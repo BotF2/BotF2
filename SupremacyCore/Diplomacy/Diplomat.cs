@@ -27,7 +27,7 @@ namespace Supremacy.Diplomacy
         private int _ownerId;
         private int _seatOfGovernmentId;
         private CivilizationKeyedMap<ForeignPower> _foreignPowers;
-        private List<IntelHelper.NewIntelOrders> _intelOrdersGoingToHost;
+        //private List<IntelHelper.NewIntelOrders> _intelOrdersGoingToHost;
         //private List<IntelHelper.NewIntelOrders> _intelOrdersGoingToHost_List;
 
         public int OwnerID
@@ -49,58 +49,58 @@ namespace Supremacy.Diplomacy
         {
             get { return GameContext.Current.CivilizationManagers[_ownerId].Resources; }
         }
-        [NotNull]
-        public List<IntelHelper.NewIntelOrders> IntelOrdersGoingToHost
-        {
-            //get { return GetIntelOrdersGoingToHost(_ownerId); }
-            get 
-            {
-                //works
-                //if (_intelOrdersGoingToHost.Count > 0)
-                    //GameLog.Server.Intel.DebugFormat("GET IntelOrdersGoingToHost.Count = {0}", _intelOrdersGoingToHost.Count);
+        //[NotNull]
+        //public List<IntelHelper.NewIntelOrders> IntelOrdersGoingToHost
+        //{
+        //    //get { return GetIntelOrdersGoingToHost(_ownerId); }
+        //    get 
+        //    {
+        //        //works
+        //        //if (_intelOrdersGoingToHost.Count > 0)
+        //            //GameLog.Server.Intel.DebugFormat("GET IntelOrdersGoingToHost.Count = {0}", _intelOrdersGoingToHost.Count);
 
 
-                //return GameContext.Current.CivilizationManagers[_ownerId].IntelOrdersGoingToHost; 
-                return _intelOrdersGoingToHost;
-            }
-            set
-            {
-                //works
-                //GameLog.Server.Intel.DebugFormat("SET IntelOrdersGoingToHost.Count = {0}", _intelOrdersGoingToHost.Count);
-                if (_intelOrdersGoingToHost != value)
-                {
-                    //works
-                    //GameLog.Server.Intel.DebugFormat("SET IntelOrdersGoingToHost to VALUE");
-                    _intelOrdersGoingToHost = value;
-                }
-            }
+        //        //return GameContext.Current.CivilizationManagers[_ownerId].IntelOrdersGoingToHost; 
+        //        return _intelOrdersGoingToHost;
+        //    }
+        //    set
+        //    {
+        //        //works
+        //        //GameLog.Server.Intel.DebugFormat("SET IntelOrdersGoingToHost.Count = {0}", _intelOrdersGoingToHost.Count);
+        //        if (_intelOrdersGoingToHost != value)
+        //        {
+        //            //works
+        //            //GameLog.Server.Intel.DebugFormat("SET IntelOrdersGoingToHost to VALUE");
+        //            _intelOrdersGoingToHost = value;
+        //        }
+        //    }
 
-            ////[NotNull]
-            //public List<IntelHelper.NewIntelOrders> IntelOrdersGoingToHost
-            //{
-            //    get
-            //    {
-            //        //        //if (_intelOrdersGoingToHost == null)
-            //        //        //{
-            //        //        //    var _DummyintelOrdersGoingToHost = new NewIntelOrders(0,1,"Dum","out");
-            //        //        //    _DummyintelOrdersGoingToHost.AttackedCivID = 0;
-            //        //        //    _DummyintelOrdersGoingToHost.AttackingCivID = 1;
-            //        //        //    _DummyintelOrdersGoingToHost.Intel_Order = "StealCredits";
-            //        //        //    _DummyintelOrdersGoingToHost.Intel_Order_Blamed = "Blam_out";
-            //        //        //    _intelOrdersGoingToHost.Add(_DummyintelOrdersGoingToHost);
-            //        //        //}
+        //    ////[NotNull]
+        //    //public List<IntelHelper.NewIntelOrders> IntelOrdersGoingToHost
+        //    //{
+        //    //    get
+        //    //    {
+        //    //        //        //if (_intelOrdersGoingToHost == null)
+        //    //        //        //{
+        //    //        //        //    var _DummyintelOrdersGoingToHost = new NewIntelOrders(0,1,"Dum","out");
+        //    //        //        //    _DummyintelOrdersGoingToHost.AttackedCivID = 0;
+        //    //        //        //    _DummyintelOrdersGoingToHost.AttackingCivID = 1;
+        //    //        //        //    _DummyintelOrdersGoingToHost.Intel_Order = "StealCredits";
+        //    //        //        //    _DummyintelOrdersGoingToHost.Intel_Order_Blamed = "Blam_out";
+        //    //        //        //    _intelOrdersGoingToHost.Add(_DummyintelOrdersGoingToHost);
+        //    //        //        //}
 
-            //        //        // gameLog is to often > 10000
-            //        //        //GameLog.Core.Intel.DebugFormat("...doing IntelOrdersGoingToHost");
+        //    //        //        // gameLog is to often > 10000
+        //    //        //        //GameLog.Core.Intel.DebugFormat("...doing IntelOrdersGoingToHost");
 
-            //        return _intelOrdersGoingToHost;
-            //    }
-            //    set
-            //            {
-            //        _intelOrdersGoingToHost = value;
-            //    }
-            //}
-        }
+        //    //        return _intelOrdersGoingToHost;
+        //    //    }
+        //    //    set
+        //    //            {
+        //    //        _intelOrdersGoingToHost = value;
+        //    //    }
+        //    //}
+        //}
 
         public Colony SeatOfGovernment
         {
@@ -137,12 +137,12 @@ namespace Supremacy.Diplomacy
 
             return foreignPower.DiplomacyData;
         }
-        public void UpdateIntelOrderList(List<IntelHelper.NewIntelOrders> orderList)
-        {
-            // old stuff, not working 
-            // GameLog.Core.Diplomacy.DebugFormat("Adding orders, count = {0}", orderList.Count);  
-            _intelOrdersGoingToHost.AddRange(orderList);
-        }
+        //public void UpdateIntelOrderList(List<IntelHelper.NewIntelOrders> orderList)
+        //{
+        //    // old stuff, not working 
+        //    // GameLog.Core.Diplomacy.DebugFormat("Adding orders, count = {0}", orderList.Count);  
+        //    _intelOrdersGoingToHost.AddRange(orderList);
+        //}
         public ForeignPower GetForeignPower(ICivIdentity civilization)
         {
             if (civilization == null)
@@ -196,16 +196,16 @@ namespace Supremacy.Diplomacy
                 throw new ArgumentNullException("owner");
             _ownerId = owner.CivID;
             _foreignPowers = new CivilizationKeyedMap<ForeignPower>(o => o.CounterpartyID);
-            _intelOrdersGoingToHost = new List<IntelHelper.NewIntelOrders>();
+            //_intelOrdersGoingToHost = new List<IntelHelper.NewIntelOrders>();
             //_intelOrdersGoingToHost.Add();
-            try
-            {
-                _intelOrdersGoingToHost = Diplomat.Get(owner)._intelOrdersGoingToHost;
-            }
-            catch
-            {
-                GameLog.Server.Intel.DebugFormat("***List _intelOrdersGoingToHost might be empty");
-            }
+            //////try
+            //////{
+            //////    _intelOrdersGoingToHost = Diplomat.Get(owner)._intelOrdersGoingToHost;
+            //////}
+            //////catch
+            //////{
+            //////    GameLog.Server.Intel.DebugFormat("***List _intelOrdersGoingToHost might be empty");
+            //////}
         }
 
         protected ForeignPower EnsureForeignPower(ICivIdentity counterparty)
@@ -305,12 +305,12 @@ namespace Supremacy.Diplomacy
                 throw new ArgumentNullException("owner");
 
             var _diplomats = GameContext.Current.Diplomats[owner.CivID];
-            _diplomats._intelOrdersGoingToHost = _diplomats.IntelOrdersGoingToHost;
+            //_diplomats._intelOrdersGoingToHost = _diplomats.IntelOrdersGoingToHost;
 
-            foreach (var item in _diplomats.IntelOrdersGoingToHost)
-            {
-                GameLog.Server.Intel.DebugFormat("IntelOrdersGoingToHost: {0} for {1} VS {2} (blamed={3})", item.Intel_Order, item.AttackingCivID, item.AttackedCivID, item.Intel_Order_Blamed);
-            }
+            //foreach (var item in _diplomats.IntelOrdersGoingToHost)
+            //{
+            //    GameLog.Server.Intel.DebugFormat("IntelOrdersGoingToHost: {0} for {1} VS {2} (blamed={3})", item.Intel_Order, item.AttackingCivID, item.AttackedCivID, item.Intel_Order_Blamed);
+            //}
 
             return GameContext.Current.Diplomats[owner.CivID];
         }
@@ -319,12 +319,12 @@ namespace Supremacy.Diplomacy
         {
 
             var _diplomats = GameContext.Current.Diplomats[ownerId];
-            _diplomats._intelOrdersGoingToHost = _diplomats.IntelOrdersGoingToHost;
+            //_diplomats._intelOrdersGoingToHost = _diplomats.IntelOrdersGoingToHost;
 
-            foreach (var item in _diplomats.IntelOrdersGoingToHost)
-            {
-                GameLog.Server.Intel.DebugFormat("IntelOrdersGoingToHost: {0} for {1} VS {2} (blamed={3})", item.Intel_Order, item.AttackingCivID, item.AttackedCivID, item.Intel_Order_Blamed);
-            }
+            //foreach (var item in _diplomats.IntelOrdersGoingToHost)
+            //{
+            //    GameLog.Server.Intel.DebugFormat("IntelOrdersGoingToHost: {0} for {1} VS {2} (blamed={3})", item.Intel_Order, item.AttackingCivID, item.AttackedCivID, item.Intel_Order_Blamed);
+            //}
             return GameContext.Current.Diplomats[ownerId];
         }
 
@@ -341,7 +341,7 @@ namespace Supremacy.Diplomacy
             _ownerId = reader.ReadOptimizedInt32();
             _seatOfGovernmentId = reader.ReadOptimizedInt32();
             _foreignPowers = reader.Read<CivilizationKeyedMap<ForeignPower>>();
-            _intelOrdersGoingToHost = reader.Read<List<IntelHelper.NewIntelOrders>>();
+            //_intelOrdersGoingToHost = reader.Read<List<IntelHelper.NewIntelOrders>>();
         }
 
         void IOwnedDataSerializable.SerializeOwnedData(SerializationWriter writer, object context)
@@ -349,7 +349,7 @@ namespace Supremacy.Diplomacy
             writer.WriteOptimized(_ownerId);
             writer.WriteOptimized(_seatOfGovernmentId);
             writer.WriteObject(_foreignPowers);
-            writer.WriteObject(_intelOrdersGoingToHost);
+            //writer.WriteObject(_intelOrdersGoingToHost);
         }
     }
 }

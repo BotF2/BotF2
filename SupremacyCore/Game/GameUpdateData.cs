@@ -62,15 +62,15 @@ namespace Supremacy.Game
                 game.AgreementMatrix = _agreementMatrix;
                 game.DiplomacyData = _diplomacyData;
 
-                var _ListofIntelOrders = new List<IntelHelper.NewIntelOrders>();
-                if (_diplomats != null)
-                {
-                    foreach (var diplomat in _diplomats)
-                    {
-                        _ListofIntelOrders = diplomat.IntelOrdersGoingToHost;
-                        //GameLog.Core.Intel.DebugFormat("_ListofIntelOrders.Count = {0}", _ListofIntelOrders.Count);
-                    }
-                }
+                //var _ListofIntelOrders = new List<IntelHelper.NewIntelOrders>();
+                //if (_diplomats != null)
+                //{
+                //    foreach (var diplomat in _diplomats)
+                //    {
+                //        _ListofIntelOrders = diplomat.IntelOrdersGoingToHost;
+                //        //GameLog.Core.Intel.DebugFormat("_ListofIntelOrders.Count = {0}", _ListofIntelOrders.Count);
+                //    }
+                //}
 
                 game.Diplomats.Clear();
 
@@ -81,7 +81,7 @@ namespace Supremacy.Game
                         var ownerId = diplomat.OwnerID;
 
                         //game.Diplomats.Add(diplomat);
-                        diplomat.IntelOrdersGoingToHost.AddRange(_ListofIntelOrders);
+                        //diplomat.IntelOrdersGoingToHost.AddRange(_ListofIntelOrders);
                         game.Diplomats.Add(diplomat);
 
                         foreach (var civ in game.Civilizations)

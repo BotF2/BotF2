@@ -253,7 +253,18 @@ namespace Supremacy.Intelligence
             var attackedCivManager = GameContext.Current.CivilizationManagers[attackedCiv];
             var attackingCivManager = GameContext.Current.CivilizationManagers[attackingCiv];
 
-            IntelHelper.NewIntelOrders order = new NewIntelOrders(attackingCiv.CivID, attackedCiv.CivID, "StealCredits", blamed);
+            
+            var _sendOrder = new SendStatementOrder(new Statement(attackingCiv, attackedCiv, StatementType.DenounceRelationship, Tone.Indignant, blamed));
+            _sendOrder.Owner = attackingCiv;
+            GameLog.Core.Diplomacy.DebugFormat("Create Statement for Stealing Credits sender = {0} *vs* Recipient = {1}: Tone = {2}  StatementType = {3}, blamed = {4}"
+                                , attackingCiv, attackedCiv, "Tone.Indignant", "DenounceRelationship", blamed);
+            ServiceLocator.Current.GetInstance<IPlayerOrderService>().AddOrder(_sendOrder);
+
+            var diploOrders = ServiceLocator.Current.GetInstance<IPlayerOrderService>().Orders;  // just for Break point controlling
+
+            //var playerDiplomat = Diplomat.Get(attackingCiv.CivID);            
+            
+            //IntelHelper.NewIntelOrders order = new NewIntelOrders(attackingCiv.CivID, attackedCiv.CivID, "StealCredits", blamed);
 
             //var statementType = DiplomacyScreenViewModel.ElementTypeToStatementType(_elements[0].ElementType);
             //if (statementType == StatementType.NoStatement)
@@ -262,86 +273,39 @@ namespace Supremacy.Intelligence
             //    GameLog.Core.Diplomacy.DebugFormat("Create Statement sender = {0} *vs* rRecipient = {1}: Tone = {2}  StatementType = {3} ", _sender, _recipient, _tone, statementType.ToString());
 
             //return new Statement(attackingCiv, attackedCiv, StatementType.DenounceRelationship, Tone.Indignant);
-            var _sendOrder = new SendStatementOrder(new Statement(attackingCiv, attackedCiv, StatementType.DenounceRelationship, Tone.Indignant));
-            _sendOrder.Owner = attackingCiv;
-            GameLog.Core.Diplomacy.DebugFormat("Create Statement for Stealing Credits sender = {0} *vs* Recipient = {1}: Tone = {2}  StatementType = {3} ", attackingCiv, attackedCiv, "Tone.Indignant", "DenounceRelationship");
-            ServiceLocator.Current.GetInstance<IPlayerOrderService>().AddOrder(_sendOrder);
+            //var _sendOrder = new SendStatementOrder(new Statement(attackingCiv, attackedCiv, StatementType.DenounceRelationship, Tone.Indignant));
 
-            var diploOrders = ServiceLocator.Current.GetInstance<IPlayerOrderService>().Orders;  // just for Break point controlling
 
             //IntelOrdersStealCredits stealCredit = new IntelOrdersStealCredits(attackingCiv, attackedCiv, blamed);
             //GameLog.Core.Intel.DebugFormat("** Class StealCredits = {0} vs {1} blamedd = {2}", attackingCiv.Key, attackedCiv.Key, blamed);
 
-            attackingCivManager.UpdateIntelOrdersGoingToHost(order);
+            //attackingCivManager.UpdateIntelOrdersGoingToHost(order);
 
-            if (attackingCivManager.IntelOrdersGoingToHost == null)
-            {
-                var itemList = new List<IntelHelper.NewIntelOrders>();
-                //attackingCivManager.IntelOrdersGoingToHost = itemList;
-                //itemList.Add(new IntelHelper.NewIntelOrders(5, 6, "StealCredits", "0"));
-                itemList.Add(order);
-                //attackingCivManager.IntelOrdersGoingToHost.AddRange(itemList);
-                //attackingCivManager.IntelOrdersGoingToHost. = new List<IntelHelper.NewIntelOrders>({ 5, 6, "StealCredits", "0" });
-                attackingCivManager.IntelOrdersGoingToHost = itemList;
-            }
-            else
-            {
-                attackingCivManager.IntelOrdersGoingToHost.Add(order);
-            }
-            
-            //var _intelOrder = IntelHelper.NewIntelOrders(attackingCiv.CivID, attackedCiv.CivID, "StealCredits", blamed);
-
-            //works
-            //////////////////GameLog.Core.Intel.DebugFormat("adding ExecuteIntelIncomingOrders: {0} vs {1} - {2}, blamed {3}", attackingCiv.CivID, attackedCiv.CivID, "StealCredits", blamed);
-
-            //if (GameContext.Current.CivilizationManagers[attackingCiv].IntelOrdersGoingToHost == null)
+            //if (attackingCivManager.IntelOrdersGoingToHost == null)
             //{
-            //    GameContext.Current.CivilizationManagers[attackingCiv].IntelOrdersGoingToHost = new List<NewIntelOrders>();
-            //    GameContext.Current.CivilizationManagers[attackingCiv].IntelOrdersGoingToHost.Add(_intelOrder);
-            //    //GameContext.Current.CivilizationManagers[attackingCiv].UpDateIntelOrdersGoingToHost();
+            //    var itemList = new List<IntelHelper.NewIntelOrders>();
+            //    //attackingCivManager.IntelOrdersGoingToHost = itemList;
+            //    //itemList.Add(new IntelHelper.NewIntelOrders(5, 6, "StealCredits", "0"));
+            //    itemList.Add(order);
+            //    //attackingCivManager.IntelOrdersGoingToHost.AddRange(itemList);
+            //    //attackingCivManager.IntelOrdersGoingToHost. = new List<IntelHelper.NewIntelOrders>({ 5, 6, "StealCredits", "0" });
+            //    attackingCivManager.IntelOrdersGoingToHost = itemList;
             //}
             //else
-            //    GameContext.Current.CivilizationManagers[attackingCiv].IntelOrdersGoingToHost.Add(_intelOrder);
-
-            //var _diplomats = new CivilizationKeyedMap<Diplomat>(o => o.OwnerID);
-
-            //foreach (var civManager in GameContext.Current.CivilizationManagers)
             //{
-            //    if (civManager.Civilization.CivilizationType != CivilizationType.NotInGameRace)
-            //    {
-            //        _diplomats.Add(new Diplomat(civManager.Civilization));
-            //    }
+            //    attackingCivManager.IntelOrdersGoingToHost.Add(order);
             //}
-
-            var playerDiplomat = Diplomat.Get(attackingCiv.CivID);
-
-            var listIntelOrders = playerDiplomat.IntelOrdersGoingToHost;
-
-            listIntelOrders.Add(order);
-            playerDiplomat.UpdateIntelOrderList(listIntelOrders);
             
-            //works
-            //if (playerDiplomat.IntelOrdersGoingToHost.Count > 0)
-            //    GameLog.Core.Intel.DebugFormat("playerDiplomat for {0} has {1} going to host", playerDiplomat.Owner.Key, playerDiplomat.IntelOrdersGoingToHost.Count);
-
-            //var dip2 = Diplomat.Get(attackingCiv.CivID);
-            //if (dip2.IntelOrdersGoingToHost.Count > 0)
-            //    GameLog.Core.Intel.DebugFormat("playerDiplomat for {0} has {1} going to host", playerDiplomat.Owner.Key, playerDiplomat.IntelOrdersGoingToHost.Count);
-
-            //listIOrders.
-
-            //_intelOrders.Add(new IntelHelper.NewIntelOrders(_intelOrder));
 
 
-            //if (GameContext.Current.CivilizationManagers[attackingCiv] == null)
-            //{
-            //    GameContext.Current.CivilizationManagers[attackingCiv].IntelOrdersGoingToHost = new List<NewIntelOrders>();
-            //    //Diplomat[attackingCiv].
-            //    //CivilizationKeyedMap[attackingCiv]
-            //    listIntelOrders.Add(_intelOrder);
-            //    //GameContext.Current.CivilizationManagers[attackingCiv].UpDateIntelOrdersGoingToHost();
-            //}
-            //else
+
+
+            //var listIntelOrders = playerDiplomat.IntelOrdersGoingToHost;
+
+            //listIntelOrders.Add(order);
+            //playerDiplomat.UpdateIntelOrderList(listIntelOrders);
+            
+
 
         }
 
@@ -370,12 +334,12 @@ namespace Supremacy.Intelligence
                 if (empire.CivilizationID == 4)
                 {
                     //GameLog.Core.Intel.DebugFormat("Before add intelOrders CivKey = {0}: Count Intel Orders = {1}", empire.Civilization.Key, Diplomat.Get(empire).IntelOrdersGoingToHost.Count);
-                    if (Diplomat.Get(empire).IntelOrdersGoingToHost.Count > 0)
-                    {
-                        //_completeListofIntelOrders.AddRange(empire.IntelOrdersGoingToHost);
-                        _completeListofIntelOrders.AddRange(Diplomat.Get(empire).IntelOrdersGoingToHost);
-                        //GameLog.Core.Intel.DebugFormat("add to CivKey {0} Intel OrderToHost Count = {1}", empire.Civilization.Key, Diplomat.Get(empire).IntelOrdersGoingToHost.Count);
-                    }
+                    //if (Diplomat.Get(empire).IntelOrdersGoingToHost.Count > 0)
+                    //{
+                    //    //_completeListofIntelOrders.AddRange(empire.IntelOrdersGoingToHost);
+                    //    _completeListofIntelOrders.AddRange(Diplomat.Get(empire).IntelOrdersGoingToHost);
+                    //    //GameLog.Core.Intel.DebugFormat("add to CivKey {0} Intel OrderToHost Count = {1}", empire.Civilization.Key, Diplomat.Get(empire).IntelOrdersGoingToHost.Count);
+                    //}
                 }
             }
 
@@ -385,48 +349,41 @@ namespace Supremacy.Intelligence
             //    GameLog.Core.Intel.DebugFormat("_completeListofIntelOrders-Entry: {0} from {1} against {2], blamed={3}", item.Intel_Order, item.AttackingCivID, item.AttackedCivID, item.Intel_Order_Blamed);
             //}
 
-            //foreach (var empire in empiresDoingIntel)
-            //{
-            //    //GameLog.Core.Intel.DebugFormat("doing ExecuteIntelIncomingOrders for empire {0} = Count {1}", empire.Civilization.Key, empire.IntelOrdersIncomingToHost.Count);
+            foreach (var order in _completeListofIntelOrders)
+                {
 
-            //if (empire.IntelOrdersIncomingToHost != null) // && empire.IntelOrdersGoingToHost.)
-                                                          //    {
-                                                          //foreach (var order in empire.IntelOrdersIncomingToHost)
-                foreach (var order in _completeListofIntelOrders)
+                    //if (order.AttackingCivID == 999)
+                    //{
+                    //    GameLog.Core.Intel.DebugFormat("Creating fake Incoming Order... (ROM vs DOM)"); // Incoming: {2} for {0} VS {1}", attacking.Civilization.Key,
+                    //    order.AttackedCivID = 5;
+                    //    order.AttackingCivID = 3;
+                    //    order.Intel_Order = "StealCredits";
+                    //    order.Intel_Order_Blamed = "bl_Federation";
+                    //    //order._attackedCivID = 5;
+                    //    //order._attackingCivID = 3;
+                    //    //order._intel_Order = "StealCreditsUL";
+                    //    //order._intel_Order_Blamed = "bl_FederationUL";
+                    //}
+
+                    //GameLog.Core.Intel.DebugFormat("Incoming: {2} for {0} VS {1}", attacking.Civilization.Key,
+                    //                                        attacked.Civilization.Key,
+                    //                                         order.Intel_Order,
+                    //                                         order.Intel_Order_Blamed);
+
+                    var attacking = GameContext.Current.CivilizationManagers[2].Civilization;
+                    var attacked = GameContext.Current.CivilizationManagers[5].Civilization;
+                    //GameLog.Core.Intel.DebugFormat("Incoming: {2} for {0} VS {1}", attacking.Key,
+                    //                                                                attacked.Key,
+                    //                                                                 order.Intel_Order,
+                    //                                                                 order.Intel_Order_Blamed);
+                    switch (order.Intel_Order)
                     {
-
-                        //if (order.AttackingCivID == 999)
-                        //{
-                        //    GameLog.Core.Intel.DebugFormat("Creating fake Incoming Order... (ROM vs DOM)"); // Incoming: {2} for {0} VS {1}", attacking.Civilization.Key,
-                        //    order.AttackedCivID = 5;
-                        //    order.AttackingCivID = 3;
-                        //    order.Intel_Order = "StealCredits";
-                        //    order.Intel_Order_Blamed = "bl_Federation";
-                        //    //order._attackedCivID = 5;
-                        //    //order._attackingCivID = 3;
-                        //    //order._intel_Order = "StealCreditsUL";
-                        //    //order._intel_Order_Blamed = "bl_FederationUL";
-                        //}
-
-                        //GameLog.Core.Intel.DebugFormat("Incoming: {2} for {0} VS {1}", attacking.Civilization.Key,
-                        //                                        attacked.Civilization.Key,
-                        //                                         order.Intel_Order,
-                        //                                         order.Intel_Order_Blamed);
-
-                        var attacking = GameContext.Current.CivilizationManagers[2].Civilization;
-                        var attacked = GameContext.Current.CivilizationManagers[5].Civilization;
-                        //GameLog.Core.Intel.DebugFormat("Incoming: {2} for {0} VS {1}", attacking.Key,
-                        //                                                                attacked.Key,
-                        //                                                                 order.Intel_Order,
-                        //                                                                 order.Intel_Order_Blamed);
-                        switch (order.Intel_Order)
-                        {
-                            case "StealCredits":
-                                ExecuteStealCredits(attacking, attacked, "_bla_Terrorists");
-                                break;
-                            default:
-                                break;
-                        }
+                        case "StealCredits":
+                            ExecuteStealCredits(attacking, attacked, "_bla_Terrorists");
+                            break;
+                        default:
+                            break;
+                    }
 
                 //    }
                 //}
