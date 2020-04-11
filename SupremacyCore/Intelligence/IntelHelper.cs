@@ -43,8 +43,6 @@ namespace Supremacy.Intelligence
         public static bool _showNetwork_4 = false;
         public static bool _showNetwork_5 = false;
         public static bool _showNetwork_6 = false;
-       // private static Dictionary<int, IntelOrdersStealCredits> _intelStealCreditDictionary;
-       // private static List<KeyValuePair<int, IntelOrdersStealCredits>> _intelStealCreditList;
 
         public static List<SitRepEntry> SitReps_Temp
         {
@@ -112,10 +110,6 @@ namespace Supremacy.Intelligence
         {
             get { return _showNetwork_6; }
         }
-        //public static Dictionary<int, IntelOrdersStealCredits> IntelStealCreditsDictionary
-        //{
-        //    get { return _intelStealCreditDictionary; }
-        //}
 
         /// <summary>
         /// Using the civ manager as a param from AssetsScreen. Hope this is the local machine local player
@@ -236,7 +230,6 @@ namespace Supremacy.Intelligence
                     break;
             }
             GameLog.Client.UI.DebugFormat("********* end of sending spied list to CM **********");
-           // PopulateDefence();
         }
 
         #region Espionage Methods
