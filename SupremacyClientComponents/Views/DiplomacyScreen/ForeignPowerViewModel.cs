@@ -394,6 +394,7 @@ namespace Supremacy.Client.Views
                     case StatementType.DenounceAssault:
                     case StatementType.DenounceInvasion:
                     case StatementType.DenounceSabotage:
+                    case StatementType.SabotageOrder:
                         GameLog.Client.Diplomacy.DebugFormat("Message Statement");
                         return DiplomaticMessageCategory.Statement;
                     

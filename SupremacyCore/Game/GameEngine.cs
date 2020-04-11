@@ -402,32 +402,6 @@ namespace Supremacy.Game
 
             var diplomatCheck = game.Diplomats;
 
-            IntelHelper.ExecuteIntelIncomingOrders();
-
-            //#region class steal credit section
-            //if (IntelHelper.IntelStealCreditsDictionary != null)
-            //{
-            //    List<KeyValuePair<int, IntelOrdersStealCredits>> stealCreditList = IntelHelper.IntelStealCreditsDictionary.ToList();
-
-            //    foreach (var stealCredit in stealCreditList) // make list and foreach list to get key to remove last turns values from Dictionary
-            //    {
-            //        if (stealCredit.Value.TurnNumber < GameContext.Current.TurnNumber)
-            //        {
-            //            GameLog.Core.Intel.DebugFormat("* * * StealCredit turn# {0} vs {1} current turn#", stealCredit.Value.TurnNumber, GameContext.Current.TurnNumber);
-            //            GameLog.Core.Intel.DebugFormat("* * * Remove last turn classes, attacking = {0}", stealCredit.Value.AttackingCiv);
-            //            IntelHelper.IntelStealCreditsDictionary.Remove(stealCredit.Key);
-            //        }
-            //    }
-            //    foreach (var stolenCredits in IntelHelper.IntelStealCreditsDictionary) // foreach dictionary to find and run stealcredit classes
-            //    {
-            //        GameLog.Core.Intel.DebugFormat("* * * for {0} vs {1} call ExecuteStealCredits", stolenCredits.Value.AttackingCiv, stolenCredits.Value.AttackedCiv);
-            //        IntelHelper.ExecuteStealCredits(stolenCredits.Value.AttackingCiv,
-            //                                        stolenCredits.Value.AttackedCiv,
-            //                                        stolenCredits.Value.Blamed);
-            //    }
-            //}
-            //#endregion class steal credit
-
             GameLog.Core.General.DebugFormat("resetting items...");
             ParallelForEach(objects, item =>
             {
@@ -864,13 +838,6 @@ namespace Supremacy.Game
                             if (ForeignPower.LastProposalReceived != null)
                                         RejectProposalVisitor.Visit(ForeignPower.LastProposalReceived);                            
                             break;
-
-                        //    // new - wrong place
-                        //case PendingDiplomacyAction.None:
-                        //    // e.g. WarDeclaration or Steal Credits
-                        //    GameLog.Core.Diplomacy.DebugFormat("PendingDiplomacyAction.None = {2} for {0} vs {1}, pending {3}", civ1, civ2, ForeignPowerStatus, ForeignPower.PendingAction.ToString());
-                        //    break;
-
                     }
 
                     ForeignPower.PendingAction = PendingDiplomacyAction.None;
@@ -901,57 +868,94 @@ namespace Supremacy.Game
                             _gameLog += Environment.NewLine + "ProposalReceived: "
                                       + foreignPower.ProposalReceived.Sender + " vs "
                                       + foreignPower.ProposalReceived.Recipient + ": > "
-                                      + foreignPower.ProposalReceived.Clauses.ToString();
+                                      + foreignPower.ProposalReceived.Clauses.ToString()
+                                      + Environment.NewLine;
                         if (foreignPower.ProposalSent != null)
                             _gameLog += Environment.NewLine + "ProposalSent: "
                                       + foreignPower.ProposalSent.Sender + " vs "
                                       + foreignPower.ProposalSent.Recipient + ": > "
-                                      + foreignPower.ProposalSent.Clauses.ToString();
+                                      + foreignPower.ProposalSent.Clauses.ToString()
+                                      + Environment.NewLine;
                         if (foreignPower.ResponseReceived != null)
                             _gameLog += Environment.NewLine + "ResponseReceived: "
                                       + foreignPower.ResponseReceived.Sender + " vs "
                                       + foreignPower.ResponseReceived.Recipient + ": > "
-                                      + foreignPower.ResponseReceived.ResponseType.ToString();
+                                      + foreignPower.ResponseReceived.ResponseType.ToString()
+                                      + Environment.NewLine;
                         if (foreignPower.ResponseSent != null)
                             _gameLog += Environment.NewLine + "ResponseSent: "
                                       + foreignPower.ResponseSent.Sender + " vs "
                                       + foreignPower.ResponseSent.Recipient + ": > "
-                                      + foreignPower.ResponseSent.ResponseType.ToString();
+                                      + foreignPower.ResponseSent.ResponseType.ToString()
+                                      + Environment.NewLine;
                         if (foreignPower.StatementReceived != null)  // in SinglePlayer you'll never get this "received" because you are always the playing SENDER
                         {
                             _gameLog += Environment.NewLine + "StatementReceived: "
                                       + foreignPower.StatementReceived.Sender + " vs "
                                       + foreignPower.StatementReceived.Recipient + ": > "
                                       + ", Parameter = " + foreignPower.StatementReceived.Parameter.ToString()
+                                      + Environment.NewLine
                                       ;
                         
-                        GameLog.Core.Diplomacy.DebugFormat("received a 'StealCredits'-Diplomacy-Statement");
-                            IntelHelper.ExecuteStealCredits(civ1, civ2, foreignPower.StatementSent.Parameter.ToString());
-                            // Get out here the stuff for StealCredits
+                            GameLog.Core.Diplomacy.DebugFormat("received a 'Sabotage'-Diplomacy-Statement");
+                            GameLog.Core.Diplomacy.DebugFormat(_gameLog);
+
+                            switch (foreignPower.StatementReceived.Tone)
+                            {
+                                case Tone.Calm:
+                                    break;
+                                case Tone.Meek:
+                                    break;
+                                case Tone.Condescending:
+                                    break;
+                                case Tone.Indignant:
+                                    IntelHelper.ExecuteStealCredits(/*GameContext.Current.CivilizationManagers[civ1].SeatOfGovernment.Sector.System.Colony
+                                ,*/ civ1, civ2, foreignPower.StatementReceived.Parameter.ToString());  // Parameter = blamed as a string
+                                    break;
+                                case Tone.Impatient:
+                                    IntelHelper.ExecuteStealResearch(civ1, civ2, foreignPower.StatementReceived.Parameter.ToString());
+                                    break;
+                                case Tone.Annoyed:
+                                    IntelHelper.ExecuteSabotageFood(civ1, civ2, foreignPower.StatementReceived.Parameter.ToString());
+                                    break;
+                                case Tone.Enraged:
+                                    IntelHelper.ExecuteSabotageIndustry(civ1, civ2, foreignPower.StatementReceived.Parameter.ToString());
+                                    break;
+                                case Tone.Receptive:
+                                    IntelHelper.ExecuteSabotageEnergy(civ1, civ2, foreignPower.StatementReceived.Parameter.ToString());
+                                    break;
+                                case Tone.Enthusiastic:
+                                    break;
+                                default:
+                                    break;
+                            }
+                            if (foreignPower.StatementReceived.Tone == Tone.Indignant)
+                            {
+                                IntelHelper.ExecuteStealCredits(/*GameContext.Current.CivilizationManagers[civ1].SeatOfGovernment.Sector.System.Colony
+                                ,*/ civ1, civ2, foreignPower.StatementReceived.Parameter.ToString());  // Parameter = blamed as a string
+                            }
+
                         }
                         if (foreignPower.StatementSent != null)
                         {
                             //GameLog.Core.Diplomacy.DebugFormat("received a 'StealCredits'-Diplomacy-Statement");   // in SinglePlayer Gamelog is just for the sender
-                            _gameLog += Environment.NewLine + "StatementSent: "
+                            _gameLog += Environment.NewLine + "(relevant is just the receive on HOSTING side.... StatementSent: "
                                       + foreignPower.StatementSent.Sender + " vs "
                                       + foreignPower.StatementSent.Recipient + ": > "
                                       + foreignPower.StatementSent.StatementType.ToString()
                                       + ", Parameter = " + foreignPower.StatementSent.Parameter.ToString()
-                                      ;
+                                      + Environment.NewLine;
                         }
 
                         if (foreignPower.PendingAction != null)
                             _gameLog += Environment.NewLine + "PendingAction: "
                                       //+ foreignPower.PendingAction + " vs "
                                       //+ foreignPower.PendingAction.Recipient
-                                      + foreignPower.PendingAction.ToString();
+                                      + foreignPower.PendingAction.ToString()
+                                      + Environment.NewLine;
 
-                        _gameLog = _gameLog + Environment.NewLine;
-
-                        GameLog.Core.Diplomacy.DebugFormat(_gameLog);
-
+                        //GameLog.Core.Diplomacy.DebugFormat(_gameLog);
                     }
-                        ;  // do nothing else = emtpy line
 
                     var proposalSent = foreignPower.ProposalSent;
                     if (proposalSent != null)
@@ -985,7 +989,7 @@ namespace Supremacy.Game
                         if (statementSent.StatementType == StatementType.WarDeclaration)
                             foreignPower.DeclareWar();
 
-                        if (statementSent.StatementType == StatementType.DenounceRelationship && statementSent.Tone == Tone.Indignant)
+                        if (statementSent.StatementType == StatementType.SabotageOrder && statementSent.Tone == Tone.Indignant)
                         {
                             // wrong - this is the place "Statement" has been SEND
                             //GameLog.Core.Diplomacy.DebugFormat("received a 'StealCredits'-Diplomacy-Statement");
