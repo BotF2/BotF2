@@ -289,7 +289,7 @@ namespace Supremacy.VFS
             {
                 string message = "File is NOT available > " + resolvedName;
                 MessageBox.Show(message, "WARNING", MessageBoxButton.OK);
-                return File.Open(resolvedName, FileMode.Open, access, share);
+                return File.Open("vfs:///Resources/Images/__image_missing.png", FileMode.Open, access, share);
             }
         }
 
