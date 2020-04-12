@@ -815,8 +815,8 @@ namespace Supremacy.Game
                     //GameLog.Core.Diplomacy.DebugFormat("foreignPowerStatus = {2} for {0} vs {1}", civ1, civ2, ForeignPowerStatus);
                     
                     
-                    if (civ1.CivID == 1 && civ2.CivID == 4)  // Terrans, incoming from Cardassians
-                        ;  // do nothing else = emtpy line
+                    //if (civ1.CivID == 1 && civ2.CivID == 4)  // Terrans, incoming from Cardassians
+                    //    ;  // do nothing else = emtpy line
 
                     switch (ForeignPower.PendingAction)
                     {
@@ -888,8 +888,9 @@ namespace Supremacy.Game
                                       + ", Parameter = " + foreignPower.StatementReceived.Parameter.ToString()
                                       + Environment.NewLine
                                       ;
-                        
-                            GameLog.Core.Diplomacy.DebugFormat("received a 'Sabotage'-Diplomacy-Statement");
+
+                            GameLog.Core.Diplomacy.DebugFormat("------------------------------------------");
+                            GameLog.Core.Diplomacy.DebugFormat("received a 'Sabotage'-Diplomacy-Statement, Tone = {0}", foreignPower.StatementReceived.Tone.ToString());
                             GameLog.Core.Diplomacy.DebugFormat(_gameLog);
 
                             switch (foreignPower.StatementReceived.Tone)
@@ -901,30 +902,25 @@ namespace Supremacy.Game
                                 case Tone.Condescending:
                                     break;
                                 case Tone.Indignant:
-                                    IntelHelper.ExecuteStealCredits(/*GameContext.Current.CivilizationManagers[civ1].SeatOfGovernment.Sector.System.Colony
-                                ,*/ civ1, civ2, foreignPower.StatementReceived.Parameter.ToString());  // Parameter = blamed as a string
+                                    IntelHelper.SabotageStealCreditsExecute(civ2, civ1, foreignPower.StatementReceived.Parameter.ToString());  
+                                    // Parameter = blamed as a string
                                     break;
                                 case Tone.Impatient:
-                                    IntelHelper.ExecuteStealResearch(civ1, civ2, foreignPower.StatementReceived.Parameter.ToString());
+                                    IntelHelper.SabotageStealResearchExecute(civ2, civ1, foreignPower.StatementReceived.Parameter.ToString());
                                     break;
                                 case Tone.Annoyed:
-                                    IntelHelper.ExecuteSabotageFood(civ1, civ2, foreignPower.StatementReceived.Parameter.ToString());
+                                    IntelHelper.SabotageFoodExecute(civ2, civ1, foreignPower.StatementReceived.Parameter.ToString());
                                     break;
                                 case Tone.Enraged:
-                                    IntelHelper.ExecuteSabotageIndustry(civ1, civ2, foreignPower.StatementReceived.Parameter.ToString());
+                                    IntelHelper.SabotageIndustryExecute(civ2, civ1, foreignPower.StatementReceived.Parameter.ToString());
                                     break;
                                 case Tone.Receptive:
-                                    IntelHelper.ExecuteSabotageEnergy(civ1, civ2, foreignPower.StatementReceived.Parameter.ToString());
+                                    IntelHelper.SabotageEnergyExecute(civ2, civ1, foreignPower.StatementReceived.Parameter.ToString());
                                     break;
                                 case Tone.Enthusiastic:
                                     break;
                                 default:
                                     break;
-                            }
-                            if (foreignPower.StatementReceived.Tone == Tone.Indignant)
-                            {
-                                IntelHelper.ExecuteStealCredits(/*GameContext.Current.CivilizationManagers[civ1].SeatOfGovernment.Sector.System.Colony
-                                ,*/ civ1, civ2, foreignPower.StatementReceived.Parameter.ToString());  // Parameter = blamed as a string
                             }
 
                         }
@@ -952,8 +948,8 @@ namespace Supremacy.Game
                     var proposalSent = foreignPower.ProposalSent;
                     if (proposalSent != null)
                     {
-                        if (civ1.CivID == 1 && civ2.CivID == 4)  // Terrans, incoming from Cardassians
-                            ;
+                        //if (civ1.CivID == 1 && civ2.CivID == 4)  // Terrans, incoming from Cardassians
+                        //    ;
                             foreignPower.CounterpartyForeignPower.ProposalReceived = proposalSent;
                         foreignPower.LastProposalSent = proposalSent;
                         foreignPower.ProposalSent = null;
@@ -972,8 +968,8 @@ namespace Supremacy.Game
                     var statementSent = foreignPower.StatementSent;
                     if (statementSent != null)
                     {
-                        if (civ1.CivID == 1 && civ2.CivID == 4)  // Terrans, incoming from Cardassians
-                            ;  // do nothing else = emtpy line
+                        //if (civ1.CivID == 1 && civ2.CivID == 4)  // Terrans, incoming from Cardassians
+                        //    ;  // do nothing else = emtpy line
                         foreignPower.CounterpartyForeignPower.StatementReceived = statementSent;
                         foreignPower.LastStatementSent = statementSent;
                         foreignPower.StatementSent = null;
@@ -996,8 +992,8 @@ namespace Supremacy.Game
                     var responseSent = foreignPower.ResponseSent;
                     if (responseSent != null)
                     {
-                        if (civ1.CivID == 1 && civ2.CivID == 4)  // Terrans, incoming from Cardassians
-                            ;  // do nothing else = emtpy line
+                        //if (civ1.CivID == 1 && civ2.CivID == 4)  // Terrans, incoming from Cardassians
+                        //    ;  // do nothing else = emtpy line
                         foreignPower.CounterpartyForeignPower.ResponseReceived = responseSent;
                         foreignPower.LastResponseSent = responseSent;
                         foreignPower.ResponseSent = null;

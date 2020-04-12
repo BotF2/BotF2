@@ -885,72 +885,72 @@ namespace Supremacy.Client.Views
 
         private void OnCreditsZeroClick(object sender, RoutedEventArgs e) // we are using attacking spy civ as peramiter here in Creidt only so far
         {
-            IntelHelper.StealCredits(AssetsScreenPresentationModel.LocalCiv, AssetsScreenPresentationModel.SpiedZeroCiv, _blameWhoZero); // blame);
+            IntelHelper.SabotageStealCredits(AssetsScreenPresentationModel.LocalCiv, AssetsScreenPresentationModel.SpiedZeroCiv, _blameWhoZero); // blame);
             CloseZero();
         }
         private void OnCreditsOneClick(object sender, RoutedEventArgs e)
         {
-            IntelHelper.StealCredits(AssetsScreenPresentationModel.LocalCiv, AssetsScreenPresentationModel.SpiedOneCiv, _blameWhoOne);
+            IntelHelper.SabotageStealCredits(AssetsScreenPresentationModel.LocalCiv, AssetsScreenPresentationModel.SpiedOneCiv, _blameWhoOne);
             CloseOne();
         }
         private void OnCreditsTwoClick(object sender, RoutedEventArgs e)
         {
-            IntelHelper.StealCredits(AssetsScreenPresentationModel.LocalCiv, AssetsScreenPresentationModel.SpiedTwoCiv, _blameWhoTwo);
+            IntelHelper.SabotageStealCredits(AssetsScreenPresentationModel.LocalCiv, AssetsScreenPresentationModel.SpiedTwoCiv, _blameWhoTwo);
             CloseTwo();
         }
         private void OnCreditsThreeClick(object sender, RoutedEventArgs e)
         {
-            IntelHelper.StealCredits(AssetsScreenPresentationModel.LocalCiv, AssetsScreenPresentationModel.SpiedThreeCiv, _blameWhoThree);
+            IntelHelper.SabotageStealCredits(AssetsScreenPresentationModel.LocalCiv, AssetsScreenPresentationModel.SpiedThreeCiv, _blameWhoThree);
             CloseThree();
         }
         private void OnCreditsFourClick(object sender, RoutedEventArgs e)
         {
-            IntelHelper.StealCredits(AssetsScreenPresentationModel.LocalCiv, AssetsScreenPresentationModel.SpiedFourCiv, _blameWhoFour);
+            IntelHelper.SabotageStealCredits(AssetsScreenPresentationModel.LocalCiv, AssetsScreenPresentationModel.SpiedFourCiv, _blameWhoFour);
             CloseFour();
         }
         private void OnCreditsFiveClick(object sender, RoutedEventArgs e)
         {
-            IntelHelper.StealCredits(AssetsScreenPresentationModel.LocalCiv, AssetsScreenPresentationModel.SpiedFiveCiv, _blameWhoFive);
+            IntelHelper.SabotageStealCredits(AssetsScreenPresentationModel.LocalCiv, AssetsScreenPresentationModel.SpiedFiveCiv, _blameWhoFive);
             CloseFive();
         }
         private void OnCreditsSixClick(object sender, RoutedEventArgs e)
         {
-            IntelHelper.StealCredits(AssetsScreenPresentationModel.LocalCiv, AssetsScreenPresentationModel.SpiedSixCiv, _blameWhoSix);
+            IntelHelper.SabotageStealCredits(AssetsScreenPresentationModel.LocalCiv, AssetsScreenPresentationModel.SpiedSixCiv, _blameWhoSix);
             CloseSix();
         }
         private void OnResearchZeroClick(object sender, RoutedEventArgs e)
         {
-            IntelHelper.StealResearch(AssetsScreenPresentationModel.LocalCiv, AssetsScreenPresentationModel.SpiedZeroCiv, _blameWhoZero);
+            IntelHelper.SabotageStealResearch(AssetsScreenPresentationModel.LocalCiv, AssetsScreenPresentationModel.SpiedZeroCiv, _blameWhoZero);
             CloseZero();
         }
         private void OnResearchOneClick(object sender, RoutedEventArgs e)
         {
-            IntelHelper.StealResearch(AssetsScreenPresentationModel.LocalCiv, AssetsScreenPresentationModel.SpiedOneCiv, _blameWhoOne);
+            IntelHelper.SabotageStealResearch(AssetsScreenPresentationModel.LocalCiv, AssetsScreenPresentationModel.SpiedOneCiv, _blameWhoOne);
             CloseOne();
         }
         private void OnResearchTwoClick(object sender, RoutedEventArgs e)
         {
-            IntelHelper.StealResearch(AssetsScreenPresentationModel.LocalCiv, AssetsScreenPresentationModel.SpiedTwoCiv, _blameWhoTwo);
+            IntelHelper.SabotageStealResearch(AssetsScreenPresentationModel.LocalCiv, AssetsScreenPresentationModel.SpiedTwoCiv, _blameWhoTwo);
             CloseTwo();
         }
         private void OnResearchThreeClick(object sender, RoutedEventArgs e)
         {
-            IntelHelper.StealResearch(AssetsScreenPresentationModel.LocalCiv, AssetsScreenPresentationModel.SpiedThreeCiv, _blameWhoThree);
+            IntelHelper.SabotageStealResearch(AssetsScreenPresentationModel.LocalCiv, AssetsScreenPresentationModel.SpiedThreeCiv, _blameWhoThree);
             CloseThree();
         }
         private void OnResearchFourClick(object sender, RoutedEventArgs e)
         {
-            IntelHelper.StealResearch(AssetsScreenPresentationModel.LocalCiv, AssetsScreenPresentationModel.SpiedFourCiv, _blameWhoFour);
+            IntelHelper.SabotageStealResearch(AssetsScreenPresentationModel.LocalCiv, AssetsScreenPresentationModel.SpiedFourCiv, _blameWhoFour);
             CloseFour();
         }
         private void OnResearchFiveClick(object sender, RoutedEventArgs e)
         {
-            IntelHelper.StealResearch(AssetsScreenPresentationModel.LocalCiv, AssetsScreenPresentationModel.SpiedFiveCiv, _blameWhoFive);
+            IntelHelper.SabotageStealResearch(AssetsScreenPresentationModel.LocalCiv, AssetsScreenPresentationModel.SpiedFiveCiv, _blameWhoFive);
             CloseFive();
         }
         private void OnResearchSixClick(object sender, RoutedEventArgs e)
         {
-            IntelHelper.StealResearch(AssetsScreenPresentationModel.LocalCiv, AssetsScreenPresentationModel.SpiedSixCiv, _blameWhoSix);
+            IntelHelper.SabotageStealResearch(AssetsScreenPresentationModel.LocalCiv, AssetsScreenPresentationModel.SpiedSixCiv, _blameWhoSix);
             CloseSix();
         }
         private void OnEnergyZeroClick(object sender, RoutedEventArgs e)
@@ -1079,108 +1079,5 @@ namespace Supremacy.Client.Views
             GameLog.Client.UI.DebugFormat("AssetsScreen receives sender=(whole GameContext)");  // sender.ToString doesn't work
             return true;
         }
-        //private void OnIntelUpdateReceived(DataEventArgs<IntelUpdate> args)
-        //{
-        //    HandleIntelUpdate(args.Value);
-        //   //private void HandleIntelUpdate(IntelUpdate update)
-        ////{
-        ////    _update = update;
-
-
-        //    //foreach (CombatAssets assets in update.FriendlyAssets)
-        //    //{
-        //    //    if (assets.Owner == _appContext.LocalPlayer.Empire)
-        //    //    {
-        //    //        _playerAssets = assets;
-        //    //        break;
-        //    //    }
-        //    //    else
-        //    //    {
-        //    //        _otherAssets = assets;
-        //    //    }
-        //    //}
-        //    //if (_playerAssets == null)
-        //    //{
-        //    //    _playerAssets = update.FriendlyAssets[0];
-        //    //}
-        //    //if (_otherAssets == null)
-        //    //{
-        //    //    _otherAssets = update.HostileAssets[0];
-        //    //}
-
-
-        //    //DataContext = _update;
-
-        //    //if (update.CombatUpdate_IsCombatOver)
-        //    //{
-
-        //    //    if (_update.IsStandoff)
-        //    //    {
-        //    //        HeaderText.Text = ResourceManager.GetString("COMBAT_HEADER") + ": "
-        //    //            + String.Format(ResourceManager.GetString("COMBAT_STANDOFF"));
-        //    //        SubHeaderText.Text = String.Format(
-        //    //            ResourceManager.GetString("COMBAT_TEXT_STANDOFF"),
-        //    //            _update.Sector.Name);
-        //    //    }
-        //    //    else if (_playerAssets.HasSurvivingAssets)
-        //    //    {
-        //    //        HeaderText.Text = ResourceManager.GetString("COMBAT_HEADER") + ": "
-        //    //            + String.Format(ResourceManager.GetString("COMBAT_VICTORY"));
-        //    //        SubHeaderText.Text = String.Format(
-        //    //            ResourceManager.GetString("COMBAT_TEXT_VICTORY"),
-        //    //            _update.Sector.Name);
-        //    //    }
-        //    //    else
-        //    //    {
-        //    //        HeaderText.Text = ResourceManager.GetString("COMBAT_HEADER") + ": "
-        //    //            + String.Format(ResourceManager.GetString("COMBAT_DEFEAT"));
-        //    //        SubHeaderText.Text = String.Format(
-        //    //            ResourceManager.GetString("COMBAT_TEXT_DEFEAT"),
-        //    //            _update.Sector.Name);
-        //    //    }
-        //    //}
-        //    //else
-        //    //{
-        //    //    HeaderText.Text = ResourceManager.GetString("COMBAT_HEADER"); // + ": "
-        //    //                                                                  //+ String.Format(ResourceManager.GetString("COMBAT_ROUND"), _update.RoundNumber);
-        //    //    SubHeaderText.Text = String.Format(
-        //    //        ResourceManager.GetString("COMBAT_TEXT_ENCOUNTER"),
-        //    //        _update.Sector.Name);
-        //    //    var soundPlayer = new SoundPlayer("Resources/SoundFX/REDALERT.wav");
-        //    //    {
-        //    //        if (File.Exists("Resources/SoundFX/REDALERT.wav"))
-        //    //            soundPlayer.Play();
-        //    //    }
-        //    //}
-        //    //SubHeader2Text.Text = String.Format(
-        //    //    ResourceManager.GetString("COMBAT_TEXT_DURABILITY"),
-        //    //    _update.Sector.Name);
-
-        //    //PopulateUnitTrees();
-
-        //    ////We need combat assets to be able to engage
-        //    //EngageButton.IsEnabled = _update.FriendlyAssets.Any(fa => (fa.CombatShips.Count > 0) || (fa.Station != null));
-        //    ////We need combat assets to be able to rush the opposition
-        //    //RushButton.IsEnabled = _update.FriendlyAssets.Any(fa => fa.CombatShips.Count > 0);
-        //    ////There needs to be transports in the opposition to be able to target them
-        //    //TransportsButton.IsEnabled = false;
-        //    ////We need at least 3 ships to create a formation
-        //    //FormationButton.IsEnabled = _update.FriendlyAssets.Any(fa => fa.CombatShips.Count >= 3);
-        //    ////We need assets to be able to retreat
-        //    //RetreatButton.IsEnabled = _update.FriendlyAssets.Any(fa => (fa.CombatShips.Count > 0) || (fa.NonCombatShips.Count > 0));
-        //    ////Can hail
-        //    //HailButton.IsEnabled = _update.FriendlyAssets.Any(fa => (fa.CombatShips.Count > 0 || fa.NonCombatShips.Count > 0 || fa.Station != null)); //(update.RoundNumber == 1);
-
-        //    //UpperButtonsPanel.Visibility = update.CombatUpdate_IsCombatOver ? Visibility.Collapsed : Visibility.Visible;
-        //    //LowerButtonsPanel.Visibility = update.CombatUpdate_IsCombatOver ? Visibility.Collapsed : Visibility.Visible;
-        //    //CloseButton.Visibility = update.CombatUpdate_IsCombatOver ? Visibility.Visible : Visibility.Collapsed;
-        //    //UpperButtonsPanel.IsEnabled = true;
-        //    //LowerButtonsPanel.IsEnabled = true;
-
-        //    //if (!IsVisible)
-        //    //    Dispatcher.BeginInvoke(DispatcherPriority.Normal, new NullableBoolFunction(ShowDialog));     }
-
-
-        //}
     }
 }

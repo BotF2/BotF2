@@ -29,6 +29,7 @@ using Supremacy.Annotations;
 
 using IOPath = System.IO.Path;
 using Supremacy.Utility;
+using System.Windows;
 
 namespace Supremacy.VFS
 {
@@ -280,7 +281,16 @@ namespace Supremacy.VFS
         {
             if ((access & FileAccess.Write) == FileAccess.Write)
                 VerifyNotReadOnly();
-            return File.Open(resolvedName, FileMode.Open, access, share);
+            try
+            {
+                return File.Open(resolvedName, FileMode.Open, access, share);
+            }
+            catch
+            {
+                string message = "File is NOT available > " + resolvedName;
+                MessageBox.Show(message, "WARNING", MessageBoxButton.OK);
+                return File.Open(resolvedName, FileMode.Open, access, share);
+            }
         }
 
         public override IVirtualFileInfo GetFileInfo(string path, bool recurse)

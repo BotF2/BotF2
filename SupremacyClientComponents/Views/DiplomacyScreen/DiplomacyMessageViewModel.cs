@@ -604,10 +604,10 @@ namespace Supremacy.Client.Views
                     break;
                 case DiplomacyMessageElementActionCategory.Denounce:
                     _statementElements.Add(element);
-                    if (element.Tone == Tone.Indignant) // and case = Denounce - both are the definition of StealCredits
-                    {
-                        IntelHelper.ExecuteStealCredits(Sender, Recipient, "dip_Terrorists");
-                    }
+                    //if (element.Tone == Tone.Indignant) // and case = Denounce - both are the definition of StealCredits
+                    //{
+                    //    IntelHelper.ExecuteStealCredits(Sender, Recipient, "dip_Terrorists");
+                    //}
                         break;
                 case DiplomacyMessageElementActionCategory.WarDeclaration:
                     st = ResourceManager.GetString("DECLARE_WAR_DIALOG_HINT"); // need to update the embassy screen with a new window to get the send button activated without delay.

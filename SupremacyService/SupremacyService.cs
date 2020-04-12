@@ -1354,16 +1354,21 @@ namespace Supremacy.WCF
             {
                 if (_combatEngine == null || orders == null)
                     return;
-                
+
+                // just a test .... but "Resolving Combat" never finished
+                //if (orders.CombatID == -1)
+                //    orders.CombatID = GameContext.Current.GenerateID();
+
                 lock (_combatEngine.SyncLock)
                 {
                     try
                     {
-                        _combatEngine.SubmitOrders(orders);
+                        if (orders.CombatID != -1)
+                            _combatEngine.SubmitOrders(orders);
                     }
                     catch { GameLog.Client.CombatDetails.DebugFormat("Problem with null in SubmitOrders(orders)"); }
 
-                    if (_combatEngine.Ready)
+                    if (_combatEngine != null && _combatEngine.Ready)
                         TryResumeCombat(_combatEngine);
                 }
             }

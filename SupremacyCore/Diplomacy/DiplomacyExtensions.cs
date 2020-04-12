@@ -290,7 +290,7 @@ namespace Supremacy.Diplomacy
             var sender = source.Owner;
             var recipient = GameContext.Current.Civilizations[civ.CivID];
 
-            HashSet<Civilization> existingWarPacts = null;
+            //HashSet<Civilization> existingWarPacts = null;
 
             var _borg = GameContext.Current.Civilizations[6];
             //string blamed = GameContext.Current.CivilizationManager.Where(o => o.CivilizationID == 6); //[6].Civilization;

@@ -233,15 +233,15 @@ namespace Supremacy.Intelligence
         }
 
         #region Espionage Methods
-        public static string Blame(Civilization localCivAttacker, string blamed, int chance)
-        {
-            if (!RandomHelper.Chance(chance))
-                return localCivAttacker.ShortName;
-            return blamed;
-        }
+        //public static string Blame(Civilization localCivAttacker, string blamed, int chance)
+        //{
+        //    if (!RandomHelper.Chance(chance))
+        //        return localCivAttacker.ShortName;
+        //    return blamed;
+        //}
 
 
-        public static void StealCredits(Civilization attackingCiv, Civilization attackedCiv, string blamed)
+        public static void SabotageStealCredits(Civilization attackingCiv, Civilization attackedCiv, string blamed)
         {
             // coming from Buttons in each of the six expanders
             var attackedCivManager = GameContext.Current.CivilizationManagers[attackedCiv];
@@ -250,15 +250,16 @@ namespace Supremacy.Intelligence
             
             var _sendOrder = new SendStatementOrder(new Statement(attackingCiv, attackedCiv, StatementType.SabotageOrder, Tone.Indignant, blamed));
             _sendOrder.Owner = attackingCiv;
-            GameLog.Core.Diplomacy.DebugFormat("Create Statement for Stealing Credits sender = {0} *vs* Recipient = {1}: {2}  StatementType = {3}, blamed = {4}"
-                                , attackingCiv, attackedCiv, "Tone.Indignant = StealCredits", "SabotageOrder", blamed);
+            GameLog.Core.Diplomacy.DebugFormat("Create Statement for StealCredits: "+ Environment.NewLine 
+                + "sender = {0} *vs* Recipient = {1}:   StatementType = {3}, blamed = {4}, {2}"
+                                , attackingCiv, attackedCiv, "Tone.Indignant = StealCredits", "SabotageOrder", blamed + Environment.NewLine);
             ServiceLocator.Current.GetInstance<IPlayerOrderService>().AddOrder(_sendOrder);
 
             var diploOrders = ServiceLocator.Current.GetInstance<IPlayerOrderService>().Orders;  // just for Break point controlling
         }
 
 
-        public static void ExecuteStealCredits(Civilization attackingCiv, Civilization attackedCiv, string blamed)
+        public static void SabotageStealCreditsExecute(Civilization attackingCiv, Civilization attackedCiv, string blamed)
         {
             
             var attackedCivManager = GameContext.Current.CivilizationManagers[attackedCiv];
@@ -299,7 +300,7 @@ namespace Supremacy.Intelligence
             if (ratio < 2 || attackMeter.CurrentValue < 10)  // 
             {
                 stolenCredits = -1;  // failed
-                blamed = IntelHelper.Blame(attackingCiv, blamed, 2);
+                //blamed = IntelHelper.Blame(attackingCiv, blamed, 2);
                 goto stolenCreditsIsMinusOne;
             }
 
@@ -308,21 +309,21 @@ namespace Supremacy.Intelligence
             if (!RandomHelper.Chance(2) && attackedCivManager.Treasury.CurrentLevel > 5)// Credit everything down to 1, for ratio: first value > 1 is 2, so ratio must be 2 or more
             {
                 stolenCredits = stolenCredits * 3; // 2 percent of their TOTAL Credits - not just income
-                blamed = IntelHelper.Blame(attackingCiv, blamed, 3);
+                //blamed = IntelHelper.Blame(attackingCiv, blamed, 3);
             }
             if (ratio > 10 && !RandomHelper.Chance(3) && attackedCivManager.Treasury.CurrentLevel > 20) // Research: remaining everything down to 1, for ratio: first value > 1 is 2, so ratio must be 2 or more
             {
                 if (!RandomHelper.Chance(2))
                 {
                     stolenCredits = stolenCredits * 3;
-                    blamed = IntelHelper.Blame(attackingCiv, blamed, 4);
+                    //blamed = IntelHelper.Blame(attackingCiv, blamed, 4);
                 }
             }
             if (ratio > 20 && !RandomHelper.Chance(2) && attackedCivManager.Treasury.CurrentLevel > 100) // Research: remaining everything down to 1, for ratio: first value > 1 is 2, so ratio must be 2 or more
             {
                 // SeeStealCredits(_newTargetCiv, "Clicked");
                 stolenCredits = stolenCredits * 2;
-                blamed = IntelHelper.Blame(attackingCiv, blamed, 5);
+                //blamed = IntelHelper.Blame(attackingCiv, blamed, 5);
 
             }
             GameLog.Core.Intel.DebugFormat("**** CREDITS, The attakING Spy Civ={0} the attackED civ={1}", attackingCiv.Key, attackedCiv.Key);
@@ -390,16 +391,11 @@ namespace Supremacy.Intelligence
 
             GameLog.Core.Intel.DebugFormat("Stolen Credits from {0}:  >>> {1} Credits, {2} Blamed", attackedCiv.Key, stolenCredits, blamed);
 
-            // Sitreps
-            //only SitRep when local player is attacked for now
-
-            attackedCivManager.SitRepEntries.Add(new NewSabotagingSitRepEntry(
+            // Sitreps   attack*ed* and attack*ing*
+            attackedCivManager.SitRepEntries.Add(new NewSabotagedSitRepEntry(
                    attackingCiv, attackedCiv, colony, affectedField, stolenCredits, newCreditsAttacked, blamed));
-
-            //*********** Want spy operation clicks coming back to host the same as it does for combat, combatupdat and now intelupdate
-
-
-            attackingCivManager.SitRepEntries.Add(new NewSabotagedSitRepEntry(
+            
+            attackingCivManager.SitRepEntries.Add(new NewSabotagingSitRepEntry(
                     attackedCiv, attackingCiv, colony, affectedField, stolenCredits, newCreditsAttacked, blamed));
 
             int newDefenseIntelligence = 0;
@@ -412,7 +408,7 @@ namespace Supremacy.Intelligence
         }
 
 
-        public static void StealResearch(Civilization attackingCiv, Civilization attackedCiv, string blamed)
+        public static void SabotageStealResearch(Civilization attackingCiv, Civilization attackedCiv, string blamed)
         {
         // coming from Buttons in each of the six expanders
             var attackedCivManager = GameContext.Current.CivilizationManagers[attackedCiv];
@@ -421,14 +417,17 @@ namespace Supremacy.Intelligence
 
             var _sendOrder = new SendStatementOrder(new Statement(attackingCiv, attackedCiv, StatementType.SabotageOrder, Tone.Impatient, blamed));
             _sendOrder.Owner = attackingCiv;
-            GameLog.Core.Diplomacy.DebugFormat("Create Statement for Stealing Research: sender = {0} *vs* Recipient = {1}: {2}  StatementType = {3}, blamed = {4}"
-                                , attackingCiv, attackedCiv, "Tone.Impatient = StealResearch", "SabotageOrder", blamed);
+
+            GameLog.Core.Diplomacy.DebugFormat("Create Statement for StealResearch: " + Environment.NewLine
+                    + "sender = {0} *vs* Recipient = {1}: {2}  StatementType = {3}, blamed = {4}"
+                    , attackingCiv, attackedCiv, "Tone.Impatient = StealResearch", "SabotageOrder", blamed + Environment.NewLine);
+
             ServiceLocator.Current.GetInstance<IPlayerOrderService>().AddOrder(_sendOrder);
 
             var diploOrders = ServiceLocator.Current.GetInstance<IPlayerOrderService>().Orders;  // just for Break point controlling
         }
 
-        public static void ExecuteStealResearch(Civilization attackingCiv, Civilization attackedCiv, string blamed)
+        public static void SabotageStealResearchExecute(Civilization attackingCiv, Civilization attackedCiv, string blamed)
         {
             var attackedCivManager = GameContext.Current.CivilizationManagers[attackedCiv];
             var attackingCivManager = GameContext.Current.CivilizationManagers[attackingCiv];
@@ -471,7 +470,7 @@ namespace Supremacy.Intelligence
             if (ratio < 2 || attackMeter.CurrentValue < 10)
             {
                 stolenResearchPoints = -1;  // -2 for a differenz
-                blamed = IntelHelper.Blame(attackingCiv, blamed, 2);
+                //blamed = IntelHelper.Blame(attackingCiv, blamed, 2);
                 goto stolenResearchPointsIsMinusOne;
             }
 
@@ -484,19 +483,19 @@ namespace Supremacy.Intelligence
                 // ToDo add to local player           
                 //SeeStealResearch(_newTargetCiv, "Clicked");
                 stolenResearchPoints = stolenResearchPoints * 2;  // 2 percent, but base is CumulativePoints, so all research points ever yielded
-                blamed = IntelHelper.Blame(attackingCiv, blamed, 2);
+                //blamed = IntelHelper.Blame(attackingCiv, blamed, 2);
             }
             if (ratio > 10 && !RandomHelper.Chance(4))// && attackedCivManager.Treasury.CurrentLevel > 40) // Research: remaining everything down to 1, for ratio: first value > 1 is 2, so ratio must be 2 or more
             {
                 //SeeStealResearch(_newTargetCiv, "Clicked");
                 stolenResearchPoints = stolenResearchPoints * 3;
-                blamed = IntelHelper.Blame(attackingCiv, blamed, 3);
+                //blamed = IntelHelper.Blame(attackingCiv, blamed, 3);
             }
             if (ratio > 20 && !RandomHelper.Chance(8))// && attackedCivManager.Treasury.CurrentLevel > 100) // Research: remaining everything down to 1, for ratio: first value > 1 is 2, so ratio must be 2 or more
             {
                 //SeeStealResearch(_newTargetCiv, "Clicked");
                 stolenResearchPoints = stolenResearchPoints * 2;
-                blamed = IntelHelper.Blame(attackingCiv, blamed, 4);
+                //blamed = IntelHelper.Blame(attackingCiv, blamed, 4);
             }
 
             GameLog.Core.Intel.DebugFormat("Research ** BEFORE ** from {0}:  >>> {1} Research",
@@ -540,11 +539,11 @@ namespace Supremacy.Intelligence
 
             Int32.TryParse(attackedCivManager.Research.CumulativePoints.ToString(), out int newResearchCumulative);
 
-            // Sitreps
-            attackedCivManager.SitRepEntries.Add(new NewSabotagingSitRepEntry(
+            // Sitreps   attack*ed* and attack*ing*
+            attackedCivManager.SitRepEntries.Add(new NewSabotagedSitRepEntry(
                    attackingCiv, attackedCiv, colony, affectedField, stolenResearchPoints, newResearchCumulative, blamed));
 
-            attackingCivManager.SitRepEntries.Add(new NewSabotagedSitRepEntry(
+            attackingCivManager.SitRepEntries.Add(new NewSabotagingSitRepEntry(
                     attackedCiv, attackingCiv, colony, affectedField, stolenResearchPoints, newResearchCumulative, blamed));
 
             int newDefenseIntelligence = 0;
@@ -566,13 +565,15 @@ namespace Supremacy.Intelligence
 
             var _sendOrder = new SendStatementOrder(new Statement(attackingCiv, attackedCiv, StatementType.SabotageOrder, Tone.Annoyed, blamed));
             _sendOrder.Owner = attackingCiv;
-            GameLog.Core.Diplomacy.DebugFormat("Create Statement for SabotageFood: sender = {0} *vs* Recipient = {1}: {2}  StatementType = {3}, blamed = {4}"
-                                , attackingCiv, attackedCiv, "Tone.Annoyed = SabotageFood", "SabotageOrder", blamed);
+
+            GameLog.Core.Diplomacy.DebugFormat("Create Statement for SabotageFood: " + Environment.NewLine
+                    + "StatementType = {3}, (Sender=) {0} *vs* {1} (Recipient), blamed = {4}, {5} = {2}"
+                    , attackingCiv, attackedCiv, "Tone.Annoyed = SabotageFood" + Environment.NewLine, "SabotageOrder", blamed, _sendOrder.Statement.Tone.ToString());
 
             ServiceLocator.Current.GetInstance<IPlayerOrderService>().AddOrder(_sendOrder);
         }
 
-        public static void ExecuteSabotageFood(Civilization attackingCiv, Civilization attackedCiv, string blamed)
+        public static void SabotageFoodExecute(Civilization attackingCiv, Civilization attackedCiv, string blamed)
         {
             var attackedCivManager = GameContext.Current.CivilizationManagers[attackedCiv];
             var attackingCivManager = GameContext.Current.CivilizationManagers[attackingCiv];
@@ -619,7 +620,7 @@ namespace Supremacy.Intelligence
             {
                 removeFoodFacilities = 1;
                 colony.RemoveFacilities(ProductionCategory.Food, 1);
-                blamed = IntelHelper.Blame(attackingCiv, blamed, 2);
+                ////blamed = IntelHelper.Blame(attackingCiv, blamed, 2);
             }
 
             //if ratio > 2 than remove one more  FoodFacility
@@ -627,7 +628,7 @@ namespace Supremacy.Intelligence
             {
                 removeFoodFacilities += 1;  //  2 and one from before
                 colony.RemoveFacilities(ProductionCategory.Food, 1);
-                blamed = IntelHelper.Blame(attackingCiv, blamed, 3);
+                ////blamed = IntelHelper.Blame(attackingCiv, blamed, 3);
             }
 
             // if ratio > 3 than remove one more  FoodFacility
@@ -635,7 +636,7 @@ namespace Supremacy.Intelligence
             {
                 removeFoodFacilities += 1;  //   3 and 3 from before = 6 in total , max 6 should be enough for one sabotage ship
                 colony.RemoveFacilities(ProductionCategory.Food, 1);
-                blamed = IntelHelper.Blame(attackingCiv, blamed, 4);
+                ////blamed = IntelHelper.Blame(attackingCiv, blamed, 4);
             }
 
             Int32.TryParse(attackedCivManager.TotalIntelligenceDefenseAccumulated.ToString(), out defenseIntelligence);  // TotalIntelligence of attacked civ
@@ -666,10 +667,11 @@ namespace Supremacy.Intelligence
 
             string affectedField = ResourceManager.GetString("SITREP_SABOTAGE_FACILITIES_SABOTAGED_FOOD");
 
-            //_sitReps_Temp.Add(new NewSabotagingSitRepEntry(
-            //        attackingCiv, attackedCiv, colony, affectedField, removeFoodFacilities, system.Colony.GetTotalFacilities(ProductionCategory.Food), blamed));
+            // Sitreps   attack*ed* and attack*ing*
+            attackedCivManager.SitRepEntries.Add(new NewSabotagedSitRepEntry(
+                    attackingCiv, attackedCiv, colony, affectedField, removeFoodFacilities, colony.GetTotalFacilities(ProductionCategory.Food), blamed));
 
-            _sitReps_Temp.Add(new NewSabotagedSitRepEntry(
+            attackingCivManager.SitRepEntries.Add(new NewSabotagingSitRepEntry(
                     attackedCiv, attackingCiv, colony, affectedField, removeFoodFacilities, colony.GetTotalFacilities(ProductionCategory.Food), blamed));
 
             int newDefenseIntelligence = 0;
@@ -691,13 +693,14 @@ namespace Supremacy.Intelligence
 
             var _sendOrder = new SendStatementOrder(new Statement(attackingCiv, attackedCiv, StatementType.SabotageOrder, Tone.Receptive, blamed));
             _sendOrder.Owner = attackingCiv;
-            GameLog.Core.Diplomacy.DebugFormat("Create Statement for SabotageEnergy: sender = {0} *vs* Recipient = {1}: {2}  StatementType = {3}, blamed = {4}"
-                                , attackingCiv, attackedCiv, "Tone.Receptive = SabotageEnergy", "SabotageOrder", blamed);
+            GameLog.Core.Diplomacy.DebugFormat("Create Statement for SabotageEnergy: " + Environment.NewLine
+                + "sender = {0} *vs* Recipient = {1}: {2}  StatementType = {3}, blamed = {4}"
+                                , attackingCiv, attackedCiv, "Tone.Receptive = SabotageEnergy", "SabotageOrder", blamed + Environment.NewLine);
 
             ServiceLocator.Current.GetInstance<IPlayerOrderService>().AddOrder(_sendOrder);
         }
 
-        public static void ExecuteSabotageEnergy(Civilization attackingCiv, Civilization attackedCiv, string blamed)
+        public static void SabotageEnergyExecute(Civilization attackingCiv, Civilization attackedCiv, string blamed)
         {
             var attackedCivManager = GameContext.Current.CivilizationManagers[attackedCiv];
             var attackingCivManager = GameContext.Current.CivilizationManagers[attackingCiv];
@@ -737,7 +740,7 @@ namespace Supremacy.Intelligence
             {
                 removeEnergyFacilities = 1;
                 colony.RemoveFacilities(ProductionCategory.Energy, 1);
-                blamed = IntelHelper.Blame(attackingCiv, blamed, 2);
+                //blamed = IntelHelper.Blame(attackingCiv, blamed, 2);
             }
 
             //if ratio > 2 than remove one more  EnergyFacility
@@ -745,7 +748,7 @@ namespace Supremacy.Intelligence
             {
                 removeEnergyFacilities += 1;  //  2 and one from before
                 colony.RemoveFacilities(ProductionCategory.Energy, 1);
-                blamed = IntelHelper.Blame(attackingCiv, blamed, 3);
+                //blamed = IntelHelper.Blame(attackingCiv, blamed, 3);
             }
 
             // if ratio > 3 than remove one more  EnergyFacility
@@ -753,7 +756,7 @@ namespace Supremacy.Intelligence
             {
                 removeEnergyFacilities = 3;  //   3 and 3 from before = 6 in total , max 6 should be enough for one sabotage ship
                 colony.RemoveFacilities(ProductionCategory.Energy, 1);
-                blamed = IntelHelper.Blame(attackingCiv, blamed, 4);
+                //blamed = IntelHelper.Blame(attackingCiv, blamed, 4);
             }
             //_removedEnergyFacilities = removeEnergyFacilities;
             GameLog.Core.Intel.DebugFormat("**** After Sabotage Energy at {0}: TotalEnergyFacilities after={1}, {2} blamed", colony.Name, colony.GetTotalFacilities(ProductionCategory.Energy), blamed);
@@ -785,11 +788,13 @@ namespace Supremacy.Intelligence
 
             GameLog.Core.Intel.DebugFormat("Sabotage Energy at {0}: TotalEnergyFacilities after={1}, {2} blamed", colony.Name, colony.GetTotalFacilities(ProductionCategory.Energy), blamed);
 
-            //_sitReps_Temp.Add(new NewSabotagingSitRepEntry(
-            //        attackingCiv, attackedCiv, colony, affectedField, removeEnergyFacilities, colony.GetTotalFacilities(ProductionCategory.Energy), blamed));
-
-            _sitReps_Temp.Add(new NewSabotagedSitRepEntry(
+            // Sitreps   attack*ed* and attack*ing*
+            attackedCivManager.SitRepEntries.Add(new NewSabotagedSitRepEntry(
                     attackedCiv, attackingCiv, colony, affectedField, removeEnergyFacilities, colony.GetTotalFacilities(ProductionCategory.Energy), blamed));
+
+            attackingCivManager.SitRepEntries.Add(new NewSabotagingSitRepEntry(
+                    attackingCiv, attackedCiv, colony, affectedField, removeEnergyFacilities, colony.GetTotalFacilities(ProductionCategory.Energy), blamed));
+
 
             int newDefenseIntelligence = 0;
             Int32.TryParse(defenseMeter.CurrentValue.ToString(), out newDefenseIntelligence);
@@ -811,12 +816,13 @@ namespace Supremacy.Intelligence
 
             var _sendOrder = new SendStatementOrder(new Statement(attackingCiv, attackedCiv, StatementType.SabotageOrder, Tone.Enraged, blamed));
             _sendOrder.Owner = attackingCiv;
-            GameLog.Core.Diplomacy.DebugFormat("Create Statement for SabotageIndustry: sender = {0} *vs* Recipient = {1}: {2}  StatementType = {3}, blamed = {4}"
-                                , attackingCiv, attackedCiv, "Tone.Enraged = SabotageIndustry", "SabotageOrder", blamed);
+            GameLog.Core.Diplomacy.DebugFormat("Create Statement for SabotageIndustry: " + Environment.NewLine
+                + "sender = {0} *vs* Recipient = {1}: {2}  StatementType = {3}, blamed = {4}"
+                                , attackingCiv, attackedCiv, "Tone.Enraged = SabotageIndustry", "SabotageOrder", blamed + Environment.NewLine);
             ServiceLocator.Current.GetInstance<IPlayerOrderService>().AddOrder(_sendOrder);
         }
 
-        public static void ExecuteSabotageIndustry(Civilization attackingCiv, Civilization attackedCiv, string blamed)
+        public static void SabotageIndustryExecute(Civilization attackingCiv, Civilization attackedCiv, string blamed)
         {
             
             var attackedCivManager = GameContext.Current.CivilizationManagers[attackedCiv];
@@ -857,7 +863,7 @@ namespace Supremacy.Intelligence
             {
                 removeIndustryFacilities = 1;
                 colony.RemoveFacilities(ProductionCategory.Industry, 1);
-                blamed = IntelHelper.Blame(attackingCiv, blamed, 2);
+                ////blamed = IntelHelper.Blame(attackingCiv, blamed, 2);
             }
 
             //if ratio > 2 than remove one more  IndustryFacility
@@ -865,7 +871,7 @@ namespace Supremacy.Intelligence
             {
                 removeIndustryFacilities += 1;  //  2 and one from before
                 colony.RemoveFacilities(ProductionCategory.Industry, 1);
-                blamed = IntelHelper.Blame(attackingCiv, blamed, 3);
+                ////blamed = IntelHelper.Blame(attackingCiv, blamed, 3);
             }
 
             // if ratio > 3 than remove one more  IndustryFacility
@@ -873,7 +879,7 @@ namespace Supremacy.Intelligence
             {
                 removeIndustryFacilities += 1;  //   3 and 3 from before = 6 in total , max 6 should be enough for one sabotage ship
                 colony.RemoveFacilities(ProductionCategory.Industry, 1);
-                blamed = IntelHelper.Blame(attackingCiv, blamed, 4);
+                ////blamed = IntelHelper.Blame(attackingCiv, blamed, 4);
             }
 
             // handling intelligence points for attack / defence  //////////////////////////7
@@ -903,10 +909,11 @@ namespace Supremacy.Intelligence
 
             GameLog.Core.Intel.DebugFormat("Sabotage Industry at {0}: TotalIndustryFacilities after={1}, {2} blamed", colony.Name, colony.GetTotalFacilities(ProductionCategory.Industry), blamed);
 
-            //_sitReps_Temp.Add(new NewSabotagingSitRepEntry(
-            //        attackingCiv, attackedCiv, colony, affectedField, removeIndustryFacilities, system.Colony.GetTotalFacilities(ProductionCategory.Industry), blamed));
+            // Sitreps   attack*ed* and attack*ing*
+            attackedCivManager.SitRepEntries.Add(new NewSabotagedSitRepEntry(
+                    attackingCiv, attackedCiv, colony, affectedField, removeIndustryFacilities, colony.GetTotalFacilities(ProductionCategory.Industry), blamed));
 
-            _sitReps_Temp.Add(new NewSabotagedSitRepEntry(
+            attackingCivManager.SitRepEntries.Add(new NewSabotagingSitRepEntry(
                     attackedCiv, attackingCiv, colony, affectedField, removeIndustryFacilities, colony.GetTotalFacilities(ProductionCategory.Industry), blamed));
 
             int newDefenseIntelligence = 0;
