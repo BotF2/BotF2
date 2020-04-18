@@ -44,14 +44,7 @@ namespace Supremacy.Game
         private readonly Treasury _treasury;
         private readonly UniverseObjectList<Colony> _colonies;
         private List<Civilization> _spiedCivList;
-        //private List<StealCredits> _stealCreditsSpyOperation;
 
-        //private List<IntelHelper.NewIntelOrders> DummyList = new List<IntelHelper.NewIntelOrders>() { new IntelHelper.NewIntelOrders( 0, 0, "D", "D" ) };
-
-        private List<IntelHelper.NewIntelOrders> _intelOrdersGoingToHost = new List<IntelHelper.NewIntelOrders>() { new IntelHelper.NewIntelOrders(0, 0, "Dum", "D") };    // fed  -> terrans
-        private List<IntelHelper.NewIntelOrders> _intelOrdersIncomingToHost = new List<IntelHelper.NewIntelOrders>() { new IntelHelper.NewIntelOrders(0, 0, "Dum", "D") };  // host
-        //private List<IntelHelper.NewIntelOrders> itemList;
-        //private Dictionary<Civilization, string> _blamedCiv;
         private int _homeColonyId;
         private List<int> _IntelIDs;
         private MapLocation? _homeColonyLocation;
@@ -59,10 +52,8 @@ namespace Supremacy.Game
         private Meter _totalIntelligenceAttackingAccumulated;
         private Meter _totalIntelligenceDefenseAccumulated;
 
-        #endregion
+        #endregion Fields
 
-        //[NonSerialized]
-        //IntelHelper.NewIntelOrders newStuff = new IntelHelper.NewIntelOrders(999,999,"x","y");
 
         #region Constructors
         /// <summary>
@@ -89,14 +80,6 @@ namespace Supremacy.Game
 
             _sitRepEntries = new List<SitRepEntry>();
             _spiedCivList = new List<Civilization>();
-            //var _newIntelOrderDummyList = new List<IntelHelper.NewIntelOrders>();
-            var _newIntelOrderDummy = new IntelHelper.NewIntelOrders (0, 0, "Dummy", "blamedTerrorist");
-            //_newIntelOrderDummyList.Add(_newIntelOrderDummy);
-            _intelOrdersGoingToHost = new List<IntelHelper.NewIntelOrders>() { _newIntelOrderDummy };  // { newStuff }; // new List<IntelHelper.NewIntelOrders>(// { 0, 0, "OutgoingDummy", "blamedTerrorist" };
-
-
-            _intelOrdersIncomingToHost = new List<IntelHelper.NewIntelOrders>() { _newIntelOrderDummy }; // { newStuff }; //new List<IntelHelper.NewIntelOrders>(); // { 0, 0, "IncomingDummy", "blamedTerrorist" };
-            //itemList = new List<IntelHelper.NewIntelOrders>();
 
             _resources.Deuterium.BaseValue = 100;
             _resources.Deuterium.Reset();
@@ -233,8 +216,8 @@ namespace Supremacy.Game
                     //CivilizationManager.
 
                     if (rep.Owner.CivID == 4 || rep.Owner.CivID == 1)  // outcomment to see Sitrep of all races, atm Card + Terrans
-                    GameLog.Core.SitReps.DebugFormat("SitRep Cat={2} Action {3} for {1}:" + Environment.NewLine + // splitted in 2 lines for better reading
-                        "                    SitRep: {0}" + Environment.NewLine, rep.SummaryText, rep.Owner, rep.Categories, rep.Action);
+                        GameLog.Core.SitReps.DebugFormat("SitRep Cat={2} Action {3} for {1}:" + Environment.NewLine + // splitted in 2 lines for better reading
+                            "                    SitRep: {0}" + Environment.NewLine, rep.SummaryText, rep.Owner, rep.Categories, rep.Action);
                 }
                 return _sitRepEntries;
             } 
@@ -244,143 +227,6 @@ namespace Supremacy.Game
         {
             get { return _spiedCivList; }
         }
-
-
-        /// <summary>
-        /// Intel Orders like StealCredits
-        /// </summary>
-        /// <value>Intel Orders like StealCredits</value>
-
-        [NotNull]
-        public IList<IntelHelper.NewIntelOrders> IntelOrdersGoingToHost //(IntelHelper.NewIntelOrders order)
-        {
-            get
-            {
-                var keyCiv = this.Civilization.Key;
-                if (_intelOrdersGoingToHost == null)
-                {
-                    //var _DummyintelOrdersGoingToHost = new NewIntelOrders(0, 1, "Dum", "out");
-                    //_DummyintelOrdersGoingToHost.AttackedCivID = 0;
-                    //_DummyintelOrdersGoingToHost.AttackingCivID = 1;
-                    //_DummyintelOrdersGoingToHost.Intel_Order = "Dum_StealCredits";
-                    //_DummyintelOrdersGoingToHost.Intel_Order_Blamed = "Blam_out";
-                    //= new List<IntelHelper.NewIntelOrders>() { new IntelHelper.NewIntelOrders(0, 0, "Dum", "D") };
-                    _intelOrdersGoingToHost = new List<IntelHelper.NewIntelOrders>() { new IntelHelper.NewIntelOrders(0, 0, "Dum123", "D") };
-                }
-
-                // gameLog is to often > 10000
-                //GameLog.Core.Intel.DebugFormat("...doing IntelOrdersGoingToHost");
-                //UpdateIntelOrdersGoingToHost();
-
-                return _intelOrdersGoingToHost;
-            }
-            set
-            {
-                GameLog.Core.Intel.DebugFormat("...doing SET IntelOrdersGoingToHost");
-                var neworder = new IntelHelper.NewIntelOrders(5, 6, "StealCredits", "0");
-                //if (_intelOrdersGoingToHost == null)
-                //{
-                //    var neworderList = new List<IntelHelper.NewIntelOrders>();
-                //    neworderList.Add(neworder);
-                //    //var neworderList = 
-                //    _intelOrdersGoingToHost = neworderList;
-                //    //_intelOrdersGoingToHost.Add(neworder);
-
-                //}
-                //else
-                //{
-                _intelOrdersGoingToHost.Add(neworder);
-                //}
-                //IntelOrdersGoingToHost = _intelOrdersGoingToHost;
-            }
-        }
-        public void UpdateIntelOrdersGoingToHost(IntelHelper.NewIntelOrders _newIntelOrdersGoingToHost)
-        {
-
-            //var _newIntelOrderDummy = new IntelHelper.NewIntelOrders(5, 6, "StealCredits", "0") ;
-            //_newIntelOrderDummy.AttackedCivID = 99;
-            //_newIntelOrderDummy.AttackingCivID = 88;
-            //_newIntelOrderDummy.Intel_Order = "DummyIntelOrder";
-            //List<IntelHelper.NewIntelOrders> _newIntelOrderList = new List<IntelHelper.NewIntelOrders>() { _newIntelOrderDummy };
-            //_newIntelOrderList.Add(_newIntelOrdersGoingToHost);
-            //_intelOrdersGoingToHost.AddRange(_newIntelOrderList);
-            _intelOrdersGoingToHost.Add(_newIntelOrdersGoingToHost);
-            //////////////foreach (var item in IntelOrdersGoingToHost)
-            //////////////{
-            //////////////    GameLog.Client.Intel.DebugFormat("UpdateIntelOrdersGoingToHost: {2} for {0} VS {1}", item.AttackingCivID, item.AttackedCivID, item.Intel_Order);
-            //////////////}
-        }
-
-        /// <summary>
-        /// Intel Orders like StealCredits
-        /// </summary>
-        /// <value>Intel Orders like StealCredits</value>
-        /// 
-        //[NotNull]
-        //public List<IntelHelper.NewIntelOrders> IntelOrdersIncomingToHost
-        //{
-        //    get
-        //    {
-        //        //_intelOrdersIncomingToHost =
-
-
-        //        //if (_intelOrdersIncomingToHost == null)
-        //        //{
-        //        //    var _DummyintelOrdersIncomingToHost = new NewIntelOrders(0,1,"a","b");
-        //        //    _DummyintelOrdersIncomingToHost.AttackedCivID = 0;
-        //        //    _DummyintelOrdersIncomingToHost.AttackingCivID = 1;
-        //        //    _DummyintelOrdersIncomingToHost.Intel_Order = "StealCredits";
-        //        //    _DummyintelOrdersIncomingToHost.Intel_Order_Blamed = "Blam_out";
-        //        //    _intelOrdersIncomingToHost.Add(_DummyintelOrdersIncomingToHost);
-        //        //}
-
-        //        return _intelOrdersIncomingToHost;
-        //    }
-        //}
-
-        //public void UpdateIntelOrdersGoingToHost(IntelHelper.NewIntelOrders _newIntelOrdersGoingToHost)
-        //{
-
-        //    var _newIntelOrderDummy = new IntelHelper.NewIntelOrders();
-        //    _newIntelOrderDummy.AttackedCivID = 99;
-        //    _newIntelOrderDummy.AttackingCivID = 88;
-        //    _newIntelOrderDummy.Intel_Order = "DummyIntelOrder";
-        //    List<IntelHelper.NewIntelOrders> _newIntelOrderList = new List<IntelHelper.NewIntelOrders>() { _newIntelOrderDummy };
-        //    _newIntelOrderList.Add(_newIntelOrdersGoingToHost);
-        //    _intelOrdersGoingToHost.AddRange(_newIntelOrderList);
-        //    foreach (var item in IntelOrdersGoingToHost)
-        //    {
-        //        GameLog.Client.Intel.DebugFormat("UpdateIntelOrdersGoingToHost: {2} for {0} VS {1}", item.AttackingCivID, item.AttackedCivID, item.Intel_Order);
-        //    }
-        //}
-        //public void UpdateIntelOrdersGoingToHost(IntelHelper.NewIntelOrders _NewIntelOrdersGoingToHost)
-        //{
-        //    var _newIntelOrder = new IntelHelper.NewIntelOrders();
-        //    //var _newIntelOrder = (0, 0, "F");
-        //    _newIntelOrder.AttackedCivID = _NewIntelOrdersGoingToHost.AttackingCivID;
-        //    _newIntelOrder.AttackingCivID = _NewIntelOrdersGoingToHost.AttackedCivID;
-        //    _newIntelOrder.Intel_Order = _NewIntelOrdersGoingToHost.Intel_Order;
-
-        //    //var itemList = new List<IntelHelper.NewIntelOrders>();
-        //    //itemList.Add(_newIntelOrder);
-
-        //    //if (IntelOrdersGoingToHost != null)
-        //    //{
-        //        IntelOrdersGoingToHost.Add(_newIntelOrder);
-
-        //        //GameLog.Client.Intel.DebugFormat("UpdateIntelOrdersGoingToHost: {2} for {0} VS {1}", item.AttackingCivID, item.AttackedCivID, item.Intel_Order);
-        //        foreach (var item in IntelOrdersGoingToHost)
-        //        {
-        //            GameLog.Client.Intel.DebugFormat("UpdateIntelOrdersGoingToHost: {2} for {0} VS {1}", item.AttackingCivID, item.AttackedCivID, item.Intel_Order);
-        //        }
-
-        //        //IntelOrdersGoingToHost.AddRange(this._intelOrdersGoingToHost);
-        //    //}
-        //    //else
-        //    //    IntelOrdersGoingToHost.Add(itemList);
-
-        //}
-
 
 
         /// <summary>
@@ -410,7 +256,7 @@ namespace Supremacy.Game
                 {
                     baseIntel *= bonus.Amount;
                 }
-                GameLog.Client.UI.DebugFormat("TotalIntelProduction ={0}", baseIntel);
+                GameLog.Client.UI.DebugFormat("TotalIntelProduction = {0}", baseIntel);
                 return baseIntel;
             }
         }
@@ -424,7 +270,7 @@ namespace Supremacy.Game
                 {
                     updateMeter.CurrentValue = TotalIntelligenceProduction;
                 }
-                GameLog.Client.UI.DebugFormat("TotalIntelAttackingAccumulated ={0}", updateMeter.CurrentValue);
+                GameLog.Client.UI.DebugFormat("TotalIntelAttackingAccumulated = {0}", updateMeter.CurrentValue);
                 return updateMeter;
             }
         }
@@ -434,7 +280,7 @@ namespace Supremacy.Game
             get
             {
                 var updateMeter = _totalIntelligenceDefenseAccumulated;
-                GameLog.Client.UI.DebugFormat("TotalIntelDefenseAccumulated ={0}", updateMeter.CurrentValue);
+                GameLog.Client.UI.DebugFormat("TotalIntelDefenseAccumulated = {0}", updateMeter.CurrentValue);
                 if (_totalIntelligenceDefenseAccumulated.CurrentValue == 0)
                 {
                     updateMeter.CurrentValue = TotalIntelligenceProduction;
@@ -543,15 +389,6 @@ namespace Supremacy.Game
             //    GameLog.Client.UI.DebugFormat("Updated the spied list = {0}", item);
             //}
         }
-
-        //public void UpDateIntelOrdersGoingToHost()
-        //{
-        //    _intelOrdersGoingToHost = IntelOrdersGoingToHost;
-        //    //foreach (var item in civList)
-        //    //{
-        //    //    GameLog.Client.UI.DebugFormat("Updated the spied list = {0}", item);
-        //    //}
-        //}
 
         /// <summary>
         /// Applies the specified morale event.
