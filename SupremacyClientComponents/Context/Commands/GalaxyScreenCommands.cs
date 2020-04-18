@@ -1,4 +1,4 @@
-// GalaxyScreenCommands.cs
+// File:GalaxyScreenCommands.cs
 //
 // Copyright (c) 2009 Mike Strobel
 //
@@ -133,7 +133,7 @@ namespace Supremacy.Client.Commands
         }
 
         #region Implementation of ICheckableCommandParameter
-        public event EventHandler InnerParameterChanged;
+        //public event EventHandler InnerParameterChanged;
         public event EventHandler IsCheckedChanged;
 
         public bool Handled { get; set; }
