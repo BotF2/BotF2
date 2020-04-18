@@ -1688,6 +1688,7 @@ namespace Supremacy.Game
         private readonly int _totalStuff;
         private readonly string _affectedField;
         private readonly string _blamed;
+        private readonly int _confidence;
         //private readonly string _roleText;
         public string Attacking
         {
@@ -1784,7 +1785,7 @@ namespace Supremacy.Game
         }
 
         public NewSabotagedSitRepEntry(Civilization attacking, Civilization attacked, Colony colony
-                    , string affectedField, int removedStuff, int totalStuff, string blamed)
+                    , string affectedField, int removedStuff, int totalStuff, string blamed, int confidence)
             : base(attacking, SitRepPriority.Red) // owner is the attackED for this, the sabotaged sit rep
         {
             if (colony == null)
@@ -1796,6 +1797,7 @@ namespace Supremacy.Game
             _totalStuff = totalStuff;
             _affectedField = affectedField;
             _blamed = blamed;
+            _confidence = confidence;
         }
     }
 

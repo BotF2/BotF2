@@ -235,13 +235,21 @@ namespace Supremacy.Intelligence
         #region Espionage Methods
         public static string Blame(Civilization localCivAttacker, Civilization Attacked, string blamed, int chance)
         {
-            GameLog.Client.Diplomacy.DebugFormat("  ");
-            if (!RandomHelper.Chance(chance))
+            //GameLog.Client.Diplomacy.DebugFormat("  ");
+            if (RandomHelper.Chance(chance))
             {
                 var otherCivs = DiplomacyHelper.GetCivilizationsHavingContact(localCivAttacker);
                 otherCivs.Remove(Attacked);
                 Civilization oneCiv = otherCivs.RandomElementOrDefault();
-                blamed = oneCiv.ShortName ?? "Terroists";
+                Civilization nextCiv = oneCiv ?? localCivAttacker;
+                if (nextCiv == localCivAttacker)
+                {
+                    if (RandomHelper.Chance(2))
+                        blamed = "Terroists";
+                    else blamed = "No one";
+                }
+                else
+                    blamed = nextCiv.ShortName;                
             }        
             return blamed;
         }
@@ -394,7 +402,7 @@ namespace Supremacy.Intelligence
 
             // Sitreps   attack*ed* and attack*ing*
             attackedCivManager.SitRepEntries.Add(new NewSabotagedSitRepEntry(
-                   attackingCiv, attackedCiv, colony, affectedField, stolenCredits, newCreditsAttacked, blamed));
+                   attackingCiv, attackedCiv, colony, affectedField, stolenCredits, newCreditsAttacked, blamed, ratio));
             
             attackingCivManager.SitRepEntries.Add(new NewSabotagingSitRepEntry(
                     attackedCiv, attackingCiv, colony, affectedField, stolenCredits, newCreditsAttacked, blamed));
