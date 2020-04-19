@@ -540,7 +540,7 @@ namespace Supremacy.Client.Views
                 }
                 if (Romulans0.IsChecked == true)
                 {
-                    _blameWhoZero = "Romulnas";
+                    _blameWhoZero = "Romulans";
                 }
                 if (Klingons0.IsChecked == true)
                 {
@@ -584,7 +584,7 @@ namespace Supremacy.Client.Views
                 }
                 if (Romulans1.IsChecked == true)
                 {
-                    _blameWhoOne = "Romulnas";
+                    _blameWhoOne = "Romulans";
                 }
                 if (Klingons1.IsChecked == true)
                 {
@@ -629,7 +629,7 @@ namespace Supremacy.Client.Views
                 }
                 if (Romulans2.IsChecked == true)
                 {
-                    _blameWhoTwo = "Romulnas";
+                    _blameWhoTwo = "Romulans";
                 }
                 if (Klingons2.IsChecked == true)
                 {
@@ -673,7 +673,7 @@ namespace Supremacy.Client.Views
                 }
                 if (Romulans3.IsChecked == true)
                 {
-                    _blameWhoThree = "Romulnas";
+                    _blameWhoThree = "Romulans";
                 }
                 if (Klingons3.IsChecked == true)
                 {
@@ -717,7 +717,7 @@ namespace Supremacy.Client.Views
                 }
                 if (Romulans4.IsChecked == true)
                 {
-                    _blameWhoFour = "Romulnas";
+                    _blameWhoFour = "Romulans";
                 }
                 if (Klingons4.IsChecked == true)
                 {
@@ -761,7 +761,7 @@ namespace Supremacy.Client.Views
                 }
                 if (Romulans5.IsChecked == true)
                 {
-                    _blameWhoFive = "Romulnas";
+                    _blameWhoFive = "Romulans";
                 }
                 if (Klingons5.IsChecked == true)
                 {
@@ -805,7 +805,7 @@ namespace Supremacy.Client.Views
                 }
                 if (Romulans6.IsChecked == true)
                 {
-                    _blameWhoSix = "Romulnas";
+                    _blameWhoSix = "Romulans";
                 }
                 if (Klingons6.IsChecked == true)
                 {
