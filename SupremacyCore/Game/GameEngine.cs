@@ -902,20 +902,20 @@ namespace Supremacy.Game
                                 case Tone.Condescending:
                                     break;
                                 case Tone.Indignant:
-                                    IntelHelper.SabotageStealCreditsExecute(civ2, civ1, foreignPower.StatementReceived.Parameter.ToString());  
-                                    // Parameter = blamed as a string
+                                    IntelHelper.SabotageStealCreditsExecute(civ2, civ1, foreignPower.StatementReceived.Parameter.ToString(), 99999);
+                                    //Parameter = blamed as a string
                                     break;
                                 case Tone.Impatient:
-                                    IntelHelper.SabotageStealResearchExecute(civ2, civ1, foreignPower.StatementReceived.Parameter.ToString());
+                                    IntelHelper.SabotageStealResearchExecute(civ2, civ1, foreignPower.StatementReceived.Parameter.ToString(), 99999);
                                     break;
                                 case Tone.Annoyed:
-                                    IntelHelper.SabotageFoodExecute(civ2, civ1, foreignPower.StatementReceived.Parameter.ToString());
+                                    IntelHelper.SabotageFoodExecute(civ2, civ1, foreignPower.StatementReceived.Parameter.ToString(), 99999);
                                     break;
                                 case Tone.Enraged:
-                                    IntelHelper.SabotageIndustryExecute(civ2, civ1, foreignPower.StatementReceived.Parameter.ToString());
+                                    IntelHelper.SabotageIndustryExecute(civ2, civ1, foreignPower.StatementReceived.Parameter.ToString(), 99999);
                                     break;
                                 case Tone.Receptive:
-                                    IntelHelper.SabotageEnergyExecute(civ2, civ1, foreignPower.StatementReceived.Parameter.ToString());
+                                    IntelHelper.SabotageEnergyExecute(civ2, civ1, foreignPower.StatementReceived.Parameter.ToString(), 99999);
                                     break;
                                 case Tone.Enthusiastic:
                                     break;
@@ -935,14 +935,14 @@ namespace Supremacy.Game
                                       + Environment.NewLine;
                         }
 
-                        if (foreignPower.PendingAction != null)
+                        if (foreignPower.PendingAction != PendingDiplomacyAction.None)
                             _gameLog += Environment.NewLine + "PendingAction: "
                                       //+ foreignPower.PendingAction + " vs "
                                       //+ foreignPower.PendingAction.Recipient
                                       + foreignPower.PendingAction.ToString()
                                       + Environment.NewLine;
 
-                        //GameLog.Core.Diplomacy.DebugFormat(_gameLog);
+                        //GameLog.Core.Diplomacy.DebugFormat(_gameLog); 
                     }
 
                     var proposalSent = foreignPower.ProposalSent;

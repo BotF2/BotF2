@@ -62,16 +62,6 @@ namespace Supremacy.Game
                 game.AgreementMatrix = _agreementMatrix;
                 game.DiplomacyData = _diplomacyData;
 
-                //var _ListofIntelOrders = new List<IntelHelper.NewIntelOrders>();
-                //if (_diplomats != null)
-                //{
-                //    foreach (var diplomat in _diplomats)
-                //    {
-                //        _ListofIntelOrders = diplomat.IntelOrdersGoingToHost;
-                //        //GameLog.Core.Intel.DebugFormat("_ListofIntelOrders.Count = {0}", _ListofIntelOrders.Count);
-                //    }
-                //}
-
                 game.Diplomats.Clear();
 
                 if (_diplomats != null)
