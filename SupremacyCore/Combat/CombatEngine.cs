@@ -1,4 +1,4 @@
-// CombatEngine.cs
+// File:CombatEngine.cs
 //
 // Copyright (c) 2007 Mike Strobel
 //
@@ -673,14 +673,20 @@ namespace Supremacy.Combat
             _localOrder = CombatOrder.Engage;
             try
             {
-                GameLog.Core.CombatDetails.DebugFormat("Try Get Order for {0} owner {1}: -> order = {2}", source, source.Owner, _orders[source.OwnerID].GetOrder(source));
-                _localOrder = _orders[source.OwnerID].GetOrder(source);
+                GameLog.Core.CombatDetails.DebugFormat("Try Get Order for {0} {1} {2}", source.ObjectID, source.Name, source.Design.Name);
+                //if(_orders[source.OwnerID].GetOrder(source) == CombatOrder.)
+                    _localOrder = _orders[source.OwnerID].GetOrder(source);
+                if (_localOrder != null)
+                    GameLog.Core.CombatDetails.DebugFormat("Got Order for {0} {1} {2}: -> order = {3}", source.ObjectID, source.Name, source.Design.Name, _orders[source.OwnerID].GetOrder(source));
                 return _localOrder; // this is the class CombatOrder.BORG (or FEDERATION or.....) that comes from public GetCombatOrder() in CombatOrders.cs
             }
             catch //(Exception e)
             {
-                if (source.Owner.IsHuman == false)
-                    GameLog.Core.CombatDetails.ErrorFormat("Unable to get order for {2} Owner: {3} Ship {0} {1}", source.ObjectID, source.Name, source.Design.Name, source.Owner.Name);
+                //if (source.Owner.IsHuman == false)
+                //{
+                //    // Gamelog works but makes no sense ... or "nothing to win" with this error message (Example: Scout, before Engage, here fails 
+                //    //GameLog.Core.CombatDetails.ErrorFormat("Unable to get order for {2} Owner: {3} Ship {0} {1}", source.ObjectID, source.Name, source.Design.Name, source.Owner.Name);
+                //}
                 //GameLog.LogException(e);
             }
 

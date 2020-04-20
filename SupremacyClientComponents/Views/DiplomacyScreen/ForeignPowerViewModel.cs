@@ -1,3 +1,4 @@
+//File:ForeignPowerViewModel.cs
 using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -195,9 +196,9 @@ namespace Supremacy.Client.Views
             get
             {
                 // Gamelog for GET _outgoingMessage mostly not needed
-                if (_outgoingMessage != null && _outgoingMessage.Elements.Count() > 0)
-                    GameLog.Client.Diplomacy.DebugFormat("OutgoingMessage GET = {0} >> {1}, CountElem.={2}",
-                            _outgoingMessage.Sender.Name, _outgoingMessage.Recipient.Name, _outgoingMessage.Elements.Count().ToString());
+                //if (_outgoingMessage != null && _outgoingMessage.Elements.Count() > 0)
+                //    GameLog.Client.Diplomacy.DebugFormat("OutgoingMessage GET = {0} >> {1}, CountElem.={2}",
+                //            _outgoingMessage.Sender.Name, _outgoingMessage.Recipient.Name, _outgoingMessage.Elements.Count().ToString());
                 return _outgoingMessage;
             }
             set
@@ -209,9 +210,19 @@ namespace Supremacy.Client.Views
 
                 OnOutgoingMessageChanged();
 
+                string _gamelogPart2 = "";
+                //if (_outgoingMessage.Elements[0].ActionCategory == Actionc)
+
+
+
                 if (_outgoingMessage != null && _outgoingMessage.Elements.Count() > 0)
-                    GameLog.Client.Diplomacy.DebugFormat("OutgoingMessage SET = {0} >> {1}, CountElem.={2}",
-                   _outgoingMessage.Sender.Name, _outgoingMessage.Recipient.Name, _outgoingMessage.Elements.Count().ToString()); 
+                    GameLog.Client.Diplomacy.DebugFormat("OutgoingMessage SET = {0} >> {1}: {3} = {4} {5}",
+                   _outgoingMessage.Sender.Name, _outgoingMessage.Recipient.Name
+                   , _outgoingMessage.Elements.Count().ToString()
+                   , _outgoingMessage.Elements[0].ActionCategory.ToString()
+                   , _outgoingMessage.Elements[0].Description.ToString()
+                   , _gamelogPart2
+                   ); 
             }
         }
 
@@ -236,7 +247,7 @@ namespace Supremacy.Client.Views
             {
                 // move Gamelog to the three detail places
                 // 
-                GameLog.Client.Diplomacy.DebugFormat("Proposal received ? ={0}, Response received = {1}, Statement Received ={2}", _foreignPower.ProposalReceived, _foreignPower.ResponseReceived, _foreignPower.StatementReceived);
+                //GameLog.Client.Diplomacy.DebugFormat("Proposal received ? ={0}, Response received = {1}, Statement Received ={2}", _foreignPower.ProposalReceived, _foreignPower.ResponseReceived, _foreignPower.StatementReceived);
                 return ResolveMessageCategory(_foreignPower.ProposalReceived ?? (object)_foreignPower.ResponseReceived ?? _foreignPower.StatementReceived);
             }
         }
@@ -266,7 +277,7 @@ namespace Supremacy.Client.Views
 
         protected internal virtual void OnOutgoingMessageCategoryChanged()
         {
-            GameLog.Client.Diplomacy.DebugFormat("Message Category Changed");
+            //GameLog.Client.Diplomacy.DebugFormat("Message Category Changed");
             OutgoingMessageCategoryChanged.Raise(this);
             OnPropertyChanged("OutgoingMessageCategory");
         }
@@ -305,8 +316,7 @@ namespace Supremacy.Client.Views
 
         protected virtual void OnPropertyChanged(string propertyName)
         {
-            //
-            GameLog.Client.Diplomacy.DebugFormat("propertyName ={0}", propertyName);
+            //GameLog.Client.Diplomacy.DebugFormat("propertyName ={0}", propertyName);
             _propertyChanged.Raise(this, propertyName);
         }
 
@@ -364,7 +374,7 @@ namespace Supremacy.Client.Views
             
             if (response != null)
             {
-                GameLog.Client.Diplomacy.DebugFormat("Response Recipient ={0} Sender ={1}", response.Recipient, response.Sender);
+                //GameLog.Client.Diplomacy.DebugFormat("Response Recipient ={0} Sender ={1}", response.Recipient, response.Sender);
                 return DiplomaticMessageCategory.Response;
             }
 
@@ -372,7 +382,7 @@ namespace Supremacy.Client.Views
             
             if (statement != null)
             {
-                GameLog.Client.Diplomacy.DebugFormat("Statement Recipient ={0} Sender ={1}", statement.Recipient, statement.Sender);
+                //GameLog.Client.Diplomacy.DebugFormat("Statement Recipient ={0} Sender ={1}", statement.Recipient, statement.Sender);
                 switch (statement.StatementType)
                 {
                     case StatementType.CommendRelationship:
@@ -384,6 +394,7 @@ namespace Supremacy.Client.Views
                     case StatementType.DenounceAssault:
                     case StatementType.DenounceInvasion:
                     case StatementType.DenounceSabotage:
+                    case StatementType.SabotageOrder:
                         GameLog.Client.Diplomacy.DebugFormat("Message Statement");
                         return DiplomaticMessageCategory.Statement;
                     

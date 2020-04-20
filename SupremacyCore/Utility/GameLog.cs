@@ -85,6 +85,7 @@ namespace Supremacy.Utility
             public const string SaveLoad = "SaveLoad";
             public const string Ships = "Ships";
             public const string ShipProduction = "ShipProduction";
+            public const string SitReps = "SitReps";
             public const string Stations = "Stations";
             public const string Structures = "Structures";
             public const string SystemAssault = "SystemAssault";
@@ -225,6 +226,10 @@ namespace Supremacy.Utility
             get { return LogManager.GetLogger(Repositories.ShipProduction); }
         }
 
+        public ILog SitReps
+        {
+            get { return LogManager.GetLogger(Repositories.SitReps); }
+        }
         public ILog Stations
         {
             get { return LogManager.GetLogger(Repositories.Stations); }

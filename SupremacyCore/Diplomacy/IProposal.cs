@@ -1,4 +1,4 @@
-// DProposal.cs[
+// File:IProposal.cs
 //
 // Copyright (c) 2007 Mike Strobel
 //

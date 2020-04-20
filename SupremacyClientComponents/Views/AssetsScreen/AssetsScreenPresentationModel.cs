@@ -925,240 +925,161 @@ namespace Supremacy.Client.Views
         //}
 
 
-        private bool CanExecuteSendSpyOrder()
-        {
-            return true;
-                //DisplayMode == DiplomacyScreenDisplayMode.Outbox &&
-                //   SelectedForeignPower != null &&
-                //   SelectedForeignPower.OutgoingSpyOrder != null &&
-                //   SelectedForeignPower.OutgoingSpyOrder.IsEditing &&
-                //   SelectedForeignPower.OutgoingSpyOrder.Elements.Count != 0;
-        }
+        //public static /*DiplomaticMessageCategory*/ SpyOrderCategory ResolveSpyOrderCategory(object message) // DiplomaticMessageCategory is enum of 1 to 9 message types
+        //{
+        //    //GameLog.Client.Diplomacy.DebugFormat("ResolveMessageCategory beginning...");
 
-        private void ExecuteSendSpyOrder()
-        {
-            if (!CanExecuteSendSpyOrder())
-                return;
+        //    var viewModel = message as DiplomacyMessageViewModel;
 
-            //SelectedForeignPower.OutgoingSpyOrder.Send();
-            GameLog.Client.Diplomacy.DebugFormat("************** Execute send Spy Order ...");
-            //SelectedForeignPower.OnOutgoingSpyOrderCategoryChanged();
+        //    //var proposal = message as IProposal;
 
-            //OnCommandVisibilityChanged();
-            //OnIsSpyOrderEditInProgressChanged();
-        }
+        //    //if (viewModel != null)
+        //    //{
+        //    //    // worksGameLog.Client.Diplomacy.DebugFormat("Message: Sender ={1} *vs* Recipient = {0}", viewModel.Recipient, viewModel.Sender);
+        //    //    //GameLog.Client.Diplomacy.DebugFormat("Message: Sender ={1} *vs* Recipient = {0} - Category {2}", viewModel.Recipient, viewModel.Sender, proposal.ToString());
+        //    //    message = viewModel.CreateMessage(); // create statment vs create proposal
+        //    //}
 
-        public void SendSpyOrder()
-        {
-            GameLog.Client.Diplomacy.DebugFormat("************** Doing send Spy Order ...");
-            //var isStatement = _elements.All(o => o.ElementType <= DiplomacySpyOrderElementType.DenounceSabotageStatement);
-            //if (isStatement)
-            //{
-            //    var statement = CreateStatement();
-            //    if (statement == null)
-            //        return;
+        //    //var proposal = message as IProposal;
 
-            //    _sendOrder = new SendStatementOrder(statement);
+        //    //GameLog.Client.Diplomacy.DebugFormat("proposal ={0}", proposal);
+        //    //if (proposal != null)
+        //    //{
+        //    //    //GameLog.Client.Diplomacy.DebugFormat("Proposal: Sender ={1} *vs* Recipient = {0} ", proposal.Recipient, proposal.Sender);
+        //    //    //GameLog.Client.Diplomacy.DebugFormat("Proposal: Sender ={1} *vs* Recipient = {0} - Category {2}", proposal.Recipient, proposal.Sender, proposal.ToString());
+        //    //    if (proposal.IsDemand())
+        //    //    {
+        //    //        GameLog.Client.Diplomacy.DebugFormat("Message Category Demand");
+        //    //        return DiplomaticMessageCategory.Demand;
+        //    //    }
+        //    //    if (proposal.IsGift())
+        //    //    {
+        //    //        GameLog.Client.Diplomacy.DebugFormat("Message Category Gift");
+        //    //        return DiplomaticMessageCategory.Gift;
+        //    //    }
+        //    //    foreach (var clause in proposal.Clauses)
+        //    //    {
+        //    //        if (!clause.ClauseType.IsTreatyClause())
+        //    //            continue;
+        //    //        if (clause.ClauseType == ClauseType.TreatyWarPact)
+        //    //        {
+        //    //            GameLog.Client.Diplomacy.DebugFormat("Message Category 1 War Pact");
+        //    //            return DiplomaticMessageCategory.WarPact;
+        //    //        }
+        //    //        GameLog.Client.Diplomacy.DebugFormat("Message Category 2 Treaty");
+        //    //        return DiplomaticMessageCategory.Treaty;
+        //    //    }
+        //    //    GameLog.Client.Diplomacy.DebugFormat("Message Exchange");
+        //    //    return DiplomaticMessageCategory.Exchange;
+        //    //}
 
-            //    ServiceLocator.Current.GetInstance<IPlayerOrderService>().AddOrder(_sendOrder);
-            //}
-            //else
-            //{
-            //    var proposal = CreateProposal();
-            //    if (proposal == null)
-            //        return;
+        //    //var response = message as IResponse;
 
-            //    _sendOrder = new SendProposalOrder(proposal);
+        //    //if (response != null)
+        //    //{
+        //    //    GameLog.Client.Diplomacy.DebugFormat("Response Recipient ={0} Sender ={1}", response.Recipient, response.Sender);
+        //    //    return DiplomaticMessageCategory.Response;
+        //    //}
 
-            //    ServiceLocator.Current.GetInstance<IPlayerOrderService>().AddOrder(_sendOrder);
-            //}
+        //    //var statement = message as Statement;
 
-            //IsEditing = false;
+        //    //if (statement != null)
+        //    //{
+        //    //    GameLog.Client.Diplomacy.DebugFormat("Statement Recipient ={0} Sender ={1}", statement.Recipient, statement.Sender);
+        //    //    switch (statement.StatementType)
+        //    //    {
+        //    //        case StatementType.CommendRelationship:
+        //    //        case StatementType.CommendAssault:
+        //    //        case StatementType.CommendInvasion:
+        //    //        case StatementType.CommendSabotage:
+        //    //        case StatementType.DenounceWar:
+        //    //        case StatementType.DenounceRelationship:
+        //    //        case StatementType.DenounceAssault:
+        //    //        case StatementType.DenounceInvasion:
+        //    //        case StatementType.DenounceSabotage:    // listing was changed
+        //    //            GameLog.Client.Diplomacy.DebugFormat("Message Statement");
+        //    //            return DiplomaticMessageCategory.Statement;
 
-            //_availableElements.Clear();
-        }
-        public NewSpyOrder NewSpyOrder
-        {
-            get
-            {
-                // Gamelog for GET _outgoingSpyOrder mostly not needed
-                //if (_outgoingSpyOrder != null && _outgoingSpyOrder.Elements.Count() > 0)
-                GameLog.Client.Diplomacy.DebugFormat("OutgoingSpyOrder GET = {0} >> {1}, CountElem.={2}",
-                        _outgoingSpyOrder.Sender.Name, _outgoingSpyOrder.Recipient.Name);
-                            //, _outgoingSpyOrder.Elements.Count().ToString());
-                return _outgoingSpyOrder;
-            }
-            set
-            {
-                if (Equals(value, _outgoingSpyOrder))
-                    return;
-
-                _outgoingSpyOrder = value;
-
-                OnOutgoingSpyOrderChanged();
-
-                if (_outgoingSpyOrder != null /*&& _outgoingSpyOrder.Elements.Count() > 0*/)
-                    GameLog.Client.Diplomacy.DebugFormat("OutgoingSpyOrder SET = {0} >> {1}, CountElem.={2}",
-                   _outgoingSpyOrder.Sender.Name, _outgoingSpyOrder.Recipient.Name);
-                //, _outgoingSpyOrder.Elements.Count().ToString());
-            }
-        }
-
-        public static /*DiplomaticMessageCategory*/ SpyOrderCategory ResolveSpyOrderCategory(object message) // DiplomaticMessageCategory is enum of 1 to 9 message types
-        {
-            //GameLog.Client.Diplomacy.DebugFormat("ResolveMessageCategory beginning...");
-
-            var viewModel = message as DiplomacyMessageViewModel;
-
-            //var proposal = message as IProposal;
-
-            //if (viewModel != null)
-            //{
-            //    // worksGameLog.Client.Diplomacy.DebugFormat("Message: Sender ={1} *vs* Recipient = {0}", viewModel.Recipient, viewModel.Sender);
-            //    //GameLog.Client.Diplomacy.DebugFormat("Message: Sender ={1} *vs* Recipient = {0} - Category {2}", viewModel.Recipient, viewModel.Sender, proposal.ToString());
-            //    message = viewModel.CreateMessage(); // create statment vs create proposal
-            //}
-
-            //var proposal = message as IProposal;
-
-            //GameLog.Client.Diplomacy.DebugFormat("proposal ={0}", proposal);
-            //if (proposal != null)
-            //{
-            //    //GameLog.Client.Diplomacy.DebugFormat("Proposal: Sender ={1} *vs* Recipient = {0} ", proposal.Recipient, proposal.Sender);
-            //    //GameLog.Client.Diplomacy.DebugFormat("Proposal: Sender ={1} *vs* Recipient = {0} - Category {2}", proposal.Recipient, proposal.Sender, proposal.ToString());
-            //    if (proposal.IsDemand())
-            //    {
-            //        GameLog.Client.Diplomacy.DebugFormat("Message Category Demand");
-            //        return DiplomaticMessageCategory.Demand;
-            //    }
-            //    if (proposal.IsGift())
-            //    {
-            //        GameLog.Client.Diplomacy.DebugFormat("Message Category Gift");
-            //        return DiplomaticMessageCategory.Gift;
-            //    }
-            //    foreach (var clause in proposal.Clauses)
-            //    {
-            //        if (!clause.ClauseType.IsTreatyClause())
-            //            continue;
-            //        if (clause.ClauseType == ClauseType.TreatyWarPact)
-            //        {
-            //            GameLog.Client.Diplomacy.DebugFormat("Message Category 1 War Pact");
-            //            return DiplomaticMessageCategory.WarPact;
-            //        }
-            //        GameLog.Client.Diplomacy.DebugFormat("Message Category 2 Treaty");
-            //        return DiplomaticMessageCategory.Treaty;
-            //    }
-            //    GameLog.Client.Diplomacy.DebugFormat("Message Exchange");
-            //    return DiplomaticMessageCategory.Exchange;
-            //}
-
-            //var response = message as IResponse;
-
-            //if (response != null)
-            //{
-            //    GameLog.Client.Diplomacy.DebugFormat("Response Recipient ={0} Sender ={1}", response.Recipient, response.Sender);
-            //    return DiplomaticMessageCategory.Response;
-            //}
-
-            //var statement = message as Statement;
-
-            //if (statement != null)
-            //{
-            //    GameLog.Client.Diplomacy.DebugFormat("Statement Recipient ={0} Sender ={1}", statement.Recipient, statement.Sender);
-            //    switch (statement.StatementType)
-            //    {
-            //        case StatementType.CommendRelationship:
-            //        case StatementType.CommendAssault:
-            //        case StatementType.CommendInvasion:
-            //        case StatementType.CommendSabotage:
-            //        case StatementType.DenounceWar:
-            //        case StatementType.DenounceRelationship:
-            //        case StatementType.DenounceAssault:
-            //        case StatementType.DenounceInvasion:
-            //        case StatementType.DenounceSabotage:
-            //            GameLog.Client.Diplomacy.DebugFormat("Message Statement");
-            //            return DiplomaticMessageCategory.Statement;
-
-            //        case StatementType.ThreatenDestroyColony:
-            //        case StatementType.ThreatenTradeEmbargo:
-            //        case StatementType.ThreatenDeclareWar:
-            //            GameLog.Client.Diplomacy.DebugFormat("Message Threat");
-            //            return DiplomaticMessageCategory.Threat;
-            //    }
-            //}
-            // a lot of times hitted without giving an info ... GameLog.Client.Diplomacy.DebugFormat("Message Category None");
-            return SpyOrderCategory.None;
-        }
+        //    //        case StatementType.ThreatenDestroyColony:
+        //    //        case StatementType.ThreatenTradeEmbargo:
+        //    //        case StatementType.ThreatenDeclareWar:
+        //    //            GameLog.Client.Diplomacy.DebugFormat("Message Threat");
+        //    //            return DiplomaticMessageCategory.Threat;
+        //    //    }
+        //    //}
+        //    // a lot of times hitted without giving an info ... GameLog.Client.Diplomacy.DebugFormat("Message Category None");
+        //    return SpyOrderCategory.None;
+        //}
 
 
-        #region OutgoingSpyOrder Property
+        //#region OutgoingSpyOrder Property
 
-        [field: NonSerialized]
-        public event EventHandler OutgoingSpyOrderChanged;
+        //[field: NonSerialized]
+        //public event EventHandler OutgoingSpyOrderChanged;
 
-        private /*DiplomacyMessageViewModel*/ NewSpyOrder _outgoingSpyOrder;
+        //private /*DiplomacyMessageViewModel*/ NewSpyOrder _outgoingSpyOrder;
 
-        public /*DiplomacyMessageViewModel*/ NewSpyOrder OutgoingSpyOrder
-        {
-            get
-            {
-                // Gamelog for GET _outgoingSpyOrder mostly not needed
-                //if (_outgoingSpyOrder != null && _outgoingSpyOrder.Elements.Count() > 0)
-                GameLog.Client.Diplomacy.DebugFormat("OutgoingSpyOrder GET = {0} >> {1}",
-                        _outgoingSpyOrder.Sender.Name, _outgoingSpyOrder.Recipient.Name);
-                            //, _outgoingSpyOrder.Elements.Count().ToString());
-                return _outgoingSpyOrder;
-            }
-            set
-            {
-                if (Equals(value, _outgoingSpyOrder))
-                    return;
+        //public /*DiplomacyMessageViewModel*/ NewSpyOrder OutgoingSpyOrder
+        //{
+        //    get
+        //    {
+        //        // Gamelog for GET _outgoingSpyOrder mostly not needed
+        //        //if (_outgoingSpyOrder != null && _outgoingSpyOrder.Elements.Count() > 0)
+        //        GameLog.Client.Diplomacy.DebugFormat("OutgoingSpyOrder GET = {0} >> {1}",
+        //                _outgoingSpyOrder.Sender.Name, _outgoingSpyOrder.Recipient.Name);
+        //                    //, _outgoingSpyOrder.Elements.Count().ToString());
+        //        return _outgoingSpyOrder;
+        //    }
+        //    set
+        //    {
+        //        if (Equals(value, _outgoingSpyOrder))
+        //            return;
 
-                _outgoingSpyOrder = value;
+        //        _outgoingSpyOrder = value;
 
-                OnOutgoingSpyOrderChanged();
+        //        OnOutgoingSpyOrderChanged();
 
-                //if (_outgoingSpyOrder != null && _outgoingSpyOrder.Elements.Count() > 0)
-                GameLog.Client.Diplomacy.DebugFormat("OutgoingSpyOrder SET = {0} >> {1}",
-                    _outgoingSpyOrder.Sender.Name, _outgoingSpyOrder.Recipient.Name);
-                   //, _outgoingSpyOrder.Elements.Count().ToString());
-            }
-        }
+        //        //if (_outgoingSpyOrder != null && _outgoingSpyOrder.Elements.Count() > 0)
+        //        GameLog.Client.Diplomacy.DebugFormat("OutgoingSpyOrder SET = {0} >> {1}",
+        //            _outgoingSpyOrder.Sender.Name, _outgoingSpyOrder.Recipient.Name);
+        //           //, _outgoingSpyOrder.Elements.Count().ToString());
+        //    }
+        //}
 
-        protected virtual void OnOutgoingSpyOrderChanged()
-        {
-            //GameLog.Client.Diplomacy.DebugFormat("Now at OnOutgoingSpyOrderChanged() - call OnPropertyChanged");
-            OutgoingSpyOrderChanged.Raise(this);
-            OnPropertyChanged("OutgoingSpyOrder");
-            OnOutgoingSpyOrderCategoryChanged();
-        }
+        //protected virtual void OnOutgoingSpyOrderChanged()
+        //{
+        //    //GameLog.Client.Diplomacy.DebugFormat("Now at OnOutgoingSpyOrderChanged() - call OnPropertyChanged");
+        //    OutgoingSpyOrderChanged.Raise(this);
+        //    OnPropertyChanged("OutgoingSpyOrder");
+        //    OnOutgoingSpyOrderCategoryChanged();
+        //}
 
-        #endregion OutgoingSpyOrder Property
+        //#endregion OutgoingSpyOrder Property
 
-        #region OutgoingSpyOrderCategory Property
+        //#region OutgoingSpyOrderCategory Property
 
-        [field: NonSerialized]
-        public event EventHandler OutgoingSpyOrderCategoryChanged;
+        //[field: NonSerialized]
+        //public event EventHandler OutgoingSpyOrderCategoryChanged;
 
-        public /*DiplomaticMessageCategory*/ SpyOrderCategory OutgoingSpyOrderCategory
-        {
-            get
-            {
-                if (ResolveSpyOrderCategory(OutgoingSpyOrder).ToString() != "None")
-                    GameLog.Client.Diplomacy.DebugFormat("OutgoingSpyOrderCategory = {0}", ResolveSpyOrderCategory(OutgoingSpyOrder));
-                return ResolveSpyOrderCategory(OutgoingSpyOrder);
-            }
-        }
+        //public /*DiplomaticMessageCategory*/ SpyOrderCategory OutgoingSpyOrderCategory
+        //{
+        //    get
+        //    {
+        //        if (ResolveSpyOrderCategory(OutgoingSpyOrder).ToString() != "None")
+        //            GameLog.Client.Diplomacy.DebugFormat("OutgoingSpyOrderCategory = {0}", ResolveSpyOrderCategory(OutgoingSpyOrder));
+        //        return ResolveSpyOrderCategory(OutgoingSpyOrder);
+        //    }
+        //}
 
-        protected internal virtual void OnOutgoingSpyOrderCategoryChanged()
-        {
-            GameLog.Client.Diplomacy.DebugFormat("SpyOrder Category Changed");
-            OutgoingSpyOrderCategoryChanged.Raise(this);
-            OnPropertyChanged("OutgoingSpyOrderCategory");
-        }
+        //protected internal virtual void OnOutgoingSpyOrderCategoryChanged()
+        //{
+        //    GameLog.Client.Diplomacy.DebugFormat("SpyOrder Category Changed");
+        //    OutgoingSpyOrderCategoryChanged.Raise(this);
+        //    OnPropertyChanged("OutgoingSpyOrderCategory");
+        //}
 
 
-        #endregion OutgoingSpyOrderCategory Property
+        //#endregion OutgoingSpyOrderCategory Property
 
 
     }

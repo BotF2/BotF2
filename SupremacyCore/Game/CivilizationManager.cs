@@ -1,3 +1,4 @@
+// File:CivilizationManager.cs
 // Copyright (c) 2007 Mike Strobel
 //
 // This source code is subject to the terms of the Microsoft Reciprocal License (Ms-RL).
@@ -21,6 +22,7 @@ using System.Linq;
 using Supremacy.Orbitals;
 using Supremacy.Utility;
 using Supremacy.Intelligence;
+using static Supremacy.Intelligence.IntelHelper;
 
 namespace Supremacy.Game
 {
@@ -42,20 +44,22 @@ namespace Supremacy.Game
         private readonly Treasury _treasury;
         private readonly UniverseObjectList<Colony> _colonies;
         private List<Civilization> _spiedCivList;
-        //private Dictionary<Civilization, string> _blamedCiv;
+
         private int _homeColonyId;
+        private List<int> _IntelIDs;
         private MapLocation? _homeColonyLocation;
         private int _seatOfGovernmentId = -1;
         private Meter _totalIntelligenceAttackingAccumulated;
         private Meter _totalIntelligenceDefenseAccumulated;
 
-        #endregion
+        #endregion Fields
+
 
         #region Constructors
         /// <summary>
         /// Initializes a new instance of the <see cref="CivilizationManager"/> class.
         /// </summary>
-        private CivilizationManager()
+        public CivilizationManager()
         {
             _credits = new Meter(5000, Meter.MinValue, Meter.MaxValue);
             _treasury = new Treasury(5000);
@@ -84,6 +88,8 @@ namespace Supremacy.Game
             _resources.RawMaterials.BaseValue = 1000;
             _resources.RawMaterials.Reset();
             _resources.UpdateAndReset();
+
+            //_stealCreditsSpyOperation = new List<StealCredits>();
         }
 
         /// <summary>
@@ -99,6 +105,11 @@ namespace Supremacy.Game
             _civId = civilization.CivID;
             _research = new ResearchPool(civilization, game.ResearchMatrix);
         }
+
+        //public CivilizationManager(List<StealCredits> stealCreditsSpyOperation)
+        //{
+        //    _stealCreditsSpyOperation = stealCreditsSpyOperation;
+        //}
         #endregion
 
         #region Properties and Indexers
@@ -199,12 +210,17 @@ namespace Supremacy.Game
             {
                 foreach (var rep in _sitRepEntries)
                 {
-                    //if (rep.Owner.CivID == Player.GameHostID)  // outcomment to see Sitrep of all races
-                    GameLog.Core.General.DebugFormat("SitRep Cat={2} Action {3} for {1}:" + Environment.NewLine + // splitted in 2 lines for better reading
-                        "                    SitRep: {0}" + Environment.NewLine, rep.SummaryText, rep.Owner, rep.Categories, rep.Action);
+                    var playerID = Player.GameHostID;
+                    //if (GameContext.Current.IsMultiplayerGame == false)
+                    //playerID = GameContext.Current.CivilizationManagers[LocalPlayer.EmpireID];/*Player.;*/
+                    //CivilizationManager.
+
+                    if (rep.Owner.CivID == 4 || rep.Owner.CivID == 1)  // outcomment to see Sitrep of all races, atm Card + Terrans
+                        GameLog.Core.SitReps.DebugFormat("SitRep Cat={2} Action {3} for {1}:" + Environment.NewLine + // splitted in 2 lines for better reading
+                            "                    SitRep: {0}" + Environment.NewLine, rep.SummaryText, rep.Owner, rep.Categories, rep.Action);
                 }
                 return _sitRepEntries;
-            }
+            } 
         }
 
         public List<Civilization> SpiedCivList
@@ -212,10 +228,7 @@ namespace Supremacy.Game
             get { return _spiedCivList; }
         }
 
-        //public Dictionary<Civilization, string> BlamedCiv
-        //{
-        //    get { return _blamedCiv; }
-        //}
+
         /// <summary>
         /// Gets the average morale of all the civilization's colonies.
         /// </summary>
@@ -243,7 +256,7 @@ namespace Supremacy.Game
                 {
                     baseIntel *= bonus.Amount;
                 }
-                GameLog.Client.UI.DebugFormat("TotalIntelProduction ={0}", baseIntel);
+                GameLog.Client.UI.DebugFormat("TotalIntelProduction = {0}", baseIntel);
                 return baseIntel;
             }
         }
@@ -257,7 +270,7 @@ namespace Supremacy.Game
                 {
                     updateMeter.CurrentValue = TotalIntelligenceProduction;
                 }
-                GameLog.Client.UI.DebugFormat("TotalIntelAttackingAccumulated ={0}", updateMeter.CurrentValue);
+                GameLog.Client.UI.DebugFormat("TotalIntelAttackingAccumulated = {0}", updateMeter.CurrentValue);
                 return updateMeter;
             }
         }
@@ -267,7 +280,7 @@ namespace Supremacy.Game
             get
             {
                 var updateMeter = _totalIntelligenceDefenseAccumulated;
-                GameLog.Client.UI.DebugFormat("TotalIntelDefenseAccumulated ={0}", updateMeter.CurrentValue);
+                GameLog.Client.UI.DebugFormat("TotalIntelDefenseAccumulated = {0}", updateMeter.CurrentValue);
                 if (_totalIntelligenceDefenseAccumulated.CurrentValue == 0)
                 {
                     updateMeter.CurrentValue = TotalIntelligenceProduction;
@@ -553,6 +566,8 @@ namespace Supremacy.Game
         {
             get { return _civId; }
         }
+
+        public List<int> IntelIDs { get => _IntelIDs; set => _IntelIDs = value; }
 
         #endregion
     }

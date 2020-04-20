@@ -8,14 +8,17 @@
 // All other rights reserved.
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 using Supremacy.Annotations;
 using Supremacy.Collections;
 using Supremacy.Diplomacy;
 using Supremacy.Entities;
+using Supremacy.Intelligence;
 using Supremacy.IO.Serialization;
 using Supremacy.Universe;
+using Supremacy.Utility;
 
 namespace Supremacy.Game
 {
@@ -47,7 +50,12 @@ namespace Supremacy.Game
             try
             {
                 game.TurnNumber = _turnNumber;
+
+
+
                 game.CivilizationManagers.Clear();
+
+
                 game.CivilizationManagers.AddRange(_civManagers);
                 game.Universe.Objects = _objects;
                 game.SectorClaims = _sectorClaims;
@@ -62,6 +70,8 @@ namespace Supremacy.Game
                     {
                         var ownerId = diplomat.OwnerID;
 
+                        //game.Diplomats.Add(diplomat);
+                        //diplomat.IntelOrdersGoingToHost.AddRange(_ListofIntelOrders);
                         game.Diplomats.Add(diplomat);
 
                         foreach (var civ in game.Civilizations)
@@ -98,6 +108,8 @@ namespace Supremacy.Game
 
             var data = new GameUpdateData();
 
+            GameLog.Server.GameData.DebugFormat("try to Create GameUpdateData for {0}", player.Empire.Key);
+
             GameContext.PushThreadContext(game);
             try
             {
@@ -109,6 +121,11 @@ namespace Supremacy.Game
                 data._diplomacyData = game.DiplomacyData;
 //                game.Diplomats.TryGetValue(player.EmpireID, out data._diplomat);
                 data._diplomats = new[] { Diplomat.Get(player) }; //game.Diplomats.ToArray();
+
+                //var _diplomat = data._diplomats;  // just for have a look
+                
+                //GameLog.Core.Intel.DebugFormat("", _diplomat.);
+
                 data._civManagers.ForEach(o => o.Compact());
             }
             finally
@@ -122,6 +139,7 @@ namespace Supremacy.Game
         #region IOwnedDataSerializable Members
         public void SerializeOwnedData(SerializationWriter writer, object context)
         {
+            GameLog.Server.GameData.DebugFormat("try to SerializeOwnedData GameUpdateData");
             writer.WriteOptimized(_turnNumber);
             _objects.SerializeOwnedData(writer, context);
             writer.WriteObject(_civManagers);

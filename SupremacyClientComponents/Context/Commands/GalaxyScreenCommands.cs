@@ -1,4 +1,4 @@
-// GalaxyScreenCommands.cs
+// File:GalaxyScreenCommands.cs
 //
 // Copyright (c) 2009 Mike Strobel
 //

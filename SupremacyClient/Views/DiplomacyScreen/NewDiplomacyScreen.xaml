@@ -1,4 +1,5 @@
-﻿<scc:ThemedUserControl x:Class="Supremacy.Client.Views.DiplomacyScreen.NewDiplomacyScreen"
+﻿<!--File:NewDiplomacySreen.xaml-->
+<scc:ThemedUserControl x:Class="Supremacy.Client.Views.DiplomacyScreen.NewDiplomacyScreen"
                        x:Name="_self"
                        x:FieldModifier="private"
                        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
@@ -304,6 +305,7 @@
                    <scc:GameButton x:Name="PART_ViewButton_Overview"
                           Label="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry='OverviewButtonText', CharacterCasing=Upper}"
                           DisplayMode="GroupedVertically"
+                          ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry='OverviewButtonTooltipText'}"
                           Command="{Binding Path=SetDisplayModeCommand}"
                           IsChecked="{Binding RelativeSource={RelativeSource Self}, Path=CommandParameter.(scc:CheckableCommandParameter.IsChecked), Mode=TwoWay}"
                           Margin="0,2,0,0">
@@ -314,6 +316,7 @@
                     <scc:GameButton x:Name="PART_ViewButton_Agreements"
                           Label="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry='AgreementsButtonText', CharacterCasing=Upper}"
                           DisplayMode="GroupedVertically"
+                          ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry='AgreementsButtonTooltipText'}"
                           Command="{Binding Path=SetDisplayModeCommand}"
                           IsChecked="{Binding RelativeSource={RelativeSource Self}, Path=CommandParameter.(scc:CheckableCommandParameter.IsChecked), Mode=TwoWay}"
                           Margin="0,2,0,0">
@@ -324,6 +327,7 @@
                     <scc:GameButton x:Name="PART_ViewButton_Inbox"
                           Label="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry='InboxButtonText', CharacterCasing=Upper}"
                           DisplayMode="GroupedVertically"
+                          ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry='InboxButtonTooltipText'}"
                           Command="{Binding Path=SetDisplayModeCommand}"
                           IsChecked="{Binding RelativeSource={RelativeSource Self}, Path=CommandParameter.(scc:CheckableCommandParameter.IsChecked), Mode=TwoWay}"
                           Margin="0,2,0,0">
@@ -334,6 +338,7 @@
                     <scc:GameButton x:Name="PART_ViewButton_Outbox"
                           Label="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry='OutboxButtonText', CharacterCasing=Upper}"
                           DisplayMode="GroupedVertically"
+                          ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry='OutboxButtonTooltipText'}"
                           Command="{Binding Path=SetDisplayModeCommand}"
                           IsChecked="{Binding RelativeSource={RelativeSource Self}, Path=CommandParameter.(scc:CheckableCommandParameter.IsChecked), Mode=TwoWay}"
                           Margin="0,2,0,0">
@@ -366,6 +371,7 @@
               Grid.Column="0"
               Grid.ColumnSpan="2"
               Grid.Row="3"
+                      
               scc:VisibilityGroupScopeBehavior.VisibilityGroup="DiplomacyScreenVisibilityScopes.Default"
               Width="168"
               Height="40"
@@ -374,16 +380,51 @@
               Data="F1 M 0,0L 0,16C 0,22.3652 2.52857,28.4697 7.02944,32.9706C 11.5303,37.4714 17.6348,40 24,40L 168,40L 168,27.0263L 148,27.0263C 143.582,27.0263 140,23.4446 140,19.0263L 140,0L 0,0 Z" />
 
                 <!-- Upper-Lower Left Corner -->
-                <Path x:Name="UpperLowerLeftCorner"
+
+                <Grid
               Grid.Column="0"
               Grid.ColumnSpan="2"
               Grid.Row="4"
+                    >
+              <!--Grid.Column="0"
+              Grid.ColumnSpan="2"
+              Grid.Row="4"-->
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="20" />
+                        <RowDefinition Height="20" />
+                    </Grid.RowDefinitions>
+                    <Path x:Name="UpperLowerLeftCorner"
+
+                          
               scc:VisibilityGroupScopeBehavior.VisibilityGroup="DiplomacyScreenVisibilityScopes.Default"
               Width="168"
               Height="40"
+                          Grid.RowSpan="2"
+
               Fill="{StaticResource LCARS_Card_ObsidianGradient_TopLeft_BottomRight}"
               Margin="0,2,0,0"
-              Data="F1 M 0,40L 0,24C 0,17.6348 2.52857,11.5303 7.02944,7.02944C 11.5303,2.52857 17.6348,0 24,0L 168,0L 168,12.9737L 148,12.9737C 143.582,12.9737 140,16.5554 140,20.9737L 140,40L 0,40 Z" />
+              Data="F1 M 0,40L 0,24C 0,17.6348 2.52857,11.5303 7.02944,7.02944C 11.5303,2.52857 17.6348,0 24,0L 168,0L 168,12.9737L 
+                          148,12.9737C 143.582,12.9737 140,16.5554 140,20.9737L 140,40L 0,40 Z" />
+
+                    <TextBlock
+                        Grid.Row="0"
+                        Grid.Column="0"
+                        HorizontalAlignment="Center"
+                        Text ="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry='NoteOutboxForSendLine1'}"
+                        FontSize="16"
+                        Foreground="{StaticResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"           
+                        >
+                    </TextBlock>
+                    <TextBlock
+                        Grid.Row="1"
+                        Grid.Column="0"
+                        HorizontalAlignment="Left"
+                        Text ="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry='NoteOutboxForSendLine2'}"
+                        FontSize="16"
+                        Foreground="{StaticResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"           
+                        >
+                    </TextBlock>
+                </Grid>
 
                 <!-- Lower Left Buttons -->
                 <StackPanel x:Name="InboxButtons"
@@ -416,13 +457,59 @@
                     <scc:GameButton x:Name="ProposalButton"
                           Label="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry='NewMessageButtonText', CharacterCasing=Upper}"
                           Margin="0,0,0,0"
+                          ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry='NewMessageButtonTooltipText', CharacterCasing=Upper}"
                           Command="{Binding Path=MakeProposalCommand}"
                           IsEnabled="{Binding Path=MakeProposalCommand}"/>
                     <scc:GameButton x:Name="DeclareWarButton"
                           Label="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry='DeclareWarButtonText', CharacterCasing=Upper}"
                           Margin="0,2,0,0"
+                          ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry='DeclareWarButtonTooltipText', CharacterCasing=Upper}"                                    
                           Command="{Binding Path=DeclareWarCommand}" 
-                          IsEnabled="{Binding Path=DeclareWarCommand}"/>
+                          IsEnabled="{Binding Path=DeclareWarCommand}">
+                    </scc:GameButton>
+                    <scc:GameButton x:Name="EndWarButton"
+                          Label="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry='EndWarButtonText', CharacterCasing=Upper}"
+                          Margin="0,2,0,0"
+                          ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry='EndWarButtonTooltipText', CharacterCasing=Upper}"                                    
+                          Command="{Binding Path=CeaseFireCommand}" 
+                          IsEnabled="{Binding Path=CeaseFireCommand}">
+                    </scc:GameButton>
+                    <scc:GameButton x:Name="OpenBordersButton"
+                          Label="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry='OpenBordersButtonText', CharacterCasing=Upper}"
+                          Margin="0,2,0,0"
+                          ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry='OpenBordersButtonTooltipText', CharacterCasing=Upper}"
+                          Command="{Binding Path=OpenBordersCommand}" 
+                          IsEnabled="{Binding Path=OpenBordersCommand}"/>
+                    <scc:GameButton x:Name="NonAgressionButton"
+                          Label="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry='NonAgressionButtonText', CharacterCasing=Upper}"
+                          Margin="0,2,0,0"
+                          ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry='NonAgressionButtonTooltipText', CharacterCasing=Upper}"
+                          Command="{Binding Path=NonAgressionCommand}" 
+                          IsEnabled="{Binding Path=NonAgressionCommand}"/>
+                    <scc:GameButton x:Name="AffiliationButton"
+                          Label="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry='AffiliationButtonText', CharacterCasing=Upper}"
+                          Margin="0,2,0,0"
+                          ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry='AffiliationButtonTooltipText', CharacterCasing=Upper}"
+                          Command="{Binding Path=AffiliationCommand}" 
+                          IsEnabled="{Binding Path=AffiliationCommand}"/>
+                    <scc:GameButton x:Name="DefenceAllianceButton"
+                          Label="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry='DefenceAllianceButtonText', CharacterCasing=Upper}"
+                          Margin="0,2,0,0"
+                          ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry='DefenceAllianceButtonTooltipText', CharacterCasing=Upper}"
+                          Command="{Binding Path=DefenceAllianceCommand}" 
+                          IsEnabled="{Binding Path=DefenceAllianceCommand}"/>
+                    <scc:GameButton x:Name="FullAllianceButton"
+                          Label="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry='FullAllianceButtonText', CharacterCasing=Upper}"
+                          Margin="0,2,0,0"
+                          ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry='FullAllianceButtonTooltipText', CharacterCasing=Upper}"
+                          Command="{Binding Path=FullAllianceCommand}" 
+                          IsEnabled="{Binding Path=FullAllianceCommand}"/>
+                    <scc:GameButton x:Name="MembershipButton"
+                          Label="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry='MembershipButtonText', CharacterCasing=Upper}"
+                          Margin="0,2,0,0"
+                          ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry='MembershipButtonTooltipText', CharacterCasing=Upper}"
+                          Command="{Binding Path=MembershipCommand}" 
+                          IsEnabled="{Binding Path=MembershipCommand}"/>
                 </scc:GameItemsControl>
                 <scc:GameItemsControl x:Name="DraftButtons"
                               Grid.Column="0"
@@ -791,9 +878,9 @@
 
                                 <TextBlock.Text>
                                     <MultiBinding StringFormat="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry=EmbassyOfText, CharacterCasing=Upper}">
-                                        <Binding Path="SelectedForeignPower.Counterparty.ShortName"
+                                        <Binding Path="SelectedForeignPower.Counterparty.ShortNameToThe"
                                                  Converter="{StaticResource UpperCaseConverter}" />
-                                        <Binding Path="PlayerCivilization.ShortName"
+                                        <Binding Path="PlayerCivilization.ShortNameFromThe"
                                                  Converter="{StaticResource UpperCaseConverter}" />
                                     </MultiBinding>
                                 </TextBlock.Text>

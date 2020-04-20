@@ -13,6 +13,7 @@ using Supremacy.Collections;
 using Supremacy.Diplomacy;
 using Supremacy.Economy;
 using Supremacy.Entities;
+using Supremacy.Intelligence;
 using Supremacy.IO.Serialization;
 using Supremacy.Orbitals;
 using Supremacy.Resources;
@@ -103,6 +104,12 @@ namespace Supremacy.Game
         /// <value>The research matrix.</value>
         ResearchMatrix ResearchMatrix { get; }
 
+        /// <summary> Do we still need this? are we no longer trying to make intel like ResearchMatrix (IntelMatrix), ResearchPool (IntelPool)
+        /// Gets the intel matrix for the current game.
+        /// </summary>
+        /// <value>The research matrix.</value>
+        //IntelMatrix IntelMatrix { get; }
+
         /// <summary>
         /// Gets the map of sector claims for the current game.
         /// </summary>
@@ -156,7 +163,7 @@ namespace Supremacy.Game
         [NonSerialized]
         private GameTables _tables;
         private ResearchMatrix _researchMatrix;
-        private IntelMatrix _intelMatrix;
+      //  private IntelMatrix _intelMatrix;
         private SectorClaimGrid _sectorClaims;
         private TechTreeMap _techTrees;
         private CivilizationPairedMap<IDiplomacyData> _diplomacyData;
@@ -180,6 +187,7 @@ namespace Supremacy.Game
             writer.WriteObject(_universe);
             writer.WriteObject(_techDatabase);
             writer.WriteObject(_researchMatrix);
+         //   writer.WriteObject(_intelMatrix);
             writer.WriteObject(_sectorClaims);
             writer.WriteObject(_techTrees);
             writer.WriteObject(_diplomacyData);
@@ -223,6 +231,7 @@ namespace Supremacy.Game
                 _scriptedEvents = reader.Read<ICollection<ScriptedEvent>>();
                 _diplomacyDatabase = reader.Read<DiplomacyDatabase>();
 
+                
                 FixupDiplomacyData();
             }
             finally
@@ -419,15 +428,15 @@ namespace Supremacy.Game
             internal set { _researchMatrix = value; }
         }
 
-        /// <summary>
+        /// <summary> Do we still need this matrix part of intel??? not making intel like research anymore?
         /// Gets the intel matrix for the current game.
         /// </summary>
         /// <value>The intel matrix.</value>
-        public IntelMatrix IntelMatrix
-        {
-            get { return _intelMatrix; }
-            internal set { _intelMatrix = value; }
-        }
+        //public IntelMatrix IntelMatrix
+        //{
+        //    get { return _intelMatrix; }
+        //    internal set { _intelMatrix = value; }
+        //}
 
         /// <summary>
         /// Gets the map of sector claims for the current game.
@@ -594,7 +603,45 @@ namespace Supremacy.Game
             {
                 var gameContext = ThreadContext ?? Peek();
                 if (gameContext != null)
+                {
+                    // keep this for next time we have to check Game Context
+                        //foreach (var civManager in gameContext.CivilizationManagers)
+                        //{
+                        //    //    if (civManager.Civilization.IsEmpire)
+                        //    //        continue;
+                        //    if (civManager.CivilizationID != 4) // only Cardassians
+                        //        continue;
+
+                        //bool output = false;
+
+                        //    string _gameLogText = "Civ= " + civManager.CivilizationID +"  :";//  .Civilization.Key;
+                        //                                                                     //string _gameLogText = "Hello";
+                        //if (civManager.IntelOrdersGoingToHost != null)
+                        //{
+                        //    _gameLogText += civManager.IntelOrdersGoingToHost.Count + " for civManager.IntelOrdersGoingToHost,  ";
+                        //    if (civManager.IntelOrdersGoingToHost.Count > 0)
+                        //        output = true;
+                        //}
+                        //if (civManager.IntelOrdersIncomingToHost != null)
+                        //{
+                        //    _gameLogText += civManager.IntelOrdersIncomingToHost.Count + " for civManager.IntelOrdersIncomingToHost";
+                        //    if(civManager.IntelOrdersIncomingToHost.Count > 0)
+                        //        output = true;
+                        //}
+                        ////    // same for civ, not for CivManager
+                        ////    if (civManager.Civilization.IntelOrdersGoingToHost != null)
+                        ////        _gameLogText += "civ.IntelOrdersGoingToHost={1} , " + civManager.Civilization.IntelOrdersIncomingToHost.Count;
+                        ////    if (civManager.Civilization.IntelOrdersIncomingToHost != null)
+                        ////        _gameLogText += "civ.IntelOrdersIncomingToHost={1} , " + civManager.Civilization.IntelOrdersIncomingToHost.Count;
+
+                        //if (output == true)
+                        //GameLog.Core.Test.DebugFormat(_gameLogText);
+
+                        //}
+
+
                     return gameContext;
+                }
 
                 if (_isInDesignMode.Value)
                     gameContext = CreateDesignTimeGameContext();
@@ -775,8 +822,8 @@ namespace Supremacy.Game
                 GameLog.Client.GameData.DebugFormat("TechDatabase loaded");
                 _researchMatrix = ResearchMatrix.Load();
                 GameLog.Client.GameData.DebugFormat("ResearchMatrix loaded");
-                _intelMatrix = IntelMatrix.Load();
-                GameLog.Client.GameData.DebugFormat("IntelMatrix loaded");
+                //_intelMatrix = IntelMatrix.Load();
+                //GameLog.Client.GameData.DebugFormat("IntelMatrix loaded");
                 _techTrees = new TechTreeMap();
                 GameLog.Client.GameData.DebugFormat("TechTree loaded");
                 _strategyDatabase = StrategyDatabase.Load();
@@ -1132,6 +1179,7 @@ namespace Supremacy.Game
                     if (civManager.Civilization.CivilizationType != CivilizationType.NotInGameRace)
                     {
                         _diplomats.Add(new Diplomat(civManager.Civilization));
+                        //_diplomats.Add(new List<IntelHelper.NewIntelOrders>());
                         civManager.EnsureSeatOfGovernment();
                     }
                 }

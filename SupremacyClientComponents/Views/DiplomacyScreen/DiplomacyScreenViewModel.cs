@@ -1,4 +1,5 @@
-﻿using Microsoft.Practices.Composite.Presentation.Events;
+﻿// File:DiplomacyScreenViewModel.cs
+using Microsoft.Practices.Composite.Presentation.Events;
 using Microsoft.Practices.Composite.Regions;
 using Supremacy.Annotations;
 using Supremacy.Client.Context;
@@ -45,7 +46,7 @@ namespace Supremacy.Client.Views
             }
         }
 
-        #endregion
+        #endregion Design-Time Instance
 
         private readonly ObservableCollection<ForeignPowerViewModel> _foreignPowers;
         private readonly ReadOnlyObservableCollection<ForeignPowerViewModel> _foreignPowersView;
@@ -57,6 +58,13 @@ namespace Supremacy.Client.Views
         private readonly DelegateCommand _threatenCommand;
         private readonly DelegateCommand _makeProposalCommand;
         private readonly DelegateCommand _declareWarCommand;
+        private readonly DelegateCommand _endWarCommand;  // other naming in the code: CeaseFire
+        private readonly DelegateCommand _openBordersCommand;
+        private readonly DelegateCommand _nonAgressionCommand;
+        private readonly DelegateCommand _affiliationCommand;
+        private readonly DelegateCommand _defenceAllianceCommand;
+        private readonly DelegateCommand _fullAllianceCommand;
+        private readonly DelegateCommand _membershipCommand;
         private readonly DelegateCommand _editMessageCommand;
         private readonly DelegateCommand _sendMessageCommand;
         private readonly DelegateCommand _cancelMessageCommand;
@@ -76,6 +84,13 @@ namespace Supremacy.Client.Views
             _threatenCommand = new DelegateCommand(ExecuteThreatenCommand, CanExecuteThreatenCommand);
             _makeProposalCommand = new DelegateCommand(ExecuteMakeProposalCommand, CanExecuteMakeProposalCommand);
             _declareWarCommand = new DelegateCommand(ExecuteDeclareWarCommand, CanExecuteDeclareWarCommand);
+            _endWarCommand = new DelegateCommand(ExecuteEndWarCommand, CanExecuteEndWarCommand);
+            _openBordersCommand = new DelegateCommand(ExecuteOpenBordersCommand, CanExecuteOpenBordersCommand);
+            _nonAgressionCommand = new DelegateCommand(ExecuteNonAgressionCommand, CanExecuteNonAgressionCommand);
+            _affiliationCommand = new DelegateCommand(ExecuteAffiliationCommand, CanExecuteAffiliationCommand);
+            _defenceAllianceCommand = new DelegateCommand(ExecuteDefenceAllianceCommand, CanExecuteDefenceAllianceCommand);
+            _fullAllianceCommand = new DelegateCommand(ExecuteFullAllianceCommand, CanExecuteFullAllianceCommand);
+            _membershipCommand = new DelegateCommand(ExecuteMembershipCommand, CanExecuteMembershipCommand);
             _editMessageCommand = new DelegateCommand(ExecuteEditMessageCommand, CanExecuteEditMessageCommand);
             _sendMessageCommand = new DelegateCommand(ExecuteSendMessageCommand, CanExecuteSendMessageCommand);
             _cancelMessageCommand = new DelegateCommand(ExecuteCancelMessageCommand, CanExecuteCancelMessageCommand);
@@ -174,6 +189,7 @@ namespace Supremacy.Client.Views
             InvalidateCommands();
         }
 
+        #region DeclareWarCommandButton
         private bool CanExecuteDeclareWarCommand()
         {
             return CanExecuteDeclareWarCommandCore(out ForeignPowerViewModel foreignPower);
@@ -195,6 +211,11 @@ namespace Supremacy.Client.Views
             if (!CanExecuteDeclareWarCommandCore(out foreignPower))
                 return;
 
+            DisplayMode = DiplomacyScreenDisplayMode.Outbox; // new
+
+            AreOutgoingMessageCommandsVisibleChanged.Raise(this);
+            OnPropertyChanged("AreOutgoingMessageCommandsVisible");
+
             var message = new DiplomacyMessageViewModel(_playerCivilization, _selectedForeignPower.Counterparty);
 
             message.Edit();
@@ -210,6 +231,347 @@ namespace Supremacy.Client.Views
             InvalidateCommands();
             OnCommandVisibilityChanged();
         }
+        #endregion DeclareWarCommandButton
+
+
+        #region EndWarCommandButton
+        private bool CanExecuteEndWarCommand()
+        {
+            return CanExecuteEndWarCommandCore(out ForeignPowerViewModel foreignPower);
+        }
+
+        private bool CanExecuteEndWarCommandCore(out ForeignPowerViewModel selectedForeignPower)
+        {
+            selectedForeignPower = SelectedForeignPower;
+
+            return selectedForeignPower != null &&
+                   //selectedForeignPower.OutgoingMessage == null &&
+                   selectedForeignPower.Status == ForeignPowerStatus.AtWar;
+        }
+
+        private void ExecuteEndWarCommand()
+        {
+            ForeignPowerViewModel foreignPower;
+
+            if (!CanExecuteEndWarCommandCore(out foreignPower))
+                return;
+
+            DisplayMode = DiplomacyScreenDisplayMode.Outbox; // new
+
+            AreOutgoingMessageCommandsVisibleChanged.Raise(this);
+            OnPropertyChanged("AreOutgoingMessageCommandsVisible");
+
+            var message = new DiplomacyMessageViewModel(_playerCivilization, _selectedForeignPower.Counterparty);
+
+            message.Edit();
+
+            var endWarElement = message.AvailableElements.FirstOrDefault(o => o.ElementType == DiplomacyMessageElementType.TreatyCeaseFireClause); // CeaseFire = endWar
+            if (endWarElement == null || !endWarElement.AddCommand.CanExecute(null))
+                return;
+
+            endWarElement.AddCommand.Execute(null);
+
+            foreignPower.OutgoingMessage = message;
+
+            InvalidateCommands();
+            OnCommandVisibilityChanged();
+        }
+        #endregion EndWarCommandButton
+
+
+        #region OpenBordersCommandButton
+        private bool CanExecuteOpenBordersCommand()
+        {
+            return CanExecuteOpenBordersCommandCore(out ForeignPowerViewModel foreignPower);
+        }
+
+        private bool CanExecuteOpenBordersCommandCore(out ForeignPowerViewModel selectedForeignPower)
+        {
+            selectedForeignPower = SelectedForeignPower;
+
+            return selectedForeignPower != null &&
+                   //selectedForeignPower.OutgoingMessage == null &&
+                   selectedForeignPower.Status != ForeignPowerStatus.AtWar;
+       //// conditions for TradeRoute
+       ////agreementMatrix.IsAgreementActive(firstCiv, secondCiv, ClauseType.TreatyOpenBorders) ||
+       ////agreementMatrix.IsAgreementActive(firstCiv, secondCiv, ClauseType.TreatyTradePact) ||
+       ////agreementMatrix.IsAgreementActive(firstCiv, secondCiv, ClauseType.TreatyAffiliation) ||
+       ////agreementMatrix.IsAgreementActive(firstCiv, secondCiv, ClauseType.TreatyDefensiveAlliance) ||
+       ////agreementMatrix.IsAgreementActive(firstCiv, secondCiv, ClauseType.TreatyFullAlliance);
+        }
+
+        private void ExecuteOpenBordersCommand()
+        {
+            ForeignPowerViewModel foreignPower;
+
+            if (!CanExecuteOpenBordersCommandCore(out foreignPower))
+                return;
+
+            DisplayMode = DiplomacyScreenDisplayMode.Outbox; // new
+
+            AreOutgoingMessageCommandsVisibleChanged.Raise(this);
+            OnPropertyChanged("AreOutgoingMessageCommandsVisible");
+
+            var message = new DiplomacyMessageViewModel(_playerCivilization, _selectedForeignPower.Counterparty);
+
+            message.Edit();
+
+            var openBordersElement = message.AvailableElements.FirstOrDefault(o => o.ElementType == DiplomacyMessageElementType.TreatyOpenBordersClause);
+            if (openBordersElement == null || !openBordersElement.AddCommand.CanExecute(null))
+                return;
+
+            openBordersElement.AddCommand.Execute(null);
+
+            foreignPower.OutgoingMessage = message;
+
+            InvalidateCommands();
+            OnCommandVisibilityChanged();
+        }
+        #endregion OpenBordersCommandButton
+
+
+        #region NonAgressionCommandButton
+        private bool CanExecuteNonAgressionCommand()
+        {
+            return CanExecuteNonAgressionCommandCore(out ForeignPowerViewModel foreignPower);
+        }
+
+        private bool CanExecuteNonAgressionCommandCore(out ForeignPowerViewModel selectedForeignPower)
+        {
+            selectedForeignPower = SelectedForeignPower;
+
+            return selectedForeignPower != null &&
+                   //selectedForeignPower.OutgoingMessage == null &&
+                   selectedForeignPower.Status != ForeignPowerStatus.AtWar;
+            //// conditions for TradeRoute
+            ////agreementMatrix.IsAgreementActive(firstCiv, secondCiv, ClauseType.TreatyOpenBorders) ||
+            ////agreementMatrix.IsAgreementActive(firstCiv, secondCiv, ClauseType.TreatyTradePact) ||
+            ////agreementMatrix.IsAgreementActive(firstCiv, secondCiv, ClauseType.TreatyAffiliation) ||
+            ////agreementMatrix.IsAgreementActive(firstCiv, secondCiv, ClauseType.TreatyDefensiveAlliance) ||
+            ////agreementMatrix.IsAgreementActive(firstCiv, secondCiv, ClauseType.TreatyFullAlliance);
+        }
+
+        private void ExecuteNonAgressionCommand()
+        {
+            ForeignPowerViewModel foreignPower;
+
+            if (!CanExecuteNonAgressionCommandCore(out foreignPower))
+                return;
+
+            DisplayMode = DiplomacyScreenDisplayMode.Outbox; // new
+
+            AreOutgoingMessageCommandsVisibleChanged.Raise(this);
+            OnPropertyChanged("AreOutgoingMessageCommandsVisible");
+
+            var message = new DiplomacyMessageViewModel(_playerCivilization, _selectedForeignPower.Counterparty);
+
+            message.Edit();
+
+            var nonAgressionElement = message.AvailableElements.FirstOrDefault(o => o.ElementType == DiplomacyMessageElementType.TreatyNonAggressionClause);
+            if (nonAgressionElement == null || !nonAgressionElement.AddCommand.CanExecute(null))
+                return;
+
+            nonAgressionElement.AddCommand.Execute(null);
+
+            foreignPower.OutgoingMessage = message;
+
+            InvalidateCommands();
+            OnCommandVisibilityChanged();
+        }
+        #endregion NonAgressionCommandButton
+
+
+        #region AffiliationCommandButton
+        private bool CanExecuteAffiliationCommand()
+        {
+            return CanExecuteAffiliationCommandCore(out ForeignPowerViewModel foreignPower);
+        }
+
+        private bool CanExecuteAffiliationCommandCore(out ForeignPowerViewModel selectedForeignPower)
+        {
+            selectedForeignPower = SelectedForeignPower;
+
+            return selectedForeignPower != null &&
+                   //selectedForeignPower.OutgoingMessage == null &&
+                   selectedForeignPower.Status != ForeignPowerStatus.AtWar;
+            //// conditions for TradeRoute
+            ////agreementMatrix.IsAgreementActive(firstCiv, secondCiv, ClauseType.TreatyOpenBorders) ||
+            ////agreementMatrix.IsAgreementActive(firstCiv, secondCiv, ClauseType.TreatyTradePact) ||
+            ////agreementMatrix.IsAgreementActive(firstCiv, secondCiv, ClauseType.TreatyAffiliation) ||
+            ////agreementMatrix.IsAgreementActive(firstCiv, secondCiv, ClauseType.TreatyDefensiveAlliance) ||
+            ////agreementMatrix.IsAgreementActive(firstCiv, secondCiv, ClauseType.TreatyFullAlliance);
+        }
+
+        private void ExecuteAffiliationCommand()
+        {
+            ForeignPowerViewModel foreignPower;
+
+            if (!CanExecuteAffiliationCommandCore(out foreignPower))
+                return;
+
+            _ = DiplomacyScreenDisplayMode.Outbox; // new
+
+            AreOutgoingMessageCommandsVisibleChanged.Raise(this);
+            OnPropertyChanged("AreOutgoingMessageCommandsVisible");
+
+            var message = new DiplomacyMessageViewModel(_playerCivilization, _selectedForeignPower.Counterparty);
+
+            message.Edit();
+
+            var affiliationElement = message.AvailableElements.FirstOrDefault(o => o.ElementType == DiplomacyMessageElementType.TreatyOpenBordersClause);
+            if (affiliationElement == null || !affiliationElement.AddCommand.CanExecute(null))
+                return;
+
+            affiliationElement.AddCommand.Execute(null);
+
+            foreignPower.OutgoingMessage = message;
+
+            InvalidateCommands();
+            OnCommandVisibilityChanged();
+        }
+        #endregion AffiliationCommandButton
+
+
+        #region DefenceAllianceCommandButton
+        private bool CanExecuteDefenceAllianceCommand()
+        {
+            return CanExecuteDefenceAllianceCommandCore(out ForeignPowerViewModel foreignPower);
+        }
+
+        private bool CanExecuteDefenceAllianceCommandCore(out ForeignPowerViewModel selectedForeignPower)
+        {
+            selectedForeignPower = SelectedForeignPower;
+
+            return selectedForeignPower != null &&
+                   //selectedForeignPower.OutgoingMessage == null &&
+                   selectedForeignPower.Status != ForeignPowerStatus.AtWar;
+            //// conditions for TradeRoute
+            ////agreementMatrix.IsAgreementActive(firstCiv, secondCiv, ClauseType.TreatyOpenBorders) ||
+            ////agreementMatrix.IsAgreementActive(firstCiv, secondCiv, ClauseType.TreatyTradePact) ||
+            ////agreementMatrix.IsAgreementActive(firstCiv, secondCiv, ClauseType.TreatyAffiliation) ||
+            ////agreementMatrix.IsAgreementActive(firstCiv, secondCiv, ClauseType.TreatyDefensiveAlliance) ||
+            ////agreementMatrix.IsAgreementActive(firstCiv, secondCiv, ClauseType.TreatyFullAlliance);
+        }
+
+        private void ExecuteDefenceAllianceCommand()
+        {
+            ForeignPowerViewModel foreignPower;
+
+            if (!CanExecuteDefenceAllianceCommandCore(out foreignPower))
+                return;
+
+            DisplayMode = DiplomacyScreenDisplayMode.Outbox; // new = DiplomacyScreenDisplayMode.Outbox; // new
+
+            AreOutgoingMessageCommandsVisibleChanged.Raise(this);
+            OnPropertyChanged("AreOutgoingMessageCommandsVisible");
+
+            var message = new DiplomacyMessageViewModel(_playerCivilization, _selectedForeignPower.Counterparty);
+
+            message.Edit();
+
+            var defenceAllianceElement = message.AvailableElements.FirstOrDefault(o => o.ElementType == DiplomacyMessageElementType.TreatyDefensiveAllianceClause);
+            if (defenceAllianceElement == null || !defenceAllianceElement.AddCommand.CanExecute(null))
+                return;
+
+            defenceAllianceElement.AddCommand.Execute(null);
+
+            foreignPower.OutgoingMessage = message;
+
+            InvalidateCommands();
+            OnCommandVisibilityChanged();
+        }
+        #endregion DefenceAllianceCommandButton
+
+
+        #region FullAllianceCommandButton
+        private bool CanExecuteFullAllianceCommand()
+        {
+            return CanExecuteFullAllianceCommandCore(out ForeignPowerViewModel foreignPower);
+        }
+
+        private bool CanExecuteFullAllianceCommandCore(out ForeignPowerViewModel selectedForeignPower)
+        {
+            selectedForeignPower = SelectedForeignPower;
+
+            return selectedForeignPower != null &&
+                   //selectedForeignPower.OutgoingMessage == null &&
+                   selectedForeignPower.Status != ForeignPowerStatus.AtWar;
+        }
+
+        private void ExecuteFullAllianceCommand()
+        {
+            ForeignPowerViewModel foreignPower;
+
+            if (!CanExecuteFullAllianceCommandCore(out foreignPower))
+                return;
+
+            DisplayMode = DiplomacyScreenDisplayMode.Outbox; // new = DiplomacyScreenDisplayMode.Outbox; // new
+
+            AreOutgoingMessageCommandsVisibleChanged.Raise(this);
+            OnPropertyChanged("AreOutgoingMessageCommandsVisible");
+
+            var message = new DiplomacyMessageViewModel(_playerCivilization, _selectedForeignPower.Counterparty);
+
+            message.Edit();
+
+            var fullAllianceElement = message.AvailableElements.FirstOrDefault(o => o.ElementType == DiplomacyMessageElementType.TreatyFullAllianceClause);
+            if (fullAllianceElement == null || !fullAllianceElement.AddCommand.CanExecute(null))
+                return;
+
+            fullAllianceElement.AddCommand.Execute(null);
+
+            foreignPower.OutgoingMessage = message;
+
+            InvalidateCommands();
+            OnCommandVisibilityChanged();
+        }
+        #endregion FullAllianceCommandButton
+
+
+        #region MembershipCommandButton
+        private bool CanExecuteMembershipCommand()
+        {
+            return CanExecuteMembershipCommandCore(out ForeignPowerViewModel foreignPower);
+        }
+
+        private bool CanExecuteMembershipCommandCore(out ForeignPowerViewModel selectedForeignPower)
+        {
+            selectedForeignPower = SelectedForeignPower;
+
+            return selectedForeignPower != null &&
+                   //selectedForeignPower.OutgoingMessage == null &&
+                   selectedForeignPower.Status != ForeignPowerStatus.AtWar;
+        }
+
+        private void ExecuteMembershipCommand()
+        {
+            ForeignPowerViewModel foreignPower;
+
+            if (!CanExecuteMembershipCommandCore(out foreignPower))
+                return;
+
+            DisplayMode = DiplomacyScreenDisplayMode.Outbox; // new = DiplomacyScreenDisplayMode.Outbox; // new
+
+            AreOutgoingMessageCommandsVisibleChanged.Raise(this);
+            OnPropertyChanged("AreOutgoingMessageCommandsVisible");
+
+            var message = new DiplomacyMessageViewModel(_playerCivilization, _selectedForeignPower.Counterparty);
+
+            message.Edit();
+
+            var membershipElement = message.AvailableElements.FirstOrDefault(o => o.ElementType == DiplomacyMessageElementType.TreatyMembershipClause);
+            if (membershipElement == null || !membershipElement.AddCommand.CanExecute(null))
+                return;
+
+            membershipElement.AddCommand.Execute(null);
+
+            foreignPower.OutgoingMessage = message;
+
+            InvalidateCommands();
+            OnCommandVisibilityChanged();
+        }
+        #endregion MembershipCommandButton
+
 
         private bool CanExecuteEditMessageCommand()
         {
@@ -245,7 +607,7 @@ namespace Supremacy.Client.Views
                 return;
 
             SelectedForeignPower.OutgoingMessage.Send();
-            GameLog.Client.Diplomacy.DebugFormat("Diplo Message sent...");
+            GameLog.Client.Diplomacy.DebugFormat("Diplo Message: SEND button pressed...");
             SelectedForeignPower.OnOutgoingMessageCategoryChanged();
 
             OnCommandVisibilityChanged();
@@ -324,6 +686,12 @@ namespace Supremacy.Client.Views
             _threatenCommand.RaiseCanExecuteChanged();
             _makeProposalCommand.RaiseCanExecuteChanged();
             _declareWarCommand.RaiseCanExecuteChanged();
+            _endWarCommand.RaiseCanExecuteChanged();
+            _openBordersCommand.RaiseCanExecuteChanged();
+            _nonAgressionCommand.RaiseCanExecuteChanged();
+            _affiliationCommand.RaiseCanExecuteChanged();
+            _defenceAllianceCommand.RaiseCanExecuteChanged();
+            _fullAllianceCommand.RaiseCanExecuteChanged();
             _editMessageCommand.RaiseCanExecuteChanged();
             _sendMessageCommand.RaiseCanExecuteChanged();
             _cancelMessageCommand.RaiseCanExecuteChanged();
@@ -397,6 +765,34 @@ namespace Supremacy.Client.Views
         public ICommand DeclareWarCommand
         {
             get { return _declareWarCommand; }
+        }
+        public ICommand EndWarCommand
+        {
+            get { return _endWarCommand; }
+        }
+        public ICommand OpenBordersCommand
+        {
+            get { return _openBordersCommand; }
+        }
+        public ICommand NonAgressionCommand
+        {
+            get { return _nonAgressionCommand; }
+        }
+        public ICommand AffiliationCommand
+        {
+            get { return _affiliationCommand; }
+        }
+        public ICommand DefenceAllianceCommand
+        {
+            get { return _defenceAllianceCommand; }
+        }
+        public ICommand FullAllianceCommand
+        {
+            get { return _fullAllianceCommand; }
+        }
+        public ICommand MembershipCommand
+        {
+            get { return _membershipCommand; }
         }
 
         public ICommand EditMessageCommand
@@ -568,12 +964,12 @@ namespace Supremacy.Client.Views
         {
             get
             {
-                if (DisplayMode != DiplomacyScreenDisplayMode.Outbox)
-                    return false;
+                //if (DisplayMode != DiplomacyScreenDisplayMode.Outbox)
+                //    return false;
 
                 var selectedForeignPower = SelectedForeignPower;  // if one is selected in the screen
 
-                // works
+                // works, mostly not needed
                 //if (selectedForeignPower != null)
                 //    GameLog.Client.Diplomacy.DebugFormat("DisplayMode is Outbox, SelectedForeignPower = {0}", selectedForeignPower.Counterparty.Key);
 
@@ -611,8 +1007,9 @@ namespace Supremacy.Client.Views
 
                 var selectedForeignPower = SelectedForeignPower;
 
-                if (selectedForeignPower != null)
-                GameLog.Core.Diplomacy.DebugFormat("DisplayMode is Inbox, SelectedForeignPower ={0}", selectedForeignPower.Counterparty.Key);
+                //works, mostly not needed
+                //if (selectedForeignPower != null)
+                //GameLog.Core.Diplomacy.DebugFormat("DisplayMode is Inbox, SelectedForeignPower ={0}", selectedForeignPower.Counterparty.Key);
 
                 return selectedForeignPower != null && selectedForeignPower.IncomingMessage != null && 
                        !selectedForeignPower.IncomingMessage.IsStatement;
@@ -636,8 +1033,8 @@ namespace Supremacy.Client.Views
         {
             get
             {
-                if (DisplayMode != DiplomacyScreenDisplayMode.Outbox)
-                    return false;
+                //if (DisplayMode != DiplomacyScreenDisplayMode.Outbox)
+                //    return false;
 
                 var selectedForeignPower = SelectedForeignPower;
 
@@ -736,7 +1133,11 @@ namespace Supremacy.Client.Views
                 var foreignPowerViewModel = new ForeignPowerViewModel(foreignPower);
 
                 _foreignPowers.Add(foreignPowerViewModel);
-                GameLog.Client.Diplomacy.DebugFormat("Added ForeignPowerViewModel: civ {0} vs {2} (playerEmpireID {1})", civ.ShortName, playerEmpireId, AppContext.LocalPlayer.Empire.Name);
+                GameLog.Client.Diplomacy.DebugFormat("Added ForeignPowerView: {2} (ID {1}) vs {0}: {3} ({4}/{5})", civ.ShortName, playerEmpireId, AppContext.LocalPlayer.Empire.Name
+                    , foreignPowerViewModel.Status
+                    , foreignPowerViewModel.CounterpartyRegard
+                    , foreignPowerViewModel.CounterpartyTrust
+                    );
             }
 
             if (selectedForeignPower != null)

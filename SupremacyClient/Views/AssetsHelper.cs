@@ -11,18 +11,18 @@ namespace Supremacy.Intelligence
 {
     public static class AssetsHelper
     {
-        public static Civilization NewSpyCiv
-        {
-            get { return IntelHelper.NewSpyCiv; }
-        }
-        public static Civilization NewTargetCiv
-        {
-            get {return IntelHelper.NewTargetCiv; }
-        }
-        public static UniverseObjectList<Colony> NewSpiedColonies
-        {
-            get { return IntelHelper.NewSpiedColonies; }
-        }
+        //public static Civilization NewSpyCiv
+        //{
+        //    get { return IntelHelper.NewSpyCiv; }
+        //}
+        //public static Civilization NewTargetCiv
+        //{
+        //    get {return IntelHelper.NewTargetCiv; }
+        //}
+        //public static UniverseObjectList<Colony> NewSpiedColonies
+        //{
+        //    get { return IntelHelper.NewSpiedColonies; }
+        //}
         public static Civilization CivZero
         {
             get { return GameContext.Current.CivilizationManagers[0].Civilization; }

@@ -1,4 +1,4 @@
-// Diplomat.cs
+// File:Diplomat.cs
 //
 // Copyright (c) 2007 Mike Strobel
 //
@@ -8,14 +8,16 @@
 // All other rights reserved.
 
 using System;
-
+using System.Collections.Generic;
 using Supremacy.Annotations;
 using Supremacy.Diplomacy.Visitors;
 using Supremacy.Economy;
 using Supremacy.Entities;
 using Supremacy.Game;
+using Supremacy.Intelligence;
 using Supremacy.IO.Serialization;
 using Supremacy.Universe;
+using Supremacy.Utility;
 
 namespace Supremacy.Diplomacy
 {
@@ -194,11 +196,21 @@ namespace Supremacy.Diplomacy
             if (owner == null)
                 throw new ArgumentNullException("owner");
 
+            var _diplomats = GameContext.Current.Diplomats[owner.CivID];
+
             return GameContext.Current.Diplomats[owner.CivID];
         }
 
         public static Diplomat Get(int ownerId)
         {
+
+            //var _diplomats = GameContext.Current.Diplomats[ownerId];
+            //_diplomats._intelOrdersGoingToHost = _diplomats.IntelOrdersGoingToHost;
+
+            //foreach (var item in _diplomats.IntelOrdersGoingToHost)
+            //{
+            //    GameLog.Server.Intel.DebugFormat("IntelOrdersGoingToHost: {0} for {1} VS {2} (blamed={3})", item.Intel_Order, item.AttackingCivID, item.AttackedCivID, item.Intel_Order_Blamed);
+            //}
             return GameContext.Current.Diplomats[ownerId];
         }
 

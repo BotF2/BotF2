@@ -280,6 +280,60 @@ namespace Supremacy.Diplomacy
             }
         }
 
+        public static IEnumerable<Civilization> GetSabotageParameters([NotNull] this Diplomat source, [NotNull] ICivIdentity civ, [CanBeNull] IProposal includeProposal = null)
+        {
+            if (source == null)
+                throw new ArgumentNullException("source");
+            if (civ == null)
+                throw new ArgumentNullException("civ");
+
+            var sender = source.Owner;
+            var recipient = GameContext.Current.Civilizations[civ.CivID];
+
+            //HashSet<Civilization> existingWarPacts = null;
+
+            var _borg = GameContext.Current.Civilizations[6];
+            //string blamed = GameContext.Current.CivilizationManager.Where(o => o.CivilizationID == 6); //[6].Civilization;
+
+            yield return _borg;
+
+            // for WarPact this is used to populate the window: Select a target 
+            //if (includeProposal != null)
+            //{
+            //    foreach (var clause in includeProposal.Clauses)
+            //    {
+            //        switch (clause.ClauseType)
+            //        {
+            //            case ClauseType.TreatyWarPact:
+            //                var warPactTarget = clause.Data as Civilization;
+            //                if (warPactTarget == null)
+            //                    continue;
+
+            //                if (existingWarPacts == null)
+            //                    existingWarPacts = new HashSet<Civilization>();
+
+            //                existingWarPacts.Add(warPactTarget);
+            //                break;
+            //        }
+            //    }
+            //}
+
+            //foreach (var otherCiv in GameContext.Current.Civilizations)
+            //{
+            //    if (otherCiv.CivID == source.OwnerID || otherCiv.CivID == civ.CivID)
+            //        continue;
+
+            //    if (DiplomacyHelper.IsContactMade(sender, otherCiv) &&
+            //        //                    DiplomacyHelper.IsContactMade(recipient, otherCiv) &&
+            //        !DiplomacyHelper.AreAtWar(recipient, otherCiv) &&
+            //        DiplomacyHelper.IsIndependent(otherCiv) &&
+            //        (existingWarPacts == null || !existingWarPacts.Contains(otherCiv)))
+            //    {
+            //        yield return otherCiv;
+            //    }
+            //}
+        }
+
         public static bool CanCommendOrDenounceTreaty([NotNull] this Diplomat source, [NotNull] ICivIdentity civ, [CanBeNull] Statement includeStatement = null)
         {
             if (source == null)
@@ -415,6 +469,7 @@ namespace Supremacy.Diplomacy
             foreach (var civilization in atWarWith)
                 yield return civilization;
         }
+
 
         public static bool CanProposeWarPact([NotNull] this Diplomat source, [NotNull] ICivIdentity civ, [CanBeNull] IProposal includeProposal = null)
         {

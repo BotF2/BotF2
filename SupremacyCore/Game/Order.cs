@@ -56,11 +56,15 @@ namespace Supremacy.Game
         {
             get
             {
-                if (_ownerId == Civilization.InvalidID)
-                    return null;
                 if (_executionContext != null)
                     return _executionContext.Civilizations[_ownerId];
-                return GameContext.Current.Civilizations[_ownerId];
+                //if (_ownerId == Civilization.InvalidID)
+                //    return null;
+                //if (_executionContext != null)
+                //    return _executionContext.Civilizations[_ownerId];
+                //return GameContext.Current.Civilizations[_ownerId];
+                GameLog.Client.General.ErrorFormat("no owner for whatever !");
+                return null;
             }
             set
             {

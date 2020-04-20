@@ -11,6 +11,7 @@ using System.ServiceModel;
 
 using Supremacy.Combat;
 using Supremacy.Game;
+using Supremacy.Intelligence;
 
 namespace Supremacy.WCF
 {
@@ -134,6 +135,13 @@ namespace Supremacy.WCF
             IsTerminating = false,
             Action = "http://Supremacy.WPF/ISupremacyService/SendCombatTarget2")]
         void SendCombatTarget2(CombatTargetSecondaries target2);
+
+        //[OperationContract(
+        //    IsOneWay = true,
+        //    IsInitiating = false,
+        //    IsTerminating = false,
+        //    Action = "http://Supremacy.WPF/ISupremacyService/SendIntelOrders")]
+        //void SendIntelOrders(IntelOrders orders);
 
         [OperationContract(
             IsOneWay = true,

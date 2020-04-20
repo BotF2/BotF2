@@ -1310,7 +1310,7 @@ namespace Supremacy.Combat
                         needAdditionalAttackingShip = false;  // Do we need more targets? Maybe, see way below
                         applyDamage = returnFireFirepower;
                         returnFireFirepower = 0; // Indicator 
-                        GameLog.Core.CombatDetails.DebugFormat("First Attacking Ship has enought weapons to fully RETALIATE {0}", AttackingShip.Item1.Name);
+                        GameLog.Core.CombatDetails.DebugFormat("First Attacking Ship has enough weapons to fully RETALIATE {0}", AttackingShip.Item1.Name);
                     }
                     else // we need another attacking ship, later, for the remaining returnFireFirepower
                     {
@@ -1956,7 +1956,7 @@ namespace Supremacy.Combat
 
                             additionalRun = false;
                         }
-                        ///returnFireFirepower = 0 does not mean we do not need more targets. It just says current attacker has enought firepower left (apply damage)
+                        ///returnFireFirepower = 0 does not mean we do not need more targets. It just says current attacker has enough firepower left (apply damage)
                         GameLog.Core.CombatDetails.DebugFormat("Retailiation complete. No more Attacker nessarcy. Update AttackingShips weapons. Break");
                         AttackingShip.Item1.RemainingFirepower = AttackingShip.Item1.RemainingFirepower - applyDamage; // Weapons remain
 

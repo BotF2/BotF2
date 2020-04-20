@@ -1,4 +1,5 @@
-﻿// Copyright (c) 2009 Mike Strobel
+﻿// File:AsteroidImpactEvent.cs
+// Copyright (c) 2009 Mike Strobel
 //
 // This source code is subject to the terms of the Microsoft Reciprocal License (Ms-RL).
 // For details, see <http://www.opensource.org/licenses/ms-rl.html>.
@@ -19,11 +20,8 @@ namespace Supremacy.Scripting.Events
     [Serializable]
     public class AsteroidImpactEvent : UnitScopedEvent<Colony>
     {
-#pragma warning disable IDE0052 // Remove unread private members
         private bool _productionFinished;         // this is necassary !!!
-#pragma warning disable IDE0052 // Remove unread private members
         private bool _shipProductionFinished;     // this is necassary !!!
-#pragma warning restore IDE0052 // Remove unread private members
 
         private int _occurrenceChance = 200;
 
@@ -34,6 +32,11 @@ namespace Supremacy.Scripting.Events
         public AsteroidImpactEvent()
         {
             _affectedProjects = new List<BuildProject>();
+
+            // keep the following to avoid error messages while "Build"
+            bool fake;
+            fake = _productionFinished;
+            fake = _shipProductionFinished;
         }
 
         public override bool CanExecute

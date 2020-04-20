@@ -50,8 +50,8 @@ using System.Windows.Markup;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("2018.09.20.0")]
-[assembly: AssemblyFileVersion("2018.09.20.0")]
+[assembly: AssemblyVersion("2020.17.0.1")]
+[assembly: AssemblyFileVersion("2020.17.0.1")]
 
 [assembly: XmlnsPrefix("http://schemas.startreksupremacy.com/xaml/xna", "sxna")]
 [assembly: XmlnsDefinition("http://schemas.startreksupremacy.com/xaml/xna", "Supremacy.Xna")]

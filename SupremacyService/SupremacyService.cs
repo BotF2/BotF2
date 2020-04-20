@@ -16,6 +16,7 @@ using Supremacy.Collections;
 using Supremacy.Combat;
 using Supremacy.Entities;
 using Supremacy.Game;
+using Supremacy.Intelligence;
 using Supremacy.Messaging;
 using Supremacy.Orbitals;
 using Supremacy.Resources;
@@ -62,6 +63,7 @@ namespace Supremacy.WCF
         private GameInitData _gameInitData;
         private IAsyncResult _aiAsyncResult;
         private CombatEngine _combatEngine;
+        //private IntelEngine _intelEngine;
         private InvasionEngine _invasionEngine;
         private GameContext _game;
         private bool _isGameStarted;
@@ -469,6 +471,7 @@ namespace Supremacy.WCF
 
                 foreach (var order in orders)
                 {
+                    //GameLog.Core.Test.DebugFormat("", order.);
                     order.Execute(_game);
                 }
 
@@ -587,6 +590,8 @@ namespace Supremacy.WCF
             var player = playerInfo.Player;
             var message = new GameUpdateMessage(GameUpdateData.Create(_game, player));
             var tcs = new TaskCompletionSource<Unit>();
+
+            GameLog.Server.GameData.DebugFormat("doing SendEndOfTurnUpdateAsync for {0}", player.Empire.Key);
 
             var subscription = Observable
                 .ToAsync(() => callback.NotifyGameDataUpdated(message), _scheduler)()
@@ -1349,12 +1354,21 @@ namespace Supremacy.WCF
             {
                 if (_combatEngine == null || orders == null)
                     return;
-                
+
+                // just a test .... but "Resolving Combat" never finished
+                //if (orders.CombatID == -1)
+                //    orders.CombatID = GameContext.Current.GenerateID();
+
                 lock (_combatEngine.SyncLock)
                 {
-                        _combatEngine.SubmitOrders(orders); 
+                    try
+                    {
+                        if (orders.CombatID != -1)
+                            _combatEngine.SubmitOrders(orders);
+                    }
+                    catch { GameLog.Client.CombatDetails.DebugFormat("Problem with null in SubmitOrders(orders)"); }
 
-                    if (_combatEngine.Ready)
+                    if (_combatEngine != null && _combatEngine.Ready)
                         TryResumeCombat(_combatEngine);
                 }
             }
@@ -1363,7 +1377,7 @@ namespace Supremacy.WCF
                 GameLog.Server.Combat.DebugFormat("null reference old closed issue #164 {0} appears not to crash code", orders.ToString());
                 GameLog.Server.Combat.Error(e);
             }
-        } // CHANGE X TOTAL END HERE, WINDOW REMAINS
+        } 
 
         public void SendCombatTarget1(CombatTargetPrimaries target1)
         {
@@ -1404,11 +1418,30 @@ namespace Supremacy.WCF
                 GameLog.Server.Combat.Error(e);
             }
         }
+        //public void SendIntelOrders(IntelOrders intelOrders)
+        //{
+        //    GameLog.Server.Intel.DebugFormat("NEXT: trying to do SendIntelOrders ...");
+        //    try
+        //    {
+        //        if (_intelEngine == null || intelOrders == null)
+        //            return;
 
+        //        GameLog.Server.Intel.DebugFormat("trying to do SendIntelOrders ...");
+        //        //lock (_combatEngine.SyncLockTargetTwos)
+        //        //{
+        //        _intelEngine.SubmitIntelOrders(intelOrders);
+        //        GameLog.Server.Intel.DebugFormat("done Submit for  SendIntelOrders ...");
+        //        //}
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        GameLog.Server.Intel.DebugFormat("SendIntelOrders null {0}", intelOrders.ToString());
+        //        GameLog.Server.Intel.Error(e);
+        //    }
+        //}
         private void SendCombatUpdateCallback(CombatEngine engine, CombatUpdate update)
         {
 
-            // CHANGE X HERE IS SOMETHING
             GameContext.PushThreadContext(_game);
 
             var player = _playerInfo.FromEmpireId(update.OwnerID);

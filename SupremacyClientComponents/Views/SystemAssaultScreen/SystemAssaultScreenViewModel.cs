@@ -1,4 +1,5 @@
-﻿using System;
+﻿// File:SystemAssaultScreenViewModel
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -1019,7 +1020,7 @@ namespace Supremacy.Client.Views
 
 
 
-            GameLog.Client.General.DebugFormat("Proceeding Invasion on {0} at {1} (Round {4}), LastPopulation={2}, _currentDefenderPopulation={3}", GameContext.Current.Universe.Map[colony.Location].System, GameContext.Current.Universe.Map[colony.Location].Location,
+            GameLog.Client.General.DebugFormat("Proceeding Invasion on {0} {1} - Round {4}, Population: Last={2}, _current={3}", GameContext.Current.Universe.Map[colony.Location].System, GameContext.Current.Universe.Map[colony.Location].Location,
                                             GameContext.Current.Universe.Map[colony.Location].System.Colony.Population, _defenderPopulation, RoundNumber);
 
             if (update.IsFinished)

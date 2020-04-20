@@ -36,7 +36,7 @@ namespace Supremacy.Combat
         private List<Civilization> _civStatusList;
         private int _friendlyEmpireStrength;
         private int _allHostileEmpireStrength;
-        // CHANGE X
+        
         public CombatUpdate(int combatId,int roundNumber, bool standoff, Civilization owner, MapLocation location, IList<CombatAssets> friendlyAssets, IList<CombatAssets> hostileAssets)
         {
             GameLog.Core.Combat.DebugFormat("combatId = {0}, roundNumber = {1}, standoff = {2}, " +
@@ -56,8 +56,6 @@ namespace Supremacy.Combat
                 throw new ArgumentNullException("friendlyAssets");
             if (hostileAssets == null)
                 throw new ArgumentNullException("hostileAssets");
-
-
 
             _combatId = combatId;
             _roundNumber = roundNumber;

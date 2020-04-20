@@ -1,3 +1,4 @@
+//File:DiplomacyMessageViewModel
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -16,6 +17,7 @@ using Supremacy.Collections;
 using Supremacy.Diplomacy;
 using Supremacy.Entities;
 using Supremacy.Game;
+using Supremacy.Intelligence;
 using Supremacy.Resources;
 using Supremacy.Scripting;
 using Supremacy.Text;
@@ -569,22 +571,47 @@ namespace Supremacy.Client.Views
 
             _elements.Add(element);
 
+            string st = "";
+
             switch (availableElement.ActionCategory)
             {
                 case DiplomacyMessageElementActionCategory.Offer:
                     _offerElements.Add(element);
+                    if (element.Tone == Tone.Indignant)
+                    {
+                        st = ResourceManager.GetString("OFFER_DIALOG_HINT"); // need to update the embassy screen with a new window to get the send button activated without delay.
+                        var result_Offer = MessageDialog.Show(st, MessageDialogButtons.Ok);
+                    }
                     break;
                 case DiplomacyMessageElementActionCategory.Request:
                     _requestElements.Add(element);
+                    if (element.Tone == Tone.Indignant)
+                    {
+                        st = ResourceManager.GetString("REQUEST_DIALOG_HINT"); // need to update the embassy screen with a new window to get the send button activated without delay.
+                        var result_Request = MessageDialog.Show(st, MessageDialogButtons.Ok);
+                    }
                     break;
                 case DiplomacyMessageElementActionCategory.Propose:
                     _treatyElements.Add(element);
+                    //if (element.Tone == Tone.Indignant)
+                    //{
+                        st = ResourceManager.GetString("PROPOSE_DIALOG_HINT"); // need to update the embassy screen with a new window to get the send button activated without delay.
+                        var result_Propose = MessageDialog.Show(st, MessageDialogButtons.Ok);
+                    //}
                     break;
                 case DiplomacyMessageElementActionCategory.Commend:
+                    _statementElements.Add(element);
+                    break;
                 case DiplomacyMessageElementActionCategory.Denounce:
+                    _statementElements.Add(element);
+                    //if (element.Tone == Tone.Indignant) // and case = Denounce - both are the definition of StealCredits
+                    //{
+                    //    IntelHelper.ExecuteStealCredits(Sender, Recipient, "dip_Terrorists");
+                    //}
+                        break;
                 case DiplomacyMessageElementActionCategory.WarDeclaration:
-                    string st = ResourceManager.GetString("DECLARE_WAR_DIALOG_HINT"); // need to update the embassy screen with a new window to get the send button activated without delay.
-                    var result = MessageDialog.Show(st, MessageDialogButtons.Ok);
+                    st = ResourceManager.GetString("DECLARE_WAR_DIALOG_HINT"); // need to update the embassy screen with a new window to get the send button activated without delay.
+                    var result_DeclareWar = MessageDialog.Show(st, MessageDialogButtons.Ok);
                     _statementElements.Add(element);
                     break;
             }
@@ -677,7 +704,7 @@ namespace Supremacy.Client.Views
             if (statementType == StatementType.NoStatement)
                 return null;
             if(statementType != StatementType.NoStatement)
-            GameLog.Core.Diplomacy.DebugFormat("Create Statement sender = {0} *vs* rRecipient = {1}: Tone = {2}  StatementType = {3} ", _sender, _recipient, _tone, statementType.ToString());
+            GameLog.Core.Diplomacy.DebugFormat("Create Statement {0} *vs* Recipient = {1}: Tone = {2}  StatementType = {3} ", _sender, _recipient, _tone, statementType.ToString());
 
             return new Statement(_sender, _recipient, statementType, _tone);
         }

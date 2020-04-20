@@ -15,6 +15,7 @@ using Supremacy.Client.Events;
 using Supremacy.Client.Input;
 using Supremacy.Combat;
 using Supremacy.Game;
+using Supremacy.Intelligence;
 using Supremacy.Messages;
 using Supremacy.Messaging;
 using Supremacy.Utility;
@@ -242,6 +243,7 @@ namespace Supremacy.Client
         private readonly DelegateCommand<CombatOrders> _sendCombatOrdersCommand;
         private readonly DelegateCommand<CombatTargetPrimaries> _sendCombatTarget1Command;
         private readonly DelegateCommand<CombatTargetSecondaries> _sendCombatTarget2Command;
+       // private readonly DelegateCommand<IntelOrders> _sendIntelOrdersCommand;
         private readonly DelegateCommand<InvasionOrders> _sendInvasionOrdersCommand;
         private readonly DelegateCommand<object> _endInvasionCommand;
         private readonly DelegateCommand<string> _saveGameCommand;
@@ -282,6 +284,7 @@ namespace Supremacy.Client
             _sendCombatOrdersCommand = new DelegateCommand<CombatOrders>(ExecuteSendCombatOrdersCommand) { IsActive = true };
             _sendCombatTarget1Command = new DelegateCommand<CombatTargetPrimaries>(ExecuteSendCombatTarget1Command) { IsActive = true };
             _sendCombatTarget2Command = new DelegateCommand<CombatTargetSecondaries>(ExecuteSendCombatTarget2Command) { IsActive = true };
+           // _sendIntelOrdersCommand = new DelegateCommand<IntelOrders>(ExecuteSendIntelOrdersCommand) { IsActive = true };
             _sendInvasionOrdersCommand = new DelegateCommand<InvasionOrders>(ExecuteSendInvasionOrdersCommand) { IsActive = true };
             _endInvasionCommand = new DelegateCommand<object>(ExecuteEndInvasionCommand) { IsActive = true };
             _saveGameCommand = new DelegateCommand<string>(ExecuteSaveGameCommand) { IsActive = false };
@@ -611,6 +614,7 @@ namespace Supremacy.Client
                 ClientCommands.SendCombatOrders.RegisterCommand(_sendCombatOrdersCommand);
                 ClientCommands.SendCombatTarget1.RegisterCommand(_sendCombatTarget1Command);
                 ClientCommands.SendCombatTarget2.RegisterCommand(_sendCombatTarget2Command);
+               // ClientCommands.SendIntelOrders.RegisterCommand(_sendIntelOrdersCommand);
                 ClientCommands.SendInvasionOrders.RegisterCommand(_sendInvasionOrdersCommand);
                 ClientCommands.EndInvasion.RegisterCommand(_endInvasionCommand);
                 ClientCommands.SaveGame.RegisterCommand(_saveGameCommand);
@@ -647,14 +651,26 @@ namespace Supremacy.Client
 
         private void ExecuteSendCombatTarget1Command(CombatTargetPrimaries target1)
         {
-            ExecuteRemoteCommand(() => _serviceClient.SendCombatTarget1(target1));
+            if (target1 != null && _serviceClient != null)
+            {
+                ExecuteRemoteCommand(() => _serviceClient.SendCombatTarget1(target1));
+            }
         }
 
         private void ExecuteSendCombatTarget2Command(CombatTargetSecondaries target2)
         {
-            ExecuteRemoteCommand(() => _serviceClient.SendCombatTarget2(target2));
+            if (target2 != null && _serviceClient != null)
+            {
+                ExecuteRemoteCommand(() => _serviceClient.SendCombatTarget2(target2));
+            }
         }
-
+        //private void ExecuteSendIntelOrdersCommand(IntelOrders orders)
+        //{
+        //    if (orders != null && _serviceClient != null)
+        //    {
+        //        ExecuteRemoteCommand(() => _serviceClient.SendIntelOrders(orders));
+        //    }
+        //}
         private void ExecuteSendInvasionOrdersCommand(InvasionOrders orders)
         {
             ExecuteRemoteCommand(() => _serviceClient.SendInvasionOrders(orders));
@@ -729,6 +745,7 @@ namespace Supremacy.Client
                 ClientCommands.SendCombatOrders.UnregisterCommand(_sendCombatOrdersCommand);
                 ClientCommands.SendCombatTarget1.UnregisterCommand(_sendCombatTarget1Command);
                 ClientCommands.SendCombatTarget2.UnregisterCommand(_sendCombatTarget2Command);
+             //   ClientCommands.SendIntelOrders.UnregisterCommand(_sendIntelOrdersCommand);
                 ClientCommands.SendInvasionOrders.UnregisterCommand(_sendInvasionOrdersCommand);
                 ClientCommands.EndInvasion.UnregisterCommand(_endInvasionCommand);
                 ClientCommands.SaveGame.UnregisterCommand(_saveGameCommand);

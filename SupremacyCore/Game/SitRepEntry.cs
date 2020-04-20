@@ -1,3 +1,4 @@
+// File:SitrepEntry.cs
 // Copyright (c) 2007 Mike Strobel
 //
 // This source code is subject to the terms of the Microsoft Reciprocal License (Ms-RL).
@@ -1688,8 +1689,25 @@ namespace Supremacy.Game
         private readonly int _totalStuff;
         private readonly string _affectedField;
         private readonly string _blamed;
-        //private readonly string _roleText;
+        private readonly int _ratioLevel;
+        private readonly string _roleText;
 
+        public NewSabotagedSitRepEntry(Civilization attacking, Civilization attacked, Colony colony
+            , string affectedField, int removedStuff, int totalStuff, string blamed, int ratioLevel)
+            : base(attacking, SitRepPriority.Red) // owner is the attackED for this, the sabotaged sit rep
+        {
+            if (colony == null)
+                throw new ArgumentNullException("colony");
+            //_attacked = owner;
+            _attacking = attacking;
+            _systemId = colony.System.ObjectID;
+            _removedStuff = removedStuff;  // facilities or credits or research points 
+            _totalStuff = totalStuff;
+            _affectedField = affectedField;
+            _blamed = blamed;
+            _ratioLevel = ratioLevel;
+            //string _blamedString = BlamedString;
+        }
         public string Attacking
         {
             get { return _attacking.Key; }
@@ -1710,7 +1728,7 @@ namespace Supremacy.Game
         }
         public override bool HasDetails
         {
-            get { return true; }
+            get { return true; }  // turn on/off for extra Dialog window
         }
 
         public override SitRepCategory Categories
@@ -1719,48 +1737,95 @@ namespace Supremacy.Game
         }
         public override string HeaderText
         {
-            get { return "Header for Sabotaged"; /* string.Format(ResourceManager.GetString("NEW_SABOTAGED_HEADER_TEXT"), System.Name);*/ }
+            get { return string.Format(ResourceManager.GetString("NEW_SABOTAGED_HEADER_TEXT")); }
         }
+        public override string DetailText
+        {
+            get { return SummaryText; }
+        }
+        public override string DetailImage
+        {
+            get
+            {
+                return "vfs:///Resources/Images/Intelligence/IntelMission.png";
+            }
+        }
+        public string RoleString
+        {
+            get { return string.Format(ResourceManager.GetString("SABOTAGE_ROLE_ATTACKED_CIV")); }
+        }
+        public string BlamedString
+        {
+            get { return _blamed + " " + RatioLevelString; }
+        }
+        public string RatioLevelString
+        {
+            get 
+            {
+                string ratioLevelString = "";
+                switch (_ratioLevel)
+                {
+                    case 1: ratioLevelString = ResourceManager.GetString("SITREP_SABOTAGE_CONFIDENCE_LEVEL_1"); break;
+                    case 2: ratioLevelString = ResourceManager.GetString("SITREP_SABOTAGE_CONFIDENCE_LEVEL_2"); break;
+                    case 3: ratioLevelString = ResourceManager.GetString("SITREP_SABOTAGE_CONFIDENCE_LEVEL_3"); break;
+                    default:
+                        break;
+                }
+                return ratioLevelString; 
+            }
+        }
+
         public override string SummaryText
         {
             get
             {
                 {
+                   
                     if (_removedStuff == -2)
                     {
-                        return "We were attacked by " + _attacking.ShortName  + " we did not have enought " + _affectedField + " to bother with.";
-                        //return string.Format(ResourceManager.GetString("SITREP_SABOTAGE_NOT_WORTH"),
-                        //    _roleText, System.Name, System.Location, System.Owner, _affectedField, _blamed);
-                        ////    0               1          2                 3              4   5   placeholders in en.txt
+
+                        return string.Format(ResourceManager.GetString("SITREP_SABOTAGE_NOT_WORTH"),
+                            RoleString, System.Name, System.Location, System.Owner, _affectedField, _blamed);
+                        ////    0               1          2                 3              4        5   placeholders in en.txt
+                        ///
+                        //return "We were attacked by " + _attacking.ShortName  + " we did not have enough " + _affectedField + " to bother with.";
                     }
                     if (_removedStuff == -1)
                     {
-                        return "We were attacked by " + _attacking.ShortName + " we did not have enought " + _affectedField + " to bother with";
-                        //return string.Format(ResourceManager.GetString("SITREP_SABOTAGE_FACILITIES_FAILED"),
-                        //    _roleText, System.Name, System.Location, System.Owner, _affectedField);
+
+                        return string.Format(ResourceManager.GetString("SITREP_SABOTAGE_FACILITIES_FAILED"),
+                            RoleString, System.Name, System.Location, System.Owner, _affectedField);
                         ////    0               1          2                 3              4       placeholders in en.txt
+                        ///
+                        //return "We were attacked by " + _attacking.ShortName + " we did not have enough " + _affectedField + " to bother with";
                     }
 
                     if (_removedStuff > 0)
                     {
-                        return "Holy crap!, We were attacked by " + _attacking.ShortName + ". They got" + _affectedField + "!";
-                        //string destroyed = ResourceManager.GetString("SITREP_SABOTAGE_DESTROYED");
-                        //if (_affectedField == ResourceManager.GetString("SITREP_SABOTAGE_CREDITS_SABOTAGED") ||
-                        //    _affectedField == ResourceManager.GetString("SITREP_SABOTAGE_RESEARCH_SABOTAGED"))
-                        //{
-                        //    destroyed = ResourceManager.GetString("SITREP_SABOTAGE_STOLEN");
-                        //}
 
-                        //return string.Format(ResourceManager.GetString("SITREP_SABOTAGE_FACILITIES_SABOTAGED"),  // {0} {2} facility/facilities sabotaged on {1}.
-                        //   _roleText, System.Name, System.Location, _affectedField, _removedStuff, _totalStuff + _removedStuff, _blamed, System.Owner, destroyed);
-                        ////    0               1          2                 3                   4               5                    6        7           8
+                        string destroyed = string.Format(ResourceManager.GetString("SITREP_SABOTAGE_DESTROYED"));
+                        //return "Holy crap!, We were attacked by " + _attacking.ShortName + ". They got " + _affectedField + "!";
+
+                        if (_affectedField == ResourceManager.GetString("SITREP_SABOTAGE_CREDITS_SABOTAGED") ||
+                            _affectedField == ResourceManager.GetString("SITREP_SABOTAGE_RESEARCH_SABOTAGED"))
+                        {
+                            destroyed = string.Format(ResourceManager.GetString("SITREP_SABOTAGE_STOLEN"));
+                        }
+
+                        return string.Format(ResourceManager.GetString("SITREP_SABOTAGE_FACILITIES_SABOTAGED"),  // {0} {2} facility/facilities sabotaged on {1}.
+                           RoleString, System.Name, System.Location, _affectedField, _removedStuff, _totalStuff + _removedStuff,
+                            //// 0               1          2             3                   4               5   
+                            BlamedString, System.Owner, destroyed);
+                        ////            6                   7                 8                
                     }
                     else // _removedStuff = 0
                     {
-                        return "Fake News, We were attacked by " + System.Owner.ShortName + " but the mission on " + _affectedField + " failed!";
-                        //return string.Format(ResourceManager.GetString("SITREP_SABOTAGE_FACILITIES_FAILED"),
-                        //    _roleText, System.Name, System.Location, System.Owner, _affectedField);
+
+                        return string.Format(ResourceManager.GetString("SITREP_SABOTAGE_FACILITIES_FAILED"),
+                            RoleString, System.Name, System.Location, System.Owner, _affectedField);
                         ////    0               1          2                 3              4   placeholders in en.txt
+                        ///
+                        //return "Fake News, We were attacked by " + _attacking.ShortName + " but the mission on " + _affectedField + " failed!";
                     }
                 } 
             }
@@ -1769,20 +1834,6 @@ namespace Supremacy.Game
         public override bool IsPriority
         {
             get { return true; }
-        }
-
-        public NewSabotagedSitRepEntry(Civilization owner, Civilization  attacking, Colony colony, string affectedField, int removedStuff, int totalStuff, string blame)
-            : base(owner, SitRepPriority.Red) // owner is the attackED for this, the sabotaged sit rep
-        {
-            if (colony == null)
-                throw new ArgumentNullException("colony");
-            //_attacked = owner;
-            _attacking = attacking;
-            _systemId = colony.System.ObjectID;
-            _removedStuff = removedStuff;  // facilities or credits or research points 
-            _totalStuff = totalStuff;
-            _affectedField = affectedField;
-            _blamed = blame;
         }
     }
 
@@ -1796,7 +1847,23 @@ namespace Supremacy.Game
         private readonly int _totalStuff;
         private readonly string _affectedField;
         private readonly string _blamed;
-        //private readonly string _roleText;
+        private readonly int _ratioLevel;
+        private readonly string _roleText;
+
+        public NewSabotagingSitRepEntry(Civilization owner, Civilization attacked, Colony colony, string affectedField, int removedStuff, int totalStuff, string blame, int ratioLevel)
+            : base(owner, SitRepPriority.Red) // owner is the attackING for this, the sabotagING sit rep
+            {
+            if (colony == null)
+                throw new ArgumentNullException("colony");
+            //_attacked = owner;
+            _attacked = attacked;
+            _systemId = colony.System.ObjectID;
+            _removedStuff = removedStuff;  // facilities or credits or research points 
+            _totalStuff = totalStuff;
+            _affectedField = affectedField;
+            _blamed = blame;
+            _ratioLevel = ratioLevel;
+        }
 
         public string Attacked
         {
@@ -1827,7 +1894,42 @@ namespace Supremacy.Game
         }
         public override string HeaderText
         {
-            get { return "Header for Sabotaging"; /*string.Format(ResourceManager.GetString("NEW_SABOTAGED_HEADER_TEXT"), System.Name);*/ }
+            get { return string.Format(ResourceManager.GetString("NEW_SABOTAGING_HEADER_TEXT")); }
+        }
+        public override string DetailText
+        {
+            get { return SummaryText; }
+        }
+        public override string DetailImage
+        {
+            get
+            {
+                return "vfs:///Resources/Images/Intelligence/IntelMission.png";
+            }
+        }
+        public string RoleString
+        {
+            get { return string.Format(ResourceManager.GetString("SABOTAGE_ROLE_ATTACKING_CIV")); }
+        }
+        public string BlamedString
+        {
+            get { return _blamed + " " + RatioLevelString; }
+        }
+        public string RatioLevelString
+        {
+            get
+            {
+                string ratioLevelString = "";
+                switch (_ratioLevel)
+                {
+                    case 1: ratioLevelString = ResourceManager.GetString("SITREP_SABOTAGE_CONFIDENCE_LEVEL_1"); break;
+                    case 2: ratioLevelString = ResourceManager.GetString("SITREP_SABOTAGE_CONFIDENCE_LEVEL_2"); break;
+                    case 3: ratioLevelString = ResourceManager.GetString("SITREP_SABOTAGE_CONFIDENCE_LEVEL_3"); break;
+                    default:
+                        break;
+                }
+                return ratioLevelString;
+            }
         }
         public override string SummaryText
         {
@@ -1836,37 +1938,39 @@ namespace Supremacy.Game
                 {
                     if (_removedStuff == -2)
                     {
-                        return "We attacked " + System.Owner.ShortName + " but they did not have enought " + _affectedField;
-                        //return string.Format(ResourceManager.GetString("SITREP_SABOTAGE_NOT_WORTH"),
-                        //    _roleText, System.Name, System.Location, System.Owner, _affectedField, _blamed);
+                        //return "We attacked " + _attacked.ShortName + " but they did not have enough " + _affectedField;
+                        return string.Format(ResourceManager.GetString("SITREP_SABOTAGE_NOT_WORTH"),
+                            RoleString, System.Name, System.Location, System.Owner, _affectedField, _blamed);
                         //    0               1          2                 3              4   5   placeholders in en.txt
                     }
                     if (_removedStuff == -1)
                     {
-                        return "We attacked " + System.Owner.ShortName + " but the mission after " + _affectedField + " failed!";
-                        //return string.Format(ResourceManager.GetString("SITREP_SABOTAGE_FACILITIES_FAILED"),
-                        //    _roleText, System.Name, System.Location, System.Owner, _affectedField);
+                        //return "We attacked " + _attacked.ShortName + " but the mission after " + _affectedField + " failed!";
+                        return string.Format(ResourceManager.GetString("SITREP_SABOTAGE_FACILITIES_FAILED"),
+                            RoleString, System.Name, System.Location, System.Owner, _affectedField);
                         //    0               1          2                 3              4       placeholders in en.txt
                     }
                     if (_removedStuff > 0)
                     {
-                        return "We attacked " + System.Owner.ShortName + " and got " + _affectedField;
-                        //string destroyed = ResourceManager.GetString("SITREP_SABOTAGE_DESTROYED");
-                        //if (_affectedField == ResourceManager.GetString("SITREP_SABOTAGE_CREDITS_SABOTAGED") ||
-                        //    _affectedField == ResourceManager.GetString("SITREP_SABOTAGE_RESEARCH_SABOTAGED"))
-                        //{
-                        //    destroyed = ResourceManager.GetString("SITREP_SABOTAGE_STOLEN");
-                        //}
+                        //return "We attacked " + _attacked.ShortName + " for " + _affectedField;  // e.g. for credits or for food facilites
 
-                        //return string.Format(ResourceManager.GetString("SITREP_SABOTAGE_FACILITIES_SABOTAGED"),  // {0} {2} facility/facilities sabotaged on {1}.
-                        //   _roleText, System.Name, System.Location, _affectedField, _removedStuff, _totalStuff + _removedStuff, _blamed, System.Owner, destroyed);
+
+                        string destroyed = ResourceManager.GetString("SITREP_SABOTAGE_DESTROYED");
+                        if (_affectedField == ResourceManager.GetString("SITREP_SABOTAGE_CREDITS_SABOTAGED") ||
+                            _affectedField == ResourceManager.GetString("SITREP_SABOTAGE_RESEARCH_SABOTAGED"))
+                        {
+                            destroyed = ResourceManager.GetString("SITREP_SABOTAGE_STOLEN");
+                        }
+
+                        return string.Format(ResourceManager.GetString("SITREP_SABOTAGE_FACILITIES_SABOTAGED"),  // {0} {2} facility/facilities sabotaged on {1}.
+                           RoleString, System.Name, System.Location, _affectedField, _removedStuff, _totalStuff + _removedStuff, BlamedString, System.Owner, destroyed);
                         ////    0               1          2                 3                   4               5                    6        7           8
                     }
                     else // _removedStuff = 0
                     {
-                        return "Fake news, we attacked " + System.Owner.ShortName + " but the mission on " + _affectedField + " failed!";
-                        //return string.Format(ResourceManager.GetString("SITREP_SABOTAGE_FACILITIES_FAILED"),
-                        //    _roleText, System.Name, System.Location, System.Owner, _affectedField);
+                        //return "Fake news, we attacked " + System.Owner.ShortName + " but the mission on " + _affectedField + " failed!";
+                        return string.Format(ResourceManager.GetString("SITREP_SABOTAGE_FACILITIES_FAILED"),
+                            RoleString, System.Name, System.Location, System.Owner, _affectedField);
                         //    0               1          2                 3              4   placeholders in en.txt
                     }
                 }
@@ -1877,84 +1981,70 @@ namespace Supremacy.Game
         {
             get { return true; }
         }
-
-        public NewSabotagingSitRepEntry(Civilization owner, Civilization attacked, Colony colony, string affectedField, int removedStuff, int totalStuff, string blame)
-            : base(owner, SitRepPriority.Red) // owner is the attackING for this, the sabotagING sit rep
-        {
-            if (colony == null)
-                throw new ArgumentNullException("colony");
-            //_attacked = owner;
-            _attacked = attacked;
-            _systemId = colony.System.ObjectID;
-            _removedStuff = removedStuff;  // facilities or credits or research points 
-            _totalStuff = totalStuff;
-            _affectedField = affectedField;
-            _blamed = blame;
-        }
     }
 
-    [Serializable]
-    public class NewSabotageFromShipSitRepEntry : SitRepEntry // local is sabotaging someone
-    {
-        private readonly int _systemId;
-        private readonly int _removeEnergyFacilities;
-        private readonly int _totalEnergyFacilities;
+    //[Serializable]
+    //public class NewSabotageFromShipSitRepEntry : SitRepEntry // local is sabotaging someone
+    //{
+    //    private readonly int _systemId;
+    //    private readonly int _removeEnergyFacilities;
+    //    private readonly int _totalEnergyFacilities;
 
-        public StarSystem System
-        {
-            get { return GameContext.Current.Universe.Get<StarSystem>(_systemId); }
-        }
+    //    public StarSystem System
+    //    {
+    //        get { return GameContext.Current.Universe.Get<StarSystem>(_systemId); }
+    //    }
 
-        public override SitRepAction Action
-        {
-            get { return SitRepAction.CenterOnSector; }
-        }
+    //    public override SitRepAction Action
+    //    {
+    //        get { return SitRepAction.CenterOnSector; }
+    //    }
 
-        public override object ActionTarget
-        {
-            get { return System.Sector; }
-        }
+    //    public override object ActionTarget
+    //    {
+    //        get { return System.Sector; }
+    //    }
 
-        public override SitRepCategory Categories
-        {
-            get { return SitRepCategory.ColonyStatus; }
-        }
+    //    public override SitRepCategory Categories
+    //    {
+    //        get { return SitRepCategory.ColonyStatus; }
+    //    }
 
-        public override string SummaryText
-        {
-            get
-            {
-                if (_removeEnergyFacilities > 0)
-                {
-                    return string.Format(ResourceManager.GetString("SITREP_SABOTAGE_SUCCESS"),
-                    //"Successful sabotage mission to {0} {1}, (ship lost in action): {2} of {3} energy facilities destroyed.",
-                       System.Owner, System.Location, _removeEnergyFacilities, _totalEnergyFacilities + _removeEnergyFacilities);
-                }
-                else
-                {
-                    return string.Format(ResourceManager.GetString("SITREP_SABOTAGE_FAILED"),
-                        //"The sabotage mission to {0} at {1} failed and the sabotage ship was lost.",
-                        System.Owner, System.Name);
-                }
-            }
-        }
+    //    public override string SummaryText
+    //    {
+    //        get
+    //        {
+    //            if (_removeEnergyFacilities > 0)
+    //            {
+    //                return string.Format(ResourceManager.GetString("SITREP_SABOTAGE_SUCCESS"),
+    //                //"Successful sabotage mission to {0} {1}, (ship lost in action): {2} of {3} energy facilities destroyed.",
+    //                   System.Owner, System.Location, _removeEnergyFacilities, _totalEnergyFacilities + _removeEnergyFacilities);
+    //            }
+    //            else
+    //            {
+    //                return string.Format(ResourceManager.GetString("SITREP_SABOTAGE_FAILED"),
+    //                    //"The sabotage mission to {0} at {1} failed and the sabotage ship was lost.",
+    //                    System.Owner, System.Name);
+    //            }
+    //        }
+    //    }
 
-        public override bool IsPriority
-        {
-            get { return true; }
-        }
+    //    public override bool IsPriority
+    //    {
+    //        get { return true; }
+    //    }
 
-        public NewSabotageFromShipSitRepEntry(Civilization owner, Colony colony, int removeEnergyFacilities, int totalEnergyFacilities)
-            : base(owner, SitRepPriority.Red)
-        {
-            if (colony == null)
-                throw new ArgumentNullException("colony");
-            _systemId = colony.System.ObjectID;
+    //    public NewSabotageFromShipSitRepEntry(Civilization owner, Colony colony, int removeEnergyFacilities, int totalEnergyFacilities)
+    //        : base(owner, SitRepPriority.Red)
+    //    {
+    //        if (colony == null)
+    //            throw new ArgumentNullException("colony");
+    //        _systemId = colony.System.ObjectID;
 
-            _removeEnergyFacilities = removeEnergyFacilities;
-            _totalEnergyFacilities = totalEnergyFacilities;
-        }
-    }
+    //        _removeEnergyFacilities = removeEnergyFacilities;
+    //        _totalEnergyFacilities = totalEnergyFacilities;
+    //    }
+    //}
 
     [Serializable]
     public class OrbitalDestroyedSitRepEntry : SitRepEntry
@@ -3289,7 +3379,7 @@ namespace Supremacy.Game
         private readonly TradeRoute _tradeRoute;
 
         private readonly int _systemId;
-        private readonly int _colonyId;
+        //private readonly int _colonyId;
 
         public StarSystem System
         {
@@ -3330,7 +3420,7 @@ namespace Supremacy.Game
         {
             if (route == null)
                 throw new ArgumentException("TradeRoute");
-            _systemId = TradeRoute.SourceColony.ObjectID;
+            _systemId = route.SourceColony.ObjectID;
             _tradeRoute = route;
         }
     }
