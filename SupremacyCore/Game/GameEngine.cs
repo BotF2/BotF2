@@ -831,8 +831,45 @@ namespace Supremacy.Game
                                         RejectProposalVisitor.Visit(ForeignPower.LastProposalReceived);                            
                             break;
                     }
-
                     ForeignPower.PendingAction = PendingDiplomacyAction.None;
+
+                    // Ships to new owner on join empire, want a way to only do this once per new member of empire
+                    if (civ1.IsEmpire && !civ2.IsEmpire && civ1.Key != "Borg")
+                    {
+                        var currentDiplomat = Diplomat.Get(civ1);
+                        if (currentDiplomat.GetForeignPower(civ2).DiplomacyData.Status == Diplomacy.ForeignPowerStatus.OwnerIsMember) // what about CounterpartyIsMember)
+                        {
+                            var _assets = GameContext.Current.Universe.Objects.Where(s => s.Owner == civ2).ToList();
+                            foreach (var assets in _assets)
+                            {
+                                //foreach (var assimilatedShip in assets.AssimilatedShips)
+                                //{
+                                //    var assimilatedCiv = assimilatedShip.Owner;
+                                //    CivilizationManager targetEmpire = GameContext.Current.CivilizationManagers[assimilatedCiv];
+                                //    var assimiltedCivHome = targetEmpire.HomeColony;
+                                //    int gainedResearchPoints = assimiltedCivHome.NetResearch;
+                                //    var destination = CombatHelper.CalculateRetreatDestination(assets);
+                                //    var ship = (Ship)assimilatedShip.Source;
+                                //    ship.Owner = borg;
+                                //    var newfleet = ship.CreateFleet();
+                                //    newfleet.Location = destination.Location;
+                                //    newfleet.Owner = borg;
+                                //    newfleet.SetOrder(FleetOrders.EngageOrder.Create());
+                                //    if (newfleet.Order == null)
+                                //    {
+                                //        newfleet.SetOrder(FleetOrders.AvoidOrder.Create());
+                                //    }
+                                //    ship.IsAssimilated = true;
+                                //    ship.Scrap = false;
+                                //    newfleet.Name = "Assimilated Assets";
+                                //    GameContext.Current.CivilizationManagers[borg].Research.UpdateResearch(gainedResearchPoints);
+
+                                //    GameLog.Core.Combat.DebugFormat("Assimilated Assets: {0} {1}, Owner = {2}, OwnerID = {3}, Fleet.OwnerID = {4}, Order = {5} gainedResearchPoints ={6}",
+                                ////        ship.ObjectID, ship.Name, ship.Owner, ship.OwnerID, newfleet.OwnerID, newfleet.Order, gainedResearchPoints);
+                                //}
+                            }
+                        }
+                    }
                 }
             }
 
