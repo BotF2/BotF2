@@ -78,13 +78,9 @@ namespace Supremacy.Game
     /// </summary>
     public class GameEngine
     {
-        private Civilization _spyAttacking;
-
-        private Civilization _spyAttacked;
-
-        private int _spyCredits;
-
-
+        //private Civilization _spyAttacking;
+        //private Civilization _spyAttacked;
+        //private int _spyCredits;
         #region Public Members
 
         /// <summary>
@@ -118,12 +114,12 @@ namespace Supremacy.Game
         //public Civilization SpyAttacked { get => _spyAttacked; set => _spyAttacked = value; }
         //public int SpyCredits { get => spyCredits; set => spyCredits = value; }
         #endregion
-        public void SendStealCreditsData(Civilization attacking, Civilization attacked, int credits)
-        {
-            _spyAttacking = attacking;
-            _spyAttacked = attacked;
-            _spyCredits = credits;
-        }
+        //public void SendStealCreditsData(Civilization attacking, Civilization attacked, int credits)
+        //{
+        //    _spyAttacking = attacking;
+        //    _spyAttacked = attacked;
+        //    _spyCredits = credits;
+        //}
         #region Private Members
         /// <summary>
         /// Blocks the execution of the turn processing engine while waiting on players
@@ -833,40 +829,42 @@ namespace Supremacy.Game
                     }
                     ForeignPower.PendingAction = PendingDiplomacyAction.None;
 
-                    // Ships to new owner on join empire, want a way to only do this once per new member of empire
+                    // Ships gets new owner on joining empire, do we need to worry about doing this more than once or does that minor race go away?
                     if (civ1.IsEmpire && !civ2.IsEmpire && civ1.Key != "Borg")
                     {
                         var currentDiplomat = Diplomat.Get(civ1);
                         if (currentDiplomat.GetForeignPower(civ2).DiplomacyData.Status == Diplomacy.ForeignPowerStatus.OwnerIsMember) // what about CounterpartyIsMember)
                         {
-                            var _assets = GameContext.Current.Universe.Objects.Where(s => s.Owner == civ2).ToList();
-                            foreach (var assets in _assets)
-                            {
-                                //foreach (var assimilatedShip in assets.AssimilatedShips)
-                                //{
-                                //    var assimilatedCiv = assimilatedShip.Owner;
-                                //    CivilizationManager targetEmpire = GameContext.Current.CivilizationManagers[assimilatedCiv];
-                                //    var assimiltedCivHome = targetEmpire.HomeColony;
-                                //    int gainedResearchPoints = assimiltedCivHome.NetResearch;
-                                //    var destination = CombatHelper.CalculateRetreatDestination(assets);
-                                //    var ship = (Ship)assimilatedShip.Source;
-                                //    ship.Owner = borg;
-                                //    var newfleet = ship.CreateFleet();
-                                //    newfleet.Location = destination.Location;
-                                //    newfleet.Owner = borg;
-                                //    newfleet.SetOrder(FleetOrders.EngageOrder.Create());
-                                //    if (newfleet.Order == null)
-                                //    {
-                                //        newfleet.SetOrder(FleetOrders.AvoidOrder.Create());
-                                //    }
-                                //    ship.IsAssimilated = true;
-                                //    ship.Scrap = false;
-                                //    newfleet.Name = "Assimilated Assets";
-                                //    GameContext.Current.CivilizationManagers[borg].Research.UpdateResearch(gainedResearchPoints);
+                            var _orbitalsCiv2 = GameContext.Current.Universe.Objects.Where(s => s.Owner == civ2)
+                                    .Where(s =>s.ObjectType == UniverseObjectType.Orbital).ToList();
 
-                                //    GameLog.Core.Combat.DebugFormat("Assimilated Assets: {0} {1}, Owner = {2}, OwnerID = {3}, Fleet.OwnerID = {4}, Order = {5} gainedResearchPoints ={6}",
-                                ////        ship.ObjectID, ship.Name, ship.Owner, ship.OwnerID, newfleet.OwnerID, newfleet.Order, gainedResearchPoints);
-                                //}
+                            foreach (var asset in _orbitalsCiv2)
+                            {
+                                int _fleetName = 0;
+                                //var assimilatedCiv = assimilatedShip.Owner;
+                                CivilizationManager targetMinor = GameContext.Current.CivilizationManagers[civ2];
+                                var minorCivHome = targetMinor.HomeColony;
+                                int gainedResearchPoints = minorCivHome.NetResearch;
+                                //var destination = CombatHelper.CalculateRetreatDestination(assets);
+                                var ship = (Ship)asset;
+                                ship.Owner = civ1;
+                                var newfleet = ship.CreateFleet();
+                                //newfleet.Location = destination.Location;
+                                newfleet.Owner = civ1;
+                                newfleet.SetOrder(FleetOrders.EngageOrder.Create());
+                                if (newfleet.Order == null)
+                                {
+                                    newfleet.SetOrder(FleetOrders.AvoidOrder.Create());
+                                }
+                               // ship.IsAssimilated = true;
+                                ship.Scrap = false;
+                                newfleet.Name = "New Fleet" + _fleetName;
+                                _fleetName += 1;
+                                GameContext.Current.CivilizationManagers[civ1].Research.UpdateResearch(gainedResearchPoints);
+
+                                GameLog.Core.Ships.DebugFormat("Assimilated Assets: {0} {1}, Owner = {2}, OwnerID = {3}, Fleet.OwnerID = {4}, Order = {5} gainedResearchPoints ={6}",
+                                        ship.ObjectID, ship.Name, ship.Owner, ship.OwnerID, newfleet.OwnerID, newfleet.Order, gainedResearchPoints);
+                                
                             }
                         }
                     }
