@@ -836,8 +836,8 @@ namespace Supremacy.Game
                         var currentDiplomat = Diplomat.Get(civ1);
                         if (currentDiplomat.GetForeignPower(civ2).DiplomacyData.Status == Diplomacy.ForeignPowerStatus.CounterpartyIsMember)
                         {
-                            var _orbitalsCiv2 = GameContext.Current.Universe.Objects.Where(s => s.Owner == civ2)
-                                    .Where(s =>s.ObjectType == UniverseObjectType.Orbital).ToList();
+                            var _shipsCiv2 = GameContext.Current.Universe.Objects.Where(s => s.Owner == civ2)
+                                    .Where(s =>s.ObjectType == UniverseObjectType.Ship).ToList();
                             foreach (var orbital in _orbitalsCiv2)
                             {
                                 if (orbital.Owner == civ2)
