@@ -78,7 +78,6 @@ namespace Supremacy.Game
     /// </summary>
     public class GameEngine
     {
-        private int _fleetName = 1;
         //private Civilization _spyAttacking;
         //private Civilization _spyAttacked;
         //private int _spyCredits;
@@ -830,42 +829,35 @@ namespace Supremacy.Game
                     }
                     ForeignPower.PendingAction = PendingDiplomacyAction.None;
 
-                    // Ships gets new owner on joining empire, do we need to worry about doing this more than once or does that minor race go away?
+                    // Ships gets new owner on joining empire
                     if (civ1.IsEmpire && !civ2.IsEmpire && civ1.Key != "Borg")
                     {
                         var currentDiplomat = Diplomat.Get(civ1);
                         if (currentDiplomat.GetForeignPower(civ2).DiplomacyData.Status == Diplomacy.ForeignPowerStatus.CounterpartyIsMember)
                         {
-                            var _shipsCiv2 = GameContext.Current.Universe.Objects.Where(s => s.Owner == civ2)
+                            var _objectsCiv2 = GameContext.Current.Universe.Objects.Where(s => s.Owner == civ2)
                                     .Where(s =>s.ObjectType == UniverseObjectType.Ship).ToList();
-                            foreach (var orbital in _orbitalsCiv2)
+                            foreach (var minorsObject in _objectsCiv2)
                             {
-                                if (orbital.Owner == civ2)
+                                if (minorsObject.Owner == civ2)
                                 {
                                     CivilizationManager targetMinor = GameContext.Current.CivilizationManagers[civ2];
                                     var minorCivHome = targetMinor.HomeColony;
-                                    int gainedResearchPoints = minorCivHome.NetResearch;
-                                    //var destination = CombatHelper.CalculateRetreatDestination(assets);
-                                    if (orbital.ObjectType == UniverseObjectType.Ship)
-                                    {                                        
-                                        var ship = (Ship)orbital;
-                                        ship.Owner = civ1;
-                                        var newfleet = ship.CreateFleet();
-                                        //newfleet.Location = destination.Location;
-                                        newfleet.Owner = civ1;
-                                        newfleet.SetOrder(FleetOrders.EngageOrder.Create());
-                                        if (newfleet.Order == null)
-                                        {
-                                            newfleet.SetOrder(FleetOrders.AvoidOrder.Create());
-                                        }
-                                        ship.Scrap = false;
-                                        newfleet.Name = "New Fleet" + _fleetName;
-                                        _fleetName += 1;
-                                        GameContext.Current.CivilizationManagers[civ1].Research.UpdateResearch(gainedResearchPoints);
-
-                                        GameLog.Core.Ships.DebugFormat("Ship Joined: {0} {1}, Owner = {2}, OwnerID = {3}, Fleet.OwnerID = {4}, Order = {5} gainedResearchPoints ={6}",
-                                                ship.ObjectID, ship.Name, ship.Owner, ship.OwnerID, newfleet.OwnerID, newfleet.Order, gainedResearchPoints);
+                                    int gainedResearchPoints = minorCivHome.NetResearch;                                      
+                                    var ship = (Ship)minorsObject;
+                                    ship.Owner = civ1;
+                                    var newfleet = ship.CreateFleet();
+                                    newfleet.Owner = civ1;
+                                    newfleet.SetOrder(FleetOrders.EngageOrder.Create());
+                                    if (newfleet.Order == null)
+                                    {
+                                        newfleet.SetOrder(FleetOrders.AvoidOrder.Create());
                                     }
+                                    ship.Scrap = false;
+                                    GameContext.Current.CivilizationManagers[civ1].Research.UpdateResearch(gainedResearchPoints);
+
+                                    GameLog.Core.Ships.DebugFormat("Ship Joined:{0} {1}, Owner {2}, OwnerID {3}, Fleet.OwnerID {4}, Order {5} fleet name {6} gainedResearchPoints {7}",
+                                            ship.ObjectID, ship.Name, ship.Owner, ship.OwnerID, newfleet.OwnerID, newfleet.Order, newfleet.Name, gainedResearchPoints);
                                 }
                             }
                         }
