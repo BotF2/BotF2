@@ -78,13 +78,9 @@ namespace Supremacy.Game
     /// </summary>
     public class GameEngine
     {
-        private Civilization _spyAttacking;
-
-        private Civilization _spyAttacked;
-
-        private int _spyCredits;
-
-
+        //private Civilization _spyAttacking;
+        //private Civilization _spyAttacked;
+        //private int _spyCredits;
         #region Public Members
 
         /// <summary>
@@ -118,12 +114,12 @@ namespace Supremacy.Game
         //public Civilization SpyAttacked { get => _spyAttacked; set => _spyAttacked = value; }
         //public int SpyCredits { get => spyCredits; set => spyCredits = value; }
         #endregion
-        public void SendStealCreditsData(Civilization attacking, Civilization attacked, int credits)
-        {
-            _spyAttacking = attacking;
-            _spyAttacked = attacked;
-            _spyCredits = credits;
-        }
+        //public void SendStealCreditsData(Civilization attacking, Civilization attacked, int credits)
+        //{
+        //    _spyAttacking = attacking;
+        //    _spyAttacked = attacked;
+        //    _spyCredits = credits;
+        //}
         #region Private Members
         /// <summary>
         /// Blocks the execution of the turn processing engine while waiting on players
@@ -831,8 +827,41 @@ namespace Supremacy.Game
                                         RejectProposalVisitor.Visit(ForeignPower.LastProposalReceived);                            
                             break;
                     }
-
                     ForeignPower.PendingAction = PendingDiplomacyAction.None;
+
+                    // Ships gets new owner on joining empire
+                    if (civ1.IsEmpire && !civ2.IsEmpire && civ1.Key != "Borg")
+                    {
+                        var currentDiplomat = Diplomat.Get(civ1);
+                        if (currentDiplomat.GetForeignPower(civ2).DiplomacyData.Status == Diplomacy.ForeignPowerStatus.CounterpartyIsMember)
+                        {
+                            var _objectsCiv2 = GameContext.Current.Universe.Objects.Where(s => s.Owner == civ2)
+                                    .Where(s =>s.ObjectType == UniverseObjectType.Ship).ToList();
+                            foreach (var minorsObject in _objectsCiv2)
+                            {
+                                if (minorsObject.Owner == civ2)
+                                {
+                                    CivilizationManager targetMinor = GameContext.Current.CivilizationManagers[civ2];
+                                    var minorCivHome = targetMinor.HomeColony;
+                                    int gainedResearchPoints = minorCivHome.NetResearch;                                      
+                                    var ship = (Ship)minorsObject;
+                                    ship.Owner = civ1;
+                                    var newfleet = ship.CreateFleet();
+                                    newfleet.Owner = civ1;
+                                    newfleet.SetOrder(FleetOrders.EngageOrder.Create());
+                                    if (newfleet.Order == null)
+                                    {
+                                        newfleet.SetOrder(FleetOrders.AvoidOrder.Create());
+                                    }
+                                    ship.Scrap = false;
+                                    GameContext.Current.CivilizationManagers[civ1].Research.UpdateResearch(gainedResearchPoints);
+
+                                    GameLog.Core.Ships.DebugFormat("Ship Joined:{0} {1}, Owner {2}, OwnerID {3}, Fleet.OwnerID {4}, Order {5} fleet name {6} gainedResearchPoints {7}",
+                                            ship.ObjectID, ship.Name, ship.Owner, ship.OwnerID, newfleet.OwnerID, newfleet.Order, newfleet.Name, gainedResearchPoints);
+                                }
+                            }
+                        }
+                    }
                 }
             }
 
