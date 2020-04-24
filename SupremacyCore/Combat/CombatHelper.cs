@@ -370,16 +370,21 @@ namespace Supremacy.Combat
             var owner = assets.Owner;
             var targetOne = new CombatTargetPrimaries(owner, assets.CombatID);
 
-            foreach (var ship in assets.CombatShips)  // all CombatShips  of civ should get this targets
+            foreach (var ship in assets.CombatShips)  // all CombatShips  of civ should get this target in the CombatTargetPrimaries dictionary
             {
                 if (target.CivID == -1 || target == null)
                 {
                     targetOne.SetTargetOneCiv(ship.Source, GetDefaultHoldFireCiv());
+                    GameLog.Core.Test.DebugFormat("CombatAsset ship = {0} Dummy Target = {1}", ship.Description, GetDefaultHoldFireCiv().Key);
                 }
                 else
+                {
                     targetOne.SetTargetOneCiv(ship.Source, target);
-                ;
+                    GameLog.Core.Test.DebugFormat("Combat ship = {0} real Target = {1}", ship.Description, GetDefaultHoldFireCiv().Key);
+                }
+
                 GameLog.Core.CombatDetails.DebugFormat("Combat Ship  {0}: target = {2}", ship.Name, ship.Owner, target.Key);
+
             }
 
             foreach (var ship in assets.NonCombatShips) // NonCombatShips (decided by carrying weapons)
@@ -387,9 +392,13 @@ namespace Supremacy.Combat
                 if (target.CivID == -1)
                 {
                     targetOne.SetTargetOneCiv(ship.Source, GetDefaultHoldFireCiv());
+                    GameLog.Core.Test.DebugFormat("NonCombat ship = {0} Dummy Target = {1}", ship.Description, GetDefaultHoldFireCiv().Key);
                 }
                 else
+                {
                     targetOne.SetTargetOneCiv(ship.Source, target);
+                    GameLog.Core.Test.DebugFormat("NonCombat ship = {0} real Target = {1}", ship.Description, target.Key);
+                }
             }
 
             if (assets.Station != null && assets.Station.Owner == owner)  // Station (only one per Sector possible)

@@ -57,7 +57,7 @@ namespace Supremacy.Combat
             if (source == null)
                 GameLog.Core.CombatDetails.DebugFormat("Orbital source null for SetTargetTwoCiv");
             GameLog.Core.CombatDetails.DebugFormat("for SetTargetTwoCiv source civ attaker {0} and Civilization target Name = {1}", source.Owner, targetTwo);
-            _targetSecondaries[source.ObjectID] = targetTwo;
+            _targetSecondaries[source.ObjectID] = targetTwo; // Ditctionary of orbital shooter object id and its civ target
         }
 
         public void ClearTargetTwo(Orbital source)
