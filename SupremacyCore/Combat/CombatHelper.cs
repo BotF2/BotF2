@@ -380,7 +380,7 @@ namespace Supremacy.Combat
                 else
                 {
                     targetOne.SetTargetOneCiv(ship.Source, target);
-                    GameLog.Core.Test.DebugFormat("Combat ship = {0} {1} real Target = {2}", ship.Description, ship.Owner.Key, GetDefaultHoldFireCiv().Key);
+                    GameLog.Core.Test.DebugFormat("Combat ship = {0} {1} real Target = {2}", ship.Description, ship.Owner.Key, target.Key);
                 }
                 //GameLog.Core.CombatDetails.DebugFormat("Combat Ship  {0}: target = {2}", ship.Name, ship.Owner, target.Key);
             }
@@ -404,11 +404,11 @@ namespace Supremacy.Combat
                 if (target.CivID == -1)
                 {
                     targetOne.SetTargetOneCiv(assets.Station.Source, GetDefaultHoldFireCiv());
-                    GameLog.Core.Test.DebugFormat("NonCombat ship = {0} {1} Dummy Target = {2}", assets.Station.Description, assets.Station.Owner.Key, GetDefaultHoldFireCiv().Key);
+                    GameLog.Core.Test.DebugFormat("Station = {0} {1} Dummy Target = {2}", assets.Station.Description, assets.Station.Owner.Key, GetDefaultHoldFireCiv().Key);
                 }
                 else
                 {
-                    targetOne.SetTargetOneCiv(assets.Station.Source, target);
+                    targetOne.SetTargetOneCiv(assets.Station.Source, target);                    
                     GameLog.Core.Test.DebugFormat("Station {0} {1} with Real target = {2}", assets.Station.Name, assets.Station.Owner.Key, target.Key);
                 }
             }

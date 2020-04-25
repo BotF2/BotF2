@@ -1,0 +1,141 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="12.0">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{1D1ACB96-9C27-4A1F-AE76-B5083A36ED05}</ProjectGuid>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <RootNamespace>Supremacy.Client</RootNamespace>
+    <AssemblyName>SupremacyWPF</AssemblyName>
+    <WarningLevel>4</WarningLevel>
+    <OutputType>library</OutputType>
+    <ApplicationVersion>1.0.0.*</ApplicationVersion>
+    <!-- Most people will use Publish dialog in Visual Studio to increment this -->
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
+    <SignAssembly>false</SignAssembly>
+    <AssemblyOriginatorKeyFile>..\Common\Supremacy.snk</AssemblyOriginatorKeyFile>
+    <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\bin\Debug\lib\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugSymbols>false</DebugSymbols>
+    <Optimize>true</Optimize>
+    <OutputPath>..\bin\Release\lib\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <DebugType>none</DebugType>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="BonusConverter.cs" />
+    <Compile Include="CivImageConverter.cs" />
+    <Compile Include="AppContextAwareValueConverter.cs" />
+    <Compile Include="ErrorProvider.cs" />
+    <Compile Include="GenericExtension.cs" />
+    <Compile Include="ImageResource.cs" />
+    <Compile Include="IsNullOrEmptyConverter.cs" />
+    <Compile Include="MapLocationConverter.cs" />
+    <Compile Include="MoraleConverter.cs" />
+    <Compile Include="NetValueConverter.cs" />
+    <Compile Include="NonNullValueConverter.cs" />
+    <Compile Include="PathToUriConverter.cs" />
+    <Compile Include="PlainView.cs" />
+    <Compile Include="PlanetTypeAbbreviationConverter.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <SubType>Designer</SubType>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="ResourceStringConverter.cs" />
+    <Compile Include="StarTypeImageConverter.cs" />
+    <Compile Include="StringResource.cs" />
+    <Compile Include="TechObjectImageConverter.cs" />
+    <Compile Include="TypeCollectionConverter.cs" />
+    <Compile Include="UpperCaseConverter.cs" />
+    <Compile Include="WpfHelper.cs" />
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{B4F97281-0DBD-4835-9ED8-7DFB966E87FF}" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Supremacy.Scripting\Supremacy.Scripting.csproj">
+      <Project>{25AEA57E-9376-4B73-93D4-A2DCDB15D2D2}</Project>
+      <Name>Supremacy.Scripting</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\SupremacyClientComponents\SupremacyClientComponents.csproj">
+      <Project>{4836d1c7-b3c6-4021-9b5f-ceef027251ec}</Project>
+      <Name>SupremacyClientComponents</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\SupremacyCore\SupremacyCore.csproj">
+      <Project>{04E34C27-6942-4EA8-93FF-DF3C4026B22A}</Project>
+      <Name>SupremacyCore</Name>
+      <Private>False</Private>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <ReferencePath Include="C:\Users\kenne\Documents\87_BOTF2_20200205\Common\ConcurrentHashtable.dll" />
+    <ReferencePath Include="C:\Users\kenne\Documents\87_BOTF2_20200205\bin\Debug\lib\log4net.dll" />
+    <ReferencePath Include="C:\Users\kenne\Documents\87_BOTF2_20200205\Common\Microsoft.Practices.ServiceLocation.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.2\mscorlib.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.2\PresentationCore.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.2\PresentationFramework.dll" />
+    <ReferencePath Include="C:\Users\kenne\Documents\87_BOTF2_20200205\bin\Debug\lib\Supremacy.Scripting.dll" />
+    <ReferencePath Include="C:\Users\kenne\Documents\87_BOTF2_20200205\bin\Debug\lib\SupremacyClientComponents.dll" />
+    <ReferencePath Include="C:\Users\kenne\Documents\87_BOTF2_20200205\bin\Debug\lib\SupremacyCore.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.2\System.Core.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.2\System.Data.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.2\System.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.2\System.Xaml.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.2\System.Xml.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.2\WindowsBase.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="C:\Users\kenne\Documents\87_BOTF2_20200205\SupremacyWPF\obj\Debug\GeneratedInternalTypeHelper.g.cs" />
+  </ItemGroup>
+</Project>
