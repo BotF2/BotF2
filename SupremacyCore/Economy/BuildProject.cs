@@ -420,6 +420,7 @@ namespace Supremacy.Economy
             var civManager = GameContext.Current.CivilizationManagers[Builder];
 
             TechObject spawnedInstance;
+            //if(BuildDesign == StationDes)
             GameLog.Core.Production.DebugFormat("Trying to finish BuildProject ##########  {0} by {1} at {2}", BuildDesign, Builder, Location);
             if (civManager == null || !BuildDesign.TrySpawn(Location, Builder, out spawnedInstance))
                 return;
@@ -549,6 +550,7 @@ namespace Supremacy.Economy
                     delta > resources[resource])
                 {
                     SetFlag((BuildProjectFlags)((int)BuildProjectFlags.DeuteriumShortage << i));
+                    GameLog.Core.Test.DebugFormat("Estimated One Turn: resource = {0}, delta/missing = {1} for {2}", resource.ToString(), delta, this.BuildDesign.Description);
                 }
 
                 if (resources[resource] <= 0)
@@ -561,6 +563,8 @@ namespace Supremacy.Economy
 
                 resources[resource] -= delta;
                 _resourcesInvested[resource] += delta;
+
+                GameLog.Core.Test.DebugFormat("resource = {0}, delta/missing = {1}", resource.ToString(), delta);
 
                 ApplyResource(resource, delta);
             }
