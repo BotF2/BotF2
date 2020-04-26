@@ -193,7 +193,11 @@ namespace Supremacy.Economy
                     {
                         GameLog.Core.Production.DebugFormat("{0} at {1} not complete - insufficient {2} invested",
                             BuildDesign, _location, resource);
-                        return false;
+
+                        GameLog.Core.Production.DebugFormat("not checking whether enough resources there");
+                        return true;  // cheating
+
+                        //return false;
                     }
                 }
 
@@ -440,7 +444,9 @@ namespace Supremacy.Economy
 
             if (newEntry == null)
             {
-                GameLog.Core.Production.DebugFormat("BuildProject.Finished: ##########  {0} built by {1} at {2}", BuildDesign, Builder, Location);
+                GameLog.Core.Production.DebugFormat("TurnNumber {3}: BuildProject.Finished: ##########  {0} built by {1} at {2}", 
+                    BuildDesign, Builder, Location, GameContext.Current.TurnNumber);
+
                 newEntry = new ItemBuiltSitRepEntry(Builder, BuildDesign, Location);
             }
 
@@ -566,6 +572,23 @@ namespace Supremacy.Economy
 
                 }
 
+                if (timeEstimate == 1)
+                {
+                    //SetFlag((BuildProjectFlags)((int)BuildProjectFlags.DeuteriumShortage << i));
+                    GameLog.Core.Test.DebugFormat("Estimated One Turn... checking for resources: resource = {0}, delta/needed for finish = {1} for {2}"
+                        , resource.ToString(), delta.ToString(), this.BuildDesign);
+
+                    if (delta > 0 && resource == ResourceType.RawMaterials && delta > civManager.Resources.RawMaterials.CurrentValue)
+                    {
+                        GameLog.Core.Test.DebugFormat("resource = {0}, delta/missing = {1}, too less available !!!", resource.ToString(), delta);
+                        civManager.SitRepEntries.Add(new BuildProjectResourceShortageSitRepEntry(civ, resource.ToString(), delta.ToString(), this.BuildDesign.Description));
+
+                    }
+                    //deltaIndustry -= delta;
+
+
+                }
+
                 if (resources[resource] <= 0)
                     continue;
 
@@ -577,10 +600,14 @@ namespace Supremacy.Economy
                 resources[resource] -= delta;
                 _resourcesInvested[resource] += delta;
 
-                if (delta < 0)
-                GameLog.Core.Test.DebugFormat("resource = {0}, delta/missing = {1}", resource.ToString(), delta);
+                //if (delta > 0)
+                //GameLog.Core.Test.DebugFormat("resource = {0}, delta/missing = {1}", resource.ToString(), delta);
 
-                ApplyResource(resource, delta);
+                if (timeEstimate == 1)
+                {
+                    delta = 0;
+                }
+                    ApplyResource(resource, delta);
             }
 
             ApplyIndustry(deltaIndustry);

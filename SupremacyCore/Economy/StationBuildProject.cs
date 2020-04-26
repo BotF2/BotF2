@@ -77,7 +77,7 @@ namespace Supremacy.Economy
             : base(source.Owner, source, design)
         {
             _productionCenterId = source.ObjectID;
-            GameLog.Core.Stations.DebugFormat("{1} ID {0} builds {3] at {3}", source.ObjectID, source.Owner, source.Location,design.Key);
+            GameLog.Core.Stations.DebugFormat("ID {0} builds {2} at {1}", source.ObjectID, source.Location.ToString(), design.Key);
         }
 
         /// <summary>
