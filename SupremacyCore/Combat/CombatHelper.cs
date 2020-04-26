@@ -140,6 +140,9 @@ namespace Supremacy.Combat
 
             if (sector.Station != null)
             {
+                if (sector.Station.TurnCreated == GameContext.Current.TurnNumber || sector.Station.TurnCreated == -1)
+                    goto DoNotIncludeStationsNotFullyBuilded;
+
                 var owner = sector.Station.Owner;
 
                 if (!assets.ContainsKey(owner))
@@ -148,6 +151,8 @@ namespace Supremacy.Combat
                 }
 
                 assets[owner].Station = new CombatUnit(sector.Station);
+
+                DoNotIncludeStationsNotFullyBuilded:;
             }
 
             results.AddRange(assets.Values);
