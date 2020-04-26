@@ -210,7 +210,7 @@ namespace Supremacy.Game
             {
                 foreach (var rep in _sitRepEntries)
                 {
-                    var playerID = Player.GameHostID;
+                    //var playerID = Player.GameHostID;
                     //if (GameContext.Current.IsMultiplayerGame == false)
                     //playerID = GameContext.Current.CivilizationManagers[LocalPlayer.EmpireID];/*Player.;*/
                     //CivilizationManager.
@@ -418,9 +418,8 @@ namespace Supremacy.Game
             if (tableValue == null)
                 return;
 
-            int change;
 
-            if (!int.TryParse(tableValue, out change))
+            if (!int.TryParse(tableValue, out int change))
                 return;
 
             foreach (var colony in Colonies)
@@ -598,8 +597,7 @@ namespace Supremacy.Game
             {
                 if (civilization == null)
                     throw new ArgumentNullException("civilization");
-                TValue value;
-                TryGetValue(civilization.CivID, out value);
+                TryGetValue(civilization.CivID, out TValue value);
                 return value;
             }
         }
@@ -612,8 +610,7 @@ namespace Supremacy.Game
         {
             get
             {
-                TValue value;
-                TryGetValue(civKey, out value);
+                TryGetValue(civKey, out TValue value);
                 return value;
             }
         }
@@ -630,8 +627,7 @@ namespace Supremacy.Game
         /// <returns><c>true</c> if the value was successfully retrieved; otherwise, <c>false</c></returns>
         public bool TryGetValue(string civKey, out TValue value)
         {
-            Civilization civ;
-            if (GameContext.Current.Civilizations.TryGetValue(civKey, out civ))
+            if (GameContext.Current.Civilizations.TryGetValue(civKey, out Civilization civ))
             {
                 if (civ != null)
                 {

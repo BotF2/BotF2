@@ -1802,7 +1802,7 @@ namespace Supremacy.Orbitals
                 return;
 
             var project = _buildProject;
-            GameLog.Core.Production.DebugFormat("project: project.BuildDesign = {1}, project.Builder = {2}, Description = {0} ", project.Description, project.BuildDesign, project.Builder);
+            GameLog.Core.Production.DebugFormat("project: Builder = {2}, BuildDesign = {1}, Description = {0} ", project.Description, project.BuildDesign, project.Builder);
             if ((project == null) || (project.ProductionCenter == null) || project.IsCompleted)
                 return;
 

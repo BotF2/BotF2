@@ -1,4 +1,4 @@
-// BuildProject.cs
+// File:BuildProject.cs
 //
 // Copyright (c) 2007 Mike Strobel
 //
@@ -8,6 +8,7 @@
 // All other rights reserved.
 
 using Supremacy.Buildings;
+using Supremacy.Client;
 using Supremacy.Entities;
 using Supremacy.Game;
 using Supremacy.IO.Serialization;
@@ -51,6 +52,8 @@ namespace Supremacy.Economy
         private byte _priority;
         private BuildProjectFlags _flags;
         private ResourceValueCollection _resourcesInvested;
+
+
 
         /// <summary>
         /// Initializes a new instance of the <see cref="BuildProject"/> class.
@@ -188,7 +191,7 @@ namespace Supremacy.Economy
                 {
                     if (_resourcesInvested[resource] < ResourcesRequired[resource])
                     {
-                        GameLog.Core.Production.DebugFormat("{0} at {1} not complete - insufficient {0} invested",
+                        GameLog.Core.Production.DebugFormat("{0} at {1} not complete - insufficient {2} invested",
                             BuildDesign, _location, resource);
                         return false;
                     }
@@ -516,19 +519,24 @@ namespace Supremacy.Economy
 
         protected virtual void AdvanceOverride(ref int industry, ResourceValueCollection resources)
         {
+
+            var civManager = GameContext.Current.CivilizationManagers[0];  // ToDo - not always Federation
+            var civ = civManager.Civilization;
             var timeEstimate = GetTimeEstimate();
             if (timeEstimate <= 0)
                 return;
 
-            var delta = Math.Min(
+            var deltaIndustry = Math.Min(
                 industry,
                 Math.Max(0, IndustryRequired - _industryInvested));
 
-            industry -= delta;
+            industry -= deltaIndustry;
 
-            IndustryInvested += delta;
-            ApplyIndustry(delta);
-            OnPropertyChanged("IndustryInvested");
+            IndustryInvested += deltaIndustry;
+
+            // moved down - if there is a shortage of one of the resources > don't say it's 100% done
+            //ApplyIndustry(delta);
+            //OnPropertyChanged("IndustryInvested");
 
             ClearFlag(
                 BuildProjectFlags.DeuteriumShortage |
@@ -541,7 +549,7 @@ namespace Supremacy.Economy
             {
                 var resource = resourceTypes[i];
 
-                delta = ResourcesRequired[resource] - _resourcesInvested[resource];
+                var delta = ResourcesRequired[resource] - _resourcesInvested[resource];
 
                 if (delta <= 0)
                     continue;
@@ -550,7 +558,12 @@ namespace Supremacy.Economy
                     delta > resources[resource])
                 {
                     SetFlag((BuildProjectFlags)((int)BuildProjectFlags.DeuteriumShortage << i));
-                    GameLog.Core.Test.DebugFormat("Estimated One Turn: resource = {0}, delta/missing = {1} for {2}", resource.ToString(), delta, this.BuildDesign.Description);
+                    GameLog.Core.Test.DebugFormat("Estimated One Turn: resource = {0}, delta/missing = {1} for {2}", resource.ToString(), delta.ToString(), this.BuildDesign.Description);
+
+                    deltaIndustry -= delta;
+                    
+                    civManager.SitRepEntries.Add(new BuildProjectResourceShortageSitRepEntry(civ, resource.ToString(), delta.ToString(), this.BuildDesign.Description));
+
                 }
 
                 if (resources[resource] <= 0)
@@ -564,10 +577,14 @@ namespace Supremacy.Economy
                 resources[resource] -= delta;
                 _resourcesInvested[resource] += delta;
 
+                if (delta < 0)
                 GameLog.Core.Test.DebugFormat("resource = {0}, delta/missing = {1}", resource.ToString(), delta);
 
                 ApplyResource(resource, delta);
             }
+
+            ApplyIndustry(deltaIndustry);
+            OnPropertyChanged("IndustryInvested");
 
             OnPropertyChanged("TurnsRemaining");
             OnPropertyChanged("PercentComplete");

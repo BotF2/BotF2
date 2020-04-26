@@ -375,12 +375,12 @@ namespace Supremacy.Combat
                 if (target.CivID == -1 || target == null)
                 {
                     targetOne.SetTargetOneCiv(ship.Source, GetDefaultHoldFireCiv());
-                    GameLog.Core.Test.DebugFormat("CombatAsset ship = {0} {1} Dummy Target = {2}", ship.Description, ship.Owner.Key, GetDefaultHoldFireCiv().Key);
+                    GameLog.Core.CombatDetails.DebugFormat("CombatAsset ship = {0} {1} Dummy Target = {2}", ship.Description, ship.Owner.Key, GetDefaultHoldFireCiv().Key);
                 }
                 else
                 {
                     targetOne.SetTargetOneCiv(ship.Source, target);
-                    GameLog.Core.Test.DebugFormat("Combat ship = {0} {1} real Target = {2}", ship.Description, ship.Owner.Key, target.Key);
+                    GameLog.Core.CombatDetails.DebugFormat("Combat ship = {0} {1} real Target = {2}", ship.Description, ship.Owner.Key, target.Key);
                 }
                 //GameLog.Core.CombatDetails.DebugFormat("Combat Ship  {0}: target = {2}", ship.Name, ship.Owner, target.Key);
             }
@@ -390,12 +390,12 @@ namespace Supremacy.Combat
                 if (target.CivID == -1)
                 {
                     targetOne.SetTargetOneCiv(ship.Source, GetDefaultHoldFireCiv());
-                    GameLog.Core.Test.DebugFormat("NonCombat ship = {0} {1} Dummy Target = {2}", ship.Description, ship.Owner.Key, GetDefaultHoldFireCiv().Key);
+                    GameLog.Core.CombatDetails.DebugFormat("NonCombat ship = {0} {1} Dummy Target = {2}", ship.Description, ship.Owner.Key, GetDefaultHoldFireCiv().Key);
                 }
                 else
                 {
                     targetOne.SetTargetOneCiv(ship.Source, target);
-                    GameLog.Core.Test.DebugFormat("NonCombat ship = {0} {1} Real Target = {2}", ship.Description, ship.Owner.Key, target.Key);
+                    GameLog.Core.CombatDetails.DebugFormat("NonCombat ship = {0} {1} Real Target = {2}", ship.Description, ship.Owner.Key, target.Key);
                 }
             }
 
@@ -404,12 +404,12 @@ namespace Supremacy.Combat
                 if (target.CivID == -1)
                 {
                     targetOne.SetTargetOneCiv(assets.Station.Source, GetDefaultHoldFireCiv());
-                    GameLog.Core.Test.DebugFormat("Station = {0} {1} Dummy Target = {2}", assets.Station.Description, assets.Station.Owner.Key, GetDefaultHoldFireCiv().Key);
+                    GameLog.Core.CombatDetails.DebugFormat("Station = {0} {1} Dummy Target = {2}", assets.Station.Description, assets.Station.Owner.Key, GetDefaultHoldFireCiv().Key);
                 }
                 else
                 {
                     targetOne.SetTargetOneCiv(assets.Station.Source, target);                    
-                    GameLog.Core.Test.DebugFormat("Station {0} {1} with Real target = {2}", assets.Station.Name, assets.Station.Owner.Key, target.Key);
+                    GameLog.Core.CombatDetails.DebugFormat("Station {0} {1} with Real target = {2}", assets.Station.Name, assets.Station.Owner.Key, target.Key);
                 }
             }
             return targetOne;
@@ -505,10 +505,12 @@ namespace Supremacy.Combat
 
         public static Civilization GetDefaultHoldFireCiv()
         {
-            Civilization _target = new Civilization(); // The 'never clicked a target button' target civilizaiton for a human player so was it a hail order or an engage order?
-            _target.ShortName = "Only Return Fire";
-            _target.CivID = 888; // CHANGE X PROBLEM this 778 will always be used for anyones TargetTWO. Bug.
-            _target.Key = "Only Return Fire";
+            Civilization _target = new Civilization
+            {
+                ShortName = "Only Return Fire",
+                CivID = 888, // CHANGE X PROBLEM this 778 will always be used for anyones TargetTWO. Bug.
+                Key = "Only Return Fire"
+            }; // The 'never clicked a target button' target civilizaiton for a human player so was it a hail order or an engage order?
 
             return _target;
         }
