@@ -34,13 +34,14 @@
               Margin="0,0,6,0">
         <AccessText Text="{s:StringResource SETTINGS_ACCEPT}" />
       </Button>
-      <Button x:Name="CancelButton"
+      <!-- CANCEL makes trouble while running out of Visual Studio ....
+        <Button x:Name="CancelButton"
               Command="{x:Static local:GenericCommands.CancelCommand}"
               Style="{DynamicResource LCARS_StandardButtonStyle}"
               IsCancel="True"
               Margin="0,0,0,0">
         <AccessText Text="{s:StringResource SETTINGS_CANCEL}" />
-      </Button>
+      </Button>-->
     </StackPanel>
       
     <TabControl x:Name="OptionsRegion"
