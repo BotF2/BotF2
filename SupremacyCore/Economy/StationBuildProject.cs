@@ -56,12 +56,12 @@ namespace Supremacy.Economy
 
         public bool HasRawMaterialsShortage
         {
-            get 
-            { 
-                return GetFlag(BuildProjectFlags.RawMaterialsShortage); 
+            get
+            {
+                return false; //GetFlag(BuildProjectFlags.RawMaterialsShortage);
             }
-            protected set 
-            { 
+            protected set
+            {
                 SetFlag(BuildProjectFlags.RawMaterialsShortage, value);
                 GameContext.Current.CivilizationManagers[ProductionCenter.Owner.CivID].SitRepEntries
                     .Add(new BuildProjectResourceShortageSitRepEntry(ProductionCenter.Owner, "Duranium", " unknown amount of ", Description));
@@ -86,7 +86,7 @@ namespace Supremacy.Economy
         /// <returns>The industry available.</returns>
         protected override int GetIndustryAvailable()
         {
-            return ProductionCenter.GetBuildOutput(0);
+            return 10000; //ProductionCenter.GetBuildOutput(0);
         }
 
         /// <summary>
