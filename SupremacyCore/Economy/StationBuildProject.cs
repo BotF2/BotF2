@@ -58,6 +58,7 @@ namespace Supremacy.Economy
         {
             get
             {
+                GameLog.Client.Test.DebugFormat("return flase for {0} stationdesign {1}", _productionCenterId, StationDesign.Description);
                 return false; //GetFlag(BuildProjectFlags.RawMaterialsShortage);
             }
             protected set

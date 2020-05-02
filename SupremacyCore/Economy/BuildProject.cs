@@ -603,11 +603,11 @@ namespace Supremacy.Economy
                 //if (delta > 0)
                 //GameLog.Core.Test.DebugFormat("resource = {0}, delta/missing = {1}", resource.ToString(), delta);
 
-                if (timeEstimate == 1)
-                {
-                    delta = 0;
-                }
-                    ApplyResource(resource, delta);
+                //if (timeEstimate == 1)
+                //{
+                //    delta = 0;
+                //}
+                ApplyResource(resource, delta);
             }
 
             ApplyIndustry(deltaIndustry);

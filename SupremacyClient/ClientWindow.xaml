@@ -1,4 +1,4 @@
-﻿<Window x:Class="Supremacy.Client.ClientWindow"
+﻿ <Window x:Class="Supremacy.Client.ClientWindow"
         xmlns="http://schemas.microsoft.com/netfx/2007/xaml/presentation"
         xmlns:res="clr-namespace:Supremacy.Client;assembly=SupremacyWPF"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
