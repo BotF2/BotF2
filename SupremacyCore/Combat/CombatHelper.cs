@@ -1,4 +1,4 @@
-// CombatHelper.cs
+// File:CombatHelper.cs
 //
 // Copyright (c) 2007 Mike Strobel
 //
@@ -140,6 +140,14 @@ namespace Supremacy.Combat
 
             if (sector.Station != null)
             {
+                // needed once again for avoiding crash while finish a station build
+                if (sector.Station.TurnCreated == GameContext.Current.TurnNumber || sector.Station.TurnCreated == 1)
+                {
+                    GameLog.Core.Combat.DebugFormat("{0} {1} ({2}) just build in turn {3} and NOT taking part in this combat for avoid crashes on *uncomplete* stations"
+                        , sector.Station.ObjectID, sector.Station.Name, sector.Station.Design, sector.Station.TurnCreated);
+                    goto DoNotIncludeStationsNotFullyBuilded;
+                }
+
                 var owner = sector.Station.Owner;
 
                 if (!assets.ContainsKey(owner))
@@ -148,6 +156,8 @@ namespace Supremacy.Combat
                 }
 
                 assets[owner].Station = new CombatUnit(sector.Station);
+
+                DoNotIncludeStationsNotFullyBuilded:;
             }
 
             results.AddRange(assets.Values);
@@ -370,16 +380,19 @@ namespace Supremacy.Combat
             var owner = assets.Owner;
             var targetOne = new CombatTargetPrimaries(owner, assets.CombatID);
 
-            foreach (var ship in assets.CombatShips)  // all CombatShips  of civ should get this targets
+            foreach (var ship in assets.CombatShips)  // all CombatShips  of civ should get this target in the CombatTargetPrimaries dictionary
             {
                 if (target.CivID == -1 || target == null)
                 {
                     targetOne.SetTargetOneCiv(ship.Source, GetDefaultHoldFireCiv());
+                    GameLog.Core.CombatDetails.DebugFormat("CombatAsset ship = {0} {1} Dummy Target = {2}", ship.Description, ship.Owner.Key, GetDefaultHoldFireCiv().Key);
                 }
                 else
+                {
                     targetOne.SetTargetOneCiv(ship.Source, target);
-                ;
-                GameLog.Core.CombatDetails.DebugFormat("Combat Ship  {0}: target = {2}", ship.Name, ship.Owner, target.Key);
+                    GameLog.Core.CombatDetails.DebugFormat("Combat ship = {0} {1} real Target = {2}", ship.Description, ship.Owner.Key, target.Key);
+                }
+                //GameLog.Core.CombatDetails.DebugFormat("Combat Ship  {0}: target = {2}", ship.Name, ship.Owner, target.Key);
             }
 
             foreach (var ship in assets.NonCombatShips) // NonCombatShips (decided by carrying weapons)
@@ -387,9 +400,13 @@ namespace Supremacy.Combat
                 if (target.CivID == -1)
                 {
                     targetOne.SetTargetOneCiv(ship.Source, GetDefaultHoldFireCiv());
+                    GameLog.Core.CombatDetails.DebugFormat("NonCombat ship = {0} {1} Dummy Target = {2}", ship.Description, ship.Owner.Key, GetDefaultHoldFireCiv().Key);
                 }
                 else
+                {
                     targetOne.SetTargetOneCiv(ship.Source, target);
+                    GameLog.Core.CombatDetails.DebugFormat("NonCombat ship = {0} {1} Real Target = {2}", ship.Description, ship.Owner.Key, target.Key);
+                }
             }
 
             if (assets.Station != null && assets.Station.Owner == owner)  // Station (only one per Sector possible)
@@ -397,10 +414,13 @@ namespace Supremacy.Combat
                 if (target.CivID == -1)
                 {
                     targetOne.SetTargetOneCiv(assets.Station.Source, GetDefaultHoldFireCiv());
-                }    
+                    GameLog.Core.CombatDetails.DebugFormat("Station = {0} {1} Dummy Target = {2}", assets.Station.Description, assets.Station.Owner.Key, GetDefaultHoldFireCiv().Key);
+                }
                 else
-                    targetOne.SetTargetOneCiv(assets.Station.Source, target);        
-                GameLog.Core.Combat.DebugFormat("Station {0} with target = {1}", assets.Station.Name, target.Key);
+                {
+                    targetOne.SetTargetOneCiv(assets.Station.Source, target);                    
+                    GameLog.Core.CombatDetails.DebugFormat("Station {0} {1} with Real target = {2}", assets.Station.Name, assets.Station.Owner.Key, target.Key);
+                }
             }
             return targetOne;
         }
@@ -495,10 +515,12 @@ namespace Supremacy.Combat
 
         public static Civilization GetDefaultHoldFireCiv()
         {
-            Civilization _target = new Civilization(); // The 'never clicked a target button' target civilizaiton for a human player so was it a hail order or an engage order?
-            _target.ShortName = "Only Return Fire";
-            _target.CivID = 888; // CHANGE X PROBLEM this 778 will always be used for anyones TargetTWO. Bug.
-            _target.Key = "Only Return Fire";
+            Civilization _target = new Civilization
+            {
+                ShortName = "Only Return Fire",
+                CivID = 888, // CHANGE X PROBLEM this 778 will always be used for anyones TargetTWO. Bug.
+                Key = "Only Return Fire"
+            }; // The 'never clicked a target button' target civilizaiton for a human player so was it a hail order or an engage order?
 
             return _target;
         }

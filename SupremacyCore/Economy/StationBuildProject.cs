@@ -12,6 +12,7 @@ using System;
 using Supremacy.Game;
 using Supremacy.Orbitals;
 using Supremacy.Resources;
+using Supremacy.Utility;
 
 namespace Supremacy.Economy
 {
@@ -30,7 +31,7 @@ namespace Supremacy.Economy
                 var fleet = GameContext.Current.Universe.Objects[_productionCenterId] as Fleet;
                 if (fleet != null)
                     return new BuildStationOrder.FleetProductionCenter(fleet);
-                return default(IProductionCenter);
+                return default;
             }
         }
 
@@ -55,8 +56,17 @@ namespace Supremacy.Economy
 
         public bool HasRawMaterialsShortage
         {
-            get { return GetFlag(BuildProjectFlags.RawMaterialsShortage); }
-            protected set { SetFlag(BuildProjectFlags.RawMaterialsShortage, value); }
+            get
+            {
+                GameLog.Client.Test.DebugFormat("ID {0} stationdesign {1}", _productionCenterId, StationDesign.Description);
+                return GetFlag(BuildProjectFlags.RawMaterialsShortage);
+            }
+            protected set
+            {
+                SetFlag(BuildProjectFlags.RawMaterialsShortage, value);
+                GameContext.Current.CivilizationManagers[ProductionCenter.Owner.CivID].SitRepEntries
+                    .Add(new BuildProjectResourceShortageSitRepEntry(ProductionCenter.Owner, "Duranium", " unknown amount of ", Description));
+            }
         }
 
         /// <summary>
@@ -68,6 +78,7 @@ namespace Supremacy.Economy
             : base(source.Owner, source, design)
         {
             _productionCenterId = source.ObjectID;
+            GameLog.Core.Stations.DebugFormat("ID {0} builds {2} at {1}", source.ObjectID, source.Location.ToString(), design.Key);
         }
 
         /// <summary>

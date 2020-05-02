@@ -20,6 +20,7 @@ using Supremacy.Utility;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Windows.Controls.Primitives;
 
 namespace Supremacy.Game
 {
@@ -378,6 +379,119 @@ namespace Supremacy.Game
             _isActive = isActive;
         }
     }
+    //[Serializable]
+    //public class StationBuiltSitRepEntry : ItemBuiltSitRepEntry
+    //{
+    //    private readonly bool _isActive;
+    //    private readonly int _colonyId;
+
+    //    public Colony Colony
+    //    {
+    //        get { return GameContext.Current.Universe.Get<Colony>(_colonyId); }
+    //    }
+
+    //    public override SitRepCategory Categories
+    //    {
+    //        get { return SitRepCategory.ColonyStatus | SitRepCategory.Construction; }
+    //    }
+
+    //    public override SitRepAction Action
+    //    {
+    //        get { return SitRepAction.ViewColony; }
+    //    }
+
+    //    public override object ActionTarget
+    //    {
+    //        get { return Colony; }
+    //    }
+
+    //    public override string SummaryText
+    //    {
+    //        get
+    //        {
+    //            return string.Format(ResourceManager.GetString("SITREP_CONSTRUCTED_UNPOWERED"),
+    //                ResourceManager.GetString(ItemType.Name),
+    //                GameContext.Current.Universe.Map[Location].Name,
+    //                _isActive ? "" : " (unpowered)");
+    //        }
+    //    }
+
+    //    public StationBuiltSitRepEntry(Civilization owner, TechObjectDesign itemType, MapLocation location, bool isActive)
+    //: base(owner, itemType, location)
+    //    {
+    //       // _colonyId = GameContext.Current.Universe.Map[Location];
+    //        _isActive = isActive;
+    //    }
+    //}
+
+
+    [Serializable]
+    public class BuildProjectResourceShortageSitRepEntry : SitRepEntry
+    {
+        //private readonly bool _isActive;
+        //private readonly int _colonyId;
+        private readonly string _delta;
+        private readonly string _project;
+        private readonly string _resource;
+
+        public BuildProjectResourceShortageSitRepEntry(Civilization owner, string resource, string delta, string project)
+            : base(owner, SitRepPriority.Red)
+        {
+            //_colonyId = GameContext.Current.Universe.Map[Location].System.Colony.ObjectID;
+
+            _resource = resource;
+            _delta = delta;
+            _project = project;
+
+        }
+        public override string SummaryText
+        {
+            get
+            {
+                var sitrepText = "Not able to finish project " + _project + ", due to missing " + _delta + " " + _resource;
+                //var sitrepText = "Not able to finish project {0}, due to missing {1} {2}";
+                return sitrepText;
+                //return string.Format(ResourceManager.GetString("SITREP_BUILDPROJECT_RESOURCE_MISSING"),
+                //    ResourceManager.GetString(ItemType.Name),
+                //    GameContext.Current.Universe.Map[Location].Name,
+                //    _isActive ? "" : " (unpowered)");
+            }
+        }
+
+        //public Colony Colony
+        //{
+        //    get 
+        //    {
+        //        // if it is Building a station, there is no colony, just a construction ship with a sector
+        //        try
+        //        {
+        //            return GameContext.Current.Universe.Get<Colony>(_colonyId);
+        //        }
+        //        catch
+        //        {
+        //            return GameContext.Current.Universe.Get<Colony>(_colonyId);
+        //        }
+        //    }
+
+        //}
+
+        public override SitRepCategory Categories
+        {
+            get { return SitRepCategory.Construction; }
+        }
+
+        public override SitRepAction Action
+        {
+            get { return SitRepAction.ViewColony; }
+        }
+
+        //public override object ActionTarget
+        //{
+        //    get { return Colony; }
+        //}
+
+
+    }
 
     [Serializable]
     public class BuildQueueEmptySitRepEntry : SitRepEntry
@@ -631,11 +745,9 @@ namespace Supremacy.Game
                 return text;
             }
 
-            LocalizedTextGroup textGroup;
-            LocalizedString localizedString;
 
-            if (!LocalizedTextDatabase.Instance.Groups.TryGetValue(typeof(DiplomacySitRepStringKey), out textGroup) ||
-                !textGroup.Entries.TryGetValue(key.Value, out localizedString))
+            if (!LocalizedTextDatabase.Instance.Groups.TryGetValue(typeof(DiplomacySitRepStringKey), out LocalizedTextGroup textGroup) ||
+                !textGroup.Entries.TryGetValue(key.Value, out LocalizedString localizedString))
             {
                 resolved = true;
                 text = string.Format("!!! MISSING TEXT: {0}.{1} !!!", typeof(DiplomacySitRepStringKey).Name, key);
@@ -1690,7 +1802,7 @@ namespace Supremacy.Game
         private readonly string _affectedField;
         private readonly string _blamed;
         private readonly int _ratioLevel;
-        private readonly string _roleText;
+        //private readonly string _roleText;
 
         public NewSabotagedSitRepEntry(Civilization attacking, Civilization attacked, Colony colony
             , string affectedField, int removedStuff, int totalStuff, string blamed, int ratioLevel)
@@ -1707,6 +1819,7 @@ namespace Supremacy.Game
             _blamed = blamed;
             _ratioLevel = ratioLevel;
             //string _blamedString = BlamedString;
+
         }
         public string Attacking
         {
@@ -1848,7 +1961,7 @@ namespace Supremacy.Game
         private readonly string _affectedField;
         private readonly string _blamed;
         private readonly int _ratioLevel;
-        private readonly string _roleText;
+
 
         public NewSabotagingSitRepEntry(Civilization owner, Civilization attacked, Colony colony, string affectedField, int removedStuff, int totalStuff, string blame, int ratioLevel)
             : base(owner, SitRepPriority.Red) // owner is the attackING for this, the sabotagING sit rep

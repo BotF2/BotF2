@@ -1749,7 +1749,10 @@ namespace Supremacy.Orbitals
             }
 
             foreach (var design in designs)
+            {
                 targets.Add(new StationBuildProject(new FleetProductionCenter(source), design));
+                //GameLog.Core.Stations.DebugFormat("{0} {1} at {2} is building a {3}", source.ObjectID, source.Name, source.Location, design);
+            }
 
             return targets;
         }
@@ -1802,7 +1805,7 @@ namespace Supremacy.Orbitals
                 return;
 
             var project = _buildProject;
-            GameLog.Core.Production.DebugFormat("project: project.BuildDesign = {1}, project.Builder = {2}, Description = {0} ", project.Description, project.BuildDesign, project.Builder);
+            GameLog.Core.Production.DebugFormat("project: Builder = {2}, BuildDesign = {1}, Description = {0} ", project.Description, project.BuildDesign, project.Builder);
             if ((project == null) || (project.ProductionCenter == null) || project.IsCompleted)
                 return;
 
@@ -1826,8 +1829,15 @@ namespace Supremacy.Orbitals
 
             project.Advance(ref buildOutput, usedResources);
 
+            //RawMaterialsBefore = usedResources[ResourceType.RawMaterials] - resources[ResourceType.RawMaterials];
+
+            GameLog.Core.Production.DebugFormat("project: Builder = {0}, BuildDesign = {1}, Duranium before {2}, AdjustValue = {3}", project.Builder
+                , project.BuildDesign, civManager.Resources[ResourceType.RawMaterials].CurrentValue
+                , usedResources[ResourceType.RawMaterials] - resources[ResourceType.RawMaterials]);
+            
             civManager.Resources[ResourceType.RawMaterials].AdjustCurrent(
                 usedResources[ResourceType.RawMaterials] - resources[ResourceType.RawMaterials]);
+
         }
 
         protected internal override void OnOrderCompleted()

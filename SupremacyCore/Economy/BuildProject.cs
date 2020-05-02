@@ -1,4 +1,4 @@
-// BuildProject.cs
+// File:BuildProject.cs
 //
 // Copyright (c) 2007 Mike Strobel
 //
@@ -8,6 +8,7 @@
 // All other rights reserved.
 
 using Supremacy.Buildings;
+using Supremacy.Client;
 using Supremacy.Entities;
 using Supremacy.Game;
 using Supremacy.IO.Serialization;
@@ -51,6 +52,8 @@ namespace Supremacy.Economy
         private byte _priority;
         private BuildProjectFlags _flags;
         private ResourceValueCollection _resourcesInvested;
+
+
 
         /// <summary>
         /// Initializes a new instance of the <see cref="BuildProject"/> class.
@@ -188,9 +191,13 @@ namespace Supremacy.Economy
                 {
                     if (_resourcesInvested[resource] < ResourcesRequired[resource])
                     {
-                        GameLog.Core.Production.DebugFormat("{0} at {1} not complete - insufficient {0} invested",
+                        GameLog.Core.Production.DebugFormat("{0} at {1} not complete - insufficient {2} invested",
                             BuildDesign, _location, resource);
-                        return false;
+
+                        GameLog.Core.Production.DebugFormat("not checking whether enough resources there");
+                        return true;  // cheating
+
+                        //return false;
                     }
                 }
 
@@ -274,64 +281,6 @@ namespace Supremacy.Economy
         {
             get { return BuildDesign.BuildResourceCosts; }
         }
-
-        /// <summary>
-        /// Gets the empire specific ShipInfoText
-        /// </summary>
-        /// <value>empire specific ShipInfoText</value>
-        //public virtual string ShipInfoEmpire
-        //{
-        //    get
-        //    {
-        //        var _owner = Builder.Key;
-        //        //GameLog.Core.General.DebugFormat("");
-        //        var message = "DEFAULT_SHIP_INFO";
-        //        switch (Builder.Key)
-        //        {
-        //            case "FEDERATION":
-        //                message = "vfs:///Resources/UI/Federation/ColonyScreen/ship_selection.png";
-        //                break;
-        //            case "KLINGONS":
-        //                message = "vfs:///Resources/UI/Klingons/ColonyScreen/ship_selection.png";
-        //                break;
-        //            case "ROMULANS":
-        //                message = "vfs:///Resources/UI/Borg/ColonyScreen/ship_selection.png";
-        //                break;
-        //            case "DOMINION":
-        //                message = "vfs:///Resources/UI/Dominion/ColonyScreen/ship_selection.png";
-        //                break;
-        //            case "TERRANEMPIRE":
-        //                message = "vfs:///Resources/UI/TerranEmpire/ColonyScreen/ship_selection.png";
-        //                break;
-        //            case "BORG":
-        //                message = "vfs:///Resources/UI/Borg/ColonyScreen/ship_selection.png";
-        //                break;
-        //            case "CARDASSIANS":
-        //                message = "vfs:///Resources/UI/Cardassians/ColonyScreen/ship_selection.png";
-        //                break;
-        //            default:
-        //                message = "vfs:///Resources/UI/Default/ship_selection.png";
-        //                break;
-        //                //case "FEDERATION":
-        //                //    message ="FED_SHIP_INFO"; break;
-        //                //case "KLINGONS":
-        //                //    message = "KLING_SHIP_INFO"; break;
-        //                //case "ROMULANS":
-        //                //    message = "ROM_SHIP_INFO"; break;
-        //                //case "DOMINION":
-        //                //    message ="DOM_SHIP_INFO"; break;
-        //                //case "TERRANEMPIRE":
-        //                //    message ="TERRANS_SHIP_INFO"; break;
-        //                //case "BORG":
-        //                //    message ="BORG_SHIP_INFO"; break;
-        //                //case "CARDASSIANS":
-        //                //    message ="CARD_SHIP_INFO"; break;
-        //                //default:
-        //                //    message ="DEFAULT_SHIP_INFO"; break;
-        //        }
-        //        return ResourceManager.GetResourcePath(message);
-        //    }
-        //}
 
         /// <summary>
         /// Gets the number of turns remaining until this <see cref="BuildProject"/> is completed.
@@ -420,6 +369,7 @@ namespace Supremacy.Economy
             var civManager = GameContext.Current.CivilizationManagers[Builder];
 
             TechObject spawnedInstance;
+            //if(BuildDesign == StationDes)
             GameLog.Core.Production.DebugFormat("Trying to finish BuildProject ##########  {0} by {1} at {2}", BuildDesign, Builder, Location);
             if (civManager == null || !BuildDesign.TrySpawn(Location, Builder, out spawnedInstance))
                 return;
@@ -436,7 +386,9 @@ namespace Supremacy.Economy
 
             if (newEntry == null)
             {
-                GameLog.Core.Production.DebugFormat("BuildProject.Finished: ##########  {0} built by {1} at {2}", BuildDesign, Builder, Location);
+                GameLog.Core.Production.DebugFormat("TurnNumber {3}: BuildProject.Finished: ##########  {0} built by {1} at {2}", 
+                    BuildDesign, Builder, Location, GameContext.Current.TurnNumber);
+
                 newEntry = new ItemBuiltSitRepEntry(Builder, BuildDesign, Location);
             }
 
@@ -515,19 +467,24 @@ namespace Supremacy.Economy
 
         protected virtual void AdvanceOverride(ref int industry, ResourceValueCollection resources)
         {
+
+            var civManager = GameContext.Current.CivilizationManagers[0];  // ToDo - not always Federation
+            var civ = civManager.Civilization;
             var timeEstimate = GetTimeEstimate();
             if (timeEstimate <= 0)
                 return;
 
-            var delta = Math.Min(
+            var deltaIndustry = Math.Min(
                 industry,
                 Math.Max(0, IndustryRequired - _industryInvested));
 
-            industry -= delta;
+            industry -= deltaIndustry;
 
-            IndustryInvested += delta;
-            ApplyIndustry(delta);
-            OnPropertyChanged("IndustryInvested");
+            IndustryInvested += deltaIndustry;
+
+            // moved down - if there is a shortage of one of the resources > don't say it's 100% done
+            //ApplyIndustry(delta);
+            //OnPropertyChanged("IndustryInvested");
 
             ClearFlag(
                 BuildProjectFlags.DeuteriumShortage |
@@ -540,7 +497,7 @@ namespace Supremacy.Economy
             {
                 var resource = resourceTypes[i];
 
-                delta = ResourcesRequired[resource] - _resourcesInvested[resource];
+                var delta = ResourcesRequired[resource] - _resourcesInvested[resource];
 
                 if (delta <= 0)
                     continue;
@@ -549,6 +506,29 @@ namespace Supremacy.Economy
                     delta > resources[resource])
                 {
                     SetFlag((BuildProjectFlags)((int)BuildProjectFlags.DeuteriumShortage << i));
+                    GameLog.Core.Test.DebugFormat("Estimated One Turn: resource = {0}, delta/missing = {1} for {2}", resource.ToString(), delta.ToString(), this.BuildDesign.Description);
+
+                    deltaIndustry -= delta;
+                    
+                    civManager.SitRepEntries.Add(new BuildProjectResourceShortageSitRepEntry(civ, resource.ToString(), delta.ToString(), this.BuildDesign.Description));
+
+                }
+
+                if (timeEstimate == 1)
+                {
+                    //SetFlag((BuildProjectFlags)((int)BuildProjectFlags.DeuteriumShortage << i));
+                    GameLog.Core.Test.DebugFormat("Estimated One Turn... checking for resources: resource = {0}, delta/needed for finish = {1} for {2}"
+                        , resource.ToString(), delta.ToString(), this.BuildDesign);
+
+                    if (delta > 0 && resource == ResourceType.RawMaterials && delta > civManager.Resources.RawMaterials.CurrentValue)
+                    {
+                        GameLog.Core.Test.DebugFormat("resource = {0}, delta/missing = {1}, too less available !!!", resource.ToString(), delta);
+                        civManager.SitRepEntries.Add(new BuildProjectResourceShortageSitRepEntry(civ, resource.ToString(), delta.ToString(), this.BuildDesign.Description));
+
+                    }
+                    //deltaIndustry -= delta;
+
+
                 }
 
                 if (resources[resource] <= 0)
@@ -562,8 +542,18 @@ namespace Supremacy.Economy
                 resources[resource] -= delta;
                 _resourcesInvested[resource] += delta;
 
+                //if (delta > 0)
+                //GameLog.Core.Test.DebugFormat("resource = {0}, delta/missing = {1}", resource.ToString(), delta);
+
+                //if (timeEstimate == 1)
+                //{
+                //    delta = 0;
+                //}
                 ApplyResource(resource, delta);
             }
+
+            ApplyIndustry(deltaIndustry);
+            OnPropertyChanged("IndustryInvested");
 
             OnPropertyChanged("TurnsRemaining");
             OnPropertyChanged("PercentComplete");

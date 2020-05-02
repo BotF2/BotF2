@@ -173,6 +173,7 @@ namespace Supremacy.Combat
                 }
                 else
                 {
+                    GameLog.Client.Test.DebugFormat("ShieldStrenth crash owner ={0} {1} {2}", Source.Owner.Key, Source.Design.Key, Source.ShieldStrength.CurrentValue);
                     { return ((float)ShieldStrength / Source.OrbitalDesign.ShieldStrength); }
                 }
             }

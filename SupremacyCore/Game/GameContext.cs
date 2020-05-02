@@ -187,7 +187,6 @@ namespace Supremacy.Game
             writer.WriteObject(_universe);
             writer.WriteObject(_techDatabase);
             writer.WriteObject(_researchMatrix);
-         //   writer.WriteObject(_intelMatrix);
             writer.WriteObject(_sectorClaims);
             writer.WriteObject(_techTrees);
             writer.WriteObject(_diplomacyData);

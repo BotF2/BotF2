@@ -911,10 +911,13 @@ namespace Supremacy.Game
                                       + Environment.NewLine;
                         if (foreignPower.StatementReceived != null)  // in SinglePlayer you'll never get this "received" because you are always the playing SENDER
                         {
+                             
+                            //string parameterString = foreignPower.StatementSent.Parameter.ToString() ?? "";
+
                             _gameLog += Environment.NewLine + "StatementReceived: "
                                       + foreignPower.StatementReceived.Sender + " vs "
                                       + foreignPower.StatementReceived.Recipient + ": > "
-                                      + ", Parameter = " + foreignPower.StatementReceived.Parameter.ToString()
+                                      + ", Parameter = " //+ parameterString
                                       + Environment.NewLine
                                       ;
 
@@ -955,12 +958,14 @@ namespace Supremacy.Game
                         }
                         if (foreignPower.StatementSent != null)
                         {
+                            //string parameterString = foreignPower.StatementSent.Parameter.ToString() ?? "";
+
                             //GameLog.Core.Diplomacy.DebugFormat("received a 'StealCredits'-Diplomacy-Statement");   // in SinglePlayer Gamelog is just for the sender
                             _gameLog += Environment.NewLine + "(relevant is just the receive on HOSTING side.... StatementSent: "
                                       + foreignPower.StatementSent.Sender + " vs "
                                       + foreignPower.StatementSent.Recipient + ": > "
                                       + foreignPower.StatementSent.StatementType.ToString()
-                                      + ", Parameter = " + foreignPower.StatementSent.Parameter.ToString()
+                                      + ", Parameter = " //+ parameterString
                                       + Environment.NewLine;
                         }
 

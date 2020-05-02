@@ -370,7 +370,7 @@ namespace Supremacy.Client
             else if (!service.AutoTurn)
             {
                 // works but doubled
-                if (ClientSettings.Current.EnableCombatScreen == false)   // only show SUMMARY if also CombatScreen are shown (if not, a quicker game is possible)
+                if (ClientSettings.Current.EnableCombatScreen == true)   // only show SUMMARY if also CombatScreen are shown (if not, a quicker game is possible)
                 {
                     GameLog.Client.General.DebugFormat("################ Setting EnableCombatScreen = {0} - SUMMARY not shown at false - just click manually to SUMMARY if you want", ClientSettings.Current.EnableCombatScreen.ToString());
                     _sitRepDialog.ShowIfAnyVisibleEntries();

@@ -1,4 +1,4 @@
-// TechDatabase.cs
+// File:TechDatabase.cs
 //
 // Copyright (c) 2007 Mike Strobel
 //
@@ -196,8 +196,10 @@ namespace Supremacy.Tech
 
             foreach (XmlElement xmlFacility in xmlFacilities.GetElementsByTagName("ProductionFacility"))
             {
-                ProductionFacilityDesign facility = new ProductionFacilityDesign(xmlFacility);
-                facility.DesignID = db.GetNewDesignID();
+                ProductionFacilityDesign facility = new ProductionFacilityDesign(xmlFacility)
+                {
+                    DesignID = db.GetNewDesignID()
+                };
                 designIdMap[facility.Key] = facility.DesignID;
                 db.ProductionFacilityDesigns.Add(facility);
             }
@@ -324,8 +326,10 @@ namespace Supremacy.Tech
             XmlElement xmlBuildings = xmlDoc.DocumentElement["Buildings"];
             foreach (XmlElement xmlBuilding in xmlBuildings.GetElementsByTagName("Building"))
             {
-                BuildingDesign building = new BuildingDesign(xmlBuilding);
-                building.DesignID = db.GetNewDesignID();
+                BuildingDesign building = new BuildingDesign(xmlBuilding)
+                {
+                    DesignID = db.GetNewDesignID()
+                };
                 designIdMap[building.Key] = building.DesignID;
                 //GameLog works
                 //GameLog.Client.GameData.DebugFormat("TechDatabase.cs: building.DesignID={0}, {1}", building.DesignID, building.LocalizedName);
@@ -388,8 +392,10 @@ namespace Supremacy.Tech
             XmlElement xmlShipyards = xmlDoc.DocumentElement["Shipyards"];
             foreach (XmlElement xmlShipyard in xmlShipyards.GetElementsByTagName("Shipyard"))
             {
-                ShipyardDesign shipyard = new ShipyardDesign(xmlShipyard);
-                shipyard.DesignID = db.GetNewDesignID();
+                ShipyardDesign shipyard = new ShipyardDesign(xmlShipyard)
+                {
+                    DesignID = db.GetNewDesignID()
+                };
                 designIdMap[shipyard.Key] = shipyard.DesignID;
                 //GameLog works
                 //GameLog.Client.GameData.DebugFormat("TechDatabase.cs: shipyard.DesignID={0}, {1}", shipyard.DesignID, shipyard.LocalizedName);
@@ -459,8 +465,10 @@ namespace Supremacy.Tech
                 lastSuccessfullyLoadedShipDesign = xmlShip.Name;
                 successfullyLoadedShipDesignCounter += 1;
 
-                ShipDesign ship = new ShipDesign(xmlShip);
-                ship.DesignID = db.GetNewDesignID();
+                ShipDesign ship = new ShipDesign(xmlShip)
+                {
+                    DesignID = db.GetNewDesignID()
+                };
                 designIdMap[ship.Key] = ship.DesignID;
                 db.ShipDesigns.Add(ship);
             }
@@ -524,8 +532,10 @@ namespace Supremacy.Tech
             XmlElement xmlStations = xmlDoc.DocumentElement["SpaceStations"];
             foreach (XmlElement xmlStation in xmlStations.GetElementsByTagName("SpaceStation"))
             {
-                StationDesign station = new StationDesign(xmlStation);
-                station.DesignID = db.GetNewDesignID();
+                StationDesign station = new StationDesign(xmlStation)
+                {
+                    DesignID = db.GetNewDesignID()
+                };
                 designIdMap[station.Key] = station.DesignID;
                 db.StationDesigns.Add(station);
             }
@@ -1875,8 +1885,8 @@ namespace Supremacy.Tech
                     XmlElement groupElement = xmlDoc.CreateElement("Buildings");
                     foreach (BuildingDesign design in _buildingDesigns)
                     {
-                        if (design is ShipyardDesign)
-                            continue;
+                        //if (design is ShipyardDesign)
+                        //    continue;
 
 
                         XmlElement designElement = xmlDoc.CreateElement("Building");

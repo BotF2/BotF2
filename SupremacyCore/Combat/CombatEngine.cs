@@ -219,7 +219,7 @@ namespace Supremacy.Combat
 
             foreach (CombatAssets civAssets in _assets.ToList())
             {
-                if (civAssets.Station != null)
+                if (civAssets.Station != null && civAssets.Station.Source != null) // new build stations have no source
                 {
                     _combatStation = new Tuple<CombatUnit, CombatWeapon[]>(
                         civAssets.Station,
@@ -669,15 +669,13 @@ namespace Supremacy.Combat
         /// <returns></returns>
         protected CombatOrder GetCombatOrder(Orbital source)
         {
-            var _localOrder = new CombatOrder();
-            _localOrder = CombatOrder.Engage;
+            CombatOrder _localOrder = CombatOrder.Engage;
             try
             {
                 GameLog.Core.CombatDetails.DebugFormat("Try Get Order for {0} {1} {2}", source.ObjectID, source.Name, source.Design.Name);
                 //if(_orders[source.OwnerID].GetOrder(source) == CombatOrder.)
                     _localOrder = _orders[source.OwnerID].GetOrder(source);
-                if (_localOrder != null)
-                    GameLog.Core.CombatDetails.DebugFormat("Got Order for {0} {1} {2}: -> order = {3}", source.ObjectID, source.Name, source.Design.Name, _orders[source.OwnerID].GetOrder(source));
+                GameLog.Core.CombatDetails.DebugFormat("Got Order for {0} {1} {2}: -> order = {3}", source.ObjectID, source.Name, source.Design.Name, _orders[source.OwnerID].GetOrder(source));
                 return _localOrder; // this is the class CombatOrder.BORG (or FEDERATION or.....) that comes from public GetCombatOrder() in CombatOrders.cs
             }
             catch //(Exception e)
