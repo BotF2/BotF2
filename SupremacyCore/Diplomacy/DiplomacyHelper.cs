@@ -684,10 +684,11 @@ namespace Supremacy.Diplomacy
         public static bool IsContactMade(Civilization source, Civilization target)
         {
             if (source == null)
-                throw new ArgumentNullException("source");
+                return false;
+                //throw new ArgumentNullException("source");
             if (target == null)
-                //return false;
-                throw new ArgumentNullException("target");
+                return false;
+               // throw new ArgumentNullException("target");
 
             if (source == target)
                 return false;

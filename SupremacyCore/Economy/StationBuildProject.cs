@@ -58,8 +58,8 @@ namespace Supremacy.Economy
         {
             get
             {
-                GameLog.Client.Test.DebugFormat("return flase for {0} stationdesign {1}", _productionCenterId, StationDesign.Description);
-                return false; //GetFlag(BuildProjectFlags.RawMaterialsShortage);
+                GameLog.Client.Test.DebugFormat("ID {0} stationdesign {1}", _productionCenterId, StationDesign.Description);
+                return GetFlag(BuildProjectFlags.RawMaterialsShortage);
             }
             protected set
             {
@@ -87,7 +87,7 @@ namespace Supremacy.Economy
         /// <returns>The industry available.</returns>
         protected override int GetIndustryAvailable()
         {
-            return 10000; //ProductionCenter.GetBuildOutput(0);
+            return ProductionCenter.GetBuildOutput(0);
         }
 
         /// <summary>
