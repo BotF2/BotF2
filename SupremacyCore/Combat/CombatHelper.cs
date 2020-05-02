@@ -138,15 +138,16 @@ namespace Supremacy.Combat
                 }
             }
 
-            if (sector.Station != null)
+            if (sector.Station != null) // && sector.Owner.HomeSystemName != sector.System.Name && sector.Station.TurnCreated != GameContext.Current.TurnNumber)
             {
+
                 // needed once again for avoiding crash while finish a station build
-                //if (sector.Station.TurnCreated == GameContext.Current.TurnNumber || sector.Station.TurnCreated == 1)
-                //{
-                //    GameLog.Core.Combat.DebugFormat("{0} {1} ({2}) just build in turn {3} and NOT taking part in this combat for avoid crashes on *uncomplete* stations"
-                //        , sector.Station.ObjectID, sector.Station.Name, sector.Station.Design, sector.Station.TurnCreated);
-                //    goto DoNotIncludeStationsNotFullyBuilded;
-                //}
+                if (sector.Station.TurnCreated == GameContext.Current.TurnNumber - 1 || sector.Station.TurnCreated == GameContext.Current.TurnNumber)
+                {
+                    GameLog.Core.Combat.DebugFormat("{0} {1} ({2}) just build in turn {3} and NOT taking part in this combat for avoid crashes on *uncomplete* stations"
+                        , sector.Station.ObjectID, sector.Station.Name, sector.Station.Design, sector.Station.TurnCreated);
+                    goto DoNotIncludeStationsNotFullyBuilded;
+                }
 
                 var owner = sector.Station.Owner;
 
@@ -157,7 +158,7 @@ namespace Supremacy.Combat
 
                 assets[owner].Station = new CombatUnit(sector.Station);
 
-                //DoNotIncludeStationsNotFullyBuilded:;
+                DoNotIncludeStationsNotFullyBuilded:;
             }
 
             results.AddRange(assets.Values);
