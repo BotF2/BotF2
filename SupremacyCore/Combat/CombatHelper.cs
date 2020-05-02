@@ -1,4 +1,4 @@
-// CombatHelper.cs
+// File:CombatHelper.cs
 //
 // Copyright (c) 2007 Mike Strobel
 //
@@ -138,11 +138,10 @@ namespace Supremacy.Combat
                 }
             }
 
-            if (sector.Station != null) // && sector.Owner.HomeSystemName != sector.System.Name && sector.Station.TurnCreated != GameContext.Current.TurnNumber)
+            if (sector.Station != null)
             {
-
                 // needed once again for avoiding crash while finish a station build
-                if (sector.Station.TurnCreated == GameContext.Current.TurnNumber - 1 || sector.Station.TurnCreated == GameContext.Current.TurnNumber)
+                if (sector.Station.TurnCreated == GameContext.Current.TurnNumber || sector.Station.TurnCreated == 1)
                 {
                     GameLog.Core.Combat.DebugFormat("{0} {1} ({2}) just build in turn {3} and NOT taking part in this combat for avoid crashes on *uncomplete* stations"
                         , sector.Station.ObjectID, sector.Station.Name, sector.Station.Design, sector.Station.TurnCreated);

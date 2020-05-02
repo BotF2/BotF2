@@ -219,7 +219,7 @@ namespace Supremacy.Combat
 
             foreach (CombatAssets civAssets in _assets.ToList())
             {
-                if (civAssets.Station != null)
+                if (civAssets.Station != null && civAssets.Station.Source != null) // new build stations have no source
                 {
                     _combatStation = new Tuple<CombatUnit, CombatWeapon[]>(
                         civAssets.Station,
