@@ -12,41 +12,42 @@ namespace Supremacy.Scripting.Ast
 
         public RangeDeclaration VariableName
         {
-            get { return _variableName; }
-            set { _variableName = value; }
+            get => _variableName;
+            set => _variableName = value;
         }
 
         public Expression Initializer
         {
-            get { return _initializer; }
-            set { _initializer = value; }
+            get => _initializer;
+            set => _initializer = value;
         }
 
         public Expression Body
         {
-            get { return _body; }
-            set { _body = value; }
+            get => _body;
+            set => _body = value;
         }
 
         public Expression LeftKey
         {
-            get { return _leftKey; }
-            set { _leftKey = value; }
+            get => _leftKey;
+            set => _leftKey = value;
         }
 
         public Expression RightKey
         {
-            get { return _rightKey; }
-            set { _rightKey = value; }
+            get => _rightKey;
+            set => _rightKey = value;
         }
 
         public override void CloneTo<T>(CloneContext cloneContext, T target)
         {
             base.CloneTo(cloneContext, target);
 
-            var clone = target as JoinClause;
-            if (clone == null)
+            if (!(target is JoinClause clone))
+            {
                 return;
+            }
 
             clone._variableName = Clone(cloneContext, _variableName);
             clone._initializer = Clone(cloneContext, _initializer);
@@ -82,9 +83,6 @@ namespace Supremacy.Scripting.Ast
             DumpChild(_body, sw, indentChange);
         }
 
-        protected override string MethodName
-        {
-            get { return "Join"; }
-        }
+        protected override string MethodName => "Join";
     }
 }

@@ -18,22 +18,29 @@ namespace Supremacy.Scripting.Ast
         internal void AddKnownVariable(string name, IKnownVariable variable)
         {
             if (_knownVariables == null)
+            {
                 _knownVariables = new Dictionary<string, IKnownVariable>();
+            }
 
             if (!_knownVariables.ContainsKey(name))
+            {
                 _knownVariables[name] = variable;
+            }
 
             if (Parent != null)
+            {
                 Parent.Explicit.AddKnownVariable(name, variable);
+            }
         }
 
         internal IKnownVariable GetKnownVariable(string name)
         {
             if (_knownVariables == null)
+            {
                 return null;
+            }
 
-            IKnownVariable variable;
-            return _knownVariables.TryGetValue(name, out variable) ? variable : null;
+            return _knownVariables.TryGetValue(name, out IKnownVariable variable) ? variable : null;
         }
     }
 }

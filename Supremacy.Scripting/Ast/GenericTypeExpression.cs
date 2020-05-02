@@ -13,7 +13,6 @@ namespace Supremacy.Scripting.Ast
     /// </summary>	
     class GenericTypeExpression : TypeExpression
     {
-        private TypeArguments _typeArguments;
         private Type[] _resolvedTypeParameters;	// TODO: Waiting for constrains check cleanup
         private Type _openType;
 
@@ -26,7 +25,7 @@ namespace Supremacy.Scripting.Ast
             : base(t)
         {
             _openType = t.GetGenericTypeDefinition();
-            _typeArguments = typeArguments;
+            TypeArguments = typeArguments;
 
             Span = span;
         }
@@ -36,20 +35,18 @@ namespace Supremacy.Scripting.Ast
             // For cloning purposes only.
         }
 
-        public TypeArguments TypeArguments
-        {
-            get { return _typeArguments; }
-        }
+        public TypeArguments TypeArguments { get; private set; }
 
         public override void CloneTo<T>(CloneContext cloneContext, T target)
         {
             base.CloneTo(cloneContext, target);
 
-            var clone = target as GenericTypeExpression;
-            if (clone == null)
+            if (!(target is GenericTypeExpression clone))
+            {
                 return;
+            }
 
-            clone._typeArguments = _typeArguments.Clone(cloneContext);
+            clone.TypeArguments = TypeArguments.Clone(cloneContext);
             clone._resolvedTypeParameters = _resolvedTypeParameters;
             clone._openType = _openType;
         }
@@ -62,16 +59,20 @@ namespace Supremacy.Scripting.Ast
         protected override TypeExpression DoResolveAsTypeStep(ParseContext parseContext)
         {
             if (ExpressionClass != ExpressionClass.Invalid)
+            {
                 return this;
+            }
 
             ExpressionClass = ExpressionClass.Type;
 
-            if (!_typeArguments.Resolve(parseContext))
+            if (!TypeArguments.Resolve(parseContext))
+            {
                 return null;
+            }
 
             _resolvedTypeParameters = _openType.GetGenericArguments();
 
-            var resolvedTypes = _typeArguments.ResolvedTypes;
+            Type[] resolvedTypes = TypeArguments.ResolvedTypes;
             if (resolvedTypes.Length != _resolvedTypeParameters.Length)
             {
                 parseContext.ReportError(
@@ -99,7 +100,7 @@ namespace Supremacy.Scripting.Ast
                 ec,
                 _openType,
                 _resolvedTypeParameters,
-                _typeArguments.ResolvedTypes,
+                TypeArguments.ResolvedTypes,
                 Span,
                 false);
         }
@@ -109,36 +110,22 @@ namespace Supremacy.Scripting.Ast
             return TypeManager.CheckAccessLevel(parseContext, _openType);
         }
 
-        public override bool IsClass
-        {
-            get { return _openType.IsClass; }
-        }
+        public override bool IsClass => _openType.IsClass;
 
-        public override bool IsValueType
-        {
-            get { return TypeManager.IsStruct(_openType); }
-        }
+        public override bool IsValueType => TypeManager.IsStruct(_openType);
 
-        public override bool IsInterface
-        {
-            get { return _openType.IsInterface; }
-        }
+        public override bool IsInterface => _openType.IsInterface;
 
-        public override bool IsSealed
-        {
-            get { return _openType.IsSealed; }
-        }
+        public override bool IsSealed => _openType.IsSealed;
 
         public override bool Equals(object obj)
         {
-            var genericTypeExpression = obj as GenericTypeExpression;
-            if (genericTypeExpression == null)
+            if (!(obj is GenericTypeExpression genericTypeExpression))
+            {
                 return false;
+            }
 
-            if ((Type == null) || (genericTypeExpression.Type == null))
-                return false;
-
-            return (Type == genericTypeExpression.Type);
+            return (Type == null) || (genericTypeExpression.Type == null) ? false : Type == genericTypeExpression.Type;
         }
 
         public override int GetHashCode()
@@ -150,20 +137,20 @@ namespace Supremacy.Scripting.Ast
         {
             if (_openType == TypeManager.CoreTypes.GenericNullable)
             {
-                if (_typeArguments.ResolvedTypes != null)
+                if (TypeArguments.ResolvedTypes != null)
                 {
-                    sw.Write(TypeManager.GetCSharpName(_typeArguments.ResolvedTypes[0]));
+                    sw.Write(TypeManager.GetCSharpName(TypeArguments.ResolvedTypes[0]));
                     sw.Write("?");
                     return;
                 }
 
-                DumpChild(_typeArguments[0], sw);
+                DumpChild(TypeArguments[0], sw);
                 sw.Write("?");
                 return;
             }
-            if (_typeArguments.ResolvedTypes != null)
+            if (TypeArguments.ResolvedTypes != null)
             {
-                sw.Write(TypeManager.GetCSharpName(_openType.MakeGenericType(_typeArguments.ResolvedTypes)));
+                sw.Write(TypeManager.GetCSharpName(_openType.MakeGenericType(TypeArguments.ResolvedTypes)));
                 return;
             }
 
@@ -172,10 +159,13 @@ namespace Supremacy.Scripting.Ast
             sw.Write("<");
 
             int i = 0;
-            foreach (var typeArgument in _typeArguments)
+            foreach (FullNamedExpression typeArgument in TypeArguments)
             {
                 if (i++ != 0)
+                {
                     sw.Write(", ");
+                }
+
                 typeArgument.Dump(sw);
             }
 

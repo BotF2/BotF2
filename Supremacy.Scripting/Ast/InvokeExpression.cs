@@ -16,7 +16,6 @@ namespace Supremacy.Scripting.Ast
     {
         private TypeArguments _typeArguments;
         private Arguments _arguments;
-        private MethodGroupExpression _methodGroup;
         private bool _argumentsResolved;
         private Expression _target;
 
@@ -29,71 +28,55 @@ namespace Supremacy.Scripting.Ast
         public InvokeExpression(Expression target, IEnumerable<Argument> arguments)
             : this()
         {
-            if (target == null)
-                throw new ArgumentNullException("target");
-            
-            Target = target;
+            Target = target ?? throw new ArgumentNullException("target");
 
             if (arguments != null)
+            {
                 Arguments.AddRange(arguments);
+            }
         }
 
         public override void CloneTo<T>(CloneContext cloneContext, T target)
         {
             base.CloneTo(cloneContext, target);
 
-            var clone = target as InvokeExpression;
-            if (clone == null)
+            if (!(target is InvokeExpression clone))
+            {
                 return;
+            }
 
             clone._typeArguments = _typeArguments.Clone(cloneContext);
             clone._arguments = _arguments.Clone(cloneContext);
-            clone._methodGroup = Clone(cloneContext, _methodGroup);
+            clone.MethodGroup = Clone(cloneContext, MethodGroup);
             clone._argumentsResolved = _argumentsResolved;
             clone._target = Clone(cloneContext, _target);
         }
         
         public Expression Target
         {
-            get { return _target; }
-            set { _target = value; }
+            get => _target;
+            set => _target = value;
         }
 
-        public virtual TypeArguments TypeArguments
-        {
-            get
-            {
-                var memberAccess = Target as MemberAccessExpression;
-                if (memberAccess != null)
-                    return memberAccess.TypeArguments;
-                return _typeArguments;
-            }
-        }
+        public virtual TypeArguments TypeArguments => Target is MemberAccessExpression memberAccess ? memberAccess.TypeArguments : _typeArguments;
 
         public Arguments Arguments
         {
-            get { return _arguments; }
-            protected set { _arguments = value; }
+            get => _arguments;
+            protected set => _arguments = value;
         }
 
-        public override bool IsPrimaryExpression
-        {
-            get { return true; }
-        }
+        public override bool IsPrimaryExpression => true;
 
-        protected MethodGroupExpression MethodGroup
-        {
-            get { return _methodGroup; }
-            set { _methodGroup = value; }
-        }
+        protected MethodGroupExpression MethodGroup { get; set; }
 
         public override void Walk(AstVisitor prefix, AstVisitor postfix)
         {
             Walk(ref _target, prefix, postfix);
 
-            for (var i = 0; i < _arguments.Count; i++)
+            for (int i = 0; i < _arguments.Count; i++)
             {
-                var argument = _arguments[i];
+                Argument argument = _arguments[i];
                 Walk(ref argument, prefix, postfix);
                 _arguments[i] = argument;
             }
@@ -101,35 +84,41 @@ namespace Supremacy.Scripting.Ast
 
         public override MSAst TransformCore(ScriptGenerator generator)
         {
-            var instanceExpression = MethodGroup.InstanceExpression;
+            Expression instanceExpression = MethodGroup.InstanceExpression;
 
             return MSAst.Call(
-                (instanceExpression != null) ? instanceExpression.Transform(generator) : null,
+                instanceExpression?.Transform(generator),
                 (MethodInfo)MethodGroup,
                 _arguments.Select(o => o.Value.Transform(generator)));
         }
 
         public override void Dump(SourceWriter sw, int indentChange)
         {
-            var parenthesize = !_target.IsPrimaryExpression;
+            bool parenthesize = !_target.IsPrimaryExpression;
 
             if (parenthesize)
+            {
                 sw.Write("(");
+            }
 
             _target.Dump(sw, indentChange);
 
             if (parenthesize)
+            {
                 sw.Write(")");
+            }
 
             if (_typeArguments.Count != 0)
             {
                 sw.Write("<");
-                for (var i = 0; i < _typeArguments.Count; i++)
+                for (int i = 0; i < _typeArguments.Count; i++)
                 {
-                    var typeArgument = _typeArguments[i];
+                    FullNamedExpression typeArgument = _typeArguments[i];
 
                     if (i != 0)
+                    {
                         sw.Write(", ");
+                    }
 
                     typeArgument.Dump(sw, indentChange);
                 }
@@ -138,15 +127,17 @@ namespace Supremacy.Scripting.Ast
 
             sw.Write("(");
 
-            var isExtensionInvocation = MethodGroup is ExtensionMethodGroupExpression;
-            var firstArgumentIndex = (isExtensionInvocation ? 1 : 0);
+            bool isExtensionInvocation = MethodGroup is ExtensionMethodGroupExpression;
+            int firstArgumentIndex = isExtensionInvocation ? 1 : 0;
 
-            for (var i = firstArgumentIndex; i < _arguments.Count; i++)
+            for (int i = firstArgumentIndex; i < _arguments.Count; i++)
             {
-                var argument = _arguments[i];
+                Argument argument = _arguments[i];
 
                 if (i > firstArgumentIndex)
+                {
                     sw.Write(", ");
+                }
 
                 argument.Dump(sw, indentChange);
             }
@@ -158,11 +149,15 @@ namespace Supremacy.Scripting.Ast
         {
             // Don't resolve already resolved expression
             if (ExpressionClass != ExpressionClass.Invalid)
+            {
                 return this;
+            }
 
-            var resolvedTarget = Target.Resolve(ec, ResolveFlags.VariableOrValue | ResolveFlags.MethodGroup);
+            Expression resolvedTarget = Target.Resolve(ec, ResolveFlags.VariableOrValue | ResolveFlags.MethodGroup);
             if (resolvedTarget == null)
+            {
                 return null;
+            }
 
             // Next, evaluate all the expressions in the argument list
             if (_arguments != null && !_argumentsResolved)
@@ -171,7 +166,7 @@ namespace Supremacy.Scripting.Ast
                 _argumentsResolved = true;
             }
 
-            var expressionType = resolvedTarget.Type;
+            Type expressionType = resolvedTarget.Type;
 
             MethodGroup = resolvedTarget as MethodGroupExpression;
 
@@ -180,15 +175,14 @@ namespace Supremacy.Scripting.Ast
                 if (expressionType != null && TypeManager.IsDelegateType(expressionType))
                 {
                     MethodGroup = (resolvedTarget = new MemberAccessExpression
-                                                     {
-                                                         Left = resolvedTarget,
-                                                         Name = "Invoke",
-                                                         Span = Span
-                                                     }.Resolve(ec)) as MethodGroupExpression;
+                    {
+                        Left = resolvedTarget,
+                        Name = "Invoke",
+                        Span = Span
+                    }.Resolve(ec)) as MethodGroupExpression;
                 }
 
-                var memberExpression = resolvedTarget as MemberExpression;
-                if (memberExpression == null)
+                if (!(resolvedTarget is MemberExpression memberExpression))
                 {
                     resolvedTarget.OnErrorUnexpectedKind(ec, ResolveFlags.MethodGroup, Span);
                     return null;
@@ -202,7 +196,9 @@ namespace Supremacy.Scripting.Ast
                         Span);
 
                     if (MethodGroup != null)
+                    {
                         ((ExtensionMethodGroupExpression)MethodGroup).ExtensionExpression = memberExpression.InstanceExpression;
+                    }
                 }
                 
                 if (MethodGroup == null)
@@ -221,15 +217,17 @@ namespace Supremacy.Scripting.Ast
             MethodGroup = DoResolveOverload(ec);
 
             if (MethodGroup == null)
+            {
                 return null;
+            }
 
-            var method = (MethodInfo)MethodGroup;
+            MethodInfo method = (MethodInfo)MethodGroup;
             if (method != null)
             {
                 Type = method.ReturnType;
 
                 // TODO: this is a copy of mg.ResolveMemberAccess method
-                var instanceExpression = MethodGroup.InstanceExpression;
+                Expression instanceExpression = MethodGroup.InstanceExpression;
                 if (method.IsStatic)
                 {
                     if (instanceExpression == null ||
@@ -254,9 +252,11 @@ namespace Supremacy.Scripting.Ast
             }
 
             if (method == null)
+            {
                 return null;
+            }
 
-            IsSpecialMethodInvocation(ec, method, Span);
+            _ = IsSpecialMethodInvocation(ec, method, Span);
 
             ExpressionClass = ExpressionClass.Value;
             return this;
@@ -270,10 +270,14 @@ namespace Supremacy.Scripting.Ast
         public static bool IsSpecialMethodInvocation(ParseContext ec, MethodBase method, SourceSpan location)
         {
             if (!TypeManager.IsSpecialMethod(method))
+            {
                 return false;
+            }
 
             if (ec.HasSet(ParseContext.Options.InvokeSpecialName))
+            {
                 return false;
+            }
 
             ec.ReportError(
                 571,

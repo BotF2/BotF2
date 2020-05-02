@@ -29,19 +29,13 @@ namespace Supremacy.Scripting.Ast
 
         public FullNamedExpression LiteralType
         {
-            get { return _literalType; }
-            set { _literalType = value; }
+            get => _literalType;
+            set => _literalType = value;
         }
 
-        public override bool IsPrimaryExpression
-        {
-            get { return true; }
-        }
+        public override bool IsPrimaryExpression => true;
 
-        public override bool IsNull
-        {
-            get { return (Kind == LiteralKind.Null); }
-        }
+        public override bool IsNull => Kind == LiteralKind.Null;
 
         public override void Walk(AstVisitor prefix, AstVisitor postfix)
         {
@@ -50,9 +44,9 @@ namespace Supremacy.Scripting.Ast
 
         public override MSAst TransformCore(ScriptGenerator generator)
         {
-            if (Kind == LiteralKind.Null)
-                return MSAst.Default(typeof(object));
-            return MSAst.Constant(
+            return Kind == LiteralKind.Null
+                ? MSAst.Default(typeof(object))
+                : (MSAst)MSAst.Constant(
                 _value,
                 Type);
         }
@@ -65,9 +59,11 @@ namespace Supremacy.Scripting.Ast
         public override Expression DoResolve(ParseContext rc)
         {
             if (Kind == LiteralKind.Null)
+            {
                 return new DefaultValueExpression(typeof(object));
+            }
 
-            var literalText = Text;
+            string literalText = Text;
             if (literalText == null)
             {
                 rc.Compiler.Errors.Add(
@@ -83,12 +79,16 @@ namespace Supremacy.Scripting.Ast
             _literalType = _literalType.ResolveAsTypeStep(rc, false);
 
             if ((_literalType == null) || (_literalType.Type == null))
+            {
                 return null;
+            }
 
             if (Kind == LiteralKind.Text)
+            {
                 return new InterpolatedStringExpression(this).Resolve(rc);
+            }
 
-            var builtinType = TypeManager.GetBuiltinTypeFromClrType(_literalType.Type);
+            BuiltinType? builtinType = TypeManager.GetBuiltinTypeFromClrType(_literalType.Type);
 
             if (!builtinType.HasValue)
             {
@@ -100,13 +100,12 @@ namespace Supremacy.Scripting.Ast
                 return null;
             }
 
-            Type type;
 
             if (TypeManager.TryParseLiteral(
                 builtinType.Value,
                 literalText,
                 out _value,
-                out type))
+                out Type type))
             {
                 Type = type;
 

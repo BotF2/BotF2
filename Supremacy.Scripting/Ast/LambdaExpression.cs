@@ -11,7 +11,6 @@ namespace Supremacy.Scripting.Ast
     public class LambdaExpression : Expression
     {
         private readonly List<LambdaParameter> _parameters;
-        private TopLevelScope _scope;
         private Expression _body;
         private Expression _resolvedBody;
 
@@ -20,20 +19,13 @@ namespace Supremacy.Scripting.Ast
             _parameters = new List<LambdaParameter>();
         }
 
-        public IList<LambdaParameter> Parameters
-        {
-            get { return _parameters; }
-        }
+        public IList<LambdaParameter> Parameters => _parameters;
 
-        public TopLevelScope Scope
-        {
-            get { return _scope; }
-            set { _scope = value; }
-        }
+        public TopLevelScope Scope { get; set; }
 
         public Expression Body
         {
-            get { return _resolvedBody ?? _body; }
+            get => _resolvedBody ?? _body;
             set
             {
                 _body = value;
@@ -46,9 +38,9 @@ namespace Supremacy.Scripting.Ast
 
         public override void Walk(AstVisitor prefix, AstVisitor postfix)
         {
-            for (var i = 0; i < _parameters.Count; i++)
+            for (int i = 0; i < _parameters.Count; i++)
             {
-                var parameter = _parameters[i];
+                LambdaParameter parameter = _parameters[i];
                 Walk(ref parameter, prefix, postfix);
                 _parameters[i] = parameter;
             }
@@ -58,19 +50,22 @@ namespace Supremacy.Scripting.Ast
 
         public override MSAst TransformCore(ScriptGenerator generator)
         {
-            var scope = generator.PushNewScope();
+            ScriptScope scope = generator.PushNewScope();
             try
             {
-                for (int i = 0; i < _scope.Parameters.Count; i++)
-                    _scope.Parameters[i].Transform(generator);
+                for (int i = 0; i < Scope.Parameters.Count; i++)
+                {
+                    _ = Scope.Parameters[i].Transform(generator);
+                }
 
-
-                var transformedBody = _body.Transform(generator);
+                MSAst transformedBody = _body.Transform(generator);
 
                 if ((ReturnType != null) && (ReturnType != TypeManager.CoreTypes.Object) && (transformedBody.Type != ReturnType))
+                {
                     transformedBody = MSAst.Convert(transformedBody, ReturnType);
+                }
 
-                var result = scope.FinishScope(transformedBody);
+                System.Linq.Expressions.LambdaExpression result = scope.FinishScope(transformedBody);
 
                 return result;
             }
@@ -82,98 +77,121 @@ namespace Supremacy.Scripting.Ast
 
         public override void Dump(SourceWriter sw, int indentChange)
         {
-            if (_scope == null)
+            if (Scope == null)
             {
-                var parenthesizeParameters = ((Parameters.Count != 1) ||
-                                              Parameters[0].HasExplicitType);
+                bool parenthesizeParameters = (Parameters.Count != 1) ||
+                                              Parameters[0].HasExplicitType;
 
                 if (parenthesizeParameters)
+                {
                     sw.Write("(");
+                }
 
-                for (var i = 0; i < Parameters.Count; i++)
+                for (int i = 0; i < Parameters.Count; i++)
                 {
                     if (i != 0)
+                    {
                         sw.Write(", ");
+                    }
 
                     DumpChild(Parameters[i], sw);
                 }
 
                 if (parenthesizeParameters)
+                {
                     sw.Write(")");
+                }
 
                 sw.Write(" => ");
 
                 if (_body != null)
+                {
                     _body.Dump(sw, indentChange);
+                }
             }
             else
             {
-                var parenthesizeParameters = ((_scope.Parameters.Count != 1) ||
-                                          !(_scope.Parameters[0] is ImplicitLambdaParameter));
+                bool parenthesizeParameters = (Scope.Parameters.Count != 1) ||
+                                          !(Scope.Parameters[0] is ImplicitLambdaParameter);
 
                 if (parenthesizeParameters)
+                {
                     sw.Write("(");
+                }
 
-                for (var i = 0; i < _scope.Parameters.Count; i++)
+                for (int i = 0; i < Scope.Parameters.Count; i++)
                 {
                     if (i != 0)
+                    {
                         sw.Write(", ");
+                    }
 
-                    sw.Write(_scope.Parameters[i].Name);
+                    sw.Write(Scope.Parameters[i].Name);
                 }
 
                 if (parenthesizeParameters)
+                {
                     sw.Write(")");
+                }
 
                 sw.Write(" => ");
 
                 if (_body != null)
+                {
                     _body.Dump(sw, indentChange);
+                }
             }
         }
 
-        public bool HasExplicitParameters
-        {
-            get { return ((_scope != null) && (_scope.Parameters.Count > 0) && !(_scope.Parameters[0] is ImplicitLambdaParameter)); }
-        }
+        public bool HasExplicitParameters => (Scope != null) && (Scope.Parameters.Count > 0) && !(Scope.Parameters[0] is ImplicitLambdaParameter);
 
         private bool _resolved;
 
         public override Expression DoResolve(ParseContext ec)
         {
             if (_resolved)
+            {
                 return this;
+            }
 
             _resolved = true;
 
-            var scope = Scope;
+            TopLevelScope scope = Scope;
             if (scope == null)
             {
                 EnsureScope(ec);
 
                 if (Body is QuoteExpression)
+                {
                     return Body.DoResolve(ec);
+                }
 
                 _body = Body.Resolve(ec);
 
                 if (_body == null)
+                {
                     return null;
+                }
 
                 Type = _resolvedBody.Type;
             }
 
-            if (HasExplicitParameters && !_scope.Parameters.Resolve(ec))
+            if (HasExplicitParameters && !Scope.Parameters.Resolve(ec))
+            {
                 return null;
+            }
 
             if (Body is QuoteExpression)
+            {
                 return Body.DoResolve(ec);
+            }
 
-//            var currentScope = ec.CurrentScope;
-//            ec.CurrentScope = scope;
-//
-//            this.Body = this.Body.Resolve(ec);
-//
-//            ec.CurrentScope = currentScope;
+            //            var currentScope = ec.CurrentScope;
+            //            ec.CurrentScope = scope;
+            //
+            //            this.Body = this.Body.Resolve(ec);
+            //
+            //            ec.CurrentScope = currentScope;
 
             ExpressionClass = ExpressionClass.Value;
             return this;
@@ -181,61 +199,69 @@ namespace Supremacy.Scripting.Ast
 
         private void EnsureScope(ParseContext ec)
         {
-            if (_scope != null)
+            if (Scope != null)
+            {
                 return;
+            }
 
-            ParametersCompiled parameters;
-
-            if (HasExplicitParameters)
-            {
-                parameters = new ParametersCompiled(
+            ParametersCompiled parameters = HasExplicitParameters
+                ? new ParametersCompiled(
                     Parameters.Select(o => new Parameter(o.Name, null, o.Span)
-                                                {
-                                                    ParameterType = o.Type.Resolve(ec).Type
-                                                }));
-            }
-            else
-            {
-                parameters = new ParametersCompiled(Parameters.Select(o => new ImplicitLambdaParameter(o.Name, null, o.Span)));
-            }
-
-            var scope = Scope = new TopLevelScope(ec.Compiler, ec.CurrentScope, parameters, Span.Start);
+                    {
+                        ParameterType = o.Type.Resolve(ec).Type
+                    }))
+                : new ParametersCompiled(Parameters.Select(o => new ImplicitLambdaParameter(o.Name, null, o.Span)));
+            TopLevelScope scope = Scope = new TopLevelScope(ec.Compiler, ec.CurrentScope, parameters, Span.Start);
                 
             for (int i = 0; i < parameters.Count; i++)
+            {
                 parameters[i].Scope = scope;
+            }
         }
 
         public bool ExplicitTypeInference(ParseContext ec, TypeInferenceContext typeInference, Type delegateType)
         {
             if (!HasExplicitParameters)
+            {
                 return false;
+            }
 
             if (!TypeManager.IsDelegateType(delegateType))
             {
                 if (TypeManager.DropGenericTypeArguments(delegateType) != TypeManager.CoreTypes.GenericExpression)
+                {
                     return false;
+                }
 
                 delegateType = delegateType.GetGenericArguments()[0];
                 if (!TypeManager.IsDelegateType(delegateType))
+                {
                     return false;
+                }
             }
 
-            var delegateParams = TypeManager.GetDelegateParameters(ec, delegateType);
-            if (delegateParams.Count != _scope.Parameters.Count)
-                return false;
-
-            for (int i = 0; i < _scope.Parameters.Count; ++i)
+            ParametersCollection delegateParams = TypeManager.GetDelegateParameters(ec, delegateType);
+            if (delegateParams.Count != Scope.Parameters.Count)
             {
-                var iType = delegateParams.Types[i];
+                return false;
+            }
+
+            for (int i = 0; i < Scope.Parameters.Count; ++i)
+            {
+                Type iType = delegateParams.Types[i];
                 if (!TypeManager.IsGenericParameter(iType))
                 {
                     if (!TypeManager.HasElementType(iType))
+                    {
                         continue;
+                    }
 
                     if (!TypeManager.IsGenericParameter(iType.GetElementType()))
+                    {
                         continue;
+                    }
                 }
-                typeInference.ExactInference(_scope.Parameters.Types[i], iType);
+                _ = typeInference.ExactInference(Scope.Parameters.Types[i], iType);
             }
 
             return true;
@@ -243,43 +269,47 @@ namespace Supremacy.Scripting.Ast
 
         public Type InferReturnType(ParseContext ec, TypeInferenceContext typeInferenceContext, Type type)
         {
-            var parameterCount = _scope.Parameters.Count;
-            var invokeMethod = TypeManager.GetDelegateInvokeMethod(ec, null, type);
+            int parameterCount = Scope.Parameters.Count;
+            System.Reflection.MethodInfo invokeMethod = TypeManager.GetDelegateInvokeMethod(ec, null, type);
             
-            if ((invokeMethod.GetParameters().Length != _scope.Parameters.Count) || typeInferenceContext.InferredTypeArguments.Length < parameterCount)
+            if ((invokeMethod.GetParameters().Length != Scope.Parameters.Count) || typeInferenceContext.InferredTypeArguments.Length < parameterCount)
+            {
                 return TypeManager.CoreTypes.Object;
+            }
 
-            var oldParameters = _scope.Parameters;
+            ParametersCompiled oldParameters = Scope.Parameters;
 
-            _scope.Parameters = oldParameters.Clone();
+            Scope.Parameters = oldParameters.Clone();
 
             for (int i = 0; i < parameterCount; i++)
             {
                 if (typeInferenceContext.InferredTypeArguments[i] != null)
                 {
                     if (!typeInferenceContext.InferredTypeArguments[i].IsGenericParameter)
-                        _scope.Parameters[i].ParameterType = typeInferenceContext.InferredTypeArguments[i];
+                    {
+                        Scope.Parameters[i].ParameterType = typeInferenceContext.InferredTypeArguments[i];
+                    }
                 }
             }
 
             //_scope.Parameters.Resolve(ec);
 
-            var oldScope = ec.CurrentScope;
+            Scope oldScope = ec.CurrentScope;
             
-            ec.CurrentScope = _scope;
-            
-            var resolvedBody = _body.Resolve(ec);
+            ec.CurrentScope = Scope;
+
+            Expression resolvedBody = _body.Resolve(ec);
             
             ec.CurrentScope = oldScope;
 
-            _scope.Parameters = oldParameters;
+            Scope.Parameters = oldParameters;
             Type = resolvedBody.Type;
 
             for (int i = 0; i < parameterCount; i++)
             {
                 if ((typeInferenceContext.InferredTypeArguments[i] != null) && typeInferenceContext.InferredTypeArguments[i].IsGenericParameter)
                 {
-                    typeInferenceContext.InferredTypeArguments[i] = _scope.Parameters[i].ParameterType;
+                    typeInferenceContext.InferredTypeArguments[i] = Scope.Parameters[i].ParameterType;
                         //_scope.Parameters[i].ParameterType = typeInferenceContext.InferredTypeArguments[i];
                 }
             }
@@ -325,16 +355,15 @@ namespace Supremacy.Scripting.Ast
         protected ParametersCompiled ResolveParameters(ParseContext ec, TypeInferenceContext tic, Type delegateType)
         {
             if (!TypeManager.IsDelegateType(delegateType))
+            {
                 return null;
+            }
 
-            var delegateParameters = TypeManager.GetParameterData(delegateType.GetMethod("Invoke"));
+            ParametersCollection delegateParameters = TypeManager.GetParameterData(delegateType.GetMethod("Invoke"));
 
             if (HasExplicitParameters)
             {
-                if (!VerifyExplicitParameters(ec, delegateType, delegateParameters))
-                    return null;
-
-                return _scope.Parameters.Clone();
+                return !VerifyExplicitParameters(ec, delegateType, delegateParameters) ? null : Scope.Parameters.Clone();
             }
 
             //
@@ -342,44 +371,54 @@ namespace Supremacy.Scripting.Ast
             // Set each parameter of L is given the type of the corresponding parameter in D
             //
             if (!VerifyParameterCompatibility(ec, delegateType, delegateParameters, ec.IsInProbingMode))
+            {
                 return null;
+            }
 
-            var ptypes = new Type[_scope.Parameters.Count];
+            Type[] ptypes = new Type[Scope.Parameters.Count];
             for (int i = 0; i < delegateParameters.Count; i++)
             {
                 // D has no ref or out parameters
                 if ((delegateParameters.FixedParameters[i].ModifierFlags & Parameter.Modifier.IsByRef) != 0)
+                {
                     return null;
+                }
 
                 Type dParam = delegateParameters.Types[i];
 
-				// Blablabla, because reflection does not work with dynamic types
-				if (dParam.IsGenericParameter)
-					dParam = delegateType.GetGenericArguments () [dParam.GenericParameterPosition];
+                // Blablabla, because reflection does not work with dynamic types
+                if (dParam.IsGenericParameter)
+                {
+                    dParam = delegateType.GetGenericArguments()[dParam.GenericParameterPosition];
+                }
 
                 //
                 // When type inference context exists try to apply inferred type arguments
                 //
                 if (tic != null)
+                {
                     dParam = tic.InflateGenericArgument(dParam);
+                }
 
                 ptypes[i] = dParam;
-                ((ImplicitLambdaParameter)_scope.Parameters.FixedParameters[i]).ParameterType = dParam;
+                ((ImplicitLambdaParameter)Scope.Parameters.FixedParameters[i]).ParameterType = dParam;
             }
 
             // TODO : FIX THIS
             //ptypes.CopyTo(_scope.Parameters.Types, 0);
             
             // TODO: STOP DOING THIS
-            _scope.Parameters.Types = ptypes;
+            Scope.Parameters.Types = ptypes;
 
-            return _scope.Parameters;
+            return Scope.Parameters;
         }
 
         protected bool VerifyExplicitParameters(ParseContext ec, Type delegateType, ParametersCollection parameters)
         {
             if (VerifyParameterCompatibility(ec, delegateType, parameters, ec.IsInProbingMode))
+            {
                 return true;
+            }
 
             if (!ec.IsInProbingMode)
             {
@@ -397,32 +436,36 @@ namespace Supremacy.Scripting.Ast
 
         protected bool VerifyParameterCompatibility(ParseContext ec, Type delegateType, ParametersCollection invokePd, bool ignoreErrors)
         {
-            if (_scope.Parameters.Count != invokePd.Count)
+            if (Scope.Parameters.Count != invokePd.Count)
             {
                 if (ignoreErrors)
+                {
                     return false;
+                }
 
                 ec.ReportError(
                     1593,
                     string.Format(
                         "Delegate '{0}' does not take '{1}' arguments.",
                         TypeManager.GetCSharpName(delegateType),
-                        _scope.Parameters.Count),
+                        Scope.Parameters.Count),
                     Span);
 
                 return false;
             }
 
-            var hasImplicitParameters = !HasExplicitParameters;
-            var error = false;
+            bool hasImplicitParameters = !HasExplicitParameters;
+            bool error = false;
 
-            for (int i = 0; i < _scope.Parameters.Count; ++i)
+            for (int i = 0; i < Scope.Parameters.Count; ++i)
             {
-                var pMod = invokePd.FixedParameters[i].ModifierFlags;
-                if (_scope.Parameters.FixedParameters[i].ModifierFlags != pMod && pMod != Parameter.Modifier.Params)
+                Parameter.Modifier pMod = invokePd.FixedParameters[i].ModifierFlags;
+                if (Scope.Parameters.FixedParameters[i].ModifierFlags != pMod && pMod != Parameter.Modifier.Params)
                 {
                     if (ignoreErrors)
+                    {
                         return false;
+                    }
 
                     if (pMod == Parameter.Modifier.None)
                     {
@@ -430,8 +473,8 @@ namespace Supremacy.Scripting.Ast
                             1677,
                             string.Format(
                                 "Parameter '{0}' should not be declared with the '{1}' keyword.",
-                                (i + 1),
-                                Parameter.GetModifierSignature(_scope.Parameters.FixedParameters[i].ModifierFlags)),
+                                i + 1,
+                                Parameter.GetModifierSignature(Scope.Parameters.FixedParameters[i].ModifierFlags)),
                             Span);
                     }
                     else
@@ -440,7 +483,7 @@ namespace Supremacy.Scripting.Ast
                             1676,
                             string.Format(
                                 "Parameter '{0}' must be declared with the '{1}' keyword.",
-                                (i + 1),
+                                i + 1,
                                 Parameter.GetModifierSignature(pMod)),
                             Span);
                     }
@@ -448,28 +491,36 @@ namespace Supremacy.Scripting.Ast
                 }
 
                 if (hasImplicitParameters)
+                {
                     continue;
+                }
 
                 Type type = invokePd.Types[i];
 
                 // We assume that generic parameters are always inflated
                 if (TypeManager.IsGenericParameter(type))
+                {
                     continue;
+                }
 
                 if (TypeManager.HasElementType(type) && TypeManager.IsGenericParameter(type.GetElementType()))
+                {
                     continue;
+                }
 
-                if (invokePd.Types[i] != _scope.Parameters.Types[i])
+                if (invokePd.Types[i] != Scope.Parameters.Types[i])
                 {
                     if (ignoreErrors)
+                    {
                         return false;
+                    }
 
                     ec.ReportError(
                         1678,
                         string.Format(
                             "Parameter '{0}' is declared as type '{1}' but should be '{2}'",
-                            (i + 1),
-                            TypeManager.GetCSharpName(_scope.Parameters.Types[i]),
+                            i + 1,
+                            TypeManager.GetCSharpName(Scope.Parameters.Types[i]),
                             TypeManager.GetCSharpName(invokePd.Types[i])),
                         Span);
 
@@ -481,59 +532,65 @@ namespace Supremacy.Scripting.Ast
         }
 
         //
-		// Returns true if the body of lambda expression can be implicitly
-		// converted to the delegate of type `delegate_type'
-		//
-		public bool ImplicitStandardConversionExists (ParseContext ec, Type delegateType)
+        // Returns true if the body of lambda expression can be implicitly
+        // converted to the delegate of type `delegate_type'
+        //
+        public bool ImplicitStandardConversionExists(ParseContext ec, Type delegateType)
 		{
-		    var expressionTreeConversion = false;
+            bool expressionTreeConversion = false;
             if (!TypeManager.IsDelegateType(delegateType))
             {
                 if (TypeManager.DropGenericTypeArguments(delegateType) != TypeManager.CoreTypes.GenericExpression)
+                {
                     return false;
+                }
 
                 delegateType = delegateType.GetGenericArguments()[0];
                 expressionTreeConversion = true;
             }
 
-		    var invokeMethod = delegateType.GetMethod("Invoke");// TypeManager.GetDelegateInvokeMethod(ec, null, delegateType);
-            var returnType = invokeMethod.ReturnType;
+            System.Reflection.MethodInfo invokeMethod = delegateType.GetMethod("Invoke");// TypeManager.GetDelegateInvokeMethod(ec, null, delegateType);
+            Type returnType = invokeMethod.ReturnType;
 
             if (returnType.IsGenericParameter)
             {
-                var genericArguments = delegateType.GetGenericArguments();
+                Type[] genericArguments = delegateType.GetGenericArguments();
                 returnType = genericArguments[returnType.GenericParameterPosition];
             }
 
             EnsureScope(ec);
 
-            var delegateParameters = invokeMethod.GetParameters();
-            if (delegateParameters.Length != _scope.Parameters.Count)
+            System.Reflection.ParameterInfo[] delegateParameters = invokeMethod.GetParameters();
+            if (delegateParameters.Length != Scope.Parameters.Count)
+            {
                 return false;
+            }
 
-		    var lambdaParameters = ResolveParameters(ec, null, delegateType);
+            ParametersCompiled lambdaParameters = ResolveParameters(ec, null, delegateType);
 
-		    int i = 0;
-            var result = delegateParameters.All(delegateParameter => TypeUtils.AreAssignable(delegateParameter.ParameterType, lambdaParameters[i++].ParameterType));
+            int i = 0;
+            bool result = delegateParameters.All(delegateParameter => TypeUtils.AreAssignable(delegateParameter.ParameterType, lambdaParameters[i++].ParameterType));
 
             if (result)
             {
-                var oldScope = ec.CurrentScope;
-                ec.CurrentScope = _scope;
-                var resolvedBody = _body.Resolve(ec);
+                Scope oldScope = ec.CurrentScope;
+                ec.CurrentScope = Scope;
+                Expression resolvedBody = _body.Resolve(ec);
                 ec.CurrentScope = oldScope;
 
                 if (!TypeUtils.AreAssignable(returnType, resolvedBody.Type))
+                {
                     return false;
+                }
 
                 _body = resolvedBody;
-                _resolvedBody = (expressionTreeConversion) ? new QuoteExpression(this) : resolvedBody;
+                _resolvedBody = expressionTreeConversion ? new QuoteExpression(this) : resolvedBody;
 
                 Type = _body.Type;
                 LambdaType = delegateType;
             }
 
-		    return result;
+            return result;
 		}
     }
 }

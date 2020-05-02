@@ -13,12 +13,14 @@ namespace Supremacy.Scripting.Ast
 
         public FullNamedExpression UnderlyingType
         {
-            get { return _underlyingType; }
+            get => _underlyingType;
             set
             {
                 _underlyingType = value;
                 if ((_underlyingType.Type != null) && _underlyingType.Type.IsValueType)
+                {
                     Type = TypeManager.CoreTypes.GenericNullable.MakeGenericType(_underlyingType.Type);
+                }
             }
         }
 
@@ -39,8 +41,8 @@ namespace Supremacy.Scripting.Ast
 
         protected override TypeExpression DoResolveAsTypeStep(ParseContext ec)
         {
-            var args = new TypeArguments(_underlyingType);
-            var ctype = new GenericTypeExpression(
+            TypeArguments args = new TypeArguments(_underlyingType);
+            GenericTypeExpression ctype = new GenericTypeExpression(
                 TypeManager.CoreTypes.GenericNullable,
                 args,
                 Span);

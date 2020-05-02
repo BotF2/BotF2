@@ -34,7 +34,9 @@ namespace Supremacy.Scripting.Ast
             {
                 // S -> T? is wrap only
                 if (TypeManager.IsNullableType(Type))
+                {
                     return Wrap.Create(_child, Type);
+                }
 
                 // S -> T can be simplified
                 return _child;
@@ -45,7 +47,9 @@ namespace Supremacy.Scripting.Ast
             {
                 _child = Wrap.Create(_child, Type);
                 if (_child == null)
+                {
                     return null;
+                }
             }
 
             ExpressionClass = ExpressionClass.Value;

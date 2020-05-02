@@ -43,40 +43,31 @@ namespace Supremacy.Scripting.Ast
             : this(containerType, fieldInfo, span)
         {
             if (TypeManager.IsGenericTypeDefinition(genericType))
+            {
                 return;
+            }
         }
 
         public override void CloneTo<T>(CloneContext cloneContext, T target)
         {
             base.CloneTo(cloneContext, target);
 
-            var clone = target as FieldExpression;
-            if (clone == null)
+            if (!(target is FieldExpression clone))
+            {
                 return;
+            }
 
             clone._containerType = _containerType;
             clone._fieldInfo = _fieldInfo;
         }
 
-        public override string Name
-        {
-            get { return _fieldInfo.Name; }
-        }
+        public override string Name => _fieldInfo.Name;
 
-        public override bool IsInstance
-        {
-            get { return !_fieldInfo.IsStatic; }
-        }
+        public override bool IsInstance => !_fieldInfo.IsStatic;
 
-        public override bool IsStatic
-        {
-            get { return _fieldInfo.IsStatic; }
-        }
+        public override bool IsStatic => _fieldInfo.IsStatic;
 
-        public override Type DeclaringType
-        {
-            get { return _fieldInfo.DeclaringType; }
-        }
+        public override Type DeclaringType => _fieldInfo.DeclaringType;
 
         public override string GetSignatureForError()
         {
@@ -92,7 +83,7 @@ namespace Supremacy.Scripting.Ast
 
         public override MemberExpression ResolveMemberAccess(ParseContext ec, Expression left, SourceSpan loc, NameExpression original)
         {
-            var fi = TypeManager.GetGenericFieldDefinition(_fieldInfo);
+            FieldInfo fi = TypeManager.GetGenericFieldDefinition(_fieldInfo);
             Type t = fi.FieldType;
 
             if (t.IsPointer/* && !ec.IsUnsafe*/)
@@ -129,23 +120,29 @@ namespace Supremacy.Scripting.Ast
 
                 if (leftValue)
                 {
-                    var rightSide = outAccess
+                    EmptyExpression rightSide = outAccess
                                         ? EmptyExpression.LValueMemberOutAccess
                                         : EmptyExpression.LValueMemberAccess;
 
                     if (InstanceExpression != EmptyExpression.Null)
+                    {
                         InstanceExpression = InstanceExpression.ResolveLValue(ec, rightSide);
+                    }
                 }
                 else
                 {
                     const ResolveFlags rf = ResolveFlags.VariableOrValue | ResolveFlags.DisableFlowAnalysis;
 
                     if (InstanceExpression != EmptyExpression.Null)
+                    {
                         InstanceExpression = InstanceExpression.Resolve(ec, rf);
+                    }
                 }
 
                 if (InstanceExpression == null)
+                {
                     return null;
+                }
             }
 
             // TODO: the code above uses some non-standard multi-resolve rules
@@ -155,11 +152,11 @@ namespace Supremacy.Scripting.Ast
             ExpressionClass = ExpressionClass.Variable;
 
             // If the instance expression is a local variable or parameter.
-                return this;
+            return this;
         }
 
-        static readonly int[] _codes = {
-			191,	// instance, write access
+        private static readonly int[] _codes = {
+            191,	// instance, write access
 			192,	// instance, out access
 			198,	// static, write access
 			199,	// static, out access
@@ -168,8 +165,7 @@ namespace Supremacy.Scripting.Ast
 			1650,	// member of value static, write access
 			1651	// member of value static, out access
 		};
-
-        static readonly string[] _msgs = {
+        private static readonly string[] _msgs = {
 			/*0191*/ "A readonly field '{0}' cannot be assigned to (except in a constructor or a variable initializer).",
 			/*0192*/ "A readonly field '{0}' cannot be passed ref or out (except in a constructor).",
 			/*0198*/ "A static readonly field '{0}' cannot be assigned to (except in a static constructor or a variable initializer).",
@@ -181,29 +177,40 @@ namespace Supremacy.Scripting.Ast
 		};
 
         // The return value is always null.  Returning a value simplifies calling code.
-        Expression Report_AssignToReadonly(ParseContext ec, Expression rightSide)
+        private Expression Report_AssignToReadonly(ParseContext ec, Expression rightSide)
         {
             int i = 0;
             if (rightSide == EmptyExpression.OutAccess || rightSide == EmptyExpression.LValueMemberOutAccess)
+            {
                 i += 1;
+            }
+
             if (IsStatic)
+            {
                 i += 2;
+            }
+
             if (rightSide == EmptyExpression.LValueMemberAccess || rightSide == EmptyExpression.LValueMemberOutAccess)
+            {
                 i += 4;
+            }
+
             ec.ReportError(_codes[i], string.Format(_msgs[i], GetSignatureForError()), Span);
 
             return null;
         }
 
-        override public Expression DoResolveLValue(ParseContext ec, Expression rightSide)
+        public override Expression DoResolveLValue(ParseContext ec, Expression rightSide)
         {
-            var leftValue = !_fieldInfo.IsStatic && TypeManager.IsValueType(_fieldInfo.DeclaringType);
-            var outAccess = rightSide == EmptyExpression.OutAccess || rightSide == EmptyExpression.LValueMemberOutAccess;
+            bool leftValue = !_fieldInfo.IsStatic && TypeManager.IsValueType(_fieldInfo.DeclaringType);
+            bool outAccess = rightSide == EmptyExpression.OutAccess || rightSide == EmptyExpression.LValueMemberOutAccess;
 
-            var e = DoResolve(ec, leftValue, outAccess);
+            Expression e = DoResolve(ec, leftValue, outAccess);
 
             if (e == null)
+            {
                 return null;
+            }
 
             if (_fieldInfo.IsInitOnly)
             {
@@ -235,20 +242,24 @@ namespace Supremacy.Scripting.Ast
 
         public FieldInfo FieldInfo
         {
-            get { return _fieldInfo; }
+            get => _fieldInfo;
             set
             {
                 _fieldInfo = value;
-                Type = (_fieldInfo == null) ? null : _fieldInfo.FieldType;
+                Type = _fieldInfo?.FieldType;
             }
         }
 
         public override void Dump(SourceWriter sw, int indentChange)
         {
             if (IsStatic)
+            {
                 sw.Write(TypeManager.GetCSharpName(_containerType));
+            }
             else
+            {
                 DumpChild(InstanceExpression, sw, indentChange);
+            }
 
             sw.Write(".");
             sw.Write(_fieldInfo.Name);
@@ -256,17 +267,11 @@ namespace Supremacy.Scripting.Ast
 
         public override bool Equals(object obj)
         {
-            var fe = obj as FieldExpression;
-            if (fe == null)
-                return false;
-
-            if (_fieldInfo != fe._fieldInfo)
-                return false;
-
-            if (InstanceExpression == null || fe.InstanceExpression == null)
-                return true;
-
-            return InstanceExpression.Equals(fe.InstanceExpression);
+            return !(obj is FieldExpression fe)
+                ? false
+                : _fieldInfo != fe._fieldInfo
+                ? false
+                : InstanceExpression == null || fe.InstanceExpression == null ? true : InstanceExpression.Equals(fe.InstanceExpression);
         }
     }
 }

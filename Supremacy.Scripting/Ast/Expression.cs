@@ -23,9 +23,10 @@ namespace Supremacy.Scripting.Ast
         {
             base.CloneTo(cloneContext, target);
 
-            var clone = target as Expression;
-            if (clone == null)
+            if (!(target is Expression clone))
+            {
                 return;
+            }
 
             clone.ExpressionClass = ExpressionClass;
             clone.Type = Type;
@@ -50,15 +51,9 @@ namespace Supremacy.Scripting.Ast
             return TransformCore(generator);
         }
 
-        public virtual bool ShouldParenthesize
-        {
-            get { return false; }
-        }
+        public virtual bool ShouldParenthesize => false;
 
-        public virtual bool IsPrimaryExpression
-        {
-            get { return false; }
-        }
+        public virtual bool IsPrimaryExpression => false;
 
         public virtual MSAst TransformCore(ScriptGenerator generator)
         {
@@ -79,8 +74,8 @@ namespace Supremacy.Scripting.Ast
         [DebuggerStepThrough]
         public Expression ResolveLValue(ParseContext ec, Expression rightSide)
         {
-            var errors = ec.CompilerErrorCount;
-            var outAccess = rightSide == EmptyExpression.OutAccess;
+            int errors = ec.CompilerErrorCount;
+            _ = rightSide == EmptyExpression.OutAccess;
 
             Expression e = DoResolveLValue(ec, rightSide);
 
@@ -94,10 +89,14 @@ namespace Supremacy.Scripting.Ast
             }
 
             if (e.ExpressionClass == ExpressionClass.Invalid)
+            {
                 throw new Exception("Expression " + e + " ExprClass is Invalid after resolve");
+            }
 
             if ((e.Type == null) && !(e is GenericTypeExpression))
+            {
                 throw new Exception("Expression " + e + " did not set its type after Resolve");
+            }
 
             return e;
         }
@@ -115,7 +114,7 @@ namespace Supremacy.Scripting.Ast
 
                 if (this is NameExpression)
                 {
-                    var intermediate = (flags & ResolveFlags.Intermediate) == ResolveFlags.Intermediate;
+                    bool intermediate = (flags & ResolveFlags.Intermediate) == ResolveFlags.Intermediate;
                     e = ((NameExpression)this).DoResolve(ec, intermediate);
                 }
                 else
@@ -147,17 +146,18 @@ namespace Supremacy.Scripting.Ast
             return null;
         }
 
-        public virtual TypeExpression ResolveAsTypeTerminal (ParseContext ec, bool silent)
+        public virtual TypeExpression ResolveAsTypeTerminal(ParseContext ec, bool silent)
         {
-            var te = ResolveAsBaseTerminal(ec, silent);
+            TypeExpression te = ResolveAsBaseTerminal(ec, silent);
             if (te == null)
+            {
                 return null;
+            }
 
-            var ct = te as GenericTypeExpression;
-            if (ct != null)
+            if (te is GenericTypeExpression ct)
             {
                 // TODO: silent flag is ignored
-                ct.CheckConstraints(ec);
+                _ = ct.CheckConstraints(ec);
             }
 
             return te;
@@ -193,9 +193,9 @@ namespace Supremacy.Scripting.Ast
 
                     default:
                         throw new InternalErrorException(
-                            Span + 
-                            " " + 
-                            GetType().Name + 
+                            Span +
+                            " " +
+                            GetType().Name +
                             " expression class is Invalid after resolve.");
                 }
             }
@@ -239,21 +239,19 @@ namespace Supremacy.Scripting.Ast
             }
         }
 
-        public virtual bool IsNull
-        {
-            get { return false; }
-        }
+        public virtual bool IsNull => false;
 
         public TypeExpression ResolveAsBaseTerminal(ParseContext ec, bool silent)
         {
-            var errorCount = ec.CompilerErrorCount;
-            var fne = ResolveAsTypeStep(ec, silent);
+            int errorCount = ec.CompilerErrorCount;
+            FullNamedExpression fne = ResolveAsTypeStep(ec, silent);
 
             if (fne == null)
+            {
                 return null;
+            }
 
-            var typeExpression = fne as TypeExpression;
-            if (typeExpression == null)
+            if (!(fne is TypeExpression typeExpression))
             {
                 if (!silent && (errorCount == ec.CompilerErrorCount))
                 {
@@ -326,9 +324,9 @@ namespace Supremacy.Scripting.Ast
                                string name, MemberTypes mt,
                                BindingFlags bf, SourceSpan span)
         {
-            var almostMatchedMembers = new ArrayList();
+            ArrayList almostMatchedMembers = new ArrayList();
 
-            var mi = TypeManager.MemberLookup(
+            MemberInfo[] mi = TypeManager.MemberLookup(
                 containerType,
                 qualifierType,
                 queriedType,
@@ -338,32 +336,36 @@ namespace Supremacy.Scripting.Ast
                 almostMatchedMembers);
 
             if (mi == null)
+            {
                 return null;
+            }
 
             if (mi.Length > 1)
             {
-                var isInterface = qualifierType != null && qualifierType.IsInterface;
-                var methods = new ArrayList(2);
+                bool isInterface = qualifierType != null && qualifierType.IsInterface;
+                ArrayList methods = new ArrayList(2);
                 List<MemberInfo> nonMethods = null;
 
                 foreach (MemberInfo m in mi)
                 {
                     if (m is MethodBase)
                     {
-                        methods.Add(m);
+                        _ = methods.Add(m);
                         continue;
                     }
 
                     if (nonMethods == null)
+                    {
                         nonMethods = new List<MemberInfo>(2);
+                    }
 
-                    var isCandidate = true;
+                    bool isCandidate = true;
                     for (int i = 0; i < nonMethods.Count; ++i)
                     {
-                        var nonMethod = nonMethods[i];
+                        MemberInfo nonMethod = nonMethods[i];
                         if (nonMethod.DeclaringType.IsInterface && TypeManager.ImplementsInterface(m.DeclaringType, nonMethod.DeclaringType))
                         {
-                            nonMethods.Remove(nonMethod);
+                            _ = nonMethods.Remove(nonMethod);
                             --i;
                         }
                         else if (m.DeclaringType.IsInterface && TypeManager.ImplementsInterface(nonMethod.DeclaringType, m.DeclaringType))
@@ -394,12 +396,14 @@ namespace Supremacy.Scripting.Ast
                 }
 
                 if ((methods.Count == 0) && (nonMethods != null))
+                {
                     return ExprClassFromMemberInfo(containerType, nonMethods[0], span);
+                }
 
                 if (nonMethods != null && nonMethods.Count > 0)
                 {
-                    var method = (MethodBase)methods[0];
-                    var nonMethod = nonMethods[0];
+                    MethodBase method = (MethodBase)methods[0];
+                    MemberInfo nonMethod = nonMethods[0];
                     if (method.DeclaringType == nonMethod.DeclaringType)
                     {
                         // Cannot happen with C# code, but is valid in IL
@@ -433,39 +437,35 @@ namespace Supremacy.Scripting.Ast
                     span);
             }
 
-            if (mi[0] is MethodBase)
-                return new MethodGroupExpression(mi, queriedType, span);
-
-            return ExprClassFromMemberInfo(containerType, mi[0], span);
+            return mi[0] is MethodBase ? new MethodGroupExpression(mi, queriedType, span) : ExprClassFromMemberInfo(containerType, mi[0], span);
         }
 
 #pragma warning disable 168
         public static Expression ExprClassFromMemberInfo(Type containerType, MemberInfo mi, SourceSpan span)
         {
-            var eventInfo = mi as EventInfo;
+            EventInfo eventInfo = mi as EventInfo;
             if (eventInfo != null)
-                throw new NotSupportedException("Event access is not supported.");
-
-            var fieldInfo = mi as FieldInfo;
-            if (fieldInfo != null)
             {
-                if (fieldInfo.IsLiteral || 
-                    (fieldInfo.IsInitOnly && (fieldInfo.FieldType == TypeManager.CoreTypes.Decimal)))
-                {
-                    return new ConstantMemberExpression(fieldInfo, span);
-                }
-                return new FieldExpression(containerType, fieldInfo, span);
+                throw new NotSupportedException("Event access is not supported.");
             }
 
-            var propertyInfo = mi as PropertyInfo;
+            FieldInfo fieldInfo = mi as FieldInfo;
+            if (fieldInfo != null)
+            {
+                return fieldInfo.IsLiteral ||
+                    (fieldInfo.IsInitOnly && (fieldInfo.FieldType == TypeManager.CoreTypes.Decimal))
+                    ? new ConstantMemberExpression(fieldInfo, span)
+                    : (Expression)new FieldExpression(containerType, fieldInfo, span);
+            }
+
+            PropertyInfo propertyInfo = mi as PropertyInfo;
             if (propertyInfo != null)
+            {
                 return new PropertyExpression(containerType, (PropertyInfo)mi, span);
+            }
 
-            var typeInfo = mi as Type;
-            if (typeInfo != null)
-                return new TypeExpression(typeInfo) { Span = span };
-
-            return null;
+            Type typeInfo = mi as Type;
+            return typeInfo != null ? new TypeExpression(typeInfo) { Span = span } : null;
         }
 #pragma warning restore 168
 
@@ -514,11 +514,13 @@ namespace Supremacy.Scripting.Ast
                                 MemberTypes mt, BindingFlags bf,
                                 SourceSpan loc)
         {
-            var errors = ec.CompilerErrorCount;
-            var e = MemberLookup(ec, null, qualifierType, queriedType, name, mt, bf, loc);
+            int errors = ec.CompilerErrorCount;
+            Expression e = MemberLookup(ec, null, qualifierType, queriedType, name, mt, bf, loc);
 
             if (e != null || errors != ec.CompilerErrorCount)
+            {
                 return e;
+            }
 
             // No errors were reported by MemberLookup, but there was an error.
             return OnErrorMemberLookupFailed(
@@ -639,7 +641,7 @@ namespace Supremacy.Scripting.Ast
             {
                 if ((lookup.Length == 1) && (lookup[0] is Type))
                 {
-                    var t = (Type)lookup[0];
+                    Type t = (Type)lookup[0];
 
                     ec.ReportError(
                         305,
@@ -661,7 +663,9 @@ namespace Supremacy.Scripting.Ast
         protected virtual Expression OnErrorMemberLookupFailed(ParseContext ec, Type type, MemberInfo[] members)
         {
             if (members.Any(t => !(t is MethodBase)))
+            {
                 return null;
+            }
 
             // By default propagate the closest candidates upwards
             return new MethodGroupExpression(members, type, Span, true);
@@ -674,33 +678,45 @@ namespace Supremacy.Scripting.Ast
             mustDoCs1540Check = false; // by default we do not check for this
 
             if (ma == MethodAttributes.Public)
+            {
                 return true;
+            }
 
             //
             // If only accessible to the current class or children
             //
             if (ma == MethodAttributes.Private)
+            {
                 return TypeManager.IsPrivateAccessible(invocationType, mi.DeclaringType) ||
                     TypeManager.IsNestedChildOf(invocationType, mi.DeclaringType);
+            }
 
             if (TypeManager.IsThisOrFriendAssembly(invocationType.Assembly, mi.DeclaringType.Assembly))
             {
                 if (ma == MethodAttributes.Assembly || ma == MethodAttributes.FamORAssem)
+                {
                     return true;
+                }
             }
             else
             {
                 if (ma == MethodAttributes.Assembly || ma == MethodAttributes.FamANDAssem)
+                {
                     return false;
+                }
             }
 
             // Family and FamANDAssem require that we derive.
             // FamORAssem requires that we derive if in different assemblies.
             if (!TypeManager.IsNestedFamilyAccessible(invocationType, mi.DeclaringType))
+            {
                 return false;
+            }
 
             if (!TypeManager.IsNestedChildOf(invocationType, mi.DeclaringType))
+            {
                 mustDoCs1540Check = true;
+            }
 
             return true;
         }
@@ -710,7 +726,7 @@ namespace Supremacy.Scripting.Ast
             // Better message for possible generic expressions
             if (ExpressionClass == ExpressionClass.MethodGroup || ExpressionClass == ExpressionClass.Type)
             {
-                var name = ExpressionClass == ExpressionClass.Type ? ExpressionClassName : "method";
+                string name = ExpressionClass == ExpressionClass.Type ? ExpressionClassName : "method";
                 parseContext.ReportError(
                     308,
                     string.Format(
@@ -740,9 +756,9 @@ namespace Supremacy.Scripting.Ast
 
         protected void OnErrorValueCannotBeConvertedCore(ParseContext ec, SourceSpan loc, Type target, bool explicitConversion)
         {
-            var sourceType = Type;
+            Type sourceType = Type;
 
-            if (TypeManager.IsGenericParameter(sourceType) && 
+            if (TypeManager.IsGenericParameter(sourceType) &&
                 TypeManager.IsGenericParameter(target) &&
                 sourceType.Name == target.Name)
             {
@@ -811,7 +827,7 @@ namespace Supremacy.Scripting.Ast
 
         public void OnErrorUnexpectedKind(ParseContext ec, ResolveFlags flags, SourceSpan span)
         {
-            var valid = new string[4];
+            string[] valid = new string[4];
             int count = 0;
 
             if ((flags & ResolveFlags.VariableOrValue) != 0)
@@ -821,24 +837,30 @@ namespace Supremacy.Scripting.Ast
             }
 
             if ((flags & ResolveFlags.Type) != 0)
+            {
                 valid[count++] = "type";
+            }
 
             if ((flags & ResolveFlags.MethodGroup) != 0)
+            {
                 valid[count++] = "method group";
+            }
 
             if (count == 0)
+            {
                 valid[count++] = "unknown";
+            }
 
-            var sb = new StringBuilder(valid[0]);
+            StringBuilder sb = new StringBuilder(valid[0]);
             for (int i = 1; i < count - 1; i++)
             {
-                sb.Append("', '");
-                sb.Append(valid[i]);
+                _ = sb.Append("', '");
+                _ = sb.Append(valid[i]);
             }
             if (count > 1)
             {
-                sb.Append("' or '");
-                sb.Append(valid[count - 1]);
+                _ = sb.Append("' or '");
+                _ = sb.Append(valid[count - 1]);
             }
 
             ec.ReportError(
@@ -861,21 +883,23 @@ namespace Supremacy.Scripting.Ast
         ///   Returns an expression that can be used to invoke operator false
         ///   on the expression if it exists.
         /// </summary>
-        static public Expression GetOperatorFalse(ParseContext ec, Expression e, SourceSpan loc)
+        public static Expression GetOperatorFalse(ParseContext ec, Expression e, SourceSpan loc)
         {
             return GetOperatorTrueOrFalse(ec, e, false, loc);
         }
 
         static Expression GetOperatorTrueOrFalse(ParseContext ec, Expression e, bool isTrue, SourceSpan location)
         {
-            var @operator = isTrue ? ExpressionType.IsTrue : ExpressionType.IsFalse;
-            var methodName = OperatorInfo.GetOperatorInfo(@operator).SignatureName;
-            
-            var operatorGroup = MethodLookup(ec, null, e.Type, methodName, location);
-            if (operatorGroup == null)
-                return null;
+            ExpressionType @operator = isTrue ? ExpressionType.IsTrue : ExpressionType.IsFalse;
+            string methodName = OperatorInfo.GetOperatorInfo(@operator).SignatureName;
 
-            var arguments = new Arguments(1) { new Argument(e) };
+            MethodGroupExpression operatorGroup = MethodLookup(ec, null, e.Type, methodName, location);
+            if (operatorGroup == null)
+            {
+                return null;
+            }
+
+            Arguments arguments = new Arguments(1) { new Argument(e) };
 
             operatorGroup = operatorGroup.OverloadResolve(
                 ec,
@@ -883,10 +907,7 @@ namespace Supremacy.Scripting.Ast
                 false,
                 location);
 
-            if (operatorGroup == null)
-                return null;
-
-            return new UserOperatorCall(operatorGroup, arguments, location);
+            return operatorGroup == null ? null : new UserOperatorCall(operatorGroup, arguments, location);
         }
 
         protected Expression CreateExpressionFactoryCall(ParseContext ec, string name, Arguments args)

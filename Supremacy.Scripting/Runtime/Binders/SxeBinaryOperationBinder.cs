@@ -7,15 +7,13 @@ namespace Supremacy.Scripting.Runtime.Binders
 {
     internal class SxeBinaryOperationBinder : BinaryOperationBinder
     {
-        private readonly BinderState _binderState;
-
         public SxeBinaryOperationBinder(BinderState binderState, ExpressionType operation)
             : base(operation)
         {
-            if (binderState == null)
-                throw new ArgumentNullException("binderState");
-            _binderState = binderState;
+            BinderState = binderState ?? throw new ArgumentNullException("binderState");
         }
+
+        public BinderState BinderState { get; }
 
         public override DynamicMetaObject FallbackBinaryOperation(DynamicMetaObject target, DynamicMetaObject arg, DynamicMetaObject errorSuggestion)
         {

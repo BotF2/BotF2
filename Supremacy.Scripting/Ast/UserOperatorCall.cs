@@ -12,13 +12,10 @@ namespace Supremacy.Scripting.Ast
     {
         public delegate Expression ExpressionTreeExpression(ParseContext ec, MethodGroupExpression mg);
 
-        private Arguments _arguments;
-        private MethodGroupExpression _method;
-
         public UserOperatorCall(MethodGroupExpression method, Arguments args, SourceSpan span)
         {
-            _method = method;
-            _arguments = args;
+            Method = method;
+            Arguments = args;
 
             Type = ((MethodInfo)method).ReturnType;
             ExpressionClass = ExpressionClass.Value;
@@ -34,12 +31,13 @@ namespace Supremacy.Scripting.Ast
         {
             base.CloneTo(cloneContext, target);
 
-            var clone = target as UserOperatorCall;
-            if (clone == null)
+            if (!(target is UserOperatorCall clone))
+            {
                 return;
+            }
 
-            clone._arguments = _arguments.Clone(cloneContext);
-            clone._method = Clone(cloneContext, _method);
+            clone.Arguments = Arguments.Clone(cloneContext);
+            clone.Method = Clone(cloneContext, Method);
         }
 
         public override Expression DoResolve(ParseContext ec)
@@ -50,21 +48,15 @@ namespace Supremacy.Scripting.Ast
             return this;
         }
 
-		public override MSAst.Expression TransformCore (ScriptGenerator generator)
-		{
-		    return MSAst.Expression.Call(
-		        (MethodInfo)_method,
-		        _arguments.Transform(generator));
-		}
-
-        protected internal MethodGroupExpression Method
+        public override MSAst.Expression TransformCore(ScriptGenerator generator)
         {
-            get { return _method; }
+            return MSAst.Expression.Call(
+                (MethodInfo)Method,
+                Arguments.Transform(generator));
         }
 
-        protected internal Arguments Arguments
-        {
-            get { return _arguments; }
-        }
+        protected internal MethodGroupExpression Method { get; private set; }
+
+        protected internal Arguments Arguments { get; private set; }
     }
 }

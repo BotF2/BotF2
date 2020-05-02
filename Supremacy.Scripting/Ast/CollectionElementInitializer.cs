@@ -14,22 +14,27 @@ namespace Supremacy.Scripting.Ast
         public override Expression DoResolve(ParseContext parseContext)
         {
             if (ExpressionClass != ExpressionClass.Invalid)
+            {
                 return this;
+            }
 
             Target = new AddMemberAccessExpression(
                 parseContext.CurrentInitializerVariable,
                 Span);
 
-             return base.DoResolve(parseContext);
+            return base.DoResolve(parseContext);
         }
 
         public override void Dump(SourceWriter sw, int indentChange)
         {
             sw.Write("{ ");
-            for (var i = 0; i < Arguments.Count; i++)
+            for (int i = 0; i < Arguments.Count; i++)
             {
                 if (i != 0)
+                {
                     sw.Write(", ");
+                }
+
                 DumpChild(Arguments[i], sw, indentChange);
             }
             sw.Write(" }");
@@ -42,7 +47,7 @@ namespace Supremacy.Scripting.Ast
                 Arguments.Select(o => o.Value.Transform(generator)));
         }
 
-        sealed class AddMemberAccessExpression : MemberAccessExpression
+        private sealed class AddMemberAccessExpression : MemberAccessExpression
         {
             public AddMemberAccessExpression(Expression left, SourceSpan span)
             {

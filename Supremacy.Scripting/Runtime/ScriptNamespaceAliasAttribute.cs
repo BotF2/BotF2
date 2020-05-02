@@ -5,23 +5,14 @@ namespace Supremacy.Scripting.Runtime
     [AttributeUsage(AttributeTargets.Assembly | AttributeTargets.Module, AllowMultiple = true)]
     public sealed class ScriptNamespaceAliasAttribute : Attribute
     {
-        private readonly string _alias;
-        private readonly string _namespace;
-
         public ScriptNamespaceAliasAttribute(string alias, string @namespace)
         {
-            _alias = alias;
-            _namespace = @namespace;
+            Alias = alias;
+            Namespace = @namespace;
         }
 
-        public string Alias
-        {
-            get { return _alias; }
-        }
+        public string Alias { get; }
 
-        public string Namespace
-        {
-            get { return _namespace; }
-        }
+        public string Namespace { get; }
     }
 }

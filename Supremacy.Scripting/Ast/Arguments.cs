@@ -34,7 +34,7 @@ namespace Supremacy.Scripting.Ast
         public int Add(Argument arg)
         {
             _arguments.Add(arg);
-            return (_arguments.Count - 1);
+            return _arguments.Count - 1;
         }
 
         void ICollection<Argument>.Clear()
@@ -73,10 +73,14 @@ namespace Supremacy.Scripting.Ast
             // Constant expression can have no effect on left-to-right execution
             //
             if (a.Value is ConstantExpression)
+            {
                 return;
+            }
 
             if (_reordered == null)
+            {
                 _reordered = new List<Argument>();
+            }
 
             _reordered.Add(a);
         }
@@ -84,37 +88,37 @@ namespace Supremacy.Scripting.Ast
         public void Dump(SourceWriter sw)
         {
             int i = 0;
-            foreach (var argument in _arguments)
+            foreach (Argument argument in _arguments)
             {
                 if (i++ != 0)
+                {
                     sw.Write(", ");
+                }
+
                 if (argument is NamedArgument)
+                {
                     sw.Write(((NamedArgument)argument).Name + ": ");
+                }
+
                 argument.Dump(sw);
             }
         }
 
         public Arguments Clone(CloneContext cloneContext)
         {
-            var clone = new Arguments(_arguments.Count);
+            Arguments clone = new Arguments(_arguments.Count);
             clone.AddRange(_arguments.Select(o => Ast.Clone(cloneContext, o)));
             return clone;
         }
 
         void ICollection<Argument>.Add(Argument item)
         {
-            Add(item);
+            _ = Add(item);
         }
 
-        public int Count
-        {
-            get { return _arguments.Count; }
-        }
+        public int Count => _arguments.Count;
 
-        public bool IsReadOnly
-        {
-            get { return false; }
-        }
+        public bool IsReadOnly => false;
 
         public IEnumerator<Argument> GetEnumerator()
         {
@@ -138,22 +142,23 @@ namespace Supremacy.Scripting.Ast
 
         public static MSAst[] Transform(Arguments arguments, ScriptGenerator generator)
 		{
-            if (arguments == null)
-				return new MSAst[0];
-
-            return arguments.Transform(generator);
-		}
+            return arguments == null ? (new MSAst[0]) : arguments.Transform(generator);
+        }
 
         public MSAst[] Transform(ScriptGenerator generator)
         {
             if (_arguments.Count == 0)
+            {
                 return _emptyTransform;
+            }
 
             if (_reordered != null)
+            {
                 throw new NotImplementedException();
+            }
 
-            var transformedArguments = new MSAst[_arguments.Count];
-            for (var i = 0; i < _arguments.Count; i++)
+            MSAst[] transformedArguments = new MSAst[_arguments.Count];
+            for (int i = 0; i < _arguments.Count; i++)
                 transformedArguments[i] = _arguments[i].Value.Transform(generator);
 
             return transformedArguments;
@@ -164,8 +169,10 @@ namespace Supremacy.Scripting.Ast
         //
         public void Resolve(ParseContext ec)
         {
-            foreach (var argument in _arguments)
+            foreach (Argument argument in _arguments)
+            {
                 argument.Resolve(ec);
+            }
         }
 
         public void RemoveAt(int index)
@@ -175,17 +182,17 @@ namespace Supremacy.Scripting.Ast
 
         public Argument this[int index]
         {
-            get { return _arguments[index]; }
-            set { _arguments[index] = value; }
+            get => _arguments[index];
+            set => _arguments[index] = value;
         }
 
         public static Arguments CreateDelegateMethodArguments(ParametersCollection pd, SourceSpan location)
         {
-            var delegateArguments = new Arguments(pd.Count);
-            for (var i = 0; i < pd.Count; ++i)
+            Arguments delegateArguments = new Arguments(pd.Count);
+            for (int i = 0; i < pd.Count; ++i)
             {
                 ArgumentType typeModifier;
-                var argumentType = pd.Types[i];
+                Type argumentType = pd.Types[i];
                 switch (pd.FixedParameters[i].ModifierFlags)
                 {
                     case Parameter.Modifier.Ref:
@@ -200,8 +207,7 @@ namespace Supremacy.Scripting.Ast
                         typeModifier = 0;
                         break;
                 }
-                delegateArguments.Add(
-                    new Argument(new TypeExpression(argumentType) { Span = location })
+                _ = delegateArguments.Add(new Argument(new TypeExpression(argumentType) { Span = location })
                     {
                         ArgumentType = typeModifier
                     });

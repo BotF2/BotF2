@@ -8,8 +8,8 @@ namespace Supremacy.Scripting.Ast
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public Expression Initializer
         {
-            get { return Expression; }
-            set { Expression = value; }
+            get => Expression;
+            set => Expression = value;
         }
 
         public SelectManyClause() { }
@@ -44,24 +44,22 @@ namespace Supremacy.Scripting.Ast
                     new NameExpression { Name = RangeVariable.VariableName, Span = RangeVariable.Span });
             }
 
-            var resultSelector = new LambdaExpression
-                                 {
-                                     Span = RangeVariable.Span,
-                                     Scope = new QueryScope(
+            LambdaExpression resultSelector = new LambdaExpression
+            {
+                Span = RangeVariable.Span,
+                Scope = new QueryScope(
                                          ec.Compiler,
                                          Scope.Parent,
                                          Scope.TopLevel.Parameters,
                                          RangeVariable,
                                          Scope.StartLocation),
-                                     Body = resultSelectorExpr                                 };
+                Body = resultSelectorExpr
+            };
 
-            args.Add(new Argument(resultSelector));
+            _ = args.Add(new Argument(resultSelector));
         }
 
-        protected override string MethodName
-        {
-            get { return "SelectMany"; }
-        }
+        protected override string MethodName => "SelectMany";
 
         public override void Dump(SourceWriter sw, int indentChange)
         {
@@ -69,7 +67,7 @@ namespace Supremacy.Scripting.Ast
             DumpChild(RangeVariable, sw, indentChange);
             sw.Write(" in");
 
-            var initializerIsQuery = Initializer is QueryExpression;
+            bool initializerIsQuery = Initializer is QueryExpression;
             if (initializerIsQuery)
             {
                 sw.WriteLine();

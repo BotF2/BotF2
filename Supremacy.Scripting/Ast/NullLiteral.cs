@@ -17,15 +17,9 @@ namespace Supremacy.Scripting.Ast
             Span = location;
         }
 
-        public override bool IsNull
-        {
-            get { return true; }
-        }
+        public override bool IsNull => true;
 
-        public override bool IsZeroInteger
-        {
-            get { return true; }
-        }
+        public override bool IsZeroInteger => true;
 
         public override void OnErrorValueCannotBeConverted(ParseContext ec, SourceSpan location, Type target, bool expl)
         {
@@ -60,15 +54,12 @@ namespace Supremacy.Scripting.Ast
         public override ConstantExpression ConvertImplicitly(Type targetType)
         {
             // Null literal is of object type
-            if (targetType == TypeManager.CoreTypes.Object)
-                return this;
-
-            return base.ConvertImplicitly(targetType);
+            return targetType == TypeManager.CoreTypes.Object ? (this) : base.ConvertImplicitly(targetType);
         }
 
-		public override System.Linq.Expressions.Expression TransformCore (ScriptGenerator generator)
+        public override System.Linq.Expressions.Expression TransformCore(ScriptGenerator generator)
 		{
-		    return System.Linq.Expressions.Expression.Constant(null);
+            return System.Linq.Expressions.Expression.Constant(null);
 		}
     }
 }

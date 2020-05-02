@@ -10,29 +10,20 @@ namespace Supremacy.Scripting.Runtime.Binders
 {
     internal class SxeConvertBinder : ConvertBinder
     {
-        private readonly BinderState _binderState;
-        private readonly OverloadResolverFactory _resolverFactory;
-
         public SxeConvertBinder(BinderState binderState, Type type, ConversionResultKind resultKind, OverloadResolverFactory resolverFactory)
-            : base(type, (resultKind == ConversionResultKind.ExplicitCast))
+            : base(type, resultKind == ConversionResultKind.ExplicitCast)
         {
-            _binderState = binderState;
-            _resolverFactory = resolverFactory;
+            BinderState = binderState;
+            ResolverFactory = resolverFactory;
         }
 
-        public OverloadResolverFactory ResolverFactory
-        {
-            get { return _resolverFactory; }
-        }
+        public OverloadResolverFactory ResolverFactory { get; }
 
-        public BinderState BinderState
-        {
-            get { return _binderState; }
-        }
+        public BinderState BinderState { get; }
 
         public override DynamicMetaObject FallbackConvert(DynamicMetaObject target, DynamicMetaObject errorSuggestion)
         {
-            var restricted = target.Restrict(target.RuntimeType);
+            DynamicMetaObject restricted = target.Restrict(target.RuntimeType);
             return new DynamicMetaObject(
                 Expression.Convert(restricted.Expression, Type),
                 restricted.Restrictions);

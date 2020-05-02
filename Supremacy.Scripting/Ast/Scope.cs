@@ -10,20 +10,12 @@ namespace Supremacy.Scripting.Ast
     public class Scope
     {
         private IDictionary<string, Parameter> _variables;
-        private readonly CompilerContext _compilerContext;
         private List<Scope> _children;
         private List<Scope> _anonymousChildren;
-        private readonly SourceLocation _startLocation;
 
-        public CompilerContext CompilerContext
-        {
-            get { return _compilerContext; }
-        }
+        public CompilerContext CompilerContext { get; }
 
-        public SourceLocation StartLocation
-        {
-            get { return _startLocation; }
-        }
+        public SourceLocation StartLocation { get; }
 
         public SourceLocation EndLocation { get; set; }
 
@@ -34,15 +26,21 @@ namespace Supremacy.Scripting.Ast
         public bool IsDescendantOf(Scope scope)
         {
             if (scope == null)
+            {
                 return false;
+            }
 
             if (scope == this)
+            {
                 return false;
+            }
 
-            for (var current = this; current != null; current = current.Parent)
+            for (Scope current = this; current != null; current = current.Parent)
             {
                 if (current == scope)
+                {
                     return true;
+                }
             }
 
             return false;
@@ -52,14 +50,19 @@ namespace Supremacy.Scripting.Ast
             : this(compilerContext, parent, SourceLocation.None, SourceLocation.None)
         {
             if (compilerContext != null)
-                _compilerContext = compilerContext;
+            {
+                CompilerContext = compilerContext;
+            }
         }
 
         public Scope(CompilerContext compilerContext, TopLevelScope parent, TopLevelScope source)
             : this(compilerContext, parent, source.StartLocation, SourceLocation.None)
         {
             if (compilerContext != null)
-                _compilerContext = compilerContext;
+            {
+                CompilerContext = compilerContext;
+            }
+
             _children = source._children;
             _variables = source._variables;
         }
@@ -74,8 +77,8 @@ namespace Supremacy.Scripting.Ast
                 Explicit = parent.Explicit;
             }
 
-            _startLocation = startLocation;
-            _compilerContext = compilerContext ?? ((parent == null) ? null : parent._compilerContext);
+            StartLocation = startLocation;
+            CompilerContext = compilerContext ?? ((parent == null) ? null : parent.CompilerContext);
 
             EndLocation = endLocation;
             Parent = parent;
@@ -84,7 +87,9 @@ namespace Supremacy.Scripting.Ast
         private void AddChild(Scope scope)
         {
             if (_children == null)
+            {
                 _children = new List<Scope>();
+            }
 
             _children.Add(scope);
         }
@@ -92,7 +97,9 @@ namespace Supremacy.Scripting.Ast
         public void AddAnonymousChild(TopLevelScope b)
         {
             if (_anonymousChildren == null)
+            {
                 _anonymousChildren = new List<Scope>();
+            }
 
             _anonymousChildren.Add(b);
         }
@@ -100,19 +107,27 @@ namespace Supremacy.Scripting.Ast
         public void SetEndLocation(SourceLocation location)
         {
             if ((EndLocation != SourceLocation.None) && (EndLocation != location))
+            {
                 throw new InvalidImplementationException("End location of scope has already been set.");
+            }
+
             EndLocation = location;
         }
 
         public Parameter GetVariable(string name)
         {
-            for (var scope = this; scope != null; scope = scope.Parent)
+            for (Scope scope = this; scope != null; scope = scope.Parent)
             {
                 if (scope._variables == null)
+                {
                     continue;
-                var variable = scope._variables[name];
+                }
+
+                Parameter variable = scope._variables[name];
                 if (variable != null)
+                {
                     return variable;
+                }
             }
             return null;
         }
@@ -121,16 +136,16 @@ namespace Supremacy.Scripting.Ast
         {
             if (scope != null)
             {
-                var e = scope.GetParameterReference(name, span);
+                Expression e = scope.GetParameterReference(name, span);
                 if (e != null)
                 {
-                    var pr = e as ParameterReference;
+                    ParameterReference pr = e as ParameterReference;
                     if ((this is QueryScope) &&
                         (((pr != null) && (pr.Parameter is QueryScope.ImplicitQueryParameter)) ||
                          e is MemberAccessExpression))
                     {
-                        _compilerContext.Errors.Add(
-                            _compilerContext.SourceUnit,
+                        CompilerContext.Errors.Add(
+                            CompilerContext.SourceUnit,
                             "Duplicate variable name: " + name,
                             span,
                             255,
@@ -144,7 +159,7 @@ namespace Supremacy.Scripting.Ast
 
         public T Clone<T>(CloneContext cloneContext) where T : Scope
         {
-            var clone = (T)MemberwiseClone();
+            T clone = (T)MemberwiseClone();
             CloneTo(cloneContext, clone);
             return clone;
         }
@@ -157,38 +172,47 @@ namespace Supremacy.Scripting.Ast
             target.Explicit = (ExplicitScope)cloneContext.LookupBlock(Explicit);
 
             if (Parent != null)
+            {
                 target.Parent = cloneContext.RemapBlockCopy(Parent);
+            }
 
             if (_variables != null)
             {
                 target._variables = new Dictionary<string, Parameter>();
 
-                foreach (var keyValuePair in _variables)
+                foreach (KeyValuePair<string, Parameter> keyValuePair in _variables)
                 {
-                    var newlocal = Ast.Clone(cloneContext, keyValuePair.Value);
+                    Parameter newlocal = Ast.Clone(cloneContext, keyValuePair.Value);
                     target._variables[keyValuePair.Key] = newlocal;
                     cloneContext.AddVariableMap(keyValuePair.Value, newlocal);
                 }
             }
 
             if (target._children != null)
+            {
                 target._children = _children.Select(o => cloneContext.LookupBlock(o)).ToList();
+            }
         }
 
         public bool CheckInvariantMeaningInBlock(string name, Expression e, SourceSpan span)
         {
-            var b = this;
+            Scope b = this;
             IKnownVariable kvi = b.Explicit.GetKnownVariable(name);
             while (kvi == null)
             {
                 b = b.Explicit.Parent;
                 if (b == null)
+                {
                     return true;
+                }
+
                 kvi = b.Explicit.GetKnownVariable(name);
             }
 
             if (kvi.Scope == b)
+            {
                 return true;
+            }
 
             // Is kvi.Block nested inside 'b'
             if (b.Explicit != kvi.Scope.Explicit)
@@ -200,8 +224,8 @@ namespace Supremacy.Scripting.Ast
                 //
                 if (b == this)
                 {
-                    _compilerContext.Errors.Add(
-                        _compilerContext.SourceUnit,
+                    CompilerContext.Errors.Add(
+                        CompilerContext.SourceUnit,
                         string.Format("'{0}' conflicts with a declaration in a child block.", name),
                         span,
                         135,
@@ -226,12 +250,14 @@ namespace Supremacy.Scripting.Ast
             // part in maintaining the invariant-meaning-in-block property.
             //
             if (e is ParameterReference)
+            {
                 return true;
+            }
 
             if (this is TopLevelScope)
             {
-                _compilerContext.Errors.Add(
-                    _compilerContext.SourceUnit,
+                CompilerContext.Errors.Add(
+                    CompilerContext.SourceUnit,
                     string.Format("A local variable '{0}' cannot be used before it is declared.", name),
                     span,
                     841,
@@ -260,8 +286,8 @@ namespace Supremacy.Scripting.Ast
                                        "to '{0}', which is already used in a '{1}' scope " +
                                        "to denote something else.";
 
-            _compilerContext.Errors.Add(
-                _compilerContext.SourceUnit,
+            CompilerContext.Errors.Add(
+                CompilerContext.SourceUnit,
                 string.Format(
                     errorFormat, name, reason),
                 span,
@@ -271,8 +297,8 @@ namespace Supremacy.Scripting.Ast
 
         protected virtual void OnAlreadyDeclaredError(SourceSpan span, string name)
         {
-            _compilerContext.Errors.Add(
-                _compilerContext.SourceUnit,
+            CompilerContext.Errors.Add(
+                CompilerContext.SourceUnit,
                 string.Format(
                     "A local variable named '{0}' is already defined in this scope.",
                     name),

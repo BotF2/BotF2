@@ -21,16 +21,16 @@ namespace Supremacy.Scripting.Ast
         
         public override MSAst.Expression TransformCore(ScriptGenerator generator)
         {
-            var operand = Operand.Transform(generator);
+            MSAst.Expression operand = Operand.Transform(generator);
 
             switch (Operator)
             {
                 case MSAst.ExpressionType.Negate:
-                    return System.Linq.Expressions.Expression.Negate(operand);
+                    return MSAst.Expression.Negate(operand);
                 case MSAst.ExpressionType.Not:
-                    return System.Linq.Expressions.Expression.Not(operand);
+                    return MSAst.Expression.Not(operand);
                 case MSAst.ExpressionType.OnesComplement:
-                    return System.Linq.Expressions.Expression.OnesComplement(operand);
+                    return MSAst.Expression.OnesComplement(operand);
                 default:
                     throw new NotSupportedException(Operator.ToString());
             }
@@ -55,19 +55,23 @@ namespace Supremacy.Scripting.Ast
 
         public override void Dump(SourceWriter sw, int indentChange)
         {
-            var operatorToken = GetOperatorToken(Operator);
+            string operatorToken = GetOperatorToken(Operator);
 
             sw.Write(operatorToken);
 
-            var parenthesize = Operand.ShouldParenthesize;
+            bool parenthesize = Operand.ShouldParenthesize;
 
             if (parenthesize)
+            {
                 sw.Write("(");
+            }
 
             Operand.Dump(sw, indentChange);
 
             if (parenthesize)
+            {
                 sw.Write(")");
+            }
         }
 
         // <summary>
@@ -77,7 +81,9 @@ namespace Supremacy.Scripting.Ast
         private ConstantExpression TryReduceConstant(ParseContext ec, ConstantExpression e)
         {
             if (e is EmptyConstantCastExpression)
+            {
                 return TryReduceConstant(ec, ((EmptyConstantCastExpression)e).Child);
+            }
 
             if (e is SideEffectConstantExpression)
             {
@@ -85,22 +91,36 @@ namespace Supremacy.Scripting.Ast
                 return r == null ? null : new SideEffectConstantExpression(r, e, r.Span);
             }
 
-            var exprType = e.Type;
+            Type exprType = e.Type;
 
             switch (Operator)
             {
                 case MSAst.ExpressionType.UnaryPlus:
                     // Unary numeric promotions
                     if (exprType == TypeManager.CoreTypes.Byte)
-                        return new ConstantExpression<int>(((byte)e.Value), e.Span);
+                    {
+                        return new ConstantExpression<int>((byte)e.Value, e.Span);
+                    }
+
                     if (exprType == TypeManager.CoreTypes.SByte)
-                        return new ConstantExpression<int>(((sbyte)e.Value), e.Span);
+                    {
+                        return new ConstantExpression<int>((sbyte)e.Value, e.Span);
+                    }
+
                     if (exprType == TypeManager.CoreTypes.Int16)
-                        return new ConstantExpression<int>(((short)e.Value), e.Span);
+                    {
+                        return new ConstantExpression<int>((short)e.Value, e.Span);
+                    }
+
                     if (exprType == TypeManager.CoreTypes.UInt16)
-                        return new ConstantExpression<int>(((ushort)e.Value), e.Span);
+                    {
+                        return new ConstantExpression<int>((ushort)e.Value, e.Span);
+                    }
+
                     if (exprType == TypeManager.CoreTypes.Char)
-                        return new ConstantExpression<int>(((char)e.Value), e.Span);
+                    {
+                        return new ConstantExpression<int>((char)e.Value, e.Span);
+                    }
 
                     // Predefined operators
                     if (exprType == TypeManager.CoreTypes.UInt32 || exprType == TypeManager.CoreTypes.UInt32 ||
@@ -116,20 +136,34 @@ namespace Supremacy.Scripting.Ast
                 case MSAst.ExpressionType.Negate:
                     // Unary numeric promotions
                     if (exprType == TypeManager.CoreTypes.Byte)
-                        return new ConstantExpression<int>(-((byte)e.Value), e.Span);
+                    {
+                        return new ConstantExpression<int>(-(byte)e.Value, e.Span);
+                    }
+
                     if (exprType == TypeManager.CoreTypes.SByte)
-                        return new ConstantExpression<int>(-((sbyte)e.Value), e.Span);
+                    {
+                        return new ConstantExpression<int>(-(sbyte)e.Value, e.Span);
+                    }
+
                     if (exprType == TypeManager.CoreTypes.Int16)
-                        return new ConstantExpression<int>(-((short)e.Value), e.Span);
+                    {
+                        return new ConstantExpression<int>(-(short)e.Value, e.Span);
+                    }
+
                     if (exprType == TypeManager.CoreTypes.UInt16)
-                        return new ConstantExpression<int>(-((ushort)e.Value), e.Span);
+                    {
+                        return new ConstantExpression<int>(-(ushort)e.Value, e.Span);
+                    }
+
                     if (exprType == TypeManager.CoreTypes.Char)
-                        return new ConstantExpression<int>(-((char)e.Value), e.Span);
+                    {
+                        return new ConstantExpression<int>(-(char)e.Value, e.Span);
+                    }
 
                     // Predefined operators
                     if (exprType == TypeManager.CoreTypes.UInt32)
                     {
-                        var value = ((int)e.Value);
+                        int value = (int)e.Value;
                         if (value == int.MinValue)
                         {
                             if (ec.ConstantCheckState)
@@ -143,7 +177,7 @@ namespace Supremacy.Scripting.Ast
                     }
                     if (exprType == TypeManager.CoreTypes.Int64)
                     {
-                        var value = (long)e.Value;
+                        long value = (long)e.Value;
                         if (value == long.MinValue)
                         {
                             if (ec.ConstantCheckState)
@@ -158,7 +192,7 @@ namespace Supremacy.Scripting.Ast
 
                     if (exprType == TypeManager.CoreTypes.UInt32)
                     {
-                        return new ConstantExpression<long>(-((uint)e.Value), e.Span);
+                        return new ConstantExpression<long>(-(uint)e.Value, e.Span);
                     }
 
                     if (exprType == TypeManager.CoreTypes.UInt64)
@@ -168,53 +202,83 @@ namespace Supremacy.Scripting.Ast
 
                     if (exprType == TypeManager.CoreTypes.Single)
                     {
-                        return new ConstantExpression<float>(-((float)e.Value), e.Span);
+                        return new ConstantExpression<float>(-(float)e.Value, e.Span);
                     }
                     if (exprType == TypeManager.CoreTypes.Double)
                     {
-                        return new ConstantExpression<double>(-((double)e.Value), e.Span);
+                        return new ConstantExpression<double>(-(double)e.Value, e.Span);
                     }
                     if (exprType == TypeManager.CoreTypes.Decimal)
-                        return new ConstantExpression<decimal>(-((decimal)e.Value), e.Span);
+                    {
+                        return new ConstantExpression<decimal>(-(decimal)e.Value, e.Span);
+                    }
 
                     return null;
 
                 case MSAst.ExpressionType.Not:
                     if (exprType != TypeManager.CoreTypes.Boolean)
+                    {
                         return null;
+                    }
 
-                    var b = (bool)e.Value;
+                    bool b = (bool)e.Value;
                     return new ConstantExpression<bool>(!b, e.Span);
 
                 case MSAst.ExpressionType.OnesComplement:
                     // Unary numeric promotions
                     if (exprType == TypeManager.CoreTypes.Byte)
-                        return new ConstantExpression<int>(~((byte)e.Value), e.Span);
+                    {
+                        return new ConstantExpression<int>(~(byte)e.Value, e.Span);
+                    }
+
                     if (exprType == TypeManager.CoreTypes.SByte)
+                    {
                         return new ConstantExpression<int>(~((sbyte)e.Value), e.Span);
+                    }
+
                     if (exprType == TypeManager.CoreTypes.Int16)
-                        return new ConstantExpression<int>(~((short)e.Value), e.Span);
+                    {
+                        return new ConstantExpression<int>(~(short)e.Value, e.Span);
+                    }
+
                     if (exprType == TypeManager.CoreTypes.UInt16)
-                        return new ConstantExpression<int>(~((ushort)e.Value), e.Span);
+                    {
+                        return new ConstantExpression<int>(~(ushort)e.Value, e.Span);
+                    }
+
                     if (exprType == TypeManager.CoreTypes.Char)
-                        return new ConstantExpression<int>(~((char)e.Value), e.Span);
+                    {
+                        return new ConstantExpression<int>(~(char)e.Value, e.Span);
+                    }
 
                     // Predefined operators
                     if (exprType == TypeManager.CoreTypes.Int32)
-                        return new ConstantExpression<int>(~((int)e.Value), e.Span);
+                    {
+                        return new ConstantExpression<int>(~(int)e.Value, e.Span);
+                    }
+
                     if (exprType == TypeManager.CoreTypes.UInt32)
-                        return new ConstantExpression<uint>(~((uint)e.Value), e.Span);
+                    {
+                        return new ConstantExpression<uint>(~(uint)e.Value, e.Span);
+                    }
+
                     if (exprType == TypeManager.CoreTypes.Int64)
-                        return new ConstantExpression<long>(~((long)e.Value), e.Span);
+                    {
+                        return new ConstantExpression<long>(~(long)e.Value, e.Span);
+                    }
+
                     if (exprType == TypeManager.CoreTypes.UInt64)
                     {
-                        return new ConstantExpression<ulong>(~((ulong)e.Value), e.Span);
+                        return new ConstantExpression<ulong>(~(ulong)e.Value, e.Span);
                     }
                     if (e is EnumConstantExpression)
                     {
                         e = TryReduceConstant(ec, ((EnumConstantExpression)e).Child);
                         if (e != null)
+                        {
                             e = new EnumConstantExpression(e, exprType);
+                        }
+
                         return e;
                     }
                     return null;
@@ -227,9 +291,11 @@ namespace Supremacy.Scripting.Ast
             ExpressionClass = ExpressionClass.Value;
 
             if (_predefinedOperators == null)
+            {
                 CreatePredefinedOperatorsTable();
+            }
 
-            var exprType = expr.Type;
+            Type exprType = expr.Type;
 
             //
             // Primitive types first
@@ -238,7 +304,9 @@ namespace Supremacy.Scripting.Ast
             {
                 Expression bestExpr = ResolvePrimitivePredefinedType(ec, expr);
                 if (bestExpr == null)
+                {
                     return null;
+                }
 
                 Type = bestExpr.Type;
                 Operand = bestExpr;
@@ -248,19 +316,20 @@ namespace Supremacy.Scripting.Ast
             //
             // E operator ~(E x);
             //
-            if (Operator == MSAst.ExpressionType.OnesComplement && TypeManager.IsEnumType(exprType))
-                return ResolveEnumOperator(ec, expr);
-
-            return ResolveUserType(ec, expr);
+            return Operator == MSAst.ExpressionType.OnesComplement && TypeManager.IsEnumType(exprType)
+                ? ResolveEnumOperator(ec, expr)
+                : ResolveUserType(ec, expr);
         }
 
         protected virtual Expression ResolveEnumOperator(ParseContext ec, Expression expr)
         {
-            var underlyingType = Enum.GetUnderlyingType(expr.Type);
-            
-            var bestExpr = ResolvePrimitivePredefinedType(ec, EmptyCastExpression.Create(expr, underlyingType));
+            Type underlyingType = Enum.GetUnderlyingType(expr.Type);
+
+            Expression bestExpr = ResolvePrimitivePredefinedType(ec, EmptyCastExpression.Create(expr, underlyingType));
             if (bestExpr == null)
+            {
                 return null;
+            }
 
             Operand = bestExpr;
             Type = expr.Type;
@@ -271,34 +340,28 @@ namespace Supremacy.Scripting.Ast
         private Expression ResolvePrimitivePredefinedType(ParseContext ec, Expression expr)
         {
             expr = DoNumericPromotion(ec, Operator, expr);
-            
-            var exprType = expr.Type;
-            var predefined = _predefinedOperators[Operator];
 
-            if (predefined.Any(t => t == exprType))
-                return expr;
+            Type exprType = expr.Type;
+            List<Type> predefined = _predefinedOperators[Operator];
 
-            return null;
+            return predefined.Any(t => t == exprType) ? expr : null;
         }
 
-        static Expression DoNumericPromotion(ParseContext ec, MSAst.ExpressionType op, Expression expr)
+        private static Expression DoNumericPromotion(ParseContext ec, MSAst.ExpressionType op, Expression expr)
         {
-            var exprType = expr.Type;
+            Type exprType = expr.Type;
 
-            if ((op == MSAst.ExpressionType.UnaryPlus || op == MSAst.ExpressionType.Negate || op == MSAst.ExpressionType.OnesComplement) &&
-                exprType == TypeManager.CoreTypes.Byte || exprType == TypeManager.CoreTypes.SByte ||
+            if (((op == MSAst.ExpressionType.UnaryPlus || op == MSAst.ExpressionType.Negate || op == MSAst.ExpressionType.OnesComplement) &&
+                exprType == TypeManager.CoreTypes.Byte) || exprType == TypeManager.CoreTypes.SByte ||
                 exprType == TypeManager.CoreTypes.Int16 || exprType == TypeManager.CoreTypes.UInt16 ||
                 exprType == TypeManager.CoreTypes.Char)
             {
                 return ConvertExpression.MakeImplicitNumericConversion(ec, expr, expr.Type, TypeManager.CoreTypes.Int32);
             }
 
-            if (op == MSAst.ExpressionType.Negate && exprType == TypeManager.CoreTypes.UInt32)
-            {
-                return ConvertExpression.MakeImplicitNumericConversion(ec, expr, expr.Type, TypeManager.CoreTypes.Int64);
-            }
-
-            return expr;
+            return op == MSAst.ExpressionType.Negate && exprType == TypeManager.CoreTypes.UInt32
+                ? ConvertExpression.MakeImplicitNumericConversion(ec, expr, expr.Type, TypeManager.CoreTypes.Int64)
+                : expr;
         }
 
         //
@@ -308,25 +371,28 @@ namespace Supremacy.Scripting.Ast
         {
             Expression bestExpr = ResolveUserOperator(ec, expr);
             if (bestExpr != null)
-                return bestExpr;
-
-            var predefined = _predefinedOperators[Operator];
-            foreach (var t in predefined)
             {
-                var operExpr = ConvertExpression.MakeExplicitConversion(ec, expr, t, expr.Span);
+                return bestExpr;
+            }
+
+            List<Type> predefined = _predefinedOperators[Operator];
+            foreach (Type t in predefined)
+            {
+                Expression operExpr = ConvertExpression.MakeExplicitConversion(ec, expr, t, expr.Span);
                 if (operExpr == null)
+                {
                     continue;
+                }
 
                 //
                 // decimal type is predefined but has user-operators
                 //
-                if (operExpr.Type == TypeManager.CoreTypes.Decimal)
-                    operExpr = ResolveUserType(ec, operExpr);
-                else
-                    operExpr = ResolvePrimitivePredefinedType(ec, operExpr);
+                operExpr = operExpr.Type == TypeManager.CoreTypes.Decimal ? ResolveUserType(ec, operExpr) : ResolvePrimitivePredefinedType(ec, operExpr);
 
                 if (operExpr == null)
+                {
                     continue;
+                }
 
                 if (bestExpr == null)
                 {
@@ -348,17 +414,23 @@ namespace Supremacy.Scripting.Ast
                 }
 
                 if (result == 2)
+                {
                     bestExpr = operExpr;
+                }
             }
 
             if (bestExpr == null)
+            {
                 return null;
+            }
 
             //
             // HACK: Decimal user-operator is included in standard operators
             //
             if (bestExpr.Type == TypeManager.CoreTypes.Decimal)
+            {
                 return bestExpr;
+            }
 
             Operand = bestExpr;
             Type = bestExpr.Type;
@@ -384,18 +456,21 @@ namespace Supremacy.Scripting.Ast
                     throw new InternalErrorException(Operator.ToString());
             }
 
-            var opName = opType.SignatureName;
-            
-            var userOp = MemberLookup(ec, null, expr.Type, opName, MemberTypes.Method, AllBindingFlags, expr.Span) as MethodGroupExpression;
-            if (userOp == null)
-                return null;
+            string opName = opType.SignatureName;
 
-            var args = new Arguments(1) { new Argument(expr) };
+            if (!(MemberLookup(ec, null, expr.Type, opName, MemberTypes.Method, AllBindingFlags, expr.Span) is MethodGroupExpression userOp))
+            {
+                return null;
+            }
+
+            Arguments args = new Arguments(1) { new Argument(expr) };
 
             userOp = userOp.OverloadResolve(ec, ref args, false, expr.Span);
 
             if (userOp == null)
+            {
                 return null;
+            }
 
             Operand = args[0].Value;
 
@@ -407,33 +482,37 @@ namespace Supremacy.Scripting.Ast
             Operand = Operand.Resolve(ec);
 
             if (Operand == null)
+            {
                 return null;
+            }
 
             if (TypeManager.IsNullableType(Operand.Type))
+            {
                 return new LiftedUnaryOperator(Operator, Operand).Resolve(ec);
+            }
 
             //
             // Attempt to use a constant folding operation.
             //
-            var cexpr = Operand as ConstantExpression;
-            if (cexpr != null)
+            if (Operand is ConstantExpression cexpr)
             {
                 cexpr = TryReduceConstant(ec, cexpr);
                 if (cexpr != null)
+                {
                     return cexpr;
+                }
             }
 
-            var expr = ResolveOperator(ec, Operand);
+            Expression expr = ResolveOperator(ec, Operand);
             if (expr == null)
+            {
                 OnErrorOperatorCannotBeApplied(ec, Span, GetOperatorToken(Operator), Operand.Type);
+            }
 
             //
             // Reduce unary operator on predefined types
             //
-            if (expr == this && Operator == MSAst.ExpressionType.UnaryPlus)
-                return Operand;
-
-            return expr;
+            return expr == this && Operator == MSAst.ExpressionType.UnaryPlus ? Operand : expr;
         }
 
         public static void OnErrorOperatorCannotBeApplied(ParseContext ec, SourceSpan loc, string oper, Type t)
@@ -513,18 +592,24 @@ namespace Supremacy.Scripting.Ast
         public override Expression DoResolve(ParseContext ec)
         {
             if (ExpressionClass != ExpressionClass.Invalid)
+            {
                 return this;
+            }
 
             _unwrap = Unwrap.Create(Operand, false);
 
             if (_unwrap == null)
+            {
                 return null;
+            }
 
-            var res = ResolveOperator(ec, _unwrap);
+            Expression res = ResolveOperator(ec, _unwrap);
             if (res != this)
             {
                 if (_userOperator == null)
+                {
                     return res;
+                }
             }
             else
             {
@@ -532,7 +617,9 @@ namespace Supremacy.Scripting.Ast
             }
 
             if (res == null)
+            {
                 return null;
+            }
 
             ExpressionClass = ExpressionClass.Value;
             Type = res.Type;
@@ -542,12 +629,14 @@ namespace Supremacy.Scripting.Ast
 
         private static Expression LiftExpression(ParseContext ec, Expression expr)
         {
-            var liftedType = (TypeExpression)new NullableTypeExpression(expr.Type, expr.Span);
+            TypeExpression liftedType = new NullableTypeExpression(expr.Type, expr.Span);
 
             liftedType = liftedType.ResolveAsTypeTerminal(ec, false);
 
             if (liftedType == null)
+            {
                 return null;
+            }
 
             expr.Type = liftedType.Type;
 
@@ -559,7 +648,9 @@ namespace Supremacy.Scripting.Ast
             expr = base.ResolveEnumOperator(ec, expr);
 
             if (expr == null)
+            {
                 return null;
+            }
 
             Operand = LiftExpression(ec, Operand);
 
@@ -570,7 +661,9 @@ namespace Supremacy.Scripting.Ast
         {
             expr = base.ResolveUserOperator(ec, expr);
             if (expr == null)
+            {
                 return null;
+            }
 
             //
             // When a user operator is of non-nullable type

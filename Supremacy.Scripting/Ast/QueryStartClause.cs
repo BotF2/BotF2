@@ -12,8 +12,8 @@ namespace Supremacy.Scripting.Ast
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public Expression Initializer
         {
-            get { return Expression; }
-            set { Expression = value; }
+            get => Expression;
+            set => Expression = value;
         }
 
         public override void Dump(SourceWriter sw, int indentChange)
@@ -22,7 +22,7 @@ namespace Supremacy.Scripting.Ast
             DumpChild(RangeVariable, sw, indentChange);
             sw.Write(" in");
 
-            var initializerIsQuery = Initializer is QueryExpression;
+            bool initializerIsQuery = Initializer is QueryExpression;
             if (initializerIsQuery)
             {
                 sw.WriteLine();
@@ -40,17 +40,16 @@ namespace Supremacy.Scripting.Ast
             finally
             {
                 if (initializerIsQuery)
+                {
                     sw.Indent -= 4;
+                }
             }
 
             sw.WriteLine();
             DumpChild(Next, sw, indentChange);
         }
 
-        protected override string MethodName
-        {
-            get { throw new NotSupportedException(); }
-        }
+        protected override string MethodName => throw new NotSupportedException();
 
         public override void BeginInit(ParseContext parseContext, bool raiseInitialized)
         {
@@ -65,13 +64,13 @@ namespace Supremacy.Scripting.Ast
 
         public override Expression BuildQueryClause(ParseContext ec, Expression leftSide)
         {
-            var result = Next.BuildQueryClause(ec, Initializer);
+            Expression result = Next.BuildQueryClause(ec, Initializer);
             return result;
         }
 
         public override Expression DoResolve(ParseContext ec)
         {
-            var result = BuildQueryClause(ec, null).Resolve(ec);
+            Expression result = BuildQueryClause(ec, null).Resolve(ec);
             return result;
         }
     }

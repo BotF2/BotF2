@@ -10,16 +10,15 @@ namespace Supremacy.Scripting.Ast
     {
         private readonly List<AnonymousMemberDeclarator> _memberDeclarators = new List<AnonymousMemberDeclarator>();
 
-        public IList<AnonymousMemberDeclarator> MemberDeclarators
-        {
-            get { return _memberDeclarators; }
-        }
+        public IList<AnonymousMemberDeclarator> MemberDeclarators => _memberDeclarators;
 
         public override Expression DoResolve(ParseContext parseContext)
         {
-            foreach (var memberDeclarator in _memberDeclarators)
-                memberDeclarator.Resolve(parseContext);
-            
+            foreach (AnonymousMemberDeclarator memberDeclarator in _memberDeclarators)
+            {
+                _ = memberDeclarator.Resolve(parseContext);
+            }
+
             return this;
         }
 
@@ -27,12 +26,15 @@ namespace Supremacy.Scripting.Ast
         {
             base.CloneTo(cloneContext, target);
 
-            var initializer = target as AnonymousObjectInitializer;
-            if (initializer == null)
+            if (!(target is AnonymousObjectInitializer initializer))
+            {
                 return;
+            }
 
-            foreach (var declarator in _memberDeclarators)
+            foreach (AnonymousMemberDeclarator declarator in _memberDeclarators)
+            {
                 initializer._memberDeclarators.Add(Clone(cloneContext, declarator));
+            }
         }
     }
 
@@ -42,8 +44,8 @@ namespace Supremacy.Scripting.Ast
 
         public AnonymousObjectInitializer Initializer
         {
-            get { return _initializer; }
-            set { _initializer = value; }
+            get => _initializer;
+            set => _initializer = value;
         }
 
         public override void Walk(AstVisitor prefix, AstVisitor postfix)
@@ -55,18 +57,19 @@ namespace Supremacy.Scripting.Ast
         {
             base.CloneTo(cloneContext, target);
 
-            var clone = target as AnonymousObjectCreationExpression;
-            if (clone == null)
+            if (!(target is AnonymousObjectCreationExpression clone))
+            {
                 return;
+            }
 
             clone._initializer = Clone(cloneContext, _initializer);
         }
 
         public override Expression DoResolve(ParseContext parseContext)
         {
-            _initializer.Resolve(parseContext);
-            
-            var anonymousType = TypeManager.GetAnonymousType(_initializer);
+            _ = _initializer.Resolve(parseContext);
+
+            AnonymousTypeClass anonymousType = TypeManager.GetAnonymousType(_initializer);
 
             return new NewInitExpression(
                 new TypeExpression(anonymousType.Type),
@@ -84,7 +87,9 @@ namespace Supremacy.Scripting.Ast
             sw.Write("new ");
 
             if (Initializer != null)
+            {
                 DumpChild(Initializer, sw);
+            }
         }
     }
 }

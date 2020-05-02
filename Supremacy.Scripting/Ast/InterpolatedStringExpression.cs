@@ -25,11 +25,19 @@ namespace Supremacy.Scripting.Ast
             Func<char, char> translateEscapeCharacter)
         {
             if (literalExpression == null)
+            {
                 throw new ArgumentNullException("literalExpression");
+            }
+
             if (translateEscapeCharacter == null)
+            {
                 throw new ArgumentNullException("translateEscapeCharacter");
+            }
+
             if (literalExpression.Kind != LiteralKind.Text)
+            {
                 throw new ArgumentException("Argument must be a Text literal expression.", "literalExpression");
+            }
 
             _literalExpression = literalExpression;
             _translateEscapeCharacter = translateEscapeCharacter;
@@ -44,9 +52,10 @@ namespace Supremacy.Scripting.Ast
         {
             base.CloneTo(cloneContext, target);
 
-            var clone = target as InterpolatedStringExpression;
-            if (clone == null)
+            if (!(target is InterpolatedStringExpression clone))
+            {
                 return;
+            }
 
             clone._literalExpression = Clone(cloneContext, _literalExpression);
             clone._translateEscapeCharacter = _translateEscapeCharacter;
@@ -56,51 +65,61 @@ namespace Supremacy.Scripting.Ast
         {
             const int startIndex = 0;
 
-            var source = _literalExpression.Text.ToCharArray();
+            char[] source = _literalExpression.Text.ToCharArray();
             if (source[startIndex] != '"')
+            {
                 return null;
+            }
 
-            var index = startIndex;
+            int index = startIndex;
             if (++index >= source.Length)
+            {
                 return null;
+            }
 
-            var language = (ScriptLanguageContext)parseContext.Compiler.SourceUnit.LanguageContext;
-            var startOfString = index;
+            ScriptLanguageContext language = (ScriptLanguageContext)parseContext.Compiler.SourceUnit.LanguageContext;
+            int startOfString = index;
 
-            var interpolatedStringBuilder = new InterpolatedStringBuilder(
+            InterpolatedStringBuilder interpolatedStringBuilder = new InterpolatedStringBuilder(
                 parseContext,
                 startIndex,
                 CreateSourceSpanCallback);
 
             while (source[index] != '"')
             {
-                var c = source[index];
+                char c = source[index];
                 if (c == '\\')
                 {
                     interpolatedStringBuilder.AddString(ExtractString(source, startOfString, index), index);
 
                     if (++index >= source.Length)
+                    {
                         return null;
+                    }
 
                     interpolatedStringBuilder.AddString(_translateEscapeCharacter(source[index]).ToString(), index);
 
                     if (++index >= source.Length)
+                    {
                         return null;
+                    }
 
                     startOfString = index;
                     continue;
                 }
-                if ((c == '{') && 
-                    (index < (source.Length - 2)) && 
-                    (source[index + 1] != '{') && 
+                if ((c == '{') &&
+                    (index < (source.Length - 2)) &&
+                    (source[index + 1] != '{') &&
                     (source[index + 1] != '}'))
                 {
                     interpolatedStringBuilder.AddString(ExtractString(source, startOfString, index), index);
 
                     if (++index >= source.Length)
+                    {
                         return null;
+                    }
 
-                    var interpolatedExpressionSpan = ExtractInterpolatedExpression(
+                    string interpolatedExpressionSpan = ExtractInterpolatedExpression(
                         parseContext,
                         source,
                         ref index);
@@ -108,12 +127,12 @@ namespace Supremacy.Scripting.Ast
                     //var expressionLength = interpolatedExpressionSpan.Length;
 
                     //index += expressionLength + 1;
-                    
-                    var interpolatedSource = language.CreateSnippet(
+
+                    SourceUnit interpolatedSource = language.CreateSnippet(
                         interpolatedExpressionSpan,
                         SourceCodeKind.Expression);
 
-                    var interpolatedExpression = language.ParseExpression(interpolatedSource);
+                    Expression interpolatedExpression = language.ParseExpression(interpolatedSource);
 
                     if (interpolatedExpression != null)
                     {
@@ -122,7 +141,9 @@ namespace Supremacy.Scripting.Ast
                             index);
 
                         if (index >= source.Length)
+                        {
                             return null;
+                        }
 
                         startOfString = index;
                         continue;
@@ -131,7 +152,9 @@ namespace Supremacy.Scripting.Ast
                 }
 
                 if (++index >= source.Length)
+                {
                     return null;
+                }
             }
 
             interpolatedStringBuilder.AddString(ExtractString(source, startOfString, index), index);
@@ -143,7 +166,7 @@ namespace Supremacy.Scripting.Ast
 
         private string ExtractInterpolatedExpression(ParseContext parseContext, char[] source, ref int index)
         {
-            var resultBuilder = new StringBuilder();
+            StringBuilder resultBuilder = new StringBuilder();
 
             while (index < source.Length)
             {
@@ -161,9 +184,11 @@ namespace Supremacy.Scripting.Ast
                 }
 
                 if (source[index] == '\\' && index < source.Length - 1 && source[index + 1] == '"')
+                {
                     ++index;
+                }
 
-                resultBuilder.Append(source[index++]);
+                _ = resultBuilder.Append(source[index++]);
             }
 
             return resultBuilder.ToString();
@@ -214,13 +239,9 @@ namespace Supremacy.Scripting.Ast
 
         public InterpolatedStringBuilder(ParseContext parseContext, int startIndex, Func<int, int, SourceSpan> sourceSpanCallback)
         {
-            if (parseContext == null)
-                throw new ArgumentNullException("parseContext");
-            if (sourceSpanCallback == null)
-                throw new ArgumentNullException("sourceSpanCallback");
-            _parseContext = parseContext;
+            _parseContext = parseContext ?? throw new ArgumentNullException("parseContext");
             _startIndex = startIndex;
-            _sourceSpanCallback = sourceSpanCallback;
+            _sourceSpanCallback = sourceSpanCallback ?? throw new ArgumentNullException("sourceSpanCallback");
             _stringStartIndex = startIndex;
             _stringBuilder = new StringBuilder();
             _expressions = null;
@@ -228,32 +249,33 @@ namespace Supremacy.Scripting.Ast
 
         public void AddString(string s, int endIndex)
         {
-            _stringBuilder.Append(s);
+            _ = _stringBuilder.Append(s);
         }
 
         public Expression CreateExpression(int endIndex)
         {
-            if (_expressions == null)
-                return new ConstantExpression<string>(_stringBuilder.ToString());
-
-            return new CallExpression(
+            return _expressions == null
+                ? new ConstantExpression<string>(_stringBuilder.ToString())
+                : (Expression)new CallExpression(
                 CommonMembers.StringFormat,
                 new TypeExpression(typeof(string)),
                 ArrayUtils.Insert(
                     new Argument(new ConstantExpression<string>(_stringBuilder.ToString())),
                     _expressions.Select(e => new Argument(e)).ToArray()))
                    {
-                       Span = _sourceSpanCallback(_stringStartIndex, endIndex - _startIndex),
-                       FileName = _parseContext.Compiler.SourceUnit.Path
+                    Span = _sourceSpanCallback(_stringStartIndex, endIndex - _startIndex),
+                    FileName = _parseContext.Compiler.SourceUnit.Path
                    };
         }
 
         public void AddExpression(Expression expression, int endIndex)
         {
             if (_expressions == null)
+            {
                 _expressions = new List<Expression>();
+            }
 
-            _stringBuilder.AppendFormat("{{{0}}}", _expressions.Count);
+            _ = _stringBuilder.AppendFormat("{{{0}}}", _expressions.Count);
             _expressions.Add(expression);
 
             _stringStartIndex = endIndex;

@@ -10,8 +10,6 @@ namespace Supremacy.Scripting.Runtime
         public const string DefaultTabString = "    ";
 
         private readonly string _tabString;
-        private readonly TextWriter _writer;
-
         private int _indentLevel;
         private int _line;
         private int _lineIndex;
@@ -25,55 +23,50 @@ namespace Supremacy.Scripting.Runtime
         public SourceWriter(TextWriter writer, string tabString)
         {
             _line = 1;
-            _writer = writer;
+            InnerWriter = writer;
             _tabString = tabString;
         }
 
-        public override Encoding Encoding
-        {
-            get { return _writer.Encoding; }
-        }
+        public override Encoding Encoding => InnerWriter.Encoding;
 
         public int Indent
         {
-            get { return _indentLevel; }
-            set { _indentLevel = (value < 0) ? 0 : value; }
+            get => _indentLevel;
+            set => _indentLevel = (value < 0) ? 0 : value;
         }
 
-        public TextWriter InnerWriter
-        {
-            get { return _writer; }
-        }
+        public TextWriter InnerWriter { get; }
 
         public override string NewLine
         {
-            get { return _writer.NewLine; }
-            set { _writer.NewLine = value; }
+            get => InnerWriter.NewLine;
+            set => InnerWriter.NewLine = value;
         }
 
-        public SourceLocation Location
-        {
-            get { return new SourceLocation(_writerIndex, _line, (_writerIndex - _lineIndex) + 1); }
-        }
+        public SourceLocation Location => new SourceLocation(_writerIndex, _line, _writerIndex - _lineIndex + 1);
 
         public override void Close()
         {
-            _writer.Close();
+            InnerWriter.Close();
         }
 
         public override void Flush()
         {
-            _writer.Flush();
+            InnerWriter.Flush();
         }
 
         public void OutputTabs()
         {
             if (!_tabsPending)
+            {
                 return;
-            
-            for (var i = 0; i < _indentLevel; i++)
-                _writer.Write(_tabString);
-            
+            }
+
+            for (int i = 0; i < _indentLevel; i++)
+            {
+                InnerWriter.Write(_tabString);
+            }
+
             _writerIndex += _indentLevel * _tabString.Length;
             _tabsPending = false;
         }
@@ -82,7 +75,7 @@ namespace Supremacy.Scripting.Runtime
         {
             OutputTabs();
 
-            _writer.Write(value);
+            InnerWriter.Write(value);
             _writerIndex++;
 
             if (value == CoreNewLine[_newLineMatchIndex])
@@ -116,7 +109,9 @@ namespace Supremacy.Scripting.Runtime
         public void Write(char c, int count)
         {
             for (int i = 0; i < count; i++)
+            {
                 Write(c);
+            }
         }
     }
 }

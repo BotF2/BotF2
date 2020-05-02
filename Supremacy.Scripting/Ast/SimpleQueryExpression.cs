@@ -1,7 +1,5 @@
 using Supremacy.Scripting.Runtime;
 
-using MSAst = System.Linq.Expressions.Expression;
-
 namespace Supremacy.Scripting.Ast
 {
     public class SimpleQueryExpression : Expression
@@ -10,8 +8,8 @@ namespace Supremacy.Scripting.Ast
 
         public Expression Projection
         {
-            get { return _projection; }
-            set { _projection = value; }
+            get => _projection;
+            set => _projection = value;
         }
 
         public override void Walk(AstVisitor prefix, AstVisitor postfix)

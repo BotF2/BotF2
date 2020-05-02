@@ -9,15 +9,15 @@ namespace Supremacy.Scripting.Ast
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public Expression Projection
         {
-            get { return Expression; }
-            set { Expression = value; }
+            get => Expression;
+            set => Expression = value;
         }
 
         public override void Walk(AstVisitor prefix, AstVisitor postfix)
         {
             base.Walk(prefix, postfix);
 
-            var projection = Projection;
+            Expression projection = Projection;
             Walk(ref projection, prefix, postfix);
             Projection = projection;
         }
@@ -28,20 +28,8 @@ namespace Supremacy.Scripting.Ast
             DumpChild(Projection, sw, indentChange);
         }
 
-        protected override string MethodName
-        {
-            get { return "Select"; }
-        }
+        protected override string MethodName => "Select";
 
-        public bool IsRequired
-        {
-            get
-            {
-                var nameExpression = Projection as NameExpression;
-                if (nameExpression == null)
-                    return true;
-                return (nameExpression.Name != Scope.Parameters.FixedParameters[0].Name);
-            }
-        }
+        public bool IsRequired => !(Projection is NameExpression nameExpression) ? true : nameExpression.Name != Scope.Parameters.FixedParameters[0].Name;
     }
 }

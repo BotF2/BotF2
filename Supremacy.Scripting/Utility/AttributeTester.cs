@@ -22,9 +22,8 @@ namespace Supremacy.Scripting.Utility
         private static PtrHashtable _analyzedMemberObsolete;
         private static PtrHashtable _analyzedMethodExcluded;
         private static PtrHashtable _fixedBufferCache;
-
-        static readonly object True = new object();
-        static readonly object False = new object();
+        private static readonly object True = new object();
+        private static readonly object False = new object();
 
         static AttributeTester()
         {
@@ -53,26 +52,30 @@ namespace Supremacy.Scripting.Utility
         /// </summary>
         public static Result AreOverloadedMethodParamsClsCompliant(ParametersCollection pa, ParametersCollection pb)
         {
-            var typesA = pa.Types;
-            var typesB = pb.Types;
+            Type[] typesA = pa.Types;
+            Type[] typesB = pb.Types;
 
             if (typesA == null || typesB == null)
+            {
                 return Result.Ok;
+            }
 
             if (typesA.Length != typesB.Length)
-                return Result.Ok;
-
-            var result = Result.Ok;
-
-            for (var i = 0; i < typesB.Length; ++i)
             {
-                var aType = typesA[i];
-                var bType = typesB[i];
+                return Result.Ok;
+            }
+
+            Result result = Result.Ok;
+
+            for (int i = 0; i < typesB.Length; ++i)
+            {
+                Type aType = typesA[i];
+                Type bType = typesB[i];
 
                 if (aType.IsArray && bType.IsArray)
                 {
-                    var elementTypeA = aType.GetElementType();
-                    var elementTypeB = bType.GetElementType();
+                    Type elementTypeA = aType.GetElementType();
+                    Type elementTypeB = bType.GetElementType();
 
                     if (aType.GetArrayRank() != bType.GetArrayRank() && elementTypeA == elementTypeB)
                     {
@@ -88,12 +91,16 @@ namespace Supremacy.Scripting.Utility
                 }
 
                 if (aType != bType)
+                {
                     return Result.Ok;
+                }
 
-                const Parameter.Modifier outRefMod = (Parameter.Modifier.OutMask | Parameter.Modifier.RefMask);
+                const Parameter.Modifier outRefMod = Parameter.Modifier.OutMask | Parameter.Modifier.RefMask;
 
                 if ((pa.FixedParameters[i].ModifierFlags & outRefMod) != (pb.FixedParameters[i].ModifierFlags & outRefMod))
+                {
                     result = Result.RefOutArrayError;
+                }
             }
             return result;
         }
@@ -104,11 +111,15 @@ namespace Supremacy.Scripting.Utility
         public static bool IsClsCompliant(Type type)
         {
             if (type == null)
+            {
                 return true;
+            }
 
-            var typeCompliance = _analyzedTypes[type];
+            object typeCompliance = _analyzedTypes[type];
             if (typeCompliance != null)
+            {
                 return typeCompliance == True;
+            }
 
             if (type.IsPointer)
             {
@@ -121,13 +132,9 @@ namespace Supremacy.Scripting.Utility
             {
                 result = IsClsCompliant(type);
             }
-            else if (TypeManager.IsNullableType(type))
-            {
-                result = IsClsCompliant(type.GetGenericArguments()[0]);
-            }
             else
             {
-                result = AnalyzeTypeCompliance(type);
+                result = TypeManager.IsNullableType(type) ? IsClsCompliant(type.GetGenericArguments()[0]) : AnalyzeTypeCompliance(type);
             }
             _analyzedTypes.Add(type, result ? True : False);
             return result;
@@ -140,15 +147,19 @@ namespace Supremacy.Scripting.Utility
         {
             // Fixed buffer helper type is generated as value type
             if (TypeManager.IsReferenceType(fi.FieldType))
+            {
                 return null;
+            }
 
             if (TypeManager.GetConstant(fi) != null)
+            {
                 return null;
+            }
 
-            var o = _fixedBufferCache[fi];
+            object o = _fixedBufferCache[fi];
             if (o == null)
             {
-                var fixedBufferAttribute = TypeManager.PredefinedAttributes.FixedBuffer;
+                Type fixedBufferAttribute = TypeManager.PredefinedAttributes.FixedBuffer;
 
                 if (!fi.IsDefined(fixedBufferAttribute, false))
                 {
@@ -161,33 +172,24 @@ namespace Supremacy.Scripting.Utility
                 return iff;
             }
 
-            if (o == False)
-                return null;
-
-            return (IFixedBuffer)o;
+            return o == False ? null : (IFixedBuffer)o;
         }
 
-        static bool GetClsCompliantAttributeValue(ICustomAttributeProvider attributeProvider, Assembly assembly)
+        private static bool GetClsCompliantAttributeValue(ICustomAttributeProvider attributeProvider, Assembly assembly)
         {
-            var clsCompliantAttribute = attributeProvider
+            CLSCompliantAttribute clsCompliantAttribute = attributeProvider
                 .GetCustomAttributes(TypeManager.PredefinedAttributes.CLSCompliant, false)
                 .Cast<CLSCompliantAttribute>()
                 .FirstOrDefault();
 
-            if (clsCompliantAttribute == null)
-                return GetClsCompliantAttributeValue(assembly, null);
-
-            return clsCompliantAttribute.IsCompliant;
+            return clsCompliantAttribute == null ? GetClsCompliantAttributeValue(assembly, null) : clsCompliantAttribute.IsCompliant;
         }
 
-        static bool AnalyzeTypeCompliance(Type type)
+        private static bool AnalyzeTypeCompliance(Type type)
         {
             type = TypeManager.DropGenericTypeArguments(type);
-        
-            if (TypeManager.IsGenericParameter(type))
-                return true;
 
-            return GetClsCompliantAttributeValue(type, type.Assembly);
+            return TypeManager.IsGenericParameter(type) ? true : GetClsCompliantAttributeValue(type, type.Assembly);
         }
 
         /// <summary>
@@ -195,12 +197,16 @@ namespace Supremacy.Scripting.Utility
         /// </summary>
         public static ObsoleteAttribute GetObsoleteAttribute(Type type)
         {
-            var typeObsolete = _analyzedTypesObsolete[type];
+            object typeObsolete = _analyzedTypesObsolete[type];
             if (typeObsolete == False)
+            {
                 return null;
+            }
 
             if (typeObsolete != null)
+            {
                 return (ObsoleteAttribute)typeObsolete;
+            }
 
             ObsoleteAttribute result = null;
             if (TypeManager.HasElementType(type))
@@ -217,13 +223,15 @@ namespace Supremacy.Scripting.Utility
             }
             else
             {
-                var obsoleteAttribute = type
+                ObsoleteAttribute obsoleteAttribute = type
                     .GetCustomAttributes(TypeManager.PredefinedAttributes.Obsolete, false)
                     .Cast<ObsoleteAttribute>()
                     .FirstOrDefault();
 
                 if (obsoleteAttribute != null)
+                {
                     result = obsoleteAttribute;
+                }
             }
 
             // Cannot use .Add because of corlib bootstrap
@@ -238,19 +246,20 @@ namespace Supremacy.Scripting.Utility
         {
             // compiler generated methods are not registered by AddMethod
             if (mb.DeclaringType is TypeBuilder)
+            {
                 return null;
+            }
 
-            var memberInfo = (MemberInfo)TypeManager.GetPropertyFromAccessor(mb);
+            MemberInfo memberInfo = TypeManager.GetPropertyFromAccessor(mb);
 
             if (memberInfo != null)
+            {
                 return GetMemberObsoleteAttribute(memberInfo);
+            }
 
             memberInfo = TypeManager.GetEventFromAccessor(mb);
 
-            if (memberInfo != null)
-                return GetMemberObsoleteAttribute(memberInfo);
-
-            return GetMemberObsoleteAttribute(mb);
+            return memberInfo != null ? GetMemberObsoleteAttribute(memberInfo) : GetMemberObsoleteAttribute(mb);
         }
 
         /// <summary>
@@ -258,17 +267,23 @@ namespace Supremacy.Scripting.Utility
         /// </summary>
         public static ObsoleteAttribute GetMemberObsoleteAttribute(MemberInfo mi)
         {
-            var typeObsolete = _analyzedMemberObsolete[mi];
+            object typeObsolete = _analyzedMemberObsolete[mi];
             if (typeObsolete == False)
+            {
                 return null;
+            }
 
             if (typeObsolete != null)
+            {
                 return (ObsoleteAttribute)typeObsolete;
+            }
 
             if ((mi.DeclaringType is TypeBuilder) || TypeManager.IsGenericType(mi.DeclaringType))
+            {
                 return null;
+            }
 
-            var obsoleteAttribute = Attribute.GetCustomAttribute(
+            ObsoleteAttribute obsoleteAttribute = Attribute.GetCustomAttribute(
                 mi, 
                 TypeManager.PredefinedAttributes.Obsolete,
                 false) as ObsoleteAttribute;
@@ -313,11 +328,13 @@ namespace Supremacy.Scripting.Utility
 
         public static bool IsConditionalMethodExcluded(ParseContext parseContext, MethodBase mb, SourceSpan loc)
         {
-            var excluded = _analyzedMethodExcluded[mb];
+            object excluded = _analyzedMethodExcluded[mb];
             if (excluded != null)
+            {
                 return excluded == True ? true : false;
+            }
 
-            var conditionalAttributes = mb
+            System.Collections.Generic.IEnumerable<ConditionalAttribute> conditionalAttributes = mb
                 .GetCustomAttributes(TypeManager.PredefinedAttributes.Conditional, true)
                 .Cast<ConditionalAttribute>();
 
@@ -344,16 +361,15 @@ namespace Supremacy.Scripting.Utility
         public static bool IsAttributeExcluded(ParseContext parseContext, Type type, SourceSpan loc)
         {
             if (!type.IsClass)
+            {
                 return false;
+            }
 
-            var attributes = type
+            System.Collections.Generic.IEnumerable<ConditionalAttribute> attributes = type
                 .GetCustomAttributes(TypeManager.PredefinedAttributes.Conditional, false)
                 .Cast<ConditionalAttribute>();
 
-            if (attributes.Any(ca => parseContext.LanguageContext.IsConditionalDefined(ca.ConditionString)))
-                return false;
-            
-            return attributes.Any();
+            return attributes.Any(ca => parseContext.LanguageContext.IsConditionalDefined(ca.ConditionString)) ? false : attributes.Any();
         }
     }
 
@@ -367,30 +383,16 @@ namespace Supremacy.Scripting.Utility
     {
         public const string FixedElementName = "FixedElementField";
 
-        private readonly FieldInfo _elementField;
-
         public FixedFieldExternal(FieldInfo fi)
         {
-            _elementField = fi.FieldType.GetField(FixedElementName);
+            Element = fi.FieldType.GetField(FixedElementName);
         }
 
         #region IFixedField Members
 
-        public FieldInfo Element
-        {
-            get
-            {
-                return _elementField;
-            }
-        }
+        public FieldInfo Element { get; }
 
-        public Type ElementType
-        {
-            get
-            {
-                return _elementField.FieldType;
-            }
-        }
+        public Type ElementType => Element.FieldType;
 
         #endregion
     }

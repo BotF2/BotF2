@@ -10,7 +10,7 @@ namespace Supremacy.Scripting.Ast
 {
     public class ParametersImported : ParametersCollection
     {
-        ParametersImported(ParametersCollection param, Type[] types)
+        private ParametersImported(ParametersCollection param, Type[] types)
         {
             Parameters = param.FixedParameters;
             Types = types;
@@ -18,7 +18,7 @@ namespace Supremacy.Scripting.Ast
             HasParams = param.HasParams;
         }
 
-        ParametersImported(IParameterData[] parameters, Type[] types, bool hasArglist, bool hasParams)
+        private ParametersImported(IParameterData[] parameters, Type[] types, bool hasArglist, bool hasParams)
         {
             Parameters = parameters;
             Types = types;
@@ -43,11 +43,13 @@ namespace Supremacy.Scripting.Ast
         public static ParametersCollection Create(ParametersCollection param, MethodBase method)
         {
             if (param.IsEmpty)
+            {
                 return param;
+            }
 
-            var parameters = method.GetParameters();
-            
-            var types = parameters
+            ParameterInfo[] parameters = method.GetParameters();
+
+            Type[] types = parameters
                 .Select(p => p.ParameterType)
                 .Select(t => t.IsByRef ? t.GetElementType() : t)
                 .ToArray();
@@ -64,13 +66,15 @@ namespace Supremacy.Scripting.Ast
             int varargs = method != null && (method.CallingConvention & CallingConventions.VarArgs) != 0 ? 1 : 0;
 
             if (pi.Length == 0 && varargs == 0)
+            {
                 return ParametersCompiled.EmptyReadOnlyParameters;
+            }
 
-            var types = new Type[pi.Length + varargs];
-            var par = new IParameterData[pi.Length + varargs];
-            var isParams = false;
-            var extensionAttribute = TypeManager.PredefinedAttributes.Extension;
-            var paramAttributre = TypeManager.PredefinedAttributes.ParamArray;
+            Type[] types = new Type[pi.Length + varargs];
+            IParameterData[] par = new IParameterData[pi.Length + varargs];
+            bool isParams = false;
+            Type extensionAttribute = TypeManager.PredefinedAttributes.Extension;
+            Type paramAttributre = TypeManager.PredefinedAttributes.ParamArray;
 
             for (int i = 0; i < pi.Length; i++)
             {
@@ -110,7 +114,7 @@ namespace Supremacy.Scripting.Ast
 
                     if (!isParams && p.IsOptional)
                     {
-                        var value = p.DefaultValue;
+                        object value = p.DefaultValue;
                         if (value == Missing.Value)
                         {
                             defaultValue = EmptyExpression.Null;
@@ -118,14 +122,14 @@ namespace Supremacy.Scripting.Ast
                         else if (value == null)
                         {
                             defaultValue = new LiteralExpression
-                                            {
-                                                Kind = LiteralKind.Null,
-                                                Span = SourceSpan.None
-                                            };
+                            {
+                                Kind = LiteralKind.Null,
+                                Span = SourceSpan.None
+                            };
                         }
                         else
                         {
-                            Activator.CreateInstance(
+                            _ = Activator.CreateInstance(
                                 typeof(ConstantExpression<>).MakeGenericType(value.GetType()),
                                 value);
                         }

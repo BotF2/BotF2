@@ -6,17 +6,11 @@ namespace Supremacy.Scripting.Ast
     {
         public TopLevelScope Scope { get; private set; }
 
-        SourceSpan IKnownVariable.Span
-        {
-            get { return Parameter.Span; }
-        }
+        SourceSpan IKnownVariable.Span => Parameter.Span;
 
         public int Index { get; private set; }
 
-        public Parameter Parameter
-        {
-            get { return Scope.Parameters[Index]; }
-        }
+        public Parameter Parameter => Scope.Parameters[Index];
 
         public TopLevelParameterInfo(TopLevelScope block, int index)
         {
@@ -24,9 +18,6 @@ namespace Supremacy.Scripting.Ast
             Index = index;
         }
 
-        Scope IKnownVariable.Scope
-        {
-            get { return Scope; }
-        }
+        Scope IKnownVariable.Scope => Scope;
     }
 }

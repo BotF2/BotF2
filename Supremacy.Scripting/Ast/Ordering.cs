@@ -16,8 +16,8 @@ namespace Supremacy.Scripting.Ast
         
         public Expression Expression
         {
-            get { return _expression; }
-            set { _expression = value; }
+            get => _expression;
+            set => _expression = value;
         }
 
         public override void Walk(AstVisitor prefix, AstVisitor postfix)

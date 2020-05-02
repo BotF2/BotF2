@@ -21,14 +21,11 @@ namespace Supremacy.Scripting.Ast
 
         public Expression Left
         {
-            get { return _left; }
-            set { _left = value; }
+            get => _left;
+            set => _left = value;
         }
 
-        public override bool IsPrimaryExpression
-        {
-            get { return true; }
-        }
+        public override bool IsPrimaryExpression => true;
 
         public override void Walk(AstVisitor prefix, AstVisitor postfix)
         {
@@ -45,15 +42,19 @@ namespace Supremacy.Scripting.Ast
 
         public override void Dump(SourceWriter sw, int indentChange)
         {
-            var parenthesize = !_left.IsPrimaryExpression;
+            bool parenthesize = !_left.IsPrimaryExpression;
 
             if (parenthesize)
+            {
                 sw.Write("(");
+            }
 
             _left.Dump(sw, indentChange);
 
             if (parenthesize)
+            {
                 sw.Write(")");
+            }
 
             sw.Write(".");
             sw.Write(Name);
@@ -61,11 +62,14 @@ namespace Supremacy.Scripting.Ast
             if (HasTypeArguments)
             {
                 sw.Write("<");
-                for (var i = 0; i < TypeArguments.Count; i++)
+                for (int i = 0; i < TypeArguments.Count; i++)
                 {
-                    var type = TypeArguments[i];
+                    FullNamedExpression type = TypeArguments[i];
                     if (i != 0)
+                    {
                         sw.Write(",");
+                    }
+
                     DumpChild(type, sw, indentChange);
                 }
                 sw.Write(">");
@@ -102,11 +106,15 @@ namespace Supremacy.Scripting.Ast
         private Expression DoResolve(ParseContext ec, Expression rightSide)
         {
             if (_resolved != null)
+            {
                 return _resolved;
+            }
 
-            var type = Type;
+            Type type = Type;
             if (type != null)
+            {
                 throw new Exception();
+            }
 
             //
             // Resolve the expression with flow analysis turned off, we'll do the definite
@@ -115,33 +123,29 @@ namespace Supremacy.Scripting.Ast
             // definite assignment check on the actual field and not on the whole struct.
             //
 
-            var original = Left as NameExpression;
-            
-            var leftResolved = Left.Resolve(ec,
+            NameExpression original = Left as NameExpression;
+
+            Expression leftResolved = Left.Resolve(ec,
                 ResolveFlags.VariableOrValue | ResolveFlags.Type |
                 ResolveFlags.Intermediate | ResolveFlags.DisableStructFlowAnalysis);
 
             if (leftResolved == null)
+            {
                 return null;
+            }
 
-            var typeArguments = TypeArguments;
-            var lookupIdentifier = MemberName.MakeName(Name, typeArguments);
+            TypeArguments typeArguments = TypeArguments;
+            string lookupIdentifier = MemberName.MakeName(Name, typeArguments);
 
-            var ns = leftResolved as NamespaceExpression;
-            if (ns != null)
+            if (leftResolved is NamespaceExpression ns)
             {
                 FullNamedExpression resolved = null;
 
                 MemberTracker namespaceChild;
 
-                bool found;
-
-                var trackerGroup = ns.Tracker as NamespaceGroupTracker;
-                if (trackerGroup != null)
-                    found = trackerGroup.TryGetValue((SymbolId)lookupIdentifier, out namespaceChild);
-                else
-                    found = ns.Tracker.TryGetValue((SymbolId)lookupIdentifier, out namespaceChild);
-
+                bool found = ns.Tracker is NamespaceGroupTracker trackerGroup
+                    ? trackerGroup.TryGetValue((SymbolId)lookupIdentifier, out namespaceChild)
+                    : ns.Tracker.TryGetValue((SymbolId)lookupIdentifier, out namespaceChild);
                 if (!found)
                 {
                     // TODO: ns.Error_NamespaceDoesNotExist(loc, lookupIdentifier, ec.Report);
@@ -149,12 +153,13 @@ namespace Supremacy.Scripting.Ast
                 else if (HasTypeArguments)
                 {
                     if (!typeArguments.Resolve(ec))
-                        return null;
-
-                    var typeTracker = namespaceChild as TypeGroup;
-                    if (typeTracker != null)
                     {
-                        var matchingType = typeTracker.GetTypeForArity(typeArguments.Count);
+                        return null;
+                    }
+
+                    if (namespaceChild is TypeGroup typeTracker)
+                    {
+                        TypeTracker matchingType = typeTracker.GetTypeForArity(typeArguments.Count);
                         if (matchingType != null)
                         {
                             resolved = new GenericTypeExpression(
@@ -170,11 +175,9 @@ namespace Supremacy.Scripting.Ast
                 }
                 else
                 {
-                    var typeGroup = namespaceChild as TypeGroup;
-                    if (typeGroup != null)
+                    if (namespaceChild is TypeGroup typeGroup)
                     {
-                        Type nonGenericType;
-                        if (typeGroup.TryGetNonGenericType(out nonGenericType))
+                        if (typeGroup.TryGetNonGenericType(out Type nonGenericType))
                         {
                             resolved = new TypeExpression(nonGenericType) { Span = Span };
                         }
@@ -185,8 +188,7 @@ namespace Supremacy.Scripting.Ast
                     }
                     else
                     {
-                        var nestedType = namespaceChild as NestedTypeTracker;
-                        if (nestedType != null)
+                        if (namespaceChild is NestedTypeTracker nestedType)
                         {
                             resolved = new TypeExpression(nestedType.Type) { Span = Span };
                         }
@@ -196,12 +198,12 @@ namespace Supremacy.Scripting.Ast
                         }
                     }
                 }
-                
-                    //FullNamedExpression retval = ns.Lookup(ec, lookupIdentifier, loc);
+
+                //FullNamedExpression retval = ns.Lookup(ec, lookupIdentifier, loc);
 
                 if (resolved == null)
                 {
-                    
+
                 }
                 else if (HasTypeArguments)
                 {
@@ -213,11 +215,14 @@ namespace Supremacy.Scripting.Ast
 
                 _resolved = resolved;
                 if (resolved != null)
+                {
                     ExpressionClass = resolved.ExpressionClass;
+                }
+
                 return resolved;
             }
 
-            var expressionType = leftResolved.Type;
+            Type expressionType = leftResolved.Type;
 
             if (expressionType.IsPointer || expressionType == TypeManager.CoreTypes.Void)
             {
@@ -225,8 +230,7 @@ namespace Supremacy.Scripting.Ast
                 return null;
             }
 
-            var c = leftResolved as ConstantExpression;
-            if (c != null && c.Value == null)
+            if (leftResolved is ConstantExpression c && c.Value == null)
             {
                 ec.ReportError(
                     1720,
@@ -236,9 +240,11 @@ namespace Supremacy.Scripting.Ast
             }
 
             if (typeArguments != null && !typeArguments.Resolve(ec))
+            {
                 return null;
+            }
 
-            var memberLookup = MemberLookup(
+            Expression memberLookup = MemberLookup(
                 ec,
                 null,
                 expressionType,
@@ -259,7 +265,7 @@ namespace Supremacy.Scripting.Ast
 
             if (memberLookup == null)
             {
-                var expressionClass = leftResolved.ExpressionClass;
+                ExpressionClass expressionClass = leftResolved.ExpressionClass;
 
                 //
                 // Extension methods are not allowed on all expression types
@@ -268,17 +274,22 @@ namespace Supremacy.Scripting.Ast
                     expressionClass == ExpressionClass.IndexerAccess || expressionClass == ExpressionClass.PropertyAccess ||
                     expressionClass == ExpressionClass.EventAccess)
                 {
-                    var exMethodLookup = ec.LookupExtensionMethod(expressionType, Name, Span);
+                    ExtensionMethodGroupExpression exMethodLookup = ec.LookupExtensionMethod(expressionType, Name, Span);
                     if (exMethodLookup != null)
                     {
                         exMethodLookup.ExtensionExpression = leftResolved;
 
                         if ((typeArguments != null) && typeArguments.Any())
+                        {
                             exMethodLookup.SetTypeArguments(ec, typeArguments);
+                        }
 
                         _resolved = exMethodLookup.DoResolve(ec);
                         if (_resolved != null)
+                        {
                             ExpressionClass = _resolved.ExpressionClass;
+                        }
+
                         return _resolved;
                     }
                 }
@@ -296,11 +307,12 @@ namespace Supremacy.Scripting.Ast
                     AllBindingFlags);
 
                 if (memberLookup == null)
+                {
                     return null;
+                }
             }
 
-            var texpr = memberLookup as TypeExpression;
-            if (texpr != null)
+            if (memberLookup is TypeExpression texpr)
             {
                 if (!(leftResolved is TypeExpression) &&
                     (original == null || !original.IdenticalNameAndTypeName(ec, leftResolved, Span)))
@@ -327,8 +339,7 @@ namespace Supremacy.Scripting.Ast
                     return null;
                 }
 
-                var ct = leftResolved as GenericTypeExpression;
-                if (ct != null)
+                if (leftResolved is GenericTypeExpression ct)
                 {
                     //
                     // When looking up a nested type in a generic instance
@@ -353,7 +364,10 @@ namespace Supremacy.Scripting.Ast
 
                     _resolved = ct.ResolveAsTypeStep(ec, false);
                     if (_resolved != null)
+                    {
                         ExpressionClass = _resolved.ExpressionClass;
+                    }
+
                     return _resolved;
                 }
 
@@ -362,10 +376,12 @@ namespace Supremacy.Scripting.Ast
                 return memberLookup;
             }
 
-            var me = (MemberExpression)memberLookup;
+            MemberExpression me = (MemberExpression)memberLookup;
             me = me.ResolveMemberAccess(ec, leftResolved, Span, original);
             if (me == null)
+            {
                 return null;
+            }
 
             if ((typeArguments != null) && typeArguments.Any())
             {
@@ -385,55 +401,48 @@ namespace Supremacy.Scripting.Ast
 
             Left = leftResolved;
 
-            if (rightSide != null)
-                return (_resolved = me.DoResolveLValue(ec, rightSide));
-            return (_resolved = me.DoResolve(ec));
+            return rightSide != null ? (_resolved = me.DoResolveLValue(ec, rightSide)) : (_resolved = me.DoResolve(ec));
         }
 
         public override FullNamedExpression ResolveAsTypeStep(ParseContext ec, bool silent)
         {
-            var result = ResolveNamespaceOrType(ec, silent);
+            FullNamedExpression result = ResolveNamespaceOrType(ec, silent);
             Type = result.Type;
             return result;
         }
 
         public FullNamedExpression ResolveNamespaceOrType(ParseContext rc, bool silent)
         {
-            var resolved = Left.ResolveAsTypeStep(rc, silent);
+            FullNamedExpression resolved = Left.ResolveAsTypeStep(rc, silent);
 
             if (resolved == null)
+            {
                 return null;
+            }
 
-            var languageContext = (ScriptLanguageContext)rc.Compiler.SourceUnit.LanguageContext;
-            
-            var hasTypeArguments = HasTypeArguments;
-            var typeArguments = TypeArguments;
+            ScriptLanguageContext languageContext = (ScriptLanguageContext)rc.Compiler.SourceUnit.LanguageContext;
 
-            var lookupIdentifier = ReflectionUtils.GetNormalizedTypeName(MemberName.MakeName(Name, typeArguments));
+            bool hasTypeArguments = HasTypeArguments;
+            TypeArguments typeArguments = TypeArguments;
 
-            var ns = resolved as NamespaceExpression;
-            
-            if (ns != null)
+            string lookupIdentifier = ReflectionUtils.GetNormalizedTypeName(MemberName.MakeName(Name, typeArguments));
+
+
+            if (resolved is NamespaceExpression ns)
             {
                 MemberTracker tracker;
 
-                bool found;
-
-                var trackerGroup = ns.Tracker as NamespaceGroupTracker;
-                if (trackerGroup != null)
-                    found = trackerGroup.TryGetValue((SymbolId)lookupIdentifier, out tracker);
-                else
-                    found = ns.Tracker.TryGetValue((SymbolId)lookupIdentifier, out tracker);
-
+                bool found = ns.Tracker is NamespaceGroupTracker trackerGroup
+                    ? trackerGroup.TryGetValue((SymbolId)lookupIdentifier, out tracker)
+                    : ns.Tracker.TryGetValue((SymbolId)lookupIdentifier, out tracker);
                 if (found)
                 {
-                    var typeGroup = tracker as TypeGroup;
-                    if (typeGroup != null)
+                    if (tracker is TypeGroup typeGroup)
                     {
                         if (hasTypeArguments)
                         {
-                            typeArguments.Resolve(rc);
-                            var genericType = typeGroup.GetTypeForArity(typeArguments.Count);
+                            _ = typeArguments.Resolve(rc);
+                            TypeTracker genericType = typeGroup.GetTypeForArity(typeArguments.Count);
                             if (genericType != null)
                             {
                                 return new TypeExpression(
@@ -445,26 +454,28 @@ namespace Supremacy.Scripting.Ast
 
                         Type nonGenericType;
                         if (typeGroup.TryGetNonGenericType(out nonGenericType))
+                        {
                             return new TypeExpression(nonGenericType);
+                        }
 
                         // ERROR!
                     }
 
-                    var singleTypeTracker = tracker as TypeTracker;
-                    if (singleTypeTracker != null)
+                    if (tracker is TypeTracker singleTypeTracker)
                     {
                         if (hasTypeArguments)
                         {
-                            typeArguments.Resolve(rc);
+                            _ = typeArguments.Resolve(rc);
                             return new TypeExpression(
                                 singleTypeTracker.Type.MakeGenericType(typeArguments.ResolvedTypes));
                         }
                         return new TypeExpression(singleTypeTracker.Type);
                     }
 
-                    var childNamespaceTracker = tracker as NamespaceTracker;
-                    if (childNamespaceTracker != null)
+                    if (tracker is NamespaceTracker childNamespaceTracker)
+                    {
                         return new NamespaceExpression(childNamespaceTracker, Span);
+                    }
 
                     // ERROR!
                 }
@@ -479,11 +490,13 @@ namespace Supremacy.Scripting.Ast
                 return null;
             }
 
-            var resolvedAsType = resolved.ResolveAsTypeTerminal(rc, false);
+            TypeExpression resolvedAsType = resolved.ResolveAsTypeTerminal(rc, false);
             if (resolvedAsType == null)
+            {
                 return null;
+            }
 
-            var expressionType = resolvedAsType.Type;
+            Type expressionType = resolvedAsType.Type;
             if (expressionType.IsGenericParameter)
             {
                 rc.Compiler.Errors.Add(
@@ -498,32 +511,37 @@ namespace Supremacy.Scripting.Ast
                 return null;
             }
 
-            var memberGroup = languageContext.DefaultBinderState.Binder.GetMember(
+            MemberGroup memberGroup = languageContext.DefaultBinderState.Binder.GetMember(
                 MemberRequestKind.Get,
                 expressionType,
                 Name);
 
             if (memberGroup != null)
             {
-                foreach (var nestedType in memberGroup.OfType<TypeTracker>())
+                foreach (TypeTracker nestedType in memberGroup.OfType<TypeTracker>())
                 {
                     if (nestedType.IsGenericType != hasTypeArguments)
+                    {
                         continue;
+                    }
 
                     if (!hasTypeArguments)
                     {
                         if (nestedType.Type.GetGenericArguments().Length == typeArguments.Count)
+                        {
                             return new TypeExpression(nestedType.Type);
+                        }
 
                         // ERROR!
                     }
 
-                    var typeGroup = nestedType as TypeGroup;
-                    if (typeGroup != null)
+                    if (nestedType is TypeGroup typeGroup)
                     {
-                        var matchingType = typeGroup.GetTypeForArity(typeArguments.Count);
+                        TypeTracker matchingType = typeGroup.GetTypeForArity(typeArguments.Count);
                         if (matchingType != null)
+                        {
                             return new TypeExpression(matchingType.Type);
+                        }
 
                         // ERROR!
                     }
@@ -532,7 +550,7 @@ namespace Supremacy.Scripting.Ast
 
             //return null;
 
-            var memberLookup = MemberLookup(
+            Expression memberLookup = MemberLookup(
                 rc,
                 null,
                 expressionType,
@@ -545,39 +563,47 @@ namespace Supremacy.Scripting.Ast
             if (memberLookup == null)
             {
                 if (silent)
+                {
                     return null;
+                }
 
                 System.Diagnostics.Debugger.Break();
                 //Error_IdentifierNotFound(rc, resolved, lookupIdentifier);
                 return null;
             }
 
-            var typeExpression = memberLookup.ResolveAsTypeTerminal(rc, false);
+            TypeExpression typeExpression = memberLookup.ResolveAsTypeTerminal(rc, false);
             if (typeExpression == null)
+            {
                 return null;
+            }
 
-            var theArgs = typeArguments;
-            var declaringType = typeExpression.Type.DeclaringType;
+            TypeArguments theArgs = typeArguments;
+            Type declaringType = typeExpression.Type.DeclaringType;
 
             if (TypeManager.HasGenericArguments(declaringType) && !TypeManager.IsGenericTypeDefinition(expressionType))
             {
                 while (!TypeManager.IsEqual(TypeManager.DropGenericTypeArguments(expressionType), declaringType))
+                {
                     expressionType = expressionType.BaseType;
+                }
 
-                var newArgs = new TypeArguments();
+                TypeArguments newArgs = new TypeArguments();
 
-                foreach (var decl in expressionType.GetGenericArguments())
+                foreach (Type decl in expressionType.GetGenericArguments())
                     newArgs.Add(new TypeExpression(decl) { Span = Span });
 
                 if (typeArguments != null)
+                {
                     newArgs.Add(typeArguments);
+                }
 
                 theArgs = newArgs;
             }
 
             if (theArgs != null)
             {
-                var genericType = new GenericTypeExpression(typeExpression.Type, theArgs, Span);
+                GenericTypeExpression genericType = new GenericTypeExpression(typeExpression.Type, theArgs, Span);
                 return genericType.ResolveAsTypeStep(rc, false);
             }
 

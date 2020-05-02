@@ -20,14 +20,14 @@ namespace Supremacy.Scripting.Ast
 
         public override Expression DoResolve(ParseContext ec)
         {
-            var method = (MethodInfo)Method;
+            MethodInfo method = (MethodInfo)Method;
 
             Type = method.ReturnType;
 
-            var parameterDatapd = TypeManager.GetParameterData(method);
+            ParametersCollection parameterDatapd = TypeManager.GetParameterData(method);
 
             if (!TypeManager.IsEqual(Type, Type) ||
-                !TypeManager.IsEqual(Type, parameterDatapd.Types[0]) || 
+                !TypeManager.IsEqual(Type, parameterDatapd.Types[0]) ||
                 !TypeManager.IsEqual(Type, parameterDatapd.Types[1]))
             {
                 ec.ReportError(
@@ -40,10 +40,10 @@ namespace Supremacy.Scripting.Ast
                 return null;
             }
 
-            var leftCopy = (Expression)new EmptyExpression(Type);
+            Expression leftCopy = new EmptyExpression(Type);
 
-            var opTrue = GetOperatorTrue(ec, leftCopy, Span);
-            var opFalse = GetOperatorFalse(ec, leftCopy, Span);
+            Expression opTrue = GetOperatorTrue(ec, leftCopy, Span);
+            Expression opFalse = GetOperatorFalse(ec, leftCopy, Span);
 
             if (opTrue == null || opFalse == null)
             {

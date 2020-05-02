@@ -32,9 +32,11 @@ namespace Supremacy.Scripting.Utility
                     return ((MethodTracker)tracker).Method;
 
                 case TrackerTypes.Property:
-                    var propertyTracker = tracker as ReflectedPropertyTracker;
-                    if (propertyTracker != null)
+                    if (tracker is ReflectedPropertyTracker propertyTracker)
+                    {
                         return propertyTracker.Property;
+                    }
+
                     return null;
 
                 case TrackerTypes.Type:
@@ -44,15 +46,21 @@ namespace Supremacy.Scripting.Utility
                     return null;
 
                 case TrackerTypes.MethodGroup:
-                    var methodBases = ((MethodGroup)tracker).GetMethodBases();
+                    MethodBase[] methodBases = ((MethodGroup)tracker).GetMethodBases();
                     if (methodBases.Length == 1)
+                    {
                         return methodBases[0];
+                    }
+
                     return null;
 
                 case TrackerTypes.TypeGroup:
-                    var types = ((TypeGroup)tracker).Types;
+                    System.Collections.Generic.IEnumerable<System.Type> types = ((TypeGroup)tracker).Types;
                     if (!types.Skip(1).Any())
+                    {
                         return types.Single();
+                    }
+
                     return null;
 
                 case TrackerTypes.Custom:

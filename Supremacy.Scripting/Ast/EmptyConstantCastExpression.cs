@@ -16,10 +16,7 @@ namespace Supremacy.Scripting.Ast
 
         public EmptyConstantCastExpression([NotNull] ConstantExpression child, Type targetType, bool isImplicitConversionRequired = false)
         {
-            if (child == null)
-                throw new ArgumentNullException("child");
-
-            _child = child;
+            _child = child ?? throw new ArgumentNullException("child");
             _isImplicitConversionRequired = isImplicitConversionRequired;
 
             Type = targetType;
@@ -35,28 +32,20 @@ namespace Supremacy.Scripting.Ast
         {
             base.CloneTo(cloneContext, target);
 
-            var clone = target as EmptyConstantCastExpression;
-            if (clone == null)
+            if (!(target is EmptyConstantCastExpression clone))
+            {
                 return;
+            }
 
             clone._isImplicitConversionRequired = _isImplicitConversionRequired;
             clone._child = Clone(cloneContext, _child);
         }
 
-        public ConstantExpression Child
-        {
-            get { return _child; }
-        }
+        public ConstantExpression Child => _child;
 
-        public override bool IsZeroInteger
-        {
-            get { return _child.IsZeroInteger; }
-        }
+        public override bool IsZeroInteger => _child.IsZeroInteger;
 
-        public override object Value
-        {
-            get { return _child.Value; }
-        }
+        public override object Value => _child.Value;
 
         public override void Walk(AstVisitor prefix, AstVisitor postfix)
         {
@@ -72,18 +61,15 @@ namespace Supremacy.Scripting.Ast
         public override ConstantExpression ConvertImplicitly(Type targetType)
         {
             // FIXME: Do we need to check user conversions?
-            if (!TypeUtils.IsImplicitlyConvertible(Type, targetType))
-                return null;
-            return _child.ConvertImplicitly(targetType);
+            return !TypeUtils.IsImplicitlyConvertible(Type, targetType) ? null : _child.ConvertImplicitly(targetType);
         }
 
         public override MSAst TransformCore(Runtime.ScriptGenerator generator)
         {
-            if (_isImplicitConversionRequired)
-                return Microsoft.Scripting.Ast.Utils.Convert(_child.Transform(generator), Type);
-
-            return generator.ConvertTo(
-                Type, 
+            return _isImplicitConversionRequired
+                ? Microsoft.Scripting.Ast.Utils.Convert(_child.Transform(generator), Type)
+                : generator.ConvertTo(
+                Type,
                 ConversionResultKind.ExplicitCast,
                 _child.Transform(generator));
         }
