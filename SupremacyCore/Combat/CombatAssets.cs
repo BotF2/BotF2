@@ -45,7 +45,6 @@ namespace Supremacy.Combat
             _escapedShips = new List<CombatUnit>();
             _destroyedShips = new List<CombatUnit>();
             _assimilatedShips = new List<CombatUnit>();
-            _station = new CombatUnit();
         }
         public CombatAssets()
         {
