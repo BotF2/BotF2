@@ -880,11 +880,12 @@ namespace Supremacy.Game
                         continue;
 
                     var foreignPower = diplomat.GetForeignPower(civ2);
+                    string _gameLog = "";
 
                     // just for testing especially generating break point
-                    if (civ1.CivID == 1 && civ2.CivID == 4 || civ1.CivID == 4 && civ2.CivID == 1)  // Terrans, incoming from Cardassians
-                    {
-                        string _gameLog = "### Checking ForeignerPower - see next line";
+                    //if (civ1.CivID == 1 && civ2.CivID == 4 || civ1.CivID == 4 && civ2.CivID == 1)  // Terrans, incoming from Cardassians
+                    //{
+                        _gameLog = "### Checking ForeignerPower - see next line";
                         if (foreignPower.ProposalReceived != null)
                             _gameLog += Environment.NewLine + "ProposalReceived: "
                                       + foreignPower.ProposalReceived.Sender + " vs "
@@ -911,7 +912,7 @@ namespace Supremacy.Game
                                       + Environment.NewLine;
                         if (foreignPower.StatementReceived != null)  // in SinglePlayer you'll never get this "received" because you are always the playing SENDER
                         {
-                             
+
                             //string parameterString = foreignPower.StatementSent.Parameter.ToString() ?? "";
 
                             _gameLog += Environment.NewLine + "StatementReceived: "
@@ -924,60 +925,65 @@ namespace Supremacy.Game
                             GameLog.Core.Diplomacy.DebugFormat("------------------------------------------");
                             GameLog.Core.Diplomacy.DebugFormat("received a 'Sabotage'-Diplomacy-Statement, Tone = {0}", foreignPower.StatementReceived.Tone.ToString());
                             GameLog.Core.Diplomacy.DebugFormat(_gameLog);
-
-                            switch (foreignPower.StatementReceived.Tone)
-                            {
-                                case Tone.Calm:
-                                    break;
-                                case Tone.Meek:
-                                    break;
-                                case Tone.Condescending:
-                                    break;
-                                case Tone.Indignant:
-                                    IntelHelper.SabotageStealCreditsExecute(civ2, civ1, foreignPower.StatementReceived.Parameter.ToString(), 99999);
-                                    //Parameter = blamed as a string
-                                    break;
-                                case Tone.Impatient:
-                                    IntelHelper.SabotageStealResearchExecute(civ2, civ1, foreignPower.StatementReceived.Parameter.ToString(), 99999);
-                                    break;
-                                case Tone.Annoyed:
-                                    IntelHelper.SabotageFoodExecute(civ2, civ1, foreignPower.StatementReceived.Parameter.ToString(), 99999);
-                                    break;
-                                case Tone.Enraged:
-                                    IntelHelper.SabotageIndustryExecute(civ2, civ1, foreignPower.StatementReceived.Parameter.ToString(), 99999);
-                                    break;
-                                case Tone.Receptive:
-                                    IntelHelper.SabotageEnergyExecute(civ2, civ1, foreignPower.StatementReceived.Parameter.ToString(), 99999);
-                                    break;
-                                case Tone.Enthusiastic:
-                                    break;
-                                default:
-                                    break;
-                            }
-
                         }
-                        if (foreignPower.StatementSent != null)
+                    //}
+
+                    if (foreignPower.StatementReceived != null)
+                    {
+                        switch (foreignPower.StatementReceived.Tone)
                         {
-                            //string parameterString = foreignPower.StatementSent.Parameter.ToString() ?? "";
-
-                            //GameLog.Core.Diplomacy.DebugFormat("received a 'StealCredits'-Diplomacy-Statement");   // in SinglePlayer Gamelog is just for the sender
-                            _gameLog += Environment.NewLine + "(relevant is just the receive on HOSTING side.... StatementSent: "
-                                      + foreignPower.StatementSent.Sender + " vs "
-                                      + foreignPower.StatementSent.Recipient + ": > "
-                                      + foreignPower.StatementSent.StatementType.ToString()
-                                      + ", Parameter = " //+ parameterString
-                                      + Environment.NewLine;
+                            case Tone.Calm:
+                                break;
+                            case Tone.Meek:
+                                break;
+                            case Tone.Condescending:
+                                break;
+                            case Tone.Indignant:
+                                IntelHelper.SabotageStealCreditsExecute(civ2, civ1, foreignPower.StatementReceived.Parameter.ToString(), 99999);
+                                //Parameter = blamed as a string
+                                break;
+                            case Tone.Impatient:
+                                IntelHelper.SabotageStealResearchExecute(civ2, civ1, foreignPower.StatementReceived.Parameter.ToString(), 99999);
+                                break;
+                            case Tone.Annoyed:
+                                IntelHelper.SabotageFoodExecute(civ2, civ1, foreignPower.StatementReceived.Parameter.ToString(), 99999);
+                                break;
+                            case Tone.Enraged:
+                                IntelHelper.SabotageIndustryExecute(civ2, civ1, foreignPower.StatementReceived.Parameter.ToString(), 99999);
+                                break;
+                            case Tone.Receptive:
+                                IntelHelper.SabotageEnergyExecute(civ2, civ1, foreignPower.StatementReceived.Parameter.ToString(), 99999);
+                                break;
+                            case Tone.Enthusiastic:
+                                break;
+                            default:
+                                break;
                         }
-
-                        if (foreignPower.PendingAction != PendingDiplomacyAction.None)
-                            _gameLog += Environment.NewLine + "PendingAction: "
-                                      //+ foreignPower.PendingAction + " vs "
-                                      //+ foreignPower.PendingAction.Recipient
-                                      + foreignPower.PendingAction.ToString()
-                                      + Environment.NewLine;
-
-                        //GameLog.Core.Diplomacy.DebugFormat(_gameLog); 
                     }
+
+                        
+                    if (foreignPower.StatementSent != null)
+                    {
+                        //string parameterString = foreignPower.StatementSent.Parameter.ToString() ?? "";
+
+                        //GameLog.Core.Diplomacy.DebugFormat("received a 'StealCredits'-Diplomacy-Statement");   // in SinglePlayer Gamelog is just for the sender
+                        _gameLog += Environment.NewLine + "(relevant is just the receive on HOSTING side.... StatementSent: "
+                                    + foreignPower.StatementSent.Sender + " vs "
+                                    + foreignPower.StatementSent.Recipient + ": > "
+                                    + foreignPower.StatementSent.StatementType.ToString()
+                                    + ", Parameter = " //+ parameterString
+                                    + Environment.NewLine;
+                    }
+
+                    if (foreignPower.PendingAction != PendingDiplomacyAction.None)
+                        _gameLog += Environment.NewLine + "PendingAction: "
+                                    //+ foreignPower.PendingAction + " vs "
+                                    //+ foreignPower.PendingAction.Recipient
+                                    + foreignPower.PendingAction.ToString()
+                                    + Environment.NewLine;
+
+                    //GameLog.Core.Diplomacy.DebugFormat(_gameLog); 
+                    
 
                     var proposalSent = foreignPower.ProposalSent;
                     if (proposalSent != null)
