@@ -1854,7 +1854,13 @@ namespace Supremacy.Game
         }
         public override string DetailText
         {
-            get { return SummaryText; }
+            get 
+            {
+                string _detailText = SummaryText;
+                _detailText = _detailText.Replace("  ", "[nl][nl]");
+
+                return _detailText; 
+            }
         }
         public override string DetailImage
         {
@@ -2011,7 +2017,13 @@ namespace Supremacy.Game
         }
         public override string DetailText
         {
-            get { return SummaryText; }
+            get 
+            {
+                string _detailText = SummaryText;
+                _detailText = _detailText.Replace("  ", "[nl][nl]");
+
+                return _detailText;
+            }
         }
         public override string DetailImage
         {
