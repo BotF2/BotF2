@@ -1585,7 +1585,9 @@ namespace Supremacy.Game
             ParallelForEach(GameContext.Current.Civilizations, civ =>
             {
                 GameLog.Core.Production.DebugFormat("#####################################################");
-                GameLog.Core.Production.DebugFormat("DoProduction for Civilization {0}", civ.Name);
+                string _turnNumberString = GameContext.Current.TurnNumber.ToString();
+                GameLog.Core.Production.DebugFormat("Turn: {0} - DoProduction for Civilization {1}", _turnNumberString, civ.Name);
+
 
                 GameContext.PushThreadContext(game);
                 try
@@ -1612,8 +1614,8 @@ namespace Supremacy.Game
                     civManager.Resources.Dilithium.AdjustCurrent(newDilithium);
                     civManager.Resources.RawMaterials.AdjustCurrent(newRawMaterials);
 
-                    GameLog.Core.Production.DebugFormat("{0} credits, {1} deuterium, {2} dilithium, {3} raw materials added from all colonies to {4} ",
-                        newCredits, newDeuterium, newDilithium, newRawMaterials, civManager.Civilization);
+                    GameLog.Core.Production.DebugFormat("Turn {5}: {0} credits, {1} deuterium, {2} dilithium, {3} duranium added from all colonies to {4} ",
+                        newCredits, newDeuterium, newDilithium, newRawMaterials, civManager.Civilization, GameContext.Current.TurnNumber);
                     GameLog.Client.UI.DebugFormat("Civ Manager ={0} TotalIntelDefenseAccumulated ={1}, TotalIntelAccumulated ={2}",
                         civManager.Civilization.Key,
                         civManager.TotalIntelligenceDefenseAccumulated.CurrentValue,
@@ -1624,12 +1626,14 @@ namespace Supremacy.Game
                     totalResourcesAvailable[ResourceType.Dilithium] = civManager.Resources.Dilithium.CurrentValue;
                     totalResourcesAvailable[ResourceType.RawMaterials] = civManager.Resources.RawMaterials.CurrentValue;
 
-                    GameLog.Core.Production.DebugFormat("{0} credits, {1} deuterium, {2} dilithium, {3} raw materials available in total for {4}"
+                    GameLog.Core.Production.DebugFormat("Turn {5}: {0} credits, {1} deuterium, {2} dilithium, {3} duranium available in total for {4}"
                         , civManager.Credits.CurrentValue
                         , civManager.Resources.Deuterium.CurrentValue
                         , civManager.Resources.Dilithium.CurrentValue
                         , civManager.Resources.RawMaterials.CurrentValue
-                        , civManager.Civilization);
+                        , civManager.Civilization
+                        , GameContext.Current.TurnNumber
+                        );
 
                     /* 
                      * Shuffle the colonies so they are processed in random order.  This
@@ -1642,7 +1646,7 @@ namespace Supremacy.Game
                     foreach (Colony colony in colonies)
                     {
                         GameLog.Core.Production.DebugFormat("--------------------------------------------------------------");
-                        GameLog.Core.Production.DebugFormat("DoProduction for Colony {0}", colony.Name, civ.Name, civManager.Credits);
+                        GameLog.Core.Production.DebugFormat("Turn {3}: DoProduction for Colony {0}", colony.Name, civ.Name, civManager.Credits, GameContext.Current.TurnNumber);
 
                         //See if there is actually anything to build for this colony
                         if (!colony.BuildSlots[0].HasProject && colony.BuildQueue.IsEmpty())

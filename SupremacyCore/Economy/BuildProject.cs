@@ -261,7 +261,13 @@ namespace Supremacy.Economy
         /// <value>The percent completion.</value>
         public virtual Percentage PercentComplete
         {
-            get { return (Percentage)((double)_industryInvested / IndustryRequired); }
+            get 
+            {
+                if ((Percentage)((double)_industryInvested / IndustryRequired) == 100 && this.IsCompleted != true)
+                    GameLog.Core.Stations.DebugFormat("100% completed (Industry only, but maybe a gap of Duranium");
+
+                return (Percentage)((double)_industryInvested / IndustryRequired); 
+            }
         }
 
         /// <summary>
