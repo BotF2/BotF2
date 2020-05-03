@@ -1584,12 +1584,12 @@ namespace Supremacy.Game
              */
             ParallelForEach(GameContext.Current.Civilizations, civ =>
             {
+                GameContext.PushThreadContext(game);
+
                 GameLog.Core.Production.DebugFormat("#####################################################");
                 string _turnNumberString = GameContext.Current.TurnNumber.ToString();
-                GameLog.Core.Production.DebugFormat("Turn: {0} - DoProduction for Civilization {1}", _turnNumberString, civ.Name);
+                GameLog.Core.Production.DebugFormat("Turn: {0}: DoProduction for Civilization {1}", _turnNumberString, civ.Name);
 
-
-                GameContext.PushThreadContext(game);
                 try
                 {
                     CivilizationManager civManager = GameContext.Current.CivilizationManagers[civ.CivID];
