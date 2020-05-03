@@ -6,7 +6,7 @@
     <appendToFile value="false" />
     <lockingModel type="log4net.Appender.FileAppender+MinimalLock" />
     <layout type="log4net.Layout.PatternLayout">
-      <conversionPattern value="%d{HH:mm:ss.fff}  %-5level %logger %C.%M() - %message%newline"  />
+      <conversionPattern value="%d{HH:mm:ss.fff} [%thread] %-5level %logger %C.%M() - %message%newline"  />
     </layout>
   </appender>
 
