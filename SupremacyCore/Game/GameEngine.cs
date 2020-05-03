@@ -1947,19 +1947,22 @@ namespace Supremacy.Game
             float targetMod = Number.ParseSingle(popModTable["Target"][0]);
 
             ParallelForEach(GameContext.Current.Civilizations, civ =>
-            {
+            {              
                 GameContext.PushThreadContext(game);
                 try
                 {
                     int popForTradeRoute;
                     var civManager = GameContext.Current.CivilizationManagers[civ.CivID];
-
+                    //if (civManager.Civilization.Key == "Borg")
+                    //    goto theCatch;
                     /*
                      * See what the minimum population level is for a new trade route for the
                      * current civilization.  If one is not specified, use the default.
                      */
                     if (popReqTable[civManager.Civilization.Key] != null)
+                    {
                         popForTradeRoute = Number.ParseInt32(popReqTable[civManager.Civilization.Key][0]);
+                    }
                     else
                         popForTradeRoute = Number.ParseInt32(popReqTable[0][0]);
 
@@ -2063,9 +2066,12 @@ namespace Supremacy.Game
                         .Where(o => o.BonusType == BonusType.PercentTotalCredits)
                         .Sum(o => o.Amount));
                     civManager.Credits.AdjustCurrent(globalBonusAdjustment);
+
+                    //theCatch:;
                 }
                 catch (Exception e)
                 {
+                   
                     GameLog.Core.Production.DebugFormat(string.Format("DoTrade failed for {0}",
                         civ.Name),
                         e);

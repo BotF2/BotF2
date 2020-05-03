@@ -109,7 +109,7 @@ namespace Supremacy.Scripting
 
         public object Evaluate(RuntimeScriptParameters parameters)
         {
-            _ = CompileScript();
+            CompileScript();
             return _delegate.DynamicInvoke(ResolveParameterValues(parameters).ToArray());
         }
 
