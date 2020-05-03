@@ -29,6 +29,7 @@ namespace Supremacy.Combat
         private readonly List<CombatUnit> _escapedShips;
         private readonly List<CombatUnit> _destroyedShips;
         private readonly List<CombatUnit> _assimilatedShips;
+        private CombatUnit _station;
 
         public CombatAssets(Civilization owner, MapLocation location) : this(-1, owner, location) { }
 
@@ -44,7 +45,6 @@ namespace Supremacy.Combat
             _escapedShips = new List<CombatUnit>();
             _destroyedShips = new List<CombatUnit>();
             _assimilatedShips = new List<CombatUnit>();
-            _station = new CombatUnit();
         }
         public CombatAssets()
         {

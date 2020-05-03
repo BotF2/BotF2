@@ -979,6 +979,7 @@ namespace Supremacy.Intelligence
         }
         public static int GetIntelRatio(CivilizationManager attackedCivManager, CivilizationManager attackingCivManager)
         {
+            bool daBorg = (attackedCivManager.Civilization.Key == "Borg");
             int ratio = -1;
             Int32.TryParse(attackedCivManager.TotalIntelligenceDefenseAccumulated.ToString(), out int defenseIntelligence);  // TotalIntelligence of attacked civ
             if (defenseIntelligence - 1 < 0.1)
@@ -999,6 +1000,8 @@ namespace Supremacy.Intelligence
                 ratio += 5;
             if (RandomHelper.Chance(10))
                 ratio += 20;
+            if (daBorg)
+                ratio += 5;
             return ratio;
         }
     }
