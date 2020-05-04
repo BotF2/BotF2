@@ -6,23 +6,14 @@ namespace Supremacy.Xna
     [Serializable]
     public class TargetSizeChangedEventArgs : EventArgs
     {
-        private readonly Int32Rect _oldSize;
-        private readonly Int32Rect _newSize;
-
         public TargetSizeChangedEventArgs(Int32Rect oldSize, Int32Rect newSize)
         {
-            _oldSize = oldSize;
-            _newSize = newSize;
+            OldSize = oldSize;
+            NewSize = newSize;
         }
 
-        public Int32Rect NewSize
-        {
-            get { return _newSize; }
-        }
+        public Int32Rect NewSize { get; }
 
-        public Int32Rect OldSize
-        {
-            get { return _oldSize; }
-        }
+        public Int32Rect OldSize { get; }
     }
 }

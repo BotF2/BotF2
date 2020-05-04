@@ -25,21 +25,18 @@ namespace Supremacy.Xna
         {
             try
             {
-                var adapter = GraphicsAdapter.DefaultAdapter;
-                var currentSurfaceFormat = adapter.CurrentDisplayMode.Format;
+                GraphicsAdapter adapter = GraphicsAdapter.DefaultAdapter;
+                SurfaceFormat currentSurfaceFormat = adapter.CurrentDisplayMode.Format;
 
-                if (adapter.CheckDeviceFormat(
+                return adapter.CheckDeviceFormat(
                     deviceType,
                     currentSurfaceFormat,
                     TextureUsage.None,
                     QueryUsages.None,
                     ResourceType.RenderTarget,
-                    SurfaceFormat.Color))
-                {
-                    return SurfaceFormat.Color;
-                }
-
-                return currentSurfaceFormat;
+                    SurfaceFormat.Color)
+                    ? SurfaceFormat.Color
+                    : currentSurfaceFormat;
             }
             catch (Exception e)
             {
@@ -51,23 +48,20 @@ namespace Supremacy.Xna
 
         public static DeviceType DetermineDeviceType()
         {
-            var adapter = GraphicsAdapter.DefaultAdapter;
+            GraphicsAdapter adapter = GraphicsAdapter.DefaultAdapter;
 
             if (!adapter.IsDeviceTypeAvailable(DeviceType.Hardware))
             {
                 return DeviceType.NullReference;
             }
 
-            var surfaceFormat = DetectSurfaceFormat(DeviceType.Hardware);
-            if (surfaceFormat == SurfaceFormat.Color)
-                return DeviceType.Hardware;
-
-            return DeviceType.NullReference;
+            SurfaceFormat surfaceFormat = DetectSurfaceFormat(DeviceType.Hardware);
+            return surfaceFormat == SurfaceFormat.Color ? DeviceType.Hardware : DeviceType.NullReference;
         }
 
         private static void ResolveDeviceParameters(DeviceType deviceType, out SurfaceFormat backBufferFormat, out DepthFormat depthFormat)
         {
-            var adapter = GraphicsAdapter.DefaultAdapter;
+            GraphicsAdapter adapter = GraphicsAdapter.DefaultAdapter;
 
             backBufferFormat = DetectSurfaceFormat(deviceType);
 
@@ -95,28 +89,30 @@ namespace Supremacy.Xna
 
         public static GraphicsDeviceManager CreateDeviceManager(XnaComponent owner)
         {
-            var deviceManager = new GraphicsDeviceManager(owner)
-                                {
-                                    PreferMultiSampling = owner.GraphicsOptions.PreferMultiSampling,
-                                    PreferredBackBufferFormat = SurfaceFormat.Color,
-                                    PreferredDepthStencilFormat = DepthFormat.Depth24
-                                };
+            GraphicsDeviceManager deviceManager = new GraphicsDeviceManager(owner)
+            {
+                PreferMultiSampling = owner.GraphicsOptions.PreferMultiSampling,
+                PreferredBackBufferFormat = SurfaceFormat.Color,
+                PreferredDepthStencilFormat = DepthFormat.Depth24
+            };
 
             deviceManager.PreparingDeviceSettings +=
                 (sender, args) =>
                 {
-                    var deviceType = args.GraphicsDeviceInformation.DeviceType;
+                    DeviceType deviceType = args.GraphicsDeviceInformation.DeviceType;
 
                     args.GraphicsDeviceInformation.PresentationParameters.EnableAutoDepthStencil = owner.GraphicsOptions.EnableDepthStencil;
 
                     if (!owner.GraphicsOptions.PreferAnisotropicFiltering || deviceType != DeviceType.Hardware)
+                    {
                         return;
+                    }
 
                     deviceManager.DeviceCreated +=
                         (s, e) =>
                         {
-                            var device = deviceManager.GraphicsDevice;
-                            var deviceCapabilities = device.GraphicsDeviceCapabilities;
+                            GraphicsDevice device = deviceManager.GraphicsDevice;
+                            GraphicsDeviceCapabilities deviceCapabilities = device.GraphicsDeviceCapabilities;
 
                             /*
                              * If the graphics adapter supports anisotropic filtering, then enable it with
@@ -141,13 +137,11 @@ namespace Supremacy.Xna
 
         public static GraphicsDevice CreateDevice(Int32Rect backBufferSize, bool enableDepthStencil, bool preferMultiSampling, bool preferAnisotropicFiltering)
         {
-            var adapter = GraphicsAdapter.DefaultAdapter;
-            var deviceType = DetermineDeviceType();
+            GraphicsAdapter adapter = GraphicsAdapter.DefaultAdapter;
+            DeviceType deviceType = DetermineDeviceType();
 
-            DepthFormat depthFormat;
-            SurfaceFormat backBufferFormat;
 
-            ResolveDeviceParameters(deviceType, out backBufferFormat, out depthFormat);
+            ResolveDeviceParameters(deviceType, out SurfaceFormat backBufferFormat, out DepthFormat depthFormat);
 
             if (deviceType != DeviceType.Hardware)
             {
@@ -165,7 +159,7 @@ namespace Supremacy.Xna
                     "Performance may be extremely poor.");
             }
 
-            var presentationParameters = new PresentationParameters
+            PresentationParameters presentationParameters = new PresentationParameters
                                          {
                                              AutoDepthStencilFormat = depthFormat,
                                              BackBufferCount = 1,
@@ -187,14 +181,14 @@ namespace Supremacy.Xna
                  * Run through our list of desired multisampling (antialiasing) levels and
                  * enable the best one that's supported by the hardware.
                  */
-                foreach (var multiSampleType in DesiredMultiSampleTypes)
+                foreach (MultiSampleType multiSampleType in DesiredMultiSampleTypes)
                 {
                     if (adapter.CheckDeviceMultiSampleType(
                         DeviceType.Hardware,
                         presentationParameters.BackBufferFormat,
                         presentationParameters.IsFullScreen,
                         multiSampleType,
-                        out int multiSampleQuality))
+                        out _))
                     {
                         presentationParameters.MultiSampleType = multiSampleType;
                         break;
@@ -202,7 +196,7 @@ namespace Supremacy.Xna
                 }
             }
 
-            var device = new GraphicsDevice(
+            GraphicsDevice device = new GraphicsDevice(
                 adapter,
                 deviceType,
                 IntPtr.Zero,
@@ -211,7 +205,7 @@ namespace Supremacy.Xna
             if (preferAnisotropicFiltering &&
                 deviceType == DeviceType.Hardware)
             {
-                var graphicsCapabilities = GraphicsAdapter.DefaultAdapter.GetCapabilities(deviceType);
+                GraphicsDeviceCapabilities graphicsCapabilities = GraphicsAdapter.DefaultAdapter.GetCapabilities(deviceType);
 
                 /*
                  * If the graphics adapter supports anisotropic filtering, then enable it with
@@ -234,10 +228,10 @@ namespace Supremacy.Xna
 
         public static DispatcherTimer CreateRenderTimer(int desiredFrameRate = ReferenceDeviceDesiredFrameRate)
         {
-            var timer = new DispatcherTimer
-                        {
-                            Interval = TimeSpan.FromMilliseconds(1000d / desiredFrameRate),
-                        };
+            DispatcherTimer timer = new DispatcherTimer
+            {
+                Interval = TimeSpan.FromMilliseconds(1000d / desiredFrameRate),
+            };
             return timer;
         }
 
@@ -246,27 +240,27 @@ namespace Supremacy.Xna
             /*
              * Initialize minimum and maximum corners of the bounding box to max and min values.
              */
-            var min = new Vector3(float.MaxValue, float.MaxValue, float.MaxValue);
-            var max = new Vector3(float.MinValue, float.MinValue, float.MinValue);
+            Vector3 min = new Vector3(float.MaxValue, float.MaxValue, float.MaxValue);
+            Vector3 max = new Vector3(float.MinValue, float.MinValue, float.MinValue);
 
             // For each mesh of the model
-            foreach (var mesh in model.Meshes)
+            foreach (ModelMesh mesh in model.Meshes)
             {
-                foreach (var meshPart in mesh.MeshParts)
+                foreach (ModelMeshPart meshPart in mesh.MeshParts)
                 {
                     // Vertex buffer parameters
-                    var vertexStride = meshPart.VertexStride;
-                    var vertexBufferSize = meshPart.NumVertices * vertexStride;
+                    int vertexStride = meshPart.VertexStride;
+                    int vertexBufferSize = meshPart.NumVertices * vertexStride;
 
                     // Get vertex data as float
-                    var vertexData = new float[vertexBufferSize / sizeof(float)];
+                    float[] vertexData = new float[vertexBufferSize / sizeof(float)];
 
                     mesh.VertexBuffer.GetData(vertexData, meshPart.StartIndex, meshPart.NumVertices);
 
                     // Iterate through vertices (possibly) growing bounding box, all calculations are done in world space
-                    for (var i = 0; i < vertexBufferSize / sizeof(float); i += vertexStride / sizeof(float))
+                    for (int i = 0; i < vertexBufferSize / sizeof(float); i += vertexStride / sizeof(float))
                     {
-                        var transformedPosition = Vector3.Transform(
+                        Vector3 transformedPosition = Vector3.Transform(
                             new Vector3(
                                 vertexData[i],
                                 vertexData[i + 1],

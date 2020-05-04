@@ -10,90 +10,39 @@ namespace Supremacy.Xna
     /// </summary>
     public class ParticleSettings
     {
-        // Name of the texture used by this particle system.
-        public string TextureName = null;
-
-
-        // Maximum number of particles that can be displayed at one time.
-        public int MaxParticles = 100;
-
-
         // How long these particles will last.
-        public TimeSpan Duration = TimeSpan.FromSeconds(1);
-
-
-        // If greater than zero, some particles will last a shorter time than others.
-        public float DurationRandomness = 0;
-
-
-        // Controls how much particles are influenced by the velocity of the object
-        // which created them. You can see this in action with the explosion effect,
-        // where the flames continue to move in the same direction as the source
-        // projectile. The projectile trail particles, on the other hand, set this
-        // value very low so they are less affected by the velocity of the projectile.
-        public float EmitterVelocitySensitivity = 1;
-
-
-        // Range of values controlling how much X and Z axis velocity to give each
-        // particle. Values for individual particles are randomly chosen from somewhere
-        // between these limits.
-        public float MinHorizontalVelocity = 0;
-        public float MaxHorizontalVelocity = 0;
-
-
-        // Range of values controlling how much Y axis velocity to give each particle.
-        // Values for individual particles are randomly chosen from somewhere between
-        // these limits.
-        public float MinVerticalVelocity = 0;
-        public float MaxVerticalVelocity = 0;
-
+        private TimeSpan duration = TimeSpan.FromSeconds(1);
 
         // Direction and strength of the gravity effect. Note that this can point in any
         // direction, not just down! The fire effect points it upward to make the flames
         // rise, and the smoke plume points it sideways to simulate wind.
-        public Vector3 Gravity = Vector3.Zero;
-
-
-        // Controls how the particle velocity will change over their lifetime. If set
-        // to 1, particles will keep going at the same speed as when they were created.
-        // If set to 0, particles will come to a complete stop right before they die.
-        // Values greater than 1 make the particles speed up over time.
-        public float EndVelocity = 1;
-
+        private Vector3 gravity = Vector3.Zero;
 
         // Range of values controlling the particle color and alpha. Values for
         // individual particles are randomly chosen from somewhere between these limits.
-        public Color MinColor = Color.White;
-        public Color MaxColor = Color.White;
+        private Color minColor = Color.White;
+        private Color maxColor = Color.White;
 
-
-        // Range of values controlling how fast the particles rotate. Values for
-        // individual particles are randomly chosen from somewhere between these
-        // limits. If both these values are set to 0, the particle system will
-        // automatically switch to an alternative shader technique that does not
-        // support rotation, and thus requires significantly less GPU power. This
-        // means if you don't need the rotation effect, you may get a performance
-        // boost from leaving these values at 0.
-        public float MinRotateSpeed = 0;
-        public float MaxRotateSpeed = 0;
-
-
-        // Range of values controlling how big the particles are when first created.
-        // Values for individual particles are randomly chosen from somewhere between
-        // these limits.
-        public float MinStartSize = 100;
-        public float MaxStartSize = 100;
-
-
-        // Range of values controlling how big particles become at the end of their
-        // life. Values for individual particles are randomly chosen from somewhere
-        // between these limits.
-        public float MinEndSize = 100;
-        public float MaxEndSize = 100;
-
-
-        // Alpha blending settings.
-        public Blend SourceBlend = Blend.SourceAlpha;
-        public Blend DestinationBlend = Blend.InverseSourceAlpha;
+        public string TextureName { get; set; } = null;
+        public int MaxParticles { get; set; } = 100;
+        public TimeSpan Duration { get => duration; set => duration = value; }
+        public float DurationRandomness { get; set; } = 0;
+        public float EmitterVelocitySensitivity { get; set; } = 1;
+        public float MinHorizontalVelocity { get; set; } = 0;
+        public float MaxHorizontalVelocity { get; set; } = 0;
+        public float MinVerticalVelocity { get; set; } = 0;
+        public float MaxVerticalVelocity { get; set; } = 0;
+        public Vector3 Gravity { get => gravity; set => gravity = value; }
+        public float EndVelocity { get; set; } = 1;
+        public Color MinColor { get => minColor; set => minColor = value; }
+        public Color MaxColor { get => maxColor; set => maxColor = value; }
+        public float MinRotateSpeed { get; set; } = 0;
+        public float MaxRotateSpeed { get; set; } = 0;
+        public float MinStartSize { get; set; } = 100;
+        public float MaxStartSize { get; set; } = 100;
+        public float MinEndSize { get; set; } = 100;
+        public float MaxEndSize { get; set; } = 100;
+        public Blend SourceBlend { get; set; } = Blend.SourceAlpha;
+        public Blend DestinationBlend { get; set; } = Blend.InverseSourceAlpha;
     }
 }

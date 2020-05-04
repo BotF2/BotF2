@@ -25,15 +25,10 @@ namespace Supremacy.Xna
         private readonly ExitRunScopeBehavior _exitRunScopeBehavior;
         private readonly StateScope _deviceTransitionScope;
         private readonly StateScope _suppressDrawScope;
-        private readonly ServiceContainer _services;
         private readonly XnaClock _clock;
         private readonly XnaTime _time;
         private readonly XnaTimer _timer;
         private readonly StateScope _runScope;
-        private GraphicsDeviceManager _graphicsDeviceManager;
-        private ContentManager _content;
-        private RenderTarget2D _backBuffer;
-        private RenderTarget2D _frontBuffer;
         private IntPtr _frontBufferPointer;
         private DepthStencilBuffer _depthStencilBuffer;
         private DepthStencilBuffer _deviceDepthStencilBuffer;
@@ -50,11 +45,8 @@ namespace Supremacy.Xna
         private TimeSpan _accumulatedElapsedGameTime;
         private TimeSpan _lastFrameElapsedGameTime;
         private TimeSpan _lastFrameElapsedRealTime;
-        private D3DImage _d3DImage;
         private Int32Rect _targetSize;
         private IGraphicsDeviceService _graphicsDeviceService;
-        private bool _isRunning;
-        private readonly XnaGraphicsOptions _graphicsOptions;
         private bool _compositionTargetSetBackBufferRequired;
         private static FieldInfo _comPointerField;
         private bool _targetSizeChanged;
@@ -81,14 +73,14 @@ namespace Supremacy.Xna
             bool enableDepthStencil,
             bool preferMultiSampling,
             bool preferAnisotropicFiltering,
-            Int32Rect targetSize = default(Int32Rect),
+            Int32Rect targetSize = default,
             ExitRunScopeBehavior exitRunScopeBehavior = ExitRunScopeBehavior.Stop)
         {
             _exitRunScopeBehavior = exitRunScopeBehavior;
-            _graphicsOptions = new XnaGraphicsOptions(enableDepthStencil, preferAnisotropicFiltering, preferMultiSampling);
+            GraphicsOptions = new XnaGraphicsOptions(enableDepthStencil, preferAnisotropicFiltering, preferMultiSampling);
             _deviceTransitionScope = new StateScope();
             _suppressDrawScope = new StateScope();
-            _services = new ServiceContainer();
+            Services = new ServiceContainer();
 
             _maximumElapsedTime = TimeSpan.FromMilliseconds(500.0);
             _time = new XnaTime();
@@ -123,74 +115,55 @@ namespace Supremacy.Xna
             }
 
             if (_exitRunScopeBehavior == ExitRunScopeBehavior.Stop)
+            {
                 Stop();
+            }
             else
+            {
                 Suspend();
+            }
         }
 
-        public bool IsRunning
-        {
-            get { return _isRunning; }
-        }
+        public bool IsRunning { get; private set; }
 
-        public D3DImage RenderTargetImage
-        {
-            get { return _d3DImage; }
-        }
+        public D3DImage RenderTargetImage { get; private set; }
 
-        protected RenderTarget2D BackBuffer
-        {
-            get { return _backBuffer; }
-        }
+        protected RenderTarget2D BackBuffer { get; private set; }
 
-        protected RenderTarget2D FrontBuffer
-        {
-            get { return _frontBuffer; }
-        }
+        protected RenderTarget2D FrontBuffer { get; private set; }
 
         protected internal Int32Rect TargetSize
         {
-            get { return _targetSize; }
+            get => _targetSize;
             set
             {
                 if (value == _targetSize)
+                {
                     return;
+                }
 
-                var oldSize = _targetSize;
+                Int32Rect oldSize = _targetSize;
 
                 _targetSize = value;
                 _targetSizeChanged = true;
 
-                var onTargetSizeChanged = TargetSizeChanged;
+                EventHandler<TargetSizeChangedEventArgs> onTargetSizeChanged = TargetSizeChanged;
                 if (onTargetSizeChanged != null)
+                {
                     onTargetSizeChanged.Raise(this, new TargetSizeChangedEventArgs(oldSize, value));
+                }
             }
         }
 
-        protected internal XnaGraphicsOptions GraphicsOptions
-        {
-            get { return _graphicsOptions; }
-        }
+        protected internal XnaGraphicsOptions GraphicsOptions { get; }
 
-        public ServiceContainer Services
-        {
-            get { return _services; }
-        }
+        public ServiceContainer Services { get; }
 
-        protected bool IsDeviceInTransition
-        {
-            get { return _deviceTransitionScope.IsWithin; }
-        }
+        protected bool IsDeviceInTransition => _deviceTransitionScope.IsWithin;
 
-        protected internal GraphicsDeviceManager Graphics
-        {
-            get { return _graphicsDeviceManager; }
-        }
+        protected internal GraphicsDeviceManager Graphics { get; private set; }
 
-        protected internal ContentManager Content
-        {
-            get { return _content; }
-        }
+        protected internal ContentManager Content { get; private set; }
 
         private void OnTimerTick(object sender, EventArgs eventArgs)
         {
@@ -211,7 +184,9 @@ namespace Supremacy.Xna
         protected virtual void Initialize()
         {
             if (_graphicsDeviceService != null && _graphicsDeviceService.GraphicsDevice != null)
+            {
                 DoLoadContent();
+            }
         }
 
         private void DoLoadContent()
@@ -230,35 +205,37 @@ namespace Supremacy.Xna
 
         private void PreInitialize()
         {
-            _graphicsDeviceService = _graphicsDeviceManager = XnaHelper.CreateDeviceManager(this);
-            _content = new ContentManager(_services, ResourceManager.WorkingDirectory);
+            _graphicsDeviceService = Graphics = XnaHelper.CreateDeviceManager(this);
+            Content = new ContentManager(Services, ResourceManager.WorkingDirectory);
 
             HookDeviceEvents();
 
-            _graphicsDeviceManager.CreateDevice();
+            Graphics.CreateDevice();
 
-            _d3DImage = new D3DImage();
-            _d3DImage.Lock();
+            RenderTargetImage = new D3DImage();
+            RenderTargetImage.Lock();
 
             try
             {
-                _d3DImage.SetBackBuffer(
+                RenderTargetImage.SetBackBuffer(
                     D3DResourceType.IDirect3DSurface9,
                     _frontBufferPointer);
             }
             finally
             {
-                _d3DImage.Unlock();
+                RenderTargetImage.Unlock();
             }
         }
 
         protected virtual void CreateBuffers()
         {
             if (_buffersCreated)
+            {
                 return;
+            }
 
-            var width = _targetSize.Width;
-            var height = _targetSize.Height;
+            int width = _targetSize.Width;
+            int height = _targetSize.Height;
 
             /*
              * Note that the front buffer doesn't need any multisampling/antialiasing (AA)
@@ -266,11 +243,13 @@ namespace Supremacy.Xna
              * the front buffer.  This works out well because D3DImage can only use AA with
              * an IDirect3DDevice9Ex, and XNA only supports IDirect3DDevice9.
              */
-            var device = Graphics.GraphicsDevice;
+            GraphicsDevice device = Graphics.GraphicsDevice;
             if (device == null)
+            {
                 return;
+            }
 
-            _frontBuffer = new RenderTarget2D(
+            FrontBuffer = new RenderTarget2D(
                 device,
                 width,
                 height,
@@ -279,7 +258,7 @@ namespace Supremacy.Xna
                 MultiSampleType.None,
                 0);
 
-            _backBuffer = new RenderTarget2D(
+            BackBuffer = new RenderTarget2D(
                 device,
                 width,
                 height,
@@ -288,7 +267,7 @@ namespace Supremacy.Xna
                 device.PresentationParameters.MultiSampleType,
                 device.PresentationParameters.MultiSampleQuality);
 
-            _frontBufferPointer = GetRenderTargetPointer(_frontBuffer);
+            _frontBufferPointer = GetRenderTargetPointer(FrontBuffer);
 
             if (GraphicsOptions.EnableDepthStencil)
             {
@@ -311,35 +290,49 @@ namespace Supremacy.Xna
         protected virtual void DisposeBuffers()
         {
             if (!_buffersCreated)
+            {
                 return;
+            }
 
             _frontBufferPointer = IntPtr.Zero;
 
             _compositionTargetSetBackBufferRequired = true;
 
-            var device = _graphicsDeviceManager.GraphicsDevice;
+            GraphicsDevice device = Graphics.GraphicsDevice;
             if (device != null && !device.IsDisposed)
+            {
                 device.SetRenderTarget(0, null);
+            }
 
-            if (_frontBuffer != null)
-                _frontBuffer.Dispose();
+            if (FrontBuffer != null)
+            {
+                FrontBuffer.Dispose();
+            }
 
-            if (_frontBuffer != null)
-                _backBuffer.Dispose();
+            if (FrontBuffer != null)
+            {
+                BackBuffer.Dispose();
+            }
 
-            _frontBuffer = null;
-            _backBuffer = null;
+            FrontBuffer = null;
+            BackBuffer = null;
 
             if (_deviceDepthStencilBuffer != null)
             {
                 if (device != null && !device.IsDisposed)
+                {
                     device.DepthStencilBuffer = _deviceDepthStencilBuffer;
+                }
                 else if (!_deviceDepthStencilBuffer.IsDisposed)
+                {
                     _deviceDepthStencilBuffer.Dispose();
+                }
             }
 
             if (_depthStencilBuffer != null)
+            {
                 _depthStencilBuffer.Dispose();
+            }
 
             _depthStencilBuffer = null;
             _deviceDepthStencilBuffer = null;
@@ -349,16 +342,15 @@ namespace Supremacy.Xna
 
         protected virtual bool BeginDraw()
         {
-            if (_graphicsDeviceManager != null && !_graphicsDeviceManager.BeginDraw())
-                return false;
-
-            return true;
+            return Graphics == null || Graphics.BeginDraw();
         }
 
         private void HookDeviceEvents()
         {
             if (_graphicsDeviceService == null)
+            {
                 return;
+            }
 
             _graphicsDeviceService.DeviceCreated += DeviceCreated;
             _graphicsDeviceService.DeviceResetting += DeviceResetting;
@@ -369,7 +361,9 @@ namespace Supremacy.Xna
         private void UnhookDeviceEvents()
         {
             if (_graphicsDeviceService == null)
+            {
                 return;
+            }
 
             _graphicsDeviceService.DeviceCreated -= DeviceCreated;
             _graphicsDeviceService.DeviceResetting -= DeviceResetting;
@@ -385,7 +379,7 @@ namespace Supremacy.Xna
 
         private void DeviceDisposing(object sender, EventArgs e)
         {
-            _content.Unload();
+            Content.Unload();
             DisposeBuffers();
             DoUnloadContent();
         }
@@ -398,15 +392,17 @@ namespace Supremacy.Xna
         {
             _clock.Step();
 
-            var suppressDraw = true;
+            bool suppressDraw = true;
 
             _time.TotalRealTime = _clock.CurrentTime;
             _time.ElapsedRealTime = _clock.ElapsedTime;
             _lastFrameElapsedRealTime += _clock.ElapsedTime;
 
-            var elapsedAdjustedTime = _clock.ElapsedAdjustedTime;
+            TimeSpan elapsedAdjustedTime = _clock.ElapsedAdjustedTime;
             if (elapsedAdjustedTime < TimeSpan.Zero)
+            {
                 elapsedAdjustedTime = TimeSpan.Zero;
+            }
 
             if (_forceElapsedTimeToZero)
             {
@@ -415,24 +411,30 @@ namespace Supremacy.Xna
             }
 
             if (elapsedAdjustedTime > _maximumElapsedTime)
+            {
                 elapsedAdjustedTime = _maximumElapsedTime;
+            }
 
             if (_isFixedTimeStep)
             {
-                if (Math.Abs((long)((sbyte)(elapsedAdjustedTime.Ticks - _targetElapsedTime.Ticks))) < (_targetElapsedTime.Ticks >> 6))
+                if (Math.Abs((long)(sbyte)(elapsedAdjustedTime.Ticks - _targetElapsedTime.Ticks)) < (_targetElapsedTime.Ticks >> 6))
+                {
                     elapsedAdjustedTime = _targetElapsedTime;
+                }
 
                 _accumulatedElapsedGameTime += elapsedAdjustedTime;
 
-                var progress = _accumulatedElapsedGameTime.Ticks / _targetElapsedTime.Ticks;
+                long progress = _accumulatedElapsedGameTime.Ticks / _targetElapsedTime.Ticks;
 
                 _accumulatedElapsedGameTime = TimeSpan.FromTicks(_accumulatedElapsedGameTime.Ticks % _targetElapsedTime.Ticks);
                 _lastFrameElapsedGameTime = TimeSpan.Zero;
 
                 if (progress == 0L)
+                {
                     return;
+                }
 
-                var targetElapsedTime = _targetElapsedTime;
+                TimeSpan targetElapsedTime = _targetElapsedTime;
 
                 if (progress > 1L)
                 {
@@ -442,10 +444,14 @@ namespace Supremacy.Xna
                 else
                 {
                     if (_updatesSinceRunningSlowly1 < 0x7fffffff)
+                    {
                         _updatesSinceRunningSlowly1++;
+                    }
 
                     if (_updatesSinceRunningSlowly2 < 0x7fffffff)
+                    {
                         _updatesSinceRunningSlowly2++;
+                    }
                 }
 
                 _drawRunningSlowly = _updatesSinceRunningSlowly2 < 20;
@@ -462,7 +468,7 @@ namespace Supremacy.Xna
 
                         Update(_time);
 
-                        suppressDraw &= (_suppressDraw || _suppressDrawScope.IsWithin);
+                        suppressDraw &= _suppressDraw || _suppressDrawScope.IsWithin;
 
                         _suppressDraw = false;
                     }
@@ -475,7 +481,7 @@ namespace Supremacy.Xna
             }
             else
             {
-                var elapsedTime = elapsedAdjustedTime;
+                TimeSpan elapsedTime = elapsedAdjustedTime;
 
                 _drawRunningSlowly = false;
                 _updatesSinceRunningSlowly1 = 0x7fffffff;
@@ -489,7 +495,7 @@ namespace Supremacy.Xna
 
                     Update(_time);
 
-                    suppressDraw &= (_suppressDraw || _suppressDrawScope.IsWithin);
+                    suppressDraw &= _suppressDraw || _suppressDrawScope.IsWithin;
 
                     _suppressDraw = false;
                 }
@@ -500,15 +506,19 @@ namespace Supremacy.Xna
             }
 
             if (!suppressDraw)
+            {
                 PresentFrame();
+            }
         }
 
         protected virtual void EndDraw()
         {
-            if (_graphicsDeviceManager == null)
+            if (Graphics == null)
+            {
                 return;
+            }
 
-            _graphicsDeviceManager.EndDraw();
+            Graphics.EndDraw();
         }
 
         private void PresentFrame()
@@ -530,13 +540,13 @@ namespace Supremacy.Xna
                         _targetSizeChanged = false;
                     }
 
-                    _graphicsDeviceManager.GraphicsDevice.SetRenderTarget(0, BackBuffer);
+                    Graphics.GraphicsDevice.SetRenderTarget(0, BackBuffer);
 
                     DoPresent();
 
-                    CopySurface(_backBuffer, _frontBuffer);
+                    CopySurface(BackBuffer, FrontBuffer);
 
-                    _graphicsDeviceManager.GraphicsDevice.SetRenderTarget(0, null);
+                    Graphics.GraphicsDevice.SetRenderTarget(0, null);
 
                     Compose();
                     EndDraw();
@@ -553,15 +563,17 @@ namespace Supremacy.Xna
 
         private void DoPresent()
         {
-            var customPresent = CustomPresent;
+            EventHandler<CustomPresentEventArgs> customPresent = CustomPresent;
             if (customPresent != null)
             {
-                var customPresentArgs = new CustomPresentEventArgs(_time);
+                CustomPresentEventArgs customPresentArgs = new CustomPresentEventArgs(_time);
 
                 customPresent(this, customPresentArgs);
 
                 if (!customPresentArgs.Handled)
+                {
                     Present(_time);
+                }
             }
             else
             {
@@ -571,31 +583,33 @@ namespace Supremacy.Xna
 
         private void Compose()
         {
-            if (_d3DImage == null)
+            if (RenderTargetImage == null)
+            {
                 return;
+            }
 
-            if (_d3DImage.IsFrontBufferAvailable &&
+            if (RenderTargetImage.IsFrontBufferAvailable &&
                 Graphics.GraphicsDevice.GraphicsDeviceStatus == GraphicsDeviceStatus.Normal)
             {
-                _d3DImage.Lock();
+                RenderTargetImage.Lock();
 
                 if (_compositionTargetSetBackBufferRequired)
                 {
-                    _d3DImage.SetBackBuffer(D3DResourceType.IDirect3DSurface9, _frontBufferPointer);
+                    RenderTargetImage.SetBackBuffer(D3DResourceType.IDirect3DSurface9, _frontBufferPointer);
                     _compositionTargetSetBackBufferRequired = false;
                 }
 
                 if (_frontBufferPointer != IntPtr.Zero)
                 {
-                    _d3DImage.AddDirtyRect(
+                    RenderTargetImage.AddDirtyRect(
                         new Int32Rect(
                             0,
                             0,
-                            _d3DImage.PixelWidth,
-                            _d3DImage.PixelHeight));
+                            RenderTargetImage.PixelWidth,
+                            RenderTargetImage.PixelHeight));
                 }
 
-                _d3DImage.Unlock();
+                RenderTargetImage.Unlock();
             }
         }
 
@@ -616,14 +630,16 @@ namespace Supremacy.Xna
 
         protected void RunOrResume()
         {
-            if (!_isRunning)
+            if (!IsRunning)
             {
                 RunCore();
                 return;
             }
 
             if (_clockSuspended)
+            {
                 _clock.Resume();
+            }
 
             _clockSuspended = false;
 
@@ -642,13 +658,15 @@ namespace Supremacy.Xna
         {
             try
             {
-                if (_isRunning)
+                if (IsRunning)
+                {
                     return;
+                }
 
                 PreInitialize();
                 Initialize();
 
-                _isRunning = true;
+                IsRunning = true;
 
                 BeginRun();
 
@@ -658,10 +676,10 @@ namespace Supremacy.Xna
                 _time.TotalRealTime = _clock.CurrentTime;
                 _time.IsRunningSlowly = false;
 
-                var deviceManager = _graphicsDeviceManager;
+                GraphicsDeviceManager deviceManager = Graphics;
 
-                var usingHardwareDevice = (deviceManager != null &&
-                                           deviceManager.GraphicsDevice.GraphicsDeviceCapabilities.DeviceType == DeviceType.Hardware);
+                bool usingHardwareDevice = deviceManager != null &&
+                                           deviceManager.GraphicsDevice.GraphicsDeviceCapabilities.DeviceType == DeviceType.Hardware;
 
                 _timer.Tick += OnTimerTick;
                 _timer.Start(usingHardwareDevice);
@@ -683,16 +701,20 @@ namespace Supremacy.Xna
         {
             lock (this)
             {
-                if (!_isRunning)
+                if (!IsRunning)
+                {
                     return;
+                }
 
-                _isRunning = false;
+                IsRunning = false;
 
                 _timer.Tick -= OnTimerTick;
                 _timer.Stop();
 
                 if (_clockSuspended)
+                {
                     _clock.Resume();
+                }
 
                 _clockSuspended = false;
 
@@ -700,15 +722,19 @@ namespace Supremacy.Xna
 
                 DisposeBuffers();
 
-                if (_graphicsDeviceManager != null)
-                    _graphicsDeviceManager.Dispose();
+                if (Graphics != null)
+                {
+                    Graphics.Dispose();
+                }
 
-                _graphicsDeviceManager = null;
+                Graphics = null;
 
-                if (_content != null)
-                    _content.Dispose();
+                if (Content != null)
+                {
+                    Content.Dispose();
+                }
 
-                _content = null;
+                Content = null;
 
                 UnhookDeviceEvents();
 
@@ -726,13 +752,13 @@ namespace Supremacy.Xna
             {
                 message = "No suitable graphics card found." + "\n\n" + exception.Message;
 
-                var minimumPixelShaderProfile = exception.Data["MinimumPixelShaderProfile"];
-                var minimumVertexShaderProfile = exception.Data["MinimumVertexShaderProfile"];
+                object minimumPixelShaderProfile = exception.Data["MinimumPixelShaderProfile"];
+                object minimumVertexShaderProfile = exception.Data["MinimumVertexShaderProfile"];
 
                 if (minimumPixelShaderProfile is ShaderProfile && minimumVertexShaderProfile is ShaderProfile)
                 {
-                    var psName = GetShaderProfileName((ShaderProfile)minimumPixelShaderProfile);
-                    var vsName = GetShaderProfileName((ShaderProfile)minimumVertexShaderProfile);
+                    string psName = GetShaderProfileName((ShaderProfile)minimumPixelShaderProfile);
+                    string vsName = GetShaderProfileName((ShaderProfile)minimumVertexShaderProfile);
 
                     message = message + "\n\n" + string.Format(
                         "This program requires pixel shader {0} and vertex shader {1}.",
@@ -744,7 +770,7 @@ namespace Supremacy.Xna
                 return false;
             }
 
-            MessageBox.Show(
+            _ = MessageBox.Show(
                 Application.Current.MainWindow,
                 message,
                 string.Empty,
@@ -814,15 +840,15 @@ namespace Supremacy.Xna
                 _comPointerField = renderTarget.GetType().GetField("pComPtr", BindingFlags.Instance | BindingFlags.NonPublic);
                 Debug.Assert(_comPointerField != null);
             }
-            var pointer = _comPointerField.GetValue(renderTarget);
+            object pointer = _comPointerField.GetValue(renderTarget);
             return new IntPtr(Pointer.Unbox(pointer));
         }
 
         protected void CopySurface(RenderTarget2D source, RenderTarget2D destination)
         {
             _copySurfaceMethod.Invoke(
-                _graphicsDeviceManager.GraphicsDevice,
-                new object[] { GetRenderTargetPointer(_backBuffer), GetRenderTargetPointer(_frontBuffer) });
+                Graphics.GraphicsDevice,
+                new object[] { GetRenderTargetPointer(BackBuffer), GetRenderTargetPointer(FrontBuffer) });
         }
 
         public void Suspend()

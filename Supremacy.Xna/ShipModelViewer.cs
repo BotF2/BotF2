@@ -39,9 +39,9 @@ namespace Supremacy.Xna
 
         // TODO: Localize these status messages.
         // ReSharper disable ConvertToConstant.Local
-        private string _loadFailureMessage = "Error Loading Model";
-        private string _modelUnavailableMessage = "No Model Available";
-        private string _loadingMessage = "Loading...";
+        private readonly string _loadFailureMessage = "Error Loading Model";
+        private readonly string _modelUnavailableMessage = "No Model Available";
+        private readonly string _loadingMessage = "Loading...";
         // ReSharper restore ConvertToConstant.Local
 
         // ReSharper restore InconsistentNaming
@@ -73,8 +73,8 @@ namespace Supremacy.Xna
 
         public string ModelFile
         {
-            get { return (string)GetValue(ModelFileProperty); }
-            set { SetValue(ModelFileProperty, value); }
+            get => (string)GetValue(ModelFileProperty);
+            set => SetValue(ModelFileProperty, value);
         }
         #endregion
 
@@ -91,8 +91,8 @@ namespace Supremacy.Xna
 
         public string StatusMessage
         {
-            get { return (string)GetValue(StatusMessageProperty); }
-            private set { SetValue(StatusMessagePropertyKey, value); }
+            get => (string)GetValue(StatusMessageProperty);
+            private set => SetValue(StatusMessagePropertyKey, value);
         }
         #endregion
 
@@ -107,16 +107,16 @@ namespace Supremacy.Xna
 
         public float CameraDistanceMultiplier
         {
-            get { return (float)GetValue(CameraDistanceMultiplierProperty); }
-            set { SetValue(CameraDistanceMultiplierProperty, value); }
+            get => (float)GetValue(CameraDistanceMultiplierProperty);
+            set => SetValue(CameraDistanceMultiplierProperty, value);
         }
         #endregion
 
         private void OnLoadedContent(object sender, EventArgs e)
         {
-            var eye = new Vector3(0.0f, 0.0f, -35.0f);
-            var at = new Vector3(0.0f, 0.0f, 0.0f);
-            var up = new Vector3(0, 1.0f, 0.0f);
+            Vector3 eye = new Vector3(0.0f, 0.0f, -35.0f);
+            Vector3 at = new Vector3(0.0f, 0.0f, 0.0f);
+            Vector3 up = new Vector3(0, 1.0f, 0.0f);
 
             _worldMatrix = Matrix.Identity;
             _viewMatrix = Matrix.CreateLookAt(eye, at, up);
@@ -143,7 +143,7 @@ namespace Supremacy.Xna
 
         protected override void OnRender(DrawingContext drawingContext)
         {
-            var statusMessage = StatusMessage;
+            string statusMessage = StatusMessage;
 
             if (string.IsNullOrEmpty(statusMessage))
             {
@@ -151,9 +151,9 @@ namespace Supremacy.Xna
                 return;
             }
 
-            var targetSize = Component.TargetSize;
+            Int32Rect targetSize = Component.TargetSize;
 
-            var message = new FormattedText(
+            FormattedText message = new FormattedText(
                 statusMessage,
                 CultureInfo.InvariantCulture,
                 FlowDirection.LeftToRight,
@@ -175,22 +175,26 @@ namespace Supremacy.Xna
 
         private void OnCustomPresent(object sender, CustomPresentEventArgs e)
         {
-            var time = e.Time;
+            XnaTime time = e.Time;
 
             if (!_isDragging)
-                _worldMatrix *= Matrix.CreateRotationY(-(float)time.ElapsedGameTime.Milliseconds / 1000f);
+            {
+                _worldMatrix *= Matrix.CreateRotationY(-time.ElapsedGameTime.Milliseconds / 1000f);
+            }
 
             Clear();
 
             Model model;
 
             lock (_modelLock)
+            {
                 model = _model;
+            }
 
             if (model != null)
             {
                 // Draw the model. A model can have multiple meshes, so loop.
-                foreach (var mesh in model.Meshes)
+                foreach (ModelMesh mesh in model.Meshes)
                 {
                     // This is where the mesh orientation is set, as well 
                     // as our camera and projection.
@@ -212,9 +216,11 @@ namespace Supremacy.Xna
 
         private void Clear()
         {
-            var device = Component.Graphics.GraphicsDevice;
+            GraphicsDevice device = Component.Graphics.GraphicsDevice;
             if (device == null)
+            {
                 return;
+            }
 
             device.Clear(
                 options: ClearOptions.Target | ClearOptions.DepthBuffer,
@@ -225,7 +231,7 @@ namespace Supremacy.Xna
 
         private void LoadModel()
         {
-            var modelFile = ModelFile;
+            string modelFile = ModelFile;
 
             lock (_modelLock)
             {
@@ -249,7 +255,9 @@ namespace Supremacy.Xna
                 modelFile = Path.Combine(ModelDirectory, modelFile);
 
                 if (!Path.HasExtension(modelFile))
-                    modelFile = modelFile + XnaContentExtension;
+                {
+                    modelFile += XnaContentExtension;
+                }
 
                 modelFile = Path.Combine(
                     _workingDirectory,
@@ -273,9 +281,11 @@ namespace Supremacy.Xna
 
             StatusMessage = _loadingMessage;
 
-            var contentManager = Component.Content;
+            Microsoft.Xna.Framework.Content.ContentManager contentManager = Component.Content;
             if (contentManager == null)
+            {
                 return;
+            }
 
             lock (_modelLock)
             {
@@ -285,19 +295,21 @@ namespace Supremacy.Xna
                     .Subscribe(
                         model =>
                         {
-                            var radius = model.Meshes.Max(o => (o.BoundingSphere.Center - Vector3.Zero).Length() + o.BoundingSphere.Radius);
-                            var cameraDistance = (radius * CameraDistanceMultiplier);
+                            float radius = model.Meshes.Max(o => (o.BoundingSphere.Center - Vector3.Zero).Length() + o.BoundingSphere.Radius);
+                            float cameraDistance = radius * CameraDistanceMultiplier;
 
-                            var eye = new Vector3(0.0f, 0.0f, cameraDistance);
-                            var at = new Vector3(0.0f, 0.0f, 0.0f);
-                            var up = new Vector3(0, 1.0f, 0.0f);
+                            Vector3 eye = new Vector3(0.0f, 0.0f, cameraDistance);
+                            Vector3 at = new Vector3(0.0f, 0.0f, 0.0f);
+                            Vector3 up = new Vector3(0, 1.0f, 0.0f);
 
                             ClearValue(StatusMessagePropertyKey);
 
                             lock (_modelLock)
                             {
                                 if (_modelLoadRequest == null)
+                                {
                                     return;
+                                }
 
                                 _modelLoadRequest = null;
                                 _model = model;
@@ -309,7 +321,9 @@ namespace Supremacy.Xna
                             lock (_modelLock)
                             {
                                 if (_modelLoadRequest == null)
+                                {
                                     return;
+                                }
 
                                 _modelLoadRequest = null;
 
@@ -327,12 +341,14 @@ namespace Supremacy.Xna
         private void OnTargetImageMouseMove(object sender, MouseEventArgs e)
         {
             if (!_isDragging)
+            {
                 return;
+            }
 
-            var mousePosition = e.GetPosition(this);
+            Point mousePosition = e.GetPosition(this);
 
-            var dX = mousePosition.X - _lastMousePosition.X;
-            var dY = mousePosition.Y - _lastMousePosition.Y;
+            double dX = mousePosition.X - _lastMousePosition.X;
+            double dY = mousePosition.Y - _lastMousePosition.Y;
 
             _lastMousePosition = mousePosition;
 
@@ -343,7 +359,9 @@ namespace Supremacy.Xna
         private void OnTargetImageMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             if (!_isDragging)
+            {
                 return;
+            }
 
             EndDrag();
 
@@ -353,7 +371,9 @@ namespace Supremacy.Xna
         private void EndDrag()
         {
             if (IsMouseCaptured)
+            {
                 ReleaseMouseCapture();
+            }
 
             _isDragging = false;
             _worldMatrix = Matrix.Identity;
@@ -362,7 +382,9 @@ namespace Supremacy.Xna
         private void OnTargetImageMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             if (!CaptureMouse())
+            {
                 return;
+            }
 
             _isDragging = true;
             _lastMousePosition = e.GetPosition(this);

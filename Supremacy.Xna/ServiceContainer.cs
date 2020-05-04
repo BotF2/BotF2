@@ -11,13 +11,19 @@ namespace Supremacy.Xna
         public void AddService(Type type, object provider)
         {
             if (type == null)
+            {
                 throw new ArgumentNullException("type", "The service type cannot be null.");
-            
+            }
+
             if (provider == null)
+            {
                 throw new ArgumentNullException("provider", "The service provider instance cannot be null.");
-            
+            }
+
             if (_services.ContainsKey(type))
+            {
                 throw new ArgumentException("Container already contains a service of this type.", "type");
+            }
 
             if (!type.IsAssignableFrom(provider.GetType()))
             {
@@ -34,22 +40,22 @@ namespace Supremacy.Xna
         public object GetService(Type type)
         {
             if (type == null)
+            {
                 throw new ArgumentNullException("type", "The service type cannot be null.");
+            }
 
-            object service;
 
-            if (_services.TryGetValue(type, out service))
-                return service;
-
-            return null;
+            return _services.TryGetValue(type, out object service) ? service : null;
         }
 
         public void RemoveService(Type type)
         {
             if (type == null)
+            {
                 throw new ArgumentNullException("type", "The service type cannot be null.");
+            }
 
-            _services.Remove(type);
+            _ = _services.Remove(type);
         }
     }
 }
