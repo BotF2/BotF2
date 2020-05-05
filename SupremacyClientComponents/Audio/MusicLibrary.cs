@@ -48,10 +48,10 @@ namespace Supremacy.Client.Audio
 
                 Load(xmlRoot);
             }
-            catch
+            catch (Exception e)
             {
                 
-                GameLog.Client.GameData.DebugFormat("MusicLibrary.cs: MusicPacks.xml is missing ({0})", libraryPath);
+                GameLog.Client.GameData.DebugFormat("MusicLibrary.cs: MusicPacks.xml is missing ({0} exception {1} {2})", libraryPath, e.Message, e.StackTrace);
                 MessageBox.Show("MusicPacks.xml is missing for played empire", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }

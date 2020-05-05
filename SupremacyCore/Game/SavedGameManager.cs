@@ -324,9 +324,9 @@ namespace Supremacy.Game
                 }
 
             }
-            catch
+            catch (Exception e)
             {
-                GameLog.Core.SaveLoad.WarnFormat("Problem at saving autosav and previous autosav");
+                GameLog.Core.SaveLoad.WarnFormat("Problem at saving autosav and previous autosav Exception {0} {1}", e.Message, e.StackTrace);
             }
            
             return SaveGame(AutoSaveFileName, game, localPlayer, lobbyData);

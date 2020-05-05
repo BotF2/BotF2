@@ -490,10 +490,10 @@ namespace Supremacy.Data
                     tableString = table.Name + ";" + _values;
                 }
             }
-            catch
+            catch (Exception e)
             {
                 if (table != null)
-                    GameLog.Client.GameInitData.DebugFormat("not able to log into Log.txt for {0}", table.Name);
+                    GameLog.Client.GameInitData.DebugFormat("not able to log into Log.txt for {0} exception {0} {1}", table.Name, e.Message, e.StackTrace);
             }
             if (tableString.Length > 60) tableString = tableString.Substring(0, 60) + "...";
             GameLog.Client.GameInitData.DebugFormat(tableString);

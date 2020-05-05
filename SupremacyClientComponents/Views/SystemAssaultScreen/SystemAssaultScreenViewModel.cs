@@ -603,9 +603,9 @@ namespace Supremacy.Client.Views
 
                     // 
                 }
-                catch
+                catch (Exception e)
                 {
-                    //GroundCombatOdds = 99;
+                    GameLog.Client.SystemAssault.DebugFormat("Exception {0} {1}", e.Message, e.StackTrace);
                 }
 
                 //GroundCombatOddsValue = GroundCombatOddsValue / 100;
