@@ -11,8 +11,6 @@ namespace Supremacy.Scripting.Runtime.Binders
 {
     public class BinderState
     {
-        private readonly ScriptBinder _binder;
-
         private Dictionary<Type, SxeConvertBinder>[] _conversionBinders;
         private Dictionary<Type, DynamicMetaObjectBinder>[] _convertRetObjectBinders;
         private Dictionary<ExpressionType, SxeBinaryOperationBinder> _binaryBinders;
@@ -25,31 +23,26 @@ namespace Supremacy.Scripting.Runtime.Binders
 
         internal BinderState(ScriptBinder binder)
         {
-            if (binder == null)
-                throw new ArgumentNullException("binder");
-            _binder = binder;
+            Binder = binder ?? throw new ArgumentNullException("binder");
         }
 
-        public ScriptBinder Binder
-        {
-            get { return _binder; }
-        }
+        public ScriptBinder Binder { get; }
 
         internal SxeConvertBinder Convert(Type type)
         {
-            return Convert(type, ConversionResultKind.ImplicitTry, _binder.Context.OverloadResolver);
+            return Convert(type, ConversionResultKind.ImplicitTry, Binder.Context.OverloadResolver);
         }
 
         internal SxeConvertBinder Convert(Type type, ConversionResultKind resultKind)
         {
-            return Convert(type, resultKind, _binder.Context.OverloadResolver);
+            return Convert(type, resultKind, Binder.Context.OverloadResolver);
         }
 
         internal SxeConvertBinder Convert(Type type, ConversionResultKind resultKind, OverloadResolverFactory resolverFactory)
         {
             if (_conversionBinders == null)
             {
-                Interlocked.CompareExchange(
+                _ = Interlocked.CompareExchange(
                     ref _conversionBinders,
                     new Dictionary<Type, SxeConvertBinder>[(int)ConversionResultKind.ExplicitTry + 1], // max conversion result kind
                     null
@@ -58,19 +51,21 @@ namespace Supremacy.Scripting.Runtime.Binders
 
             if (_conversionBinders[(int)resultKind] == null)
             {
-                Interlocked.CompareExchange(
+                _ = Interlocked.CompareExchange(
                     ref _conversionBinders[(int)resultKind],
                     new Dictionary<Type, SxeConvertBinder>(),
                     null
                 );
             }
 
-            var binders = _conversionBinders[(int)resultKind];
+            Dictionary<Type, SxeConvertBinder> binders = _conversionBinders[(int)resultKind];
             lock (binders)
             {
-                SxeConvertBinder result;
-                if (!binders.TryGetValue(type, out result))
+                if (!binders.TryGetValue(type, out SxeConvertBinder result))
+                {
                     binders[type] = result = new SxeConvertBinder(this, type, resultKind, resolverFactory);
+                }
+
                 return result;
             }
         }
@@ -79,7 +74,7 @@ namespace Supremacy.Scripting.Runtime.Binders
         {
             if (_convertRetObjectBinders == null)
             {
-                Interlocked.CompareExchange(
+                _ = Interlocked.CompareExchange(
                     ref _convertRetObjectBinders,
                     new Dictionary<Type, DynamicMetaObjectBinder>[(int)ConversionResultKind.ExplicitTry + 1], // max conversion result kind
                     null);
@@ -87,18 +82,19 @@ namespace Supremacy.Scripting.Runtime.Binders
 
             if (_convertRetObjectBinders[(int)resultKind] == null)
             {
-                Interlocked.CompareExchange(
+                _ = Interlocked.CompareExchange(
                     ref _convertRetObjectBinders[(int)resultKind],
                     new Dictionary<Type, DynamicMetaObjectBinder>(),
                     null);
             }
 
-            var binder = _convertRetObjectBinders[(int)resultKind];
+            Dictionary<Type, DynamicMetaObjectBinder> binder = _convertRetObjectBinders[(int)resultKind];
             lock (binder)
             {
-                DynamicMetaObjectBinder result;
-                if (!binder.TryGetValue(type, out result))
-                    binder[type] = result = new SxeConvertBinder(this, type, resultKind, _binder.Context.OverloadResolver);
+                if (!binder.TryGetValue(type, out DynamicMetaObjectBinder result))
+                {
+                    binder[type] = result = new SxeConvertBinder(this, type, resultKind, Binder.Context.OverloadResolver);
+                }
 
                 return result;
             }
@@ -108,7 +104,7 @@ namespace Supremacy.Scripting.Runtime.Binders
         {
             if (_binaryBinders == null)
             {
-                Interlocked.CompareExchange(
+                _ = Interlocked.CompareExchange(
                     ref _binaryBinders,
                     new Dictionary<ExpressionType, SxeBinaryOperationBinder>(),
                     null);
@@ -116,8 +112,7 @@ namespace Supremacy.Scripting.Runtime.Binders
 
             lock (_binaryBinders)
             {
-                SxeBinaryOperationBinder binder;
-                if (!_binaryBinders.TryGetValue(operation, out binder))
+                if (!_binaryBinders.TryGetValue(operation, out SxeBinaryOperationBinder binder))
                 {
                     binder = new SxeBinaryOperationBinder(this, operation);
                     _binaryBinders[operation] = binder;
@@ -130,7 +125,7 @@ namespace Supremacy.Scripting.Runtime.Binders
         {
             if (_unaryBinders == null)
             {
-                Interlocked.CompareExchange(
+                _ = Interlocked.CompareExchange(
                     ref _unaryBinders,
                     new Dictionary<ExpressionType, SxeUnaryOperationBinder>(),
                     null);
@@ -138,8 +133,7 @@ namespace Supremacy.Scripting.Runtime.Binders
 
             lock (_unaryBinders)
             {
-                SxeUnaryOperationBinder binder;
-                if (!_unaryBinders.TryGetValue(operation, out binder))
+                if (!_unaryBinders.TryGetValue(operation, out SxeUnaryOperationBinder binder))
                 {
                     binder = new SxeUnaryOperationBinder(this, operation);
                     _unaryBinders[operation] = binder;
@@ -152,7 +146,7 @@ namespace Supremacy.Scripting.Runtime.Binders
         {
             if (_invokeBinders == null)
             {
-                Interlocked.CompareExchange(
+                _ = Interlocked.CompareExchange(
                     ref _invokeBinders,
                     new SxeInvokeBinder[argCount + 1],
                     null);
@@ -161,10 +155,14 @@ namespace Supremacy.Scripting.Runtime.Binders
             lock (this)
             {
                 if (_invokeBinders.Length <= argCount)
+                {
                     Array.Resize(ref _invokeBinders, argCount + 1);
+                }
 
                 if (_invokeBinders[argCount] == null)
+                {
                     _invokeBinders[argCount] = new SxeInvokeBinder(this, new CallInfo(argCount));
+                }
 
                 return _invokeBinders[argCount];
             }
@@ -174,19 +172,21 @@ namespace Supremacy.Scripting.Runtime.Binders
         {
             if (_invokeMemberBinders == null)
             {
-                Interlocked.CompareExchange(
+                _ = Interlocked.CompareExchange(
                     ref _invokeMemberBinders,
                     new Dictionary<InvokeMemberBinderKey, SxeInvokeMemberBinder>(),
                     null);
             }
 
-            var key = new InvokeMemberBinderKey(memberName, new CallInfo(argCount));
+            InvokeMemberBinderKey key = new InvokeMemberBinderKey(memberName, new CallInfo(argCount));
 
             lock (_invokeMemberBinders)
             {
-                SxeInvokeMemberBinder binder;
-                if (_invokeMemberBinders.TryGetValue(key, out binder))
+                if (_invokeMemberBinders.TryGetValue(key, out SxeInvokeMemberBinder binder))
+                {
                     return binder;
+                }
+
                 binder = new SxeInvokeMemberBinder(this, key.Name, key.Info);
                 _invokeMemberBinders[key] = binder;
                 return binder;
@@ -201,9 +201,11 @@ namespace Supremacy.Scripting.Runtime.Binders
         internal SxeGetMemberBinder GetMember(string memberName, bool isNoThrow)
         {
             Dictionary<string, SxeGetMemberBinder> dict;
-            if (isNoThrow) {
-                if (_tryGetMemberBinders == null) {
-                    Interlocked.CompareExchange(
+            if (isNoThrow)
+            {
+                if (_tryGetMemberBinders == null)
+                {
+                    _ = Interlocked.CompareExchange(
                         ref _tryGetMemberBinders,
                         new Dictionary<string, SxeGetMemberBinder>(),
                         null
@@ -211,9 +213,12 @@ namespace Supremacy.Scripting.Runtime.Binders
                 }
 
                 dict = _tryGetMemberBinders;
-            } else {
-                if (_getMemberBinders == null) {
-                    Interlocked.CompareExchange(
+            }
+            else
+            {
+                if (_getMemberBinders == null)
+                {
+                    _ = Interlocked.CompareExchange(
                         ref _getMemberBinders,
                         new Dictionary<string, SxeGetMemberBinder>(),
                         null
@@ -223,9 +228,10 @@ namespace Supremacy.Scripting.Runtime.Binders
                 dict = _getMemberBinders;
             }
 
-            lock (dict) {
-                SxeGetMemberBinder res;
-                if (!dict.TryGetValue(memberName, out res)) {
+            lock (dict)
+            {
+                if (!dict.TryGetValue(memberName, out SxeGetMemberBinder res))
+                {
                     dict[memberName] = res = new SxeGetMemberBinder(this, memberName, isNoThrow);
                 }
 
@@ -237,8 +243,8 @@ namespace Supremacy.Scripting.Runtime.Binders
         {
             if (_getIndexBinders == null)
             {
-                Interlocked.CompareExchange(
-                    ref _getIndexBinders, 
+                _ = Interlocked.CompareExchange(
+                    ref _getIndexBinders,
                     new SxeGetIndexBinder[argCount + 1],
                     null);
             }
@@ -246,10 +252,14 @@ namespace Supremacy.Scripting.Runtime.Binders
             lock (this)
             {
                 if (_getIndexBinders.Length <= argCount)
+                {
                     Array.Resize(ref _getIndexBinders, argCount + 1);
+                }
 
                 if (_getIndexBinders[argCount] == null)
+                {
                     _getIndexBinders[argCount] = new SxeGetIndexBinder(this, new CallInfo(argCount));
+                }
 
                 return _getIndexBinders[argCount];
             }

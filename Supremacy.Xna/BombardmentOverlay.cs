@@ -29,8 +29,8 @@ namespace Supremacy.Xna
 
         protected internal TimeSpan TimeToNextProjectile
         {
-            get { return _timeToNextProjectile; }
-            set { _timeToNextProjectile = value; }
+            get => _timeToNextProjectile;
+            set => _timeToNextProjectile = value;
         }
 
         protected override void Initialize()
@@ -72,19 +72,19 @@ namespace Supremacy.Xna
 
         protected override void Present(XnaTime time)
         {
-            var device = Graphics.GraphicsDevice;
+            GraphicsDevice device = Graphics.GraphicsDevice;
 
             Clear();
 
             // Compute camera matrices.
-            var aspectRatio = (float)device.Viewport.Width / device.Viewport.Height;
+            float aspectRatio = (float)device.Viewport.Width / device.Viewport.Height;
 
-            var view = Matrix.CreateLookAt(
+            Matrix view = Matrix.CreateLookAt(
                 new Vector3(0, 0, -200),
                 new Vector3(0, 0, 0),
                 Vector3.Up);
 
-            var projection = Matrix.CreatePerspectiveFieldOfView(
+            Matrix projection = Matrix.CreatePerspectiveFieldOfView(
                 MathHelper.PiOver4,
                 aspectRatio,
                 1,
@@ -97,9 +97,11 @@ namespace Supremacy.Xna
 
         private void Clear()
         {
-            var device = Graphics.GraphicsDevice;
+            GraphicsDevice device = Graphics.GraphicsDevice;
             if (device == null)
+            {
                 return;
+            }
 
             device.Clear(
                 options: ClearOptions.Target | ClearOptions.DepthBuffer,
@@ -114,11 +116,13 @@ namespace Supremacy.Xna
 
         public bool GenerateExplosions
         {
-            get { return _generateExplosions; }
+            get => _generateExplosions;
             set
             {
                 if (value == _generateExplosions)
+                {
                     return;
+                }
 
                 _generateExplosions = value;
                 _timeToNextProjectile = TimeSpan.Zero;
@@ -136,11 +140,13 @@ namespace Supremacy.Xna
         /// <summary>
         /// Helper for updating the explosions effect.
         /// </summary>
-        void UpdateExplosions(XnaTime gameTime)
+        private void UpdateExplosions(XnaTime gameTime)
         {
-            var explosionInterval = ExplosionInterval;
+            TimeSpan? explosionInterval = ExplosionInterval;
             if (explosionInterval == null)
+            {
                 return;
+            }
 
             _timeToNextProjectile -= gameTime.ElapsedGameTime;
 
@@ -158,7 +164,7 @@ namespace Supremacy.Xna
         /// <summary>
         /// Helper for updating the list of active projectiles.
         /// </summary>
-        void UpdateProjectiles(XnaTime gameTime)
+        private void UpdateProjectiles(XnaTime gameTime)
         {
             int i = 0;
 
@@ -185,8 +191,8 @@ namespace Supremacy.Xna
 
         public new BombardmentOverlay Component
         {
-            get { return base.Component as BombardmentOverlay; }
-            set { base.Component = value; }
+            get => base.Component as BombardmentOverlay;
+            set => base.Component = value;
         }
 
         #region GenerateExplosions Property
@@ -199,8 +205,8 @@ namespace Supremacy.Xna
 
         public bool GenerateExplosions
         {
-            get { return (bool)GetValue(GenerateExplosionsProperty); }
-            set { SetValue(GenerateExplosionsProperty, value); }
+            get => (bool)GetValue(GenerateExplosionsProperty);
+            set => SetValue(GenerateExplosionsProperty, value);
         }
 
         #endregion
@@ -215,8 +221,8 @@ namespace Supremacy.Xna
 
         public TimeSpan? ExplosionInterval
         {
-            get { return (TimeSpan?)GetValue(ExplosionIntervalProperty); }
-            set { SetValue(ExplosionIntervalProperty, value); }
+            get => (TimeSpan?)GetValue(ExplosionIntervalProperty);
+            set => SetValue(ExplosionIntervalProperty, value);
         }
 
         #endregion

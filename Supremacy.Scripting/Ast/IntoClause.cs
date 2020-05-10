@@ -10,8 +10,8 @@ namespace Supremacy.Scripting.Ast
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public QueryStartClause Initializer
         {
-            get { return Expression as QueryStartClause; }
-            set { Expression = value; }
+            get => Expression as QueryStartClause;
+            set => Expression = value;
         }
 
         public override void Dump(SourceWriter sw, int indentChange)
@@ -24,10 +24,7 @@ namespace Supremacy.Scripting.Ast
             DumpChild(Next, sw, indentChange);
         }
 
-        protected override string MethodName
-        {
-            get { throw new NotSupportedException(); }
-        }
+        protected override string MethodName => throw new NotSupportedException();
 
         public override void BeginInit(ParseContext parseContext, bool raiseInitialized)
         {
@@ -66,7 +63,7 @@ namespace Supremacy.Scripting.Ast
             //var currentScope = ec.CurrentScope;
             //ec.CurrentScope = this.Scope;
 
-            var nestedFrom = new QueryStartClause
+            Expression nestedFrom = new QueryStartClause
                              {
                                  RangeVariable = RangeVariable,
                                  Initializer = Initializer,

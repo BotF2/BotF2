@@ -106,9 +106,9 @@ namespace Supremacy.Client.Views
                     GameLog.Core.UI.DebugFormat("Get TotalIntelProcudtion ={0}", _totalIntelligenceProduction);
                     return _totalIntelligenceProduction;
                 }
-                catch
+                catch (Exception e)
                 {
-                    GameLog.Core.UI.DebugFormat("Problem occured at TotalIntelligenceProduction get...");
+                    GameLog.Core.UI.DebugFormat("Problem occured at TotalIntelligenceProduction get, exception {0} {1}", e.Message, e.TargetSite);
                     return 0;
                 }
             }
@@ -122,9 +122,9 @@ namespace Supremacy.Client.Views
                     GameLog.Core.UI.DebugFormat("Set TotalIntelProcudtion ={0}", _totalIntelligenceProduction);
                     NotifyPropertyChanged("TotalIntelligenceProduction");
                 }
-                catch
+                catch (Exception e)
                 {
-                    GameLog.Core.UI.DebugFormat("Problem occured at TotalIntelligenceProduction set...");
+                    GameLog.Core.UI.DebugFormat("Problem occured at TotalIntelligenceProduction set, Exception {0} {1}", e.Message, e.StackTrace);
                 }
             }
         }
@@ -502,7 +502,7 @@ namespace Supremacy.Client.Views
                 }
                 catch (Exception e)
                 {
-                    GameLog.Core.Stations.WarnFormat("Problem occured at TotalPopulation:");
+                    GameLog.Core.Stations.WarnFormat("Problem occured at TotalPopulation: {0} {1}", e.Message, e.StackTrace);
                     GameLog.Core.General.Error(e);
                     Meter zero = new Meter(0, 0, 0);
                     return zero; //civManager.TotalPopulation;
@@ -856,9 +856,9 @@ namespace Supremacy.Client.Views
                     var civManager = GameContext.Current.CivilizationManagers[DesignTimeObjects.CivilizationManager.Civilization];
                     return civManager.Credits;
                 }
-                catch
+                catch (Exception e)
                 {
-                    GameLog.Core.Intel.WarnFormat("Problem occured at CreditsEmpire:");
+                    GameLog.Core.Intel.WarnFormat("Problem occured at CreditsEmpire: {0} {1}", e.Message, e.StackTrace);
                     Meter zero = new Meter(0, 0, 0);
                     return zero;
                 }

@@ -12,6 +12,7 @@ namespace Supremacy.Xna
     /// </summary>
     public abstract class ParticleSystem : IDisposable
     {
+        private const bool V = true;
         #region Fields
 
         // Settings class controls the appearance and animation of this particle system.
@@ -161,7 +162,7 @@ namespace Supremacy.Xna
                 ParticleVertex.VertexElements);
 
             // Create a dynamic vertex buffer.
-            var size = ParticleVertex.SizeInBytes * _particles.Length;
+            int size = ParticleVertex.SizeInBytes * _particles.Length;
 
             _vertexBuffer = new DynamicVertexBuffer(
                 _graphicsDevice,
@@ -175,7 +176,7 @@ namespace Supremacy.Xna
         /// </summary>
         private void LoadParticleEffect()
         {
-            var effect = _content.Load<Effect>(@"Resources\Effects\ParticleEffect");
+            Effect effect = _content.Load<Effect>(@"Resources\Effects\ParticleEffect");
 
             // If we have several particle systems, the content manager will return
             // a single shared effect instance to them all. But we want to preconfigure
@@ -185,7 +186,7 @@ namespace Supremacy.Xna
 
             _particleEffect = effect.Clone(_graphicsDevice);
 
-            var parameters = _particleEffect.Parameters;
+            EffectParameterCollection parameters = _particleEffect.Parameters;
 
             // Look up shortcuts for parameters that change every frame.
             _effectViewParameter = parameters["View"];
@@ -211,19 +212,13 @@ namespace Supremacy.Xna
                 new Vector2(_settings.MinEndSize, _settings.MaxEndSize));
 
             // Load the particle texture, and set it onto the effect.
-            var texture = _content.Load<Texture2D>(_settings.TextureName);
+            Texture2D texture = _content.Load<Texture2D>(_settings.TextureName);
 
             parameters["Texture"].SetValue(texture);
 
             // Choose the appropriate effect technique. If these particles will never
             // rotate, we can use a simpler pixel shader that requires less GPU power.
-            string techniqueName;
-
-            if (_settings.MinRotateSpeed == 0f && _settings.MaxRotateSpeed == 0f)
-                techniqueName = "NonRotatingParticles";
-            else
-                techniqueName = "RotatingParticles";
-
+            string techniqueName = _settings.MinRotateSpeed == 0f && _settings.MaxRotateSpeed == 0f ? "NonRotatingParticles" : "RotatingParticles";
             _particleEffect.CurrentTechnique = _particleEffect.Techniques[techniqueName];
         }
 
@@ -237,7 +232,9 @@ namespace Supremacy.Xna
         public void Update(XnaTime gameTime)
         {
             if (gameTime == null)
-                throw new ArgumentNullException("gameTime");
+            {
+                throw new ArgumentNullException(nameof(gameTime));
+            }
 
             _currentTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
 
@@ -251,10 +248,14 @@ namespace Supremacy.Xna
             // so we can reset it back to zero any time the active queue is empty.
 
             if (_firstActiveParticle == _firstFreeParticle)
+            {
                 _currentTime = 0;
+            }
 
             if (_firstRetiredParticle == _firstActiveParticle)
+            {
                 _drawCounter = 0;
+            }
         }
 
         /// <summary>
@@ -264,15 +265,17 @@ namespace Supremacy.Xna
         /// </summary>
         private void RetireActiveParticles()
         {
-            var particleDuration = (float)_settings.Duration.TotalSeconds;
+            float particleDuration = (float)_settings.Duration.TotalSeconds;
 
             while (_firstActiveParticle != _firstNewParticle)
             {
                 // Is this particle old enough to retire?
-                var particleAge = _currentTime - _particles[_firstActiveParticle].Time;
+                float particleAge = _currentTime - _particles[_firstActiveParticle].Time;
 
                 if (particleAge < particleDuration)
+                {
                     break;
+                }
 
                 // Remember the time at which we retired this particle.
                 _particles[_firstActiveParticle].Time = _drawCounter;
@@ -281,7 +284,9 @@ namespace Supremacy.Xna
                 _firstActiveParticle++;
 
                 if (_firstActiveParticle >= _particles.Length)
+                {
                     _firstActiveParticle = 0;
+                }
             }
         }
 
@@ -296,19 +301,23 @@ namespace Supremacy.Xna
             {
                 // Has this particle been unused long enough that
                 // the GPU is sure to be finished with it?
-                var age = _drawCounter - (int)_particles[_firstRetiredParticle].Time;
+                int age = _drawCounter - (int)_particles[_firstRetiredParticle].Time;
 
                 // The GPU is never supposed to get more than 2 frames behind the CPU.
                 // We add 1 to that, just to be safe in case of buggy drivers that
                 // might bend the rules and let the GPU get further behind.
                 if (age < 3)
+                {
                     break;
+                }
 
                 // Move the particle from the retired to the free queue.
                 _firstRetiredParticle++;
 
                 if (_firstRetiredParticle >= _particles.Length)
+                {
                     _firstRetiredParticle = 0;
+                }
             }
         }
 
@@ -317,16 +326,20 @@ namespace Supremacy.Xna
         /// </summary>
         public void Draw(XnaTime gameTime)
         {
-            var device = _graphicsDevice;
+            GraphicsDevice device = _graphicsDevice;
 
             // Restore the vertex buffer contents if the graphics device was lost.
             if (_vertexBuffer.IsContentLost)
+            {
                 _vertexBuffer.SetData(_particles);
+            }
 
             // If there are any particles waiting in the newly added queue,
             // we'd better upload them to the GPU ready for drawing.
             if (_firstNewParticle != _firstFreeParticle)
+            {
                 AddNewParticlesToVertexBuffer();
+            }
 
             // If there are any active particles, draw them now!
             if (_firstActiveParticle != _firstFreeParticle)
@@ -352,7 +365,7 @@ namespace Supremacy.Xna
                 // Activate the particle effect.
                 _particleEffect.Begin(SaveStateMode.None);
 
-                foreach (var pass in _particleEffect.CurrentTechnique.Passes)
+                foreach (EffectPass pass in _particleEffect.CurrentTechnique.Passes)
                 {
                     pass.Begin();
 
@@ -391,7 +404,7 @@ namespace Supremacy.Xna
                 // Reset a couple of the more unusual renderstates that we changed,
                 //// so as not to mess up any other subsequent drawing.
                 device.RenderState.PointSpriteEnable = false;
-                device.RenderState.DepthBufferWriteEnable = true;
+                device.RenderState.DepthBufferWriteEnable = V;
             }
 
             _drawCounter++;
@@ -448,27 +461,27 @@ namespace Supremacy.Xna
         /// <summary>
         /// Helper for setting the renderstates used to draw particles.
         /// </summary>
-        public void SetParticleRenderStates(RenderState renderState)
+        private void SetParticleRenderStates(RenderState renderState)
         {
             // Enable point sprites.
-            renderState.PointSpriteEnable = true;
+            renderState.PointSpriteEnable = V;
             renderState.PointSizeMax = 256;
 
             // Set the alpha blend mode.
-            renderState.AlphaBlendEnable = true;
+            renderState.AlphaBlendEnable = V;
             renderState.AlphaBlendOperation = BlendFunction.Add;
             renderState.SourceBlend = _settings.SourceBlend;
             renderState.DestinationBlend = _settings.DestinationBlend;
 
             // Set the alpha test mode.
-            renderState.AlphaTestEnable = true;
+            renderState.AlphaTestEnable = V;
             renderState.AlphaFunction = CompareFunction.Greater;
             renderState.ReferenceAlpha = 0;
 
             // Enable the depth buffer (so particles will not be visible through
             // solid objects like the ground plane), but disable depth writes
             // (so particles will not obscure other particles).
-            renderState.DepthBufferEnable = true;
+            renderState.DepthBufferEnable = V;
             renderState.DepthBufferWriteEnable = false;
         }
 
@@ -492,26 +505,30 @@ namespace Supremacy.Xna
         public void AddParticle(Vector3 position, Vector3 velocity)
         {
             // Figure out where in the circular queue to allocate the new particle.
-            var nextFreeParticle = _firstFreeParticle + 1;
+            int nextFreeParticle = _firstFreeParticle + 1;
 
             if (nextFreeParticle >= _particles.Length)
+            {
                 nextFreeParticle = 0;
+            }
 
             // If there are no free particles, we just have to give up.
             if (nextFreeParticle == _firstRetiredParticle)
+            {
                 return;
+            }
 
             // Adjust the input velocity based on how much
             // this particle system wants to be affected by it.
             velocity *= _settings.EmitterVelocitySensitivity;
 
             // Add in some random amount of horizontal velocity.
-            var horizontalVelocity = MathHelper.Lerp(
+            float horizontalVelocity = MathHelper.Lerp(
                 _settings.MinHorizontalVelocity,
                 _settings.MaxHorizontalVelocity,
                 (float)RandomProvider.Shared.NextDouble());
 
-            var horizontalAngle = RandomProvider.Shared.NextDouble() * MathHelper.TwoPi;
+            double horizontalAngle = RandomProvider.Shared.NextDouble() * MathHelper.TwoPi;
 
             velocity.X += horizontalVelocity * (float)Math.Cos(horizontalAngle);
             velocity.Z += horizontalVelocity * (float)Math.Sin(horizontalAngle);
@@ -524,7 +541,7 @@ namespace Supremacy.Xna
 
             // Choose four random control values. These will be used by the vertex
             // shader to give each particle a different size, rotation, and color.
-            var randomValues = new Color(
+            Color randomValues = new Color(
                 (byte)RandomProvider.Shared.Next(255),
                 (byte)RandomProvider.Shared.Next(255),
                 (byte)RandomProvider.Shared.Next(255),

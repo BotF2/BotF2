@@ -12,14 +12,11 @@ namespace Supremacy.Scripting.Ast
 
         public Expression TypeExpression
         {
-            get { return _typeExpression; }
-            set { _typeExpression = value; }
+            get => _typeExpression;
+            set => _typeExpression = value;
         }
 
-        public override bool IsPrimaryExpression
-        {
-            get { return true; }
-        }
+        public override bool IsPrimaryExpression => true;
 
         public override void Walk(AstVisitor prefix, AstVisitor postfix)
         {
@@ -31,8 +28,10 @@ namespace Supremacy.Scripting.Ast
             _typeExpression = _typeExpression.ResolveAsTypeStep(parseContext, false);
             
             if (_typeExpression == null)
+            {
                 return null;
-            
+            }
+
             Type = _typeExpression.Type;
 
             return this;

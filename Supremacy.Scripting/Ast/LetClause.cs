@@ -6,8 +6,8 @@ namespace Supremacy.Scripting.Ast
     {
         public Expression Initializer
         {
-            get { return Expression; }
-            set { Expression = value; }
+            get => Expression;
+            set => Expression = value;
         }
 
         public override void Dump(SourceWriter sw, int indentChange)
@@ -21,10 +21,7 @@ namespace Supremacy.Scripting.Ast
             DumpChild(Next, sw, indentChange);
         }
 
-        protected override string MethodName
-        {
-            get { return "Select"; }
-        }
+        protected override string MethodName => "Select";
 
         public override Expression BuildQueryClause(ParseContext ec, Expression leftSide)
         {

@@ -16,25 +16,13 @@ namespace Supremacy.Scripting.Ast
 
         public abstract GenericParameterAttributes Attributes { get; }
 
-        public bool HasConstructorConstraint
-        {
-            get { return (Attributes & GenericParameterAttributes.DefaultConstructorConstraint) != 0; }
-        }
+        public bool HasConstructorConstraint => (Attributes & GenericParameterAttributes.DefaultConstructorConstraint) != 0;
 
-        public bool HasReferenceTypeConstraint
-        {
-            get { return (Attributes & GenericParameterAttributes.ReferenceTypeConstraint) != 0; }
-        }
+        public bool HasReferenceTypeConstraint => (Attributes & GenericParameterAttributes.ReferenceTypeConstraint) != 0;
 
-        public bool HasValueTypeConstraint
-        {
-            get { return (Attributes & GenericParameterAttributes.NotNullableValueTypeConstraint) != 0; }
-        }
+        public bool HasValueTypeConstraint => (Attributes & GenericParameterAttributes.NotNullableValueTypeConstraint) != 0;
 
-        public virtual bool HasClassConstraint
-        {
-            get { return ClassConstraint != null; }
-        }
+        public virtual bool HasClassConstraint => ClassConstraint != null;
 
         public abstract Type ClassConstraint { get; }
 
@@ -50,17 +38,26 @@ namespace Supremacy.Scripting.Ast
             get
             {
                 if (HasReferenceTypeConstraint)
+                {
                     return true;
+                }
+
                 if (HasValueTypeConstraint)
+                {
                     return false;
+                }
 
                 if (ClassConstraint != null)
                 {
                     if (ClassConstraint.IsValueType)
+                    {
                         return false;
+                    }
 
                     if (ClassConstraint != TypeManager.CoreTypes.Object)
+                    {
                         return true;
+                    }
                 }
 
                 return (from t in InterfaceConstraints
@@ -77,17 +74,26 @@ namespace Supremacy.Scripting.Ast
             get
             {
                 if (HasValueTypeConstraint)
+                {
                     return true;
+                }
+
                 if (HasReferenceTypeConstraint)
+                {
                     return false;
+                }
 
                 if (ClassConstraint != null)
                 {
                     if (!TypeManager.IsValueType(ClassConstraint))
+                    {
                         return false;
+                    }
 
                     if (ClassConstraint != TypeManager.CoreTypes.ValueType)
+                    {
                         return true;
+                    }
                 }
 
                 return (from t in InterfaceConstraints
@@ -110,7 +116,7 @@ namespace Supremacy.Scripting.Ast
             _name = name;
             _attributes = attributes;
 
-            var interfaceConstraintsPos = 0;
+            int interfaceConstraintsPos = 0;
             if ((attributes & GenericParameterAttributes.NotNullableValueTypeConstraint) != 0)
             {
                 _baseType = TypeManager.CoreTypes.ValueType;
@@ -151,38 +157,23 @@ namespace Supremacy.Scripting.Ast
             }
         }
 
-        public override string TypeParameter
-        {
-            get { return _name; }
-        }
+        public override string TypeParameter => _name;
 
-        public override GenericParameterAttributes Attributes
-        {
-            get { return _attributes; }
-        }
+        public override GenericParameterAttributes Attributes => _attributes;
 
-        public override Type ClassConstraint
-        {
-            get { return _classConstraint; }
-        }
+        public override Type ClassConstraint => _classConstraint;
 
-        public override Type EffectiveBaseClass
-        {
-            get { return _baseType; }
-        }
+        public override Type EffectiveBaseClass => _baseType;
 
-        public override Type[] InterfaceConstraints
-        {
-            get { return _interfaceConstraints; }
-        }
+        public override Type[] InterfaceConstraints => _interfaceConstraints;
 
         public static GenericConstraints GetConstraints(Type t)
         {
-            var constraints = t.GetGenericParameterConstraints();
-            var attrs = t.GenericParameterAttributes;
-            if (constraints.Length == 0 && attrs == GenericParameterAttributes.None)
-                return null;
-            return new ReflectionConstraints(t.Name, constraints, attrs);
+            Type[] constraints = t.GetGenericParameterConstraints();
+            GenericParameterAttributes attrs = t.GenericParameterAttributes;
+            return constraints.Length == 0 && attrs == GenericParameterAttributes.None
+                ? null
+                : new ReflectionConstraints(t.Name, constraints, attrs);
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿// File:ScriptExpression.cs
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -93,13 +94,14 @@ namespace Supremacy.Scripting
 
         public TResult Evaluate<TResult>(RuntimeScriptParameters parameters)
         {
-            var result = Evaluate(parameters);
+            object result = Evaluate(parameters);
 
             if (!typeof(IValueProvider).IsAssignableFrom(typeof(TResult)))
             {
-                var valueProvider = result as IValueProvider;
-                if (valueProvider != null)
+                if (result is IValueProvider valueProvider)
+                {
                     return (TResult)valueProvider.Value;
+                }
             }
             
             return (TResult)result;
@@ -114,12 +116,14 @@ namespace Supremacy.Scripting
         public bool CompileScript([CanBeNull] ErrorSink errorSink = null)
         {
             if (_delegate != null)
+            {
                 return true;
+            }
 
-            var scriptService = ScriptService.Instance;// ServiceLocator.Current.GetInstance<IScriptService>();
-            var source = scriptService.Context.CreateSnippet(ScriptCode, SourceCodeKind.Expression);
-            var options = new ScriptCompilerOptions(new ScriptParameters(Parameters));
-            var errorCounter = (errorSink != null) ? new ErrorCounter(errorSink) : new ErrorCounter(new LogErrorSink());
+            ScriptService scriptService = ScriptService.Instance;// ServiceLocator.Current.GetInstance<IScriptService>();
+            SourceUnit source = scriptService.Context.CreateSnippet(ScriptCode, SourceCodeKind.Expression);
+            ScriptCompilerOptions options = new ScriptCompilerOptions(new ScriptParameters(Parameters));
+            ErrorCounter errorCounter = (errorSink != null) ? new ErrorCounter(errorSink) : new ErrorCounter(new LogErrorSink());
 
             LambdaExpression lambdaExpression;
 
@@ -133,18 +137,19 @@ namespace Supremacy.Scripting
             catch (Exception)
             {
                 if (!errorCounter.AnyError)
+                {
                     return false;
+                }
 
                 throw;
             }
 
             if (errorCounter.AnyError)
+            {
                 return false;
+            }
 
-            if (_returnObservableResult)
-                _delegate = ExpressionObserver.Compile(lambdaExpression);
-            else
-                _delegate = lambdaExpression.Compile();
+            _delegate = _returnObservableResult ? ExpressionObserver.Compile(lambdaExpression) : lambdaExpression.Compile();
 
             return true;
         }

@@ -11,46 +11,33 @@ namespace Supremacy.Scripting.Ast
     /// </summary>
     public class SideEffectConstantExpression : ConstantExpression
     {
-        private readonly ConstantExpression _value;
-        private readonly Expression _sideEffect;
-
         public SideEffectConstantExpression(ConstantExpression value, Expression sideEffect, SourceSpan location)
         {
-            _value = value;
+            ConstantValue = value;
             
             while (sideEffect is SideEffectConstantExpression)
-                sideEffect = ((SideEffectConstantExpression)sideEffect)._sideEffect;
+            {
+                sideEffect = ((SideEffectConstantExpression)sideEffect).SideEffect;
+            }
 
-            _sideEffect = sideEffect;
+            SideEffect = sideEffect;
 
             Span = location;
             Type = value.Type;
             ExpressionClass = ExpressionClass.Value;
         }
 
-        public Expression SideEffect
-        {
-            get { return _sideEffect; }
-        }
+        public Expression SideEffect { get; }
 
-        public ConstantExpression ConstantValue
-        {
-            get { return _value; }
-        }
+        public ConstantExpression ConstantValue { get; }
 
-        public override bool IsZeroInteger
-        {
-            get { return _value.IsZeroInteger; }
-        }
+        public override bool IsZeroInteger => ConstantValue.IsZeroInteger;
 
         public override ConstantExpression ConvertExplicitly(bool inCheckedContext, Type targetType)
         {
-            var newValue = _value.ConvertExplicitly(inCheckedContext, targetType);
-            
-            if (newValue == null)
-                return null;
+            ConstantExpression newValue = ConstantValue.ConvertExplicitly(inCheckedContext, targetType);
 
-            return new SideEffectConstantExpression(newValue, _sideEffect, newValue.Span);
+            return newValue == null ? null : new SideEffectConstantExpression(newValue, SideEffect, newValue.Span);
         }
     }
 }

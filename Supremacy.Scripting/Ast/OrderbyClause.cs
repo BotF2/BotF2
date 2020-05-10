@@ -19,16 +19,17 @@ namespace Supremacy.Scripting.Ast
             }
 
             if (Next is ThenbyClause)
+            {
                 sw.Write(", ");
+            }
             else
+            {
                 sw.WriteLine();
+            }
 
             DumpChild(Next, sw, indentChange);
         }
 
-        protected override string MethodName
-        {
-            get { return (Direction == OrderingDirection.Descending) ? "OrderByDescending" : "OrderBy"; }
-        }
+        protected override string MethodName => (Direction == OrderingDirection.Descending) ? "OrderByDescending" : "OrderBy";
     }
 }

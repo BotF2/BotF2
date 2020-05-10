@@ -8,17 +8,18 @@ namespace Supremacy.Scripting.Ast
 
         public RangeDeclaration IntoName
         {
-            get { return _intoName; }
-            set { _intoName = value; }
+            get => _intoName;
+            set => _intoName = value;
         }
 
         public override void CloneTo<T>(CloneContext cloneContext, T target)
         {
             base.CloneTo(cloneContext, target);
 
-            var clone = target as JoinIntoClause;
-            if (clone == null)
+            if (!(target is JoinIntoClause clone))
+            {
                 return;
+            }
 
             clone._intoName = Clone(cloneContext, _intoName);
         }
@@ -48,9 +49,6 @@ namespace Supremacy.Scripting.Ast
             DumpChild(Body, sw, indentChange);
         }
 
-        protected override string MethodName
-        {
-            get { return "GroupJoin"; }
-        }
+        protected override string MethodName => "GroupJoin";
     }
 }

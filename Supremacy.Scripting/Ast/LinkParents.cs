@@ -13,13 +13,13 @@ namespace Supremacy.Scripting.Ast
 
         public static void Link(IAst node)
         {
-            var parents = new LinkParents();
+            LinkParents parents = new LinkParents();
             Ast.Walk(ref node, parents.Prefix, parents.Postfix);
         }
 
         public bool Postfix(ref IAst node)
         {
-            _stack.Pop();
+            _ = _stack.Pop();
             return true;
         }
 

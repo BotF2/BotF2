@@ -36,8 +36,8 @@ namespace Supremacy.Scripting.Ast
         [DefaultValue(0)]
         public int GenericArity
         {
-            get { return _genericArity + 1; }
-            set { _genericArity = value; }
+            get => _genericArity + 1;
+            set => _genericArity = value;
         }
 
         public override void Dump(SourceWriter sw, int indentChange)
@@ -46,34 +46,42 @@ namespace Supremacy.Scripting.Ast
 
             if (IsBuiltinType)
             {
-                var builtinType = TypeManager.GetClrTypeFromBuiltinType(
-                    (BuiltinType)Enum.Parse(typeof(BuiltinType), 
+                Type builtinType = TypeManager.GetClrTypeFromBuiltinType(
+                    (BuiltinType)Enum.Parse(typeof(BuiltinType),
                     Name));
 
                 if (builtinType != null)
+                {
                     name = TypeManager.GetCSharpName(builtinType);
+                }
             }
 
             sw.Write(name);
 
             if (!HasTypeArguments && !IsGenericTypeDefinition)
+            {
                 return;
+            }
 
             sw.Write("<");
 
             if (IsGenericTypeDefinition)
             {
                 for (int i = 0; i < GenericArity - 1; i++)
+                {
                     sw.Write(",");
+                }
             }
             else
             {
                 for (int i = 0; i < TypeArguments.Count; i++)
                 {
-                    var typeArgument = TypeArguments[i];
+                    FullNamedExpression typeArgument = TypeArguments[i];
 
                     if (i != 0)
+                    {
                         sw.Write(", ");
+                    }
 
                     typeArgument.Dump(sw, indentChange);
                 }
@@ -82,17 +90,13 @@ namespace Supremacy.Scripting.Ast
             sw.Write(">");
         }
 
-        public override bool IsPrimaryExpression
-        {
-            get { return true; }
-        }
+        public override bool IsPrimaryExpression => true;
 
         public override Expression DoResolve(ParseContext parseContext)
         {
-            if (IsBuiltinType)
-                return new TypeExpression(TypeManager.GetClrTypeFromBuiltinType((BuiltinType)Enum.Parse(typeof(BuiltinType), Name)));
-
-            return base.DoResolve(parseContext);
+            return IsBuiltinType
+                ? new TypeExpression(TypeManager.GetClrTypeFromBuiltinType((BuiltinType)Enum.Parse(typeof(BuiltinType), Name)))
+                : base.DoResolve(parseContext);
         }
     }
 
@@ -100,17 +104,12 @@ namespace Supremacy.Scripting.Ast
     {
         public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
         {
-            if (typeof(IEnumerable).IsAssignableFrom(sourceType))
-                return true;
-            return base.CanConvertFrom(context, sourceType);
+            return typeof(IEnumerable).IsAssignableFrom(sourceType) ? true : base.CanConvertFrom(context, sourceType);
         }
 
         public override object ConvertFrom(ITypeDescriptorContext context, System.Globalization.CultureInfo culture, object value)
         {
-            var enumerable = value as IEnumerable;
-            if (enumerable != null)
-                return enumerable.Cast<object>().Count() + 1;
-            return base.ConvertFrom(context, culture, value);
+            return value is IEnumerable enumerable ? enumerable.Cast<object>().Count() + 1 : base.ConvertFrom(context, culture, value);
         }
     }
 }

@@ -273,8 +273,9 @@ namespace Supremacy.Resources
                                              .Select(o => o.Value),
                                     };
             }
-            catch
+            catch (Exception e)
             {
+                GameLog.Core.CivsAndRaces.DebugFormat("civString {0} {1}", e.Message, e.StackTrace);
                 s_databaseXml = null;
             }
         }

@@ -9,23 +9,21 @@ namespace Supremacy.Scripting.Ast
         public virtual FullNamedExpression ElementType
         {
             // ReSharper disable ValueParameterNotUsed
-            get { return null; }
+            get => null;
             set { }
             // ReSharper restore ValueParameterNotUsed
         }
 
-        public bool HasExplicitType
-        {
-            get { return (ElementType != null); }
-        }
+        public bool HasExplicitType => (ElementType != null);
 
         public override void CloneTo<T>(CloneContext cloneContext, T target)
         {
             base.CloneTo(cloneContext, target);
 
-            var clone = target as Declaration;
-            if (clone == null)
+            if (!(target is Declaration clone))
+            {
                 return;
+            }
 
             clone.VariableName = VariableName;
             clone.ElementType = Clone(cloneContext, ElementType);
@@ -33,14 +31,14 @@ namespace Supremacy.Scripting.Ast
 
         public override void Walk(AstVisitor prefix, AstVisitor postfix)
         {
-            var elementType = ElementType;
+            FullNamedExpression elementType = ElementType;
             Walk(ref elementType, prefix, postfix);
             ElementType = elementType;
         }
 
         public override void Dump(SourceWriter sw, int indentChange)
         {
-            var elementType = ElementType;
+            FullNamedExpression elementType = ElementType;
             if (elementType != null)
             {
                 elementType.Dump(sw, indentChange);

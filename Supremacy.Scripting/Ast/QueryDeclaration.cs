@@ -6,8 +6,8 @@ namespace Supremacy.Scripting.Ast
 
         public override FullNamedExpression ElementType
         {
-            get { return _elementType; }
-            set { _elementType = value; }
+            get => _elementType;
+            set => _elementType = value;
         }
 
         public override void Walk(AstVisitor prefix, AstVisitor postfix)

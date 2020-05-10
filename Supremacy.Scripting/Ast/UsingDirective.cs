@@ -6,22 +6,24 @@ namespace Supremacy.Scripting.Ast
     {
         private readonly List<UsingEntry> _entries = new List<UsingEntry>();
 
-        public IList<UsingEntry> Entries
-        {
-            get { return _entries; }
-        }
+        public IList<UsingEntry> Entries => _entries;
 
         public override Expression DoResolve(Runtime.ParseContext parseContext)
         {
-            foreach (var entry in _entries)
+            foreach (UsingEntry entry in _entries)
+            {
                 parseContext.AddUsing(entry);
+            }
+
             return null;
         }
 
         public override void Dump(Runtime.SourceWriter sw, int indentChange)
         {
-            foreach (var entry in _entries)
+            foreach (UsingEntry entry in _entries)
+            {
                 sw.WriteLine("using {0}", entry);
+            }
         }
     }
 }

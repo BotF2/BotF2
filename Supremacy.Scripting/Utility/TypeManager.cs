@@ -69,10 +69,13 @@ namespace Supremacy.Scripting.Utility
             get
             {
                 if (_activatorCreateInstance == null)
+                {
                     _activatorCreateInstance = typeof(Activator).GetMethod("CreateInstance", Type.EmptyTypes);
+                }
+
                 return _activatorCreateInstance;
             }
-            set { _activatorCreateInstance = value; }
+            set => _activatorCreateInstance = value;
         }
 
         /// <summary>
@@ -81,7 +84,9 @@ namespace Supremacy.Scripting.Utility
         public static string GetCSharpName(Type t)
         {
             if ((t == null) || (t == typeof(DynamicNull)))
+            {
                 return "null";
+            }
 
             //if (t == typeof(ArglistAccess))
             //    return "__arglist";
@@ -93,12 +98,14 @@ namespace Supremacy.Scripting.Utility
             //    return "method group";
 
             if ((PredefinedAttributes.Dynamic != null) && t.GetCustomAttributes(PredefinedAttributes.Dynamic, true).Any())
+            {
                 return "dynamic";
+            }
 
             if (t.IsGenericType && !t.IsGenericTypeDefinition)
             {
-                var sb = new StringBuilder();
-                ReflectionUtils.FormatTypeName(sb, t, o => GetCSharpName(o.Name, o));
+                StringBuilder sb = new StringBuilder();
+                _ = ReflectionUtils.FormatTypeName(sb, t, o => GetCSharpName(o.Name, o));
                 return sb.ToString();
             }
 
@@ -110,37 +117,84 @@ namespace Supremacy.Scripting.Utility
             if (type.FullName.Length > 3)
             {
                 if (type == CoreTypes.Int32)
+                {
                     return "int";
+                }
+
                 if (type == CoreTypes.Int64)
+                {
                     return "long";
+                }
+
                 if (type == CoreTypes.String)
+                {
                     return "string";
+                }
+
                 if (type == CoreTypes.Boolean)
+                {
                     return "bool";
+                }
+
                 if (type == CoreTypes.Void)
+                {
                     return "void";
+                }
+
                 if (type == CoreTypes.Object)
+                {
                     return "object";
+                }
+
                 if (type == CoreTypes.UInt32)
+                {
                     return "uint";
+                }
+
                 if (type == CoreTypes.Int16)
+                {
                     return "short";
+                }
+
                 if (type == CoreTypes.UInt16)
+                {
                     return "ushort";
+                }
+
                 if (type == CoreTypes.UInt64)
+                {
                     return "ulong";
+                }
+
                 if (type == CoreTypes.Single)
+                {
                     return "float";
+                }
+
                 if (type == CoreTypes.Double)
+                {
                     return "double";
+                }
+
                 if (type == CoreTypes.Decimal)
+                {
                     return "decimal";
+                }
+
                 if (type == CoreTypes.Char)
+                {
                     return "char";
+                }
+
                 if (type == CoreTypes.Byte)
+                {
                     return "byte";
+                }
+
                 if (type == CoreTypes.SByte)
+                {
                     return "sbyte";
+                }
             }
 
             return name.Replace('+', '.');
@@ -149,15 +203,19 @@ namespace Supremacy.Scripting.Utility
         public static string GetCSharpName(Type[] types)
         {
             if (types.Length == 0)
-                return String.Empty;
+            {
+                return string.Empty;
+            }
 
-            var sb = new StringBuilder();
-            for (var i = 0; i < types.Length; ++i)
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < types.Length; ++i)
             {
                 if (i > 0)
+                {
                     sb.Append(", ");
+                }
 
-                sb.Append(GetCSharpName(types[i]));
+                _ = sb.Append(GetCSharpName(types[i]));
             }
 
             return sb.ToString();
@@ -170,18 +228,24 @@ namespace Supremacy.Scripting.Utility
         public static PropertyInfo GetPropertyFromAccessor(MethodBase mb)
         {
             if (!mb.IsSpecialName)
+            {
                 return null;
+            }
 
             string name = mb.Name;
             if (name.Length < 5)
+            {
                 return null;
+            }
 
             if (name[3] != '_')
+            {
                 return null;
+            }
 
             if (name.StartsWith("get") || name.StartsWith("set"))
             {
-                var pi = mb.DeclaringType.FindMembers(
+                MemberInfo[] pi = mb.DeclaringType.FindMembers(
                     MemberTypes.Property,
                     AllMembers,
                     Type.FilterName,
@@ -199,18 +263,20 @@ namespace Supremacy.Scripting.Utility
 
         private static bool IsValidProperty(PropertyInfo pi)
         {
-            var getMethod = pi.GetGetMethod(true);
-            var setMethod = pi.GetSetMethod(true);
+            MethodInfo getMethod = pi.GetGetMethod(true);
+            MethodInfo setMethod = pi.GetSetMethod(true);
 
-            var gCount = 0;
-            var sCount = 0;
+            int gCount = 0;
+            int sCount = 0;
 
             if (getMethod != null && setMethod != null)
             {
                 gCount = getMethod.GetParameters().Length;
                 sCount = setMethod.GetParameters().Length;
                 if (gCount + 1 != sCount)
+                {
                     return false;
+                }
             }
             else if (getMethod != null)
             {
@@ -226,20 +292,30 @@ namespace Supremacy.Scripting.Utility
             //
             if ((sCount > 1) || (gCount > 0))
             {
-                var defaultMemberAttribute = pi.DeclaringType
+                DefaultMemberAttribute defaultMemberAttribute = pi.DeclaringType
                     .GetCustomAttributes(PredefinedAttributes.DefaultMember, false)
                     .Cast<DefaultMemberAttribute>()
                     .FirstOrDefault();
 
                 if (defaultMemberAttribute == null)
+                {
                     return false;
+                }
 
                 if (defaultMemberAttribute.MemberName != pi.Name)
+                {
                     return false;
+                }
+
                 if (getMethod != null && "get_" + defaultMemberAttribute.MemberName != getMethod.Name)
+                {
                     return false;
+                }
+
                 if (setMethod != null && "set_" + defaultMemberAttribute.MemberName != setMethod.Name)
+                {
                     return false;
+                }
             }
 
             return true;
@@ -248,38 +324,44 @@ namespace Supremacy.Scripting.Utility
         public static MemberInfo GetEventFromAccessor(MethodBase mb)
         {
             if (!mb.IsSpecialName)
+            {
                 return null;
+            }
 
             string name = mb.Name;
             if (name.Length < 5)
+            {
                 return null;
+            }
 
             if (name.StartsWith("add_"))
+            {
                 return mb.DeclaringType.GetEvent(name.Substring(4), AllMembers);
+            }
 
-            if (name.StartsWith("remove_"))
-                return mb.DeclaringType.GetEvent(name.Substring(7), AllMembers);
-
-            return null;
+            return name.StartsWith("remove_") ? mb.DeclaringType.GetEvent(name.Substring(7), AllMembers) : null;
         }
 
         public static bool IsSpecialMethod(MethodBase mb)
         {
             if (!mb.IsSpecialName)
+            {
                 return false;
+            }
 
-            var pi = GetPropertyFromAccessor(mb);
+            PropertyInfo pi = GetPropertyFromAccessor(mb);
             if (pi != null)
+            {
                 return IsValidProperty(pi);
+            }
 
             if (GetEventFromAccessor(mb) != null)
+            {
                 return true;
+            }
 
-            var name = mb.Name;
-            if (name.StartsWith("op_"))
-                return (OperatorInfo.GetOperatorInfo(name) != null);
-
-            return false;
+            string name = mb.Name;
+            return name.StartsWith("op_") ? OperatorInfo.GetOperatorInfo(name) != null : false;
         }
 
         public static string GetCSharpSignature(MethodBase mb)
@@ -289,89 +371,96 @@ namespace Supremacy.Scripting.Utility
 
         public static string GetCSharpSignature(MethodBase mb, bool showAccessor)
         {
-            var sig = new StringBuilder(GetCSharpName(mb.DeclaringType));
-            sig.Append('.');
+            StringBuilder sig = new StringBuilder(GetCSharpName(mb.DeclaringType));
+            _ = sig.Append('.');
 
-            var accessorEnd = 0;
-            var parameters = GetParameterData(mb);
-            var parametersSignature = parameters.GetSignatureForError();
+            int accessorEnd = 0;
+            ParametersCollection parameters = GetParameterData(mb);
+            string parametersSignature = parameters.GetSignatureForError();
 
             if (!mb.IsConstructor && IsSpecialMethod(mb))
             {
-                var signatureName = OperatorInfo.GetSignatureName(mb.Name);
+                string signatureName = OperatorInfo.GetSignatureName(mb.Name);
                 if (signatureName != null)
                 {
                     if (signatureName == "explicit" || signatureName == "implicit")
                     {
-                        sig.Append(signatureName);
-                        sig.Append(" operator ");
-                        sig.Append(GetCSharpName(((MethodInfo)mb).ReturnType));
+                        _ = sig.Append(signatureName);
+                        _ = sig.Append(" operator ");
+                        _ = sig.Append(GetCSharpName(((MethodInfo)mb).ReturnType));
                     }
                     else
                     {
-                        sig.Append("operator ");
-                        sig.Append(signatureName);
+                        _ = sig.Append("operator ");
+                        _ = sig.Append(signatureName);
                     }
-                    sig.Append(parametersSignature);
+                    _ = sig.Append(parametersSignature);
                     return sig.ToString();
                 }
 
-                var isGetter = mb.Name.StartsWith("get_");
-                var isSetter = mb.Name.StartsWith("set_");
+                bool isGetter = mb.Name.StartsWith("get_");
+                bool isSetter = mb.Name.StartsWith("set_");
 
                 if (isGetter || isSetter || mb.Name.StartsWith("add_"))
+                {
                     accessorEnd = 3;
+                }
                 else if (mb.Name.StartsWith("remove_"))
+                {
                     accessorEnd = 6;
+                }
 
                 // Is indexer
                 if (parameters.Count > (isGetter ? 0 : 1))
                 {
-                    sig.Append("this[");
+                    _ = sig.Append("this[");
 
-                    sig.Append(
+                    _ = sig.Append(
                         isGetter
                             ? parametersSignature.Substring(1, parametersSignature.Length - 2)
                             : parametersSignature.Substring(1, parametersSignature.LastIndexOf(',') - 1));
 
-                    sig.Append(']');
+                    _ = sig.Append(']');
                 }
                 else
                 {
-                    sig.Append(mb.Name.Substring(accessorEnd + 1));
+                    _ = sig.Append(mb.Name.Substring(accessorEnd + 1));
                 }
             }
             else
             {
                 if (mb.Name == ".ctor")
                 {
-                    sig.Append(ReflectionUtils.GetNormalizedTypeName(mb.DeclaringType));
+                    _ = sig.Append(ReflectionUtils.GetNormalizedTypeName(mb.DeclaringType));
                 }
                 else
                 {
-                    sig.Append(mb.Name);
+                    _ = sig.Append(mb.Name);
 
                     if (mb.IsGenericMethod)
                     {
-                        var args = mb.GetGenericArguments();
-                        sig.Append('<');
+                        Type[] args = mb.GetGenericArguments();
+                        _ = sig.Append('<');
                         for (int i = 0; i < args.Length; i++)
                         {
                             if (i > 0)
-                                sig.Append(',');
-                            sig.Append(GetCSharpName(args[i]));
+                            {
+                                _ = sig.Append(',');
+                            }
+
+                            _ = sig.Append(GetCSharpName(args[i]));
                         }
-                        sig.Append('>');
+                        _ = sig.Append('>');
                     }
                 }
 
-                sig.Append(parametersSignature);
+                _ = sig.Append(parametersSignature);
             }
 
             if (showAccessor && accessorEnd > 0)
             {
-                sig.Append('.');
-                sig.Append(mb.Name.Substring(0, accessorEnd));
+                _ = sig.Append('.');
+                _ = sig.Append(mb.Name.Substring(0, accessorEnd));
             }
 
             return sig.ToString();
@@ -379,14 +468,17 @@ namespace Supremacy.Scripting.Utility
 
         public static ParametersCollection GetParameterData(PropertyInfo pi)
         {
-            ParametersCollection pd;
-            if (_methodParameters.TryGetValue(pi, out pd))
+            if (_methodParameters.TryGetValue(pi, out ParametersCollection pd))
+            {
                 return pd;
+            }
 
             if (pi is PropertyBuilder)
+            {
                 return ParametersCompiled.EmptyReadOnlyParameters;
+            }
 
-            var p = pi.GetIndexParameters();
+            ParameterInfo[] p = pi.GetIndexParameters();
 
             pd = ParametersImported.Create(p, null);
             _methodParameters[pi] = pd;
@@ -400,12 +492,11 @@ namespace Supremacy.Scripting.Utility
 
             if (mb.IsGenericMethod && !mb.IsGenericMethodDefinition)
             {
-                var mi = ((MethodInfo)mb).GetGenericMethodDefinition();
+                MethodInfo mi = ((MethodInfo)mb).GetGenericMethodDefinition();
                 pd = GetParameterData(mi);
-                if (mi.IsGenericMethod)
-                    pd = pd.InflateTypes(mi.GetGenericArguments(), mb.GetGenericArguments());
-                else
-                    pd = pd.InflateTypes(mi.DeclaringType.GetGenericArguments(), mb.GetGenericArguments());
+                pd = mi.IsGenericMethod
+                    ? pd.InflateTypes(mi.GetGenericArguments(), mb.GetGenericArguments())
+                    : pd.InflateTypes(mi.DeclaringType.GetGenericArguments(), mb.GetGenericArguments());
                 return pd;
             }
 
@@ -418,18 +509,12 @@ namespace Supremacy.Scripting.Utility
 
         public static Type GetClrTypeFromBuiltinType(BuiltinType builtinType)
         {
-            Type clrType;
-            if (!BuiltinTypeToClrTypeMap.TryGetValue(builtinType, out clrType))
-                return null;
-            return clrType;
+            return !BuiltinTypeToClrTypeMap.TryGetValue(builtinType, out Type clrType) ? null : clrType;
         }
 
         public static BuiltinType? GetBuiltinTypeFromClrType(Type type)
         {
-            BuiltinType builtinType;
-            if (!ClrTypeToBuiltinMap.TryGetValue(type, out builtinType))
-                return null;
-            return builtinType;
+            return !ClrTypeToBuiltinMap.TryGetValue(type, out BuiltinType builtinType) ? null : (BuiltinType?)builtinType;
         }
 
         public static bool TryParseLiteral(BuiltinType literalType, string text, out object value, out Type clrType)
@@ -444,82 +529,85 @@ namespace Supremacy.Scripting.Utility
             {
                 case BuiltinType.SByte:
                     sbyte parsedSByte;
-                    SByte.TryParse(text, out parsedSByte);
+                    _ = sbyte.TryParse(text, out parsedSByte);
                     value = parsedSByte;
                     break;
 
                 case BuiltinType.Byte:
                     byte parsedByte;
-                    Byte.TryParse(text, out parsedByte);
+                    _ = byte.TryParse(text, out parsedByte);
                     value = parsedByte;
                     break;
 
                 case BuiltinType.Int16:
                     short parsedInt16;
-                    Int16.TryParse(text, out parsedInt16);
+                    _ = Int16.TryParse(text, out parsedInt16);
                     value = parsedInt16;
                     break;
 
                 case BuiltinType.UInt16:
                     ushort parsedUInt16;
-                    UInt16.TryParse(text, out parsedUInt16);
+                    _ = UInt16.TryParse(text, out parsedUInt16);
                     value = parsedUInt16;
                     break;
 
                 case BuiltinType.Int32:
                     int parsedInt32;
-                    Int32.TryParse(text, out parsedInt32);
+                    _ = Int32.TryParse(text, out parsedInt32);
                     value = parsedInt32;
                     break;
 
                 case BuiltinType.UInt32:
                     uint parsedUInt32;
-                    UInt32.TryParse(text, out parsedUInt32);
+                    _ = UInt32.TryParse(text, out parsedUInt32);
                     value = parsedUInt32;
                     break;
 
                 case BuiltinType.Int64:
                     long parsedInt64;
-                    Int64.TryParse(text, out parsedInt64);
+                    _ = Int64.TryParse(text, out parsedInt64);
                     value = parsedInt64;
                     break;
 
                 case BuiltinType.UInt64:
                     ulong parsedUInt64;
-                    UInt64.TryParse(text, out parsedUInt64);
+                    _ = UInt64.TryParse(text, out parsedUInt64);
                     value = parsedUInt64;
                     break;
 
                 case BuiltinType.Single:
                     float parsedSingle;
-                    Single.TryParse(text, out parsedSingle);
+                    _ = Single.TryParse(text, out parsedSingle);
                     value = parsedSingle;
                     break;
 
                 case BuiltinType.Double:
                     double parsedDouble;
-                    Double.TryParse(text, out parsedDouble);
+                    _ = Double.TryParse(text, out parsedDouble);
                     value = parsedDouble;
                     break;
 
                 case BuiltinType.Decimal:
                     decimal parsedDecimal;
-                    Decimal.TryParse(text, out parsedDecimal);
+                    _ = Decimal.TryParse(text, out parsedDecimal);
                     value = parsedDecimal;
                     break;
 
                 case BuiltinType.Boolean:
                     bool parsedBoolean;
-                    Boolean.TryParse(text, out parsedBoolean);
+                    _ = Boolean.TryParse(text, out parsedBoolean);
                     value = parsedBoolean;
                     break;
 
                 case BuiltinType.Char:
-                    var parsedChar = text.Length == 3 && text[0] == '\'' && text[2] == '\'';
+                    bool parsedChar = text.Length == 3 && text[0] == '\'' && text[2] == '\'';
                     if (parsedChar)
                         value = text[1];
                     else
+                    {
                         value = null;
+                    }
+
                     break;
 
                 case BuiltinType.Null:
@@ -537,11 +625,11 @@ namespace Supremacy.Scripting.Utility
         public static Type DropGenericTypeArguments(Type t)
         {
             if (!t.IsGenericType || t.IsGenericTypeDefinition)
+            {
                 return t;
+            }
             // Micro-optimization: a generic typebuilder is always a generic type definition
-            if (t is TypeBuilder)
-                return t;
-            return t.GetGenericTypeDefinition();
+            return t is TypeBuilder ? t : t.GetGenericTypeDefinition();
         }
 
         public static bool HasElementType(Type t)
@@ -555,34 +643,43 @@ namespace Supremacy.Scripting.Utility
         public static bool IsThisOrFriendAssembly(Assembly invocationAssembly, [Annotations.NotNull] Assembly assembly)
         {
             if (assembly == null)
+            {
                 throw new ArgumentNullException("assembly");
+            }
 
             if (invocationAssembly == null)
+            {
                 invocationAssembly = Assembly.GetExecutingAssembly();
+            }
 
             if (invocationAssembly == assembly)
+            {
                 return true;
+            }
 
-            bool visible;
-            if (_assemblyInternalsVisibleAttributes.TryGetValue(assembly, out visible))
+            if (_assemblyInternalsVisibleAttributes.TryGetValue(assembly, out bool visible))
+            {
                 return visible;
+            }
 
-            var internalsVisibleAttributes = assembly.GetCustomAttributes(typeof(InternalsVisibleToAttribute), false).Cast<InternalsVisibleToAttribute>();
+            IEnumerable<InternalsVisibleToAttribute> internalsVisibleAttributes = assembly.GetCustomAttributes(typeof(InternalsVisibleToAttribute), false).Cast<InternalsVisibleToAttribute>();
             if (!internalsVisibleAttributes.Any())
             {
                 _assemblyInternalsVisibleAttributes.Add(assembly, false);
                 return false;
             }
 
-            var isFriend = false;
+            bool isFriend = false;
 
-            var invocationAssemblyName = invocationAssembly.GetName();
-            var invocationAssemblyToken = invocationAssemblyName.GetPublicKeyToken();
+            AssemblyName invocationAssemblyName = invocationAssembly.GetName();
+            byte[] invocationAssemblyToken = invocationAssemblyName.GetPublicKeyToken();
 
-            foreach (var attr in internalsVisibleAttributes)
+            foreach (InternalsVisibleToAttribute attr in internalsVisibleAttributes)
             {
                 if (string.IsNullOrEmpty(attr.AssemblyName))
+                {
                     continue;
+                }
 
                 AssemblyName assemblyName = null;
 
@@ -591,12 +688,14 @@ namespace Supremacy.Scripting.Utility
                 catch (ArgumentException) { }
 
                 if (assemblyName == null || (assemblyName.Name != invocationAssemblyName.Name))
-                    continue;
-
-                var keyToken = assemblyName.GetPublicKeyToken();
-                if ((keyToken != null))
                 {
-                    if ((invocationAssemblyToken.Length == 0))
+                    continue;
+                }
+
+                byte[] keyToken = assemblyName.GetPublicKeyToken();
+                if (keyToken != null)
+                {
+                    if (invocationAssemblyToken.Length == 0)
                     {
                         throw new CompilerErrorException(
                             CompilerErrors.FriendAssemblyNameNotMatching,
@@ -605,7 +704,9 @@ namespace Supremacy.Scripting.Utility
                     }
 
                     if (!keyToken.SequenceEqual(invocationAssemblyToken))
+                    {
                         continue;
+                    }
                 }
 
                 isFriend = true;
@@ -626,12 +727,16 @@ namespace Supremacy.Scripting.Utility
              * NonPublic visibility for pointers.
              */
             if (HasElementType(checkType))
+            {
                 return CheckAccessLevel(parseContext, checkType.GetElementType());
+            }
 
             if (checkType.IsGenericParameter)
+            {
                 return true;
+            }
 
-            var checkAttributes = checkType.Attributes & TypeAttributes.VisibilityMask;
+            TypeAttributes checkAttributes = checkType.Attributes & TypeAttributes.VisibilityMask;
 
             try
             {
@@ -674,19 +779,25 @@ namespace Supremacy.Scripting.Utility
         public static bool IsFamilyAccessible(Type type, Type parent)
         {
             if (type.Equals(parent))
+            {
                 return true;
+            }
 
             if (type.IsGenericParameter)
             {
-                var typeConstraint = type.GetGenericParameterConstraints().FirstOrDefault(o => o.IsClass);
+                Type typeConstraint = type.GetGenericParameterConstraints().FirstOrDefault(o => o.IsClass);
                 if ((typeConstraint != null) && typeConstraint.IsSubclassOf(parent))
+                {
                     return true;
+                }
             }
 
             do
             {
                 if (IsInstantiationOfSameGenericType(type, parent))
+                {
                     return true;
+                }
 
                 type = type.BaseType;
             }
@@ -697,18 +808,18 @@ namespace Supremacy.Scripting.Utility
 
         public static int GetNumberOfTypeArguments(Type t)
         {
-            if (t.IsGenericParameter)
-                return 0;
-            return t.IsGenericType ? t.GetGenericArguments().Length : 0;
+            return t.IsGenericParameter ? 0 : t.IsGenericType ? t.GetGenericArguments().Length : 0;
         }
 
         public static bool IsInstantiationOfSameGenericType(Type type, Type parent)
         {
-            var tCount = GetNumberOfTypeArguments(type);
-            var pCount = GetNumberOfTypeArguments(parent);
+            int tCount = GetNumberOfTypeArguments(type);
+            int pCount = GetNumberOfTypeArguments(parent);
 
             if (tCount != pCount)
+            {
                 return false;
+            }
 
             type = DropGenericTypeArguments(type);
             parent = DropGenericTypeArguments(parent);
@@ -725,7 +836,9 @@ namespace Supremacy.Scripting.Utility
             do
             {
                 if (IsFamilyAccessible(type, baseType))
+                {
                     return true;
+                }
 
                 // Handle nested types.
                 type = type.DeclaringType;
@@ -740,19 +853,25 @@ namespace Supremacy.Scripting.Utility
         public static bool IsNestedChildOf(Type type, Type parent)
         {
             if (type == null)
+            {
                 return false;
+            }
 
             type = DropGenericTypeArguments(type);
             parent = DropGenericTypeArguments(parent);
 
             if (IsEqual(type, parent))
+            {
                 return false;
+            }
 
             type = type.DeclaringType;
             while (type != null)
             {
                 if (IsEqual(type, parent))
+                {
                     return true;
+                }
 
                 type = type.DeclaringType;
             }
@@ -790,49 +909,49 @@ namespace Supremacy.Scripting.Utility
             if (a.Equals(b))
             {
                 // MS BCL returns true even if enum types are different
-                if (a.BaseType == CoreTypes.Enum || b.BaseType == CoreTypes.Enum)
-                    return (a.FullName == b.FullName);
-
-                return true;
+                return a.BaseType == CoreTypes.Enum || b.BaseType == CoreTypes.Enum ? a.FullName == b.FullName : true;
             }
 
             if (IsGenericParameter(a) && IsGenericParameter(b))
             {
-                if ((a.DeclaringMethod != b.DeclaringMethod) &&
-                    ((a.DeclaringMethod == null) || (b.DeclaringMethod == null)))
-                {
-                    return false;
-                }
-                return (a.GenericParameterPosition == b.GenericParameterPosition);
+                return (a.DeclaringMethod != b.DeclaringMethod) &&
+                    ((a.DeclaringMethod == null) || (b.DeclaringMethod == null))
+                    ? false
+                    : a.GenericParameterPosition == b.GenericParameterPosition;
             }
 
             if (a.IsArray && b.IsArray)
             {
-                return ((a.GetArrayRank() == b.GetArrayRank()) &&
-                        IsEqual(a.GetElementType(), b.GetElementType()));
+                return (a.GetArrayRank() == b.GetArrayRank()) &&
+                        IsEqual(a.GetElementType(), b.GetElementType());
             }
 
             if (a.IsByRef && b.IsByRef)
+            {
                 return IsEqual(a.GetElementType(), b.GetElementType());
+            }
 
             if (IsGenericType(a) && IsGenericType(b))
             {
-                var genericDefinitionA = DropGenericTypeArguments(a);
-                var genericDefinitionB = DropGenericTypeArguments(b);
+                Type genericDefinitionA = DropGenericTypeArguments(a);
+                Type genericDefinitionB = DropGenericTypeArguments(b);
 
                 if (genericDefinitionA != genericDefinitionB)
+                {
                     return false;
+                }
 
                 if (genericDefinitionA.IsEnum && genericDefinitionB.IsEnum)
+                {
                     return true;
+                }
 
-                var genericArgumentsA = a.GetGenericArguments();
-                var genericArgumentsB = b.GetGenericArguments();
+                Type[] genericArgumentsA = a.GetGenericArguments();
+                Type[] genericArgumentsB = b.GetGenericArguments();
 
-                if (genericArgumentsA.Length != genericArgumentsB.Length)
-                    return false;
-
-                return genericArgumentsA
+                return genericArgumentsA.Length != genericArgumentsB.Length
+                    ? false
+                    : genericArgumentsA
                     .Zip(genericArgumentsB, Tuple.Create)
                     .All(tuple => IsEqual(tuple.Item1, tuple.Item2));
             }
@@ -843,17 +962,16 @@ namespace Supremacy.Scripting.Utility
         public static bool IsPrivateAccessible(Type type, Type parent)
         {
             if (type == null)
+            {
                 return false;
+            }
 
-            if (type.Equals(parent))
-                return true;
-
-            return DropGenericTypeArguments(type) == DropGenericTypeArguments(parent);
+            return type.Equals(parent) ? true : DropGenericTypeArguments(type) == DropGenericTypeArguments(parent);
         }
 
         public static bool IsSpecialType(Type t)
         {
-            return ((t == typeof(ArgIterator)) || (t == typeof(TypedReference)));
+            return (t == typeof(ArgIterator)) || (t == typeof(TypedReference));
         }
 
         /// <summary>
@@ -862,10 +980,11 @@ namespace Supremacy.Scripting.Utility
         /// </summary>
         public static Type[] GetInterfaces(Type t)
         {
-            Type[] interfaces;
 
-            if (_interfaceCache.TryGetValue(t, out interfaces))
+            if (_interfaceCache.TryGetValue(t, out Type[] interfaces))
+            {
                 return interfaces;
+            }
 
             //
             // The reason for catching the Array case is that Reflection.Emit
@@ -878,14 +997,16 @@ namespace Supremacy.Scripting.Utility
             //
 
             if (t.IsArray)
+            {
                 t = CoreTypes.Array;
+            }
 
             if (IsGenericType(t))
             {
-                var baseInterfaces = t.BaseType == null ? Type.EmptyTypes : GetInterfaces(t.BaseType);
-                var typeInterfaces = IsGenericType(t) ? t.GetGenericTypeDefinition().GetInterfaces() : Type.EmptyTypes;
+                Type[] baseInterfaces = t.BaseType == null ? Type.EmptyTypes : GetInterfaces(t.BaseType);
+                Type[] typeInterfaces = IsGenericType(t) ? t.GetGenericTypeDefinition().GetInterfaces() : Type.EmptyTypes;
 
-                var baseCount = baseInterfaces.Length;
+                int baseCount = baseInterfaces.Length;
 
                 interfaces = new Type[baseCount + typeInterfaces.Length];
 
@@ -923,19 +1044,27 @@ namespace Supremacy.Scripting.Utility
             private bool CheckValidFamilyAccess(bool isStatic, MemberInfo m)
             {
                 if (InvocationType == null)
+                {
                     return false;
+                }
 
                 if (isStatic && QualifierType == null)
+                {
                     // It resolved from a simple name, so it should be visible.
                     return true;
+                }
 
                 if (IsNestedChildOf(InvocationType, m.DeclaringType))
+                {
                     return true;
+                }
 
-                for (var t = InvocationType; t != null; t = t.DeclaringType)
+                for (Type t = InvocationType; t != null; t = t.DeclaringType)
                 {
                     if (!IsFamilyAccessible(t, m.DeclaringType))
+                    {
                         continue;
+                    }
 
                     // Although a derived class can access protected members of its base class
                     // it cannot do so through an instance of the base class (CS1540).
@@ -943,11 +1072,15 @@ namespace Supremacy.Scripting.Utility
                     if (isStatic || QualifierType == null ||
                         IsInstantiationOfSameGenericType(t, QualifierType) ||
                         IsFamilyAccessible(QualifierType, t))
+                    {
                         return true;
+                    }
                 }
 
                 if (AlmostMatch != null)
+                {
                     AlmostMatch.Add(m);
+                }
 
                 return false;
             }
@@ -964,7 +1097,9 @@ namespace Supremacy.Scripting.Utility
                 //
 
                 if ((filterCriteria != null) && (m.Name != (string)filterCriteria))
+                {
                     return false;
+                }
 
                 if (((QualifierType == null) || (QualifierType == InvocationType)) &&
                     (InvocationType != null) &&
@@ -977,16 +1112,19 @@ namespace Supremacy.Scripting.Utility
                 // Ugly: we need to find out the type of `m', and depending
                 // on this, tell whether we accept or not
                 //
-                if (m is MethodBase)
+                if (m is MethodBase mb)
                 {
-                    var mb = (MethodBase)m;
-                    var ma = mb.Attributes & MethodAttributes.MemberAccessMask;
+                    MethodAttributes ma = mb.Attributes & MethodAttributes.MemberAccessMask;
 
                     if (ma == MethodAttributes.Public)
+                    {
                         return true;
+                    }
 
                     if (ma == MethodAttributes.PrivateScope)
+                    {
                         return false;
+                    }
 
                     if (ma == MethodAttributes.Private)
                     {
@@ -998,28 +1136,35 @@ namespace Supremacy.Scripting.Utility
                     if (IsThisOrFriendAssembly(InvocationAssembly, mb.DeclaringType.Assembly))
                     {
                         if (ma == MethodAttributes.Assembly || ma == MethodAttributes.FamORAssem)
+                        {
                             return true;
+                        }
                     }
                     else
                     {
                         if (ma == MethodAttributes.Assembly || ma == MethodAttributes.FamANDAssem)
+                        {
                             return false;
+                        }
                     }
 
                     // Family, FamORAssem or FamANDAssem
                     return CheckValidFamilyAccess(mb.IsStatic, m);
                 }
 
-                if (m is FieldInfo)
+                if (m is FieldInfo fi)
                 {
-                    var fi = (FieldInfo)m;
-                    var fa = fi.Attributes & FieldAttributes.FieldAccessMask;
+                    FieldAttributes fa = fi.Attributes & FieldAttributes.FieldAccessMask;
 
                     if (fa == FieldAttributes.Public)
+                    {
                         return true;
+                    }
 
                     if (fa == FieldAttributes.PrivateScope)
+                    {
                         return false;
+                    }
 
                     if (fa == FieldAttributes.Private)
                     {
@@ -1118,24 +1263,24 @@ namespace Supremacy.Scripting.Utility
             BindingFlags bf;
 
             List<MethodBase> methodList = null;
-            var currentType = queriedType;
-            var searching = (originalBf & BindingFlags.DeclaredOnly) == 0;
-            var skipInterfaceCheck = true;
-            var alwaysOkFlag = invocationType != null && IsNestedChildOf(invocationType, queriedType);
+            Type currentType = queriedType;
+            bool searching = (originalBf & BindingFlags.DeclaredOnly) == 0;
+            bool skipInterfaceCheck = true;
+            bool alwaysOkFlag = invocationType != null && IsNestedChildOf(invocationType, queriedType);
 
-            var closure = new Closure
-                          {
-                              InvocationType = invocationType,
-                              InvocationAssembly = invocationType != null ? invocationType.Assembly : null,
-                              QualifierType = qualifierType,
-                              AlmostMatch = almostMatch
-                          };
+            Closure closure = new Closure
+            {
+                InvocationType = invocationType,
+                InvocationAssembly = invocationType?.Assembly,
+                QualifierType = qualifierType,
+                AlmostMatch = almostMatch
+            };
 
             // This is from the first time we find a method
             // in most cases, we do not actually find a method in the base class
             // so we can just ignore it, and save the arraylist allocation
             MemberInfo[] firstMembersList = null;
-            var useFirstMembersList = false;
+            bool useFirstMembersList = false;
 
             do
             {
@@ -1148,8 +1293,8 @@ namespace Supremacy.Scripting.Utility
                 //    public, private and protected (internal does not come into the
                 //    equation)
                 //
-                if ((invocationType != null) &&
-                    ((invocationType == currentType) || IsNestedChildOf(invocationType, currentType)) || alwaysOkFlag)
+                if (((invocationType != null) &&
+                    ((invocationType == currentType) || IsNestedChildOf(invocationType, currentType))) || alwaysOkFlag)
                 {
                     bf = originalBf | BindingFlags.NonPublic;
                 }
@@ -1167,9 +1312,8 @@ namespace Supremacy.Scripting.Utility
                 //    name);
                 //MemberInfo[] list = memberGroup.Select(o => o.GetMemberInfo()).ToArray();
 
-                bool usedCache;
 
-                var list = MemberLookup_FindMembers(currentType, mt, bf, name, closure.Filter, out usedCache);
+                MemberInfo[] list = MemberLookup_FindMembers(currentType, mt, bf, name, closure.Filter, out bool usedCache);
 
                 //
                 // When queried for an interface type, the cache will automatically check all
@@ -1181,12 +1325,18 @@ namespace Supremacy.Scripting.Utility
                 //
 
                 if (usedCache)
+                {
                     searching = false;
+                }
                 else
+                {
                     skipInterfaceCheck = false;
+                }
 
                 if (currentType == CoreTypes.Object)
+                {
                     searching = false;
+                }
                 else
                 {
                     currentType = currentType.BaseType;
@@ -1203,7 +1353,9 @@ namespace Supremacy.Scripting.Utility
                 }
 
                 if (list.Length == 0)
+                {
                     continue;
+                }
 
                 //
                 // Events and types are returned by both `static' and `instance'
@@ -1220,7 +1372,9 @@ namespace Supremacy.Scripting.Utility
                 // name
                 //
                 if (list[0] is PropertyInfo)
+                {
                     return list;
+                }
 
                 //
                 // We found an event: the cache lookup returns both the event and
@@ -1228,10 +1382,7 @@ namespace Supremacy.Scripting.Utility
                 //
                 if (list[0] is EventInfo)
                 {
-                    if ((list.Length == 2) && (list[1] is FieldInfo))
-                        return new[] { list[0] };
-
-                    return list;
+                    return (list.Length == 2) && (list[1] is FieldInfo) ? (new[] { list[0] }) : list;
                 }
 
                 //
@@ -1253,13 +1404,15 @@ namespace Supremacy.Scripting.Utility
                 {
                     firstMembersList = list;
                     useFirstMembersList = true;
-                    mt &= (MemberTypes.Method | MemberTypes.Constructor);
+                    mt &= MemberTypes.Method | MemberTypes.Constructor;
                 }
             }
             while (searching);
 
             if (useFirstMembersList)
+            {
                 return firstMembersList;
+            }
 
             if (methodList != null && methodList.Count > 0)
             {
@@ -1270,24 +1423,26 @@ namespace Supremacy.Scripting.Utility
             // the cache already looked in all interfaces.
             //
             if (skipInterfaceCheck)
+            {
                 return null;
+            }
 
             //
             // Interfaces do not list members they inherit, so we have to
             // scan those.
             // 
             if (!queriedType.IsInterface)
+            {
                 return null;
+            }
 
             if (queriedType.IsArray)
+            {
                 queriedType = CoreTypes.Array;
+            }
 
-            var ifaces = GetInterfaces(queriedType);
-            if (ifaces == null)
-                return null;
-
-            return ifaces
-                .Select(itype => MemberLookup(null, null, itype, mt, bf, name, null))
+            Type[] ifaces = GetInterfaces(queriedType);
+            return ifaces?.Select(itype => MemberLookup(null, null, itype, mt, bf, name, null))
                 .FirstOrDefault(x => x != null);
         }
 
@@ -1337,7 +1492,7 @@ namespace Supremacy.Scripting.Utility
                 // in TypeContainer.DefineType().  At this time, the types aren't
                 // populated yet, so we can't use the cache.
                 //
-                var info = t.FindMembers(
+                MemberInfo[] info = t.FindMembers(
                     mt,
                     bf | BindingFlags.DeclaredOnly,
                     filter,
@@ -1351,7 +1506,7 @@ namespace Supremacy.Scripting.Utility
             // type, TypeHandle.GetMemberCache() will, if necessary, create a new one, and return
             // the corresponding MemberCache.
             //
-            var cache = TypeHandle.GetMemberCache(t);
+            MemberCache cache = TypeHandle.GetMemberCache(t);
             usedCache = true;
 
             return cache.FindMembers(mt, bf, name, filter, null);
@@ -1361,15 +1516,18 @@ namespace Supremacy.Scripting.Utility
 
         public static MemberCache LookupBaseInterfacesCache(Type t)
         {
-            var interfaces = GetInterfaces(t);
+            Type[] interfaces = GetInterfaces(t);
 
             if (interfaces != null && interfaces.Length == 1)
+            {
                 return TypeHandle.GetMemberCache(interfaces[0]);
+            }
 
             // TODO: the builder_to_member_cache should be indexed by 'ifaces', not 't'
-            MemberCache cache;
-            if (_typeMemberCache.TryGetValue(t, out cache))
+            if (_typeMemberCache.TryGetValue(t, out MemberCache cache))
+            {
                 return cache;
+            }
 
             cache = new MemberCache(interfaces);
             _typeMemberCache[t] = cache;
@@ -1399,9 +1557,11 @@ namespace Supremacy.Scripting.Utility
             internal AnonymousTypeKey(AnonymousObjectInitializer initializer)
             {
                 if (initializer == null)
+                {
                     throw new ArgumentNullException("initializer");
+                }
 
-                var memberDeclarators = initializer.MemberDeclarators
+                AnonymousMemberDeclarator[] memberDeclarators = initializer.MemberDeclarators
                     .OrderBy(o => o.Name, StringComparer.Ordinal)
                     .ToArray();
 
@@ -1410,7 +1570,7 @@ namespace Supremacy.Scripting.Utility
 
                 _hashCode = memberDeclarators.Aggregate(
                     6551,
-                    (hash, member) => hash ^ ((hash << 5) ^ member.Name.GetHashCode()));
+                    (hash, member) => hash ^ (hash << 5) ^ member.Name.GetHashCode());
             }
 
             public bool Equals(AnonymousTypeKey other)
@@ -1433,25 +1593,31 @@ namespace Supremacy.Scripting.Utility
         internal static AnonymousTypeClass GetAnonymousType(AnonymousObjectInitializer initializer)
         {
             if (initializer == null)
+            {
                 throw new ArgumentNullException("initializer");
+            }
+
             if (initializer.MemberDeclarators.Count == 0)
+            {
                 throw new ArgumentOutOfRangeException("initializer", "fields must have at least 1 field definition");
+            }
 
             lock (_anonymousClasses)
             {
-                var key = new AnonymousTypeKey(initializer);
+                AnonymousTypeKey key = new AnonymousTypeKey(initializer);
 
-                AnonymousTypeClass anonymousClass;
-                if (_anonymousClasses.TryGetValue(key, out anonymousClass))
+                if (_anonymousClasses.TryGetValue(key, out AnonymousTypeClass anonymousClass))
+                {
                     return _anonymousClasses[key];
+                }
 
-                var typeBuilder = _moduleBuilder.DefineType(
+                TypeBuilder typeBuilder = _moduleBuilder.DefineType(
                     AnonymousTypeNamePrefix + _anonymousClasses.Count,
                     TypeAttributes.Public | TypeAttributes.Class | TypeAttributes.Serializable);
 
-                foreach (var member in initializer.MemberDeclarators)
+                foreach (AnonymousMemberDeclarator member in initializer.MemberDeclarators)
                 {
-                    typeBuilder.DefineField(
+                    _ = typeBuilder.DefineField(
                         member.Name,
                         member.Type,
                         FieldAttributes.Public);
@@ -1470,21 +1636,21 @@ namespace Supremacy.Scripting.Utility
 
         public static string GetMethodName(MethodInfo m)
         {
-            if (!m.IsGenericMethodDefinition && !m.IsGenericMethod)
-                return m.Name;
-
-            return MemberName.MakeName(m.Name, (m.GetGenericArguments() ?? Type.EmptyTypes).Length);
+            return !m.IsGenericMethodDefinition && !m.IsGenericMethod
+                ? m.Name
+                : MemberName.MakeName(m.Name, (m.GetGenericArguments() ?? Type.EmptyTypes).Length);
         }
 
         private static readonly Dictionary<MethodBase, MethodBase> _methodOverrides = new Dictionary<MethodBase, MethodBase>();
 
         public static void RegisterOverride(MethodBase overrideMethod, MethodBase baseMethod)
         {
-            MethodBase knownBaseMethod;
-            if (_methodOverrides.TryGetValue(overrideMethod, out knownBaseMethod))
+            if (_methodOverrides.TryGetValue(overrideMethod, out MethodBase knownBaseMethod))
             {
                 if (knownBaseMethod != baseMethod)
+                {
                     throw new InternalErrorException("Override mismatch: " + overrideMethod);
+                }
             }
             else
             {
@@ -1512,11 +1678,8 @@ namespace Supremacy.Scripting.Utility
         {
             if (IsGenericParameter(t))
             {
-                var constraints = GetTypeParameterConstraints(t);
-                if (constraints == null)
-                    return false;
-
-                return constraints.IsValueType;
+                GenericConstraints constraints = GetTypeParameterConstraints(t);
+                return constraints == null ? false : constraints.IsValueType;
             }
 
             return IsStruct(t) || IsEnumType(t);
@@ -1525,7 +1688,9 @@ namespace Supremacy.Scripting.Utility
         public static GenericConstraints GetTypeParameterConstraints(this Type t)
         {
             if (!t.IsGenericParameter)
+            {
                 throw new InvalidOperationException();
+            }
 
             return ReflectionConstraints.GetConstraints(t);
         }
@@ -1534,11 +1699,8 @@ namespace Supremacy.Scripting.Utility
         {
             if (IsGenericParameter(t))
             {
-                var constraints = GetTypeParameterConstraints(t);
-                if (constraints == null)
-                    return false;
-
-                return constraints.IsReferenceType;
+                GenericConstraints constraints = GetTypeParameterConstraints(t);
+                return constraints == null ? false : constraints.IsReferenceType;
             }
 
             return !IsStruct(t) && !IsEnumType(t);
@@ -1559,17 +1721,17 @@ namespace Supremacy.Scripting.Utility
             t = DropGenericTypeArguments(t);
             
             if (t.BaseType == CoreTypes.Enum)
+            {
                 return true;
+            }
 
             if (!allowNullable)
+            {
                 return false;
+            }
 
-            Type baseType;
 
-            if (IsNullableType(t, out baseType))
-                return IsEnumType(baseType, true);
-            
-            return false;
+            return IsNullableType(t, out Type baseType) ? IsEnumType(baseType, true) : false;
         }
 
         public static bool IsNullableType(this Type t)
@@ -1614,7 +1776,9 @@ namespace Supremacy.Scripting.Utility
                 if (interfaces != null)
                 {
                     if (interfaces.Any(i => i == iface || IsVariantOf(i, iface)))
+                    {
                         return true;
+                    }
                 }
 
                 t = t.BaseType;
@@ -1626,31 +1790,40 @@ namespace Supremacy.Scripting.Utility
         public static bool IsVariantOf(Type type1, Type type2)
         {
             if (!type1.IsGenericType || !type2.IsGenericType)
+            {
                 return false;
+            }
 
-            var genericTargetType = DropGenericTypeArguments(type2);
+            Type genericTargetType = DropGenericTypeArguments(type2);
 
             if (DropGenericTypeArguments(type1) != genericTargetType)
+            {
                 return false;
+            }
 
-            var t1 = type1.GetGenericArguments();
-            var t2 = type2.GetGenericArguments();
-            var definitionArgs = genericTargetType.GetGenericArguments();
+            Type[] t1 = type1.GetGenericArguments();
+            Type[] t2 = type2.GetGenericArguments();
+            Type[] definitionArgs = genericTargetType.GetGenericArguments();
 
             for (int i = 0; i < definitionArgs.Length; ++i)
             {
-                var v = GetTypeParameterVariance(definitionArgs[i]);
+                Variance v = GetTypeParameterVariance(definitionArgs[i]);
                 if (v == Variance.None)
                 {
                     if (t1[i] == t2[i])
+                    {
                         continue;
+                    }
+
                     return false;
                 }
 
                 if (v == Variance.Covariant)
                 {
                     if (!TypeUtils.IsImplicitlyConvertible(t1[i], t2[i]))
+                    {
                         return false;
+                    }
                 }
                 else if (!TypeUtils.IsImplicitlyConvertible(t2[i], t1[i]))
                 {
@@ -1676,12 +1849,14 @@ namespace Supremacy.Scripting.Utility
 
         static public string GetFullNameSignature(MemberInfo mi)
         {
-            var pi = mi as PropertyInfo;
+            PropertyInfo pi = mi as PropertyInfo;
             if (pi != null)
             {
                 MethodBase pmi = pi.GetGetMethod(true) ?? pi.GetSetMethod(true);
                 if (GetParameterData(pmi).Count > 0)
+                {
                     mi = pmi;
+                }
             }
             return (mi is MethodBase)
                        ? GetCSharpSignature(mi as MethodBase)
@@ -1691,15 +1866,19 @@ namespace Supremacy.Scripting.Utility
         public static FieldInfo GetGenericFieldDefinition(FieldInfo fi)
         {
             if (fi.DeclaringType.IsGenericTypeDefinition || !fi.DeclaringType.IsGenericType)
+            {
                 return fi;
+            }
 
-            var t = fi.DeclaringType.GetGenericTypeDefinition();
+            Type t = fi.DeclaringType.GetGenericTypeDefinition();
             const BindingFlags bf = BindingFlags.Public | BindingFlags.NonPublic |
                                     BindingFlags.Static | BindingFlags.Instance | BindingFlags.DeclaredOnly;
 
             // TODO: use CodeGen.Module.Builder.ResolveField (fi.MetadataToken);
-            foreach (var f in t.GetFields(bf).Where(f => f.MetadataToken == fi.MetadataToken))
+            foreach (FieldInfo f in t.GetFields(bf).Where(f => f.MetadataToken == fi.MetadataToken))
+            {
                 return f;
+            }
 
             return fi;
         }
@@ -1707,15 +1886,21 @@ namespace Supremacy.Scripting.Utility
         public static bool IsSubclassOf(Type type, Type baseType)
         {
             if (type.IsGenericType)
+            {
                 type = type.GetGenericTypeDefinition();
+            }
 
             if (type.IsSubclassOf(baseType))
+            {
                 return true;
+            }
 
             do
             {
                 if (IsEqual(type, baseType))
+                {
                     return true;
+                }
 
                 type = type.BaseType;
             } while (type != null);
@@ -1726,10 +1911,14 @@ namespace Supremacy.Scripting.Utility
         public static bool IsDelegateType(Type t)
         {
             if (IsGenericParameter(t))
+            {
                 return false;
+            }
 
             if (t == CoreTypes.Delegate || t == CoreTypes.MulticastDelegate)
+            {
                 return false;
+            }
 
             t = DropGenericTypeArguments(t);
             return IsSubclassOf(t, CoreTypes.Delegate);
@@ -1757,7 +1946,9 @@ namespace Supremacy.Scripting.Utility
             // we need to do a signature based comparision and consider them equal.
             
             if (a == b)
+            {
                 return true;
+            }
 
             if (a.IsGenericParameter && b.IsGenericParameter &&
                 (a.DeclaringMethod != null) && (b.DeclaringMethod != null))
@@ -1767,27 +1958,25 @@ namespace Supremacy.Scripting.Utility
 
             if (a.IsArray && b.IsArray)
             {
-                if (a.GetArrayRank() != b.GetArrayRank())
-                    return false;
-
-                return IsSignatureEqual(a.GetElementType(), b.GetElementType());
+                return a.GetArrayRank() != b.GetArrayRank() ? false : IsSignatureEqual(a.GetElementType(), b.GetElementType());
             }
 
             if (a.IsByRef && b.IsByRef)
+            {
                 return IsSignatureEqual(a.GetElementType(), b.GetElementType());
+            }
 
             if (IsGenericType(a) && IsGenericType(b))
             {
                 if (DropGenericTypeArguments(a) != DropGenericTypeArguments(b))
+                {
                     return false;
+                }
 
                 Type[] aargs = a.GetGenericArguments();
                 Type[] bargs = b.GetGenericArguments();
 
-                if (aargs.Length != bargs.Length)
-                    return false;
-
-                return !aargs.Where((t, i) => !IsSignatureEqual(t, bargs[i])).Any();
+                return aargs.Length != bargs.Length ? false : !aargs.Where((t, i) => !IsSignatureEqual(t, bargs[i])).Any();
             }
 
             return false;
@@ -1795,36 +1984,48 @@ namespace Supremacy.Scripting.Utility
 
         public static bool ArrayContainsMethod(MemberInfo[] array, MethodBase newMethod, bool ignoreDeclType)
         {
-            var newArgs = GetParameterData(newMethod).Types;
+            Type[] newArgs = GetParameterData(newMethod).Types;
 
             foreach (MethodBase method in array)
             {
                 if (!ignoreDeclType && method.DeclaringType != newMethod.DeclaringType)
+                {
                     continue;
+                }
 
                 if (method.Name != newMethod.Name)
+                {
                     continue;
+                }
 
                 if (method is MethodInfo && newMethod is MethodInfo &&
                     !IsSignatureEqual(
                          ((MethodInfo)method).ReturnType,
                          ((MethodInfo)newMethod).ReturnType))
+                {
                     continue;
+                }
 
-                var oldArgs = GetParameterData(method).Types;
-                var oldCount = oldArgs.Length;
+                Type[] oldArgs = GetParameterData(method).Types;
+                int oldCount = oldArgs.Length;
                 int i;
 
                 if (newArgs.Length != oldCount)
+                {
                     continue;
+                }
 
                 for (i = 0; i < oldCount; i++)
                 {
                     if (!IsSignatureEqual(oldArgs[i], newArgs[i]))
+                    {
                         break;
+                    }
                 }
                 if (i != oldCount)
+                {
                     continue;
+                }
 
                 return true;
             }
@@ -1832,21 +2033,22 @@ namespace Supremacy.Scripting.Utility
             return false;
         }
 
-        static public MethodBase TryGetBaseDefinition(MethodBase m)
+        public static MethodBase TryGetBaseDefinition(MethodBase m)
         {
             m = DropGenericMethodArguments(m);
             return _methodOverrides[m];
         }
 
-        private static readonly Dictionary<Tuple<Type,string>, Type> _typeHash = new Dictionary<Tuple<Type, string>, Type>();
+        private static readonly Dictionary<Tuple<Type, string>, Type> _typeHash = new Dictionary<Tuple<Type, string>, Type>();
 
         public static Type GetConstructedType(Type t, string dim)
         {
-            Type constructedType;
 
-            var key = Tuple.Create(t, dim);
-            if (_typeHash.TryGetValue(key, out constructedType))
+            Tuple<Type, string> key = Tuple.Create(t, dim);
+            if (_typeHash.TryGetValue(key, out Type constructedType))
+            {
                 return constructedType;
+            }
 
             constructedType = t.Module.GetType(t + dim);
 
@@ -1858,7 +2060,7 @@ namespace Supremacy.Scripting.Utility
 
             if (t.IsGenericParameter || t.IsGenericType)
             {
-                var pos = 0;
+                int pos = 0;
                 Type result = t;
                 while ((pos < dim.Length) && (dim[pos] == '['))
                 {
@@ -1870,7 +2072,9 @@ namespace Supremacy.Scripting.Utility
                         pos++;
 
                         if (pos < dim.Length)
+                        {
                             continue;
+                        }
 
                         _typeHash[key] = result;
                         return result;
@@ -1884,7 +2088,9 @@ namespace Supremacy.Scripting.Utility
                     }
 
                     if ((dim[pos] != ']') || (pos != dim.Length - 1))
+                    {
                         break;
+                    }
 
                     result = result.MakeArrayType(rank + 1);
                     _typeHash[key] = result;
@@ -1898,90 +2104,90 @@ namespace Supremacy.Scripting.Utility
         public static bool IsEqual(Type[] a, Type[] b)
         {
             if (a == null || b == null || a.Length != b.Length)
+            {
                 return false;
+            }
 
             for (int i = 0; i < a.Length; ++i)
             {
                 if (a[i] == null || b[i] == null)
                 {
                     if (a[i] == b[i])
+                    {
                         continue;
+                    }
 
                     return false;
                 }
 
                 if (!IsEqual(a[i], b[i]))
+                {
                     return false;
+                }
             }
 
             return true;
         }
 
-        public static int InferTypeArguments (ParseContext ec, Arguments arguments, ref MethodBase method)
+        public static int InferTypeArguments(ParseContext ec, Arguments arguments, ref MethodBase method)
         {
-            var typeInference = TypeInferenceBase.CreateInstance (arguments);
+            TypeInferenceBase typeInference = TypeInferenceBase.CreateInstance(arguments);
 
-            var inferredArgs = typeInference.InferMethodArguments (ec, method);
+            Type[] inferredArgs = typeInference.InferMethodArguments(ec, method);
             if (inferredArgs == null)
+            {
                 return typeInference.InferenceScore;
+            }
 
             if (inferredArgs.Length == 0)
+            {
                 return 0;
+            }
 
-            method = ((MethodInfo) method).MakeGenericMethod (inferredArgs);
+            method = ((MethodInfo)method).MakeGenericMethod(inferredArgs);
             return 0;
         }
 
         public static bool ImplicitConversionExists(ParseContext ec, Expression source, Type targetType)
         {
-            var lambda = source as LambdaExpression;
-            if (lambda != null)
+            if (source is LambdaExpression lambda)
             {
-                if (!IsDelegateType(targetType) &&
-                    DropGenericTypeArguments(targetType) != CoreTypes.GenericExpression)
-                {
-                    return false;
-                }
-
-                return lambda.ImplicitStandardConversionExists(ec, targetType);
+                return !IsDelegateType(targetType) &&
+                    DropGenericTypeArguments(targetType) != CoreTypes.GenericExpression
+                    ? false
+                    : lambda.ImplicitStandardConversionExists(ec, targetType);
             }
 
-            if (TypeUtils.IsImplicitlyConvertible(source.Type, targetType))
-                return true;
-
-            return false;
+            return TypeUtils.IsImplicitlyConvertible(source.Type, targetType);
         }
 
-        public static Variance CheckTypeVariance (Type t, Variance expected, IMemberContext member)
+        public static Variance CheckTypeVariance(Type t, Variance expected, IMemberContext member)
         {
-            if (t.IsGenericType) {
-                var typeArgsDefinition = DropGenericTypeArguments(t).GetGenericArguments();
-                var typeArgs = t.GetGenericArguments();
+            if (t.IsGenericType)
+            {
+                Type[] typeArgsDefinition = DropGenericTypeArguments(t).GetGenericArguments();
+                Type[] typeArgs = t.GetGenericArguments();
                 
-                for (var i = 0; i < typeArgsDefinition.Length; ++i)
+                for (int i = 0; i < typeArgsDefinition.Length; ++i)
                 {
-                    var variance = GetTypeParameterVariance(typeArgsDefinition[i]);
-                    CheckTypeVariance(typeArgs[i], (Variance)((int)variance * (int)expected), member);
+                    Variance variance = GetTypeParameterVariance(typeArgsDefinition[i]);
+                    _ = CheckTypeVariance(typeArgs[i], (Variance)((int)variance * (int)expected), member);
                 }
 
                 return expected;
             }
 
-            if (t.IsArray)
-                return CheckTypeVariance (t.GetElementType(), expected, member);
-
-            return Variance.None;
+            return t.IsArray ? CheckTypeVariance(t.GetElementType(), expected, member) : Variance.None;
         }
 
         public static bool IsDynamicType(Type t)
         {
             if (t == typeof(DynamicObject))
+            {
                 return true;
+            }
 
-            if (t != CoreTypes.Object)
-                return false;
-
-            return t.IsDefined(PredefinedAttributes.Dynamic, false);
+            return t != CoreTypes.Object ? false : t.IsDefined(PredefinedAttributes.Dynamic, false);
         }
 
         //
@@ -1999,7 +2205,7 @@ namespace Supremacy.Scripting.Utility
                 dt = DropGenericTypeArguments(delegateType);
             }
 
-            var ml = Expression.MemberLookup(
+            Expression ml = Expression.MemberLookup(
                 ctx,
                 containerType,
                 null,
@@ -2007,22 +2213,22 @@ namespace Supremacy.Scripting.Utility
                 "Invoke",
                 SourceSpan.None);
 
-            var mg = ml as MethodGroupExpression;
-            if (mg == null)
+            if (!(ml is MethodGroupExpression mg))
             {
                 ctx.ReportError(
-                    -100, 
+                    -100,
                     "Internal error: could not find Invoke method!");
 
                 // FIXME: null will cause a crash later
                 return null;
             }
 
-            var invoke = (MethodInfo)mg.Methods[0];
-            
-            if (gArgs != null) {
-                var p = GetParameterData (invoke);
-                p = p.InflateTypes (gArgs, gArgs);
+            MethodInfo invoke = (MethodInfo)mg.Methods[0];
+
+            if (gArgs != null)
+            {
+                ParametersCollection p = GetParameterData(invoke);
+                p = p.InflateTypes(gArgs, gArgs);
                 _methodParameters[invoke] = p;
                 return invoke;
             }
@@ -2032,7 +2238,7 @@ namespace Supremacy.Scripting.Utility
 
         public static ParametersCollection GetDelegateParameters(ParseContext ec, Type t)
         {
-            var invokeMethod = GetDelegateInvokeMethod(ec, t, t);
+            MethodInfo invokeMethod = GetDelegateInvokeMethod(ec, t, t);
             return GetParameterData(invokeMethod);
         }
 
@@ -2046,13 +2252,11 @@ namespace Supremacy.Scripting.Utility
         public static IConstant GetConstant(FieldInfo fb)
         {
             if (fb == null)
+            {
                 return null;
+            }
 
-            IConstant constant;
-            if (_fieldConstants.TryGetValue(fb, out constant))
-                return constant;
-
-            return null;
+            return _fieldConstants.TryGetValue(fb, out IConstant constant) ? constant : null;
         }
     }
 

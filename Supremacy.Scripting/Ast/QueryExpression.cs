@@ -8,8 +8,8 @@ namespace Supremacy.Scripting.Ast
     {
         public QueryClause Query
         {
-            get { return Next; }
-            set { Next = value; }
+            get => Next;
+            set => Next = value;
         }
 
         public override Expression BuildQueryClause(ParseContext ec, Expression lSide)
@@ -21,11 +21,13 @@ namespace Supremacy.Scripting.Ast
         public override Expression DoResolve(ParseContext ec)
         {
             if (_resolved != null)
+            {
                 return _resolved;
+            }
 
-            var oldCounter = QueryScope.TransparentParameter.Counter;
+            int oldCounter = QueryScope.TransparentParameter.Counter;
 
-            var e = BuildQueryClause(ec, null);
+            Expression e = BuildQueryClause(ec, null);
             e = e.Resolve(ec);
 
             //
@@ -33,15 +35,14 @@ namespace Supremacy.Scripting.Ast
             // identifier anonymous types are created only once
             //
             if (ec.IsInProbingMode)
+            {
                 QueryScope.TransparentParameter.Counter = oldCounter;
+            }
 
-            return (Expression = _resolved = e);
+            return Expression = _resolved = e;
         }
 
-        protected override string MethodName
-        {
-            get { throw new NotSupportedException(); }
-        }
+        protected override string MethodName => throw new NotSupportedException();
 
         public override System.Linq.Expressions.Expression TransformCore(ScriptGenerator generator)
         {

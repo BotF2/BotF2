@@ -569,9 +569,9 @@ namespace Supremacy.Entities
                 {
                     return (_raceId == Race.InvalidRaceKey) ? null : GameContext.Current.Races[_raceId];
                 }
-                catch
+                catch (Exception e)
                 {
-                    GameLog.Core.GameData.ErrorFormat("##### Problem with Race = {0}", Race);
+                    GameLog.Core.GameData.ErrorFormat("##### Problem with Race = {0} {1} {2}", Race, e.Message, e.StackTrace);
                     
                 }
                 return (_raceId == Race.InvalidRaceKey) ? null : GameContext.Current.Races[_raceId];

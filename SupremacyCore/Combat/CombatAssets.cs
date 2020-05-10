@@ -1,4 +1,4 @@
-// CombatAssets.cs
+// File:CombatAssets.cs
 //
 // Copyright (c) 2007 Mike Strobel
 //

@@ -18,10 +18,14 @@ namespace Supremacy.Scripting.Ast
             Parent = parent;
 
             if (parent != null)
+            {
                 parent.AddAnonymousChild(this);
+            }
 
             if ((Parameters != null) && !Parameters.IsEmpty)
+            {
                 ProcessParameters();
+            }
         }
 
         public TopLevelScope(CompilerContext ctx, SourceLocation loc)
@@ -29,42 +33,47 @@ namespace Supremacy.Scripting.Ast
 
         public ParametersCompiled Parameters { get; set; }
 
-        public TopLevelScope Container
-        {
-            get { return (Parent == null) ? null : Parent.TopLevel; }
-        }
+        public TopLevelScope Container => Parent?.TopLevel;
 
         protected void ProcessParameters()
         {
-            var count = Parameters.Count;
-            var topParent = (Parent == null) ? null : Parent.TopLevel;
-            var parameterInfo = new TopLevelParameterInfo[count];
+            int count = Parameters.Count;
+            TopLevelScope topParent = Parent?.TopLevel;
+            TopLevelParameterInfo[] parameterInfo = new TopLevelParameterInfo[count];
 
-            for (var i = 0; i < count; ++i)
+            for (int i = 0; i < count; ++i)
             {
                 parameterInfo[i] = new TopLevelParameterInfo(this, i);
 
-                var p = Parameters[i];
+                Parameter p = Parameters[i];
                 if (p == null)
+                {
                     continue;
+                }
 
                 if (p.Scope == null)
+                {
                     p.Scope = this;
+                }
 
-                var name = p.Name;
+                string name = p.Name;
 
                 if (CheckParentConflictName(topParent, name, p.Span))
+                {
                     AddKnownVariable(name, parameterInfo[i]);
+                }
             }
         }
 
         public Expression GetParameterReference(string name, SourceSpan span)
         {
-            for (var topLevelScope = this; topLevelScope != null; topLevelScope = topLevelScope.Container)
+            for (TopLevelScope topLevelScope = this; topLevelScope != null; topLevelScope = topLevelScope.Container)
             {
-                var expression = topLevelScope.GetParameterReferenceExpression(name, span);
+                Expression expression = topLevelScope.GetParameterReferenceExpression(name, span);
                 if (expression != null)
+                {
                     return expression;
+                }
             }
             return null;
         }
@@ -72,13 +81,12 @@ namespace Supremacy.Scripting.Ast
         protected virtual Expression GetParameterReferenceExpression(string name, SourceSpan span)
         {
             if (Parameters == null)
+            {
                 return null;
+            }
 
-            var index = Parameters.GetParameterIndexByName(name);
-            if (index < 0)
-                return null;
-
-            return new ParameterReference(Parameters[index]);
+            int index = Parameters.GetParameterIndexByName(name);
+            return index < 0 ? null : new ParameterReference(Parameters[index]);
         }
     }
 }

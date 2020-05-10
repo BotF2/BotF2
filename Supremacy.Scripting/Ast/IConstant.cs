@@ -20,7 +20,7 @@ namespace Supremacy.Scripting.Ast
 
     public class ExternalConstant : IConstant
     {
-        readonly FieldInfo _field;
+        private readonly FieldInfo _field;
         private object _value;
 
         public ExternalConstant(FieldInfo field)
@@ -42,17 +42,18 @@ namespace Supremacy.Scripting.Ast
         public static IConstant CreateDecimal(FieldInfo fi)
         {
             if (fi is FieldBuilder)
+            {
                 return null;
+            }
 
-            var decimalConstantAttribute =
+            DecimalConstantAttribute decimalConstantAttribute =
                 fi.GetCustomAttributes(TypeManager.PredefinedAttributes.DecimalConstant, false)
                     .Cast<DecimalConstantAttribute>()
                     .FirstOrDefault();
 
-            if (decimalConstantAttribute == null)
-                return null;
-
-            return new ExternalConstant(
+            return decimalConstantAttribute == null
+                ? null
+                : new ExternalConstant(
                 fi,
                 decimalConstantAttribute.Value);
         }
@@ -61,9 +62,11 @@ namespace Supremacy.Scripting.Ast
 
         public void CheckObsoleteness(ParseContext parseContext, SourceSpan location)
         {
-            var oa = AttributeTester.GetMemberObsoleteAttribute(_field);
+            System.ObsoleteAttribute oa = AttributeTester.GetMemberObsoleteAttribute(_field);
             if (oa == null)
+            {
                 return;
+            }
 
             AttributeTester.ReportObsoleteMessage(parseContext, oa, TypeManager.GetFullNameSignature(_field), location);
         }
@@ -71,7 +74,9 @@ namespace Supremacy.Scripting.Ast
         public bool ResolveValue()
         {
             if (_value != null)
+            {
                 return true;
+            }
 
             _value = _field.GetValue(_field);
             return true;

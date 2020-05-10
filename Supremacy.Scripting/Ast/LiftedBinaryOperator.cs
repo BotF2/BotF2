@@ -11,11 +11,11 @@ namespace Supremacy.Scripting.Ast
 {
     public class LiftedBinaryOperator : BinaryExpression
     {
-        Unwrap left_unwrap, right_unwrap;
-        bool left_null_lifted, right_null_lifted;
-        Expression left_orig, right_orig;
-        Expression user_operator;
-        ConstructorInfo wrap_ctor;
+        private Unwrap left_unwrap, right_unwrap;
+        private bool left_null_lifted, right_null_lifted;
+        private Expression left_orig, right_orig;
+        private Expression user_operator;
+        private ConstructorInfo wrap_ctor;
 
         public LiftedBinaryOperator(ExpressionType op, Expression left, Expression right, SourceSpan span)
         {
@@ -33,7 +33,7 @@ namespace Supremacy.Scripting.Ast
         private Expression CreateNullConstant(ParseContext ec, Expression expr)
         {
             // FIXME: Handle side effect constants
-            var c = new ConstantExpression<bool>(Operator == ExpressionType.NotEqual, Span);
+            ConstantExpression<bool> c = new ConstantExpression<bool>(Operator == ExpressionType.NotEqual, Span);
 
             if (Operator.IsEquality())
             {
@@ -64,7 +64,9 @@ namespace Supremacy.Scripting.Ast
         public override Expression DoResolve(ParseContext ec)
         {
             if (ExpressionClass != ExpressionClass.Invalid)
+            {
                 return this;
+            }
 
             if (Operator.IsLogical())
             {
@@ -72,13 +74,15 @@ namespace Supremacy.Scripting.Ast
                 return null;
             }
 
-            bool use_default_call = (Operator.IsBitwise() || Operator.IsEquality());
+            bool use_default_call = Operator.IsBitwise() || Operator.IsEquality();
             left_orig = Left;
             if (TypeManager.IsNullableType(Left.Type))
             {
                 Left = left_unwrap = Unwrap.Create(Left, use_default_call);
                 if (Left == null)
+                {
                     return null;
+                }
             }
 
             right_orig = Right;
@@ -86,7 +90,9 @@ namespace Supremacy.Scripting.Ast
             {
                 Right = right_unwrap = Unwrap.Create(Right, use_default_call);
                 if (Right == null)
+                {
                     return null;
+                }
             }
 
             //
@@ -122,7 +128,7 @@ namespace Supremacy.Scripting.Ast
             }
         }
 
-        Expression LiftResult(ParseContext ec, Expression res_expr)
+        private Expression LiftResult(ParseContext ec, Expression res_expr)
         {
             TypeExpression lifted_type;
 
@@ -134,12 +140,18 @@ namespace Supremacy.Scripting.Ast
                 lifted_type = new NullableTypeExpression(Left.Type, Span);
                 lifted_type = lifted_type.ResolveAsTypeTerminal(ec, false);
                 if (lifted_type == null)
+                {
                     return null;
+                }
 
                 if (Left is CastExpression)
+                {
                     ((CastExpression)Left).DestinationType = new TypeExpression(lifted_type.Type);
+                }
                 else
+                {
                     Left = EmptyCastExpression.Create(Left, lifted_type.Type);
+                }
             }
 
             if (right_unwrap == null || right_null_lifted || !TypeManager.IsEqual(right_unwrap.Type, Right.Type) || (right_unwrap != null && left_null_lifted))
@@ -148,12 +160,18 @@ namespace Supremacy.Scripting.Ast
                 lifted_type = lifted_type.ResolveAsTypeTerminal(ec, false);
 
                 if (lifted_type == null)
+                {
                     return null;
+                }
 
                 if (Right is CastExpression)
+                {
                     ((CastExpression)Right).DestinationType = new TypeExpression(lifted_type.Type);
+                }
                 else
+                {
                     Right = EmptyCastExpression.Create(Right, lifted_type.Type);
+                }
             }
 
             if (!Operator.IsComparison())
@@ -162,7 +180,9 @@ namespace Supremacy.Scripting.Ast
                 lifted_type = lifted_type.ResolveAsTypeTerminal(ec, false);
 
                 if (lifted_type == null)
+                {
                     return null;
+                }
 
                 wrap_ctor = new NullableInfo(lifted_type.Type).Constructor;
                 ResultType = res_expr.Type = lifted_type.Type;
@@ -173,13 +193,17 @@ namespace Supremacy.Scripting.Ast
                 Left = LiftedNullExpression.Create(Right.Type, Left.Span);
 
                 if (Operator.IsArithmetic() || Operator.IsShift() || Operator.IsBitwise())
+                {
                     return LiftedNullExpression.CreateFromExpression(ec, res_expr);
+                }
 
                 //
                 // Value types and null comparison
                 //
                 if (right_unwrap == null || Operator.IsRelational())
+                {
                     return CreateNullConstant(ec, right_orig).Resolve(ec);
+                }
             }
 
             if (right_null_lifted)
@@ -187,13 +211,17 @@ namespace Supremacy.Scripting.Ast
                 Right = LiftedNullExpression.Create(Left.Type, Right.Span);
 
                 if (Operator.IsArithmetic() || Operator.IsShift() || Operator.IsBitwise())
+                {
                     return LiftedNullExpression.CreateFromExpression(ec, res_expr);
+                }
 
                 //
                 // Value types and null comparison
                 //
                 if (left_unwrap == null || Operator.IsRelational())
+                {
                     return CreateNullConstant(ec, left_orig).Resolve(ec);
+                }
             }
 
             return res_expr;
@@ -204,7 +232,9 @@ namespace Supremacy.Scripting.Ast
             Expression e = base.ResolveOperatorPredefined(ec, operators, primitives_only, enum_type);
 
             if (e == this || enum_type != null)
+            {
                 return LiftResult(ec, e);
+            }
 
             //
             // 7.9.9 Equality operators and null
@@ -216,7 +246,9 @@ namespace Supremacy.Scripting.Ast
             if (e == null && Operator.IsEquality())
             {
                 if ((left_null_lifted && right_unwrap != null) || (right_null_lifted && left_unwrap != null))
+                {
                     return LiftResult(ec, this);
+                }
             }
 
             return e;
@@ -226,11 +258,15 @@ namespace Supremacy.Scripting.Ast
         {
             Expression expr = base.ResolveUserOperator(ec, l, r);
             if (expr == null)
+            {
                 return null;
+            }
 
             expr = LiftResult(ec, expr);
             if (expr is ConstantExpression)
+            {
                 return expr;
+            }
 
             ResultType = expr.Type;
             user_operator = expr;

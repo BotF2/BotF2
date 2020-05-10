@@ -10,7 +10,7 @@ namespace Supremacy.Scripting.Ast
     {
         private RangeDeclaration _rangeVeriable;
 
-        sealed class RangeAnonymousMemberDeclarator : AnonymousMemberDeclarator
+        private sealed class RangeAnonymousMemberDeclarator : AnonymousMemberDeclarator
         {
             public RangeAnonymousMemberDeclarator(Expression initializer, RangeDeclaration parameter)
                 : base(initializer, parameter.VariableName, parameter.Span)
@@ -42,8 +42,8 @@ namespace Supremacy.Scripting.Ast
 
         public RangeDeclaration RangeVariable
         {
-            get { return _rangeVeriable; }
-            set { _rangeVeriable = value; }
+            get => _rangeVeriable;
+            set => _rangeVeriable = value;
         }
 
         protected static Expression CreateRangeVariableType(
@@ -52,11 +52,11 @@ namespace Supremacy.Scripting.Ast
             RangeDeclaration declaration,
             Expression initializer)
         {
-            var anonInitializer = new AnonymousObjectInitializer
-                                  {
-                                      FileName = declaration.FileName,
-                                      Span = initializer.Span,
-                                  };
+            AnonymousObjectInitializer anonInitializer = new AnonymousObjectInitializer
+            {
+                FileName = declaration.FileName,
+                Span = initializer.Span,
+            };
             anonInitializer.MemberDeclarators.Add(new AnonymousMemberDeclarator(scope.Parameters[0]));
             anonInitializer.MemberDeclarators.Add(
                 new RangeAnonymousMemberDeclarator(

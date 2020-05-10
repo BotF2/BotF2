@@ -880,11 +880,12 @@ namespace Supremacy.Game
                         continue;
 
                     var foreignPower = diplomat.GetForeignPower(civ2);
+                    string _gameLog = "";
 
                     // just for testing especially generating break point
-                    if (civ1.CivID == 1 && civ2.CivID == 4 || civ1.CivID == 4 && civ2.CivID == 1)  // Terrans, incoming from Cardassians
-                    {
-                        string _gameLog = "### Checking ForeignerPower - see next line";
+                    //if (civ1.CivID == 1 && civ2.CivID == 4 || civ1.CivID == 4 && civ2.CivID == 1)  // Terrans, incoming from Cardassians
+                    //{
+                        _gameLog = "### Checking ForeignerPower - see next line";
                         if (foreignPower.ProposalReceived != null)
                             _gameLog += Environment.NewLine + "ProposalReceived: "
                                       + foreignPower.ProposalReceived.Sender + " vs "
@@ -911,7 +912,7 @@ namespace Supremacy.Game
                                       + Environment.NewLine;
                         if (foreignPower.StatementReceived != null)  // in SinglePlayer you'll never get this "received" because you are always the playing SENDER
                         {
-                             
+
                             //string parameterString = foreignPower.StatementSent.Parameter.ToString() ?? "";
 
                             _gameLog += Environment.NewLine + "StatementReceived: "
@@ -924,60 +925,65 @@ namespace Supremacy.Game
                             GameLog.Core.Diplomacy.DebugFormat("------------------------------------------");
                             GameLog.Core.Diplomacy.DebugFormat("received a 'Sabotage'-Diplomacy-Statement, Tone = {0}", foreignPower.StatementReceived.Tone.ToString());
                             GameLog.Core.Diplomacy.DebugFormat(_gameLog);
-
-                            switch (foreignPower.StatementReceived.Tone)
-                            {
-                                case Tone.Calm:
-                                    break;
-                                case Tone.Meek:
-                                    break;
-                                case Tone.Condescending:
-                                    break;
-                                case Tone.Indignant:
-                                    IntelHelper.SabotageStealCreditsExecute(civ2, civ1, foreignPower.StatementReceived.Parameter.ToString(), 99999);
-                                    //Parameter = blamed as a string
-                                    break;
-                                case Tone.Impatient:
-                                    IntelHelper.SabotageStealResearchExecute(civ2, civ1, foreignPower.StatementReceived.Parameter.ToString(), 99999);
-                                    break;
-                                case Tone.Annoyed:
-                                    IntelHelper.SabotageFoodExecute(civ2, civ1, foreignPower.StatementReceived.Parameter.ToString(), 99999);
-                                    break;
-                                case Tone.Enraged:
-                                    IntelHelper.SabotageIndustryExecute(civ2, civ1, foreignPower.StatementReceived.Parameter.ToString(), 99999);
-                                    break;
-                                case Tone.Receptive:
-                                    IntelHelper.SabotageEnergyExecute(civ2, civ1, foreignPower.StatementReceived.Parameter.ToString(), 99999);
-                                    break;
-                                case Tone.Enthusiastic:
-                                    break;
-                                default:
-                                    break;
-                            }
-
                         }
-                        if (foreignPower.StatementSent != null)
+                    //}
+
+                    if (foreignPower.StatementReceived != null)
+                    {
+                        switch (foreignPower.StatementReceived.Tone)
                         {
-                            //string parameterString = foreignPower.StatementSent.Parameter.ToString() ?? "";
-
-                            //GameLog.Core.Diplomacy.DebugFormat("received a 'StealCredits'-Diplomacy-Statement");   // in SinglePlayer Gamelog is just for the sender
-                            _gameLog += Environment.NewLine + "(relevant is just the receive on HOSTING side.... StatementSent: "
-                                      + foreignPower.StatementSent.Sender + " vs "
-                                      + foreignPower.StatementSent.Recipient + ": > "
-                                      + foreignPower.StatementSent.StatementType.ToString()
-                                      + ", Parameter = " //+ parameterString
-                                      + Environment.NewLine;
+                            case Tone.Calm:
+                                break;
+                            case Tone.Meek:
+                                break;
+                            case Tone.Condescending:
+                                break;
+                            case Tone.Indignant:
+                                IntelHelper.SabotageStealCreditsExecute(civ2, civ1, foreignPower.StatementReceived.Parameter.ToString(), 99999);
+                                //Parameter = blamed as a string
+                                break;
+                            case Tone.Impatient:
+                                IntelHelper.SabotageStealResearchExecute(civ2, civ1, foreignPower.StatementReceived.Parameter.ToString(), 99999);
+                                break;
+                            case Tone.Annoyed:
+                                IntelHelper.SabotageFoodExecute(civ2, civ1, foreignPower.StatementReceived.Parameter.ToString(), 99999);
+                                break;
+                            case Tone.Enraged:
+                                IntelHelper.SabotageIndustryExecute(civ2, civ1, foreignPower.StatementReceived.Parameter.ToString(), 99999);
+                                break;
+                            case Tone.Receptive:
+                                IntelHelper.SabotageEnergyExecute(civ2, civ1, foreignPower.StatementReceived.Parameter.ToString(), 99999);
+                                break;
+                            case Tone.Enthusiastic:
+                                break;
+                            default:
+                                break;
                         }
-
-                        if (foreignPower.PendingAction != PendingDiplomacyAction.None)
-                            _gameLog += Environment.NewLine + "PendingAction: "
-                                      //+ foreignPower.PendingAction + " vs "
-                                      //+ foreignPower.PendingAction.Recipient
-                                      + foreignPower.PendingAction.ToString()
-                                      + Environment.NewLine;
-
-                        //GameLog.Core.Diplomacy.DebugFormat(_gameLog); 
                     }
+
+                        
+                    if (foreignPower.StatementSent != null)
+                    {
+                        //string parameterString = foreignPower.StatementSent.Parameter.ToString() ?? "";
+
+                        //GameLog.Core.Diplomacy.DebugFormat("received a 'StealCredits'-Diplomacy-Statement");   // in SinglePlayer Gamelog is just for the sender
+                        _gameLog += Environment.NewLine + "(relevant is just the receive on HOSTING side.... StatementSent: "
+                                    + foreignPower.StatementSent.Sender + " vs "
+                                    + foreignPower.StatementSent.Recipient + ": > "
+                                    + foreignPower.StatementSent.StatementType.ToString()
+                                    + ", Parameter = " //+ parameterString
+                                    + Environment.NewLine;
+                    }
+
+                    if (foreignPower.PendingAction != PendingDiplomacyAction.None)
+                        _gameLog += Environment.NewLine + "PendingAction: "
+                                    //+ foreignPower.PendingAction + " vs "
+                                    //+ foreignPower.PendingAction.Recipient
+                                    + foreignPower.PendingAction.ToString()
+                                    + Environment.NewLine;
+
+                    //GameLog.Core.Diplomacy.DebugFormat(_gameLog); 
+                    
 
                     var proposalSent = foreignPower.ProposalSent;
                     if (proposalSent != null)
@@ -1578,10 +1584,12 @@ namespace Supremacy.Game
              */
             ParallelForEach(GameContext.Current.Civilizations, civ =>
             {
-                GameLog.Core.Production.DebugFormat("#####################################################");
-                GameLog.Core.Production.DebugFormat("DoProduction for Civilization {0}", civ.Name);
-
                 GameContext.PushThreadContext(game);
+
+                GameLog.Core.Production.DebugFormat("#####################################################");
+                string _turnNumberString = GameContext.Current.TurnNumber.ToString();
+                GameLog.Core.Production.DebugFormat("Turn: {0}: DoProduction for Civilization {1}", _turnNumberString, civ.Name);
+
                 try
                 {
                     CivilizationManager civManager = GameContext.Current.CivilizationManagers[civ.CivID];
@@ -1606,8 +1614,8 @@ namespace Supremacy.Game
                     civManager.Resources.Dilithium.AdjustCurrent(newDilithium);
                     civManager.Resources.RawMaterials.AdjustCurrent(newRawMaterials);
 
-                    GameLog.Core.Production.DebugFormat("{0} credits, {1} deuterium, {2} dilithium, {3} raw materials added from all colonies to {4} ",
-                        newCredits, newDeuterium, newDilithium, newRawMaterials, civManager.Civilization);
+                    GameLog.Core.Production.DebugFormat("Turn {5}: {0} credits, {1} deuterium, {2} dilithium, {3} duranium added from all colonies to {4} ",
+                        newCredits, newDeuterium, newDilithium, newRawMaterials, civManager.Civilization, GameContext.Current.TurnNumber);
                     GameLog.Client.UI.DebugFormat("Civ Manager ={0} TotalIntelDefenseAccumulated ={1}, TotalIntelAccumulated ={2}",
                         civManager.Civilization.Key,
                         civManager.TotalIntelligenceDefenseAccumulated.CurrentValue,
@@ -1618,12 +1626,14 @@ namespace Supremacy.Game
                     totalResourcesAvailable[ResourceType.Dilithium] = civManager.Resources.Dilithium.CurrentValue;
                     totalResourcesAvailable[ResourceType.RawMaterials] = civManager.Resources.RawMaterials.CurrentValue;
 
-                    GameLog.Core.Production.DebugFormat("{0} credits, {1} deuterium, {2} dilithium, {3} raw materials available in total for {4}"
+                    GameLog.Core.Production.DebugFormat("Turn {5}: {0} credits, {1} deuterium, {2} dilithium, {3} duranium available in total for {4}"
                         , civManager.Credits.CurrentValue
                         , civManager.Resources.Deuterium.CurrentValue
                         , civManager.Resources.Dilithium.CurrentValue
                         , civManager.Resources.RawMaterials.CurrentValue
-                        , civManager.Civilization);
+                        , civManager.Civilization
+                        , GameContext.Current.TurnNumber
+                        );
 
                     /* 
                      * Shuffle the colonies so they are processed in random order.  This
@@ -1636,7 +1646,7 @@ namespace Supremacy.Game
                     foreach (Colony colony in colonies)
                     {
                         GameLog.Core.Production.DebugFormat("--------------------------------------------------------------");
-                        GameLog.Core.Production.DebugFormat("DoProduction for Colony {0}", colony.Name, civ.Name, civManager.Credits);
+                        GameLog.Core.Production.DebugFormat("Turn {3}: DoProduction for Colony {0}", colony.Name, civ.Name, civManager.Credits, GameContext.Current.TurnNumber);
 
                         //See if there is actually anything to build for this colony
                         if (!colony.BuildSlots[0].HasProject && colony.BuildQueue.IsEmpty())
@@ -1937,19 +1947,22 @@ namespace Supremacy.Game
             float targetMod = Number.ParseSingle(popModTable["Target"][0]);
 
             ParallelForEach(GameContext.Current.Civilizations, civ =>
-            {
+            {              
                 GameContext.PushThreadContext(game);
                 try
                 {
                     int popForTradeRoute;
                     var civManager = GameContext.Current.CivilizationManagers[civ.CivID];
-
+                    //if (civManager.Civilization.Key == "Borg")
+                    //    goto theCatch;
                     /*
                      * See what the minimum population level is for a new trade route for the
                      * current civilization.  If one is not specified, use the default.
                      */
                     if (popReqTable[civManager.Civilization.Key] != null)
+                    {
                         popForTradeRoute = Number.ParseInt32(popReqTable[civManager.Civilization.Key][0]);
+                    }
                     else
                         popForTradeRoute = Number.ParseInt32(popReqTable[0][0]);
 
@@ -2053,9 +2066,12 @@ namespace Supremacy.Game
                         .Where(o => o.BonusType == BonusType.PercentTotalCredits)
                         .Sum(o => o.Amount));
                     civManager.Credits.AdjustCurrent(globalBonusAdjustment);
+
+                    //theCatch:;
                 }
                 catch (Exception e)
                 {
+                   
                     GameLog.Core.Production.DebugFormat(string.Format("DoTrade failed for {0}",
                         civ.Name),
                         e);

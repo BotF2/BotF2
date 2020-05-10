@@ -8,40 +8,33 @@ namespace Supremacy.Scripting.Ast
 {
     public class ElementAccessExpression : Expression
     {
-        private readonly Arguments _arguments;
-
         private Expression _target;
 
         public ElementAccessExpression()
         {
-            _arguments = new Arguments();
+            Arguments = new Arguments();
         }
 
         public Expression Target
         {
-            get { return _target; }
-            set { _target = value; }
+            get => _target;
+            set => _target = value;
         }
 
-        public Arguments Arguments
-        {
-            get { return _arguments; }
-        }
+        public Arguments Arguments { get; }
 
-        public override bool IsPrimaryExpression
-        {
-            get { return true; }
-        }
+        public override bool IsPrimaryExpression => true;
 
         public override void CloneTo<T>(CloneContext cloneContext, T target)
         {
             base.CloneTo(cloneContext, target);
 
-            var clone = target as ElementAccessExpression;
-            if (clone == null)
+            if (!(target is ElementAccessExpression clone))
+            {
                 return;
+            }
 
-            _arguments.CloneTo(cloneContext, clone._arguments);
+            Arguments.CloneTo(cloneContext, clone.Arguments);
             clone._target = Clone(cloneContext, _target);
         }
 
@@ -49,23 +42,22 @@ namespace Supremacy.Scripting.Ast
         {
             Walk(ref _target, prefix, postfix);
 
-            for (var i = 0; i < _arguments.Count; i++)
+            for (int i = 0; i < Arguments.Count; i++)
             {
-                var argument = _arguments[i];
+                Argument argument = Arguments[i];
                 Walk(ref argument, prefix, postfix);
-                _arguments[i] = argument;
+                Arguments[i] = argument;
             }
         }
 
         public override MSAst TransformCore(ScriptGenerator generator)
         {
-            var arguments = Arguments.Transform(generator);
+            MSAst[] arguments = Arguments.Transform(generator);
 
-            var propertyExpression = Target as PropertyExpression;
-            if (propertyExpression != null)
+            if (Target is PropertyExpression propertyExpression)
             {
                 MSAst instance = null;
-                
+
                 if (propertyExpression.InstanceExpression != null)
                     instance = propertyExpression.InstanceExpression.TransformCore(generator);
 
@@ -85,12 +77,11 @@ namespace Supremacy.Scripting.Ast
         public override Expression DoResolve(ParseContext parseContext)
         {
             _target = _target.Resolve(parseContext);
-            _arguments.Resolve(parseContext);
+            Arguments.Resolve(parseContext);
 
-            var typeExpression = _target as TypeExpression;
-            if (typeExpression != null)
+            if (_target is TypeExpression typeExpression)
             {
-                var indexers = typeExpression.Type
+                MethodInfo[] indexers = typeExpression.Type
                     .GetProperties(BindingFlags.Static | BindingFlags.Public)
                     .Where(o => o.Name == "Item")
                     .Select(o => o.GetGetMethod(false))
@@ -114,14 +105,13 @@ namespace Supremacy.Scripting.Ast
                             indexers,
                             typeExpression.Type,
                             Span),
-                        _arguments).DoResolve(parseContext);
+                        Arguments).DoResolve(parseContext);
                 }
             }
 
-            var propertyExpression = _target as PropertyExpression;
-            if (propertyExpression != null)
+            if (_target is PropertyExpression propertyExpression)
             {
-                var indexers = propertyExpression.Type
+                MethodInfo[] indexers = propertyExpression.Type
                     .GetProperties(BindingFlags.Instance | BindingFlags.Public)
                     .Where(o => o.Name == "Item")
                     .Select(o => o.GetGetMethod(false))
@@ -148,34 +138,38 @@ namespace Supremacy.Scripting.Ast
                         {
                             InstanceExpression = _target
                         },
-                        _arguments).DoResolve(parseContext);
+                        Arguments).DoResolve(parseContext);
                 }
             }
 
-            _arguments.Resolve(parseContext);
+            Arguments.Resolve(parseContext);
             
             return this;
         }
 
         public override void Dump(SourceWriter sw, int indentChange)
         {
-            var parenthesize = !_target.IsPrimaryExpression;
+            bool parenthesize = !_target.IsPrimaryExpression;
 
             if (parenthesize)
+            {
                 sw.Write("(");
+            }
 
             _target.Dump(sw, indentChange);
 
             if (parenthesize)
+            {
                 sw.Write(")");
+            }
 
             sw.Write("[");
 
-            var lastStartLine = Span.Start.Line;
+            int lastStartLine = Span.Start.Line;
 
-            for (var i = 0; i < _arguments.Count; i++)
+            for (int i = 0; i < Arguments.Count; i++)
             {
-                var argument = _arguments[i];
+                Argument argument = Arguments[i];
 
                 if (i != 0)
                 {

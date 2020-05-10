@@ -14,9 +14,7 @@ namespace Supremacy.Scripting.Runtime
 
         public ScriptOverloadResolverFactory(ScriptLanguageContext context)
         {
-            if (context == null)
-                throw new ArgumentNullException("context");
-            _context = context;
+            _context = context ?? throw new ArgumentNullException("context");
         }
 
         public override DefaultOverloadResolver CreateOverloadResolver(IList<DynamicMetaObject> args, CallSignature signature, CallTypes callType)

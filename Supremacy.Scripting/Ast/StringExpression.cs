@@ -22,23 +22,18 @@ namespace Supremacy.Scripting.Ast
             _contents = new List<Expression>();
         }
 
-        public IList<Expression> Contents
-        {
-            get { return _contents; }
-        }
+        public IList<Expression> Contents => _contents;
 
-        public override bool IsPrimaryExpression
-        {
-            get { return true; }
-        }
+        public override bool IsPrimaryExpression => true;
 
         public override void CloneTo<T>(CloneContext cloneContext, T target)
         {
             base.CloneTo(cloneContext, target);
 
-            var clone = target as StringExpression;
-            if (clone == null)
+            if (!(target is StringExpression clone))
+            {
                 return;
+            }
 
             clone._contents.Clear();
             clone._contents.AddRange(Clone<Expression>(cloneContext, _contents));
@@ -46,25 +41,29 @@ namespace Supremacy.Scripting.Ast
 
         public override Expression DoResolve(ParseContext parseContext)
         {
-            var builder = new StringBuilder();
-            var arguments = new List<Expression>();
+            StringBuilder builder = new StringBuilder();
+            List<Expression> arguments = new List<Expression>();
 
             if (_contents.Count == 1 && _contents[0] is StringLiteralContent)
-                return new ConstantExpression<string>(((StringLiteralContent)_contents[0]).Text);
-
-            foreach (var content in _contents)
             {
-                var literal = content as StringLiteralContent;
-                if (literal != null)
+                return new ConstantExpression<string>(((StringLiteralContent)_contents[0]).Text);
+            }
+
+            foreach (Expression content in _contents)
+            {
+                if (content is StringLiteralContent literal)
                 {
                     if (literal.Text != null)
+                    {
                         AppendLiteral(parseContext, builder, literal);
+                    }
+
                     continue;
                 }
 
-                builder.Append('{');
-                builder.Append(arguments.Count);
-                builder.Append('}');
+                _ = builder.Append('{');
+                _ = builder.Append(arguments.Count);
+                _ = builder.Append('}');
 
                 arguments.Add(content);
             }
@@ -75,25 +74,29 @@ namespace Supremacy.Scripting.Ast
                 ArrayUtils.Insert(
                     new Argument(new ConstantExpression<string>(builder.ToString())),
                     arguments.Select(e => new Argument(e)).ToArray()))
-                   {
-                       Span = Span,
-                       FileName = parseContext.Compiler.SourceUnit.Path
-                   }
+            {
+                Span = Span,
+                FileName = parseContext.Compiler.SourceUnit.Path
+            }
                 .Resolve(parseContext);
         }
 
         private void AppendLiteral(ParseContext parseContext, StringBuilder builder, [NotNull] StringLiteralContent literal)
         {
             if (literal == null)
-                throw new ArgumentNullException("literal");
-
-            var text = literal.Text;
-            if (text == null)
-                return;
-
-            for (var i = 0; i < text.Length; i++)
             {
-                var ch = text[i];
+                throw new ArgumentNullException("literal");
+            }
+
+            string text = literal.Text;
+            if (text == null)
+            {
+                return;
+            }
+
+            for (int i = 0; i < text.Length; i++)
+            {
+                char ch = text[i];
                 if (ch == '\\')
                 {
                     if (++i >= text.Length)
@@ -109,9 +112,11 @@ namespace Supremacy.Scripting.Ast
                 }
 
                 if (ch == '{' || ch == '}')
-                    builder.Append(ch);
-    
-                builder.Append(ch);
+                {
+                    _ = builder.Append(ch);
+                }
+
+                _ = builder.Append(ch);
             }
         }
 
@@ -135,10 +140,7 @@ namespace Supremacy.Scripting.Ast
     {
         public string Text { get; set; }
 
-        public override bool IsPrimaryExpression
-        {
-            get { return true; }
-        }
+        public override bool IsPrimaryExpression => true;
 
         public override MSAst.Expression TransformCore(ScriptGenerator generator)
         {

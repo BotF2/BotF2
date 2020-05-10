@@ -19,8 +19,8 @@ namespace Supremacy.Scripting.Ast
 
         public Expression Value
         {
-            get { return _value; }
-            set { _value = value; }
+            get => _value;
+            set => _value = value;
         }
 
         public ElementInitializer() { }
@@ -41,9 +41,10 @@ namespace Supremacy.Scripting.Ast
         {
             base.CloneTo(cloneContext, target);
 
-            var clone = target as ElementInitializer;
-            if (clone == null)
+            if (!(target is ElementInitializer clone))
+            {
                 return;
+            }
 
             clone._value = Clone(cloneContext, _value);
             clone._target = Clone(cloneContext, _target);
@@ -51,14 +52,13 @@ namespace Supremacy.Scripting.Ast
 
         public MSAst::MemberBinding TransformMemberBinding(ScriptGenerator generator)
         {
-            var memberInfo = (_target is PropertyExpression)
+            MemberInfo memberInfo = (_target is PropertyExpression)
                                      ? (MemberInfo)((PropertyExpression)_target).PropertyInfo
                                      : ((FieldExpression)_target).FieldInfo;
 
-            var collectionInitializer = _value as CollectionInitializerExpression;
-            if (collectionInitializer != null)
+            if (_value is CollectionInitializerExpression collectionInitializer)
             {
-                var elementInitializers = collectionInitializer.Initializers
+                System.Collections.Generic.IEnumerable<MSAst.ElementInit> elementInitializers = collectionInitializer.Initializers
                     .Cast<CollectionElementInitializer>()
                     .Select(o => o.TransformInitializer(generator));
 
@@ -75,26 +75,29 @@ namespace Supremacy.Scripting.Ast
         public override Expression DoResolve(ParseContext ec)
         {
             if (_value == null)
+            {
                 return null;
+            }
 
-            var me = MemberLookupFinal(
+
+            if (!(MemberLookupFinal(
                          ec,
                          ec.CurrentInitializerVariable.Type,
                          ec.CurrentInitializerVariable.Type,
                          MemberName,
                          MemberTypes.Field | MemberTypes.Property,
                          BindingFlags.Public | BindingFlags.Instance,
-                         Span) as MemberExpression;
-
-            if (me == null)
+                         Span) is MemberExpression me))
+            {
                 return null;
+            }
 
             _target = me;
             me.InstanceExpression = ec.CurrentInitializerVariable;
 
             if (_value is ObjectInitializerExpression)
             {
-                var previous = ec.CurrentInitializerVariable;
+                Expression previous = ec.CurrentInitializerVariable;
                 ec.CurrentInitializerVariable = _value;
 
                 _value = _value.Resolve(ec);
@@ -102,7 +105,9 @@ namespace Supremacy.Scripting.Ast
                 ec.CurrentInitializerVariable = previous;
 
                 if (_value == null)
+                {
                     return null;
+                }
 
                 Type = _value.Type;
                 ExpressionClass = _value.ExpressionClass;

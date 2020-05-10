@@ -19,20 +19,18 @@ namespace Supremacy.Scripting.Ast
 
         public ConstantExpression([NotNull] Type type, object value)
         {
-            if (type == null)
-                throw new ArgumentNullException("type");
-            
             _value = value;
-            Type = type;
+            Type = type ?? throw new ArgumentNullException("type");
         }
 
         public override void CloneTo<T>(CloneContext cloneContext, T target)
         {
             base.CloneTo(cloneContext, target);
 
-            var clone = target as ConstantExpression;
-            if (clone == null)
+            if (!(target is ConstantExpression clone))
+            {
                 return;
+            }
 
             clone._value = _value;
         }
@@ -49,40 +47,25 @@ namespace Supremacy.Scripting.Ast
         // Returns true iff 1) the stack type of this is one of Object, 
         // int32, int64 and 2) this == 0 or this == null.
         //
-        public virtual bool IsZeroInteger
-        {
-            get
-            {
-                return IsDefaultValue &&
+        public virtual bool IsZeroInteger => IsDefaultValue &&
                        (Type.IsIntegerOrBoolean() || (Type == TypeManager.CoreTypes.Char));
-            }
-        }
 
-        public virtual object Value
-        {
-            get { return _value; }
-        }
+        public virtual object Value => _value;
 
-        public override bool IsNull
-        {
-            get { return !Type.IsValueType && ReferenceEquals(_value, null); }
-        }
+        public override bool IsNull => !Type.IsValueType && _value is null;
 
-        public override bool IsPrimaryExpression
-        {
-            get { return true; }
-        }
+        public override bool IsPrimaryExpression => true;
 
         public virtual bool IsDefaultValue
         {
             get
             {
                 if (!Type.IsValueType)
-                    return ReferenceEquals(_value, null);
+                {
+                    return _value is null;
+                }
 
-                object defaultValue;
-
-                if (!_defaultValueLookup.TryGetValue(Type, out defaultValue))
+                if (!_defaultValueLookup.TryGetValue(Type, out object defaultValue))
                 {
                     defaultValue = Activator.CreateInstance(Type);
                     _defaultValueLookup[Type] = defaultValue;
@@ -101,15 +84,19 @@ namespace Supremacy.Scripting.Ast
 
         public override void Dump(SourceWriter sw, int indentChange)
         {
-            var quote = (Type == TypeManager.CoreTypes.String);
+            bool quote = Type == TypeManager.CoreTypes.String;
 
             if (quote)
+            {
                 sw.Write("\"");
+            }
 
             sw.Write(_value);
 
             if (quote)
+            {
                 sw.Write("\"");
+            }
         }
 
         public virtual ConstantExpression ConvertExplicitly(bool inCheckedContext, Type targetType)
@@ -120,12 +107,11 @@ namespace Supremacy.Scripting.Ast
         public virtual ConstantExpression ConvertImplicitly(Type targetType)
         {
             if (TypeManager.IsEqual(Type, targetType))
+            {
                 return this;
+            }
 
-            if (!TypeUtils.IsImplicitNumericConversion(Type, targetType))
-                return null;
-
-            return new EmptyConstantCastExpression(this, targetType, true);
+            return !TypeUtils.IsImplicitNumericConversion(Type, targetType) ? null : new EmptyConstantCastExpression(this, targetType, true);
         }
 
         /// <summary>
@@ -148,7 +134,7 @@ namespace Supremacy.Scripting.Ast
         {
             if (Type == targetType)
             {
-                var thisType = GetType();
+                Type thisType = GetType();
 
                 if (!thisType.IsGenericType && !TypeManager.IsEnumType(targetType))
                 {
@@ -202,11 +188,8 @@ namespace Supremacy.Scripting.Ast
 
             if (TypeManager.IsEnumType(targetType))
             {
-                var c = TryReduce(Enum.GetUnderlyingType(targetType));
-                if (c == null)
-                    return null;
-
-                return new EnumConstantExpression(c, targetType);
+                ConstantExpression c = TryReduce(Enum.GetUnderlyingType(targetType));
+                return c == null ? null : new EnumConstantExpression(c, targetType);
             }
 
             return ConvertExplicitly(false, targetType);
@@ -229,19 +212,8 @@ namespace Supremacy.Scripting.Ast
             // For cloning purposes only.
         }
 
-        public new T Value
-        {
-            get { return (T)base.Value; }
-        }
+        public new T Value => (T)base.Value;
 
-        public override bool IsDefaultValue
-        {
-            get
-            {
-                if (typeof(T).IsValueType)
-                    return Equals(Value, default(T));
-                return ReferenceEquals(Value, null);
-            }
-        }
+        public override bool IsDefaultValue => typeof(T).IsValueType ? Equals(Value, default(T)) : Value == null;
     }
 }

@@ -114,9 +114,10 @@ namespace Supremacy.Resources
                     _localStrings = StringTable.Load(
                         GetResourcePath(@"Resources\Data\" + CurrentLocale + ".txt"));
                 }
-                catch 
+                catch (Exception e)
                 {
                     GameLog.Core.GameData.Info("Hint: local file \\Data\\xx.txt not available - at the moment only English (en.txt) is ingame. French and German are already done");
+                    GameLog.Core.GameData.DebugFormat("exception {0} {1}", e.Message, e.StackTrace);
                 }
             }
         }

@@ -16,20 +16,17 @@ namespace Supremacy.Scripting.Ast
             _initializers = new List<Expression>();
         }
 
-        public IList<Expression> Initializers
-        {
-            get { return _initializers; }
-        }
+        public IList<Expression> Initializers => _initializers;
 
         public override Expression DoResolve(Runtime.ParseContext parseContext)
         {
             List<string> elementNames = null;
-            var isCollectionInitialization = false;
+            bool isCollectionInitialization = false;
 
             for (int i = 0; i < _initializers.Count; ++i)
             {
-                var initializer = _initializers[i];
-                var elementInitializer = initializer as ElementInitializer;
+                Expression initializer = _initializers[i];
+                ElementInitializer elementInitializer = initializer as ElementInitializer;
 
                 if (i == 0)
                 {
@@ -119,12 +116,17 @@ namespace Supremacy.Scripting.Ast
         {
             sw.Write(" {");
 
-            for (var i = 0; i < _initializers.Count; i++)
+            for (int i = 0; i < _initializers.Count; i++)
             {
                 if (i != 0)
+                {
                     sw.Write(", ");
+                }
                 else
+                {
                     sw.Write(" ");
+                }
+
                 DumpChild(_initializers[i], sw, indentChange);
             }
 

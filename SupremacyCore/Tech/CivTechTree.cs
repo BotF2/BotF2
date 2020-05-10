@@ -547,7 +547,10 @@ namespace Supremacy.Tech
                             techTree.Merge(defaultTechTree);
                             civManager.TechTree = techTree;
                         }
-                        catch { }
+                        catch (Exception e) 
+                        {
+                            GameLog.Core.GameData.DebugFormat("TechTree exception {0} {1}", e.Message, e.StackTrace);
+                        }
                     }
                 }
                 streamWriter.Close();

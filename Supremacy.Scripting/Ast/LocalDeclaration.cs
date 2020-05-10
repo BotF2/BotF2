@@ -11,8 +11,8 @@ namespace Supremacy.Scripting.Ast
 
         public Expression Initializer
         {
-            get { return _initializer; }
-            set { _initializer = value; }
+            get => _initializer;
+            set => _initializer = value;
         }
 
         public override void Walk(AstVisitor prefix, AstVisitor postfix)
@@ -22,11 +22,11 @@ namespace Supremacy.Scripting.Ast
 
         public override void Dump(SourceWriter sw, int indentChange)
         {
-            var declarationBuilder = new StringBuilder();
+            StringBuilder declarationBuilder = new StringBuilder();
 
-            declarationBuilder.Append("local ");
-            declarationBuilder.Append(VariableName);
-            declarationBuilder.Append(" = ");
+            _ = declarationBuilder.Append("local ");
+            _ = declarationBuilder.Append(VariableName);
+            _ = declarationBuilder.Append(" = ");
 
             sw.Write(declarationBuilder.ToString());
 
@@ -36,16 +36,16 @@ namespace Supremacy.Scripting.Ast
                 return;
             }
 
-            var oldIndent = sw.Indent;
-            var initializerIndentChange = indentChange;
-            var initializerStart = _initializer.Span.Start;
+            int oldIndent = sw.Indent;
+            int initializerIndentChange = indentChange;
+            Microsoft.Scripting.SourceLocation initializerStart = _initializer.Span.Start;
 
             if (initializerStart.Line == Span.Start.Line)
             {
-                var declarationLength = declarationBuilder.Length;
-                var originalInitializerOffset = initializerStart.Column - 1;
+                int declarationLength = declarationBuilder.Length;
+                int originalInitializerOffset = initializerStart.Column - 1;
 
-                initializerIndentChange += (declarationLength - originalInitializerOffset) - sw.Indent;
+                initializerIndentChange += declarationLength - originalInitializerOffset - sw.Indent;
             }
             else
             {

@@ -13,7 +13,7 @@ namespace Supremacy.Scripting.Ast
         #region Dependent Type: ReducedConstantExpression
         private sealed class ReducedConstantExpression : EmptyConstantCastExpression
         {
-            readonly Expression _originalExpression;
+            private readonly Expression _originalExpression;
 
             public ReducedConstantExpression(ConstantExpression baseExpression, Expression originalExpression)
                 : base(baseExpression, baseExpression.Type)
@@ -25,22 +25,28 @@ namespace Supremacy.Scripting.Ast
             {
                 ConstantExpression c = base.ConvertImplicitly(targetType);
                 if (c != null)
+                {
                     c = new ReducedConstantExpression(c, _originalExpression);
+                }
+
                 return c;
             }
 
             public override ConstantExpression ConvertExplicitly(bool inCheckedContext, Type targetType)
             {
-                var c = base.ConvertExplicitly(inCheckedContext, targetType);
+                ConstantExpression c = base.ConvertExplicitly(inCheckedContext, targetType);
                 if (c != null)
+                {
                     c = new ReducedConstantExpression(c, _originalExpression);
+                }
+
                 return c;
             }
         }
 
         #endregion
 
-        readonly Expression _baseExpression, _originalExpression;
+        private readonly Expression _baseExpression, _originalExpression;
 
         private ReducedExpression(Expression baseExpression, Expression originalExpression)
         {
@@ -57,11 +63,7 @@ namespace Supremacy.Scripting.Ast
 
         public static Expression Create(Expression expr, Expression originalExpression)
         {
-            var c = expr as ConstantExpression;
-            if (c != null)
-                return Create(c, originalExpression);
-
-            return new ReducedExpression(expr, originalExpression);
+            return expr is ConstantExpression c ? Create(c, originalExpression) : (Expression)new ReducedExpression(expr, originalExpression);
         }
 
         public override Expression DoResolve(ParseContext ec)

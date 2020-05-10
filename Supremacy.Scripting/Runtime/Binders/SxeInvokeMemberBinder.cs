@@ -12,34 +12,24 @@ namespace Supremacy.Scripting.Runtime.Binders
 {
     public class InvokeMemberBinderKey
     {
-        private readonly string _name;
-        private readonly CallInfo _info;
-
         public InvokeMemberBinderKey(string name, CallInfo info)
         {
-            _name = name;
-            _info = info;
+            Name = name;
+            Info = info;
         }
 
-        public string Name
-        {
-            get { return _name; }
-        }
+        public string Name { get; }
 
-        public CallInfo Info
-        {
-            get { return _info; }
-        }
+        public CallInfo Info { get; }
 
         public override bool Equals(object obj)
         {
-            var key = obj as InvokeMemberBinderKey;
-            return (key != null) && (key._name == _name) && Equals(key._info, _info);
+            return (obj is InvokeMemberBinderKey key) && (key.Name == Name) && Equals(key.Info, Info);
         }
 
         public override int GetHashCode()
         {
-            return 0x28000000 ^ _name.GetHashCode() ^ _info.GetHashCode();
+            return 0x28000000 ^ Name.GetHashCode() ^ Info.GetHashCode();
         }
     }
 
@@ -54,7 +44,7 @@ namespace Supremacy.Scripting.Runtime.Binders
 
         public override DynamicMetaObject FallbackInvokeMember(DynamicMetaObject target, DynamicMetaObject[] args, DynamicMetaObject errorSuggestion)
         {
-            var restrictions = target.Restrictions.Merge(
+            BindingRestrictions restrictions = target.Restrictions.Merge(
                 BindingRestrictionsHelpers.GetRuntimeTypeRestriction(target));
 
             //target = target.Restrict(target.RuntimeType);
@@ -76,8 +66,10 @@ namespace Supremacy.Scripting.Runtime.Binders
                     break;
             }
 
-            foreach (var o in args)
+            foreach (DynamicMetaObject o in args)
+            {
                 restrictions = restrictions.Merge(BindingRestrictionsHelpers.GetRuntimeTypeRestriction(o));
+            }
 
             return _binder.CallMethod(
                 new DefaultOverloadResolver(_binder, target, args.ToList(), new CallSignature(args.Length)),
@@ -99,15 +91,13 @@ namespace Supremacy.Scripting.Runtime.Binders
         public SxeInvokeMemberBinder(BinderState binder, string name, CallInfo callInfo)
             : base(name, false, callInfo)
         {
-            if (binder == null)
-                throw new ArgumentNullException("binder");
-            _binder = binder;
+            _binder = binder ?? throw new ArgumentNullException("binder");
         }
 
         public override DynamicMetaObject FallbackInvokeMember(DynamicMetaObject target, DynamicMetaObject[] args, DynamicMetaObject errorSuggestion)
         {
-            var typeArguments = args[0].Value as Type[];
-            args = ArrayUtils.RemoveFirst(args);
+            _ = args[0].Value as Type[];
+            _ = ArrayUtils.RemoveFirst(args);
 
             throw new NotImplementedException();
         }

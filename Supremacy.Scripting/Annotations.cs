@@ -17,7 +17,6 @@ namespace Supremacy.Annotations
     [AttributeUsage(AttributeTargets.All, Inherited = true)]
     internal sealed class LocalizableAttribute : Attribute
     {
-        private readonly bool myIsLocalizable;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="LocalizableAttribute"/> class.
@@ -25,17 +24,14 @@ namespace Supremacy.Annotations
         /// <param name="isLocalizable"><c>true</c> if a element should be localized; otherwise, <c>false</c>.</param>
         internal LocalizableAttribute(bool isLocalizable)
         {
-            myIsLocalizable = isLocalizable;
+            IsLocalizable = isLocalizable;
         }
 
         /// <summary>
         /// Gets a value indicating whether a element should be localized.
         /// <value><c>true</c> if a element should be localized; otherwise, <c>false</c>.</value>
         /// </summary>
-        internal bool IsLocalizable
-        {
-            get { return myIsLocalizable; }
-        }
+        internal bool IsLocalizable { get; }
 
         /// <summary>
         /// Returns whether the value of the given object is equal to the current <see cref="LocalizableAttribute"/>.
@@ -46,8 +42,7 @@ namespace Supremacy.Annotations
         /// </returns>
         public override bool Equals(object obj)
         {
-            var attribute = obj as LocalizableAttribute;
-            return attribute != null && attribute.IsLocalizable == IsLocalizable;
+            return obj is LocalizableAttribute attribute && attribute.IsLocalizable == IsLocalizable;
         }
 
         /// <summary>
@@ -68,7 +63,6 @@ namespace Supremacy.Annotations
     [AttributeUsage(AttributeTargets.Constructor | AttributeTargets.Method, AllowMultiple = false, Inherited = true)]
     internal sealed class StringFormatMethodAttribute : Attribute
     {
-        private readonly string myFormatParameterName;
 
         /// <summary>
         /// Initializes new instance of StringFormatMethodAttribute
@@ -76,16 +70,13 @@ namespace Supremacy.Annotations
         /// <param name="formatParameterName">Specifies which parameter of an annotated method should be treated as format-string</param>
         internal StringFormatMethodAttribute(string formatParameterName)
         {
-            myFormatParameterName = formatParameterName;
+            FormatParameterName = formatParameterName;
         }
 
         /// <summary>
         /// Gets format parameter name
         /// </summary>
-        internal string FormatParameterName
-        {
-            get { return myFormatParameterName; }
-        }
+        internal string FormatParameterName { get; }
     }
 
     /// <summary>
@@ -116,7 +107,6 @@ namespace Supremacy.Annotations
     [AttributeUsage(AttributeTargets.Parameter, AllowMultiple = false, Inherited = true)]
     public sealed class AssertionConditionAttribute : Attribute
     {
-        private readonly AssertionConditionType myConditionType;
 
         /// <summary>
         /// Initializes new instance of AssertionConditionAttribute
@@ -124,16 +114,13 @@ namespace Supremacy.Annotations
         /// <param name="conditionType">Specifies condition type</param>
         internal AssertionConditionAttribute(AssertionConditionType conditionType)
         {
-            myConditionType = conditionType;
+            ConditionType = conditionType;
         }
 
         /// <summary>
         /// Gets condition type
         /// </summary>
-        internal AssertionConditionType ConditionType
-        {
-            get { return myConditionType; }
-        }
+        internal AssertionConditionType ConditionType { get; }
     }
 
     /// <summary>
@@ -234,10 +221,7 @@ namespace Supremacy.Annotations
         /// <summary>
         /// Gets enumerations of specified base types
         /// </summary>
-        internal IEnumerable<Type> BaseTypes
-        {
-            get { return myBaseTypes; }
-        }
+        internal IEnumerable<Type> BaseTypes => myBaseTypes;
     }
 
     /// <summary>

@@ -10,20 +10,14 @@ namespace Supremacy.Scripting.Ast
     {
         public ParameterReference(Parameter parameter)
         {
-            if (parameter == null)
-                throw new ArgumentNullException("parameter");
-
-            Parameter = parameter;
+            Parameter = parameter ?? throw new ArgumentNullException("parameter");
             Type = parameter.ParameterType;
             ExpressionClass = ExpressionClass.Variable;
         }
 
         public Parameter Parameter { get; private set; }
 
-        public override bool IsPrimaryExpression
-        {
-            get { return true; }
-        }
+        public override bool IsPrimaryExpression => true;
 
         public override System.Linq.Expressions.Expression TransformCore(ScriptGenerator generator)
         {
@@ -37,9 +31,7 @@ namespace Supremacy.Scripting.Ast
 
         public override Expression DoResolve(ParseContext parseContext)
         {
-            if (!DoResolveBase(parseContext))
-                return null;
-            return this;
+            return !DoResolveBase(parseContext) ? null : (this);
         }
 
         private bool DoResolveBase(ParseContext ec)
@@ -47,19 +39,23 @@ namespace Supremacy.Scripting.Ast
             Type = Parameter.ParameterType;
             ExpressionClass = ExpressionClass.Variable;
 
-            var am = ec.CurrentAnonymousMethod;
+            LambdaExpression am = ec.CurrentAnonymousMethod;
             if (am == null)
+            {
                 return true;
+            }
 
-            var b = ec.CurrentScope;
+            Scope b = ec.CurrentScope;
             while (b != null)
             {
                 b = b.TopLevel;
-                var p = b.TopLevel.Parameters.FixedParameters;
+                IParameterData[] p = b.TopLevel.Parameters.FixedParameters;
                 if (p.Any(t => t == Parameter))
                 {
                     if (b == ec.CurrentScope.TopLevel)
+                    {
                         return true;
+                    }
 
                     if ((Parameter.ModifierFlags & Parameter.Modifier.IsByRef) == Parameter.Modifier.IsByRef)
                     {

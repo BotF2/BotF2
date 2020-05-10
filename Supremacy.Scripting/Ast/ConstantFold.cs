@@ -31,18 +31,22 @@ namespace Supremacy.Scripting.Ast
         // TODO: BinaryFold should be called as an optimization step only,
         // error checking here is weak
         //		
-        static bool DoBinaryNumericPromotions(ref ConstantExpression left, ref ConstantExpression right)
+        private static bool DoBinaryNumericPromotions(ref ConstantExpression left, ref ConstantExpression right)
         {
-            var ltype = left.Type;
-            var rtype = right.Type;
+            Type ltype = left.Type;
+            Type rtype = right.Type;
 
             foreach (Type t in BinaryPromotions)
             {
                 if (t == ltype)
+                {
                     return t == rtype || ConvertPromotion(ref right, ref left, t);
+                }
 
                 if (t == rtype)
+                {
                     return t == ltype || ConvertPromotion(ref left, ref right, t);
+                }
             }
 
             left = left.ConvertImplicitly(TypeManager.CoreTypes.Int32);
@@ -50,7 +54,7 @@ namespace Supremacy.Scripting.Ast
             return left != null && right != null;
         }
 
-        static bool ConvertPromotion(ref ConstantExpression prim, ref ConstantExpression second, Type type)
+        private static bool ConvertPromotion(ref ConstantExpression prim, ref ConstantExpression second, Type type)
         {
             ConstantExpression c = prim.ConvertImplicitly(type);
             if (c != null)
@@ -89,29 +93,29 @@ namespace Supremacy.Scripting.Ast
             ConstantExpression result = null;
 
             if (left is EmptyConstantCastExpression)
+            {
                 return BinaryFold(ec, oper, ((EmptyConstantCastExpression)left).Child, right, loc);
+            }
 
             if (left is SideEffectConstantExpression)
             {
                 result = BinaryFold(ec, oper, ((SideEffectConstantExpression)left).ConstantValue, right, loc);
-                if (result == null)
-                    return null;
-                return new SideEffectConstantExpression(result, left, loc);
+                return result == null ? null : new SideEffectConstantExpression(result, left, loc);
             }
 
             if (right is EmptyConstantCastExpression)
+            {
                 return BinaryFold(ec, oper, left, ((EmptyConstantCastExpression)right).Child, loc);
+            }
 
             if (right is SideEffectConstantExpression)
             {
                 result = BinaryFold(ec, oper, left, ((SideEffectConstantExpression)right).ConstantValue, loc);
-                if (result == null)
-                    return null;
-                return new SideEffectConstantExpression(result, right, loc);
+                return result == null ? null : new SideEffectConstantExpression(result, right, loc);
             }
 
-            var leftType = left.Type;
-            var rightType = right.Type;
+            Type leftType = left.Type;
+            Type rightType = right.Type;
 
             bool booleanResult;
 
@@ -178,7 +182,9 @@ namespace Supremacy.Scripting.Ast
             {
                 case MSAst.ExpressionType.Or:
                     if (!DoBinaryNumericPromotions(ref left, ref right))
+                    {
                         return null;
+                    }
 
                     if (left is ConstantExpression<int>)
                     {
@@ -243,7 +249,9 @@ namespace Supremacy.Scripting.Ast
 
                 case MSAst.ExpressionType.ExclusiveOr:
                     if (!DoBinaryNumericPromotions(ref left, ref right))
+                    {
                         return null;
+                    }
 
                     if (left is ConstantExpression<int>)
                     {
@@ -273,10 +281,14 @@ namespace Supremacy.Scripting.Ast
 
                 case MSAst.ExpressionType.Add:
                     if (leftType == TypeManager.CoreTypes.Null)
+                    {
                         return right;
+                    }
 
                     if (rightType == TypeManager.CoreTypes.Null)
+                    {
                         return left;
+                    }
 
                     //
                     // If both sides are strings, then concatenate, if
@@ -285,10 +297,7 @@ namespace Supremacy.Scripting.Ast
                     //
                     if (leftType == TypeManager.CoreTypes.String || rightType == TypeManager.CoreTypes.String)
                     {
-                        if (leftType == rightType)
-                            return new ConstantExpression<string>((string)left.Value + (string)right.Value, left.Span);
-
-                        return null;
+                        return leftType == rightType ? new ConstantExpression<string>((string)left.Value + (string)right.Value, left.Span) : null;
                     }
 
                     //
@@ -309,113 +318,88 @@ namespace Supremacy.Scripting.Ast
                         // U has to be implicitly convetible to E.base
                         right = right.ConvertImplicitly(lc.Child.Type);
                         if (right == null)
+                        {
                             return null;
+                        }
 
                         result = BinaryFold(ec, oper, lc.Child, right, loc);
                         if (result == null)
+                        {
                             return null;
+                        }
 
                         result = result.TryReduce(ec, leftType, loc);
-                        if (result == null)
-                            return null;
-
-                        return new EnumConstantExpression(result, leftType);
+                        return result == null ? null : new EnumConstantExpression(result, leftType);
                     }
 
                     if (!DoBinaryNumericPromotions(ref left, ref right))
+                    {
                         return null;
+                    }
 
                     try
                     {
                         if (left is ConstantExpression<double>)
                         {
-                            double res;
-
-                            if (ec.ConstantCheckState)
-                                res = checked(((ConstantExpression<double>)left).Value +
-                                           ((ConstantExpression<double>)right).Value);
-                            else
-                                res = unchecked(((ConstantExpression<double>)left).Value +
-                                         ((ConstantExpression<double>)right).Value);
-
+                            double res = ec.ConstantCheckState
+                                ? ((ConstantExpression<double>)left).Value +
+                                           ((ConstantExpression<double>)right).Value
+                                : ((ConstantExpression<double>)left).Value +
+                                         ((ConstantExpression<double>)right).Value;
                             return new ConstantExpression<double>(res) { Span = left.Span };
                         }
                         if (left is ConstantExpression<float>)
                         {
-                            float res;
-
-                            if (ec.ConstantCheckState)
-                                res = checked(((ConstantExpression<float>)left).Value +
-                                           ((ConstantExpression<float>)right).Value);
-                            else
-                                res = unchecked(((ConstantExpression<float>)left).Value +
-                                         ((ConstantExpression<float>)right).Value);
-
+                            float res = ec.ConstantCheckState
+                                ? ((ConstantExpression<float>)left).Value +
+                                           ((ConstantExpression<float>)right).Value
+                                : ((ConstantExpression<float>)left).Value +
+                                         ((ConstantExpression<float>)right).Value;
                             result = new ConstantExpression<float>(res) { Span = left.Span };
                         }
                         else if (left is ConstantExpression<ulong>)
                         {
-                            ulong res;
-
-                            if (ec.ConstantCheckState)
-                                res = checked(((ConstantExpression<ulong>)left).Value +
-                                           ((ConstantExpression<ulong>)right).Value);
-                            else
-                                res = unchecked(((ConstantExpression<ulong>)left).Value +
-                                         ((ConstantExpression<ulong>)right).Value);
-
+                            ulong res = ec.ConstantCheckState
+                                ? ((ConstantExpression<ulong>)left).Value +
+                                           ((ConstantExpression<ulong>)right).Value
+                                : ((ConstantExpression<ulong>)left).Value +
+                                         ((ConstantExpression<ulong>)right).Value;
                             result = new ConstantExpression<ulong>(res) { Span = left.Span };
                         }
                         else if (left is ConstantExpression<long>)
                         {
-                            long res;
-
-                            if (ec.ConstantCheckState)
-                                res = checked(((ConstantExpression<long>)left).Value +
-                                           ((ConstantExpression<long>)right).Value);
-                            else
-                                res = unchecked(((ConstantExpression<long>)left).Value +
-                                         ((ConstantExpression<long>)right).Value);
-
+                            long res = ec.ConstantCheckState
+                                ? ((ConstantExpression<long>)left).Value +
+                                           ((ConstantExpression<long>)right).Value
+                                : ((ConstantExpression<long>)left).Value +
+                                         ((ConstantExpression<long>)right).Value;
                             result = new ConstantExpression<long>(res) { Span = left.Span };
                         }
                         else if (left is ConstantExpression<uint>)
                         {
-                            uint res;
-
-                            if (ec.ConstantCheckState)
-                                res = checked(((ConstantExpression<uint>)left).Value +
-                                           ((ConstantExpression<uint>)right).Value);
-                            else
-                                res = unchecked(((ConstantExpression<uint>)left).Value +
-                                         ((ConstantExpression<uint>)right).Value);
-
+                            uint res = ec.ConstantCheckState
+                                ? ((ConstantExpression<uint>)left).Value +
+                                           ((ConstantExpression<uint>)right).Value
+                                : ((ConstantExpression<uint>)left).Value +
+                                         ((ConstantExpression<uint>)right).Value;
                             result = new ConstantExpression<uint>(res) { Span = left.Span };
                         }
                         else if (left is ConstantExpression<int>)
                         {
-                            int res;
-
-                            if (ec.ConstantCheckState)
-                                res = checked(((ConstantExpression<int>)left).Value +
-                                           ((ConstantExpression<int>)right).Value);
-                            else
-                                res = unchecked(((ConstantExpression<int>)left).Value +
-                                         ((ConstantExpression<int>)right).Value);
-
+                            int res = ec.ConstantCheckState
+                                ? ((ConstantExpression<int>)left).Value +
+                                           ((ConstantExpression<int>)right).Value
+                                : ((ConstantExpression<int>)left).Value +
+                                         ((ConstantExpression<int>)right).Value;
                             result = new ConstantExpression<int>(res) { Span = left.Span };
                         }
                         else if (left is ConstantExpression<decimal>)
                         {
-                            decimal res;
-
-                            if (ec.ConstantCheckState)
-                                res = checked(((ConstantExpression<decimal>)left).Value +
-                                    ((ConstantExpression<decimal>)right).Value);
-                            else
-                                res = unchecked(((ConstantExpression<decimal>)left).Value +
-                                    ((ConstantExpression<decimal>)right).Value);
-
+                            decimal res = ec.ConstantCheckState
+                                ? ((ConstantExpression<decimal>)left).Value +
+                                    ((ConstantExpression<decimal>)right).Value
+                                : ((ConstantExpression<decimal>)left).Value +
+                                    ((ConstantExpression<decimal>)right).Value;
                             result = new ConstantExpression<decimal>(res) { Span = left.Span };
                         }
                     }
@@ -445,113 +429,88 @@ namespace Supremacy.Scripting.Ast
                         // U has to be implicitly convetible to E.base
                         right = right.ConvertImplicitly(lc.Child.Type);
                         if (right == null)
+                        {
                             return null;
+                        }
 
                         result = BinaryFold(ec, oper, lc.Child, right, loc);
                         if (result == null)
+                        {
                             return null;
+                        }
 
                         result = result.TryReduce(ec, leftType, loc);
-                        if (result == null)
-                            return null;
-
-                        return new EnumConstantExpression(result, leftType);
+                        return result == null ? null : new EnumConstantExpression(result, leftType);
                     }
 
                     if (!DoBinaryNumericPromotions(ref left, ref right))
+                    {
                         return null;
+                    }
 
                     try
                     {
                         if (left is ConstantExpression<double>)
                         {
-                            double res;
-
-                            if (ec.ConstantCheckState)
-                                res = checked(((ConstantExpression<double>)left).Value -
-                                           ((ConstantExpression<double>)right).Value);
-                            else
-                                res = unchecked(((ConstantExpression<double>)left).Value -
-                                         ((ConstantExpression<double>)right).Value);
-
+                            double res = ec.ConstantCheckState
+                                ? ((ConstantExpression<double>)left).Value -
+                                           ((ConstantExpression<double>)right).Value
+                                : ((ConstantExpression<double>)left).Value -
+                                         ((ConstantExpression<double>)right).Value;
                             result = new ConstantExpression<double>(res) { Span = left.Span };
                         }
                         else if (left is ConstantExpression<float>)
                         {
-                            float res;
-
-                            if (ec.ConstantCheckState)
-                                res = checked(((ConstantExpression<float>)left).Value -
-                                           ((ConstantExpression<float>)right).Value);
-                            else
-                                res = unchecked(((ConstantExpression<float>)left).Value -
-                                         ((ConstantExpression<float>)right).Value);
-
+                            float res = ec.ConstantCheckState
+                                ? ((ConstantExpression<float>)left).Value -
+                                           ((ConstantExpression<float>)right).Value
+                                : ((ConstantExpression<float>)left).Value -
+                                         ((ConstantExpression<float>)right).Value;
                             result = new ConstantExpression<float>(res) { Span = left.Span };
                         }
                         else if (left is ConstantExpression<ulong>)
                         {
-                            ulong res;
-
-                            if (ec.ConstantCheckState)
-                                res = checked(((ConstantExpression<ulong>)left).Value -
-                                           ((ConstantExpression<ulong>)right).Value);
-                            else
-                                res = unchecked(((ConstantExpression<ulong>)left).Value -
-                                         ((ConstantExpression<ulong>)right).Value);
-
+                            ulong res = ec.ConstantCheckState
+                                ? ((ConstantExpression<ulong>)left).Value -
+                                           ((ConstantExpression<ulong>)right).Value
+                                : ((ConstantExpression<ulong>)left).Value -
+                                         ((ConstantExpression<ulong>)right).Value;
                             result = new ConstantExpression<ulong>(res) { Span = left.Span };
                         }
                         else if (left is ConstantExpression<long>)
                         {
-                            long res;
-
-                            if (ec.ConstantCheckState)
-                                res = checked(((ConstantExpression<long>)left).Value -
-                                           ((ConstantExpression<long>)right).Value);
-                            else
-                                res = unchecked(((ConstantExpression<long>)left).Value -
-                                         ((ConstantExpression<long>)right).Value);
-
+                            long res = ec.ConstantCheckState
+                                ? ((ConstantExpression<long>)left).Value -
+                                           ((ConstantExpression<long>)right).Value
+                                : ((ConstantExpression<long>)left).Value -
+                                         ((ConstantExpression<long>)right).Value;
                             result = new ConstantExpression<long>(res) { Span = left.Span };
                         }
                         else if (left is ConstantExpression<uint>)
                         {
-                            uint res;
-
-                            if (ec.ConstantCheckState)
-                                res = checked(((ConstantExpression<uint>)left).Value -
-                                           ((ConstantExpression<uint>)right).Value);
-                            else
-                                res = unchecked(((ConstantExpression<uint>)left).Value -
-                                         ((ConstantExpression<uint>)right).Value);
-
+                            uint res = ec.ConstantCheckState
+                                ? ((ConstantExpression<uint>)left).Value -
+                                           ((ConstantExpression<uint>)right).Value
+                                : ((ConstantExpression<uint>)left).Value -
+                                         ((ConstantExpression<uint>)right).Value;
                             result = new ConstantExpression<uint>(res) { Span = left.Span };
                         }
                         else if (left is ConstantExpression<int>)
                         {
-                            int res;
-
-                            if (ec.ConstantCheckState)
-                                res = checked(((ConstantExpression<int>)left).Value -
-                                           ((ConstantExpression<int>)right).Value);
-                            else
-                                res = unchecked(((ConstantExpression<int>)left).Value -
-                                         ((ConstantExpression<int>)right).Value);
-
+                            int res = ec.ConstantCheckState
+                                ? ((ConstantExpression<int>)left).Value -
+                                           ((ConstantExpression<int>)right).Value
+                                : ((ConstantExpression<int>)left).Value -
+                                         ((ConstantExpression<int>)right).Value;
                             result = new ConstantExpression<int>(res) { Span = left.Span };
                         }
                         else if (left is ConstantExpression<decimal>)
                         {
-                            decimal res;
-
-                            if (ec.ConstantCheckState)
-                                res = checked(((ConstantExpression<decimal>)left).Value -
-                                    ((ConstantExpression<decimal>)right).Value);
-                            else
-                                res = unchecked(((ConstantExpression<decimal>)left).Value -
-                                    ((ConstantExpression<decimal>)right).Value);
-
+                            decimal res = ec.ConstantCheckState
+                                ? ((ConstantExpression<decimal>)left).Value -
+                                    ((ConstantExpression<decimal>)right).Value
+                                : ((ConstantExpression<decimal>)left).Value -
+                                    ((ConstantExpression<decimal>)right).Value;
                             return new ConstantExpression<decimal>(res) { Span = left.Span };
                         }
                         else
@@ -574,93 +533,65 @@ namespace Supremacy.Scripting.Ast
                     {
                         if (left is ConstantExpression<double>)
                         {
-                            double res;
-
-                            if (ec.ConstantCheckState)
-                                res = checked(((ConstantExpression<double>)left).Value *
-                                    ((ConstantExpression<double>)right).Value);
-                            else
-                                res = unchecked(((ConstantExpression<double>)left).Value *
-                                    ((ConstantExpression<double>)right).Value);
-
+                            double res = ec.ConstantCheckState
+                                ? ((ConstantExpression<double>)left).Value *
+                                    ((ConstantExpression<double>)right).Value
+                                : ((ConstantExpression<double>)left).Value *
+                                    ((ConstantExpression<double>)right).Value;
                             return new ConstantExpression<double>(res) { Span = left.Span };
                         }
                         else if (left is ConstantExpression<float>)
                         {
-                            float res;
-
-                            if (ec.ConstantCheckState)
-                                res = checked(((ConstantExpression<float>)left).Value *
-                                    ((ConstantExpression<float>)right).Value);
-                            else
-                                res = unchecked(((ConstantExpression<float>)left).Value *
-                                    ((ConstantExpression<float>)right).Value);
-
+                            float res = ec.ConstantCheckState
+                                ? ((ConstantExpression<float>)left).Value *
+                                    ((ConstantExpression<float>)right).Value
+                                : ((ConstantExpression<float>)left).Value *
+                                    ((ConstantExpression<float>)right).Value;
                             return new ConstantExpression<float>(res) { Span = left.Span };
                         }
                         else if (left is ConstantExpression<ulong>)
                         {
-                            ulong res;
-
-                            if (ec.ConstantCheckState)
-                                res = checked(((ConstantExpression<ulong>)left).Value *
-                                    ((ConstantExpression<ulong>)right).Value);
-                            else
-                                res = unchecked(((ConstantExpression<ulong>)left).Value *
-                                    ((ConstantExpression<ulong>)right).Value);
-
+                            ulong res = ec.ConstantCheckState
+                                ? ((ConstantExpression<ulong>)left).Value *
+                                    ((ConstantExpression<ulong>)right).Value
+                                : ((ConstantExpression<ulong>)left).Value *
+                                    ((ConstantExpression<ulong>)right).Value;
                             return new ConstantExpression<ulong>(res) { Span = left.Span };
                         }
                         else if (left is ConstantExpression<long>)
                         {
-                            long res;
-
-                            if (ec.ConstantCheckState)
-                                res = checked(((ConstantExpression<long>)left).Value *
-                                    ((ConstantExpression<long>)right).Value);
-                            else
-                                res = unchecked(((ConstantExpression<long>)left).Value *
-                                    ((ConstantExpression<long>)right).Value);
-
+                            long res = ec.ConstantCheckState
+                                ? ((ConstantExpression<long>)left).Value *
+                                    ((ConstantExpression<long>)right).Value
+                                : ((ConstantExpression<long>)left).Value *
+                                    ((ConstantExpression<long>)right).Value;
                             return new ConstantExpression<long>(res) { Span = left.Span };
                         }
                         else if (left is ConstantExpression<uint>)
                         {
-                            uint res;
-
-                            if (ec.ConstantCheckState)
-                                res = checked(((ConstantExpression<uint>)left).Value *
-                                    ((ConstantExpression<uint>)right).Value);
-                            else
-                                res = unchecked(((ConstantExpression<uint>)left).Value *
-                                    ((ConstantExpression<uint>)right).Value);
-
+                            uint res = ec.ConstantCheckState
+                                ? ((ConstantExpression<uint>)left).Value *
+                                    ((ConstantExpression<uint>)right).Value
+                                : ((ConstantExpression<uint>)left).Value *
+                                    ((ConstantExpression<uint>)right).Value;
                             return new ConstantExpression<uint>(res) { Span = left.Span };
                         }
                         else if (left is ConstantExpression<int>)
                         {
-                            int res;
-
-                            if (ec.ConstantCheckState)
-                                res = checked(((ConstantExpression<int>)left).Value *
-                                    ((ConstantExpression<int>)right).Value);
-                            else
-                                res = unchecked(((ConstantExpression<int>)left).Value *
-                                    ((ConstantExpression<int>)right).Value);
-
+                            int res = ec.ConstantCheckState
+                                ? ((ConstantExpression<int>)left).Value *
+                                    ((ConstantExpression<int>)right).Value
+                                : ((ConstantExpression<int>)left).Value *
+                                    ((ConstantExpression<int>)right).Value;
                             return new ConstantExpression<int>(res) { Span = left.Span };
                         }
                         else if (left is ConstantExpression<decimal>)
                         {
-                            decimal res;
-
-                            if (ec.ConstantCheckState)
-                                res = checked(((ConstantExpression<decimal>)left).Value *
-                                    ((ConstantExpression<decimal>)right).Value);
-                            else
-                                res = unchecked(((ConstantExpression<decimal>)left).Value *
-                                    ((ConstantExpression<decimal>)right).Value);
-
+                            decimal res = ec.ConstantCheckState
+                                ? ((ConstantExpression<decimal>)left).Value *
+                                    ((ConstantExpression<decimal>)right).Value
+                                : ((ConstantExpression<decimal>)left).Value *
+                                    ((ConstantExpression<decimal>)right).Value;
                             return new ConstantExpression<decimal>(res) { Span = left.Span };
                         }
                         else
@@ -676,99 +607,73 @@ namespace Supremacy.Scripting.Ast
 
                 case MSAst.ExpressionType.Divide:
                     if (!DoBinaryNumericPromotions(ref left, ref right))
+                    {
                         return null;
+                    }
 
                     try
                     {
                         if (left is ConstantExpression<double>)
                         {
-                            double res;
-
-                            if (ec.ConstantCheckState)
-                                res = checked(((ConstantExpression<double>)left).Value /
-                                    ((ConstantExpression<double>)right).Value);
-                            else
-                                res = unchecked(((ConstantExpression<double>)left).Value /
-                                    ((ConstantExpression<double>)right).Value);
-
+                            double res = ec.ConstantCheckState
+                                ? ((ConstantExpression<double>)left).Value /
+                                    ((ConstantExpression<double>)right).Value
+                                : ((ConstantExpression<double>)left).Value /
+                                    ((ConstantExpression<double>)right).Value;
                             return new ConstantExpression<double>(res) { Span = left.Span };
                         }
                         else if (left is ConstantExpression<float>)
                         {
-                            float res;
-
-                            if (ec.ConstantCheckState)
-                                res = checked(((ConstantExpression<float>)left).Value /
-                                    ((ConstantExpression<float>)right).Value);
-                            else
-                                res = unchecked(((ConstantExpression<float>)left).Value /
-                                    ((ConstantExpression<float>)right).Value);
-
+                            float res = ec.ConstantCheckState
+                                ? ((ConstantExpression<float>)left).Value /
+                                    ((ConstantExpression<float>)right).Value
+                                : ((ConstantExpression<float>)left).Value /
+                                    ((ConstantExpression<float>)right).Value;
                             return new ConstantExpression<float>(res) { Span = left.Span };
                         }
                         else if (left is ConstantExpression<ulong>)
                         {
-                            ulong res;
-
-                            if (ec.ConstantCheckState)
-                                res = checked(((ConstantExpression<ulong>)left).Value /
-                                    ((ConstantExpression<ulong>)right).Value);
-                            else
-                                res = unchecked(((ConstantExpression<ulong>)left).Value /
-                                    ((ConstantExpression<ulong>)right).Value);
-
+                            ulong res = ec.ConstantCheckState
+                                ? ((ConstantExpression<ulong>)left).Value /
+                                    ((ConstantExpression<ulong>)right).Value
+                                : ((ConstantExpression<ulong>)left).Value /
+                                    ((ConstantExpression<ulong>)right).Value;
                             return new ConstantExpression<ulong>(res) { Span = left.Span };
                         }
                         else if (left is ConstantExpression<long>)
                         {
-                            long res;
-
-                            if (ec.ConstantCheckState)
-                                res = checked(((ConstantExpression<long>)left).Value /
-                                    ((ConstantExpression<long>)right).Value);
-                            else
-                                res = unchecked(((ConstantExpression<long>)left).Value /
-                                    ((ConstantExpression<long>)right).Value);
-
+                            long res = ec.ConstantCheckState
+                                ? ((ConstantExpression<long>)left).Value /
+                                    ((ConstantExpression<long>)right).Value
+                                : ((ConstantExpression<long>)left).Value /
+                                    ((ConstantExpression<long>)right).Value;
                             return new ConstantExpression<long>(res) { Span = left.Span };
                         }
                         else if (left is ConstantExpression<uint>)
                         {
-                            uint res;
-
-                            if (ec.ConstantCheckState)
-                                res = checked(((ConstantExpression<uint>)left).Value /
-                                    ((ConstantExpression<uint>)right).Value);
-                            else
-                                res = unchecked(((ConstantExpression<uint>)left).Value /
-                                    ((ConstantExpression<uint>)right).Value);
-
+                            uint res = ec.ConstantCheckState
+                                ? ((ConstantExpression<uint>)left).Value /
+                                    ((ConstantExpression<uint>)right).Value
+                                : ((ConstantExpression<uint>)left).Value /
+                                    ((ConstantExpression<uint>)right).Value;
                             return new ConstantExpression<uint>(res) { Span = left.Span };
                         }
                         else if (left is ConstantExpression<int>)
                         {
-                            int res;
-
-                            if (ec.ConstantCheckState)
-                                res = checked(((ConstantExpression<int>)left).Value /
-                                    ((ConstantExpression<int>)right).Value);
-                            else
-                                res = unchecked(((ConstantExpression<int>)left).Value /
-                                    ((ConstantExpression<int>)right).Value);
-
+                            int res = ec.ConstantCheckState
+                                ? ((ConstantExpression<int>)left).Value /
+                                    ((ConstantExpression<int>)right).Value
+                                : ((ConstantExpression<int>)left).Value /
+                                    ((ConstantExpression<int>)right).Value;
                             return new ConstantExpression<int>(res) { Span = left.Span };
                         }
                         else if (left is ConstantExpression<decimal>)
                         {
-                            decimal res;
-
-                            if (ec.ConstantCheckState)
-                                res = checked(((ConstantExpression<decimal>)left).Value /
-                                    ((ConstantExpression<decimal>)right).Value);
-                            else
-                                res = unchecked(((ConstantExpression<decimal>)left).Value /
-                                    ((ConstantExpression<decimal>)right).Value);
-
+                            decimal res = ec.ConstantCheckState
+                                ? ((ConstantExpression<decimal>)left).Value /
+                                    ((ConstantExpression<decimal>)right).Value
+                                : ((ConstantExpression<decimal>)left).Value /
+                                    ((ConstantExpression<decimal>)right).Value;
                             return new ConstantExpression<decimal>(res) { Span = left.Span };
                         }
                         else
@@ -790,86 +695,64 @@ namespace Supremacy.Scripting.Ast
 
                 case MSAst.ExpressionType.Modulo:
                     if (!DoBinaryNumericPromotions(ref left, ref right))
+                    {
                         return null;
+                    }
 
                     try
                     {
                         if (left is ConstantExpression<double>)
                         {
-                            double res;
-
-                            if (ec.ConstantCheckState)
-                                res = checked(((ConstantExpression<double>)left).Value %
-                                           ((ConstantExpression<double>)right).Value);
-                            else
-                                res = unchecked(((ConstantExpression<double>)left).Value %
-                                         ((ConstantExpression<double>)right).Value);
-
+                            double res = ec.ConstantCheckState
+                                ? ((ConstantExpression<double>)left).Value %
+                                           ((ConstantExpression<double>)right).Value
+                                : ((ConstantExpression<double>)left).Value %
+                                         ((ConstantExpression<double>)right).Value;
                             return new ConstantExpression<double>(res) { Span = left.Span };
                         }
                         else if (left is ConstantExpression<float>)
                         {
-                            float res;
-
-                            if (ec.ConstantCheckState)
-                                res = checked(((ConstantExpression<float>)left).Value %
-                                           ((ConstantExpression<float>)right).Value);
-                            else
-                                res = unchecked(((ConstantExpression<float>)left).Value %
-                                         ((ConstantExpression<float>)right).Value);
-
+                            float res = ec.ConstantCheckState
+                                ? ((ConstantExpression<float>)left).Value %
+                                           ((ConstantExpression<float>)right).Value
+                                : ((ConstantExpression<float>)left).Value %
+                                         ((ConstantExpression<float>)right).Value;
                             return new ConstantExpression<float>(res) { Span = left.Span };
                         }
                         else if (left is ConstantExpression<ulong>)
                         {
-                            ulong res;
-
-                            if (ec.ConstantCheckState)
-                                res = checked(((ConstantExpression<ulong>)left).Value %
-                                           ((ConstantExpression<ulong>)right).Value);
-                            else
-                                res = unchecked(((ConstantExpression<ulong>)left).Value %
-                                         ((ConstantExpression<ulong>)right).Value);
-
+                            ulong res = ec.ConstantCheckState
+                                ? ((ConstantExpression<ulong>)left).Value %
+                                           ((ConstantExpression<ulong>)right).Value
+                                : ((ConstantExpression<ulong>)left).Value %
+                                         ((ConstantExpression<ulong>)right).Value;
                             return new ConstantExpression<ulong>(res) { Span = left.Span };
                         }
                         else if (left is ConstantExpression<long>)
                         {
-                            long res;
-
-                            if (ec.ConstantCheckState)
-                                res = checked(((ConstantExpression<long>)left).Value %
-                                           ((ConstantExpression<long>)right).Value);
-                            else
-                                res = unchecked(((ConstantExpression<long>)left).Value %
-                                         ((ConstantExpression<long>)right).Value);
-
+                            long res = ec.ConstantCheckState
+                                ? ((ConstantExpression<long>)left).Value %
+                                           ((ConstantExpression<long>)right).Value
+                                : ((ConstantExpression<long>)left).Value %
+                                         ((ConstantExpression<long>)right).Value;
                             return new ConstantExpression<long>(res) { Span = left.Span };
                         }
                         else if (left is ConstantExpression<uint>)
                         {
-                            uint res;
-
-                            if (ec.ConstantCheckState)
-                                res = checked(((ConstantExpression<uint>)left).Value %
-                                           ((ConstantExpression<uint>)right).Value);
-                            else
-                                res = unchecked(((ConstantExpression<uint>)left).Value %
-                                         ((ConstantExpression<uint>)right).Value);
-
+                            uint res = ec.ConstantCheckState
+                                ? ((ConstantExpression<uint>)left).Value %
+                                           ((ConstantExpression<uint>)right).Value
+                                : ((ConstantExpression<uint>)left).Value %
+                                         ((ConstantExpression<uint>)right).Value;
                             return new ConstantExpression<uint>(res) { Span = left.Span };
                         }
                         else if (left is ConstantExpression<int>)
                         {
-                            int res;
-
-                            if (ec.ConstantCheckState)
-                                res = checked(((ConstantExpression<int>)left).Value %
-                                           ((ConstantExpression<int>)right).Value);
-                            else
-                                res = unchecked(((ConstantExpression<int>)left).Value %
-                                         ((ConstantExpression<int>)right).Value);
-
+                            int res = ec.ConstantCheckState
+                                ? ((ConstantExpression<int>)left).Value %
+                                           ((ConstantExpression<int>)right).Value
+                                : ((ConstantExpression<int>)left).Value %
+                                         ((ConstantExpression<int>)right).Value;
                             return new ConstantExpression<int>(res) { Span = left.Span };
                         }
                         else
@@ -891,8 +774,7 @@ namespace Supremacy.Scripting.Ast
                 // There is no overflow checking on left shift
                 //
                 case MSAst.ExpressionType.LeftShift:
-                    ConstantExpression<int> ic = right.ConvertImplicitly(TypeManager.CoreTypes.Int32) as ConstantExpression<int>;
-                    if (ic == null)
+                    if (!(right.ConvertImplicitly(TypeManager.CoreTypes.Int32) is ConstantExpression<int> ic))
                     {
                         BinaryExpression.OnErrorOperatorCannotBeApplied(ec, left, right, oper, loc);
                         return null;
@@ -900,15 +782,25 @@ namespace Supremacy.Scripting.Ast
 
                     int lshift_val = ic.Value;
                     if (left.Type == TypeManager.CoreTypes.UInt64)
+                    {
                         return new ConstantExpression<ulong>(((ConstantExpression<ulong>)left).Value << lshift_val) { Span = left.Span };
+                    }
+
                     if (left.Type == TypeManager.CoreTypes.Int64)
+                    {
                         return new ConstantExpression<long>(((ConstantExpression<long>)left).Value << lshift_val) { Span = left.Span };
+                    }
+
                     if (left.Type == TypeManager.CoreTypes.UInt32)
+                    {
                         return new ConstantExpression<uint>(((ConstantExpression<uint>)left).Value << lshift_val) { Span = left.Span };
+                    }
 
                     left = left.ConvertImplicitly(TypeManager.CoreTypes.Int32);
                     if (left.Type == TypeManager.CoreTypes.Int32)
+                    {
                         return new ConstantExpression<int>(((ConstantExpression<int>)left).Value << lshift_val) { Span = left.Span };
+                    }
 
                     BinaryExpression.OnErrorOperatorCannotBeApplied(ec, left, right, oper, loc);
                     break;
@@ -917,23 +809,32 @@ namespace Supremacy.Scripting.Ast
                 // There is no overflow checking on right shift
                 //
                 case MSAst.ExpressionType.RightShift:
-                    ConstantExpression<int> sic = right.ConvertImplicitly(TypeManager.CoreTypes.Int32) as ConstantExpression<int>;
-                    if (sic == null)
+                    if (!(right.ConvertImplicitly(TypeManager.CoreTypes.Int32) is ConstantExpression<int> sic))
                     {
                         BinaryExpression.OnErrorOperatorCannotBeApplied(ec, left, right, oper, loc);
                         return null;
                     }
                     int rshift_val = sic.Value;
                     if (left.Type == TypeManager.CoreTypes.UInt64)
+                    {
                         return new ConstantExpression<ulong>(((ConstantExpression<ulong>)left).Value >> rshift_val) { Span = left.Span };
+                    }
+
                     if (left.Type == TypeManager.CoreTypes.Int64)
+                    {
                         return new ConstantExpression<long>(((ConstantExpression<long>)left).Value >> rshift_val) { Span = left.Span };
+                    }
+
                     if (left.Type == TypeManager.CoreTypes.UInt32)
+                    {
                         return new ConstantExpression<uint>(((ConstantExpression<uint>)left).Value >> rshift_val) { Span = left.Span };
+                    }
 
                     left = left.ConvertImplicitly(TypeManager.CoreTypes.Int32);
                     if (left.Type == TypeManager.CoreTypes.Int32)
+                    {
                         return new ConstantExpression<int>(((ConstantExpression<int>)left).Value >> rshift_val) { Span = left.Span };
+                    }
 
                     BinaryExpression.OnErrorOperatorCannotBeApplied(ec, left, right, oper, loc);
                     break;
@@ -948,35 +849,47 @@ namespace Supremacy.Scripting.Ast
                                 new BinaryExpression { Operator = oper, Left = left, Right = right });
                         }
 
-                        if (left is ConstantExpression<string> && right is ConstantExpression<string>)
-                            return new ConstantExpression<bool>(
-                                ((ConstantExpression<string>)left).Value == ((ConstantExpression<string>)right).Value) { Span = left.Span };
-
-                        return null;
+                        return left is ConstantExpression<string> && right is ConstantExpression<string>
+                            ? new ConstantExpression<bool>(
+                                ((ConstantExpression<string>)left).Value == ((ConstantExpression<string>)right).Value) { Span = left.Span }
+                            : null;
                     }
 
                     if (!DoBinaryNumericPromotions(ref left, ref right))
+                    {
                         return null;
+                    }
 
-                    booleanResult = false;
                     if (left is ConstantExpression<double>)
+                    {
                         booleanResult = ((ConstantExpression<double>)left).Value ==
                             ((ConstantExpression<double>)right).Value;
+                    }
                     else if (left is ConstantExpression<float>)
+                    {
                         booleanResult = ((ConstantExpression<float>)left).Value ==
                             ((ConstantExpression<float>)right).Value;
+                    }
                     else if (left is ConstantExpression<ulong>)
+                    {
                         booleanResult = ((ConstantExpression<ulong>)left).Value ==
                             ((ConstantExpression<ulong>)right).Value;
+                    }
                     else if (left is ConstantExpression<long>)
+                    {
                         booleanResult = ((ConstantExpression<long>)left).Value ==
                             ((ConstantExpression<long>)right).Value;
+                    }
                     else if (left is ConstantExpression<uint>)
+                    {
                         booleanResult = ((ConstantExpression<uint>)left).Value ==
                             ((ConstantExpression<uint>)right).Value;
+                    }
                     else if (left is ConstantExpression<int>)
+                    {
                         booleanResult = ((ConstantExpression<int>)left).Value ==
                             ((ConstantExpression<int>)right).Value;
+                    }
                     else
                         return null;
 
@@ -992,35 +905,47 @@ namespace Supremacy.Scripting.Ast
                                 new BinaryExpression { Operator = oper, Left = left, Right = right });
                         }
 
-                        if (left is ConstantExpression<string> && right is ConstantExpression<string>)
-                            return new ConstantExpression<bool>(
-                                ((ConstantExpression<string>)left).Value != ((ConstantExpression<string>)right).Value) { Span = left.Span };
-
-                        return null;
+                        return left is ConstantExpression<string> && right is ConstantExpression<string>
+                            ? new ConstantExpression<bool>(
+                                ((ConstantExpression<string>)left).Value != ((ConstantExpression<string>)right).Value) { Span = left.Span }
+                            : null;
                     }
 
                     if (!DoBinaryNumericPromotions(ref left, ref right))
+                    {
                         return null;
+                    }
 
-                    booleanResult = false;
                     if (left is ConstantExpression<double>)
+                    {
                         booleanResult = ((ConstantExpression<double>)left).Value !=
                             ((ConstantExpression<double>)right).Value;
+                    }
                     else if (left is ConstantExpression<float>)
+                    {
                         booleanResult = ((ConstantExpression<float>)left).Value !=
                             ((ConstantExpression<float>)right).Value;
+                    }
                     else if (left is ConstantExpression<ulong>)
+                    {
                         booleanResult = ((ConstantExpression<ulong>)left).Value !=
                             ((ConstantExpression<ulong>)right).Value;
+                    }
                     else if (left is ConstantExpression<long>)
+                    {
                         booleanResult = ((ConstantExpression<long>)left).Value !=
                             ((ConstantExpression<long>)right).Value;
+                    }
                     else if (left is ConstantExpression<uint>)
+                    {
                         booleanResult = ((ConstantExpression<uint>)left).Value !=
                             ((ConstantExpression<uint>)right).Value;
+                    }
                     else if (left is ConstantExpression<int>)
+                    {
                         booleanResult = ((ConstantExpression<int>)left).Value !=
                             ((ConstantExpression<int>)right).Value;
+                    }
                     else
                         return null;
 
@@ -1028,27 +953,40 @@ namespace Supremacy.Scripting.Ast
 
                 case MSAst.ExpressionType.LessThan:
                     if (!DoBinaryNumericPromotions(ref left, ref right))
+                    {
                         return null;
+                    }
 
-                    booleanResult = false;
                     if (left is ConstantExpression<double>)
+                    {
                         booleanResult = ((ConstantExpression<double>)left).Value <
                             ((ConstantExpression<double>)right).Value;
+                    }
                     else if (left is ConstantExpression<float>)
+                    {
                         booleanResult = ((ConstantExpression<float>)left).Value <
                             ((ConstantExpression<float>)right).Value;
+                    }
                     else if (left is ConstantExpression<ulong>)
+                    {
                         booleanResult = ((ConstantExpression<ulong>)left).Value <
                             ((ConstantExpression<ulong>)right).Value;
+                    }
                     else if (left is ConstantExpression<long>)
+                    {
                         booleanResult = ((ConstantExpression<long>)left).Value <
                             ((ConstantExpression<long>)right).Value;
+                    }
                     else if (left is ConstantExpression<uint>)
+                    {
                         booleanResult = ((ConstantExpression<uint>)left).Value <
                             ((ConstantExpression<uint>)right).Value;
+                    }
                     else if (left is ConstantExpression<int>)
+                    {
                         booleanResult = ((ConstantExpression<int>)left).Value <
                             ((ConstantExpression<int>)right).Value;
+                    }
                     else
                         return null;
 
@@ -1056,27 +994,40 @@ namespace Supremacy.Scripting.Ast
 
                 case MSAst.ExpressionType.GreaterThan:
                     if (!DoBinaryNumericPromotions(ref left, ref right))
+                    {
                         return null;
+                    }
 
-                    booleanResult = false;
                     if (left is ConstantExpression<double>)
+                    {
                         booleanResult = ((ConstantExpression<double>)left).Value >
                             ((ConstantExpression<double>)right).Value;
+                    }
                     else if (left is ConstantExpression<float>)
+                    {
                         booleanResult = ((ConstantExpression<float>)left).Value >
                             ((ConstantExpression<float>)right).Value;
+                    }
                     else if (left is ConstantExpression<ulong>)
+                    {
                         booleanResult = ((ConstantExpression<ulong>)left).Value >
                             ((ConstantExpression<ulong>)right).Value;
+                    }
                     else if (left is ConstantExpression<long>)
+                    {
                         booleanResult = ((ConstantExpression<long>)left).Value >
                             ((ConstantExpression<long>)right).Value;
+                    }
                     else if (left is ConstantExpression<uint>)
+                    {
                         booleanResult = ((ConstantExpression<uint>)left).Value >
                             ((ConstantExpression<uint>)right).Value;
+                    }
                     else if (left is ConstantExpression<int>)
+                    {
                         booleanResult = ((ConstantExpression<int>)left).Value >
                             ((ConstantExpression<int>)right).Value;
+                    }
                     else
                         return null;
 
@@ -1084,27 +1035,40 @@ namespace Supremacy.Scripting.Ast
 
                 case MSAst.ExpressionType.GreaterThanOrEqual:
                     if (!DoBinaryNumericPromotions(ref left, ref right))
+                    {
                         return null;
+                    }
 
-                    booleanResult = false;
                     if (left is ConstantExpression<double>)
+                    {
                         booleanResult = ((ConstantExpression<double>)left).Value >=
                             ((ConstantExpression<double>)right).Value;
+                    }
                     else if (left is ConstantExpression<float>)
+                    {
                         booleanResult = ((ConstantExpression<float>)left).Value >=
                             ((ConstantExpression<float>)right).Value;
+                    }
                     else if (left is ConstantExpression<ulong>)
+                    {
                         booleanResult = ((ConstantExpression<ulong>)left).Value >=
                             ((ConstantExpression<ulong>)right).Value;
+                    }
                     else if (left is ConstantExpression<long>)
+                    {
                         booleanResult = ((ConstantExpression<long>)left).Value >=
                             ((ConstantExpression<long>)right).Value;
+                    }
                     else if (left is ConstantExpression<uint>)
+                    {
                         booleanResult = ((ConstantExpression<uint>)left).Value >=
                             ((ConstantExpression<uint>)right).Value;
+                    }
                     else if (left is ConstantExpression<int>)
+                    {
                         booleanResult = ((ConstantExpression<int>)left).Value >=
                             ((ConstantExpression<int>)right).Value;
+                    }
                     else
                         return null;
 
@@ -1112,27 +1076,40 @@ namespace Supremacy.Scripting.Ast
 
                 case MSAst.ExpressionType.LessThanOrEqual:
                     if (!DoBinaryNumericPromotions(ref left, ref right))
+                    {
                         return null;
+                    }
 
-                    booleanResult = false;
                     if (left is ConstantExpression<double>)
+                    {
                         booleanResult = ((ConstantExpression<double>)left).Value <=
                             ((ConstantExpression<double>)right).Value;
+                    }
                     else if (left is ConstantExpression<float>)
+                    {
                         booleanResult = ((ConstantExpression<float>)left).Value <=
                             ((ConstantExpression<float>)right).Value;
+                    }
                     else if (left is ConstantExpression<ulong>)
+                    {
                         booleanResult = ((ConstantExpression<ulong>)left).Value <=
                             ((ConstantExpression<ulong>)right).Value;
+                    }
                     else if (left is ConstantExpression<long>)
+                    {
                         booleanResult = ((ConstantExpression<long>)left).Value <=
                             ((ConstantExpression<long>)right).Value;
+                    }
                     else if (left is ConstantExpression<uint>)
+                    {
                         booleanResult = ((ConstantExpression<uint>)left).Value <=
                             ((ConstantExpression<uint>)right).Value;
+                    }
                     else if (left is ConstantExpression<int>)
+                    {
                         booleanResult = ((ConstantExpression<int>)left).Value <=
                             ((ConstantExpression<int>)right).Value;
+                    }
                     else
                         return null;
 

@@ -22,18 +22,22 @@ namespace Supremacy.Xna
 
         protected XnaComponent Component
         {
-            get { return _component; }
+            get => _component;
             set
             {
                 if (value == _component)
+                {
                     return;
+                }
 
                 EndRun();
 
                 _component = value;
 
                 if (IsLoaded && IsVisible)
+                {
                     BeginRun();
+                }
             }
         }
 
@@ -42,14 +46,11 @@ namespace Supremacy.Xna
             InvalidateVisual();
         }
 
-        protected virtual bool ManageComponentTargetSize
-        {
-            get { return true; }
-        }
+        protected virtual bool ManageComponentTargetSize => true;
 
         private void BeginRun()
         {
-            var oldRunHandle = _runHandle;
+            IDisposable oldRunHandle = _runHandle;
 
             if (_component != null)
             {
@@ -67,13 +68,17 @@ namespace Supremacy.Xna
             }
 
             if (oldRunHandle != null)
+            {
                 oldRunHandle.Dispose();
+            }
         }
 
         private void EndRun()
         {
             if (_runHandle == null)
+            {
                 return;
+            }
 
             if (_subscribedToPresentEvent && _component != null)
             {
@@ -98,24 +103,32 @@ namespace Supremacy.Xna
         private void OnIsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
             if ((bool)e.NewValue)
+            {
                 BeginRun();
+            }
             else
+            {
                 EndRun();
+            }
         }
 
         private void OnSizeChanged(object sender, SizeChangedEventArgs e)
         {
             if (ManageComponentTargetSize)
+            {
                 UpdateTargetSize();
+            }
         }
 
         protected void UpdateTargetSize()
         {
-            var multiplier = 1.0;
+            double multiplier = 1.0;
 
-            var window = Window.GetWindow(this);
+            Window window = Window.GetWindow(this);
             if (window != null)
+            {
                 multiplier = TransformToAncestor(window).TransformBounds(new Rect(1, 1, 1, 1)).Width;
+            }
 
             _component.TargetSize = new Int32Rect(
                 0,
@@ -126,13 +139,17 @@ namespace Supremacy.Xna
 
         protected override void OnRender(System.Windows.Media.DrawingContext drawingContext)
         {
-            var component = _component;
+            XnaComponent component = _component;
             if (component == null)
+            {
                 return;
+            }
 
-            var renderTargetImage = component.RenderTargetImage;
+            System.Windows.Interop.D3DImage renderTargetImage = component.RenderTargetImage;
             if (renderTargetImage != null && renderTargetImage.IsFrontBufferAvailable)
+            {
                 drawingContext.DrawImage(renderTargetImage, new Rect(RenderSize));
+            }
         }
     }
 }

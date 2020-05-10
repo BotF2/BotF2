@@ -61,7 +61,6 @@ namespace Supremacy.Xna
         private SurfaceFormat _backBufferFormat = SurfaceFormat.Color;
         private bool _beginDrawOk;
         private DepthFormat _depthStencilFormat = DepthFormat.Depth24;
-        private GraphicsDevice _device;
         private bool _inDeviceTransition;
         private bool _isDeviceDirty;
         private ShaderProfile _minimumPixelShaderProfile;
@@ -119,10 +118,7 @@ namespace Supremacy.Xna
 
         public GraphicsDeviceManager([NotNull] XnaComponent owner)
         {
-            if (owner == null)
-                throw new ArgumentNullException("owner");
-
-            _owner = owner;
+            _owner = owner ?? throw new ArgumentNullException(nameof(owner));
             _owner.Services.AddService(typeof(IGraphicsDeviceService), this);
             _owner.Services.AddService(typeof(IGraphicsDeviceManager), this);
             _owner.TargetSizeChanged += OnOwnerSizeChanged;
@@ -137,26 +133,28 @@ namespace Supremacy.Xna
 
         private void AddDevices(List<GraphicsDeviceInformation> foundDevices)
         {
-            foreach (var adapter in GraphicsAdapter.Adapters)
+            foreach (GraphicsAdapter adapter in GraphicsAdapter.Adapters)
             {
-                foreach (var type in ValidDeviceTypes)
+                foreach (DeviceType type in ValidDeviceTypes)
                 {
                     try
                     {
                         if (!adapter.IsDeviceTypeAvailable(type))
+                        {
                             continue;
+                        }
 
-                        var capabilities = adapter.GetCapabilities(type);
+                        GraphicsDeviceCapabilities capabilities = adapter.GetCapabilities(type);
 
                         if (capabilities.DeviceCapabilities.IsDirect3D9Driver &&
                             IsValidShaderProfile(capabilities.MaxPixelShaderProfile, MinimumPixelShaderProfile) &&
                             IsValidShaderProfile(capabilities.MaxVertexShaderProfile, MinimumVertexShaderProfile))
                         {
-                            var baseDeviceInfo = new GraphicsDeviceInformation
-                                                 {
-                                                     Adapter = adapter,
-                                                     DeviceType = type,
-                                                     PresentationParameters =
+                            GraphicsDeviceInformation baseDeviceInfo = new GraphicsDeviceInformation
+                            {
+                                Adapter = adapter,
+                                DeviceType = type,
+                                PresentationParameters =
                                                      {
                                                          DeviceWindowHandle = GetDesktopWindow(),
                                                          EnableAutoDepthStencil = true,
@@ -171,7 +169,7 @@ namespace Supremacy.Xna
                                                                                  ? PresentInterval.One
                                                                                  : PresentInterval.Immediate
                                                      }
-                                                 };
+                            };
 
                             AddDevices(
                                 adapter,
@@ -193,12 +191,14 @@ namespace Supremacy.Xna
             GraphicsDeviceInformation baseDeviceInfo,
             List<GraphicsDeviceInformation> foundDevices)
         {
-            foreach (var backBufferFormat in ValidBackBufferFormats)
+            foreach (SurfaceFormat backBufferFormat in ValidBackBufferFormats)
             {
                 if (!adapter.CheckDeviceType(deviceType, mode.Format, backBufferFormat, false))
+                {
                     continue;
+                }
 
-                var item = baseDeviceInfo.Clone();
+                GraphicsDeviceInformation item = baseDeviceInfo.Clone();
 
                 if (_useResizedBackBuffer)
                 {
@@ -216,19 +216,22 @@ namespace Supremacy.Xna
 
                 if (PreferMultiSampling)
                 {
-                    foreach (var multiSampleType in _multiSampleTypes)
+                    foreach (MultiSampleType multiSampleType in _multiSampleTypes)
                     {
-                        var sampleType = multiSampleType;
-
-                        if (!adapter.CheckDeviceMultiSampleType(deviceType, backBufferFormat, false, sampleType, out int qualityLevels))
+                        MultiSampleType sampleType = multiSampleType;
+                        if (!adapter.CheckDeviceMultiSampleType(deviceType, backBufferFormat, false, sampleType, out _))
+                        {
                             continue;
+                        }
 
-                        var clone = item.Clone();
+                        GraphicsDeviceInformation clone = item.Clone();
 
                         clone.PresentationParameters.MultiSampleType = sampleType;
 
                         if (!foundDevices.Contains(clone))
+                        {
                             foundDevices.Add(clone);
+                        }
 
                         break;
                     }
@@ -242,19 +245,15 @@ namespace Supremacy.Xna
 
         public void ApplyChanges()
         {
-            if (_device != null && !_isDeviceDirty)
+            if (GraphicsDevice != null && !_isDeviceDirty)
+            {
                 return;
+            }
 
             ChangeDevice(false);
         }
 
-        protected virtual bool CanResetDevice(GraphicsDeviceInformation newDeviceInfo)
-        {
-            if (_device.CreationParameters.DeviceType != newDeviceInfo.DeviceType)
-                return false;
-
-            return true;
-        }
+        protected virtual bool CanResetDevice(GraphicsDeviceInformation newDeviceInfo) => GraphicsDevice.CreationParameters.DeviceType == newDeviceInfo.DeviceType;
 
         private void ChangeDevice(bool forceCreate)
         {
@@ -264,10 +263,10 @@ namespace Supremacy.Xna
 
                 try
                 {
-                    var deviceInformation = FindBestDevice();
-                    var newDeviceRequired = true;
+                    GraphicsDeviceInformation deviceInformation = FindBestDevice();
+                    bool newDeviceRequired = true;
 
-                    if (!forceCreate && _device != null)
+                    if (!forceCreate && GraphicsDevice != null)
                     {
                         OnPreparingDeviceSettings(
                             this,
@@ -277,12 +276,12 @@ namespace Supremacy.Xna
                         {
                             try
                             {
-                                var clonedDeviceInformation = deviceInformation.Clone();
+                                GraphicsDeviceInformation clonedDeviceInformation = deviceInformation.Clone();
 
                                 MassagePresentParameters(deviceInformation.PresentationParameters);
                                 ValidateGraphicsDeviceInformation(deviceInformation);
 
-                                _device.Reset(
+                                GraphicsDevice.Reset(
                                     clonedDeviceInformation.PresentationParameters,
                                     clonedDeviceInformation.Adapter);
 
@@ -296,7 +295,9 @@ namespace Supremacy.Xna
                     }
 
                     if (newDeviceRequired)
+                    {
                         CreateDevice(deviceInformation);
+                    }
 
                     _isDeviceDirty = false;
                 }
@@ -308,52 +309,53 @@ namespace Supremacy.Xna
         }
 
         // ReSharper disable UnusedMember.Local
-        private void CheckForAvailableSupportedHardware()
-        {
-            var deviceFound = false;
-            var deviceIsDirect3D9Compatible = false;
+        //private void CheckForAvailableSupportedHardware()
+        //{
+        //    var deviceFound = false;
+        //    var deviceIsDirect3D9Compatible = false;
 
-            foreach (var adapter in GraphicsAdapter.Adapters)
-            {
-                if (!adapter.IsDeviceTypeAvailable(DeviceType.Hardware))
-                    continue;
+        //    foreach (var adapter in GraphicsAdapter.Adapters)
+        //    {
+        //        if (!adapter.IsDeviceTypeAvailable(DeviceType.Hardware))
+        //            continue;
 
-                deviceFound = true;
+        //        deviceFound = true;
 
-                var capabilities = adapter.GetCapabilities(DeviceType.Hardware);
+        //        var capabilities = adapter.GetCapabilities(DeviceType.Hardware);
 
-                if (capabilities.MaxPixelShaderProfile != ShaderProfile.Unknown &&
-                    capabilities.MaxPixelShaderProfile >= ShaderProfile.PS_1_1 &&
-                    capabilities.DeviceCapabilities.IsDirect3D9Driver)
-                {
-                    deviceIsDirect3D9Compatible = true;
-                    break;
-                }
-            }
+        //        if (capabilities.MaxPixelShaderProfile != ShaderProfile.Unknown &&
+        //            capabilities.MaxPixelShaderProfile >= ShaderProfile.PS_1_1 &&
+        //            capabilities.DeviceCapabilities.IsDirect3D9Driver)
+        //        {
+        //            deviceIsDirect3D9Compatible = true;
+        //            break;
+        //        }
+        //    }
 
-            if (!deviceFound)
-            {
-                if (SystemParameters.IsRemoteSession)
-                {
-                    throw CreateNoSuitableGraphicsDeviceException(
-                        "Direct3D is not available when you are using Remote Desktop.",
-                        null);
-                }
-                throw CreateNoSuitableGraphicsDeviceException(
-                    "Direct3D hardware acceleration is not available or has been disabled. " +
-                    "Verify that a Direct3D enabled graphics device is installed and check " +
-                    "the display properties to make sure hardware acceleration is set to Full.",
-                    null);
-            }
+        //    if (!deviceFound)
+        //    {
+        //        if (SystemParameters.IsRemoteSession)
+        //        {
+        //            throw CreateNoSuitableGraphicsDeviceException(
+        //                "Direct3D is not available when you are using Remote Desktop.",
+        //                null);
+        //        }
+        //        throw CreateNoSuitableGraphicsDeviceException(
+        //            "Direct3D hardware acceleration is not available or has been disabled. " +
+        //            "Verify that a Direct3D enabled graphics device is installed and check " +
+        //            "the display properties to make sure hardware acceleration is set to Full.",
+        //            null);
+        //    }
 
-            if (!deviceIsDirect3D9Compatible)
-            {
-                throw CreateNoSuitableGraphicsDeviceException(
-                    "Could not find a Direct3D device that has a Direct3D 9 level driver " +
-                    "and supports pixel shader 1.1 or greater.",
-                    null);
-            }
-        }
+        //    if (!deviceIsDirect3D9Compatible)
+        //    {
+        //        throw CreateNoSuitableGraphicsDeviceException(
+        //            "Could not find a Direct3D device that has a Direct3D 9 level driver " +
+        //            "and supports pixel shader 1.1 or greater.",
+        //            null);
+        //    }
+        //}
+
         // ReSharper restore UnusedMember.Local
 
         private DepthFormat ChooseDepthStencilFormat(GraphicsAdapter adapter, DeviceType deviceType, SurfaceFormat adapterFormat)
@@ -376,15 +378,14 @@ namespace Supremacy.Xna
                 depthFormat = ChooseDepthStencilFormatFromList(_depthFormatsWithStencil, adapter, deviceType, adapterFormat);
 
                 if (depthFormat != DepthFormat.Unknown)
+                {
                     return depthFormat;
+                }
             }
 
             depthFormat = ChooseDepthStencilFormatFromList(_depthFormatsWithoutStencil, adapter, deviceType, adapterFormat);
 
-            if (depthFormat != DepthFormat.Unknown)
-                return depthFormat;
-
-            return DepthFormat.Depth24;
+            return depthFormat != DepthFormat.Unknown ? depthFormat : DepthFormat.Depth24;
         }
 
         private DepthFormat ChooseDepthStencilFormatFromList(
@@ -393,7 +394,7 @@ namespace Supremacy.Xna
             DeviceType deviceType,
             SurfaceFormat adapterFormat)
         {
-            foreach (var depthFormat in availableFormats)
+            foreach (DepthFormat depthFormat in availableFormats)
             {
                 if (depthFormat != PreferredDepthStencilFormat &&
                     adapter.CheckDeviceFormat(
@@ -420,10 +421,10 @@ namespace Supremacy.Xna
 
         private void CreateDevice(GraphicsDeviceInformation newInfo)
         {
-            if (_device != null)
+            if (GraphicsDevice != null)
             {
-                _device.Dispose();
-                _device = null;
+                GraphicsDevice.Dispose();
+                GraphicsDevice = null;
             }
 
             OnPreparingDeviceSettings(this, new PreparingDeviceSettingsEventArgs(newInfo));
@@ -433,18 +434,18 @@ namespace Supremacy.Xna
             {
                 ValidateGraphicsDeviceInformation(newInfo);
 
-                var device = new GraphicsDevice(
+                GraphicsDevice device = new GraphicsDevice(
                     newInfo.Adapter,
                     newInfo.DeviceType,
                     GetDesktopWindow(),
                     newInfo.PresentationParameters);
 
-                _device = device;
+                GraphicsDevice = device;
 
-                _device.DeviceResetting += HandleDeviceResetting;
-                _device.DeviceReset += HandleDeviceReset;
-                _device.DeviceLost += delegate { };
-                _device.Disposing += HandleDisposing;
+                GraphicsDevice.DeviceResetting += HandleDeviceResetting;
+                GraphicsDevice.DeviceReset += HandleDeviceReset;
+                GraphicsDevice.DeviceLost += delegate { };
+                GraphicsDevice.Disposing += HandleDisposing;
             }
             catch (DeviceNotSupportedException exception)
             {
@@ -478,7 +479,7 @@ namespace Supremacy.Xna
 
         private Exception CreateNoSuitableGraphicsDeviceException(string message, Exception innerException)
         {
-            var exception = new NoSuitableGraphicsDeviceException(message, innerException);
+            NoSuitableGraphicsDeviceException exception = new NoSuitableGraphicsDeviceException(message, innerException);
 
             exception.Data.Add("MinimumPixelShaderProfile", _minimumPixelShaderProfile);
             exception.Data.Add("MinimumVertexShaderProfile", _minimumVertexShaderProfile);
@@ -489,33 +490,30 @@ namespace Supremacy.Xna
         protected virtual void Dispose(bool disposing)
         {
             if (!disposing)
-                return;
-
-            if (_device != null)
             {
-                _device.Dispose();
-                _device = null;
+                return;
+            }
+
+            if (GraphicsDevice != null)
+            {
+                GraphicsDevice.Dispose();
+                GraphicsDevice = null;
             }
 
             _owner.Services.RemoveService(typeof(IGraphicsDeviceManager));
             _owner.Services.RemoveService(typeof(IGraphicsDeviceService));
 
-            var handler = Disposed;
-            if (handler != null)
-                handler(this, EventArgs.Empty);
+            Disposed?.Invoke(this, EventArgs.Empty);
         }
 
         private bool EnsureDevice()
         {
-            if (_device == null)
-                return false;
-
-            return EnsureDevicePlatform();
+            return GraphicsDevice == null ? false : EnsureDevicePlatform();
         }
 
         private bool EnsureDevicePlatform()
         {
-            switch (_device.GraphicsDeviceStatus)
+            switch (GraphicsDevice.GraphicsDeviceStatus)
             {
                 case GraphicsDeviceStatus.Lost:
                     {
@@ -545,7 +543,7 @@ namespace Supremacy.Xna
 
         private GraphicsDeviceInformation FindBestPlatformDevice()
         {
-            var foundDevices = new List<GraphicsDeviceInformation>();
+            List<GraphicsDeviceInformation> foundDevices = new List<GraphicsDeviceInformation>();
 
             AddDevices(foundDevices);
 
@@ -578,12 +576,16 @@ namespace Supremacy.Xna
         protected void UpdateClientBounds(Int32Rect clientBounds)
         {
             if (clientBounds == _clientBounds)
+            {
                 return;
+            }
 
             _clientBounds = clientBounds;
 
             if (_inDeviceTransition || (_clientBounds.Height == 0 && _clientBounds.Width == 0))
+            {
                 return;
+            }
 
             _resizedBackBufferWidth = _clientBounds.Width;
             _resizedBackBufferHeight = _clientBounds.Height;
@@ -609,19 +611,22 @@ namespace Supremacy.Xna
 
         private static bool IsValidShaderProfile(ShaderProfile capsShaderProfile, ShaderProfile minimumShaderProfile)
         {
-            if (capsShaderProfile == ShaderProfile.PS_2_B && minimumShaderProfile == ShaderProfile.PS_2_A)
-                return false;
-
-            return (capsShaderProfile >= minimumShaderProfile);
+            return capsShaderProfile == ShaderProfile.PS_2_B && minimumShaderProfile == ShaderProfile.PS_2_A
+                ? false
+                : capsShaderProfile >= minimumShaderProfile;
         }
 
         private static void MassagePresentParameters(PresentationParameters pp)
         {
             if (pp.BackBufferWidth == 0)
+            {
                 pp.BackBufferWidth = 1;
+            }
 
             if (pp.BackBufferHeight == 0)
+            {
                 pp.BackBufferHeight = 1;
+            }
 
             pp.IsFullScreen = false;
             pp.FullScreenRefreshRateInHz = 0;
@@ -630,7 +635,9 @@ namespace Supremacy.Xna
         public bool BeginDraw()
         {
             if (!EnsureDevice())
+            {
                 return false;
+            }
 
             _beginDrawOk = true;
 
@@ -639,15 +646,17 @@ namespace Supremacy.Xna
 
         public void EndDraw()
         {
-            if (!_beginDrawOk || _device == null)
+            if (!_beginDrawOk || GraphicsDevice == null)
+            {
                 return;
+            }
 
             NewMethod();
         }
 
         private void NewMethod()
         {
-            try { _device.Present(); }
+            try { GraphicsDevice.Present(); }
             catch (InvalidOperationException) { }
             catch (DeviceLostException) { }
             catch (DeviceNotResetException) { }
@@ -656,37 +665,27 @@ namespace Supremacy.Xna
 
         protected virtual void OnDeviceCreated(object sender, EventArgs args)
         {
-            var handler = DeviceCreated;
-            if (handler != null)
-                handler(sender, args);
+            DeviceCreated?.Invoke(sender, args);
         }
 
         protected virtual void OnDeviceDisposing(object sender, EventArgs args)
         {
-            var handler = DeviceDisposing;
-            if (handler != null)
-                handler(sender, args);
+            DeviceDisposing?.Invoke(sender, args);
         }
 
         protected virtual void OnDeviceReset(object sender, EventArgs args)
         {
-            var handler = DeviceReset;
-            if (handler != null)
-                handler(sender, args);
+            DeviceReset?.Invoke(sender, args);
         }
 
         protected virtual void OnDeviceResetting(object sender, EventArgs args)
         {
-            var handler = DeviceResetting;
-            if (handler != null)
-                handler(sender, args);
+            DeviceResetting?.Invoke(sender, args);
         }
 
         protected virtual void OnPreparingDeviceSettings(object sender, PreparingDeviceSettingsEventArgs args)
         {
-            var handler = PreparingDeviceSettings;
-            if (handler != null)
-                handler(sender, args);
+            PreparingDeviceSettings?.Invoke(sender, args);
         }
 
         protected virtual void RankDevices(List<GraphicsDeviceInformation> foundDevices)
@@ -696,13 +695,13 @@ namespace Supremacy.Xna
 
         private void RankDevicesPlatform(List<GraphicsDeviceInformation> foundDevices)
         {
-            var index = 0;
+            int index = 0;
 
             while (index < foundDevices.Count)
             {
-                var deviceType = foundDevices[index].DeviceType;
-                var adapter = foundDevices[index].Adapter;
-                var presentationParameters = foundDevices[index].PresentationParameters;
+                DeviceType deviceType = foundDevices[index].DeviceType;
+                GraphicsAdapter adapter = foundDevices[index].Adapter;
+                PresentationParameters presentationParameters = foundDevices[index].PresentationParameters;
 
                 if (!adapter.CheckDeviceFormat(
                     deviceType,
@@ -731,18 +730,20 @@ namespace Supremacy.Xna
 
         private static void ValidateGraphicsDeviceInformation(GraphicsDeviceInformation devInfo)
         {
-            var adapter = devInfo.Adapter;
-            var deviceType = devInfo.DeviceType;
-            var presentationParameters = devInfo.PresentationParameters;
-            var deviceFormat = adapter.CurrentDisplayMode.Format;
-            var acceptedBackBufferFormat = presentationParameters.BackBufferFormat;
+            GraphicsAdapter adapter = devInfo.Adapter;
+            DeviceType deviceType = devInfo.DeviceType;
+            PresentationParameters presentationParameters = devInfo.PresentationParameters;
+            SurfaceFormat deviceFormat = adapter.CurrentDisplayMode.Format;
+            SurfaceFormat acceptedBackBufferFormat = presentationParameters.BackBufferFormat;
 
             if (!presentationParameters.IsFullScreen)
             {
                 deviceFormat = adapter.CurrentDisplayMode.Format;
 
                 if (SurfaceFormat.Unknown == presentationParameters.BackBufferFormat)
+                {
                     acceptedBackBufferFormat = deviceFormat;
+                }
             }
 
             if (Array.IndexOf(ValidBackBufferFormats, acceptedBackBufferFormat) == -1)
@@ -760,10 +761,14 @@ namespace Supremacy.Xna
             }
 
             if (presentationParameters.BackBufferCount < 0 || presentationParameters.BackBufferCount > 3)
+            {
                 throw new ArgumentException("BackBufferCount must be between 0 and 3.");
+            }
 
             if (presentationParameters.BackBufferCount > 1 && presentationParameters.SwapEffect == SwapEffect.Copy)
+            {
                 throw new ArgumentException("When using SwapEffect.Copy, BackBufferCount must be one.");
+            }
 
             switch (presentationParameters.SwapEffect)
             {
@@ -771,46 +776,44 @@ namespace Supremacy.Xna
                 case SwapEffect.Flip:
                 case SwapEffect.Copy:
                 {
-                    int qualityLevels;
+                        if (!adapter.CheckDeviceMultiSampleType(
+                            deviceType,
+                            acceptedBackBufferFormat,
+                            presentationParameters.IsFullScreen,
+                            presentationParameters.MultiSampleType,
+                            out int qualityLevels))
+                        {
+                            throw new ArgumentException(
+                                "The selected MultiSampleType is not compatible with the " +
+                                "current BackBufferFormat and IsFullScreen value for the " +
+                                "selected adapter.");
+                        }
 
-                    if (!adapter.CheckDeviceMultiSampleType(
-                        deviceType,
-                        acceptedBackBufferFormat,
-                        presentationParameters.IsFullScreen,
-                        presentationParameters.MultiSampleType,
-                        out qualityLevels))
+                        if (presentationParameters.MultiSampleQuality >= qualityLevels)
                     {
-                        throw new ArgumentException(
-                            "The selected MultiSampleType is not compatible with the " +
-                            "current BackBufferFormat and IsFullScreen value for the " +
-                            "selected adapter.");
-                    }
-
-                    if (presentationParameters.MultiSampleQuality >= qualityLevels)
-                    {
-                        throw new ArgumentException(
+                            throw new ArgumentException(
                             "The selected MultiSampleQualityLevel value is invalid for the " +
                             "selected MultiSampleType.");
                     }
 
-                    if (presentationParameters.MultiSampleType != MultiSampleType.None &&
+                        if (presentationParameters.MultiSampleType != MultiSampleType.None &&
                         presentationParameters.SwapEffect != SwapEffect.Discard)
                     {
-                        throw new ArgumentException(
+                            throw new ArgumentException(
                             "Must use SwapEffect.Discard when enabling multisampling.");
                     }
 
-                    if ((presentationParameters.PresentOptions & PresentOptions.DiscardDepthStencil) != PresentOptions.None &&
+                        if ((presentationParameters.PresentOptions & PresentOptions.DiscardDepthStencil) != PresentOptions.None &&
                         !presentationParameters.EnableAutoDepthStencil)
                     {
-                        throw new ArgumentException(
+                            throw new ArgumentException(
                             "When PresentOptions.DiscardDepthStencil is set, " +
                             "EnabledAutoDepthStencil must be true.");
                     }
 
-                    if (presentationParameters.EnableAutoDepthStencil)
+                        if (presentationParameters.EnableAutoDepthStencil)
                     {
-                        if (!adapter.CheckDeviceFormat(
+                            if (!adapter.CheckDeviceFormat(
                             deviceType,
                             deviceFormat,
                             TextureUsage.None,
@@ -818,63 +821,54 @@ namespace Supremacy.Xna
                             ResourceType.DepthStencilBuffer,
                             presentationParameters.AutoDepthStencilFormat))
                         {
-                            throw new ArgumentException(
+                                throw new ArgumentException(
                                 "The specified DepthStencilFormat is not supported as " +
                                 "a depth/stencil format for the selected adapter.");
                         }
 
-                        if (!adapter.CheckDepthStencilMatch(
+                            if (!adapter.CheckDepthStencilMatch(
                             deviceType,
                             deviceFormat,
                             acceptedBackBufferFormat,
                             presentationParameters.AutoDepthStencilFormat))
                         {
-                            throw new ArgumentException(
+                                throw new ArgumentException(
                                 "The specified DepthStencilFormat is not supported as " +
                                 "a depth/stencil format when using the selected BackBufferFormat.");
                         }
                     }
 
-                    if (!presentationParameters.IsFullScreen)
+                        if (!presentationParameters.IsFullScreen)
                     {
-                        switch (presentationParameters.PresentationInterval)
+                            switch (presentationParameters.PresentationInterval)
                         {
-                            case PresentInterval.Default:
-                            case PresentInterval.One:
-                            case PresentInterval.Immediate:
-                                return;
+                                case PresentInterval.Default:
+                                case PresentInterval.One:
+                                case PresentInterval.Immediate:
+                                    return;
                         }
 
-                        throw new ArgumentException(
+                            throw new ArgumentException(
                             "When IsFullScreen is false, PresentationInterval must be " +
                             "one of the following: Default, Immediate, or One.");
                     }
 
-                    break;
+                        break;
                 }
                 default:
                 {
-                    throw new ArgumentException(
+                        throw new ArgumentException(
                         "SwapEffect must be one of the following: SwapEffect.Copy, " +
                         "SwapEffect.Discard, or SwapEffect.Flip.");
                 }
             }
         }
 
-        public GraphicsDevice GraphicsDevice
-        {
-            get
-            {
-                return _device;
-            }
-        }
+        public GraphicsDevice GraphicsDevice { get; private set; }
 
         public ShaderProfile MinimumPixelShaderProfile
         {
-            get
-            {
-                return _minimumPixelShaderProfile;
-            }
+            get => _minimumPixelShaderProfile;
             set
             {
                 if (value < ShaderProfile.PS_1_1 || value > ShaderProfile.XPS_3_0)
@@ -890,10 +884,7 @@ namespace Supremacy.Xna
 
         public ShaderProfile MinimumVertexShaderProfile
         {
-            get
-            {
-                return _minimumVertexShaderProfile;
-            }
+            get => _minimumVertexShaderProfile;
             set
             {
                 if (value < ShaderProfile.VS_1_1 || value > ShaderProfile.XVS_3_0)
@@ -909,10 +900,7 @@ namespace Supremacy.Xna
 
         public bool PreferMultiSampling
         {
-            get
-            {
-                return _allowMultiSampling;
-            }
+            get => _allowMultiSampling;
             set
             {
                 _allowMultiSampling = value;
@@ -922,10 +910,7 @@ namespace Supremacy.Xna
 
         public SurfaceFormat PreferredBackBufferFormat
         {
-            get
-            {
-                return _backBufferFormat;
-            }
+            get => _backBufferFormat;
             set
             {
                 if (Array.IndexOf(ValidBackBufferFormats, value) == -1)
@@ -941,22 +926,13 @@ namespace Supremacy.Xna
             }
         }
 
-        public int PreferredBackBufferHeight
-        {
-            get { return _clientBounds.Height; }
-        }
+        public int PreferredBackBufferHeight => _clientBounds.Height;
 
-        public int PreferredBackBufferWidth
-        {
-            get { return _clientBounds.Width; }
-        }
+        public int PreferredBackBufferWidth => _clientBounds.Width;
 
         public DepthFormat PreferredDepthStencilFormat
         {
-            get
-            {
-                return _depthStencilFormat;
-            }
+            get => _depthStencilFormat;
             set
             {
                 switch (value)
@@ -981,10 +957,7 @@ namespace Supremacy.Xna
 
         public bool SynchronizeWithVerticalRetrace
         {
-            get
-            {
-                return _synchronizeWithVerticalRetrace;
-            }
+            get => _synchronizeWithVerticalRetrace;
             set
             {
                 _synchronizeWithVerticalRetrace = value;
@@ -998,10 +971,7 @@ namespace Supremacy.Xna
 
             public GraphicsDeviceInformationComparer([NotNull] GraphicsDeviceManager graphicsComponent)
             {
-                if (graphicsComponent == null)
-                    throw new ArgumentNullException("graphicsComponent");
-
-                _graphics = graphicsComponent;
+                _graphics = graphicsComponent ?? throw new ArgumentNullException("graphicsComponent");
             }
 
             public int Compare(GraphicsDeviceInformation d1, GraphicsDeviceInformation d2)
@@ -1010,102 +980,79 @@ namespace Supremacy.Xna
 
                 if (d1.DeviceType != d2.DeviceType)
                 {
-                    if (d1.DeviceType >= d2.DeviceType)
-                        return 1;
-
-                    return -1;
+                    return d1.DeviceType >= d2.DeviceType ? 1 : -1;
                 }
 
-                var parameters1 = d1.PresentationParameters;
-                var parameters2 = d2.PresentationParameters;
+                PresentationParameters parameters1 = d1.PresentationParameters;
+                PresentationParameters parameters2 = d2.PresentationParameters;
 
-                var formatRank1 = RankFormat(parameters1.BackBufferFormat);
-                var formatRank2 = RankFormat(parameters2.BackBufferFormat);
+                int formatRank1 = RankFormat(parameters1.BackBufferFormat);
+                int formatRank2 = RankFormat(parameters2.BackBufferFormat);
 
                 if (formatRank1 != formatRank2)
                 {
-                    if (formatRank1 >= formatRank2)
-                        return 1;
-
-                    return -1;
+                    return formatRank1 >= formatRank2 ? 1 : -1;
                 }
 
                 if (parameters1.MultiSampleType != parameters2.MultiSampleType)
                 {
-                    var multiSample1 = (parameters1.MultiSampleType == MultiSampleType.NonMaskable)
+                    int multiSample1 = (parameters1.MultiSampleType == MultiSampleType.NonMaskable)
                                            ? ((int)MultiSampleType.SixteenSamples | (int)MultiSampleType.NonMaskable)
                                            : (int)parameters1.MultiSampleType;
 
-                    var multiSample2 = (parameters2.MultiSampleType == MultiSampleType.NonMaskable)
+                    int multiSample2 = (parameters2.MultiSampleType == MultiSampleType.NonMaskable)
                                            ? ((int)MultiSampleType.SixteenSamples | (int)MultiSampleType.NonMaskable)
                                            : (int)parameters2.MultiSampleType;
 
-                    if (multiSample1 <= multiSample2)
-                        return 1;
-
-                    return -1;
+                    return multiSample1 <= multiSample2 ? 1 : -1;
                 }
 
                 if (parameters1.MultiSampleQuality != parameters2.MultiSampleQuality)
                 {
-                    if (parameters1.MultiSampleQuality <= parameters2.MultiSampleQuality)
-                        return 1;
-
-                    return -1;
+                    return parameters1.MultiSampleQuality <= parameters2.MultiSampleQuality ? 1 : -1;
                 }
 
-                if (_graphics.PreferredBackBufferWidth == 0 || _graphics.PreferredBackBufferHeight == 0)
-                {
-                    preferredAspectRatio = ((float)DefaultBackBufferWidth) / DefaultBackBufferHeight;
-                }
-                else
-                {
-                    preferredAspectRatio = ((float)_graphics.PreferredBackBufferWidth) / _graphics.PreferredBackBufferHeight;
-                }
+                preferredAspectRatio = _graphics.PreferredBackBufferWidth == 0 || _graphics.PreferredBackBufferHeight == 0
+                    ? ((float)DefaultBackBufferWidth) / DefaultBackBufferHeight
+                    : ((float)_graphics.PreferredBackBufferWidth) / _graphics.PreferredBackBufferHeight;
 
-                var aspectRatio1 = ((float)parameters1.BackBufferWidth) / parameters1.BackBufferHeight;
-                var aspectRatio2 = ((float)parameters2.BackBufferWidth) / parameters2.BackBufferHeight;
+                float aspectRatio1 = ((float)parameters1.BackBufferWidth) / parameters1.BackBufferHeight;
+                float aspectRatio2 = ((float)parameters2.BackBufferWidth) / parameters2.BackBufferHeight;
 
-                var dRatio1 = Math.Abs(aspectRatio1 - preferredAspectRatio);
-                var dRaio2 = Math.Abs(aspectRatio2 - preferredAspectRatio);
+                float dRatio1 = Math.Abs(aspectRatio1 - preferredAspectRatio);
+                float dRaio2 = Math.Abs(aspectRatio2 - preferredAspectRatio);
 
                 if (Math.Abs(dRatio1 - dRaio2) > 0.2f)
                 {
-                    if (dRatio1 >= dRaio2)
-                        return 1;
-
-                    return -1;
+                    return dRatio1 >= dRaio2 ? 1 : -1;
                 }
 
                 int pixelCount1;
                 int pixelCount2;
 
-                if (_graphics.PreferredBackBufferWidth == 0 || _graphics.PreferredBackBufferHeight == 0)
-                {
-                    pixelCount1 = pixelCount2 = DefaultBackBufferWidth * DefaultBackBufferHeight;
-                }
-                else
-                {
-                    pixelCount1 = pixelCount2 = _graphics.PreferredBackBufferWidth * _graphics.PreferredBackBufferHeight;
-                }
+                pixelCount1 = _graphics.PreferredBackBufferWidth == 0 || _graphics.PreferredBackBufferHeight == 0
+                    ? (pixelCount2 = DefaultBackBufferWidth * DefaultBackBufferHeight)
+                    : (pixelCount2 = _graphics.PreferredBackBufferWidth * _graphics.PreferredBackBufferHeight);
 
-                var dPixels1 = Math.Abs((parameters1.BackBufferWidth * parameters1.BackBufferHeight) - pixelCount1);
-                var dPixels2 = Math.Abs((parameters2.BackBufferWidth * parameters2.BackBufferHeight) - pixelCount2);
+                int dPixels1 = Math.Abs((parameters1.BackBufferWidth * parameters1.BackBufferHeight) - pixelCount1);
+                int dPixels2 = Math.Abs((parameters2.BackBufferWidth * parameters2.BackBufferHeight) - pixelCount2);
 
                 if (dPixels1 != dPixels2)
                 {
-                    if (dPixels1 >= dPixels2)
-                        return 1;
-                    return -1;
+                    return dPixels1 >= dPixels2 ? 1 : -1;
                 }
 
                 if (d1.Adapter != d2.Adapter)
                 {
                     if (d1.Adapter.IsDefaultAdapter)
+                    {
                         return -1;
+                    }
 
                     if (d2.Adapter.IsDefaultAdapter)
+                    {
                         return 1;
+                    }
                 }
 
                 return 0;
@@ -1113,16 +1060,21 @@ namespace Supremacy.Xna
 
             private int RankFormat(SurfaceFormat format)
             {
-                var formatIndex = Array.IndexOf(ValidBackBufferFormats, format);
+                int formatIndex = Array.IndexOf(ValidBackBufferFormats, format);
 
                 if (formatIndex != -1)
                 {
-                    var preferredFormatIndex = Array.IndexOf(ValidBackBufferFormats, _graphics.PreferredBackBufferFormat);
+                    int preferredFormatIndex = Array.IndexOf(ValidBackBufferFormats, _graphics.PreferredBackBufferFormat);
 
                     if (preferredFormatIndex == -1)
+                    {
                         return (ValidBackBufferFormats.Length - formatIndex);
+                    }
+
                     if (formatIndex >= preferredFormatIndex)
+                    {
                         return (formatIndex - preferredFormatIndex);
+                    }
                 }
 
                 return 0x7fffffff;
@@ -1131,11 +1083,9 @@ namespace Supremacy.Xna
 
         #region Implementation of IServiceProvider
 
-        object IServiceProvider.GetService(Type serviceType)
+        public object GetService(Type serviceType)
         {
-            if (serviceType == typeof(IGraphicsDeviceService))
-                return this;
-            return null;
+            return serviceType == typeof(IGraphicsDeviceService) ? (this) : null;
         }
 
         #endregion

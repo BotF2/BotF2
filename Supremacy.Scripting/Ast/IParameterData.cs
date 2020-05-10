@@ -5,14 +5,10 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Text;
-
 using Microsoft.Scripting;
 using Microsoft.Scripting.Utils;
-
 using Supremacy.Scripting.Runtime;
 using Supremacy.Scripting.Utility;
-
-using MSAst = System.Linq.Expressions;
 
 namespace Supremacy.Scripting.Ast
 {
@@ -45,7 +41,6 @@ namespace Supremacy.Scripting.Ast
         #endregion
 
         private readonly Modifier _modifierFlags;
-        private Type _parameterType;
 
         public Parameter(string name, Scope scope, SourceSpan span, Modifier modifierFlags = Modifier.None)
         {
@@ -60,45 +55,29 @@ namespace Supremacy.Scripting.Ast
 
         public Type ParameterType
         {
-            get { return _parameterType ?? TypeManager.CoreTypes.Object; }
-            set { _parameterType = value; }
+            get => ParameterTypeInternal ?? TypeManager.CoreTypes.Object;
+            set => ParameterTypeInternal = value;
         }
 
-        internal Type ParameterTypeInternal
-        {
-            get { return _parameterType; }
-            set { _parameterType = value; }
-        }
+        internal Type ParameterTypeInternal { get; set; }
 
         public int Index { get; private set; }
 
-        public virtual bool IsParamsArray
-        {
-            get { return false; }
-        }
+        public virtual bool IsParamsArray => false;
 
         public Scope Scope { get; set; }
 
         #region IParameterData Members
         public Expression DefaultValue { get; set; }
 
-        public bool HasExtensionMethodModifier
-        {
-            get { return (_modifierFlags & Modifier.This) == Modifier.This; }
-        }
+        public bool HasExtensionMethodModifier => (_modifierFlags & Modifier.This) == Modifier.This;
 
         public bool HasDefaultValue { get; set; }
         public string Name { get; set; }
 
-        public bool IsByRef
-        {
-            get { return ParameterType.IsByRef; }
-        }
+        public bool IsByRef => ParameterType.IsByRef;
 
-        public Modifier ModifierFlags
-        {
-            get { return _modifierFlags & ~Modifier.This; }
-        }
+        public Modifier ModifierFlags => _modifierFlags & ~Modifier.This;
         #endregion
 
         public static string GetModifierSignature(Modifier mod)
@@ -122,9 +101,10 @@ namespace Supremacy.Scripting.Ast
         {
             base.CloneTo(cloneContext, target);
 
-            var targetParameter = target as Parameter;
-            if (targetParameter == null)
+            if (!(target is Parameter targetParameter))
+            {
                 return;
+            }
 
             targetParameter.Scope = cloneContext.LookupBlock(Scope);
         }
@@ -147,11 +127,15 @@ namespace Supremacy.Scripting.Ast
         public virtual Type Resolve(ParseContext rc)
         {
             if (ParameterType != null)
+            {
                 return ParameterType;
+            }
 
-            var texpr = TypeName.ResolveAsTypeTerminal(rc, false);
+            TypeExpression texpr = TypeName.ResolveAsTypeTerminal(rc, false);
             if (texpr == null)
+            {
                 return null;
+            }
 
             ParameterType = texpr.Type;
 
@@ -161,8 +145,7 @@ namespace Supremacy.Scripting.Ast
                 DefaultValue = DefaultValue.Resolve(rc);
                 if (DefaultValue != null)
                 {
-                    var value = DefaultValue as ConstantExpression;
-                    if (value == null)
+                    if (!(DefaultValue is ConstantExpression value))
                     {
                         if (DefaultValue != null)
                         {
@@ -204,7 +187,7 @@ namespace Supremacy.Scripting.Ast
                     }
                     else
                     {
-                        var c = value.ConvertImplicitly(ParameterType);
+                        ConstantExpression c = value.ConvertImplicitly(ParameterType);
                         if (c == null)
                         {
                             if (ParameterType == TypeManager.CoreTypes.Object)
@@ -245,13 +228,15 @@ namespace Supremacy.Scripting.Ast
                 return null;
             }
 
-            TypeManager.CheckTypeVariance(
+            _ = TypeManager.CheckTypeVariance(
                 ParameterType,
                 (_modifierFlags & Modifier.IsByRef) != 0 ? Variance.None : Variance.Contravariant,
                 rc);
 
             if (TypeManager.IsGenericParameter(ParameterType))
+            {
                 return ParameterType;
+            }
 
             if ((_modifierFlags & Modifier.This) != 0 &&
                 (ParameterType.IsPointer || TypeManager.IsDynamicType(ParameterType)))
@@ -269,122 +254,81 @@ namespace Supremacy.Scripting.Ast
 
         public virtual string GetSignatureForError()
         {
-            var typeName = (ParameterType != null)
+            string typeName = (ParameterType != null)
                                ? TypeManager.GetCSharpName(ParameterType)
                                : TypeName.GetSignatureForError();
 
-            var mod = GetModifierSignature(_modifierFlags);
-            if (mod.Length > 0)
-                return String.Concat(mod, " ", typeName);
-
-            return typeName;
+            string mod = GetModifierSignature(_modifierFlags);
+            return mod.Length > 0 ? string.Concat(mod, " ", typeName) : typeName;
         }
     }
 
     public abstract class ParametersCollection
     {
-        private IParameterData[] _parameters;
-
-        public int Count
-        {
-            get { return (Parameters == null) ? 0 : Parameters.Length; }
-        }
+        public int Count => (Parameters == null) ? 0 : Parameters.Length;
 
         public bool HasParams { get; protected set; }
 
         public bool HasArglist { get; protected set; }
 
-        public Type ExtensionMethodType
-        {
-            get
-            {
-                if (Count == 0)
-                    return null;
-                return FixedParameters[0].HasExtensionMethodModifier ? Types[0] : null;
-            }
-        }
+        public Type ExtensionMethodType => Count == 0 ? null : FixedParameters[0].HasExtensionMethodModifier ? Types[0] : null;
 
-        public IParameterData[] FixedParameters
-        {
-            get { return Parameters; }
-        }
+        public IParameterData[] FixedParameters => Parameters;
 
-        public bool HasExtensionMethodType
-        {
-            get
-            {
-                if (Count == 0)
-                    return false;
+        public bool HasExtensionMethodType => Count == 0 ? false : FixedParameters[0].HasExtensionMethodModifier;
 
-                return FixedParameters[0].HasExtensionMethodModifier;
-            }
-        }
-
-        public bool IsEmpty
-        {
-            get { return Parameters.Length == 0; }
-        }
+        public bool IsEmpty => Parameters.Length == 0;
 
         public Type[] Types { get; set; }
 
-        protected IParameterData[] Parameters
-        {
-            get { return _parameters; }
-            set { _parameters = value; }
-        }
+        protected IParameterData[] Parameters { get; set; }
 
         public int GetParameterIndexByName(string name)
         {
-            if (_parameters == null)
-                return -1;
-
-            return _parameters.FindIndex(o => o.Name == name);
+            return Parameters == null ? -1 : Parameters.FindIndex(o => o.Name == name);
         }
 
         public string GetSignatureForError()
         {
-            var sb = new StringBuilder("(");
-            for (var i = 0; i < Count; ++i)
+            StringBuilder sb = new StringBuilder("(");
+            for (int i = 0; i < Count; ++i)
             {
                 if (i != 0)
-                    sb.Append(", ");
-                sb.Append(ParameterDesc(i));
+                {
+                    _ = sb.Append(", ");
+                }
+
+                _ = sb.Append(ParameterDesc(i));
             }
-            sb.Append(')');
+            _ = sb.Append(')');
             return sb.ToString();
         }
 
         public string ParameterDesc(int pos)
         {
-            var types = Types;
-            var typeName = ((types == null) || (types[pos] == null))
+            Type[] types = Types;
+            string typeName = ((types == null) || (types[pos] == null))
                                ? "dynamic"
                                : TypeManager.GetCSharpName(types[pos]);
 
-            if (FixedParameters[pos].HasExtensionMethodModifier)
-                return "this " + typeName;
-
-            return typeName;
+            return FixedParameters[pos].HasExtensionMethodModifier ? "this " + typeName : typeName;
         }
 
         public ParametersCollection InflateTypes(Type[] genArguments, Type[] argTypes)
         {
-            var p = (ParametersCollection)MemberwiseClone();
-            var types = Types;
+            ParametersCollection p = (ParametersCollection)MemberwiseClone();
+            Type[] types = Types;
 
-            for (var i = 0; i < Count; ++i)
+            for (int i = 0; i < Count; ++i)
             {
                 if (types[i].IsGenericType)
                 {
-                    var genericArgumentsOpen = new Type[types[i].GetGenericTypeDefinition().GetGenericArguments().Length];
-                    var genericArguments = types[i].GetGenericArguments();
+                    Type[] genericArgumentsOpen = new Type[types[i].GetGenericTypeDefinition().GetGenericArguments().Length];
+                    Type[] genericArguments = types[i].GetGenericArguments();
 
-                    for (var j = 0; j < genericArgumentsOpen.Length; ++j)
+                    for (int j = 0; j < genericArgumentsOpen.Length; ++j)
                     {
-                        if (genericArguments[j].IsGenericParameter)
-                            genericArgumentsOpen[j] = argTypes[genericArguments[j].GenericParameterPosition];
-                        else
-                            genericArgumentsOpen[j] = genericArguments[j];
+                        genericArgumentsOpen[j] = genericArguments[j].IsGenericParameter ? argTypes[genericArguments[j].GenericParameterPosition] : genericArguments[j];
                     }
 
                     p.Types[i] = types[i].GetGenericTypeDefinition().MakeGenericType(genericArgumentsOpen);
@@ -392,9 +336,11 @@ namespace Supremacy.Scripting.Ast
                 }
 
                 if (!types[i].IsGenericParameter)
+                {
                     continue;
+                }
 
-                var genericArgument = argTypes[types[i].GenericParameterPosition];
+                Type genericArgument = argTypes[types[i].GenericParameterPosition];
                 p.Types[i] = genericArgument;
                 continue;
             }
@@ -425,14 +371,13 @@ namespace Supremacy.Scripting.Ast
 
         public ParametersCompiled(params Parameter[] parameters)
         {
-            if (parameters == null)
-                throw new ArgumentException("Use EmptyReadOnlyParameters");
+            Parameters = parameters ?? throw new ArgumentException("Use EmptyReadOnlyParameters");
 
-            Parameters = parameters;
-
-            var count = parameters.Length;
+            int count = parameters.Length;
             if (count == 0)
+            {
                 return;
+            }
 
             if (count == 1)
             {
@@ -440,15 +385,17 @@ namespace Supremacy.Scripting.Ast
                 return;
             }
 
-            for (var i = 0; i < count; i++)
+            for (int i = 0; i < count; i++)
             {
-                var baseName = parameters[i].Name;
+                string baseName = parameters[i].Name;
                 HasParams |= parameters[i].IsParamsArray;
 
-                for (var j = i + 1; j < count; j++)
+                for (int j = i + 1; j < count; j++)
                 {
                     if (baseName != parameters[j].Name)
+                    {
                         continue;
+                    }
 
                     Debug.Assert(baseName != parameters[j].Name, "Duplicate parameter name: " + baseName);
 
@@ -466,15 +413,9 @@ namespace Supremacy.Scripting.Ast
         public ParametersCompiled(IEnumerable<Parameter> parameters)
             : this(parameters.ToArray()) { }
 
-        public CallingConventions CallingConvention
-        {
-            get { return CallingConventions.Standard; }
-        }
+        public CallingConventions CallingConvention => CallingConventions.Standard;
 
-        public Parameter this[int pos]
-        {
-            get { return (Parameter)Parameters[pos]; }
-        }
+        public Parameter this[int pos] => (Parameter)Parameters[pos];
 
         public static ParametersCompiled CreateFullyResolved(Parameter p, Type type)
         {
@@ -506,7 +447,7 @@ namespace Supremacy.Scripting.Ast
             Parameter[] compilerParams,
             Type[] compilerTypes)
         {
-            var allParams = new Parameter[userParams.Count + compilerParams.Length];
+            Parameter[] allParams = new Parameter[userParams.Count + compilerParams.Length];
 
             userParams.FixedParameters.CopyTo(allParams, 0);
 
@@ -521,12 +462,12 @@ namespace Supremacy.Scripting.Ast
                 allTypes = null;
             }
 
-            var index = 0;
-            var lastFilled = userParams.Count;
+            int index = 0;
+            int lastFilled = userParams.Count;
 
-            foreach (var p in compilerParams)
+            foreach (Parameter p in compilerParams)
             {
-                for (var i = 0; i < lastFilled; ++i)
+                for (int i = 0; i < lastFilled; ++i)
                 {
                     while (p.Name == allParams[i].Name)
                     {
@@ -543,7 +484,9 @@ namespace Supremacy.Scripting.Ast
                 allParams[lastFilled] = p;
 
                 if (allTypes != null)
+                {
                     allTypes[lastFilled] = compilerTypes[index++];
+                }
 
                 ++lastFilled;
             }
@@ -553,19 +496,23 @@ namespace Supremacy.Scripting.Ast
 
         public void ResolveVariable()
         {
-            for (var i = 0; i < FixedParameters.Length; ++i)
+            for (int i = 0; i < FixedParameters.Length; ++i)
+            {
                 this[i].ResolveVariable(i);
+            }
         }
 
         public ParametersCompiled Clone()
         {
-            var p = (ParametersCompiled)MemberwiseClone();
-            var parameters = Parameters;
+            ParametersCompiled p = (ParametersCompiled)MemberwiseClone();
+            IParameterData[] parameters = Parameters;
 
             p.Parameters = new IParameterData[parameters.Length];
 
-            for (var i = 0; i < Count; ++i)
+            for (int i = 0; i < Count; ++i)
+            {
                 p.Parameters[i] = this[i].Clone();
+            }
 
             return p;
         }
@@ -573,17 +520,19 @@ namespace Supremacy.Scripting.Ast
         public bool Resolve(ParseContext ec)
         {
             if (Types != null)
+            {
                 return true;
+            }
 
             Types = new Type[Count];
 
-            var ok = true;
+            bool ok = true;
 
-            for (var i = 0; i < FixedParameters.Length; ++i)
+            for (int i = 0; i < FixedParameters.Length; ++i)
             {
                 Parameter p = this[i];
 
-                var resolvedType = p.Resolve(ec);
+                Type resolvedType = p.Resolve(ec);
                 if (resolvedType == null)
                 {
                     ok = false;
@@ -603,54 +552,37 @@ namespace Supremacy.Scripting.Ast
     public class ParameterData : IParameterData
     {
         private readonly Parameter.Modifier _modifiers;
-        private readonly Expression _defaultValue;
-        private readonly string _name;
 
         public ParameterData(string name, Parameter.Modifier modifiers)
         {
-            _name = name;
+            Name = name;
             _modifiers = modifiers;
         }
 
         public ParameterData(string name, Parameter.Modifier modifiers, Expression defaultValue)
             : this(name, modifiers)
         {
-            _defaultValue = defaultValue;
+            DefaultValue = defaultValue;
         }
 
         #region IParameterData Members
-        public Expression DefaultValue
-        {
-            get { return _defaultValue; }
-        }
+        public Expression DefaultValue { get; }
 
-        public bool HasExtensionMethodModifier
-        {
-            get { return (_modifiers & Parameter.Modifier.This) != 0; }
-        }
+        public bool HasExtensionMethodModifier => (_modifiers & Parameter.Modifier.This) != 0;
 
-        public bool HasDefaultValue
-        {
-            get { return _defaultValue != null; }
-        }
+        public bool HasDefaultValue => DefaultValue != null;
 
         public bool IsByRef { get; set; }
 
-        public Parameter.Modifier ModFlags
-        {
-            get { return _modifiers & ~Parameter.Modifier.This; }
-        }
+        public Parameter.Modifier ModFlags => _modifiers & ~Parameter.Modifier.This;
 
-        public string Name
-        {
-            get { return _name; }
-        }
+        public string Name { get; }
 
         private Parameter.Modifier _modifierFlags;
         public Parameter.Modifier ModifierFlags
         {
-            get { return _modifierFlags & ~Parameter.Modifier.This; }
-            set { _modifierFlags = value; }
+            get => _modifierFlags & ~Parameter.Modifier.This;
+            set => _modifierFlags = value;
         }
         #endregion
     }

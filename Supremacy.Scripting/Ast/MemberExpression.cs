@@ -50,10 +50,7 @@ namespace Supremacy.Scripting.Ast
             get;
         }
 
-        public override bool IsPrimaryExpression
-        {
-            get { return true; }
-        }
+        public override bool IsPrimaryExpression => true;
 
         /// <summary>
         ///   The instance expression associated with this member, if it's a
@@ -65,7 +62,7 @@ namespace Supremacy.Scripting.Ast
         // Cache resolved constant result in FieldBuilder <-> expression map
         public virtual MemberExpression ResolveMemberAccess(
             ParseContext ec,
-            Expression left, 
+            Expression left,
             SourceSpan loc,
             NameExpression original)
         {
@@ -78,11 +75,13 @@ namespace Supremacy.Scripting.Ast
             {
                 left = left.ResolveAsBaseTerminal(ec, false);
                 if (left == null)
+                {
                     return null;
+                }
 
                 // TODO: Same problem as in class.cs, TypeTerminal does not
                 // always do all necessary checks
-                var obsoleteAttribute = left.Type.GetCustomAttributes(typeof(ObsoleteAttribute), true)
+                ObsoleteAttribute obsoleteAttribute = left.Type.GetCustomAttributes(typeof(ObsoleteAttribute), true)
                     .Cast<ObsoleteAttribute>()
                     .FirstOrDefault();
                 if (obsoleteAttribute != null)
@@ -90,11 +89,12 @@ namespace Supremacy.Scripting.Ast
                     ErrorInfo error;
                     
                     if (obsoleteAttribute.IsError)
+                    {
                         error = CompilerErrors.MemberIsObsolete;
-                    else if (string.IsNullOrEmpty(obsoleteAttribute.Message))
-                        error = CompilerErrors.MemberIsObsoleteWarning;
-                    else
-                        error = CompilerErrors.MemberIsObsoleteWithMessageWarning;
+                    }
+                    else error = string.IsNullOrEmpty(obsoleteAttribute.Message)
+                        ? CompilerErrors.MemberIsObsoleteWarning
+                        : CompilerErrors.MemberIsObsoleteWithMessageWarning;
 
                     ec.ReportError(
                         error,
@@ -103,9 +103,10 @@ namespace Supremacy.Scripting.Ast
                         obsoleteAttribute.Message);
                 }
 
-                var ct = left as GenericTypeExpression;
-                if (ct != null && !ct.CheckConstraints(ec))
+                if (left is GenericTypeExpression ct && !ct.CheckConstraints(ec))
+                {
                     return null;
+                }
 
                 if (!IsStatic)
                 {
@@ -125,10 +126,7 @@ namespace Supremacy.Scripting.Ast
 
             if (!IsInstance)
             {
-                if (original != null && original.IdenticalNameAndTypeName(ec, left, loc))
-                    return this;
-
-                return ResolveExtensionMemberAccess(ec, left);
+                return original != null && original.IdenticalNameAndTypeName(ec, left, loc) ? (this) : ResolveExtensionMemberAccess(ec, left);
             }
 
             InstanceExpression = left;
@@ -163,39 +161,24 @@ namespace Supremacy.Scripting.Ast
 
         public ConstantMemberExpression([NotNull] FieldInfo field, SourceSpan span = default(SourceSpan))
         {
-            if (field == null)
-                throw new ArgumentNullException("field");
-
-            _field = field;
+            _field = field ?? throw new ArgumentNullException("field");
 
             Span = span;
         }
 
-        public override string Name
-        {
-            get { return _field.Name; }
-        }
+        public override string Name => _field.Name;
 
-        public override bool IsInstance
-        {
-            get { return !_field.IsStatic; }
-        }
+        public override bool IsInstance => !_field.IsStatic;
 
-        public override bool IsStatic
-        {
-            get { return _field.IsStatic; }
-        }
+        public override bool IsStatic => _field.IsStatic;
 
-        public override Type DeclaringType
-        {
-            get { return _field.DeclaringType; }
-        }
+        public override Type DeclaringType => _field.DeclaringType;
 
         public override MemberExpression ResolveMemberAccess(ParseContext ec, Expression left, SourceSpan loc, NameExpression original)
         {
             _field = TypeManager.GetGenericFieldDefinition(_field);
 
-            var ic = TypeManager.GetConstant(_field);
+            IConstant ic = TypeManager.GetConstant(_field);
             if (ic == null)
             {
                 if (_field.IsLiteral)
@@ -207,7 +190,9 @@ namespace Supremacy.Scripting.Ast
                     ic = ExternalConstant.CreateDecimal(_field);
                     // HACK: decimal field was not resolved as constant
                     if (ic == null)
+                    {
                         return new FieldExpression(_field, loc).ResolveMemberAccess(ec, left, loc, original);
+                    }
                 }
 
                 TypeManager.RegisterConstant(_field, ic);
@@ -218,7 +203,7 @@ namespace Supremacy.Scripting.Ast
 
         public override Expression DoResolve(ParseContext ec)
         {
-            var ic = TypeManager.GetConstant(_field);
+            IConstant ic = TypeManager.GetConstant(_field);
             if (ic.ResolveValue())
                 ic.CheckObsoleteness(ec, Span);
 

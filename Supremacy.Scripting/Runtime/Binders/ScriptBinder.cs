@@ -19,25 +19,23 @@ namespace Supremacy.Scripting.Runtime.Binders
 {
     public class ScriptBinder : DefaultBinder
     {
-        private readonly ScriptLanguageContext _context;
         private readonly Dictionary<Type, IList<Type>> _extensionTypes;
         private bool _registeredInterfaceExtensions;    // true if someone has registered extensions for interfaces
 
-        public ScriptLanguageContext Context
-        {
-            get { return _context; }
-        }
+        public ScriptLanguageContext Context { get; }
 
         public ScriptBinder(ScriptLanguageContext context)
             : base(context.DomainManager)
         {
-            _context = context;
+            Context = context;
             _extensionTypes = new Dictionary<Type, IList<Type>>();
 
-            _context.DomainManager.AssemblyLoaded += DomainManager_AssemblyLoaded;
+            Context.DomainManager.AssemblyLoaded += DomainManager_AssemblyLoaded;
 
-            foreach (var assembly in _context.DomainManager.GetLoadedAssemblyList())
+            foreach (Assembly assembly in Context.DomainManager.GetLoadedAssemblyList())
+            {
                 DomainManager_AssemblyLoaded(this, new AssemblyLoadedEventArgs(assembly));
+            }
         }
 
         /// <summary>
@@ -48,7 +46,7 @@ namespace Supremacy.Scripting.Runtime.Binders
         /// </summary>
         private void DomainManager_AssemblyLoaded(object sender, AssemblyLoadedEventArgs e)
         {
-            var assembly = e.Assembly;
+            Assembly assembly = e.Assembly;
 
             var extensions =
                 (
@@ -66,10 +64,10 @@ namespace Supremacy.Scripting.Runtime.Binders
                              type)).Distinct()
                     from extendedType in extendedTypes
                     select new
-                           {
-                               ExtendedType = extendedType.Item1,
-                               ExtendingType = extendedType.Item2
-                           }
+                    {
+                        ExtendedType = extendedType.Item1,
+                        ExtendingType = extendedType.Item2
+                    }
                 ).ToList();
 
             lock (_extensionTypes)
@@ -77,17 +75,24 @@ namespace Supremacy.Scripting.Runtime.Binders
                 foreach (var extension in extensions)
                 {
                     if (extension.ExtendedType.IsInterface)
+                    {
                         _registeredInterfaceExtensions = true;
+                    }
 
-                    IList<Type> typeList;
-                    
-                    if (!_extensionTypes.TryGetValue(extension.ExtendedType, out typeList))
+
+                    if (!_extensionTypes.TryGetValue(extension.ExtendedType, out IList<Type> typeList))
+                    {
                         _extensionTypes[extension.ExtendedType] = typeList = new List<Type>();
+                    }
                     else if (typeList.IsReadOnly)
+                    {
                         _extensionTypes[extension.ExtendedType] = typeList = new List<Type>(typeList);
+                    }
 
                     if (!typeList.Contains(extension.ExtendingType))
+                    {
                         typeList.Add(extension.ExtendingType);
+                    }
                 }
             }
         }
@@ -95,34 +100,39 @@ namespace Supremacy.Scripting.Runtime.Binders
         #region ActionBinder overrides
         public override bool CanConvertFrom(Type fromType, Type toType, bool toNotNullable, NarrowingLevel level)
         {
-            var conversionResultKind = level.ToConversionResultKind();
+            ConversionResultKind? conversionResultKind = level.ToConversionResultKind();
             
             if (!conversionResultKind.HasValue)
+            {
                 return toType.IsAssignableFrom(fromType);
+            }
 
-            var conversionResult = ConvertExpression(
+            MSAst conversionResult = ConvertExpression(
                 MSAst.Default(fromType),
                 toType,
                 conversionResultKind.Value,
-                _context.OverloadResolver);
+                Context.OverloadResolver);
 
-            return (conversionResult != null);
+            return conversionResult != null;
         }
 
         public override object Convert(object obj, Type toType)
         {
             if (toType == typeof(int))
+            {
                 return System.Convert.ToInt32(obj);
+            }
+
             if (toType == typeof(decimal))
+            {
                 return System.Convert.ToDecimal(obj);
+            }
+
             if (toType == typeof(char))
             {
-                var stringValue = obj as string;
-                if (stringValue != null)
+                if (obj is string stringValue)
                 {
-                    if (stringValue == string.Empty)
-                        return '\0';
-                    return stringValue[0];
+                    return stringValue == string.Empty ? '\0' : (object)stringValue[0];
                 }
             }
             return base.Convert(obj, toType);
@@ -141,13 +151,15 @@ namespace Supremacy.Scripting.Runtime.Binders
             ContractUtils.RequiresNotNull(expression, "arg");
 
             if (expression.Type == toType)
+            {
                 return expression;
+            }
 
             // try all the conversions - first look for conversions against the expression type,
             // these can be done w/o any additional tests.  Then look for conversions against the 
             // restricted type.
 
-            var res = TryConvertToObject(toType, expression.Type, expression) ??
+            MSAst res = TryConvertToObject(toType, expression.Type, expression) ??
                       TryAllConversions(toType, kind, expression.Type, expression) ??
                       //TryAllConversions(toType, kind, expression.Type, expression) ??
                       MakeErrorTarget(toType, kind, expression);
@@ -175,9 +187,7 @@ namespace Supremacy.Scripting.Runtime.Binders
         /// <summary>Checks if the conversion is to object and produces a target if it is.</summary>
         private static MSAst TryConvertToObject(Type toType, Type knownType, MSAst arg)
         {
-            if (toType == typeof(object))
-                return knownType.IsValueType ? MakeBoxingTarget(arg) : arg;
-            return null;
+            return toType == typeof(object) ? knownType.IsValueType ? MakeBoxingTarget(arg) : arg : null;
         }
 
         /// <summary>Checks if any conversions are available and if so builds the target for that conversion.</summary>
@@ -208,9 +218,9 @@ namespace Supremacy.Scripting.Runtime.Binders
         /// <summary>Checks if the conversion can be handled by calling a user-defined conversion method.</summary>
         internal MSAst TryUserDefinedConversion(ConversionResultKind kind, Type toType, Type type, MSAst arg)
         {
-            var fromType = GetUnderlyingType(type);
+            Type fromType = GetUnderlyingType(type);
 
-            var res = TryOneConversion(kind, toType, type, fromType, "op_Implicit", true, arg) ??
+            MSAst res = TryOneConversion(kind, toType, type, fromType, "op_Implicit", true, arg) ??
                       TryOneConversion(kind, toType, type, fromType, "ConvertTo" + toType.Name, true, arg);
 
             if (kind == ConversionResultKind.ExplicitCast ||
@@ -238,10 +248,12 @@ namespace Supremacy.Scripting.Runtime.Binders
             bool isImplicit,
             MSAst arg)
         {
-            var conversions = GetMember(fromType, methodName);
-            var res = TryUserDefinedConversion(kind, toType, type, conversions, isImplicit, arg);
+            MemberGroup conversions = GetMember(fromType, methodName);
+            MSAst res = TryUserDefinedConversion(kind, toType, type, conversions, isImplicit, arg);
             if (res != null)
+            {
                 return res;
+            }
 
             // then on the type we're trying to convert to
             conversions = GetMember(toType, methodName);
@@ -255,14 +267,16 @@ namespace Supremacy.Scripting.Runtime.Binders
         private static MSAst TryUserDefinedConversion(
             ConversionResultKind kind, Type toType, Type type, MemberGroup conversions, bool isImplicit, MSAst arg)
         {
-            var checkType = GetUnderlyingType(type);
+            Type checkType = GetUnderlyingType(type);
 
-            foreach (var mt in conversions)
+            foreach (MemberTracker mt in conversions)
             {
                 if (mt.MemberType != TrackerTypes.Method)
+                {
                     continue;
+                }
 
-                var method = (MethodTracker)mt;
+                MethodTracker method = (MethodTracker)mt;
 
                 if (isImplicit && method.Method.IsDefined(typeof(ExplicitConversionMethodAttribute), true))
                 {
@@ -272,14 +286,14 @@ namespace Supremacy.Scripting.Runtime.Binders
                 if (method.Method.ReturnType == toType)
                 {
                     // TODO: IsAssignableFrom?  IsSubclass?
-                    var pis = method.Method.GetParameters();
+                    ParameterInfo[] pis = method.Method.GetParameters();
 
                     if (pis.Length == 1 && pis[0].ParameterType.IsAssignableFrom(checkType))
                     {
                         // we can use this method
-                        if (type == checkType)
-                            return MakeConversionTarget(kind, method, type, isImplicit, arg);
-                        return MakeExtensibleConversionTarget(kind, method, type, isImplicit, arg);
+                        return type == checkType
+                            ? MakeConversionTarget(kind, method, type, isImplicit, arg)
+                            : MakeExtensibleConversionTarget(kind, method, type, isImplicit, arg);
                     }
                 }
             }
@@ -289,12 +303,8 @@ namespace Supremacy.Scripting.Runtime.Binders
         /// <summary>Checks if the conversion is to applicable by extracting the value from Extensible of T.</summary>
         private static MSAst TryExtensibleConversion(Type toType, Type type, MSAst arg)
         {
-            var extensibleType = typeof(Extensible<>).MakeGenericType(toType);
-            if (extensibleType.IsAssignableFrom(type))
-            {
-                return MakeExtensibleTarget(extensibleType, arg);
-            }
-            return null;
+            Type extensibleType = typeof(Extensible<>).MakeGenericType(toType);
+            return extensibleType.IsAssignableFrom(type) ? MakeExtensibleTarget(extensibleType, arg) : null;
         }
 
         /// <summary>Checks if there's an implicit numeric conversion for primitive data types.</summary>
@@ -309,9 +319,8 @@ namespace Supremacy.Scripting.Runtime.Binders
             if (TypeUtils.IsNumeric(toType) && TypeUtils.IsNumeric(checkType))
             {
                 // check for an explicit conversion
-                int toX, toY, fromX, fromY;
-                if (TypeUtils.GetNumericConversionOrder(Type.GetTypeCode(toType), out toX, out toY) &&
-                    TypeUtils.GetNumericConversionOrder(Type.GetTypeCode(checkType), out fromX, out fromY))
+                if (TypeUtils.GetNumericConversionOrder(Type.GetTypeCode(toType), out int toX, out int toY) &&
+                    TypeUtils.GetNumericConversionOrder(Type.GetTypeCode(checkType), out int fromX, out int fromY))
                 {
                     if (TypeUtils.IsImplicitlyConvertible(fromX, fromY, toX, toY))
                     {
@@ -333,10 +342,14 @@ namespace Supremacy.Scripting.Runtime.Binders
             if (toType.IsGenericType && (toType.GetGenericTypeDefinition() == typeof(Nullable<>)))
             {
                 if (knownType == typeof(DynamicNull))
+                {
                     return MakeNullToNullableOfTTarget(toType);
+                }
 
                 if (knownType == toType.GetGenericArguments()[0])
+                {
                     return MakeTToNullableOfTTarget(toType, knownType, arg);
+                }
 
                 if ((kind == ConversionResultKind.ExplicitCast) || (kind == ConversionResultKind.ExplicitTry))
                 {
@@ -354,9 +367,7 @@ namespace Supremacy.Scripting.Runtime.Binders
         /// <summary>Checks to see if there's a conversion of null to a reference type</summary>
         private static MSAst TryNullConversion(Type toType, Type knownType)
         {
-            if (knownType == typeof(DynamicNull) && !toType.IsValueType)
-                return MakeNullTarget(toType);
-            return null;
+            return knownType == typeof(DynamicNull) && !toType.IsValueType ? MakeNullTarget(toType) : null;
         }
         #endregion
 
@@ -397,7 +408,7 @@ namespace Supremacy.Scripting.Runtime.Binders
         private static MSAst MakeConversionTarget(
             ConversionResultKind kind, MethodTracker method, Type fromType, bool isImplicit, MSAst arg)
         {
-            var param = AstUtils.Convert(arg, fromType);
+            MSAst param = AstUtils.Convert(arg, fromType);
 
             return MakeConversionTargetWorker(kind, method, isImplicit, param);
         }
@@ -434,7 +445,7 @@ namespace Supremacy.Scripting.Runtime.Binders
         {
             if (!isImplicit && kind == ConversionResultKind.ExplicitTry)
             {
-                var convFailed = GetTryConvertReturnValue(retType);
+                MSAst convFailed = GetTryConvertReturnValue(retType);
                 //var tmp = MSAst.Variable(convFailed.Type == typeof(object) ? typeof(object) : ret.Type, "tmp");
                 return AstUtils.Convert(ret, convFailed.Type == typeof(object) ? typeof(object) : ret.Type);
                 //ret = MSAst.Block(
@@ -467,7 +478,7 @@ namespace Supremacy.Scripting.Runtime.Binders
         /// </summary>
         private static MSAst MakeSimpleExtensibleConversionTarget(Type toType, MSAst arg)
         {
-            var extType = typeof(Extensible<>).MakeGenericType(toType);
+            Type extType = typeof(Extensible<>).MakeGenericType(toType);
 
             return AstUtils.Convert(
                 GetExtensibleValue(extType, arg),
@@ -500,13 +511,13 @@ namespace Supremacy.Scripting.Runtime.Binders
         /// <summary>Helper to produce the rule for converting T to Nullable of T</summary>
         private static MSAst MakeConvertingToTToNullableOfTTarget(Type toType, ConversionResultKind kind, MSAst arg)
         {
-            var valueType = toType.GetGenericArguments()[0];
+            Type valueType = toType.GetGenericArguments()[0];
 
             // ConvertSelfToT -> Nullable<T>
             if (kind == ConversionResultKind.ExplicitCast)
             {
                 // if the conversion to T fails we just throw
-                var conversion = ConvertExpression(arg, valueType);
+                MSAst conversion = ConvertExpression(arg, valueType);
 
                 return MSAst.New(
                     toType.GetConstructor(new[] { valueType }),
@@ -514,7 +525,7 @@ namespace Supremacy.Scripting.Runtime.Binders
             }
             else
             {
-                var conversion = ConvertExpression(arg, valueType);
+                MSAst conversion = ConvertExpression(arg, valueType);
 
                 // if the conversion to T succeeds then produce the nullable<T>, otherwise return default(retType)
 
@@ -554,12 +565,15 @@ namespace Supremacy.Scripting.Runtime.Binders
         /// </summary>
         private static Type GetUnderlyingType(Type fromType)
         {
-            var currentType = fromType;
+            Type currentType = fromType;
 
             do
             {
                 if (currentType.IsGenericType && (currentType.GetGenericTypeDefinition() == typeof(Extensible<>)))
+                {
                     fromType = currentType.GetGenericArguments()[0];
+                }
+
                 currentType = currentType.BaseType;
             }
             while (currentType != null);
@@ -576,17 +590,20 @@ namespace Supremacy.Scripting.Runtime.Binders
         private static MSAst ConvertExpression(MSAst expr, Type toType)
         {
             if (expr == null)
+            {
                 throw new ArgumentNullException("expr");
-            if (toType == null)
-                throw new ArgumentNullException("toType");
+            }
 
-            var exprType = expr.Type;
+            if (toType == null)
+            {
+                throw new ArgumentNullException("toType");
+            }
+
+            Type exprType = expr.Type;
 
             if (toType == typeof(object))
             {
-                if (exprType.IsValueType)
-                    return AstUtils.Convert(expr, toType);
-                return expr;
+                return exprType.IsValueType ? AstUtils.Convert(expr, toType) : expr;
             }
 
             if (toType.IsAssignableFrom(exprType))
@@ -601,29 +618,34 @@ namespace Supremacy.Scripting.Runtime.Binders
 
         private MemberGroup GetMember(Type type, string name)
         {
-            var foundMembers = type.GetMember(name);
+            MemberInfo[] foundMembers = type.GetMember(name);
             if (!PrivateBinding)
+            {
                 foundMembers = CompilerHelpers.FilterNonVisibleMembers(type, foundMembers);
+            }
 
-            var members = new MemberGroup(foundMembers);
+            MemberGroup members = new MemberGroup(foundMembers);
 
             // check for generic types w/ arity...
-            var types = type.GetNestedTypes(BindingFlags.Public);
-            var genName = name + ReflectionUtils.GenericArityDelimiter;
+            Type[] types = type.GetNestedTypes(BindingFlags.Public);
+            string genName = name + ReflectionUtils.GenericArityDelimiter;
             List<Type> genTypes = null;
-            foreach (var t in types)
+            foreach (Type t in types)
             {
                 if (t.Name.StartsWith(genName))
                 {
                     if (genTypes == null)
+                    {
                         genTypes = new List<Type>();
+                    }
+
                     genTypes.Add(t);
                 }
             }
 
             if (genTypes != null)
             {
-                var mt = new List<MemberTracker>(members);
+                List<MemberTracker> mt = new List<MemberTracker>(members);
                 mt.AddRange(genTypes.Select(MemberTracker.FromMemberInfo));
                 return new MemberGroup(mt.ToArray());
             }
@@ -651,7 +673,7 @@ namespace Supremacy.Scripting.Runtime.Binders
         #region Extension Types
         public override IList<Type> GetExtensionTypes(Type t)
         {
-            var list = new List<Type>(base.GetExtensionTypes(t));
+            List<Type> list = new List<Type>(base.GetExtensionTypes(t));
 
             AddExtensionTypes(t, list);
 
@@ -662,24 +684,28 @@ namespace Supremacy.Scripting.Runtime.Binders
         {
             lock (_extensionTypes)
             {
-                IList<Type> userExtensions;
 
-                if (_extensionTypes.TryGetValue(t, out userExtensions))
+                if (_extensionTypes.TryGetValue(t, out IList<Type> userExtensions))
+                {
                     list.AddRange(userExtensions.Where(o => !list.Contains(o)));
+                }
 
                 if (_registeredInterfaceExtensions)
                 {
-                    foreach (var interfaceType in t.GetInterfaces())
+                    foreach (Type interfaceType in t.GetInterfaces())
                     {
-                        IList<Type> extendingTypes;
-                        if (_extensionTypes.TryGetValue(interfaceType, out extendingTypes))
+                        if (_extensionTypes.TryGetValue(interfaceType, out IList<Type> extendingTypes))
+                        {
                             list.AddRange(extendingTypes.Where(o => !list.Contains(o)).ToList());
+                        }
                     }
                 }
             }
 
             if (t.BaseType != null)
+            {
                 AddExtensionTypes(t.BaseType, list);
+            }
         }
 
         public bool HasExtensionTypes(Type t)
