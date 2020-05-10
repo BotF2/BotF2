@@ -56,7 +56,7 @@ namespace Supremacy.Client
                 new CommandBinding(GenericCommands.AcceptCommand,
                                    GenericCommandsAcceptCommandExecuted,
                                    GenericCommandsAcceptCommandCanExecute));
-
+            SaveButton.IsEnabled = true;
             SaveGameList.SelectionChanged += SaveGameListSelectionChanged;
         }
 
