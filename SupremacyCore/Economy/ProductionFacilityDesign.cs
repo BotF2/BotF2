@@ -65,8 +65,7 @@ namespace Supremacy.Economy
         /// Initializes a new instance of the <see cref="ProductionFacilityDesign"/> class using XML data.
         /// </summary>
         /// <param name="element">The XML element.</param>
-        public ProductionFacilityDesign(XmlElement element)
-            : base(element)
+        public ProductionFacilityDesign(XmlElement element) : base(element)
         {
             XmlElement tempElement = element["LaborCost"];
             if (tempElement != null)

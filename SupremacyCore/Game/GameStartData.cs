@@ -20,6 +20,7 @@ using Supremacy.IO.Serialization;
 using Supremacy.Tech;
 using Supremacy.Text;
 using Supremacy.Universe;
+using Supremacy.Utility;
 
 namespace Supremacy.Game
 {
@@ -176,7 +177,6 @@ namespace Supremacy.Game
             try
             {
                 _textDatabase = reader.Read<ITextDatabase>();
-
                 _localGame.TurnNumber = _turnNumber = reader.ReadOptimizedInt32();
                 _localGame.Options = _options = reader.Read<GameOptions>();
                 _localGame.GameMod = _gameMod = reader.Read<GameMod>();

@@ -28,8 +28,7 @@ namespace Supremacy.Tech
         /// Initializes a new instance of the <see cref="BuildingDesign"/> class from XML data.
         /// </summary>
         /// <param name="element">The XML data.</param>
-        protected PlanetaryTechObjectDesign(XmlElement element)
-            : base(element)
+        protected PlanetaryTechObjectDesign(XmlElement element) : base(element)
         {
             var propertyElement = element["BuildLimit"];
 
