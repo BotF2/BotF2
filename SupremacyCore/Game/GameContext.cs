@@ -164,7 +164,6 @@ namespace Supremacy.Game
         [NonSerialized]
         private GameTables _tables;
         private ResearchMatrix _researchMatrix;
-      //  private IntelMatrix _intelMatrix;
         private SectorClaimGrid _sectorClaims;
         private TechTreeMap _techTrees;
         private CivilizationPairedMap<IDiplomacyData> _diplomacyData;
@@ -284,7 +283,7 @@ namespace Supremacy.Game
                     continue;
                 }
                 ITextDatabaseEntry<ITechObjectTextDatabaseEntry> entry; 
-                if (!techObjectTable.TryGetEntry(design.Key, out entry)) // Is this always false ????
+                if (!techObjectTable.TryGetEntry(design.Key, out entry)) 
                     continue;
                 design.TextDatabaseEntry = entry.GetLocalizedEntry(ResourceManager.CurrentLocale);
                 GameLog.Client.GameData.DebugFormat("THE ^^TextDatabaseEntry ={0} {1}", design.TextDatabaseEntry.Name, design.TextDatabaseEntry.Description);
