@@ -9,30 +9,30 @@ namespace Supremacy.Client
         public static object FindItemsControlItemFromVisualDescendant(DependencyObject descendant)
         {
             if (descendant == null)
-                return null;
-
-            var itemsControl = ItemsControl.ItemsControlFromItemContainer(descendant);
-            if (itemsControl != null)
             {
-                var item = itemsControl.ItemContainerGenerator.ItemFromContainer(descendant);
-                if (item != null)
-                    return item;
+                return null;
             }
 
-            var parent = GetParent(descendant as FrameworkElement);
+            ItemsControl itemsControl = ItemsControl.ItemsControlFromItemContainer(descendant);
+            if (itemsControl != null)
+            {
+                object item = itemsControl.ItemContainerGenerator.ItemFromContainer(descendant);
+                if (item != null)
+                {
+                    return item;
+                }
+            }
 
-            if (parent == null)
-                return null;
+            DependencyObject parent = GetParent(descendant as FrameworkElement);
 
-            return FindItemsControlItemFromVisualDescendant(parent);
+            return parent == null ? null : FindItemsControlItemFromVisualDescendant(parent);
         }
 
         public static DependencyObject GetParent(FrameworkElement frameworkElement)
         {
-            if (frameworkElement == null)
-                return null;
-
-            return frameworkElement.Parent ??
+            return frameworkElement == null
+                ? null
+                : frameworkElement.Parent ??
                    frameworkElement.TemplatedParent ??
                    VisualTreeHelper.GetParent(frameworkElement) ??
                    LogicalTreeHelper.GetParent(frameworkElement);

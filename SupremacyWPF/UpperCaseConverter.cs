@@ -13,16 +13,14 @@ using System.Windows.Data;
 
 namespace Supremacy.Client
 {
-    [ValueConversion(typeof(String), typeof(String))]
+    [ValueConversion(typeof(string), typeof(string))]
     public class UpperCaseConverter : IValueConverter
     {
         public static readonly UpperCaseConverter Instance = new UpperCaseConverter();
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value == null)
-                return null;
-            return value.ToString().ToUpper();
+            return value?.ToString().ToUpper();
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

@@ -25,12 +25,9 @@ namespace Supremacy.Client
             ITypeDescriptorContext context,
             Type sourceType)
         {
-            IXamlTypeResolver xamlTypeResolver = context.GetService(typeof(IXamlTypeResolver)) as IXamlTypeResolver;
-
-            if (sourceType == typeof(Type) && xamlTypeResolver != null)
-                return true;
-
-            return base.CanConvertFrom(context, sourceType);
+            return sourceType == typeof(Type) && context.GetService(typeof(IXamlTypeResolver)) is IXamlTypeResolver
+                ? true
+                : base.CanConvertFrom(context, sourceType);
         }
 
 
@@ -46,7 +43,9 @@ namespace Supremacy.Client
             Collection<Type> types = new Collection<Type>();
 
             for (int i = 0; i < stringArray.Length; i++)
+            {
                 types.Add(xamlTypeResolver.Resolve(stringArray[i].Trim()));
+            }
 
             return types;
         }
@@ -59,9 +58,9 @@ namespace Supremacy.Client
         }
 
         public override object ConvertTo(
-            ITypeDescriptorContext context, 
-            CultureInfo culture, 
-            object value, 
+            ITypeDescriptorContext context,
+            CultureInfo culture,
+            object value,
             Type destinationType)
         {
             return base.ConvertTo(context, culture, value, destinationType);

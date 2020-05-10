@@ -32,33 +32,40 @@ namespace Supremacy.Client
         public static string GetImagePath(string path)
         {
             if (path == null)
+            {
                 return null;
+            }
+
             string result = ResourceManager.GetResourcePath(path);
             if (File.Exists(result))
+            {
                 return result;
+            }
+
             result = ResourceManager.GetResourcePath(ImageMissingPath);
-            if (File.Exists(result))
-                return result;
-            return null;
+            return File.Exists(result) ? result : null;
         }
 
         public static Uri GetImageUri(string path)
         {
             if (path == null)
+            {
                 return null;
-            Uri uri;
-            if (Uri.TryCreate(path, UriKind.Absolute, out uri))
-                return uri;
-            return ResourceManager.GetResourceUri(GetImagePath(path));
+            }
+
+            return Uri.TryCreate(path, UriKind.Absolute, out Uri uri) ? uri : ResourceManager.GetResourceUri(GetImagePath(path));
         }
 
         public static BitmapImage GetImage(string path)
         {
             if (path == null)
+            {
                 return null;
+            }
+
             try
             {
-                var imageUri = GetImageUri(path);
+                Uri imageUri = GetImageUri(path);
                 return ImageCache.Current.Get(imageUri);
             }
             catch (Exception e)
@@ -70,17 +77,14 @@ namespace Supremacy.Client
         }
     }
 
-    [ValueConversion(typeof(Sector), typeof(String))]
+    [ValueConversion(typeof(Sector), typeof(string))]
     public class SectorNameConverter : AppContextAwareValueConverter
     {
         #region IValueConverter Members
         public override object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            var sector = value as Sector;
-            if (sector == null)
-                return null;
-
-            return sector.Location;
+            Sector sector = value as Sector;
+            return sector == null ? null : (object)sector.Location;
         }
         #endregion
     }
@@ -91,18 +95,19 @@ namespace Supremacy.Client
         #region IValueConverter Members
         public override object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            var sector = value as Sector;
+            Sector sector = value as Sector;
             if (sector == null)
+            {
                 return null;
+            }
 
-            var mapData = AppContext.LocalPlayerEmpire.MapData;
+            CivilizationMapData mapData = AppContext.LocalPlayerEmpire.MapData;
             if (mapData == null)
+            {
                 return null;
+            }
 
-            if (!mapData.IsScanned(sector.Location))
-                return 0;
-
-            return mapData.GetScanStrength(sector.Location);
+            return !mapData.IsScanned(sector.Location) ? 0 : (object)mapData.GetScanStrength(sector.Location);
         }
         #endregion
     }
@@ -113,23 +118,31 @@ namespace Supremacy.Client
         #region IValueConverter Members
         public override object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            var sector = value as Sector;
+            Sector sector = value as Sector;
             if (sector == null)
+            {
                 return null;
+            }
 
-            var mapData = AppContext.LocalPlayerEmpire.MapData;
+            CivilizationMapData mapData = AppContext.LocalPlayerEmpire.MapData;
             if (mapData == null)
+            {
                 return null;
+            }
 
             if (mapData.IsScanned(sector.Location))
             {
-                var scanStrength = mapData.GetScanStrength(sector.Location);
+                int scanStrength = mapData.GetScanStrength(sector.Location);
 
                 if (scanStrength > 0)
+                {
                     return Brushes.Lime;
+                }
 
                 if (scanStrength < 0)
+                {
                     return Brushes.Crimson;
+                }
             }
 
             return Brushes.Yellow;
@@ -143,15 +156,15 @@ namespace Supremacy.Client
         #region IValueConverter Members
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            BuildQueueItem item = value as BuildQueueItem;
-            if (item != null)
+            if (value is BuildQueueItem item)
             {
                 string description = ResourceManager.GetString(item.Project.Description);
                 if ("UpperCase" == (parameter as string))
+                {
                     description = description.ToUpperInvariant();
-                if (item.Count > 1)
-                    return String.Format("{0}x {1}", item.Count, description);
-                return description;
+                }
+
+                return item.Count > 1 ? string.Format("{0}x {1}", item.Count, description) : description;
             }
             return value;
         }
@@ -169,18 +182,26 @@ namespace Supremacy.Client
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            var objectKey = "" ;
+            string objectKey = "";
 
             if (value != null)
             {
                 if (value is string)
+                {
                     objectKey = (string)value;
+                }
                 else if (value is int)
+                {
                     objectKey = GameContext.Current.Civilizations[(int)value].Key;
+                }
                 else if (value is ICivIdentity)
+                {
                     objectKey = GameContext.Current.Civilizations[((ICivIdentity)value).CivID].Key;
+                }
                 else if (value is UniverseObject)
+                {
                     objectKey = ((UniverseObject)value).Owner.Key.ToLowerInvariant();
+                }
             }
 
             return Convert(objectKey);
@@ -194,14 +215,13 @@ namespace Supremacy.Client
         public static BitmapImage Convert(string objectKey)
         {
             Uri imageUri;
-            var fileName = objectKey.ToLowerInvariant();
+            string fileName = objectKey.ToLowerInvariant();
 
-            if (File.Exists(ResourceManager.GetResourcePath(@"Resources\Images\Insignias\" + fileName + ".png")))
-                imageUri = ResourceManager.GetResourceUri(@"Resources\Images\Insignias\" + fileName + ".png");
-            else if (File.Exists(ResourceManager.GetResourcePath(@"Resources\Images\Insignias\" + fileName + ".jpg")))
-                imageUri = ResourceManager.GetResourceUri(@"Resources\Images\Insignias\" + fileName + ".jpg");
-            else
-                imageUri = ResourceManager.GetResourceUri(@"Resources\Images\Insignias\__default.png");
+            imageUri = File.Exists(ResourceManager.GetResourcePath(@"Resources\Images\Insignias\" + fileName + ".png"))
+                ? ResourceManager.GetResourceUri(@"Resources\Images\Insignias\" + fileName + ".png")
+                : File.Exists(ResourceManager.GetResourcePath(@"Resources\Images\Insignias\" + fileName + ".jpg"))
+                ? ResourceManager.GetResourceUri(@"Resources\Images\Insignias\" + fileName + ".jpg")
+                : ResourceManager.GetResourceUri(@"Resources\Images\Insignias\__default.png");
 
             return ImageCache.Current.Get(imageUri);
         }
@@ -213,7 +233,9 @@ namespace Supremacy.Client
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             if (value == null)
+            {
                 return null;
+            }
 
             Civilization civ = null;
 
@@ -235,9 +257,11 @@ namespace Supremacy.Client
             }
 
             if (civ == null)
+            {
                 return null;
+            }
 
-            var brush = new SolidColorBrush((Color)ColorConverter.ConvertFromString(civ.Color));
+            SolidColorBrush brush = new SolidColorBrush((Color)ColorConverter.ConvertFromString(civ.Color));
             brush.Freeze();
 
             return brush;
@@ -255,12 +279,7 @@ namespace Supremacy.Client
         #region IValueConverter Members
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            string imageUri = value as string;
-            if (imageUri != null)
-            {
-                return ImageCache.Current.Get(ResourceManager.GetResourceUri(imageUri));
-            }
-            return value;
+            return value is string imageUri ? ImageCache.Current.Get(ResourceManager.GetResourceUri(imageUri)) : value;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
@@ -286,7 +305,9 @@ namespace Supremacy.Client
                 {
                     imagePath = value.ToString();
                     if (string.IsNullOrEmpty(Path.GetExtension(imagePath)))
+                    {
                         imagePath += ".png";
+                    }
                 }
                 return Convert(imagePath);
             }
@@ -313,9 +334,14 @@ namespace Supremacy.Client
             //GameLog.Core.General.DebugFormat("StringResourceConverter: value = {0}, targetType = {1}, parameter = {2}, culture = {3}", 
             //    value, targetType, parameter, culture);
             if (value == null)
+            {
                 return null;
+            }
+
             if (parameter != null)
+            {
                 return ResourceManager.GetString(value.ToString()).ToUpperInvariant();
+            }
             //GameLog.Core.General.DebugFormat("StringResourceConverter: returning = {0}",
             //    ResourceManager.GetString(value.ToString()));
             return ResourceManager.GetString(value.ToString());
@@ -332,12 +358,10 @@ namespace Supremacy.Client
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value is ResearchField)
-            {
-                return Convert(
-                    ResourceManager.GetString(((ResearchField)value).Name) + ".png");
-            }
-            return null;
+            return value is ResearchField
+                ? Convert(
+                    ResourceManager.GetString(((ResearchField)value).Name) + ".png")
+                : null;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
@@ -356,17 +380,16 @@ namespace Supremacy.Client
     {
         public override object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            var field = value as ResearchField;
-            
-            if (field == null)
-                return null;
+            ResearchField field = value as ResearchField;
 
-            return new Binding
-                   {
-                       Source = AppContext.LocalPlayerEmpire.Research.Distributions[field.FieldID],
-                       Path = new PropertyPath("Value"),
-                       Mode = BindingMode.TwoWay
-                   };
+            return field == null
+                ? null
+                : new Binding
+                {
+                    Source = AppContext.LocalPlayerEmpire.Research.Distributions[field.FieldID],
+                    Path = new PropertyPath("Value"),
+                    Mode = BindingMode.TwoWay
+                };
         }
     }
 

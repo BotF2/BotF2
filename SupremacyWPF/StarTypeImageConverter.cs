@@ -14,22 +14,17 @@ namespace Supremacy.Client
 
         public ImageSource Convert(StarType starType)
         {
-            var resourcePath = string.Format("Resources/Images/Stars/Map/{0}.png", starType);
-            var resourceFile = ResourceManager.VfsService.GetFile(resourcePath);
-            if (resourceFile != null && resourceFile.Exists)
-                return ImageCache.Current.Get(ResourceManager.GetResourceUri(resourcePath));
-
-            return null;
+            string resourcePath = string.Format("Resources/Images/Stars/Map/{0}.png", starType);
+            VFS.IVirtualFileInfo resourceFile = ResourceManager.VfsService.GetFile(resourcePath);
+            return resourceFile != null && resourceFile.Exists ? ImageCache.Current.Get(ResourceManager.GetResourceUri(resourcePath)) : null;
         }
 
         #region Implementation of IValueConverter
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            var starType = value as StarType?;
-            if (starType.HasValue)
-                return Convert(starType.Value);
-            return null;
+            StarType? starType = value as StarType?;
+            return starType.HasValue ? Convert(starType.Value) : null;
         }
 
         #endregion

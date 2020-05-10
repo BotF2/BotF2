@@ -30,31 +30,25 @@ namespace Supremacy.Client
     [MarkupExtensionReturnType(typeof(object))]
     public sealed class StringResource : MarkupExtension
     {
-        private string _key;
-
         [ConstructorArgument("key")]
-        public string Key
-        {
-            get { return _key; }
-            set { _key = value; }
-        }
+        public string Key { get; set; }
 
         public StringCaseEnum Case { get; set; }
 
         public StringResource()
         {
-            _key = string.Empty;
+            Key = string.Empty;
             Case = StringCaseEnum.Original;
         }
 
         public StringResource(string key)
         {
-            _key = key;
+            Key = key;
         }
 
         public override object ProvideValue(IServiceProvider serviceProvider)
         {
-            var text = ResourceManager.GetString(_key);
+            string text = ResourceManager.GetString(Key);
             switch (Case)
             {
                 case StringCaseEnum.Lower:
@@ -66,18 +60,19 @@ namespace Supremacy.Client
             }
             if (serviceProvider != null)
             {
-                var provideValueTarget = serviceProvider.GetService(typeof(IProvideValueTarget)) as IProvideValueTarget;
-                if (provideValueTarget != null)
+                if (serviceProvider.GetService(typeof(IProvideValueTarget)) is IProvideValueTarget provideValueTarget)
                 {
-                    var property = provideValueTarget.TargetProperty;
-                    if (!(property is DependencyProperty) && 
-                        !(property is PropertyInfo) && 
+                    object property = provideValueTarget.TargetProperty;
+                    if (!(property is DependencyProperty) &&
+                        !(property is PropertyInfo) &&
                         !(property is PropertyDescriptor))
                     {
                         return this;
                     }
                     if (Equals(property, ContentControl.ContentProperty))
+                    {
                         return new AccessText { Text = text };
+                    }
                 }
             }
             return text;

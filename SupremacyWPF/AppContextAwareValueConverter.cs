@@ -29,10 +29,10 @@ namespace Supremacy.Client
         {
             get
             {
-                var resourceManager = s_resourceManager;
+                IResourceManager resourceManager = s_resourceManager;
                 if (resourceManager == null)
                 {
-                    var newResourceManager = ServiceLocator.Current.GetInstance<IResourceManager>();
+                    IResourceManager newResourceManager = ServiceLocator.Current.GetInstance<IResourceManager>();
                     resourceManager = Interlocked.CompareExchange(ref s_resourceManager, resourceManager, null) ?? newResourceManager;
                 }
                 return resourceManager;
@@ -43,10 +43,10 @@ namespace Supremacy.Client
         {
             get
             {
-                var appContext = s_appContext;
+                IAppContext appContext = s_appContext;
                 if (appContext == null)
                 {
-                    var newAppContext = ServiceLocator.Current.GetInstance<IAppContext>();
+                    IAppContext newAppContext = ServiceLocator.Current.GetInstance<IAppContext>();
                     appContext = Interlocked.CompareExchange(ref s_appContext, appContext, null) ?? newAppContext;
                 }
                 return appContext;

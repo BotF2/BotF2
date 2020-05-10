@@ -20,11 +20,7 @@ namespace Supremacy.Client
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value is MapLocation)
-            {
-                return ((MapLocation)value).ToString();
-            }
-            return value;
+            return value is MapLocation ? ((MapLocation)value).ToString() : value;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

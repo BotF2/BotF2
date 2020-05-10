@@ -20,7 +20,8 @@ namespace Supremacy.Client
     {
         private delegate void FoundBindingCallbackDelegate(FrameworkElement element, Binding binding, DependencyProperty dp);
         private FrameworkElement _firstInvalidElement;
-        private Dictionary<DependencyObject, Style> _backupStyles = new Dictionary<DependencyObject, Style>();
+
+        public Dictionary<DependencyObject, Style> BackupStyles { get; } = new Dictionary<DependencyObject, Style>();
 
         /// <summary>
         /// Constructor.
@@ -55,7 +56,7 @@ namespace Supremacy.Client
                 ((INotifyPropertyChanged)e.NewValue).PropertyChanged += new PropertyChangedEventHandler(DataContext_PropertyChanged);
             }
 
-            Validate();
+            _ = Validate();
         }
 
         /// <summary>
@@ -86,11 +87,10 @@ namespace Supremacy.Client
                         // Display the error on any elements bound to the property
                         FindBindingsRecursively(
                         Parent,
-                        delegate(FrameworkElement element, Binding binding, DependencyProperty dp)
+                        delegate (FrameworkElement element, Binding binding, DependencyProperty dp)
                         {
                             if (knownBinding.Path.Path == binding.Path.Path)
                             {
-
                                 BindingExpression expression = element.GetBindingExpression(dp);
                                 ValidationError error = new ValidationError(new ExceptionValidationRule(), expression, errorMessage, null);
                                 Validation.MarkInvalid(expression, error);
@@ -138,7 +138,7 @@ namespace Supremacy.Client
             List<Binding> bindings = new List<Binding>();
             FindBindingsRecursively(
                     Parent,
-                    delegate(FrameworkElement element, Binding binding, DependencyProperty dp)
+                    delegate (FrameworkElement element, Binding binding, DependencyProperty dp)
                     {
                         // Remember this bound element. We'll use this to display error messages for each property.
                         bindings.Add(binding);
