@@ -10,6 +10,8 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
+using System.Windows.Forms;
+
 
 namespace Supremacy.Client.Dialogs
 {
@@ -31,8 +33,8 @@ namespace Supremacy.Client.Dialogs
 
             foreach (var category in EnumHelper.GetValues<SitRepCategory>())
             {
-                var menuItem = new MenuItem
-                               {
+                var menuItem = new System.Windows.Controls.MenuItem
+                {
                                    StaysOpenOnClick = true,
                                    IsCheckable = true,
                                    IsChecked = (visibleCategories & category) == category,
@@ -41,7 +43,7 @@ namespace Supremacy.Client.Dialogs
 
                 menuItem.SetBinding(
                     HeaderedItemsControl.HeaderProperty,
-                    new Binding
+                    new System.Windows.Data.Binding
                     {
                         Source = "SitRepCategory." + category,
                         Converter = enumStringConverter,
@@ -89,9 +91,9 @@ namespace Supremacy.Client.Dialogs
                 return;
 
             var visibleCategories = FilterMenu.Items
-                .OfType<MenuItem>()
+                .OfType<System.Windows.Controls.MenuItem>()
                 .Where(menuItem => menuItem.IsChecked)
-                .Aggregate<MenuItem, SitRepCategory>(0, (current, menuItem) => current | (SitRepCategory)menuItem.Tag);
+                .Aggregate<System.Windows.Controls.MenuItem, SitRepCategory>(0, (current, menuItem) => current | (SitRepCategory)menuItem.Tag);
 
             var visiblePriorities = new List<SitRepPriority>();
 
@@ -130,9 +132,9 @@ namespace Supremacy.Client.Dialogs
         private void UpdateCategoryFilter()
         {
             var visibleCategories = FilterMenu.Items
-                .OfType<MenuItem>()
+                .OfType<System.Windows.Controls.MenuItem>()
                 .Where(menuItem => menuItem.IsChecked)
-                .Aggregate<MenuItem, SitRepCategory>(0, (current, menuItem) => current | (SitRepCategory)menuItem.Tag);
+                .Aggregate<System.Windows.Controls.MenuItem, SitRepCategory>(0, (current, menuItem) => current | (SitRepCategory)menuItem.Tag);
 
             VisibleCategories = visibleCategories;
         }
@@ -158,6 +160,9 @@ namespace Supremacy.Client.Dialogs
                         Close();
                         GalaxyScreenCommands.SelectSector.Execute((selection.ActionTarget as Colony).Sector); // F2
                         NavigationCommands.ActivateScreen.Execute(StandardGameScreens.ColonyScreen);
+                        //Refresh the screen on an easy way
+                        SendKeys.SendWait("{F5}");
+                        SendKeys.SendWait("{F2}");
                         break;
 
                     case SitRepAction.ShowDiploScreen:
