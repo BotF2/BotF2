@@ -84,7 +84,7 @@ namespace Supremacy.UI
             Frames = new ImageBrush[5];
             for (int i = 0; i < Frames.Length; i++)
             {
-                var frame = new CachedBitmap(
+                CachedBitmap frame = new CachedBitmap(
                     new BitmapImage(ResourceManager.GetResourceUri("Resources/Images/Stars/Star" + (i + 1) + ".png")),
                     BitmapCreateOptions.None,
                     BitmapCacheOption.OnLoad);
@@ -121,17 +121,16 @@ namespace Supremacy.UI
         #endregion
 
         #region Properties
-        protected override int VisualChildrenCount
-        {
-            get { return 1; }
-        }
+        protected override int VisualChildrenCount => 1;
         #endregion
 
         #region IAnimationsHost Members
         public void PauseAnimations()
         {
             if (!_clockGroup.IsPaused && (_clockGroup.Controller != null))
+            {
                 _clockGroup.Controller.Pause();
+            }
         }
 
         public void ResumeAnimations()
@@ -140,11 +139,17 @@ namespace Supremacy.UI
             {
                 case ClockState.Stopped:
                     if (_clockGroup.Controller != null)
+                    {
                         _clockGroup.Controller.Begin();
+                    }
+
                     break;
                 default:
                     if (_clockGroup.IsPaused && (_clockGroup.Controller != null))
+                    {
                         _clockGroup.Controller.Resume();
+                    }
+
                     break;
             }
         }
@@ -160,37 +165,37 @@ namespace Supremacy.UI
         {
             const int secondsPerTransition = 3;
 
-            var rectangles = new Rectangle[Frames.Length];
-            var animations = new DoubleAnimationUsingKeyFrames[Frames.Length];
+            Rectangle[] rectangles = new Rectangle[Frames.Length];
+            DoubleAnimationUsingKeyFrames[] animations = new DoubleAnimationUsingKeyFrames[Frames.Length];
 
             _parallelTimeline = new ParallelTimeline(
                 null,
-                new Duration(new TimeSpan(0, 0, secondsPerTransition * (Frames.Length))),
+                new Duration(new TimeSpan(0, 0, secondsPerTransition * Frames.Length)),
                 RepeatBehavior.Forever);
 
-            var innerGrid = new Grid();
+            Grid innerGrid = new Grid();
 
             for (int i = 0; i < Frames.Length; i++)
             {
                 rectangles[i] = new Rectangle
-                                {
-                                    Fill = Frames[i],
-                                    Height = 128,
-                                    Width = 128,
-                                    Opacity = (i == 0) ? 1.0 : 0.0
-                                };
+                {
+                    Fill = Frames[i],
+                    Height = 128,
+                    Width = 128,
+                    Opacity = (i == 0) ? 1.0 : 0.0
+                };
 
-                innerGrid.Children.Add(rectangles[i]);
+                _ = innerGrid.Children.Add(rectangles[i]);
 
                 animations[i] = new DoubleAnimationUsingKeyFrames
-                                {
-                                    AutoReverse = true,
-                                    AccelerationRatio = 0.0,
-                                    DecelerationRatio = 0.0,
-                                    BeginTime = new TimeSpan(0),
-                                    Duration = _parallelTimeline.Duration,
-                                    FillBehavior = FillBehavior.HoldEnd
-                                };
+                {
+                    AutoReverse = true,
+                    AccelerationRatio = 0.0,
+                    DecelerationRatio = 0.0,
+                    BeginTime = new TimeSpan(0),
+                    Duration = _parallelTimeline.Duration,
+                    FillBehavior = FillBehavior.HoldEnd
+                };
 
                 if (i > 0)
                 {
@@ -224,9 +229,11 @@ namespace Supremacy.UI
             _clockGroup = _parallelTimeline.CreateClock();
 
             for (int i = 0; i < rectangles.Length; i++)
+            {
                 rectangles[i].ApplyAnimationClock(OpacityProperty, _clockGroup.Children[i] as AnimationClock);
+            }
 
-            var effects = new Effect[]
+            Effect[] effects = new Effect[]
                           {
                               new BloomEffect
                               {
@@ -270,10 +277,10 @@ namespace Supremacy.UI
                               }
                           };
 
-            var parent = new Border();
-            foreach (var effect in effects)
+            Border parent = new Border();
+            foreach (Effect effect in effects)
             {
-                var child = new Border { Effect = effect };
+                Border child = new Border { Effect = effect };
                 parent.Child = child;
                 parent = child;
 
@@ -295,7 +302,10 @@ namespace Supremacy.UI
         private void StopAnimations()
         {
             if (_clockGroup.Controller == null)
+            {
                 return;
+            }
+
             _clockGroup.Controller.Stop();
             _clockGroup.Controller.Remove();
         }

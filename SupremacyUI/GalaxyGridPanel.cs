@@ -116,7 +116,6 @@ namespace Supremacy.UI
         private Dictionary<StarType, ImageBrush> _starBrushes;
         private GuidelineSet _guides;
         private GuidelineSet _halfGuides;
-        private GalaxyGridInputMode _inputMode;
         private bool _isDragScrollInProgress;
         private double _lastOffsetRequestX = -1;
         private double _lastOffsetRequestY = -1;
@@ -138,7 +137,6 @@ namespace Supremacy.UI
         private GalaxyScreenPresentationModel _screenModel;
         private IObservable<Sector> _hoveredSector;
         private IDisposable _hoveredSectorSubscription;
-        private ISoundPlayer _soundPlayer = null;
         #endregion
 
         #region Events
@@ -169,7 +167,7 @@ namespace Supremacy.UI
 
             //Set up defaults and ones that don't change depending on civilization
             //Scans
-            var scanBrush = new SolidColorBrush(Color.FromArgb(0x1F, 0xFF, 0xFF, 0xFF));
+            SolidColorBrush scanBrush = new SolidColorBrush(Color.FromArgb(0x1F, 0xFF, 0xFF, 0xFF));
             scanBrush.Freeze();
 
             //Ship Routes
@@ -214,14 +212,14 @@ namespace Supremacy.UI
             s_minorRaceFill.Freeze();
 
             //Minor Race Borders
-            var minorRaceBorderPenBrush = new SolidColorBrush(
+            SolidColorBrush minorRaceBorderPenBrush = new SolidColorBrush(
                 Color.FromArgb(255, 127, 127, 127));
             minorRaceBorderPenBrush.Freeze();
             s_minorRaceBorderPen = new Pen(minorRaceBorderPenBrush, 2.0);
             s_minorRaceBorderPen.Freeze();
 
             //Fog of War
-            var fogOfWarColor = Color.FromArgb(0x66, 0x33, 0x33, 0x33);
+            Color fogOfWarColor = Color.FromArgb(0x66, 0x33, 0x33, 0x33);
             s_fogOfWarBrush = new SolidColorBrush(fogOfWarColor);
             s_fogOfWarBrush.Freeze();
 
@@ -229,10 +227,10 @@ namespace Supremacy.UI
             //Instead of loading the civilizations from the gamecontext,
             //load them straight from the db, as this panel is only constructed once.
             //Failure to do so will cause crashes when starting a second game
-            foreach (var civ in MasterResources.CivDB)
+            foreach (Civilization civ in MasterResources.CivDB)
             {
-                var color = (Color) ColorConverter.ConvertFromString(civ.Color);
-                var textColor = Color.Add(color, Colors.Gray);
+                Color color = (Color)ColorConverter.ConvertFromString(civ.Color);
+                Color textColor = Color.Add(color, Colors.Gray);
 
                 //Scan
                 scanBrush = new SolidColorBrush(Avalon.Windows.Utility.ColorHelpers.Lighten(color, 0.67f))
@@ -260,21 +258,16 @@ namespace Supremacy.UI
                 s_colonyNameBrushes[civ.CivID].Freeze();
 
                 //Borders
-                var borderBrush = new SolidColorBrush(color);
+                SolidColorBrush borderBrush = new SolidColorBrush(color);
                 borderBrush.Freeze();
                 s_borderPens[civ.CivID] = new Pen(borderBrush, 2.0);
                 s_borderPens[civ.CivID].Freeze();
 
                 //Fleet icons
-                var iconPath = "Resources/Images/Insignias/" + civ.Key.ToLower() + ".png";
-                if (File.Exists(ResourceManager.GetResourcePath(iconPath)))
-                {
-                    s_fleetIcons[civ.CivID] = LoadFleetIcon(ResourceManager.GetResourceUri(iconPath));
-                }
-                else
-                {
-                    s_fleetIcons[civ.CivID] = s_defaultFleetIcon;
-                }
+                string iconPath = "Resources/Images/Insignias/" + civ.Key.ToLower() + ".png";
+                s_fleetIcons[civ.CivID] = File.Exists(ResourceManager.GetResourcePath(iconPath))
+                    ? LoadFleetIcon(ResourceManager.GetResourceUri(iconPath))
+                    : s_defaultFleetIcon;
             }
             
             //Disputed
@@ -283,17 +276,17 @@ namespace Supremacy.UI
                 StartPoint = new Point(0, 0),
                 EndPoint = new Point(1, 1)
             };
-            var uniqueEmpireFills = s_empireFills.Values.Distinct().ToList();
-            var stepOffset = 1.0 / uniqueEmpireFills.Count / 2;
-            var i = 0;
-            foreach (var empireBrush in uniqueEmpireFills)
+            List<SolidColorBrush> uniqueEmpireFills = s_empireFills.Values.Distinct().ToList();
+            double stepOffset = 1.0 / uniqueEmpireFills.Count / 2;
+            int i = 0;
+            foreach (SolidColorBrush empireBrush in uniqueEmpireFills)
             {
                 s_disputedSectorFill.GradientStops.Add(
                     new GradientStop(empireBrush.Color,
                                      stepOffset * i));
                 s_disputedSectorFill.GradientStops.Add(
                     new GradientStop(empireBrush.Color,
-                                     0.5 + stepOffset * i));
+                                     0.5 + (stepOffset * i)));
                 i++;
             }
             s_disputedSectorFill.Freeze();
@@ -353,7 +346,7 @@ namespace Supremacy.UI
                 typeof(string),
                 typeof(GalaxyGridPanel),
                 new FrameworkPropertyMetadata(
-                    String.Empty,
+                    string.Empty,
                     FrameworkPropertyMetadataOptions.None,
                     null,
                     CoerceSelectedSectorAllegiance));
@@ -385,31 +378,25 @@ namespace Supremacy.UI
 
         public GalaxyGridPanel(SectorMap galaxy, [NotNull] ISoundPlayer soundPlayer)
         {
-            if (soundPlayer == null)
-                throw new ArgumentNullException("soundPlayer");
-            _soundPlayer = soundPlayer;
-
-            if (galaxy == null)
-                throw new ArgumentNullException("galaxy");
-
-            InputBindings.Add(
+            SoundPlayer = soundPlayer ?? throw new ArgumentNullException("soundPlayer");
+            _ = InputBindings.Add(
                 new KeyBinding(
                     GalaxyScreenCommands.MapZoomIn,
                     Key.Add,
                     ModifierKeys.None));
 
-            InputBindings.Add(
+            _ = InputBindings.Add(
                 new KeyBinding(
                     GalaxyScreenCommands.MapZoomOut,
                     Key.Subtract,
                     ModifierKeys.None));
 
-            CommandBindings.Add(
+            _ = CommandBindings.Add(
                 new CommandBinding(
                     GalaxyScreenCommands.MapZoomIn,
                     (sender, args) => ZoomIn()));
 
-            CommandBindings.Add(
+            _ = CommandBindings.Add(
                 new CommandBinding(
                     GalaxyScreenCommands.MapZoomOut,
                     (sender, args) => ZoomOut()));
@@ -425,12 +412,12 @@ namespace Supremacy.UI
             GalaxyScreenCommands.MapZoomOut.RegisterCommand(_zoomOutCommand);
             GalaxyScreenCommands.SelectSector.RegisterCommand(_selectSectorCommand);
 
-            ClientEvents.ScreenRefreshRequired.Subscribe(OnScreenRefreshRequired, ThreadOption.UIThread);
+            _ = ClientEvents.ScreenRefreshRequired.Subscribe(OnScreenRefreshRequired, ThreadOption.UIThread);
 
             _autoScrollTimer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(0.2d) };
             _autoScrollTimer.Tick += OnAutoScrollTimerTick;
 
-            var transforms = new TransformGroup();
+            TransformGroup transforms = new TransformGroup();
 
             _translation = new TranslateTransform();
             _scale = new ScaleTransform();
@@ -443,8 +430,8 @@ namespace Supremacy.UI
             Focusable = true;
             ClipToBounds = false;
 
-            _galaxy = galaxy;
-            _inputMode = GalaxyGridInputMode.Default;
+            _galaxy = galaxy ?? throw new ArgumentNullException("galaxy");
+            InputMode = GalaxyGridInputMode.Default;
             InputModeOnFirstClick = GalaxyGridInputMode.Default;
             _lastSector = null;
             _waypoints = new List<Sector>();
@@ -469,12 +456,12 @@ namespace Supremacy.UI
             CreateGuides();
             CreateBackdrop();
 
-            _children.Add(_composite);
-            _children.Add(_selectRect);
-            _children.Add(_shipRange);
-            _children.Add(_routeLines);
-            _children.Add(_tradeLines);
-            _children.Add(_starNames);
+            _ = _children.Add(_composite);
+            _ = _children.Add(_selectRect);
+            _ = _children.Add(_shipRange);
+            _ = _children.Add(_routeLines);
+            _ = _children.Add(_tradeLines);
+            _ = _children.Add(_starNames);
 
             OptionsChanged += GalaxyGridPanel_OptionsChanged;
             SelectedFleetChanged += GalaxyGridPanel_SelectedFleetChanged;
@@ -483,7 +470,7 @@ namespace Supremacy.UI
             Unloaded += OnUnloaded;
             Loaded += OnLoaded;
 
-            SetBinding(
+            _ = SetBinding(
                 UseAnimatedStarsProperty,
                 new Binding
                 {
@@ -492,7 +479,7 @@ namespace Supremacy.UI
                     Mode = BindingMode.OneWay
                 });
 
-            SetBinding(
+            _ = SetBinding(
                 UseAnimationProperty,
                 new Binding
                 {
@@ -501,7 +488,7 @@ namespace Supremacy.UI
                     Mode = BindingMode.OneWay
                 });
 
-            SetBinding(
+            _ = SetBinding(
                 UseCombatScreenProperty,
                 new Binding
                 {
@@ -514,38 +501,46 @@ namespace Supremacy.UI
         private void OnLoaded(object sender, RoutedEventArgs e)
         {
             GameLog.Client.General.InfoFormat("GalaxyGridPanel.cs: OnLoading is beginning...");
-            var galaxyScreen = this.FindVisualAncestorByType<GalaxyScreenView>();
+            GalaxyScreenView galaxyScreen = this.FindVisualAncestorByType<GalaxyScreenView>();
             if (galaxyScreen != null)
+            {
                 _screenModel = galaxyScreen.Model;
+            }
 
             if (_screenModel == null)
+            {
                 return;
+            }
 
             _screenModel.SelectedTaskForceChanged += OnScreenModelSelectedTaskForceChanged;
             _screenModel.SelectedSectorChanged += OnScreenModelSelectedSectorChanged;
 
             if (_hoveredSector == null)
+            {
                 _hoveredSector = HoveredSectorAsObservable();
+            }
 
             _hoveredSectorSubscription = _hoveredSector.Subscribe(
                 sector =>
                 {
                     Dispatcher.VerifyAccess();
                     if (_screenModel != null)
+                    {
                         _screenModel.HoveredSector = sector;
+                    }
                 });
         }
 
         private IObservable<Sector> HoveredSectorAsObservable()
         {
-            var mouseMove = Observable.FromEvent<MouseEventHandler, MouseEventArgs>(
+            IObservable<Sector> mouseMove = Observable.FromEvent<MouseEventHandler, MouseEventArgs>(
                 eventHandler => new MouseEventHandler(eventHandler),
                 handler => MouseMove += handler,
                 handler => MouseMove -= handler)
                 .ObserveOn(Scheduler.Immediate)
                 .Select(@event => PointToSector(@event.EventArgs.GetPosition(this)));
 
-            var mouseLeave = Observable.FromEvent<MouseEventHandler, MouseEventArgs>(
+            IObservable<Sector> mouseLeave = Observable.FromEvent<MouseEventHandler, MouseEventArgs>(
                 eventHandler => new MouseEventHandler(eventHandler),
                 handler => MouseLeave += handler,
                 handler => MouseLeave -= handler)
@@ -594,26 +589,31 @@ namespace Supremacy.UI
         private void OnScreenModelSelectedTaskForceChanged(object sender, EventArgs e)
         {
             if (_screenModel == null)
+            {
                 return;
+            }
 
-            var selectedTaskForce = _screenModel.SelectedTaskForce;
+            FleetViewWrapper selectedTaskForce = _screenModel.SelectedTaskForce;
 
             if (Equals(selectedTaskForce, SelectedFleet))
+            {
                 return;
+            }
 
-            if (selectedTaskForce == null)
-                SelectedFleet = null;
-            else
-                SelectedFleet = selectedTaskForce.View.Source;
+            SelectedFleet = selectedTaskForce?.View.Source;
         }
 
         private void OnScreenModelSelectedSectorChanged(object sender, EventArgs e)
         {
             if (_screenModel == null)
+            {
                 return;
+            }
 
             if (Equals(_screenModel.SelectedSector, SelectedSector))
+            {
                 return;
+            }
 
             SelectedSector = _screenModel.SelectedSector;
         }
@@ -630,7 +630,10 @@ namespace Supremacy.UI
             get
             {
                 if (s_appContext == null)
+                {
                     s_appContext = ServiceLocator.Current.GetInstance<IAppContext>();
+                }
+
                 return s_appContext;
             }
         }
@@ -640,126 +643,98 @@ namespace Supremacy.UI
             get
             {
                 if (s_playerOrderService == null)
+                {
                     s_playerOrderService = ServiceLocator.Current.GetInstance<IPlayerOrderService>();
+                }
+
                 return s_playerOrderService;
             }
         }
 
-        protected override int VisualChildrenCount
-        {
-            get { return _children.Count; }
-        }
+        protected override int VisualChildrenCount => _children.Count;
 
-        private bool IsScrolling
-        {
-            get
-            {
-                if (_scrollData != null)
-                    return (_scrollData.ScrollOwner != null);
-                return false;
-            }
-        }
+        private bool IsScrolling => _scrollData != null ? _scrollData.ScrollOwner != null : false;
 
-        private GalaxyGridInputMode InputMode
-        {
-            get { return _inputMode; }
-        }
+        private GalaxyGridInputMode InputMode { get; set; }
 
         private GalaxyGridInputMode InputModeOnFirstClick { get; set; }
 
         public Sector SelectedSector
         {
-            get { return GetValue(SelectedSectorProperty) as Sector; }
-            set { SetValue(SelectedSectorProperty, value); }
+            get => GetValue(SelectedSectorProperty) as Sector;
+            set => SetValue(SelectedSectorProperty, value);
         }
-        
+
         public Sector HoveredSector
         {
-            get { return GetValue(HoveredSectorProperty) as Sector; }
-            private set { SetValue(HoveredSectorPropertyKey, value); }
+            get => GetValue(HoveredSectorProperty) as Sector;
+            private set => SetValue(HoveredSectorPropertyKey, value);
         }
 
         public string SelectedSectorAllegiance
         {
-            get { return GetValue(SelectedSectorAllegianceProperty) as string; }
-            set { SetValue(SelectedSectorAllegianceProperty, value); }
+            get => GetValue(SelectedSectorAllegianceProperty) as string;
+            set => SetValue(SelectedSectorAllegianceProperty, value);
         }
 
         public TradeRoute SelectedTradeRoute
         {
-            get { return GetValue(SelectedTradeRouteProperty) as TradeRoute; }
-            set { SetValue(SelectedTradeRouteProperty, value); }
+            get => GetValue(SelectedTradeRouteProperty) as TradeRoute;
+            set => SetValue(SelectedTradeRouteProperty, value);
         }
 
         public Civilization PlayerCivilization
         {
             get
             {
-                var playerEmpire = AppContext.LocalPlayerEmpire;
-                if (playerEmpire == null)
-                    return null;
-                return playerEmpire.Civilization;
+                CivilizationManager playerEmpire = AppContext.LocalPlayerEmpire;
+                return playerEmpire?.Civilization;
             }
         }
 
         public GalaxyViewOptions Options
         {
-            get { return (GalaxyViewOptions)GetValue(OptionsProperty); }
-            set { SetValue(OptionsProperty, value); }
+            get => (GalaxyViewOptions)GetValue(OptionsProperty);
+            set => SetValue(OptionsProperty, value);
         }
 
         public Fleet SelectedFleet
         {
-            get { return GetValue(SelectedFleetProperty) as Fleet; }
-            set { SetValue(SelectedFleetProperty, value); }
+            get => GetValue(SelectedFleetProperty) as Fleet;
+            set => SetValue(SelectedFleetProperty, value);
         }
 
         public bool UseAnimatedStars
         {
-            get { return (bool)GetValue(UseAnimatedStarsProperty); }
-            set { SetValue(UseAnimatedStarsProperty, value); }
+            get => (bool)GetValue(UseAnimatedStarsProperty);
+            set => SetValue(UseAnimatedStarsProperty, value);
         }
 
         public bool UseAnimation
         {
-            get { return (bool)GetValue(UseAnimationProperty); }
-            set { SetValue(UseAnimationProperty, value); }
+            get => (bool)GetValue(UseAnimationProperty);
+            set => SetValue(UseAnimationProperty, value);
         }
         public bool UseCombatScreen
         {
-            get { return (bool)GetValue(UseCombatScreenProperty); }
-            set { SetValue(UseCombatScreenProperty, value); }
+            get => (bool)GetValue(UseCombatScreenProperty);
+            set => SetValue(UseCombatScreenProperty, value);
         }
 
-        public double ScaleFactor
-        {
-            get { return _scale.ScaleX; }
-        }
+        public double ScaleFactor => _scale.ScaleX;
 
-        private double MinScaleFactor
-        {
-            get
-            {
-                return Math.Max(ViewportWidth / (SectorSize * _galaxy.Width),
+        private double MinScaleFactor => Math.Max(ViewportWidth / (SectorSize * _galaxy.Width),
                                 ViewportHeight / (SectorSize * _galaxy.Height));
-            }
-        }
 
-        public bool CanZoomOut
-        {
-            get { return (ScaleFactor > MinScaleFactor); }
-        }
+        public bool CanZoomOut => ScaleFactor > MinScaleFactor;
 
-        public bool CanZoomIn
-        {
-            get { return (ScaleFactor < MaxScaleFactor); }
-        }
+        public bool CanZoomIn => ScaleFactor < MaxScaleFactor;
         #endregion
 
         #region Methods
         private static BitmapImage LoadFleetIcon(Uri uri)
         {
-            var image = new BitmapImage();
+            BitmapImage image = new BitmapImage();
             image.BeginInit();
             image.DecodePixelHeight = (int)(FleetIconSize * MaxScaleFactor);
             image.UriSource = uri;
@@ -771,12 +746,16 @@ namespace Supremacy.UI
         public void PauseAnimations()
         {
             if (_animationClocks == null)
+            {
                 return;
+            }
 
-            foreach (var clock in _animationClocks)
+            foreach (Clock clock in _animationClocks)
             {
                 if (!clock.IsPaused && clock.Controller != null)
+                {
                     clock.Controller.Pause();
+                }
             }
 
             _fleetIconAdorners.ForEach(o => o.PauseAnimations());
@@ -785,12 +764,16 @@ namespace Supremacy.UI
         public void ResumeAnimations()
         {
             if (_animationClocks == null || !UseAnimatedStars)
+            {
                 return;
+            }
 
-            foreach (var clock in _animationClocks)
+            foreach (Clock clock in _animationClocks)
             {
                 if (clock.IsPaused && clock.Controller != null)
+                {
                     clock.Controller.Resume();
+                }
             }
 
             _fleetIconAdorners.ForEach(o => o.ResumeAnimations());
@@ -804,9 +787,11 @@ namespace Supremacy.UI
         private void StopAnimations()
         {
             if (_animationClocks == null)
+            {
                 return;
+            }
 
-            foreach (var clockController in _animationClocks.Select(o => o.Controller).Where(o => o!= null))
+            foreach (ClockController clockController in _animationClocks.Select(o => o.Controller).Where(o => o != null))
             {
                 clockController.Stop();
                 clockController.Remove();
@@ -818,10 +803,13 @@ namespace Supremacy.UI
         private static Visual BuildRouteETA(Fleet fleet, TravelRoute route)
         {
             if ((fleet == null) || (fleet.Ships.Count == 0) || (fleet.Speed == 0))
+            {
                 return null;
-            var eta = (route.Length / fleet.Speed) + (((route.Length % fleet.Speed) == 0) ? 0 : 1);
-            var visual = new DrawingVisual();
-            var text = new FormattedText(
+            }
+
+            int eta = (route.Length / fleet.Speed) + (((route.Length % fleet.Speed) == 0) ? 0 : 1);
+            DrawingVisual visual = new DrawingVisual();
+            FormattedText text = new FormattedText(
                 eta.ToString(),
                 CultureInfo.CurrentCulture,
                 FlowDirection.LeftToRight,
@@ -830,13 +818,13 @@ namespace Supremacy.UI
                 Brushes.White,
                 VisualTreeHelper.GetDpi(visual).PixelsPerDip);
 
-            using (var dc = visual.RenderOpen())
+            using (DrawingContext dc = visual.RenderOpen())
             {
                 const int padding = 3;
-                var midpoint = GetSectorMidpoint(route.Steps[route.Length - 1]);
-                var border = new Rect(
-                    midpoint.X - text.Width / 2 - padding,
-                    midpoint.Y - text.Height / 2 - padding,
+                Point midpoint = GetSectorMidpoint(route.Steps[route.Length - 1]);
+                Rect border = new Rect(
+                    midpoint.X - (text.Width / 2) - padding,
+                    midpoint.Y - (text.Height / 2) - padding,
                     text.Width + (padding * 2),
                     text.Height + (padding * 2));
                 dc.DrawRectangle(Brushes.Black, new Pen(Brushes.White, 1.0), border);
@@ -848,24 +836,26 @@ namespace Supremacy.UI
 
         private static Visual BuildRoutePath(Fleet fleet, TravelRoute route)
         {
-            var visual = new DrawingVisual();
-            var geometry = new StreamGeometry();
-            var isInRange = true;
+            DrawingVisual visual = new DrawingVisual();
+            StreamGeometry geometry = new StreamGeometry();
+            bool isInRange = true;
 
-            using (var context = geometry.Open())
+            using (StreamGeometryContext context = geometry.Open())
             {
                 context.BeginFigure(GetSectorMidpoint(fleet.Location), false, false);
-                foreach (var location in route.Steps)
+                foreach (MapLocation location in route.Steps)
                 {
                     context.LineTo(GetSectorMidpoint(location), true, false);
                     if (isInRange && !IsSectorInRange(fleet, location))
+                    {
                         isInRange = false;
+                    }
                 }
             }
 
             geometry.Freeze();
 
-            using (var dc = visual.RenderOpen())
+            using (DrawingContext dc = visual.RenderOpen())
             {
                 dc.DrawGeometry(
                     null,
@@ -884,8 +874,8 @@ namespace Supremacy.UI
 
         private static FormattedText GetStarText(StarSystem system, Civilization playerCiv)
         {
-            var owner = system.Owner;
-            var brush = (system.HasColony && owner.IsEmpire && (DiplomacyHelper.IsContactMade(owner, playerCiv) || (owner == playerCiv)))
+            Civilization owner = system.Owner;
+            Brush brush = (system.HasColony && owner.IsEmpire && (DiplomacyHelper.IsContactMade(owner, playerCiv) || (owner == playerCiv)))
                             ? s_colonyNameBrushes[system.OwnerID]
                             : Brushes.White;
             string nameText;
@@ -940,9 +930,11 @@ namespace Supremacy.UI
 
         private static bool IsExplored(MapLocation location)
         {
-            var playerEmpire = AppContext.LocalPlayerEmpire;
+            CivilizationManager playerEmpire = AppContext.LocalPlayerEmpire;
             if (playerEmpire == null)
+            {
                 return false;
+            }
 
             //if (playerEmpire.MapData.IsExplored(location) == true)
             //{
@@ -958,9 +950,11 @@ namespace Supremacy.UI
 
         private static bool IsScanned(MapLocation location)
         {
-            var playerEmpire = AppContext.LocalPlayerEmpire;
+            CivilizationManager playerEmpire = AppContext.LocalPlayerEmpire;
             if (playerEmpire == null)
+            {
                 return false;
+            }
 
             //if (playerEmpire.MapData.IsScanned(location) == true)
             //{
@@ -981,10 +975,8 @@ namespace Supremacy.UI
 
         private static bool IsSectorInRange(Fleet fleet, MapLocation location)
         {
-            var playerEmpire = AppContext.LocalPlayerEmpire;
-            if (playerEmpire == null)
-                return false;
-            return (playerEmpire.MapData.GetFuelRange(location) <= fleet.Range);
+            CivilizationManager playerEmpire = AppContext.LocalPlayerEmpire;
+            return playerEmpire == null ? false : playerEmpire.MapData.GetFuelRange(location) <= fleet.Range;
         }
 
         private static bool IsStarNameVisible(StarSystem starSystem)
@@ -996,17 +988,17 @@ namespace Supremacy.UI
 
         private static bool IsValidTradeEndpoint(TradeRoute route, Colony colony)
         {
-            if (colony == null)
-                return false;
-            return route.IsValidTargetColony(colony);
+            return colony == null ? false : route.IsValidTargetColony(colony);
         }
 
         private static void OptionsChangedCallback(DependencyObject source,
                                                    DependencyPropertyChangedEventArgs e)
         {
-            var view = source as GalaxyGridPanel;
-            if ((view == null) || (view.OptionsChanged == null))
+            if ((!(source is GalaxyGridPanel view)) || (view.OptionsChanged == null))
+            {
                 return;
+            }
+
             view.OptionsChanged(
                 source,
                 new DependencyPropertyChangedEventArgs<GalaxyViewOptions>(e));
@@ -1016,15 +1008,19 @@ namespace Supremacy.UI
         {
             element.InvalidateMeasure();
             if (element.IsScrolling)
+            {
                 element._scrollData.ClearLayout();
+            }
         }
 
         private static void SelectedFleetChangedCallback(DependencyObject source,
                                                          DependencyPropertyChangedEventArgs e)
         {
-            var view = source as GalaxyGridPanel;
-            if ((view == null) || (view.SelectedFleetChanged == null))
+            if ((!(source is GalaxyGridPanel view)) || (view.SelectedFleetChanged == null))
+            {
                 return;
+            }
+
             view.SelectedFleetChanged(
                 source,
                 new DependencyPropertyChangedEventArgs<Fleet>(e));
@@ -1034,31 +1030,31 @@ namespace Supremacy.UI
             DependencyObject source,
             object value)
         {
-            var grid = source as GalaxyGridPanel;
-            var fleet = value as Fleet;
-            if ((grid == null) || (fleet == null))
-                return null;
-            if (fleet.Owner != grid.PlayerCivilization)
-                return null;
-            return value;
+            Fleet fleet = value as Fleet;
+            return (!(source is GalaxyGridPanel grid)) || (fleet == null) ? null : fleet.Owner != grid.PlayerCivilization ? null : value;
         }
 
         private static object CoerceSelectedSectorAllegiance(DependencyObject d, object value)
         {
-            var source = d as GalaxyGridPanel;
             try
             {
-                if (source != null)
+                if (d is GalaxyGridPanel source)
                 {
                     if (source.SelectedSector == null)
+                    {
                         return null;
-                    
-                    var owner = GetPerceivedSectorOwner(source.SelectedSector);
+                    }
+
+                    Civilization owner = GetPerceivedSectorOwner(source.SelectedSector);
                     if (owner != null)
+                    {
                         return owner.ShortName;
-                    
+                    }
+
                     if (IsScanned(source.SelectedSector.Location))
+                    {
                         return ResourceManager.GetString("SECTOR_NO_OWNER");
+                    }
                 }
             }
             catch (Exception e)
@@ -1073,15 +1069,14 @@ namespace Supremacy.UI
             DependencyObject source,
             DependencyPropertyChangedEventArgs e)
         {
-            var view = source as GalaxyGridPanel;
-            if (view == null)
-                return;
-            if (view.SelectedSectorChanged != null)
+            if (!(source is GalaxyGridPanel view))
             {
-                view.SelectedSectorChanged(
-                    source,
-                    new DependencyPropertyChangedEventArgs<Sector>(e));
+                return;
             }
+
+            view.SelectedSectorChanged?.Invoke(
+    source,
+    new DependencyPropertyChangedEventArgs<Sector>(e));
             view.CoerceValue(SelectedSectorAllegianceProperty);
             view.UpdateSelection();
         }
@@ -1090,9 +1085,11 @@ namespace Supremacy.UI
             DependencyObject source,
             DependencyPropertyChangedEventArgs e)
         {
-            var view = source as GalaxyGridPanel;
-            if ((view == null) || (view.SelectedTradeRouteChanged == null))
+            if ((!(source is GalaxyGridPanel view)) || (view.SelectedTradeRouteChanged == null))
+            {
                 return;
+            }
+
             view.SelectedTradeRouteChanged(
                 source,
                 new DependencyPropertyChangedEventArgs<TradeRoute>(e));
@@ -1100,27 +1097,30 @@ namespace Supremacy.UI
 
         private static void UseAnimatedStarsChangedCallback(DependencyObject source, DependencyPropertyChangedEventArgs e)
         {
-            var view = source as GalaxyGridPanel;
-            if (view == null)
+            if (!(source is GalaxyGridPanel view))
+            {
                 return;
+            }
 
             view.Update(true);
         }
 
         private static void UseAnimationChangedCallback(DependencyObject source, DependencyPropertyChangedEventArgs e)
         {
-            var view = source as GalaxyGridPanel;
-            if (view == null)
+            if (!(source is GalaxyGridPanel view))
+            {
                 return;
+            }
 
             view.Update(true);
         }
 
         private static void UseCombatScreenChangedCallback(DependencyObject source, DependencyPropertyChangedEventArgs e)
         {
-            var view = source as GalaxyGridPanel;
-            if (view == null)
+            if (!(source is GalaxyGridPanel view))
+            {
                 return;
+            }
 
             view.Update(true);
         }
@@ -1128,27 +1128,28 @@ namespace Supremacy.UI
         private static object SelectedTradeRouteCoerceValueCallback(
             DependencyObject source, object value)
         {
-            var grid = source as GalaxyGridPanel;
-            
-            var route = value as TradeRoute;
-            if ((grid == null) || (route == null))
-                return null;
-            if (route.SourceColony.Owner != grid.PlayerCivilization)
-                return null;
-            return value;
+            return (!(source is GalaxyGridPanel grid)) || (!(value is TradeRoute route))
+                ? null
+                : route.SourceColony.Owner != grid.PlayerCivilization ? null : value;
         }
 
         private void ExecuteSelectSectorCommand(Sector sector)
         {
             if (sector == null)
+            {
                 return;
+            }
+
             SelectedSector = sector;
         }
 
         private void ExecuteCenterOnSectorCommand(Sector sector)
         {
             if ((sector == null) || (ScrollOwner == null))
+            {
                 return;
+            }
+
             AutoScrollToSector(sector);
         }
 
@@ -1163,39 +1164,53 @@ namespace Supremacy.UI
 
             if (snapToGrid)
             {
-                var sectorSize = ExtentWidth / _galaxy.Width;
-                var offsetX = Math.Floor(offset / sectorSize) * sectorSize;
+                double sectorSize = ExtentWidth / _galaxy.Width;
+                double offsetX = Math.Floor(offset / sectorSize) * sectorSize;
 
                 if (_lastOffsetRequestX < 0)
+                {
                     _lastOffsetRequestX = HorizontalOffset;
+                }
 
                 if ((offset % sectorSize) > 1)
+                {
                     offsetX += sectorSize;
+                }
 
                 // If scrolling right...
                 if (offset > _lastOffsetRequestX)
+                {
                     offsetX -= (ViewportWidth % sectorSize);
+                }
 
                 _lastOffsetRequestX = offset;
 
                 offset = offsetX;
             }
             else
+            {
                 _lastOffsetRequestY = offset;
+            }
 
             if (offset < 0 || ViewportWidth >= ExtentWidth)
+            {
                 offset = 0;
+            }
             else
             {
                 if (offset + ViewportWidth >= ExtentWidth)
+                {
                     offset = ExtentWidth - ViewportWidth;
+                }
             }
 
             _scrollData.Offset.X = offset;
             _translation.X = -offset;
 
             if (ScrollOwner != null)
+            {
                 ScrollOwner.InvalidateScrollInfo();
+            }
         }
 
         public void SetVerticalOffset(double offset, bool snapToGrid)
@@ -1204,39 +1219,53 @@ namespace Supremacy.UI
 
             if (snapToGrid)
             {
-                var sectorSize = ExtentHeight / _galaxy.Height;
-                var offsetY = Math.Floor(offset / sectorSize) * sectorSize;
+                double sectorSize = ExtentHeight / _galaxy.Height;
+                double offsetY = Math.Floor(offset / sectorSize) * sectorSize;
 
                 if (_lastOffsetRequestY < 0)
+                {
                     _lastOffsetRequestY = VerticalOffset;
+                }
 
                 if ((offset % sectorSize) > 1)
+                {
                     offsetY += sectorSize;
+                }
 
                 // If scrolling down...
                 if (offset > _lastOffsetRequestY)
+                {
                     offsetY -= (ViewportHeight % sectorSize);
+                }
 
                 _lastOffsetRequestY = offset;
 
                 offset = offsetY;
             }
             else
+            {
                 _lastOffsetRequestY = offset;
+            }
 
             if (offset < 0 || ViewportHeight >= ExtentHeight)
+            {
                 offset = 0;
+            }
             else
             {
                 if (offset + ViewportHeight >= ExtentHeight)
+                {
                     offset = ExtentHeight - ViewportHeight;
+                }
             }
 
             _scrollData.Offset.Y = offset;
             _translation.Y = -offset;
 
             if (ScrollOwner != null)
+            {
                 ScrollOwner.InvalidateScrollInfo();
+            }
         }
 
         public void Update()
@@ -1247,7 +1276,9 @@ namespace Supremacy.UI
         public void Update(bool updateSectors)
         {
             if (!UseAnimatedStars)
+            {
                 PauseAnimations();
+            }
 
             _children.Clear();
 
@@ -1264,16 +1295,18 @@ namespace Supremacy.UI
             UpdateSelection();
             
             if (updateSectors)
+            {
                 Composite();
+            }
 
-            _children.Add(_composite);
-            _children.Add(_sectors);
-            _children.Add(_selectRect);
-            _children.Add(_shipRange);
-            _children.Add(_routeLines);
-            _children.Add(_tradeLines);
-            _children.Add(_starNames);
-            _children.Add(_fleetIconCanvas);
+            _ = _children.Add(_composite);
+            _ = _children.Add(_sectors);
+            _ = _children.Add(_selectRect);
+            _ = _children.Add(_shipRange);
+            _ = _children.Add(_routeLines);
+            _ = _children.Add(_tradeLines);
+            _ = _children.Add(_starNames);
+            _ = _children.Add(_fleetIconCanvas);
         }
 
         public void ZoomIn()
@@ -1290,9 +1323,12 @@ namespace Supremacy.UI
             }
             else if (SelectedSector != null)
             {
-                var selectedSectorMidpoint = GetSectorMidpoint(SelectedSector.Location);
+                Point selectedSectorMidpoint = GetSectorMidpoint(SelectedSector.Location);
                 if (ScrollOwner != null)
+                {
                     selectedSectorMidpoint = TransformToVisual(ScrollOwner).Transform(selectedSectorMidpoint);
+                }
+
                 zoomAroundPoint = selectedSectorMidpoint;
             }
             return zoomAroundPoint;
@@ -1316,46 +1352,66 @@ namespace Supremacy.UI
         public void ZoomIn(Point? zoomAroundPoint)
         {
             if (!CanZoomIn)
+            {
                 return;
-            var scaleFactor = ScaleFactor;
+            }
+
+            double scaleFactor = ScaleFactor;
             if (scaleFactor % ZoomIncrement != 0)
+            {
                 scaleFactor = Math.Round(scaleFactor, 1);
+            }
+
             scaleFactor += ZoomIncrement;
             if (scaleFactor > MaxScaleFactor)
+            {
                 scaleFactor = MaxScaleFactor;
+            }
+
             SetScaleFactor(scaleFactor, zoomAroundPoint);
         }
 
         public void ZoomOut(Point? zoomAroundPoint)
         {
             if (!CanZoomOut)
+            {
                 return;
-            var scaleFactor = ScaleFactor;
+            }
+
+            double scaleFactor = ScaleFactor;
             if (scaleFactor % ZoomIncrement != 0)
+            {
                 scaleFactor = Math.Round(scaleFactor, 1);
+            }
+
             scaleFactor -= ZoomIncrement;
             if (scaleFactor < MinScaleFactor)
+            {
                 scaleFactor = MinScaleFactor;
+            }
+
             SetScaleFactor(scaleFactor, zoomAroundPoint);
         }
 
         private Visual BuildTradeLine(TradeRoute route, Point endPoint, bool isNew)
         {
-            var visual = new DrawingVisual();
-            var geometry = new StreamGeometry();
+            DrawingVisual visual = new DrawingVisual();
+            StreamGeometry geometry = new StreamGeometry();
             Pen pen;
-            var isValid = false;
+            bool isValid = false;
 
-            var startPoint = GetSectorMidpoint(route.SourceColony.Location);
+            Point startPoint = GetSectorMidpoint(route.SourceColony.Location);
 
             if (isNew)
             {
-                var endSector = PointToSector(endPoint);
+                Sector endSector = PointToSector(endPoint);
                 if ((endSector.System != null) && endSector.System.HasColony)
                 {
                     endPoint = GetSectorMidpoint(endSector.Location);
                     if (IsValidTradeEndpoint(route, endSector.System.Colony))
+                    {
                         isValid = true;
+                    }
                 }
                 pen = isValid ? s_tradeRouteValidPen : s_tradeRouteInvalidPen;
             }
@@ -1365,7 +1421,7 @@ namespace Supremacy.UI
                 pen = s_tradeRouteSetPen;
             }
 
-            using (var context = geometry.Open())
+            using (StreamGeometryContext context = geometry.Open())
             {
                 context.BeginFigure(startPoint, false, false);
                 context.LineTo(endPoint, true, false);
@@ -1373,7 +1429,7 @@ namespace Supremacy.UI
 
             geometry.Freeze();
 
-            using (var dc = visual.RenderOpen())
+            using (DrawingContext dc = visual.RenderOpen())
             {
                 dc.PushGuidelineSet(_halfGuides);
                 dc.DrawGeometry(null, pen, geometry);
@@ -1385,9 +1441,15 @@ namespace Supremacy.UI
         private void ClearRouteData()
         {
             if (_newRoutePath != null)
+            {
                 _children.Remove(_newRoutePath);
+            }
+
             if (_newRouteEta != null)
+            {
                 _children.Remove(_newRouteEta);
+            }
+
             _newRoute = null;
             _newRoutePath = null;
             _newRouteEta = null;
@@ -1397,20 +1459,22 @@ namespace Supremacy.UI
 
         private void Composite()
         {
-            using (var drawingContext = _composite.RenderOpen())
+            using (DrawingContext drawingContext = _composite.RenderOpen())
             {
                 drawingContext.DrawDrawing(_backdrop.Drawing);
                 drawingContext.DrawDrawing(_borderLines.Drawing);
             }
             if (_composite.Drawing != null)
+            {
                 _composite.Drawing.Freeze();
+            }
         }
 
         protected override HitTestResult HitTestCore(PointHitTestParameters hitTestParameters)
         {
-            if (VisualClip == null)
-                return null;
-            return new PointHitTestResult(
+            return VisualClip == null
+                ? null
+                : new PointHitTestResult(
                 VisualClip.Bounds.Contains(hitTestParameters.HitPoint) ? this : null,
                 hitTestParameters.HitPoint);
         }
@@ -1424,13 +1488,13 @@ namespace Supremacy.UI
 
         private void CreateBackdrop()
         {
-            var map = GameContext.Current.Universe.Map;
-            var gridColor = Color.FromArgb(0x5F, 0x3F, 0x3F, 0x3F);
-            var gridBrush = new SolidColorBrush(gridColor);
+            SectorMap map = GameContext.Current.Universe.Map;
+            Color gridColor = Color.FromArgb(0x5F, 0x3F, 0x3F, 0x3F);
+            SolidColorBrush gridBrush = new SolidColorBrush(gridColor);
             gridBrush.Freeze();
-            var gridPen = new Pen(gridBrush, 1.0);
+            Pen gridPen = new Pen(gridBrush, 1.0);
             gridPen.Freeze();
-            var axisPen = new Pen(Brushes.White, 1.0);
+            Pen axisPen = new Pen(Brushes.White, 1.0);
             axisPen.Freeze();
             using (var dc = _backdrop.RenderOpen())
             {
@@ -1440,7 +1504,7 @@ namespace Supremacy.UI
                     new Rect(0, 0, map.Width * SectorSize,
                              map.Height * SectorSize));
                 dc.PushGuidelineSet(_guides);
-                for (var x = 0; x < map.Width; x++)
+                for (int x = 0; x < map.Width; x++)
                 {
                     dc.DrawLine(
                         gridPen,
@@ -1459,32 +1523,34 @@ namespace Supremacy.UI
                 // ReSharper disable PossibleLossOfFraction
                 dc.DrawLine(
                     axisPen,
-                    new Point((map.Width / 2) * SectorSize, 0),
-                    new Point((map.Width / 2) * SectorSize,
+                    new Point(map.Width / 2 * SectorSize, 0),
+                    new Point(map.Width / 2 * SectorSize,
                               map.Height * SectorSize));
                 dc.DrawLine(
                     axisPen,
-                    new Point(0, (map.Height / 2) * SectorSize),
+                    new Point(0, map.Height / 2 * SectorSize),
                     new Point(map.Width * SectorSize,
-                              (map.Height / 2) * SectorSize));
+                              map.Height / 2 * SectorSize));
                 // ReSharper restore PossibleLossOfFraction
             }
             if (_backdrop.Drawing != null)
+            {
                 _backdrop.Drawing.Freeze();
+            }
         }
 
         private void CreateGuides()
         {
             _guides = new GuidelineSet();
             _halfGuides = new GuidelineSet();
-            for (var x = 0; x <= SectorMap.MaxWidth; x++)
+            for (int x = 0; x <= SectorMap.MaxWidth; x++)
             {
-                _guides.GuidelinesX.Add(x * SectorSize - 0.5);
-                _halfGuides.GuidelinesX.Add(x * SectorSize - SectorSize / 2 - 0.5);
+                _guides.GuidelinesX.Add((x * SectorSize) - 0.5);
+                _halfGuides.GuidelinesX.Add(x * SectorSize - (SectorSize / 2) - 0.5);
             }
-            for (var y = 0; y <= SectorMap.MaxHeight; y++)
+            for (var y = SectorMap.MaxHeight; y >= 0; y--)
             {
-                _guides.GuidelinesY.Add(y * SectorSize - 0.5);
+                _guides.GuidelinesY.Add((y * SectorSize) - 0.5);
                 _halfGuides.GuidelinesY.Add(y * SectorSize - SectorSize / 2 - 0.5);
             }
             _guides.Freeze();
@@ -1494,17 +1560,19 @@ namespace Supremacy.UI
         private void EnsureScrollData()
         {
             if (_scrollData == null)
+            {
                 _scrollData = new ScrollData();
+            }
         }
 
         private double GetSectorSize()
         {
-            return (SectorSize * ScaleFactor);
+            return SectorSize * ScaleFactor;
         }
 
         private Sector PointToSector(Point p)
         {
-            var location = new MapLocation(
+            MapLocation location = new MapLocation(
                 Math.Min((int)(p.X / SectorSize), _galaxy.Width - 1),
                 Math.Min((int)(p.Y / SectorSize), _galaxy.Height - 1));
             return _galaxy[location];
@@ -1512,11 +1580,13 @@ namespace Supremacy.UI
 
         private void SetInputMode(GalaxyGridInputMode newInputMode)
         {
-            var oldInputMode = _inputMode;
+            GalaxyGridInputMode oldInputMode = InputMode;
             if (oldInputMode == newInputMode)
+            {
                 return;
+            }
 
-            _inputMode = newInputMode;
+            InputMode = newInputMode;
 
             switch (oldInputMode)
             {
@@ -1525,7 +1595,10 @@ namespace Supremacy.UI
                     ClearRouteData();
                     ReleaseMouseCapture();
                     if (SelectedFleet != null)
+                    {
                         PlayerActionEvents.FleetRouteUpdated.Publish(SelectedFleet);
+                    }
+
                     break;
                 case GalaxyGridInputMode.TradeRoute:
                     SelectedTradeRoute = null;
@@ -1542,28 +1615,32 @@ namespace Supremacy.UI
         private void SetScaleFactor(double scaleFactor, Point? relativePoint)
         {
             // this works.
-            var lastScaleFactor = ScaleFactor;
-            var minScaleFactor = MinScaleFactor;
-            var scaleRatio = scaleFactor / lastScaleFactor;
+            double lastScaleFactor = ScaleFactor;
+            double minScaleFactor = MinScaleFactor;
+            double scaleRatio = scaleFactor / lastScaleFactor;
 
             if (scaleFactor < minScaleFactor)
-                scaleFactor = minScaleFactor;
-            else if (scaleFactor > MaxScaleFactor)
-                scaleFactor = MaxScaleFactor;
-
-            var transforms = new TransformGroup();
-
-            var lastCenterPoint = new Point
             {
-                X = (HorizontalOffset + ViewportWidth / 2),
-                Y = (VerticalOffset + ViewportHeight / 2)
+                scaleFactor = minScaleFactor;
+            }
+            else if (scaleFactor > MaxScaleFactor)
+            {
+                scaleFactor = MaxScaleFactor;
+            }
+
+            TransformGroup transforms = new TransformGroup();
+
+            Point lastCenterPoint = new Point
+            {
+                X = HorizontalOffset + ViewportWidth / 2,
+                Y = VerticalOffset + ViewportHeight / 2
             };
 
             if (relativePoint.HasValue)
             {
-                var p = relativePoint.Value;
-                lastCenterPoint.X -= ((p.X - (ViewportWidth / 2)) * (1 - scaleRatio)) / scaleRatio;
-                lastCenterPoint.Y -= ((p.Y - (ViewportHeight / 2)) * (1 - scaleRatio)) / scaleRatio;
+                Point p = relativePoint.Value;
+                lastCenterPoint.X -= (p.X - (ViewportWidth / 2)) * (1 - scaleRatio) / scaleRatio;
+                lastCenterPoint.Y -= (p.Y - (ViewportHeight / 2)) * (1 - scaleRatio) / scaleRatio;
             }
 
             lastCenterPoint.X /= lastScaleFactor;
@@ -1575,7 +1652,7 @@ namespace Supremacy.UI
             transforms.Children.Add(_scale);
             transforms.Children.Add(_translation);
 
-            var effectiveFontSize = TransformToVisual(Application.Current.MainWindow)
+            double effectiveFontSize = TransformToVisual(Application.Current.MainWindow)
                                         .TransformBounds(new Rect(new Size(0.0, StarNameFontSize)))
                                         .Height;
 
@@ -1586,34 +1663,40 @@ namespace Supremacy.UI
             UpdateLayout();
 
             if (relativePoint.HasValue)
+            {
                 AutoCenterOnPoint(lastCenterPoint, false);
+            }
         }
 
         private void UpdateBorders()
         {
-            var galaxy = GameContext.Current.Universe.Map;
-            var dc = _borderLines.RenderOpen();
+            SectorMap galaxy = GameContext.Current.Universe.Map;
+            DrawingContext dc = _borderLines.RenderOpen();
             
             dc.PushGuidelineSet(_guides);
             
-            for (var x = 0; x < galaxy.Width; x++)
+            for (int x = 0; x < galaxy.Width; x++)
             {
-                for (var y = 0; y < galaxy.Height; y++)
+                for (int y = 0; y < galaxy.Height; y++)
                 {
-                    var sector = galaxy[x, y];
+                    Sector sector = galaxy[x, y];
                     
                     if (!IsScanned(sector.Location))
+                    {
                         continue;
-                    
-                    var owner = GetPerceivedSectorOwner(sector);
-                    if (owner == null)
-                        continue;
+                    }
 
-                    var borderPen = (owner.IsEmpire)
+                    Civilization owner = GetPerceivedSectorOwner(sector);
+                    if (owner == null)
+                    {
+                        continue;
+                    }
+
+                    Pen borderPen = (owner.IsEmpire)
                                         ? s_borderPens[owner.CivID]
                                         : s_minorRaceBorderPen;
 
-                    var neighbor = sector.GetNeighbor(MapDirection.West);
+                    Sector neighbor = sector.GetNeighbor(MapDirection.West);
 
                     if (neighbor == null ||
                         owner != GetPerceivedSectorOwner(neighbor))
@@ -1639,7 +1722,7 @@ namespace Supremacy.UI
                                       SectorSize * y));
                     }
 
-                   neighbor = sector.GetNeighbor(MapDirection.East);
+                    neighbor = sector.GetNeighbor(MapDirection.East);
 
                     if (neighbor == null ||
                         owner != GetPerceivedSectorOwner(neighbor))
@@ -1672,11 +1755,11 @@ namespace Supremacy.UI
 
         private static Civilization GetPerceivedSectorOwner(Sector sector)
         {
-            var owner = (Civilization)null;
-            var localPlayerEmpire = AppContext.LocalPlayer.Empire;
-            var localPlayerEmpireManager = AppContext.LocalPlayerEmpire;
-            var claims = AppContext.CurrentGame.SectorClaims;
-            var system = sector.System;
+            Civilization owner = null;
+            Civilization localPlayerEmpire = AppContext.LocalPlayer.Empire;
+            CivilizationManager localPlayerEmpireManager = AppContext.LocalPlayerEmpire;
+            SectorClaimGrid claims = AppContext.CurrentGame.SectorClaims;
+            StarSystem system = sector.System;
 
             if (system != null && system.IsOwned)
             {
@@ -1684,22 +1767,23 @@ namespace Supremacy.UI
             }
             else
             {
-                var station = sector.Station;
+                Station station = sector.Station;
                 if ((station != null) && station.IsOwned)
+                {
                     owner = station.Owner;
+                }
             }
 
             if (owner == null)
-                return claims.GetPerceivedOwner(sector.Location, localPlayerEmpire);
-
-            if (localPlayerEmpireManager.MapData.IsExplored(sector.Location) ||
-                Equals(owner, localPlayerEmpire) ||
-                DiplomacyHelper.IsContactMade(owner, localPlayerEmpire))
             {
-                return owner;
+                return claims.GetPerceivedOwner(sector.Location, localPlayerEmpire);
             }
 
-            return claims.GetPerceivedOwner(sector.Location, localPlayerEmpire);
+            return localPlayerEmpireManager.MapData.IsExplored(sector.Location) ||
+                Equals(owner, localPlayerEmpire) ||
+                DiplomacyHelper.IsContactMade(owner, localPlayerEmpire)
+                ? owner
+                : claims.GetPerceivedOwner(sector.Location, localPlayerEmpire);
         }
 
         private void UpdateRoutes()
@@ -1707,22 +1791,25 @@ namespace Supremacy.UI
             _routeLines.Children.Clear();
             _routePaths.Clear();
             if (PlayerCivilization == null)
-                return;
-            foreach (var fleet in GameContext.Current.Universe.FindOwned<Fleet>(PlayerCivilization))
             {
-                var route = fleet.Route;
+                return;
+            }
+
+            foreach (Fleet fleet in GameContext.Current.Universe.FindOwned<Fleet>(PlayerCivilization))
+            {
+                TravelRoute route = fleet.Route;
                 if (!route.IsEmpty)
                 {
-                    var routePath = BuildRoutePath(fleet, route);
+                    Visual routePath = BuildRoutePath(fleet, route);
                     _routePaths[fleet] = routePath;
-                    _routeLines.Children.Add(routePath);
+                    _ = _routeLines.Children.Add(routePath);
                 }
             }
         }
 
         private static Color SetAlpha(Color c, byte alpha)
         {
-            var copy = c;
+            Color copy = c;
             copy.A = alpha;
             return copy;
         }
@@ -1730,15 +1817,17 @@ namespace Supremacy.UI
         private Pen GetScanPen(Civilization civ)
         {
             if (_scanPen != null)
+            {
                 return _scanPen;
+            }
 
-            var color = Avalon.Windows.Utility.ColorHelpers.Lighten(
+            Color color = Avalon.Windows.Utility.ColorHelpers.Lighten(
                 (Color)ColorConverter.ConvertFromString(civ.Color),
                 0.67f);
 
-            var scanBrush = new LinearGradientBrush
+            LinearGradientBrush scanBrush = new LinearGradientBrush
             {
-                StartPoint = new Point(0,0),
+                StartPoint = new Point(0, 0),
                 EndPoint = new Point(SectorSize, SectorSize * 2),
                 SpreadMethod = GradientSpreadMethod.Reflect,
                 MappingMode = BrushMappingMode.Absolute,
@@ -1755,9 +1844,9 @@ namespace Supremacy.UI
                     }
             };
 
-            var transform = new TranslateTransform(0d, 0d);
+            TranslateTransform transform = new TranslateTransform(0d, 0d);
 
-            var animationX = new DoubleAnimation(
+            DoubleAnimation animationX = new DoubleAnimation(
                 0d,
                 scanBrush.EndPoint.X * 2,
                 new Duration(
@@ -1766,17 +1855,17 @@ namespace Supremacy.UI
                 RepeatBehavior = RepeatBehavior.Forever
             };
 
-            var animationY = new DoubleAnimation(
+            DoubleAnimation animationY = new DoubleAnimation(
                 0d,
                 scanBrush.EndPoint.Y * 2,
                 new Duration(
                     TimeSpan.FromSeconds(7.5)))
-                    {
-                        RepeatBehavior = RepeatBehavior.Forever
-                    };
+            {
+                RepeatBehavior = RepeatBehavior.Forever
+            };
 
-            var clockX = animationX.CreateClock();
-            var clockY = animationY.CreateClock();
+            AnimationClock clockX = animationX.CreateClock();
+            AnimationClock clockY = animationY.CreateClock();
 
             transform.ApplyAnimationClock(
                 TranslateTransform.XProperty,
@@ -1791,7 +1880,9 @@ namespace Supremacy.UI
             _scanPen = new Pen(scanBrush, 1.5);
 
             if (_animationClocks == null)
+            {
                 _animationClocks = new List<Clock>();
+            }
 
             _animationClocks.Add(clockX);
             _animationClocks.Add(clockY);
@@ -1801,15 +1892,15 @@ namespace Supremacy.UI
 
         private void UpdateSectors()
         {
-            var playerCiv = PlayerCivilization;
-            var scanPen = GetScanPen(playerCiv);
-            var map = GameContext.Current.Universe.Map;
-            var sectorClaims = GameContext.Current.SectorClaims;
-            var mapData = AppContext.LocalPlayerEmpire.MapData;
+            Civilization playerCiv = PlayerCivilization;
+            Pen scanPen = GetScanPen(playerCiv);
+            SectorMap map = GameContext.Current.Universe.Map;
+            SectorClaimGrid sectorClaims = GameContext.Current.SectorClaims;
+            CivilizationMapData mapData = AppContext.LocalPlayerEmpire.MapData;
 
-            var fleetLookup = (from item in GameContext.Current.Universe.Objects
-                               where item.ObjectType == UniverseObjectType.Fleet
-                               select (Fleet)item).ToLookup(o => o.Location,
+            ILookup<MapLocation, FleetView> fleetLookup = (from item in GameContext.Current.Universe.Objects
+                                                           where item.ObjectType == UniverseObjectType.Fleet
+                                                           select (Fleet)item).ToLookup(o => o.Location,
                                                             o => FleetView.Create(playerCiv, o));
 
             _sectors.Children.Clear();
@@ -1824,19 +1915,19 @@ namespace Supremacy.UI
 
             using (DrawingContext dc = _sectors.RenderOpen(), dcStarNames = _starNames.RenderOpen())
             {
-                var scanLines = new StreamGeometry();
-                var slc = scanLines.Open();
+                StreamGeometry scanLines = new StreamGeometry();
+                StreamGeometryContext slc = scanLines.Open();
 
                 dc.PushGuidelineSet(_guides);
-                for (var x = 0; x < map.Width; x++)
+                for (int x = 0; x < map.Width; x++)
                 {
-                    for (var y = 0; y < map.Height; y++)
+                    for (int y = 0; y < map.Height; y++)
                     {
-                        var isContactMadeWithOwner = false;
-                        var sector = map[x, y];
-                        var system = sector.System;
-                        var owner = GetPerceivedSectorOwner(sector);
-                        var location = sector.Location;
+                        bool isContactMadeWithOwner = false;
+                        Sector sector = map[x, y];
+                        StarSystem system = sector.System;
+                        Civilization owner = GetPerceivedSectorOwner(sector);
+                        MapLocation location = sector.Location;
 
                         /*******************
                          * DRAW FOG OF WAR *
@@ -1854,7 +1945,9 @@ namespace Supremacy.UI
                         }
 
                         if (owner != null)
+                        {
                             isContactMadeWithOwner = true;
+                        }
 
                         /**************************************
                          * DRAW SECTOR FILL FOR OWNED SECTORS *
@@ -1872,15 +1965,7 @@ namespace Supremacy.UI
                         else if (isContactMadeWithOwner)
                         {
 
-                            SolidColorBrush sectorBrush;
-                            if (owner.CivilizationType == CivilizationType.Empire)
-                            {
-                                sectorBrush = s_colonyFills[owner.CivID];
-                            }
-                            else
-                            {
-                                sectorBrush = s_minorRaceFill;
-                            }
+                            SolidColorBrush sectorBrush = owner.CivilizationType == CivilizationType.Empire ? s_colonyFills[owner.CivID] : s_minorRaceFill;
 
                             dc.DrawRectangle(
                                 sectorBrush,
@@ -1894,7 +1979,7 @@ namespace Supremacy.UI
                                         SectorSize * (location.Y + 1))));
                         }
 
-                        var scanStrength = mapData.GetScanStrength(location);
+                        int scanStrength = mapData.GetScanStrength(location);
 
                         /*************************
                          * DRAW SCAN RANGE LINES *
@@ -1941,7 +2026,7 @@ namespace Supremacy.UI
                          ***************************/
                         if (system != null)
                         {
-                            var p = new Point(SectorSize * location.X,
+                            Point p = new Point(SectorSize * location.X,
                                                 SectorSize * location.Y);
                             double topMargin = 4;
                             if (mapData.IsScanned(location))
@@ -1959,13 +2044,13 @@ namespace Supremacy.UI
                                     if (!_starBrushes.ContainsKey(sector.System.StarType))
                                     {
                                         AnimationClock clock;
-                                        var brush = new ImageBrush(s_starImages[sector.System.StarType]);
+                                        ImageBrush brush = new ImageBrush(s_starImages[sector.System.StarType]);
                                         RenderOptions.SetCacheInvalidationThresholdMinimum(brush, 0.5);
                                         RenderOptions.SetCacheInvalidationThresholdMaximum(brush, 2.0);
                                         RenderOptions.SetCachingHint(brush, CachingHint.Cache);
                                         if (sector.System.StarType == StarType.Nebula)
                                         {
-                                            var opacityAnim = new DoubleAnimation(
+                                            DoubleAnimation opacityAnim = new DoubleAnimation(
                                                 1.0, 0.5, new Duration(new TimeSpan(0, 0, 3)))
                                             {
                                                 AutoReverse = true,
@@ -1974,15 +2059,18 @@ namespace Supremacy.UI
                                             clock = opacityAnim.CreateClock();
                                             _animationClocks.Add(clock);
                                             if (!UseAnimatedStars && clock.Controller != null)
+                                            {
                                                 clock.Controller.Pause();
+                                            }
+
                                             brush.ApplyAnimationClock(Brush.OpacityProperty, clock);
                                         }
                                         else
                                         {
                                             if (StarHelper.SupportsPlanets(sector.System))
                                             {
-                                                var grow = new ScaleTransform(1.0, 1.0, 0.5, 0.5);
-                                                var growAnimation = new DoubleAnimation(
+                                                ScaleTransform grow = new ScaleTransform(1.0, 1.0, 0.5, 0.5);
+                                                DoubleAnimation growAnimation = new DoubleAnimation(
                                                     0.85, 1.25, new Duration(new TimeSpan(0, 0, 2)))
                                                 {
                                                     RepeatBehavior = RepeatBehavior.Forever,
@@ -2029,9 +2117,12 @@ namespace Supremacy.UI
 
                                 if (IsStarNameVisible(system))
                                 {
-                                    var starName = GetStarText(system, playerCiv);
+                                    FormattedText starName = GetStarText(system, playerCiv);
                                     if (starName.Height > starName.LineHeight)
+                                    {
                                         topMargin = -2;
+                                    }
+
                                     dcStarNames.DrawText(
                                         starName,
                                         new Point(p.X + 3,
@@ -2042,14 +2133,14 @@ namespace Supremacy.UI
                         /*************************
                          * DRAW FLEET INDICATORS *
                          *************************/
-                        var fleetsAtLocation = fleetLookup[location]
+                        List<IGrouping<Civilization, FleetView>> fleetsAtLocation = fleetLookup[location]
                             .Where(f => f.IsPresenceKnown)
                             .GroupBy(f => f.Source.Owner)
                             .ToList();
 
                         const double maxIconsWidth = (SectorSize * MaxScaleFactor) + FleetIconSpacing;
 
-                        var consumedWidth = 0d;
+                        double consumedWidth = 0d;
 
                         while (fleetsAtLocation.Count != 0)
                         {
@@ -2085,24 +2176,21 @@ namespace Supremacy.UI
                             _fleetIconCanvas.Children.Add(adorner);
                             _fleetIconAdorners.Add(adorner);
 
-                            consumedWidth += (FleetIconSize + FleetIconSpacing);
+                            consumedWidth += FleetIconSize + FleetIconSpacing;
                         }
 
                         /***************************
                          * DRAW STATION INDICATORS *
                          ***************************/
-                        var station = sector.Station;
+                        Station station = sector.Station;
                         if ((station != null) &&
                             ((station.Owner == playerCiv) || (scanStrength > 0)))
                         {
                             int brushId = station.OwnerID;
-                            Pen sPen;
-                            if ((station.Owner != playerCiv) && !DiplomacyHelper.IsContactMade(station.Owner, playerCiv)) {
-                                sPen = new Pen(Brushes.White, 1.0);
-                            } else {
-                                sPen = new Pen(s_colonyNameBrushes[brushId], 1.0);
-                            }
-                            var sText = new FormattedText(
+                            Pen sPen = (station.Owner != playerCiv) && !DiplomacyHelper.IsContactMade(station.Owner, playerCiv)
+                                ? new Pen(Brushes.White, 1.0)
+                                : new Pen(s_colonyNameBrushes[brushId], 1.0);
+                            FormattedText sText = new FormattedText(
                                 "S",
                                 CultureInfo.CurrentCulture,
                                 FlowDirection.LeftToRight,
@@ -2110,7 +2198,7 @@ namespace Supremacy.UI
                                 16.0,
                                 Brushes.White,
                                 VisualTreeHelper.GetDpi(this).PixelsPerDip);
-                            var sGeom = sText.BuildGeometry(
+                            Geometry sGeom = sText.BuildGeometry(
                                 new Point(SectorSize * location.X + 5,
                                             SectorSize * (location.Y + 1) - 5
                                                 - sText.Height + (sText.Height - sText.Baseline)));
@@ -2136,7 +2224,7 @@ namespace Supremacy.UI
                                 int tradeRouteAvailable = sector.TradeRouteIndicator - sector.System.Colony.TradeRoutes.Count();
                                 GameLog.Core.TradeRoutes.DebugFormat("TradeRoutes for Sector {0}: Available: {1}, Possible: {2}, Used: {3}", sector.Location,  tradeRouteAvailable, sector.TradeRouteIndicator, sector.System.Colony.TradeRoutes.Count());
 
-                                var tText = new FormattedText(
+                                FormattedText tText = new FormattedText(
                                     "T:" + sector.TradeRouteIndicator.ToString(),
                                     CultureInfo.CurrentCulture,
                                     FlowDirection.LeftToRight,
@@ -2144,7 +2232,7 @@ namespace Supremacy.UI
                                     12.0,
                                     Brushes.White,
                                     VisualTreeHelper.GetDpi(this).PixelsPerDip);
-                                var tGeom = tText.BuildGeometry(
+                                Geometry tGeom = tText.BuildGeometry(
                                     new Point(SectorSize * location.X + 50,
                                                 SectorSize * (location.Y + 1) - 40
                                                     - tText.Height + (tText.Height - tText.Baseline)));
@@ -2162,10 +2250,11 @@ namespace Supremacy.UI
         internal static BitmapImage GetFleetIcon(Civilization civ)
         {
             if (civ == null)
+            {
                 throw new ArgumentNullException("civ");
-            if (s_fleetIcons.ContainsKey(civ.CivID))
-                return s_fleetIcons[civ.CivID];
-            return s_defaultFleetIcon;
+            }
+
+            return s_fleetIcons.ContainsKey(civ.CivID) ? s_fleetIcons[civ.CivID] : s_defaultFleetIcon;
         }
 
         [NotNull]
@@ -2182,7 +2271,7 @@ namespace Supremacy.UI
 
         private void UpdateSelection()
         {
-            using (var selectRect = _selectRect.RenderOpen())
+            using (DrawingContext selectRect = _selectRect.RenderOpen())
             {
                 if (SelectedSector != null)
                 {
@@ -2203,13 +2292,18 @@ namespace Supremacy.UI
         {
             _tradeLines.Children.Clear();
             if (PlayerCivilization == null)
-                return;
-            foreach (var colony in GameContext.Current.Universe.FindOwned<Colony>(PlayerCivilization))
             {
-                foreach (var route in colony.TradeRoutes)
+                return;
+            }
+
+            foreach (Colony colony in GameContext.Current.Universe.FindOwned<Colony>(PlayerCivilization))
+            {
+                foreach (TradeRoute route in colony.TradeRoutes)
                 {
                     if (route.TargetColony != null)
-                        _tradeLines.Children.Add(BuildTradeLine(route, default(Point), false));
+                    {
+                        _ = _tradeLines.Children.Add(BuildTradeLine(route, default, false));
+                    }
                 }
             }
         }
@@ -2218,20 +2312,24 @@ namespace Supremacy.UI
         {
             if (IsScrolling)
             {
-                var extent = new Size(
+                Size extent = new Size(
                     GetSectorSize() * _galaxy.Width,
                     GetSectorSize() * _galaxy.Height);
                 if (extent != _scrollData.Extent)
                 {
                     _scrollData.Extent = extent;
                     if (_scrollData.ScrollOwner != null)
+                    {
                         _scrollData.ScrollOwner.InvalidateScrollInfo();
+                    }
                 }
                 if (finalSize != _scrollData.Viewport)
                 {
                     _scrollData.Viewport = finalSize;
                     if (_scrollData.ScrollOwner != null)
+                    {
                         _scrollData.ScrollOwner.InvalidateScrollInfo();
+                    }
                 }
                 finalSize = new Size(
                     Math.Min(extent.Width, finalSize.Width),
@@ -2250,19 +2348,23 @@ namespace Supremacy.UI
         {
             if (IsScrolling)
             {
-                var extent = new Size(
+                Size extent = new Size(
                     GetSectorSize() * _galaxy.Width,
                     GetSectorSize() * _galaxy.Height);
                 if (extent != _scrollData.Extent)
                 {
                     if (_scrollData.ScrollOwner != null)
+                    {
                         _scrollData.ScrollOwner.InvalidateScrollInfo();
+                    }
                 }
                 if (availableSize != _scrollData.Viewport)
                 {
                     _scrollData.Viewport = availableSize;
                     if (_scrollData.ScrollOwner != null)
+                    {
                         _scrollData.ScrollOwner.InvalidateScrollInfo();
+                    }
                 }
                 return new Size(Math.Min(extent.Width, availableSize.Width),
                                 Math.Min(extent.Height, availableSize.Height));
@@ -2287,28 +2389,36 @@ namespace Supremacy.UI
         {
             const double edgeWidth = 16d;
 
-            var edges = ScreenEdges.None;
-            var position = Mouse.GetPosition(this);
+            ScreenEdges edges = ScreenEdges.None;
+            Point position = Mouse.GetPosition(this);
 
-            var leftEdge = _scrollData.Offset.X / ScaleFactor;
-            var topEdge = _scrollData.Offset.Y / ScaleFactor;
-            var rightEdge = leftEdge + _scrollData.Viewport.Width / ScaleFactor;
-            var bottomEdge = topEdge + _scrollData.Viewport.Height / ScaleFactor;
+            double leftEdge = _scrollData.Offset.X / ScaleFactor;
+            double topEdge = _scrollData.Offset.Y / ScaleFactor;
+            double rightEdge = leftEdge + (_scrollData.Viewport.Width / ScaleFactor);
+            double bottomEdge = topEdge + (_scrollData.Viewport.Height / ScaleFactor);
 
-            var leftThreshold = leftEdge + edgeWidth;
-            var topThreshold = topEdge + edgeWidth;
-            var rightThreshold = rightEdge - edgeWidth;
-            var bottomThreshold = bottomEdge - edgeWidth;
+            double leftThreshold = leftEdge + edgeWidth;
+            double topThreshold = topEdge + edgeWidth;
+            double rightThreshold = rightEdge - edgeWidth;
+            double bottomThreshold = bottomEdge - edgeWidth;
 
             if (position.X >= leftEdge && position.X <= leftThreshold)
+            {
                 edges |= ScreenEdges.Left;
+            }
             else if (position.X <= rightEdge && position.X >= rightThreshold)
+            {
                 edges |= ScreenEdges.Right;
+            }
 
             if (position.Y >= topEdge && position.Y <= topThreshold)
+            {
                 edges |= ScreenEdges.Top;
+            }
             else if (position.Y <= bottomEdge && position.Y >= bottomThreshold)
+            {
                 edges |= ScreenEdges.Bottom;
+            }
 
             return edges;
         }
@@ -2322,17 +2432,25 @@ namespace Supremacy.UI
 
         private void OnAutoScrollTimerTick(object sender, EventArgs eventArgs)
         {
-            var edges = GetMouseScreenEdges();
+            ScreenEdges edges = GetMouseScreenEdges();
 
             if ((edges & ScreenEdges.Left) == ScreenEdges.Left)
+            {
                 LineLeft();
+            }
             else if ((edges & ScreenEdges.Right) == ScreenEdges.Right)
+            {
                 LineRight();
+            }
 
             if ((edges & ScreenEdges.Top) == ScreenEdges.Top)
+            {
                 LineUp();
+            }
             else if ((edges & ScreenEdges.Bottom) == ScreenEdges.Bottom)
+            {
                 LineDown();
+            }
 
             _autoScrollTimer.Interval = TimeSpan.FromSeconds(0.2d);
         }
@@ -2362,8 +2480,11 @@ namespace Supremacy.UI
         {
             base.OnMouseDown(e);
             if (e.Handled)
+            {
                 return;
-            Keyboard.Focus(this);
+            }
+
+            _ = Keyboard.Focus(this);
             if ((InputMode != GalaxyGridInputMode.Default) &&
                 (InputHitTest(e.GetPosition(this)) == null))
             {
@@ -2381,42 +2502,52 @@ namespace Supremacy.UI
             }
             if (e.LeftButton == MouseButtonState.Pressed)
             {
-                var clickSector = PointToSector(e.GetPosition(this));
-                if (_inputMode == GalaxyGridInputMode.FleetMovement)
+                Sector clickSector = PointToSector(e.GetPosition(this));
+                if (InputMode == GalaxyGridInputMode.FleetMovement)
                 {
-                    var fleet = SelectedFleet;
+                    Fleet fleet = SelectedFleet;
                     if ((fleet != null) && (_newRoute != null))
                     {
                         if ((_waypoints.Count == 0) || (_waypoints[_waypoints.Count - 1] != clickSector))
                         {
                             if (_newRoutePath != null)
+                            {
                                 _children.Remove(_newRoutePath);
+                            }
+
                             if (_newRouteEta != null)
+                            {
                                 _children.Remove(_newRouteEta);
+                            }
+
                             _waypoints.Add(clickSector);
                             _newRoute = AStar.FindPath(SelectedFleet, _waypoints);
                             if (!_newRoute.IsEmpty)
                             {
                                 _newRoutePath = BuildRoutePath(SelectedFleet, _newRoute);
-                                _children.Add(_newRoutePath);
+                                _ = _children.Add(_newRoutePath);
                                 _newRouteEta = BuildRouteETA(SelectedFleet, _newRoute);
                                 if (_newRouteEta != null)
+                                {
                                     _children.Add(_newRouteEta);
+                                }
                             }
                         }
                         if (!Keyboard.IsKeyDown(Key.LeftCtrl) && !Keyboard.IsKeyDown(Key.RightCtrl))
                         {
-                            var setRoute = true;
+                            bool setRoute = true;
                             if (!_newRoute.IsEmpty && fleet.Order.IsCancelledOnRouteChange)
                             {
-                                var confirmResult = MessageDialog.Show(
+                                MessageDialogResult confirmResult = MessageDialog.Show(
                                     ResourceManager.GetString("CONFIRM_NEW_ROUTE_HEADER"),
-                                    String.Format(
+                                    string.Format(
                                         ResourceManager.GetString("CONFIRM_NEW_ROUTE_MESSAGE"),
                                         fleet.Order.OrderName),
                                     MessageDialogButtons.YesNo);
                                 if (confirmResult != MessageDialogResult.Yes)
+                                {
                                     setRoute = false;
+                                }
                             }
                             if (setRoute)
                             {
@@ -2429,10 +2560,10 @@ namespace Supremacy.UI
                         return;
                     }
                 }
-                else if (_inputMode == GalaxyGridInputMode.TradeRoute)
+                else if (InputMode == GalaxyGridInputMode.TradeRoute)
                 {
-                    var route = SelectedTradeRoute;
-                    var targetChanged = false;
+                    TradeRoute route = SelectedTradeRoute;
+                    bool targetChanged = false;
                     if ((clickSector.System != null)
                         && IsValidTradeEndpoint(route, clickSector.System.Colony))
                     {
@@ -2462,51 +2593,66 @@ namespace Supremacy.UI
 
         protected override void OnMouseMove(MouseEventArgs e)
         {
-            if (_inputMode == GalaxyGridInputMode.Default)
-                return;
-
-            var hoverSector = PointToSector(e.GetPosition(this));
-
-            if (_inputMode == GalaxyGridInputMode.FleetMovement)
+            if (InputMode == GalaxyGridInputMode.Default)
             {
-                var fleet = SelectedFleet;
+                return;
+            }
+
+            Sector hoverSector = PointToSector(e.GetPosition(this));
+
+            if (InputMode == GalaxyGridInputMode.FleetMovement)
+            {
+                Fleet fleet = SelectedFleet;
 
                 if (fleet == null)
                 {
-                    _inputMode = GalaxyGridInputMode.Default;
+                    InputMode = GalaxyGridInputMode.Default;
                     return;
                 }
 
                 if (_routePaths.ContainsKey(fleet))
+                {
                     _routeLines.Children.Remove(_routePaths[fleet]);
+                }
 
                 if ((_waypoints.Count == 0) || (hoverSector != _lastSector))
                 {
-                    var newWaypoints = new List<Sector>(_waypoints)
+                    List<Sector> newWaypoints = new List<Sector>(_waypoints)
                                        {
                                            hoverSector
                                        };
                     _newRoute = AStar.FindPath(SelectedFleet, newWaypoints);
                     if (_newRoutePath != null)
+                    {
                         _children.Remove(_newRoutePath);
+                    }
+
                     _newRoutePath = BuildRoutePath(SelectedFleet, _newRoute);
-                    _children.Add(_newRoutePath);
+                    _ = _children.Add(_newRoutePath);
                     if (_newRouteEta != null)
+                    {
                         _children.Remove(_newRouteEta);
+                    }
+
                     if (_newRoute.Length > 0)
                     {
                         _newRouteEta = BuildRouteETA(SelectedFleet, _newRoute);
                         if (_newRouteEta != null)
+                        {
                             _children.Add(_newRouteEta);
+                        }
                     }
                 }
             }
-            else if (_inputMode == GalaxyGridInputMode.TradeRoute)
+            else if (InputMode == GalaxyGridInputMode.TradeRoute)
             {
                 if (_newTradeLine != null)
+                {
                     _tradeLines.Children.Remove(_newTradeLine);
+                }
+
                 _newTradeLine = BuildTradeLine(SelectedTradeRoute, e.GetPosition(this), true);
-                _tradeLines.Children.Add(_newTradeLine);
+                _ = _tradeLines.Children.Add(_newTradeLine);
             }
             _lastSector = hoverSector;
         }
@@ -2526,9 +2672,11 @@ namespace Supremacy.UI
                 // Update the cursor if can scroll or not.
                 if ((_scrollData.Extent.Width > _scrollData.Viewport.Width)
                     || (_scrollData.Extent.Height > _scrollData.Viewport.Height))
+                {
                     Cursor = Cursors.ScrollAll;
+                }
 
-                CaptureMouse();
+                _ = CaptureMouse();
 
                 e.Handled = true;
             }
@@ -2539,10 +2687,10 @@ namespace Supremacy.UI
             if (_isDragScrollInProgress)
             {
                 // Get the new scroll position.
-                var point = e.GetPosition(ScrollOwner);
+                Point point = e.GetPosition(ScrollOwner);
 
                 // Determine the new amount to scroll.
-                var delta = new Point(
+                Point delta = new Point(
                     (point.X > _scrollStartPoint.X)
                         ? -(point.X - _scrollStartPoint.X)
                         : (_scrollStartPoint.X - point.X),
@@ -2556,7 +2704,7 @@ namespace Supremacy.UI
 
                 e.Handled = true;
             }
-            else if (_inputMode != GalaxyGridInputMode.Default &&
+            else if (InputMode != GalaxyGridInputMode.Default &&
                      !_autoScrollTimer.IsEnabled)
             {
                 _autoScrollTimer.Interval = TimeSpan.FromSeconds(1d);
@@ -2578,9 +2726,14 @@ namespace Supremacy.UI
         protected override void OnPreviewMouseWheel(MouseWheelEventArgs e)
         {
             if (e.Delta > 0)
+            {
                 ZoomIn(true);
+            }
             else if (e.Delta < 0)
+            {
                 ZoomOut(true);
+            }
+
             e.Handled = true;
         }
         #endregion
@@ -2591,18 +2744,26 @@ namespace Supremacy.UI
             offset.X *= ScaleFactor;
             offset.Y *= ScaleFactor;
 
-            offset.X = offset.X - ViewportWidth / 2;
-            offset.Y = offset.Y - ViewportHeight / 2;
+            offset.X -= ViewportWidth / 2;
+            offset.Y -= ViewportHeight / 2;
 
             if (offset.X < 0)
+            {
                 offset.X = 0;
+            }
             else if ((offset.X + ViewportWidth) > ExtentWidth)
+            {
                 offset.X = ExtentWidth - ViewportWidth;
+            }
 
             if (offset.Y < 0)
+            {
                 offset.Y = 0;
+            }
             else if ((offset.Y + ViewportHeight) > ExtentHeight)
+            {
                 offset.Y = ExtentHeight - ViewportHeight;
+            }
 
             _scrollData.Offset.X = offset.X;
             _scrollData.Offset.Y = offset.Y;
@@ -2611,7 +2772,7 @@ namespace Supremacy.UI
 
             if (animate)
             {
-                var xAnim = new DoubleAnimation(
+                DoubleAnimation xAnim = new DoubleAnimation(
                     _translation.X,
                     -_scrollData.Offset.X,
                     new Duration(new TimeSpan(0, 0, 0, 0, 500)),
@@ -2621,7 +2782,7 @@ namespace Supremacy.UI
                                             DecelerationRatio = 0.5
                                         };
 
-                var yAnim = new DoubleAnimation(
+                DoubleAnimation yAnim = new DoubleAnimation(
                     _translation.Y,
                     -_scrollData.Offset.Y,
                     new Duration(new TimeSpan(0, 0, 0, 0, 500)),
@@ -2641,7 +2802,7 @@ namespace Supremacy.UI
 
         private void AutoScrollToSector(Sector sector)
         {
-            var offset = GetSectorMidpoint(sector.Location);
+            Point offset = GetSectorMidpoint(sector.Location);
             AutoCenterOnPoint(offset, true);
         }
 
@@ -2657,23 +2818,28 @@ namespace Supremacy.UI
             {
                 SetInputMode(GalaxyGridInputMode.FleetMovement);
                 if (!Focus() && (Parent is Control))
-                    ((Control)Parent).Focus();
+                {
+                    _ = ((Control)Parent).Focus();
+                }
             }
-            else if (_inputMode == GalaxyGridInputMode.FleetMovement)
+            else if (InputMode == GalaxyGridInputMode.FleetMovement)
+            {
                 SetInputMode(GalaxyGridInputMode.Default);
+            }
+
             _shipRange.Opacity = 0;
             _shipRange.Children.Clear();
             if (e.NewValue != null)
             {
-                using (var dc = _shipRange.RenderOpen())
+                using (DrawingContext dc = _shipRange.RenderOpen())
                 {
-                    var pen = new Pen(Brushes.Yellow, 2.0);
-                    var fleet = e.NewValue;
+                    Pen pen = new Pen(Brushes.Yellow, 2.0);
+                    Fleet fleet = e.NewValue;
                     const int lineLength = (int)SectorSize;
                     pen.DashStyle = DashStyles.Dash;
-                    for (var x = 0; x < _galaxy.Width; x++)
+                    for (int x = 0; x < _galaxy.Width; x++)
                     {
-                        for (var y = 0; y < _galaxy.Height; y++)
+                        for (int y = 0; y < _galaxy.Height; y++)
                         {
                             if (IsSectorInRange(fleet, new MapLocation(x, y)))
                             {
@@ -2731,10 +2897,14 @@ namespace Supremacy.UI
             {
                 SetInputMode(GalaxyGridInputMode.TradeRoute);
                 if (!Focus() && (Parent is Control))
-                    ((Control)Parent).Focus();
+                {
+                    _ = ((Control)Parent).Focus();
+                }
             }
-            else if (_inputMode == GalaxyGridInputMode.TradeRoute)
+            else if (InputMode == GalaxyGridInputMode.TradeRoute)
+            {
                 SetInputMode(GalaxyGridInputMode.Default);
+            }
         }
 
         private void GalaxyGridPanel_SizeChanged(object sender, SizeChangedEventArgs e)
@@ -2745,19 +2915,16 @@ namespace Supremacy.UI
         private void OnSectorDoubleClicked(Sector sector)
         {
             if ((sector != null) && (SectorDoubleClicked != null))
+            {
                 SectorDoubleClicked(sector);
+            }
         }
         #endregion
 
         #region IScrollInfo Members
         public bool CanHorizontallyScroll
         {
-            get
-            {
-                if (_scrollData == null)
-                    return false;
-                return _scrollData.AllowHorizontal;
-            }
+            get => _scrollData == null ? false : _scrollData.AllowHorizontal;
             set
             {
                 EnsureScrollData();
@@ -2771,12 +2938,7 @@ namespace Supremacy.UI
 
         public bool CanVerticallyScroll
         {
-            get
-            {
-                if (_scrollData == null)
-                    return false;
-                return _scrollData.AllowVertical;
-            }
+            get => _scrollData == null ? false : _scrollData.AllowVertical;
             set
             {
                 EnsureScrollData();
@@ -2788,35 +2950,11 @@ namespace Supremacy.UI
             }
         }
 
-        public double ExtentHeight
-        {
-            get
-            {
-                if (_scrollData == null)
-                    return 0;
-                return _scrollData.Extent.Height;
-            }
-        }
+        public double ExtentHeight => _scrollData == null ? 0 : _scrollData.Extent.Height;
 
-        public double ExtentWidth
-        {
-            get
-            {
-                if (_scrollData == null)
-                    return 0;
-                return _scrollData.Extent.Width;
-            }
-        }
+        public double ExtentWidth => _scrollData == null ? 0 : _scrollData.Extent.Width;
 
-        public double HorizontalOffset
-        {
-            get
-            {
-                if (_scrollData == null)
-                    return 0;
-                return _scrollData.Offset.X;
-            }
-        }
+        public double HorizontalOffset => _scrollData == null ? 0 : _scrollData.Offset.X;
 
         public void LineDown()
         {
@@ -2911,35 +3049,13 @@ namespace Supremacy.UI
             SetHorizontalOffset(offset, false);
         }
 
-        public double VerticalOffset
-        {
-            get
-            {
-                if (_scrollData == null)
-                    return 0;
-                return _scrollData.Offset.Y;
-            }
-        }
+        public double VerticalOffset => _scrollData == null ? 0 : _scrollData.Offset.Y;
 
-        public double ViewportHeight
-        {
-            get
-            {
-                if (_scrollData == null)
-                    return 0;
-                return _scrollData.Viewport.Height;
-            }
-        }
+        public double ViewportHeight => _scrollData == null ? 0 : _scrollData.Viewport.Height;
 
-        public double ViewportWidth
-        {
-            get
-            {
-                if (_scrollData == null)
-                    return 0;
-                return _scrollData.Viewport.Width;
-            }
-        }
+        public double ViewportWidth => _scrollData == null ? 0 : _scrollData.Viewport.Width;
+
+        public ISoundPlayer SoundPlayer { get; } = null;
         #endregion
 
         #region ScrollData Class

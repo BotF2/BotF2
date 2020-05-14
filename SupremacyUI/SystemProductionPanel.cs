@@ -117,8 +117,8 @@ namespace Supremacy.UI
 
             DataContextChanged += OnDataContextChanged;
 
-            var headerBrush = FindResource("LCARS_HeaderBrush") as Brush ?? Foreground;
-            var paragraphBrush = FindResource("DefaultTextBrush") as Brush ?? Foreground;
+            Brush headerBrush = FindResource("LCARS_HeaderBrush") as Brush ?? Foreground;
+            Brush paragraphBrush = FindResource("DefaultTextBrush") as Brush ?? Foreground;
 
             SetResourceReference(
                 FontFamilyProperty,
@@ -294,17 +294,17 @@ namespace Supremacy.UI
             _researchOutputText.SetValue(Grid.RowProperty, 3);
             _intelligenceOutputText.SetValue(Grid.RowProperty, 4);
 
-            _grid.Children.Add(_foodFacilityText);
-            _grid.Children.Add(_industryFacilityText);
-            _grid.Children.Add(_energyFacilityText);
-            _grid.Children.Add(_researchFacilityText);
-            _grid.Children.Add(_intelligenceFacilityText);
+            _ = _grid.Children.Add(_foodFacilityText);
+            _ = _grid.Children.Add(_industryFacilityText);
+            _ = _grid.Children.Add(_energyFacilityText);
+            _ = _grid.Children.Add(_researchFacilityText);
+            _ = _grid.Children.Add(_intelligenceFacilityText);
 
-            _grid.Children.Add(_foodOutputText);
-            _grid.Children.Add(_industryOutputText);
-            _grid.Children.Add(_energyOutputText);
-            _grid.Children.Add(_researchOutputText);
-            _grid.Children.Add(_intelligenceOutputText);
+            _ = _grid.Children.Add(_foodOutputText);
+            _ = _grid.Children.Add(_industryOutputText);
+            _ = _grid.Children.Add(_energyOutputText);
+            _ = _grid.Children.Add(_researchOutputText);
+            _ = _grid.Children.Add(_intelligenceOutputText);
 
             /* FOOD IMAGE */
             _foodImageBorder = new Border
@@ -321,7 +321,7 @@ namespace Supremacy.UI
             _foodImageBorder.SetValue(Grid.RowProperty, 0);
             _foodImageBorder.PreviewMouseDown += ImageBorder_PreviewMouseDown;
             _foodImageBorder.PreviewMouseUp += ImageBorder_PreviewMouseUp;
-            _grid.Children.Add(_foodImageBorder);
+            _ = _grid.Children.Add(_foodImageBorder);
 
             /* INDUSTRY IMAGE */
             _industryImageBorder = new Border
@@ -338,7 +338,7 @@ namespace Supremacy.UI
             _industryImageBorder.SetValue(Grid.RowProperty, 1);
             _industryImageBorder.PreviewMouseDown += ImageBorder_PreviewMouseDown;
             _industryImageBorder.PreviewMouseUp += ImageBorder_PreviewMouseUp;
-            _grid.Children.Add(_industryImageBorder);
+            _ = _grid.Children.Add(_industryImageBorder);
 
             /* ENERGY IMAGE */
             _energyImageBorder = new Border
@@ -355,7 +355,7 @@ namespace Supremacy.UI
             _energyImageBorder.SetValue(Grid.RowProperty, 2);
             _energyImageBorder.PreviewMouseDown += ImageBorder_PreviewMouseDown;
             _energyImageBorder.PreviewMouseUp += ImageBorder_PreviewMouseUp;
-            _grid.Children.Add(_energyImageBorder);
+            _ = _grid.Children.Add(_energyImageBorder);
 
             /* RESEARCH IMAGE */
             _researchImageBorder = new Border
@@ -372,7 +372,7 @@ namespace Supremacy.UI
             _researchImageBorder.SetValue(Grid.RowProperty, 3);
             _researchImageBorder.PreviewMouseDown += ImageBorder_PreviewMouseDown;
             _researchImageBorder.PreviewMouseUp += ImageBorder_PreviewMouseUp;
-            _grid.Children.Add(_researchImageBorder);
+            _ = _grid.Children.Add(_researchImageBorder);
 
             /* INTELLIGENCE IMAGE */
             _intelligenceImageBorder = new Border
@@ -389,7 +389,7 @@ namespace Supremacy.UI
             _intelligenceImageBorder.SetValue(Grid.RowProperty, 4);
             _intelligenceImageBorder.PreviewMouseDown += ImageBorder_PreviewMouseDown;
             _intelligenceImageBorder.PreviewMouseUp += ImageBorder_PreviewMouseUp;
-            _grid.Children.Add(_intelligenceImageBorder);
+            _ = _grid.Children.Add(_intelligenceImageBorder);
 
             _foodSlider.SetValue(Grid.ColumnProperty, 2);
             _industrySlider.SetValue(Grid.ColumnProperty, 2);
@@ -415,16 +415,16 @@ namespace Supremacy.UI
             _researchSlider.SetValue(Grid.RowProperty, 3);
             _intelligenceSlider.SetValue(Grid.RowProperty, 4);
 
-            _grid.Children.Add(_foodSlider);
-            _grid.Children.Add(_industrySlider);
-            _grid.Children.Add(_energySlider);
-            _grid.Children.Add(_researchSlider);
-            _grid.Children.Add(_intelligenceSlider);
+            _ = _grid.Children.Add(_foodSlider);
+            _ = _grid.Children.Add(_industrySlider);
+            _ = _grid.Children.Add(_energySlider);
+            _ = _grid.Children.Add(_researchSlider);
+            _ = _grid.Children.Add(_intelligenceSlider);
 
             _laborBar = new UnitActivationBar
-                        {
-                            HorizontalAlignment = HorizontalAlignment.Stretch
-                        };
+            {
+                HorizontalAlignment = HorizontalAlignment.Stretch
+            };
             _laborBar.SetValue(Grid.ColumnProperty, 2);
             _laborBar.SetValue(Grid.RowProperty, 5);
             _laborBar.VerticalAlignment = VerticalAlignment.Bottom;
@@ -442,16 +442,16 @@ namespace Supremacy.UI
             _laborPoolText.Text = string.Format(ResourceManager.GetString("Labor_Pool"));
             _laborPoolText.Foreground = headerBrush;
 
-            _grid.Children.Add(_laborBar);
-            _grid.Children.Add(_laborPoolText);
+            _ = _grid.Children.Add(_laborBar);
+            _ = _grid.Children.Add(_laborPoolText);
 
             #endregion
 
-            _children.Add(_grid);
+            _ = _children.Add(_grid);
 
             _sliderGroup.PoolBar = _laborBar;
-            _sliderGroup.FreePoolSizeChanged += sliderGroup_FreePoolSizeChanged;
-            _sliderGroup.PoolSizeChanged += sliderGroup_PoolSizeChanged;
+            _sliderGroup.FreePoolSizeChanged += SliderGroup_FreePoolSizeChanged;
+            _sliderGroup.PoolSizeChanged += SliderGroup_PoolSizeChanged;
 
             _sliderGroup.Children.Add(_foodSlider);
             _sliderGroup.Children.Add(_industrySlider);
@@ -459,7 +459,7 @@ namespace Supremacy.UI
             _sliderGroup.Children.Add(_researchSlider);
             _sliderGroup.Children.Add(_intelligenceSlider);
 
-            CommandBindings.Add(
+            _ = CommandBindings.Add(
                 new CommandBinding(
                     ScrapFacilityCommand,
                     ScrapFacilityCommand_Executed));
@@ -467,19 +467,24 @@ namespace Supremacy.UI
 
         private void OnDataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
-            var model = e.OldValue as ColonyScreenPresentationModel;
-            if (model != null)
+            if (e.OldValue is ColonyScreenPresentationModel model)
+            {
                 model.SelectedColonyChanged -= OnColonyChanged;
+            }
 
             model = e.NewValue as ColonyScreenPresentationModel;
 
             if (model == null)
+            {
                 return;
+            }
 
             model.SelectedColonyChanged += OnColonyChanged;
 
             if (model.SelectedColony != null)
+            {
                 Reset();
+            }
         }
 
         private void OnColonyChanged(object sender, EventArgs e)
@@ -494,7 +499,9 @@ namespace Supremacy.UI
         private void ImageBorder_PreviewMouseUp(object sender, MouseButtonEventArgs e)
         {
             if (e.ChangedButton != MouseButton.Right)
+            {
                 return;
+            }
 
             if ((sender == _foodImageBorder) ||
                 (sender == _industryImageBorder) ||
@@ -509,28 +516,27 @@ namespace Supremacy.UI
 
         private void ImageBorder_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-            var colony = Colony;
+            Colony colony = Colony;
             if (colony == null)
+            {
                 return;
+            }
 
-            var model = Model;
+            ColonyScreenPresentationModel model = Model;
             if (model == null)
+            {
                 return;
+            }
 
-            var delta = 0;
+            int delta = 0;
             ProductionCategory? category = null;
 
             if (e.LeftButton == MouseButtonState.Pressed)
             {
-                if (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl)
-                    || Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift))
-                {
-                    delta = -1;
-                }
-                else
-                {
-                    delta = 1;
-                }
+                delta = Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl)
+                    || Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift)
+                    ? -1
+                    : 1;
             }
             else if (e.RightButton == MouseButtonState.Pressed)
             {
@@ -538,22 +544,36 @@ namespace Supremacy.UI
             }
 
             if (sender == _foodImageBorder)
+            {
                 category = ProductionCategory.Food;
+            }
             else if (sender == _industryImageBorder)
+            {
                 category = ProductionCategory.Industry;
+            }
             else if (sender == _energyImageBorder)
+            {
                 category = ProductionCategory.Energy;
+            }
             else if (sender == _researchImageBorder)
+            {
                 category = ProductionCategory.Research;
+            }
             else if (sender == _intelligenceImageBorder)
+            {
                 category = ProductionCategory.Intelligence;
+            }
 
             if (!category.HasValue)
+            {
                 return;
+            }
 
-            var command = (delta < 0) ? Model.UnscrapFacilityCommand : Model.ScrapFacilityCommand;
+            ICommand command = (delta < 0) ? Model.UnscrapFacilityCommand : Model.ScrapFacilityCommand;
             if ((command == null) || !command.CanExecute(category.Value))
+            {
                 return;
+            }
 
             command.Execute(category.Value);
 
@@ -564,26 +584,29 @@ namespace Supremacy.UI
 
         private static void ScrapFacilityCommand_Executed(object sender, ExecutedRoutedEventArgs e) { }
 
-        private void slider_ActiveUnitsChanged(object sender, DependencyPropertyChangedEventArgs<int> e)
+        private void Slider_ActiveUnitsChanged(object sender, DependencyPropertyChangedEventArgs<int> e)
         {
             GameLog.Client.General.DebugFormat("slider_ActiveUnitsChanged...");
-            var colony = Colony;
+            Colony colony = Colony;
             if (colony == null)
+            {
                 return;
+            }
 
-            var slider = sender as UnitActivationBar;
 
-            if ((slider == null) || (slider == _laborBar))
+            if ((!(sender is UnitActivationBar slider)) || (slider == _laborBar))
+            {
                 return;
+            }
 
-            var delta = Math.Abs(e.NewValue - e.OldValue);
+            int delta = Math.Abs(e.NewValue - e.OldValue);
 
             
             if (delta != 0)
             {
                 int i;
-                var activate = (e.NewValue > e.OldValue);
-                var category = default(ProductionCategory);
+                bool activate = e.NewValue > e.OldValue;
+                ProductionCategory category = default;
                 TextBlock outputText = null;
                 TextBlock facilityText = null;
                 TextBlock activeText = null;
@@ -628,16 +651,22 @@ namespace Supremacy.UI
                 {
                     if (activate)
                     {
-                        var activateCommand = Model.ActivateFacilityCommand;
+                        ICommand activateCommand = Model.ActivateFacilityCommand;
                         if ((activateCommand != null) && activateCommand.CanExecute(category))
+                        {
                             activateCommand.Execute(category);
+                        }
+
                         GameLog.Client.General.DebugFormat("slider_ActiveUnitsChanged... category {1} IN-CREASED {0}", delta, category);
                     }
                     else
                     {
-                        var deactivateCommand = Model.DeactivateFacilityCommand;
+                        ICommand deactivateCommand = Model.DeactivateFacilityCommand;
                         if ((deactivateCommand != null) && deactivateCommand.CanExecute(category))
+                        {
                             deactivateCommand.Execute(category);
+                        }
+
                         GameLog.Client.General.DebugFormat("slider_ActiveUnitsChanged... category {1} DE-CREASED {0}", delta, category);
                     }
                 }
@@ -659,7 +688,7 @@ namespace Supremacy.UI
 
                 if (outputText != null)
                 {
-                    outputText.Text = String.Format(
+                    outputText.Text = string.Format(
                         "{0} {1}",
                         colony.GetProductionOutput(category),
                         category);
@@ -667,17 +696,16 @@ namespace Supremacy.UI
 
                 slider.ActiveUnits = colony.GetActiveFacilities(category);
 
-                if (SliderChanged != null)
-                    SliderChanged(this, new SliderChangedEventArgs(category));
+                SliderChanged?.Invoke(this, new SliderChangedEventArgs(category));
             }
         }
 
-        private void sliderGroup_FreePoolSizeChanged(object sender, EventArgs e)
+        private void SliderGroup_FreePoolSizeChanged(object sender, EventArgs e)
         {
             _laborBar.ActiveUnits = _sliderGroup.FreePoolSize / _laborBar.UnitCost;
         }
 
-        private void sliderGroup_PoolSizeChanged(object sender, EventArgs e)
+        private void SliderGroup_PoolSizeChanged(object sender, EventArgs e)
         {
             _laborBar.Units = _sliderGroup.PoolSize / _laborBar.UnitCost;
         }
@@ -686,19 +714,14 @@ namespace Supremacy.UI
 
         #region Properties
 
-        public ColonyScreenPresentationModel Model
-        {
-            get { return DataContext as ColonyScreenPresentationModel; }
-        }
+        public ColonyScreenPresentationModel Model => DataContext as ColonyScreenPresentationModel;
 
         public Colony Colony
         {
             get
             {
-                var model = Model;
-                if (model == null)
-                    return null;
-                return model.SelectedColony;
+                ColonyScreenPresentationModel model = Model;
+                return model?.SelectedColony;
             }
         }
 
@@ -714,7 +737,7 @@ namespace Supremacy.UI
 
         private void ResetSliders()
         {
-            var colony = Colony;
+            Colony colony = Colony;
             if (colony == null)
             {
                 _sliderGroup.ResetPool(0);
@@ -725,11 +748,11 @@ namespace Supremacy.UI
             }
             else
             {
-                _foodSlider.ActiveUnitsChanged -= slider_ActiveUnitsChanged;
-                _industrySlider.ActiveUnitsChanged -= slider_ActiveUnitsChanged;
-                _energySlider.ActiveUnitsChanged -= slider_ActiveUnitsChanged;
-                _researchSlider.ActiveUnitsChanged -= slider_ActiveUnitsChanged;
-                _intelligenceSlider.ActiveUnitsChanged -= slider_ActiveUnitsChanged;
+                _foodSlider.ActiveUnitsChanged -= Slider_ActiveUnitsChanged;
+                _industrySlider.ActiveUnitsChanged -= Slider_ActiveUnitsChanged;
+                _energySlider.ActiveUnitsChanged -= Slider_ActiveUnitsChanged;
+                _researchSlider.ActiveUnitsChanged -= Slider_ActiveUnitsChanged;
+                _intelligenceSlider.ActiveUnitsChanged -= Slider_ActiveUnitsChanged;
 
                 _foodSlider.UnitCost = colony.GetFacilityType(ProductionCategory.Food).LaborCost;
                 _industrySlider.UnitCost = colony.GetFacilityType(ProductionCategory.Industry).LaborCost;
@@ -747,15 +770,15 @@ namespace Supremacy.UI
 
                 int LaborPool = colony.GetAvailableLabor() / 10;
 
-                GameLog.Client.Production.DebugFormat("Pop={0},Food={1},Ind={2},Energy={3},Research={4},Intel={5},FreePoolSize={6}", 
-                    colony.Population.CurrentValue, 
+                GameLog.Client.Production.DebugFormat("Pop={0},Food={1},Ind={2},Energy={3},Research={4},Intel={5},FreePoolSize={6}",
+                    colony.Population.CurrentValue,
                     colony.GetActiveFacilities(ProductionCategory.Food),
                     colony.GetActiveFacilities(ProductionCategory.Industry),
                     colony.GetActiveFacilities(ProductionCategory.Energy),
                     colony.GetActiveFacilities(ProductionCategory.Research),
                     colony.GetActiveFacilities(ProductionCategory.Intelligence),
                     LaborPool);
-                    /*_laborBar.ActiveUnits doesn't work */
+                /*_laborBar.ActiveUnits doesn't work */
 
                 _foodSlider.ActiveUnits = colony.GetActiveFacilities(ProductionCategory.Food);
                 _industrySlider.ActiveUnits = colony.GetActiveFacilities(ProductionCategory.Industry);
@@ -763,11 +786,11 @@ namespace Supremacy.UI
                 _researchSlider.ActiveUnits = colony.GetActiveFacilities(ProductionCategory.Research);
                 _intelligenceSlider.ActiveUnits = colony.GetActiveFacilities(ProductionCategory.Intelligence);
 
-                _foodSlider.ActiveUnitsChanged += slider_ActiveUnitsChanged;
-                _industrySlider.ActiveUnitsChanged += slider_ActiveUnitsChanged;
-                _energySlider.ActiveUnitsChanged += slider_ActiveUnitsChanged;
-                _researchSlider.ActiveUnitsChanged += slider_ActiveUnitsChanged;
-                _intelligenceSlider.ActiveUnitsChanged += slider_ActiveUnitsChanged;
+                _foodSlider.ActiveUnitsChanged += Slider_ActiveUnitsChanged;
+                _industrySlider.ActiveUnitsChanged += Slider_ActiveUnitsChanged;
+                _energySlider.ActiveUnitsChanged += Slider_ActiveUnitsChanged;
+                _researchSlider.ActiveUnitsChanged += Slider_ActiveUnitsChanged;
+                _intelligenceSlider.ActiveUnitsChanged += Slider_ActiveUnitsChanged;
 
                 _foodOutputText.Text = string.Format(
                     "{0} {1}",
@@ -811,7 +834,7 @@ namespace Supremacy.UI
 
         private void UpdateImages()
         {
-            var colony = Colony;
+            Colony colony = Colony;
             if (colony == null)
             {
                 _foodImage.ImageSource = TechObjectImageConverter.Convert("");
@@ -952,10 +975,7 @@ namespace Supremacy.UI
 
         #region Properties
 
-        protected override int VisualChildrenCount
-        {
-            get { return _children.Count; }
-        }
+        protected override int VisualChildrenCount => _children.Count;
 
         #endregion
 
@@ -976,7 +996,6 @@ namespace Supremacy.UI
         {
             #region Fields
 
-            private readonly ProductionCategory productionCategory;
 
             #endregion
 
@@ -984,17 +1003,14 @@ namespace Supremacy.UI
 
             public SliderChangedEventArgs(ProductionCategory productionCategory)
             {
-                this.productionCategory = productionCategory;
+                ProductionCategory = productionCategory;
             }
 
             #endregion
 
             #region Properties
 
-            public ProductionCategory ProductionCategory
-            {
-                get { return productionCategory; }
-            }
+            public ProductionCategory ProductionCategory { get; }
 
             #endregion
         }

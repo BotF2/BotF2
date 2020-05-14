@@ -114,8 +114,8 @@ namespace Supremacy.UI
         /// </summary>
         public bool IsExpanded
         {
-            get { return (bool)GetValue(IsExpandedProperty); }
-            set { SetValue(IsExpandedProperty, value); }
+            get => (bool)GetValue(IsExpandedProperty);
+            set => SetValue(IsExpandedProperty, value);
         }
 
         /// <summary>
@@ -124,24 +124,24 @@ namespace Supremacy.UI
         /// </summary>
         public double Duration
         {
-            get { return (double)GetValue(DurationProperty); }
-            set { SetValue(DurationProperty, value); }
+            get => (double)GetValue(DurationProperty);
+            set => SetValue(DurationProperty, value);
         }
 
         // Using a DependencyProperty as the backing store for Duration.  This enables animation, styling, binding, etc...
 
         public HorizontalRevealMode HorizontalReveal
         {
-            get { return (HorizontalRevealMode)GetValue(HorizontalRevealProperty); }
-            set { SetValue(HorizontalRevealProperty, value); }
+            get => (HorizontalRevealMode)GetValue(HorizontalRevealProperty);
+            set => SetValue(HorizontalRevealProperty, value);
         }
 
         // Using a DependencyProperty as the backing store for HorizontalReveal.  This enables animation, styling, binding, etc...
 
         public VerticalRevealMode VerticalReveal
         {
-            get { return (VerticalRevealMode)GetValue(VerticalRevealProperty); }
-            set { SetValue(VerticalRevealProperty, value); }
+            get => (VerticalRevealMode)GetValue(VerticalRevealProperty);
+            set => SetValue(VerticalRevealProperty, value);
         }
 
         // Using a DependencyProperty as the backing store for VerticalReveal.  This enables animation, styling, binding, etc...
@@ -152,8 +152,8 @@ namespace Supremacy.UI
         /// </summary>
         public double AnimationProgress
         {
-            get { return (double)GetValue(AnimationProgressProperty); }
-            set { SetValue(AnimationProgressProperty, value); }
+            get => (double)GetValue(AnimationProgressProperty);
+            set => SetValue(AnimationProgressProperty, value);
         }
 
         private static void OnIsExpandedChanged(object sender, DependencyPropertyChangedEventArgs e)
@@ -221,58 +221,26 @@ namespace Supremacy.UI
 
         private static double CalculateLeft(double width, double percent, HorizontalRevealMode reveal)
         {
-            if (reveal == HorizontalRevealMode.FromRightToLeft)
-            {
-                return (percent - 1.0) * width;
-            }
-            else if (reveal == HorizontalRevealMode.FromCenterToEdge)
-            {
-                return (percent - 1.0) * width * 0.5;
-            }
-            else
-            {
-                return 0.0;
-            }
+            return reveal == HorizontalRevealMode.FromRightToLeft
+                ? (percent - 1.0) * width
+                : reveal == HorizontalRevealMode.FromCenterToEdge ? (percent - 1.0) * width * 0.5 : 0.0;
         }
 
         private static double CalculateTop(double height, double percent, VerticalRevealMode reveal)
         {
-            if (reveal == VerticalRevealMode.FromBottomToTop)
-            {
-                return (percent - 1.0) * height;
-            }
-            else if (reveal == VerticalRevealMode.FromCenterToEdge)
-            {
-                return (percent - 1.0) * height * 0.5;
-            }
-            else
-            {
-                return 0.0;
-            }
+            return reveal == VerticalRevealMode.FromBottomToTop
+                ? (percent - 1.0) * height
+                : reveal == VerticalRevealMode.FromCenterToEdge ? (percent - 1.0) * height * 0.5 : 0.0;
         }
 
         private static double CalculateWidth(double originalWidth, double percent, HorizontalRevealMode reveal)
         {
-            if (reveal == HorizontalRevealMode.None)
-            {
-                return originalWidth;
-            }
-            else
-            {
-                return originalWidth * percent;
-            }
+            return reveal == HorizontalRevealMode.None ? originalWidth : originalWidth * percent;
         }
 
         private static double CalculateHeight(double originalHeight, double percent, VerticalRevealMode reveal)
         {
-            if (reveal == VerticalRevealMode.None)
-            {
-                return originalHeight;
-            }
-            else
-            {
-                return originalHeight * percent;
-            }
+            return reveal == VerticalRevealMode.None ? originalHeight : originalHeight * percent;
         }
 
         private void SetupAnimation(bool isExpanded)
@@ -284,10 +252,12 @@ namespace Supremacy.UI
                 currentProgress = 1.0 - currentProgress;
             }
 
-            DoubleAnimation animation = new DoubleAnimation();
-            animation.To = isExpanded ? 1.0 : 0.0;
-            animation.Duration = TimeSpan.FromMilliseconds(Duration * currentProgress);
-            animation.FillBehavior = FillBehavior.HoldEnd;
+            DoubleAnimation animation = new DoubleAnimation
+            {
+                To = isExpanded ? 1.0 : 0.0,
+                Duration = TimeSpan.FromMilliseconds(Duration * currentProgress),
+                FillBehavior = FillBehavior.HoldEnd
+            };
 
             BeginAnimation(AnimationProgressProperty, animation);
         }

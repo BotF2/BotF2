@@ -85,7 +85,7 @@ namespace Supremacy.UI
         {
             get
             {
-                if (((SystemParameters.PowerLineStatus == PowerLineStatus.Online) && SystemParameters.ClientAreaAnimation) && (RenderCapability.Tier > 0))
+                if ((SystemParameters.PowerLineStatus == PowerLineStatus.Online) && SystemParameters.ClientAreaAnimation && (RenderCapability.Tier > 0))
                 {
                     return IsEnabled;
                 }
@@ -97,32 +97,32 @@ namespace Supremacy.UI
         /// <returns>The brush used to fill the background of the <see cref="T:System.Windows.Controls.Button"></see>.</returns>
         public Brush Background
         {
-            get { return GetValue(BackgroundProperty) as Brush ?? Brushes.Transparent; }
-            set { SetValue(BackgroundProperty, value); }
+            get => GetValue(BackgroundProperty) as Brush ?? Brushes.Transparent;
+            set => SetValue(BackgroundProperty, value);
         }
 
         public Brush HoverBackground
         {
-            get { return GetValue(HoverBackgroundProperty) as Brush ?? Brushes.Transparent; }
-            set { SetValue(HoverBackgroundProperty, value); }
+            get => GetValue(HoverBackgroundProperty) as Brush ?? Brushes.Transparent;
+            set => SetValue(HoverBackgroundProperty, value);
         }
 
         public Brush PressedBackground
         {
-            get { return GetValue(PressedBackgroundProperty) as Brush ?? Brushes.Transparent; }
-            set { SetValue(PressedBackgroundProperty, value); }
+            get => GetValue(PressedBackgroundProperty) as Brush ?? Brushes.Transparent;
+            set => SetValue(PressedBackgroundProperty, value);
         }
 
         public Brush DisabledBackground
         {
-            get { return GetValue(DisabledBackgroundProperty) as Brush ?? Brushes.Transparent; }
-            set { SetValue(DisabledBackgroundProperty, value); }
+            get => GetValue(DisabledBackgroundProperty) as Brush ?? Brushes.Transparent;
+            set => SetValue(DisabledBackgroundProperty, value);
         }
 
         public Brush RenderBackground
         {
-            get { return GetValue(RenderBackgroundProperty) as Brush ?? Brushes.Transparent; }
-            private set { SetValue(RenderBackgroundPropertyKey, value); }
+            get => GetValue(RenderBackgroundProperty) as Brush ?? Brushes.Transparent;
+            private set => SetValue(RenderBackgroundPropertyKey, value);
         }
 
         private void UpdateRenderBrush()
@@ -178,11 +178,7 @@ namespace Supremacy.UI
                     {
                         return PressedBackground;
                     }
-                    if (RenderMouseOver)
-                    {
-                        return HoverBackground;
-                    }
-                    return null;
+                    return RenderMouseOver ? HoverBackground : null;
                 }
                 if (_localResources == null)
                 {
@@ -205,32 +201,32 @@ namespace Supremacy.UI
         /// <returns>The brush used to draw the outer border of the <see cref="T:System.Windows.Controls.Button"></see>.</returns>
         public Brush BorderBrush
         {
-            get { return (Brush)GetValue(BorderBrushProperty); }
-            set { SetValue(BorderBrushProperty, value); }
+            get => (Brush)GetValue(BorderBrushProperty);
+            set => SetValue(BorderBrushProperty, value);
         }
 
         /// <summary>Gets or sets a value indicating whether the <see cref="T:System.Windows.Controls.Button"></see> has the appearance of the default button on the form.</summary>
         /// <returns>true if the <see cref="T:System.Windows.Controls.Button"></see> has the appearance of the default button; otherwise false.</returns>
         public bool RenderDefaulted
         {
-            get { return (bool)GetValue(RenderDefaultedProperty); }
-            set { SetValue(RenderDefaultedProperty, value); }
+            get => (bool)GetValue(RenderDefaultedProperty);
+            set => SetValue(RenderDefaultedProperty, value);
         }
 
         /// <summary>Gets or sets a value indicating whether the <see cref="T:System.Windows.Controls.Button"></see> appears as if the mouse is over it.</summary>
         /// <returns>true if the <see cref="T:System.Windows.Controls.Button"></see> appears as if the mouse is over it; otherwise false.</returns>
         public bool RenderMouseOver
         {
-            get { return (bool)GetValue(RenderMouseOverProperty); }
-            set { SetValue(RenderMouseOverProperty, value); }
+            get => (bool)GetValue(RenderMouseOverProperty);
+            set => SetValue(RenderMouseOverProperty, value);
         }
 
         /// <summary>Gets or sets a value indicating whether the <see cref="T:System.Windows.Controls.Button"></see> appears pressed.</summary>
         /// <returns>true if the <see cref="T:System.Windows.Controls.Button"></see> appears pressed; otherwise false.</returns>
         public bool RenderPressed
         {
-            get { return (bool)GetValue(RenderPressedProperty); }
-            set { SetValue(RenderPressedProperty, value); }
+            get => (bool)GetValue(RenderPressedProperty);
+            set => SetValue(RenderPressedProperty, value);
         }
         #endregion
 
@@ -239,19 +235,26 @@ namespace Supremacy.UI
         {
             base.OnPropertyChanged(e);
             if ((e.Property != RenderBackgroundProperty) && typeof(Brush).IsAssignableFrom(e.Property.PropertyType))
+            {
                 UpdateRenderBrush();
+            }
         }
         private void TryInvalidateVisual()
         {
             if (!_suppressInvalidateScope.IsWithin)
+            {
                 InvalidateVisual();
+            }
         }
 
         private static void OnRenderDefaultedChanged(DependencyObject o, DependencyPropertyChangedEventArgs e)
         {
             ButtonChrome chrome = (ButtonChrome)o;
             if (chrome.Parent == null)
+            {
                 return;
+            }
+
             try
             {
                 if (chrome.Animates)
@@ -266,9 +269,9 @@ namespace Supremacy.UI
                                 chrome.TryInvalidateVisual();
                             }
                             DoubleAnimationUsingKeyFrames frames1 = new DoubleAnimationUsingKeyFrames();
-                            frames1.KeyFrames.Add(new LinearDoubleKeyFrame(1, TimeSpan.FromSeconds(0.5)));
-                            frames1.KeyFrames.Add(new DiscreteDoubleKeyFrame(1, TimeSpan.FromSeconds(0.75)));
-                            frames1.KeyFrames.Add(new LinearDoubleKeyFrame(0, TimeSpan.FromSeconds(2)));
+                            _ = frames1.KeyFrames.Add(new LinearDoubleKeyFrame(1, TimeSpan.FromSeconds(0.5)));
+                            _ = frames1.KeyFrames.Add(new DiscreteDoubleKeyFrame(1, TimeSpan.FromSeconds(0.75)));
+                            _ = frames1.KeyFrames.Add(new LinearDoubleKeyFrame(0, TimeSpan.FromSeconds(2)));
                             frames1.RepeatBehavior = RepeatBehavior.Forever;
                             chrome.BackgroundOverlay.BeginAnimation(Brush.OpacityProperty, frames1);
                         }
@@ -279,11 +282,15 @@ namespace Supremacy.UI
                         else
                         {
                             Duration duration2 = new Duration(TimeSpan.FromSeconds(0.2));
-                            DoubleAnimation animation2 = new DoubleAnimation();
-                            animation2.Duration = duration2;
+                            DoubleAnimation animation2 = new DoubleAnimation
+                            {
+                                Duration = duration2
+                            };
                             chrome.BackgroundOverlay.BeginAnimation(Brush.OpacityProperty, animation2);
-                            ColorAnimation animation3 = new ColorAnimation();
-                            animation3.Duration = duration2;
+                            ColorAnimation animation3 = new ColorAnimation
+                            {
+                                Duration = duration2
+                            };
                         }
                     }
                 }
@@ -305,7 +312,10 @@ namespace Supremacy.UI
         {
             ButtonChrome chrome = (ButtonChrome)o;
             if (chrome.Parent == null)
+            {
                 return;
+            }
+
             try
             {
                 if (chrome.Animates)
@@ -332,18 +342,20 @@ namespace Supremacy.UI
                             double num1 = chrome.BackgroundOverlay.Opacity;
                             double num2 = (OverlayOpacityCeiling - num1) * 0.5;
                             DoubleAnimationUsingKeyFrames frames1 = new DoubleAnimationUsingKeyFrames();
-                            frames1.KeyFrames.Add(new LinearDoubleKeyFrame(OverlayOpacityCeiling, TimeSpan.FromSeconds(num2)));
-                            frames1.KeyFrames.Add(new DiscreteDoubleKeyFrame(OverlayOpacityCeiling, TimeSpan.FromSeconds(num2 + 0.25)));
-                            frames1.KeyFrames.Add(new LinearDoubleKeyFrame(0, TimeSpan.FromSeconds(num2 + 1.5)));
-                            frames1.KeyFrames.Add(new LinearDoubleKeyFrame(num1, TimeSpan.FromSeconds(2)));
+                            _ = frames1.KeyFrames.Add(new LinearDoubleKeyFrame(OverlayOpacityCeiling, TimeSpan.FromSeconds(num2)));
+                            _ = frames1.KeyFrames.Add(new DiscreteDoubleKeyFrame(OverlayOpacityCeiling, TimeSpan.FromSeconds(num2 + 0.25)));
+                            _ = frames1.KeyFrames.Add(new LinearDoubleKeyFrame(0, TimeSpan.FromSeconds(num2 + 1.5)));
+                            _ = frames1.KeyFrames.Add(new LinearDoubleKeyFrame(num1, TimeSpan.FromSeconds(2)));
                             frames1.RepeatBehavior = RepeatBehavior.Forever;
                             chrome.BackgroundOverlay.BeginAnimation(Brush.OpacityProperty, frames1);
                         }
                         else
                         {
                             Duration duration2 = new Duration(TimeSpan.FromSeconds(0.2));
-                            DoubleAnimation animation2 = new DoubleAnimation();
-                            animation2.Duration = duration2;
+                            DoubleAnimation animation2 = new DoubleAnimation
+                            {
+                                Duration = duration2
+                            };
                             chrome.BackgroundOverlay.BeginAnimation(Brush.OpacityProperty, animation2);
                         }
                     }
@@ -368,7 +380,10 @@ namespace Supremacy.UI
             {
                 ButtonChrome chrome = (ButtonChrome)o;
                 if (chrome.Parent == null)
+                {
                     return;
+                }
+
                 chrome.UpdateRenderBrush();
             }
             catch (Exception ex)

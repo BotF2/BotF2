@@ -91,7 +91,7 @@ namespace Supremacy.UI
             typeof(PlanetView3D),
             new PropertyMetadata(
                 null,
-                ((o, args) => ((PlanetView3D)o).RebuildUI())));
+                (o, args) => ((PlanetView3D)o).RebuildUI()));
 
         public static readonly DependencyProperty StarSystemProperty = DependencyProperty.RegisterAttached(
             "StarSystem",
@@ -100,12 +100,13 @@ namespace Supremacy.UI
             new FrameworkPropertyMetadata(
                 null,
                 FrameworkPropertyMetadataOptions.Inherits,
-                ((o, args) =>
+                (o, args) =>
                  {
-                     var planetView = o as PlanetView3D;
-                     if (planetView != null)
+                     if (o is PlanetView3D planetView)
+                     {
                          planetView.RebuildUI();
-                 })));
+                     }
+                 }));
 
         public static readonly DependencyProperty BaseDimensionProperty = DependencyProperty.RegisterAttached(
             "BaseDimension",
@@ -125,24 +126,29 @@ namespace Supremacy.UI
                 FrameworkPropertyMetadataOptions.Inherits,
                 (o, args) =>
                 {
-                    var planetView = o as PlanetView3D;
-                    if (planetView == null)
+                    if (!(o is PlanetView3D planetView))
+                    {
                         return;
+                    }
 
-                    var wasRunning = planetView._axisRotation.HasAnimatedProperties &&
+                    bool wasRunning = planetView._axisRotation.HasAnimatedProperties &&
                                      planetView._animationClock.Controller == null &&
                                      planetView._animationClock.CurrentState == ClockState.Active;
 
                     planetView.StopAnimations();
 
-                    var bindingExpression = BindingOperations.GetBindingExpression(planetView._axisAnimation, Timeline.DurationProperty);
+                    BindingExpression bindingExpression = BindingOperations.GetBindingExpression(planetView._axisAnimation, Timeline.DurationProperty);
                     if (bindingExpression != null)
+                    {
                         bindingExpression.UpdateTarget();
+                    }
 
                     planetView._animationClock = planetView._axisAnimation.CreateClock();
 
                     if (wasRunning)
+                    {
                         planetView.ResumeAnimations();
+                    }
                 }));
 
         public static readonly DependencyProperty DimensionOverrideProperty = DependencyProperty.RegisterAttached(
@@ -183,9 +189,10 @@ namespace Supremacy.UI
 
         private static void OnImportantPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            var planetView = d as PlanetView3D;
-            if (planetView != null)
+            if (d is PlanetView3D planetView)
+            {
                 planetView.RebuildUI();
+            }
         }
 
         public static StarSystem GetStarSystem(DependencyObject target)
@@ -293,7 +300,7 @@ namespace Supremacy.UI
 
             try
             {
-                var customPlanetsXml = XDocument.Load(ResourceManager.GetResourcePath(@"Resources\Data\CustomPlanets.xml"));
+                XDocument customPlanetsXml = XDocument.Load(ResourceManager.GetResourcePath(@"Resources\Data\CustomPlanets.xml"));
 
                 var customPlanets = from customPlanet in customPlanetsXml.Elements("CustomPlanets").Elements("CustomPlanet")
                                     let name = (string)customPlanet.Attribute("Name")
@@ -309,14 +316,19 @@ namespace Supremacy.UI
                                                 "Resources/Images/Atmospheres/" + (string)customPlanet.Attribute("Atmosphere"))),
                                         BitmapCreateOptions.None,
                                         BitmapCacheOption.OnLoad)
-                                    select new {Name = name, ImageSource = imageSource, AtmosphereSource = atmosphereSource};
+                                    select new { Name = name, ImageSource = imageSource, AtmosphereSource = atmosphereSource };
 
                 foreach (var customPlanet in customPlanets)
                 {
                     if (customPlanet.ImageSource != null && customPlanet.ImageSource.CanFreeze)
+                    {
                         customPlanet.ImageSource.Freeze();
+                    }
+
                     if (customPlanet.AtmosphereSource != null && customPlanet.AtmosphereSource.CanFreeze)
+                    {
                         customPlanet.AtmosphereSource.Freeze();
+                    }
 
                     _customMaterials.Add(customPlanet.Name, customPlanet.ImageSource);
                     _customAtmospheres.Add(customPlanet.Name, customPlanet.AtmosphereSource);
@@ -324,22 +336,24 @@ namespace Supremacy.UI
             }
             catch (Exception e)
             {
-               _log.GameData.Error(
+                _log.GameData.Error(
                    "Error processing CustomPlanets.xml",
                    e);
             }
 
-            foreach (var type in EnumHelper.GetValues<PlanetType>())
+            foreach (PlanetType type in EnumHelper.GetValues<PlanetType>())
             {
                 if (type == PlanetType.Asteroids)
+                {
                     continue;
+                }
 
                 _materials[type] = new List<CachedBitmap>();
                 _atmospheres[type] = new List<CachedBitmap>();
 
-                for (var i = 0; i < 3; i++)
+                for (int i = 0; i < 3; i++)
                 {
-                    var cachedBitmap = new CachedBitmap(
+                    CachedBitmap cachedBitmap = new CachedBitmap(
                         new BitmapImage(
                             ResourceManager.GetResourceUri(
                                 string.Format(
@@ -364,12 +378,12 @@ namespace Supremacy.UI
                         BitmapCacheOption.OnLoad);
 
                     cachedBitmap.Freeze();
-                    
+
                     _atmospheres[type].Insert(i, cachedBitmap);
                 }
             }
 
-            foreach (var shape in EnumHelper.GetValues<MoonShape>())
+            foreach (MoonShape shape in EnumHelper.GetValues<MoonShape>())
             {
                 _moonImages[shape] = new CachedBitmap(
                     new BitmapImage(
@@ -419,12 +433,12 @@ namespace Supremacy.UI
             _label.FontFamily = new FontFamily("Resources/Fonts/#Calibri");
 
             _moons = new StackPanel
-                     {
-                         Height = 16,
-                         Orientation = Orientation.Horizontal,
-                         Margin = new Thickness(0, 0, 0, 4),
-                         HorizontalAlignment = HorizontalAlignment.Center
-                     };
+            {
+                Height = 16,
+                Orientation = Orientation.Horizontal,
+                Margin = new Thickness(0, 0, 0, 4),
+                HorizontalAlignment = HorizontalAlignment.Center
+            };
 
             _moons.SetValue(Grid.RowProperty, 0);
 
@@ -458,7 +472,7 @@ namespace Supremacy.UI
                                  RepeatBehavior = RepeatBehavior.Forever
                              };
 
-            BindingOperations.SetBinding(
+            _ = BindingOperations.SetBinding(
                 _axisAnimation,
                 Timeline.DurationProperty,
                 new Binding
@@ -486,62 +500,64 @@ namespace Supremacy.UI
         private void OnLoaded(object sender, RoutedEventArgs e)
         {
             if (ClientSettings.Current.EnableAnimation)  // only animate then
+            {
                 StartAnimations();
+            }
         }
 
         #region Properties
 
         public Thickness PlanetMargin
         {
-            get { return (Thickness)GetValue(PlanetMarginProperty); }
-            set { SetValue(PlanetMarginProperty, value); }
+            get => (Thickness)GetValue(PlanetMarginProperty);
+            set => SetValue(PlanetMarginProperty, value);
         }
 
         public Duration RotationDuration
         {
-            get { return (Duration)GetValue(RotationDurationProperty); }
-            set { SetValue(RotationDurationProperty, value); }
+            get => (Duration)GetValue(RotationDurationProperty);
+            set => SetValue(RotationDurationProperty, value);
         }
 
         public double BaseDimension
         {
-            get { return (double)GetValue(BaseDimensionProperty); }
-            set { SetValue(BaseDimensionProperty, value); }
+            get => (double)GetValue(BaseDimensionProperty);
+            set => SetValue(BaseDimensionProperty, value);
         }
 
         public double DimensionOverride
         {
-            get { return (double)GetValue(DimensionOverrideProperty); }
-            set { SetValue(DimensionOverrideProperty, value); }
+            get => (double)GetValue(DimensionOverrideProperty);
+            set => SetValue(DimensionOverrideProperty, value);
         }
 
         public bool ShowMoons
         {
-            get { return (bool)GetValue(ShowMoonsProperty); }
-            set { SetValue(ShowMoonsProperty, value); }
+            get => (bool)GetValue(ShowMoonsProperty);
+            set => SetValue(ShowMoonsProperty, value);
         }
         public bool ShowPlanetTypeLabels
         {
-            get { return (bool)GetValue(ShowPlanetTypeLabelsProperty); }
-            set { SetValue(ShowPlanetTypeLabelsProperty, value); }
+            get => (bool)GetValue(ShowPlanetTypeLabelsProperty);
+            set => SetValue(ShowPlanetTypeLabelsProperty, value);
         }
 
         public Planet Planet
         {
-            get { return GetValue(PlanetProperty) as Planet; }
-            set { SetValue(PlanetProperty, value); }
+            get => GetValue(PlanetProperty) as Planet;
+            set => SetValue(PlanetProperty, value);
         }
 
         public StarSystem StarSystem
         {
-            get { return GetValue(StarSystemProperty) as StarSystem; }
-            set { SetValue(StarSystemProperty, value); }
+            get => GetValue(StarSystemProperty) as StarSystem;
+            set => SetValue(StarSystemProperty, value);
         }
 
         public LightSourceDirection LightSourceDirection
         {
-            get { return GetLightSourceDirection(this); }
-            set { SetLightSourceDirection(this, value); }
+            get => GetLightSourceDirection(this);
+            set => SetLightSourceDirection(this, value);
         }
 
         // ReSharper disable MemberCanBeMadeStatic.Local
@@ -549,23 +565,19 @@ namespace Supremacy.UI
         {
             get
             {
-                var appContext = _appContext;
+                IAppContext appContext = _appContext;
                 if (appContext == null)
                 {
-                    if (Designer.IsInDesignMode)
-                        appContext = _appContext = DesignTimeAppContext.Instance;
-                    else
-                        appContext = _appContext = ServiceLocator.Current.GetInstance<IAppContext>();
+                    appContext = Designer.IsInDesignMode
+                        ? (_appContext = DesignTimeAppContext.Instance)
+                        : (_appContext = ServiceLocator.Current.GetInstance<IAppContext>());
                 }
                 return appContext;
             }
         }
         // ReSharper restore MemberCanBeMadeStatic.Local
 
-        protected override int VisualChildrenCount
-        {
-            get { return 1; }
-        }
+        protected override int VisualChildrenCount => 1;
 
         #endregion
 
@@ -574,19 +586,27 @@ namespace Supremacy.UI
         public void PauseAnimations()
         {
             if (!_animationClock.IsPaused && _animationClock.Controller != null)
+            {
                 _animationClock.Controller.Pause();
+            }
         }
 
         public void ResumeAnimations()
         {
             if (_animationClock.Controller == null)
+            {
                 return;
+            }
 
             if (_animationClock.IsPaused)
+            {
                 _animationClock.Controller.Resume();
+            }
             else
                 if (ClientSettings.Current.EnableAnimation)
+            {
                 StartAnimations();
+            }
         }
 
         public void StopAnimations()
@@ -598,7 +618,9 @@ namespace Supremacy.UI
             }
 
             if (_axisAnimation != null)
+            {
                 _axisRotation.ApplyAnimationClock(AxisAngleRotation3D.AngleProperty, null);
+            }
         }
 
         public void StartAnimations()
@@ -628,23 +650,25 @@ namespace Supremacy.UI
             _toolTip.ClearValue(ContentControl.ContentProperty);
             _label.ClearValue(ContentControl.ContentProperty);
 
-            var planet = Planet;
-            var system = StarSystem;
+            Planet planet = Planet;
+            StarSystem system = StarSystem;
 
             if (planet == null || system == null)
+            {
                 return;
+            }
 
-            var overrideDimension = !DoubleUtil.IsNaN(DimensionOverride);
-            var dimension = overrideDimension ? DimensionOverride : BaseDimension;
-            var customTexture = false;
+            bool overrideDimension = !DoubleUtil.IsNaN(DimensionOverride);
+            double dimension = overrideDimension ? DimensionOverride : BaseDimension;
+            bool customTexture = false;
 
-            var targetRace = system.HasColony
+            Entities.Race targetRace = system.HasColony
                                  ? system.Colony.Inhabitants
                                  : AppContext.LocalPlayerEmpire.Civilization.Race;
 
-            var environment = planet.GetEnvironment(targetRace);
-            var maxPopulation = planet.GetMaxPopulation(targetRace);
-            var growthRate = planet.GetGrowthRate(targetRace);
+            PlanetEnvironment environment = planet.GetEnvironment(targetRace);
+            int maxPopulation = planet.GetMaxPopulation(targetRace);
+            Types.Percentage growthRate = planet.GetGrowthRate(targetRace);
 
             if (!overrideDimension)
             {
@@ -790,9 +814,8 @@ namespace Supremacy.UI
             if (!customTexture ||
                 !_customAtmospheres.TryGetValue(planet.Name, out atmosphereImage))
             {
-                List<CachedBitmap> atmospheres;
 
-                if (_atmospheres.TryGetValue(planet.PlanetType, out atmospheres) &&
+                if (_atmospheres.TryGetValue(planet.PlanetType, out List<CachedBitmap> atmospheres) &&
                     atmospheres.Count > planet.Variation)
                 {
                     atmosphereImage = atmospheres[planet.Variation];
@@ -836,7 +859,9 @@ namespace Supremacy.UI
             }
 
             if (_material == null)
+            {
                 _material = new DiffuseMaterial(Brushes.White);
+            }
 
             _material.AmbientColor = Color.FromScRgb(1.0f, 0.3f, 0.3f, 0.3f);
             _material.Color = Color.FromScRgb(1.0f, 0.7f, 0.7f, 0.7f);
@@ -846,11 +871,11 @@ namespace Supremacy.UI
 
             if (ShowMoons)
             {
-                foreach (var moon in planet.Moons)
+                foreach (MoonType moon in planet.Moons)
                 {
                     int size;
-                    var moonToolTip = new ToolTip();
-                    var moonImage = new Image {Source = _moonImages[moon.GetShape()]};
+                    ToolTip moonToolTip = new ToolTip();
+                    Image moonImage = new Image { Source = _moonImages[moon.GetShape()] };
 
                     switch (moon.GetSize())
                     {
@@ -873,18 +898,22 @@ namespace Supremacy.UI
                     moonImage.Margin = new Thickness(1, 0, 1, 0);
                     moonImage.ToolTip = moonToolTip;
 
-                    _moons.Children.Add(moonImage);
+                    _ = _moons.Children.Add(moonImage);
                 }
             }
 
-            _grid.Children.Add(_viewport);
-            _grid.Children.Add(_overlay);
+            _ = _grid.Children.Add(_viewport);
+            _ = _grid.Children.Add(_overlay);
 
             if (ShowPlanetTypeLabels)
-                _grid.Children.Add(_label);
+            {
+                _ = _grid.Children.Add(_label);
+            }
 
             if (ShowMoons)
-                _grid.Children.Add(_moons);
+            {
+                _ = _grid.Children.Add(_moons);
+            }
         }
 
         public static void PreloadImages() { }
@@ -991,11 +1020,11 @@ namespace Supremacy.UI
         {
             _mesh = new MeshGeometry3D();
 
-            var latTheta = 0.0;
-            var latDeltaTheta = Math.PI / _latitude;
-            var lonDeltaTheta = 2.0 * Math.PI / _longitude;
+            double latTheta = 0.0;
+            double latDeltaTheta = Math.PI / _latitude;
+            double lonDeltaTheta = 2.0 * Math.PI / _longitude;
 
-            var origin = new Point3D(0, 0, 0);
+            Point3D origin = new Point3D(0, 0, 0);
 
             // Order of vertex creation:
             //  - For each latitude strip (y := [+radius,-radius] by -increment)
@@ -1041,8 +1070,8 @@ namespace Supremacy.UI
                         lonTheta -= lonDeltaTheta;
                     }
 
-                    var p = new Point3D(x, y, z);
-                    var norm = p - origin;
+                    Point3D p = new Point3D(x, y, z);
+                    Vector3D norm = p - origin;
 
                     _mesh.Positions.Add(p);
                     _mesh.Normals.Add(norm);
@@ -1060,7 +1089,7 @@ namespace Supremacy.UI
                         //          |           |
                         //      x-1 +-----------+ x
 
-                        int bottomRight = lat * (_longitude + 1) + lon;
+                        int bottomRight = (lat * (_longitude + 1)) + lon;
                         int bottomLeft = bottomRight - 1;
                         int topRight = bottomRight - (_longitude + 1);
                         int topLeft = topRight - 1;
@@ -1087,18 +1116,12 @@ namespace Supremacy.UI
         private static readonly DataTemplate AsteroidsTemplate;
         private static readonly DataTemplate PlanetTemplate;
 
-        private double _baseDimension = 96d;
-
-        public double BaseDimension
-        {
-            get { return _baseDimension; }
-            set { _baseDimension = value; }
-        }
+        public double BaseDimension { get; set; } = 96d;
 
         static PlanetItemTemplateSelector()
         {
-            var asteroids = new FrameworkElementFactory(typeof(AsteroidsView));
-            var planet = new FrameworkElementFactory(typeof(PlanetView3D));
+            FrameworkElementFactory asteroids = new FrameworkElementFactory(typeof(AsteroidsView));
+            FrameworkElementFactory planet = new FrameworkElementFactory(typeof(PlanetView3D));
 
             planet.SetBinding(
                 PlanetView3D.PlanetProperty,
@@ -1157,14 +1180,9 @@ namespace Supremacy.UI
 
         public override DataTemplate SelectTemplate(object item, DependencyObject container)
         {
-            var planet = item as Planet;
-            if (planet == null)
-                return base.SelectTemplate(item, container);
-
-            if (planet.PlanetType == PlanetType.Asteroids)
-                return AsteroidsTemplate;
-
-            return PlanetTemplate;
+            return !(item is Planet planet)
+                ? base.SelectTemplate(item, container)
+                : planet.PlanetType == PlanetType.Asteroids ? AsteroidsTemplate : PlanetTemplate;
         }
     }
 }
