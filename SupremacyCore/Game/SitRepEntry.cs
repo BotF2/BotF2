@@ -1728,68 +1728,68 @@ namespace Supremacy.Game
         }
     }
 
-    [Serializable]
-    public class NewRaidSitRepEntry : SitRepEntry
-    {
-        private readonly int _systemId;
-        private readonly int _gainedCredits;
-        private readonly int _totalCredits;
+    //[Serializable]
+    //public class NewRaidSitRepEntry : SitRepEntry
+    //{
+    //    private readonly int _systemId;
+    //    private readonly int _gainedCredits;
+    //    private readonly int _totalCredits;
 
-        public StarSystem System
-        {
-            get { return GameContext.Current.Universe.Get<StarSystem>(_systemId); }
-        }
+    //    public StarSystem System
+    //    {
+    //        get { return GameContext.Current.Universe.Get<StarSystem>(_systemId); }
+    //    }
 
-        public override SitRepAction Action
-        {
-            get { return SitRepAction.CenterOnSector; }
-        }
+    //    public override SitRepAction Action
+    //    {
+    //        get { return SitRepAction.CenterOnSector; }
+    //    }
 
-        public override object ActionTarget
-        {
-            get { return System.Sector; }
-        }
+    //    public override object ActionTarget
+    //    {
+    //        get { return System.Sector; }
+    //    }
 
-        public override SitRepCategory Categories
-        {
-            get { return SitRepCategory.ColonyStatus; }
-        }
+    //    public override SitRepCategory Categories
+    //    {
+    //        get { return SitRepCategory.ColonyStatus; }
+    //    }
 
-        public override string SummaryText
-        {
-            get
-            {
-                if (_gainedCredits > 0)
-                {
-                    return string.Format(ResourceManager.GetString("SITREP_RAID_SUCCESSFULLY"),
-                        //"The {0} at {1} have been raided: we got {2} of {3} credits.",
-                        System.Owner, System.Name, _gainedCredits, _totalCredits);
-                }
-                else
-                {
-                    return string.Format(ResourceManager.GetString("SITREP_RAID_NO_SUCCESS"),
-                        //"Our spies have tried to raid the {0} at {1} but they had no success.",
-                        System.Owner, System.Name);
-                }
-            }
-        }
+    //    public override string SummaryText
+    //    {
+    //        get
+    //        {
+    //            if (_gainedCredits > 0)
+    //            {
+    //                return string.Format(ResourceManager.GetString("SITREP_RAID_SUCCESSFULLY"),
+    //                    //"The {0} at {1} have been raided: we got {2} of {3} credits.",
+    //                    System.Owner, System.Name, _gainedCredits, _totalCredits);
+    //            }
+    //            else
+    //            {
+    //                return string.Format(ResourceManager.GetString("SITREP_RAID_NO_SUCCESS"),
+    //                    //"Our spies have tried to raid the {0} at {1} but they had no success.",
+    //                    System.Owner, System.Name);
+    //            }
+    //        }
+    //    }
 
-        public override bool IsPriority
-        {
-            get { return true; }
-        }
+    //    public override bool IsPriority
+    //    {
+    //        get { return true; }
+    //    }
 
-        public NewRaidSitRepEntry(Civilization owner, Colony colony, int gainedCredits, int totalCredits)
-            : base(owner, SitRepPriority.Red)
-        {
-            if (colony == null)
-                throw new ArgumentNullException("colony");
-            _systemId = colony.System.ObjectID;
+    //    public NewRaidSitRepEntry(Civilization owner, Colony colony, int gainedCredits, int totalCredits)
+    //        : base(owner, SitRepPriority.Red)
+    //    {
+    //        if (colony == null)
+    //            throw new ArgumentNullException("colony");
+    //        _systemId = colony.System.ObjectID;
 
-            _gainedCredits = gainedCredits;
-            _totalCredits = totalCredits;
-        }
-    }
+    //        _gainedCredits = gainedCredits;
+    //        _totalCredits = totalCredits;
+    //    }
+    //}
 
     [Serializable]
     public class NewSabotagedSitRepEntry : SitRepEntry

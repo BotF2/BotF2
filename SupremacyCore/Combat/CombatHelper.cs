@@ -84,6 +84,12 @@ namespace Supremacy.Combat
                     //    ship.ObjectID, ship.Name, ship.DesignName, ship.Location.ToString(), ship.IsCamouflaged, ship.IsCloaked);
                     if ((ship.IsCamouflaged) && (unit.CamouflagedStrength >= maxOppostionScanStrength))
                     {
+                        //if (ship.ShipType.ToString() == "Spy" || ship.ShipType.ToString() == "Diplomatic")
+                        //{
+                        //    if (Ships.Where(sh => sh.OwnerID != 6).Any())
+                        //        continue;
+                        //}
+
                         continue; // skip over ships camaouflaged better than best scan strength
                     }
                     if (sector.System != null && ship.Owner != sector.Owner && sector.Owner != null)

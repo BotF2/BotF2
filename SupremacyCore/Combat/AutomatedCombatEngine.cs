@@ -94,15 +94,17 @@ namespace Supremacy.Combat
                     }
                 }
 
-                //Resistance is futile, try assimilation before you attack then retreat if assimilated
+                //Resistance is futile, try assimilation before you attack then retreat if assimilated & no spy or diplomtic assimilated
                 bool foundDaBorg = _combatShips.Any(borg => borg.Item1.Owner.ShortName == "Borg");
                 bool assimilationSuccessful = false;
-                var notDaBorg = _combatShips.Where(xborg => xborg.Item1.Owner.ShortName != "Borg").Select(xborg => xborg).ToList();
+                var notDaBorg = _combatShips.Where(xborg => xborg.Item1.Owner.ShortName != "Borg" &&
+                    xborg.Item1.Source.OrbitalDesign.ShipType.ToString() != "Spy" &&
+                    xborg.Item1.Source.OrbitalDesign.ShipType.ToString() != "Diplomatic").Select(xborg => xborg).ToList();
                 if (foundDaBorg)
                 {
                     foreach (var target in notDaBorg)
                     {
-                        int chanceToAssimilate = RandomHelper.Random(100);
+                        int chanceToAssimilate = RandomHelper.Random(75);
                         assimilationSuccessful = chanceToAssimilate <= (int)(BaseChanceToAssimilate * 100);
                         if (target.Item1.Source is Ship && assimilationSuccessful)
                         {
