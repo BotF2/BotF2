@@ -809,15 +809,26 @@ namespace Supremacy.Orbitals
                 return false;
             if (fleet.Sector.System == null)
                 return false;
-            if (fleet.Sector.Owner.Key != "BORG")
-                return false;
+            //try // no owner for wormholes....
+            //{
+            //    if (fleet.Sector.Owner.Key == "BORG" || fleet.Sector.Owner.Key == null)
+            //        return false;
+            //}
+            //catch { }
             //if (fleet.Sector.IsOwned && (fleet.Sector.Owner == fleet.Owner))
             //    return false;
-            foreach (var ship in fleet.Ships)
+            try
             {
-                if (ship.ShipType == ShipType.Spy)
-                    return true;
+                if (fleet.Sector.Owner != null && fleet.Sector.Owner.Key == "BORG")
+                {
+                    foreach (var ship in fleet.Ships)
+                    {
+                        if (ship.ShipType == ShipType.Spy)
+                            return true;
+                    }
+                }
             }
+            catch { }
             return false;
         }
 
