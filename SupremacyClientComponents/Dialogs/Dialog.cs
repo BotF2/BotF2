@@ -524,7 +524,7 @@ namespace Supremacy.Client.Dialogs
             {
                 _showingAsDialog = false;
 
-                throw;
+                //throw; if you want to game to crash
             }
             finally
             {
