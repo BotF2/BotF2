@@ -474,29 +474,32 @@ namespace Supremacy.Data
                     break;
             }
 
-            //GameLog.Client.GameInitData.DebugFormat(tableOut);
-            string _values = "";
-            string tableString = "";
-            try
+            if (GameLog.Core.GameInitData.IsDebugEnabled == true)
             {
-                if (table != null)
-                foreach (var row in table.Rows)
+                //GameLog.Client.GameInitData.DebugFormat(tableOut);
+                string _values = "";
+                string tableString = "";
+                try
                 {
+                    if (table != null)
+                        foreach (var row in table.Rows)
+                        {
 
-                    foreach (var column in row.Values)
-                    {
-                        _values += column + ";";
-                    }
-                    tableString = table.Name + ";" + _values;
+                            foreach (var column in row.Values)
+                            {
+                                _values += column + ";";
+                            }
+                            tableString = table.Name + ";" + _values;
+                        }
                 }
+                catch (Exception e)
+                {
+                    if (table != null)
+                        GameLog.Client.GameInitData.DebugFormat("not able to log into Log.txt for {0} exception {0} {1}", table.Name, e.Message, e.StackTrace);
+                }
+                if (tableString.Length > 60) tableString = tableString.Substring(0, 60) + "...";
+                GameLog.Client.GameInitData.DebugFormat(tableString);
             }
-            catch (Exception e)
-            {
-                if (table != null)
-                    GameLog.Client.GameInitData.DebugFormat("not able to log into Log.txt for {0} exception {0} {1}", table.Name, e.Message, e.StackTrace);
-            }
-            if (tableString.Length > 60) tableString = tableString.Substring(0, 60) + "...";
-            GameLog.Client.GameInitData.DebugFormat(tableString);
 
             return table;
         }

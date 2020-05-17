@@ -52,7 +52,9 @@ namespace Supremacy.Data
                 return false;
             }
             table = (Table)_tables[tableName];
-            GameLog.Core.GameInitData.DebugFormat("tableName = {0} for string rowKey, string columnKey, out string value", tableName);
+
+            if (GameLog.Core.GameInitData.IsDebugEnabled == true)
+                GameLog.Core.GameInitData.DebugFormat("tableName = {0} for string rowKey, string columnKey, out string value", tableName);
 
             TableRow<string> row;
             if (!table.TryGetRow(rowKey, out row))

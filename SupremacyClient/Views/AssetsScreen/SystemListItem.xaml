@@ -94,6 +94,8 @@
               BorderThickness="1"
               Margin="2,2,2,2"
               BorderBrush="{DynamicResource {x:Static scc:ClientResources.DisabledTextForegroundBrushKey}}" />
+        <!--#####   Row 1   ##### -->
+        <!--Colony Name-->
         <scc:GameButton Grid.Row="1"
                         Grid.Column="0"
                     DisplayMode="Hyperlink"
@@ -101,6 +103,14 @@
                     Label="{Binding Path=Name}"
                     Command="{x:Static scc:NavigationCommands.NavigateToColony}"
                     CommandParameter="{Binding FallbackValue={x:Null}}" />
+        <!--#####   Row 2   ##### -->
+        <!--Inhabitants-->
+        <TextBlock Grid.Column="0"
+               Grid.Row="2"
+               VerticalAlignment="Center"
+               FontWeight="DemiBold"  
+               Text="{Binding Path=Inhabitants.PluralName}" />      
+        <!--#####   Row 3   ##### -->        
         <scc:GameButton Grid.Column="4"
                     Grid.Row="3"
                     DisplayMode="Tiny"
@@ -112,11 +122,8 @@
                     BorderThickness="2"
                     Command="{x:Static scc:NavigationCommands.RushColonyProduction}"
                     CommandParameter="{Binding FallbackValue={x:Null}}" />
-        <TextBlock Grid.Column="0"
-               Grid.Row="2"
-               VerticalAlignment="Center"
-               FontWeight="DemiBold"  
-               Text="{Binding Path=Inhabitants.PluralName}" />
+
+        <!--Row 3 Building-->
         <TextBlock Grid.Column="0"
                Grid.Row="3"
                VerticalAlignment="Center"
@@ -138,6 +145,51 @@
                     BorderThickness="2"
                     Command="{x:Static scc:NavigationCommands.RushColonyProduction}"
                     CommandParameter="{Binding FallbackValue={x:Null}}" />
+        <!--TRADE ROUTES-->
+        <TextBlock Text="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=TRADE_ROUTES, CharacterCasing=Upper}" Grid.Row="3" Grid.Column="6" HorizontalAlignment="Right"/>
+        <scc:GameLabel Grid.Column="8"
+                   Grid.Row="3"
+                Grid.ColumnSpan="2"                        
+                   VerticalAlignment="Center"
+                   ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/traderoute.png"
+                   ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=TRADE_ROUTES_TOOL_TIP}">
+            <scc:GameLabel.Label>
+                <MultiBinding StringFormat="{}{0} ( {1} )">
+                    <Binding Path="TradeRoutes.Count" />
+                    <Binding Path="CreditsFromTrade" />
+                </MultiBinding>
+            </scc:GameLabel.Label>
+        </scc:GameLabel>
+        <!--SHIELDS-->
+        <TextBlock Text="SHIELDS =" Grid.Row="3" Grid.Column="10" HorizontalAlignment="Right"/>
+        <scc:GameLabel Grid.Column="12"
+                   Grid.Row="3"
+                Grid.ColumnSpan="2"                        
+                   VerticalAlignment="Center"
+                   ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/shield.png"
+                   ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=SHIELDS_TOOL_TIP}">
+            <scc:GameLabel.Label>
+                <MultiBinding StringFormat="{}{0}">
+                    <Binding Path="ShieldStrength" />
+                </MultiBinding>
+            </scc:GameLabel.Label>
+        </scc:GameLabel>
+        <!--ORBITAL BATTERIES-->
+        <TextBlock Text="ORBITAL B. =" Grid.Row="3" Grid.Column="14" HorizontalAlignment="Right"/>
+        <scc:GameLabel Grid.Column="16"
+                   Grid.Row="3"
+                Grid.ColumnSpan="2"                        
+                   VerticalAlignment="Center"
+                   ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/red_hand.png"
+                   ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=POPULATION_TOOL_TIP}">
+            <scc:GameLabel.Label>
+                <MultiBinding StringFormat="{}{0} / {1}">
+                    <Binding Path="ActiveOrbitalBatteries" />
+                    <Binding Path="TotalOrbitalBatteries" />
+                </MultiBinding>
+            </scc:GameLabel.Label>
+        </scc:GameLabel>
+        <!--POPULATION-->
         <TextBlock Text="POPULATION =" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Right"/>
         <scc:GameLabel Grid.Column="3"
                    Grid.Row="1"
@@ -146,13 +198,15 @@
                    ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/population.png"
                    ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=POPULATION_TOOL_TIP}">
             <scc:GameLabel.Label>
-                <MultiBinding StringFormat="{}{0} / {1} ({2:0.#%})">
+                <MultiBinding StringFormat="{}{0} / {1} ( {2:0.#%} ) / Health: {3}">
                     <Binding Path="Population.CurrentValue" />
                     <Binding Path="Population.Maximum" />
                     <Binding Path="GrowthRate" />
+                    <Binding Path="Health" />
                 </MultiBinding>
             </scc:GameLabel.Label>
         </scc:GameLabel>
+        <!--MORALE-->
         <TextBlock Text="MORALE =" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Right"/>
         <scc:GameLabel Grid.Column="3"
                    Grid.Row="2"
@@ -168,6 +222,7 @@
                 </MultiBinding>
             </scc:GameLabel.Label>
         </scc:GameLabel>
+        <!--FOOD-->
         <TextBlock Text="FOOD =" Grid.Row="1" Grid.Column="6" HorizontalAlignment="Right"/>
         <scc:GameLabel Grid.Column="8"
                    Grid.Row="1"
@@ -210,6 +265,7 @@
                    ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/research.png"
                    Label="{Binding Path=NetResearch}"
                    ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=RESEARCH_TOOL_TIP}" />
+        <!--INDUSTRY-->
         <TextBlock Text="INDUSTRY =" Grid.Row="1" Grid.Column="18" HorizontalAlignment="Right"/>
         <scc:GameLabel Grid.Column="20"
                    Grid.Row="1"
@@ -217,9 +273,18 @@
                    ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/industry.png"
                    Label="{Binding Path=NetIndustry}"
                    ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=INDUSTRY_TOOL_TIP}" />
-        <TextBlock Text="SHIP BUILDING =" Grid.Row="2" Grid.Column="18" HorizontalAlignment="Right"/>
+        <!--INTELLIGENCE-->
+        <TextBlock Text="INTEL =" Grid.Row="2" Grid.Column="18" HorizontalAlignment="Right"/>
         <scc:GameLabel Grid.Column="20"
                    Grid.Row="2"
+                   VerticalAlignment="Center"
+                   ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/intelligence.png"
+                   Label="{Binding Path=NetIntelligence}"
+                   ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=INTELLIGENCE_TOOL_TIP}" />
+        <!--SHIP BUILDING-->
+        <TextBlock Text="SHIP BUILDING =" Grid.Row="3" Grid.Column="18" HorizontalAlignment="Right"/>
+        <scc:GameLabel Grid.Column="20"
+                   Grid.Row="3"
                    VerticalAlignment="Center"
                    ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/ship.png"
                    ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=SHIPBUILDING_TOOL_TIP}"
