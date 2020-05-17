@@ -147,7 +147,15 @@ namespace Supremacy.Combat
                 {
                     return true;
                 }
+
+                if (_roundNumber > 1)
+                {
+                    return true;
+                }
+
+                int coutner = 0;
                 TryAgain:
+                
                 try
                 {
                     return (_assets.Count(assets => assets.HasSurvivingAssets) <= 1); //count assets less than or equal one for true/false
@@ -156,6 +164,9 @@ namespace Supremacy.Combat
                 {
                     GameLog.Core.Combat.WarnFormat("We changed _assets while counting, error message {0}", e);
                     System.Threading.Thread.Sleep(1000); // wait for a second
+                    if (coutner > 2)
+                        return true;
+                    coutner++;
                     goto TryAgain;
                     //throw;
                 }
