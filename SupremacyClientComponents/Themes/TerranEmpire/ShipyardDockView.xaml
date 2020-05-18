@@ -26,6 +26,7 @@
   <Style x:Key="BuildShipButton"
            TargetType="{x:Type Button}">
     <Setter Property="Focusable" Value="False"/>
+    <Setter Property="IsEnabled" Value="True" />
     <Setter Property="IsTabStop" Value="False"/>
     <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
     <Setter Property="UseLayoutRounding" Value="True" />
@@ -133,6 +134,7 @@
   <Style x:Key="ToggleConstructionBayButton"
            TargetType="{x:Type Button}">
     <Setter Property="Focusable" Value="False"/>
+    <Setter Property="IsEnabled" Value="True" />
     <Setter Property="IsTabStop" Value="False"/>
     <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
     <Setter Property="Foreground" Value="White"/>
