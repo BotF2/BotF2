@@ -9,12 +9,13 @@
                        xmlns:sx="http://schemas.startreksupremacy.com/xaml/core/markup"
                        mc:Ignorable="d"
                        d:DesignWidth="1024"
-                       d:DataContext="{x:Static scc:DesignTimeObjects.Colony}"
+                       d:DataContext="{scc:DesignTimeObjects.Colony}"
                        Foreground="{DynamicResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"
                        FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                        FontWeight="{DynamicResource {x:Static scc:ClientResources.DefaultFontWeightKey}}"
                        FontSize="{DynamicResource {x:Static scc:ClientResources.DefaultFontSizeKey}}">
 
+    <!--SystemListItem.xaml-->
     <UserControl.Resources>
         <scc:HasSystemBonusConverter x:Key="SystemBonusVisibilityConverter"
                                  TrueValue="{x:Static Visibility.Visible}"
@@ -51,6 +52,8 @@
             </Setter>
         </Style>
     </UserControl.Resources>
+    
+    <!--Grid for SystemListItem.xaml-->
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="96" SharedSizeGroup="SystemListColumn0" />
@@ -94,6 +97,7 @@
               BorderThickness="1"
               Margin="2,2,2,2"
               BorderBrush="{DynamicResource {x:Static scc:ClientResources.DisabledTextForegroundBrushKey}}" />
+        
         <!--#####   Row 1   ##### -->
         <!--Colony Name-->
         <scc:GameButton Grid.Row="1"
@@ -145,9 +149,11 @@
                     BorderThickness="2"
                     Command="{x:Static scc:NavigationCommands.RushColonyProduction}"
                     CommandParameter="{Binding FallbackValue={x:Null}}" />
+        
         <!--TRADE ROUTES-->
-        <TextBlock Text="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=TRADE_ROUTES, CharacterCasing=Upper}" Grid.Row="3" Grid.Column="6" HorizontalAlignment="Right"/>
-        <scc:GameLabel Grid.Column="8"
+        <TextBlock Text="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=TRADE_ROUTES, CharacterCasing=Upper}" 
+                   Grid.Row="3" Grid.Column="18" HorizontalAlignment="Right"/>
+        <scc:GameLabel Grid.Column="20"
                    Grid.Row="3"
                 Grid.ColumnSpan="2"                        
                    VerticalAlignment="Center"
@@ -224,33 +230,43 @@
         </scc:GameLabel>
         <!--FOOD-->
         <TextBlock Text="FOOD =" Grid.Row="1" Grid.Column="6" HorizontalAlignment="Right"/>
+        <!--Label="{Binding Path=FoodReserves.CurrentValue}"-->
         <scc:GameLabel Grid.Column="8"
                    Grid.Row="1"
                    VerticalAlignment="Center"
-                   ImageSourceSmall="vfs:///Resources/Images/Resources/food.png"
-                   Label="{Binding Path=FoodReserves.CurrentValue}"
-                   ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=FOOD_TOOL_TIP}" />
+                   ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/food.png"
+                   ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=FOOD_TOOL_TIP}" >
+            <MultiBinding StringFormat="{}{0} ({1}) ">
+
+                <Binding Path="FoodReserves" />
+                <Binding Path="NetFood" />                
+            </MultiBinding>
+        </scc:GameLabel>
+        <!--DEUTERIUM-->
         <TextBlock Text="DEUTERIUM =" Grid.Row="2" Grid.Column="6" HorizontalAlignment="Right"/>
         <scc:GameLabel Grid.Column="8"
                    Grid.Row="2"
                    VerticalAlignment="Center"
-                   ImageSourceSmall="vfs:///Resources/Images/Resources/deuterium.png"
+                   ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/deuterium.png"
                    Label="{Binding Path=NetDeuterium}"
                    ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=DEUTERIUM_TOOL_TIP}" />
+        <!--DILITHIUM-->
         <TextBlock Text="DILITHIUM =" Grid.Row="1" Grid.Column="10" HorizontalAlignment="Right"/>
         <scc:GameLabel Grid.Column="12"
                    Grid.Row="1"
                    VerticalAlignment="Center"
-                   ImageSourceSmall="vfs:///Resources/Images/Resources/dilithium.png"
+                   ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/dilithium.png"
                    Label="{Binding Path=NetDilithium}"
                    ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=DILITHIUM_TOOL_TIP}" />
+        <!--RAW MATERIALS-->
         <TextBlock Text="RAW MATERIALS =" Grid.Row="2" Grid.Column="10" HorizontalAlignment="Right"/>
         <scc:GameLabel Grid.Column="12"
                    Grid.Row="2"
                    VerticalAlignment="Center"
-                   ImageSourceSmall="vfs:///Resources/Images/Resources/rawmaterials.png"
+                   ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/rawmaterials.png"
                    Label="{Binding Path=NetRawMaterials}"
                    ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=RAW_MATERIALS_TOOL_TIP}" />
+        <!--ENERGY-->
         <TextBlock Text="ENERGY =" Grid.Row="1" Grid.Column="14" HorizontalAlignment="Right"/>
         <scc:GameLabel Grid.Column="16"
                    Grid.Row="1"
@@ -258,6 +274,7 @@
                    ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/energy.png"
                    Label="{Binding Path=NetEnergy}"
                    ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=ENERGY_TOOL_TIP}" />
+        <!--RESEARCH-->
         <TextBlock Text="RESEARCH =" Grid.Row="2" Grid.Column="14" HorizontalAlignment="Right"/>
         <scc:GameLabel Grid.Column="16"
                    Grid.Row="2"
@@ -282,8 +299,8 @@
                    Label="{Binding Path=NetIntelligence}"
                    ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=INTELLIGENCE_TOOL_TIP}" />
         <!--SHIP BUILDING-->
-        <TextBlock Text="SHIP BUILDING =" Grid.Row="3" Grid.Column="18" HorizontalAlignment="Right"/>
-        <scc:GameLabel Grid.Column="20"
+        <TextBlock Text="SHIP BUILDING =" Grid.Row="3" Grid.Column="6" HorizontalAlignment="Right"/>
+        <scc:GameLabel Grid.Column="8"
                    Grid.Row="3"
                    VerticalAlignment="Center"
                    ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/ship.png"
