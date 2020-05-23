@@ -40,7 +40,7 @@ namespace Supremacy.Diplomacy
 
             return GameContext.Current.DiplomacyData[owner.CivID, counterparty.CivID].Status;
         }
-            // ToDo look at bringin diplomatic ships to use the old diplomatic code and set up the Civilization-to-diplomat map for games (GameContext.Current.Diplomats)
+            // ToDo look at bringing diplomatic ships to use the old diplomatic code and set up the Civilization-to-diplomat map for games (GameContext.Current.Diplomats)
         public static void ApplyGlobalTrustChange([NotNull] ICivIdentity civ, int trustDelta)
         {
             if (civ == null)

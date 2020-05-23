@@ -180,7 +180,7 @@
                    Grid.Row="3"
                 Grid.ColumnSpan="2"                        
                    VerticalAlignment="Center"
-                   ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/red_hand.png"
+                   ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/orbital_battery.png"
                    ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=POPULATION_TOOL_TIP}">
             <scc:GameLabel.Label>
                 <MultiBinding StringFormat="{}{0} / {1}">

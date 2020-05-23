@@ -48,7 +48,7 @@ namespace Supremacy.Entities
 
     public enum CivTraits : ushort
     {
-        Warlike = 0x0001,
+        Warlike = 0x0001, // only used in one line in DiplomacyHelper.cs at this time
         Peaceful = 0x0002,
         Superiority = 0x0004,
         Submissive = 0x0008,
