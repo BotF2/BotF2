@@ -457,6 +457,7 @@ namespace Supremacy.Client
             _regionViewRegistry.RegisterViewWithRegion(ColonyScreenRegions.ShipyardBuildList, ColonyScreenRegions.ShipyardBuildList, typeof(ColonyShipyardBuildListView));
             _regionViewRegistry.RegisterViewWithRegion(ColonyScreenRegions.SelectedShipyardBuildProjectInfo, ColonyScreenRegions.SelectedShipyardBuildProjectInfo, typeof(ColonyBuildProjectInfoView));
             _regionViewRegistry.RegisterViewWithRegion(ColonyScreenRegions.StructureList, ColonyScreenRegions.StructureList, typeof(ColonyStructureListView));
+            _regionViewRegistry.RegisterViewWithRegion(ColonyScreenRegions.HandlingList, ColonyScreenRegions.HandlingList, typeof(ColonyHandlingListView));
         }
 
         private void RegisterEventHandlers()

@@ -91,7 +91,7 @@ namespace Supremacy.UI
             FoodBonusImage = new CachedBitmap(
                 new BitmapImage(
                     new Uri(
-                        "Resources/Images/Resources/food.png",
+                        "Resources/Images/ScreenIcons/food.png",
                         UriKind.Relative)),
                 BitmapCreateOptions.None,
                 BitmapCacheOption.OnLoad);
@@ -100,7 +100,7 @@ namespace Supremacy.UI
             EnergyBonusImage = new CachedBitmap(
                 new BitmapImage(
                     new Uri(
-                        "Resources/Images/Resources/energy.png",
+                        "Resources/Images/ScreenIcons/energy_bonus.png",
                         UriKind.Relative)),
                 BitmapCreateOptions.None,
                 BitmapCacheOption.OnLoad);
@@ -109,7 +109,7 @@ namespace Supremacy.UI
             DilithiumBonusImage = new CachedBitmap(
                 new BitmapImage(
                     new Uri(
-                        "Resources/Images/Resources/dilithium.png",
+                        "Resources/Images/ScreenIcons/dilithium.png",
                         UriKind.Relative)),
                 BitmapCreateOptions.None,
                 BitmapCacheOption.OnLoad);
@@ -118,7 +118,7 @@ namespace Supremacy.UI
             RawMaterialsBonusImage = new CachedBitmap(
                 new BitmapImage(
                     new Uri(
-                        "Resources/Images/Resources/rawmaterials.png",
+                        "Resources/Images/ScreenIcons/rawmaterials.png",
                         UriKind.Relative)),
                 BitmapCreateOptions.None,
                 BitmapCacheOption.OnLoad);

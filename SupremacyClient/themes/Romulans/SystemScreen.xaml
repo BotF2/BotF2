@@ -196,7 +196,10 @@
                 <TabItem x:Name="StructuresTab" Header="STRUCTURES">
                     <ContentControl cal:RegionManager.RegionName="{x:Static scc:ColonyScreenRegions.StructureList}" />
                 </TabItem>
-            </TabControl>
+                                <TabItem x:Name="HandlingTab" Header="COLONY HANDLING">
+                                    <ContentControl cal:RegionManager.RegionName="{x:Static scc:ColonyScreenRegions.HandlingList}" />
+                                </TabItem>
+                            </TabControl>
               <!-- END PRIMARY CONTENT AREA -->
 
 
