@@ -19,7 +19,7 @@
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
-            <Border Grid.Column="0"
+            <!--<Border Grid.Column="0"
               VerticalAlignment="Center"
               BorderBrush="{StaticResource BorderBrush}"
               BorderThickness="2"
@@ -29,7 +29,7 @@
                 <Border.Background>
                     <ImageBrush ImageSource="{Binding Path=SelectedColony.OrbitalBatteryDesign.Image, Converter={StaticResource TechObjectImageConverter}}" />
                 </Border.Background>
-            </Border>
+            </Border>-->
             <StackPanel Grid.Column="1"
                   Orientation="Vertical"
                   VerticalAlignment="Center"
@@ -43,7 +43,31 @@
                    FontSize="11pt"
                    TextWrapping="NoWrap"
                    TextTrimming="CharacterEllipsis"
-                   Text="{Binding Path=SelectedColony.OrbitalBatteryDesign.UnitEnergyCost, StringFormat='{}{0} Energy Cost'}"  />
+                   Text="{Binding Path=SelectedColony.OrbitalBatteryDesign.UnitEnergyCost, StringFormat='{}{0} Energy Cost'}" />
+
+
+
+                <!--<Border x:Name="OptionsPanel" Grid.Column="1">-->
+
+        <ScrollViewer CanContentScroll="True"
+                      MinWidth="400"
+                      MaxWidth="900"
+                      Grid.Column="1"
+                  ScrollViewer.VerticalScrollBarVisibility="Visible"
+                  ScrollViewer.HorizontalScrollBarVisibility="Visible">
+                    <s:SystemProductionPanel x:Name="SystemProductionPanel" />
+                         <!--SelectedFleet="{Binding Path=SelectedTaskForce.Source, Mode=OneWay}"
+                         SelectedSector="{Binding Path=SelectedSector, Mode=TwoWay}"
+                         SelectedTradeRoute="{Binding Path=SelectedTradeRoute, Mode=TwoWay}"
+                         SnapsToDevicePixels="True" />-->
+                    <!--<TextBlock FontSize="14pt"
+                   Foreground="{StaticResource LCARS_HeaderBrush}"
+                   Text="{Binding Path=SelectedColony.OrbitalBatteryDesign.Name, Converter={StaticResource StringResourceConverter}, FallbackValue='Orbital Battery'}"/>-->
+
+                </ScrollViewer>
+    <!--</Border>-->
+                           
+                
             </StackPanel>
         </Grid>
         <!--OrbitalBattery-->

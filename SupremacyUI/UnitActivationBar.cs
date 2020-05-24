@@ -681,6 +681,7 @@ namespace Supremacy.UI
 
         protected override void OnRender(DrawingContext drawingContext)
         {
+            return;
             if (_unitBlockBounds.Length == 0)
             {
                 return;
