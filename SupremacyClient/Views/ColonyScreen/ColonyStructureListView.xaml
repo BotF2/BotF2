@@ -9,8 +9,9 @@
              d:DesignWidth="720"
              d:DesignHeight="240"
              d:DataContext="{x:Static scc:ColonyScreenPresentationModel.DesignInstance}">
+             <!--xmlns:scm="clr-namespace:System.ComponentModel;assembly=WindowsBase"-->
 
-  <DockPanel LastChildFill="True">
+    <DockPanel LastChildFill="True">
     <Grid DockPanel.Dock="Bottom" Margin="7">
       <Grid.ColumnDefinitions>
         <ColumnDefinition Width="Auto" />
@@ -84,7 +85,13 @@
                   ItemsSource="{Binding Path=SelectedColony.Buildings}"
         >
       <ItemsControl.Resources>
-        <DataTemplate x:Key="StructureListItemTemplate">
+          <!--tried Sorting - not working yet-->
+                <!--<CollectionViewSource x:Key="viewsource" Source="Binding Path=SelectedColony.Buildings">
+                    <CollectionViewSource.SortDescriptions>
+                        <scm:SortDescription PropertyName="Name" Direction="Descending"/>
+                    </CollectionViewSource.SortDescriptions>
+                </CollectionViewSource>-->
+                <DataTemplate x:Key="StructureListItemTemplate">
           <Border Padding="7"
                   scc:InfoCardService.InfoCardHeader="{Binding RelativeSource={RelativeSource Self}, Path=(scc:InfoCardService.InfoCardSubject).(scc:InfoCardSubject.Data), Mode=OneWay}"
                   scc:InfoCardService.InfoCardContent="{Binding RelativeSource={RelativeSource Self}, Path=(scc:InfoCardService.InfoCardSubject).(scc:InfoCardSubject.Data), Mode=OneWay}">

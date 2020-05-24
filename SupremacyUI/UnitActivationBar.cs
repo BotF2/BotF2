@@ -758,11 +758,12 @@ namespace Supremacy.UI
                 }
             }
 
-            if ((actualWidth != 0)
-                && !double.IsNaN(actualWidth)
-                && !double.IsInfinity(actualWidth))
+            ////if ((actualWidth != 0)
+            ////    && !double.IsNaN(actualWidth)
+            //    && !double.IsInfinity(actualWidth))
             {
-                double unitBlockWidth = Math.Round(Math.Max(Math.Min(actualWidth * 0.5 / GetMaxUnitsInGroup(), 24.0), 1.0));
+                //double unitBlockWidth = Math.Round(Math.Max(Math.Min(actualWidth * 0.5 / GetMaxUnitsInGroup(), 24.0), 1.0));
+                double unitBlockWidth = Math.Round(Math.Max(Math.Min(actualWidth * 0.5 / GetMaxUnitsInGroup(), 18.0), 1.0));
 
                 _unitBlockBounds = new Rect[Units];
 

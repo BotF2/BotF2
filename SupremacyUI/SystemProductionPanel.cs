@@ -112,8 +112,11 @@ namespace Supremacy.UI
 
         public SystemProductionPanel()
         {
-            const int rowSpacing = 14;
-            const int colSpacing = 14;
+            const int rowSpacing = 10;  // ProdPanel was 14
+            const int colSpacing = 6;  // ProdPanel was 14
+
+            const int imageWidth = 62;  // ProdPanel was 100
+            const int imageHeight = 62;  // ProdPanel was 77
 
             DataContextChanged += OnDataContextChanged;
 
@@ -128,6 +131,9 @@ namespace Supremacy.UI
 
             _grid = new Grid();
 
+
+            _grid.Width = 580;
+
             _grid.ColumnDefinitions.Add(new ColumnDefinition());
             _grid.ColumnDefinitions.Add(new ColumnDefinition());
             _grid.ColumnDefinitions.Add(new ColumnDefinition());
@@ -135,7 +141,7 @@ namespace Supremacy.UI
 
             _grid.ColumnDefinitions[0].Width = new GridLength(1.0, GridUnitType.Auto);
             _grid.ColumnDefinitions[1].Width = new GridLength(1.0, GridUnitType.Auto);
-            _grid.ColumnDefinitions[2].Width = new GridLength(1.0, GridUnitType.Star);
+            _grid.ColumnDefinitions[2].Width = new GridLength(1.0, GridUnitType.Star);  // was .Star
             _grid.ColumnDefinitions[3].Width = new GridLength(1.0, GridUnitType.Auto);
 
             _grid.RowDefinitions.Add(new RowDefinition());
@@ -160,17 +166,17 @@ namespace Supremacy.UI
             _researchSlider = new UnitActivationBar();
             _intelligenceSlider = new UnitActivationBar();
 
-            _foodSlider.HorizontalAlignment = HorizontalAlignment.Stretch;
+            _foodSlider.HorizontalAlignment = HorizontalAlignment.Left;
             _industrySlider.HorizontalAlignment = HorizontalAlignment.Stretch;
             _energySlider.HorizontalAlignment = HorizontalAlignment.Stretch;
             _researchSlider.HorizontalAlignment = HorizontalAlignment.Stretch;
             _intelligenceSlider.HorizontalAlignment = HorizontalAlignment.Stretch;
 
-            _foodSlider.Margin = new Thickness(0, rowSpacing, 0, 0);
-            _industrySlider.Margin = new Thickness(0, rowSpacing, 0, 0);
-            _energySlider.Margin = new Thickness(0, rowSpacing, 0, 0);
-            _researchSlider.Margin = new Thickness(0, rowSpacing, 0, 0);
-            _intelligenceSlider.Margin = new Thickness(0, rowSpacing, 0, 0);
+            _foodSlider.Margin = new Thickness(0, 1, 0, 0);
+            _industrySlider.Margin = new Thickness(0, 1, 0, 0);
+            _energySlider.Margin = new Thickness(0, 1, 0, 0);
+            _researchSlider.Margin = new Thickness(0, 1, 0, 0);
+            _intelligenceSlider.Margin = new Thickness(0, 1, 0, 0);
 
             #region Arrange Visual Children
 
@@ -198,11 +204,11 @@ namespace Supremacy.UI
             _researchActiveText = new TextBlock();
             _intelligenceActiveText = new TextBlock();
 
-            _foodFacilityText.Foreground = headerBrush;
-            _industryFacilityText.Foreground = headerBrush;
-            _energyFacilityText.Foreground = headerBrush;
-            _researchFacilityText.Foreground = headerBrush;
-            _intelligenceFacilityText.Foreground = headerBrush;
+            _foodFacilityText.Foreground = paragraphBrush;
+            _industryFacilityText.Foreground = paragraphBrush;
+            _energyFacilityText.Foreground = paragraphBrush;
+            _researchFacilityText.Foreground = paragraphBrush;
+            _intelligenceFacilityText.Foreground = paragraphBrush;
 
             _foodScrapText.Foreground = Brushes.Red;
             _industryScrapText.Foreground = Brushes.Red;
@@ -222,11 +228,12 @@ namespace Supremacy.UI
             _researchOutputText = new TextBlock();
             _intelligenceOutputText = new TextBlock();
 
-            _foodOutputText.Foreground = paragraphBrush;
-            _industryOutputText.Foreground = paragraphBrush;
-            _energyOutputText.Foreground = paragraphBrush;
-            _researchOutputText.Foreground = paragraphBrush;
-            _intelligenceOutputText.Foreground = paragraphBrush;
+
+            _foodOutputText.Foreground = headerBrush;
+            _industryOutputText.Foreground = headerBrush;
+            _energyOutputText.Foreground = headerBrush;
+            _researchOutputText.Foreground = headerBrush;
+            _intelligenceOutputText.Foreground = headerBrush;
 
             _foodOutputText.MinWidth = 100;
             _industryOutputText.MinWidth = 100;
@@ -234,17 +241,17 @@ namespace Supremacy.UI
             _researchOutputText.MinWidth = 100;
             _intelligenceOutputText.MinWidth = 100;
 
-            _foodFacilityText.VerticalAlignment = VerticalAlignment.Center;
-            _industryFacilityText.VerticalAlignment = VerticalAlignment.Center;
-            _energyFacilityText.VerticalAlignment = VerticalAlignment.Center;
-            _researchFacilityText.VerticalAlignment = VerticalAlignment.Center;
-            _intelligenceFacilityText.VerticalAlignment = VerticalAlignment.Center;
+            _foodFacilityText.VerticalAlignment = VerticalAlignment.Top;
+            _industryFacilityText.VerticalAlignment = VerticalAlignment.Top;
+            _energyFacilityText.VerticalAlignment = VerticalAlignment.Top;
+            _researchFacilityText.VerticalAlignment = VerticalAlignment.Top;
+            _intelligenceFacilityText.VerticalAlignment = VerticalAlignment.Top;
 
-            _foodOutputText.VerticalAlignment = VerticalAlignment.Center;
-            _industryOutputText.VerticalAlignment = VerticalAlignment.Center;
-            _energyOutputText.VerticalAlignment = VerticalAlignment.Center;
-            _researchOutputText.VerticalAlignment = VerticalAlignment.Center;
-            _intelligenceOutputText.VerticalAlignment = VerticalAlignment.Center;
+            _foodOutputText.VerticalAlignment = VerticalAlignment.Bottom;
+            _industryOutputText.VerticalAlignment = VerticalAlignment.Bottom;
+            _energyOutputText.VerticalAlignment = VerticalAlignment.Bottom;
+            _researchOutputText.VerticalAlignment = VerticalAlignment.Bottom;
+            _intelligenceOutputText.VerticalAlignment = VerticalAlignment.Bottom;
 
             _foodFacilityText.HorizontalAlignment = HorizontalAlignment.Left;
             _industryFacilityText.HorizontalAlignment = HorizontalAlignment.Left;
@@ -282,11 +289,11 @@ namespace Supremacy.UI
             _researchFacilityText.SetValue(Grid.RowProperty, 3);
             _intelligenceFacilityText.SetValue(Grid.RowProperty, 4);
 
-            _foodOutputText.SetValue(Grid.ColumnProperty, 3);
-            _industryOutputText.SetValue(Grid.ColumnProperty, 3);
-            _energyOutputText.SetValue(Grid.ColumnProperty, 3);
-            _researchOutputText.SetValue(Grid.ColumnProperty, 3);
-            _intelligenceOutputText.SetValue(Grid.ColumnProperty, 3);
+            _foodOutputText.SetValue(Grid.ColumnProperty, 1);
+            _industryOutputText.SetValue(Grid.ColumnProperty, 1);
+            _energyOutputText.SetValue(Grid.ColumnProperty, 1);
+            _researchOutputText.SetValue(Grid.ColumnProperty, 1);
+            _intelligenceOutputText.SetValue(Grid.ColumnProperty, 1);
 
             _foodOutputText.SetValue(Grid.RowProperty, 0);
             _industryOutputText.SetValue(Grid.RowProperty, 1);
@@ -312,9 +319,9 @@ namespace Supremacy.UI
                                    BorderBrush = FindResource("DefaultTextBrush") as Brush ?? Foreground,
                                    BorderThickness = new Thickness(2.0),
                                    CornerRadius = new CornerRadius(2.0),
-                                        MinWidth = 100,
-                                        MinHeight = 77,
-                                   Margin = new Thickness(0, rowSpacing, 0, 0),
+                                        MinWidth = imageWidth,
+                                        MinHeight = imageHeight,
+                                        Margin = new Thickness(0, rowSpacing, 0, 0),
                                    Background = _foodImage
                                };
             _foodImageBorder.SetValue(Grid.ColumnProperty, 0);
@@ -329,8 +336,8 @@ namespace Supremacy.UI
                                        BorderBrush = FindResource("DefaultTextBrush") as Brush ?? Foreground,
                                        BorderThickness = new Thickness(2.0),
                                        CornerRadius = new CornerRadius(2.0),
-                                        MinWidth = 100,
-                                        MinHeight = 77,
+                                        MinWidth = imageWidth,
+                                        MinHeight = imageHeight,
                                        Margin = new Thickness(0, rowSpacing, 0, 0),
                                        Background = _industryImage
                                    };
@@ -346,8 +353,8 @@ namespace Supremacy.UI
                                      BorderBrush = FindResource("DefaultTextBrush") as Brush ?? Foreground,
                                      BorderThickness = new Thickness(2.0),
                                      CornerRadius = new CornerRadius(2.0),
-                                        MinWidth = 100,
-                                        MinHeight = 77,
+                                        MinWidth = imageWidth,
+                                        MinHeight = imageHeight,
                                      Margin = new Thickness(0, rowSpacing, 0, 0),
                                      Background = _energyImage
                                  };
@@ -363,8 +370,8 @@ namespace Supremacy.UI
                                        BorderBrush = FindResource("DefaultTextBrush") as Brush ?? Foreground,
                                        BorderThickness = new Thickness(2.0),
                                        CornerRadius = new CornerRadius(2.0),
-                                        MinWidth = 100,
-                                        MinHeight = 77,
+                                        MinWidth = imageWidth,
+                                        MinHeight = imageHeight,
                                        Margin = new Thickness(0, rowSpacing, 0, 0),
                                        Background = _researchImage
                                    };
@@ -380,8 +387,8 @@ namespace Supremacy.UI
                                         BorderBrush = FindResource("DefaultTextBrush") as Brush ?? Foreground,
                                         BorderThickness = new Thickness(2.0),
                                         CornerRadius = new CornerRadius(2.0),
-                                        MinWidth = 100,
-                                        MinHeight = 77,
+                                        MinWidth = imageWidth,
+                                        MinHeight = imageHeight,
                                         Margin = new Thickness(0, rowSpacing, 0, 0),
                                         Background = _intelligenceImage
                                     };
@@ -427,7 +434,7 @@ namespace Supremacy.UI
             };
             _laborBar.SetValue(Grid.ColumnProperty, 2);
             _laborBar.SetValue(Grid.RowProperty, 5);
-            _laborBar.VerticalAlignment = VerticalAlignment.Bottom;
+            _laborBar.VerticalAlignment = VerticalAlignment.Top;
             _laborBar.Margin = new Thickness(0, rowSpacing * 2, 0, rowSpacing);
             _laborBar.Height = 28;
             _laborBar.IsReadOnly = true;
@@ -435,7 +442,7 @@ namespace Supremacy.UI
             _laborPoolText = new TextBlock();
             _laborPoolText.SetValue(Grid.ColumnProperty, 1);
             _laborPoolText.SetValue(Grid.RowProperty, 5);
-            _laborPoolText.VerticalAlignment = VerticalAlignment.Bottom;
+            _laborPoolText.VerticalAlignment = VerticalAlignment.Top;
             _laborPoolText.HorizontalAlignment = HorizontalAlignment.Right;
             _laborPoolText.Margin = new Thickness(0, rowSpacing * 2, colSpacing, rowSpacing);
             _laborPoolText.FontSize = 20;
@@ -689,7 +696,7 @@ namespace Supremacy.UI
                 if (outputText != null)
                 {
                     outputText.Text = string.Format(
-                        "{0} {1}",
+                        "Output {1}:  {0}",
                         colony.GetProductionOutput(category),
                         category);
                 }
@@ -793,31 +800,31 @@ namespace Supremacy.UI
                 _intelligenceSlider.ActiveUnitsChanged += Slider_ActiveUnitsChanged;
 
                 _foodOutputText.Text = string.Format(
-                    "{0} {1}",
+                    "Output {1}:  {0}",
                     colony.GetProductionOutput(ProductionCategory.Food),
                     ResourceManager.GetString(
                         "PRODUCTION_CATEGORY_"
                         + ProductionCategory.Food.ToString().ToUpperInvariant()));
                 _industryOutputText.Text = string.Format(
-                    "{0} {1}",
+                    "Output {1}:  {0}",
                     colony.GetProductionOutput(ProductionCategory.Industry),
                     ResourceManager.GetString(
                         "PRODUCTION_CATEGORY_"
                         + ProductionCategory.Industry.ToString().ToUpperInvariant()));
                 _energyOutputText.Text = string.Format(
-                    "{0} {1}",
+                    "Output {1}:  {0}",
                     colony.GetProductionOutput(ProductionCategory.Energy),
                     ResourceManager.GetString(
                         "PRODUCTION_CATEGORY_"
                         + ProductionCategory.Energy.ToString().ToUpperInvariant()));
                 _researchOutputText.Text = string.Format(
-                    "{0} {1}",
+                    "Output {1}:  {0}",
                     colony.GetProductionOutput(ProductionCategory.Research),
                     ResourceManager.GetString(
                         "PRODUCTION_CATEGORY_"
                         + ProductionCategory.Research.ToString().ToUpperInvariant()));
                 _intelligenceOutputText.Text = string.Format(
-                    "{0} {1}",
+                    "Output {1}:  {0}",
                     colony.GetProductionOutput(ProductionCategory.Intelligence),
                     ResourceManager.GetString(
                         "PRODUCTION_CATEGORY_"
@@ -873,23 +880,28 @@ namespace Supremacy.UI
                 _foodActiveText.Text = string.Format(
                     ResourceManager.GetString("ACTIVE_FACILITIES_FORMAT_STRING"),
                     colony.GetActiveFacilities(ProductionCategory.Food),
-                    colony.GetTotalFacilities(ProductionCategory.Food));
+                    colony.GetTotalFacilities(ProductionCategory.Food),
+                    _foodOutputText.Text);
                 _industryActiveText.Text = string.Format(
                     ResourceManager.GetString("ACTIVE_FACILITIES_FORMAT_STRING"),
                     colony.GetActiveFacilities(ProductionCategory.Industry),
-                    colony.GetTotalFacilities(ProductionCategory.Industry));
+                    colony.GetTotalFacilities(ProductionCategory.Industry),
+                    _industryOutputText.Text);
                 _energyActiveText.Text = string.Format(
                     ResourceManager.GetString("ACTIVE_FACILITIES_FORMAT_STRING"),
                     colony.GetActiveFacilities(ProductionCategory.Energy),
-                    colony.GetTotalFacilities(ProductionCategory.Energy));
+                    colony.GetTotalFacilities(ProductionCategory.Energy),
+                    _energyOutputText.Text);
                 _researchActiveText.Text = string.Format(
                     ResourceManager.GetString("ACTIVE_FACILITIES_FORMAT_STRING"),
                     colony.GetActiveFacilities(ProductionCategory.Research),
-                    colony.GetTotalFacilities(ProductionCategory.Research));
+                    colony.GetTotalFacilities(ProductionCategory.Research),
+                    _researchOutputText.Text);
                 _intelligenceActiveText.Text = string.Format(
                     ResourceManager.GetString("ACTIVE_FACILITIES_FORMAT_STRING"),
                     colony.GetActiveFacilities(ProductionCategory.Intelligence),
-                    colony.GetTotalFacilities(ProductionCategory.Intelligence));
+                    colony.GetTotalFacilities(ProductionCategory.Intelligence),
+                    _intelligenceOutputText.Text);
 
                 _foodFacilityText.Inlines.Clear();
                 _industryFacilityText.Inlines.Clear();
@@ -913,6 +925,12 @@ namespace Supremacy.UI
                 _energyActiveText.Inlines.FirstInline.Foreground = _energyActiveText.Foreground;
                 _researchActiveText.Inlines.FirstInline.Foreground = _researchActiveText.Foreground;
                 _intelligenceActiveText.Inlines.FirstInline.Foreground = _intelligenceActiveText.Foreground;
+
+                _foodActiveText.FontSize = 10d;
+                _industryActiveText.FontSize = 10d;
+                _energyActiveText.FontSize = 10d;
+                _researchActiveText.FontSize = 10d;
+                _intelligenceActiveText.FontSize = 10d;
 
                 _foodFacilityText.Inlines.Add(new LineBreak());
                 _foodFacilityText.Inlines.Add(_foodActiveText.Inlines.FirstInline);

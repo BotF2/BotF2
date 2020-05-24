@@ -5,6 +5,7 @@
              xmlns:scc="http://schemas.startreksupremacy.com/xaml/presentation"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:scm="clr-namespace:System.ComponentModel;assembly=WindowsBase"
              mc:Ignorable="d"
              d:DesignWidth="720"
              d:DesignHeight="240"
@@ -12,65 +13,27 @@
 
   <DockPanel LastChildFill="True">
 
-        <Grid DockPanel.Dock="Left" Margin="7">
+      <!--DockPanel LEFT-->
+        <Grid DockPanel.Dock="Left" Margin="2">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="0" />  <!--Empty-->
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
-            <!--<Border Grid.Column="0"
-              VerticalAlignment="Center"
-              BorderBrush="{StaticResource BorderBrush}"
-              BorderThickness="2"
-              CornerRadius="4"
-              Width="48"
-              Height="38">
-                <Border.Background>
-                    <ImageBrush ImageSource="{Binding Path=SelectedColony.OrbitalBatteryDesign.Image, Converter={StaticResource TechObjectImageConverter}}" />
-                </Border.Background>
-            </Border>-->
-            <StackPanel Grid.Column="1"
-                  Orientation="Vertical"
-                  VerticalAlignment="Center"
-                  HorizontalAlignment="Stretch"
-                  Margin="7,0,14,0"
-                  TextBlock.FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}">
-                <TextBlock FontSize="14pt"
-                   Foreground="{StaticResource LCARS_HeaderBrush}"
-                   Text="{Binding Path=SelectedColony.OrbitalBatteryDesign.Name, Converter={StaticResource StringResourceConverter}, FallbackValue='Orbital Battery'}"/>
-                <TextBlock Foreground="{StaticResource DefaultTextBrush}"
-                   FontSize="11pt"
-                   TextWrapping="NoWrap"
-                   TextTrimming="CharacterEllipsis"
-                   Text="{Binding Path=SelectedColony.OrbitalBatteryDesign.UnitEnergyCost, StringFormat='{}{0} Energy Cost'}" />
 
-
-
-                <!--<Border x:Name="OptionsPanel" Grid.Column="1">-->
 
         <ScrollViewer CanContentScroll="True"
-                      MinWidth="400"
-                      MaxWidth="900"
-                      Grid.Column="1"
-                  ScrollViewer.VerticalScrollBarVisibility="Visible"
-                  ScrollViewer.HorizontalScrollBarVisibility="Visible">
-                    <s:SystemProductionPanel x:Name="SystemProductionPanel" />
-                         <!--SelectedFleet="{Binding Path=SelectedTaskForce.Source, Mode=OneWay}"
-                         SelectedSector="{Binding Path=SelectedSector, Mode=TwoWay}"
-                         SelectedTradeRoute="{Binding Path=SelectedTradeRoute, Mode=TwoWay}"
-                         SnapsToDevicePixels="True" />-->
-                    <!--<TextBlock FontSize="14pt"
-                   Foreground="{StaticResource LCARS_HeaderBrush}"
-                   Text="{Binding Path=SelectedColony.OrbitalBatteryDesign.Name, Converter={StaticResource StringResourceConverter}, FallbackValue='Orbital Battery'}"/>-->
+                Width="600"
+                Height="480"
+                Grid.Column="1"
+                ScrollViewer.VerticalScrollBarVisibility="Visible"
+                ScrollViewer.HorizontalScrollBarVisibility="Auto">
+                <s:SystemProductionPanel x:Name="SystemProductionPanel" />
 
                 </ScrollViewer>
-    <!--</Border>-->
-                           
-                
-            </StackPanel>
         </Grid>
-        <!--OrbitalBattery-->
+
+      <!--OrbitalBattery-->
         <Grid DockPanel.Dock="Top" Margin="7">
       <Grid.ColumnDefinitions>
         <ColumnDefinition Width="Auto" />
@@ -120,14 +83,14 @@
                  Foreground="Transparent"
                  FontSize="14pt"
                  FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
-                 Margin="14,0,0,0"
+                 Margin="7,0,0,0"
                  VerticalAlignment="Center"
                  Text="999 / 999" />
       <TextBlock Grid.Column="3"
                  Foreground="{StaticResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"
                  FontSize="14pt"
                  FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
-                 Margin="14,0,0,0"
+                 Margin="7,0,0,0"
                  VerticalAlignment="Center">
         <TextBlock.Text>
           <MultiBinding StringFormat="{}{0} / {1}" FallbackValue="0 / 0">
@@ -137,8 +100,12 @@
         </TextBlock.Text>
       </TextBlock>
     </Grid>
-    <ItemsControl DockPanel.Dock="Right"
+        <!--End of OrbitalBatteries-->
+    
+      <!--Structures-->
+        <ItemsControl DockPanel.Dock="Right"
                   Grid.IsSharedSizeScope="True"
+                      
                   Focusable="False"
                   IsTabStop="False"
                   ItemsSource="{Binding Path=SelectedColony.Buildings}">
@@ -148,8 +115,32 @@
                   scc:InfoCardService.InfoCardHeader="{Binding RelativeSource={RelativeSource Self}, Path=(scc:InfoCardService.InfoCardSubject).(scc:InfoCardSubject.Data), Mode=OneWay}"
                   scc:InfoCardService.InfoCardContent="{Binding RelativeSource={RelativeSource Self}, Path=(scc:InfoCardService.InfoCardSubject).(scc:InfoCardSubject.Data), Mode=OneWay}">
             <scc:InfoCardService.InfoCardHeaderTemplate>
-              <DataTemplate DataType="{x:Type s:Building}">
+                            <DataTemplate DataType="{x:Type s:Building}">
+                                <!--<ItemsControl>
+                                    <ItemsControl.Resources>
+                                        <CollectionViewSource x:Key="viewsource" Source="Binding Path=SelectedColony.Buildings">
+                                            <CollectionViewSource.SortDescriptions>
+                                                <scm:SortDescription PropertyName="IsActive" Direction="Descending"/>
+                                            </CollectionViewSource.SortDescriptions>
+                                        </CollectionViewSource>
+                                    </ItemsControl.Resources>
+                                </ItemsControl>-->
+
+
+
+                                <!--<DataTemplate.Resources>
+                                    <CollectionViewSource x:Key="viewsource" Source="Binding Path=SelectedColony.Buildings">
+                                        <CollectionViewSource.SortDescriptions>
+                                            <scm:SortDescription PropertyName="IsActive" />
+                                        </CollectionViewSource.SortDescriptions>
+                                        
+                                    </CollectionViewSource>
+                                </DataTemplate.Resources>-->
                 <DockPanel LastChildFill="True">
+                                    <!--<Viewbox></Viewbox>-->
+                    
+                    
+                    
                   <Border DockPanel.Dock="Left"
                           VerticalAlignment="Top"
                           CornerRadius="4"
@@ -183,7 +174,7 @@
                                  Foreground="LimeGreen" />
                     </WrapPanel>
                     <scc:GameButton Label="{s:StringResource Scrap}"
-                                    Margin="0,5,0,0"
+                                    Margin="0,2,0,0"
                                     DisplayMode="CheckBox"
                                     HorizontalAlignment="Left"
                                     VerticalAlignment="Center"
@@ -265,12 +256,14 @@
                             CommandParameter="{Binding}" />
                 </ContextMenu>
               </Button.ContextMenu>
+                
               <Grid>
                 <Grid.ColumnDefinitions>
                   <ColumnDefinition SharedSizeGroup="HandlingListItem_ImageColumn" />
                   <ColumnDefinition SharedSizeGroup="HandlingListItem_TextColumn" />
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
+                                    <!--<RowDefinition Height="10">-->
                   <RowDefinition SharedSizeGroup="HandlingListItem_Row" />
                 </Grid.RowDefinitions>
                 <Border x:Name="ImageBorder"
@@ -299,7 +292,7 @@
                              Text="(SCRAP)"
                              Opacity="0.0" />
                 </TextBlock>
-                                    <TextBlock Foreground="{StaticResource DefaultTextBrush}"
+                             <TextBlock Foreground="{StaticResource DefaultTextBrush}"
                              FontSize="10pt"
                              TextWrapping="NoWrap"
                              TextTrimming="CharacterEllipsis">
@@ -341,7 +334,7 @@
         <ControlTemplate TargetType="{x:Type ItemsControl}">
           <ScrollViewer CanContentScroll="True"
                         VerticalScrollBarVisibility="Visible"
-                        HorizontalScrollBarVisibility="Visible">
+                        HorizontalScrollBarVisibility="Auto">
             <WrapPanel Orientation="Vertical"
                        IsItemsHost="True" />
           </ScrollViewer>
