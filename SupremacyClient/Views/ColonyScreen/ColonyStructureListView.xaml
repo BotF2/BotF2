@@ -5,12 +5,11 @@
              xmlns:scc="http://schemas.startreksupremacy.com/xaml/presentation"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:scm="clr-namespace:System.ComponentModel;assembly=WindowsBase"
              mc:Ignorable="d"
              d:DesignWidth="720"
              d:DesignHeight="240"
              d:DataContext="{x:Static scc:ColonyScreenPresentationModel.DesignInstance}">
-             
+             <!--xmlns:scm="clr-namespace:System.ComponentModel;assembly=WindowsBase"-->
 
     <DockPanel LastChildFill="True">
     <Grid DockPanel.Dock="Bottom" Margin="7">
@@ -87,12 +86,12 @@
         >
       <ItemsControl.Resources>
           <!--tried Sorting - not working yet-->
-                <CollectionViewSource x:Key="ViewSource" Source="Binding Path=SelectedColony.BuildingsInternal">
-                    <CollectionViewSource.SortDescriptions>
-                        <scm:SortDescription PropertyName="IsActive" Direction="Descending"/>
+                <!--<CollectionViewSource x:Key="Viewsource" Source="Binding Path=SelectedColony.Buildings">
+                    <CollectionViewSource.SortDescriptions> // should be sorting on properties, not descriptions
+                        <scm:SortDescription PropertyName="Name" Direction="Descending"/>
                     </CollectionViewSource.SortDescriptions>
-                </CollectionViewSource>
-                <DataTemplate x:Key="StructureListItemTemplate">
+                </CollectionViewSource>-->
+        <DataTemplate x:Key="StructureListItemTemplate">
           <Border Padding="7"
                   scc:InfoCardService.InfoCardHeader="{Binding RelativeSource={RelativeSource Self}, Path=(scc:InfoCardService.InfoCardSubject).(scc:InfoCardSubject.Data), Mode=OneWay}"
                   scc:InfoCardService.InfoCardContent="{Binding RelativeSource={RelativeSource Self}, Path=(scc:InfoCardService.InfoCardSubject).(scc:InfoCardSubject.Data), Mode=OneWay}">
