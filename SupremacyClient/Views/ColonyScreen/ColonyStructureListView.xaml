@@ -87,9 +87,9 @@
         >
       <ItemsControl.Resources>
           <!--tried Sorting - not working yet-->
-                <CollectionViewSource x:Key="ViewSource" Source="Binding Path=SelectedColony.Buildings">
+                <CollectionViewSource x:Key="ViewSource" Source="Binding Path=SelectedColony.BuildingsInternal">
                     <CollectionViewSource.SortDescriptions>
-                        <scm:SortDescription PropertyName="Name" Direction="Descending"/>
+                        <scm:SortDescription PropertyName="IsActive" Direction="Descending"/>
                     </CollectionViewSource.SortDescriptions>
                 </CollectionViewSource>
                 <DataTemplate x:Key="StructureListItemTemplate">

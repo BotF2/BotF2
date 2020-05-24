@@ -115,10 +115,10 @@
                   scc:InfoCardService.InfoCardHeader="{Binding RelativeSource={RelativeSource Self}, Path=(scc:InfoCardService.InfoCardSubject).(scc:InfoCardSubject.Data), Mode=OneWay}"
                   scc:InfoCardService.InfoCardContent="{Binding RelativeSource={RelativeSource Self}, Path=(scc:InfoCardService.InfoCardSubject).(scc:InfoCardSubject.Data), Mode=OneWay}">
             <scc:InfoCardService.InfoCardHeaderTemplate>
-                            <DataTemplate DataType="{x:Type s:Building}">
+            <DataTemplate DataType="{x:Type s:Building}">
                                 <!--<ItemsControl>
                                     <ItemsControl.Resources>
-                                        <CollectionViewSource x:Key="viewsource" Source="Binding Path=SelectedColony.Buildings">
+                                        <CollectionViewSource x:Key="Viewsource" Source="Binding Path=SelectedColony.Buildings">
                                             <CollectionViewSource.SortDescriptions>
                                                 <scm:SortDescription PropertyName="IsActive" Direction="Descending"/>
                                             </CollectionViewSource.SortDescriptions>
@@ -129,7 +129,7 @@
 
 
                                 <!--<DataTemplate.Resources>
-                                    <CollectionViewSource x:Key="viewsource" Source="Binding Path=SelectedColony.Buildings">
+                                    <CollectionViewSource x:Key="Viewsource" Source="Binding Path=SelectedColony.Buildings">
                                         <CollectionViewSource.SortDescriptions>
                                             <scm:SortDescription PropertyName="IsActive" />
                                         </CollectionViewSource.SortDescriptions>
