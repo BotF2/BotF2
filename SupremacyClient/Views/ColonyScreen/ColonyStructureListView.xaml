@@ -85,7 +85,7 @@
                   ItemsSource="{Binding Path=SelectedColony.Buildings}"
         >
       <ItemsControl.Resources>
-          <!--tried Sorting - not working yet-->
+          <!--tried Sorting - the xmlns:scm="clr-namespace: should be looking at a Supremacy name space to get Building.IsActive-->
                 <!--<CollectionViewSource x:Key="Viewsource" Source="Binding Path=SelectedColony.Buildings">
                     <CollectionViewSource.SortDescriptions> // should be sorting on properties, not descriptions
                         <scm:SortDescription PropertyName="Name" Direction="Descending"/>

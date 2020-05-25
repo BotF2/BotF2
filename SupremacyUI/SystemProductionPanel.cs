@@ -228,7 +228,6 @@ namespace Supremacy.UI
             _researchOutputText = new TextBlock();
             _intelligenceOutputText = new TextBlock();
 
-
             _foodOutputText.Foreground = headerBrush;
             _industryOutputText.Foreground = headerBrush;
             _energyOutputText.Foreground = headerBrush;
@@ -422,6 +421,12 @@ namespace Supremacy.UI
             _researchSlider.SetValue(Grid.RowProperty, 3);
             _intelligenceSlider.SetValue(Grid.RowProperty, 4);
 
+            _foodSlider.IsEnabled = true;
+            _industrySlider.IsEnabled = true;
+            _energySlider.IsEnabled = true;
+            _researchSlider.IsEnabled = true;
+            _intelligenceSlider.IsEnabled = true;
+
             _ = _grid.Children.Add(_foodSlider);
             _ = _grid.Children.Add(_industrySlider);
             _ = _grid.Children.Add(_energySlider);
@@ -438,6 +443,7 @@ namespace Supremacy.UI
             _laborBar.Margin = new Thickness(0, rowSpacing * 2, 0, rowSpacing);
             _laborBar.Height = 28;
             _laborBar.IsReadOnly = true;
+            _laborBar.IsEnabled = true;
 
             _laborPoolText = new TextBlock();
             _laborPoolText.SetValue(Grid.ColumnProperty, 1);
@@ -704,17 +710,28 @@ namespace Supremacy.UI
                 slider.ActiveUnits = colony.GetActiveFacilities(category);
 
                 SliderChanged?.Invoke(this, new SliderChangedEventArgs(category));
+                slider.IsEnabled = true;
             }
         }
 
         private void SliderGroup_FreePoolSizeChanged(object sender, EventArgs e)
         {
             _laborBar.ActiveUnits = _sliderGroup.FreePoolSize / _laborBar.UnitCost;
+            _foodSlider.IsEnabled = true;
+            _industrySlider.IsEnabled = true;
+            _energySlider.IsEnabled = true;
+            _researchSlider.IsEnabled = true;
+            _intelligenceSlider.IsEnabled = true;
         }
 
         private void SliderGroup_PoolSizeChanged(object sender, EventArgs e)
         {
             _laborBar.Units = _sliderGroup.PoolSize / _laborBar.UnitCost;
+            _foodSlider.IsEnabled = true;
+            _industrySlider.IsEnabled = true;
+            _energySlider.IsEnabled = true;
+            _researchSlider.IsEnabled = true;
+            _intelligenceSlider.IsEnabled = true;
         }
 
         #endregion
@@ -740,6 +757,11 @@ namespace Supremacy.UI
         {
             UpdateImages();
             ResetSliders();
+            _foodSlider.IsEnabled = true;
+            _industrySlider.IsEnabled = true;
+            _energySlider.IsEnabled = true;
+            _researchSlider.IsEnabled = true;
+            _intelligenceSlider.IsEnabled = true;
         }
 
         private void ResetSliders()
@@ -837,6 +859,12 @@ namespace Supremacy.UI
             _researchSlider.InvalidateVisual();
             _intelligenceSlider.InvalidateVisual();
             _laborBar.InvalidateVisual();
+
+            _foodSlider.IsEnabled = true;
+            _industrySlider.IsEnabled = true;
+            _energySlider.IsEnabled = true;
+            _researchSlider.IsEnabled = true;
+            _intelligenceSlider.IsEnabled = true;
         }
 
         private void UpdateImages()
