@@ -24,11 +24,16 @@ namespace Supremacy.AI
         public static InfluenceMap BuildInfluenceMap(GameContext game, Civilization owner)
         {
             if (game == null)
-                throw new ArgumentNullException("game");
-            if (owner == null)
-                throw new ArgumentNullException("owner");
+            {
+                throw new ArgumentNullException(nameof(game));
+            }
 
-            var map = new InfluenceMap(game);
+            if (owner == null)
+            {
+                throw new ArgumentNullException(nameof(owner));
+            }
+
+            InfluenceMap map = new InfluenceMap(game);
 
             game.Civilizations
                 .AsParallel()

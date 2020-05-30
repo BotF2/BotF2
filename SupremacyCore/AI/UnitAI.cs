@@ -27,14 +27,16 @@ namespace Supremacy.AI
         public static void DoTurn([NotNull] Civilization civ)
         {
             if (civ == null)
-                throw new ArgumentNullException("civ");
+            {
+                throw new ArgumentNullException(nameof(civ));
+            }
 
-            foreach (var fleet in GameContext.Current.Universe.FindOwned<Fleet>(civ))
+            foreach (Fleet fleet in GameContext.Current.Universe.FindOwned<Fleet>(civ))
             {
                 GameLog.Core.AI.DebugFormat("Processing Fleet {0} in {1}...", fleet.ObjectID, fleet.Location);
 
                 //Make sure all fleets are cloaked
-                foreach (var ship in fleet.Ships.Where(ship => ship.CanCloak && !ship.IsCloaked))
+                foreach (Ship ship in fleet.Ships.Where(ship => ship.CanCloak && !ship.IsCloaked))
                 {
                     GameLog.Core.AI.DebugFormat("Cloaking {0} {1}", ship.Name, ship.ObjectID);
                     ship.IsCloaked = true;
@@ -42,27 +44,25 @@ namespace Supremacy.AI
 
                 //If the fleet can't move, we're limited in our options
                 if (!fleet.CanMove)
+                {
                     continue;
+                }
 
                 //Set scouts to permanently explore
-                if (fleet.IsScout)
+                if (fleet.IsScout && fleet.Activity == UnitActivity.NoActivity)
                 {
-                    if (fleet.Activity == UnitActivity.NoActivity)
-                    {
-                        fleet.SetOrder(new ExploreOrder());
-                        fleet.UnitAIType = UnitAIType.Explorer;
-                        fleet.Activity = UnitActivity.Mission;
-                        GameLog.Core.AI.DebugFormat("Ordering Scout fleet {0} to explore", fleet.ObjectID, fleet.Location);
-                    }
+                    fleet.SetOrder(new ExploreOrder());
+                    fleet.UnitAIType = UnitAIType.Explorer;
+                    fleet.Activity = UnitActivity.Mission;
+                    GameLog.Core.AI.DebugFormat("Ordering Scout fleet {0} to explore", fleet.ObjectID, fleet.Location);
                 }
 
                 if (fleet.IsColonizer)
                 {
                     if (fleet.Activity == UnitActivity.NoActivity || fleet.Route.IsEmpty || fleet.Order.IsComplete)
                     {
-                        StarSystem bestSystemToColonize;
                         //Do we have a system to colonize?
-                        if (GetBestSystemToColonize(fleet, out bestSystemToColonize))
+                        if (GetBestSystemToColonize(fleet, out StarSystem bestSystemToColonize))
                         {
                             //Are we there?
                             if (fleet.Sector == bestSystemToColonize.Sector)
@@ -91,14 +91,14 @@ namespace Supremacy.AI
 
                 if (fleet.IsConstructor)
                 {
-                    if (fleet.Activity == UnitActivity.NoActivity || fleet.Route.IsEmpty || fleet.Order.IsComplete) {
-                        Sector bestSectorForStation;
-                        if (GetBestSectorForStation(fleet, out bestSectorForStation))
+                    if (fleet.Activity == UnitActivity.NoActivity || fleet.Route.IsEmpty || fleet.Order.IsComplete)
+                    {
+                        if (GetBestSectorForStation(fleet, out Sector bestSectorForStation))
                         {
                             if (fleet.Sector == bestSectorForStation)
                             {
                                 //Build the station
-                                var order = new BuildStationOrder();
+                                BuildStationOrder order = new BuildStationOrder();
                                 order.BuildProject = order.FindTargets(fleet).Cast<StationBuildProject>().LastOrDefault(o => o.StationDesign.IsCombatant);
                                 if (order.BuildProject != null && order.CanAssignOrder(fleet))
                                 {
@@ -106,7 +106,7 @@ namespace Supremacy.AI
                                     fleet.Activity = UnitActivity.Mission;
                                 }
                                 GameLog.Core.AI.DebugFormat("Ordering constructor fleet {0} to build station", fleet.ObjectID);
-                            } 
+                            }
                             else
                             {
                                 //Head to the system
@@ -128,7 +128,7 @@ namespace Supremacy.AI
                 {
                     GameLog.Core.AI.DebugFormat("## IsBattleFleet ##  fleet={0}, {1}, {2}, {3}, {4},", fleet.ObjectID, fleet.Name, fleet.Owner, fleet.Order, fleet.Location);
 
-                    var defenseFleet = GameContext.Current.Universe.HomeColonyLookup[civ].Sector.GetOwnedFleets(civ).FirstOrDefault(o => o.UnitAIType == UnitAIType.SystemDefense);
+                    Fleet defenseFleet = GameContext.Current.Universe.HomeColonyLookup[civ].Sector.GetOwnedFleets(civ).FirstOrDefault(o => o.UnitAIType == UnitAIType.SystemDefense);
                     if (fleet.Activity == UnitActivity.NoActivity && defenseFleet == null)
                     {
                         fleet.UnitAIType = UnitAIType.SystemDefense;
@@ -137,7 +137,7 @@ namespace Supremacy.AI
                     }
                     else if (fleet.Activity == UnitActivity.NoActivity && fleet.Ships.Count == 1 && fleet.Sector == defenseFleet.Sector)
                     {
-                        var ship = fleet.Ships[0];
+                        Ship ship = fleet.Ships[0];
                         GameLog.Core.AI.DebugFormat("## IsBattleFleet - on SystemDefence - Ship added ##  fleet={0}, {1}, {2}, {3}, {4},", fleet.ObjectID, fleet.Name, fleet.Owner, fleet.Order, fleet.Location);
 
                         fleet.RemoveShip(ship);
@@ -149,8 +149,7 @@ namespace Supremacy.AI
                 {
                     if (fleet.Activity == UnitActivity.NoActivity || fleet.Route.IsEmpty || fleet.Order.IsComplete)
                     {
-                        Colony bestSystemForMedical;
-                        if (GetBestColonyForMedical(fleet, out bestSystemForMedical))
+                        if (GetBestColonyForMedical(fleet, out Colony bestSystemForMedical))
                         {
                             if (bestSystemForMedical.Location == fleet.Location)
                             {
@@ -234,34 +233,30 @@ namespace Supremacy.AI
         public static bool GetBestSystemToColonize(Fleet fleet, out StarSystem result)
         {
             if (fleet == null)
-                throw new ArgumentNullException("fleet");
+            {
+                throw new ArgumentNullException(nameof(fleet));
+            }
 
-            var colonizerFleets = GameContext.Current.Universe.FindOwned<Fleet>(fleet.Owner).Where(o => o.IsColonizer);
+            IEnumerable<Fleet> colonizerFleets = GameContext.Current.Universe.FindOwned<Fleet>(fleet.Owner).Where(o => o.IsColonizer);
 
-            var civManager = GameContext.Current.CivilizationManagers[fleet.Owner];
-            var mapData = civManager.MapData;
+            CivilizationManager civManager = GameContext.Current.CivilizationManagers[fleet.Owner];
+            CivilizationMapData mapData = civManager.MapData;
 
             //Get a list of all systems that we can colonise
-            var systems = GameContext.Current.Universe.Find<StarSystem>()
+            List<StarSystem> systems = GameContext.Current.Universe.Find<StarSystem>()
                 //We need to know about it (no cheating)
-                .Where(s => mapData.IsScanned(s.Location) && mapData.IsExplored(s.Location))
+                .Where(s => mapData.IsScanned(s.Location) && mapData.IsExplored(s.Location) && (!s.IsOwned || s.Owner == fleet.Owner) && (!s.IsInhabited || !s.HasColony) && s.IsHabitable(fleet.Owner.Race) && FleetHelper.IsSectorWithinFuelRange(s.Sector, fleet) && GameContext.Current.Universe.FindAt<Orbital>(s.Location).Any(o => DiplomacyHelper.ArePotentialEnemies(fleet.Owner, o.Owner)) && colonizerFleets.Any(f => f.Route.Waypoints.LastOrDefault() == s.Location) && colonizerFleets.Any(f => (f.Location == s.Location) && f.Order is ColonizeOrder))
                 //That isn't owned by another civilization
-                .Where(s => !s.IsOwned || s.Owner == fleet.Owner)
                 //That isn't currently inhabited or have a current colony
-                .Where(s => !s.IsInhabited || !s.HasColony)
                 //That's actually inhabitable
-                .Where(s => s.IsHabitable(fleet.Owner.Race))
                 //That are in fuel range
-                .Where(s => FleetHelper.IsSectorWithinFuelRange(s.Sector, fleet))
                 //That doesn't have potential enemies in it
-                .Where(s => GameContext.Current.Universe.FindAt<Orbital>(s.Location).Any(o => DiplomacyHelper.ArePotentialEnemies(fleet.Owner, o.Owner)))
                 //Where a ship isn't heading there already
-                .Where(s => colonizerFleets.Any(f => f.Route.Waypoints.LastOrDefault() == s.Location))
                 //Where a ship isn't there and colonizing
-                .Where(s => colonizerFleets.Where(f => (f.Location == s.Location)).Any(f => f.Order is ColonizeOrder))
+
                 .ToList();
 
-            if (systems.Count() == 0)
+            if (systems.Count == 0)
             {
                 result = null;
                 return false;
@@ -270,7 +265,7 @@ namespace Supremacy.AI
             systems.Sort((a, b) =>
                 (GetColonizeValue(a, fleet.Owner) * HomeSystemDistanceModifier(fleet, a.Sector))
                 .CompareTo(GetColonizeValue(b, fleet.Owner) * HomeSystemDistanceModifier(fleet, b.Sector)));
-            result = systems[systems.Count() - 1];
+            result = systems[systems.Count - 1];
             return true;
         }
         
@@ -284,21 +279,30 @@ namespace Supremacy.AI
         public static float GetColonizeValue(StarSystem system, Civilization civ)
         {
             if (system == null)
-                throw new ArgumentNullException("system");
+            {
+                throw new ArgumentNullException(nameof(system));
+            }
+
             if (civ == null)
-                throw new ArgumentNullException("civ");
+            {
+                throw new ArgumentNullException(nameof(civ));
+            }
 
             //Alter this to alter priority
-            int DilithiumBonusValue = 20;
-            int DuraniumBonusValue = 20;
+            const int DilithiumBonusValue = 20;
+            const int DuraniumBonusValue = 20;
 
             float value = 0;
 
             if (system.HasDilithiumBonus)
+            {
                 value += DilithiumBonusValue;
+            }
 
             if (system.HasRawMaterialsBonus)
+            {
                 value += DuraniumBonusValue;
+            }
 
             value += system.GetMaxPopulation(civ.Race) * system.GetGrowthRate(civ.Race);
             GameLog.Core.AI.DebugFormat("Colonize value for {0} is {1}", system, value);
@@ -319,15 +323,20 @@ namespace Supremacy.AI
         public static int GetExploreValue(Sector sector, Civilization civ)
         {
             if (sector == null)
-                throw new ArgumentNullException("sector");
+            {
+                throw new ArgumentNullException(nameof(sector));
+            }
+
             if (civ == null)
-                throw new ArgumentNullException("civ");
+            {
+                throw new ArgumentNullException(nameof(civ));
+            }
 
             //These values are the priority of each item
-            int UnscannedSectorValue = 500;
-            int UnexploredSectorValue = 200;
-            int HasStarSystemValue = 300;
-            int InitiatesFirstContactValue = 200;
+            const int UnscannedSectorValue = 500;
+            const int UnexploredSectorValue = 200;
+            const int HasStarSystemValue = 300;
+            const int InitiatesFirstContactValue = 200;
 
             int value = 0;
 
@@ -336,7 +345,9 @@ namespace Supremacy.AI
 
             //Unscanned
             if (!mapData.IsScanned(sector.Location))
+            {
                 value += UnscannedSectorValue;
+            }
 
             //Unexplored
             if (!mapData.IsExplored(sector.Location))
@@ -350,8 +361,10 @@ namespace Supremacy.AI
             }
 
             //First contact
-            if (sector.System != null && sector.System.HasColony && (sector.System.Colony.Owner != civ)  && !DiplomacyHelper.IsContactMade(sector.Owner, civ))
+            if (sector.System?.HasColony == true && (sector.System.Colony.Owner != civ) && !DiplomacyHelper.IsContactMade(sector.Owner, civ))
+            {
                 value += InitiatesFirstContactValue;
+            }
 
             GameLog.Core.AI.DebugFormat("Explore priority for {0} is {1}", sector, value);
             return value;
@@ -365,33 +378,32 @@ namespace Supremacy.AI
         public static bool GetBestSectorToExplore(Fleet fleet, out Sector sector)
         {
             if (fleet == null)
-                throw new ArgumentNullException("fleet");
+            {
+                throw new ArgumentNullException(nameof(fleet));
+            }
 
             List<Fleet> ownFleets = GameContext.Current.Universe.FindOwned<Fleet>(fleet.Owner).Where(f => f.CanMove && f != fleet && !f.Route.IsEmpty).ToList();
 
-            var civManager = GameContext.Current.CivilizationManagers[fleet.Owner];
-            var mapData = civManager.MapData;
+            CivilizationManager civManager = GameContext.Current.CivilizationManagers[fleet.Owner];
+            CivilizationMapData mapData = civManager.MapData;
 
-            var starsToExplore = GameContext.Current.Universe.Find<StarSystem>()
+            List<StarSystem> starsToExplore = GameContext.Current.Universe.Find<StarSystem>()
                 //We need to know about it (no cheating)
-                .Where(s => mapData.IsScanned(s.Location))
+                .Where(s => mapData.IsScanned(s.Location) && (!s.IsOwned || (s.Owner != fleet.Owner)) && DiplomacyHelper.IsTravelAllowed(fleet.Owner, s.Sector) && FleetHelper.IsSectorWithinFuelRange(s.Sector, fleet) && !ownFleets.Any(f => f.Route.Waypoints.Any(wp => s.Location == wp)))
                 //No point exploring our own space
-                .Where(s => !s.IsOwned || (s.Owner != fleet.Owner))
                 //Where we can enter the sector
-                .Where(s => DiplomacyHelper.IsTravelAllowed(fleet.Owner, s.Sector))
                 //Where is in fuel range of the ship
-                .Where(s => FleetHelper.IsSectorWithinFuelRange(s.Sector, fleet))
                 //Where no fleets are already heading there or through there
-                .Where(s => !ownFleets.Any(f => f.Route.Waypoints.Any(wp => s.Location == wp)))
+
                 .ToList();
 
-            if (starsToExplore.Count() == 0)
+            if (starsToExplore.Count == 0)
             {
                 sector = null;
                 return false;
             }
 
-            starsToExplore.Sort((a, b) => 
+            starsToExplore.Sort((a, b) =>
                 (GetExploreValue(a.Sector, fleet.Owner) * HomeSystemDistanceModifier(fleet, a.Sector))
                 .CompareTo(GetExploreValue(b.Sector, fleet.Owner) * HomeSystemDistanceModifier(fleet, b.Sector)));
             sector = starsToExplore[starsToExplore.Count() - 1].Sector;
@@ -412,26 +424,34 @@ namespace Supremacy.AI
         public static int GetStationValue(Sector sector, Civilization civ)
         {
             if (sector == null)
-                throw new ArgumentNullException("sector");
-            if (civ == null)
-                throw new ArgumentNullException("civ");
+            {
+                throw new ArgumentNullException(nameof(sector));
+            }
 
-            int HomeSystemValue = 2000;
-            int SeatOfGovernmentValue = 2000;
+            if (civ == null)
+            {
+                throw new ArgumentNullException(nameof(civ));
+            }
+
+            const int HomeSystemValue = 2000;
+            const int SeatOfGovernmentValue = 2000;
 
             int value = 0;
 
-            var civManager = GameContext.Current.CivilizationManagers[civ];
+            CivilizationManager civManager = GameContext.Current.CivilizationManagers[civ];
 
-            if ((sector.System != null) && sector.System.HasColony)
+            if ((sector.System?.HasColony == true))
             {
                 value += sector.System.Colony.ColonyValue();
                 if (sector.System == civManager.HomeSystem)
+                {
                     value += HomeSystemValue;
+                }
 
                 if (sector.System == civManager.SeatOfGovernment)
+                {
                     value += SeatOfGovernmentValue;
-
+                }
             }
 
             GameLog.Core.AI.DebugFormat("Station value for {0} is {1}", sector, value);
@@ -449,39 +469,37 @@ namespace Supremacy.AI
         public static bool GetBestSectorForStation(Fleet fleet, out Sector result)
         {
             if (fleet == null)
-                throw new ArgumentNullException("fleet");
+            {
+                throw new ArgumentNullException(nameof(fleet));
+            }
 
-            var constructorFleets = GameContext.Current.Universe.FindOwned<Fleet>(fleet.Owner)
+            IEnumerable<Fleet> constructorFleets = GameContext.Current.Universe.FindOwned<Fleet>(fleet.Owner)
                 .Where(f => f.IsConstructor);
 
-            var civManager = GameContext.Current.CivilizationManagers[fleet.Owner];
-            var mapData = civManager.MapData;
+            CivilizationManager civManager = GameContext.Current.CivilizationManagers[fleet.Owner];
+            CivilizationMapData mapData = civManager.MapData;
 
-            var possibleSectors = GameContext.Current.Universe.Find<StarSystem>()
+            List<StarSystem> possibleSectors = GameContext.Current.Universe.Find<StarSystem>()
                 //We need to know about it (no cheating)
-                .Where(s => mapData.IsScanned(s.Location) && mapData.IsExplored(s.Location))
+                .Where(s => mapData.IsScanned(s.Location) && mapData.IsExplored(s.Location) && ((s.Owner == null) || (s.Owner == fleet.Owner)) && FleetHelper.IsSectorWithinFuelRange(s.Sector, fleet) && s.Sector.Station == null && constructorFleets.Any(f => f.Route.Waypoints.LastOrDefault() == s.Location) && !constructorFleets.Where(f => f.Location == s.Location).Any(f => f.Order is BuildStationOrder))
                 //That isn't owned by an opposition
-                .Where(s => (s.Owner == null) || (s.Owner == fleet.Owner))
                 //That's within fuel range of the ship
-                .Where(s => FleetHelper.IsSectorWithinFuelRange(s.Sector, fleet))
                 //That hasn't got a station already
-                .Where(s => s.Sector.Station == null)
                 //Where a ship isn't heading there already
-                .Where(s => constructorFleets.Any(f => f.Route.Waypoints.LastOrDefault() == s.Location))
                 //Where one isn't under construction
-                .Where(s => !constructorFleets.Where(f => f.Location == s.Location).Any(f => f.Order is BuildStationOrder))
+
                 .ToList();
 
-            if (possibleSectors.Count() == 0)
+            if (possibleSectors.Count == 0)
             {
                 result = null;
                 return false;
             }
 
-            possibleSectors.Sort((a, b) => 
+            possibleSectors.Sort((a, b) =>
                 GetStationValue(a.Sector, fleet.Owner)
                 .CompareTo(GetStationValue(b.Sector, fleet.Owner)));
-            result = possibleSectors[possibleSectors.Count() - 1].Sector;
+            result = possibleSectors[possibleSectors.Count - 1].Sector;
             return true;
         }
 
@@ -499,34 +517,34 @@ namespace Supremacy.AI
         public static bool GetBestColonyForMedical(Fleet fleet, out Colony result)
         {
             if (fleet == null)
-                throw new ArgumentNullException("fleet");
+            {
+                throw new ArgumentNullException(nameof(fleet));
+            }
 
-            var civManager = GameContext.Current.CivilizationManagers[fleet.Owner];
-            var mapData = civManager.MapData;
+            CivilizationManager civManager = GameContext.Current.CivilizationManagers[fleet.Owner];
+            CivilizationMapData mapData = civManager.MapData;
 
-            var possibleColonies = GameContext.Current.Universe.Find<Colony>()
+            List<Colony> possibleColonies = GameContext.Current.Universe.Find<Colony>()
                 //We need to know about it (no cheating)
                 .Where(s => mapData.IsScanned(s.Location) && mapData.IsExplored(s.Location))
                 //In fuel range
-                .Where(c => FleetHelper.IsSectorWithinFuelRange(c.Sector, fleet))
+                .Where(c => FleetHelper.IsSectorWithinFuelRange(c.Sector, fleet) && DiplomacyHelper.IsTravelAllowed(fleet.Owner, c.Sector) && GameContext.Current.Universe.FindAt<Orbital>(c.Location).Any(o => DiplomacyHelper.ArePotentialEnemies(fleet.Owner, o.Owner)) && !DiplomacyHelper.AreAtWar(c.Owner, fleet.Owner))
                 //Where we can enter the sector
-                .Where(c => DiplomacyHelper.IsTravelAllowed(fleet.Owner, c.Sector))
                 //Where there aren't any hostiles
-                .Where(c => GameContext.Current.Universe.FindAt<Orbital>(c.Location).Any(o => DiplomacyHelper.ArePotentialEnemies(fleet.Owner, o.Owner)))
                 //Where they aren't at war
-                .Where(c => !DiplomacyHelper.AreAtWar(c.Owner, fleet.Owner))
+
                 .ToList();
 
-            if (possibleColonies.Count() == 0)
+            if (possibleColonies.Count == 0)
             {
                 result = null;
                 return false;
             }
 
-            possibleColonies.Sort((a, b) => 
+            possibleColonies.Sort((a, b) =>
                 (GetMedicalValue(a, fleet.Owner) * HomeSystemDistanceModifier(fleet, a.Sector))
                 .CompareTo(GetMedicalValue(b, fleet.Owner) * HomeSystemDistanceModifier(fleet, b.Sector)));
-            result = possibleColonies[possibleColonies.Count() - 1];
+            result = possibleColonies[possibleColonies.Count - 1];
             return true;
         }
 
@@ -540,15 +558,20 @@ namespace Supremacy.AI
         public static int GetMedicalValue(Colony colony, Civilization civ)
         {
             if (colony == null)
-                throw new ArgumentNullException("colony");
+            {
+                throw new ArgumentNullException(nameof(colony));
+            }
+
             if (civ == null)
-                throw new ArgumentNullException("civ");
+            {
+                throw new ArgumentNullException(nameof(civ));
+            }
 
             //Tweak these to set priorities
-            int OwnColonyPriority = 100;
-            int AlliedColonyPriority = 15;
-            int FriendlyColonyPriority = 10;
-            int NeutralColonyPriority = 5;
+            const int OwnColonyPriority = 100;
+            const int AlliedColonyPriority = 15;
+            const int FriendlyColonyPriority = 10;
+            const int NeutralColonyPriority = 5;
 
             int value = 0;
 
@@ -569,7 +592,7 @@ namespace Supremacy.AI
                 value += NeutralColonyPriority;
             }
 
-            value += (100 - colony.Health.CurrentValue);
+            value += 100 - colony.Health.CurrentValue;
             GameLog.Core.AI.DebugFormat("Medical value for {0} is {1})", colony, value);
             return value;
         }
@@ -588,14 +611,18 @@ namespace Supremacy.AI
         public static int GetSpyingValue(Colony colony, Civilization civ)
         {
             if (colony == null)
-                throw new ArgumentNullException("colony");
+            {
+                throw new ArgumentNullException(nameof(colony));
+            }
 
             if (civ == null)
-                throw new ArgumentNullException("civ");
+            {
+                throw new ArgumentNullException(nameof(civ));
+            }
 
-            int EnemyColonyPriority = 50;
-            int NeutralColonyPriority = 25;
-            int FriendlyColonyPriority = 10;
+            const int EnemyColonyPriority = 50;
+            const int NeutralColonyPriority = 25;
+            const int FriendlyColonyPriority = 10;
 
             int value = 0;
 
@@ -626,25 +653,24 @@ namespace Supremacy.AI
         public static bool GetBestColonyForSpying(Fleet fleet, out Colony result)
         {
             if (fleet == null)
-                throw new ArgumentNullException("fleet");
+            {
+                throw new ArgumentNullException(nameof(fleet));
+            }
 
-            var civManager = GameContext.Current.CivilizationManagers[fleet.Owner];
-            var mapData = civManager.MapData;
-            var spyShips = GameContext.Current.Universe.FindOwned<Fleet>(fleet.Owner).Where(s => s.IsSpy);
+            CivilizationManager civManager = GameContext.Current.CivilizationManagers[fleet.Owner];
+            CivilizationMapData mapData = civManager.MapData;
+            IEnumerable<Fleet> spyShips = GameContext.Current.Universe.FindOwned<Fleet>(fleet.Owner).Where(s => s.IsSpy);
 
-            var possibleColonies = GameContext.Current.Universe.Find<Colony>()
+            List<Colony> possibleColonies = GameContext.Current.Universe.Find<Colony>()
                 //That isn't owned by us
-                .Where(c => c.Owner != fleet.Owner)
+                .Where(c => c.Owner != fleet.Owner && mapData.IsScanned(c.Location) && mapData.IsExplored(c.Location) && FleetHelper.IsSectorWithinFuelRange(c.Sector, fleet) && !spyShips.Any(f => f.Location == c.Location) && !spyShips.Any(f => f.Route.Waypoints.LastOrDefault() == c.Location))
                 //We need to know about it (no cheating)
-                .Where(c => mapData.IsScanned(c.Location) && mapData.IsExplored(c.Location))
                 //In fuel range
-                .Where(c => FleetHelper.IsSectorWithinFuelRange(c.Sector, fleet))
                 //Where there isn't a spy ship already there or heading there
-                .Where(c => !spyShips.Any(f => f.Location == c.Location))
-                .Where(c => !spyShips.Any(f => f.Route.Waypoints.LastOrDefault() == c.Location))
+
                 .ToList();
 
-            if (possibleColonies.Count() == 0)
+            if (possibleColonies.Count == 0)
             {
                 result = null;
                 return false;
@@ -653,7 +679,7 @@ namespace Supremacy.AI
             possibleColonies.Sort((a, b) =>
                 (GetSpyingValue(a, fleet.Owner) * HomeSystemDistanceModifier(fleet, a.Sector))
                 .CompareTo(GetSpyingValue(b, fleet.Owner) * HomeSystemDistanceModifier(fleet, b.Sector)));
-            result = possibleColonies[possibleColonies.Count() - 1];
+            result = possibleColonies[possibleColonies.Count - 1];
             return true;
         }
 
@@ -667,11 +693,16 @@ namespace Supremacy.AI
         public static float HomeSystemDistanceModifier(Fleet fleet, Sector targetSector)
         {
             if (fleet == null)
-                throw new ArgumentNullException("fleet");
-            if (targetSector == null)
-                throw new ArgumentNullException("targetSector");
+            {
+                throw new ArgumentNullException(nameof(fleet));
+            }
 
-            var distance = MapLocation.GetDistance(targetSector.Location, GameContext.Current.CivilizationManagers[fleet.Owner].HomeSystem.Location);
+            if (targetSector == null)
+            {
+                throw new ArgumentNullException(nameof(targetSector));
+            }
+
+            int distance = MapLocation.GetDistance(targetSector.Location, GameContext.Current.CivilizationManagers[fleet.Owner].HomeSystem.Location);
             return 1 / (distance + 1);
         }
     }

@@ -20,21 +20,30 @@ namespace Supremacy.AI
         public static bool IsInDanger(Colony colony)
         {
             if (colony == null)
-                throw new ArgumentNullException("colony");
-            return (PlayerAI.GetSectorDanger(colony.Owner, colony.Sector, 2, false) > 0);
+            {
+                throw new ArgumentNullException(nameof(colony));
+            }
+
+            return PlayerAI.GetSectorDanger(colony.Owner, colony.Sector, 2, false) > 0;
         }
 
         public static BuildProject GetBuildProject(Colony colony)
         {
             if (colony == null)
-                throw new ArgumentNullException("colony");
+            {
+                throw new ArgumentNullException(nameof(colony));
+            }
+
             return colony.BuildSlots[0].Project;
         }
 
         public static ICollection<Orbital> GetDefenders(Colony colony)
         {
             if (colony == null)
-                throw new ArgumentNullException("colony");
+            {
+                throw new ArgumentNullException(nameof(colony));
+            }
+
             return GameContext.Current.Universe.FindAt<Orbital>(colony.Location)
                 .Where(o => o.Owner == colony.Owner).ToList();
                 
@@ -42,15 +51,19 @@ namespace Supremacy.AI
 
         public static int GetProjectedPopulation(Colony colony, int numberOfTurns)
         {
-            var populationCopy = colony.Population.Clone();
+            Types.Meter populationCopy = colony.Population.Clone();
 
             populationCopy.UpdateAndReset();
 
             if (populationCopy.IsMaximized)
+            {
                 return populationCopy.CurrentValue;
+            }
 
             for (int i = 0; (i < numberOfTurns) && !populationCopy.IsMaximized; i++)
-                populationCopy.AdjustCurrent(colony.GrowthRate);
+            {
+                _ = populationCopy.AdjustCurrent(colony.GrowthRate);
+            }
 
             return populationCopy.CurrentValue;
         }
