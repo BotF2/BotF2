@@ -153,10 +153,9 @@
         <!--TRADE ROUTES-->
         <TextBlock Text="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=TRADE_ROUTES, CharacterCasing=Upper}" 
                    Grid.Row="3" Grid.Column="18" HorizontalAlignment="Right"/>
+        <TextBlock Text=" = " Grid.Row="3" Grid.Column="19" HorizontalAlignment="Center"/>
         <scc:GameLabel Grid.Column="20"
-                   Grid.Row="3"
-                Grid.ColumnSpan="2"                        
-                   VerticalAlignment="Center"
+                   Grid.Row="3" Grid.ColumnSpan="2" VerticalAlignment="Center" 
                    ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/traderoute.png"
                    ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=TRADE_ROUTES_TOOL_TIP}">
             <scc:GameLabel.Label>
@@ -167,7 +166,9 @@
             </scc:GameLabel.Label>
         </scc:GameLabel>
         <!--SHIELDS-->
-        <TextBlock Text="SHIELDS =" Grid.Row="3" Grid.Column="10" HorizontalAlignment="Right"/>
+        <TextBlock Text="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=SHIELDS, CharacterCasing=Upper}" 
+                   Grid.Row="3" Grid.Column="10" HorizontalAlignment="Right"/>
+        <TextBlock Text=" = " Grid.Row="3" Grid.Column="11" HorizontalAlignment="Center"/>
         <scc:GameLabel Grid.Column="12"
                    Grid.Row="3"
                 Grid.ColumnSpan="2"                        
@@ -181,13 +182,15 @@
             </scc:GameLabel.Label>
         </scc:GameLabel>
         <!--ORBITAL BATTERIES-->
-        <TextBlock Text="ORBITAL B. =" Grid.Row="3" Grid.Column="14" HorizontalAlignment="Right"/>
+        <TextBlock Text="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=ORBITAL_BATTERIES, CharacterCasing=Upper}" 
+                   Grid.Row="3" Grid.Column="14" HorizontalAlignment="Right"/>
+        <TextBlock Text=" = " Grid.Row="3" Grid.Column="15" HorizontalAlignment="Center"/>
         <scc:GameLabel Grid.Column="16"
                    Grid.Row="3"
                 Grid.ColumnSpan="2"                        
                    VerticalAlignment="Center"
                    ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/orbital_battery.png"
-                   ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=POPULATION_TOOL_TIP}">
+                   ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=ORBITAL_BATTERIES_TOOL_TIP}">
             <scc:GameLabel.Label>
                 <MultiBinding StringFormat="{}{0} / {1}">
                     <Binding Path="ActiveOrbitalBatteries" />
@@ -196,7 +199,9 @@
             </scc:GameLabel.Label>
         </scc:GameLabel>
         <!--POPULATION-->
-        <TextBlock Text="POPULATION =" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Right"/>
+        <TextBlock Text="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=POPULATION, CharacterCasing=Upper}" 
+                   Grid.Row="1" Grid.Column="1" HorizontalAlignment="Right"/>
+        <TextBlock Text=" = " Grid.Row="1" Grid.Column="2" HorizontalAlignment="Center"/>
         <scc:GameLabel Grid.Column="3"
                    Grid.Row="1"
                 Grid.ColumnSpan="2"                        
@@ -213,7 +218,9 @@
             </scc:GameLabel.Label>
         </scc:GameLabel>
         <!--MORALE-->
-        <TextBlock Text="MORALE =" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Right"/>
+        <TextBlock Text="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=MORALE, CharacterCasing=Upper}" 
+                   Grid.Row="2" Grid.Column="1" HorizontalAlignment="Right"/>
+        <TextBlock Text=" = " Grid.Row="1" Grid.Column="2" HorizontalAlignment="Center"/>
         <scc:GameLabel Grid.Column="3"
                    Grid.Row="2"
                    VerticalAlignment="Center"
@@ -228,8 +235,11 @@
                 </MultiBinding>
             </scc:GameLabel.Label>
         </scc:GameLabel>
+        <!--******* ROW 1 *********-->
         <!--FOOD-->
-        <TextBlock Text="FOOD =" Grid.Row="1" Grid.Column="6" HorizontalAlignment="Right"/>
+        <TextBlock Text="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=FOOD, CharacterCasing=Upper}" 
+                   Grid.Row="1" Grid.Column="6" HorizontalAlignment="Right"/>
+        <TextBlock Text=" = " Grid.Row="1" Grid.Column="7" HorizontalAlignment="Center"/>
         <!--Label="{Binding Path=FoodReserves.CurrentValue}"-->
         <scc:GameLabel Grid.Column="8"
                    Grid.Row="1"
@@ -242,40 +252,42 @@
                 <Binding Path="NetFood" />                
             </MultiBinding>
         </scc:GameLabel>
+        <!--DILITHIUM-->
+        <TextBlock Text="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=DILITHIUM, CharacterCasing=Upper}" 
+                   Grid.Row="1" Grid.Column="10" HorizontalAlignment="Right"/>
+        <TextBlock Text=" = " Grid.Row="1" Grid.Column="11" HorizontalAlignment="Center"/>
+        <scc:GameLabel Grid.Row="1"  Grid.Column="12" VerticalAlignment="Center"
+                   ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/dilithium.png"
+                   Label="{Binding Path=NetDilithium}"
+                   ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=DILITHIUM_TOOL_TIP}" />        
         <!--DEUTERIUM-->
-        <TextBlock Text="DEUTERIUM =" Grid.Row="2" Grid.Column="6" HorizontalAlignment="Right"/>
-        <scc:GameLabel Grid.Column="8"
-                   Grid.Row="2"
-                   VerticalAlignment="Center"
+        <TextBlock Text="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=DEUTERIUM, CharacterCasing=Upper}" 
+                   Grid.Row="1" Grid.Column="14" HorizontalAlignment="Right"/>
+        <TextBlock Text=" = " Grid.Row="1" Grid.Column="15" HorizontalAlignment="Center"/>
+        <scc:GameLabel Grid.Row="1" Grid.Column="16" VerticalAlignment="Center"
                    ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/deuterium.png"
                    Label="{Binding Path=NetDeuterium}"
                    ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=DEUTERIUM_TOOL_TIP}" />
-        <!--DILITHIUM-->
-        <TextBlock Text="DILITHIUM =" Grid.Row="1" Grid.Column="10" HorizontalAlignment="Right"/>
-        <scc:GameLabel Grid.Column="12"
-                   Grid.Row="1"
-                   VerticalAlignment="Center"
-                   ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/dilithium.png"
-                   Label="{Binding Path=NetDilithium}"
-                   ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=DILITHIUM_TOOL_TIP}" />
         <!--RAW MATERIALS-->
-        <TextBlock Text="RAW MATERIALS =" Grid.Row="2" Grid.Column="10" HorizontalAlignment="Right"/>
-        <scc:GameLabel Grid.Column="12"
-                   Grid.Row="2"
-                   VerticalAlignment="Center"
+        <TextBlock Text="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=DURANIUM, CharacterCasing=Upper}" 
+                   Grid.Row="1" Grid.Column="18" HorizontalAlignment="Right"/>
+        <TextBlock Text=" = " Grid.Row="1" Grid.Column="19" HorizontalAlignment="Center"/>
+        <scc:GameLabel Grid.Row="1" Grid.Column="20" VerticalAlignment="Center"
                    ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/rawmaterials.png"
                    Label="{Binding Path=NetRawMaterials}"
-                   ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=RAW_MATERIALS_TOOL_TIP}" />
+                   ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=DURANIUM_TOOL_TIP}" />
         <!--ENERGY-->
-        <TextBlock Text="ENERGY =" Grid.Row="1" Grid.Column="14" HorizontalAlignment="Right"/>
-        <scc:GameLabel Grid.Column="16"
-                   Grid.Row="1"
-                   VerticalAlignment="Center"
+        <TextBlock Text="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=ENERGY, CharacterCasing=Upper}" 
+                   Grid.Row="2" Grid.Column="10" HorizontalAlignment="Right"/>
+        <TextBlock Text=" = " Grid.Row="2" Grid.Column="11" HorizontalAlignment="Center"/>
+        <scc:GameLabel Grid.Row="2" Grid.Column="12" VerticalAlignment="Center"
                    ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/energy.png"
                    Label="{Binding Path=NetEnergy}"
                    ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=ENERGY_TOOL_TIP}" />
         <!--RESEARCH-->
-        <TextBlock Text="RESEARCH =" Grid.Row="2" Grid.Column="14" HorizontalAlignment="Right"/>
+        <TextBlock Text="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=RESEARCH, CharacterCasing=Upper}" 
+                   Grid.Row="2" Grid.Column="14" HorizontalAlignment="Right"/>
+        <TextBlock Text=" = " Grid.Row="2" Grid.Column="15" HorizontalAlignment="Center"/>
         <scc:GameLabel Grid.Column="16"
                    Grid.Row="2"
                    VerticalAlignment="Center"
@@ -283,15 +295,17 @@
                    Label="{Binding Path=NetResearch}"
                    ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=RESEARCH_TOOL_TIP}" />
         <!--INDUSTRY-->
-        <TextBlock Text="INDUSTRY =" Grid.Row="1" Grid.Column="18" HorizontalAlignment="Right"/>
-        <scc:GameLabel Grid.Column="20"
-                   Grid.Row="1"
-                   VerticalAlignment="Center"
+        <TextBlock Text="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=INDUSTRY, CharacterCasing=Upper}" 
+                   Grid.Row="2" Grid.Column="6" HorizontalAlignment="Right"/>
+        <TextBlock Text=" = " Grid.Row="2" Grid.Column="7" HorizontalAlignment="Center"/>
+        <scc:GameLabel Grid.Row="2" Grid.Column="8" VerticalAlignment="Center"
                    ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/industry.png"
                    Label="{Binding Path=NetIndustry}"
                    ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=INDUSTRY_TOOL_TIP}" />
         <!--INTELLIGENCE-->
-        <TextBlock Text="INTEL =" Grid.Row="2" Grid.Column="18" HorizontalAlignment="Right"/>
+        <TextBlock Text="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=INTELLIGENCE, CharacterCasing=Upper}" 
+                   Grid.Row="2" Grid.Column="18" HorizontalAlignment="Right"/>
+        <TextBlock Text=" = " Grid.Row="2" Grid.Column="19" HorizontalAlignment="Center"/>
         <scc:GameLabel Grid.Column="20"
                    Grid.Row="2"
                    VerticalAlignment="Center"
@@ -299,7 +313,9 @@
                    Label="{Binding Path=NetIntelligence}"
                    ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=INTELLIGENCE_TOOL_TIP}" />
         <!--SHIP BUILDING-->
-        <TextBlock Text="SHIP BUILDING =" Grid.Row="3" Grid.Column="6" HorizontalAlignment="Right"/>
+        <TextBlock Text="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=SHIPYARD_SLOTS, CharacterCasing=Upper}" 
+                   Grid.Row="3" Grid.Column="6" HorizontalAlignment="Right"/>
+        <TextBlock Text=" = " Grid.Row="3" Grid.Column="7" HorizontalAlignment="Center"/>
         <scc:GameLabel Grid.Column="8"
                    Grid.Row="3"
                    VerticalAlignment="Center"
@@ -316,12 +332,14 @@
         <!-- Grid for Shipyards-->
         <Grid Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="20">
             <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="110" />
+                <ColumnDefinition Width="Auto" MinWidth="250"/>
                 <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="Auto" MinWidth="280"/>
+                <ColumnDefinition Width="Auto" MinWidth="250"/>
                 <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="Auto" MinWidth="280"/>
+                <ColumnDefinition Width="Auto" MinWidth="250" />
                 <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="Auto" MinWidth="280" />
+                <ColumnDefinition Width="Auto" MinWidth="250" />
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="5" />
                 <ColumnDefinition Width="Auto"  />
@@ -342,27 +360,27 @@
                 HorizontalAlignment="Left"
                 FontWeight="DemiBold"              
                 Text="Shipyard 1:  " />
-            <TextBlock Grid.Column="0"
-                Grid.Row="1"
+            <TextBlock Grid.Column="2"
+                Grid.Row="0"
                HorizontalAlignment="Left"
                 VerticalAlignment="Center"
                FontWeight="DemiBold"  
                 Text="Shipyard 2:  " />
-            <TextBlock Grid.Column="2"
-                Grid.Row="0"
-                VerticalAlignment="Center"
-               FontWeight="DemiBold"  
-                Text=" Shipyard 3:  " />
-            <TextBlock Grid.Column="2"
-                Grid.Row="1"
-                VerticalAlignment="Center"
-               FontWeight="DemiBold"  
-                Text=" Shipyard 4:  " />
             <TextBlock Grid.Column="4"
                 Grid.Row="0"
                 VerticalAlignment="Center"
                FontWeight="DemiBold"  
-                Text="Shipyard 5:  " />
+                Text=" Shipyard 3:  " />
+            <TextBlock Grid.Column="6"
+                Grid.Row="0"
+                VerticalAlignment="Center"
+               FontWeight="DemiBold"  
+                Text=" Shipyard 4:  " />
+            <!--<TextBlock Grid.Column="4"
+                Grid.Row="0"
+                VerticalAlignment="Center"
+               FontWeight="DemiBold"  
+                Text="Shipyard 5:  " />-->
             <!--<TextBlock Grid.Column="10"
                 Grid.Row="5"
                 Grid.ColumnSpan="2"
@@ -387,27 +405,27 @@
                 VerticalAlignment="Center"
                 HorizontalAlignment="Left"
                 Text="{Binding Path=Shipyard.BuildSlots[0].Project}" />
-            <TextBlock Grid.Column="1"
-                Grid.Row="1"
+            <TextBlock Grid.Column="3"
+                Grid.Row="0"
                 VerticalAlignment="Center"
                 HorizontalAlignment="Left"
                 Text="{Binding Path=Shipyard.BuildSlots[1].Project}" />
-            <TextBlock Grid.Column="3"
+            <TextBlock Grid.Column="5"
                 Grid.Row="0"
                 Grid.ColumnSpan="3"
                 VerticalAlignment="Center"
                 HorizontalAlignment="Left"
                 Text="{Binding Path=Shipyard.BuildSlots[2].Project}" />
-            <TextBlock Grid.Column="3"
-                Grid.Row="1"              
+            <TextBlock Grid.Column="7"
+                Grid.Row="0"              
                 VerticalAlignment="Center"
                 HorizontalAlignment="Left"
                 Text="{Binding Path=Shipyard.BuildSlots[3].Project}" />
-            <TextBlock Grid.Column="5"
+            <!--<TextBlock Grid.Column="5"
                 Grid.Row="0"
                 VerticalAlignment="Center"
                 HorizontalAlignment="Left"
-                Text="{Binding Path=Shipyard.BuildSlots[4].Project}" />
+                Text="{Binding Path=Shipyard.BuildSlots[4].Project}" />-->
             <!--<TextBlock Grid.Column="11"
                 Grid.Row="5"
                 Grid.ColumnSpan="2" 
