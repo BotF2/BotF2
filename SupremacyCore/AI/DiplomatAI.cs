@@ -18,8 +18,12 @@ namespace Supremacy.AI
             if (civ == null)
                 throw new ArgumentNullException("civ");
 
-            if (PlayerContext.Current.IsHumanPlayer(civ))
+            var Aciv = (Civilization)civ;
+            if (Aciv.IsHuman)
+            {
                 return;
+            }
+            //    return;
 
             var diplomat = Diplomat.Get(civ);
 
@@ -33,7 +37,7 @@ namespace Supremacy.AI
 
                 var foreignPower = diplomat.GetForeignPower(otherCiv);
                 if (!foreignPower.IsContactMade)
-                    return;
+                    continue;
                 
                 if (foreignPower.ProposalReceived != null)
                     {
