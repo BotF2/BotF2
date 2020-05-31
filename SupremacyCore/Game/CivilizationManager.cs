@@ -41,6 +41,7 @@ namespace Supremacy.Game
         private readonly ResourcePool _resources;
         private readonly List<SitRepEntry> _sitRepEntries;
         private readonly Meter _totalPopulation;
+        private readonly Meter _totalResearch;
         private readonly Treasury _treasury;
         private readonly UniverseObjectList<Colony> _colonies;
         private List<Civilization> _spiedCivList;
@@ -72,6 +73,9 @@ namespace Supremacy.Game
 
             _totalPopulation = new Meter();
             _totalPopulation.PropertyChanged += OnTotalPopulationPropertyChanged;
+
+            _totalResearch = new Meter();
+            _totalResearch.PropertyChanged += OnTotalResearchPropertyChanged;
 
             _totalIntelligenceAttackingAccumulated = new Meter(0, 0, Meter.MaxValue);
             _totalIntelligenceAttackingAccumulated.PropertyChanged += OnTotalIntelligenceAttackingAccumulatedPropertyChanged;
@@ -138,6 +142,15 @@ namespace Supremacy.Game
         public Meter TotalPopulation
         {
             get { return _totalPopulation; }
+        }
+
+        /// <summary>
+        /// Gets the total research of all the civilization's colonies.
+        /// </summary>
+        /// <value>The total population.</value>
+        public Meter TotalResearch
+        {
+            get { return _totalResearch; }
         }
 
         /// <summary>
@@ -503,6 +516,11 @@ namespace Supremacy.Game
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="System.ComponentModel.PropertyChangedEventArgs"/> instance containing the event data.</param>
         private void OnTotalPopulationPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == "CurrentValue")
+                OnPropertyChanged("AverageMorale");
+        }
+        private void OnTotalResearchPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             if (e.PropertyName == "CurrentValue")
                 OnPropertyChanged("AverageMorale");
