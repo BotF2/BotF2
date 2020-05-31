@@ -55,16 +55,32 @@ namespace Supremacy.AI
 
                     var commonTraitItems = foreignTraits.Intersect(theCivTraits);
 
-                    if (commonTraitItems.Count() > 0)
+                    if (commonTraitItems.Count() > 2)
+                    {
                         accept = true;
+                    }
+                    else if (commonTraitItems.Count() == 2 && RandomHelper.Chance(2))
+                    {
+                        accept = true;
+                    }
+                    else if (commonTraitItems.Count() == 1 && RandomHelper.Chance(4))
+                    {
+                        accept = true;
+                    }
+                    else if (commonTraitItems.Count() == 0 && RandomHelper.Chance(15))
+                    {
+                        accept = true;
+                    }
 
                     if (accept)
                     {
                         foreignPower.PendingAction = PendingDiplomacyAction.AcceptProposal;
+                        GameLog.Client.Diplomacy.DebugFormat("Accept Proposal {1} and {2} - CommonTraits = {0}", commonTraitItems.Count(), foreignPower.Owner.ShortName, Aciv.ShortName);
                     }
                     else
                     {
                         foreignPower.PendingAction = PendingDiplomacyAction.RejectProposal;
+                        GameLog.Client.Diplomacy.DebugFormat("Reject Proposal {1} and {2} - CommonTraits = {0}", commonTraitItems.Count(), foreignPower.Owner.ShortName, Aciv.ShortName);
                     }
 
                     GameLog.Client.Diplomacy.DebugFormat("ForeignPower = {0} Civ = {1} decsion = {2}", foreignPower.Owner.ShortName, Aciv.ShortName, foreignPower.PendingAction.ToString());
