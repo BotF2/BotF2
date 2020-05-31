@@ -25,7 +25,7 @@
     </UserControl.Resources>
     <TabControl>
         <!--TAB for Local Player COLONIES-->
-        <TabItem Header="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=COLONIES_TAB_HEADER}">
+        <TabItem Header="{s:StringResource Key=COLONIES_TAB_HEADER}">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
@@ -59,13 +59,15 @@
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
                     <!--Grid.Column="1"-->
-                    <TextBlock 
+                    <!--<TextBlock 
                         Grid.Column="7" Text=""
                         Foreground="{DynamicResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"
                         FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
-                        FontSize="12pt"/>
+                        FontSize="12pt"/>-->
+
+                    <!--Colonies.Count-->
                     <TextBlock 
-                        Grid.Column="1" Text="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=COLONIES}"
+                        Grid.Column="1" Text="{s:StringResource Key=COLONIES}"
                         Foreground="{DynamicResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"
                         FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                         FontSize="12pt"/>
@@ -74,8 +76,9 @@
                         Foreground="{DynamicResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"
                         FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                         FontSize="12pt"/>
+                    <!--TotalPopulation-->
                     <TextBlock 
-                        Grid.Column="5" Text="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=TOTAL_POPULATION}"
+                        Grid.Column="5" Text="{s:StringResource Key=TOTAL_POPULATION}"
                         Foreground="{DynamicResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"
                         FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                         FontSize="12pt"/>
@@ -84,8 +87,9 @@
                         Foreground="{DynamicResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"
                         FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                         FontSize="12pt"/>
+                    <!--CreditsEmpire-->
                     <TextBlock 
-                        Grid.Column="9" Text="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=TOTAL_CREDITS}"
+                        Grid.Column="9" Text="{s:StringResource Key=TOTAL_CREDITS}"
                         Foreground="{DynamicResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"
                         FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                         FontSize="12pt"/>
@@ -94,18 +98,20 @@
                         Foreground="{DynamicResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"
                         FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                         FontSize="12pt"/>
-                    <!--<TextBlock 
-                        Grid.Column="13" Text="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=TOTAL_RESEARCH}"
+                    <!--TotalResearch-->
+                    <TextBlock 
+                        Grid.Column="13" Text="{s:StringResource Key=TOTAL_RESEARCH}"
                         Foreground="{DynamicResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"
                         FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                         FontSize="12pt"/>
                     <TextBlock 
-                        Grid.Column="15" Text="{Binding Path=_re}" 
+                        Grid.Column="15" Text="{Binding Path=TotalResearch}" 
                         Foreground="{DynamicResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"
                         FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
-                        FontSize="12pt"/>-->
+                        FontSize="12pt"/>
+                    <!--TotalIntelligenceProduction-->
                     <TextBlock 
-                        Grid.Column="17" Text="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=TOTAL_INTELLIGENCE}"
+                        Grid.Column="17" Text="{s:StringResource Key=TOTAL_INTELLIGENCE}"
                         Foreground="{DynamicResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"
                         FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                         FontSize="12pt"/>
@@ -114,8 +120,9 @@
                         Foreground="{DynamicResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"
                         FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                         FontSize="12pt"/>
-
                 </Grid>
+                
+                <!--ColonyList-->
                 <ScrollViewer 
                     VerticalScrollBarVisibility="Auto"
                     HorizontalScrollBarVisibility="Auto"
@@ -133,7 +140,7 @@
         </TabItem>
 
         <!--SPY_REPORT_TAB_HEADER-->
-        <TabItem Header="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=SPY_REPORT_TAB_HEADER}">
+        <TabItem Header="{s:StringResource Key=SPY_REPORT_TAB_HEADER}">
             <!-- Spy Tab and Grid just for Head line -->
             <StackPanel>
                 <Grid>
@@ -158,13 +165,14 @@
                     <!-- Header -->
                     <TextBlock 
                         Grid.Column="0" 
-                        Text="  Intelligence Resources:"
+                        Text="{s:StringResource Key=INTELLIGENCE_RESOURCES}"
                         Foreground="{DynamicResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"
                         FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                         FontSize="16pt"/>
+                    <!--TotalIntelligenceProduction-->
                     <TextBlock 
                         Grid.Column="1" 
-                        Text="Your Intelligence Points Per Turn = "
+                        Text="{s:StringResource Key=INTELLIGENCE_POINTS_PER_TURN}"
                         HorizontalAlignment="Right"
                         Foreground="LightGoldenrodYellow"
                         FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
@@ -176,9 +184,10 @@
                         Foreground="OrangeRed"
                         FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                         FontSize="14pt"/>
+                    <!--TotalIntelligenceAttackingAccumulated-->
                     <TextBlock 
                         Grid.Column="3"
-                        Text="Accumulated Attack Points = "
+                        Text="{s:StringResource Key=INTELLIGENCE_POINTS_ATTACK_ACCUMATED}"
                         HorizontalAlignment="Right"
                         Foreground="LightGoldenrodYellow"
                         FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
@@ -190,9 +199,10 @@
                         Foreground="OrangeRed"
                         FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                         FontSize="14pt"/>
+                    <!--TotalIntelligenceDefenseAccumulated-->
                     <TextBlock 
                         Grid.Column="5"
-                        Text="Accumulated Defence Points = "
+                        Text="{s:StringResource Key=INTELLIGENCE_POINTS_DEFENSE_ACCUMATED}"
                         HorizontalAlignment="Right"
                         Foreground="LightGoldenrodYellow"
                         FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
@@ -222,7 +232,7 @@
                                 Grid.Row="0" 
                                 Grid.Column="0"
                                 VerticalAlignment="Center"
-                                Text="  To spy on a major Empire below: "
+                                Text="{s:StringResource Key=SPY_A_MAJOR_BELOW}"
                                 Foreground="{DynamicResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"
                                 FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                                 FontSize="12pt"/>
@@ -324,7 +334,7 @@
                                                      Margin="5,10,0,0"
                                                      Foreground="LightGoldenrodYellow"
                                                      FontSize="16"
-                                                     Text="1) Blame your actions on: " />
+                                                     Text="{s:StringResource Key=BLAME_ACTIONS_ON}"/>
                                             </StackPanel>
                                             <StackPanel x:Name="BlameTerrorists0"
                                                       Orientation="Horizontal" >
@@ -499,7 +509,7 @@
                                              Margin="10,0,0,0"
                                              FontSize="16"
                                              Foreground="AntiqueWhite"
-                                             Text="2) Target: " />
+                                             Text="{s:StringResource Key=TARGET}"/>
                                         <TextBlock VerticalAlignment="Center"
                                                Text="{Binding Path=SpiedFedName}"/>
                                         <Image Source="vfs:///Resources/Images/Insignias/FEDERATION.png" Margin="0,0,0,0">
@@ -509,7 +519,7 @@
                                                    VerticalAlignment="Center"
                                                    Margin="0,0,2,0"
                                                    ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/food.png"
-                                                   ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=FOOD_TOOL_TIP}" />
+                                                   ToolTip="{s:StringResource Key=FOOD_TOOL_TIP}" />
                                         <TextBlock
                                                 VerticalAlignment="Center"
                                                 HorizontalAlignment="Right"
@@ -533,7 +543,7 @@
                                                       VerticalAlignment="Center"
                                                       HorizontalAlignment="Left"
                                                       FontWeight="DemiBold"
-                                                      Label="Sabotage Food"
+                                                Label="{s:StringResource Key=SABOTAGE_FOOD}" 
                                                       Visibility="Collapsed"
                                                       Foreground="Black"
                                                       Background="Transparent"
@@ -546,7 +556,7 @@
                                                     VerticalAlignment="Center"
                                                     Margin="14,0,2,0"
                                                     ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/industry.png"
-                                                    ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=INDUSTRY_TOOL_TIP}" />
+                                                    ToolTip="{s:StringResource Key=INDUSTRY_TOOL_TIP}" />
                                         <TextBlock
                                                 VerticalAlignment="Center"
                                                 HorizontalAlignment="Right"
@@ -570,7 +580,7 @@
                                                   DisplayMode="Tiny"
                                                   VerticalAlignment="Center"
                                                   HorizontalAlignment="Left"
-                                                  Label="Sabotage Industry"
+                                                Label="{s:StringResource Key=SABOTAGE_INDUSTRY}" 
                                                   Visibility="Collapsed"
                                                   FontWeight="DemiBold"
                                                   Foreground="Black"
@@ -583,7 +593,7 @@
                                                     VerticalAlignment="Center"
                                                     Margin="14,0,2,0"
                                                     ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/energy.png"
-                                                    ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=ENERGY_TOOL_TIP}" />
+                                                    ToolTip="{s:StringResource Key=ENERGY_TOOL_TIP}" />
                                         <TextBlock
                                                 VerticalAlignment="Center"
                                                 HorizontalAlignment="Right"
@@ -607,7 +617,7 @@
                                                   DisplayMode="Tiny"
                                                   VerticalAlignment="Center"
                                                   HorizontalAlignment="Left"
-                                                  Label="Sabotage Energy"
+                                                Label="{s:StringResource Key=SABOTAGE_ENERGY}" 
                                                   Visibility="Collapsed"
                                                   FontWeight="DemiBold"
                                                   Foreground="Black"
@@ -621,7 +631,7 @@
                                                VerticalAlignment="Center"
                                                Margin="14,0,2,0"
                                                ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/research.png"
-                                               ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=RESEARCH_TOOL_TIP}" />
+                                               ToolTip="{s:StringResource Key=RESEARCH_TOOL_TIP}" />
                                         <TextBlock
                                                 VerticalAlignment="Center"
                                                 HorizontalAlignment="Right"
@@ -645,7 +655,7 @@
                                                   DisplayMode="Tiny"
                                                   VerticalAlignment="Center"
                                                   HorizontalAlignment="Left"
-                                                  Label="Steal Research"
+                                                Label="{s:StringResource Key=STEAL_RESEARCH}" 
                                                   Visibility="Collapsed"
                                                   FontWeight="DemiBold"
                                                   Foreground="Black"
@@ -682,7 +692,7 @@
                                                 DisplayMode="Tiny"
                                                 VerticalAlignment="Center"
                                                 HorizontalAlignment="Left"
-                                                Label="Steal Credits"
+                                                Label="{s:StringResource Key=STEAL_CREDITS}" 
                                                 Visibility="Collapsed"
                                                 FontWeight="DemiBold"
                                                 Foreground="Black"
@@ -763,7 +773,7 @@
                                                      Margin="5,10,0,0"
                                                      Foreground="LightGoldenrodYellow"
                                                      FontSize="16"
-                                                     Text="1) Blame your actions on: " />
+                                                     Text="{s:StringResource Key=BLAME_ACTIONS_ON}"/>
                                             </StackPanel>
                                             <StackPanel x:Name="BlameTerrorists1"
                                                       Orientation="Horizontal" >
@@ -938,7 +948,7 @@
                                              Margin="10,0,0,0"
                                              FontSize="16"
                                              Foreground="AntiqueWhite"
-                                             Text="2) Target: " />
+                                                Text="{s:StringResource Key=TARGET}"/>
                                         <TextBlock VerticalAlignment="Center"
                                                Text="{Binding Path=SpiedTerranName}"/>
                                         <Image Source="vfs:///Resources/Images/Insignias/TERRANEMPIRE.png" Margin="0,0,0,0">
@@ -948,7 +958,7 @@
                                                    VerticalAlignment="Center"
                                                    Margin="0,0,2,0"
                                                    ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/food.png"
-                                                   ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=FOOD_TOOL_TIP}" />
+                                                   ToolTip="{s:StringResource Key=FOOD_TOOL_TIP}" />
                                         <TextBlock
                                                 VerticalAlignment="Center"
                                                 HorizontalAlignment="Right"
@@ -972,7 +982,7 @@
                                                       VerticalAlignment="Center"
                                                       HorizontalAlignment="Left"
                                                       FontWeight="DemiBold"
-                                                      Label="Sabotage Food"
+                                                 Label="{s:StringResource Key=SABOTAGE_FOOD}" 
                                                       Visibility="Collapsed"
                                                       Foreground="Black"
                                                       Background="Transparent"
@@ -985,7 +995,7 @@
                                                     VerticalAlignment="Center"
                                                     Margin="14,0,2,0"
                                                     ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/industry.png"
-                                                    ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=INDUSTRY_TOOL_TIP}" />
+                                                    ToolTip="{s:StringResource Key=INDUSTRY_TOOL_TIP}" />
                                         <TextBlock
                                                 VerticalAlignment="Center"
                                                 HorizontalAlignment="Right"
@@ -1009,7 +1019,7 @@
                                                   DisplayMode="Tiny"
                                                   VerticalAlignment="Center"
                                                   HorizontalAlignment="Left"
-                                                  Label="Sabotage Industry"
+                                                Label="{s:StringResource Key=SABOTAGE_INDUSTRY}" 
                                                   Visibility="Collapsed"
                                                   FontWeight="DemiBold"
                                                   Foreground="Black"
@@ -1022,7 +1032,7 @@
                                                     VerticalAlignment="Center"
                                                     Margin="14,0,2,0"
                                                     ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/energy.png"
-                                                    ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=ENERGY_TOOL_TIP}" />
+                                                    ToolTip="{s:StringResource Key=ENERGY_TOOL_TIP}" />
                                         <TextBlock
                                                 VerticalAlignment="Center"
                                                 HorizontalAlignment="Right"
@@ -1046,7 +1056,7 @@
                                                   DisplayMode="Tiny"
                                                   VerticalAlignment="Center"
                                                   HorizontalAlignment="Left"
-                                                  Label="Sabotage Energy"
+                                                Label="{s:StringResource Key=SABOTAGE_ENERGY}" 
                                                   Visibility="Collapsed"
                                                   FontWeight="DemiBold"
                                                   Foreground="Black"
@@ -1060,7 +1070,7 @@
                                                VerticalAlignment="Center"
                                                Margin="14,0,2,0"
                                                ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/research.png"
-                                               ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=RESEARCH_TOOL_TIP}" />
+                                               ToolTip="{s:StringResource Key=RESEARCH_TOOL_TIP}" />
                                         <TextBlock
                                                 VerticalAlignment="Center"
                                                 HorizontalAlignment="Right"
@@ -1084,7 +1094,7 @@
                                                   DisplayMode="Tiny"
                                                   VerticalAlignment="Center"
                                                   HorizontalAlignment="Left"
-                                                  Label="Steal Research"
+                                                Label="{s:StringResource Key=STEAL_RESEARCH}" 
                                                   Visibility="Collapsed"
                                                   FontWeight="DemiBold"
                                                   Foreground="Black"
@@ -1121,7 +1131,7 @@
                                                 DisplayMode="Tiny"
                                                 VerticalAlignment="Center"
                                                 HorizontalAlignment="Left"
-                                                Label="Steal Credits"
+                                                Label="{s:StringResource Key=STEAL_CREDITS}" 
                                                 Visibility="Collapsed"
                                                 FontWeight="DemiBold"
                                                 Foreground="Black"
@@ -1200,7 +1210,7 @@
                                                        Margin="5,10,0,0"
                                                        Foreground="LightGoldenrodYellow"
                                                        FontSize="16"
-                                                       Text="1) Blame your actions on: " />
+                                                       Text="{s:StringResource Key=BLAME_ACTIONS_ON}"/>
                                             </StackPanel>
                                             <StackPanel x:Name="BlameTerrorists2"
                                                         Orientation="Horizontal" >
@@ -1384,7 +1394,7 @@
                                                  Margin="10,0,0,0"
                                                  FontSize="16"
                                                  Foreground="AntiqueWhite"
-                                 Text="2) Target: " />
+                                                Text="{s:StringResource Key=TARGET}"/>
                                         <TextBlock VerticalAlignment="Center"
                                                    Text="{Binding Path=SpiedRomName}"/>
                                         <Image Source="vfs:///Resources/Images/Insignias/ROMULANS.png" Margin="0,0,0,0">
@@ -1394,7 +1404,7 @@
                                              VerticalAlignment="Center"
                                              Margin="0,0,2,0"
                                              ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/food.png"
-                                             ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=FOOD_TOOL_TIP}" />
+                                             ToolTip="{s:StringResource Key=FOOD_TOOL_TIP}" />
                                         <TextBlock
                                               VerticalAlignment="Center"
                                               HorizontalAlignment="Right"
@@ -1418,7 +1428,7 @@
                                                             VerticalAlignment="Center"
                                                             HorizontalAlignment="Left"
                                                             FontWeight="DemiBold"
-                                                            Label="Sabotage Food"
+                                                Label="{s:StringResource Key=SABOTAGE_FOOD}" 
                                                             Visibility="Collapsed"
                                                             Foreground="Black"
                                                             Background="Transparent"
@@ -1431,7 +1441,7 @@
                                               VerticalAlignment="Center"
                                               Margin="14,0,2,0"
                                               ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/industry.png"
-                                              ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=INDUSTRY_TOOL_TIP}" />
+                                              ToolTip="{s:StringResource Key=INDUSTRY_TOOL_TIP}" />
                                         <TextBlock
                                                 VerticalAlignment="Center"
                                                 HorizontalAlignment="Right"
@@ -1455,7 +1465,7 @@
                                                     DisplayMode="Tiny"
                                                     VerticalAlignment="Center"
                                                     HorizontalAlignment="Left"
-                                                    Label="Sabotage Industry"
+                                                Label="{s:StringResource Key=SABOTAGE_INDUSTRY}" 
                                                     Visibility="Collapsed"
                                                     FontWeight="DemiBold"
                                                     Foreground="Black"
@@ -1468,7 +1478,7 @@
                                               VerticalAlignment="Center"
                                               Margin="14,0,2,0"
                                               ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/energy.png"
-                                              ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=ENERGY_TOOL_TIP}" />
+                                              ToolTip="{s:StringResource Key=ENERGY_TOOL_TIP}" />
                                         <TextBlock
                                             VerticalAlignment="Center"
                                             HorizontalAlignment="Right"
@@ -1492,7 +1502,7 @@
                                                     DisplayMode="Tiny"
                                                     VerticalAlignment="Center"
                                                     HorizontalAlignment="Left"
-                                                    Label="Sabotage Energy"
+                                                Label="{s:StringResource Key=SABOTAGE_ENERGY}" 
                                                     Visibility="Collapsed"
                                                     FontWeight="DemiBold"
                                                     Foreground="Black"
@@ -1506,7 +1516,7 @@
                                                VerticalAlignment="Center"
                                                Margin="14,0,2,0"
                                                ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/research.png"
-                                               ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=RESEARCH_TOOL_TIP}" />
+                                               ToolTip="{s:StringResource Key=RESEARCH_TOOL_TIP}" />
                                         <TextBlock
                                               VerticalAlignment="Center"
                                               HorizontalAlignment="Right"
@@ -1567,7 +1577,7 @@
                                                     DisplayMode="Tiny"
                                                     VerticalAlignment="Center"
                                                     HorizontalAlignment="Left"
-                                                    Label="Steal Credits"
+                                                Label="{s:StringResource Key=STEAL_CREDITS}" 
                                                     Visibility="Collapsed"
                                                     FontWeight="DemiBold"
                                                     Foreground="Black"
@@ -1646,7 +1656,7 @@
                                                      Margin="5,10,0,0"
                                                      Foreground="LightGoldenrodYellow"
                                                      FontSize="16"
-                                                     Text="1) Blame your actions on: " />
+                                                     Text="{s:StringResource Key=BLAME_ACTIONS_ON}"/>
                                             </StackPanel>
                                             <StackPanel x:Name="BlameTerrorists3"
                                                         Orientation="Horizontal" >
@@ -1829,7 +1839,7 @@
                                              Margin="10,0,0,0"
                                              FontSize="16"
                                              Foreground="AntiqueWhite"
-                                             Text="2) Target: " />
+                                                Text="{s:StringResource Key=TARGET}"/>
                                         <TextBlock VerticalAlignment="Center"
                                                     Text="{Binding Path=SpiedKlingName}"/>
                                         <Image Source="vfs:///Resources/Images/Insignias/KLINGONS.png" Margin="0,0,0,0">
@@ -1839,7 +1849,7 @@
                                              VerticalAlignment="Center"
                                              Margin="0,0,2,0"
                                              ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/food.png"
-                                             ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=FOOD_TOOL_TIP}" />
+                                             ToolTip="{s:StringResource Key=FOOD_TOOL_TIP}" />
                                         <TextBlock
                                               VerticalAlignment="Center"
                                               HorizontalAlignment="Right"
@@ -1863,7 +1873,7 @@
                                                             VerticalAlignment="Center"
                                                             HorizontalAlignment="Left"
                                                             FontWeight="DemiBold"
-                                                            Label="Sabotage Food"
+                                                Label="{s:StringResource Key=SABOTAGE_FOOD}" 
                                                             Visibility="Collapsed"
                                                             Foreground="Black"
                                                             Background="Transparent"
@@ -1876,7 +1886,7 @@
                                               VerticalAlignment="Center"
                                               Margin="14,0,2,0"
                                               ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/industry.png"
-                                              ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=INDUSTRY_TOOL_TIP}" />
+                                              ToolTip="{s:StringResource Key=INDUSTRY_TOOL_TIP}" />
                                         <TextBlock
                                               VerticalAlignment="Center"
                                               HorizontalAlignment="Right"
@@ -1900,7 +1910,7 @@
                                                     DisplayMode="Tiny"
                                                     VerticalAlignment="Center"
                                                     HorizontalAlignment="Left"
-                                                    Label="Sabotage Industry"
+                                                Label="{s:StringResource Key=SABOTAGE_INDUSTRY}" 
                                                     Visibility="Collapsed"
                                                     FontWeight="DemiBold"
                                                     Foreground="Black"
@@ -1913,7 +1923,7 @@
                                               VerticalAlignment="Center"
                                               Margin="14,0,2,0"
                                               ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/energy.png"
-                                              ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=ENERGY_TOOL_TIP}" />
+                                              ToolTip="{s:StringResource Key=ENERGY_TOOL_TIP}" />
                                         <TextBlock
                                               VerticalAlignment="Center"
                                               HorizontalAlignment="Right"
@@ -1937,7 +1947,7 @@
                                                     DisplayMode="Tiny"
                                                     VerticalAlignment="Center"
                                                     HorizontalAlignment="Left"
-                                                    Label="Sabotage Energy"
+                                                Label="{s:StringResource Key=SABOTAGE_ENERGY}" 
                                                     Visibility="Collapsed"
                                                     FontWeight="DemiBold"
                                                     Foreground="Black"
@@ -1951,7 +1961,7 @@
                                                VerticalAlignment="Center"
                                                Margin="14,0,2,0"
                                                ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/research.png"
-                                               ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=RESEARCH_TOOL_TIP}" />
+                                               ToolTip="{s:StringResource Key=RESEARCH_TOOL_TIP}" />
                                         <TextBlock
                                                 VerticalAlignment="Center"
                                                 HorizontalAlignment="Right"
@@ -2012,7 +2022,7 @@
                                                   DisplayMode="Tiny"
                                                   VerticalAlignment="Center"
                                                   HorizontalAlignment="Left"
-                                                  Label="Steal Credits"
+                                                Label="{s:StringResource Key=STEAL_CREDITS}" 
                                                   Visibility="Collapsed"
                                                   FontWeight="DemiBold"
                                                   Foreground="Black"
@@ -2091,7 +2101,7 @@
                                                      Margin="5,10,0,0"
                                                      Foreground="LightGoldenrodYellow"
                                                      FontSize="16"
-                                                     Text="1) Blame your actions on: " />
+                                                     Text="{s:StringResource Key=BLAME_ACTIONS_ON}"/>
                                             </StackPanel>
                                             <StackPanel x:Name="BlameTerrorists4"
                                                         Orientation="Horizontal">
@@ -2274,7 +2284,7 @@
                                              Margin="10,0,0,0"
                                              FontSize="16"
                                              Foreground="AntiqueWhite"
-                                             Text="2) Target: " />
+                                                Text="{s:StringResource Key=TARGET}"/>
                                         <TextBlock VerticalAlignment="Center"
                                                    Text="{Binding Path=SpiedCardName}"/>
                                         <Image Source="vfs:///Resources/Images/Insignias/CARDASSIANS.png" Margin="0,0,0,0">
@@ -2284,7 +2294,7 @@
                                              VerticalAlignment="Center"
                                              Margin="0,0,2,0"
                                              ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/food.png"
-                                             ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=FOOD_TOOL_TIP}" />
+                                             ToolTip="{s:StringResource Key=FOOD_TOOL_TIP}" />
                                         <TextBlock
                                               VerticalAlignment="Center"
                                               HorizontalAlignment="Right"
@@ -2308,7 +2318,7 @@
                                                             VerticalAlignment="Center"
                                                             HorizontalAlignment="Left"
                                                             FontWeight="DemiBold"
-                                                            Label="Sabotage Food"
+                                                Label="{s:StringResource Key=SABOTAGE_FOOD}" 
                                                             Visibility="Collapsed"
                                                             Foreground="Black"
                                                             Background="Transparent"
@@ -2321,7 +2331,7 @@
                                               VerticalAlignment="Center"
                                               Margin="14,0,2,0"
                                               ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/industry.png"
-                                              ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=INDUSTRY_TOOL_TIP}" />
+                                              ToolTip="{s:StringResource Key=INDUSTRY_TOOL_TIP}" />
                                         <TextBlock
                                               VerticalAlignment="Center"
                                               HorizontalAlignment="Right"
@@ -2345,7 +2355,7 @@
                                                   DisplayMode="Tiny"
                                                   VerticalAlignment="Center"
                                                   HorizontalAlignment="Left"
-                                                  Label="Sabotage Industry"
+                                                Label="{s:StringResource Key=SABOTAGE_INDUSTRY}" 
                                                   Visibility="Collapsed"
                                                   FontWeight="DemiBold"
                                                   Foreground="Black"
@@ -2358,7 +2368,7 @@
                                               VerticalAlignment="Center"
                                               Margin="14,0,2,0"
                                               ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/energy.png"
-                                              ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=ENERGY_TOOL_TIP}" />
+                                              ToolTip="{s:StringResource Key=ENERGY_TOOL_TIP}" />
                                         <TextBlock
                                               VerticalAlignment="Center"
                                               HorizontalAlignment="Right"
@@ -2382,7 +2392,7 @@
                                                     DisplayMode="Tiny"
                                                     VerticalAlignment="Center"
                                                     HorizontalAlignment="Left"
-                                                    Label="Sabotage Energy"
+                                                Label="{s:StringResource Key=SABOTAGE_ENERGY}" 
                                                     Visibility="Collapsed"
                                                     FontWeight="DemiBold"
                                                     Foreground="Black"
@@ -2396,7 +2406,7 @@
                                                VerticalAlignment="Center"
                                                Margin="14,0,2,0"
                                                ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/research.png"
-                                               ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=RESEARCH_TOOL_TIP}" />
+                                               ToolTip="{s:StringResource Key=RESEARCH_TOOL_TIP}" />
                                         <TextBlock
                                               VerticalAlignment="Center"
                                               HorizontalAlignment="Right"
@@ -2420,7 +2430,7 @@
                                                   DisplayMode="Tiny"
                                                   VerticalAlignment="Center"
                                                   HorizontalAlignment="Left"
-                                                  Label="Steal Research"
+                                                Label="{s:StringResource Key=STEAL_RESEARCH}" 
                                                   Visibility="Collapsed"
                                                   FontWeight="DemiBold"
                                                   Foreground="Black"
@@ -2457,7 +2467,7 @@
                                                     DisplayMode="Tiny"
                                                     VerticalAlignment="Center"
                                                     HorizontalAlignment="Left"
-                                                    Label="Steal Credits"
+                                                Label="{s:StringResource Key=STEAL_CREDITS}" 
                                                     Visibility="Collapsed"
                                                     FontWeight="DemiBold"
                                                     Foreground="Black"
@@ -2536,7 +2546,7 @@
                                                    Margin="5,10,0,0"
                                                    Foreground="LightGoldenrodYellow"
                                                    FontSize="16"
-                                                   Text="1) Blame your actions on: " />
+                                                   Text="{s:StringResource Key=BLAME_ACTIONS_ON}"/>
                                             </StackPanel>
                                             <StackPanel x:Name="BlameTerrorists5"
                                                         Orientation="Horizontal" >
@@ -2719,7 +2729,7 @@
                                             Margin="10,0,0,0"
                                             FontSize="16"
                                             Foreground="AntiqueWhite"
-                                            Text="2) Target: " />
+                                                Text="{s:StringResource Key=TARGET}"/>
                                         <TextBlock VerticalAlignment="Center"
                                                     Text="{Binding Path=SpiedDomName}"/>
                                         <Image Source="vfs:///Resources/Images/Insignias/DOMINION.png" Margin="0,0,0,0">
@@ -2729,13 +2739,13 @@
                                              VerticalAlignment="Center"
                                              Margin="0,0,2,0"
                                              ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/food.png"
-                                             ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=FOOD_TOOL_TIP}" />
+                                             ToolTip="{s:StringResource Key=FOOD_TOOL_TIP}" />
                                         <TextBlock
                                           VerticalAlignment="Center"
                                           HorizontalAlignment="Right"
                                           FontWeight="DemiBold"
                                           Foreground="LightGreen"
-                                          Text="Food: " />
+                                          Text="{s:StringResource Key=FOOD}"/>
                                         <Grid>
                                             <Grid.RowDefinitions>
                                                 <RowDefinition Height="*" />
@@ -2753,7 +2763,7 @@
                                                 VerticalAlignment="Center"
                                                 HorizontalAlignment="Left"
                                                 FontWeight="DemiBold"
-                                                Label="Sabotage Food"
+                                                Label="{s:StringResource Key=SABOTAGE_FOOD}" 
                                                 Visibility="Collapsed"
                                                 Foreground="Black"
                                                 Background="Transparent"
@@ -2766,7 +2776,7 @@
                                               VerticalAlignment="Center"
                                               Margin="14,0,2,0"
                                               ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/industry.png"
-                                              ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=INDUSTRY_TOOL_TIP}" />
+                                              ToolTip="{s:StringResource Key=INDUSTRY_TOOL_TIP}" />
                                         <TextBlock
                                               VerticalAlignment="Center"
                                               HorizontalAlignment="Right"
@@ -2790,7 +2800,7 @@
                                                     DisplayMode="Tiny"
                                                     VerticalAlignment="Center"
                                                     HorizontalAlignment="Left"
-                                                    Label="Sabotage Industry"
+                                                Label="{s:StringResource Key=SABOTAGE_INDUSTRY}" 
                                                     Visibility="Collapsed"
                                                     FontWeight="DemiBold"
                                                     Foreground="Black"
@@ -2803,7 +2813,7 @@
                                               VerticalAlignment="Center"
                                               Margin="14,0,2,0"
                                               ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/energy.png"
-                                              ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=ENERGY_TOOL_TIP}" />
+                                              ToolTip="{s:StringResource Key=ENERGY_TOOL_TIP}" />
                                         <TextBlock
                                               VerticalAlignment="Center"
                                               HorizontalAlignment="Right"
@@ -2827,7 +2837,7 @@
                                                   DisplayMode="Tiny"
                                                   VerticalAlignment="Center"
                                                   HorizontalAlignment="Left"
-                                                  Label="Sabotage Energy"
+                                                Label="{s:StringResource Key=SABOTAGE_ENERGY}" 
                                                   Visibility="Collapsed"
                                                   FontWeight="DemiBold"
                                                   Foreground="Black"
@@ -2841,7 +2851,7 @@
                                                VerticalAlignment="Center"
                                                Margin="14,0,2,0"
                                                ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/research.png"
-                                               ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=RESEARCH_TOOL_TIP}" />
+                                               ToolTip="{s:StringResource Key=RESEARCH_TOOL_TIP}" />
                                         <TextBlock
                                               VerticalAlignment="Center"
                                               HorizontalAlignment="Right"
@@ -2865,7 +2875,7 @@
                                                     DisplayMode="Tiny"
                                                     VerticalAlignment="Center"
                                                     HorizontalAlignment="Left"
-                                                    Label="Steal Research"
+                                                Label="{s:StringResource Key=STEAL_RESEARCH}" 
                                                     Visibility="Collapsed"
                                                     FontWeight="DemiBold"
                                                     Foreground="Black"
@@ -2902,7 +2912,7 @@
                                                     DisplayMode="Tiny"
                                                     VerticalAlignment="Center"
                                                     HorizontalAlignment="Left"
-                                                    Label="Steal Credits"
+                                                Label="{s:StringResource Key=STEAL_CREDITS}" 
                                                     Visibility="Collapsed"
                                                     FontWeight="DemiBold"
                                                     Foreground="Black"
@@ -2981,7 +2991,7 @@
                                                        Margin="5,10,0,0"
                                                        Foreground="LightGoldenrodYellow"
                                                        FontSize="16"
-                                                       Text="1) Blame your actions on: " />
+                                                       Text="{s:StringResource Key=BLAME_ACTIONS_ON}"/>
                                             </StackPanel>
                                             <StackPanel x:Name="BlameTerrorists6"
                                                         Orientation="Horizontal" >
@@ -3164,7 +3174,7 @@
                                                 Margin="10,0,0,0"
                                                 FontSize="16"
                                                 Foreground="AntiqueWhite"
-                                                Text="2) Target: " />
+                                                Text="{s:StringResource Key=TARGET}"/>
                                         <TextBlock VerticalAlignment="Center"
                                                     Text="{Binding Path=SpiedBorgName}"/>
                                         <Image Source="vfs:///Resources/Images/Insignias/BORG.png" Margin="0,0,0,0">
@@ -3174,7 +3184,7 @@
                                              VerticalAlignment="Center"
                                              Margin="0,0,2,0"
                                              ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/food.png"
-                                             ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=FOOD_TOOL_TIP}" />
+                                             ToolTip="{s:StringResource Key=FOOD_TOOL_TIP}" />
                                         <TextBlock
                                               VerticalAlignment="Center"
                                               HorizontalAlignment="Right"
@@ -3198,7 +3208,7 @@
                                                             VerticalAlignment="Center"
                                                             HorizontalAlignment="Left"
                                                             FontWeight="DemiBold"
-                                                            Label="Sabotage Food"
+                                                            Label="{s:StringResource Key=SABOTAGE_FOOD}" 
                                                             Visibility="Collapsed"
                                                             Foreground="Black"
                                                             Background="Transparent"
@@ -3211,7 +3221,7 @@
                                               VerticalAlignment="Center"
                                               Margin="14,0,2,0"
                                               ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/industry.png"
-                                              ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=INDUSTRY_TOOL_TIP}" />
+                                              ToolTip="{s:StringResource Key=INDUSTRY_TOOL_TIP}" />
                                         <TextBlock
                                                   VerticalAlignment="Center"
                                                   HorizontalAlignment="Right"
@@ -3235,7 +3245,7 @@
                                                     DisplayMode="Tiny"
                                                     VerticalAlignment="Center"
                                                     HorizontalAlignment="Left"
-                                                    Label="Sabotage Industry"
+                                                Label="{s:StringResource Key=SABOTAGE_INDUSTRY}" 
                                                     Visibility="Collapsed"
                                                     FontWeight="DemiBold"
                                                     Foreground="Black"
@@ -3248,7 +3258,7 @@
                                               VerticalAlignment="Center"
                                               Margin="14,0,2,0"
                                               ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/energy.png"
-                                              ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=ENERGY_TOOL_TIP}" />
+                                              ToolTip="{s:StringResource Key=ENERGY_TOOL_TIP}" />
                                         <TextBlock
                                               VerticalAlignment="Center"
                                               HorizontalAlignment="Right"
@@ -3272,7 +3282,7 @@
                                                     DisplayMode="Tiny"
                                                     VerticalAlignment="Center"
                                                     HorizontalAlignment="Left"
-                                                    Label="Sabotage Energy"
+                                                Label="{s:StringResource Key=SABOTAGE_ENERGY}" 
                                                     Visibility="Collapsed"
                                                     FontWeight="DemiBold"
                                                     Foreground="Black"
@@ -3286,7 +3296,7 @@
                                                  VerticalAlignment="Center"
                                                  Margin="14,0,2,0"
                                                  ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/research.png"
-                                                 ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=RESEARCH_TOOL_TIP}" />
+                                                 ToolTip="{s:StringResource Key=RESEARCH_TOOL_TIP}" />
                                         <TextBlock
                                                   VerticalAlignment="Center"
                                                   HorizontalAlignment="Right"
@@ -3310,7 +3320,7 @@
                                                     DisplayMode="Tiny"
                                                     VerticalAlignment="Center"
                                                     HorizontalAlignment="Left"
-                                                    Label="Steal Research"
+                                                Label="{s:StringResource Key=STEAL_RESEARCH}" 
                                                     Visibility="Collapsed"
                                                     FontWeight="DemiBold"
                                                     Foreground="Black"
@@ -3347,7 +3357,7 @@
                                                   DisplayMode="Tiny"
                                                   VerticalAlignment="Center"
                                                   HorizontalAlignment="Left"
-                                                  Label="Steal Credits"
+                                                Label="{s:StringResource Key=STEAL_CREDITS}" 
                                                   Visibility="Collapsed"
                                                   FontWeight="DemiBold"
                                                   Foreground="Black"
@@ -3370,7 +3380,7 @@
         </TabItem>
 
         <!--TAB for STATIONS-->
-        <!--<TabItem Header="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=STATIONS_TAB_HEADER}">
+        <!--<TabItem Header="{s:StringResource Key=STATIONS_TAB_HEADER}">
             <Grid>
                 --><!--Grid just for Head line--><!--
                 <Grid.RowDefinitions>
@@ -3436,7 +3446,7 @@
             </Grid>
         </TabItem>
         --><!--TAB for Spy Ship Report of colony--><!--
-        <TabItem Header="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=SHIPS_TAB_HEADER}">
+        <TabItem Header="{s:StringResource Key=SHIPS_TAB_HEADER}">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
@@ -3470,7 +3480,7 @@
         </TabItem>-->
 
         <!--TAB for Economy-->
-        <!--<TabItem Header="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=ECONOMY_TAB_HEADER}">
+        <!--<TabItem Header="{s:StringResource Key=ECONOMY_TAB_HEADER}">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
