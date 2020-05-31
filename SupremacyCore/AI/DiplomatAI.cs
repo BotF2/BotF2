@@ -8,6 +8,7 @@ using Supremacy.Diplomacy;
 using Supremacy.Economy;
 using Supremacy.Entities;
 using Supremacy.Game;
+using Supremacy.Utility;
 
 namespace Supremacy.AI
 {
@@ -40,43 +41,67 @@ namespace Supremacy.AI
                     continue;
                 
                 if (foreignPower.ProposalReceived != null)
+                {
+                    bool accept = false;
+                    #region Foriegn Traits List
+                    String traitsOfForeignCiv = otherCiv.Traits;
+                    var foreignTraits = traitsOfForeignCiv.Split(',');
+                    #endregion
+
+                    #region The Civ's Traits List
+                    String traitsOfCiv = Aciv.Traits;
+                    var theCivTraits = traitsOfCiv.Split(',');
+                    #endregion
+
+                    var commonTraitItems = foreignTraits.Intersect(theCivTraits);
+
+                    if (commonTraitItems.Count() > 0)
+                        accept = true;
+
+                    if (accept)
                     {
-                    // TODO: Have the AI actually consider proposals instead of blindly accepting
-                    foreignPower.PendingAction = PendingDiplomacyAction.AcceptProposal;
-                    foreach (var clause in foreignPower.ProposalReceived.Clauses) // regard value 0 TotalWar to 5 Unified
+                        foreignPower.PendingAction = PendingDiplomacyAction.AcceptProposal;
+                    }
+                    else
                     {
-                        if (clause.ClauseType == ClauseType.TreatyMembership && foreignPower.DiplomacyData.Regard.CurrentValue < (int)RegardValue.Unified ||
-                            clause.ClauseType == ClauseType.TreatyFullAlliance && foreignPower.DiplomacyData.Regard.CurrentValue < (int)RegardValue.Allied ||
-                            clause.ClauseType == ClauseType.TreatyDefensiveAlliance && foreignPower.DiplomacyData.Regard.CurrentValue < (int) RegardValue.Allied ||
-                            clause.ClauseType == ClauseType.TreatyWarPact && foreignPower.DiplomacyData.Regard.CurrentValue < (int) RegardValue.Allied ||
-                            clause.ClauseType == ClauseType.TreatyAffiliation && foreignPower.DiplomacyData.Regard.CurrentValue < (int) RegardValue.Friend || 
-                            clause.ClauseType == ClauseType.TreatyNonAggression && foreignPower.DiplomacyData.Regard.CurrentValue < (int) RegardValue.Friend ||
-                            clause.ClauseType == ClauseType.TreatyOpenBorders && foreignPower.DiplomacyData.Regard.CurrentValue < (int) RegardValue.Friend ||
-                            clause.ClauseType == ClauseType.TreatyResearchPact && foreignPower.DiplomacyData.Regard.CurrentValue < (int) RegardValue.Friend ||
-                            clause.ClauseType == ClauseType.TreatyTradePact && foreignPower.DiplomacyData.Regard.CurrentValue < (int) RegardValue.Neutral ||
-                            clause.ClauseType == ClauseType.TreatyCeaseFire && foreignPower.DiplomacyData.Regard.CurrentValue < (int) RegardValue.Neutral)
-                        {
-                            foreignPower.PendingAction = PendingDiplomacyAction.RejectProposal;
-                        }
+                        foreignPower.PendingAction = PendingDiplomacyAction.RejectProposal;
                     }
 
-                    if (foreignPower.PendingAction == PendingDiplomacyAction.AcceptProposal)
+                    GameLog.Client.Diplomacy.DebugFormat("ForeignPower = {0} Civ = {1} decsion = {2}", foreignPower.Owner.ShortName, Aciv.ShortName, foreignPower.PendingAction.ToString());
+                    foreach (var clause in foreignPower.ProposalReceived.Clauses) // regard value 0 TotalWar to 5 Unified
+                {
+                    if (clause.ClauseType == ClauseType.TreatyMembership && foreignPower.DiplomacyData.Regard.CurrentValue < (int)RegardValue.Unified ||
+                        clause.ClauseType == ClauseType.TreatyFullAlliance && foreignPower.DiplomacyData.Regard.CurrentValue < (int)RegardValue.Allied ||
+                        clause.ClauseType == ClauseType.TreatyDefensiveAlliance && foreignPower.DiplomacyData.Regard.CurrentValue < (int) RegardValue.Allied ||
+                        clause.ClauseType == ClauseType.TreatyWarPact && foreignPower.DiplomacyData.Regard.CurrentValue < (int) RegardValue.Allied ||
+                        clause.ClauseType == ClauseType.TreatyAffiliation && foreignPower.DiplomacyData.Regard.CurrentValue < (int) RegardValue.Friend || 
+                        clause.ClauseType == ClauseType.TreatyNonAggression && foreignPower.DiplomacyData.Regard.CurrentValue < (int) RegardValue.Friend ||
+                        clause.ClauseType == ClauseType.TreatyOpenBorders && foreignPower.DiplomacyData.Regard.CurrentValue < (int) RegardValue.Friend ||
+                        clause.ClauseType == ClauseType.TreatyResearchPact && foreignPower.DiplomacyData.Regard.CurrentValue < (int) RegardValue.Friend ||
+                        clause.ClauseType == ClauseType.TreatyTradePact && foreignPower.DiplomacyData.Regard.CurrentValue < (int) RegardValue.Neutral ||
+                        clause.ClauseType == ClauseType.TreatyCeaseFire && foreignPower.DiplomacyData.Regard.CurrentValue < (int) RegardValue.Neutral)
                     {
-                        foreach (var clause in foreignPower.ProposalReceived.Clauses)
+                        foreignPower.PendingAction = PendingDiplomacyAction.RejectProposal;
+                    }
+                }
+
+                if (foreignPower.PendingAction == PendingDiplomacyAction.AcceptProposal)
+                {
+                    foreach (var clause in foreignPower.ProposalReceived.Clauses)
+                    {
+                        if (clause.ClauseType == ClauseType.OfferGiveCredits)
                         {
-                            if (clause.ClauseType == ClauseType.OfferGiveCredits)
-                            {
-                                int value = (((CreditsClauseData)clause.Data).ImmediateAmount + ((CreditsClauseData)clause.Data).RecurringAmount) / 100;
-                                foreignPower.AddRegardEvent(new RegardEvent(10, RegardEventType.NoRegardEvent, value));
-                            }
-                            else if (clause.ClauseType == ClauseType.OfferGiveResources)
-                            {
-                                var data = (IEnumerable<Tuple<ResourceType, int>>)clause.Data;
-                                int value = data.Sum(pair => EconomyHelper.ComputeResourceValue(pair.Item1, pair.Item2)) / 100;
-                                foreignPower.AddRegardEvent(new RegardEvent(10, RegardEventType.NoRegardEvent, value));
-                            }
+                            int value = (((CreditsClauseData)clause.Data).ImmediateAmount + ((CreditsClauseData)clause.Data).RecurringAmount) / 100;
+                            foreignPower.AddRegardEvent(new RegardEvent(10, RegardEventType.NoRegardEvent, value));
+                        }
+                        else if (clause.ClauseType == ClauseType.OfferGiveResources)
+                        {
+                            var data = (IEnumerable<Tuple<ResourceType, int>>)clause.Data;
+                            int value = data.Sum(pair => EconomyHelper.ComputeResourceValue(pair.Item1, pair.Item2)) / 100;
+                            foreignPower.AddRegardEvent(new RegardEvent(10, RegardEventType.NoRegardEvent, value));
                         }
                     }
+                }
 
                     foreignPower.LastProposalReceived = foreignPower.ProposalReceived;
                     foreignPower.ProposalReceived = null;

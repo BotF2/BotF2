@@ -21,7 +21,7 @@ namespace Supremacy.Client.Views
         private readonly ObservableCollection<ActiveAgreementViewModel> _activeAgreements;
         private readonly ReadOnlyObservableCollection<ActiveAgreementViewModel> _activeAgreementsView;
         public ForeignPowerViewModel([NotNull] ForeignPower foreignPower)
-        {
+         {
             if (foreignPower == null)
                 throw new ArgumentNullException("foreignPower");
 
@@ -136,7 +136,7 @@ namespace Supremacy.Client.Views
         {
             get
             {
-                //GameLog.Client.Diplomacy.DebugFormat("Is Diplomat Available ={0}", _foreignPower.IsDiplomatAvailable);
+                GameLog.Client.Diplomacy.DebugFormat("Is Diplomat Available ={0}", _foreignPower.IsDiplomatAvailable);
                 return _foreignPower.IsDiplomatAvailable;
             }
         }
