@@ -67,7 +67,7 @@ namespace Supremacy.AI
                     {
                         accept = true;
                     }
-                    else if (commonTraitItems.Count() == 0 && RandomHelper.Chance(15))
+                    else if (commonTraitItems.Count() == 0 && RandomHelper.Chance(12))
                     {
                         accept = true;
                     }
