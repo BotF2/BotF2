@@ -278,7 +278,7 @@ namespace Supremacy.Game
                 if (LocalizedTextDatabase.Instance.Groups.TryGetValue(new TechObjectTextGroupKey(design.Key), out localizedText))
                 {
                     //GameLog.Client.GameInitData.DebugFormat("###### textDatabase localizedTest = {0} {1} {2} {3} {4}",
-                        localizedText.DefaultEntry, localizedText.DefaultLocalText, localizedText.Entries, localizedText.Key, design.Key );
+                    //    localizedText.DefaultEntry, localizedText.DefaultLocalText, localizedText.Entries, localizedText.Key, design.Key );
                     design.LocalizedText = localizedText;
                     continue;
                 }
