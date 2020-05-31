@@ -1021,6 +1021,14 @@ namespace Supremacy.Game
                             if (civ2.IsEmpire)
                                 civManagers[civ2].SitRepEntries.Add(new DiplomaticSitRepEntry(civ2, responseSent));
                         }
+                        else if (responseSent.ResponseType != ResponseType.NoResponse && responseSent.ResponseType == ResponseType.Reject)
+                        {
+                            if (civ1.IsEmpire)
+                                civManagers[civ1].SitRepEntries.Add(new DiplomaticSitRepEntry(civ1, responseSent));
+
+                            if (civ2.IsEmpire)
+                                civManagers[civ2].SitRepEntries.Add(new DiplomaticSitRepEntry(civ2, responseSent));
+                        }
                     }
                     else
                     {

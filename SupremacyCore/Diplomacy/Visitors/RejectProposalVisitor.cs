@@ -54,13 +54,13 @@ namespace Supremacy.Diplomacy.Visitors
             var diplomat = Diplomat.Get(proposal.Recipient);
             var foreignPower = diplomat.GetForeignPower(proposal.Sender);
 
-            GameContext.Current.AgreementMatrix.AddAgreement(agreement);
+            //GameContext.Current.AgreementMatrix.AddAgreement(agreement);
 
             var response = new Response(ResponseType.Reject, proposal);
             GameLog.Core.Diplomacy.DebugFormat("RejectProposal from {1} to {0}", diplomat, foreignPower, agreement.Data.ToString());
 
             foreignPower.ResponseSent = response;
-            foreignPower.UpdateStatus();
+            //foreignPower.UpdateStatus();
 
             //return agreement;
         }

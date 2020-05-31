@@ -872,19 +872,19 @@ namespace Supremacy.Game
                     if (proposal.HasTreaty())
                     {
                         if (proposal.HasClause(ClauseType.TreatyCeaseFire))
-                            return detailed ? default(DiplomacySitRepStringKey?) : DiplomacySitRepStringKey.CeaseFireRejectedSummaryText;
+                            return DiplomacySitRepStringKey.CeaseFireRejectedSummaryText;
                         if (proposal.HasClause(ClauseType.TreatyNonAggression))
-                            return detailed ? default(DiplomacySitRepStringKey?) : DiplomacySitRepStringKey.NonAggressionPactRejectedSummaryText;
+                            return DiplomacySitRepStringKey.NonAggressionPactRejectedSummaryText;
                         if (proposal.HasClause(ClauseType.TreatyOpenBorders) || proposal.HasClause(ClauseType.TreatyTradePact))
-                            return detailed ? default(DiplomacySitRepStringKey?) : DiplomacySitRepStringKey.OpenBordersRejectedSummaryText;
+                            return DiplomacySitRepStringKey.OpenBordersRejectedSummaryText;
                         if (proposal.HasClause(ClauseType.TreatyAffiliation))
-                            return detailed ? default(DiplomacySitRepStringKey?) : DiplomacySitRepStringKey.AffiliationRejectedSummaryText;
+                            return DiplomacySitRepStringKey.AffiliationRejectedSummaryText;
                         if (proposal.HasClause(ClauseType.TreatyDefensiveAlliance))
-                            return detailed ? default(DiplomacySitRepStringKey?) : DiplomacySitRepStringKey.DefensiveAllianceRejectedSummaryText;
+                            return DiplomacySitRepStringKey.DefensiveAllianceRejectedSummaryText;
                         if (proposal.HasClause(ClauseType.TreatyFullAlliance))
-                            return detailed ? default(DiplomacySitRepStringKey?) : DiplomacySitRepStringKey.FullAllianceRejectedSummaryText;
+                            return DiplomacySitRepStringKey.FullAllianceRejectedSummaryText;
                         if (proposal.HasClause(ClauseType.TreatyMembership))
-                            return detailed ? default(DiplomacySitRepStringKey?) : DiplomacySitRepStringKey.MembershipRejectedSummaryText;
+                            return DiplomacySitRepStringKey.MembershipRejectedSummaryText;
                     }
 
                     if (proposal.IsDemand())
