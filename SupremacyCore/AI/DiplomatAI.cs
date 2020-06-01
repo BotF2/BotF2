@@ -12,6 +12,7 @@ using Supremacy.Utility;
 
 namespace Supremacy.AI
 {
+    public delegate bool Chance();
     public static class DiplomatAI
     {
         public static void DoTurn([NotNull] ICivIdentity civ)
@@ -39,35 +40,40 @@ namespace Supremacy.AI
                 var foreignPower = diplomat.GetForeignPower(otherCiv);
                 if (!foreignPower.IsContactMade)
                     continue;
-                
+ 
                 if (foreignPower.ProposalReceived != null)
                 {
                     bool accept = false;
                     #region Foriegn Traits List
-                    String traitsOfForeignCiv = otherCiv.Traits;
-                    var foreignTraits = traitsOfForeignCiv.Split(',');
+                    string traitsOfForeignCiv = otherCiv.Traits;
+                    string[] foreignTraits = traitsOfForeignCiv.Split(',');
                     #endregion
 
                     #region The Civ's Traits List
-                    String traitsOfCiv = Aciv.Traits;
-                    var theCivTraits = traitsOfCiv.Split(',');
+                    string traitsOfCiv = Aciv.Traits;
+                    string[] theCivTraits = traitsOfCiv.Split(',');
                     #endregion
 
+                    // traits in common relative to the number of triats a civilization has
                     var commonTraitItems = foreignTraits.Intersect(theCivTraits);
+                    int[] countArray = new int[] { foreignTraits.Length, theCivTraits.Length };
+                    int fewestTotalTraits = countArray.Min();
 
-                    if (commonTraitItems.Count() > 2)
+                    double similarTraits = commonTraitItems.Count() / fewestTotalTraits;
+
+                    if ( similarTraits == 1)
                     {
                         accept = true;
                     }
-                    else if (commonTraitItems.Count() == 2 && RandomHelper.Chance(2))
+                    else if (similarTraits >= 0.5 && RandomHelper.Chance(2))
                     {
                         accept = true;
                     }
-                    else if (commonTraitItems.Count() == 1 && RandomHelper.Chance(4))
+                    else if (similarTraits >= 0.33 && RandomHelper.Chance(4))
                     {
                         accept = true;
                     }
-                    else if (commonTraitItems.Count() == 0 && RandomHelper.Chance(12))
+                    else if (similarTraits == 0 && RandomHelper.Chance(12))
                     {
                         accept = true;
                     }
