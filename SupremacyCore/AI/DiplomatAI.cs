@@ -43,6 +43,7 @@ namespace Supremacy.AI
  
                 if (foreignPower.ProposalReceived != null)
                 {
+                    
                     bool accept = false;
                     #region Foriegn Traits List
                     string traitsOfForeignCiv = otherCiv.Traits;
@@ -61,15 +62,19 @@ namespace Supremacy.AI
 
                     double similarTraits = commonTraitItems.Count() / fewestTotalTraits;
 
-                    if ( similarTraits == 1)
+                    if ( similarTraits == 1 && RandomHelper.Chance(2))
                     {
                         accept = true;
                     }
-                    else if (similarTraits >= 0.5 && RandomHelper.Chance(2))
+                    else if (similarTraits > 0.6 && RandomHelper.Chance(3))
                     {
                         accept = true;
                     }
-                    else if (similarTraits >= 0.33 && RandomHelper.Chance(4))
+                    else if (similarTraits >= 0.5 && RandomHelper.Chance(4))
+                    {
+                        accept = true;
+                    }
+                    else if (similarTraits > 0.3 && RandomHelper.Chance(6))
                     {
                         accept = true;
                     }
@@ -134,9 +139,20 @@ namespace Supremacy.AI
                     // TODO: Process statements (apply regard/trust changes, etc.)
                     if (foreignPower.StatementReceived.StatementType == StatementType.WarDeclaration)
                         foreignPower.AddRegardEvent(new RegardEvent(30, RegardEventType.DeclaredWar, -1000));
-                    
+                    if (foreignPower.StatementReceived.StatementType == StatementType.ThreatenTradeEmbargo
+                        || foreignPower.StatementReceived.StatementType == StatementType.ThreatenDestroyColony
+                        || foreignPower.StatementReceived.StatementType == StatementType.ThreatenDeclareWar)
+                        foreignPower.AddRegardEvent(new RegardEvent(25, RegardEventType.InvaderMovement, -600));
+                    //if (foreignPower.StatementReceived.StatementType == StatementType.DenounceWar
+                    //    || foreignPower.StatementReceived.StatementType == StatementType.DenounceWar
+                    //    || foreignPower.StatementReceived.StatementType == StatementType.DenounceSabotage
+                    //    || foreignPower.StatementReceived.StatementType == StatementType.DenounceInvasion
+                    //    || foreignPower.StatementReceived.StatementType == StatementType.DenounceAssault)
+                        //foreignPower.AddRegardEvent(new RegardEvent(10, RegardEventType., +500));
+
                     foreignPower.LastStatementReceived = foreignPower.StatementReceived;
                     foreignPower.StatementReceived = null;
+
                 }
 
                 if (foreignPower.ResponseReceived != null)
