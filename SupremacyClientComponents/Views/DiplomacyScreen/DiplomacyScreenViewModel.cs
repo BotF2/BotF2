@@ -1183,6 +1183,7 @@ namespace Supremacy.Client.Views
 
         internal static DiplomacyMessageElementType ElementTypeFromClauseType(ClauseType clauseType)
         {
+            GameLog.Client.Diplomacy.DebugFormat("((()))DiplomacyMessageFromClauseType ClauseType in ={0}", clauseType );
             switch (clauseType)
             {
                 case ClauseType.OfferWithdrawTroops:
@@ -1244,6 +1245,7 @@ namespace Supremacy.Client.Views
 
         internal static ClauseType ElementTypeToClauseType(DiplomacyMessageElementType elementType)
         {
+            GameLog.Client.Diplomacy.DebugFormat("((()))ElementTypeToClauseType DiploMessageElementType in ={0}", elementType);
             switch (elementType)
             {
                 case DiplomacyMessageElementType.OfferWithdrawTroopsClause:
@@ -1305,6 +1307,7 @@ namespace Supremacy.Client.Views
 
         internal static StatementType ElementTypeToStatementType(DiplomacyMessageElementType elementType)
         {
+            GameLog.Client.Diplomacy.DebugFormat("((()))StatementTypeToStatementType DiploMessageElementType in ={0}", elementType);
             switch (elementType)
             {
                 case DiplomacyMessageElementType.WarDeclaration:

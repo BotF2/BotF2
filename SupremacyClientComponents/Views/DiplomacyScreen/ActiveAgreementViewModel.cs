@@ -197,7 +197,7 @@ namespace Supremacy.Client.Views
                     DiplomacyMessageElementActionCategory.Propose,
                     DiplomacyScreenViewModel.ElementTypeFromClauseType(clause.ClauseType),
                     null);
-
+                GameLog.Client.Diplomacy.DebugFormat("((()))DiplomacyMessageFromClauseType out ElementType ={0}", DiplomacyScreenViewModel.ElementTypeFromClauseType(clause.ClauseType).ToString());
                 if (clause.ClauseType == ClauseType.OfferGiveCredits ||
                     clause.ClauseType == ClauseType.RequestGiveCredits)
                 {
