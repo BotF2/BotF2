@@ -143,6 +143,7 @@ namespace Supremacy.AI
                             foreignPower.Owner.ShortName, foreignPower.Counterparty.ShortName);
 
                         foreignPower.AddRegardEvent(new RegardEvent(30, RegardEventType.DeclaredWar, -1000));
+                        DiplomacyHelper.ApplyTrustChange(foreignPower, otherCiv, -500);
 
                         GameLog.Client.Diplomacy.DebugFormat("$$$ CounterparytID  ={0}, Owner regard ={1}, Counterparty regard ={2} ",
                             foreignPower.DiplomacyData.CounterpartyID, foreignPower.DiplomacyData.Regard.CurrentValue, foreignPower.CounterpartyDiplomacyData.Regard.CurrentValue);
