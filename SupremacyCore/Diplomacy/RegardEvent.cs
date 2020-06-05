@@ -25,7 +25,10 @@ namespace Supremacy.Diplomacy
             : this(duration, type, 0) { }
 
         public RegardEvent(int duration, RegardEventType type, int regard)
-            : this(GameContext.Current.TurnNumber, duration, type, regard) { }
+            : this(GameContext.Current.TurnNumber, duration, type, regard)
+        {
+            Turn = GameContext.Current.TurnNumber;
+        }
 
         public RegardEvent(int turn, int duration, RegardEventType type, int regard)
         {

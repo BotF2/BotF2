@@ -138,28 +138,46 @@ namespace Supremacy.AI
                 {
                     // TODO: Process statements (apply regard/trust changes, etc.)
                     if (foreignPower.StatementReceived.StatementType == StatementType.WarDeclaration)
+                    {
+                        GameLog.Client.Diplomacy.DebugFormat("$$$ WarDeclaration Statement Owner = {0} to {1} for RegardEvent DeclareWar",
+                            foreignPower.Owner.ShortName, foreignPower.Counterparty.ShortName);
+
                         foreignPower.AddRegardEvent(new RegardEvent(30, RegardEventType.DeclaredWar, -1000));
+
+                        GameLog.Client.Diplomacy.DebugFormat("$$$ CounterparytID  ={0}, Owner regard ={1}, Counterparty regard ={2} ",
+                            foreignPower.DiplomacyData.CounterpartyID, foreignPower.DiplomacyData.Regard.CurrentValue, foreignPower.CounterpartyDiplomacyData.Regard.CurrentValue);
+                    }
                     if (foreignPower.StatementReceived.StatementType == StatementType.ThreatenTradeEmbargo
                         || foreignPower.StatementReceived.StatementType == StatementType.ThreatenDestroyColony
                         || foreignPower.StatementReceived.StatementType == StatementType.ThreatenDeclareWar)
-                        foreignPower.AddRegardEvent(new RegardEvent(25, RegardEventType.InvaderMovement, -600));
-                    //if (foreignPower.StatementReceived.StatementType == StatementType.DenounceWar
-                    //    || foreignPower.StatementReceived.StatementType == StatementType.DenounceWar
-                    //    || foreignPower.StatementReceived.StatementType == StatementType.DenounceSabotage
-                    //    || foreignPower.StatementReceived.StatementType == StatementType.DenounceInvasion
-                    //    || foreignPower.StatementReceived.StatementType == StatementType.DenounceAssault)
-                        //foreignPower.AddRegardEvent(new RegardEvent(10, RegardEventType., +500));
-
+                        foreignPower.AddRegardEvent(new RegardEvent(20, RegardEventType.InvaderMovement, -600));
+                    if (foreignPower.StatementReceived.StatementType == StatementType.DenounceWar
+                        || foreignPower.StatementReceived.StatementType == StatementType.DenounceSabotage
+                        || foreignPower.StatementReceived.StatementType == StatementType.DenounceInvasion
+                        || foreignPower.StatementReceived.StatementType == StatementType.DenounceAssault)
+                        foreignPower.AddRegardEvent(new RegardEvent(10, RegardEventType.DeclaredWar, +400));
+                    if (foreignPower.StatementReceived.StatementType == StatementType.CommendAssault
+                        || foreignPower.StatementReceived.StatementType == StatementType.CommendAssault
+                        || foreignPower.StatementReceived.StatementType == StatementType.CommendRelationship
+                        || foreignPower.StatementReceived.StatementType == StatementType.CommendSabotage
+                        || foreignPower.StatementReceived.StatementType == StatementType.CommendWar)
+                        foreignPower.AddRegardEvent(new RegardEvent(10, RegardEventType.DeclaredWar, +400));
+                    if (foreignPower.StatementReceived.StatementType == StatementType.SabotageOrder) // only the borg now?
+                        foreignPower.AddRegardEvent(new RegardEvent(10, RegardEventType.AttackedCivilians, -400));
+                    // if (foreignPower.StatementReceived.StatementType == StatementType.NoStatement) // do we need something for this?
                     foreignPower.LastStatementReceived = foreignPower.StatementReceived;
                     foreignPower.StatementReceived = null;
-
                 }
 
                 if (foreignPower.ResponseReceived != null)
                 {
                     // TODO: Process responses (apply regard/trust changes, etc.)
+                    
+                    //if (foreignPower.ResponseReceived.ResponseType == ResponseType.Reject) // The ResponseTypes do not appear to have matching regard events at this time.
+                    //    foreignPower.AddRegardEvent(new RegardEvent(30, RegardEventType., -1000));
                     foreignPower.LastResponseReceived = foreignPower.ResponseReceived;
                     foreignPower.ResponseReceived = null;
+
                 }
                 
                 foreignPower.UpdateRegardAndTrustMeters();

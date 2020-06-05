@@ -659,7 +659,7 @@ namespace Supremacy.Client.Views
             foreach (var element in _elements)
             {
                 var clauseType = DiplomacyScreenViewModel.ElementTypeToClauseType(element.ElementType);
-                GameLog.Client.Diplomacy.DebugFormat("((()))ElementTypeToClauseType out ElementType ={0}", DiplomacyScreenViewModel.ElementTypeToClauseType(element.ElementType).ToString());
+                GameLog.Client.Diplomacy.DebugFormat("((()))ElementTypeToClause out Clause ={0}", DiplomacyScreenViewModel.ElementTypeToClauseType(element.ElementType).ToString());
                 if (clauseType == ClauseType.NoClause)
                     continue;
 
@@ -692,7 +692,11 @@ namespace Supremacy.Client.Views
 
             if (clauses.Count == 0)
                 return null;
-            GameLog.Core.Diplomacy.DebugFormat("((()))Create Proposal sender {0} *vs* Recipient = {1}: Tone = {2}  clauses = {3} ", _sender, _recipient, _tone, clauses.ToString());
+            foreach (var clause in clauses)
+            {
+                GameLog.Core.Diplomacy.DebugFormat("((()))Create Proposal sender {0}, Recipient = {1}: Tone = {2} clause type = {3} data = {4} duration = {5}",
+                    _sender, _recipient, _tone, clause.ClauseType, clause.Data, clause.Duration);
+            }
             return new NewProposal(_sender, _recipient, clauses);
         }
 

@@ -211,18 +211,21 @@ namespace Supremacy.Client.Views
                 OnOutgoingMessageChanged();
 
                 string _gamelogPart2 = "";
-                //if (_outgoingMessage.Elements[0].ActionCategory == Actionc)
-
-
 
                 if (_outgoingMessage != null && _outgoingMessage.Elements.Count() > 0)
-                    GameLog.Client.Diplomacy.DebugFormat("OutgoingMessage SET = {0} >> {1}: {3} = {4} {5}",
-                   _outgoingMessage.Sender.Name, _outgoingMessage.Recipient.Name
-                   , _outgoingMessage.Elements.Count().ToString()
-                   , _outgoingMessage.Elements[0].ActionCategory.ToString()
-                   , _outgoingMessage.Elements[0].Description.ToString()
-                   , _gamelogPart2
-                   ); 
+                {
+                    for (int i = 0; i < _outgoingMessage.Elements.Count(); i++)
+                    {
+                        GameLog.Client.Diplomacy.DebugFormat(
+                            "OutgoingMessage SET = {0} to {1}, count{2}, {3} = {4} {5}",
+                            _outgoingMessage.Sender.Name, _outgoingMessage.Recipient.Name
+                            , _outgoingMessage.Elements.Count().ToString()
+                            , _outgoingMessage.Elements[i].ActionCategory.ToString()
+                            , _outgoingMessage.Elements[i].Description.ToString()
+                            , _gamelogPart2
+                        );
+                    }
+                }
             }
         }
 

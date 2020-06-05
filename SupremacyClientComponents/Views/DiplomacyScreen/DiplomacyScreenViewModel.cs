@@ -1121,7 +1121,7 @@ namespace Supremacy.Client.Views
 
             _foreignPowers.Clear();
 
-            var playerEmpireId = AppContext.LocalPlayer.EmpireID;
+            var playerEmpireId = AppContext.LocalPlayer.EmpireID; // local player
             var playerDiplomat = Diplomat.Get(playerEmpireId);
 
             foreach (var civ in GameContext.Current.Civilizations)
@@ -1133,7 +1133,7 @@ namespace Supremacy.Client.Views
                 var foreignPowerViewModel = new ForeignPowerViewModel(foreignPower);
 
                 _foreignPowers.Add(foreignPowerViewModel);
-                GameLog.Client.Diplomacy.DebugFormat("Added ForeignPowerView: {2} (ID {1}) vs {0}: {3} ({4}/{5})", civ.ShortName, playerEmpireId, AppContext.LocalPlayer.Empire.Name
+                GameLog.Client.Diplomacy.DebugFormat("!!! View of local player {1} for {0}: {2} ({3}/{4})", civ.ShortName, AppContext.LocalPlayer.Empire.Name
                     , foreignPowerViewModel.Status
                     , foreignPowerViewModel.CounterpartyRegard
                     , foreignPowerViewModel.CounterpartyTrust
@@ -1183,7 +1183,7 @@ namespace Supremacy.Client.Views
 
         internal static DiplomacyMessageElementType ElementTypeFromClauseType(ClauseType clauseType)
         {
-            GameLog.Client.Diplomacy.DebugFormat("((()))DiplomacyMessageFromClauseType ClauseType in ={0}", clauseType );
+            GameLog.Client.Diplomacy.DebugFormat("((()))DiplomacyMessageFromClauseType ClauseType param ={0}", clauseType );
             switch (clauseType)
             {
                 case ClauseType.OfferWithdrawTroops:
@@ -1243,9 +1243,9 @@ namespace Supremacy.Client.Views
             }
         }
 
-        internal static ClauseType ElementTypeToClauseType(DiplomacyMessageElementType elementType)
+        internal static ClauseType ElementTypeToClauseType(DiplomacyMessageElementType elementType) // clicking send in Diplomatic Screen action
         {
-            GameLog.Client.Diplomacy.DebugFormat("((()))ElementTypeToClauseType DiploMessageElementType in ={0}", elementType);
+            GameLog.Client.Diplomacy.DebugFormat("((()))ElementToClause DiploMessageElement param ={0}", elementType);
             switch (elementType)
             {
                 case DiplomacyMessageElementType.OfferWithdrawTroopsClause:
@@ -1305,9 +1305,9 @@ namespace Supremacy.Client.Views
             }
         }
 
-        internal static StatementType ElementTypeToStatementType(DiplomacyMessageElementType elementType)
+        internal static StatementType ElementTypeToStatementType(DiplomacyMessageElementType elementType) // see your action element as statment on Diplomatic Screen
         {
-            GameLog.Client.Diplomacy.DebugFormat("((()))StatementTypeToStatementType DiploMessageElementType in ={0}", elementType);
+            GameLog.Client.Diplomacy.DebugFormat("((()))ElementToStatement DiploMessageElement param ={0}", elementType);
             switch (elementType)
             {
                 case DiplomacyMessageElementType.WarDeclaration:
