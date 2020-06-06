@@ -884,7 +884,7 @@ namespace Supremacy.Game
                                       + foreignPower.ResponseSent.Recipient + ": > "
                                       + foreignPower.ResponseSent.ResponseType.ToString()
                                       + Environment.NewLine;
-                        if (foreignPower.StatementReceived != null)  // in SinglePlayer you'll never get this "received" because you are always the playing SENDER
+                        if (foreignPower.StatementReceived != null)  // in SinglePlayer you'll never get this "received" because you are always the playing SENDER unitl AI sends
                         {
 
                             //string parameterString = foreignPower.StatementSent.Parameter.ToString() ?? "";
@@ -897,7 +897,7 @@ namespace Supremacy.Game
                                       ;
 
                             GameLog.Core.Diplomacy.DebugFormat("------------------------------------------");
-                            GameLog.Core.Diplomacy.DebugFormat("received a 'Sabotage'-Diplomacy-Statement, Tone = {0}", foreignPower.StatementReceived.Tone.ToString());
+                            //GameLog.Core.Diplomacy.DebugFormat("received a 'Sabotage'-Diplomacy-Statement, Tone = {0}", foreignPower.StatementReceived.Tone.ToString());
                             GameLog.Core.Diplomacy.DebugFormat(_gameLog);
                         }
                     //}

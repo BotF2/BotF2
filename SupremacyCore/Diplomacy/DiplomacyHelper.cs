@@ -75,18 +75,28 @@ namespace Supremacy.Diplomacy
 
                 var foreignPower = diplomat.GetForeignPower(civ);
 
-                if (civId == otherPower.CivID)
+                if (otherPower.CivID == diplomat.OwnerID)
                 {
                     //var foreignPower = diplomat.GetForeignPower(civ);
-                    GameLog.Core.Diplomacy.DebugFormat("BEFORE: civ = {0}, otherPower.CivID = {1}, trustDelta = {2}, diplomat.Owner = {3}, foreignPower.OwnerID = {4}, CurrentTrust = {5}",
-                                    civ, otherPower.CivID, trustDelta, diplomat.Owner, foreignPower.OwnerID, foreignPower.DiplomacyData.Trust.CurrentValue);
+                    GameLog.Core.Diplomacy.DebugFormat(
+                        "BEFORE: civ = {0}, otherPower = {1}, trustDelta = {2}, diplomat.Owner = {3}, foreignPower = {4}, CurrentTrust = {5}",
+                        GameContext.Current.CivilizationManagers[civ.CivID].Civilization.ShortName,
+                        GameContext.Current.CivilizationManagers[otherPower.CivID].Civilization.ShortName,
+                        trustDelta, diplomat.Owner,
+                        GameContext.Current.CivilizationManagers[foreignPower.OwnerID].Civilization.ShortName,
+                        foreignPower.DiplomacyData.Trust.CurrentValue);
 
                     if (foreignPower != null)
                         foreignPower.DiplomacyData.Trust.AdjustCurrent(trustDelta);
                     foreignPower.DiplomacyData.Trust.UpdateAndReset();
 
-                    GameLog.Core.Diplomacy.DebugFormat("AFTER : civ = {0}, otherPower.CivID = {1}, trustDelta = {2}, diplomat.Owner = {3}, foreignPower.OwnerID = {4}, CurrentTrust = {5}",
-                            civ, otherPower.CivID, trustDelta, diplomat.Owner, foreignPower.OwnerID, foreignPower.DiplomacyData.Trust.CurrentValue);
+                    GameLog.Core.Diplomacy.DebugFormat(
+                        "AFTER : civ = {0}, otherPower = {1}, trustDelta = {2}, diplomat.Owner = {3}, foreignPower = {4}, CurrentTrust = {5}",
+                        GameContext.Current.CivilizationManagers[civ.CivID].Civilization.ShortName,
+                        GameContext.Current.CivilizationManagers[otherPower.CivID].Civilization.ShortName,
+                        trustDelta, diplomat.Owner,
+                        GameContext.Current.CivilizationManagers[foreignPower.OwnerID].Civilization.ShortName,
+                        foreignPower.DiplomacyData.Trust.CurrentValue);
                 }
 
                 if (foreignPower != null)
@@ -95,6 +105,7 @@ namespace Supremacy.Diplomacy
                     foreignPower.DiplomacyData.Trust.UpdateAndReset();
                     foreignPower.UpdateRegardAndTrustMeters();
                 }
+                
             }
         }
         //Regard makes crashes

@@ -1183,7 +1183,7 @@ namespace Supremacy.Client.Views
 
         internal static DiplomacyMessageElementType ElementTypeFromClauseType(ClauseType clauseType)
         {
-            GameLog.Client.Diplomacy.DebugFormat("((()))DiplomacyMessageFromClauseType ClauseType param ={0}", clauseType );
+            //GameLog.Client.Diplomacy.DebugFormat("((()))DiplomacyMessageFromClauseType ClauseType param ={0}", clauseType );
             switch (clauseType)
             {
                 case ClauseType.OfferWithdrawTroops:
@@ -1245,7 +1245,7 @@ namespace Supremacy.Client.Views
 
         internal static ClauseType ElementTypeToClauseType(DiplomacyMessageElementType elementType) // clicking send in Diplomatic Screen action
         {
-            GameLog.Client.Diplomacy.DebugFormat("((()))ElementToClause DiploMessageElement param ={0}", elementType);
+            //GameLog.Client.Diplomacy.DebugFormat("((()))ElementToClause DiploMessageElement param ={0}", elementType);
             switch (elementType)
             {
                 case DiplomacyMessageElementType.OfferWithdrawTroopsClause:
@@ -1307,31 +1307,31 @@ namespace Supremacy.Client.Views
 
         internal static StatementType ElementTypeToStatementType(DiplomacyMessageElementType elementType) // see your action element as statment on Diplomatic Screen
         {
-            GameLog.Client.Diplomacy.DebugFormat("((()))ElementToStatement DiploMessageElement param ={0}", elementType);
+            //GameLog.Client.Diplomacy.DebugFormat("((()))ElementToStatement DiploMessageElement param ={0}", elementType);
             switch (elementType)
             {
                 case DiplomacyMessageElementType.WarDeclaration:
                     return StatementType.WarDeclaration;
                 case DiplomacyMessageElementType.CommendWarStatement:
                     return StatementType.CommendWar;
-                case DiplomacyMessageElementType.CommendTreatyStatement:
-                    return StatementType.CommendRelationship;
-                case DiplomacyMessageElementType.CommendAssaultStatement:
-                    return StatementType.CommendAssault;
-                case DiplomacyMessageElementType.CommendInvasionStatement:
-                    return StatementType.CommendInvasion;
-                case DiplomacyMessageElementType.CommendSabotageStatement:
-                    return StatementType.CommendSabotage;
+                //case DiplomacyMessageElementType.CommendTreatyStatement:
+                //    return StatementType.CommendRelationship;
+                //case DiplomacyMessageElementType.CommendAssaultStatement:
+                //    return StatementType.CommendAssault;
+                //case DiplomacyMessageElementType.CommendInvasionStatement:
+                //    return StatementType.CommendInvasion;
+                //case DiplomacyMessageElementType.CommendSabotageStatement:
+                //    return StatementType.CommendSabotage;
                 case DiplomacyMessageElementType.DenounceWarStatement:
                     return StatementType.DenounceWar;
-                case DiplomacyMessageElementType.DenounceTreatyStatement:
-                    return StatementType.DenounceRelationship;
-                case DiplomacyMessageElementType.DenounceAssaultStatement:
-                    return StatementType.DenounceAssault;
-                case DiplomacyMessageElementType.DenounceInvasionStatement:
-                    return StatementType.DenounceInvasion;
-                case DiplomacyMessageElementType.DenounceSabotageStatement:
-                    return StatementType.DenounceSabotage;
+                //case DiplomacyMessageElementType.DenounceTreatyStatement:
+                //    return StatementType.DenounceRelationship;
+                //case DiplomacyMessageElementType.DenounceAssaultStatement:
+                //    return StatementType.DenounceAssault;
+                //case DiplomacyMessageElementType.DenounceInvasionStatement:
+                //    return StatementType.DenounceInvasion;
+                //case DiplomacyMessageElementType.DenounceSabotageStatement:
+                //    return StatementType.DenounceSabotage;
                 default:
                     return StatementType.NoStatement;
             }

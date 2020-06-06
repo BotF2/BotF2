@@ -51,18 +51,18 @@ namespace Supremacy.Diplomacy
     {
         NoStatement,
         CommendWar = 0,
-        CommendRelationship,
-        CommendAssault,
-        CommendInvasion,
-        CommendSabotage,
+        //CommendRelationship,
+        //CommendAssault,
+        //CommendInvasion,
+        //CommendSabotage,
         DenounceWar,
-        DenounceRelationship,
-        DenounceAssault,
-        DenounceInvasion,
-        DenounceSabotage,
-        ThreatenDestroyColony,
-        ThreatenTradeEmbargo,
-        ThreatenDeclareWar,
+        //DenounceRelationship,
+        //DenounceAssault,
+        //DenounceInvasion,
+        //DenounceSabotage,
+        //ThreatenDestroyColony,
+        //ThreatenTradeEmbargo,
+        //ThreatenDeclareWar,
         WarDeclaration,
         SabotageOrder
     }
@@ -132,7 +132,13 @@ namespace Supremacy.Diplomacy
         EnemySharesQuadrant,
         DeclaredWar,
         CapturedColony,
-        HealedPopulation
+        TreatyCounter,
+        TreatyReject,
+        HealedPopulation,
+        TreatyProposal,
+        TreatyAccept
+
+
     }
 
     [Flags]

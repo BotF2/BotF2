@@ -29,7 +29,7 @@ namespace Supremacy.Client.Views
             _activeAgreements = new ObservableCollection<ActiveAgreementViewModel>();
             _activeAgreementsView = new ReadOnlyObservableCollection<ActiveAgreementViewModel>(_activeAgreements);
 
-            GameLog.Client.Diplomacy.DebugFormat("foreignPower = {0}", foreignPower.Owner);
+            GameLog.Client.Diplomacy.DebugFormat("foreignPower = {0}", foreignPower.Owner.ShortName);
 
             UpdateIncomingMessage();
             UpdateActiveAgreements();
@@ -136,7 +136,7 @@ namespace Supremacy.Client.Views
         {
             get
             {
-                GameLog.Client.Diplomacy.DebugFormat("Is Diplomat Available ={0}", _foreignPower.IsDiplomatAvailable);
+                GameLog.Client.Diplomacy.DebugFormat("Is Diplomat Available ={0}, false if AtWar", _foreignPower.IsDiplomatAvailable);
                 return _foreignPower.IsDiplomatAvailable;
             }
         }
@@ -389,23 +389,23 @@ namespace Supremacy.Client.Views
                 //GameLog.Client.Diplomacy.DebugFormat("Statement Recipient ={0} Sender ={1}", statement.Recipient, statement.Sender);
                 switch (statement.StatementType)
                 {
-                    case StatementType.CommendRelationship:
-                    case StatementType.CommendAssault:
-                    case StatementType.CommendInvasion:
-                    case StatementType.CommendSabotage:
+                    //case StatementType.CommendRelationship:
+                    //case StatementType.CommendAssault:
+                    //case StatementType.CommendInvasion:
+                    //case StatementType.CommendSabotage:
                     case StatementType.DenounceWar:
-                    case StatementType.DenounceRelationship:
-                    case StatementType.DenounceAssault:
-                    case StatementType.DenounceInvasion:
-                    case StatementType.DenounceSabotage:
+                    //case StatementType.DenounceRelationship:
+                    //case StatementType.DenounceAssault:
+                    //case StatementType.DenounceInvasion:
+                    //case StatementType.DenounceSabotage:
                     case StatementType.SabotageOrder:
                         GameLog.Client.Diplomacy.DebugFormat("Message Statement");
                         return DiplomaticMessageCategory.Statement;
                     
-                    case StatementType.ThreatenDestroyColony:
-                    case StatementType.ThreatenTradeEmbargo:
-                    case StatementType.ThreatenDeclareWar:
-                        GameLog.Client.Diplomacy.DebugFormat("Message Threat");
+                    //case StatementType.ThreatenDestroyColony:
+                    //case StatementType.ThreatenTradeEmbargo:
+                    //case StatementType.ThreatenDeclareWar:
+                    //    GameLog.Client.Diplomacy.DebugFormat("Message Threat");
                         return DiplomaticMessageCategory.Threat;
                 }
             }
