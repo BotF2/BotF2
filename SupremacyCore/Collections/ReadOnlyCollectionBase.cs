@@ -17,18 +17,17 @@ namespace Supremacy.Collections
 
         private readonly IList<T> _list;
         [NonSerialized]
-        private Object _syncRoot;
+        private object _syncRoot;
 
         public ReadOnlyCollectionBase([NotNull] IList<T> list)
         {
-            if (list == null)
-                throw new ArgumentNullException("list");
-            _list = list;
+            _list = list ?? throw new ArgumentNullException(nameof(list));
         }
 
         public int Count
         {
-            get {
+            get
+            {
                 lock (SyncRoot)
                 {
                     return _list.Count;
@@ -38,7 +37,8 @@ namespace Supremacy.Collections
 
         public T this[int index]
         {
-            get {
+            get
+            {
                 lock (SyncRoot)
                 {
                     return _list[index];
@@ -70,23 +70,20 @@ namespace Supremacy.Collections
             }
         }
 
-        public int IndexOf(T value)
+        public int IndexOf(T item)
         {
             lock (SyncRoot)
             {
-                return _list.IndexOf(value);
+                return _list.IndexOf(item);
             }
         }
 
-        bool ICollection<T>.IsReadOnly
-        {
-            get { return true; }
-        }
+        bool ICollection<T>.IsReadOnly => true;
 
         T IList<T>.this[int index]
         {
-            get { return _list[index]; }
-            set { throw NotSupportedOnReadOnlyCollection(); }
+            get => _list[index];
+            set => throw NotSupportedOnReadOnlyCollection();
         }
 
         void ICollection<T>.Add(T value)
@@ -99,7 +96,7 @@ namespace Supremacy.Collections
             throw NotSupportedOnReadOnlyCollection();
         }
 
-        void IList<T>.Insert(int index, T value)
+        void IList<T>.Insert(int index, T item)
         {
             throw NotSupportedOnReadOnlyCollection();
         }
@@ -119,10 +116,7 @@ namespace Supremacy.Collections
             return GetEnumerator();
         }
 
-        public bool IsSynchronized
-        {
-            get { return true; }
-        }
+        public bool IsSynchronized => true;
 
         public object SyncRoot
         {
@@ -130,14 +124,13 @@ namespace Supremacy.Collections
             {
                 if (_syncRoot == null)
                 {
-                    var c = _list as ICollection;
-                    if (c != null)
+                    if (_list is ICollection c)
                     {
                         _syncRoot = c.SyncRoot;
                     }
                     else
                     {
-                        Interlocked.CompareExchange(ref _syncRoot, new Object(), null);
+                        _ = Interlocked.CompareExchange(ref _syncRoot, new object(), null);
                     }
                 }
                 return _syncRoot;
@@ -147,22 +140,31 @@ namespace Supremacy.Collections
         void ICollection.CopyTo(Array array, int index)
         {
             if (array == null)
-                throw new ArgumentNullException("array");
+            {
+                throw new ArgumentNullException(nameof(array));
+            }
 
             if (array.Rank != 1)
-                throw new ArgumentException("Destination array must be single-dimensional.", "array");
+            {
+                throw new ArgumentException("Destination array must be single-dimensional.", nameof(array));
+            }
 
             if (array.GetLowerBound(0) != 0)
-                throw new ArgumentException("Destination array has non-zero lower bound.", "array");
+            {
+                throw new ArgumentException("Destination array has non-zero lower bound.", nameof(array));
+            }
 
             if (index < 0)
-                throw new ArgumentOutOfRangeException("index", "Index must be non-negative.");
+            {
+                throw new ArgumentOutOfRangeException(nameof(index), "Index must be non-negative.");
+            }
 
             if ((array.Length - index) < Count)
-                throw new ArgumentException("Destination array is not large enough.", "array");
+            {
+                throw new ArgumentException("Destination array is not large enough.", nameof(array));
+            }
 
-            var items = array as T[];
-            if (items != null)
+            if (array is T[] items)
             {
                 lock (SyncRoot)
                 {
@@ -177,26 +179,31 @@ namespace Supremacy.Collections
                 // For example, if the element type of the Array is derived from T,
                 // we can't figure out if we can successfully copy the element beforehand. 
                 //
-                var targetType = array.GetType().GetElementType();
-                var sourceType = typeof(T);
+                Type targetType = array.GetType().GetElementType();
+                Type sourceType = typeof(T);
                 if (!(targetType.IsAssignableFrom(sourceType) || sourceType.IsAssignableFrom(targetType)))
+                {
                     throw new ArgumentException("Destination array is incompatible with this collection type.");
+                }
 
                 //
                 // We can't cast array of value type to object[], so we don't support 
                 // widening of primitive types here.
                 // 
-                var objects = array as object[];
-                if (objects == null)
+                if (!(array is object[] objects))
+                {
                     throw new ArgumentException("Destination array is incompatible with this collection type.");
+                }
 
                 lock (SyncRoot)
                 {
-                    var count = _list.Count;
+                    int count = _list.Count;
                     try
                     {
-                        for (var i = 0; i < count; i++)
+                        for (int i = 0; i < count; i++)
+                        {
                             objects[index++] = _list[i];
+                        }
                     }
                     catch (ArrayTypeMismatchException)
                     {
@@ -206,23 +213,14 @@ namespace Supremacy.Collections
             }
         }
 
-        bool IList.IsFixedSize
-        {
-            get { return true; }
-        }
+        bool IList.IsFixedSize => true;
 
-        bool IList.IsReadOnly
-        {
-            get { return true; }
-        }
+        bool IList.IsReadOnly => true;
 
         object IList.this[int index]
         {
-            get { return this[index]; }
-            set
-            {
-                throw NotSupportedOnReadOnlyCollection();
-            }
+            get => this[index];
+            set => throw NotSupportedOnReadOnlyCollection();
         }
 
         int IList.Add(object value)
@@ -237,22 +235,26 @@ namespace Supremacy.Collections
 
         private static bool IsCompatibleObject(object value)
         {
-            if ((value is T) || (value == null && !typeof(T).IsValueType))
-                return true;
-            return false;
+            return (value is T) || (value == null && !typeof(T).IsValueType);
         }
 
         bool IList.Contains(object value)
         {
             if (IsCompatibleObject(value))
+            {
                 return Contains((T)value);
+            }
+
             return false;
         }
 
         int IList.IndexOf(object value)
         {
             if (IsCompatibleObject(value))
+            {
                 return IndexOf((T)value);
+            }
+
             return -1;
         }
 
@@ -283,18 +285,20 @@ namespace Supremacy.Collections
             {
                 lock (SyncRoot)
                 {
-                    var source = _list as INotifyCollectionChanged; 
-                    if (source != null)
+                    if (_list is INotifyCollectionChanged source)
+                    {
                         source.CollectionChanged += value;
+                    }
                 }
             }
             remove
             {
                 lock (SyncRoot)
                 {
-                    var source = _list as INotifyCollectionChanged;
-                    if (source != null)
+                    if (_list is INotifyCollectionChanged source)
+                    {
                         source.CollectionChanged -= value;
+                    }
                 }
             }
         }

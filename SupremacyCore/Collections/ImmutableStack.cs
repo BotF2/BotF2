@@ -8,10 +8,7 @@ namespace Supremacy.Collections
     {
         private sealed class EmptyStack : IStack<T>
         {
-            public bool IsEmpty
-            {
-                get { return true; }
-            }
+            public bool IsEmpty => true;
 
             public T Peek()
             {
@@ -36,10 +33,7 @@ namespace Supremacy.Collections
 
         private static readonly EmptyStack s_empty = new EmptyStack();
 
-        public static IStack<T> Empty
-        {
-            get { return s_empty; }
-        }
+        public static IStack<T> Empty => s_empty;
 
         private readonly T head;
         private readonly IStack<T> tail;
@@ -50,10 +44,7 @@ namespace Supremacy.Collections
             this.tail = tail;
         }
 
-        public bool IsEmpty
-        {
-            get { return false; }
-        }
+        public bool IsEmpty => false;
 
         public T Peek()
         {
@@ -73,7 +64,9 @@ namespace Supremacy.Collections
         public IEnumerator<T> GetEnumerator()
         {
             for (IStack<T> stack = this; !stack.IsEmpty; stack = stack.Pop())
+            {
                 yield return stack.Peek();
+            }
         }
 
         IEnumerator IEnumerable.GetEnumerator()

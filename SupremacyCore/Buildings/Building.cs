@@ -33,11 +33,11 @@ namespace Supremacy.Buildings
         /// <value><c>true</c> if this <see cref="Building"/> is active; otherwise, <c>false</c>.</value>
         public bool IsActive
         {
-            get { return _isActive || BuildingDesign.AlwaysOnline; }
+            get => _isActive || BuildingDesign.AlwaysOnline;
             set
             {
                 _isActive = value;
-                OnPropertyChanged("IsActive");
+                OnPropertyChanged(nameof(IsActive));
             }
         }
 
@@ -45,19 +45,13 @@ namespace Supremacy.Buildings
         /// Gets the type of the UniverseObject.
         /// </summary>
         /// <value>The type of the UniverseObject.</value>
-        public override UniverseObjectType ObjectType
-        {
-            get { return UniverseObjectType.Building; }
-        }
+        public override UniverseObjectType ObjectType => UniverseObjectType.Building;
 
         /// <summary>
         /// Gets the building design.
         /// </summary>
         /// <value>The building design.</value>
-        public BuildingDesign BuildingDesign
-        {
-            get { return Design as BuildingDesign; }
-        }
+        public BuildingDesign BuildingDesign => Design as BuildingDesign;
 
         public Building() { }
 
@@ -69,7 +63,9 @@ namespace Supremacy.Buildings
             : base(design)
         {
             if (design.AlwaysOnline)
+            {
                 _isActive = true;
+            }
 
             _effectGroupBindings = new EffectGroupBindingCollection();
             _effectGroupBindings.AddRange(design.Effects.Select(o => o.Bind(this)));
@@ -89,7 +85,7 @@ namespace Supremacy.Buildings
 
         public override void CloneFrom(Cloneable source, ICloneContext context)
         {
-            var typedSource = (Building)source;
+            Building typedSource = (Building)source;
 
             base.CloneFrom(typedSource, context);
 
@@ -98,11 +94,8 @@ namespace Supremacy.Buildings
 
         #region Implementation of IEffectSource
 
-        private EffectGroupBindingCollection _effectGroupBindings;
-        public IEffectGroupBindingCollection EffectGroupBindings
-        {
-            get { return _effectGroupBindings; }
-        }
+        private readonly EffectGroupBindingCollection _effectGroupBindings;
+        public IEffectGroupBindingCollection EffectGroupBindings => _effectGroupBindings;
 
         #endregion
     }

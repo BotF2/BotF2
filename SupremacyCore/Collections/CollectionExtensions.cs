@@ -30,15 +30,21 @@ namespace Supremacy.Collections
         public static void AddSorted<TValue, TKey>([NotNull] this IList<TValue> list, [NotNull] TValue item, [NotNull] Func<TValue, TKey> keySelector) where TKey : IComparable<TKey>
         {
             if (list == null)
-                throw new ArgumentNullException("list");
+            {
+                throw new ArgumentNullException(nameof(list));
+            }
+
             if (item == null)
-                throw new ArgumentNullException("item");
+            {
+                throw new ArgumentNullException(nameof(item));
+            }
+
             if (keySelector == null)
-                throw new ArgumentNullException("keySelector");
+            {
+                throw new ArgumentNullException(nameof(keySelector));
+            }
 
-            int index;
-
-            LocateSorted(list, keySelector(item), keySelector, out index);
+            _ = LocateSorted(list, keySelector(item), keySelector, out int index);
 
             list.Insert(index, item);
         }
@@ -55,12 +61,12 @@ namespace Supremacy.Collections
         /// <returns>True if present; false otherwise.</returns>
         private static bool LocateSorted<TValue, TKey>([NotNull] IList<TValue> list, [NotNull] TKey key, [NotNull] Func<TValue, TKey> keySelector, out int index) where TKey : IComparable<TKey>
         {
-            var l = -1;
-            var r = list.Count;
+            int l = -1;
+            int r = list.Count;
 
             while (true)
             {
-                var p = (r - l) / 2;
+                int p = (r - l) / 2;
                 if (0 == p)
                 {
                     index = r;
@@ -69,7 +75,7 @@ namespace Supremacy.Collections
 
                 p += l;
 
-                var compare = key.CompareTo(keySelector(list[p]));
+                int compare = key.CompareTo(keySelector(list[p]));
                 if (compare == 0)
                 {
                     index = p;
@@ -77,9 +83,13 @@ namespace Supremacy.Collections
                 }
 
                 if (compare > 0)
+                {
                     l = p;
+                }
                 else
+                {
                     r = p;
+                }
             }
         }
 
@@ -100,15 +110,14 @@ namespace Supremacy.Collections
                 _count = count;
             }
 
-            public override int Count
-            {
-                get { return Math.Min(_count, _wrappedList.Count - _start); }
-            }
+            public override int Count => Math.Min(_count, _wrappedList.Count - _start);
 
             public override void Clear()
             {
                 if (_wrappedList.Count - _start < _count)
+                {
                     _count = _wrappedList.Count - _start;
+                }
 
                 while (_count > 0)
                 {
@@ -120,7 +129,9 @@ namespace Supremacy.Collections
             public override void Insert(int index, T item)
             {
                 if (index < 0 || index > _count)
-                    throw new ArgumentOutOfRangeException("index");
+                {
+                    throw new ArgumentOutOfRangeException(nameof(index));
+                }
 
                 _wrappedList.Insert(_start + index, item);
                 ++_count;
@@ -129,7 +140,9 @@ namespace Supremacy.Collections
             public override void RemoveAt(int index)
             {
                 if (index < 0 || index >= _count)
-                    throw new ArgumentOutOfRangeException("index");
+                {
+                    throw new ArgumentOutOfRangeException(nameof(index));
+                }
 
                 _wrappedList.RemoveAt(_start + index);
                 --_count;
@@ -138,7 +151,9 @@ namespace Supremacy.Collections
             public override bool Remove(T item)
             {
                 if (_wrappedList.IsReadOnly)
+                {
                     throw new NotSupportedException("Cannot modify read-only collection.");
+                }
 
                 return base.Remove(item);
             }
@@ -148,33 +163,42 @@ namespace Supremacy.Collections
                 get
                 {
                     if (index < 0 || index >= _count)
-                        throw new ArgumentOutOfRangeException("index");
+                    {
+                        throw new ArgumentOutOfRangeException(nameof(index));
+                    }
 
                     return _wrappedList[_start + index];
                 }
                 set
                 {
                     if (index < 0 || index >= _count)
-                        throw new ArgumentOutOfRangeException("index");
+                    {
+                        throw new ArgumentOutOfRangeException(nameof(index));
+                    }
 
                     _wrappedList[_start + index] = value;
                 }
             }
 
-            bool ICollection<T>.IsReadOnly
-            {
-                get { return _wrappedList.IsReadOnly; }
-            }
+            bool ICollection<T>.IsReadOnly => _wrappedList.IsReadOnly;
         }
 
         public static IList<T> Range<T>([NotNull] this IList<T> list, int start, int count)
         {
             if (list == null)
-                throw new ArgumentOutOfRangeException("list");
+            {
+                throw new ArgumentOutOfRangeException(nameof(list));
+            }
+
             if ((start < 0) || (start > list.Count) || ((start == list.Count) && (count != 0)))
-                throw new ArgumentOutOfRangeException("start");
+            {
+                throw new ArgumentOutOfRangeException(nameof(start));
+            }
+
             if ((count < 0) || (count > list.Count) || ((count + start) > list.Count))
-                throw new ArgumentOutOfRangeException("count");
+            {
+                throw new ArgumentOutOfRangeException(nameof(count));
+            }
 
             return new ListRange<T>(list, start, count);
         }
@@ -214,15 +238,9 @@ namespace Supremacy.Collections
                 _wrappedCollection.CopyTo(array, arrayIndex);
             }
 
-            public int Count
-            {
-                get { return _wrappedCollection.Count; }
-            }
+            public int Count => _wrappedCollection.Count;
 
-            public bool IsReadOnly
-            {
-                get { return true; }
-            }
+            public bool IsReadOnly => true;
 
             public void Add(T item)
             {
@@ -245,7 +263,10 @@ namespace Supremacy.Collections
         public static ICollection<T> AsReadOnly<T>([NotNull] this ICollection<T> collection)
         {
             if (collection == null)
-                throw new ArgumentNullException("collection");
+            {
+                throw new ArgumentNullException(nameof(collection));
+            }
+
             return new ReadOnlyCollection<T>(collection);
         }
 
@@ -289,21 +310,15 @@ namespace Supremacy.Collections
                 _wrappedList.CopyTo(array, arrayIndex);
             }
 
-            public int Count
-            {
-                get { return _wrappedList.Count; }
-            }
+            public int Count => _wrappedList.Count;
 
-            public bool IsReadOnly
-            {
-                get { return true; }
-            }
+            public bool IsReadOnly => true;
 
             public T this[int index]
             {
-                get { return _wrappedList[index]; }
+                get => _wrappedList[index];
                 // ReSharper disable ValueParameterNotUsed
-                set { MethodModifiesCollection(); }
+                set => MethodModifiesCollection();
                 // ReSharper restore ValueParameterNotUsed
             }
 
@@ -341,9 +356,7 @@ namespace Supremacy.Collections
 
             public ListAsIndexedCollection([NotNull] IList<T> list)
             {
-                if (list == null)
-                    throw new ArgumentNullException("list");
-                _list = list;
+                _list = list ?? throw new ArgumentNullException(nameof(list));
             }
 
             #region Implementation of IEnumerable
@@ -362,15 +375,9 @@ namespace Supremacy.Collections
 
             #region Implementation of IIndexedEnumerable<T>
 
-            public int Count
-            {
-                get { return _list.Count; }
-            }
+            public int Count => _list.Count;
 
-            public T this[int index]
-            {
-                get { return _list[index]; }
-            }
+            public T this[int index] => _list[index];
 
             #endregion
 
@@ -397,11 +404,7 @@ namespace Supremacy.Collections
         [CanBeNull]
         public static IList<T> AsReadOnly<T>([CanBeNull] this IList<T> list)
         {
-            if (list == null)
-                return null;
-            if (list.IsReadOnly)
-                return list;
-            return new ReadOnlyList<T>(list);
+            return list == null ? null : list.IsReadOnly ? list : new ReadOnlyList<T>(list);
         }
 
         [Serializable]
@@ -412,10 +415,7 @@ namespace Supremacy.Collections
 
             public ReadOnlyDictionary([NotNull] IDictionary<TKey, TValue> wrappedDictionary)
             {
-                if (wrappedDictionary == null)
-                    throw new ArgumentNullException("wrappedDictionary");
-
-                _wrappedDictionary = wrappedDictionary;
+                _wrappedDictionary = wrappedDictionary ?? throw new ArgumentNullException(nameof(wrappedDictionary));
             }
 
             private static void MethodModifiesCollection()
@@ -433,15 +433,9 @@ namespace Supremacy.Collections
                 return _wrappedDictionary.ContainsKey(key);
             }
 
-            public ICollection<TKey> Keys
-            {
-                get { return AsReadOnly(_wrappedDictionary.Keys); }
-            }
+            public ICollection<TKey> Keys => _wrappedDictionary.Keys.AsReadOnly();
 
-            public ICollection<TValue> Values
-            {
-                get { return AsReadOnly(_wrappedDictionary.Values); }
-            }
+            public ICollection<TValue> Values => _wrappedDictionary.Values.AsReadOnly();
 
             public bool Remove(TKey key)
             {
@@ -456,9 +450,9 @@ namespace Supremacy.Collections
 
             public TValue this[TKey key]
             {
-                get { return _wrappedDictionary[key]; }
+                get => _wrappedDictionary[key];
                 // ReSharper disable ValueParameterNotUsed
-                set { MethodModifiesCollection(); }
+                set => MethodModifiesCollection();
                 // ReSharper restore ValueParameterNotUsed
             }
 
@@ -482,15 +476,9 @@ namespace Supremacy.Collections
                 _wrappedDictionary.CopyTo(array, arrayIndex);
             }
 
-            public int Count
-            {
-                get { return _wrappedDictionary.Count; }
-            }
+            public int Count => _wrappedDictionary.Count;
 
-            public bool IsReadOnly
-            {
-                get { return true; }
-            }
+            public bool IsReadOnly => true;
 
             public bool Remove(KeyValuePair<TKey, TValue> item)
             {
@@ -511,11 +499,7 @@ namespace Supremacy.Collections
 
         public static IDictionary<TKey, TValue> AsReadOnly<TKey, TValue>([CanBeNull] this IDictionary<TKey, TValue> dictionary)
         {
-            if (dictionary == null)
-                return null;
-            if (dictionary.IsReadOnly)
-                return dictionary;
-            return new ReadOnlyDictionary<TKey, TValue>(dictionary);
+            return dictionary == null ? null : dictionary.IsReadOnly ? dictionary : new ReadOnlyDictionary<TKey, TValue>(dictionary);
         }
 
         [Serializable]
@@ -528,21 +512,17 @@ namespace Supremacy.Collections
                 _wrappedEnumerator = wrappedEnumerator;
             }
 
-            T IEnumerator<T>.Current
-            {
-                get { return (T)_wrappedEnumerator.Current; }
-            }
+            T IEnumerator<T>.Current => (T)_wrappedEnumerator.Current;
 
             void IDisposable.Dispose()
             {
-                if (_wrappedEnumerator is IDisposable)
-                    ((IDisposable)_wrappedEnumerator).Dispose();
+                if (_wrappedEnumerator is IDisposable disposable)
+                {
+                    disposable.Dispose();
+                }
             }
 
-            object IEnumerator.Current
-            {
-                get { return _wrappedEnumerator.Current; }
-            }
+            object IEnumerator.Current => _wrappedEnumerator.Current;
 
             bool IEnumerator.MoveNext()
             {
@@ -579,11 +559,9 @@ namespace Supremacy.Collections
         [CanBeNull]
         public static IEnumerable<T> TypedAs<T>([CanBeNull] this IEnumerable untypedCollection)
         {
-            if (untypedCollection == null)
-                return null;
-            if (untypedCollection is IEnumerable<T>)
-                return (IEnumerable<T>)untypedCollection;
-            return new TypedEnumerable<T>(untypedCollection);
+            return untypedCollection == null
+                ? (IEnumerable<T>)null
+                : untypedCollection is IEnumerable<T> enumerables ? enumerables : new TypedEnumerable<T>(untypedCollection);
         }
 
         [Serializable]
@@ -596,37 +574,48 @@ namespace Supremacy.Collections
                 _wrappedArray = wrappedArray;
             }
 
-            public override int Count
-            {
-                get { return _wrappedArray.Length; }
-            }
+            public override int Count => _wrappedArray.Length;
 
             public override void Clear()
             {
-                var count = _wrappedArray.Length;
-                for (var i = 0; i < count; ++i)
-                    _wrappedArray[i] = default(T);
+                int count = _wrappedArray.Length;
+                for (int i = 0; i < count; ++i)
+                {
+                    _wrappedArray[i] = default;
+                }
             }
 
             public override void Insert(int index, T item)
             {
                 if (index < 0 || index > _wrappedArray.Length)
-                    throw new ArgumentOutOfRangeException("index");
+                {
+                    throw new ArgumentOutOfRangeException(nameof(index));
+                }
 
                 if (index + 1 < _wrappedArray.Length)
+                {
                     Array.Copy(_wrappedArray, index, _wrappedArray, index + 1, _wrappedArray.Length - index - 1);
+                }
+
                 if (index < _wrappedArray.Length)
+                {
                     _wrappedArray[index] = item;
+                }
             }
 
             public override void RemoveAt(int index)
             {
                 if (index < 0 || index >= _wrappedArray.Length)
-                    throw new ArgumentOutOfRangeException("index");
+                {
+                    throw new ArgumentOutOfRangeException(nameof(index));
+                }
 
                 if (index < _wrappedArray.Length - 1)
+                {
                     Array.Copy(_wrappedArray, index + 1, _wrappedArray, index, _wrappedArray.Length - index - 1);
-                _wrappedArray[_wrappedArray.Length - 1] = default(T);
+                }
+
+                _wrappedArray[_wrappedArray.Length - 1] = default;
             }
 
             public override T this[int index]
@@ -634,14 +623,18 @@ namespace Supremacy.Collections
                 get
                 {
                     if (index < 0 || index >= _wrappedArray.Length)
-                        throw new ArgumentOutOfRangeException("index");
+                    {
+                        throw new ArgumentOutOfRangeException(nameof(index));
+                    }
 
                     return _wrappedArray[index];
                 }
                 set
                 {
                     if (index < 0 || index >= _wrappedArray.Length)
-                        throw new ArgumentOutOfRangeException("index");
+                    {
+                        throw new ArgumentOutOfRangeException(nameof(index));
+                    }
 
                     _wrappedArray[index] = value;
                 }
@@ -650,13 +643,24 @@ namespace Supremacy.Collections
             public override void CopyTo(T[] array, int arrayIndex)
             {
                 if (array == null)
-                    throw new ArgumentNullException("array");
+                {
+                    throw new ArgumentNullException(nameof(array));
+                }
+
                 if (array.Length < _wrappedArray.Length)
-                    throw new ArgumentException("array is too short", "array");
+                {
+                    throw new ArgumentException("array is too short", nameof(array));
+                }
+
                 if (arrayIndex < 0 || arrayIndex >= array.Length)
-                    throw new ArgumentOutOfRangeException("arrayIndex");
+                {
+                    throw new ArgumentOutOfRangeException(nameof(arrayIndex));
+                }
+
                 if (array.Length + arrayIndex < _wrappedArray.Length)
-                    throw new ArgumentOutOfRangeException("arrayIndex");
+                {
+                    throw new ArgumentOutOfRangeException(nameof(arrayIndex));
+                }
 
                 Array.Copy(_wrappedArray, 0, array, arrayIndex, _wrappedArray.Length);
             }
@@ -668,13 +672,10 @@ namespace Supremacy.Collections
 
             IEnumerator IEnumerable.GetEnumerator()
             {
-                return ((IList)_wrappedArray).GetEnumerator();
+                return _wrappedArray.GetEnumerator();
             }
 
-            bool IList.IsFixedSize
-            {
-                get { return true; }
-            }
+            bool IList.IsFixedSize => true;
         }
         #endregion CollectionBase wrappers
 
@@ -682,11 +683,19 @@ namespace Supremacy.Collections
         public static void RemoveRange<TKey, TValue>([NotNull] this IDictionary<TKey, TValue> dictionary, [NotNull] IEnumerable<TKey> keys)
         {
             if (dictionary == null)
-                throw new ArgumentNullException("dictionary");
+            {
+                throw new ArgumentNullException(nameof(dictionary));
+            }
+
             if (keys == null)
-                throw new ArgumentNullException("keys");
-            foreach (var key in keys)
-                dictionary.Remove(key);
+            {
+                throw new ArgumentNullException(nameof(keys));
+            }
+
+            foreach (TKey key in keys)
+            {
+                _ = dictionary.Remove(key);
+            }
         }
         #endregion Consecutive items
 
@@ -694,16 +703,23 @@ namespace Supremacy.Collections
         public static int CountWhere<T>(this IEnumerable<T> collection, Func<T, bool> predicate)
         {
             if (collection == null)
-                throw new ArgumentNullException("collection");
+            {
+                throw new ArgumentNullException(nameof(collection));
+            }
+
             if (predicate == null)
-                throw new ArgumentNullException("predicate");
+            {
+                throw new ArgumentNullException(nameof(predicate));
+            }
 
-            var count = 0;
+            int count = 0;
 
-            foreach (var item in collection)
+            foreach (T item in collection)
             {
                 if (predicate(item))
+                {
                     ++count;
+                }
             }
 
             return count;
@@ -712,26 +728,36 @@ namespace Supremacy.Collections
         public static ICollection<T> RemoveWhere<T>(this ICollection<T> collection, Func<T, bool> predicate)
         {
             if (collection == null)
-                throw new ArgumentNullException("collection");
-            if (predicate == null)
-                throw new ArgumentNullException("predicate");
-            if (collection is T[])
-                collection = new ArrayWrapper<T>((T[])collection);
-            if (collection.IsReadOnly)
-                throw new ArgumentException("List is read-only.", "collection");
+            {
+                throw new ArgumentNullException(nameof(collection));
+            }
 
-            var list = collection as IList<T>;
-            if (list != null)
+            if (predicate == null)
+            {
+                throw new ArgumentNullException(nameof(predicate));
+            }
+
+            if (collection is T[] v)
+            {
+                collection = new ArrayWrapper<T>(v);
+            }
+
+            if (collection.IsReadOnly)
+            {
+                throw new ArgumentException("List is read-only.", nameof(collection));
+            }
+
+            if (collection is IList<T> list)
             {
                 int i = -1, j = 0;
-                var listCount = list.Count;
-                var removed = new List<T>();
+                int listCount = list.Count;
+                List<T> removed = new List<T>();
 
                 // Remove item where predicate is true, compressing items to lower in the list. This is much more
                 // efficient than the naive algorithm that uses IList<T>.Remove().
                 while (j < listCount)
                 {
-                    var item = list[j];
+                    T item = list[j];
                     if (predicate(item))
                     {
                         removed.Add(item);
@@ -740,7 +766,9 @@ namespace Supremacy.Collections
                     {
                         ++i;
                         if (i != j)
+                        {
                             list[i] = item;
+                        }
                     }
                     ++j;
                 }
@@ -749,11 +777,13 @@ namespace Supremacy.Collections
                 if (i < listCount)
                 {
                     // remove items from the end.
-                    if (list is IList && ((IList)list).IsFixedSize)
+                    if (list is IList lists && lists.IsFixedSize)
                     {
                         // An array or similar. Null out the last elements.
                         while (i < listCount)
-                            list[i++] = default(T);
+                        {
+                            list[i++] = default;
+                        }
                     }
                     else
                     {
@@ -772,14 +802,20 @@ namespace Supremacy.Collections
             {
                 // We have to copy all the items to remove to a List, because collections can't be modifed 
                 // during an enumeration.
-                var removed = new List<T>();
+                List<T> removed = new List<T>();
 
-                foreach (var item in collection)
+                foreach (T item in collection)
+                {
                     if (predicate(item))
+                    {
                         removed.Add(item);
+                    }
+                }
 
-                foreach (var item in removed)
+                foreach (T item in removed)
+                {
                     collection.Remove(item);
+                }
 
                 return removed;
             }
@@ -788,17 +824,22 @@ namespace Supremacy.Collections
         public static bool TryFindFirstItem<T>(this IEnumerable<T> collection, Func<T, bool> condition, out T foundItem)
         {
             if (collection == null)
-                throw new ArgumentNullException("collection");
-            if (condition == null)
-                throw new ArgumentNullException("condition");
+            {
+                throw new ArgumentNullException(nameof(collection));
+            }
 
-            foreach (var item in collection.Where(condition))
+            if (condition == null)
+            {
+                throw new ArgumentNullException(nameof(condition));
+            }
+
+            foreach (T item in collection.Where(condition))
             {
                 foundItem = item;
                 return true;
             }
 
-            foundItem = default(T);
+            foundItem = default;
             return false;
         }
 
@@ -824,19 +865,24 @@ namespace Supremacy.Collections
         public static bool TryFindLastItem<T>([NotNull] this IEnumerable<T> collection, [NotNull] Func<T, bool> condition, [CanBeNull] out T foundItem)
         {
             if (collection == null)
-                throw new ArgumentNullException("collection");
+            {
+                throw new ArgumentNullException(nameof(collection));
+            }
+
             if (condition == null)
-                throw new ArgumentNullException("condition");
+            {
+                throw new ArgumentNullException(nameof(condition));
+            }
 
-            foundItem = default(T);
+            foundItem = default;
 
-            var list = collection as IList<T>;
+            IList<T> list = collection as IList<T>;
             if (list == null)
             {
                 const int listConstructionThreshold = 8192;
 
-                var trueCollection = collection as ICollection<T>;
-                if ((trueCollection != null) && (trueCollection.Count <= listConstructionThreshold))
+                ICollection<T> trueCollection = collection as ICollection<T>;
+                if (trueCollection?.Count <= listConstructionThreshold)
                 {
                     list = new T[trueCollection.Count];
                     collection.CopyTo(list);
@@ -844,37 +890,42 @@ namespace Supremacy.Collections
             }
             if (list != null)
             {
-                for (var index = list.Count - 1; index >= 0; --index)
+                for (int index = list.Count - 1; index >= 0; --index)
                 {
-                    var item = list[index];
+                    T item = list[index];
                     if (!condition(item))
+                    {
                         continue;
+                    }
+
                     foundItem = item;
                     return true;
                 }
 
-                foundItem = default(T);
+                foundItem = default;
                 return false;
             }
 
-            var indexedEnumerable = collection as IIndexedEnumerable<T>;
-            if (indexedEnumerable != null)
+            if (collection is IIndexedEnumerable<T> indexedEnumerable)
             {
-                for (var index = indexedEnumerable.Count - 1; index >= 0; --index)
+                for (int index = indexedEnumerable.Count - 1; index >= 0; --index)
                 {
-                    var item = indexedEnumerable[index];
+                    T item = indexedEnumerable[index];
                     if (!condition(item))
+                    {
                         continue;
+                    }
+
                     foundItem = item;
                     return true;
                 }
 
-                foundItem = default(T);
+                foundItem = default;
                 return false;
             }
 
-            var linkedList = new LinkedList<T>(collection);
-            for (var currentNode = linkedList.Last; currentNode.Previous != null; currentNode = currentNode.Previous)
+            LinkedList<T> linkedList = new LinkedList<T>(collection);
+            for (LinkedListNode<T> currentNode = linkedList.Last; currentNode.Previous != null; currentNode = currentNode.Previous)
             {
                 if (condition(currentNode.Value))
                 {
@@ -889,15 +940,23 @@ namespace Supremacy.Collections
         public static int FirstIndexWhere<T>([NotNull] this IIndexedEnumerable<T> list, [NotNull] Func<T, bool> predicate)
         {
             if (list == null)
-                throw new ArgumentNullException("list");
-            if (predicate == null)
-                throw new ArgumentNullException("predicate");
+            {
+                throw new ArgumentNullException(nameof(list));
+            }
 
-            var index = 0;
-            foreach (var item in list)
+            if (predicate == null)
+            {
+                throw new ArgumentNullException(nameof(predicate));
+            }
+
+            int index = 0;
+            foreach (T item in list)
             {
                 if (predicate(item))
+                {
                     return index;
+                }
+
                 ++index;
             }
 
@@ -913,9 +972,14 @@ namespace Supremacy.Collections
         public static int LastIndexWhere<T>([NotNull] this IList<T> list, [NotNull] Func<T, bool> predicate)
         {
             if (list == null)
-                throw new ArgumentNullException("list");
+            {
+                throw new ArgumentNullException(nameof(list));
+            }
+
             if (predicate == null)
-                throw new ArgumentNullException("predicate");
+            {
+                throw new ArgumentNullException(nameof(predicate));
+            }
 
             return LastIndexWhere(new ListAsIndexedCollection<T>(list), predicate);
         }
@@ -923,14 +987,21 @@ namespace Supremacy.Collections
         public static int LastIndexWhere<T>(this IIndexedEnumerable<T> list, Func<T, bool> predicate)
         {
             if (list == null)
-                throw new ArgumentNullException("list");
-            if (predicate == null)
-                throw new ArgumentNullException("predicate");
+            {
+                throw new ArgumentNullException(nameof(list));
+            }
 
-            for (var index = list.Count - 1; index >= 0; --index)
+            if (predicate == null)
+            {
+                throw new ArgumentNullException(nameof(predicate));
+            }
+
+            for (int index = list.Count - 1; index >= 0; --index)
             {
                 if (predicate(list[index]))
+                {
                     return index;
+                }
             }
 
             // didn't find any item that matches.
@@ -945,15 +1016,23 @@ namespace Supremacy.Collections
         public static int FirstIndexOf<T>(this IIndexedEnumerable<T> list, T item, IEqualityComparer<T> equalityComparer)
         {
             if (list == null)
-                throw new ArgumentNullException("list");
-            if (equalityComparer == null)
-                throw new ArgumentNullException("equalityComparer");
+            {
+                throw new ArgumentNullException(nameof(list));
+            }
 
-            var index = 0;
-            foreach (var x in list)
+            if (equalityComparer == null)
+            {
+                throw new ArgumentNullException(nameof(equalityComparer));
+            }
+
+            int index = 0;
+            foreach (T x in list)
             {
                 if (equalityComparer.Equals(x, item))
+                {
                     return index;
+                }
+
                 ++index;
             }
 
@@ -969,14 +1048,21 @@ namespace Supremacy.Collections
         public static int LastIndexOf<T>(this IIndexedEnumerable<T> list, T item, IEqualityComparer<T> equalityComparer)
         {
             if (list == null)
-                throw new ArgumentNullException("list");
-            if (equalityComparer == null)
-                throw new ArgumentNullException("equalityComparer");
+            {
+                throw new ArgumentNullException(nameof(list));
+            }
 
-            for (var index = list.Count - 1; index >= 0; --index)
+            if (equalityComparer == null)
+            {
+                throw new ArgumentNullException(nameof(equalityComparer));
+            }
+
+            for (int index = list.Count - 1; index >= 0; --index)
             {
                 if (equalityComparer.Equals(list[index], item))
+                {
                     return index;
+                }
             }
 
             // didn't find any item that matches.
@@ -996,19 +1082,29 @@ namespace Supremacy.Collections
             [NotNull] IEqualityComparer<T> equalityComparer)
         {
             if (firstCollection == null)
-                throw new ArgumentNullException("firstCollection");
+            {
+                throw new ArgumentNullException(nameof(firstCollection));
+            }
+
             if (secondCollection == null)
-                throw new ArgumentNullException("secondCollection");
+            {
+                throw new ArgumentNullException(nameof(secondCollection));
+            }
+
             if (equalityComparer == null)
-                throw new ArgumentException("equalityComparer");
+            {
+                throw new ArgumentException(nameof(equalityComparer));
+            }
 
-            var firstSet = firstCollection as HashSet<T>;
-            if ((firstSet == null) || (firstSet.Comparer != equalityComparer))
+            if ((!(firstCollection is HashSet<T> firstSet)) || (firstSet.Comparer != equalityComparer))
+            {
                 firstSet = new HashSet<T>(firstCollection, equalityComparer);
+            }
 
-            var secondSet = secondCollection as HashSet<T>;
-            if ((secondSet == null) || (secondSet.Comparer != equalityComparer))
+            if ((!(secondCollection is HashSet<T> secondSet)) || (secondSet.Comparer != equalityComparer))
+            {
                 secondSet = new HashSet<T>(secondCollection, equalityComparer);
+            }
 
             return firstSet.SetEquals(secondSet);
         }
@@ -1019,7 +1115,10 @@ namespace Supremacy.Collections
         public static string ToString<T>([NotNull] this IEnumerable<T> collection)
         {
             if (collection == null)
-                throw new ArgumentNullException("collection");
+            {
+                throw new ArgumentNullException(nameof(collection));
+            }
+
             return ToString(collection, true, "{", ",", "}");
         }
 
@@ -1032,41 +1131,57 @@ namespace Supremacy.Collections
             [NotNull] string end)
         {
             if (start == null)
-                throw new ArgumentNullException("start");
+            {
+                throw new ArgumentNullException(nameof(start));
+            }
+
             if (separator == null)
-                throw new ArgumentNullException("separator");
+            {
+                throw new ArgumentNullException(nameof(separator));
+            }
+
             if (end == null)
-                throw new ArgumentNullException("end");
+            {
+                throw new ArgumentNullException(nameof(end));
+            }
 
             if (collection == null)
+            {
                 return "null";
+            }
 
-            var firstItem = true;
+            bool firstItem = true;
 
-            var builder = new StringBuilder();
+            StringBuilder builder = new StringBuilder();
 
             builder.Append(start);
 
             // Call ToString on each item and put it in.
-            foreach (var item in collection)
+            foreach (T item in collection)
             {
                 if (!firstItem)
-                    builder.Append(separator);
+                {
+                    _ = builder.Append(separator);
+                }
 
                 // "TypedAs<object>((IEnumerable)item)" is never null because item is never 'null'.
                 // ReSharper disable AssignNullToNotNullAttribute
-                if (ReferenceEquals(item, null))
-                    builder.Append("null");
-                else if (recursive && item is IEnumerable && !(item is string))
-                    builder.Append(ToString(TypedAs<object>((IEnumerable)item), true, start, separator, end));
+                if (item == null)
+                {
+                    _ = builder.Append("null");
+                }
                 else
-                    builder.Append(item.ToString());
+                {
+                    _ = recursive && item is IEnumerable enumerable && !(item is string)
+                        ? builder.Append(ToString(TypedAs<object>(enumerable), true, start, separator, end))
+                        : builder.Append(item.ToString());
+                }
                 // ReSharper restore AssignNullToNotNullAttribute
 
                 firstItem = false;
             }
 
-            builder.Append(end);
+            _ = builder.Append(end);
             return builder.ToString();
         }
         #endregion String representations
@@ -1074,49 +1189,65 @@ namespace Supremacy.Collections
         #region Shuffles and Permutations
         public static T RandomElement<T>([NotNull] this IEnumerable<T> collection)
         {
-            T result;
-            if (!SelectRandomElement(collection, out result))
+            if (!SelectRandomElement(collection, out T result))
+            {
                 throw new InvalidOperationException("Sequence contains no elements");
+            }
+
             return result;
         }
 
         public static T RandomElementOrDefault<T>([NotNull] this IEnumerable<T> collection)
         {
-            T result;
-            SelectRandomElement(collection, out result);
+            _ = SelectRandomElement(collection, out T result);
             return result;
         }
 
         private static bool SelectRandomElement<T>([NotNull] IEnumerable<T> collection, out T result)
         {
-            result = default(T);
+            result = default;
 
             if (!collection.Any())
+            {
                 return false;
+            }
 
-            var list = collection as ICollection;
-            var trueList = collection as IList;
-            var indexable = collection as IIndexedEnumerable<T>;
+            IList trueList = collection as IList;
+            IIndexedEnumerable<T> indexable = collection as IIndexedEnumerable<T>;
 
             int count;
 
             if (trueList != null)
+            {
                 count = trueList.Count;
+            }
             else if (indexable != null)
+            {
                 count = indexable.Count;
-            else if (list != null)
+            }
+            else if (collection is ICollection list)
+            {
                 count = list.Count;
+            }
             else
+            {
                 count = collection.Count();
+            }
 
-            var skipCount = RandomProvider.Shared.Next(count);
+            int skipCount = RandomProvider.Shared.Next(count);
 
             if (trueList != null)
+            {
                 result = (T)trueList[skipCount];
+            }
             else if (indexable != null)
+            {
                 result = indexable[skipCount];
+            }
             else
+            {
                 result = collection.Skip(skipCount).First();
+            }
 
             return true;
         }
@@ -1126,18 +1257,20 @@ namespace Supremacy.Collections
             // We have to copy all items anyway, and there isn't a way to produce the items
             // on the fly that is linear. So copying to an array and shuffling it is an efficient as we can get.
             if (collection == null)
-                throw new ArgumentNullException("collection");
+            {
+                throw new ArgumentNullException(nameof(collection));
+            }
 
-            var array = collection.ToArray();
+            T[] array = collection.ToArray();
 
-            var count = array.Length;
-            for (var i = count - 1; i >= 1; --i)
+            int count = array.Length;
+            for (int i = count - 1; i >= 1; --i)
             {
                 // Pick an random number 0 through i inclusive.
-                var j = RandomProvider.Shared.Next(i + 1);
+                int j = RandomProvider.Shared.Next(i + 1);
 
                 // Swap array[i] and array[j]
-                var temp = array[i];
+                T temp = array[i];
                 array[i] = array[j];
                 array[j] = temp;
             }
@@ -1147,8 +1280,15 @@ namespace Supremacy.Collections
 
         public static void RandomizeInPlace<T>([NotNull] this IList<T> list)
         {
-            if (list == null) throw new ArgumentNullException("list");
-            if (list.IsReadOnly) throw new ArgumentException("List is read-only.", "list");
+            if (list == null)
+            {
+                throw new ArgumentNullException(nameof(list));
+            }
+
+            if (list.IsReadOnly)
+            {
+                throw new ArgumentException("List is read-only.", nameof(list));
+            }
 
             for (int i = 0; i < list.Count - 1; i++)
             {
@@ -1174,20 +1314,28 @@ namespace Supremacy.Collections
             [NotNull] IComparer<TComparand> comparer)
         {
             if (collection == null)
-                throw new ArgumentNullException("collection");
-            if (comparandResolver == null)
-                throw new ArgumentNullException("comparandResolver");
-            if (comparer == null)
-                throw new ArgumentNullException("comparer");
+            {
+                throw new ArgumentNullException(nameof(collection));
+            }
 
-            var maxSoFar = default(TComparand);
-            var maxElementSoFar = default(T);
-            var foundOne = false;
+            if (comparandResolver == null)
+            {
+                throw new ArgumentNullException(nameof(comparandResolver));
+            }
+
+            if (comparer == null)
+            {
+                throw new ArgumentNullException(nameof(comparer));
+            }
+
+            TComparand maxSoFar = default;
+            T maxElementSoFar = default;
+            bool foundOne = false;
 
             // Go through the collection, keeping the maximum found so far.
-            foreach (var item in collection)
+            foreach (T item in collection)
             {
-                var comparand = comparandResolver(item);
+                TComparand comparand = comparandResolver(item);
                 if (!foundOne || comparer.Compare(maxSoFar, comparand) < 0)
                 {
                     maxSoFar = comparand;
@@ -1198,7 +1346,9 @@ namespace Supremacy.Collections
 
             // If the collection was empty, throw an exception.
             if (!foundOne)
+            {
                 throw new InvalidOperationException("Sequence is empty.");
+            }
 
             return maxElementSoFar;
         }
@@ -1217,18 +1367,23 @@ namespace Supremacy.Collections
             [NotNull] IComparer<TComparand> comparer)
         {
             if (collection == null)
-                throw new ArgumentNullException("collection");
-            if (comparer == null)
-                throw new ArgumentNullException("comparer");
+            {
+                throw new ArgumentNullException(nameof(collection));
+            }
 
-            var minSoFar = default(TComparand);
-            var minElementSoFar = default(T);
-            var foundOne = false;
+            if (comparer == null)
+            {
+                throw new ArgumentNullException(nameof(comparer));
+            }
+
+            TComparand minSoFar = default;
+            T minElementSoFar = default;
+            bool foundOne = false;
 
             // Go through the collection, keeping the minimum found so far.
-            foreach (var item in collection)
+            foreach (T item in collection)
             {
-                var comparand = comparandResolver(item);
+                TComparand comparand = comparandResolver(item);
                 if (!foundOne || comparer.Compare(minSoFar, comparand) > 0)
                 {
                     minSoFar = comparand;
@@ -1239,7 +1394,9 @@ namespace Supremacy.Collections
 
             // If the collection was empty, throw an exception.
             if (!foundOne)
+            {
                 throw new InvalidOperationException("Sequence is empty.");
+            }
 
             return minElementSoFar;
         }
@@ -1251,11 +1408,16 @@ namespace Supremacy.Collections
         public static T[] Sort<T>([NotNull] this IEnumerable<T> collection, [NotNull] IComparer<T> comparer)
         {
             if (collection == null)
-                throw new ArgumentNullException("collection");
-            if (comparer == null)
-                throw new ArgumentNullException("comparer");
+            {
+                throw new ArgumentNullException(nameof(collection));
+            }
 
-            var array = collection.ToArray();
+            if (comparer == null)
+            {
+                throw new ArgumentNullException(nameof(comparer));
+            }
+
+            T[] array = collection.ToArray();
 
             Array.Sort(array, comparer);
             return array;
@@ -1270,28 +1432,35 @@ namespace Supremacy.Collections
         public static IList<T> SortInPlace<T>([NotNull] this IList<T> list, [NotNull] IComparer<T> comparer)
         {
             if (list == null)
-                throw new ArgumentNullException("list");
+            {
+                throw new ArgumentNullException(nameof(list));
+            }
+
             if (comparer == null)
-                throw new ArgumentNullException("comparer");
+            {
+                throw new ArgumentNullException(nameof(comparer));
+            }
 
             // If we have an array, use the built-in array sort (faster than going through IList accessors
             // with virtual calls).
-            if (list is T[])
+            if (list is T[] v)
             {
-                Array.Sort((T[])list, comparer);
+                Array.Sort(v, comparer);
                 return list;
             }
 
             if (list.IsReadOnly)
-                throw new ArgumentException("List is read-only.", "list");
+            {
+                throw new ArgumentException("List is read-only.", nameof(list));
+            }
 
             // Instead of a recursive procedure, we use an explicit stack to hold
             // ranges that we still need to sort.
             int[] leftStack = new int[32], rightStack = new int[32];
-            var stackPtr = 0;
+            int stackPtr = 0;
 
-            var l = 0; // the inclusive left edge of the current range we are sorting.
-            var r = list.Count - 1; // the inclusive right edge of the current range we are sorting.
+            int l = 0; // the inclusive left edge of the current range we are sorting.
+            int r = list.Count - 1; // the inclusive right edge of the current range we are sorting.
 
             // Loop until we have nothing left to sort. On each iteration, l and r contains the bounds
             // of something to sort (unless r <= l), and leftStack/rightStack have a stack of unsorted
@@ -1315,7 +1484,7 @@ namespace Supremacy.Collections
                     // Sort the items in the inclusive range l .. r
 
                     // Get the left, middle, and right-most elements and sort them, yielding e1=smallest, e2=median, e3=largest
-                    var m = l + (r - l) / 2;
+                    int m = l + ((r - l) / 2);
                     T e1 = list[l], e2 = list[m], e3 = list[r], temp;
                     if (comparer.Compare(e1, e2) > 0)
                     {
@@ -1374,7 +1543,9 @@ namespace Supremacy.Collections
                             while (comparer.Compare(secondItem, partition) > 0);
 
                             if (j < i)
+                            {
                                 break;
+                            }
 
                             list[i] = secondItem;
                             list[j] = firstItem; // swap items to continue the partition.
@@ -1438,14 +1609,18 @@ namespace Supremacy.Collections
         public static bool Any<T>([NotNull] this IEnumerable<T> collection, Func<T, int, bool> predicate)
         {
             if (collection == null)
-                throw new ArgumentNullException("collection");
+            {
+                throw new ArgumentNullException(nameof(collection));
+            }
 
-            var i = 0;
+            int i = 0;
 
-            for (var e = collection.GetEnumerator(); e.MoveNext(); i++)
+            for (IEnumerator<T> e = collection.GetEnumerator(); e.MoveNext(); i++)
             {
                 if (predicate(e.Current, i))
+                {
                     return true;
+                }
             }
 
             return false;
@@ -1454,21 +1629,30 @@ namespace Supremacy.Collections
         public static bool CountAtLeast<T>([NotNull] this IEnumerable<T> collection, int count)
         {
             if (collection == null)
-                throw new ArgumentNullException("collection");
+            {
+                throw new ArgumentNullException(nameof(collection));
+            }
 
-            return Any(collection, (o, i) => (i + 1) >= count);
+            return Any(collection, (_, i) => (i + 1) >= count);
         }
 
         [NotNull]
         public static IEnumerable<T> ForEach<T>([NotNull] this IEnumerable<T> collection, [NotNull] Action<T> action)
         {
             if (collection == null)
-                throw new ArgumentNullException("collection");
-            if (action == null)
-                throw new ArgumentNullException("action");
+            {
+                throw new ArgumentNullException(nameof(collection));
+            }
 
-            foreach (var item in collection)
+            if (action == null)
+            {
+                throw new ArgumentNullException(nameof(action));
+            }
+
+            foreach (T item in collection)
+            {
                 action(item);
+            }
 
             return collection;
         }
@@ -1477,13 +1661,20 @@ namespace Supremacy.Collections
         public static IEnumerable<T> ForEach<T>([NotNull] this IEnumerable<T> collection, [NotNull] Action<T, int> action)
         {
             if (collection == null)
-                throw new ArgumentNullException("collection");
-            if (action == null)
-                throw new ArgumentNullException("action");
+            {
+                throw new ArgumentNullException(nameof(collection));
+            }
 
-            var i = 0;
-            foreach (var item in collection)
+            if (action == null)
+            {
+                throw new ArgumentNullException(nameof(action));
+            }
+
+            int i = 0;
+            foreach (T item in collection)
+            {
                 action(item, i++);
+            }
 
             return collection;
         }
@@ -1493,13 +1684,21 @@ namespace Supremacy.Collections
         public static void AddRange<T>([NotNull] this ICollection<T> collection, [NotNull] IEnumerable<T> items)
         {
             if (collection == null)
-                throw new ArgumentNullException("collection");
-            if (collection.IsReadOnly)
-                throw new ArgumentException("CollectionBase is read-only.", "collection");
-            if (items == null)
-                throw new ArgumentNullException("items");
+            {
+                throw new ArgumentNullException(nameof(collection));
+            }
 
-            items.ForEach(collection.Add);
+            if (collection.IsReadOnly)
+            {
+                throw new ArgumentException("CollectionBase is read-only.", nameof(collection));
+            }
+
+            if (items == null)
+            {
+                throw new ArgumentNullException(nameof(items));
+            }
+
+            _ = items.ForEach(collection.Add);
         }
 
         public static void CopyTo<T>([NotNull] this IEnumerable<T> source, [NotNull] IList<T> dest)
@@ -1515,42 +1714,61 @@ namespace Supremacy.Collections
         public static void CopyTo<T>([NotNull] this IEnumerable<T> source, [NotNull] T[] dest, int destIndex)
         {
             if (source == null)
-                throw new ArgumentNullException("source");
+            {
+                throw new ArgumentNullException(nameof(source));
+            }
+
             if (dest == null)
-                throw new ArgumentNullException("dest");
+            {
+                throw new ArgumentNullException(nameof(dest));
+            }
 
             if (destIndex < 0 || destIndex > dest.Length)
-                throw new ArgumentOutOfRangeException("destIndex");
-
-            using (var sourceEnum = source.GetEnumerator())
             {
-                // Overwrite items to the end of the destination array. If we hit the end, throw.
-                while (sourceEnum.MoveNext())
+                throw new ArgumentOutOfRangeException(nameof(destIndex));
+            }
+
+            foreach (T item in source)
+            {
+                if (destIndex >= dest.Length)
                 {
-                    if (destIndex >= dest.Length)
-                        throw new ArgumentException("Array is too small.", "dest");
-                    dest[destIndex++] = sourceEnum.Current;
+                    throw new ArgumentException("Array is too small.", nameof(dest));
                 }
+
+                dest[destIndex++] = item;
             }
         }
 
         public static void CopyTo<T>([NotNull] this IEnumerable<T> source, [NotNull] IList<T> dest, int destIndex, int count)
         {
             if (source == null)
-                throw new ArgumentNullException("source");
-            if (dest == null)
-                throw new ArgumentNullException("dest");
-            if (dest.IsReadOnly)
-                throw new ArgumentException("List is read-only.", "dest");
+            {
+                throw new ArgumentNullException(nameof(source));
+            }
 
-            var destCount = dest.Count;
+            if (dest == null)
+            {
+                throw new ArgumentNullException(nameof(dest));
+            }
+
+            if (dest.IsReadOnly)
+            {
+                throw new ArgumentException("List is read-only.", nameof(dest));
+            }
+
+            int destCount = dest.Count;
 
             if (destIndex < 0 || destIndex > destCount)
-                throw new ArgumentOutOfRangeException("destIndex");
-            if (count < 0)
-                throw new ArgumentOutOfRangeException("count");
+            {
+                throw new ArgumentOutOfRangeException(nameof(destIndex));
+            }
 
-            using (var sourceEnum = source.GetEnumerator())
+            if (count < 0)
+            {
+                throw new ArgumentOutOfRangeException(nameof(count));
+            }
+
+            using (IEnumerator<T> sourceEnum = source.GetEnumerator())
             {
                 // First, overwrite items to the end of the destination list.
                 while (destIndex < destCount && count > 0 && sourceEnum.MoveNext())
@@ -1571,23 +1789,42 @@ namespace Supremacy.Collections
         public static void CopyTo<T>([NotNull] this IList<T> source, int sourceIndex, [NotNull] IList<T> dest, int destIndex, int count)
         {
             if (source == null)
-                throw new ArgumentNullException("source");
-            if (dest == null)
-                throw new ArgumentNullException("dest");
-            if (dest.IsReadOnly)
-                throw new ArgumentException("List is read-only.", "dest");
+            {
+                throw new ArgumentNullException(nameof(source));
+            }
 
-            var sourceCount = source.Count;
-            var destCount = dest.Count;
+            if (dest == null)
+            {
+                throw new ArgumentNullException(nameof(dest));
+            }
+
+            if (dest.IsReadOnly)
+            {
+                throw new ArgumentException("List is read-only.", nameof(dest));
+            }
+
+            int sourceCount = source.Count;
+            int destCount = dest.Count;
 
             if (sourceIndex < 0 || sourceIndex >= sourceCount)
-                throw new ArgumentOutOfRangeException("sourceIndex");
+            {
+                throw new ArgumentOutOfRangeException(nameof(sourceIndex));
+            }
+
             if (destIndex < 0 || destIndex > destCount)
-                throw new ArgumentOutOfRangeException("destIndex");
+            {
+                throw new ArgumentOutOfRangeException(nameof(destIndex));
+            }
+
             if (count < 0)
-                throw new ArgumentOutOfRangeException("count");
+            {
+                throw new ArgumentOutOfRangeException(nameof(count));
+            }
+
             if (count > sourceCount - sourceIndex)
+            {
                 count = sourceCount - sourceIndex;
+            }
 
             if (source == dest && sourceIndex > destIndex)
             {
@@ -1604,7 +1841,7 @@ namespace Supremacy.Collections
                 // First, insert any items needed at the end
                 if (destIndex + count > destCount)
                 {
-                    var numberToInsert = destIndex + count - destCount;
+                    int numberToInsert = destIndex + count - destCount;
                     si = sourceIndex + (count - numberToInsert);
                     di = destCount;
                     count -= numberToInsert;
@@ -1625,7 +1862,7 @@ namespace Supremacy.Collections
                 }
             }
         }
-        
+
         public static void SelectInto<T, TResult>([NotNull] this IEnumerable<T> source, Func<T, TResult> selector, [NotNull] IList<TResult> dest)
         {
             SelectInto(source, selector, dest, 0, int.MaxValue);
@@ -1634,20 +1871,33 @@ namespace Supremacy.Collections
         public static void SelectInto<T, TResult>([NotNull] this IEnumerable<T> source, Func<T, TResult> selector, [NotNull] IList<TResult> dest, int destIndex, int count)
         {
             if (source == null)
-                throw new ArgumentNullException("source");
-            if (dest == null)
-                throw new ArgumentNullException("dest");
-            if (dest.IsReadOnly)
-                throw new ArgumentException("List is read-only.", "dest");
+            {
+                throw new ArgumentNullException(nameof(source));
+            }
 
-            var destCount = dest.Count;
+            if (dest == null)
+            {
+                throw new ArgumentNullException(nameof(dest));
+            }
+
+            if (dest.IsReadOnly)
+            {
+                throw new ArgumentException("List is read-only.", nameof(dest));
+            }
+
+            int destCount = dest.Count;
 
             if (destIndex < 0 || destIndex > destCount)
-                throw new ArgumentOutOfRangeException("destIndex");
-            if (count < 0)
-                throw new ArgumentOutOfRangeException("count");
+            {
+                throw new ArgumentOutOfRangeException(nameof(destIndex));
+            }
 
-            using (var sourceEnum = source.GetEnumerator())
+            if (count < 0)
+            {
+                throw new ArgumentOutOfRangeException(nameof(count));
+            }
+
+            using (IEnumerator<T> sourceEnum = source.GetEnumerator())
             {
                 // First, overwrite items to the end of the destination list.
                 while (destIndex < destCount && count > 0 && sourceEnum.MoveNext())
@@ -1698,35 +1948,52 @@ namespace Supremacy.Collections
         public virtual bool Contains(T item)
         {
             IEqualityComparer<T> equalityComparer = EqualityComparer<T>.Default;
-            foreach (var i in this)
+            foreach (T i in this)
             {
                 if (equalityComparer.Equals(i, item))
+                {
                     return true;
+                }
             }
             return false;
         }
 
         public virtual void CopyTo(T[] array, int arrayIndex)
         {
-            var count = Count;
+            int count = Count;
 
             if (count == 0)
+            {
                 return;
+            }
 
             if (array == null)
-                throw new ArgumentNullException("array");
+            {
+                throw new ArgumentNullException(nameof(array));
+            }
+
             if (count < 0)
-                throw new ArgumentOutOfRangeException("arrayIndex", "Value must be non-negative");
+            {
+                throw new ArgumentOutOfRangeException(nameof(arrayIndex), "Value must be non-negative");
+            }
+
             if (arrayIndex < 0)
-                throw new ArgumentOutOfRangeException("arrayIndex", "Value must be non-negative");
+            {
+                throw new ArgumentOutOfRangeException(nameof(arrayIndex), "Value must be non-negative");
+            }
+
             if (arrayIndex >= array.Length || count > array.Length - arrayIndex)
-                throw new ArgumentException("Array is too small.", "arrayIndex");
+            {
+                throw new ArgumentException("Array is too small.", nameof(arrayIndex));
+            }
 
             int index = arrayIndex, i = 0;
-            foreach (var item in this)
+            foreach (T item in this)
             {
                 if (i >= count)
+                {
                     break;
+                }
 
                 array[index] = item;
                 ++index;
@@ -1736,19 +2003,16 @@ namespace Supremacy.Collections
 
         public virtual T[] ToArray()
         {
-            var count = Count;
+            int count = Count;
 
-            var array = new T[count];
+            T[] array = new T[count];
             CopyTo(array, 0);
             return array;
         }
 
         public abstract int Count { get; }
 
-        bool ICollection<T>.IsReadOnly
-        {
-            get { return false; }
-        }
+        bool ICollection<T>.IsReadOnly => false;
 
         public virtual ICollection<T> AsReadOnly()
         {
@@ -1760,7 +2024,9 @@ namespace Supremacy.Collections
         public virtual bool Exists(Func<T, bool> predicate)
         {
             if (predicate == null)
-                throw new ArgumentNullException("predicate");
+            {
+                throw new ArgumentNullException(nameof(predicate));
+            }
 
             return this.Any(predicate);
         }
@@ -1768,7 +2034,9 @@ namespace Supremacy.Collections
         public virtual bool TrueForAll(Func<T, bool> predicate)
         {
             if (predicate == null)
-                throw new ArgumentNullException("predicate");
+            {
+                throw new ArgumentNullException(nameof(predicate));
+            }
 
             return this.All(predicate);
         }
@@ -1776,7 +2044,9 @@ namespace Supremacy.Collections
         public virtual int CountWhere(Func<T, bool> predicate)
         {
             if (predicate == null)
-                throw new ArgumentNullException("predicate");
+            {
+                throw new ArgumentNullException(nameof(predicate));
+            }
 
             return CollectionExtensions.CountWhere(this, predicate);
         }
@@ -1784,7 +2054,9 @@ namespace Supremacy.Collections
         public virtual IEnumerable<T> FindAll(Func<T, bool> predicate)
         {
             if (predicate == null)
-                throw new ArgumentNullException("predicate");
+            {
+                throw new ArgumentNullException(nameof(predicate));
+            }
 
             return this.Where(predicate);
         }
@@ -1792,7 +2064,9 @@ namespace Supremacy.Collections
         public virtual ICollection<T> RemoveAll(Func<T, bool> predicate)
         {
             if (predicate == null)
-                throw new ArgumentNullException("predicate");
+            {
+                throw new ArgumentNullException(nameof(predicate));
+            }
 
             return this.RemoveWhere(predicate);
         }
@@ -1800,15 +2074,19 @@ namespace Supremacy.Collections
         public virtual void ForEach(Action<T> action)
         {
             if (action == null)
-                throw new ArgumentNullException("action");
+            {
+                throw new ArgumentNullException(nameof(action));
+            }
 
-            CollectionExtensions.ForEach(this, action);
+            _ = CollectionExtensions.ForEach(this, action);
         }
 
         public virtual IEnumerable<TOutput> ConvertAll<TOutput>(Converter<T, TOutput> converter)
         {
             if (converter == null)
-                throw new ArgumentNullException("converter");
+            {
+                throw new ArgumentNullException(nameof(converter));
+            }
 
             return this.Select(o => converter(o));
         }
@@ -1821,24 +2099,36 @@ namespace Supremacy.Collections
         #region ICollection Members
         void ICollection.CopyTo(Array array, int index)
         {
-            var count = Count;
+            int count = Count;
 
             if (count == 0)
+            {
                 return;
+            }
 
             if (array == null)
-                throw new ArgumentNullException("array");
-            if (index < 0)
-                throw new ArgumentOutOfRangeException("index", index, "Value must be non-negative.");
-            if (index >= array.Length || count > array.Length - index)
-                throw new ArgumentException("Array is too small.", "index");
+            {
+                throw new ArgumentNullException(nameof(array));
+            }
 
-            var i = 0;
+            if (index < 0)
+            {
+                throw new ArgumentOutOfRangeException(nameof(index), index, "Value must be non-negative.");
+            }
+
+            if (index >= array.Length || count > array.Length - index)
+            {
+                throw new ArgumentException("Array is too small.", nameof(index));
+            }
+
+            int i = 0;
             // TODO: Look into this
-            foreach (var o in (ICollection)this)
+            foreach (object o in (ICollection)this)
             {
                 if (i >= count)
+                {
                     break;
+                }
 
                 array.SetValue(o, index);
                 ++index;
@@ -1846,21 +2136,15 @@ namespace Supremacy.Collections
             }
         }
 
-        bool ICollection.IsSynchronized
-        {
-            get { return false; }
-        }
+        bool ICollection.IsSynchronized => false;
 
-        object ICollection.SyncRoot
-        {
-            get { return this; }
-        }
+        object ICollection.SyncRoot => this;
         #endregion
 
         #region IEnumerable Members
         IEnumerator IEnumerable.GetEnumerator()
         {
-            foreach (var item in this)
+            foreach (T item in this)
             {
                 yield return item;
             }
@@ -1871,32 +2155,38 @@ namespace Supremacy.Collections
         {
             const int maxlength = 250;
 
-            var builder = new StringBuilder();
+            StringBuilder builder = new StringBuilder();
 
-            builder.Append('{');
+            _ = builder.Append('{');
 
             // Call ToString on each item and put it in.
-            var firstItem = true;
-            foreach (var item in this)
+            bool firstItem = true;
+            foreach (T item in this)
             {
                 if (builder.Length >= maxlength)
                 {
-                    builder.Append(",...");
+                    _ = builder.Append(",...");
                     break;
                 }
 
                 if (!firstItem)
-                    builder.Append(',');
+                {
+                    _ = builder.Append(',');
+                }
 
-                if (ReferenceEquals(item, null))
-                    builder.Append("null");
+                if (item == null)
+                {
+                    _ = builder.Append("null");
+                }
                 else
-                    builder.Append(item.ToString());
+                {
+                    _ = builder.Append(item.ToString());
+                }
 
                 firstItem = false;
             }
 
-            builder.Append('}');
+            _ = builder.Append('}');
             return builder.ToString();
         }
     }
@@ -1916,8 +2206,8 @@ namespace Supremacy.Collections
 
         public override IEnumerator<T> GetEnumerator()
         {
-            var count = Count;
-            for (var i = 0; i < count; ++i)
+            int count = Count;
+            for (int i = 0; i < count; ++i)
             {
                 yield return this[i];
             }
@@ -1925,7 +2215,7 @@ namespace Supremacy.Collections
 
         public override bool Contains(T item)
         {
-            return (IndexOf(item) >= 0);
+            return IndexOf(item) >= 0;
         }
 
         public override void Add(T item)
@@ -1935,9 +2225,12 @@ namespace Supremacy.Collections
 
         public override bool Remove(T item)
         {
-            var index = IndexOf(item);
+            int index = IndexOf(item);
             if (index < 0)
+            {
                 return false;
+            }
+
             RemoveAt(index);
             return true;
         }
@@ -1984,18 +2277,14 @@ namespace Supremacy.Collections
 
         public virtual int FindIndex(int index, Func<T, bool> predicate)
         {
-            var foundIndex = Range(index, Count - index).FirstIndexWhere(predicate);
-            if (foundIndex < 0)
-                return -1;
-            return foundIndex + index;
+            int foundIndex = Range(index, Count - index).FirstIndexWhere(predicate);
+            return foundIndex < 0 ? -1 : foundIndex + index;
         }
 
         public virtual int FindIndex(int index, int count, Func<T, bool> predicate)
         {
-            var foundIndex = Range(index, count).FirstIndexWhere(predicate);
-            if (foundIndex < 0)
-                return -1;
-            return foundIndex + index;
+            int foundIndex = Range(index, count).FirstIndexWhere(predicate);
+            return foundIndex < 0 ? -1 : foundIndex + index;
         }
 
         public virtual int FindLastIndex(Func<T, bool> predicate)
@@ -2010,11 +2299,9 @@ namespace Supremacy.Collections
 
         public virtual int FindLastIndex(int index, int count, Func<T, bool> predicate)
         {
-            var foundIndex = Range(index - count + 1, count).LastIndexWhere(predicate);
+            int foundIndex = Range(index - count + 1, count).LastIndexWhere(predicate);
 
-            if (foundIndex >= 0)
-                return foundIndex + index - count + 1;
-            return -1;
+            return foundIndex >= 0 ? foundIndex + index - count + 1 : -1;
         }
 
         public virtual int IndexOf(T item)
@@ -2024,20 +2311,16 @@ namespace Supremacy.Collections
 
         public virtual int IndexOf(T item, int index)
         {
-            var foundIndex = Range(index, Count - index).FirstIndexOf(item, EqualityComparer<T>.Default);
+            int foundIndex = Range(index, Count - index).FirstIndexOf(item, EqualityComparer<T>.Default);
 
-            if (foundIndex >= 0)
-                return foundIndex + index;
-            return -1;
+            return foundIndex >= 0 ? foundIndex + index : -1;
         }
 
         public virtual int IndexOf(T item, int index, int count)
         {
-            var foundIndex = Range(index, count).FirstIndexOf(item, EqualityComparer<T>.Default);
+            int foundIndex = Range(index, count).FirstIndexOf(item, EqualityComparer<T>.Default);
 
-            if (foundIndex >= 0)
-                return foundIndex + index;
-            return -1;
+            return foundIndex >= 0 ? foundIndex + index : -1;
         }
 
         public virtual int LastIndexOf(T item)
@@ -2047,18 +2330,14 @@ namespace Supremacy.Collections
 
         public virtual int LastIndexOf(T item, int index)
         {
-            var foundIndex = Range(0, index + 1).LastIndexOf(item, EqualityComparer<T>.Default);
-
-            return foundIndex;
+            return Range(0, index + 1).LastIndexOf(item, EqualityComparer<T>.Default);
         }
 
         public virtual int LastIndexOf(T item, int index, int count)
         {
-            var foundIndex = Range(index - count + 1, count).LastIndexOf(item, EqualityComparer<T>.Default);
+            int foundIndex = Range(index - count + 1, count).LastIndexOf(item, EqualityComparer<T>.Default);
 
-            if (foundIndex >= 0)
-                return foundIndex + index - count + 1;
-            return -1;
+            return foundIndex >= 0 ? foundIndex + index - count + 1 : -1;
         }
 
         public virtual IList<T> Range(int start, int count)
@@ -2086,7 +2365,7 @@ namespace Supremacy.Collections
 
         int IList.Add(object value)
         {
-            var count = Count;
+            int count = Count;
             Insert(count, ConvertToItemType("value", value));
             return count;
         }
@@ -2098,16 +2377,12 @@ namespace Supremacy.Collections
 
         bool IList.Contains(object value)
         {
-            if (value is T || value == null)
-                return Contains((T)value);
-            return false;
+            return (value is T || value == null) && Contains((T)value);
         }
 
         int IList.IndexOf(object value)
         {
-            if (value is T || value == null)
-                return IndexOf((T)value);
-            return -1;
+            return value is T || value == null ? IndexOf((T)value) : -1;
         }
 
         void IList.Insert(int index, object value)
@@ -2115,20 +2390,16 @@ namespace Supremacy.Collections
             Insert(index, ConvertToItemType("value", value));
         }
 
-        bool IList.IsFixedSize
-        {
-            get { return false; }
-        }
+        bool IList.IsFixedSize => false;
 
-        bool IList.IsReadOnly
-        {
-            get { return ((ICollection<T>)this).IsReadOnly; }
-        }
+        bool IList.IsReadOnly => ((ICollection<T>)this).IsReadOnly;
 
         void IList.Remove(object value)
         {
             if (value is T || value == null)
-                Remove((T)value);
+            {
+                _ = Remove((T)value);
+            }
         }
 
         void IList.RemoveAt(int index)
@@ -2138,9 +2409,9 @@ namespace Supremacy.Collections
 
         object IList.this[int index]
         {
-            get { return this[index]; }
+            get => this[index];
 
-            set { this[index] = ConvertToItemType("value", value); }
+            set => this[index] = ConvertToItemType("value", value);
         }
     }
     // ReSharper restore CompareNonConstrainedGenericWithNull

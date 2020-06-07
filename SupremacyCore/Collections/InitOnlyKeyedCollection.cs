@@ -16,7 +16,9 @@ namespace Supremacy.Collections
         protected InitOnlyKeyedCollection([NotNull] Func<TValue, TKey> keyRetriever)
         {
             if (keyRetriever == null)
-                throw new ArgumentNullException("keyRetriever");
+            {
+                throw new ArgumentNullException(nameof(keyRetriever));
+            }
 
             _innerCollection = new KeyedCollectionBase<TKey, TValue>(keyRetriever);
         }
@@ -38,7 +40,10 @@ namespace Supremacy.Collections
         bool IList.Contains(object value)
         {
             if (!(value is TValue))
+            {
                 return false;
+            }
+
             return Contains((TValue)value);
         }
         public void Clear()
@@ -50,7 +55,10 @@ namespace Supremacy.Collections
         int IList.IndexOf(object value)
         {
             if (!(value is TValue))
+            {
                 return -1;
+            }
+
             return _innerCollection.IndexOf((TValue)value);
         }
 
@@ -66,19 +74,15 @@ namespace Supremacy.Collections
         {
             VerifyInitializing();
 
-            if (value is TValue)
-                Remove((TValue)value);
+            if (value is TValue value2)
+            {
+                Remove(value2);
+            }
         }
 
-        bool IList.IsFixedSize
-        {
-            get { return false; }
-        }
+        bool IList.IsFixedSize => false;
 
-        bool IList.IsReadOnly
-        {
-            get { return !IsInitializing; }
-        }
+        bool IList.IsReadOnly => !IsInitializing;
 
         public void Insert(int index, TValue item)
         {
@@ -100,12 +104,12 @@ namespace Supremacy.Collections
 
         object IList.this[int index]
         {
-            get { return this[index]; }
+            get => this[index];
             set
             {
                 VerifyInitializing();
                 VerifyCompatibleValue(value);
-                ((IList<TValue>)_innerCollection)[index] = (TValue)value;
+                _innerCollection[index] = (TValue)value;
             }
         }
 
@@ -150,25 +154,16 @@ namespace Supremacy.Collections
             return _innerCollection.GetEnumerator();
         }
 
-        public TValue this[TKey key]
-        {
-            get { return _innerCollection[key]; }
-        }
+        public TValue this[TKey key] => _innerCollection[key];
 
         public bool Contains(TKey key)
         {
             return _innerCollection.Contains(key);
         }
 
-        public IEqualityComparer<TKey> KeyComparer
-        {
-            get { return _innerCollection.KeyComparer; }
-        }
+        public IEqualityComparer<TKey> KeyComparer => _innerCollection.KeyComparer;
 
-        public IEnumerable<TKey> Keys
-        {
-            get { return _innerCollection.Keys; }
-        }
+        public IEnumerable<TKey> Keys => _innerCollection.Keys;
 
         public bool TryGetValue(TKey key, out TValue value)
         {
@@ -180,20 +175,11 @@ namespace Supremacy.Collections
             ((ICollection)_innerCollection).CopyTo(array, index);
         }
 
-        public int Count
-        {
-            get { return _innerCollection.Count; }
-        }
+        public int Count => _innerCollection.Count;
 
-        bool ICollection.IsSynchronized
-        {
-            get { return ((ICollection)_innerCollection).IsSynchronized; }
-        }
+        bool ICollection.IsSynchronized => _innerCollection.IsSynchronized;
 
-        public TValue this[int index]
-        {
-            get { return _innerCollection[index]; }
-        }
+        public TValue this[int index] => _innerCollection[index];
 
         public bool Contains(TValue value)
         {
@@ -219,7 +205,9 @@ namespace Supremacy.Collections
         private static void VerifyCompatibleValue(object value)
         {
             if (value == null)
-                throw new ArgumentNullException("value");
+            {
+                throw new ArgumentNullException(nameof(value));
+            }
 
             if (!(value is TValue))
             {
