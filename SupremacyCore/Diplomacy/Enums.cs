@@ -84,7 +84,7 @@ namespace Supremacy.Diplomacy
         OfferWithdrawTroops,
         RequestWithdrawTroops,
 
-        OfferStopPiracy,
+        OfferStopPiracy, // this could become OfferStopSpying
         RequestStopPiracy,
 
         OfferBreakAgreement,
@@ -93,8 +93,8 @@ namespace Supremacy.Diplomacy
         OfferGiveCredits,
         RequestGiveCredits,
 
-        OfferGiveResources,
-        RequestGiveResources,
+        //OfferGiveResources,
+        //RequestGiveResources,
 
         OfferMapData,
         RequestMapData,

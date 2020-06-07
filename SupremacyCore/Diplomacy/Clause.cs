@@ -80,8 +80,8 @@ namespace Supremacy.Diplomacy
                     clause.Data = 0;
                     break;
 
-                case ClauseType.OfferGiveResources:
-                case ClauseType.RequestGiveResources:
+                //case ClauseType.OfferGiveResources:
+                //case ClauseType.RequestGiveResources:
                     clause.Data = new ResourceValueCollection();
                     break;
 
@@ -127,12 +127,12 @@ namespace Supremacy.Diplomacy
                 case ClauseType.RequestGiveCredits:
                     visitor.VisitRequestGiveCreditsClause(clause);
                     break;
-                case ClauseType.OfferGiveResources:
-                    visitor.VisitOfferGiveResourcesClause(clause);
-                    break;
-                case ClauseType.RequestGiveResources:
-                    visitor.VisitRequestGiveResourcesClause(clause);
-                    break;
+                //case ClauseType.OfferGiveResources:
+                //    visitor.VisitOfferGiveResourcesClause(clause);
+                //    break;
+                //case ClauseType.RequestGiveResources:
+                //    visitor.VisitRequestGiveResourcesClause(clause);
+                //    break;
                 case ClauseType.OfferMapData:
                     visitor.VisitOfferMapDataClause(clause);
                     break;

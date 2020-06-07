@@ -120,7 +120,7 @@ namespace Supremacy.SpyOperations
                     case ClauseType.RequestBreakAgreement:
                     case ClauseType.RequestEndEmbargo:
                     case ClauseType.RequestGiveCredits:
-                    case ClauseType.RequestGiveResources:
+                    //case ClauseType.RequestGiveResources:
                     case ClauseType.RequestHonorMilitaryAgreement:
                     case ClauseType.RequestMapData:
                     case ClauseType.RequestStopPiracy:
@@ -156,7 +156,7 @@ namespace Supremacy.SpyOperations
                     case ClauseType.OfferBreakAgreement:
                     case ClauseType.OfferEndEmbargo:
                     case ClauseType.OfferGiveCredits:
-                    case ClauseType.OfferGiveResources:
+                    //case ClauseType.OfferGiveResources:
                     case ClauseType.OfferHonorMilitaryAgreement:
                     case ClauseType.OfferMapData:
                     case ClauseType.OfferStopPiracy:

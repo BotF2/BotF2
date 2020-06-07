@@ -1201,10 +1201,10 @@ namespace Supremacy.Client.Views
                 case ClauseType.OfferGiveCredits:
                     return DiplomacyMessageElementType.OfferGiveCreditsClause;
                 case ClauseType.RequestGiveCredits:
-                    return DiplomacyMessageElementType.RequestGiveCreditsClause;
-                case ClauseType.OfferGiveResources:
-                    return DiplomacyMessageElementType.OfferGiveResourcesClause;
-                case ClauseType.RequestGiveResources:
+                //    return DiplomacyMessageElementType.RequestGiveCreditsClause;
+                //case ClauseType.OfferGiveResources:
+                //    return DiplomacyMessageElementType.OfferGiveResourcesClause;
+                //case ClauseType.RequestGiveResources:
                     return DiplomacyMessageElementType.RequestGiveResourcesClause;
                 case ClauseType.OfferMapData:
                     return DiplomacyMessageElementType.OfferMapDataClause;
@@ -1264,10 +1264,10 @@ namespace Supremacy.Client.Views
                     return ClauseType.OfferGiveCredits;
                 case DiplomacyMessageElementType.RequestGiveCreditsClause:
                     return ClauseType.RequestGiveCredits;
-                case DiplomacyMessageElementType.OfferGiveResourcesClause:
-                    return ClauseType.OfferGiveResources;
-                case DiplomacyMessageElementType.RequestGiveResourcesClause:
-                    return ClauseType.RequestGiveResources;
+                //case DiplomacyMessageElementType.OfferGiveResourcesClause:
+                //    return ClauseType.OfferGiveResources;
+                //case DiplomacyMessageElementType.RequestGiveResourcesClause:
+                //    return ClauseType.RequestGiveResources;
                 case DiplomacyMessageElementType.OfferMapDataClause:
                     return ClauseType.OfferMapData;
                 case DiplomacyMessageElementType.RequestMapDataClause:
