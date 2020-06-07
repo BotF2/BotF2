@@ -1133,11 +1133,11 @@ namespace Supremacy.Client.Views
                 var foreignPowerViewModel = new ForeignPowerViewModel(foreignPower);
 
                 _foreignPowers.Add(foreignPowerViewModel);
-                GameLog.Client.Diplomacy.DebugFormat("!!! View of local player {1} for {0}: {2} ({3}/{4})", civ.ShortName, AppContext.LocalPlayer.Empire.Name
-                    , foreignPowerViewModel.Status
-                    , foreignPowerViewModel.CounterpartyRegard
-                    , foreignPowerViewModel.CounterpartyTrust
-                    );
+               // GameLog.Client.Diplomacy.DebugFormat("!!! View of local player {1} for {0}: {2} ({3}/{4})", civ.ShortName, AppContext.LocalPlayer.Empire.Name
+                    //, foreignPowerViewModel.Status
+                    //, foreignPowerViewModel.CounterpartyRegard
+                    //, foreignPowerViewModel.CounterpartyTrust
+                    //);
             }
 
             if (selectedForeignPower != null)

@@ -708,9 +708,9 @@ namespace Supremacy.Client.Views
             var statementType = DiplomacyScreenViewModel.ElementTypeToStatementType(_elements[0].ElementType);
             if (statementType == StatementType.NoStatement)
                 return null;
-            if(statementType != StatementType.NoStatement)
-                GameLog.Core.Diplomacy.DebugFormat("((()))Create Statement {0} *vs* Recipient = {1}: Tone = {2}  StatementType = {3} ",
-                 _sender.ShortName, _recipient.ShortName, _tone, statementType.ToString());
+            //if(statementType != StatementType.NoStatement)
+                //GameLog.Core.Diplomacy.DebugFormat("((()))Create Statement {0} *vs* Recipient = {1}: Tone = {2}  StatementType = {3} ",
+                // _sender.ShortName, _recipient.ShortName, _tone, statementType.ToString());
 
             return new Statement(_sender, _recipient, statementType, _tone);
         }

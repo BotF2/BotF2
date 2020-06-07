@@ -78,25 +78,25 @@ namespace Supremacy.Diplomacy
                 if (otherPower.CivID == diplomat.OwnerID)
                 {
                     //var foreignPower = diplomat.GetForeignPower(civ);
-                    GameLog.Core.Diplomacy.DebugFormat(
-                        "BEFORE: civ = {0}, otherPower = {1}, trustDelta = {2}, diplomat.Owner = {3}, foreignPower = {4}, CurrentTrust = {5}",
-                        GameContext.Current.CivilizationManagers[civ.CivID].Civilization.ShortName,
-                        GameContext.Current.CivilizationManagers[otherPower.CivID].Civilization.ShortName,
-                        trustDelta, diplomat.Owner,
-                        GameContext.Current.CivilizationManagers[foreignPower.OwnerID].Civilization.ShortName,
-                        foreignPower.DiplomacyData.Trust.CurrentValue);
+                    //GameLog.Core.Diplomacy.DebugFormat(
+                    //    "BEFORE: civ = {0}, otherPower = {1}, trustDelta = {2}, diplomat.Owner = {3}, foreignPower = {4}, CurrentTrust = {5}",
+                    //    GameContext.Current.CivilizationManagers[civ.CivID].Civilization.ShortName,
+                    //    GameContext.Current.CivilizationManagers[otherPower.CivID].Civilization.ShortName,
+                    //    trustDelta, diplomat.Owner,
+                    //    GameContext.Current.CivilizationManagers[foreignPower.OwnerID].Civilization.ShortName,
+                    //    foreignPower.DiplomacyData.Trust.CurrentValue);
 
                     if (foreignPower != null)
                         foreignPower.DiplomacyData.Trust.AdjustCurrent(trustDelta);
                     foreignPower.DiplomacyData.Trust.UpdateAndReset();
 
-                    GameLog.Core.Diplomacy.DebugFormat(
-                        "AFTER : civ = {0}, otherPower = {1}, trustDelta = {2}, diplomat.Owner = {3}, foreignPower = {4}, CurrentTrust = {5}",
-                        GameContext.Current.CivilizationManagers[civ.CivID].Civilization.ShortName,
-                        GameContext.Current.CivilizationManagers[otherPower.CivID].Civilization.ShortName,
-                        trustDelta, diplomat.Owner,
-                        GameContext.Current.CivilizationManagers[foreignPower.OwnerID].Civilization.ShortName,
-                        foreignPower.DiplomacyData.Trust.CurrentValue);
+                    //GameLog.Core.Diplomacy.DebugFormat(
+                    //    "AFTER : civ = {0}, otherPower = {1}, trustDelta = {2}, diplomat.Owner = {3}, foreignPower = {4}, CurrentTrust = {5}",
+                    //    GameContext.Current.CivilizationManagers[civ.CivID].Civilization.ShortName,
+                    //    GameContext.Current.CivilizationManagers[otherPower.CivID].Civilization.ShortName,
+                    //    trustDelta, diplomat.Owner,
+                    //    GameContext.Current.CivilizationManagers[foreignPower.OwnerID].Civilization.ShortName,
+                    //    foreignPower.DiplomacyData.Trust.CurrentValue);
                 }
 
                 if (foreignPower != null)
