@@ -43,25 +43,19 @@ namespace Supremacy.Buildings
         private readonly List<Bonus> _bonuses;
 
         private ushort _energyCost;
-        private byte _buildingFlags;
+        private readonly byte _buildingFlags;
 
         /// <summary>
         /// Gets a value indicating whether buildings of this design are always online.
         /// </summary>
         /// <value><c>true</c> if always online; otherwise, <c>false</c>.</value>
-        public bool AlwaysOnline
-        {
-            get { return (_buildingFlags & AlwaysOnlineFlag) == AlwaysOnlineFlag; }
-        }
+        public bool AlwaysOnline => (_buildingFlags & AlwaysOnlineFlag) == AlwaysOnlineFlag;
 
         /// <summary>
         /// Gets a value indicating whether a building is permanent, e.g. cannot be powered down or destroyed.
         /// </summary>
         /// <value><c>true</c> if the building is permanent; otherwise, <c>false</c>.</value>
-        public bool IsPermanent
-        {
-            get { return (_buildingFlags & IsPermanentFlag) == IsPermanentFlag; }
-        }
+        public bool IsPermanent => (_buildingFlags & IsPermanentFlag) == IsPermanentFlag;
 
         /// <summary>
         /// Gets or sets the energy cost to maintain a building of this design.
@@ -69,33 +63,27 @@ namespace Supremacy.Buildings
         /// <value>The energy cost.</value>
         public int EnergyCost
         {
-            get { return _energyCost; }
-            set { _energyCost = (ushort) Math.Max(ushort.MinValue, Math.Min(ushort.MaxValue, value)); }
+            get => _energyCost;
+            set => _energyCost = (ushort)Math.Max(ushort.MinValue, Math.Min(ushort.MaxValue, value));
         }
 
         public override CaptureResult CaptureResult
         {
-            get { return IsPermanent ? CaptureResult.Capture : base.CaptureResult; }
-            set { base.CaptureResult = value; }
+            get => IsPermanent ? CaptureResult.Capture : base.CaptureResult;
+            set => base.CaptureResult = value;
         }
 
         /// <summary>
         /// Gets the bonuses produced by a building of this design.
         /// </summary>
         /// <value>The bonuses.</value>
-        public IList<Bonus> Bonuses
-        {
-            get { return _bonuses; }
-        }
+        public IList<Bonus> Bonuses => _bonuses;
 
         /// <summary>
         /// Gets the encyclopedia category for a building of this design.
         /// </summary>
         /// <value>The encyclopedia category.</value>
-        public override EncyclopediaCategory EncyclopediaCategory
-        {
-            get { return EncyclopediaCategory.Buildings; }
-        }
+        public override EncyclopediaCategory EncyclopediaCategory => EncyclopediaCategory.Buildings;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="BuildingDesign"/> class.
@@ -114,7 +102,7 @@ namespace Supremacy.Buildings
         {
             _bonuses = new List<Bonus>();
 
-            var propertyElement = element["EnergyCost"];
+            XmlElement propertyElement = element["EnergyCost"];
             if (propertyElement != null)
             {
                 EnergyCost = Number.ParseInt32(propertyElement.InnerText.Trim());
@@ -123,36 +111,39 @@ namespace Supremacy.Buildings
             propertyElement = element["AlwaysOnline"];
 
             if (propertyElement != null && StringHelper.IsTrue(propertyElement.Value))
+            {
                 _buildingFlags |= AlwaysOnlineFlag;
+            }
 
             propertyElement = element["IsPermanent"];
 
             if (propertyElement != null && StringHelper.IsTrue(propertyElement.Value))
+            {
                 _buildingFlags |= IsPermanentFlag;
+            }
 
             propertyElement = element["Bonuses"];
 
             if (propertyElement == null)
+            {
                 return;
+            }
 
             foreach (XmlElement xmlBonus in propertyElement.GetElementsByTagName("Bonus"))
             {
-                int bonusAmount;
-                BonusType bonusType;
+                string bonusTypeText = xmlBonus.GetAttribute("Type");
 
-                var bonusTypeText = xmlBonus.GetAttribute("Type");
-
-                if (!EnumHelper.TryParse(bonusTypeText, out bonusType))
+                if (!EnumHelper.TryParse(bonusTypeText, out BonusType bonusType))
                 {
                     GameLog.Core.GameData.WarnFormat(
                         "Invalid bonus type specified for design '{0}': {1}",
                         Key ?? UnknownDesignKey,
                         bonusTypeText);
-                    
+
                     continue;
                 }
 
-                if (!int.TryParse(xmlBonus.GetAttribute("Amount"), out bonusAmount))
+                if (!int.TryParse(xmlBonus.GetAttribute("Amount"), out int bonusAmount))
                 {
                     GameLog.Core.GameData.WarnFormat(
                         "Invalid bonus amount specified for bonus type '{0}' on design '{1}': {2}",
@@ -182,10 +173,7 @@ namespace Supremacy.Buildings
             return Bonuses.Where(o => bonusTypes.Contains(o.BonusType));
         }
 
-        protected override string DefaultImageSubFolder
-        {
-            get { return "Buildings/"; }
-        }
+        protected override string DefaultImageSubFolder => "Buildings/";
 
         /// <summary>
         /// Compacts this instance to reduce serialization footprint.
@@ -204,27 +192,28 @@ namespace Supremacy.Buildings
         {
             base.AppendXml(baseElement);
 
-            var doc = baseElement.OwnerDocument;
-            var newElement = doc.CreateElement("EnergyCost");
+            XmlDocument doc = baseElement.OwnerDocument;
+            XmlElement newElement = doc.CreateElement("EnergyCost");
 
             newElement.InnerText = EnergyCost.ToString();
-            baseElement.AppendChild(newElement);
+            _ = baseElement.AppendChild(newElement);
 
-            
-            if (_bonuses.Count <= 0)
+            if (_bonuses.Count == 0)
+            {
                 return;
+            }
 
             newElement = doc.CreateElement("Bonuses");
 
-            foreach (var bonus in _bonuses)
+            foreach (Bonus bonus in _bonuses)
             {
-                var subElement = doc.CreateElement("Bonus");
+                XmlElement subElement = doc.CreateElement("Bonus");
                 subElement.SetAttribute("Type", bonus.BonusType.ToString());
                 subElement.SetAttribute("Amount", bonus.Amount.ToString());
-                newElement.AppendChild(subElement);
+                _ = newElement.AppendChild(subElement);
             }
 
-            baseElement.AppendChild(newElement);
+            _ = baseElement.AppendChild(newElement);
         }
 
         /// <summary>
@@ -246,17 +235,17 @@ namespace Supremacy.Buildings
                 return false;
             }
 
-            var system = GameContext.Current.Universe.Map[location].System;
-            var building = new Building(this);
-            
+            StarSystem system = GameContext.Current.Universe.Map[location].System;
+            Building building = new Building(this);
+
             building.Reset();
-            
+
             building.Owner = system.Colony.Owner;
             building.Location = system.Colony.Location;
-            
+
             system.Colony.AddBuilding(building);
-            system.Colony.ActivateBuilding(building);
-            
+            _ = system.Colony.ActivateBuilding(building);
+
             GameContext.Current.Universe.Objects.Add(building);
             //building.EffectBindingsInternal.AddRange(this.Effects);
             EffectSystem.RegisterEffectSource(building);
@@ -279,24 +268,29 @@ namespace Supremacy.Buildings
         public override bool CanConvertTo(ITypeDescriptorContext context, Type destinationType)
         {
             if (destinationType == typeof(InstanceDescriptor))
+            {
                 return true;
+            }
 
             return base.CanConvertTo(context, destinationType);
         }
 
         public override object ConvertTo(ITypeDescriptorContext context, System.Globalization.CultureInfo culture, object value, Type destinationType)
         {
-            var design = value as TechObjectDesign;
-            if (design == null)
+            if (!(value is TechObjectDesign design))
+            {
                 return null;
+            }
 
-            var sourceType = value.GetType();
+            Type sourceType = value.GetType();
 
             if (destinationType == typeof(InstanceDescriptor))
             {
-                var constructor = sourceType.GetConstructor(ConstructorArgumentTypes);
+                System.Reflection.ConstructorInfo constructor = sourceType.GetConstructor(ConstructorArgumentTypes);
                 if (constructor == null)
+                {
                     return null;
+                }
 
                 return new InstanceDescriptor(
                     constructor,

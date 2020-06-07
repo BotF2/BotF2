@@ -19,11 +19,11 @@ namespace Supremacy.Collections
     [ContractClassFor(typeof(IKeyedLookup<,>))]
     internal sealed class KeyedLookupContracts<TKey, TValue> : IKeyedLookup<TKey, TValue>
     {
-        [ContractInvariantMethod]
-        private void Invariants()
-        {
-            Contract.Invariant(Contract.ForAll(this, o => !ReferenceEquals(o, null)));
-        }
+        //[ContractInvariantMethod]
+        //private void Invariants()
+        //{
+        //    Contract.Invariant(Contract.ForAll(this, o => !ReferenceEquals(o, null)));
+        //}
 
         #region Implementation of IKeyedCollection<TKey,TValue>
         bool IKeyedLookup<TKey, TValue>.Contains(TKey key)
@@ -35,10 +35,10 @@ namespace Supremacy.Collections
         {
             get
             {
-                var @this = (IKeyedLookup<TKey, TValue>)this;
+                IKeyedLookup<TKey, TValue> @this = this;
                 Contract.Ensures(@this.Contains(key));
                 Contract.EnsuresOnThrow<KeyNotFoundException>(!@this.Contains(key));
-                return default(TValue);
+                return default;
             }
         }
 
@@ -77,28 +77,25 @@ namespace Supremacy.Collections
     [ContractClassFor(typeof(IIndexedEnumerable<>))]
     internal sealed class IndexedEnumerableContracts<T> : IIndexedEnumerable<T>
     {
-        [ContractInvariantMethod]
-        private void Invariants()
-        {
-            var @this = (IIndexedEnumerable<T>)this;
-            Contract.Invariant(@this.Count >= 0);
-        }
+        //[ContractInvariantMethod]
+        //private void Invariants()
+        //{
+        //    var @this = (IIndexedEnumerable<T>)this;
+        //    Contract.Invariant(@this.Count >= 0);
+        //}
 
         T IIndexedEnumerable<T>.this[int index]
         {
             get
             {
-                var @this = (IIndexedEnumerable<T>)this;
+                IIndexedEnumerable<T> @this = this;
                 Contract.Requires/*<ArgumentOutOfRangeException>*/(index >= 0);
                 Contract.Requires/*<ArgumentOutOfRangeException>*/(index < @this.Count);
-                return default(T);
+                return default;
             }
         }
 
-        int IIndexedEnumerable<T>.Count
-        {
-            get { return 0; }
-        }
+        int IIndexedEnumerable<T>.Count => 0;
 
         #region Implementation of IEnumerable
         public IEnumerator<T> GetEnumerator()
@@ -122,7 +119,7 @@ namespace Supremacy.Collections
         int IndexOf(T value);
     }
 
-    public interface IObservableIndexedCollection<T> 
+    public interface IObservableIndexedCollection<T>
         : IIndexedCollection<T>, INotifyCollectionChanged { }
 
     [ContractClassFor(typeof(IIndexedCollection<>))]
@@ -130,14 +127,14 @@ namespace Supremacy.Collections
     {
         public bool Contains(T value)
         {
-            var @this = (IIndexedCollection<T>)this;
+            IIndexedCollection<T> @this = this;
             Contract.Ensures(!Contract.Result<bool>() || Contract.Exists(@this, o => Equals(o, value)));
             return false;
         }
 
         int IIndexedCollection<T>.IndexOf(T value)
         {
-            var @this = (IIndexedCollection<T>)this;
+            IIndexedCollection<T> @this = this;
             Contract.Ensures(Contract.Result<int>() >= -1 && Contract.Result<int>() < @this.Count);
             Contract.Ensures(Contract.Result<int>() == -1 || Contract.Exists(this, o => ReferenceEquals(o, value)));
             return -1;
@@ -156,15 +153,9 @@ namespace Supremacy.Collections
         #endregion
 
         #region Implementation of IIndexedEnumerable<T>
-        public int Count
-        {
-            get { return 0; }
-        }
+        public int Count => 0;
 
-        public T this[int index]
-        {
-            get { return default(T); }
-        }
+        public T this[int index] => default;
         #endregion
     }
 
@@ -192,9 +183,9 @@ namespace Supremacy.Collections
 
         bool IKeyedCollection<TKey, TValue>.TryGetValue(TKey key, out TValue value)
         {
-            var @this = (IKeyedCollection<TKey, TValue>)this;
+            IKeyedCollection<TKey, TValue> @this = this;
             Contract.Ensures(!Contract.Result<bool>() || @this.Contains(key));
-            value = default(TValue);
+            value = default;
             return false;
         }
         #endregion
@@ -212,25 +203,16 @@ namespace Supremacy.Collections
         #endregion
 
         #region Implementation of IKeyedEnumerable<TKey,TValue>
-        public TValue this[TKey key]
-        {
-            get { return default(TValue); }
-        }
+        public TValue this[TKey key] => default;
 
         public bool Contains(TKey key)
         {
             return false;
         }
 
-        public TKey GetKeyForItem(TValue item)
-        {
-            return default(TKey);
-        }
+        public TKey GetKeyForItem(TValue item) => default;
 
-        public IEqualityComparer<TKey> KeyComparer
-        {
-            get { return null; }
-        }
+        public IEqualityComparer<TKey> KeyComparer => null;
         #endregion
     }
 
@@ -262,41 +244,26 @@ namespace Supremacy.Collections
 
         public bool TryGetValue(TKey key, out TValue value)
         {
-            value = default(TValue);
+            value = default;
             return false;
         }
 
-        TValue IKeyedLookup<TKey, TValue>.this[TKey key]
-        {
-            get { return default(TValue); }
-        }
+        TValue IKeyedLookup<TKey, TValue>.this[TKey key] => default;
 
         public bool Contains(TKey key)
         {
             return false;
         }
 
-        public TKey GetKeyForItem(TValue item)
-        {
-            return default(TKey);
-        }
+        public TKey GetKeyForItem(TValue item) => default;
 
-        public IEqualityComparer<TKey> KeyComparer
-        {
-            get { return EqualityComparer<TKey>.Default; }
-        }
+        public IEqualityComparer<TKey> KeyComparer => EqualityComparer<TKey>.Default;
         #endregion
 
         #region Implementation of IIndexedEnumerable<TValue>
-        public int Count
-        {
-            get { return 0; }
-        }
+        public int Count => 0;
 
-        TValue IIndexedEnumerable<TValue>.this[int index]
-        {
-            get { return default(TValue); }
-        }
+        TValue IIndexedEnumerable<TValue>.this[int index] => default;
         #endregion
 
         #region Implementation of IIndexedCollection<TValue>

@@ -20,10 +20,7 @@ namespace Supremacy.Collections
 
         public ArrayWrapper([NotNull] T[] values)
         {
-            if (values == null)
-                throw new ArgumentNullException("values");
-
-            _values = values;
+            _values = values ?? throw new ArgumentNullException(nameof(values));
             _count = values.Length;
         }
 
@@ -32,23 +29,20 @@ namespace Supremacy.Collections
         {
             if (start < 0 || start >= values.Length)
             {
-                throw new ArgumentOutOfRangeException(
-                    "start",
-                    SR.ArgumentOutOfRangeException_IndexIsOutsideArrayBounds);
+                throw new ArgumentOutOfRangeException(nameof(start),
+                SR.ArgumentOutOfRangeException_IndexIsOutsideArrayBounds);
             }
 
             if (count < 0)
             {
-                throw new ArgumentOutOfRangeException(
-                    "count",
-                    SR.ArgumentOutOfRangeException_ValueMustBeNonNegative);
+                throw new ArgumentOutOfRangeException(nameof(count),
+                SR.ArgumentOutOfRangeException_ValueMustBeNonNegative);
             }
-            
+
             if (start + count > values.Length)
             {
-                throw new ArgumentOutOfRangeException(
-                    "count",
-                    SR.ArgumentOutOfRangeException_StartPlusCountExceedsLength);
+                throw new ArgumentOutOfRangeException(nameof(count),
+                SR.ArgumentOutOfRangeException_StartPlusCountExceedsLength);
             }
 
             _start = start;
@@ -67,15 +61,14 @@ namespace Supremacy.Collections
             _values = new T[length];
         }
 
-        public T[] Values
-        {
-            get { return _values; }
-        }
+        public T[] Values => _values;
 
         public IEnumerator<T> GetEnumerator()
         {
-            for (var i = 0; i < _start + _count; i++)
+            for (int i = 0; i < _start + _count; i++)
+            {
                 yield return _values[i];
+            }
         }
 
         void ICollection<T>.Add(T item)
@@ -88,15 +81,17 @@ namespace Supremacy.Collections
             Array.Clear(_values, _start, _count);
         }
 
-        public bool Contains(T item)
+        public bool Contains(T value)
         {
-            return IndexOf(item) >= 0;
+            return IndexOf(value) >= 0;
         }
 
         public void CopyTo(T[] array, int arrayIndex)
         {
             for (int i = 0, j = arrayIndex; i < _start + _count; i++, j++)
+            {
                 array[i] = _values[i];
+            }
         }
 
         bool ICollection<T>.Remove(T item)
@@ -104,19 +99,13 @@ namespace Supremacy.Collections
             throw new NotSupportedException(SR.NotSupported_FixedSizeCollection);
         }
 
-        public int Count
-        {
-            get { return _values.Length; }
-        }
+        public int Count => _values.Length;
 
-        public bool IsReadOnly
-        {
-            get { return false; }
-        }
+        public bool IsReadOnly => false;
 
-        public int IndexOf(T item)
+        public int IndexOf(T value)
         {
-            return Array.IndexOf(_values, item, _start, _count) - _start;
+            return Array.IndexOf(_values, value, _start, _count) - _start;
         }
 
         public void Insert(int index, T item)
@@ -138,7 +127,7 @@ namespace Supremacy.Collections
             }
             set
             {
-                VerifyIndexWithinBounds(index); 
+                VerifyIndexWithinBounds(index);
                 _values[index + _start] = value;
             }
         }
@@ -148,9 +137,8 @@ namespace Supremacy.Collections
             if (index < _start ||
                 index >= (_start + _count))
             {
-                throw new ArgumentOutOfRangeException(
-                    "index",
-                    SR.ArgumentOutOfRangeException_IndexIsOutsideArrayBounds);
+                throw new ArgumentOutOfRangeException(nameof(index),
+                SR.ArgumentOutOfRangeException_IndexIsOutsideArrayBounds);
             }
         }
 
@@ -164,20 +152,11 @@ namespace Supremacy.Collections
             Array.Copy(_values, _start, array, index, _count);
         }
 
-        int ICollection.Count
-        {
-            get { return _count; }
-        }
+        int ICollection.Count => _count;
 
-        object ICollection.SyncRoot
-        {
-            get { return _values.SyncRoot; }
-        }
+        object ICollection.SyncRoot => _values.SyncRoot;
 
-        public bool IsSynchronized
-        {
-            get { return false; }
-        }
+        public bool IsSynchronized => false;
 
         int IList.Add(object value)
         {
@@ -228,15 +207,9 @@ namespace Supremacy.Collections
             }
         }
 
-        bool IList.IsReadOnly
-        {
-            get { return _values.IsReadOnly; }
-        }
+        bool IList.IsReadOnly => _values.IsReadOnly;
 
-        bool IList.IsFixedSize
-        {
-            get { return true; }
-        }
+        bool IList.IsFixedSize => true;
 
         #region Implementation of IOwnedDataSerializable
         public void DeserializeOwnedData(SerializationReader reader, object context)

@@ -19,7 +19,7 @@ using Supremacy.IO.Serialization;
 namespace Supremacy.Collections
 {
     [Serializable]
-    public class GameObjectLookupCollection<TKey, TValue> : 
+    public class GameObjectLookupCollection<TKey, TValue> :
         ICollection<TValue>,
         IKeyedCollection<TKey, TValue>,
         IOwnedDataSerializableAndRecreatable
@@ -39,18 +39,10 @@ namespace Supremacy.Collections
             [NotNull] Func<TValue, int> valueLookupResolver,
             [NotNull] Func<int, TValue> valueResolver)
         {
-            if (keyLookupResolver == null)
-                throw new ArgumentNullException("keyLookupResolver");
-            if (keyResolver == null)
-                throw new ArgumentNullException("keyResolver");
-            if (valueLookupResolver == null)
-                throw new ArgumentNullException("valueLookupResolver");
-            if (valueResolver == null)
-                throw new ArgumentNullException("valueResolver");
-            _keyLookupResolver = keyLookupResolver;
-            _valueResolver = valueResolver;
-            _valueLookupResolver = valueLookupResolver;
-            _keyResolver = keyResolver;
+            _keyLookupResolver = keyLookupResolver ?? throw new ArgumentNullException(nameof(keyLookupResolver));
+            _valueResolver = valueResolver ?? throw new ArgumentNullException(nameof(valueResolver));
+            _valueLookupResolver = valueLookupResolver ?? throw new ArgumentNullException(nameof(valueLookupResolver));
+            _keyResolver = keyResolver ?? throw new ArgumentNullException(nameof(keyResolver));
             _lookupDictionary = new Dictionary<int, int>();
         }
 
@@ -59,21 +51,20 @@ namespace Supremacy.Collections
         {
             get
             {
-                var keyLookup = _keyLookupResolver(key);
-                int valueLookup;
-                if (!_lookupDictionary.TryGetValue(keyLookup, out valueLookup))
-                    return null;
-                return _valueResolver(valueLookup);
+                int keyLookup = _keyLookupResolver(key);
+                return !_lookupDictionary.TryGetValue(keyLookup, out int valueLookup) ? null : _valueResolver(valueLookup);
             }
-            set { _lookupDictionary[_keyLookupResolver(key)] = _valueLookupResolver(value); }
+            set => _lookupDictionary[_keyLookupResolver(key)] = _valueLookupResolver(value);
         }
         #endregion
 
         #region Implementation of IEnumerable
         public IEnumerator<TValue> GetEnumerator()
         {
-            foreach (var valueLookup in _lookupDictionary.Values)
+            foreach (int valueLookup in _lookupDictionary.Values)
+            {
                 yield return _valueResolver(valueLookup);
+            }
         }
 
         IEnumerator IEnumerable.GetEnumerator()
@@ -86,7 +77,10 @@ namespace Supremacy.Collections
         public void Add([NotNull] TValue item)
         {
             if (item == null)
-                throw new ArgumentNullException("item");
+            {
+                throw new ArgumentNullException(nameof(item));
+            }
+
             _lookupDictionary[_keyLookupResolver(_keyResolver(item))] = _valueLookupResolver(item);
         }
 
@@ -110,25 +104,16 @@ namespace Supremacy.Collections
             return _lookupDictionary.Remove(_keyLookupResolver(_keyResolver(item)));
         }
 
-        public int Count
-        {
-            get { return _lookupDictionary.Count; }
-        }
+        public int Count => _lookupDictionary.Count;
 
-        public bool IsReadOnly
-        {
-            get { return false; }
-        }
+        public bool IsReadOnly => false;
 
         public bool Contains(TKey key)
         {
             return _lookupDictionary.ContainsKey(_keyLookupResolver(key));
         }
 
-        public IEqualityComparer<TKey> KeyComparer
-        {
-            get { return EqualityComparer<TKey>.Default; }
-        }
+        public IEqualityComparer<TKey> KeyComparer => EqualityComparer<TKey>.Default;
 
         public bool Remove(TKey item)
         {
@@ -139,33 +124,31 @@ namespace Supremacy.Collections
         #region Implementation of IOwnedDataSerializable
         public void DeserializeOwnedData(SerializationReader reader, object context)
         {
-            var keys = reader.ReadOptimizedInt32Array();
-            var values = reader.ReadOptimizedInt32Array();
-            for (var i = 0; i < keys.Length; i++)
+            int[] keys = reader.ReadOptimizedInt32Array();
+            int[] values = reader.ReadOptimizedInt32Array();
+            for (int i = 0; i < keys.Length; i++)
+            {
                 _lookupDictionary[keys[i]] = values[i];
+            }
         }
 
         public void SerializeOwnedData(SerializationWriter writer, object context)
         {
-            var keys = _lookupDictionary.Keys.Select(id => (int)id).ToArray();
-            var values = keys.Select(key => _lookupDictionary[key]).Select(id => (int)id).ToArray();
+            int[] keys = _lookupDictionary.Keys.Select(id => id).ToArray();
+            int[] values = keys.Select(key => _lookupDictionary[key]).Select(id => id).ToArray();
             writer.WriteOptimized(keys);
             writer.WriteOptimized(values);
         }
         #endregion
 
-        public IEnumerable<TKey> Keys
-        {
-            get { return _lookupDictionary.Values.Select(_ => _keyResolver(_valueResolver(_))); }
-        }
+        public IEnumerable<TKey> Keys => _lookupDictionary.Values.Select(_ => _keyResolver(_valueResolver(_)));
 
         public bool TryGetValue(TKey key, out TValue value)
         {
-            var internalKey = _keyLookupResolver(key);
-            int valueId;
-            if (!_lookupDictionary.TryGetValue(internalKey, out valueId))
+            int internalKey = _keyLookupResolver(key);
+            if (!_lookupDictionary.TryGetValue(internalKey, out int valueId))
             {
-                value = default(TValue);
+                value = default;
                 return false;
             }
             value = _valueResolver(valueId);
