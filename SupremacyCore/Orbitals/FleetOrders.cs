@@ -1039,13 +1039,15 @@ namespace Supremacy.Orbitals
                 return;
             }
 
-            // part 2: to *independed* minor race
-            if (!Fleet.Sector.System.Owner.IsEmpire)   // not an empire
+            // part 2: to AI race
+            if (!Fleet.Sector.System.Owner.IsHuman)   // not an empire
             {
                 GameLog.Core.Diplomacy.DebugFormat("{0} is attempting to influence the {1} at {2}",
                     influencerCiv, influencedCiv, Fleet.Sector.System);
-
-                DiplomacyHelper.ApplyTrustChange(influencedCiv, influencerCiv, 288);
+                var diplomat = Diplomat.Get(Fleet.Sector.System.Owner);
+                var foreignPower = diplomat.GetForeignPower(Fleet.Owner);
+                foreignPower.AddRegardEvent(new RegardEvent(30, RegardEventType.DeclaredWar, +255));
+                DiplomacyHelper.ApplyTrustChange(influencerCiv.Civilization, influencedCiv.Civilization, +255);
             }
         }
 
