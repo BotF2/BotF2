@@ -1038,7 +1038,6 @@ namespace Supremacy.Orbitals
                 }
                 return;
             }
-
             // part 2: to AI race
             if (!Fleet.Sector.System.Owner.IsHuman)   // not an empire
             {
