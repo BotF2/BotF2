@@ -27,7 +27,8 @@ namespace Supremacy.Diplomacy
     public static class DiplomacyHelper
     {
         private static readonly IList<Civilization> EmptyCivilizations = new Civilization[0];
-          
+        private static CollectionBase<RegardEvent> _regardEvents;
+
         public static ForeignPowerStatus GetForeignPowerStatus([NotNull] ICivIdentity owner, [NotNull] ICivIdentity counterparty)
         {
             if (owner == null)
@@ -37,7 +38,7 @@ namespace Supremacy.Diplomacy
 
             if (owner.CivID == counterparty.CivID)
                 return ForeignPowerStatus.NoContact;
-
+            _regardEvents = new CollectionBase<RegardEvent>();
             return GameContext.Current.DiplomacyData[owner.CivID, counterparty.CivID].Status;
         }
             // ToDo look at bringing diplomatic ships to use the old diplomatic code and set up the Civilization-to-diplomat map for games (GameContext.Current.Diplomats)
@@ -142,6 +143,37 @@ namespace Supremacy.Diplomacy
                     foreignPower.DiplomacyData.Trust.UpdateAndReset();
                     foreignPower.UpdateRegardAndTrustMeters();
                 }
+            }
+        }
+        public static void ApplyRegardDecay(RegardEventCategories category, RegardDecay decay)
+        {
+            for (var i = 0; i < _regardEvents.Count; i++)
+            {
+                var regardEvent = _regardEvents[i];
+
+                // Regard events with a fixed duration do not decay.
+                if (regardEvent.Duration > 0)
+                    continue;
+
+                var regard = regardEvent.Regard;
+                if (regard == 0)
+                {
+                    _regardEvents.RemoveAt(i--);
+                    continue;
+                }
+
+                if (!regardEvent.Type.GetCategories().HasFlag(category))
+                    continue;
+
+                if (regard > 0)
+                    regard = Math.Max(0, (int)(regard * decay.Positive));
+                else
+                    regard = Math.Min(0, (int)(regard * decay.Negative));
+
+                if (regard == 0)
+                    _regardEvents.RemoveAt(i--);
+                else
+                    regardEvent.Regard = regard;
             }
         }
 

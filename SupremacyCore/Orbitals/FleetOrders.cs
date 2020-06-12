@@ -1041,12 +1041,13 @@ namespace Supremacy.Orbitals
             // part 2: to AI race
             if (!Fleet.Sector.System.Owner.IsHuman)   // not an empire
             {
-                GameLog.Core.Diplomacy.DebugFormat("{0} is attempting to influence the {1} at {2}",
-                    influencerCiv, influencedCiv, Fleet.Sector.System);
                 var diplomat = Diplomat.Get(Fleet.Sector.System.Owner);
                 var foreignPower = diplomat.GetForeignPower(Fleet.Owner);
                 foreignPower.AddRegardEvent(new RegardEvent(30, RegardEventType.DeclaredWar, +255));
                 DiplomacyHelper.ApplyTrustChange(influencerCiv.Civilization, influencedCiv.Civilization, +255);
+                GameLog.Core.Diplomacy.DebugFormat("{0} is attempting to influence the {1} at {2} regard ={3} trust ={4}",
+                       influencerCiv, influencedCiv, Fleet.Sector.System,
+                       foreignPower.DiplomacyData.Regard.CurrentValue, foreignPower.DiplomacyData.Trust.CurrentValue);
             }
         }
 

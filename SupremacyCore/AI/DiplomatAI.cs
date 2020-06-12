@@ -15,7 +15,7 @@ namespace Supremacy.AI
     public delegate bool Chance();
     public static class DiplomatAI
     {
-        public static void DoTurn([NotNull] ICivIdentity civ) // pass in the AI players to procees Diplomacy
+        public static void DoTurn([NotNull] ICivIdentity civ) // pass in the AI civs to procees Diplomacy
         {
             if (civ == null)
                 throw new ArgumentNullException("civ");
@@ -158,12 +158,25 @@ namespace Supremacy.AI
                                 int value = (((CreditsClauseData)clause.Data).ImmediateAmount + ((CreditsClauseData)clause.Data).RecurringAmount) / 25;
                                 foreignPower.AddRegardEvent(new RegardEvent(10, RegardEventType.NoRegardEvent, value));
                             }
+                            if (clause.ClauseType == ClauseType.TreatyAffiliation ||
+                                clause.ClauseType == ClauseType.TreatyCeaseFire ||
+                                clause.ClauseType == ClauseType.TreatyDefensiveAlliance ||
+                                clause.ClauseType == ClauseType.TreatyNonAggression ||
+                                clause.ClauseType == ClauseType.TreatyOpenBorders ||
+                                clause.ClauseType == ClauseType.TreatyResearchPact||
+                                clause.ClauseType == ClauseType.TreatyTradePact ||
+                                clause.ClauseType == ClauseType.TreatyWarPact)
+                            { 
+                                foreignPower.AddRegardEvent(new RegardEvent(10, RegardEventType.TreatyAccept, 100));
+                            }
+                            if (clause.ClauseType == ClauseType.OfferStopPiracy ||
+                                clause.ClauseType == ClauseType.OfferWithdrawTroops ||
+                                clause.ClauseType == ClauseType.OfferEndEmbargo)
+                            {
+                                foreignPower.AddRegardEvent(new RegardEvent(10, RegardEventType.BorderIncursionPullout, 100));
+                            }
                             //else if (clause.ClauseType == ClauseType.OfferGiveResources)
-                            //{
-                            //    var data = (IEnumerable<Tuple<ResourceType, int>>)clause.Data;
-                            //    int value = data.Sum(pair => EconomyHelper.ComputeResourceValue(pair.Item1, pair.Item2)) / 100;
-                            //    foreignPower.AddRegardEvent(new RegardEvent(10, RegardEventType.NoRegardEvent, value));
-                            //}
+                                                               
                         }
                     }
 

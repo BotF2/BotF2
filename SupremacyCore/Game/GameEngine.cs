@@ -38,7 +38,6 @@ namespace Supremacy.Game
     {
         WaitOnPlayers = 0,
         PreTurnOperations,
-       // SpyOperations,
         ResetObjects,
         FleetMovement,
         Combat,
@@ -49,7 +48,6 @@ namespace Supremacy.Game
         ShipProduction,
         Production,
         Trade,
-       // Intelligence,
         Morale,
         MapUpdates,
         PostTurnOperations,
@@ -1081,6 +1079,8 @@ namespace Supremacy.Game
                     {
                         invasions.Add(new InvasionArena(fleet.Sector.System.Colony, fleet.Owner));
                         invasionLocations.Add(fleet.Location);
+                        DiplomacyState invadeCost = new DiplomacyState();
+                        invadeCost.InvadeColonyRegardCost = -100;
                     }
                 }
             }
