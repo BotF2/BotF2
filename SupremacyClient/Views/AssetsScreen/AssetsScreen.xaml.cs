@@ -1026,11 +1026,14 @@ namespace Supremacy.Client.Views
         private void OnIndustryZeroClick(object sender, RoutedEventArgs e)
         {
             IntelHelper.SabotageIndustry(AssetsScreenPresentationModel.LocalCiv, AssetsScreenPresentationModel.SpiedZeroCiv, _blameWhoZero);
+            GameLog.Client.Intel.DebugFormat("LocalCiv ={0} spiedZeroCiv = {1}",
+                AssetsScreenPresentationModel.LocalCiv.Key, AssetsScreenPresentationModel.SpiedZeroCiv.Key);
             CloseZero();
         }
         private void OnIndustryOneClick(object sender, RoutedEventArgs e)
         {
             IntelHelper.SabotageIndustry(AssetsScreenPresentationModel.LocalCiv, AssetsScreenPresentationModel.SpiedOneCiv, _blameWhoOne);
+            GameLog.Client.Intel.DebugFormat("LocalCiv ={0} spiedOneCiv = {1}", AssetsScreenPresentationModel.LocalCiv.Key, AssetsScreenPresentationModel.SpiedOneCiv.Key);
             CloseOne();
         }
         private void OnIndustryTwoClick(object sender, RoutedEventArgs e)
@@ -1046,6 +1049,7 @@ namespace Supremacy.Client.Views
         private void OnIndustryFourClick(object sender, RoutedEventArgs e)
         {
             IntelHelper.SabotageIndustry(AssetsScreenPresentationModel.LocalCiv, AssetsScreenPresentationModel.SpiedFourCiv, _blameWhoFour);
+            GameLog.Client.Intel.DebugFormat("LocalCiv ={0} spiedFourCiv = {1}", AssetsScreenPresentationModel.LocalCiv.Key, AssetsScreenPresentationModel.SpiedFourCiv.Key);
             CloseFour();
         }
         private void OnIndustryFiveClick(object sender, RoutedEventArgs e)

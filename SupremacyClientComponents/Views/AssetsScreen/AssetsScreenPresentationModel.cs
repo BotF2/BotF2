@@ -77,7 +77,7 @@ namespace Supremacy.Client.Views
 
         public List<Civilization> LocalSpyingCivList
         {
-            get 
+            get
             {
                 if (MyLocalCivManager.Civilization.CivID == 0)
                 {
@@ -91,7 +91,7 @@ namespace Supremacy.Client.Views
                 if (MyLocalCivManager.Civilization.CivID == 5) _localSpyingCivList = IntelHelper._spyingCiv_5_List;
                 if (MyLocalCivManager.Civilization.CivID == 6) _localSpyingCivList = IntelHelper._spyingCiv_6_List;
 
-                return _localSpyingCivList; 
+                return _localSpyingCivList;
             }
         }
 
@@ -421,20 +421,10 @@ namespace Supremacy.Client.Views
             SpiedZeroColoniesChanged.Raise(this);
             OnPropertyChanged("SpiedZeroColonies");
         }
-        protected virtual void OnSpiedZeroTotalPopulationChanged()
-        {
-            SpiedZeroTotalPopulationChanged.Raise(this);
-            OnPropertyChanged("SpiedZeroTotalPopulation");
-        }
         protected virtual void OnSpiedOneColoniesChanged()
         {
             SpiedOneColoniesChanged.Raise(this);
             OnPropertyChanged("SpiedOneColonies");
-        }
-        protected virtual void OnSpiedOneTotalPopulationChanged()
-        {
-            SpiedOneTotalPopulationChanged.Raise(this);
-            OnPropertyChanged("SpiedOneTotalPopulation");
         }
         protected virtual void OnSpiedTwoColoniesChanged()
         {
@@ -461,7 +451,16 @@ namespace Supremacy.Client.Views
             SpiedSixColoniesChanged.Raise(this);
             OnPropertyChanged("SpiedSixColonies");
         }
-
+        protected virtual void OnSpiedZeroTotalPopulationChanged()
+        {
+            SpiedZeroTotalPopulationChanged.Raise(this);
+            OnPropertyChanged("SpiedZeroTotalPopulation");
+        }
+        protected virtual void OnSpiedOneTotalPopulationChanged()
+        {
+            SpiedOneTotalPopulationChanged.Raise(this);
+            OnPropertyChanged("SpiedOneTotalPopulation");
+        }
         protected virtual void OnSpiedTwoTotalPopulationChanged()
         {
             SpiedTwoTotalPopulationChanged.Raise(this);
@@ -531,7 +530,7 @@ namespace Supremacy.Client.Views
             get
             {
                 var SpiedCiv = DesignTimeObjects.SpiedCivZero;
-               // GameLog.Client.Test.DebugFormat("##### trying to return SpiedCiv.Civilization = {0}", SpiedCiv.Civilization.Key);
+                GameLog.Client.Test.DebugFormat("##### trying to return SpiedCiv.Civilization = {0}", SpiedCiv.Civilization.Key);
                 return SpiedCiv.Civilization;
             }
         }
@@ -541,7 +540,7 @@ namespace Supremacy.Client.Views
             {
                 var SpiedCiv = DesignTimeObjects.SpiedCivZero;
                 var SeatOfGovernment = GameContext.Current.CivilizationManagers[SpiedCiv].SeatOfGovernment;
-               // GameLog.Client.Test.DebugFormat("##### trying to return SpiedCivZero SeatOfGovernment = {0}", SeatOfGovernment);
+                GameLog.Client.Test.DebugFormat("##### trying to return SpiedCivZero SeatOfGovernment = {0}", SeatOfGovernment);
                 return SeatOfGovernment;
             }
         }

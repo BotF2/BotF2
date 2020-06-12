@@ -187,7 +187,7 @@ namespace Supremacy.AI
                 var otherdiplomat = Diplomat.Get(otherCiv);
                 ForeignPower otherForeignPower = otherdiplomat.GetForeignPower(civ);
                 GameLog.Client.Diplomacy.DebugFormat("#### Civ = {0}, ForeignPower to {1}, otherCiv = {2}, otherForeignpower to {3}", (Civilization)civ, otherCiv.ShortName, otherCiv.ShortName, (Civilization)civ);
-                GameLog.Client.Diplomacy.DebugFormat("#### Foreign{ower for = {0}, to = {1} otherForeignPower for {2} to {3}", foreignPower.Owner.ShortName, foreignPower.Counterparty.ShortName, otherForeignPower.Owner.ShortName, otherForeignPower.Counterparty.ShortName);
+                //GameLog.Client.Diplomacy.DebugFormat("#### ForeignPower for = {0}, to = {1} otherForeignPower for {2} to {3}", foreignPower.Owner.Key, foreignPower.Counterparty.Key, otherForeignPower.Owner.Key, otherForeignPower.Counterparty.Key);
 
                 if (foreignPower.StatementReceived != null)
                 {

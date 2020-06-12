@@ -64,7 +64,12 @@ namespace Supremacy.Diplomacy
         //ThreatenTradeEmbargo,
         //ThreatenDeclareWar,
         WarDeclaration,
-        SabotageOrder
+        SabotageOrder,
+        StealCredits,
+        StealResearch,
+        SabotageFood,
+        SabotageEnergey,
+        SabotageIndustry
     }
 
     public enum ResponseType : byte

@@ -38,6 +38,7 @@ namespace Supremacy.Game
     {
         WaitOnPlayers = 0,
         PreTurnOperations,
+       // SpyOperations,
         ResetObjects,
         FleetMovement,
         Combat,
@@ -48,6 +49,7 @@ namespace Supremacy.Game
         ShipProduction,
         Production,
         Trade,
+       // Intelligence,
         Morale,
         MapUpdates,
         PostTurnOperations,
@@ -735,47 +737,6 @@ namespace Supremacy.Game
                         {
                             continue;
                         }
-                    //if (!civ2.IsEmpire && civ1.IsEmpire) // only a minor vs a major
-                    //{
-                    //    var diplomateOne = Diplomat.Get(civ1);
-                    //    var diplomateTwo = Diplomat.Get(civ2);
-                    //    var ForeignPowerStatusOne = diplomateOne.GetForeignPower(civ1).DiplomacyData.Status;
-                    //    if (ForeignPowerStatusOne == Diplomacy.ForeignPowerStatus.CounterpartyIsMember)
-                    //    {
-                    //        continue;
-                    //    }
-                    //}
-                    //if (civ2.IsEmpire && !civ1.IsEmpire) // only a minor vs a major
-                    //{
-                    //    var diplomateOne = Diplomat.Get(civ1);
-                    //    var diplomateTwo = Diplomat.Get(civ2);
-                    //    var ForeignPowerStatusTwo = diplomateTwo.GetForeignPower(civ1).DiplomacyData.Status;
-                    //    if (ForeignPowerStatusTwo == Diplomacy.ForeignPowerStatus.CounterpartyIsMember)
-                    //    {
-                    //        continue;
-                    //    }
-                    //}
-
-                    //if (civ2.IsEmpire && civ2.IsHuman && civ1.IsEmpire) // empire vs empire && civ2.IsHuman If two non Human Empires no diplomacy porposals 
-                    //{
-                    //    var diplomatOne = Diplomat.Get(civ1);
-                    //    var diplomatTwo = Diplomat.Get(civ2);
-                    //    var ForeignPowerStatusTwo = diplomatTwo.GetForeignPower(civ1).DiplomacyData.Status;
-                    //    if (ForeignPowerStatusTwo == Diplomacy.ForeignPowerStatus.Allied)
-                    //    {
-                    //        continue;
-                    //    }
-                    //}
-                    //if (civ1.IsEmpire && civ1.IsHuman && civ2.IsEmpire) // empire vs empire && civ1.IsHuman
-                    //{
-                    //    var diplomatOne = Diplomat.Get(civ1);
-                    //    var diplomatTwo = Diplomat.Get(civ2);
-                    //    var ForeignPowerStatusOne = diplomatOne.GetForeignPower(civ2).DiplomacyData.Status;
-                    //    if (ForeignPowerStatusOne == Diplomacy.ForeignPowerStatus.Allied)
-                    //    {
-                    //        continue;
-                    //    }
-                    //}
 
                     var ForeignPower = diplomat1.GetForeignPower(civ2);
                     var ForeignPowerStatus = diplomat1.GetForeignPower(civ2).DiplomacyData.Status;
@@ -902,31 +863,26 @@ namespace Supremacy.Game
 
                     if (foreignPower.StatementReceived != null)
                     {
-                        switch (foreignPower.StatementReceived.Tone)
+                        switch (foreignPower.StatementReceived.StatementType)
                         {
-                            case Tone.Calm:
-                                break;
-                            case Tone.Meek:
-                                break;
-                            case Tone.Condescending:
-                                break;
-                            case Tone.Indignant:
+                            case StatementType.StealCredits:
                                 IntelHelper.SabotageStealCreditsExecute(civ2, civ1, foreignPower.StatementReceived.Parameter.ToString(), 99999);
-                                //Parameter = blamed as a string
                                 break;
-                            case Tone.Impatient:
+                            case StatementType.StealResearch:
                                 IntelHelper.SabotageStealResearchExecute(civ2, civ1, foreignPower.StatementReceived.Parameter.ToString(), 99999);
                                 break;
-                            case Tone.Annoyed:
+                            case StatementType.SabotageFood:
                                 IntelHelper.SabotageFoodExecute(civ2, civ1, foreignPower.StatementReceived.Parameter.ToString(), 99999);
                                 break;
-                            case Tone.Enraged:
+                            case StatementType.SabotageIndustry:
                                 IntelHelper.SabotageIndustryExecute(civ2, civ1, foreignPower.StatementReceived.Parameter.ToString(), 99999);
                                 break;
-                            case Tone.Receptive:
+                            case StatementType.SabotageEnergey:
                                 IntelHelper.SabotageEnergyExecute(civ2, civ1, foreignPower.StatementReceived.Parameter.ToString(), 99999);
                                 break;
-                            case Tone.Enthusiastic:
+                            case StatementType.CommendWar:
+                            case StatementType.DenounceWar:
+                            case StatementType.WarDeclaration:  
                                 break;
                             default:
                                 break;
@@ -989,12 +945,12 @@ namespace Supremacy.Game
                         if (statementSent.StatementType == StatementType.WarDeclaration)
                             foreignPower.DeclareWar();
 
-                        if (statementSent.StatementType == StatementType.SabotageOrder && statementSent.Tone == Tone.Indignant)
-                        {
-                            // wrong - this is the place "Statement" has been SEND
-                            //GameLog.Core.Diplomacy.DebugFormat("received a 'StealCredits'-Diplomacy-Statement");
-                            //IntelHelper.ExecuteStealCredits(civ1, civ2, "Diplo-Terrorists");
-                        }
+                        //if (statementSent.StatementType == StatementType.SabotageOrder && statementSent.Tone == Tone.Indignant)
+                        //{
+                        //    // wrong - this is the place "Statement" has been SEND
+                        //    //GameLog.Core.Diplomacy.DebugFormat("received a 'StealCredits'-Diplomacy-Statement");
+                        //    //IntelHelper.ExecuteStealCredits(civ1, civ2, "Diplo-Terrorists");
+                        //}
                     }
                     else
                     {
@@ -1079,8 +1035,6 @@ namespace Supremacy.Game
                     {
                         invasions.Add(new InvasionArena(fleet.Sector.System.Colony, fleet.Owner));
                         invasionLocations.Add(fleet.Location);
-                        DiplomacyState invadeCost = new DiplomacyState();
-                        invadeCost.InvadeColonyRegardCost = -100;
                     }
                 }
             }
