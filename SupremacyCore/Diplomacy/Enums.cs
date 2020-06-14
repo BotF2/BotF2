@@ -64,7 +64,7 @@ namespace Supremacy.Diplomacy
         //ThreatenTradeEmbargo,
         //ThreatenDeclareWar,
         WarDeclaration,
-        SabotageOrder,
+        //SabotageOrder,
         StealCredits,
         StealResearch,
         SabotageFood,

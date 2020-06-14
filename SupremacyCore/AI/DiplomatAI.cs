@@ -256,8 +256,9 @@ namespace Supremacy.AI
                         DiplomacyHelper.ApplyTrustChange(foreignPower.Owner, foreignPower.Counterparty, +100);
                     }
 
-                    if (foreignPower.StatementReceived.StatementType == StatementType.SabotageOrder) // only the borg now?
-                        foreignPower.AddRegardEvent(new RegardEvent(1, RegardEventType.NoRegardEvent, 0));
+                    //if (foreignPower.StatementReceived.StatementType == StatementType.SabotageOrder) // only the borg now?
+                    //    foreignPower.AddRegardEvent(new RegardEvent(1, RegardEventType.NoRegardEvent, 0));
+
                     // if (foreignPower.StatementReceived.StatementType == StatementType.NoStatement) // do we need something for this?
 
                     foreignPower.LastStatementReceived = foreignPower.StatementReceived;

@@ -65,7 +65,7 @@ namespace Supremacy.Client.Views
         {
             get
             {
-                GameLog.Client.Diplomacy.DebugFormat("_foreignPower.Counterparty = {0}", _foreignPower.Counterparty);
+                //GameLog.Client.Diplomacy.DebugFormat("_foreignPower.Counterparty = {0}", _foreignPower.Counterparty);
                 return _foreignPower.Counterparty;
             }
         }
@@ -250,7 +250,7 @@ namespace Supremacy.Client.Views
             {
                 // move Gamelog to the three detail places
                 // 
-                GameLog.Client.Diplomacy.DebugFormat("Proposal received ? ={0}, Response received = {1}, Statement Received ={2}", _foreignPower.ProposalReceived, _foreignPower.ResponseReceived, _foreignPower.StatementReceived);
+                //GameLog.Client.Diplomacy.DebugFormat("Proposal received ? ={0}, Response received = {1}, Statement Received ={2}", _foreignPower.ProposalReceived, _foreignPower.ResponseReceived, _foreignPower.StatementReceived);
                 return ResolveMessageCategory(_foreignPower.ProposalReceived ?? (object)_foreignPower.ResponseReceived ?? _foreignPower.StatementReceived);
             }
         }
@@ -398,15 +398,19 @@ namespace Supremacy.Client.Views
                     //case StatementType.DenounceAssault:
                     //case StatementType.DenounceInvasion:
                     //case StatementType.DenounceSabotage:
-                    case StatementType.SabotageOrder:
-                        GameLog.Client.Diplomacy.DebugFormat("Message Statement");
+                    case StatementType.SabotageFood:
+                    case StatementType.SabotageIndustry:
+                    case StatementType.SabotageEnergy:
+                    case StatementType.StealCredits:
+                    case StatementType.StealResearch:
+                        //GameLog.Client.Diplomacy.DebugFormat("Message Statement");
                         return DiplomaticMessageCategory.Statement;
                     
                     //case StatementType.ThreatenDestroyColony:
                     //case StatementType.ThreatenTradeEmbargo:
                     //case StatementType.ThreatenDeclareWar:
                     //    GameLog.Client.Diplomacy.DebugFormat("Message Threat");
-                        return DiplomaticMessageCategory.Threat;
+                        //return DiplomaticMessageCategory.Threat;
                 }
             }
             // a lot of times hitted without giving an info ... GameLog.Client.Diplomacy.DebugFormat("Message Category None");
