@@ -979,6 +979,7 @@ namespace Supremacy.Intelligence
         }
         public static int GetIntelRatio(CivilizationManager attackedCivManager, CivilizationManager attackingCivManager)
         {
+            bool isSpyShipInHomeSystem = FindSpyShipInHomeSystem(attackedCivManager, attackedCivManager);
             bool daBorg = (attackedCivManager.Civilization.Key == "Borg");
             int ratio = -1;
             Int32.TryParse(attackedCivManager.TotalIntelligenceDefenseAccumulated.ToString(), out int defenseIntelligence);  // TotalIntelligence of attacked civ
@@ -1003,6 +1004,11 @@ namespace Supremacy.Intelligence
             if (daBorg)
                 ratio += 5;
             return ratio;
+        }
+
+        public static bool FindSpyShipInHomeSystem(CivilizationManager attackedCivManager, CivilizationManager civilizationManager)
+        {
+            return true;
         }
     }
     #endregion
