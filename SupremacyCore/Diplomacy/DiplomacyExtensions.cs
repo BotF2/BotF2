@@ -174,6 +174,16 @@ namespace Supremacy.Diplomacy
                 return envoy.LastResponseReceived;
             return null;
         }
+
+        public static Statement GetStatementSent(this Diplomat source, ICivIdentity civ)
+        {
+            if (source == null)
+                return null;
+            var envoy = source.GetForeignPower(civ);
+            if (envoy != null)
+                return envoy.StatementSent;
+            return null;
+        }
         public static Statement GetLastStatementSent(this Diplomat source, ICivIdentity civ)
         {
             if (source == null)
