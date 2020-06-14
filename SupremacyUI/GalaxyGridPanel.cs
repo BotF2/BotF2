@@ -2209,20 +2209,41 @@ namespace Supremacy.UI
                          * DRAW TradeRoute INDICATORS *
                          ***************************/
 
-                        if (sector.TradeRouteIndicator != 99 && sector.TradeRouteIndicator != 0)
+                        if (sector.TradeRouteIndicator != 99 && sector.TradeRouteIndicator != 0 && sector.Owner == playerCiv)
                         {
-                            if (!mapData.IsScanned(location))
+                            if (mapData.IsScanned(location))
                             {
-                                // my plan is: 
+                                // TradeRouteIndicator - my plan is: 
                                 // yellow "2": 2 TradeRoutes done, 2 possible
                                 // green "1": 1 TradeRoutes done, 2 possible -> one available
 
+                                //int tradeRouteAssigned = 0;
+
+                                //foreach (var tr in sector.System.Colony.TradeRoutes)
+                                //{
+                                //    if (tr.IsAssigned)
+                                //    {
+                                //        tradeRouteAssigned += 1;
+                                //    }
+                                //}
+
+                                int tradeRouteUnused = sector.System.Colony.TradeRoutesPossible;
+
+                                GameLog.Core.TradeRoutes.DebugFormat("TradeRoutes for Sector {0}: Available: {1}, Possible: {2}, Used: {3}", 
+                                    sector.Location, tradeRouteUnused, sector.TradeRouteIndicator, sector.System.Colony.TradeRoutesAssigned);
+
                                 Pen tPen;
 
-                                tPen = new Pen(Brushes.Green, 1.0);
+                                tPen = new Pen(Brushes.Yellow, 1.0);
+                                if (sector.System.Colony.TradeRoutesAssigned == sector.TradeRouteIndicator)
+                                {
+                                    tPen = new Pen(Brushes.Green, 1.0);
+                                }
+                                if (tradeRouteUnused > 0)
+                                {
+                                    tPen = new Pen(Brushes.Red, 1.0);
+                                }
 
-                                int tradeRouteAvailable = sector.TradeRouteIndicator - sector.System.Colony.TradeRoutes.Count();
-                                GameLog.Core.TradeRoutes.DebugFormat("TradeRoutes for Sector {0}: Available: {1}, Possible: {2}, Used: {3}", sector.Location,  tradeRouteAvailable, sector.TradeRouteIndicator, sector.System.Colony.TradeRoutes.Count());
 
                                 FormattedText tText = new FormattedText(
                                     "T:" + sector.TradeRouteIndicator.ToString(),
