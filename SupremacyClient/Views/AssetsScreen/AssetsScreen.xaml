@@ -138,7 +138,6 @@
                 </ScrollViewer>
             </Grid>
         </TabItem>
-
         <!--SPY_REPORT_TAB_HEADER-->
         <TabItem Header="{s:StringResource Key=SPY_REPORT_TAB_HEADER}">
             <!-- Spy Tab and Grid just for Head line -->
@@ -265,9 +264,10 @@
                 </Grid>
                 <ScrollViewer 
                     VerticalScrollBarVisibility="Auto"
+                    HorizontalScrollBarVisibility="Auto"
                     Margin="5,0,0,0"
                     Width="Auto"
-                    Height="800"
+                    Height="Auto"
                     HorizontalAlignment="Left">
                     <StackPanel Height="1400" Margin="5,0,0,0">
             <!-- Zero Expander -->
