@@ -17,7 +17,6 @@ using Supremacy.Economy;
 using Supremacy.Entities;
 using Supremacy.Intelligence;
 using Supremacy.Orbitals;
-using Supremacy.SpyOperations;
 using Supremacy.Tech;
 using Supremacy.Types;
 using Supremacy.Universe;

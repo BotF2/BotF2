@@ -8,7 +8,6 @@ using Supremacy.Annotations;
 using Supremacy.Entities;
 using Supremacy.Game;
 using Supremacy.Intelligence;
-using Supremacy.SpyOperations;
 using Supremacy.Types;
 using Supremacy.Universe;
 using Supremacy.Utility;
