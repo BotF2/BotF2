@@ -21,20 +21,20 @@
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
 
-
-        <ScrollViewer CanContentScroll="True"
+       
+            <ScrollViewer CanContentScroll="True"
                 Width="600"
                 Height="480"
                 Grid.Column="1"
                 ScrollViewer.VerticalScrollBarVisibility="Visible"
                 ScrollViewer.HorizontalScrollBarVisibility="Auto">
+                <!--SystemProductionPanel-->
                 <s:SystemProductionPanel x:Name="SystemProductionPanel" />
-
-                </ScrollViewer>
+            </ScrollViewer>
         </Grid>
 
       <!--OrbitalBattery-->
-        <Grid DockPanel.Dock="Top" Margin="7">
+        <Grid DockPanel.Dock="Top" Margin="2">
       <Grid.ColumnDefinitions>
         <ColumnDefinition Width="Auto" />
         <ColumnDefinition Width="Auto" />
@@ -111,7 +111,7 @@
                   ItemsSource="{Binding Path=SelectedColony.Buildings}">
       <ItemsControl.Resources>
         <DataTemplate x:Key="HandlingListItemTemplate">
-          <Border Padding="7"
+          <Border Padding="2"
                   scc:InfoCardService.InfoCardHeader="{Binding RelativeSource={RelativeSource Self}, Path=(scc:InfoCardService.InfoCardSubject).(scc:InfoCardSubject.Data), Mode=OneWay}"
                   scc:InfoCardService.InfoCardContent="{Binding RelativeSource={RelativeSource Self}, Path=(scc:InfoCardService.InfoCardSubject).(scc:InfoCardSubject.Data), Mode=OneWay}">
             <scc:InfoCardService.InfoCardHeaderTemplate>

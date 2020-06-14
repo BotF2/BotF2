@@ -438,7 +438,7 @@ namespace Supremacy.Intelligence
         // coming from Buttons in each of the six expanders
             var attackedCivManager = GameContext.Current.CivilizationManagers[attackedCiv];
             var attackingCivManager = GameContext.Current.CivilizationManagers[attackingCiv];
-            var _sendOrder = new SendStatementOrder(new Statement(attackingCiv, attackedCiv, StatementType.StealResearch, Tone.Annoyed, blamed, 99999));
+            var _sendOrder = new SendStatementOrder(new Statement(attackingCiv, attackedCiv, StatementType.StealResearch, Tone.Enraged, blamed, 99999));
             _sendOrder.Owner = attackingCiv;
 
             GameLog.Core.Diplomacy.DebugFormat("Create Statement for StealResearch: " + Environment.NewLine
@@ -735,7 +735,7 @@ namespace Supremacy.Intelligence
             // coming from Buttons in each of the six expanders
             var attackedCivManager = GameContext.Current.CivilizationManagers[attackedCiv];
             var attackingCivManager = GameContext.Current.CivilizationManagers[attackingCiv];
-            var _sendOrder = new SendStatementOrder(new Statement(attackingCiv, attackedCiv, StatementType.SabotageEnergey, Tone.Enraged, blamed, 99999));
+            var _sendOrder = new SendStatementOrder(new Statement(attackingCiv, attackedCiv, StatementType.SabotageEnergy, Tone.Enraged, blamed, 99999));
             _sendOrder.Owner = attackingCiv;
             GameLog.Core.Diplomacy.DebugFormat("Create Statement for SabotageEnergy: " + Environment.NewLine
                 + "sender = {0} *vs* Recipient = {1}: StatementType = {2}, blamed = {4} tone ={5}"
@@ -864,7 +864,7 @@ namespace Supremacy.Intelligence
             _sendOrder.Owner = attackingCiv;
             GameLog.Core.Diplomacy.DebugFormat("Create Statement for SabotageIndustry: " + Environment.NewLine
                 + "sender = {0} *vs* Recipient = {1}: StatementType = {2}, Tone ={3}, blamed = {4}"
-                                , attackingCiv, attackedCiv, _sendOrder.Statement.ToString(), _sendOrder.Statement.Tone.ToString(), blamed + Environment.NewLine);
+                                , attackingCiv, attackedCiv, _sendOrder.Statement.StatementType.ToString(), _sendOrder.Statement.Tone.ToString(), blamed + Environment.NewLine);
             ServiceLocator.Current.GetInstance<IPlayerOrderService>().AddOrder(_sendOrder);
         }
 

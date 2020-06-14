@@ -68,7 +68,7 @@ namespace Supremacy.Diplomacy
         StealCredits,
         StealResearch,
         SabotageFood,
-        SabotageEnergey,
+        SabotageEnergy,
         SabotageIndustry
     }
 

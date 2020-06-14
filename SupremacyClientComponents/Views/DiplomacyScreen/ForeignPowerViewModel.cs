@@ -37,7 +37,7 @@ namespace Supremacy.Client.Views
 
         private void UpdateIncomingMessage()
         {
-            GameLog.Client.Diplomacy.DebugFormat("Checking for IncomingMessage...");
+            GameLog.Client.Diplomacy.DebugFormat("Checking for IncomingMessage out of *ResponseReceived...");
             if (_foreignPower.ResponseReceived == null)
             {
                 GameLog.Client.Diplomacy.DebugFormat("_foreignPower.ResponseReceived = no incoming message yet");
@@ -45,7 +45,7 @@ namespace Supremacy.Client.Views
             }
 
             IncomingMessage = DiplomacyMessageViewModel.FromReponse(_foreignPower.ResponseReceived);
-            GameLog.Client.Diplomacy.DebugFormat("Found IncomingMessage from {0}: {1}", _foreignPower.Owner, IncomingMessage);
+            GameLog.Client.Diplomacy.DebugFormat("Found IncomingMessage out of *ResponseReceived from {0}: {1}", _foreignPower.Owner, IncomingMessage);
         }
 
         private void UpdateActiveAgreements()
@@ -327,7 +327,7 @@ namespace Supremacy.Client.Views
 
         internal static DiplomaticMessageCategory ResolveMessageCategory(object message) // DiplomaticMessageCategory is enum of 1 to 9 message types
         {
-            GameLog.Client.Diplomacy.DebugFormat("ResolveMessageCategory beginning...");
+            //GameLog.Client.Diplomacy.DebugFormat("ResolveMessageCategory beginning...");
 
             var viewModel = message as DiplomacyMessageViewModel;
 
@@ -382,7 +382,7 @@ namespace Supremacy.Client.Views
                 return DiplomaticMessageCategory.Response;
             }
 
-            var statement = message as Statement;
+            Statement statement = message as Statement;
             
             if (statement != null)
             {

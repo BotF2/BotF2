@@ -41,6 +41,21 @@ namespace Supremacy.Client
                 new CommandBinding(
                     GenericCommands.AcceptCommand,
                     OnGenericCommandsAcceptCommandExecuted));
+
+            CommandBindings.Add(
+                new CommandBinding(
+                    GenericCommands.TracesSetAllCommand,
+                    OnGenericCommandsTracesSetAllCommandExecuted));
+
+            CommandBindings.Add(
+                new CommandBinding(
+                    GenericCommands.TracesSetSomeCommand,
+                    OnGenericCommandsTracesSetSomeCommandExecuted));
+
+            CommandBindings.Add(
+                new CommandBinding(
+                    GenericCommands.TracesSetNoneCommand,
+                    OnGenericCommandsTracesSetNoneCommandExecuted));
         }
 
         private void OnGenericCommandsCancelCommandExecuted(object source, ExecutedRoutedEventArgs e)
@@ -58,6 +73,30 @@ namespace Supremacy.Client
         {
             ClientSettings.Current.Save();
             Close();
+        }
+
+        private void OnGenericCommandsTracesSetAllCommandExecuted(object source, ExecutedRoutedEventArgs e)
+        {
+            ClientSettings.Current.TracesAudio = false;
+
+            ClientSettings.Current.Save();
+            ClientSettings.Current.Reload();
+        }
+
+        private void OnGenericCommandsTracesSetSomeCommandExecuted(object source, ExecutedRoutedEventArgs e)
+        {
+            ClientSettings.Current.TracesAudio = false;
+
+            ClientSettings.Current.Save();
+            ClientSettings.Current.Reload();
+        }
+
+        private void OnGenericCommandsTracesSetNoneCommandExecuted(object source, ExecutedRoutedEventArgs e)
+        {
+            ClientSettings.Current.TracesAudio = false;
+
+            ClientSettings.Current.Save();
+            ClientSettings.Current.Reload();
         }
     }
 }

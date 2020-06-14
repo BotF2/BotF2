@@ -61,11 +61,13 @@
             <ColumnDefinition Width="Auto" MinWidth="64" SharedSizeGroup="SystemListColumn1" /> <!-- column 2 = population  -->
             <ColumnDefinition Width="5" />
             <ColumnDefinition Width="Auto" MinWidth="64" SharedSizeGroup="SystemListColumn2" /> <!-- column 6  -->
-            <ColumnDefinition Width="5" />
-            <ColumnDefinition Width="Auto" MinWidth="64" SharedSizeGroup="SystemListColumn3" />
-            <ColumnDefinition Width="5" />
-            <ColumnDefinition Width="Auto" MinWidth="64" SharedSizeGroup="SystemListColumn4" />
-            <ColumnDefinition Width="5" />
+            <ColumnDefinition Width="Auto" MinWidth="10" />   <!--active facilities of-->
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="Auto" MinWidth="5" SharedSizeGroup="SystemListColumn3" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="Auto" MinWidth="5" SharedSizeGroup="SystemListColumn4" />
+            <ColumnDefinition Width="Auto" MinWidth="10" />
+            <ColumnDefinition Width="Auto" />
             <ColumnDefinition Width="Auto" MinWidth="64" SharedSizeGroup="SystemListColumn6" />
             <ColumnDefinition Width="5" />
             <ColumnDefinition Width="Auto" MinWidth="64" SharedSizeGroup="SystemListColumn7" />
@@ -105,8 +107,9 @@
         <!--#####   Column 0   ##### -->
         <!--Colony Name-->
         <scc:GameButton Grid.Row="1" Grid.Column="0" VerticalAlignment="Center"
-                        FontSize="16"
+                        FontSize="18"
                     DisplayMode="Hyperlink"
+                        Foreground="Aqua"
                     Label="{Binding Path=Name}"
                     Command="{x:Static scc:NavigationCommands.NavigateToColony}"
                     CommandParameter="{Binding FallbackValue={x:Null}}" />
@@ -126,14 +129,14 @@
         <!--#####   Column 2+   ##### -->
         <!--POPULATION-->
         <TextBlock Text="{s:StringResource Key=POPULATION, Case=Upper}" 
-                   Grid.Row="1" Grid.Column="2" HorizontalAlignment="Right" />
-        <TextBlock Grid.Row="1" Grid.Column="3" HorizontalAlignment="Center" Text=" = " />
+                   Grid.Row="1" Grid.Column="2" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+        <TextBlock Grid.Row="1" Grid.Column="3" HorizontalAlignment="Center" VerticalAlignment="Center" Text=" = " />
         <scc:GameLabel Grid.Row="1" Grid.Column="4" VerticalAlignment="Center"
                    Grid.ColumnSpan="2"                        
                    ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/population.png"
                    ToolTip="{s:StringResource Key=POPULATION_TOOL_TIP}">
             <scc:GameLabel.Label>
-                <MultiBinding StringFormat="{}{0} / {1} ( G: {2:0.# %} ) / Health: {3}">
+                <MultiBinding StringFormat="{}{0} / {1} (# {2:0.# %} ) / Health: {3}">
                     <Binding Path="Population.CurrentValue" />
                     <Binding Path="Population.Maximum" />
                     <Binding Path="GrowthRate" />
@@ -152,7 +155,7 @@
                    Foreground="{Binding Path=Morale.CurrentValue, Converter={x:Static s:MoraleBrushConverter.Instance}}"
                    ToolTip="{s:StringResource Key=MORALE_TOOL_TIP}" >
             <scc:GameLabel.Label>
-                <MultiBinding StringFormat="{}{0} ( {1} ) ">
+                <MultiBinding StringFormat="{}{0}  =  {1} ">
                     <Binding Path="Morale.CurrentValue" 
                              Converter="{x:Static s:MoraleConverter.Instance}" />
                     <Binding Path="Morale.CurrentValue" />
@@ -172,12 +175,21 @@
 
         <!--FOOD-->
         <TextBlock Text="{s:StringResource Key=FOOD, Case=Upper}" 
-                   Grid.Row="1" Grid.Column="6" HorizontalAlignment="Right" Foreground="LightGreen"/>
-        <TextBlock Grid.Row="1" Grid.Column="7" HorizontalAlignment="Center" Text=" = " />
-        <scc:GameLabel Grid.Row="1" Grid.Column="8" VerticalAlignment="Center"
+                   Grid.Row="1" Grid.Column="6" HorizontalAlignment="Right" VerticalAlignment="Center" Foreground="LightGreen"/>
+        <scc:GameLabel Grid.Row="1" Grid.Column="7" VerticalAlignment="Center">
+            <scc:GameLabel.Label>
+                <MultiBinding StringFormat="{}( {0} / {1} )">
+
+                    <Binding Path="ActiveFoodFacilities" />
+                    <Binding Path="TotalIFoodFacilities" />
+                </MultiBinding>
+            </scc:GameLabel.Label>
+        </scc:GameLabel>
+        <TextBlock Grid.Row="1" Grid.Column="8" HorizontalAlignment="Center" VerticalAlignment="Center" Text=" = " />
+        <scc:GameLabel Grid.Row="1" Grid.Column="9" VerticalAlignment="Center"
                    ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/food.png"
                    ToolTip="{s:StringResource Key=FOOD_TOOL_TIP}" >
-            <MultiBinding StringFormat="{}{0} ( {1} ) ">
+            <MultiBinding StringFormat="{}{0}  (# {1} ) ">
                 <Binding Path="FoodReserves" />
                 <Binding Path="NetFood" />
             </MultiBinding>
@@ -186,20 +198,36 @@
         <!--INDUSTRY-->
         <TextBlock Text="{s:StringResource Key=INDUSTRY, Case=Upper}" 
                    Grid.Row="2" Grid.Column="6" HorizontalAlignment="Right" Foreground="Silver"/>
-        <TextBlock Grid.Row="2" Grid.Column="7" HorizontalAlignment="Center" Text=" = " />
-        <scc:GameLabel Grid.Row="2" Grid.Column="8" VerticalAlignment="Center"
+        <scc:GameLabel Grid.Row="2" Grid.Column="7" VerticalAlignment="Center">
+            <scc:GameLabel.Label>
+                <MultiBinding StringFormat="{}{0} / {1}">
+
+                    <Binding Path="ActiveIndustryFacilities" />
+                    <Binding Path="TotalIndustryFacilities" />
+                </MultiBinding>
+            </scc:GameLabel.Label>
+        </scc:GameLabel>
+        <TextBlock Grid.Row="2" Grid.Column="8" HorizontalAlignment="Center" Text=" = " />
+        <scc:GameLabel Grid.Row="2" Grid.Column="9" VerticalAlignment="Center"
                    ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/industry.png"
                    ToolTip="{s:StringResource Key=INDUSTRY_TOOL_TIP}" >
-            <MultiBinding StringFormat="{}{0} ">
-                <Binding Path="NetIndustry" />
-            </MultiBinding>
+            <!--old: Label="{Binding Path=NetIndustry}"-->
+            <scc:GameLabel.Label>
+                <!--<MultiBinding StringFormat="{}{0} / {1} >  {2}">-->
+                    <MultiBinding StringFormat="{}{0}">
+
+                    <!--<Binding Path="ActiveIndustryFacilities" />
+                    <Binding Path="TotalIndustryFacilities" />-->
+                    <Binding Path="NetIndustry" />                     
+                </MultiBinding>
+            </scc:GameLabel.Label>
         </scc:GameLabel>
 
         <!--SHIP SLOTS VALUE-->
         <TextBlock Text="{s:StringResource Key=SHIPYARD_SLOTS, Case=Upper}" 
                    Grid.Row="3" Grid.Column="6" HorizontalAlignment="Right" Foreground="Gray"/>
-        <TextBlock Grid.Row="3" Grid.Column="7" HorizontalAlignment="Center" Text=" = " />
-        <scc:GameLabel Grid.Column="8"
+        <TextBlock Grid.Row="3" Grid.Column="8" HorizontalAlignment="Center" Text=" = " />
+        <scc:GameLabel Grid.Column="9"
                    Grid.Row="3"
                    VerticalAlignment="Center"
                    ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/ship.png"
@@ -207,8 +235,8 @@
                    Visibility="{Binding Path=Shipyard, Converter={StaticResource NullValueVisibilityConverter}}">
             <scc:GameLabel.Label>
                 <MultiBinding StringFormat="{}{0} x {1}" FallbackValue="n/a">
-                    <Binding Path="Shipyard.ShipyardDesign.BuildSlotOutput" />
                     <Binding Path="Shipyard.ShipyardDesign.BuildSlots" />
+                    <Binding Path="Shipyard.ShipyardDesign.BuildSlotOutput" />
                 </MultiBinding>
             </scc:GameLabel.Label>
         </scc:GameLabel>
@@ -239,8 +267,8 @@
 
         <!--DILITHIUM-->
         <TextBlock Text="{s:StringResource Key=DILITHIUM, Case=Upper}" 
-                   Grid.Row="1" Grid.Column="10" HorizontalAlignment="Right" Foreground="SteelBlue"/>
-        <TextBlock Grid.Row="1" Grid.Column="11" HorizontalAlignment="Center" Text=" = " />
+                   Grid.Row="1" Grid.Column="10" HorizontalAlignment="Right" VerticalAlignment="Center" Foreground="SteelBlue"/>
+        <TextBlock Grid.Row="1" Grid.Column="11" HorizontalAlignment="Center" VerticalAlignment="Center" Text=" = " />
         <scc:GameLabel Grid.Row="1"  Grid.Column="12" VerticalAlignment="Center"
                    ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/dilithium.png"
                    Label="{Binding Path=NetDilithium}"
@@ -252,8 +280,16 @@
         <TextBlock Grid.Row="2" Grid.Column="11" HorizontalAlignment="Center" Text=" = " />
         <scc:GameLabel Grid.Row="2" Grid.Column="12" VerticalAlignment="Center"
                    ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/energy.png"
-                   Label="{Binding Path=NetEnergy}"
-                   ToolTip="{s:StringResource Key=ENERGY_TOOL_TIP}" />
+
+                   ToolTip="{s:StringResource Key=ENERGY_TOOL_TIP}" >
+            <!--old: Label="{Binding Path=NetEnergy}"-->
+        <scc:GameLabel.Label>
+            <MultiBinding StringFormat="{}{0} / {1}">
+                    <Binding Path="NetEnergy" />
+                    <Binding Path="NetEnergy" />
+            </MultiBinding>
+        </scc:GameLabel.Label>
+        </scc:GameLabel>
 
         <!--SHIELDS-->
         <TextBlock Text="{s:StringResource Key=SHIELDS, Case=Upper}" 
@@ -277,12 +313,19 @@
 
         <!--DEUTERIUM-->
         <TextBlock Text="{s:StringResource Key=DEUTERIUM, Case=Upper}" 
-                   Grid.Row="1" Grid.Column="14" HorizontalAlignment="Right" Foreground="OrangeRed"/>
-        <TextBlock Grid.Row="1" Grid.Column="15" HorizontalAlignment="Center" Text=" = " />
+                   Grid.Row="1" Grid.Column="14" HorizontalAlignment="Right" VerticalAlignment="Center" Foreground="OrangeRed"/>
+        <TextBlock Grid.Row="1" Grid.Column="15" HorizontalAlignment="Center" VerticalAlignment="Center" Text=" = " />
         <scc:GameLabel Grid.Row="1" Grid.Column="16" VerticalAlignment="Center"
                    ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/deuterium.png"
-                   Label="{Binding Path=NetDeuterium}"
-                   ToolTip="{s:StringResource Key=DEUTERIUM_TOOL_TIP}" />
+                   ToolTip="{s:StringResource Key=DEUTERIUM_TOOL_TIP}" >
+            <!--old: Label="{Binding Path=NetDeuterium}"-->
+            <scc:GameLabel.Label>
+            <MultiBinding StringFormat="{}{0} / {1}">
+                    <Binding Path="NetDeuterium" />
+                <Binding Path="SelectedColony.Resources.Deuterium.LastChange" />
+            </MultiBinding>
+        </scc:GameLabel.Label>
+        </scc:GameLabel>
 
         <!--RESEARCH-->
         <TextBlock Text="{s:StringResource Key=RESEARCH, Case=Upper}" 
@@ -290,8 +333,16 @@
         <TextBlock Grid.Row="2" Grid.Column="15" HorizontalAlignment="Center" Text=" = " />
         <scc:GameLabel Grid.Row="2"  Grid.Column="16" VerticalAlignment="Center"
                    ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/research.png"
-                   Label="{Binding Path=NetResearch}"
-                   ToolTip="{s:StringResource Key=RESEARCH_TOOL_TIP}" />
+                   
+                   ToolTip="{s:StringResource Key=RESEARCH_TOOL_TIP}" >
+             <!--old: Label="{Binding Path=NetResearch}"-->
+            <scc:GameLabel.Label>
+                <MultiBinding StringFormat="{}{0} / {1}">
+                <Binding Path="ActiveResearchFacilities" />
+                <Binding Path="TotalResearchFacilities" />
+            </MultiBinding>
+            </scc:GameLabel.Label>
+        </scc:GameLabel>
 
         <!--ORBITAL BATTERIES-->
         <TextBlock Text="{s:StringResource Key=ORBITAL_BATTERIES, Case=Upper}" 
@@ -314,8 +365,8 @@
 
         <!--DURANIUM-->
         <TextBlock Text="{s:StringResource Key=DURANIUM, Case=Upper}" 
-                   Grid.Row="1" Grid.Column="18" HorizontalAlignment="Right" Foreground="Gray"/>
-        <TextBlock Grid.Row="1" Grid.Column="19" HorizontalAlignment="Center" Text=" = " />
+                   Grid.Row="1" Grid.Column="18" HorizontalAlignment="Right" VerticalAlignment="Center" Foreground="Gray"/>
+        <TextBlock Grid.Row="1" Grid.Column="19" HorizontalAlignment="Center" VerticalAlignment="Center" Text=" = " />
         <scc:GameLabel Grid.Row="1" Grid.Column="20" VerticalAlignment="Center"
                    ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/rawmaterials.png"
                    Label="{Binding Path=NetRawMaterials}"
@@ -341,9 +392,10 @@
                    ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/traderoute.png"
                    ToolTip="{s:StringResource Key=TRADE_ROUTES_TOOL_TIP}">
             <scc:GameLabel.Label>
-                <MultiBinding StringFormat="{}{0} ( {1} )">
+                <MultiBinding StringFormat="{}{0} / {1} ( {2} Credits )">
+                    <Binding Path="TradeRoutesAssigned" />
                     <Binding Path="TradeRoutes.Count" />
-                    <Binding Path="CreditsFromTrade" />
+                    <Binding Path="TradeRoutes.CreditsFromTrade" />
                 </MultiBinding>
             </scc:GameLabel.Label>
         </scc:GameLabel>

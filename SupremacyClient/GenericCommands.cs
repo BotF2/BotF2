@@ -15,5 +15,8 @@ namespace Supremacy.Client
     {
         public static readonly RoutedCommand AcceptCommand = new RoutedCommand("Accept", typeof(GenericCommands));
         public static readonly RoutedCommand CancelCommand = new RoutedCommand("Cancel", typeof(GenericCommands));
+        public static readonly RoutedCommand TracesSetAllCommand = new RoutedCommand("TracesSetAll", typeof(GenericCommands));
+        public static readonly RoutedCommand TracesSetSomeCommand = new RoutedCommand("TracesSetSome", typeof(GenericCommands));
+        public static readonly RoutedCommand TracesSetNoneCommand = new RoutedCommand("TracesSetNone", typeof(GenericCommands));
     }
 }

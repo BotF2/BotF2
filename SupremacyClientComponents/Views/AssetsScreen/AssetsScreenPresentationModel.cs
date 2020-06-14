@@ -226,6 +226,7 @@ namespace Supremacy.Client.Views
         [field: NonSerialized]
         public event EventHandler ColoniesChanged;
         public event EventHandler TotalPopulationChanged;
+        public event EventHandler TotalResearchChanged;
         public event EventHandler InstallingSpyNetworkChanged;
         public event EventHandler TotalIntelligenceProductionChanged;
         public event EventHandler TotalIntelligenceAttackingAccumulatedChanged;
@@ -281,6 +282,7 @@ namespace Supremacy.Client.Views
                 FillUpDefense();
                 OnColoniesChanged();
                 OnTotalPopulationChanged();
+                OnTotalResearchChanged();
                 OnInstallingSpyNetworkChanged();
                 OnTotalIntelligenceProductionChanged();
                 OnTotalIntelligenceAttackingAccumulatedChanged();
@@ -396,6 +398,11 @@ namespace Supremacy.Client.Views
             TotalPopulationChanged.Raise(this);
             OnPropertyChanged("TotalPopulation");
         }
+        protected virtual void OnTotalResearchChanged()
+        {
+            TotalResearchChanged.Raise(this);
+            OnPropertyChanged("TotalResearch");
+        }
         protected virtual void OnInstallingSpyNetworkChanged()
         {
             InstallingSpyNetworkChanged.Raise(this);
@@ -501,7 +508,28 @@ namespace Supremacy.Client.Views
                 }
                 catch (Exception e)
                 {
-                    GameLog.Core.Stations.WarnFormat("Problem occured at TotalPopulation: {0} {1}", e.Message, e.StackTrace);
+                    GameLog.Core.GameData.WarnFormat("Problem occured at TotalPopulation: {0} {1}", e.Message, e.StackTrace);
+                    GameLog.Core.General.Error(e);
+                    Meter zero = new Meter(0, 0, 0);
+                    return zero; //civManager.TotalPopulation;
+
+                }
+            }
+        }
+
+        public Meter TotalResearch
+        {
+            get
+            {
+                var civManager = MyLocalCivManager; // not this DesignTimeObjects.LocalCivManager.Civilization
+                try
+                {
+                    //GameLog.Core.Intel.DebugFormat("TotalPopulation ={0}", civManager.TotalPopulation);
+                    return civManager.TotalResearch;
+                }
+                catch (Exception e)
+                {
+                    GameLog.Core.GameData.WarnFormat("Problem occured at TotalResearch: {0} {1}", e.Message, e.StackTrace);
                     GameLog.Core.General.Error(e);
                     Meter zero = new Meter(0, 0, 0);
                     return zero; //civManager.TotalPopulation;
@@ -530,7 +558,7 @@ namespace Supremacy.Client.Views
             get
             {
                 var SpiedCiv = DesignTimeObjects.SpiedCivZero;
-                GameLog.Client.Test.DebugFormat("##### trying to return SpiedCiv.Civilization = {0}", SpiedCiv.Civilization.Key);
+               // GameLog.Client.Test.DebugFormat("##### trying to return SpiedCiv.Civilization = {0}", SpiedCiv.Civilization.Key);
                 return SpiedCiv.Civilization;
             }
         }
@@ -540,7 +568,7 @@ namespace Supremacy.Client.Views
             {
                 var SpiedCiv = DesignTimeObjects.SpiedCivZero;
                 var SeatOfGovernment = GameContext.Current.CivilizationManagers[SpiedCiv].SeatOfGovernment;
-                GameLog.Client.Test.DebugFormat("##### trying to return SpiedCivZero SeatOfGovernment = {0}", SeatOfGovernment);
+               // GameLog.Client.Test.DebugFormat("##### trying to return SpiedCivZero SeatOfGovernment = {0}", SeatOfGovernment);
                 return SeatOfGovernment;
             }
         }
