@@ -2,6 +2,7 @@
 using Microsoft.Practices.ServiceLocation;
 using Supremacy.Client;
 using Supremacy.Collections;
+using Supremacy.Combat;
 using Supremacy.Diplomacy;
 using Supremacy.Economy;
 using Supremacy.Entities;
@@ -13,6 +14,8 @@ using Supremacy.Utility;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Supremacy.Orbitals;
+using System.Linq;
 
 namespace Supremacy.Intelligence
 {
@@ -979,7 +982,7 @@ namespace Supremacy.Intelligence
         }
         public static int GetIntelRatio(CivilizationManager attackedCivManager, CivilizationManager attackingCivManager)
         {
-            bool isSpyShipInHomeSystem = FindSpyShipInHomeSystem(attackedCivManager, attackedCivManager);
+            bool isSpyShipInHomeSystem = IsSpyShipInHomeSystem(attackedCivManager, attackingCivManager);
             bool daBorg = (attackedCivManager.Civilization.Key == "Borg");
             int ratio = -1;
             Int32.TryParse(attackedCivManager.TotalIntelligenceDefenseAccumulated.ToString(), out int defenseIntelligence);  // TotalIntelligence of attacked civ
@@ -1003,14 +1006,24 @@ namespace Supremacy.Intelligence
                 ratio += 20;
             if (daBorg)
                 ratio += 5;
+            if (isSpyShipInHomeSystem)
+                ratio += 10;
             return ratio;
         }
 
-        public static bool FindSpyShipInHomeSystem(CivilizationManager attackedCivManager, CivilizationManager civilizationManager)
+        public static bool IsSpyShipInHomeSystem(CivilizationManager attackedCivManager, CivilizationManager attackingCivManager)
         {
-            return true;
+            var attackedHomeSystemLocation = attackedCivManager.SeatOfGovernment;
+            var fleetsAtSetOfGovernment = attackedHomeSystemLocation.Sector.GetFleets();
+            var attackingSpyShips = fleetsAtSetOfGovernment.Where(s => s.IsSpy && s.Owner == attackingCivManager.Civilization).ToList().Count();//Where(x => x.ShipType.ToString() == "Spy")).ToList();
+                 
+            if (attackingSpyShips > 0)
+            {
+                return true;
+            }
+            return false;
         }
     }
     #endregion
-    
+
 }
