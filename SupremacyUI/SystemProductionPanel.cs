@@ -1,4 +1,4 @@
-// SystemProductionPanel.cs
+// File:SystemProductionPanel.cs
 //
 // Copyright (c) 2007 Mike Strobel
 //

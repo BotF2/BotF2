@@ -1363,7 +1363,7 @@ namespace Supremacy.WCF
                 {
                     try
                     {
-                        if (orders.CombatID != -1)
+                        if (orders.CombatID != -1 && _combatEngine != null)
                             _combatEngine.SubmitOrders(orders);
                     }
                     catch { GameLog.Client.CombatDetails.DebugFormat("Problem with null in SubmitOrders(orders)"); }
