@@ -255,7 +255,7 @@ namespace Supremacy.AI
                         otherForeignPower.AddRegardEvent(new RegardEvent(10, RegardEventType.DeclaredWar, +50));
                         DiplomacyHelper.ApplyTrustChange(foreignPower.Owner, foreignPower.Counterparty, +100);
                     }
-                    // ToDo: look at AI cis reacting to blame with the StatmentType.Sabotage... and Steal... 
+                    // ToDo: look at AI civ reacting to blame with the StatementType.Sabotage... and Steal... 
                     //if (foreignPower.StatementReceived.StatementType == StatementType.SabotageOrder) // only the borg now?
                     //    foreignPower.AddRegardEvent(new RegardEvent(1, RegardEventType.NoRegardEvent, 0));
 

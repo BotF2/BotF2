@@ -243,296 +243,329 @@ namespace Supremacy.Client.Views
         }
         private void OnIsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
-
-            var _civLocalPlayer = _appContext.LocalPlayer.Empire;
-
-            if (IsVisible)
+            if (GameContext.Current.TurnNumber > 1)
             {
-                ResumeAnimations();
-                GameLog.Client.UI.DebugFormat("*********** begin of checking visible ***********");
 
-                // GameLog.Client.UI.DebugFormat("SpiedZeroCiv checking visible .... _spiedOneCiv = {0}, _civLocalPlayer = {1}", _spiedZeroCiv, _civLocalPlayer);
-                if (AssetsHelper.IsSpiedZero(_civLocalPlayer) || IntelHelper.ShowNetwork_0)
+                var _civLocalPlayer = _appContext.LocalPlayer.Empire;
+
+                if (IsVisible)
                 {
-                    //var ForeignPower = diplomat1.GetForeignPower(GameContext.Current.CivilizationManagers[0]);
-                    //_checkedVisibleForSabotagePending = CheckingVisibityForSabotagePending(diplomat1, ForeignPower);
+                    ResumeAnimations();
+                    GameLog.Client.UI.DebugFormat("*********** begin of checking visible ***********");
 
-                    //if (_checkedVisibleForSabotagePending)
-                    //{
+                    // GameLog.Client.UI.DebugFormat("SpiedZeroCiv checking visible .... _spiedOneCiv = {0}, _civLocalPlayer = {1}", _spiedZeroCiv, _civLocalPlayer);
+                    if (AssetsHelper.IsSpiedZero(_civLocalPlayer) || IntelHelper.ShowNetwork_0)
+                    {
+                        //var ForeignPower = diplomat1.GetForeignPower(GameContext.Current.CivilizationManagers[0]);
+                        //_checkedVisibleForSabotagePending = CheckingVisibityForSabotagePending(diplomat1, ForeignPower);
+
+                        //if (_checkedVisibleForSabotagePending)
+                        //{
                         EmpireExpanderZero.Visibility = Visibility.Visible;
                         SabotageEnergyZero.Visibility = Visibility.Visible;
                         SabotageFoodZero.Visibility = Visibility.Visible;
                         SabotageIndustryZero.Visibility = Visibility.Visible;
                         StealResearchZero.Visibility = Visibility.Visible;
                         StealCreditsZero.Visibility = Visibility.Visible;
-                    //}
-                }
-                //GameLog.Client.UI.DebugFormat("SpiedOneCiv checking visible .... _spiedOneCiv = {0}, _civLocalPlayer = {1}", _spiedOneCiv, _civLocalPlayer);
-                if (AssetsHelper.IsSpiedOne(_civLocalPlayer) || IntelHelper.ShowNetwork_1)
-                {
-                    //var ForeignPower = diplomat1.GetForeignPower(GameContext.Current.CivilizationManagers[1]);
-                    //_checkedVisibleForSabotagePending = CheckingVisibityForSabotagePending(diplomat1, ForeignPower);
+                        //}
+                    }
 
-                    //if (_checkedVisibleForSabotagePending)
-                    //{
+                    //GameLog.Client.UI.DebugFormat("SpiedOneCiv checking visible .... _spiedOneCiv = {0}, _civLocalPlayer = {1}", _spiedOneCiv, _civLocalPlayer);
+                    if (AssetsHelper.IsSpiedOne(_civLocalPlayer) || IntelHelper.ShowNetwork_1)
+                    {
+                        //var ForeignPower = diplomat1.GetForeignPower(GameContext.Current.CivilizationManagers[1]);
+                        //_checkedVisibleForSabotagePending = CheckingVisibityForSabotagePending(diplomat1, ForeignPower);
+
+                        //if (_checkedVisibleForSabotagePending)
+                        //{
                         EmpireExpanderOne.Visibility = Visibility.Visible;
                         SabotageEnergyOne.Visibility = Visibility.Visible;
                         SabotageFoodOne.Visibility = Visibility.Visible;
                         SabotageIndustryOne.Visibility = Visibility.Visible;
                         StealResearchOne.Visibility = Visibility.Visible;
                         StealCreditsOne.Visibility = Visibility.Visible;
-                    //}
-                }
-                // GameLog.Client.UI.DebugFormat("SpiedTwoCiv checking visible .... _spiedTwoCiv = {0}, _civLocalPlayer = {1}", _spiedTwoCiv, _civLocalPlayer);
-                if (AssetsHelper.IsSpiedTwo(_civLocalPlayer) || IntelHelper.ShowNetwork_2)
-                {
-                    //var ForeignPower = diplomat1.GetForeignPower(GameContext.Current.CivilizationManagers[2]);
-                    //_checkedVisibleForSabotagePending = CheckingVisibityForSabotagePending(diplomat1, ForeignPower);
+                        //}
+                    }
 
-                    //if (_checkedVisibleForSabotagePending)
-                    //{
+                    // GameLog.Client.UI.DebugFormat("SpiedTwoCiv checking visible .... _spiedTwoCiv = {0}, _civLocalPlayer = {1}", _spiedTwoCiv, _civLocalPlayer);
+                    if (AssetsHelper.IsSpiedTwo(_civLocalPlayer) || IntelHelper.ShowNetwork_2)
+                    {
+                        //var ForeignPower = diplomat1.GetForeignPower(GameContext.Current.CivilizationManagers[2]);
+                        //_checkedVisibleForSabotagePending = CheckingVisibityForSabotagePending(diplomat1, ForeignPower);
+
+                        //if (_checkedVisibleForSabotagePending)
+                        //{
                         EmpireExpanderTwo.Visibility = Visibility.Visible;
                         SabotageEnergyTwo.Visibility = Visibility.Visible;
                         SabotageFoodTwo.Visibility = Visibility.Visible;
                         SabotageIndustryTwo.Visibility = Visibility.Visible;
                         StealResearchTwo.Visibility = Visibility.Visible;
                         StealCreditsTwo.Visibility = Visibility.Visible;
-                    //}
-                }
-                //GameLog.Client.UI.DebugFormat("SpiedThreeCiv checking visible .... _spiedThreeCiv = {0}, _civLocalPlayer = {1}", _spiedThreeCiv, _civLocalPlayer);
-                if (AssetsHelper.IsSpiedThree(_civLocalPlayer) || IntelHelper.ShowNetwork_3)
-                {
-                    //var ForeignPower = diplomat1.GetForeignPower(GameContext.Current.CivilizationManagers[3]);
-                    //_checkedVisibleForSabotagePending = CheckingVisibityForSabotagePending(diplomat1, ForeignPower);
+                        //}
+                    }
 
-                    //if (_checkedVisibleForSabotagePending)
-                    //{
+                    //GameLog.Client.UI.DebugFormat("SpiedThreeCiv checking visible .... _spiedThreeCiv = {0}, _civLocalPlayer = {1}", _spiedThreeCiv, _civLocalPlayer);
+                    if (AssetsHelper.IsSpiedThree(_civLocalPlayer) || IntelHelper.ShowNetwork_3)
+                    {
+                        //var ForeignPower = diplomat1.GetForeignPower(GameContext.Current.CivilizationManagers[3]);
+                        //_checkedVisibleForSabotagePending = CheckingVisibityForSabotagePending(diplomat1, ForeignPower);
+
+                        //if (_checkedVisibleForSabotagePending)
+                        //{
                         EmpireExpanderThree.Visibility = Visibility.Visible;
                         SabotageEnergyThree.Visibility = Visibility.Visible;
                         SabotageFoodThree.Visibility = Visibility.Visible;
                         SabotageIndustryThree.Visibility = Visibility.Visible;
                         StealResearchThree.Visibility = Visibility.Visible;
                         StealCreditsThree.Visibility = Visibility.Visible;
-                    //}
-                }
-                //GameLog.Client.UI.DebugFormat("SpiedCiv cFourhecking visible .... _spiedFourCiv = {0}, _civLocalPlayer = {1}", _spiedFourCiv, _civLocalPlayer);
-                if (AssetsHelper.IsSpiedFour(_civLocalPlayer) || IntelHelper.ShowNetwork_4)
-                {
-                    //var ForeignPower = diplomat1.GetForeignPower(GameContext.Current.CivilizationManagers[4]);
-                    //_checkedVisibleForSabotagePending = CheckingVisibityForSabotagePending(diplomat1, ForeignPower);
+                        //}
+                    }
 
-                    //if (_checkedVisibleForSabotagePending)
-                    //{
+                    //GameLog.Client.UI.DebugFormat("SpiedCiv cFourhecking visible .... _spiedFourCiv = {0}, _civLocalPlayer = {1}", _spiedFourCiv, _civLocalPlayer);
+                    if (AssetsHelper.IsSpiedFour(_civLocalPlayer) || IntelHelper.ShowNetwork_4)
+                    {
+                        //var ForeignPower = diplomat1.GetForeignPower(GameContext.Current.CivilizationManagers[4]);
+                        //_checkedVisibleForSabotagePending = CheckingVisibityForSabotagePending(diplomat1, ForeignPower);
+
+                        //if (_checkedVisibleForSabotagePending)
+                        //{
                         EmpireExpanderFour.Visibility = Visibility.Visible;
                         SabotageEnergyFour.Visibility = Visibility.Visible;
                         SabotageFoodFour.Visibility = Visibility.Visible;
                         SabotageIndustryFour.Visibility = Visibility.Visible;
                         StealResearchFour.Visibility = Visibility.Visible;
                         StealCreditsFour.Visibility = Visibility.Visible;
-                    //}
-                }
-                //GameLog.Client.UI.DebugFormat("SpiedFiveCiv checking visible .... _spiedFiveCiv = {0}, _civLocalPlayer = {1}", _spiedFiveCiv, _civLocalPlayer);
-                if (AssetsHelper.IsSpiedFive(_civLocalPlayer) || IntelHelper.ShowNetwork_5)
-                {
-                    //var ForeignPower = diplomat1.GetForeignPower(GameContext.Current.CivilizationManagers[5]);
-                    //_checkedVisibleForSabotagePending = CheckingVisibityForSabotagePending(diplomat1, ForeignPower);
+                        //}
+                    }
 
-                    //if (_checkedVisibleForSabotagePending)
-                    //{
+                    //GameLog.Client.UI.DebugFormat("SpiedFiveCiv checking visible .... _spiedFiveCiv = {0}, _civLocalPlayer = {1}", _spiedFiveCiv, _civLocalPlayer);
+                    if (AssetsHelper.IsSpiedFive(_civLocalPlayer) || IntelHelper.ShowNetwork_5)
+                    {
+                        //var ForeignPower = diplomat1.GetForeignPower(GameContext.Current.CivilizationManagers[5]);
+                        //_checkedVisibleForSabotagePending = CheckingVisibityForSabotagePending(diplomat1, ForeignPower);
+
+                        //if (_checkedVisibleForSabotagePending)
+                        //{
                         EmpireExpanderFive.Visibility = Visibility.Visible;
                         SabotageEnergyFive.Visibility = Visibility.Visible;
                         SabotageFoodFive.Visibility = Visibility.Visible;
                         SabotageIndustryFive.Visibility = Visibility.Visible;
                         StealResearchFive.Visibility = Visibility.Visible;
                         StealCreditsFive.Visibility = Visibility.Visible;
-                    //}
-                }
-                //GameLog.Client.UI.DebugFormat("SpiedSixCiv checking visible .... _spiedSixCiv = {0}, _civLocalPlayer = {1}", _spiedSixCiv, _civLocalPlayer);
-                if (AssetsHelper.IsSpiedSix(_civLocalPlayer) || IntelHelper.ShowNetwork_6)
-                {
-                    //var ForeignPower = diplomat1.GetForeignPower(GameContext.Current.CivilizationManagers[1]);
-                    //_checkedVisibleForSabotagePending = CheckingVisibityForSabotagePending(diplomat1, ForeignPower);
+                        //}
+                    }
 
-                    //if (_checkedVisibleForSabotagePending)
-                    //{
+                    //GameLog.Client.UI.DebugFormat("SpiedSixCiv checking visible .... _spiedSixCiv = {0}, _civLocalPlayer = {1}", _spiedSixCiv, _civLocalPlayer);
+                    if (AssetsHelper.IsSpiedSix(_civLocalPlayer) || IntelHelper.ShowNetwork_6)
+                    {
+                        //var ForeignPower = diplomat1.GetForeignPower(GameContext.Current.CivilizationManagers[1]);
+                        //_checkedVisibleForSabotagePending = CheckingVisibityForSabotagePending(diplomat1, ForeignPower);
+
+                        //if (_checkedVisibleForSabotagePending)
+                        //{
                         EmpireExpanderSix.Visibility = Visibility.Visible;
                         SabotageEnergySix.Visibility = Visibility.Visible;
                         SabotageFoodSix.Visibility = Visibility.Visible;
                         SabotageIndustrySix.Visibility = Visibility.Visible;
                         StealResearchSix.Visibility = Visibility.Visible;
                         StealCreditsSix.Visibility = Visibility.Visible;
-                    //}
-                }
-                //GameLog.Client.UI.DebugFormat("end  of checking visible");
+                        //}
+                    }
+                    //GameLog.Client.UI.DebugFormat("end  of checking visible");
 
 
-                // GameLog.Client.UI.DebugFormat("_civLocalPlayer = {0}", _civLocalPlayer.Key);
+                    // GameLog.Client.UI.DebugFormat("_civLocalPlayer = {0}", _civLocalPlayer.Key);
 
-                Diplomat diplomat1 = Diplomat.Get(GameContext.Current.CivilizationManagers[_civLocalPlayer.CivID]);
-                var empireCount = GameContext.Current.Civilizations.Where(o => o.IsEmpire).Count();
-
-
-                for (int i = 0; i < empireCount; i++)
-                {
-                    if (i == _civLocalPlayer.CivID)
-                        continue;
-
-                    var ForeignPower = diplomat1.GetForeignPower(GameContext.Current.CivilizationManagers[i]);
-
-                    if (diplomat1.GetLastStatementSent(ForeignPower) != null)
-                        ;
-
-                    bool _checkedVisibleForSabotagePending = true;
+                    Diplomat diplomat1 = Diplomat.Get(GameContext.Current.CivilizationManagers[_civLocalPlayer.CivID]);
+                    var empireCount = GameContext.Current.Civilizations.Where(o => o.IsEmpire).Count();
 
 
-                    //_checkedVisibleForSabotagePending = CheckingVisibityForSabotagePending(diplomat1, ForeignPower);
-
-                    //if (ForeignPower.LastStatementSent != null)
-                    if (diplomat1.GetLastStatementSent(ForeignPower) != null)
+                    for (int i = 0; i < empireCount; i++)
                     {
-                        int _statementSentInTurn = diplomat1.GetLastStatementSent(ForeignPower).TurnSent;
+                        if (i == _civLocalPlayer.CivID)
+                            continue;
 
-                        if (_statementSentInTurn == 99999)
-                            _statementSentInTurn = 1;
-                        //switch (ForeignPower.LastStatementSent.StatementType)
-                        if (GameContext.Current.TurnNumber < _statementSentInTurn + 2)
-                            switch (diplomat1.GetLastStatementSent(ForeignPower).StatementType)
+                        var ForeignPower = diplomat1.GetForeignPower(GameContext.Current.CivilizationManagers[i]);
+
+                        if (diplomat1.GetLastStatementSent(ForeignPower) != null)
+                            ;
+
+                        bool _checkedVisibleForSabotagePending = true;
+
+
+                        //_checkedVisibleForSabotagePending = CheckingVisibityForSabotagePending(diplomat1, ForeignPower);
+
+                        //if (ForeignPower.LastStatementSent != null)
+                        if (diplomat1.GetLastStatementSent(ForeignPower) != null)
+                        {
+                            int _statementSentInTurn = diplomat1.GetLastStatementSent(ForeignPower).TurnSent;
+
+                            if (_statementSentInTurn == 99999)
+                                _statementSentInTurn = 1;
+                            //switch (ForeignPower.LastStatementSent.StatementType)
+                            if (GameContext.Current.TurnNumber < _statementSentInTurn + 2)
+                                switch (diplomat1.GetLastStatementSent(ForeignPower).StatementType)
+                                {
+                                    case StatementType.StealCredits:
+                                    case StatementType.StealResearch:
+                                    case StatementType.SabotageFood:
+                                    case StatementType.SabotageIndustry:
+                                    case StatementType.SabotageEnergy:
+                                        _checkedVisibleForSabotagePending = false;
+                                        //_visibleForSabotagePending = false;
+                                        break;
+                                    case StatementType.CommendWar:
+                                    case StatementType.DenounceWar:
+                                    case StatementType.WarDeclaration:
+                                        break;
+                                    default:
+                                        break;
+                                }
+
+                        }
+
+                        //_checkedVisibleForSabotagePending = _visibleForSabotagePending;
+
+                        // just for testing      _checkedVisibleForSabotagePending = true;
+                        if (_checkedVisibleForSabotagePending == false)
+                            switch (i)
                             {
-                                case StatementType.StealCredits:
-                                case StatementType.StealResearch:
-                                case StatementType.SabotageFood:
-                                case StatementType.SabotageIndustry:
-                                case StatementType.SabotageEnergy:
-                                    _checkedVisibleForSabotagePending = false;
-                                    //_visibleForSabotagePending = false;
+                                case 0:
+                                    Close_0_SabotageButtons();
                                     break;
-                                case StatementType.CommendWar:
-                                case StatementType.DenounceWar:
-                                case StatementType.WarDeclaration:
+                                case 1:
+                                    Close_1_SabotageButtons();
                                     break;
-                                default:
+                                case 2:
+                                    Close_2_SabotageButtons();
                                     break;
+                                case 3:
+                                    Close_3_SabotageButtons();
+                                    break;
+                                case 4:
+                                    Close_4_SabotageButtons();
+                                    break;
+                                case 5:
+                                    Close_5_SabotageButtons();
+                                    break;
+                                case 6:
+                                    Close_6_SabotageButtons();
+                                    break;
+                                default: break;
                             }
 
                     }
 
-                    //_checkedVisibleForSabotagePending = _visibleForSabotagePending;
+                    List<CivilizationManager> spyableCivManagers = new List<CivilizationManager>();
 
-                    // just for testing      _checkedVisibleForSabotagePending = true;
-                    if (_checkedVisibleForSabotagePending == false)
-                        switch (i)
-                        {
-                            case 0: Close_0_SabotageButtons(); break;
-                            case 1: Close_1_SabotageButtons(); break;
-                            case 2: Close_2_SabotageButtons(); break;
-                            case 3: Close_3_SabotageButtons(); break;
-                            case 4: Close_4_SabotageButtons(); break;
-                            case 5: Close_5_SabotageButtons(); break;
-                            case 6: Close_6_SabotageButtons(); break;
-                            default: break;
-                        }
-
-                }
-
-                List<CivilizationManager> spyableCivManagers = new List<CivilizationManager>();
-
-                var shortList = GameContext.Current.CivilizationManagers; // only CivilizationMangers in game and in CivID numerical sequence
-                foreach (var manager in shortList)
-                {
-                    if (manager.Civilization.IsEmpire && manager.Civilization != _civLocalPlayer) // bool is empire and is not the local player
+                    var shortList =
+                        GameContext.Current
+                            .CivilizationManagers; // only CivilizationMangers in game and in CivID numerical sequence
+                    foreach (var manager in shortList)
                     {
-                        spyableCivManagers.Add(manager);
-                        // GameLog.Client.UI.DebugFormat("spyableCivManagers.ADD: manager = {0}", manager.Civilization.Key);
+                        if (manager.Civilization.IsEmpire && manager.Civilization != _civLocalPlayer
+                        ) // bool is empire and is not the local player
+                        {
+                            spyableCivManagers.Add(manager);
+                            // GameLog.Client.UI.DebugFormat("spyableCivManagers.ADD: manager = {0}", manager.Civilization.Key);
+                        }
                     }
-                }
-                Dictionary<int, Civilization> empireCivsDictionary = new Dictionary<int, Civilization>();
-                List<Civilization> empireCivsList = new List<Civilization>();
 
-                int counting = 0;
-                foreach (var civManager in spyableCivManagers)
-                {
-                    empireCivsDictionary.Add(civManager.CivilizationID, civManager.Civilization); //dictionary of civs that can be spied on with key set to CivID
-                    empireCivsList.Add(civManager.Civilization); // list of civs that can be spied on by local player and in CivID sequence
-                                                                 //GameLog.Client.UI.DebugFormat("Add civ = {0} to blame dictionary at key ={1}", civManager.Civilization.Key, civManager.CivilizationID);
-                                                                 // GameLog.Client.UI.DebugFormat("Add civ.Key = {0} to blame list at index ={1}", civManager.Civilization.Key, counting);
-                    counting++;
-                }
-                //GameLog.Client.UI.DebugFormat("FED: begin of checking BLAME visible");
+                    Dictionary<int, Civilization> empireCivsDictionary = new Dictionary<int, Civilization>();
+                    List<Civilization> empireCivsList = new List<Civilization>();
 
-                if (empireCivsDictionary.Keys.Contains(0) &&
-                    GameContext.Current.DiplomacyData[_civLocalPlayer, empireCivsDictionary[0]].IsContactMade())
-                {
-                    BlameFederation1.Visibility = Visibility.Visible;
-                    BlameFederation2.Visibility = Visibility.Visible;
-                    BlameFederation3.Visibility = Visibility.Visible;
-                    BlameFederation4.Visibility = Visibility.Visible;
-                    BlameFederation5.Visibility = Visibility.Visible;
-                    BlameFederation6.Visibility = Visibility.Visible;
-                }
-                //GameLog.Client.UI.DebugFormat("FED: end   of checking BLAME visible");
+                    int counting = 0;
+                    foreach (var civManager in spyableCivManagers)
+                    {
+                        empireCivsDictionary.Add(civManager.CivilizationID,
+                            civManager.Civilization); //dictionary of civs that can be spied on with key set to CivID
+                        empireCivsList.Add(civManager
+                            .Civilization); // list of civs that can be spied on by local player and in CivID sequence
+                        //GameLog.Client.UI.DebugFormat("Add civ = {0} to blame dictionary at key ={1}", civManager.Civilization.Key, civManager.CivilizationID);
+                        // GameLog.Client.UI.DebugFormat("Add civ.Key = {0} to blame list at index ={1}", civManager.Civilization.Key, counting);
+                        counting++;
+                    }
+                    //GameLog.Client.UI.DebugFormat("FED: begin of checking BLAME visible");
 
-                if (empireCivsDictionary.Keys.Contains(1) &&
-                    GameContext.Current.DiplomacyData[_civLocalPlayer, empireCivsDictionary[1]].IsContactMade())
-                {
-                    BlameTerranEmpire0.Visibility = Visibility.Visible;
-                    BlameTerranEmpire2.Visibility = Visibility.Visible;
-                    BlameTerranEmpire3.Visibility = Visibility.Visible;
-                    BlameTerranEmpire4.Visibility = Visibility.Visible;
-                    BlameTerranEmpire5.Visibility = Visibility.Visible;
-                    BlameTerranEmpire6.Visibility = Visibility.Visible;
-                }
-                if (empireCivsDictionary.Keys.Contains(2) &&
-                    GameContext.Current.DiplomacyData[_civLocalPlayer, empireCivsDictionary[2]].IsContactMade())
-                {
-                    BlameRomulans0.Visibility = Visibility.Visible;
-                    BlameRomulans1.Visibility = Visibility.Visible;
-                    BlameRomulans3.Visibility = Visibility.Visible;
-                    BlameRomulans4.Visibility = Visibility.Visible;
-                    BlameRomulans5.Visibility = Visibility.Visible;
-                    BlameRomulans6.Visibility = Visibility.Visible;
-                }
-                if (empireCivsDictionary.Keys.Contains(3) &&
-                    GameContext.Current.DiplomacyData[_civLocalPlayer, empireCivsDictionary[3]].IsContactMade())
-                {
-                    BlameKlingons0.Visibility = Visibility.Visible;
-                    BlameKlingons1.Visibility = Visibility.Visible;
-                    BlameKlingons2.Visibility = Visibility.Visible;
-                    BlameKlingons4.Visibility = Visibility.Visible;
-                    BlameKlingons5.Visibility = Visibility.Visible;
-                    BlameKlingons6.Visibility = Visibility.Visible;
-                }
-                //GameLog.Client.UI.DebugFormat("CARD: begin of checking BLAME visible");
-                if (empireCivsDictionary.Keys.Contains(4) &&
-                    GameContext.Current.DiplomacyData[_civLocalPlayer, empireCivsDictionary[4]].IsContactMade()) // && sevenCivs[4].Key != "CARDASSIANS")
-                {
-                    BlameCardassians0.Visibility = Visibility.Visible;
-                    BlameCardassians1.Visibility = Visibility.Visible;
-                    BlameCardassians2.Visibility = Visibility.Visible;
-                    BlameCardassians3.Visibility = Visibility.Visible;
-                    BlameCardassians5.Visibility = Visibility.Visible;
-                    BlameCardassians6.Visibility = Visibility.Visible;
-                }
+                    if (empireCivsDictionary.Keys.Contains(0) &&
+                        GameContext.Current.DiplomacyData[_civLocalPlayer, empireCivsDictionary[0]].IsContactMade())
+                    {
+                        BlameFederation1.Visibility = Visibility.Visible;
+                        BlameFederation2.Visibility = Visibility.Visible;
+                        BlameFederation3.Visibility = Visibility.Visible;
+                        BlameFederation4.Visibility = Visibility.Visible;
+                        BlameFederation5.Visibility = Visibility.Visible;
+                        BlameFederation6.Visibility = Visibility.Visible;
+                    }
+                    //GameLog.Client.UI.DebugFormat("FED: end   of checking BLAME visible");
 
-                if (empireCivsDictionary.Keys.Contains(5) &&
-                    GameContext.Current.DiplomacyData[_civLocalPlayer, empireCivsDictionary[5]].IsContactMade())
-                {
-                    BlameDominion0.Visibility = Visibility.Visible;
-                    BlameDominion1.Visibility = Visibility.Visible;
-                    BlameDominion2.Visibility = Visibility.Visible;
-                    BlameDominion3.Visibility = Visibility.Visible;
-                    BlameDominion4.Visibility = Visibility.Visible;
-                    BlameDominion6.Visibility = Visibility.Visible;
-                }
+                    if (empireCivsDictionary.Keys.Contains(1) &&
+                        GameContext.Current.DiplomacyData[_civLocalPlayer, empireCivsDictionary[1]].IsContactMade())
+                    {
+                        BlameTerranEmpire0.Visibility = Visibility.Visible;
+                        BlameTerranEmpire2.Visibility = Visibility.Visible;
+                        BlameTerranEmpire3.Visibility = Visibility.Visible;
+                        BlameTerranEmpire4.Visibility = Visibility.Visible;
+                        BlameTerranEmpire5.Visibility = Visibility.Visible;
+                        BlameTerranEmpire6.Visibility = Visibility.Visible;
+                    }
 
-                if (empireCivsDictionary.Keys.Contains(6) &&
-                    GameContext.Current.DiplomacyData[_civLocalPlayer, empireCivsDictionary[6]].IsContactMade())
-                {
-                    BlameBorg0.Visibility = Visibility.Visible;
-                    BlameBorg1.Visibility = Visibility.Visible;
-                    BlameBorg2.Visibility = Visibility.Visible;
-                    BlameBorg3.Visibility = Visibility.Visible;
-                    BlameBorg4.Visibility = Visibility.Visible;
-                    BlameBorg5.Visibility = Visibility.Visible;
+                    if (empireCivsDictionary.Keys.Contains(2) &&
+                        GameContext.Current.DiplomacyData[_civLocalPlayer, empireCivsDictionary[2]].IsContactMade())
+                    {
+                        BlameRomulans0.Visibility = Visibility.Visible;
+                        BlameRomulans1.Visibility = Visibility.Visible;
+                        BlameRomulans3.Visibility = Visibility.Visible;
+                        BlameRomulans4.Visibility = Visibility.Visible;
+                        BlameRomulans5.Visibility = Visibility.Visible;
+                        BlameRomulans6.Visibility = Visibility.Visible;
+                    }
+
+                    if (empireCivsDictionary.Keys.Contains(3) &&
+                        GameContext.Current.DiplomacyData[_civLocalPlayer, empireCivsDictionary[3]].IsContactMade())
+                    {
+                        BlameKlingons0.Visibility = Visibility.Visible;
+                        BlameKlingons1.Visibility = Visibility.Visible;
+                        BlameKlingons2.Visibility = Visibility.Visible;
+                        BlameKlingons4.Visibility = Visibility.Visible;
+                        BlameKlingons5.Visibility = Visibility.Visible;
+                        BlameKlingons6.Visibility = Visibility.Visible;
+                    }
+
+                    //GameLog.Client.UI.DebugFormat("CARD: begin of checking BLAME visible");
+                    if (empireCivsDictionary.Keys.Contains(4) &&
+                        GameContext.Current.DiplomacyData[_civLocalPlayer, empireCivsDictionary[4]].IsContactMade()
+                    ) // && sevenCivs[4].Key != "CARDASSIANS")
+                    {
+                        BlameCardassians0.Visibility = Visibility.Visible;
+                        BlameCardassians1.Visibility = Visibility.Visible;
+                        BlameCardassians2.Visibility = Visibility.Visible;
+                        BlameCardassians3.Visibility = Visibility.Visible;
+                        BlameCardassians5.Visibility = Visibility.Visible;
+                        BlameCardassians6.Visibility = Visibility.Visible;
+                    }
+
+                    if (empireCivsDictionary.Keys.Contains(5) &&
+                        GameContext.Current.DiplomacyData[_civLocalPlayer, empireCivsDictionary[5]].IsContactMade())
+                    {
+                        BlameDominion0.Visibility = Visibility.Visible;
+                        BlameDominion1.Visibility = Visibility.Visible;
+                        BlameDominion2.Visibility = Visibility.Visible;
+                        BlameDominion3.Visibility = Visibility.Visible;
+                        BlameDominion4.Visibility = Visibility.Visible;
+                        BlameDominion6.Visibility = Visibility.Visible;
+                    }
+
+                    if (empireCivsDictionary.Keys.Contains(6) &&
+                        GameContext.Current.DiplomacyData[_civLocalPlayer, empireCivsDictionary[6]].IsContactMade())
+                    {
+                        BlameBorg0.Visibility = Visibility.Visible;
+                        BlameBorg1.Visibility = Visibility.Visible;
+                        BlameBorg2.Visibility = Visibility.Visible;
+                        BlameBorg3.Visibility = Visibility.Visible;
+                        BlameBorg4.Visibility = Visibility.Visible;
+                        BlameBorg5.Visibility = Visibility.Visible;
+                    }
                 }
             }
             else
