@@ -19,9 +19,11 @@ namespace Supremacy.Client.Views
 {
     public class AssetsScreenPresentationModel : PresentationModelBase, INotifyPropertyChanged
     {
+        protected Meter _totalResearch;
         protected int _totalIntelligenceProduction;
         protected int _totalIntelligenceDefenseAccumulated;
         protected int _totalIntelligenceAttackingAccumulated;
+        protected int _valuesFromTurn;
         private List<Civilization> _localSpyingCivList;
 
         #region designInstance stuff
@@ -210,9 +212,11 @@ namespace Supremacy.Client.Views
             _spiedFourColonies = DesignTimeObjects.SpiedCivFour.Colonies;
             _spiedFiveColonies = DesignTimeObjects.SpiedCivFive.Colonies;
             _spiedSixColonies = DesignTimeObjects.SpiedCivSix.Colonies;
+            _totalResearch = GameContext.Current.CivilizationManagers[MyLocalCivManager.Civilization].Research.CumulativePoints;
             _totalIntelligenceProduction = GameContext.Current.CivilizationManagers[MyLocalCivManager.Civilization].TotalIntelligenceProduction;
             _totalIntelligenceAttackingAccumulated = GameContext.Current.CivilizationManagers[MyLocalCivManager.Civilization].TotalIntelligenceAttackingAccumulated.CurrentValue;
             _totalIntelligenceDefenseAccumulated = GameContext.Current.CivilizationManagers[MyLocalCivManager.Civilization].TotalIntelligenceDefenseAccumulated.CurrentValue;
+            _valuesFromTurn = GameContext.Current.TurnNumber;
 
             OnPropertyChanged("InstallingSpyNetwork");
             OnPropertyChanged("TotalIntelligenceAttackingAccumulated");
@@ -402,6 +406,11 @@ namespace Supremacy.Client.Views
             TotalResearchChanged.Raise(this);
             OnPropertyChanged("TotalResearch");
         }
+        protected virtual void OnValuesFromTurnChanged()
+        {
+            TotalIntelligenceProductionChanged.Raise(this);
+            OnPropertyChanged("ValuesFromTurn");
+        }
         protected virtual void OnInstallingSpyNetworkChanged()
         {
             InstallingSpyNetworkChanged.Raise(this);
@@ -516,7 +525,7 @@ namespace Supremacy.Client.Views
             }
         }
 
-        public Meter TotalResearch
+        public int TotalResearch
         {
             get
             {
@@ -524,16 +533,24 @@ namespace Supremacy.Client.Views
                 try
                 {
                     //GameLog.Core.Intel.DebugFormat("TotalPopulation ={0}", civManager.TotalPopulation);
-                    return civManager.TotalResearch;
+                    return civManager.Research.CumulativePoints.CurrentValue;
                 }
                 catch (Exception e)
                 {
                     GameLog.Core.GameData.WarnFormat("Problem occured at TotalResearch: {0} {1}", e.Message, e.StackTrace);
                     GameLog.Core.General.Error(e);
-                    Meter zero = new Meter(0, 0, 0);
-                    return zero; //civManager.TotalPopulation;
+                    //Meter zero = new Meter(0, 0, 0);
+                    return 0; //civManager.TotalPopulation;
 
                 }
+            }
+        }
+
+        public int ValuesFromTurn
+        {
+            get
+            {
+                return GameContext.Current.TurnNumber;
             }
         }
 

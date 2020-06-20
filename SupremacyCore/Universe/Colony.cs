@@ -902,7 +902,13 @@ namespace Supremacy.Universe
         {
             this.ResetCreditsFromTrade();
         }
+
+        public int TurnNumberValuesFrom()
+        {
+            return GameContext.Current.TurnNumber;
+        }
         #endregion
+
 
         private void Initialize()
         {
@@ -1675,6 +1681,11 @@ namespace Supremacy.Universe
         public int TotalIntelligenceFacilities
         {
             get { try { return GetTotalFacilities(ProductionCategory.Intelligence); } catch { return 0; } }
+        }
+
+        public int EnergyCostEachOrbitalBattery
+        {
+            get { try { return OrbitalBatteryDesign.UnitEnergyCost; } catch { return 0; } }
         }
         /// <summary>
         /// //////////

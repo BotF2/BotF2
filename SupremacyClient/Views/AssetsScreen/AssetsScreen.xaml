@@ -56,68 +56,82 @@
                         <ColumnDefinition Width="10"/>
                         <ColumnDefinition Width="Auto" />
                         <ColumnDefinition Width="30"/>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="10"/>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="30"/>
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
                     <!--Grid.Column="1"-->
-                    <!--<TextBlock 
-                        Grid.Column="7" Text=""
+                    <TextBlock 
+                        Grid.Column="1" Text="{s:StringResource Key=TURN_VALUES}"
+                        Foreground="Aqua"
+                        FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+                        FontSize="12pt"/>
+                    <TextBlock 
+                        Grid.Column="3" Text="{Binding Path=ValuesFromTurn}"
+                        Foreground="Aqua"
+                        FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+                        FontSize="12pt"/>
+                    <TextBlock 
+                        Grid.Column="4" Text="  > "
                         Foreground="{DynamicResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"
                         FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
-                        FontSize="12pt"/>-->
+                        FontSize="12pt"/>
 
                     <!--Colonies.Count-->
                     <TextBlock 
-                        Grid.Column="1" Text="{s:StringResource Key=COLONIES}"
+                        Grid.Column="5" Text="{s:StringResource Key=COLONIES}"
                         Foreground="{DynamicResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"
                         FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                         FontSize="12pt"/>
                     <TextBlock 
-                        Grid.Column="3" Text="{Binding Path=Colonies.Count}" 
+                        Grid.Column="7" Text="{Binding Path=Colonies.Count}" 
                         Foreground="{DynamicResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"
                         FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                         FontSize="12pt"/>
                     <!--TotalPopulation-->
                     <TextBlock 
-                        Grid.Column="5" Text="{s:StringResource Key=TOTAL_POPULATION}"
-                        Foreground="{DynamicResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"
+                        Grid.Column="9" Text="{s:StringResource Key=TOTAL_POPULATION}"
+                        Foreground="LightGoldenrodYellow"
                         FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                         FontSize="12pt"/>
                     <TextBlock 
-                        Grid.Column="7" Text="{Binding Path=TotalPopulation}" 
-                        Foreground="{DynamicResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"
+                        Grid.Column="11" Text="{Binding Path=TotalPopulation}" 
+                        Foreground="LightGoldenrodYellow"
                         FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                         FontSize="12pt"/>
                     <!--CreditsEmpire-->
                     <TextBlock 
-                        Grid.Column="9" Text="{s:StringResource Key=TOTAL_CREDITS}"
+                        Grid.Column="13" Text="{s:StringResource Key=TOTAL_CREDITS}"
                         Foreground="{DynamicResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"
                         FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                         FontSize="12pt"/>
                     <TextBlock 
-                        Grid.Column="11" Text="{Binding Path=CreditsEmpire}" 
+                        Grid.Column="15" Text="{Binding Path=CreditsEmpire}" 
                         Foreground="{DynamicResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"
                         FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                         FontSize="12pt"/>
                     <!--TotalResearch-->
                     <TextBlock 
-                        Grid.Column="13" Text="{s:StringResource Key=TOTAL_RESEARCH}"
-                        Foreground="{DynamicResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"
+                        Grid.Column="17" Text="{s:StringResource Key=TOTAL_RESEARCH}"
+                        Foreground="SteelBlue"
                         FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                         FontSize="12pt"/>
                     <TextBlock 
-                        Grid.Column="15" Text="{Binding Path=TotalResearch}" 
-                        Foreground="{DynamicResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"
+                        Grid.Column="19" Text="{Binding Path=TotalResearch}" 
+                        Foreground="SteelBlue"
                         FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                         FontSize="12pt"/>
                     <!--TotalIntelligenceProduction-->
                     <TextBlock 
-                        Grid.Column="17" Text="{s:StringResource Key=TOTAL_INTELLIGENCE}"
-                        Foreground="{DynamicResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"
+                        Grid.Column="21" Text="{s:StringResource Key=TOTAL_INTELLIGENCE}"
+                        Foreground="Silver"
                         FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                         FontSize="12pt"/>
                     <TextBlock 
-                        Grid.Column="19" Text="{Binding Path=TotalIntelligenceProduction}" 
-                        Foreground="{DynamicResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"
+                        Grid.Column="23" Text="{Binding Path=TotalIntelligenceProduction}" 
+                        Foreground="Silver"
                         FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                         FontSize="12pt"/>
                 </Grid>
