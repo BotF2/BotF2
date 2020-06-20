@@ -19,7 +19,8 @@ namespace Supremacy.Client.Views
 {
     public class DiplomacyScreenViewModel : ViewModelBase<INewDiplomacyScreenView, DiplomacyScreenViewModel>
     {
-
+        private bool _isMembershipButtonVisible;
+        private bool _isFullAllianceButtonVisible;
         #region Design-Time Instance
 
         private static DiplomacyScreenViewModel _designInstance;
@@ -96,6 +97,7 @@ namespace Supremacy.Client.Views
             _cancelMessageCommand = new DelegateCommand(ExecuteCancelMessageCommand, CanExecuteCancelMessageCommand);
             _resetGraphCommand = new DelegateCommand(ExecuteResetGraphCommand);
             _setSelectedGraphNodeCommand = new DelegateCommand<DiplomacyGraphNode>(ExecuteSetSelectedGraphNodeCommand);
+            
 
             Refresh();
         }
@@ -539,7 +541,7 @@ namespace Supremacy.Client.Views
             selectedForeignPower = SelectedForeignPower;
 
             return selectedForeignPower != null &&
-                   //selectedForeignPower.OutgoingMessage == null &&
+                  // !selectedForeignPower.Owner.IsEmpire &&
                    selectedForeignPower.Status != ForeignPowerStatus.AtWar;
         }
 
@@ -950,7 +952,13 @@ namespace Supremacy.Client.Views
             OnPropertyChanged("SelectedForeignPower");
             OnAreOutgoingMessageCommandsVisibleChanged();
             OnAreIncomingMessageCommandsVisibleChanged();
+            if (AreNewMessageCommandsVisible){}
             OnAreNewMessageCommandsVisibleChanged();
+            if (IsMembershipButtonVisible){}
+            OnMembershipButtonVisibleChanged();
+            if (IsFullAllianceButtonVisible) {}
+            OnFullAllianceButtonVisibleChanged();
+
         }
 
         #endregion
@@ -1033,15 +1041,14 @@ namespace Supremacy.Client.Views
         {
             get
             {
-                //if (DisplayMode != DiplomacyScreenDisplayMode.Outbox)
-                //    return false;
-
                 var selectedForeignPower = SelectedForeignPower;
 
                 return selectedForeignPower != null &&
                        selectedForeignPower.OutgoingMessage == null;
             }
+
         }
+
 
         protected virtual void OnAreNewMessageCommandsVisibleChanged()
         {
@@ -1049,6 +1056,46 @@ namespace Supremacy.Client.Views
             OnPropertyChanged("AreNewMessageCommandsVisible");
         }
 
+        #endregion
+         
+        #region IsMembershipButtonVisible Property
+
+        [field: NonSerialized]
+        public event EventHandler IsMembershipButtonVisibleChanged;
+        public bool IsMembershipButtonVisible
+        {
+            get
+            {
+                var selectedForeignPower = SelectedForeignPower;
+                _isMembershipButtonVisible = (selectedForeignPower != null && !selectedForeignPower.Counterparty.IsEmpire);
+                return _isMembershipButtonVisible;
+            }
+        }
+        protected virtual void OnMembershipButtonVisibleChanged()
+        {
+            IsMembershipButtonVisibleChanged.Raise(this);
+            OnPropertyChanged("IsMembershipButtonVisible");
+        }
+        #endregion
+
+        #region IsFullAllianceButtonVisible Property
+
+        [field: NonSerialized]
+        public event EventHandler IsFullAllianceButtonVisibleChanged;
+        public bool IsFullAllianceButtonVisible
+        {
+            get
+            {
+                var selectedForeignPower = SelectedForeignPower;
+                _isFullAllianceButtonVisible = (selectedForeignPower != null && selectedForeignPower.Counterparty.IsEmpire);
+                return _isFullAllianceButtonVisible;
+            }
+        }
+        protected virtual void OnFullAllianceButtonVisibleChanged()
+        {
+            IsFullAllianceButtonVisibleChanged.Raise(this);
+            OnPropertyChanged("IsFullAllianceButtonVisible");
+        }
         #endregion
 
         #region DisplayMode Property
@@ -1097,6 +1144,8 @@ namespace Supremacy.Client.Views
                        SelectedForeignPower.OutgoingMessage.IsEditing;
             }
         }
+
+        //public bool IsFullAllianceButtonVisible { get; private set; }
 
         protected virtual void OnIsMessageEditInProgressChanged()
         {

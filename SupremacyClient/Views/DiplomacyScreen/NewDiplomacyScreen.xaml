@@ -503,13 +503,15 @@
                           Margin="0,2,0,0"
                           ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry='FullAllianceButtonTooltipText', CharacterCasing=Upper}"
                           Command="{Binding Path=FullAllianceCommand}" 
-                          IsEnabled="{Binding Path=FullAllianceCommand}"/>
+                          Visibility="{Binding Path=IsFullAllianceButtonVisible, Converter={StaticResource BooleanToVisibilityConverter}}"
+                          IsEnabled="{Binding Path=IsFullAllianceButtonVisible, Converter={StaticResource BooleanToVisibilityConverter}}"/>
                     <scc:GameButton x:Name="MembershipButton"
                           Label="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry='MembershipButtonText', CharacterCasing=Upper}"
                           Margin="0,2,0,0"
                           ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry='MembershipButtonTooltipText', CharacterCasing=Upper}"
                           Command="{Binding Path=MembershipCommand}" 
-                          IsEnabled="{Binding Path=MembershipCommand}"/>
+                          Visibility="{Binding Path=IsMembershipButtonVisible, Converter={StaticResource BooleanToVisibilityConverter}}"
+                          IsEnabled="{Binding Path=IsMembershipButtonVisible, Converter={StaticResource BooleanToVisibilityConverter}}"/>
                 </scc:GameItemsControl>
                 <scc:GameItemsControl x:Name="DraftButtons"
                               Grid.Column="0"
