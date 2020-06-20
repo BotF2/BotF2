@@ -243,7 +243,7 @@
 
         <!--ENERGY-->
         <TextBlock Text="{s:StringResource Key=ENERGY, Case=Upper}" 
-                   Grid.Row="3" Grid.Column="6" HorizontalAlignment="Right" Foreground="Goldenrod"/>
+                   Grid.Row="3" Grid.Column="6" HorizontalAlignment="Right" VerticalAlignment="Center" Foreground="Goldenrod"/>
         <scc:GameLabel Grid.Row="3" Grid.Column="7" VerticalAlignment="Center" Grid.ColumnSpan="2"    >
             <scc:GameLabel.Label>
                 <MultiBinding StringFormat="{}  {0} / {1} ">
@@ -409,7 +409,7 @@
                 <MultiBinding StringFormat="{}{0} / {1}">
                     <!--<MultiBinding StringFormat="{}{0} / {1} ({0} )">-->
                     <Binding Path="TradeRoutesAssigned" />
-                    <Binding Path="TradeRoutes" />
+                    <Binding Path="TradeRoutes.Count" />
                     <!--<Binding Path="TradeRoutes.CreditsFromTrade" />-->
                 </MultiBinding>
             </scc:GameLabel.Label>

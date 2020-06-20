@@ -60,6 +60,10 @@
                         <ColumnDefinition Width="10"/>
                         <ColumnDefinition Width="Auto" />
                         <ColumnDefinition Width="30"/>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="10"/>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="30"/>
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
                     <!--Grid.Column="1"-->
@@ -90,6 +94,7 @@
                         Foreground="{DynamicResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"
                         FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                         FontSize="12pt"/>
+                    
                     <!--TotalPopulation-->
                     <TextBlock 
                         Grid.Column="9" Text="{s:StringResource Key=TOTAL_POPULATION}"
@@ -101,6 +106,7 @@
                         Foreground="LightGoldenrodYellow"
                         FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                         FontSize="12pt"/>
+                    
                     <!--CreditsEmpire-->
                     <TextBlock 
                         Grid.Column="13" Text="{s:StringResource Key=TOTAL_CREDITS}"
