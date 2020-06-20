@@ -558,10 +558,12 @@ namespace Supremacy.Orbitals
         protected internal override void OnTurnBeginning()
         {
             base.OnTurnBeginning();
+            if (!IsAssigned)
+                return;
             if (_isComplete)
                 return;
-            var SpyOnShip = FindBestSpyOnShip();
-            if (SpyOnShip == null)
+            var spyOnShip = FindBestSpyOnShip();
+            if (spyOnShip == null)
                 return;
             CreateSpyOn(
                 Fleet.Owner,
@@ -1633,7 +1635,15 @@ namespace Supremacy.Orbitals
                 return false;
             if (fleet.Sector.IsOwned && (fleet.Sector.Owner != fleet.Owner))
                 return false;
-            return true;
+            foreach (var ship in fleet.Ships)
+            {
+                if (ship.ShipType == ShipType.Construction)
+                {
+                    return true;
+                }
+
+            }
+            return false;
         }
 
         public override bool CanAssignOrder(Fleet fleet)
