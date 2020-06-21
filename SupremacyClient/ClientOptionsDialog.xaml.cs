@@ -1,4 +1,4 @@
-// ClientSettingsWindow.xaml.cs
+// <!-- File:ClientOptionsDialog.xaml.cs
 //
 // Copyright (c) 2007 Mike Strobel
 //
@@ -77,7 +77,7 @@ namespace Supremacy.Client
 
         private void OnGenericCommandsTracesSetAllCommandExecuted(object source, ExecutedRoutedEventArgs e)
         {
-            ClientSettings.Current.TracesAudio = false;
+            ClientSettings.Current.TracesAudio = true;
 
             ClientSettings.Current.Save();
             ClientSettings.Current.Reload();
@@ -93,6 +93,7 @@ namespace Supremacy.Client
 
         private void OnGenericCommandsTracesSetNoneCommandExecuted(object source, ExecutedRoutedEventArgs e)
         {
+            //ClientSettings.Traces_ClearAllProperty();
             ClientSettings.Current.TracesAudio = false;
 
             ClientSettings.Current.Save();

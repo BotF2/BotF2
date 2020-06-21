@@ -58,9 +58,7 @@ namespace Supremacy.Client
 
         private void OnSaved()
         {
-            var handler = Saved;
-            if (handler != null)
-                handler(null, EventArgs.Empty);
+            Saved?.Invoke(null, EventArgs.Empty);
 
             var settingsDirectory = ResourceManager.GetResourcePath("");
             var filePath = Path.Combine(
@@ -75,9 +73,7 @@ namespace Supremacy.Client
 
         private void OnLoaded()
         {
-            var handler = Loaded;
-            if (handler != null)
-                handler(null, EventArgs.Empty);
+            Loaded?.Invoke(null, EventArgs.Empty);
         }
 
         public void Reload()
@@ -247,9 +243,7 @@ namespace Supremacy.Client
 
         private void OnMasterVolumeChanged(double oldValue, double newValue)
         {
-            var handler = MasterVolumeChanged;
-            if (handler != null)
-                handler(this, new PropertyChangedRoutedEventArgs<double>(oldValue, newValue));
+            MasterVolumeChanged?.Invoke(this, new PropertyChangedRoutedEventArgs<double>(oldValue, newValue));
         }
         #endregion
 
@@ -273,9 +267,7 @@ namespace Supremacy.Client
 
         private void OnMusicVolumeChanged(double oldValue, double newValue)
         {
-            var handler = MusicVolumeChanged;
-            if (handler != null)
-                handler(this, new PropertyChangedRoutedEventArgs<double>(oldValue, newValue));
+            MusicVolumeChanged?.Invoke(this, new PropertyChangedRoutedEventArgs<double>(oldValue, newValue));
         }
         #endregion
 
@@ -299,9 +291,7 @@ namespace Supremacy.Client
 
         private void OnFXVolumeChanged(double oldValue, double newValue)
         {
-            var handler = FXVolumeChanged;
-            if (handler != null)
-                handler(this, new PropertyChangedRoutedEventArgs<double>(oldValue, newValue));
+            FXVolumeChanged?.Invoke(this, new PropertyChangedRoutedEventArgs<double>(oldValue, newValue));
         }
         #endregion
 
@@ -325,9 +315,7 @@ namespace Supremacy.Client
 
         private void OnEnableAntiAliasingChanged(bool oldValue, bool newValue)
         {
-            var handler = EnableAntiAliasingChanged;
-            if (handler != null)
-                handler(this, new PropertyChangedRoutedEventArgs<bool>(oldValue, newValue));
+            EnableAntiAliasingChanged?.Invoke(this, new PropertyChangedRoutedEventArgs<bool>(oldValue, newValue));
         }
         #endregion
 
@@ -395,33 +383,73 @@ namespace Supremacy.Client
         }
         #endregion
 
-        #region TracesClearAll Property
-        public static readonly DependencyProperty TracesClearAllProperty = DependencyProperty.Register(
-            "ClearAll",
+        #region Traces_SetAll Property
+        public static readonly DependencyProperty Traces_SetAllProperty = DependencyProperty.Register(
+            "SetAll",
             typeof(bool),
             typeof(ClientSettings),
             new FrameworkPropertyMetadata(
                 false,
                 FrameworkPropertyMetadataOptions.None));
 
-        public bool TracesClearAll
+
+        public bool Traces_SetAll
         {
-            get { return (bool)GetValue(TracesClearAllProperty); }
+            get { return (bool)GetValue(Traces_SetAllProperty); }
             set
             {
-                SetValue(TracesClearAllProperty, value);
+                SetValue(Traces_SetAllProperty, value);
 
                 GameLog.Client.General.InfoFormat("Log.Txt: Traces mostly set to ERROR only (press ingame CTRL + O)");  // in Log.Txt only DEBUG = yes get a line
 
                 if (value == true)
                 {
-                    //SetValue(TracesAIProperty, value);
-                    //OnTracesAIChanged(false, true);
-                    //GameLog.SetRepositoryToDebug("AI");
+                    // Audio changes shall be done directly = OnTracesAudioChanged
+                    
+                    SetValue(TracesAIProperty, value); /*OnTracesAIChanged(false, true);*/ GameLog.SetRepositoryToDebug("AI");
+                    SetValue(TracesAudioProperty, value); OnTracesAudioChanged(false, true); GameLog.SetRepositoryToDebug("Audio");
+                    SetValue(TracesCivsAndRacesProperty, value); /*OnTracesCivsAndRacesChanged(false, true);*/ GameLog.SetRepositoryToDebug("CivsAndRaces");
+                    SetValue(TracesColoniesProperty, value); /*OnTracesColoniesChanged(false, true);*/ GameLog.SetRepositoryToDebug("Colonies");
+                    SetValue(TracesCombatProperty, value); /*OnTracesCombatChanged(false, true);*/ GameLog.SetRepositoryToDebug("Combat");
+                    SetValue(TracesCombatDetailsProperty, value); /*OnTracesCombatDetailsChanged(false, true);*/ GameLog.SetRepositoryToDebug("CombatDetails");
+                    SetValue(TracesCreditsProperty, value); /*OnTracesCreditsChanged(false, true);*/ GameLog.SetRepositoryToDebug("Credits");
+                    SetValue(TracesDeuteriumProperty, value); /*OnTracesDeuteriumChanged(false, true);*/ GameLog.SetRepositoryToDebug("Deuterium");
+                    SetValue(TracesDilithiumProperty, value); /*OnTracesDilithiumChanged(false, true);*/ GameLog.SetRepositoryToDebug("Dilithium");
+                    SetValue(TracesDiplomacyProperty, value); /*OnTracesDiplomacyChanged(false, true);*/ GameLog.SetRepositoryToDebug("Diplomacy");
+                    SetValue(TracesEnergyProperty, value); /*OnTracesEnergyChanged(false, true);*/ GameLog.SetRepositoryToDebug("Energy");
+                    SetValue(TracesEventsProperty, value); /*OnTracesEventsChanged(false, true);*/ GameLog.SetRepositoryToDebug("Events");
+                    SetValue(TracesGalaxyGeneratorProperty, value); /*OnTracesGalaxyGeneratorChanged(false, true);*/ GameLog.SetRepositoryToDebug("GalaxyGenerator");
+                    SetValue(TracesGameDataProperty, value); /*OnTracesGameDataChanged(false, true);*/ GameLog.SetRepositoryToDebug("GameData");
+                    SetValue(TracesGameInitDataProperty, value); /*OnTracesGameInitDataChanged(false, true);*/ GameLog.SetRepositoryToDebug("GameInitData");
+                    SetValue(TracesGeneralProperty, value); /*OnTracesGeneralChanged(false, true);*/ GameLog.SetRepositoryToDebug("General");
+                    SetValue(TracesIntelProperty, value); /*OnTracesIntelChanged(false, true);*/ GameLog.SetRepositoryToDebug("Intel");
+                    SetValue(TracesMapDataProperty, value); /*OnTracesMapDataChanged(false, true);*/ GameLog.SetRepositoryToDebug("MapData");
+                    SetValue(TracesMultiPlayProperty, value); /*OnTracesMultiPlayChanged(false, true);*/ GameLog.SetRepositoryToDebug("MultiPlay");
+                    SetValue(TracesProductionProperty, value); /*OnTracesProductionChanged(false, true);*/ GameLog.SetRepositoryToDebug("Production");
+                    SetValue(TracesResearchProperty, value); /*OnTracesResearchChanged(false, true);*/ GameLog.SetRepositoryToDebug("Research");
+                    SetValue(TracesSitRepsProperty, value); /*OnTracesSitRepsChanged(false, true);*/ GameLog.SetRepositoryToDebug("SitReps");
+                    SetValue(TracesSaveLoadProperty, value); /*OnTracesSaveLoadChanged(false, true);*/ GameLog.SetRepositoryToDebug("SaveLoad");
+                    SetValue(TracesShipsProperty, value); /*OnTracesShipsChanged(false, true);*/ GameLog.SetRepositoryToDebug("Ships");
+                    SetValue(TracesShipProductionProperty, value); /*OnTracesShipProductionChanged(false, true);*/ GameLog.SetRepositoryToDebug("ShipProduction");
+                    SetValue(TracesStationsProperty, value); /*OnTracesStationsChanged(false, true);*/ GameLog.SetRepositoryToDebug("Stations");
+                    SetValue(TracesStructuresProperty, value); /*OnTracesStructuresChanged(false, true);*/ GameLog.SetRepositoryToDebug("Structures");
+                    SetValue(TracesSystemAssaultProperty, value); /*OnTracesSystemAssaultChanged(false, true);*/ GameLog.SetRepositoryToDebug("SystemAssault");
+                    SetValue(TracesTestProperty, value); /*OnTracesTestChanged(false, true);*/ GameLog.SetRepositoryToDebug("Test");
+                    SetValue(TracesTradeRoutesProperty, value); /*OnTracesTradeRoutesChanged(false, true);*/ GameLog.SetRepositoryToDebug("TradeRoutes");
+                    SetValue(TracesUIProperty, value); /*OnTracesUIChanged(false, true);*/ GameLog.SetRepositoryToDebug("UI");
+                    SetValue(TracesXMLCheckProperty, value); /*OnTracesXMLCheckChanged(false, true);*/ GameLog.SetRepositoryToDebug("XMLCheck");
+                    SetValue(TracesXML2CSVOutputProperty, value); /*OnTracesXML2CSVOutputChanged(false, true);*/ GameLog.SetRepositoryToDebug("XML2CSVOutput");
+                    //SetValue(TracesAudioProperty, value); /*OnTracesAudioChanged(false, true);*/ GameLog.SetRepositoryToDebug("Audio");
+                    //SetValue(TracesAudioProperty, value); /*OnTracesAudioChanged(false, true);*/ GameLog.SetRepositoryToDebug("Audio");
+                    //SetValue(TracesAudioProperty, value); /*OnTracesAudioChanged(false, true);*/ GameLog.SetRepositoryToDebug("Audio");
+                    //SetValue(TracesAudioProperty, value); /*OnTracesAudioChanged(false, true);*/ GameLog.SetRepositoryToDebug("Audio");
+                    //SetValue(TracesAudioProperty, value); /*OnTracesAudioChanged(false, true);*/ GameLog.SetRepositoryToDebug("Audio");
+                    //SetValue(TracesAudioProperty, value); /*OnTracesAudioChanged(false, true);*/ GameLog.SetRepositoryToDebug("Audio");
+                    //SetValue(TracesAudioProperty, value); /*OnTracesAudioChanged(false, true);*/ GameLog.SetRepositoryToDebug("Audio");
+                    //SetValue(TracesAudioProperty, value); /*OnTracesAudioChanged(false, true);*/ GameLog.SetRepositoryToDebug("Audio");
 
 
-                    //SetValue(TracesAudioProperty, value);
-                    //GameLog.SetRepositoryToDebug("Audio");
+
                 }
                 else
                 {
@@ -437,7 +465,156 @@ namespace Supremacy.Client
 
             }
         }
-        #endregion
+        #endregion Traces_SetAll
+
+        #region Traces_ClearAll Property
+        public static readonly DependencyProperty Traces_ClearAllProperty = DependencyProperty.Register(
+            "ClearAll",
+            typeof(bool),
+            typeof(ClientSettings),
+            new FrameworkPropertyMetadata(
+                false,
+                FrameworkPropertyMetadataOptions.None));
+        public bool Traces_ClearAll
+        {
+            get { return (bool)GetValue(Traces_ClearAllProperty); }
+            set
+            {
+                SetValue(Traces_ClearAllProperty, value);
+                if (value == true)
+                {
+                    SetValue(Traces_SetAllProperty, false);
+                    //SetValue(Traces_SetSomeProperty, false);
+                }
+
+                GameLog.Client.General.InfoFormat("Log.Txt: Traces mostly set to ERROR only (press ingame CTRL + O)");  // in Log.Txt only DEBUG = yes get a line
+
+                if (value == true)
+                {
+                    // Audio changes shall be done directly = OnTracesAudioChanged
+                    SetValue(TracesAIProperty, value); /*OnTracesAIChanged(false, true);*/ GameLog.SetRepositoryToDebug("AI");
+                    SetValue(TracesAudioProperty, value); OnTracesAudioChanged(false, true); GameLog.SetRepositoryToDebug("Audio");
+                    SetValue(TracesCivsAndRacesProperty, value); /*OnTracesCivsAndRacesChanged(false, true);*/ GameLog.SetRepositoryToDebug("CivsAndRaces");
+                    SetValue(TracesColoniesProperty, value); /*OnTracesColoniesChanged(false, true);*/ GameLog.SetRepositoryToDebug("Colonies");
+                    SetValue(TracesCombatProperty, value); /*OnTracesCombatChanged(false, true);*/ GameLog.SetRepositoryToDebug("Combat");
+                    SetValue(TracesCombatDetailsProperty, value); /*OnTracesCombatDetailsChanged(false, true);*/ GameLog.SetRepositoryToDebug("CombatDetails");
+                    SetValue(TracesCreditsProperty, value); /*OnTracesCreditsChanged(false, true);*/ GameLog.SetRepositoryToDebug("Credits");
+                    SetValue(TracesDeuteriumProperty, value); /*OnTracesDeuteriumChanged(false, true);*/ GameLog.SetRepositoryToDebug("Deuterium");
+                    SetValue(TracesDilithiumProperty, value); /*OnTracesDilithiumChanged(false, true);*/ GameLog.SetRepositoryToDebug("Dilithium");
+                    SetValue(TracesDiplomacyProperty, value); /*OnTracesDiplomacyChanged(false, true);*/ GameLog.SetRepositoryToDebug("Diplomacy");
+                    SetValue(TracesEnergyProperty, value); /*OnTracesEnergyChanged(false, true);*/ GameLog.SetRepositoryToDebug("Energy");
+                    SetValue(TracesEventsProperty, value); /*OnTracesEventsChanged(false, true);*/ GameLog.SetRepositoryToDebug("Events");
+                    SetValue(TracesGalaxyGeneratorProperty, value); /*OnTracesGalaxyGeneratorChanged(false, true);*/ GameLog.SetRepositoryToDebug("GalaxyGenerator");
+                    SetValue(TracesGameDataProperty, value); /*OnTracesGameDataChanged(false, true);*/ GameLog.SetRepositoryToDebug("GameData");
+                    SetValue(TracesGameInitDataProperty, value); /*OnTracesGameInitDataChanged(false, true);*/ GameLog.SetRepositoryToDebug("GameInitData");
+                    SetValue(TracesGeneralProperty, value); /*OnTracesGeneralChanged(false, true);*/ GameLog.SetRepositoryToDebug("General");
+                    SetValue(TracesIntelProperty, value); /*OnTracesIntelChanged(false, true);*/ GameLog.SetRepositoryToDebug("Intel");
+                    SetValue(TracesMapDataProperty, value); /*OnTracesMapDataChanged(false, true);*/ GameLog.SetRepositoryToDebug("MapData");
+                    SetValue(TracesMultiPlayProperty, value); /*OnTracesMultiPlayChanged(false, true);*/ GameLog.SetRepositoryToDebug("MultiPlay");
+                    SetValue(TracesProductionProperty, value); /*OnTracesProductionChanged(false, true);*/ GameLog.SetRepositoryToDebug("Production");
+                    SetValue(TracesResearchProperty, value); /*OnTracesResearchChanged(false, true);*/ GameLog.SetRepositoryToDebug("Research");
+                    SetValue(TracesSitRepsProperty, value); /*OnTracesSitRepsChanged(false, true);*/ GameLog.SetRepositoryToDebug("SitReps");
+                    SetValue(TracesSaveLoadProperty, value); /*OnTracesSaveLoadChanged(false, true);*/ GameLog.SetRepositoryToDebug("SaveLoad");
+                    SetValue(TracesShipsProperty, value); /*OnTracesShipsChanged(false, true);*/ GameLog.SetRepositoryToDebug("Ships");
+                    SetValue(TracesShipProductionProperty, value); /*OnTracesShipProductionChanged(false, true);*/ GameLog.SetRepositoryToDebug("ShipProduction");
+                    SetValue(TracesStationsProperty, value); /*OnTracesStationsChanged(false, true);*/ GameLog.SetRepositoryToDebug("Stations");
+                    SetValue(TracesStructuresProperty, value); /*OnTracesStructuresChanged(false, true);*/ GameLog.SetRepositoryToDebug("Structures");
+                    SetValue(TracesSystemAssaultProperty, value); /*OnTracesSystemAssaultChanged(false, true);*/ GameLog.SetRepositoryToDebug("SystemAssault");
+                    SetValue(TracesTestProperty, value); /*OnTracesTestChanged(false, true);*/ GameLog.SetRepositoryToDebug("Test");
+                    SetValue(TracesTradeRoutesProperty, value); /*OnTracesTradeRoutesChanged(false, true);*/ GameLog.SetRepositoryToDebug("TradeRoutes");
+                    SetValue(TracesUIProperty, value); /*OnTracesUIChanged(false, true);*/ GameLog.SetRepositoryToDebug("UI");
+                    SetValue(TracesXMLCheckProperty, value); /*OnTracesXMLCheckChanged(false, true);*/ GameLog.SetRepositoryToDebug("XMLCheck");
+                    SetValue(TracesXML2CSVOutputProperty, value); /*OnTracesXML2CSVOutputChanged(false, true);*/ GameLog.SetRepositoryToDebug("XML2CSVOutput");
+                    //SetValue(TracesAudioProperty, value); /*OnTracesAudioChanged(false, true);*/ GameLog.SetRepositoryToDebug("Audio");
+                    //SetValue(TracesAudioProperty, value); /*OnTracesAudioChanged(false, true);*/ GameLog.SetRepositoryToDebug("Audio");
+                    //SetValue(TracesAudioProperty, value); /*OnTracesAudioChanged(false, true);*/ GameLog.SetRepositoryToDebug("Audio");
+                    //SetValue(TracesAudioProperty, value); /*OnTracesAudioChanged(false, true);*/ GameLog.SetRepositoryToDebug("Audio");
+                    //SetValue(TracesAudioProperty, value); /*OnTracesAudioChanged(false, true);*/ GameLog.SetRepositoryToDebug("Audio");
+                    //SetValue(TracesAudioProperty, value); /*OnTracesAudioChanged(false, true);*/ GameLog.SetRepositoryToDebug("Audio");
+                    //SetValue(TracesAudioProperty, value); /*OnTracesAudioChanged(false, true);*/ GameLog.SetRepositoryToDebug("Audio");
+                    //SetValue(TracesAudioProperty, value); /*OnTracesAudioChanged(false, true);*/ GameLog.SetRepositoryToDebug("Audio");
+
+
+
+                }
+                else
+                {
+
+                    //SetValue(TracesAIProperty, false);
+                    //OnTracesAIChanged(true, false);
+                    //GameLog.SetRepositoryToErrorOnly("AI");
+
+                    //SetValue(TracesAudioProperty, value);
+                    //GameLog.SetRepositoryToErrorOnly("Audio");
+                }
+
+
+            }
+        }
+        #endregion Traces_ClearAll
+
+
+        #region Traces_SetAll Property
+        public static readonly DependencyProperty Traces_SetSomeProperty = DependencyProperty.Register(
+            "SetSome",
+            typeof(bool),
+            typeof(ClientSettings),
+            new FrameworkPropertyMetadata(
+                false,
+                FrameworkPropertyMetadataOptions.None));
+
+
+        public bool Traces_SetSome
+        {
+            get { return (bool)GetValue(Traces_SetSomeProperty); }
+            set
+            {
+                SetValue(Traces_SetSomeProperty, value);
+
+                GameLog.Client.General.InfoFormat("Log.Txt: Traces mostly set to ERROR only (press ingame CTRL + O)");  // in Log.Txt only DEBUG = yes get a line
+
+                if (value == true)
+                {
+                    // Audio changes shall be done directly = OnTracesAudioChanged
+
+                    SetValue(TracesAIProperty, value); /*OnTracesAIChanged(false, true);*/ GameLog.SetRepositoryToDebug("AI");
+                    SetValue(TracesAudioProperty, value); OnTracesAudioChanged(false, true); GameLog.SetRepositoryToDebug("Audio");
+                    SetValue(TracesCivsAndRacesProperty, value); /*OnTracesCivsAndRacesChanged(false, true);*/ GameLog.SetRepositoryToDebug("CivsAndRaces");
+                    SetValue(TracesColoniesProperty, value); /*OnTracesColoniesChanged(false, true);*/ GameLog.SetRepositoryToDebug("Colonies");
+                    SetValue(TracesCombatProperty, value); /*OnTracesCombatChanged(false, true);*/ GameLog.SetRepositoryToDebug("Combat");
+                    SetValue(TracesCombatDetailsProperty, value); /*OnTracesCombatDetailsChanged(false, true);*/ GameLog.SetRepositoryToDebug("CombatDetails");
+                    SetValue(TracesCreditsProperty, value); /*OnTracesCreditsChanged(false, true);*/ GameLog.SetRepositoryToDebug("Credits");
+                    SetValue(TracesDeuteriumProperty, value); /*OnTracesDeuteriumChanged(false, true);*/ GameLog.SetRepositoryToDebug("Deuterium");
+                    SetValue(TracesDilithiumProperty, value); /*OnTracesDilithiumChanged(false, true);*/ GameLog.SetRepositoryToDebug("Dilithium");
+                    SetValue(TracesDiplomacyProperty, value); /*OnTracesDiplomacyChanged(false, true);*/ GameLog.SetRepositoryToDebug("Diplomacy");
+                    SetValue(TracesEnergyProperty, value); /*OnTracesEnergyChanged(false, true);*/ GameLog.SetRepositoryToDebug("Energy");
+                    SetValue(TracesEventsProperty, value); /*OnTracesEventsChanged(false, true);*/ GameLog.SetRepositoryToDebug("Events");
+                    SetValue(TracesGalaxyGeneratorProperty, value); /*OnTracesGalaxyGeneratorChanged(false, true);*/ GameLog.SetRepositoryToDebug("GalaxyGenerator");
+                    SetValue(TracesGameDataProperty, value); /*OnTracesGameDataChanged(false, true);*/ GameLog.SetRepositoryToDebug("GameData");
+                    SetValue(TracesGameInitDataProperty, value); /*OnTracesGameInitDataChanged(false, true);*/ GameLog.SetRepositoryToDebug("GameInitData");
+                    SetValue(TracesGeneralProperty, value); /*OnTracesGeneralChanged(false, true);*/ GameLog.SetRepositoryToDebug("General");
+                    SetValue(TracesIntelProperty, value); /*OnTracesIntelChanged(false, true);*/ GameLog.SetRepositoryToDebug("Intel");
+                    SetValue(TracesMapDataProperty, value); /*OnTracesMapDataChanged(false, true);*/ GameLog.SetRepositoryToDebug("MapData");
+                    SetValue(TracesMultiPlayProperty, value); /*OnTracesMultiPlayChanged(false, true);*/ GameLog.SetRepositoryToDebug("MultiPlay");
+                    SetValue(TracesProductionProperty, value); /*OnTracesProductionChanged(false, true);*/ GameLog.SetRepositoryToDebug("Production");
+                    SetValue(TracesResearchProperty, value); /*OnTracesResearchChanged(false, true);*/ GameLog.SetRepositoryToDebug("Research");
+                    SetValue(TracesSitRepsProperty, value); /*OnTracesSitRepsChanged(false, true);*/ GameLog.SetRepositoryToDebug("SitReps");
+                    SetValue(TracesSaveLoadProperty, value); /*OnTracesSaveLoadChanged(false, true);*/ GameLog.SetRepositoryToDebug("SaveLoad");
+                    SetValue(TracesShipsProperty, value); /*OnTracesShipsChanged(false, true);*/ GameLog.SetRepositoryToDebug("Ships");
+                    SetValue(TracesShipProductionProperty, value); /*OnTracesShipProductionChanged(false, true);*/ GameLog.SetRepositoryToDebug("ShipProduction");
+                    SetValue(TracesStationsProperty, value); /*OnTracesStationsChanged(false, true);*/ GameLog.SetRepositoryToDebug("Stations");
+                    SetValue(TracesStructuresProperty, value); /*OnTracesStructuresChanged(false, true);*/ GameLog.SetRepositoryToDebug("Structures");
+                    SetValue(TracesSystemAssaultProperty, value); /*OnTracesSystemAssaultChanged(false, true);*/ GameLog.SetRepositoryToDebug("SystemAssault");
+                    SetValue(TracesTestProperty, value); /*OnTracesTestChanged(false, true);*/ GameLog.SetRepositoryToDebug("Test");
+                    SetValue(TracesTradeRoutesProperty, value); /*OnTracesTradeRoutesChanged(false, true);*/ GameLog.SetRepositoryToDebug("TradeRoutes");
+                    SetValue(TracesUIProperty, value); /*OnTracesUIChanged(false, true);*/ GameLog.SetRepositoryToDebug("UI");
+                    SetValue(TracesXMLCheckProperty, value); /*OnTracesXMLCheckChanged(false, true);*/ GameLog.SetRepositoryToDebug("XMLCheck");
+                    SetValue(TracesXML2CSVOutputProperty, value); /*OnTracesXML2CSVOutputChanged(false, true);*/ GameLog.SetRepositoryToDebug("XML2CSVOutput");
+                }
+            }
+        }
+        #endregion Traces_SetSome
+
 
         #region TracesAI Property
         public DependencyProperty TracesAIProperty = DependencyProperty.Register(
@@ -465,16 +642,16 @@ namespace Supremacy.Client
 
         public event EventHandler<PropertyChangedRoutedEventArgs<bool>> TracesAIChanged;
 
-        private void OnTracesAIChanged(bool oldValue, bool newValue)
-        {
-            var handler = TracesAIChanged;
-            if (handler != null)
-                handler(this, new PropertyChangedRoutedEventArgs<bool>(oldValue, newValue));
-        }
+        private void OnTracesAIChanged(bool oldValue, bool newValue) => TracesAIChanged?.Invoke(this, new PropertyChangedRoutedEventArgs<bool>(oldValue, newValue));
 
         #endregion
 
         #region TracesAudio Property
+
+        public event EventHandler<PropertyChangedRoutedEventArgs<bool>> TracesAudioChanged;
+
+        private void OnTracesAudioChanged(bool oldValue, bool newValue) => TracesAudioChanged?.Invoke(this, new PropertyChangedRoutedEventArgs<bool>(oldValue, newValue));
+
         public static readonly DependencyProperty TracesAudioProperty = DependencyProperty.Register(
             "Audio",
             typeof(bool),
@@ -1588,9 +1765,7 @@ namespace Supremacy.Client
 
         protected void OnPropertyChanged(string propertyName)
         {
-            var handler = PropertyChanged;
-            if (handler != null)
-                handler(this, new PropertyChangedEventArgs(propertyName));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
         #endregion
