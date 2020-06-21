@@ -42,7 +42,7 @@ namespace Supremacy.Diplomacy
             return GameContext.Current.DiplomacyData[owner.CivID, counterparty.CivID].Status;
         }
             // ToDo look at bringing diplomatic ships to use the old diplomatic code and set up the Civilization-to-diplomat map for games (GameContext.Current.Diplomats)
-        public static void ApplyGlobalTrustChange([NotNull] ICivIdentity civ, int trustDelta)
+        public static void ApplyGlobalTrustChange([NotNull] ICivIdentity civ, int trustDelta) 
         {
             if (civ == null)
                 throw new ArgumentNullException("civ");
@@ -359,65 +359,6 @@ namespace Supremacy.Diplomacy
                 sectorOwner = GameContext.Current.SectorClaims.GetOwner(sector.Location);
 
             // GameLog.Core.Diplomacy.DebugFormat("traveller ={0}, sector location ={1}", traveller.Key, sector.Location);
-
-            // You can go to the homeworld of other players no first contact and only after that with declaration of war. ToDo let camouflage ships in
-            //if (sector.System != null)
-            //{
-            //    if (sector.System.Owner != null)
-            //    {
-            //        if (GameContext.Current.Universe.HomeColonyLookup[traveller] != sector.System.Colony &&
-            //            GameContext.Current.Universe.HomeColonyLookup[sectorOwner] == sector.System.Colony &&
-            //            DiplomacyHelper.IsContactMade(traveller, sectorOwner) &&
-            //            !DiplomacyHelper.AreAtWar(traveller, sectorOwner))
-            //        {
-            //            travel = false;
-            //        }
-                    //if (GameContext.Current.Universe.HomeColonyLookup[traveller] != sector.System.Colony &&
-                    //    GameContext.Current.Universe.HomeColonyLookup[sectorOwner] == sector.System.Colony)
-                    //{
-                    //    var map = GameContext.Current.Universe.Map;
-                    //    List<CombatAssets> localCamouflagedShips = new List<CombatAssets>();
-                    //    List<Sector> localSectors = new List<Sector>();
-                    //    //localSectors.Add(sector);
-                    //    int xLow = sector.Location.X - 6;
-                    //    int xHigh = sector.Location.X + 6;
-                    //    if (xLow < 0)
-                    //        xLow = 0;
-                    //    if (xHigh > map.Width + 1)
-                    //        xHigh = map.Width + 1;
-                    //    int yLow = sector.Location.Y - 6;
-                    //    int yHigh = sector.Location.Y + 6;
-                    //    if (yLow < 0)
-                    //        yLow = 0;
-                    //    if (yHigh < map.Height + 1)
-                    //        yHigh = map.Height + 1;
-
-                    //    for (int x = xLow; x <= xHigh; x++)
-                    //    {
-                    //        for (int y = yLow; y <= (xHigh); y++)
-                    //        {
-                    //            var nearSector = map[x, y];
-                    //            if (nearSector != null)
-                    //            {
-                    //                localSectors.Add(nearSector);
-                    //            }
-                    //        }
-                    //    }
-
-                    //    foreach (var aSector in localSectors)
-                    //    {
-
-                    //        localCamouflagedShips.AddRange(CombatHelper.GetCamouflageAssets(aSector.Location));
-                    //        localCamouflagedShips.Distinct();
-                    //    }
-                    //    if (localCamouflagedShips.Count > 0)
-                    //    {
-                    //        // need a way to make this only for the camou ships
-                    //        travel = true;
-                    //    }
-                    //}
-            //    }   
-            //}
 
             return travel;
         }
