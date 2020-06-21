@@ -19,29 +19,28 @@ namespace Supremacy.Data
         private const string nameMessage =
             "An error occurred while parsing table ";
 
-        private string details;
-
-        public string Details
-        {
-            get { return details; }
-        }
+        public string Details { get; }
 
         public TableParseException()
             : base(baseMessage)
         {
-            details = null;
+            Details = null;
         }
 
         public TableParseException(string details)
             : base(baseMessage)
         {
-            this.details = details;
+            Details = details;
         }
 
         public TableParseException(string tableName, string details)
             : base(nameMessage + tableName)
         {
-            this.details = details;
+            Details = details;
+        }
+
+        public TableParseException(string message, Exception innerException) : base(message, innerException)
+        {
         }
     }
 }

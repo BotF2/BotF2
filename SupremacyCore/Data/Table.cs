@@ -26,24 +26,22 @@ namespace Supremacy.Data
 
         public TableColumn([NotNull] string name, [NotNull] Type valueType)
         {
-            if (name == null)
-                throw new ArgumentNullException("name");
-            if (valueType == null)
-                throw new ArgumentNullException("valueType");
-
-            Name = name;
-            ValueType = valueType;
+            Name = name ?? throw new ArgumentNullException(nameof(name));
+            ValueType = valueType ?? throw new ArgumentNullException(nameof(valueType));
         }
 
-        public string Name { get; private set; }
-        public Type ValueType { get; private set; }
+        public string Name { get; }
+        public Type ValueType { get; }
 
         internal object ParseValue(string valueText)
         {
             if (ValueType.IsEnum)
+            {
                 return Enum.Parse(ValueType, valueText);
+            }
+
             return Convert.ChangeType(valueText, ValueType);
-        } 
+        }
     }
 
     [Serializable]
@@ -65,37 +63,34 @@ namespace Supremacy.Data
 
         public static explicit operator int?(TableValue tableValue)
         {
-            int result;
-            return int.TryParse(tableValue._value, out result) ? (int?)result : null;
+            return int.TryParse(tableValue._value, out int result) ? (int?)result : null;
         }
 
         public static explicit operator float?(TableValue tableValue)
         {
-            float result;
-            return float.TryParse(tableValue._value, out result) ? (float?)result : null;
+            return float.TryParse(tableValue._value, out float result) ? (float?)result : null;
         }
 
         public static explicit operator double?(TableValue tableValue)
         {
-            double result;
-            return double.TryParse(tableValue._value, out result) ? (double?)result : null;
+            return double.TryParse(tableValue._value, out double result) ? (double?)result : null;
         }
 
         public static explicit operator Percentage?(TableValue tableValue)
         {
-            Percentage result;
-            return Percentage.TryParse(tableValue._value, out result) ? (Percentage?)result : null;
+            return Percentage.TryParse(tableValue._value, out Percentage result) ? (Percentage?)result : null;
         }
     }
 
     [Serializable]
-    public class Table : Table<string> {
+    public class Table : Table<string>
+    {
         public Table(Table<string> baseTable)
         {
             NameInternal = baseTable.NameInternal;
             RowKeyTypeInternal = baseTable.RowKeyTypeInternal;
             ColumnsInternal = baseTable.ColumnsInternal;
-            RowsInternal = baseTable.RowsInternal; 
+            RowsInternal = baseTable.RowsInternal;
         }
         public Table(string name) : base(name) { }
     }
@@ -103,23 +98,9 @@ namespace Supremacy.Data
     [Serializable]
     public class Table<TRowKey>
     {
-        internal static readonly Regex TableNameRegex = new Regex(
-            "[ _a-z0-9]+",
-            RegexOptions.Compiled |
-            RegexOptions.IgnoreCase |
-            RegexOptions.Singleline);
-
-        internal static readonly Regex ColumnNameRegex = new Regex(
-            "([_a-z][ _a-z0-9]*)(\\<[^>]\\>)?",
-            RegexOptions.Compiled |
-            RegexOptions.IgnoreCase |
-            RegexOptions.Singleline);
-
-        internal static readonly Regex RowHeadingStartRegex = new Regex(
-            "RowHeadingsStart(\\<[^>]\\>)?",
-            RegexOptions.Compiled |
-            RegexOptions.IgnoreCase |
-            RegexOptions.Singleline);
+        internal static readonly Regex TableNameRegex = new Regex("[ _a-z0-9]+", RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.Singleline);
+        internal static readonly Regex ColumnNameRegex = new Regex("([_a-z][ _a-z0-9]*)(\\<[^>]\\>)?", RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.Singleline);
+        internal static readonly Regex RowHeadingStartRegex = new Regex("RowHeadingsStart(\\<[^>]\\>)?", RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.Singleline);
 
         protected readonly object SyncRoot;
 
@@ -130,30 +111,60 @@ namespace Supremacy.Data
 
         public string Name
         {
-            get { lock (SyncRoot) return NameInternal ?? String.Empty; }
+            get
+            {
+                lock (SyncRoot)
+                {
+                    return NameInternal ?? string.Empty;
+                }
+            }
             set
             {
                 if (value == null)
+                {
                     throw new ArgumentNullException("value");
+                }
+
                 if (!TableNameRegex.IsMatch(value))
+                {
                     throw new ArgumentException("Illegal table name: " + value);
+                }
+
                 NameInternal = value;
             }
         }
 
         public IIndexedKeyedCollection<string, TableColumn> Columns
         {
-            get { lock (SyncRoot) return ColumnsInternal; }
+            get
+            {
+                lock (SyncRoot)
+                {
+                    return ColumnsInternal;
+                }
+            }
         }
 
         public IIndexedKeyedCollection<TRowKey, TableRow<TRowKey>> Rows
         {
-            get { lock (SyncRoot) return RowsInternal; }
+            get
+            {
+                lock (SyncRoot)
+                {
+                    return RowsInternal;
+                }
+            }
         }
 
         public TableRow<TRowKey> this[int rowIndex]
         {
-            get { lock (SyncRoot) return RowsInternal[rowIndex]; }
+            get
+            {
+                lock (SyncRoot)
+                {
+                    return RowsInternal[rowIndex];
+                }
+            }
         }
 
         public TableRow<TRowKey> this[TRowKey rowKey]
@@ -162,9 +173,10 @@ namespace Supremacy.Data
             {
                 lock (SyncRoot)
                 {
-                    TableRow<TRowKey> row;
-                    if (RowsInternal.TryGetValue(rowKey, out row))
+                    if (RowsInternal.TryGetValue(rowKey, out TableRow<TRowKey> row))
+                    {
                         return row;
+                    }
                 }
                 return null;
             }
@@ -185,11 +197,11 @@ namespace Supremacy.Data
 
         private enum ReadState
         {
-            TableStart,
-            ColumnHeadingsStart,
-            RowHeadingsStart,
-            Rows,
-            TableEnd
+            TableStart = 0,
+            ColumnHeadingsStart = 1,
+            RowHeadingsStart = 2,
+            Rows = 3,
+            TableEnd = 4
         }
 
         public bool TryGetRow(TRowKey key, out TableRow<TRowKey> row)
@@ -199,9 +211,7 @@ namespace Supremacy.Data
 
         public bool TryGetValue(TRowKey key, string columnName, out string value)
         {
-            TableRow<TRowKey> row;
-
-            if (!TryGetRow(key, out row))
+            if (!TryGetRow(key, out TableRow<TRowKey> row))
             {
                 value = null;
                 return false;
@@ -212,10 +222,7 @@ namespace Supremacy.Data
 
         public bool TryGetValue(TRowKey key, string columnName, out TableValue value)
         {
-            string stringValue;
-            TableRow<TRowKey> row;
-
-            if (TryGetRow(key, out row) && row.TryGetColumn(columnName, out stringValue))
+            if (TryGetRow(key, out TableRow<TRowKey> row) && row.TryGetColumn(columnName, out string stringValue))
             {
                 value = new TableValue(stringValue);
                 return true;
@@ -227,9 +234,7 @@ namespace Supremacy.Data
 
         public bool TryGetValue(TRowKey key, int columnIndex, out string value)
         {
-            TableRow<TRowKey> row;
-
-            if (!TryGetRow(key, out row))
+            if (!TryGetRow(key, out TableRow<TRowKey> row))
             {
                 value = null;
                 return false;
@@ -240,10 +245,7 @@ namespace Supremacy.Data
 
         public bool TryGetValue(TRowKey key, int columnIndex, out TableValue value)
         {
-            string stringValue;
-            TableRow<TRowKey> row;
-
-            if (TryGetRow(key, out row) && row.TryGetColumn(columnIndex, out stringValue))
+            if (TryGetRow(key, out TableRow<TRowKey> row) && row.TryGetColumn(columnIndex, out string stringValue))
             {
                 value = new TableValue(stringValue);
                 return true;
@@ -255,21 +257,19 @@ namespace Supremacy.Data
 
         public TableValue GetValue(TRowKey key, string columnName)
         {
-            TableValue value;
-            TryGetValue(key, columnName, out value);
+            _ = TryGetValue(key, columnName, out TableValue value);
             return value;
         }
 
         public TableValue GetValue(TRowKey key, int columnIndex)
         {
-            TableValue value;
-            TryGetValue(key, columnIndex, out value);
+            _ = TryGetValue(key, columnIndex, out TableValue value);
             return value;
         }
 
         public void Read(TextReader reader)
         {
-            var tempTable = ReadFromStream(reader);
+            Table<TRowKey> tempTable = ReadFromStream(reader);
             if (tempTable != null)
             {
                 lock (SyncRoot)
@@ -292,24 +292,26 @@ namespace Supremacy.Data
         {
             if (writer == null)
             {
-                throw new ArgumentNullException("writer");
+                throw new ArgumentNullException(nameof(writer));
             }
             lock (SyncRoot)
             {
-                writer.WriteLine("TableStart" + "\t" + Name);
+                writer.WriteLine("TableStart\t" + Name);
                 writer.Write("ColumnHeadingsStart");
-                foreach (var column in ColumnsInternal)
+                foreach (TableColumn column in ColumnsInternal)
                 {
                     writer.Write("\t" + column.Name);
                     if (column.ValueType != typeof(string))
+                    {
                         writer.Write("<{0}>", column.ValueType.FullName);
+                    }
                 }
                 writer.WriteLine();
                 writer.WriteLine("RowHeadingsStart");
                 for (int i = 0; i < RowsInternal.Count; i++)
                 {
                     writer.Write(RowsInternal[i].Name);
-                    for (int j = 0; j < RowsInternal[i].Values.Count; j++)
+                    for (int j = 0; j < RowsInternal[i].GetValues().Count; j++)
                     {
                         writer.Write("\t" + RowsInternal[i][j]);
                     }
@@ -328,18 +330,22 @@ namespace Supremacy.Data
 
             if (reader == null)
             {
-                throw new ArgumentNullException("reader");
+                throw new ArgumentNullException(nameof(reader));
             }
 
             while (((line = reader.ReadLine()) != null)
                 && ((line = line.Trim()).Length > 0))
             {
                 if (line.StartsWith("#"))
+                {
                     continue;
+                }
 
                 string[] tokens = line.Split(new[] { '\t' }, StringSplitOptions.None);
                 if (tokens.Length == 0)
+                {
                     continue;
+                }
 
                 switch (state)
                 {
@@ -394,11 +400,14 @@ namespace Supremacy.Data
                             if (ColumnNameRegex.IsMatch(tokens[i]))
                             {
                                 Debug.Assert(table != null);
-                                var columnDefinition = tokens[i];
-                                var match = ColumnNameRegex.Match(columnDefinition);
-                                var columnType = typeof(string);
+                                string columnDefinition = tokens[i];
+                                Match match = ColumnNameRegex.Match(columnDefinition);
+                                Type columnType = typeof(string);
                                 if (match.Groups[2].Success)
+                                {
                                     columnType = Type.GetType(match.Groups[2].Value);
+                                }
+
                                 table.ColumnsInternal.Add(new TableColumn(match.Groups[1].Value, columnType));
                                 //tableOut += "Columns: " + new TableColumn(match.Groups[1].Value, columnType).ToString()
                             }
@@ -414,7 +423,7 @@ namespace Supremacy.Data
 
                     case ReadState.RowHeadingsStart:
                         Debug.Assert(table != null);
-                        var rowHeadingsStartMatch = RowHeadingStartRegex.Match(tokens[0]);
+                        Match rowHeadingsStartMatch = RowHeadingStartRegex.Match(tokens[0]);
                         if (!rowHeadingsStartMatch.Success)
                         {
                             throw new TableParseException(
@@ -430,7 +439,10 @@ namespace Supremacy.Data
                         //}
                         state = ReadState.Rows;
                         if (rowHeadingsStartMatch.Groups[1].Success)
+                        {
                             table.RowKeyTypeInternal = Type.GetType(rowHeadingsStartMatch.Groups[1].Value);
+                        }
+
                         break;
 
                     case ReadState.Rows:
@@ -464,17 +476,19 @@ namespace Supremacy.Data
                         }
                         for (int i = 1; i < tokens.Length; i++)
                         {
-                            row.Values.Add(tokens[i]);
+                            row.GetValues().Add(tokens[i]);
                             tableOut += tokens[i];
                         }
                         break;
                 }
 
                 if (state == ReadState.TableEnd)
+                {
                     break;
+                }
             }
 
-            if (GameLog.Core.GameInitData.IsDebugEnabled == true)
+            if (GameLog.Core.GameInitData.IsDebugEnabled)
             {
                 //GameLog.Client.GameInitData.DebugFormat(tableOut);
                 string _values = "";
@@ -482,22 +496,29 @@ namespace Supremacy.Data
                 try
                 {
                     if (table != null)
-                        foreach (var row in table.Rows)
+                    {
+                        foreach (TableRow<TRowKey> row in table.Rows)
                         {
-
-                            foreach (var column in row.Values)
+                            foreach (object column in row.GetValues())
                             {
                                 _values += column + ";";
                             }
                             tableString = table.Name + ";" + _values;
                         }
+                    }
                 }
                 catch (Exception e)
                 {
                     if (table != null)
+                    {
                         GameLog.Client.GameInitData.DebugFormat("not able to log into Log.txt for {0} exception {0} {1}", table.Name, e.Message, e.StackTrace);
+                    }
                 }
-                if (tableString.Length > 60) tableString = tableString.Substring(0, 60) + "...";
+                if (tableString.Length > 60)
+                {
+                    tableString = tableString.Substring(0, 60) + "...";
+                }
+
                 GameLog.Client.GameInitData.DebugFormat(tableString);
             }
 
