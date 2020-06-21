@@ -1,5 +1,5 @@
-﻿using System;
-
+﻿// File:TracesOptionsPage.xaml.cs
+using System;
 using Supremacy.Annotations;
 using Supremacy.Resources;
 

@@ -33,7 +33,7 @@ namespace Supremacy.AI
 
             foreach (Fleet fleet in GameContext.Current.Universe.FindOwned<Fleet>(civ))
             {
-                GameLog.Core.AI.DebugFormat("Processing Fleet {0} in {1}...", fleet.ObjectID, fleet.Location);
+                GameLog.Core.AI.DebugFormat("Turn {2}: Processing Fleet {0} in {1}...", fleet.ObjectID, fleet.Location, GameContext.Current.TurnNumber);
 
                 //Make sure all fleets are cloaked
                 foreach (Ship ship in fleet.Ships.Where(ship => ship.CanCloak && !ship.IsCloaked))

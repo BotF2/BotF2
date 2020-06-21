@@ -17,6 +17,7 @@ using System.Windows.Media;
 using Supremacy.Client;
 using Supremacy.Client.Views;
 using Supremacy.Economy;
+using Supremacy.Game;
 using Supremacy.Resources;
 using Supremacy.Universe;
 using Supremacy.Utility;
@@ -799,14 +800,15 @@ namespace Supremacy.UI
 
                 int LaborPool = colony.GetAvailableLabor() / 10;
 
-                GameLog.Client.Production.DebugFormat("Pop={0},Food={1},Ind={2},Energy={3},Research={4},Intel={5},FreePoolSize={6}",
+                GameLog.Client.Production.DebugFormat("Turn {7}: Pop={0},Food={1},Ind={2},Energy={3},Research={4},Intel={5},FreePoolSize={6}",
                     colony.Population.CurrentValue,
                     colony.GetActiveFacilities(ProductionCategory.Food),
                     colony.GetActiveFacilities(ProductionCategory.Industry),
                     colony.GetActiveFacilities(ProductionCategory.Energy),
                     colony.GetActiveFacilities(ProductionCategory.Research),
                     colony.GetActiveFacilities(ProductionCategory.Intelligence),
-                    LaborPool);
+                    LaborPool,
+                    GameContext.Current.TurnNumber);
                 /*_laborBar.ActiveUnits doesn't work */
 
                 _foodSlider.ActiveUnits = colony.GetActiveFacilities(ProductionCategory.Food);
