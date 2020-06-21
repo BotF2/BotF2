@@ -82,8 +82,8 @@ namespace Supremacy.Diplomacy
 
                 //case ClauseType.OfferGiveResources:
                 //case ClauseType.RequestGiveResources:
-                    clause.Data = new ResourceValueCollection();
-                    break;
+                //clause.Data = new ResourceValueCollection();
+                //break;
 
                 default:
                     clause.Data = null;
