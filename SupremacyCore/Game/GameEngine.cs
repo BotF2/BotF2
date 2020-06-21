@@ -714,8 +714,10 @@ namespace Supremacy.Game
             {
                 foreach (var civ2 in GameContext.Current.Civilizations)
                 {
-                    if (civ1.CivID == 4 && civ2.CivID == 2)  // just for break point for these two
-                        ;  // doing nothing
+                    //if (civ1.CivID == 4 && civ2.CivID == 2)  // just for break point for these two
+                    //{
+                    //    // doing nothing
+                    //}
                     GameLog.Core.Diplomacy.DebugFormat("Checking for {0} vs {1}", civ1, civ2);
                     //var orderCiv1 = new Civilization();
                     //var orderCiv2 = new Civilization();
@@ -826,8 +828,10 @@ namespace Supremacy.Game
                     //{
                         _gameLog = "### Checking ForeignerPower - see next line";
 
-                    if (civ1.CivID == 2 && civ2.CivID == 4)  // just for break point for these two
-                        ;  // doing nothing
+                    //if (civ1.CivID == 2 && civ2.CivID == 4)  // just for break point for these two
+                    //{
+                    //    // doing nothing
+                    //}
 
                     #region Gamelogs
                     if (foreignPower.ProposalReceived != null)
