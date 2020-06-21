@@ -571,7 +571,7 @@ namespace Supremacy.Client.Views
 
             _elements.Add(element);
 
-            string st = "";
+            string st = ""; // needed
 
             switch (availableElement.ActionCategory)
             {
@@ -581,6 +581,7 @@ namespace Supremacy.Client.Views
                     {
                         st = ResourceManager.GetString("OFFER_DIALOG_HINT"); // need to update the embassy screen with a new window to get the send button activated without delay.
                         var result_Offer = MessageDialog.Show(st, MessageDialogButtons.Ok);
+                        GameLog.Client.Diplomacy.DebugFormat("OFFER_DIALOG_HINT is outcommented");
                     }
                     break;
                 case DiplomacyMessageElementActionCategory.Request:
@@ -589,14 +590,16 @@ namespace Supremacy.Client.Views
                     {
                         st = ResourceManager.GetString("REQUEST_DIALOG_HINT"); // need to update the embassy screen with a new window to get the send button activated without delay.
                         var result_Request = MessageDialog.Show(st, MessageDialogButtons.Ok);
+                        GameLog.Client.Diplomacy.DebugFormat("REQUEST_DIALOG_HINT is outcommented");
                     }
                     break;
                 case DiplomacyMessageElementActionCategory.Propose:
                     _treatyElements.Add(element);
                     //if (element.Tone == Tone.Indignant)
                     //{
-                        st = ResourceManager.GetString("PROPOSE_DIALOG_HINT"); // need to update the embassy screen with a new window to get the send button activated without delay.
-                        var result_Propose = MessageDialog.Show(st, MessageDialogButtons.Ok);
+                    st = ResourceManager.GetString("PROPOSE_DIALOG_HINT"); // need to update the embassy screen with a new window to get the send button activated without delay.
+                    var result_Propose = MessageDialog.Show(st, MessageDialogButtons.Ok);
+                    GameLog.Client.Diplomacy.DebugFormat("PROPOSE_DIALOG_HINT is outcommented");
                     //}
                     break;
                 case DiplomacyMessageElementActionCategory.Commend:
@@ -612,6 +615,7 @@ namespace Supremacy.Client.Views
                 case DiplomacyMessageElementActionCategory.WarDeclaration:
                     st = ResourceManager.GetString("DECLARE_WAR_DIALOG_HINT"); // need to update the embassy screen with a new window to get the send button activated without delay.
                     var result_DeclareWar = MessageDialog.Show(st, MessageDialogButtons.Ok);
+                    GameLog.Client.Diplomacy.DebugFormat("DECLARE_WAR_DIALOG_HINT is outcommented");
                     _statementElements.Add(element);
                     break;
             }
