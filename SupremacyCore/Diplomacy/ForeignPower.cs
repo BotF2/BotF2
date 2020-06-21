@@ -326,15 +326,15 @@ namespace Supremacy.Diplomacy
 
             foreach (var regardEvent in _regardEvents)
             {
-                GameLog.Client.Diplomacy.DebugFormat("### regardEvent regard ={0}, turn ={1} Type ={2} duration ={3}",
-                    regardEvent.Regard, regardEvent.Turn, regardEvent.Type.ToString(), regardEvent.Duration);
+                //GameLog.Client.Diplomacy.DebugFormat("### regardEvent regard ={0}, turn ={1} Type ={2} duration ={3}",
+                //    regardEvent.Regard, regardEvent.Turn, regardEvent.Type.ToString(), regardEvent.Duration);
 
                 regardMeter.AdjustCurrent(regardEvent.Regard);
 
-                GameLog.Client.Diplomacy.DebugFormat("### Regard ={0} Owner ={1} CounterParty ={2}",
-                    DiplomacyData.Regard,
-                    GameContext.Current.CivilizationManagers[OwnerID].Civilization.ShortName,
-                    GameContext.Current.CivilizationManagers[CounterpartyID].Civilization.ShortName);
+                //GameLog.Client.Diplomacy.DebugFormat("### Regard ={0} Owner ={1} CounterParty ={2}",
+                //    DiplomacyData.Regard,
+                //    GameContext.Current.CivilizationManagers[OwnerID].Civilization.ShortName,
+                //    GameContext.Current.CivilizationManagers[CounterpartyID].Civilization.ShortName);
             }
 
         }

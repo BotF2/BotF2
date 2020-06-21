@@ -1354,7 +1354,7 @@ namespace Supremacy.Client.Views
             }
         }
 
-        internal static StatementType ElementTypeToStatementType(DiplomacyMessageElementType elementType) // see your action element as statment on Diplomatic Screen
+        internal static StatementType ElementTypeToStatementType(DiplomacyMessageElementType elementType) // see your action element as statement on Diplomatic Screen
         {
             //GameLog.Client.Diplomacy.DebugFormat("((()))ElementToStatement DiploMessageElement param ={0}", elementType);
             switch (elementType)

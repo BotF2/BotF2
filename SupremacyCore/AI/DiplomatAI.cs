@@ -17,17 +17,12 @@ namespace Supremacy.AI
 
     public static class DiplomatAI
     {
-        public static void DoTurn([NotNull] ICivIdentity civ) // pass in the AI civs to process Diplomacy
+        public static void DoTurn([NotNull] ICivIdentity civ) // pass in all civs to process Diplomacy
         {
             if (civ == null)
                 throw new ArgumentNullException("civ");
 
             var Aciv = (Civilization) civ;
-            if (Aciv.IsHuman)
-            {
-                return;
-            }
-            //    return;
 
             var diplomat = Diplomat.Get(civ);
 
@@ -69,6 +64,7 @@ namespace Supremacy.AI
 
                 if (!Aciv.IsHuman)
                 {
+                    GameLog.Client.Deuterium.DebugFormat("## Beging DiplomacyAI for Aciv AI .......................");
                     // delta trust and regard by traits
                     if (foreignPower.DiplomacyData.ContactTurn > (GameContext.Current.TurnNumber - 10))
                     {
@@ -104,6 +100,8 @@ namespace Supremacy.AI
                         }
 
                         foreignPower.UpdateStatus();
+                        GameLog.Client.Diplomacy.DebugFormat("## current Aciv ={0} otherCiv ={1} foreighPower.Counterparty ={2} foreighPower.Owner ={3}",
+                            Aciv.ShortName, otherCiv.ShortName, foreignPower.Counterparty.ShortName, foreignPower.Owner.ShortName);
                     }
 
                     if (foreignPower.ProposalReceived != null &&
@@ -159,18 +157,14 @@ namespace Supremacy.AI
                         if (accept)
                         {
                             foreignPower.PendingAction = PendingDiplomacyAction.AcceptProposal;
-                            GameLog.Client.Diplomacy.DebugFormat("Accept Proposal {1} and {2} - CommonTraits = {0}",
-                                commonTraitItems.Count(), foreignPower.Owner.ShortName, Aciv.ShortName);
                         }
                         else
                         {
                             foreignPower.PendingAction = PendingDiplomacyAction.RejectProposal;
-                            GameLog.Client.Diplomacy.DebugFormat("Reject Proposal {1} and {2} - CommonTraits = {0}",
-                                commonTraitItems.Count(), foreignPower.Owner.ShortName, Aciv.ShortName);
                         }
 
-                        GameLog.Client.Diplomacy.DebugFormat("ForeignPower = {0} Civ = {1} decsion = {2}",
-                            foreignPower.Owner.ShortName, Aciv.ShortName, foreignPower.PendingAction.ToString());
+                        GameLog.Client.Diplomacy.DebugFormat("## foreignPower PendingAction ={0} Counterparty = {1} Onwer = {2}",
+                            foreignPower.PendingAction.ToString(), foreignPower.Counterparty.ShortName ,foreignPower.Owner.ShortName);
 
                         if (foreignPower.ProposalReceived != null)
                         {
@@ -198,6 +192,9 @@ namespace Supremacy.AI
                                     foreignPower.DiplomacyData.Regard.CurrentValue < (int) RegardValue.Neutral)
                                 {
                                     foreignPower.PendingAction = PendingDiplomacyAction.RejectProposal;
+
+                                    GameLog.Client.Diplomacy.DebugFormat("## PendingAction ={0} reset by clause - regard value, Counterparty = {1} Onwer = {2}",
+                                        foreignPower.PendingAction.ToString(), foreignPower.Counterparty.ShortName, foreignPower.Owner.ShortName);
                                 }
                             }
                         }
@@ -245,23 +242,34 @@ namespace Supremacy.AI
                     }
                 }
 
-                if (!otherCiv.IsHuman)
+                if (true) // for human and non human alike //!otherCiv.IsHuman)
                 {
-                    // did proposals recieved (incoming) now Statements outgoing
+                    GameLog.Client.Diplomacy.DebugFormat("## Begin Statements, Human and AI civs .............................");
+                    // did proposals received (incoming) now Statements outgoing
                     var otherdiplomat = Diplomat.Get(otherCiv);
                     ForeignPower otherForeignPower = otherdiplomat.GetForeignPower(civ);
-                    GameLog.Client.Diplomacy.DebugFormat(
-                        "#### Civ = {0}, ForeignPower to {1}, otherCiv = {2}, otherForeignpower to {3}",
-                        (Civilization) civ, otherCiv.ShortName, otherCiv.ShortName, (Civilization) civ);
-                    //GameLog.Client.Diplomacy.DebugFormat("#### ForeignPower for = {0}, to = {1} otherForeignPower for {2} to {3}", foreignPower.Owner.Key, foreignPower.Counterparty.Key, otherForeignPower.Owner.Key, otherForeignPower.Counterparty.Key);
-
+                    GameLog.Client.Diplomacy.DebugFormat("## current ..................Aciv ={0} ...............otherCiv ={1}",
+                            Aciv.ShortName, otherCiv.ShortName);
+                    GameLog.Client.Diplomacy.DebugFormat("## otherForeignPower.Counterparty ={0} otherForeignPower.Owner ={1}",
+                        otherForeignPower.Counterparty.ShortName, otherForeignPower.Owner.ShortName);
+                    GameLog.Client.Diplomacy.DebugFormat("## .....foreignPower.Counterparty ={0} .....foreignPower.Owner ={1}", 
+                        foreignPower.Counterparty.ShortName, foreignPower.Owner.ShortName);
+                    // use foreignPower for Statement and Response of AI Aciv
+                    // use otherForeignPower for Statement and Response - reaction to AI 
                     if (foreignPower.StatementReceived != null)
                     {
+                        GameLog.Client.Diplomacy.DebugFormat(
+                            "## otherforeignPower.Statement ={0} Counterparty ={1} to {2} Regard = {3} Trust = {4}",
+                            foreignPower.StatementReceived.StatementType.ToString(),
+                            foreignPower.Counterparty.ShortName,
+                            foreignPower.Owner.ShortName,
+                            foreignPower.DiplomacyData.Regard.CurrentValue,
+                            foreignPower.DiplomacyData.Trust.CurrentValue);
                         // DOING: Process statements (apply regard/trust changes, etc.)
                         if (foreignPower.StatementReceived.StatementType == StatementType.WarDeclaration)
                         {
                             GameLog.Client.Diplomacy.DebugFormat(
-                                "$$$ WarDeclaration by counterparty = {0} to {1} Regard = {2} Trust = {3}",
+                                "## WarDeclaration by counterparty = {0} to {1} Regard = {2} Trust = {3}",
                                 foreignPower.Counterparty.ShortName, foreignPower.Owner.ShortName,
                                 foreignPower.DiplomacyData.Regard.CurrentValue,
                                 foreignPower.DiplomacyData.Trust.CurrentValue);
@@ -352,7 +360,14 @@ namespace Supremacy.AI
                         // TODO: Process responses (apply regard/trust changes, etc.)
 
                         if (foreignPower.ResponseReceived.ResponseType == ResponseType.Accept
-                        ) // Added some positive RegardEventTypes.
+                        )
+                            GameLog.Client.Diplomacy.DebugFormat(
+                                "## Responce type ={0} ResponseReceived by ?counterparty = {1} to {2} Regard = {3} Trust = {4}",
+                                foreignPower.ResponseReceived.ResponseType.ToString(),
+                                foreignPower.Counterparty.ShortName, foreignPower.Owner.ShortName,
+                                foreignPower.DiplomacyData.Regard.CurrentValue,
+                                foreignPower.DiplomacyData.Trust.CurrentValue);
+                        // Added some positive RegardEventTypes.
                         {
                             foreignPower.AddRegardEvent(new RegardEvent(10, RegardEventType.TreatyAccept, +200));
                             DiplomacyHelper.ApplyTrustChange(foreignPower.Counterparty, foreignPower.Owner, +200);
