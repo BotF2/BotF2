@@ -494,12 +494,49 @@ namespace Supremacy.Client
             {
                 var errorFile = File.Open("Error.txt", FileMode.Create, FileAccess.Write, FileShare.ReadWrite);
                 Console.SetError(new StreamWriter(errorFile));
+                //just starts an empty file 
+                // System.Diagnostics.Process.Start("Error.txt");
             }
             catch
             {
                 MessageBox.Show(
                     "The error log could not be created.  You may still run the game,\n"
                     + "but error details cannot be logged.",
+                    "Warning",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Warning);
+            }
+
+            try
+            {
+                // Diary like the old game had curves of Federation growing 
+                var errorFile = File.Open("./lib/_diary.txt", FileMode.Create, FileAccess.Write, FileShare.ReadWrite);
+                Console.SetError(new StreamWriter(errorFile));
+                //just starts an empty file 
+                // System.Diagnostics.Process.Start("./lib/_diary.txt");
+            }
+            catch
+            {
+                MessageBox.Show(
+                    "./lib/_diary.txt could not be created.  You may still run the game,\n"
+                    + "but diary details cannot be logged.",
+                    "Warning",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Warning);
+            }
+
+            try
+            {
+                var errorFile = File.Open("./lib/_last_options.txt", FileMode.Create, FileAccess.Write, FileShare.ReadWrite);
+                Console.SetError(new StreamWriter(errorFile));
+                //just starts an empty file 
+                // System.Diagnostics.Process.Start("Error.txt");
+            }
+            catch
+            {
+                MessageBox.Show(
+                    "./lib/_last_options.txt could not be created.  You may still run the game,\n"
+                    + "but _last_options.txt cannot be logged.",
                     "Warning",
                     MessageBoxButton.OK,
                     MessageBoxImage.Warning);
