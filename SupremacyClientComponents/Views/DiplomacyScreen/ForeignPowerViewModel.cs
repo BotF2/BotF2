@@ -272,8 +272,9 @@ namespace Supremacy.Client.Views
         {
             get
             {
-                GameLog.Client.Diplomacy.DebugFormat("##### ........ OutgoingMessageCategory = {0} Sender ={1} first statement element ={2} latst ={3}", ResolveMessageCategory(OutgoingMessage).ToString(),
-                    OutgoingMessage.Sender.ShortName, OutgoingMessage.StatementElements.FirstOrDefault(), OutgoingMessage.StatementElements.LastOrDefault());
+                //This is causing an System.NullReferenceException
+                //GameLog.Client.Diplomacy.DebugFormat("##### ........ OutgoingMessageCategory = {0} Sender ={1} first statement element ={2} latst ={3}", ResolveMessageCategory(OutgoingMessage).ToString(),
+                //OutgoingMessage.Sender.ShortName, OutgoingMessage.StatementElements.FirstOrDefault(), OutgoingMessage.StatementElements.LastOrDefault());
                 if (ResolveMessageCategory(OutgoingMessage).ToString() != "None")
                     GameLog.Client.Diplomacy.DebugFormat("OutgoingMessageCategory = {0}", ResolveMessageCategory(OutgoingMessage));
                 return ResolveMessageCategory(OutgoingMessage);
