@@ -714,11 +714,8 @@ namespace Supremacy.Game
             {
                 foreach (var civ2 in GameContext.Current.Civilizations)
                 {
-                    //if (civ1.CivID == 4 && civ2.CivID == 2)  // just for break point for these two
-                    //{
-                    //    // doing nothing
-                    //}
-                    GameLog.Core.Diplomacy.DebugFormat("Checking for {0} vs {1}", civ1, civ2);
+                  
+                    //GameLog.Core.Diplomacy.DebugFormat("Checking for {0} vs {1}", civ1, civ2);
                     //var orderCiv1 = new Civilization();
                     //var orderCiv2 = new Civilization();
                     if (civ1 == civ2)
@@ -808,7 +805,7 @@ namespace Supremacy.Game
             /*
             // Second: Schedule delivery of outbound messages  Including Statementreceived
              */
-            GameLog.Core.Diplomacy.DebugFormat("NEXT: *Second*");
+            GameLog.Core.Diplomacy.DebugFormat("NEXT: *Second* Outgoing");
             foreach (var civ1 in GameContext.Current.Civilizations)
             {
                 var diplomat = Diplomat.Get(civ1);
@@ -1009,13 +1006,11 @@ namespace Supremacy.Game
                         foreignPower.LastStatementSent = statementSent;
                         foreignPower.StatementSent = null;
 
-                        GameLog.Core.Diplomacy.DebugFormat("foreignPower.Owner = {0}", foreignPower.Owner);
-                        GameLog.Core.Diplomacy.DebugFormat("CounterpartyForeignPower.Owner = {0}", foreignPower.CounterpartyForeignPower.Owner);
+                        GameLog.Core.Diplomacy.DebugFormat("foreignPower.Owner = {0}", foreignPower.Owner.Key);
+                        GameLog.Core.Diplomacy.DebugFormat("CounterpartyForeignPower.Owner = {0}", foreignPower.CounterpartyForeignPower.Owner.Key);
 
                         if (statementSent.StatementType == StatementType.WarDeclaration)
                             foreignPower.DeclareWar();
-
-
 
                         //if (statementSent.StatementType == StatementType.SabotageOrder && statementSent.Tone == Tone.Indignant)
                         //{

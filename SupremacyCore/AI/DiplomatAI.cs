@@ -66,42 +66,51 @@ namespace Supremacy.AI
                 {
                     GameLog.Client.Deuterium.DebugFormat("## Beging DiplomacyAI for Aciv AI .......................");
                     // delta trust and regard by traits
-                    if (foreignPower.DiplomacyData.ContactTurn > (GameContext.Current.TurnNumber - 10))
+                    if (foreignPower.DiplomacyData.ContactTurn > (GameContext.Current.TurnNumber - 4))
                     {
                         int lessOverTime = (GameContext.Current.TurnNumber + 1) -
                                            foreignPower.DiplomacyData.ContactTurn;
                         if (similarTraits == 1)
                         {
                             foreignPower.AddRegardEvent(new RegardEvent(5, RegardEventType.NoRegardEvent,
-                                100 / lessOverTime));
-                            DiplomacyHelper.ApplyTrustChange(foreignPower.Counterparty, foreignPower.Owner,
-                                100 / lessOverTime);
-                        }
-                        else if (similarTraits >= 0.5)
-                        {
-                            foreignPower.AddRegardEvent(new RegardEvent(5, RegardEventType.NoRegardEvent,
                                 50 / lessOverTime));
                             DiplomacyHelper.ApplyTrustChange(foreignPower.Counterparty, foreignPower.Owner,
                                 50 / lessOverTime);
                         }
-                        else if (similarTraits > 0.3)
+                        else if (similarTraits >= 0.5)
                         {
                             foreignPower.AddRegardEvent(new RegardEvent(5, RegardEventType.NoRegardEvent,
                                 25 / lessOverTime));
                             DiplomacyHelper.ApplyTrustChange(foreignPower.Counterparty, foreignPower.Owner,
                                 25 / lessOverTime);
                         }
+                        else if (similarTraits > 0.3)
+                        {
+                            foreignPower.AddRegardEvent(new RegardEvent(5, RegardEventType.NoRegardEvent,
+                                12 / lessOverTime));
+                            DiplomacyHelper.ApplyTrustChange(foreignPower.Counterparty, foreignPower.Owner,
+                                12 / lessOverTime);
+                        }
                         else if (similarTraits < 0.3)
                         {
                             foreignPower.AddRegardEvent(new RegardEvent(5, RegardEventType.NoRegardEvent,
-                                -25 / lessOverTime));
+                                -12 / lessOverTime));
                             DiplomacyHelper.ApplyTrustChange(foreignPower.Counterparty, foreignPower.Owner,
-                                -25 / lessOverTime);
+                                -12 / lessOverTime);
                         }
 
                         foreignPower.UpdateStatus();
                         GameLog.Client.Diplomacy.DebugFormat("## current Aciv ={0} otherCiv ={1} foreighPower.Counterparty ={2} foreighPower.Owner ={3}",
                             Aciv.ShortName, otherCiv.ShortName, foreignPower.Counterparty.ShortName, foreignPower.Owner.ShortName);
+                        GameLog.Client.Diplomacy.DebugFormat("## Counterparty Status {0} Owner Status {1}",
+                            foreignPower.CounterpartyDiplomacyData.Status.ToString(),
+                            foreignPower.DiplomacyData.Status.ToString());
+                        GameLog.Client.Diplomacy.DebugFormat("## Counterparty Regard={0} Trust={1} Owner Regard={2} Trust={3}",
+                            foreignPower.CounterpartyDiplomacyData.Regard.CurrentValue,
+                            foreignPower.CounterpartyDiplomacyData.Trust.CurrentValue,
+                            foreignPower.DiplomacyData.Regard.CurrentValue,
+                            foreignPower.DiplomacyData.Trust.CurrentValue);
+                        GameLog.Client.Diplomacy.DebugFormat("## Counterparty effective regard ={0} ", foreignPower.CounterpartyDiplomacyData.EffectiveRegard.ToString());
                     }
 
                     if (foreignPower.ProposalReceived != null &&
@@ -113,8 +122,8 @@ namespace Supremacy.AI
                             {
                                 int value = (((CreditsClauseData) clause.Data).ImmediateAmount +
                                              ((CreditsClauseData) clause.Data).RecurringAmount) / 25;
-                                foreignPower.AddRegardEvent(new RegardEvent(10, RegardEventType.NoRegardEvent, value));
-                                DiplomacyHelper.ApplyTrustChange(foreignPower.Counterparty, foreignPower.Owner, 50);
+                                foreignPower.AddRegardEvent(new RegardEvent(6, RegardEventType.NoRegardEvent, value));
+                                DiplomacyHelper.ApplyTrustChange(foreignPower.Counterparty, foreignPower.Owner, 40);
                             }
                         }
 
@@ -125,10 +134,10 @@ namespace Supremacy.AI
                                 regardFactor = -100;
                                 break;
                             case RegardLevel.ColdWar:
-                                regardFactor = -50;
+                                regardFactor = -14;
                                 break;
                             case RegardLevel.Detested:
-                                regardFactor = -25;
+                                regardFactor = -8;
                                 break;
                             case RegardLevel.Neutral:
                                 regardFactor = 0;
@@ -143,15 +152,39 @@ namespace Supremacy.AI
                                 regardFactor = 12;
                                 break;
                         }
+                        int trustFactor = 0;
+                        int currentTrust = foreignPower.DiplomacyData.Trust.CurrentValue;
+                        if (currentTrust >= 900)
+                            trustFactor = 12;
+                        else if (currentTrust >= 800)
+                            trustFactor = 10;
+                        else if (currentTrust >= 700)
+                            trustFactor = 8;
+                        else if (currentTrust >= 600)
+                            trustFactor = 2;
+                        else if (currentTrust >= 400)
+                            trustFactor = -2;
+                        else if (trustFactor >= 300)
+                            trustFactor = -4;
+                        else if (trustFactor >= 200)
+                            trustFactor = -8;
+                        else trustFactor = -12;
 
-                        int scaleTheOdds = (14 - (int) (similarTraits * 10) - regardFactor);
-                        if (scaleTheOdds < 2)
-                            scaleTheOdds = 2;
-                        bool theirChance = RandomHelper.Chance(scaleTheOdds);
-                        if (theirChance)
+                int scaleTheOdds = (14 - (int)(similarTraits * 10) - regardFactor - trustFactor);
+                        int chance = 1;
+                        if (scaleTheOdds <= 2 && scaleTheOdds > 0)
+                            chance = 2;
+                        else if (scaleTheOdds > 2)
                         {
-                            accept = true;
+                            chance = scaleTheOdds;
+                            bool theirChance = RandomHelper.Chance(chance);
+                            if (theirChance)
+                            {
+                                accept = true;
+                            }
                         }
+                        if (scaleTheOdds < 0)
+                            accept = false;
 
                         //decide proposal
                         if (accept)
