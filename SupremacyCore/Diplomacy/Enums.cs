@@ -142,7 +142,8 @@ namespace Supremacy.Diplomacy
         HealedPopulation,
         TreatyProposal,
         TreatyAccept, 
-        DiplomaticShip
+        DiplomaticShip,
+        TraitsInCommon
     }
 
     [Flags]
