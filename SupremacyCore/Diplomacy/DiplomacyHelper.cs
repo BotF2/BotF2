@@ -102,8 +102,8 @@ namespace Supremacy.Diplomacy
 
                 if (foreignPower != null)
                 {
-                    foreignPower.DiplomacyData.Trust.AdjustCurrent(trustDelta);
-                    foreignPower.DiplomacyData.Trust.UpdateAndReset();
+                    //foreignPower.DiplomacyData.Trust.AdjustCurrent(trustDelta);
+                    //foreignPower.DiplomacyData.Trust.UpdateAndReset();
                     foreignPower.UpdateRegardAndTrustMeters();
                 }
                 

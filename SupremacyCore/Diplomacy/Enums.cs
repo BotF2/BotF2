@@ -28,6 +28,7 @@ namespace Supremacy.Diplomacy
         Detested,
         TotalWar,
         ColdWar,
+        Cold,
         Neutral,
         Friend,
         Allied,
