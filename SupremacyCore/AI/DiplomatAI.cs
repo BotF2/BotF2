@@ -71,12 +71,12 @@ namespace Supremacy.AI
                 int similarTraits = (countCommon *10 / fewestTotalTraits); // a double from 1 to 0
                 GameLog.Client.Diplomacy.DebugFormat("## similar traits ={0} counterparty ={1} traits ={2} owner ={3} traits ={4}",
                     similarTraits, foreignPower.Counterparty.Key,foreignPower.Counterparty.Traits, foreignPower.Owner.Key, foreignPower.Owner.Traits );
-                if (!foreignPower.DiplomacyData.FirstDiplomaticAction && otherCiv.IsHuman)
-                {
-                    int impact = 75;
-                    TrustAndRegardByTraits(otherForeignPower, impact, similarTraits);
-                }
-                 if (!aCiv.IsHuman)
+                //if (!foreignPower.DiplomacyData.FirstDiplomaticAction && otherCiv.IsHuman)
+                //{
+                //    int impact = 75;
+                //    TrustAndRegardByTraits(otherForeignPower, impact, similarTraits);
+                //}
+                if (true)//(!aCiv.IsHuman)
                 {
                     GameLog.Client.Deuterium.DebugFormat("## Beging DiplomacyAI for aCiv AI .......................");
                     #region First Impression
@@ -86,7 +86,7 @@ namespace Supremacy.AI
                         foreignPower.DiplomacyData.FirstDiplomaticAction = true;
                         int impact = 75;
                         TrustAndRegardByTraits(foreignPower, impact, similarTraits);
-                        
+                        TrustAndRegardByTraits(otherForeignPower, impact, similarTraits);
                         GameLog.Client.Diplomacy.DebugFormat("## foreignPower CounterParty ={0} regard ={1} trust ={2}",foreignPower.Counterparty.Key,foreignPower.CounterpartyDiplomacyData.Regard.CurrentValue, foreignPower.CounterpartyDiplomacyData.Trust.CurrentValue);
                         GameLog.Client.Diplomacy.DebugFormat("## foreignPower .......Owner ={0} regard ={1} trust ={2}", foreignPower.Owner.Key, foreignPower.DiplomacyData.Regard.CurrentValue, foreignPower.DiplomacyData.Trust.CurrentValue);
                         //foreignPower.UpdateStatus();
@@ -95,12 +95,12 @@ namespace Supremacy.AI
                         GameLog.Client.Diplomacy.DebugFormat("## Counterparty Status {0} Owner Status {1}",
                             foreignPower.CounterpartyDiplomacyData.Status.ToString(),
                             foreignPower.DiplomacyData.Status.ToString());
-                        GameLog.Client.Diplomacy.DebugFormat("## Counterparty Regard={0} Trust={1} Owner Regard={2} Trust={3}",
-                            foreignPower.CounterpartyDiplomacyData.Regard.CurrentValue,
-                            foreignPower.CounterpartyDiplomacyData.Trust.CurrentValue,
-                            foreignPower.DiplomacyData.Regard.CurrentValue,
-                            foreignPower.DiplomacyData.Trust.CurrentValue);
-                        GameLog.Client.Diplomacy.DebugFormat("## Counterparty effective regard ={0} ", foreignPower.CounterpartyDiplomacyData.EffectiveRegard.ToString());
+                        //GameLog.Client.Diplomacy.DebugFormat("## Counterparty Regard={0} Trust={1} Owner Regard={2} Trust={3}",
+                        //    foreignPower.CounterpartyDiplomacyData.Regard.CurrentValue,
+                        //    foreignPower.CounterpartyDiplomacyData.Trust.CurrentValue,
+                        //    foreignPower.DiplomacyData.Regard.CurrentValue,
+                        //    foreignPower.DiplomacyData.Trust.CurrentValue);
+                        //GameLog.Client.Diplomacy.DebugFormat("## Counterparty effective regard ={0} ", foreignPower.CounterpartyDiplomacyData.EffectiveRegard.ToString());
                     }
                     #endregion First Impressions
 
@@ -136,7 +136,7 @@ namespace Supremacy.AI
                             foreignPower.PendingAction.ToString(), foreignPower.Counterparty.ShortName,
                             foreignPower.Owner.ShortName);
 
-                        if (foreignPower.ProposalReceived != null)
+                        if (foreignPower.ProposalReceived != null && !(aCiv.IsHuman && otherCiv.IsHuman))
                         {
                             foreach (var clause in foreignPower.ProposalReceived.Clauses)
                             {

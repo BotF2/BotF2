@@ -389,14 +389,14 @@
               <!--Grid.Column="0"
               Grid.ColumnSpan="2"
               Grid.Row="4"-->
-                    <Grid.RowDefinitions>
+                    <!--<Grid.RowDefinitions>
                         <RowDefinition Height="20" />
                         <RowDefinition Height="20" />
                     </Grid.RowDefinitions>
-                    <Path x:Name="UpperLowerLeftCorner"
+                    <Path x:Name="UpperLowerLeftCorner"-->
 
                           
-              scc:VisibilityGroupScopeBehavior.VisibilityGroup="DiplomacyScreenVisibilityScopes.Default"
+              <!--scc:VisibilityGroupScopeBehavior.VisibilityGroup="DiplomacyScreenVisibilityScopes.Default"
               Width="168"
               Height="40"
                           Grid.RowSpan="2"
@@ -404,9 +404,9 @@
               Fill="{StaticResource LCARS_Card_ObsidianGradient_TopLeft_BottomRight}"
               Margin="0,2,0,0"
               Data="F1 M 0,40L 0,24C 0,17.6348 2.52857,11.5303 7.02944,7.02944C 11.5303,2.52857 17.6348,0 24,0L 168,0L 168,12.9737L 
-                          148,12.9737C 143.582,12.9737 140,16.5554 140,20.9737L 140,40L 0,40 Z" />
+                          148,12.9737C 143.582,12.9737 140,16.5554 140,20.9737L 140,40L 0,40 Z" />-->
 
-                    <TextBlock
+                    <!--<TextBlock
                         Grid.Row="0"
                         Grid.Column="0"
                         HorizontalAlignment="Center"
@@ -423,11 +423,11 @@
                         FontSize="16"
                         Foreground="{StaticResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"           
                         >
-                    </TextBlock>
+                    </TextBlock>-->
                 </Grid>
 
                 <!-- Lower Left Buttons -->
-                <StackPanel x:Name="InboxButtons"
+                <!--<StackPanel x:Name="InboxButtons"
                             Grid.Column="0"
                             Grid.Row="5"
                             Orientation="Vertical"
@@ -446,8 +446,8 @@
                           Context="VerticalGroupItem"
                           DisplayMode="GroupedVertically"
                           Margin="0,2,0,0" />
-                </StackPanel>
-                <scc:GameItemsControl x:Name="OutboxButtons"
+                </StackPanel>-->
+                <!--<scc:GameItemsControl x:Name="OutboxButtons"
                               Grid.Column="0"
                               Grid.Row="5"
                               Margin="0,2,0,0"
@@ -531,10 +531,10 @@
                           Margin="0,2,0,0"
                           Command="{Binding Path=CancelMessageCommand}"
                           IsEnabled="{Binding Path=CancelMessageCommand}"/>
-                </scc:GameItemsControl>
+                </scc:GameItemsControl>-->
 
                 <!-- Lower Left Side -->
-                <DockPanel x:Name="LowerLeftSide"
+                <!--<DockPanel x:Name="LowerLeftSide"
                    Grid.Column="0"
                    Grid.Row="6"
                    scc:VisibilityGroupScopeBehavior.VisibilityGroup="DiplomacyScreenVisibilityScopes.Default"
@@ -544,10 +544,10 @@
                     <Border Background="{StaticResource LCARS_AzureGradient_TopLeft_BottomRight}"
                   Width="69"
                   Margin="2,0,0,0" />
-                </DockPanel>
+                </DockPanel>-->
 
                 <!-- Lower Left Corner -->
-                <Path x:Name="LowerLeftCorner"
+                <!--<Path x:Name="LowerLeftCorner"
               Grid.Column="0"
               Grid.ColumnSpan="2"
               Grid.Row="7"
@@ -557,7 +557,7 @@
               Margin="0,2,0,0"
               Data="F1 M 0,0L 0,32C 0,38.3652 2.52857,44.4697 7.02944,48.9706C 11.5303,53.4714 17.6348,56 24,56L 168,56L 168,28L 148,28C 143.582,28 140,24.4183 140,20L 140,0L 0,0 Z" />
 
-                <!-- Upper Horizontal Divider -->
+                 --><!--Upper Horizontal Divider 
                 <Border x:Name="UpperHorizontalDivider"
                 Grid.Column="2"
                 Grid.Row="0"
@@ -566,7 +566,7 @@
                 Height="28"
                 Margin="2,0,2,0"
                 VerticalAlignment="Top"
-                Grid.ColumnSpan="3" />
+                Grid.ColumnSpan="3" />-->
 
                 <!-- Upper-Middle Left Horizontal Divider -->
                 <Border x:Name="UpperMiddleLeftHorizontalDivider"
@@ -579,14 +579,14 @@
                 VerticalAlignment="Bottom" />
 
                 <!-- Lower-Middle Left Horizontal Divider -->
-                <Border x:Name="LowerMiddleLeftHorizontalDivider"
+                <!--<Border x:Name="LowerMiddleLeftHorizontalDivider"
                 Grid.Column="2"
                 Grid.Row="4"
                 scc:VisibilityGroupScopeBehavior.VisibilityGroup="DiplomacyScreenVisibilityScopes.Default"
                 Background="{StaticResource LCARS_Card_ObsidianGradient_Top_Bottom}"
                 Height="13"
                 Margin="2,2,2,0"
-                VerticalAlignment="Top" />
+                VerticalAlignment="Top" />-->
 
                 <!-- Upper-Middle Right Horizontal Divider -->
                 <Border x:Name="UpperMiddleRightHorizontalDivider"
@@ -639,14 +639,14 @@
               VerticalAlignment="Bottom"
               Data="F1M0,41.9932L0,13.9977C1.85621,13.9977 3.6364,13.2603 4.94894,11.9478 6.26148,10.6353 6.99886,8.85507 6.99886,6.99886L6.99886,0 20.9966,0 20.9966,6.99886C20.9966,8.85508 21.734,10.6353 23.0465,11.9478 24.359,13.2603 26.1392,13.9977 27.9954,13.9977L27.9954,41.9932 0,41.9932z" />
 
-                <!-- Lower-Left Horizontal Divider -->
+                <!-- Lower-Left Horizontal Divider --><!--
                 <Border x:Name="LowerLeftHorizontalDivider"
                 Grid.Column="2"
                 Grid.Row="7"
                 Background="{StaticResource LCARS_AzureGradient_Top_Bottom}"
                 Height="28"
                 Margin="2,0,2,0"
-                VerticalAlignment="Bottom" />
+                VerticalAlignment="Bottom" />-->
 
                 <!-- Lower-Right Horizontal Divider -->
                 <Border x:Name="LowerRightHorizontalDivider"
@@ -843,12 +843,13 @@
           Main Content Area
         ================================================================================ 
         -->
-                <DockPanel Grid.Column="2"
-                           Grid.Row="5"
-                           Grid.RowSpan="2"
+                <DockPanel Grid.Column="0"
+                           Grid.ColumnSpan="3"                          
+                           Grid.Row="4"
+                           Grid.RowSpan="3"
                            scc:VisibilityGroupScopeBehavior.VisibilityGroup="DiplomacyScreenVisibilityScopes.Default"
                            LastChildFill="True"
-                           Margin="-14,-14,0,-14">
+                           Margin="0,5,0,-14">
 
                     <!--
           ================================================================================
@@ -869,22 +870,22 @@
                 Header
               ================================================================================
               -->
-                            <TextBlock TextAlignment="Center"
+                            <TextBlock TextAlignment="Left"
                                        VerticalAlignment="Center"
                                        TextWrapping="Wrap"
                                        TextTrimming="CharacterEllipsis"
-                                       FontSize="28pt"
+                                       FontSize="18pt"
                                        FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
                                        Foreground="{StaticResource HeaderTextBrush}"
                                        Margin="7,0,7,0">
 
                                 <TextBlock.Text>
-                                    <MultiBinding StringFormat="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry=EmbassyOfText, CharacterCasing=Upper}">
-                                        <Binding Path="SelectedForeignPower.Counterparty.ShortNameToThe"
+                                    <!--<MultiBinding StringFormat="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry=EmbassyOfText, CharacterCasing=Upper}">-->
+                                        <Binding Path="SelectedForeignPower.Counterparty.ShortName"
                                                  Converter="{StaticResource UpperCaseConverter}" />
-                                        <Binding Path="PlayerCivilization.ShortNameFromThe"
-                                                 Converter="{StaticResource UpperCaseConverter}" />
-                                    </MultiBinding>
+                                        <!--<Binding Path="PlayerCivilization.ShortNameFromThe"
+                                                 Converter="{StaticResource UpperCaseConverter}" />-->
+                                    <!--</MultiBinding>-->
                                 </TextBlock.Text>
                             </TextBlock>
                         </DockPanel>
