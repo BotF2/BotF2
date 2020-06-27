@@ -428,7 +428,7 @@ namespace Supremacy.Game
             ParallelForEach(civManagers, civManager =>
             {
                 GameContext.PushThreadContext(game);
-                civManager.SitRepEntries.Clear();
+                //civManager.SitRepEntries.Clear();
                 try
                 {
                     civManager.SitRepEntries.Clear();
@@ -441,11 +441,12 @@ namespace Supremacy.Game
                             civManager.SitRepEntries.Add(entry);
                         }
                     }
-                    catch { }
+                    catch (Exception e) { GameLog.Client.General.ErrorFormat("SitRep civManager error ={0}", e); }
                 }
                 catch (Exception e)
                 {
                     errors.Push(e);
+                    GameLog.Client.General.ErrorFormat("SitRepEntries clear error ={0}", e);
                 }
                 finally
                 {

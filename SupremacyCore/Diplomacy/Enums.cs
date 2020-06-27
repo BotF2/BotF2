@@ -95,7 +95,7 @@ namespace Supremacy.Diplomacy
 
         OfferBreakAgreement,
         RequestBreakAgreement,
-
+        // proposal
         OfferGiveCredits,
         RequestGiveCredits,
 
@@ -110,7 +110,7 @@ namespace Supremacy.Diplomacy
 
         OfferEndEmbargo,
         RequestEndEmbargo,
-
+        // proposals
         TreatyWarPact,
         TreatyCeaseFire,
         TreatyNonAggression,
