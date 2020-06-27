@@ -736,14 +736,14 @@ namespace Supremacy.Game
                     if (diplomat1.GetForeignPower(civ2).DiplomacyData.Status == Diplomacy.ForeignPowerStatus.NoContact ||
                         diplomat2.GetForeignPower(civ1).DiplomacyData.Status == Diplomacy.ForeignPowerStatus.NoContact)
                         {
-                        GameLog.Core.Diplomacy.DebugFormat("DiplomacyData.Status = NoContact for {0} vs {1}", civ1, civ2);
+                        //GameLog.Core.Diplomacy.DebugFormat("DiplomacyData.Status = NoContact for {0} vs {1}", civ1, civ2);
                         continue;
                         }
 
                     var ForeignPower = diplomat1.GetForeignPower(civ2);
                     var ForeignPowerStatus = diplomat1.GetForeignPower(civ2).DiplomacyData.Status;
-                    GameLog.Core.Diplomacy.DebugFormat("---------------------------------------");
-                    GameLog.Core.Diplomacy.DebugFormat("foreignPowerStatus = {2} for {0} vs {1}", civ1, civ2, ForeignPowerStatus);
+                   // GameLog.Core.Diplomacy.DebugFormat("---------------------------------------");
+                   // GameLog.Core.Diplomacy.DebugFormat("foreignPowerStatus = {2} for {0} vs {1}", civ1, civ2, ForeignPowerStatus);
 
 
                     //if (civ1.CivID == 1 && civ2.CivID == 4)  // Terrans, incoming from Cardassians
@@ -791,8 +791,8 @@ namespace Supremacy.Game
                                     ship.Scrap = false;
                                     GameContext.Current.CivilizationManagers[civ1].Research.UpdateResearch(gainedResearchPoints);
 
-                                    GameLog.Core.Ships.DebugFormat("Ship Joined:{0} {1}, Owner {2}, OwnerID {3}, Fleet.OwnerID {4}, Order {5} fleet name {6} gainedResearchPoints {7}",
-                                            ship.ObjectID, ship.Name, ship.Owner, ship.OwnerID, newfleet.OwnerID, newfleet.Order, newfleet.Name, gainedResearchPoints);
+                                    //GameLog.Core.Ships.DebugFormat("Ship Joined:{0} {1}, Owner {2}, OwnerID {3}, Fleet.OwnerID {4}, Order {5} fleet name {6} gainedResearchPoints {7}",
+                                    //        ship.ObjectID, ship.Name, ship.Owner, ship.OwnerID, newfleet.OwnerID, newfleet.Order, newfleet.Name, gainedResearchPoints);
                                 }
                             }
                         }
