@@ -1116,7 +1116,12 @@ namespace Supremacy.Client.Views
 
         public DiplomacyScreenDisplayMode DisplayMode
         {
-            get { return _displayMode; }
+            get
+            {
+                Sele
+                //ForeignPowerShortName.
+                return _displayMode;
+            }
             set
             {
                 if (Equals(value, _displayMode))
