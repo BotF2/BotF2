@@ -90,6 +90,17 @@
             </Setter>
         </Style>
 
+        <Style x:Key="SummaryButtonStyle"
+             TargetType="{x:Type Button}">
+            <Setter Property="Width"
+                Value="160" />
+            <Setter Property="Height"
+                Value="35" />
+            <Setter Property="Focusable"
+                Value="False" />
+            <Setter Property="Margin" Value="2,2,2,2">
+            </Setter>
+        </Style>
         <DataTemplate DataType="{x:Type scc:DiplomacyMessageElement}">
             <DockPanel LastChildFill="True"
                    HorizontalAlignment="Left">
@@ -313,7 +324,7 @@
                             <scc:CheckableCommandParameter InnerParameter="{x:Static scc:DiplomacyScreenDisplayMode.Overview}" />
                         </scc:GameButton.CommandParameter>
                     </scc:GameButton>
-                    <scc:GameButton x:Name="PART_ViewButton_Agreements"
+                    <!--<scc:GameButton x:Name="PART_ViewButton_Agreements"
                           Label="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry='AgreementsButtonText', CharacterCasing=Upper}"
                           DisplayMode="GroupedVertically"
                           ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry='AgreementsButtonTooltipText'}"
@@ -321,7 +332,7 @@
                           IsChecked="{Binding RelativeSource={RelativeSource Self}, Path=CommandParameter.(scc:CheckableCommandParameter.IsChecked), Mode=TwoWay}"
                           Margin="0,2,0,0">
                         <scc:GameButton.CommandParameter>
-                            <scc:CheckableCommandParameter InnerParameter="{x:Static scc:DiplomacyScreenDisplayMode.Agreements}" />
+                            <scc:CheckableCommandParameter InnerParameter="{x:Static scc:DiplomacyScreenDisplayMode.Outbox}" />
                         </scc:GameButton.CommandParameter>
                     </scc:GameButton>
                     <scc:GameButton x:Name="PART_ViewButton_Inbox"
@@ -332,59 +343,68 @@
                           IsChecked="{Binding RelativeSource={RelativeSource Self}, Path=CommandParameter.(scc:CheckableCommandParameter.IsChecked), Mode=TwoWay}"
                           Margin="0,2,0,0">
                         <scc:GameButton.CommandParameter>
-                            <scc:CheckableCommandParameter InnerParameter="{x:Static scc:DiplomacyScreenDisplayMode.Inbox}" />
+                            <scc:CheckableCommandParameter InnerParameter="{x:Static scc:DiplomacyScreenDisplayMode.Outbox}" />
                         </scc:GameButton.CommandParameter>
-                    </scc:GameButton>
+                    </scc:GameButton>-->
                     <scc:GameButton x:Name="PART_ViewButton_Outbox"
                           Label="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry='OutboxButtonText', CharacterCasing=Upper}"
                           DisplayMode="GroupedVertically"
                           ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry='OutboxButtonTooltipText'}"
                           Command="{Binding Path=SetDisplayModeCommand}"
                           IsChecked="{Binding RelativeSource={RelativeSource Self}, Path=CommandParameter.(scc:CheckableCommandParameter.IsChecked), Mode=TwoWay}"
-                          Margin="0,2,0,0">
+                          Margin="0,2,0,2">
                         <scc:GameButton.CommandParameter>
                             <scc:CheckableCommandParameter InnerParameter="{x:Static scc:DiplomacyScreenDisplayMode.Outbox}" />
                         </scc:GameButton.CommandParameter>
                     </scc:GameButton>
+                    <Button x:Name="SummaryButton"                             
+                            Style="{StaticResource SummaryButtonStyle}"
+                            Content="Turn Summary   "
+                            FontSize="14pt"
+                            FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
+                            Foreground="Black"
+                            Background="LightSteelBlue"
+                            Margin="0,0,0,0"
+                            Command="{x:Static scc:ClientCommands.ShowEndOfTurnSummary}"></Button>
+
                 </StackPanel>
 
                 <!-- Upper Left Side -->
                 <Grid x:Name="UpperLeftSide"
-              Grid.Column="0"
-              Grid.Row="2"
-              Grid.RowSpan="{Binding Path=DisplayMode, Converter={scc:SimpleCase Case=Overview, IfMatch=5, Else=1}}"
-              Margin="0,2,0,0">
+                      Grid.Column="0"
+                      Grid.Row="2"
+                      Grid.RowSpan="{Binding Path=DisplayMode, Converter={scc:SimpleCase Case=Overview, IfMatch=5, Else=1}}"
+                      Margin="0,2,0,0">
                     <Border Background="{StaticResource LCARS_AzureGradient_TopLeft_BottomRight}"
-                  BorderThickness="0"
-                  Width="69"
-                  Height="Auto"
-                  HorizontalAlignment="Left" />
+                          BorderThickness="0"
+                          Width="69"
+                          Height="Auto"
+                          HorizontalAlignment="Left" />
                     <Border Background="{StaticResource LCARS_AzureGradient_TopLeft_BottomRight}"
-                  BorderThickness="0"
-                  Width="69"
-                  Height="Auto"
-                  HorizontalAlignment="Right" />
+                          BorderThickness="0"
+                          Width="69"
+                          Height="Auto"
+                          HorizontalAlignment="Right" />
                 </Grid>
 
                 <!-- Lower-Upper Left Corner -->
                 <Path x:Name="LowerUpperLeftCorner"
-              Grid.Column="0"
-              Grid.ColumnSpan="2"
-              Grid.Row="3"
-                      
-              scc:VisibilityGroupScopeBehavior.VisibilityGroup="DiplomacyScreenVisibilityScopes.Default"
-              Width="168"
-              Height="40"
-              Fill="{StaticResource LCARS_Card_ObsidianGradient_TopLeft_BottomRight}"
-              Margin="0,2,0,0"
-              Data="F1 M 0,0L 0,16C 0,22.3652 2.52857,28.4697 7.02944,32.9706C 11.5303,37.4714 17.6348,40 24,40L 168,40L 168,27.0263L 148,27.0263C 143.582,27.0263 140,23.4446 140,19.0263L 140,0L 0,0 Z" />
+                      Grid.Column="0"
+                      Grid.ColumnSpan="2"
+                      Grid.Row="3"                  
+                      scc:VisibilityGroupScopeBehavior.VisibilityGroup="DiplomacyScreenVisibilityScopes.Default"
+                      Width="168"
+                      Height="40"
+                      Fill="{StaticResource LCARS_Card_ObsidianGradient_TopLeft_BottomRight}"
+                      Margin="0,2,0,0"
+                      Data="F1 M 0,0L 0,16C 0,22.3652 2.52857,28.4697 7.02944,32.9706C 11.5303,37.4714 17.6348,40 24,40L 168,40L 168,27.0263L 148,27.0263C 143.582,27.0263 140,23.4446 140,19.0263L 140,0L 0,0 Z" />
 
                 <!-- Upper-Lower Left Corner -->
 
                 <Grid
-              Grid.Column="0"
-              Grid.ColumnSpan="2"
-              Grid.Row="4"
+                      Grid.Column="0"
+                      Grid.ColumnSpan="2"
+                      Grid.Row="4"
                     >
               <!--Grid.Column="0"
               Grid.ColumnSpan="2"
@@ -427,7 +447,7 @@
                 </Grid>
 
                 <!-- Lower Left Buttons -->
-                <!--<StackPanel x:Name="InboxButtons"
+                <StackPanel x:Name="InboxButtons"
                             Grid.Column="0"
                             Grid.Row="5"
                             Orientation="Vertical"
@@ -446,7 +466,7 @@
                           Context="VerticalGroupItem"
                           DisplayMode="GroupedVertically"
                           Margin="0,2,0,0" />
-                </StackPanel>-->
+                </StackPanel>
                 <!--<scc:GameItemsControl x:Name="OutboxButtons"
                               Grid.Column="0"
                               Grid.Row="5"
@@ -459,7 +479,7 @@
                           Margin="0,0,0,0"
                           ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry='NewMessageButtonTooltipText', CharacterCasing=Upper}"
                           Command="{Binding Path=MakeProposalCommand}"
-                          IsEnabled="{Binding Path=MakeProposalCommand}"/>
+                          IsEnabled="True"/>
                     <scc:GameButton x:Name="DeclareWarButton"
                           Label="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry='DeclareWarButtonText', CharacterCasing=Upper}"
                           Margin="0,2,0,0"
@@ -518,8 +538,8 @@
                               Grid.Row="5"
                               Context="VerticalGroupItem"
                               Margin="0,2,0,0"
-                              Visibility="{Binding Path=AreOutgoingMessageCommandsVisible, Converter={StaticResource BooleanToVisibilityConverter}}"
-                              IsEnabled="{Binding Path=AreOutgoingMessageCommandsVisible, Converter={StaticResource BooleanToVisibilityConverter}}">
+                              Visibility="Visible"
+                              IsEnabled="True">
                     <scc:GameButton Label="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry='SendMessageButtonText', CharacterCasing=Upper}"
                           Command="{Binding Path=SendMessageCommand}"
                           IsEnabled="{Binding Path=SendMessageCommand}"/>
@@ -570,13 +590,13 @@
 
                 <!-- Upper-Middle Left Horizontal Divider -->
                 <Border x:Name="UpperMiddleLeftHorizontalDivider"
-                Grid.Column="2"
-                Grid.Row="3"
-                scc:VisibilityGroupScopeBehavior.VisibilityGroup="DiplomacyScreenVisibilityScopes.Default"
-                Background="{StaticResource LCARS_AzureGradient_Top_Bottom}"
-                Height="13"
-                Margin="2,0,2,0"
-                VerticalAlignment="Bottom" />
+                    Grid.Column="2"
+                    Grid.Row="3"
+                    scc:VisibilityGroupScopeBehavior.VisibilityGroup="DiplomacyScreenVisibilityScopes.Default"
+                    Background="{StaticResource LCARS_AzureGradient_Top_Bottom}"
+                    Height="13"
+                    Margin="2,0,2,0"
+                    VerticalAlignment="Bottom" />
 
                 <!-- Lower-Middle Left Horizontal Divider -->
                 <!--<Border x:Name="LowerMiddleLeftHorizontalDivider"
@@ -590,54 +610,54 @@
 
                 <!-- Upper-Middle Right Horizontal Divider -->
                 <Border x:Name="UpperMiddleRightHorizontalDivider"
-                Grid.Column="4"
-                Grid.Row="3"
-                scc:VisibilityGroupScopeBehavior.VisibilityGroup="DiplomacyScreenVisibilityScopes.Default"
-                Background="{StaticResource LCARS_AzureGradient_Top_Bottom}"
-                Height="13"
-                Margin="2,0,2,0"
-                VerticalAlignment="Bottom" />
+                    Grid.Column="4"
+                    Grid.Row="3"
+                    scc:VisibilityGroupScopeBehavior.VisibilityGroup="DiplomacyScreenVisibilityScopes.Default"
+                    Background="{StaticResource LCARS_AzureGradient_Top_Bottom}"
+                    Height="13"
+                    Margin="2,0,2,0"
+                    VerticalAlignment="Bottom" />
 
                 <!-- Lower-Middle Right Horizontal Divider -->
                 <Border x:Name="LowerMiddleRightHorizontalDivider"
-                Grid.Column="4"
-                Grid.Row="4"
-                scc:VisibilityGroupScopeBehavior.VisibilityGroup="DiplomacyScreenVisibilityScopes.Default"
-                Background="{StaticResource LCARS_Card_ObsidianGradient_Top_Bottom}"
-                Height="13"
-                Margin="2,2,2,0"
-                VerticalAlignment="Top" />
+                    Grid.Column="4"
+                    Grid.Row="4"
+                    scc:VisibilityGroupScopeBehavior.VisibilityGroup="DiplomacyScreenVisibilityScopes.Default"
+                    Background="{StaticResource LCARS_Card_ObsidianGradient_Top_Bottom}"
+                    Height="13"
+                    Margin="2,2,2,0"
+                    VerticalAlignment="Top" />
 
                 <!-- Lower-Middle Splitter Column -->
                 <Path x:Name="UpperCenterDivider"
-              Grid.Column="3"
-              Grid.Row="3"
-              Grid.RowSpan="2"
-              scc:VisibilityGroupScopeBehavior.VisibilityGroup="DiplomacyScreenVisibilityScopes.Default"
-              Width="28"
-              Height="42"
-              Fill="{StaticResource LCARS_Card_ObsidianGradient_TopLeft_BottomRight}"
-              Margin="0,0,0,13"
-              VerticalAlignment="Bottom"
-              Data="F1 M 0,0L 0,27.9954C 1.85621,27.9954 3.6364,28.7328 4.94894,30.0454C 6.26148,31.3579 6.99886,33.1381 6.99886,34.9943L 6.99886,41.9932L 20.9966,41.9932L 20.9966,34.9943C 20.9966,33.1381 21.734,31.3579 23.0465,30.0454C 24.359,28.7328 26.1392,27.9954 27.9954,27.9954L 27.9954,0L 0,0 Z" />
+                      Grid.Column="3"
+                      Grid.Row="3"
+                      Grid.RowSpan="2"
+                      scc:VisibilityGroupScopeBehavior.VisibilityGroup="DiplomacyScreenVisibilityScopes.Default"
+                      Width="28"
+                      Height="42"
+                      Fill="{StaticResource LCARS_Card_ObsidianGradient_TopLeft_BottomRight}"
+                      Margin="0,0,0,13"
+                      VerticalAlignment="Bottom"
+                      Data="F1 M 0,0L 0,27.9954C 1.85621,27.9954 3.6364,28.7328 4.94894,30.0454C 6.26148,31.3579 6.99886,33.1381 6.99886,34.9943L 6.99886,41.9932L 20.9966,41.9932L 20.9966,34.9943C 20.9966,33.1381 21.734,31.3579 23.0465,30.0454C 24.359,28.7328 26.1392,27.9954 27.9954,27.9954L 27.9954,0L 0,0 Z" />
                 <Border x:Name="MiddleCenterDivider"
-                Grid.Column="3"
-                Grid.Row="4"
-                Grid.RowSpan="4"
-                scc:VisibilityGroupScopeBehavior.VisibilityGroup="DiplomacyScreenVisibilityScopes.Default"
-                Background="{StaticResource LCARS_Card_ObsidianGradient_Left_Right}"
-                Width="14"
-                Margin="0,31,0,44" />
+                    Grid.Column="3"
+                    Grid.Row="4"
+                    Grid.RowSpan="4"
+                    scc:VisibilityGroupScopeBehavior.VisibilityGroup="DiplomacyScreenVisibilityScopes.Default"
+                    Background="{StaticResource LCARS_Card_ObsidianGradient_Left_Right}"
+                    Width="14"
+                    Margin="0,31,0,44" />
                 <Path x:Name="LowerCenterDivider"
-              Grid.Column="3"
-              Grid.Row="7"
-              scc:VisibilityGroupScopeBehavior.VisibilityGroup="DiplomacyScreenVisibilityScopes.Default"
-              Width="28"
-              Height="42"
-              Fill="{StaticResource LCARS_Card_ObsidianGradient_TopLeft_BottomRight}"
-              Margin="0,0,0,0"
-              VerticalAlignment="Bottom"
-              Data="F1M0,41.9932L0,13.9977C1.85621,13.9977 3.6364,13.2603 4.94894,11.9478 6.26148,10.6353 6.99886,8.85507 6.99886,6.99886L6.99886,0 20.9966,0 20.9966,6.99886C20.9966,8.85508 21.734,10.6353 23.0465,11.9478 24.359,13.2603 26.1392,13.9977 27.9954,13.9977L27.9954,41.9932 0,41.9932z" />
+                      Grid.Column="3"
+                      Grid.Row="7"
+                      scc:VisibilityGroupScopeBehavior.VisibilityGroup="DiplomacyScreenVisibilityScopes.Default"
+                      Width="28"
+                      Height="42"
+                      Fill="{StaticResource LCARS_Card_ObsidianGradient_TopLeft_BottomRight}"
+                      Margin="0,0,0,0"
+                      VerticalAlignment="Bottom"
+                      Data="F1M0,41.9932L0,13.9977C1.85621,13.9977 3.6364,13.2603 4.94894,11.9478 6.26148,10.6353 6.99886,8.85507 6.99886,6.99886L6.99886,0 20.9966,0 20.9966,6.99886C20.9966,8.85508 21.734,10.6353 23.0465,11.9478 24.359,13.2603 26.1392,13.9977 27.9954,13.9977L27.9954,41.9932 0,41.9932z" />
 
                 <!-- Lower-Left Horizontal Divider --><!--
                 <Border x:Name="LowerLeftHorizontalDivider"
@@ -650,13 +670,13 @@
 
                 <!-- Lower-Right Horizontal Divider -->
                 <Border x:Name="LowerRightHorizontalDivider"
-                Grid.Column="4"
-                Grid.Row="7"
-                scc:VisibilityGroupScopeBehavior.VisibilityGroup="DiplomacyScreenVisibilityScopes.Default"
-                Background="{StaticResource LCARS_AzureGradient_Top_Bottom}"
-                Height="28"
-                Margin="2,0,2,0"
-                VerticalAlignment="Bottom" />
+                    Grid.Column="4"
+                    Grid.Row="7"
+                    scc:VisibilityGroupScopeBehavior.VisibilityGroup="DiplomacyScreenVisibilityScopes.Default"
+                    Background="{StaticResource LCARS_AzureGradient_Top_Bottom}"
+                    Height="28"
+                    Margin="2,0,2,0"
+                    VerticalAlignment="Bottom" />
 
                 <!-- Upper Right Corner -->
                 <Path x:Name="UpperRightCorner"
@@ -670,46 +690,46 @@
 
                 <!-- Lower-Upper Right Corner -->
                 <Path x:Name="LowerUpperRightCorner"
-              Grid.Column="5"
-              Grid.ColumnSpan="2"
-              Grid.Row="3"
-              scc:VisibilityGroupScopeBehavior.VisibilityGroup="DiplomacyScreenVisibilityScopes.Default"
-              Width="56"
-              Height="40"
-              Fill="{StaticResource LCARS_Card_ObsidianGradient_TopLeft_BottomRight}"
-              Margin="0,2,0,0"
-              Data="F1 M 0,40L 40,40C 48.8366,40 56,32.8366 56,24L 56,0L 28,0L 28,19C 28,23.4183 24.4183,27 20,27L 0,27L 0,40 Z" />
+                      Grid.Column="5"
+                      Grid.ColumnSpan="2"
+                      Grid.Row="3"
+                      scc:VisibilityGroupScopeBehavior.VisibilityGroup="DiplomacyScreenVisibilityScopes.Default"
+                      Width="56"
+                      Height="40"
+                      Fill="{StaticResource LCARS_Card_ObsidianGradient_TopLeft_BottomRight}"
+                      Margin="0,2,0,0"
+                      Data="F1 M 0,40L 40,40C 48.8366,40 56,32.8366 56,24L 56,0L 28,0L 28,19C 28,23.4183 24.4183,27 20,27L 0,27L 0,40 Z" />
 
                 <!-- Upper-Lower Right Corner -->
                 <Path x:Name="UpperLowerRightCorner"
-              Grid.Column="5"
-              Grid.ColumnSpan="2"
-              Grid.Row="4"
-              scc:VisibilityGroupScopeBehavior.VisibilityGroup="DiplomacyScreenVisibilityScopes.Default"
-              Width="168"
-              Height="40"
-              Fill="{StaticResource LCARS_Card_ObsidianGradient_TopLeft_BottomRight}"
-              Margin="0,2,0,0"
-              Data="F1 M 0,0L 40,0C 48.8366,0 56,7.16344 56,16L 56,40L 28,40L 28,21C 28,16.5817 24.4183,13 20,13L 0,13L 0,0 Z" />
+                      Grid.Column="5"
+                      Grid.ColumnSpan="2"
+                      Grid.Row="4"
+                      scc:VisibilityGroupScopeBehavior.VisibilityGroup="DiplomacyScreenVisibilityScopes.Default"
+                      Width="168"
+                      Height="40"
+                      Fill="{StaticResource LCARS_Card_ObsidianGradient_TopLeft_BottomRight}"
+                      Margin="0,2,0,0"
+                      Data="F1 M 0,0L 40,0C 48.8366,0 56,7.16344 56,16L 56,40L 28,40L 28,21C 28,16.5817 24.4183,13 20,13L 0,13L 0,0 Z" />
 
                 <!-- Upper Right Side -->
                 <Border x:Name="UpperRightSide"
-                Grid.Column="6"
-                Grid.Row="1"
-                Grid.RowSpan="{Binding Path=DisplayMode, Converter={scc:SimpleCase Case=Overview, IfMatch=7, Else=2}}"
-                Margin="{Binding Path=DisplayMode, Converter={scc:SimpleCase Case=Overview, IfMatch='0,2,0,50', Else='0,2,0,0'}}"
-                Background="{StaticResource LCARS_AzureGradient_Left_Right}"
-                Height="Auto" />
+                        Grid.Column="6"
+                        Grid.Row="1"
+                        Grid.RowSpan="{Binding Path=DisplayMode, Converter={scc:SimpleCase Case=Overview, IfMatch=7, Else=2}}"
+                        Margin="{Binding Path=DisplayMode, Converter={scc:SimpleCase Case=Overview, IfMatch='0,2,0,50', Else='0,2,0,0'}}"
+                        Background="{StaticResource LCARS_AzureGradient_Left_Right}"
+                        Height="Auto" />
 
                 <!-- Lower Right Side -->
                 <Border x:Name="LowerRightSide"
-                Grid.Column="6"
-                Grid.Row="5"
-                Grid.RowSpan="3"
-                scc:VisibilityGroupScopeBehavior.VisibilityGroup="DiplomacyScreenVisibilityScopes.Default"
-                Background="{StaticResource LCARS_AzureGradient_Left_Right}"
-                Height="Auto"
-                Margin="0,2,0,50" />
+                        Grid.Column="6"
+                        Grid.Row="5"
+                        Grid.RowSpan="3"
+                        scc:VisibilityGroupScopeBehavior.VisibilityGroup="DiplomacyScreenVisibilityScopes.Default"
+                        Background="{StaticResource LCARS_AzureGradient_Left_Right}"
+                        Height="Auto"
+                        Margin="0,2,0,50" />
 
                 <!-- Lower Right Corner -->
                 <Path x:Name="LowerRightCorner"
@@ -837,19 +857,18 @@
                         </xcdg:DataGridControl.View>
                     </xcdg:DataGridControl>
                 </Grid>
-
+                
                 <!--
         ================================================================================
           Main Content Area
         ================================================================================ 
         -->
-                <DockPanel Grid.Column="0"
-                           Grid.ColumnSpan="3"                          
+                <DockPanel Grid.Column="0"                         
                            Grid.Row="4"
-                           Grid.RowSpan="3"
-                           scc:VisibilityGroupScopeBehavior.VisibilityGroup="DiplomacyScreenVisibilityScopes.Default"
+                           Grid.ColumnSpan="2"
+                           Visibility="Visible"
                            LastChildFill="True"
-                           Margin="0,5,0,-14">
+                           Margin="0,0,0,0">
 
                     <!--
           ================================================================================
@@ -857,13 +876,16 @@
           ================================================================================
           -->
                     <Border DockPanel.Dock="Top"
-                            Margin="0,0,8,7"
+                            Margin="0,0,0,0"
+                            HorizontalAlignment="Left"
                             Background="{StaticResource CommBackgroundBrush}"
                             BorderBrush="{StaticResource CommBorderBrush}"
                             BorderThickness="2"
                             CornerRadius="8"
-                            Padding="6">
-                        <DockPanel LastChildFill="True">
+                            Padding="2"
+                            Width="Auto"
+                            Height="30">
+                        
 
                             <!--
               ================================================================================
@@ -874,23 +896,110 @@
                                        VerticalAlignment="Center"
                                        TextWrapping="Wrap"
                                        TextTrimming="CharacterEllipsis"
-                                       FontSize="18pt"
+                                       FontSize="19pt"
                                        FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
-                                       Foreground="{StaticResource HeaderTextBrush}"
-                                       Margin="7,0,7,0">
+                                       Foreground="LightGoldenrodYellow"
+                                       FontWeight="Normal"
+                                       Margin="3,0,3,0">
 
                                 <TextBlock.Text>
-                                    <!--<MultiBinding StringFormat="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry=EmbassyOfText, CharacterCasing=Upper}">-->
-                                        <Binding Path="SelectedForeignPower.Counterparty.ShortName"
+
+                                    <Binding Path="SelectedForeignPower.Counterparty.ShortName"
                                                  Converter="{StaticResource UpperCaseConverter}" />
-                                        <!--<Binding Path="PlayerCivilization.ShortNameFromThe"
-                                                 Converter="{StaticResource UpperCaseConverter}" />-->
-                                    <!--</MultiBinding>-->
+
                                 </TextBlock.Text>
                             </TextBlock>
-                        </DockPanel>
-                    </Border>
+                            <!--<TextBlock VerticalAlignment="Center"
+                                        TextAlignment="Center"
+                                        TextWrapping="Wrap"
+                                        TextTrimming="CharacterEllipsis"
+                                        FontSize="16pt"
+                                        FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
+                                        Foreground="{StaticResource HeaderTextBrush}"
+                                        Background="Transparent"
+                                        Margin="0,0,0,0"
+                                        Text="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry=ActiveAgreementsHeader, CharacterCasing=Upper}" />
 
+                            <TabControl SelectedIndex="{Binding Path=DisplayMode, Converter={x:Static scc:EnumToInt32Converter.Instance}}">
+                                <TabControl.Template>
+                                    <ControlTemplate TargetType="TabControl">
+                                        <Border>
+                                            <ContentPresenter Content="{TemplateBinding SelectedContent}" />
+                                        </Border>
+                                    </ControlTemplate>
+                                </TabControl.Template>
+
+                                <ItemsControl ItemsSource="{Binding Path=ActiveAgreements}"
+                                                                  HorizontalContentAlignment="Center"
+                                                                  Foreground="{StaticResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}"
+                                                                  FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+                                                                  FontSize="16">
+                                    <ItemsControl.Resources>
+                                        <Style TargetType="{x:Type Hyperlink}"
+                                                                     BasedOn="{StaticResource {x:Type Hyperlink}}">
+                                            <Setter Property="TextElement.Foreground"
+                                                                        Value="{StaticResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}" />
+                                            <Setter Property="IsEnabled"
+                                                                        Value="False" />
+                                        </Style>
+                                        </ItemsControl.Resources>
+                                    </ItemsControl>
+                                </TabControl>-->
+
+                            <!--<Button x:Name="SummaryButton"
+                                                          VerticalAlignment="Top"
+                                                          HorizontalAlignment="Right"
+                                                          Width="145"
+                                                          Height="20"                               
+                                                          Style="{StaticResource LCARS_StandardButtonStyle}"
+                                                           Content="Summary"
+                                                           FontSize="14pt"
+                                                           FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
+                                                           Foreground="Black"
+                                                           Margin="0,0,0,0"
+                                                           Command="{x:Static scc:ClientCommands.ShowEndOfTurnSummary}"></Button>-->
+
+
+                        
+                    </Border>
+                </DockPanel>
+                <DockPanel Grid.Column="2"  
+                           Grid.ColumnSpan="2"
+                           Grid.Row="4"
+                           Visibility="Visible"
+                           LastChildFill="True"
+                           Margin="0,0,0,0">
+                    <StackPanel Orientation="Horizontal">
+                    <Button Content="SEND" 
+                            Command="{Binding Path=SendMessageCommand}"
+                            IsEnabled="{Binding Path=SendMessageCommand}"
+                            MinWidth="150"
+                            MaxWidth="151"
+                            MaxHeight="28"
+                            Margin="2,0,5,0"/>
+                    <Button Content="EDIT" 
+                            Command="{Binding Path=EditMessageCommand}"
+                            IsEnabled="{Binding Path=EditMessageCommand}"
+                            MinWidth="150"
+                            MaxWidth="151"
+                            MaxHeight="28"
+                            Margin="2,0,5,0"/>
+                    <Button Content="CANCEL" 
+                            Command="{Binding Path=CancelMessageCommand}"
+                            IsEnabled="{Binding Path=CancelMessageCommand}"
+                            MinWidth="150"
+                            MaxWidth="151"
+                            MaxHeight="28"
+                            Margin="2,0,2,0"/>
+                    </StackPanel>
+                </DockPanel>
+                <DockPanel Grid.Column="0"
+                           Grid.ColumnSpan="3"                          
+                           Grid.Row="5"
+                           Grid.RowSpan="4"
+                           Visibility="Visible"
+                           LastChildFill="True"
+                           Margin="0,5,0,0">
                     <!--
           ================================================================================
             Tabbed Content
@@ -911,62 +1020,512 @@
             ================================================================================ 
             -->
                         <TabItem>
-                            <Border>
+                            <Border Margin="0,0,0,0" VerticalAlignment="Top" >
                                 <ScrollViewer HorizontalScrollBarVisibility="Disabled"
                                               VerticalScrollBarVisibility="Auto">
+
                                     <DockPanel LastChildFill="True"
-                                                Margin="0,0,7,0">
-                                        <Border Padding="7"
+                                                Margin="0,0,7,0"
+                                               >
+                                        <StackPanel Orientation="Vertical">
+                                            <Border Padding="7"
                                                 Background="{StaticResource CommBackgroundBrush}"
                                                 BorderBrush="{StaticResource CommBorderBrush}"
                                                 BorderThickness="2"
                                                 CornerRadius="8"
                                                 DataContext="{Binding Path=SelectedForeignPower}">
-                                            <DockPanel LastChildFill="True">
-                                                <TextBlock DockPanel.Dock="Top"
+                                                <StackPanel Orientation="Horizontal">
+                                                    <!--<TextBlock TextAlignment="Left"
+                                                           VerticalAlignment="Center"
+                                                           TextWrapping="Wrap"
+                                                           TextTrimming="CharacterEllipsis"
+                                                           FontSize="16pt"
+                                                           FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
+                                                           Foreground="{StaticResource HeaderTextBrush}"
+                                                           Margin="7,0,7,0">
+                                                    <TextBlock.Text>
+                                                        <Binding Path="SelectedForeignPower.Counterparty.ShortName"
+                                                                Converter="{StaticResource UpperCaseConverter}" />
+                                                    </TextBlock.Text>
+                                                </TextBlock>-->
+
+                                                    <TextBlock DockPanel.Dock="Top"
                                                          TextAlignment="Left"
                                                          TextWrapping="Wrap"
                                                          TextTrimming="CharacterEllipsis"
-                                                         FontSize="28pt"
+                                                         FontSize="16pt"
                                                          FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
                                                          Foreground="{StaticResource HeaderTextBrush}"
-                                                         Margin="0,0,0,0"
+                                                         Background="Transparent"
+                                                         Margin="5,0,10,0"
                                                          Text="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry=ActiveAgreementsHeader, CharacterCasing=Upper}" />
 
-                                                <ItemsControl ItemsSource="{Binding Path=ActiveAgreements}"
+                                                    <ItemsControl ItemsSource="{Binding Path=ActiveAgreements}"
                                                               HorizontalContentAlignment="Center"
                                                               Foreground="{StaticResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}"
                                                               FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                                                               FontSize="16">
-                                                    <ItemsControl.Resources>
-                                                        <Style TargetType="{x:Type Hyperlink}"
+                                                        <ItemsControl.Resources>
+                                                            <Style TargetType="{x:Type Hyperlink}"
                                                                  BasedOn="{StaticResource {x:Type Hyperlink}}">
-                                                            <Setter Property="TextElement.Foreground"
+                                                                <Setter Property="TextElement.Foreground"
                                                                     Value="{StaticResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}" />
-                                                            <Setter Property="IsEnabled"
+                                                                <Setter Property="IsEnabled"
                                                                     Value="False" />
-                                                        </Style>
-                                                    </ItemsControl.Resources>
-                                                </ItemsControl>
+                                                            </Style>
+                                                        </ItemsControl.Resources>
+                                                    </ItemsControl>
 
-                                                <Button x:Name="SummaryButton"
+                                                    <!--<Button x:Name="SummaryButton"
                                                           VerticalAlignment="Top"
                                                           HorizontalAlignment="Right"
-                                                          Width="250"
+                                                          Width="170"
                                                           Height="30"                               
                                                           Style="{StaticResource LCARS_StandardButtonStyle}"
-                                                           Content="Click for Summary"
+                                                           Content="Summary"
                                                            FontSize="14pt"
                                                            FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
                                                            Foreground="Black"
                                                            Margin="0,0,0,0"
-                                                           Command="{x:Static scc:ClientCommands.ShowEndOfTurnSummary}"></Button>
+                                                           Command="{x:Static scc:ClientCommands.ShowEndOfTurnSummary}"></Button>-->
+                                                </StackPanel>
 
-                                            </DockPanel>
-                                        </Border>
+                                            </Border>
+                                            <Border Padding="7"
+                                                                Background="{StaticResource CommBackgroundBrush}"
+                                                                BorderBrush="{StaticResource CommBorderBrush}"
+                                                                BorderThickness="2"
+                                                                CornerRadius="8"
+                                                                DataContext="{Binding Path=SelectedForeignPower.IncomingMessage}">
+                                                <StackPanel Orientation="Vertical">
+                                                    <TextBlock TextAlignment="Center"
+                                                           TextWrapping="Wrap"
+                                                           TextTrimming="CharacterEllipsis"
+                                                           FontSize="28pt"
+                                                           FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
+                                                           Foreground="{StaticResource HeaderTextBrush}"
+                                                           Margin="0,0,0,0"
+                                                           Text="{Binding Converter={scc:SimpleCase Case={x:Null}, IfMatch='', Else={sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry=InboxHeader, CharacterCasing=Upper}}}" />
+                                                    <ContentPresenter TextBlock.Foreground="{StaticResource DefaultTextBrush}"
+                                                                  TextBlock.FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+                                                                  TextBlock.FontSize="16"
+                                                                  Margin="0,0,0,0" />
+                                                    <StackPanel Orientation="Vertical">
+                                                        <TextBlock Text="{Binding Path=TreatyLeadInText}"
+                                                                 Visibility="{Binding Path=HasTreatyLeadInText, Converter={StaticResource BooleanToVisibilityConverter}}"
+                                                                 TextWrapping="Wrap"
+                                                                 TextBlock.Foreground="{StaticResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"
+                                                                 TextBlock.FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+                                                                 TextBlock.FontSize="12pt"
+                                                                 Margin="0,12,0,0" />
+                                                        <ItemsControl Margin="24,12,0,0"
+                                        ItemsSource="{Binding Path=TreatyElements}"
+                                        HorizontalContentAlignment="Center"
+                                        Foreground="DodgerBlue"
+                                        FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+                                        FontSize="16"
+                                        Visibility="{Binding Path=TreatyElements.Count, Converter={scc:SimpleCase Case=0, IfMatch=Collapsed, Else=Visible}}">
+                                                            <ItemsControl.Resources>
+                                                                <Style TargetType="{x:Type Hyperlink}"
+                                     BasedOn="{StaticResource {x:Type Hyperlink}}">
+                                                                    <Setter Property="TextElement.Foreground">
+                                                                        <Setter.Value>
+                                                                            <SolidColorBrush Color="{Binding Source={x:Static Colors.DodgerBlue}, BindsDirectlyToSource=True, Converter={StaticResource LightColorConverter}}" />
+                                                                        </Setter.Value>
+                                                                    </Setter>
+                                                                </Style>
+                                                            </ItemsControl.Resources>
+                                                        </ItemsControl>
+                                                        <TextBlock Text="{Binding Path=OfferLeadInText}"
+                                     Visibility="{Binding Path=HasOfferLeadInText, Converter={StaticResource BooleanToVisibilityConverter}}"
+                                     TextWrapping="Wrap"
+                                     TextBlock.Foreground="{StaticResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"
+                                     TextBlock.FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+                                     TextBlock.FontSize="12pt"
+                                     Margin="0,12,0,0" />
+                                                        <ItemsControl Margin="24,12,0,0"
+                                        ItemsSource="{Binding Path=OfferElements}"
+                                        HorizontalContentAlignment="Center"
+                                        Foreground="LimeGreen"
+                                        FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+                                        FontSize="16"
+                                        Visibility="{Binding Path=OfferElements.Count, Converter={scc:SimpleCase Case=0, IfMatch=Collapsed, Else=Visible}}">
+                                                            <ItemsControl.Resources>
+                                                                <Style TargetType="{x:Type Hyperlink}"
+                                     BasedOn="{StaticResource {x:Type Hyperlink}}">
+                                                                    <Setter Property="TextElement.Foreground">
+                                                                        <Setter.Value>
+                                                                            <SolidColorBrush Color="{Binding Source={x:Static Colors.LimeGreen}, BindsDirectlyToSource=True, Converter={StaticResource LightColorConverter}}" />
+                                                                        </Setter.Value>
+                                                                    </Setter>
+                                                                </Style>
+                                                            </ItemsControl.Resources>
+                                                        </ItemsControl>
+                                                        <TextBlock Text="{Binding Path=RequestLeadInText}"
+                                                                     Visibility="{Binding Path=HasRequestLeadInText, Converter={StaticResource BooleanToVisibilityConverter}}"
+                                                                     TextWrapping="Wrap"
+                                                                     TextBlock.Foreground="{StaticResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"
+                                                                     TextBlock.FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+                                                                     TextBlock.FontSize="12pt"
+                                                                     Margin="0,12,0,0" />
+                                                        <ItemsControl Margin="24,12,0,0"
+                                                                        ItemsSource="{Binding Path=RequestElements}"
+                                                                        HorizontalContentAlignment="Center"
+                                                                        Foreground="Crimson"
+                                                                        FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+                                                                        FontSize="16"
+                                                                        Visibility="{Binding Path=RequestElements.Count, Converter={scc:SimpleCase Case=0, IfMatch=Collapsed, Else=Visible}}">
+                                                            <ItemsControl.Resources>
+                                                                <Style TargetType="{x:Type Hyperlink}"
+                                     BasedOn="{StaticResource {x:Type Hyperlink}}">
+                                                                    <Setter Property="TextElement.Foreground">
+                                                                        <Setter.Value>
+                                                                            <SolidColorBrush Color="{Binding Source={x:Static Colors.Crimson}, BindsDirectlyToSource=True, Converter={StaticResource LightColorConverter}}" />
+                                                                        </Setter.Value>
+                                                                    </Setter>
+                                                                </Style>
+                                                            </ItemsControl.Resources>
+                                                        </ItemsControl>
+                                                    </StackPanel>
+                                                </StackPanel>
+                                            </Border>
+                                            <StackPanel Orientation="Horizontal">
+                                                <Border DockPanel.Dock="Left"
+                                                            Width="220"                                                    
+                                                            Margin="0,0,8,0"
+                                                            Padding="7"
+                                                            Background="{StaticResource CommBackgroundBrush}"
+                                                            BorderBrush="{StaticResource CommBorderBrush}"
+                                                            BorderThickness="2"
+                                                            CornerRadius="8"
+                                                            Visibility="Visible" 
+                                                            IsEnabled="{Binding IsMessageEditInProgress, Converter={StaticResource BooleanToVisibilityConverter}}">
+
+                                                    <!--Visibility="{Binding Path=IsMessageEditInProgress, Converter={StaticResource BooleanToVisibilityConverter}}">-->
+                                                    <ItemsControl Background="Transparent"
+                                                                  BorderBrush="{x:Null}"
+                                                                  BorderThickness="0"
+                                                                  Foreground="{StaticResource DefaultTextBrush}"
+                                                                  FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+                                                                  FontSize="12pt"
+                                                                  ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                                                                  ScrollViewer.VerticalScrollBarVisibility="Auto"
+                                                                  ItemTemplate="{StaticResource StipulationTreeItemTemplate}"
+                                                                  ItemsSource="{Binding Path=SelectedForeignPower.OutgoingMessage.AvailableElements}"
+                                                                  IsEnabled="{Binding Path=SelectedForeignPower.OutgoingMessage.AvailableElements}"
+                                                                  Visibility="Visible">
+                                                        <ItemsControl.GroupStyle>
+                                                            <GroupStyle HeaderTemplate="{StaticResource StipulationTreeHeaderTemplate}" />
+                                                        </ItemsControl.GroupStyle>
+                                                    </ItemsControl>
+                                                </Border>
+                                                <Border Padding="7"
+                                                        Background="{StaticResource CommBackgroundBrush}"
+                                                        BorderBrush="{StaticResource CommBorderBrush}"
+                                                        BorderThickness="2"
+                                                        CornerRadius="8"
+                                                        DataContext="{Binding Path=SelectedForeignPower.OutgoingMessage}"
+                                                        IsEnabled="{Binding Path=SelectedForeignPower.OutgoingMessage}"
+                                                        Visibility="Visible">
+                                                    <StackPanel Orientation="Vertical">
+
+                                                        <TextBlock TextAlignment="Center"  
+                                                                  TextWrapping="Wrap"            
+                                                                  TextTrimming="CharacterEllipsis"
+                                                                  FontSize="18pt"
+                                                                  Foreground="{DynamicResource {x:Static scc:ClientResources.AlertTextForegroundBrushKey}}"
+                                                                  Margin="4"
+                                                                  Text="To send a message press the SEND button" />
+
+                                                        <TextBlock TextAlignment="Center"
+                                                                     TextWrapping="Wrap"
+                                                                     TextTrimming="CharacterEllipsis"
+                                                                     FontSize="28pt"
+                                                                     FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
+                                                                     Foreground="{StaticResource HeaderTextBrush}"
+                                                                     Margin="0,0,0,0"
+                                                                   Visibility="Visible"
+                                                                     Text="{Binding Path=IsEditing, Converter={scc:BooleanValueConverter TrueValue={sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry=OutboxHeaderWhileEditing, CharacterCasing=Upper}, FalseValue={sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry=OutboxHeader, CharacterCasing=Upper}}}">
+                                                        </TextBlock>
+                                                        <ContentPresenter TextBlock.Foreground="{StaticResource DefaultTextBrush}"
+                                                                      TextBlock.FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+                                                                      TextBlock.FontSize="16"
+                                                                      Margin="0,0,0,0" />
+                                                        <StackPanel Orientation="Vertical">
+                                                            <StackPanel.Resources>
+                                                                <Style TargetType="{x:Type Button}">
+                                                                    <Setter Property="Width"
+                                                                        Value="21" />
+                                                                    <Setter Property="Height"
+                                                                        Value="21" />
+                                                                    <Setter Property="Visibility"
+                                                                            Value="Visible"/>
+                                                                    <Setter Property="Focusable"
+                                                                        Value="False" />
+                                                                    <Setter Property="IsEnabled" Value="True" />
+                                                                    <Setter Property="Template">
+                                                                        <Setter.Value>
+                                                                            <ControlTemplate TargetType="{x:Type Button}">
+                                                                                <Border x:Name="ButtonBorder"
+                                                                                            Background="{StaticResource LCARS_BlueGradient_Top_Bottom}"
+                                                                                            CornerRadius="8"
+                                                                                            Width="16"
+                                                                                            Height="16">
+                                                                                    <Canvas Width="16"
+                                                                                            Height="16">
+                                                                                        <Path Canvas.Left="0"
+                                                                                            Canvas.Top="0"
+                                                                                            Width="16"
+                                                                                            Height="16"
+                                                                                            Stretch="None"
+                                                                                            StrokeThickness="2.0"
+                                                                                            StrokeStartLineCap="Round"
+                                                                                            StrokeEndLineCap="Round"
+                                                                                            StrokeMiterLimit="2"
+                                                                                            Stroke="#FF000000"
+                                                                                            Data="F1 M 5.67,5.67L 11.33,11.33" />
+                                                                                        <Path Canvas.Left="0"
+                                                                                                Canvas.Top="0"
+                                                                                                Width="21"
+                                                                                                Height="21"
+                                                                                                Stretch="None"
+                                                                                                StrokeThickness="2.0"
+                                                                                                StrokeStartLineCap="Round"
+                                                                                                StrokeEndLineCap="Round"
+                                                                                                StrokeMiterLimit="2"
+                                                                                                Stroke="#FF000000"
+                                                                                                Data="F1 M 11.33,5.67L 5.67,11.33" />
+                                                                                    </Canvas>
+                                                                                </Border>
+                                                                                <ControlTemplate.Triggers>
+                                                                                    <Trigger Property="IsMouseOver"
+                                                                                          Value="True">
+                                                                                        <Setter TargetName="ButtonBorder"
+                                                                                            Property="Background"
+                                                                                            Value="{StaticResource LCARS_HoverBlueGradient_Top_Bottom}" />
+                                                                                        <Setter Property="IsEnabled" Value="True" />
+                                                                                    </Trigger>
+                                                                                    <Trigger Property="IsPressed"
+                                                                                          Value="True">
+                                                                                        <Setter TargetName="ButtonBorder"
+                                                                                            Property="Background"
+                                                                                            Value="{StaticResource LCARS_BlueGradient_Bottom_Top}" />
+                                                                                        <Setter Property="IsEnabled" Value="True" />
+                                                                                    </Trigger>
+                                                                                </ControlTemplate.Triggers>
+                                                                            </ControlTemplate>
+                                                                        </Setter.Value>
+                                                                    </Setter>
+                                                                </Style>
+                                                            </StackPanel.Resources>
+                                                            <ItemsControl Margin="24,12,0,0"
+                                                                    ItemsSource="{Binding Path=StatementElements}"
+                                                                    HorizontalContentAlignment="Center"
+                                                                    Foreground="{StaticResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"
+                                                                    FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+                                                                    FontSize="16"
+                                                                    Visibility="{Binding Path=StatementElements.Count, Converter={scc:SimpleCase Case=0, IfMatch=Collapsed, Else=Visible}}">
+                                                                <ItemsControl.Resources>
+                                                                    <Style TargetType="{x:Type Hyperlink}"
+                                                                        BasedOn="{StaticResource {x:Type Hyperlink}}">
+                                                                        <Setter Property="TextElement.Foreground">
+                                                                            <Setter.Value>
+                                                                                <SolidColorBrush Color="{Binding Source={x:Static scc:ClientResources.DefaultTextForegroundBrushKey}, BindsDirectlyToSource=True, Converter={StaticResource LightColorConverter}}" />
+                                                                            </Setter.Value>
+                                                                        </Setter>
+                                                                    </Style>
+                                                                </ItemsControl.Resources>
+                                                            </ItemsControl>
+                                                            <TextBlock Text="{Binding Path=TreatyLeadInText}"
+                                                                   Visibility="{Binding Path=HasTreatyLeadInText, Converter={StaticResource BooleanToVisibilityConverter}}"
+                                                                   TextWrapping="Wrap"
+                                                                   TextBlock.Foreground="{StaticResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"
+                                                                   TextBlock.FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+                                                                   TextBlock.FontSize="12pt"
+                                                                   Margin="0,12,0,0" />
+                                                            <ItemsControl Margin="24,12,0,0"
+                                                                    ItemsSource="{Binding Path=TreatyElements}"
+                                                                    HorizontalContentAlignment="Center"
+                                                                    Foreground="DodgerBlue"
+                                                                    FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+                                                                    FontSize="16"
+                                                                    Visibility="{Binding Path=TreatyElements.Count, Converter={scc:SimpleCase Case=0, IfMatch=Collapsed, Else=Visible}}">
+                                                                <ItemsControl.Resources>
+                                                                    <Style TargetType="{x:Type Hyperlink}"
+                                                                        BasedOn="{StaticResource {x:Type Hyperlink}}">
+                                                                        <Setter Property="TextElement.Foreground">
+                                                                            <Setter.Value>
+                                                                                <SolidColorBrush Color="{Binding Source={x:Static Colors.DodgerBlue}, BindsDirectlyToSource=True, Converter={StaticResource LightColorConverter}}" />
+                                                                            </Setter.Value>
+                                                                        </Setter>
+                                                                    </Style>
+                                                                </ItemsControl.Resources>
+                                                            </ItemsControl>
+                                                            <TextBlock Text="{Binding Path=OfferLeadInText}"
+                                                                 Visibility="{Binding Path=HasOfferLeadInText, Converter={StaticResource BooleanToVisibilityConverter}}"
+                                                                 TextWrapping="Wrap"
+                                                                 TextBlock.Foreground="{StaticResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"
+                                                                 TextBlock.FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+                                                                 TextBlock.FontSize="12pt"
+                                                                 Margin="0,12,0,0" />
+                                                            <ItemsControl Margin="24,12,0,0"
+                                                                ItemsSource="{Binding Path=OfferElements}"
+                                                                HorizontalContentAlignment="Center"
+                                                                Foreground="LimeGreen"
+                                                                FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+                                                                FontSize="16"
+                                                                Visibility="{Binding Path=OfferElements.Count, Converter={scc:SimpleCase Case=0, IfMatch=Collapsed, Else=Visible}}">
+                                                                <ItemsControl.Resources>
+                                                                    <Style TargetType="{x:Type Hyperlink}"
+                                                                        BasedOn="{StaticResource {x:Type Hyperlink}}">
+                                                                        <Setter Property="TextElement.Foreground">
+                                                                            <Setter.Value>
+                                                                                <SolidColorBrush Color="{Binding Source={x:Static Colors.LimeGreen}, BindsDirectlyToSource=True, Converter={StaticResource LightColorConverter}}" />
+                                                                            </Setter.Value>
+                                                                        </Setter>
+                                                                    </Style>
+                                                                </ItemsControl.Resources>
+                                                            </ItemsControl>
+                                                            <TextBlock Text="{Binding Path=RequestLeadInText}"
+                                                                   Visibility="{Binding Path=HasRequestLeadInText, Converter={StaticResource BooleanToVisibilityConverter}}"
+                                                                   TextWrapping="Wrap"
+                                                                   TextBlock.Foreground="{StaticResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"
+                                                                   TextBlock.FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+                                                                   TextBlock.FontSize="12pt"
+                                                                   Margin="0,12,0,0" />
+                                                            <ItemsControl Margin="24,12,0,0"
+                                                                    ItemsSource="{Binding Path=RequestElements}"
+                                                                    HorizontalContentAlignment="Center"
+                                                                    Foreground="Crimson"
+                                                                    FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+                                                                    FontSize="16"
+                                                                    Visibility="{Binding Path=RequestElements.Count, Converter={scc:SimpleCase Case=0, IfMatch=Collapsed, Else=Visible}}">
+                                                                <ItemsControl.Resources>
+                                                                    <Style TargetType="{x:Type Hyperlink}"
+                                                                       BasedOn="{StaticResource {x:Type Hyperlink}}">
+                                                                        <Setter Property="TextElement.Foreground">
+                                                                            <Setter.Value>
+                                                                                <SolidColorBrush Color="{Binding Source={x:Static Colors.Crimson}, BindsDirectlyToSource=True, Converter={StaticResource LightColorConverter}}" />
+                                                                            </Setter.Value>
+                                                                        </Setter>
+                                                                    </Style>
+                                                                </ItemsControl.Resources>
+                                                            </ItemsControl>
+                                                        </StackPanel>
+                                                    </StackPanel>
+                                                </Border>
+                                            </StackPanel>
+                                        </StackPanel>
                                     </DockPanel>
+
                                 </ScrollViewer>
                             </Border>
+                            <!--<Border Margin="142,2,2,2" Height="195" VerticalAlignment="Center">
+                                <ScrollViewer HorizontalScrollBarVisibility="Disabled"
+                                                VerticalScrollBarVisibility="Auto">-->
+                                    <!--<DockPanel LastChildFill="True"
+                                             Margin="0,0,7,0">-->
+                                        <!--<Border Padding="7"
+                                                                Background="{StaticResource CommBackgroundBrush}"
+                                                                BorderBrush="{StaticResource CommBorderBrush}"
+                                                                BorderThickness="2"
+                                                                CornerRadius="8"
+                                                                DataContext="{Binding Path=SelectedForeignPower.IncomingMessage}">
+                                            <StackPanel Orientation="Vertical">
+                                                <TextBlock TextAlignment="Center"
+                                                           TextWrapping="Wrap"
+                                                           TextTrimming="CharacterEllipsis"
+                                                           FontSize="28pt"
+                                                           FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
+                                                           Foreground="{StaticResource HeaderTextBrush}"
+                                                           Margin="0,0,0,0"
+                                                           Text="{Binding Converter={scc:SimpleCase Case={x:Null}, IfMatch='', Else={sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry=InboxHeader, CharacterCasing=Upper}}}" />
+                                                <ContentPresenter TextBlock.Foreground="{StaticResource DefaultTextBrush}"
+                                                                  TextBlock.FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+                                                                  TextBlock.FontSize="16"
+                                                                  Margin="0,0,0,0" />
+                                                <StackPanel Orientation="Vertical">
+                                                    <TextBlock Text="{Binding Path=TreatyLeadInText}"
+                                                                 Visibility="{Binding Path=HasTreatyLeadInText, Converter={StaticResource BooleanToVisibilityConverter}}"
+                                                                 TextWrapping="Wrap"
+                                                                 TextBlock.Foreground="{StaticResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"
+                                                                 TextBlock.FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+                                                                 TextBlock.FontSize="12pt"
+                                                                 Margin="0,12,0,0" />
+                                                    <ItemsControl Margin="24,12,0,0"
+                                        ItemsSource="{Binding Path=TreatyElements}"
+                                        HorizontalContentAlignment="Center"
+                                        Foreground="DodgerBlue"
+                                        FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+                                        FontSize="16"
+                                        Visibility="{Binding Path=TreatyElements.Count, Converter={scc:SimpleCase Case=0, IfMatch=Collapsed, Else=Visible}}">
+                                                        <ItemsControl.Resources>
+                                                            <Style TargetType="{x:Type Hyperlink}"
+                                     BasedOn="{StaticResource {x:Type Hyperlink}}">
+                                                                <Setter Property="TextElement.Foreground">
+                                                                    <Setter.Value>
+                                                                        <SolidColorBrush Color="{Binding Source={x:Static Colors.DodgerBlue}, BindsDirectlyToSource=True, Converter={StaticResource LightColorConverter}}" />
+                                                                    </Setter.Value>
+                                                                </Setter>
+                                                            </Style>
+                                                        </ItemsControl.Resources>
+                                                    </ItemsControl>
+                                                    <TextBlock Text="{Binding Path=OfferLeadInText}"
+                                     Visibility="{Binding Path=HasOfferLeadInText, Converter={StaticResource BooleanToVisibilityConverter}}"
+                                     TextWrapping="Wrap"
+                                     TextBlock.Foreground="{StaticResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"
+                                     TextBlock.FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+                                     TextBlock.FontSize="12pt"
+                                     Margin="0,12,0,0" />
+                                                    <ItemsControl Margin="24,12,0,0"
+                                        ItemsSource="{Binding Path=OfferElements}"
+                                        HorizontalContentAlignment="Center"
+                                        Foreground="LimeGreen"
+                                        FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+                                        FontSize="16"
+                                        Visibility="{Binding Path=OfferElements.Count, Converter={scc:SimpleCase Case=0, IfMatch=Collapsed, Else=Visible}}">
+                                                        <ItemsControl.Resources>
+                                                            <Style TargetType="{x:Type Hyperlink}"
+                                     BasedOn="{StaticResource {x:Type Hyperlink}}">
+                                                                <Setter Property="TextElement.Foreground">
+                                                                    <Setter.Value>
+                                                                        <SolidColorBrush Color="{Binding Source={x:Static Colors.LimeGreen}, BindsDirectlyToSource=True, Converter={StaticResource LightColorConverter}}" />
+                                                                    </Setter.Value>
+                                                                </Setter>
+                                                            </Style>
+                                                        </ItemsControl.Resources>
+                                                    </ItemsControl>
+                                                    <TextBlock Text="{Binding Path=RequestLeadInText}"
+                                     Visibility="{Binding Path=HasRequestLeadInText, Converter={StaticResource BooleanToVisibilityConverter}}"
+                                     TextWrapping="Wrap"
+                                     TextBlock.Foreground="{StaticResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"
+                                     TextBlock.FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+                                     TextBlock.FontSize="12pt"
+                                     Margin="0,12,0,0" />
+                                                    <ItemsControl Margin="24,12,0,0"
+                                        ItemsSource="{Binding Path=RequestElements}"
+                                        HorizontalContentAlignment="Center"
+                                        Foreground="Crimson"
+                                        FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+                                        FontSize="16"
+                                        Visibility="{Binding Path=RequestElements.Count, Converter={scc:SimpleCase Case=0, IfMatch=Collapsed, Else=Visible}}">
+                                                        <ItemsControl.Resources>
+                                                            <Style TargetType="{x:Type Hyperlink}"
+                                     BasedOn="{StaticResource {x:Type Hyperlink}}">
+                                                                <Setter Property="TextElement.Foreground">
+                                                                    <Setter.Value>
+                                                                        <SolidColorBrush Color="{Binding Source={x:Static Colors.Crimson}, BindsDirectlyToSource=True, Converter={StaticResource LightColorConverter}}" />
+                                                                    </Setter.Value>
+                                                                </Setter>
+                                                            </Style>
+                                                        </ItemsControl.Resources>
+                                                    </ItemsControl>
+                                                </StackPanel>
+                                            </StackPanel>
+                                        </Border>-->
+                                    <!--</DockPanel>-->
+                                <!--</ScrollViewer>
+                            </Border>-->
                         </TabItem>
 
                         <!--
@@ -974,39 +1533,39 @@
               Inbound Messages
             ================================================================================ 
             -->
-                        <TabItem>
-                            <Border>
+                        <!--<TabItem>
+                            <Border Margin="142,2,2,2" Height="195" VerticalAlignment="Center">
                                 <ScrollViewer HorizontalScrollBarVisibility="Disabled"
-                              VerticalScrollBarVisibility="Auto">
+                                                VerticalScrollBarVisibility="Auto">
                                     <DockPanel LastChildFill="True"
-                             Margin="0,0,7,0">
-                                        <Border Padding="7"
-                            Background="{StaticResource CommBackgroundBrush}"
-                            BorderBrush="{StaticResource CommBorderBrush}"
-                            BorderThickness="2"
-                            CornerRadius="8"
-                            DataContext="{Binding Path=SelectedForeignPower.IncomingMessage}">
+                                             Margin="0,0,7,0">
+                                                        <Border Padding="7"
+                                                                Background="{StaticResource CommBackgroundBrush}"
+                                                                BorderBrush="{StaticResource CommBorderBrush}"
+                                                                BorderThickness="2"
+                                                                CornerRadius="8"
+                                                                DataContext="{Binding Path=SelectedForeignPower.IncomingMessage}">
                                             <StackPanel Orientation="Vertical">
                                                 <TextBlock TextAlignment="Center"
-                                   TextWrapping="Wrap"
-                                   TextTrimming="CharacterEllipsis"
-                                   FontSize="28pt"
-                                   FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
-                                   Foreground="{StaticResource HeaderTextBrush}"
-                                   Margin="0,0,0,0"
-                                   Text="{Binding Converter={scc:SimpleCase Case={x:Null}, IfMatch='', Else={sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry=InboxHeader, CharacterCasing=Upper}}}" />
+                                                           TextWrapping="Wrap"
+                                                           TextTrimming="CharacterEllipsis"
+                                                           FontSize="28pt"
+                                                           FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
+                                                           Foreground="{StaticResource HeaderTextBrush}"
+                                                           Margin="0,0,0,0"
+                                                           Text="{Binding Converter={scc:SimpleCase Case={x:Null}, IfMatch='', Else={sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry=InboxHeader, CharacterCasing=Upper}}}" />
                                                 <ContentPresenter TextBlock.Foreground="{StaticResource DefaultTextBrush}"
-                                          TextBlock.FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
-                                          TextBlock.FontSize="16"
-                                          Margin="0,0,0,0" />
+                                                                  TextBlock.FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+                                                                  TextBlock.FontSize="16"
+                                                                  Margin="0,0,0,0" />               
                                                 <StackPanel Orientation="Vertical">
                                                     <TextBlock Text="{Binding Path=TreatyLeadInText}"
-                                     Visibility="{Binding Path=HasTreatyLeadInText, Converter={StaticResource BooleanToVisibilityConverter}}"
-                                     TextWrapping="Wrap"
-                                     TextBlock.Foreground="{StaticResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"
-                                     TextBlock.FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
-                                     TextBlock.FontSize="12pt"
-                                     Margin="0,12,0,0" />
+                                                                 Visibility="{Binding Path=HasTreatyLeadInText, Converter={StaticResource BooleanToVisibilityConverter}}"
+                                                                 TextWrapping="Wrap"
+                                                                 TextBlock.Foreground="{StaticResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"
+                                                                 TextBlock.FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+                                                                 TextBlock.FontSize="12pt"
+                                                                 Margin="0,12,0,0" />       
                                                     <ItemsControl Margin="24,12,0,0"
                                         ItemsSource="{Binding Path=TreatyElements}"
                                         HorizontalContentAlignment="Center"
@@ -1081,15 +1640,15 @@
                                     </DockPanel>
                                 </ScrollViewer>
                             </Border>
-                        </TabItem>
+                        </TabItem>-->
 
                         <!--
             ================================================================================
               Outbound Messages
             ================================================================================ 
             -->
-                        <TabItem>
-                            <Border>
+                        <!--<TabItem>
+                            <Border Margin="142,0,0,0" Height="120" VerticalAlignment="Bottom">
                                 <ScrollViewer HorizontalScrollBarVisibility="Disabled"
                                               VerticalScrollBarVisibility="Auto">
                                     <DockPanel LastChildFill="True"
@@ -1105,7 +1664,7 @@
                                                 Visibility="{Binding Path=IsMessageEditInProgress, Converter={StaticResource BooleanToVisibilityConverter}}"
                                                 IsEnabled="{Binding IsMessageEditInProgress, Converter={StaticResource BooleanToVisibilityConverter}}">
                                             
-                                            <!--Visibility="{Binding Path=IsMessageEditInProgress, Converter={StaticResource BooleanToVisibilityConverter}}"-->
+                                            --><!--Visibility="{Binding Path=IsMessageEditInProgress, Converter={StaticResource BooleanToVisibilityConverter}}"--><!--
                                             <ItemsControl Background="Transparent"
                                                           BorderBrush="{x:Null}"
                                                           BorderThickness="0"
@@ -1316,7 +1875,7 @@
                                     </DockPanel>
                                 </ScrollViewer>
                             </Border>
-                        </TabItem>
+                        </TabItem>-->
                     </TabControl>
 
                 </DockPanel>

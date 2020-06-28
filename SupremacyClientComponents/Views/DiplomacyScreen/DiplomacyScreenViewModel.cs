@@ -38,8 +38,8 @@ namespace Supremacy.Client.Views
 
                 _designInstance.SelectedForeignPower = _designInstance.ForeignPowers.First();
                 _designInstance.DisplayMode = DiplomacyScreenDisplayMode.Outbox;
-
-                _designInstance.MakeProposalCommand.Execute(null);
+                
+                //_designInstance.MakeProposalCommand.Execute(null);
                 _designInstance.SelectedForeignPower.OutgoingMessage.AvailableElements.First(o => o.ActionCategory == DiplomacyMessageElementActionCategory.Propose).AddCommand.Execute(null);
                 _designInstance.SelectedForeignPower.OutgoingMessage.AvailableElements.First(o => o.ActionCategory == DiplomacyMessageElementActionCategory.Offer).AddCommand.Execute(null);
 
@@ -51,13 +51,15 @@ namespace Supremacy.Client.Views
 
         private readonly ObservableCollection<ForeignPowerViewModel> _foreignPowers;
         private readonly ReadOnlyObservableCollection<ForeignPowerViewModel> _foreignPowersView;
-        
-        private readonly DelegateCommand<ICheckableCommandParameter> _setDisplayModeCommand;
+        /*
+          DISPLAY MODE
+         */
+        private readonly DelegateCommand<ICheckableCommandParameter> _setDisplayModeCommand; 
 
         private readonly DelegateCommand _commendCommand;
         private readonly DelegateCommand _denounceCommand;
         private readonly DelegateCommand _threatenCommand;
-        private readonly DelegateCommand _makeProposalCommand;
+        //private readonly DelegateCommand _makeProposalCommand;
         private readonly DelegateCommand _declareWarCommand;
         private readonly DelegateCommand _endWarCommand;  // other naming in the code: CeaseFire
         private readonly DelegateCommand _openBordersCommand;
@@ -77,13 +79,15 @@ namespace Supremacy.Client.Views
         {
             _foreignPowers = new ObservableCollection<ForeignPowerViewModel>();
             _foreignPowersView = new ReadOnlyObservableCollection<ForeignPowerViewModel>(_foreignPowers);
-
+            // DISPLAY MODE
             _setDisplayModeCommand = new DelegateCommand<ICheckableCommandParameter>(ExecuteSetDisplayModeComand, CanExecuteSetDisplayModeComand);
 
             _commendCommand = new DelegateCommand(ExecuteCommendCommand, CanExecuteCommendCommand);
             _denounceCommand = new DelegateCommand(ExecuteDenounceCommand, CanExecuteDenounceCommand);
             _threatenCommand = new DelegateCommand(ExecuteThreatenCommand, CanExecuteThreatenCommand);
-            _makeProposalCommand = new DelegateCommand(ExecuteMakeProposalCommand, CanExecuteMakeProposalCommand);
+
+           // _makeProposalCommand = new DelegateCommand(ExecuteMakeProposalCommand, CanExecuteMakeProposalCommand);
+
             _declareWarCommand = new DelegateCommand(ExecuteDeclareWarCommand, CanExecuteDeclareWarCommand);
             _endWarCommand = new DelegateCommand(ExecuteEndWarCommand, CanExecuteEndWarCommand);
             _openBordersCommand = new DelegateCommand(ExecuteOpenBordersCommand, CanExecuteOpenBordersCommand);
@@ -686,7 +690,7 @@ namespace Supremacy.Client.Views
             _commendCommand.RaiseCanExecuteChanged();
             _denounceCommand.RaiseCanExecuteChanged();
             _threatenCommand.RaiseCanExecuteChanged();
-            _makeProposalCommand.RaiseCanExecuteChanged();
+            //_makeProposalCommand.RaiseCanExecuteChanged();
             _declareWarCommand.RaiseCanExecuteChanged();
             _endWarCommand.RaiseCanExecuteChanged();
             _openBordersCommand.RaiseCanExecuteChanged();
@@ -738,10 +742,12 @@ namespace Supremacy.Client.Views
         {
             get { return _foreignPowersView; }
         }
-
+        // DiplayMode
         public ICommand SetDisplayModeCommand
         {
-            get { return _setDisplayModeCommand; }
+            get { 
+                return _setDisplayModeCommand;
+            }
         }
 
         public ICommand CommendCommand
@@ -759,10 +765,10 @@ namespace Supremacy.Client.Views
             get { return _threatenCommand; }
         }
 
-        public ICommand MakeProposalCommand
-        {
-            get { return _makeProposalCommand; }
-        }
+        //public ICommand MakeProposalCommand
+        //{
+        //    get { return _makeProposalCommand; }
+        //}
 
         public ICommand DeclareWarCommand
         {
@@ -920,6 +926,7 @@ namespace Supremacy.Client.Views
         {
             get
             {
+       
                 //if (_selectedForeignPower.Owner != null)
                 //    GameLog.Client.Diplomacy.DebugFormat("_selectedForeignPower GET = {0}", _selectedForeignPower.Owner);
                 //else
@@ -950,6 +957,8 @@ namespace Supremacy.Client.Views
         {
             SelectedForeignPowerChanged.Raise(this);
             OnPropertyChanged("SelectedForeignPower");
+            if (_selectedForeignPower != null)
+                ExecuteMakeProposalCommand();
             OnAreOutgoingMessageCommandsVisibleChanged();
             OnAreIncomingMessageCommandsVisibleChanged();
             if (AreNewMessageCommandsVisible){}
@@ -1003,14 +1012,14 @@ namespace Supremacy.Client.Views
         {
             get
             {
-                if (DisplayMode != DiplomacyScreenDisplayMode.Inbox)
+                if (DisplayMode != DiplomacyScreenDisplayMode.Overview)
                 {
                     //GameLog.Core.Diplomacy.DebugFormat("DisplayMode not DiplomacyScreenDispalyMode.Inbox" );
                     return false;
                 }
                 else
                 {
-                    GameLog.Core.Diplomacy.DebugFormat("DisplayMode = INBOX selected");
+                    GameLog.Core.Diplomacy.DebugFormat("DisplayMode = OverView selected");
                 }
 
                 var selectedForeignPower = SelectedForeignPower;

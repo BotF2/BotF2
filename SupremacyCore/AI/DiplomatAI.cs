@@ -136,7 +136,7 @@ namespace Supremacy.AI
                             foreignPower.PendingAction.ToString(), foreignPower.Counterparty.ShortName,
                             foreignPower.Owner.ShortName);
 
-                        if (foreignPower.ProposalReceived != null && !(aCiv.IsHuman && otherCiv.IsHuman))
+                        if (foreignPower.ProposalReceived != null && !aCiv.IsHuman) //!(aCiv.IsHuman && otherCiv.IsHuman))
                         {
                             foreach (var clause in foreignPower.ProposalReceived.Clauses)
                             {
