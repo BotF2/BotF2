@@ -1117,8 +1117,7 @@ namespace Supremacy.Client.Views
         public DiplomacyScreenDisplayMode DisplayMode
         {
             get
-            {
-                Sele
+            {                
                 //ForeignPowerShortName.
                 return _displayMode;
             }

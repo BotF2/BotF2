@@ -864,6 +864,7 @@
         ================================================================================ 
         -->
                 <DockPanel x:Name="ForeignPowerShortName"
+                           scc:VisibilityGroupScopeBehavior.VisibilityGroup="DiplomacyScreenVisibilityScopes.Default"
                            Grid.Column="0"                         
                            Grid.Row="4"
                            Grid.ColumnSpan="2"
@@ -961,6 +962,7 @@
                     </Border>
                 </DockPanel>
                 <DockPanel x:Name="SendEditCancel"
+                           scc:VisibilityGroupScopeBehavior.VisibilityGroup="DiplomacyScreenVisibilityScopes.Default"
                            Grid.Column="2"  
                            Grid.ColumnSpan="2"
                            Grid.Row="4"
@@ -1215,6 +1217,9 @@
                                                 </Border>
                                                 <!-- Out Box -->
                                                 <Border Padding="7"
+                                                        Width="*"
+                                                        Grid.Column="0"
+              
                                                         Background="{StaticResource CommBackgroundBrush}"
                                                         BorderBrush="{StaticResource CommBorderBrush}"
                                                         BorderThickness="2"
@@ -1222,7 +1227,7 @@
                                                         DataContext="{Binding Path=SelectedForeignPower.OutgoingMessage}"
                                                         IsEnabled="{Binding Path=SelectedForeignPower.OutgoingMessage}"
                                                         Visibility="Visible">
-                                                    <StackPanel Orientation="Vertical" Width="847">
+                                                    <StackPanel Orientation="Vertical">
                                                         <TextBlock TextAlignment="Left"  
                                                                   TextWrapping="Wrap"            
                                                                   TextTrimming="CharacterEllipsis"
