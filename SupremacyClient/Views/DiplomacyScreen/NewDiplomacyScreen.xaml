@@ -642,13 +642,13 @@
                       VerticalAlignment="Bottom"
                       Data="F1 M 0,0L 0,27.9954C 1.85621,27.9954 3.6364,28.7328 4.94894,30.0454C 6.26148,31.3579 6.99886,33.1381 6.99886,34.9943L 6.99886,41.9932L 20.9966,41.9932L 20.9966,34.9943C 20.9966,33.1381 21.734,31.3579 23.0465,30.0454C 24.359,28.7328 26.1392,27.9954 27.9954,27.9954L 27.9954,0L 0,0 Z" />
                 <Border x:Name="MiddleCenterDivider"
-                    Grid.Column="3"
-                    Grid.Row="4"
-                    Grid.RowSpan="4"
-                    scc:VisibilityGroupScopeBehavior.VisibilityGroup="DiplomacyScreenVisibilityScopes.Default"
-                    Background="{StaticResource LCARS_Card_ObsidianGradient_Left_Right}"
-                    Width="14"
-                    Margin="0,31,0,44" />
+                        Grid.Column="3"
+                        Grid.Row="4"
+                        Grid.RowSpan="4"
+                        scc:VisibilityGroupScopeBehavior.VisibilityGroup="DiplomacyScreenVisibilityScopes.Default"
+                        Background="{StaticResource LCARS_Card_ObsidianGradient_Left_Right}"
+                        Width="14"
+                        Margin="0,31,0,44" />
                 <Path x:Name="LowerCenterDivider"
                       Grid.Column="3"
                       Grid.Row="7"
@@ -671,13 +671,13 @@
 
                 <!-- Lower-Right Horizontal Divider -->
                 <Border x:Name="LowerRightHorizontalDivider"
-                    Grid.Column="4"
-                    Grid.Row="7"
-                    scc:VisibilityGroupScopeBehavior.VisibilityGroup="DiplomacyScreenVisibilityScopes.Default"
-                    Background="{StaticResource LCARS_AzureGradient_Top_Bottom}"
-                    Height="28"
-                    Margin="2,0,2,0"
-                    VerticalAlignment="Bottom" />
+                        Grid.Column="4"
+                        Grid.Row="7"
+                        scc:VisibilityGroupScopeBehavior.VisibilityGroup="DiplomacyScreenVisibilityScopes.Default"
+                        Background="{StaticResource LCARS_AzureGradient_Top_Bottom}"
+                        Height="28"
+                        Margin="2,0,2,0"
+                        VerticalAlignment="Bottom" />
 
                 <!-- Upper Right Corner -->
                 <Path x:Name="UpperRightCorner"
@@ -861,7 +861,7 @@
                 
                 <!--
         ================================================================================
-          Main Content Area
+         Lower - Main Content Area
         ================================================================================ 
         -->
                 <DockPanel x:Name="ForeignPowerShortName"
@@ -941,6 +941,16 @@
                             MaxWidth="151"
                             MaxHeight="28"
                             Margin="2,0,2,0"/>
+                      <!--<Button x:Name="EndWarButton"
+                              Content="End War"
+                              MinWidth="150"
+                              MaxWidth="151"
+                              MaxHeight="28"
+                              Margin="2,0,2,0"
+                              ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry='EndWarButtonTooltipText', CharacterCasing=Upper}"
+                              Command="{Binding Path=CeaseFireCommand}"
+                              IsEnabled="{Binding Path=CeaseFireCommand}">
+                      </Button>-->
                     </StackPanel>
                 </DockPanel>
                 <DockPanel Grid.Column="0"
@@ -1014,7 +1024,11 @@
                                       
                                             </ScrollViewer>
                                         </Border>
-                                    <!-- In Box -->
+          <!--
+          ============================
+          In Box
+          ============================
+          -->
                                         <Border Padding="7"
                                                 Background="{StaticResource CommBackgroundBrush}"
                                                 BorderBrush="{StaticResource CommBorderBrush}"
@@ -1114,7 +1128,11 @@
                                                 </StackPanel>
                                             </StackPanel>
                                         </Border>
-                                 <!-- OutBox Left - List of Proposals and Statments to send -->
+        <!--
+        =======================================================
+        OutBox Left - List of Proposals and Statments to send
+        =======================================================
+        -->
                                         <DockPanel LastChildFill="True"
                                             Margin="0,0,7,0">
                                             <StackPanel Orientation="Horizontal">
@@ -1150,7 +1168,11 @@
                                                         </ItemsControl>
                                                     </ScrollViewer>
                                                 </Border>
-                                        <!-- Out Box Right -->
+        <!--
+        =============================
+        Out Box Right
+        =============================
+        -->
                                                 <Border Padding="7"                                                        
                                                         MaxHeight="335"
                                                         Background="{StaticResource CommBackgroundBrush}"
@@ -1353,116 +1375,10 @@
                                     </StackPanel>
                                 </DockPanel>
                             </ScrollViewer>
-                           
-                            <!--<Border Margin="142,2,2,2" Height="195" VerticalAlignment="Center">
-                                <ScrollViewer HorizontalScrollBarVisibility="Disabled"
-                                                VerticalScrollBarVisibility="Auto">-->
-                                    <!--<DockPanel LastChildFill="True"
-                                             Margin="0,0,7,0">-->
-                                        <!--<Border Padding="7"
-                                                                Background="{StaticResource CommBackgroundBrush}"
-                                                                BorderBrush="{StaticResource CommBorderBrush}"
-                                                                BorderThickness="2"
-                                                                CornerRadius="8"
-                                                                DataContext="{Binding Path=SelectedForeignPower.IncomingMessage}">
-                                            <StackPanel Orientation="Vertical">
-                                                <TextBlock TextAlignment="Center"
-                                                           TextWrapping="Wrap"
-                                                           TextTrimming="CharacterEllipsis"
-                                                           FontSize="28pt"
-                                                           FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
-                                                           Foreground="{StaticResource HeaderTextBrush}"
-                                                           Margin="0,0,0,0"
-                                                           Text="{Binding Converter={scc:SimpleCase Case={x:Null}, IfMatch='', Else={sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry=InboxHeader, CharacterCasing=Upper}}}" />
-                                                <ContentPresenter TextBlock.Foreground="{StaticResource DefaultTextBrush}"
-                                                                  TextBlock.FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
-                                                                  TextBlock.FontSize="16"
-                                                                  Margin="0,0,0,0" />
-                                                <StackPanel Orientation="Vertical">
-                                                    <TextBlock Text="{Binding Path=TreatyLeadInText}"
-                                                                 Visibility="{Binding Path=HasTreatyLeadInText, Converter={StaticResource BooleanToVisibilityConverter}}"
-                                                                 TextWrapping="Wrap"
-                                                                 TextBlock.Foreground="{StaticResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"
-                                                                 TextBlock.FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
-                                                                 TextBlock.FontSize="12pt"
-                                                                 Margin="0,12,0,0" />
-                                                    <ItemsControl Margin="24,12,0,0"
-                                        ItemsSource="{Binding Path=TreatyElements}"
-                                        HorizontalContentAlignment="Center"
-                                        Foreground="DodgerBlue"
-                                        FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
-                                        FontSize="16"
-                                        Visibility="{Binding Path=TreatyElements.Count, Converter={scc:SimpleCase Case=0, IfMatch=Collapsed, Else=Visible}}">
-                                                        <ItemsControl.Resources>
-                                                            <Style TargetType="{x:Type Hyperlink}"
-                                     BasedOn="{StaticResource {x:Type Hyperlink}}">
-                                                                <Setter Property="TextElement.Foreground">
-                                                                    <Setter.Value>
-                                                                        <SolidColorBrush Color="{Binding Source={x:Static Colors.DodgerBlue}, BindsDirectlyToSource=True, Converter={StaticResource LightColorConverter}}" />
-                                                                    </Setter.Value>
-                                                                </Setter>
-                                                            </Style>
-                                                        </ItemsControl.Resources>
-                                                    </ItemsControl>
-                                                    <TextBlock Text="{Binding Path=OfferLeadInText}"
-                                     Visibility="{Binding Path=HasOfferLeadInText, Converter={StaticResource BooleanToVisibilityConverter}}"
-                                     TextWrapping="Wrap"
-                                     TextBlock.Foreground="{StaticResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"
-                                     TextBlock.FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
-                                     TextBlock.FontSize="12pt"
-                                     Margin="0,12,0,0" />
-                                                    <ItemsControl Margin="24,12,0,0"
-                                        ItemsSource="{Binding Path=OfferElements}"
-                                        HorizontalContentAlignment="Center"
-                                        Foreground="LimeGreen"
-                                        FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
-                                        FontSize="16"
-                                        Visibility="{Binding Path=OfferElements.Count, Converter={scc:SimpleCase Case=0, IfMatch=Collapsed, Else=Visible}}">
-                                                        <ItemsControl.Resources>
-                                                            <Style TargetType="{x:Type Hyperlink}"
-                                     BasedOn="{StaticResource {x:Type Hyperlink}}">
-                                                                <Setter Property="TextElement.Foreground">
-                                                                    <Setter.Value>
-                                                                        <SolidColorBrush Color="{Binding Source={x:Static Colors.LimeGreen}, BindsDirectlyToSource=True, Converter={StaticResource LightColorConverter}}" />
-                                                                    </Setter.Value>
-                                                                </Setter>
-                                                            </Style>
-                                                        </ItemsControl.Resources>
-                                                    </ItemsControl>
-                                                    <TextBlock Text="{Binding Path=RequestLeadInText}"
-                                     Visibility="{Binding Path=HasRequestLeadInText, Converter={StaticResource BooleanToVisibilityConverter}}"
-                                     TextWrapping="Wrap"
-                                     TextBlock.Foreground="{StaticResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"
-                                     TextBlock.FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
-                                     TextBlock.FontSize="12pt"
-                                     Margin="0,12,0,0" />
-                                                    <ItemsControl Margin="24,12,0,0"
-                                        ItemsSource="{Binding Path=RequestElements}"
-                                        HorizontalContentAlignment="Center"
-                                        Foreground="Crimson"
-                                        FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
-                                        FontSize="16"
-                                        Visibility="{Binding Path=RequestElements.Count, Converter={scc:SimpleCase Case=0, IfMatch=Collapsed, Else=Visible}}">
-                                                        <ItemsControl.Resources>
-                                                            <Style TargetType="{x:Type Hyperlink}"
-                                     BasedOn="{StaticResource {x:Type Hyperlink}}">
-                                                                <Setter Property="TextElement.Foreground">
-                                                                    <Setter.Value>
-                                                                        <SolidColorBrush Color="{Binding Source={x:Static Colors.Crimson}, BindsDirectlyToSource=True, Converter={StaticResource LightColorConverter}}" />
-                                                                    </Setter.Value>
-                                                                </Setter>
-                                                            </Style>
-                                                        </ItemsControl.Resources>
-                                                    </ItemsControl>
-                                                </StackPanel>
-                                            </StackPanel>
-                                        </Border>-->
-                                    <!--</DockPanel>-->
-                                <!--</ScrollViewer>
-                            </Border>-->
                         </TabItem>
-
-                        <!--
+                    </TabControl>
+                  </DockPanel>
+            <!--
             ================================================================================
               Old Inbound Messages
             ================================================================================ 
@@ -1810,10 +1726,6 @@
                                 </ScrollViewer>
                             </Border>
                         </TabItem>-->
-                    </TabControl>
-
-                </DockPanel>
-
                 <!--
         ================================================================================
           Foreign Power Info

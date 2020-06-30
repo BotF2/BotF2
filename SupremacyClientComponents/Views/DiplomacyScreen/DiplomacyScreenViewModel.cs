@@ -615,9 +615,10 @@ namespace Supremacy.Client.Views
             SelectedForeignPower.OutgoingMessage.Send();
             GameLog.Client.Diplomacy.DebugFormat("Diplo Message: SEND button pressed...");
             SelectedForeignPower.OnOutgoingMessageCategoryChanged();
-
+            
             OnCommandVisibilityChanged();
             OnIsMessageEditInProgressChanged();
+            Refresh();
         }
 
         private bool CanExecuteCancelMessageCommand()
