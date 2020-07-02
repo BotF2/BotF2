@@ -638,6 +638,7 @@ namespace Supremacy.Client.Views
 
             OnCommandVisibilityChanged();
             OnIsMessageEditInProgressChanged();
+            Refresh();
         }
 
         private void ExecuteSetDisplayModeComand(ICheckableCommandParameter p)
