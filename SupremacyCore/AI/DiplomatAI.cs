@@ -217,13 +217,13 @@ namespace Supremacy.AI
                         // DOING: Process statements (apply regard/trust changes, etc.)
                         if (foreignPower.StatementReceived.StatementType == StatementType.WarDeclaration)
                         {
+                            foreignPower.AddRegardEvent(new RegardEvent(10, RegardEventType.DeclaredWar, -300));
+                            DiplomacyHelper.ApplyTrustChange(foreignPower.Counterparty, foreignPower.Owner, -310);
                             int impact = -175;
                             TrustAndRegardByTraits(foreignPower, impact, similarTraits);
                             int degree = 0;
                             TrustAndRegardForATrait(foreignPower, degree, foreignTraits, theCivTraits);
-                            //  reaction to their reaction?
-                            //degree = - 20;
-                            //TrustAndRegardForATrait(otherForeignPower, degree, theCivTraits, foreignTraits); 
+
 
                             GameLog.Client.Diplomacy.DebugFormat(
                                     "## WarDeclaration by counterparty = {0} to {1} Regard = {2} Trust = {3}",
