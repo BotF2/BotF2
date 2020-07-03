@@ -29,8 +29,8 @@ namespace Supremacy.AI
             /*
              * Process messages which have already been delivered
              */
-            foreach (var otherCiv in GameContext.Current.Civilizations
-            ) // we can control regard and trust for both human and AI otherCivs
+            foreach (var otherCiv in GameContext.Current.Civilizations)
+             // we can control regard and trust for both human otherCivs and AI otherCivs
             {
                 if (otherCiv.CivID == civ.CivID)
                     continue;
@@ -71,11 +71,28 @@ namespace Supremacy.AI
                 int similarTraits = (countCommon *10 / fewestTotalTraits); // a double from 1 to 0
                 GameLog.Client.Diplomacy.DebugFormat("## similar traits ={0} counterparty ={1} traits ={2} owner ={3} traits ={4}",
                     similarTraits, foreignPower.Counterparty.Key,foreignPower.Counterparty.Traits, foreignPower.Owner.Key, foreignPower.Owner.Traits );
-                //if (!foreignPower.DiplomacyData.FirstDiplomaticAction && otherCiv.IsHuman)
-                //{
-                //    int impact = 75;
-                //    TrustAndRegardByTraits(otherForeignPower, impact, similarTraits);
-                //}
+
+                /*
+                 * look for human to human proposals
+                 */
+                if (aCiv.IsHuman && otherCiv.IsHuman)
+                {
+                    GameLog.Client.Diplomacy.DebugFormat("!! HUMAN counterparty {0} to HUMAN owner {1}...",
+                        foreignPower.Counterparty.Key, foreignPower.Owner.Key);
+                    if (foreignPower.ProposalReceived != null)
+                    {
+                        if (aCiv == foreignPower.ProposalReceived.Recipient)
+                        {
+                            foreach (var clause in foreignPower.ProposalReceived.Clauses)
+                            {
+
+                                GameLog.Client.Diplomacy.DebugFormat("%% Clause {0} duration {1}",
+                                        clause.ClauseType.ToString(), clause.Duration);                                      
+                            }
+                        }
+                    }
+                }
+
                 if (true)//(!aCiv.IsHuman)
                 {
                     GameLog.Client.Deuterium.DebugFormat("## Beging DiplomacyAI for aCiv AI .......................");
@@ -135,8 +152,9 @@ namespace Supremacy.AI
                             "## foreignPower PendingAction ={0} Counterparty = {1} Onwer = {2}",
                             foreignPower.PendingAction.ToString(), foreignPower.Counterparty.ShortName,
                             foreignPower.Owner.ShortName);
+                        //if (foreignPower.DiplomacyData.Status == ForeignPowerStatus.Affiliated)
 
-                        if (foreignPower.ProposalReceived != null && !aCiv.IsHuman) //!(aCiv.IsHuman && otherCiv.IsHuman))
+                        if (foreignPower.ProposalReceived != null && !aCiv.IsHuman ) //!(aCiv.IsHuman && otherCiv.IsHuman))
                         {
                             foreach (var clause in foreignPower.ProposalReceived.Clauses)
                             {
