@@ -154,7 +154,7 @@ namespace Supremacy.Client.Views
         }
 
         private bool CanExecuteMakeProposalCommand()
-        {
+        {            
             if (!CanExecuteNewProposalCommandCore(out ForeignPowerViewModel selectedForeignPower))
                 return false;
 
@@ -198,6 +198,7 @@ namespace Supremacy.Client.Views
         #region DeclareWarCommandButton
         private bool CanExecuteDeclareWarCommand()
         {
+            Refresh();
             return CanExecuteDeclareWarCommandCore(out ForeignPowerViewModel foreignPower);
         }
 
@@ -207,8 +208,7 @@ namespace Supremacy.Client.Views
 
             return selectedForeignPower != null &&
                    selectedForeignPower.OutgoingMessage == null &&
-                   selectedForeignPower.Status != ForeignPowerStatus.AtWar; // &&
-                   //selectedForeignPower.Status != ForeignPowerStatus.CounterpartyIsMember;
+                   selectedForeignPower.Status != ForeignPowerStatus.AtWar;
         }
 
         private void ExecuteDeclareWarCommand()
@@ -217,11 +217,9 @@ namespace Supremacy.Client.Views
 
             if (!CanExecuteDeclareWarCommandCore(out foreignPower))
                 return;
-            //if (foreignPower.Status != ForeignPowerStatus.CounterpartyIsMember)
-            //    return;
 
             DisplayMode = DiplomacyScreenDisplayMode.Outbox; // new
-
+     
             AreOutgoingMessageCommandsVisibleChanged.Raise(this);
             OnPropertyChanged("AreOutgoingMessageCommandsVisible");
 
@@ -247,6 +245,7 @@ namespace Supremacy.Client.Views
         #region EndWarCommandButton
         private bool CanExecuteEndWarCommand()
         {
+            Refresh();
             return CanExecuteEndWarCommandCore(out ForeignPowerViewModel foreignPower);
         }
 
@@ -267,7 +266,7 @@ namespace Supremacy.Client.Views
                 return;
 
             DisplayMode = DiplomacyScreenDisplayMode.Outbox; // new
-
+       
             AreOutgoingMessageCommandsVisibleChanged.Raise(this);
             OnPropertyChanged("AreOutgoingMessageCommandsVisible");
 
@@ -293,6 +292,7 @@ namespace Supremacy.Client.Views
         #region OpenBordersCommandButton
         private bool CanExecuteOpenBordersCommand()
         {
+            Refresh();
             return CanExecuteOpenBordersCommandCore(out ForeignPowerViewModel foreignPower);
         }
 
@@ -319,7 +319,7 @@ namespace Supremacy.Client.Views
                 return;
 
             DisplayMode = DiplomacyScreenDisplayMode.Outbox; // new
-
+  
             AreOutgoingMessageCommandsVisibleChanged.Raise(this);
             OnPropertyChanged("AreOutgoingMessageCommandsVisible");
 
@@ -345,6 +345,7 @@ namespace Supremacy.Client.Views
         #region NonAgressionCommandButton
         private bool CanExecuteNonAgressionCommand()
         {
+            Refresh();
             return CanExecuteNonAgressionCommandCore(out ForeignPowerViewModel foreignPower);
         }
 
@@ -371,7 +372,7 @@ namespace Supremacy.Client.Views
                 return;
 
             DisplayMode = DiplomacyScreenDisplayMode.Outbox; // new
-
+     
             AreOutgoingMessageCommandsVisibleChanged.Raise(this);
             OnPropertyChanged("AreOutgoingMessageCommandsVisible");
 
@@ -397,6 +398,7 @@ namespace Supremacy.Client.Views
         #region AffiliationCommandButton
         private bool CanExecuteAffiliationCommand()
         {
+            Refresh();
             return CanExecuteAffiliationCommandCore(out ForeignPowerViewModel foreignPower);
         }
 
@@ -422,8 +424,8 @@ namespace Supremacy.Client.Views
             if (!CanExecuteAffiliationCommandCore(out foreignPower))
                 return;
 
-            _ = DiplomacyScreenDisplayMode.Outbox; // new
-
+            DisplayMode = DiplomacyScreenDisplayMode.Outbox; // new
+      
             AreOutgoingMessageCommandsVisibleChanged.Raise(this);
             OnPropertyChanged("AreOutgoingMessageCommandsVisible");
 
@@ -449,6 +451,7 @@ namespace Supremacy.Client.Views
         #region DefenceAllianceCommandButton
         private bool CanExecuteDefenceAllianceCommand()
         {
+            Refresh();
             return CanExecuteDefenceAllianceCommandCore(out ForeignPowerViewModel foreignPower);
         }
 
@@ -475,7 +478,7 @@ namespace Supremacy.Client.Views
                 return;
 
             DisplayMode = DiplomacyScreenDisplayMode.Outbox; // new = DiplomacyScreenDisplayMode.Outbox; // new
-
+     
             AreOutgoingMessageCommandsVisibleChanged.Raise(this);
             OnPropertyChanged("AreOutgoingMessageCommandsVisible");
 
@@ -501,6 +504,7 @@ namespace Supremacy.Client.Views
         #region FullAllianceCommandButton
         private bool CanExecuteFullAllianceCommand()
         {
+            Refresh();
             return CanExecuteFullAllianceCommandCore(out ForeignPowerViewModel foreignPower);
         }
 
@@ -521,7 +525,7 @@ namespace Supremacy.Client.Views
                 return;
 
             DisplayMode = DiplomacyScreenDisplayMode.Outbox; // new = DiplomacyScreenDisplayMode.Outbox; // new
-
+      
             AreOutgoingMessageCommandsVisibleChanged.Raise(this);
             OnPropertyChanged("AreOutgoingMessageCommandsVisible");
 
@@ -547,6 +551,7 @@ namespace Supremacy.Client.Views
         #region MembershipCommandButton
         private bool CanExecuteMembershipCommand()
         {
+            Refresh();
             return CanExecuteMembershipCommandCore(out ForeignPowerViewModel foreignPower);
         }
 
@@ -591,7 +596,7 @@ namespace Supremacy.Client.Views
 
 
         private bool CanExecuteEditMessageCommand()
-        {
+        {          
             return DisplayMode == DiplomacyScreenDisplayMode.Outbox &&
                    SelectedForeignPower != null &&
                    SelectedForeignPower.OutgoingMessage != null &&
