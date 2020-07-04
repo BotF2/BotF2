@@ -87,14 +87,14 @@ namespace Supremacy.Diplomacy
     {
         NoClause,
 
-        OfferWithdrawTroops,
-        RequestWithdrawTroops,
+        //OfferWithdrawTroops,
+        //RequestWithdrawTroops,
 
-        OfferStopPiracy, // this could become OfferStopSpying
-        RequestStopPiracy,
+        //OfferStopPiracy, // this could become OfferStopSpying
+        //RequestStopPiracy,
 
-        OfferBreakAgreement,
-        RequestBreakAgreement,
+        //OfferBreakAgreement,
+        //RequestBreakAgreement,
         // proposal
         OfferGiveCredits,
         RequestGiveCredits,
@@ -102,21 +102,21 @@ namespace Supremacy.Diplomacy
         //OfferGiveResources,
         //RequestGiveResources,
 
-        OfferMapData,
-        RequestMapData,
+        //OfferMapData,
+        //RequestMapData,
 
-        OfferHonorMilitaryAgreement,
-        RequestHonorMilitaryAgreement,
+        //OfferHonorMilitaryAgreement,
+        //RequestHonorMilitaryAgreement,
 
-        OfferEndEmbargo,
-        RequestEndEmbargo,
+        //OfferEndEmbargo,
+        //RequestEndEmbargo,
         // proposals
         TreatyWarPact,
         TreatyCeaseFire,
         TreatyNonAggression,
         TreatyOpenBorders,
-        TreatyTradePact,
-        TreatyResearchPact,
+        //TreatyTradePact,
+        //TreatyResearchPact,
         TreatyAffiliation,
         TreatyDefensiveAlliance,
         TreatyFullAlliance,

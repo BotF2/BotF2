@@ -169,29 +169,29 @@ namespace Supremacy.Diplomacy
             }
         }
 
-        public void BeginEmbargo()
-        {
-            var agreements = GameContext.Current.AgreementMatrix;
+        //public void BeginEmbargo()
+        //{
+        //    var agreements = GameContext.Current.AgreementMatrix;
 
-            foreach (var agreement in agreements)
-            {
-                foreach (var clause in agreement.Proposal.Clauses)
-                {
-                    if (clause.ClauseType == ClauseType.TreatyTradePact)
-                    {
-                        DiplomacyHelper.BreakAgreement(agreement);
-                    }
+        //    foreach (var agreement in agreements)
+        //    {
+        //        foreach (var clause in agreement.Proposal.Clauses)
+        //        {
+        //            if (clause.ClauseType == ClauseType.TreatyTradePact)
+        //            {
+        //                DiplomacyHelper.BreakAgreement(agreement);
+        //            }
 
-                }
-            }
-            // TODO: Break any trade agreements
-            IsEmbargoInPlace = true;
-        }
+        //        }
+        //    }
+        //    // TODO: Break any trade agreements
+        //    IsEmbargoInPlace = true;
+        //}
 
-        public void EndEmbargo()
-        {
-            IsEmbargoInPlace = false;
-        }
+        //public void EndEmbargo()
+        //{
+        //    IsEmbargoInPlace = false;
+        //}
 
         public void DeclareWar()
         {
@@ -380,8 +380,9 @@ namespace Supremacy.Diplomacy
                 return;
             }
 
-            if (agreementMatrix.IsAgreementActive(owner, counterparty, ClauseType.TreatyTradePact) ||
-                agreementMatrix.IsAgreementActive(owner, counterparty, ClauseType.TreatyResearchPact) ||
+            if (
+            //agreementMatrix.IsAgreementActive(owner, counterparty, ClauseType.TreatyTradePact) ||
+            //    agreementMatrix.IsAgreementActive(owner, counterparty, ClauseType.TreatyResearchPact) ||
                 agreementMatrix.IsAgreementActive(owner, counterparty, ClauseType.TreatyOpenBorders))
             {
                 ownerStatus = ForeignPowerStatus.Friendly;

@@ -103,24 +103,24 @@ namespace Supremacy.Diplomacy
 
             switch (clause.ClauseType)
             {
-                case ClauseType.OfferWithdrawTroops:
-                    visitor.VisitOfferWithdrawTroopsClause(clause);
-                    break;
-                case ClauseType.RequestWithdrawTroops:
-                    visitor.VisitRequestWithdrawTroopsClause(clause);
-                    break;
-                case ClauseType.OfferStopPiracy:
-                    visitor.VisitOfferStopPiracyClause(clause);
-                    break;
-                case ClauseType.RequestStopPiracy:
-                    visitor.VisitRequestStopPiracyClause(clause);
-                    break;
-                case ClauseType.OfferBreakAgreement:
-                    visitor.VisitOfferBreakAgreementClause(clause);
-                    break;
-                case ClauseType.RequestBreakAgreement:
-                    visitor.VisitRequestBreakAgreementClause(clause);
-                    break;
+                //case ClauseType.OfferWithdrawTroops:
+                //    visitor.VisitOfferWithdrawTroopsClause(clause);
+                //    break;
+                //case ClauseType.RequestWithdrawTroops:
+                //    visitor.VisitRequestWithdrawTroopsClause(clause);
+                //    break;
+                //case ClauseType.OfferStopPiracy:
+                //    visitor.VisitOfferStopPiracyClause(clause);
+                //    break;
+                //case ClauseType.RequestStopPiracy:
+                //    visitor.VisitRequestStopPiracyClause(clause);
+                //    break;
+                //case ClauseType.OfferBreakAgreement:
+                //    visitor.VisitOfferBreakAgreementClause(clause);
+                //    break;
+                //case ClauseType.RequestBreakAgreement:
+                //    visitor.VisitRequestBreakAgreementClause(clause);
+                //    break;
                 case ClauseType.OfferGiveCredits:
                     visitor.VisitOfferGiveCreditsClause(clause);
                     break;
@@ -133,24 +133,24 @@ namespace Supremacy.Diplomacy
                 //case ClauseType.RequestGiveResources:
                 //    visitor.VisitRequestGiveResourcesClause(clause);
                 //    break;
-                case ClauseType.OfferMapData:
-                    visitor.VisitOfferMapDataClause(clause);
-                    break;
-                case ClauseType.RequestMapData:
-                    visitor.VisitRequestMapDataClause(clause);
-                    break;
-                case ClauseType.OfferHonorMilitaryAgreement:
-                    visitor.VisitOfferHonorMilitaryAgreementClause(clause);
-                    break;
-                case ClauseType.RequestHonorMilitaryAgreement:
-                    visitor.VisitRequestHonorMilitaryAgreementClause(clause);
-                    break;
-                case ClauseType.OfferEndEmbargo:
-                    visitor.VisitOfferEndEmbargoClause(clause);
-                    break;
-                case ClauseType.RequestEndEmbargo:
-                    visitor.VisitRequestEndEmbargoClause(clause);
-                    break;
+                //case ClauseType.OfferMapData:
+                //    visitor.VisitOfferMapDataClause(clause);
+                //    break;
+                //case ClauseType.RequestMapData:
+                //    visitor.VisitRequestMapDataClause(clause);
+                //    break;
+                //case ClauseType.OfferHonorMilitaryAgreement:
+                //    visitor.VisitOfferHonorMilitaryAgreementClause(clause);
+                //    break;
+                //case ClauseType.RequestHonorMilitaryAgreement:
+                //    visitor.VisitRequestHonorMilitaryAgreementClause(clause);
+                //    break;
+                //case ClauseType.OfferEndEmbargo:
+                //    visitor.VisitOfferEndEmbargoClause(clause);
+                //    break;
+                //case ClauseType.RequestEndEmbargo:
+                //    visitor.VisitRequestEndEmbargoClause(clause);
+                //    break;
                 case ClauseType.TreatyWarPact:
                     visitor.VisitWarPactClause(clause);
                     break;
@@ -163,12 +163,12 @@ namespace Supremacy.Diplomacy
                 case ClauseType.TreatyOpenBorders:
                     visitor.VisitTreatyOpenBordersClause(clause);
                     break;
-                case ClauseType.TreatyTradePact:
-                    visitor.VisitTreatyTradePactClause(clause);
-                    break;
-                case ClauseType.TreatyResearchPact:
-                    visitor.VisitTreatyResearchPactClause(clause);
-                    break;
+                //case ClauseType.TreatyTradePact:
+                //    visitor.VisitTreatyTradePactClause(clause);
+                //    break;
+                //case ClauseType.TreatyResearchPact:
+                //    visitor.VisitTreatyResearchPactClause(clause);
+                //    break;
                 case ClauseType.TreatyAffiliation:
                     visitor.VisitTreatyAffiliationClause(clause);
                     break;

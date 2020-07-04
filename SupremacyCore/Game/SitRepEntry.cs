@@ -818,7 +818,7 @@ namespace Supremacy.Game
                         return detailed ? default(DiplomacySitRepStringKey?) : DiplomacySitRepStringKey.CeaseFireProposedSummaryText;
                     if (proposal.HasClause(ClauseType.TreatyNonAggression))
                         return detailed ? default(DiplomacySitRepStringKey?) : DiplomacySitRepStringKey.NonAggressionPactProposedSummaryText;
-                    if (proposal.HasClause(ClauseType.TreatyOpenBorders) || proposal.HasClause(ClauseType.TreatyTradePact))
+                    if (proposal.HasClause(ClauseType.TreatyOpenBorders) /*|| proposal.HasClause(ClauseType.TreatyTradePact)*/)
                         return detailed ? default(DiplomacySitRepStringKey?) : DiplomacySitRepStringKey.OpenBordersProposedSummaryText;
                     if (proposal.HasClause(ClauseType.TreatyAffiliation))
                         return detailed ? default(DiplomacySitRepStringKey?) : DiplomacySitRepStringKey.AffiliationProposedSummaryText;
@@ -850,7 +850,7 @@ namespace Supremacy.Game
                             return detailed ? default(DiplomacySitRepStringKey?) : DiplomacySitRepStringKey.CeaseFireAcceptedSummaryText;
                         if (proposal.HasClause(ClauseType.TreatyNonAggression))
                             return detailed ? DiplomacySitRepStringKey.NonAggressionPactAcceptedDetailText : DiplomacySitRepStringKey.NonAggressionPactAcceptedSummaryText;
-                        if (proposal.HasClause(ClauseType.TreatyOpenBorders) || proposal.HasClause(ClauseType.TreatyTradePact))
+                        if (proposal.HasClause(ClauseType.TreatyOpenBorders) /*|| proposal.HasClause(ClauseType.TreatyTradePact)*/)
                             return detailed ? DiplomacySitRepStringKey.OpenBordersAcceptedDetailText : DiplomacySitRepStringKey.OpenBordersAcceptedSummaryText;
                         if (proposal.HasClause(ClauseType.TreatyAffiliation))
                             return detailed ? DiplomacySitRepStringKey.AffiliationAcceptedDetailText : DiplomacySitRepStringKey.AffiliationAcceptedSummaryText;
@@ -875,7 +875,7 @@ namespace Supremacy.Game
                             return DiplomacySitRepStringKey.CeaseFireRejectedSummaryText;
                         if (proposal.HasClause(ClauseType.TreatyNonAggression))
                             return DiplomacySitRepStringKey.NonAggressionPactRejectedSummaryText;
-                        if (proposal.HasClause(ClauseType.TreatyOpenBorders) || proposal.HasClause(ClauseType.TreatyTradePact))
+                        if (proposal.HasClause(ClauseType.TreatyOpenBorders) /*|| proposal.HasClause(ClauseType.TreatyTradePact)*/)
                             return DiplomacySitRepStringKey.OpenBordersRejectedSummaryText;
                         if (proposal.HasClause(ClauseType.TreatyAffiliation))
                             return DiplomacySitRepStringKey.AffiliationRejectedSummaryText;

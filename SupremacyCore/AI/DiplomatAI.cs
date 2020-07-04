@@ -135,17 +135,17 @@ namespace Supremacy.AI
                             {
                                 if (clause.ClauseType == ClauseType.OfferGiveCredits)
                                 {
-                                    int value = (((CreditsClauseData) clause.Data).ImmediateAmount +
-                                                 ((CreditsClauseData) clause.Data).RecurringAmount) / 25;
+                                    int value = (((CreditsClauseData)clause.Data).ImmediateAmount +
+                                                 ((CreditsClauseData)clause.Data).RecurringAmount) / 25;
                                     int greedy = 0;
                                     if (foreignPower.ProposalReceived.Recipient.Traits.Contains("Materialistic"))
                                     {
                                         greedy = 50;
                                     }
                                     foreignPower.AddRegardEvent(
-                                        new RegardEvent(5, RegardEventType.NoRegardEvent, value/2 +greedy));
+                                        new RegardEvent(5, RegardEventType.NoRegardEvent, value / 2 + greedy));
                                     DiplomacyHelper.ApplyTrustChange(foreignPower.Counterparty, foreignPower.Owner,
-                                        value/2 + greedy);
+                                        value / 2 + greedy);
                                 }
                             }
                         }
@@ -156,54 +156,72 @@ namespace Supremacy.AI
                             foreignPower.Owner.ShortName);
                         //if (foreignPower.DiplomacyData.Status == ForeignPowerStatus.Affiliated)
 
-                        if (foreignPower.ProposalReceived != null && !aCiv.IsHuman ) //!(aCiv.IsHuman && otherCiv.IsHuman))
+                        if (foreignPower.ProposalReceived != null && !aCiv.IsHuman) //!(aCiv.IsHuman && otherCiv.IsHuman))
                         {
+                            bool accepted = false;
+                            int regard = foreignPower.DiplomacyData.Regard.CurrentValue;
+                            int trust = foreignPower.DiplomacyData.Regard.CurrentValue;
+                            //bool traits = RandomHelper.Chance(similarTraits);
+
                             foreach (var clause in foreignPower.ProposalReceived.Clauses)
                             {
-                                if (clause.ClauseType == ClauseType.TreatyMembership &&
-                                    foreignPower.DiplomacyData.Regard.CurrentValue > 899 &&
-                                    foreignPower.DiplomacyData.Trust.CurrentValue > 899 ||
-                                    clause.ClauseType == ClauseType.TreatyFullAlliance &&
-                                    foreignPower.DiplomacyData.Regard.CurrentValue > 899 &&
-                                    foreignPower.DiplomacyData.Trust.CurrentValue > 899 ||
-                                    clause.ClauseType == ClauseType.TreatyDefensiveAlliance &&
-                                    foreignPower.DiplomacyData.Regard.CurrentValue > 799 &&
-                                    foreignPower.DiplomacyData.Trust.CurrentValue > 799 ||
-                                    clause.ClauseType == ClauseType.TreatyWarPact &&
-                                    foreignPower.DiplomacyData.Regard.CurrentValue > 799 &&
-                                    foreignPower.DiplomacyData.Trust.CurrentValue > 799 ||
-                                    clause.ClauseType == ClauseType.TreatyAffiliation &&
-                                    foreignPower.DiplomacyData.Regard.CurrentValue > 699 &&
-                                    foreignPower.DiplomacyData.Trust.CurrentValue > 699 ||
-                                    clause.ClauseType == ClauseType.TreatyNonAggression &&
-                                    foreignPower.DiplomacyData.Regard.CurrentValue > 499 &&
-                                    foreignPower.DiplomacyData.Trust.CurrentValue > 499 ||
-                                    clause.ClauseType == ClauseType.TreatyOpenBorders &&
-                                    foreignPower.DiplomacyData.Regard.CurrentValue > 399 &&
-                                    foreignPower.DiplomacyData.Trust.CurrentValue > 399 ||
-                                    clause.ClauseType == ClauseType.TreatyResearchPact &&
-                                    foreignPower.DiplomacyData.Regard.CurrentValue > 499 &&
-                                    foreignPower.DiplomacyData.Trust.CurrentValue > 499 ||
-                                    clause.ClauseType == ClauseType.TreatyTradePact &&
-                                    foreignPower.DiplomacyData.Regard.CurrentValue > 399 &&
-                                    foreignPower.DiplomacyData.Trust.CurrentValue > 399 ||
-                                    clause.ClauseType == ClauseType.TreatyCeaseFire &&
-                                    RandomHelper.Chance(similarTraits))
+                                switch (clause.ClauseType)
                                 {
-                                    foreignPower.PendingAction = PendingDiplomacyAction.AcceptProposal;
+                                    case ClauseType.TreatyMembership:
+                                        if (regard > 899 && trust > 899) accepted = true; break;
 
-                                    GameLog.Client.Diplomacy.DebugFormat(
-                                        "## PendingAction ={0} reset by clause - regard value, Counterparty = {1} Onwer = {2}",
-                                        foreignPower.PendingAction.ToString(), foreignPower.Counterparty.ShortName,
-                                        foreignPower.Owner.ShortName);
+                                    case ClauseType.TreatyFullAlliance:
+                                        if (regard > 899 && trust > 899) accepted = true; break;
+
+                                    case ClauseType.TreatyDefensiveAlliance:
+                                        if (regard > 799 && trust > 799) accepted = true; break;
+
+                                    case ClauseType.TreatyWarPact:
+                                        if (regard > 799 && trust > 799) accepted = true; break;
+
+                                    case ClauseType.TreatyAffiliation:
+                                        if (regard > 699 && trust > 699) accepted = true; break;
+
+                                    case ClauseType.TreatyNonAggression:
+                                        if (regard > 499 && trust > 499) accepted = true; break;
+
+                                    case ClauseType.TreatyOpenBorders:
+                                        if (regard > 399 && trust > 399) accepted = true; break;
+
+                                    case ClauseType.TreatyCeaseFire:
+                                        if (RandomHelper.Chance(similarTraits)) accepted = true; break;
+
+                                    default:
+                                        break;
                                 }
-                                else foreignPower.PendingAction = PendingDiplomacyAction.RejectProposal;
                             }
+
+
+                            if (accepted == true)
+                            {
+                                foreignPower.PendingAction = PendingDiplomacyAction.AcceptProposal;
+
+                                GameLog.Client.Diplomacy.DebugFormat(
+                                    "## PendingAction: ACCEPT ={0} reset by clause - regard value, Counterparty = {1} Onwer = {2}",
+                                    foreignPower.PendingAction.ToString(), foreignPower.Counterparty.ShortName,
+                                    foreignPower.Owner.ShortName);
+                            }
+                            else
+                            {
+                                foreignPower.PendingAction = PendingDiplomacyAction.RejectProposal;
+
+                                GameLog.Client.Diplomacy.DebugFormat(
+                                    "## PendingAction: REJECT ={0} reset by clause - regard value, Counterparty = {1} Onwer = {2}",
+                                    foreignPower.PendingAction.ToString(), foreignPower.Counterparty.ShortName,
+                                    foreignPower.Owner.ShortName);
+                            }
+
+
                         }
+                        #endregion Proposals
+                        foreignPower.LastProposalReceived = foreignPower.ProposalReceived;
+                        foreignPower.ProposalReceived = null;
                     }
-                    #endregion Proposals
-                    foreignPower.LastProposalReceived = foreignPower.ProposalReceived;
-                    foreignPower.ProposalReceived = null;
                     
                 }
 

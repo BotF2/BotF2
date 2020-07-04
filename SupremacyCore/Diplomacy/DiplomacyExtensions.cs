@@ -47,8 +47,8 @@ namespace Supremacy.Diplomacy
                 case ClauseType.TreatyAffiliation:
                 case ClauseType.TreatyNonAggression:
                 case ClauseType.TreatyOpenBorders:
-                case ClauseType.TreatyResearchPact:
-                case ClauseType.TreatyTradePact:
+                //case ClauseType.TreatyResearchPact:
+                //case ClauseType.TreatyTradePact:
                     return true;
             }
             return false;
@@ -433,15 +433,15 @@ namespace Supremacy.Diplomacy
                 where d.Status == ForeignPowerStatus.AtWar && d.CounterpartyID != source.OwnerID
                 select civilizations[d.CounterpartyID]);
 
-            if (includeProposal != null)
-            {
-                foreach (var clauses in includeProposal.Clauses.Where(o => o.ClauseType == ClauseType.RequestHonorMilitaryAgreement))
-                {
-                    var otherCiv = clauses.Data as Civilization;
-                    if (otherCiv != null)
-                        atWarWith.Remove(otherCiv);
-                }
-            }
+            //if (includeProposal != null)
+            //{
+            //    foreach (var clauses in includeProposal.Clauses.Where(o => o.ClauseType == ClauseType.RequestHonorMilitaryAgreement))
+            //    {
+            //        var otherCiv = clauses.Data as Civilization;
+            //        if (otherCiv != null)
+            //            atWarWith.Remove(otherCiv);
+            //    }
+            //}
 
             foreach (var civilization in atWarWith)
                 yield return civilization;
@@ -475,15 +475,15 @@ namespace Supremacy.Diplomacy
                 where d.Status == ForeignPowerStatus.AtWar && d.CounterpartyID != civ.CivID
                 select civilizations[d.CounterpartyID]);
 
-            if (includeProposal != null)
-            {
-                foreach (var clauses in includeProposal.Clauses.Where(o => o.ClauseType ==ClauseType.OfferHonorMilitaryAgreement))
-                {
-                    var otherCiv = clauses.Data as Civilization;
-                    if (otherCiv != null)
-                        atWarWith.Remove(otherCiv);
-                }
-            }
+            //if (includeProposal != null)
+            //{
+            //    foreach (var clauses in includeProposal.Clauses.Where(o => o.ClauseType ==ClauseType.OfferHonorMilitaryAgreement))
+            //    {
+            //        var otherCiv = clauses.Data as Civilization;
+            //        if (otherCiv != null)
+            //            atWarWith.Remove(otherCiv);
+            //    }
+            //}
 
             foreach (var civilization in atWarWith)
                 yield return civilization;

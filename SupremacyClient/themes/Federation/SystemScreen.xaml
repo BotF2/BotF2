@@ -252,12 +252,12 @@
                         <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
                                         
-                      <TextBlock Grid.Row="0" Grid.Column="0" VerticalAlignment="Center"
+                      <!--<TextBlock Grid.Row="0" Grid.Column="0" VerticalAlignment="Center"
                            Foreground="LightGoldenrodYellow"
                            FontSize="16"
                            Text="Hello" 
                                  
-                                 />
+                                 />-->
                                         
                       <ItemsControl ItemsSource="{Binding Path=SelectedColony.Shipyard.BuildSlots, Mode=OneWay}"
                                   Grid.Column="0"
