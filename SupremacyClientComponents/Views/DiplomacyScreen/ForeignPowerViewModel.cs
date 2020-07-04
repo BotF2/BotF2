@@ -350,8 +350,6 @@ namespace Supremacy.Client.Views
                 message = viewModel.CreateMessage(); // create statment vs create proposal
             }
 
-            //var proposal = message as IProposal;
-
             //GameLog.Client.Diplomacy.DebugFormat("proposal ={0}", proposal);
             if (proposal != null)
             {

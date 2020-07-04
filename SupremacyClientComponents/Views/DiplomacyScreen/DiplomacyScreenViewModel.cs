@@ -102,7 +102,6 @@ namespace Supremacy.Client.Views
             _resetGraphCommand = new DelegateCommand(ExecuteResetGraphCommand);
             _setSelectedGraphNodeCommand = new DelegateCommand<DiplomacyGraphNode>(ExecuteSetSelectedGraphNodeCommand);
             
-
             Refresh();
         }
 
@@ -193,6 +192,7 @@ namespace Supremacy.Client.Views
             OnCommandVisibilityChanged();
             OnIsMessageEditInProgressChanged();
             InvalidateCommands();
+            //Refresh(); crashes
         }
 
         #region DeclareWarCommandButton
@@ -239,6 +239,7 @@ namespace Supremacy.Client.Views
 
             InvalidateCommands();
             OnCommandVisibilityChanged();
+            Refresh();
         }
         #endregion DeclareWarCommandButton
 
@@ -284,6 +285,7 @@ namespace Supremacy.Client.Views
 
             InvalidateCommands();
             OnCommandVisibilityChanged();
+            Refresh();
         }
         #endregion EndWarCommandButton
 
@@ -335,6 +337,7 @@ namespace Supremacy.Client.Views
 
             InvalidateCommands();
             OnCommandVisibilityChanged();
+            Refresh();
         }
         #endregion OpenBordersCommandButton
 
@@ -386,6 +389,7 @@ namespace Supremacy.Client.Views
 
             InvalidateCommands();
             OnCommandVisibilityChanged();
+            Refresh();
         }
         #endregion NonAgressionCommandButton
 
@@ -437,6 +441,7 @@ namespace Supremacy.Client.Views
 
             InvalidateCommands();
             OnCommandVisibilityChanged();
+            Refresh();
         }
         #endregion AffiliationCommandButton
 
@@ -488,6 +493,7 @@ namespace Supremacy.Client.Views
 
             InvalidateCommands();
             OnCommandVisibilityChanged();
+            Refresh();
         }
         #endregion DefenceAllianceCommandButton
 
@@ -533,6 +539,7 @@ namespace Supremacy.Client.Views
 
             InvalidateCommands();
             OnCommandVisibilityChanged();
+            Refresh();
         }
         #endregion FullAllianceCommandButton
 
@@ -578,6 +585,7 @@ namespace Supremacy.Client.Views
 
             InvalidateCommands();
             OnCommandVisibilityChanged();
+            Refresh();
         }
         #endregion MembershipCommandButton
 
@@ -1268,11 +1276,11 @@ namespace Supremacy.Client.Views
                 case ClauseType.OfferGiveCredits:
                     return DiplomacyMessageElementType.OfferGiveCreditsClause;
                 case ClauseType.RequestGiveCredits:
-                //    return DiplomacyMessageElementType.RequestGiveCreditsClause;
+                    return DiplomacyMessageElementType.RequestGiveCreditsClause;
                 //case ClauseType.OfferGiveResources:
                 //    return DiplomacyMessageElementType.OfferGiveResourcesClause;
                 //case ClauseType.RequestGiveResources:
-                    return DiplomacyMessageElementType.RequestGiveResourcesClause;
+                    //return DiplomacyMessageElementType.RequestGiveResourcesClause;
                 //case ClauseType.OfferMapData:
                 //    return DiplomacyMessageElementType.OfferMapDataClause;
                 //case ClauseType.RequestMapData:

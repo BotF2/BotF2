@@ -70,7 +70,7 @@ namespace Supremacy.AI
                 int[] countArray = new int[] {foreignTraits.Length, theCivTraits.Length};
                 int fewestTotalTraits = countArray.Min();    
 
-                int similarTraits = (countCommon *10 / fewestTotalTraits); // a double from 1 to 0
+                int similarTraits = (countCommon *10 / fewestTotalTraits); // (a double from 1 to 0) * 10 
                 GameLog.Client.Diplomacy.DebugFormat("## similar traits ={0} counterparty ={1} traits ={2} owner ={3} traits ={4}",
                     similarTraits, foreignPower.Counterparty.Key,foreignPower.Counterparty.Traits, foreignPower.Owner.Key, foreignPower.Owner.Traits );
 
@@ -189,7 +189,11 @@ namespace Supremacy.AI
                                         if (regard > 399 && trust > 399) accepted = true; break;
 
                                     case ClauseType.TreatyCeaseFire:
-                                        if (RandomHelper.Chance(similarTraits)) accepted = true; break;
+                                        {
+                                            Random num = new Random();
+                                            int chance = num.Next(1, (similarTraits + 2));
+                                            if (chance != 1) accepted = true; break;
+                                        }
 
                                     default:
                                         break;
