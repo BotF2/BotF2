@@ -91,12 +91,15 @@ namespace Supremacy.Diplomacy
         {
             get
             {
-                if (!IsContactMade)
+                if (!IsContactMade || DiplomacyData.Status == ForeignPowerStatus.OwnerIsMember || DiplomacyData.Status == ForeignPowerStatus.CounterpartyIsMember)
                     return false;
 
                 if (DiplomacyData.Status != ForeignPowerStatus.AtWar)
                     return true;
-
+                //if (DiplomacyData.Status != ForeignPowerStatus.OwnerIsMember)
+                //    return false;
+                //if (DiplomacyData.Status != ForeignPowerStatus.CounterpartyIsMember)
+                //    return false;
                 var turnsSinceWarDeclaration = GameContext.Current.TurnNumber - LastStatusChange;
                 if (turnsSinceWarDeclaration <= 3)
                     return false;
@@ -194,7 +197,10 @@ namespace Supremacy.Diplomacy
         {
             if (DiplomacyData.Status == ForeignPowerStatus.AtWar)
                 return;
-
+            if (DiplomacyData.Status == ForeignPowerStatus.OwnerIsMember)
+                return;
+            if (DiplomacyData.Status == ForeignPowerStatus.CounterpartyIsMember)
+                return;
             if (!IsContactMade)
                 MakeContact();
 
