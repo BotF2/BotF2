@@ -41,6 +41,8 @@ namespace Supremacy.AI
                 var foreignPower = diplomat.GetForeignPower(otherCiv);
                 var otherdiplomat = Diplomat.Get(otherCiv);
                 ForeignPower otherForeignPower = otherdiplomat.GetForeignPower(civ);
+                if (foreignPower.DiplomacyData.Status == ForeignPowerStatus.OwnerIsMember || otherForeignPower.DiplomacyData.Status == ForeignPowerStatus.OwnerIsMember)
+                    continue;
 
                 #region Foriegn Traits List
 
@@ -159,43 +161,43 @@ namespace Supremacy.AI
                             foreach (var clause in foreignPower.ProposalReceived.Clauses)
                             {
                                 if (clause.ClauseType == ClauseType.TreatyMembership &&
-                                    foreignPower.DiplomacyData.Regard.CurrentValue < (int) RegardValue.Unified &&
-                                    foreignPower.DiplomacyData.Trust.CurrentValue < 900 ||
+                                    foreignPower.DiplomacyData.Regard.CurrentValue > 899 &&
+                                    foreignPower.DiplomacyData.Trust.CurrentValue > 899 ||
                                     clause.ClauseType == ClauseType.TreatyFullAlliance &&
-                                    foreignPower.DiplomacyData.Regard.CurrentValue < (int) RegardValue.Allied &&
-                                    foreignPower.DiplomacyData.Trust.CurrentValue < 900 ||
+                                    foreignPower.DiplomacyData.Regard.CurrentValue > 899 &&
+                                    foreignPower.DiplomacyData.Trust.CurrentValue > 899 ||
                                     clause.ClauseType == ClauseType.TreatyDefensiveAlliance &&
-                                    foreignPower.DiplomacyData.Regard.CurrentValue < (int) RegardValue.Allied &&
-                                    foreignPower.DiplomacyData.Trust.CurrentValue < 800 ||
+                                    foreignPower.DiplomacyData.Regard.CurrentValue > 799 &&
+                                    foreignPower.DiplomacyData.Trust.CurrentValue > 799 ||
                                     clause.ClauseType == ClauseType.TreatyWarPact &&
-                                    foreignPower.DiplomacyData.Regard.CurrentValue < (int) RegardValue.Allied &&
-                                    foreignPower.DiplomacyData.Trust.CurrentValue < 800 ||
+                                    foreignPower.DiplomacyData.Regard.CurrentValue > 799 &&
+                                    foreignPower.DiplomacyData.Trust.CurrentValue > 799 ||
                                     clause.ClauseType == ClauseType.TreatyAffiliation &&
-                                    foreignPower.DiplomacyData.Regard.CurrentValue < (int) RegardValue.Friend &&
-                                    foreignPower.DiplomacyData.Trust.CurrentValue < 700 ||
+                                    foreignPower.DiplomacyData.Regard.CurrentValue > 699 &&
+                                    foreignPower.DiplomacyData.Trust.CurrentValue > 699 ||
                                     clause.ClauseType == ClauseType.TreatyNonAggression &&
-                                    foreignPower.DiplomacyData.Regard.CurrentValue < (int) RegardValue.Friend &&
-                                    foreignPower.DiplomacyData.Trust.CurrentValue < 600 ||
+                                    foreignPower.DiplomacyData.Regard.CurrentValue > 499 &&
+                                    foreignPower.DiplomacyData.Trust.CurrentValue > 499 ||
                                     clause.ClauseType == ClauseType.TreatyOpenBorders &&
-                                    foreignPower.DiplomacyData.Regard.CurrentValue < (int) RegardValue.Neutral &&
-                                    foreignPower.DiplomacyData.Trust.CurrentValue < 500 ||
+                                    foreignPower.DiplomacyData.Regard.CurrentValue > 399 &&
+                                    foreignPower.DiplomacyData.Trust.CurrentValue > 399 ||
                                     clause.ClauseType == ClauseType.TreatyResearchPact &&
-                                    foreignPower.DiplomacyData.Regard.CurrentValue < (int) RegardValue.Neutral &&
-                                    foreignPower.DiplomacyData.Trust.CurrentValue < 500 ||
+                                    foreignPower.DiplomacyData.Regard.CurrentValue > 499 &&
+                                    foreignPower.DiplomacyData.Trust.CurrentValue > 499 ||
                                     clause.ClauseType == ClauseType.TreatyTradePact &&
-                                    foreignPower.DiplomacyData.Regard.CurrentValue < (int) RegardValue.Neutral &&
-                                    foreignPower.DiplomacyData.Trust.CurrentValue < 500 ||
+                                    foreignPower.DiplomacyData.Regard.CurrentValue > 399 &&
+                                    foreignPower.DiplomacyData.Trust.CurrentValue > 399 ||
                                     clause.ClauseType == ClauseType.TreatyCeaseFire &&
                                     RandomHelper.Chance(similarTraits))
                                 {
-                                    foreignPower.PendingAction = PendingDiplomacyAction.RejectProposal;
+                                    foreignPower.PendingAction = PendingDiplomacyAction.AcceptProposal;
 
                                     GameLog.Client.Diplomacy.DebugFormat(
                                         "## PendingAction ={0} reset by clause - regard value, Counterparty = {1} Onwer = {2}",
                                         foreignPower.PendingAction.ToString(), foreignPower.Counterparty.ShortName,
                                         foreignPower.Owner.ShortName);
                                 }
-                                else foreignPower.PendingAction = PendingDiplomacyAction.AcceptProposal;
+                                else foreignPower.PendingAction = PendingDiplomacyAction.RejectProposal;
                             }
                         }
                     }

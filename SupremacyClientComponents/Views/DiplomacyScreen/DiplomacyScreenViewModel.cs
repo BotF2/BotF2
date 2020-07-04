@@ -207,7 +207,8 @@ namespace Supremacy.Client.Views
 
             return selectedForeignPower != null &&
                    selectedForeignPower.OutgoingMessage == null &&
-                   selectedForeignPower.Status != ForeignPowerStatus.AtWar;
+                   selectedForeignPower.Status != ForeignPowerStatus.AtWar; // &&
+                   //selectedForeignPower.Status != ForeignPowerStatus.CounterpartyIsMember;
         }
 
         private void ExecuteDeclareWarCommand()
@@ -216,6 +217,8 @@ namespace Supremacy.Client.Views
 
             if (!CanExecuteDeclareWarCommandCore(out foreignPower))
                 return;
+            //if (foreignPower.Status != ForeignPowerStatus.CounterpartyIsMember)
+            //    return;
 
             DisplayMode = DiplomacyScreenDisplayMode.Outbox; // new
 
