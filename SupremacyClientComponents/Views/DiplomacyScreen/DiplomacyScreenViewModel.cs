@@ -1253,18 +1253,18 @@ namespace Supremacy.Client.Views
             //GameLog.Client.Diplomacy.DebugFormat("((()))DiplomacyMessageFromClauseType ClauseType param ={0}", clauseType );
             switch (clauseType)
             {
-                case ClauseType.OfferWithdrawTroops:
-                    return DiplomacyMessageElementType.OfferWithdrawTroopsClause;
-                case ClauseType.RequestWithdrawTroops:
-                    return DiplomacyMessageElementType.RequestWithdrawTroopsClause;
-                case ClauseType.OfferStopPiracy:
-                    return DiplomacyMessageElementType.OfferStopPiracyClause;
-                case ClauseType.RequestStopPiracy:
-                    return DiplomacyMessageElementType.RequestStopPiracyClause;
-                case ClauseType.OfferBreakAgreement:
-                    return DiplomacyMessageElementType.OfferBreakAgreementClause;
-                case ClauseType.RequestBreakAgreement:
-                    return DiplomacyMessageElementType.RequestBreakAgreementClause;
+                //case ClauseType.OfferWithdrawTroops:
+                //    return DiplomacyMessageElementType.OfferWithdrawTroopsClause;
+                //case ClauseType.RequestWithdrawTroops:
+                //    return DiplomacyMessageElementType.RequestWithdrawTroopsClause;
+                //case ClauseType.OfferStopPiracy:
+                //    return DiplomacyMessageElementType.OfferStopPiracyClause;
+                //case ClauseType.RequestStopPiracy:
+                //    return DiplomacyMessageElementType.RequestStopPiracyClause;
+                //case ClauseType.OfferBreakAgreement:
+                //    return DiplomacyMessageElementType.OfferBreakAgreementClause;
+                //case ClauseType.RequestBreakAgreement:
+                //    return DiplomacyMessageElementType.RequestBreakAgreementClause;
                 case ClauseType.OfferGiveCredits:
                     return DiplomacyMessageElementType.OfferGiveCreditsClause;
                 case ClauseType.RequestGiveCredits:
@@ -1273,18 +1273,18 @@ namespace Supremacy.Client.Views
                 //    return DiplomacyMessageElementType.OfferGiveResourcesClause;
                 //case ClauseType.RequestGiveResources:
                     return DiplomacyMessageElementType.RequestGiveResourcesClause;
-                case ClauseType.OfferMapData:
-                    return DiplomacyMessageElementType.OfferMapDataClause;
-                case ClauseType.RequestMapData:
-                    return DiplomacyMessageElementType.RequestMapDataClause;
-                case ClauseType.OfferHonorMilitaryAgreement:
-                    return DiplomacyMessageElementType.OfferHonorMilitaryAgreementClause;
-                case ClauseType.RequestHonorMilitaryAgreement:
-                    return DiplomacyMessageElementType.RequestHonorMilitaryAgreementClause;
-                case ClauseType.OfferEndEmbargo:
-                    return DiplomacyMessageElementType.OfferEndEmbargoClause;
-                case ClauseType.RequestEndEmbargo:
-                    return DiplomacyMessageElementType.RequestEndEmbargoClause;
+                //case ClauseType.OfferMapData:
+                //    return DiplomacyMessageElementType.OfferMapDataClause;
+                //case ClauseType.RequestMapData:
+                //    return DiplomacyMessageElementType.RequestMapDataClause;
+                //case ClauseType.OfferHonorMilitaryAgreement:
+                //    return DiplomacyMessageElementType.OfferHonorMilitaryAgreementClause;
+                //case ClauseType.RequestHonorMilitaryAgreement:
+                //    return DiplomacyMessageElementType.RequestHonorMilitaryAgreementClause;
+                //case ClauseType.OfferEndEmbargo:
+                //    return DiplomacyMessageElementType.OfferEndEmbargoClause;
+                //case ClauseType.RequestEndEmbargo:
+                //    return DiplomacyMessageElementType.RequestEndEmbargoClause;
                 case ClauseType.TreatyWarPact:
                     return DiplomacyMessageElementType.TreatyWarPact;
                 case ClauseType.TreatyCeaseFire:
@@ -1293,10 +1293,10 @@ namespace Supremacy.Client.Views
                     return DiplomacyMessageElementType.TreatyNonAggressionClause;
                 case ClauseType.TreatyOpenBorders:
                     return DiplomacyMessageElementType.TreatyOpenBordersClause;
-                case ClauseType.TreatyTradePact:
-                    return DiplomacyMessageElementType.TreatyTradePactClause;
-                case ClauseType.TreatyResearchPact:
-                    return DiplomacyMessageElementType.TreatyResearchPactClause;
+                //case ClauseType.TreatyTradePact:
+                //    return DiplomacyMessageElementType.TreatyTradePactClause;
+                //case ClauseType.TreatyResearchPact:
+                //    return DiplomacyMessageElementType.TreatyResearchPactClause;
                 case ClauseType.TreatyAffiliation:
                     return DiplomacyMessageElementType.TreatyAffiliationClause;
                 case ClauseType.TreatyDefensiveAlliance:
@@ -1315,18 +1315,18 @@ namespace Supremacy.Client.Views
             //GameLog.Client.Diplomacy.DebugFormat("((()))ElementToClause DiploMessageElement param ={0}", elementType);
             switch (elementType)
             {
-                case DiplomacyMessageElementType.OfferWithdrawTroopsClause:
-                    return ClauseType.OfferWithdrawTroops;
-                case DiplomacyMessageElementType.RequestWithdrawTroopsClause:
-                    return ClauseType.RequestWithdrawTroops;
-                case DiplomacyMessageElementType.OfferStopPiracyClause:
-                    return ClauseType.OfferStopPiracy;
-                case DiplomacyMessageElementType.RequestStopPiracyClause:
-                    return ClauseType.RequestStopPiracy;
-                case DiplomacyMessageElementType.OfferBreakAgreementClause:
-                    return ClauseType.OfferBreakAgreement;
-                case DiplomacyMessageElementType.RequestBreakAgreementClause:
-                    return ClauseType.RequestBreakAgreement;
+                //case DiplomacyMessageElementType.OfferWithdrawTroopsClause:
+                //    return ClauseType.OfferWithdrawTroops;
+                //case DiplomacyMessageElementType.RequestWithdrawTroopsClause:
+                //    return ClauseType.RequestWithdrawTroops;
+                //case DiplomacyMessageElementType.OfferStopPiracyClause:
+                //    return ClauseType.OfferStopPiracy;
+                //case DiplomacyMessageElementType.RequestStopPiracyClause:
+                //    return ClauseType.RequestStopPiracy;
+                //case DiplomacyMessageElementType.OfferBreakAgreementClause:
+                //    return ClauseType.OfferBreakAgreement;
+                //case DiplomacyMessageElementType.RequestBreakAgreementClause:
+                //    return ClauseType.RequestBreakAgreement;
                 case DiplomacyMessageElementType.OfferGiveCreditsClause:
                     return ClauseType.OfferGiveCredits;
                 case DiplomacyMessageElementType.RequestGiveCreditsClause:
@@ -1335,18 +1335,18 @@ namespace Supremacy.Client.Views
                 //    return ClauseType.OfferGiveResources;
                 //case DiplomacyMessageElementType.RequestGiveResourcesClause:
                 //    return ClauseType.RequestGiveResources;
-                case DiplomacyMessageElementType.OfferMapDataClause:
-                    return ClauseType.OfferMapData;
-                case DiplomacyMessageElementType.RequestMapDataClause:
-                    return ClauseType.RequestMapData;
-                case DiplomacyMessageElementType.OfferHonorMilitaryAgreementClause:
-                    return ClauseType.OfferHonorMilitaryAgreement;
-                case DiplomacyMessageElementType.RequestHonorMilitaryAgreementClause:
-                    return ClauseType.RequestHonorMilitaryAgreement;
-                case DiplomacyMessageElementType.OfferEndEmbargoClause:
-                    return ClauseType.OfferEndEmbargo;
-                case DiplomacyMessageElementType.RequestEndEmbargoClause:
-                    return ClauseType.RequestEndEmbargo;
+                //case DiplomacyMessageElementType.OfferMapDataClause:
+                //    return ClauseType.OfferMapData;
+                //case DiplomacyMessageElementType.RequestMapDataClause:
+                //    return ClauseType.RequestMapData;
+                //case DiplomacyMessageElementType.OfferHonorMilitaryAgreementClause:
+                //    return ClauseType.OfferHonorMilitaryAgreement;
+                //case DiplomacyMessageElementType.RequestHonorMilitaryAgreementClause:
+                //    return ClauseType.RequestHonorMilitaryAgreement;
+                //case DiplomacyMessageElementType.OfferEndEmbargoClause:
+                //    return ClauseType.OfferEndEmbargo;
+                //case DiplomacyMessageElementType.RequestEndEmbargoClause:
+                //    return ClauseType.RequestEndEmbargo;
                 case DiplomacyMessageElementType.TreatyWarPact:
                     return ClauseType.TreatyWarPact;
                 case DiplomacyMessageElementType.TreatyCeaseFireClause:
@@ -1355,10 +1355,10 @@ namespace Supremacy.Client.Views
                     return ClauseType.TreatyNonAggression;
                 case DiplomacyMessageElementType.TreatyOpenBordersClause:
                     return ClauseType.TreatyOpenBorders;
-                case DiplomacyMessageElementType.TreatyTradePactClause:
-                    return ClauseType.TreatyTradePact;
-                case DiplomacyMessageElementType.TreatyResearchPactClause:
-                    return ClauseType.TreatyResearchPact;
+                //case DiplomacyMessageElementType.TreatyTradePactClause:
+                //    return ClauseType.TreatyTradePact;
+                //case DiplomacyMessageElementType.TreatyResearchPactClause:
+                //    return ClauseType.TreatyResearchPact;
                 case DiplomacyMessageElementType.TreatyAffiliationClause:
                     return ClauseType.TreatyAffiliation;
                 case DiplomacyMessageElementType.TreatyDefensiveAllianceClause:
