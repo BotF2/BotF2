@@ -671,7 +671,7 @@ namespace Supremacy.UI
                             activateCommand.Execute(category);
                         }
 
-                        GameLog.Client.General.DebugFormat("slider_ActiveUnitsChanged... category {1} IN-CREASED {0}", delta, category);
+                        GameLog.Client.Production.DebugFormat("slider_ActiveUnitsChanged... category {1} IN-CREASED {0}", delta, category);
                     }
                     else
                     {
@@ -681,7 +681,7 @@ namespace Supremacy.UI
                             deactivateCommand.Execute(category);
                         }
 
-                        GameLog.Client.General.DebugFormat("slider_ActiveUnitsChanged... category {1} DE-CREASED {0}", delta, category);
+                        GameLog.Client.Production.DebugFormat("slider_ActiveUnitsChanged... category {1} DE-CREASED {0}", delta, category);
                     }
                 }
                 
@@ -800,7 +800,7 @@ namespace Supremacy.UI
 
                 int LaborPool = colony.GetAvailableLabor() / 10;
 
-                GameLog.Client.Production.DebugFormat("Turn {7}: Pop={0},Food={1},Ind={2},Energy={3},Research={4},Intel={5},FreePoolSize={6}",
+                GameLog.Client.Production.DebugFormat("Turn {7}: Pop={0},Food={1},Ind={2},Energy={3},Research={4},Intel={5},FreePoolSize={6} for {8}",
                     colony.Population.CurrentValue,
                     colony.GetActiveFacilities(ProductionCategory.Food),
                     colony.GetActiveFacilities(ProductionCategory.Industry),
@@ -808,7 +808,8 @@ namespace Supremacy.UI
                     colony.GetActiveFacilities(ProductionCategory.Research),
                     colony.GetActiveFacilities(ProductionCategory.Intelligence),
                     LaborPool,
-                    GameContext.Current.TurnNumber);
+                    GameContext.Current.TurnNumber,
+                    this.Name);
                 /*_laborBar.ActiveUnits doesn't work */
 
                 _foodSlider.ActiveUnits = colony.GetActiveFacilities(ProductionCategory.Food);

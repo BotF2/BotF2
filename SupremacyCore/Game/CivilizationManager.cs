@@ -269,7 +269,7 @@ namespace Supremacy.Game
                 {
                     baseIntel *= bonus.Amount;
                 }
-                GameLog.Client.UI.DebugFormat("TotalIntelProduction = {0}", baseIntel);
+                GameLog.Client.Intel.DebugFormat("TotalIntelProduction = {0}", baseIntel);
                 return baseIntel;
             }
         }
@@ -283,7 +283,7 @@ namespace Supremacy.Game
                 {
                     updateMeter.CurrentValue = TotalIntelligenceProduction;
                 }
-                GameLog.Client.UI.DebugFormat("TotalIntelAttackingAccumulated = {0}", updateMeter.CurrentValue);
+                GameLog.Client.Intel.DebugFormat("TotalIntelAttackingAccumulated = {0}", updateMeter.CurrentValue);
                 return updateMeter;
             }
         }
@@ -293,7 +293,7 @@ namespace Supremacy.Game
             get
             {
                 var updateMeter = _totalIntelligenceDefenseAccumulated;
-                GameLog.Client.UI.DebugFormat("TotalIntelDefenseAccumulated = {0}", updateMeter.CurrentValue);
+                GameLog.Client.Intel.DebugFormat("TotalIntelDefenseAccumulated = {0}", updateMeter.CurrentValue);
                 if (_totalIntelligenceDefenseAccumulated.CurrentValue == 0)
                 {
                     updateMeter.CurrentValue = TotalIntelligenceProduction;
@@ -399,7 +399,7 @@ namespace Supremacy.Game
             _spiedCivList.AddRange(civList);
             //foreach (var item in civList)
             //{
-            //    GameLog.Client.UI.DebugFormat("Updated the spied list = {0}", item);
+            //    GameLog.Client.Intel.DebugFormat("Updated the spied list = {0}", item);
             //}
         }
 
@@ -532,14 +532,14 @@ namespace Supremacy.Game
         }
         private void OnTotalIntelligenceAttackingAccumulatedPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            GameLog.Client.UI.DebugFormat("OnTotalIntelAttackingAccumulated sender ={0} property changed ={1}", sender.ToString(), e.PropertyName.ToString());
+            GameLog.Client.Intel.DebugFormat("OnTotalIntelAttackingAccumulated sender ={0} property changed ={1}", sender.ToString(), e.PropertyName.ToString());
             if (e.PropertyName == "CurrentValue")
                 OnPropertyChanged("TotalIntelligenceAttackingAccumulated");
         }
 
         private void OnTotalIntelligenceDefenseAccumulatedPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            GameLog.Client.UI.DebugFormat("OnTotalIntelDefenceAccumulated sender ={0} property changed ={1}", sender.ToString(), e.PropertyName.ToString());
+            GameLog.Client.Intel.DebugFormat("OnTotalIntelDefenceAccumulated sender ={0} property changed ={1}", sender.ToString(), e.PropertyName.ToString());
             if (e.PropertyName == "CurrentValue")
                 OnPropertyChanged("TotalIntelligenceDefenseAccumulated");
         }

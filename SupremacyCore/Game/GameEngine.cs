@@ -1574,6 +1574,10 @@ namespace Supremacy.Game
                 foreach (TechObject item in GameContext.Current.Universe.FindOwned<TechObject>(civ))
                 {
                     civManager.Credits.AdjustCurrent(-item.Design.MaintenanceCost);
+                    GameLog.Core.Credits.DebugFormat("MaintenanceCost {3} for {0} {1} {2} at {4}", item.ObjectID, item.Name, item.Design
+                        , item.Design.MaintenanceCost
+                        , item.Location
+                        );
                 }
             }
         }
@@ -1593,7 +1597,7 @@ namespace Supremacy.Game
 
                 GameLog.Core.Production.DebugFormat("#####################################################");
                 string _turnNumberString = GameContext.Current.TurnNumber.ToString();
-                GameLog.Core.Production.DebugFormat("Turn: {0}: DoProduction for Civilization {1}", _turnNumberString, civ.Name);
+                GameLog.Core.Production.DebugFormat("Turn {0}: DoProduction for Civilization {1}", _turnNumberString, civ.Name);
 
                 try
                 {
