@@ -257,6 +257,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FakeDialog.xaml.cs">
+      <DependentUpon>FakeDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="OptionsPages\TracesOptionsPage.xaml.cs">
       <DependentUpon>TracesOptionsPage.xaml</DependentUpon>
     </Compile>
@@ -269,6 +272,7 @@
     <Compile Include="PopupTest.xaml.cs">
       <DependentUpon>PopupTest.xaml</DependentUpon>
     </Compile>
+    <Compile Include="EncyclopediaScreen.cs" />
     <Compile Include="ShellIntegration.cs" />
     <Compile Include="Views\AssetsHelper.cs" />
     <Compile Include="Views\AssetsScreen\AssetsScreen.xaml.cs">
@@ -379,6 +383,10 @@
     <Page Include="GameOptionsPanel.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="FakeDialog.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -525,6 +533,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="themes\Federation\AffairsScreen.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="themes\Federation\EncyclopediaScreen.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
