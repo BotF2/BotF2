@@ -24,7 +24,7 @@
        
             <ScrollViewer CanContentScroll="True"
                 Width="600"
-                Height="480"
+                Height="Auto"
                 Grid.Column="1"
                 ScrollViewer.VerticalScrollBarVisibility="Visible"
                 ScrollViewer.HorizontalScrollBarVisibility="Auto">

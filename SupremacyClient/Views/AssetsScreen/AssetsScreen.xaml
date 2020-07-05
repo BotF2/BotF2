@@ -63,7 +63,15 @@
                         <ColumnDefinition Width="Auto" />
                         <ColumnDefinition Width="10"/>
                         <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="10"/>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="30" />
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="10" />
+                        <ColumnDefinition Width="Auto" />
                         <ColumnDefinition Width="30"/>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="10"/>
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
                     <!--Grid.Column="1"-->
@@ -137,6 +145,44 @@
                         FontSize="12pt"/>
                     <TextBlock 
                         Grid.Column="23" Text="{Binding Path=TotalIntelligenceProduction}" 
+                        Foreground="Silver"
+                        FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+                        FontSize="12pt"/>
+                    <TextBlock 
+                        Grid.Column="25" Text="{s:StringResource Key=TOTAL_RESOURCES}"
+                        Foreground="Aqua"
+                        FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+                        FontSize="12pt"/>
+                    <Image Grid.Column="27" 
+                        VerticalAlignment="Top"
+                        Width="20"
+                        Height="20"
+                        Source="vfs:///Resources/Images/ScreenIcons/dilithium.png"
+                        />
+                    <TextBlock 
+                        Grid.Column="29" Text="{Binding Path=TotalDilithium}" 
+                        Foreground="LightBlue"
+                        FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+                        FontSize="12pt"/>
+                    <Image Grid.Column="31" 
+                        VerticalAlignment="Top"
+                        Width="20"
+                        Height="20"
+                        Source="vfs:///Resources/Images/ScreenIcons/deuterium.png"
+                        />
+                    <TextBlock 
+                        Grid.Column="33" Text="{Binding Path=TotalDeuterium}" 
+                        Foreground="Red"
+                        FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+                        FontSize="12pt"/>
+                    <Image Grid.Column="35" 
+                        VerticalAlignment="Top"
+                        Width="20"
+                        Height="20"
+                        Source="vfs:///Resources/Images/ScreenIcons/rawmaterials.png"
+                        />
+                    <TextBlock 
+                        Grid.Column="37" Text="{Binding Path=TotalRawMaterials}" 
                         Foreground="Silver"
                         FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                         FontSize="12pt"/>

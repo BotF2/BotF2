@@ -51,7 +51,7 @@
                Text="{Binding Source={s:StringResource INTELLIGENCE}, Mode=OneTime, Converter={StaticResource UpperCaseConverter}}" />
     <TextBlock Foreground="{StaticResource DefaultTextBrush}"
                HorizontalAlignment="Right">
-      <TextBlock Text="{Binding Path=TotalIntelligence, Mode=OneWay}" />
+      <TextBlock Text="{Binding Path=TotalIntelligenceProduction, Mode=OneWay}" />
     </TextBlock>
   </wpfcontrib:AutoGrid>
 </scc:ThemedUserControl>
