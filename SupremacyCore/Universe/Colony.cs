@@ -10,18 +10,19 @@
 using Obtics.Values;
 using Supremacy.Annotations;
 using Supremacy.Buildings;
+using Supremacy.Client;
 using Supremacy.Collections;
 using Supremacy.Diplomacy;
 using Supremacy.Economy;
 using Supremacy.Effects;
 using Supremacy.Entities;
 using Supremacy.Game;
-using Supremacy.Intelligence;
 using Supremacy.IO.Serialization;
 using Supremacy.Orbitals;
 using Supremacy.Tech;
 using Supremacy.Types;
 using Supremacy.Utility;
+
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -295,7 +296,16 @@ namespace Supremacy.Universe
         {
             get { return _activeFacilitiesProvider; }
         }
-
+        public int AvailableLabor
+        {
+            get 
+            {
+                int _available = GetAvailableLabor() / 10 * -1;
+                if (_available < 1)
+                    _available = 0;
+                return _available; 
+            }
+        }
         public OrbitalBatteryDesign OrbitalBatteryDesign
         {
             get
@@ -597,6 +607,7 @@ namespace Supremacy.Universe
         {
             get
             {
+                int _taxCredits = 0;
                 var modifier = new OutputModifier(0, 1.0f);
                 var moraleMod = _morale.CurrentValue / (0.5f * MoraleHelper.MaxValue);
                 var adjustedPop = Population.CurrentValue * moraleMod;
@@ -609,13 +620,43 @@ namespace Supremacy.Universe
                     foreach (var bonus in building.BuildingDesign.Bonuses)
                     {
                         if (bonus.BonusType == BonusType.Credits)
+                        {
                             modifier.Bonus += bonus.Amount;
+                            GameLog.Core.Credits.DebugFormat("{0}: Bonus Credits Amount = {1}", building.Design, bonus.Amount);
+
+                        }
                         else if (bonus.BonusType == BonusType.PercentCredits)
+                        {
                             modifier.Efficiency += (bonus.Amount / 100f);
+                            GameLog.Core.Credits.DebugFormat("{0}: Bonus Credits Percent = {1}", building.Design, bonus.Amount/100f);
+                        }
                     }
                 }
 
-                return (int)((adjustedPop * modifier.Efficiency) + modifier.Bonus + NetIndustry * 3.5 + 500); // UPDATE 31 july *3 to *3.5 and +500
+
+                // it's: 
+                // a) Pop (* modifier, mostly 1.0) + modifier.Bonus (often 0) + NetIndustry
+                // b) NetIndustry: it's 150% tax income from NetIndustry, so more income from Industry than from Population
+                // c) base value = 200
+
+                // OLD - 31 july 2019 *3 to *3.5 and +500
+                _taxCredits = (int)((adjustedPop * modifier.Efficiency * moraleMod) + modifier.Bonus + NetIndustry * 1.5 + 200);
+
+                // only for LocalPlayer
+                //if (this.OwnerID == )
+                //GameLog.Core.Credits.DebugFormat("########## Turn;{0};MoraleMOD =;{4};Effic.MOD =;{5};BonusMOD =;{7};Pop =;{3};NetIndustry =;{6};TaxCredits =;{8}; for ;{1};{2}"
+                //    , GameContext.Current.TurnNumber
+                //    , this.Name
+                //    , Location
+                //    , adjustedPop
+                //    , moraleMod
+                //    , modifier.Efficiency
+                //    , NetIndustry
+                //    , modifier.Bonus
+                //    , _taxCredits
+                //);
+
+                return _taxCredits; 
             }
         }
 
@@ -731,7 +772,7 @@ namespace Supremacy.Universe
         {
             get
             {
-                GameLog.Client.UI.DebugFormat("NetIntelligence ={0}", GetProductionOutput(ProductionCategory.Intelligence));
+                //GameLog.Client.Intel.DebugFormat("NetIntelligence ={0}", GetProductionOutput(ProductionCategory.Intelligence));
                 return GetProductionOutput(ProductionCategory.Intelligence);
             }
         }
