@@ -1,3 +1,4 @@
+// File:ClientModule.cs
 // Copyright (c) 2009 Mike Strobel
 //
 // This source code is subject to the terms of the Microsoft Reciprocal License (Ms-RL).
@@ -25,7 +26,6 @@ using Supremacy.Game;
 using Supremacy.Messages;
 using Supremacy.Messaging;
 using Supremacy.Resources;
-using Supremacy.Scripting;
 using Supremacy.Types;
 using Supremacy.UI;
 using Supremacy.Utility;
@@ -62,6 +62,7 @@ namespace Supremacy.Client
         private readonly ISoundPlayer _soundPlayer;
 
         private readonly ClientOptionsDialog _optionsDialog;
+        private readonly FakeDialog _fakeDialog;
 
         private readonly DelegateCommand<object> _optionsCommand;
         private readonly DelegateCommand<object> _logTxtCommand;
@@ -124,6 +125,7 @@ namespace Supremacy.Client
             _navigationCommands = _container.Resolve<INavigationCommandsProxy>();
 
             _optionsDialog = new ClientOptionsDialog();
+            _fakeDialog = new FakeDialog();
 
             _optionsCommand = new DelegateCommand<object>(
                 ExecuteOptionsCommand);
@@ -173,7 +175,18 @@ namespace Supremacy.Client
 
             //MessageDialog.Show(creditsPage, MessageDialogButtons.Close);
 
-            MessageDialog.Show("Please have a look to Credits.xaml !", MessageDialogButtons.Close);
+            //MessageDialog.Show("Please have a look to Credits.xaml !", MessageDialogButtons.Close);
+
+            string file = "Credits_for_Rise_of_the_UFP.pdf";
+            try
+            {
+                if (System.IO.File.Exists(file))
+                    System.Diagnostics.Process.Start(file);
+            }
+            catch
+            {
+                MessageDialog.Show("Please have a look to Credits.xaml !", MessageDialogButtons.Close);
+            }
         }
 
         private void ExecuteHostMultiplayerGameCommand(string playerName)
@@ -397,6 +410,7 @@ namespace Supremacy.Client
             _container.RegisterType<DiplomacyScreenViewModel>(new ExternallyControlledLifetimeManager());
             _container.RegisterType<ScienceScreenPresentationModel>(new ExternallyControlledLifetimeManager());
             _container.RegisterType<AssetsScreenPresentationModel>(new ExternallyControlledLifetimeManager());
+            _container.RegisterType<EncyclopediaScreenPresentationModel>(new ExternallyControlledLifetimeManager());
             _container.RegisterType<SystemAssaultScreenViewModel>(new ContainerControlledLifetimeManager());
 
             _container.RegisterType<IGalaxyScreenView, GalaxyScreenView>(new ExternallyControlledLifetimeManager());
@@ -405,6 +419,7 @@ namespace Supremacy.Client
             _container.RegisterType<IScienceScreenView, ResearchScreen>(new ExternallyControlledLifetimeManager());
            // _container.RegisterType<IIntelScreenView, IntelScreen>(new ExternallyControlledLifetimeManager());
             _container.RegisterType<IAssetsScreenView, AssetsScreen>(new ExternallyControlledLifetimeManager());
+            _container.RegisterType<IEncyclopediaScreenView, EncyclopediaScreen>(new ExternallyControlledLifetimeManager());
             _container.RegisterType<ILobbyScreenView, MultiplayerLobby>(new ContainerControlledLifetimeManager());
             _container.RegisterType<ISystemAssaultScreenView, SystemAssaultScreen>(new ContainerControlledLifetimeManager());
 
@@ -413,6 +428,8 @@ namespace Supremacy.Client
             _container.RegisterType<IDiplomacyScreenPresenter, DiplomacyScreenPresenter>(new ExternallyControlledLifetimeManager());
             _container.RegisterType<IScienceScreenPresenter, ScienceScreenPresenter>(new ExternallyControlledLifetimeManager());
             _container.RegisterType<IAssetsScreenPresenter, AssetsScreenPresenter>(new ExternallyControlledLifetimeManager());
+            //_container.RegisterType<IScienceScreenPresenter, EncyclodepiaScreenPresenter>(new ExternallyControlledLifetimeManager());
+            _container.RegisterType<IEncyclopediaScreenPresenter, EncyclopediaScreenPresenter>(new ExternallyControlledLifetimeManager());
 
             _regionViewRegistry.RegisterViewWithRegion(ClientRegions.GameScreens, StandardGameScreens.MenuScreen, typeof(MenuScreen));
             _regionViewRegistry.RegisterViewWithRegion(ClientRegions.GameScreens, StandardGameScreens.MultiplayerLobby, typeof(ILobbyScreenView));
