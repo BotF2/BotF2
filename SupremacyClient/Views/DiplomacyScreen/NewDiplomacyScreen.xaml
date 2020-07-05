@@ -265,6 +265,13 @@
         </TextBlock>
         </DataTemplate>
 
+        <!--<DataTemplate x:Key="OutgoingMessageTemplate">
+            <TextBlock Text="{Binding Path=Name, Converter={StaticResource UpperCaseConverter}}"
+                   Foreground="{StaticResource HeaderTextBrush}"
+                   FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+                   Margin="0,8,0,0" />
+        </DataTemplate>-->
+
         <!--
     </ResourceDictionary>
 -->
@@ -1187,13 +1194,15 @@
                                                     <ScrollViewer HorizontalScrollBarVisibility="Disabled"
                                                                     VerticalScrollBarVisibility="Auto">
                                                         <StackPanel Orientation="Vertical">
-                                                            <TextBlock TextAlignment="Left"  
+                                                            <TextBlock TextAlignment="Left" 
+                                                                       
                                                                     TextWrapping="Wrap"            
                                                                     TextTrimming="CharacterEllipsis"
                                                                     FontSize="16pt"
                                                                     Foreground="{DynamicResource {x:Static scc:ClientResources.AlertTextForegroundBrushKey}}"
                                                                     Margin="4"
-                                                                    Text="To send a message press the SEND button" />
+                                                                    Text="To send a message press the SEND button" 
+                                                                    Visibility="{Binding Path=IsEditing, Converter={StaticResource BooleanToVisibilityConverter}}"/>
                                                             <TextBlock TextAlignment="Center"
                                                                         TextWrapping="Wrap"
                                                                         TextTrimming="CharacterEllipsis"
@@ -1201,7 +1210,7 @@
                                                                         FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
                                                                         Foreground="{StaticResource HeaderTextBrush}"
                                                                         Margin="0,0,0,0"
-                                                                    Visibility="Visible"
+                                                                        Visibility="Visible"
                                                                         Text="{Binding Path=IsEditing, Converter={scc:BooleanValueConverter TrueValue={sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry=OutboxHeaderWhileEditing, CharacterCasing=Upper}, FalseValue={sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry=OutboxHeader, CharacterCasing=Upper}}}">
                                                             </TextBlock>
                                                             <ContentPresenter TextBlock.Foreground="{StaticResource DefaultTextBrush}"
@@ -1212,13 +1221,13 @@
                                                                 <StackPanel.Resources>
                                                                     <Style TargetType="{x:Type Button}">
                                                                         <Setter Property="Width"
-                                                                        Value="21" />
+                                                                                Value="21" />
                                                                         <Setter Property="Height"
-                                                                        Value="21" />
+                                                                                Value="21" />
                                                                         <Setter Property="Visibility"
-                                                                            Value="Visible"/>
+                                                                                Value="Visible"/>
                                                                         <Setter Property="Focusable"
-                                                                        Value="False" />
+                                                                                Value="False" />
                                                                         <Setter Property="IsEnabled" Value="True" />
                                                                         <Setter Property="Template">
                                                                             <Setter.Value>
@@ -1276,15 +1285,15 @@
                                                                     </Style>
                                                                 </StackPanel.Resources>
                                                                 <ItemsControl Margin="24,12,0,0"
-                                                                    ItemsSource="{Binding Path=StatementElements}"
-                                                                    HorizontalContentAlignment="Center"
-                                                                    Foreground="{StaticResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"
-                                                                    FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
-                                                                    FontSize="16"
-                                                                    Visibility="{Binding Path=StatementElements.Count, Converter={scc:SimpleCase Case=0, IfMatch=Collapsed, Else=Visible}}">
+                                                                            ItemsSource="{Binding Path=StatementElements}"
+                                                                            HorizontalContentAlignment="Center"
+                                                                            Foreground="{StaticResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"
+                                                                            FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+                                                                            FontSize="16"
+                                                                            Visibility="{Binding Path=StatementElements.Count, Converter={scc:SimpleCase Case=0, IfMatch=Collapsed, Else=Visible}}">
                                                                     <ItemsControl.Resources>
                                                                         <Style TargetType="{x:Type Hyperlink}"
-                                                                        BasedOn="{StaticResource {x:Type Hyperlink}}">
+                                                                                BasedOn="{StaticResource {x:Type Hyperlink}}">
                                                                             <Setter Property="TextElement.Foreground">
                                                                                 <Setter.Value>
                                                                                     <SolidColorBrush Color="{Binding Source={x:Static scc:ClientResources.DefaultTextForegroundBrushKey}, BindsDirectlyToSource=True, Converter={StaticResource LightColorConverter}}" />
@@ -1319,22 +1328,22 @@
                                                                     </ItemsControl.Resources>
                                                                 </ItemsControl>
                                                                 <TextBlock Text="{Binding Path=OfferLeadInText}"
-                                                                    Visibility="{Binding Path=HasOfferLeadInText, Converter={StaticResource BooleanToVisibilityConverter}}"
-                                                                    TextWrapping="Wrap"
-                                                                    TextBlock.Foreground="{StaticResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"
-                                                                    TextBlock.FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
-                                                                    TextBlock.FontSize="12pt"
-                                                                    Margin="0,12,0,0" />
+                                                                            Visibility="{Binding Path=HasOfferLeadInText, Converter={StaticResource BooleanToVisibilityConverter}}"
+                                                                            TextWrapping="Wrap"
+                                                                            TextBlock.Foreground="{StaticResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"
+                                                                            TextBlock.FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+                                                                            TextBlock.FontSize="12pt"
+                                                                            Margin="0,12,0,0" />
                                                                 <ItemsControl Margin="24,12,0,0"
-                                                                ItemsSource="{Binding Path=OfferElements}"
-                                                                HorizontalContentAlignment="Center"
-                                                                Foreground="LimeGreen"
-                                                                FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
-                                                                FontSize="16"
-                                                                Visibility="{Binding Path=OfferElements.Count, Converter={scc:SimpleCase Case=0, IfMatch=Collapsed, Else=Visible}}">
+                                                                            ItemsSource="{Binding Path=OfferElements}"
+                                                                            HorizontalContentAlignment="Center"
+                                                                            Foreground="LimeGreen"
+                                                                            FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+                                                                            FontSize="16"
+                                                                            Visibility="{Binding Path=OfferElements.Count, Converter={scc:SimpleCase Case=0, IfMatch=Collapsed, Else=Visible}}">
                                                                     <ItemsControl.Resources>
                                                                         <Style TargetType="{x:Type Hyperlink}"
-                                                                        BasedOn="{StaticResource {x:Type Hyperlink}}">
+                                                                                BasedOn="{StaticResource {x:Type Hyperlink}}">
                                                                             <Setter Property="TextElement.Foreground">
                                                                                 <Setter.Value>
                                                                                     <SolidColorBrush Color="{Binding Source={x:Static Colors.LimeGreen}, BindsDirectlyToSource=True, Converter={StaticResource LightColorConverter}}" />
@@ -1344,22 +1353,22 @@
                                                                     </ItemsControl.Resources>
                                                                 </ItemsControl>
                                                                 <TextBlock Text="{Binding Path=RequestLeadInText}"
-                                                                    Visibility="{Binding Path=HasRequestLeadInText, Converter={StaticResource BooleanToVisibilityConverter}}"
-                                                                    TextWrapping="Wrap"
-                                                                    TextBlock.Foreground="{StaticResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"
-                                                                    TextBlock.FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
-                                                                    TextBlock.FontSize="12pt"
-                                                                    Margin="0,12,0,0" />
+                                                                            Visibility="{Binding Path=HasRequestLeadInText, Converter={StaticResource BooleanToVisibilityConverter}}"
+                                                                            TextWrapping="Wrap"
+                                                                            TextBlock.Foreground="{StaticResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"
+                                                                            TextBlock.FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+                                                                            TextBlock.FontSize="12pt"
+                                                                            Margin="0,12,0,0" />
                                                                 <ItemsControl Margin="24,12,0,0"
-                                                                    ItemsSource="{Binding Path=RequestElements}"
-                                                                    HorizontalContentAlignment="Center"
-                                                                    Foreground="Crimson"
-                                                                    FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
-                                                                    FontSize="16"
-                                                                    Visibility="{Binding Path=RequestElements.Count, Converter={scc:SimpleCase Case=0, IfMatch=Collapsed, Else=Visible}}">
+                                                                            ItemsSource="{Binding Path=RequestElements}"
+                                                                            HorizontalContentAlignment="Center"
+                                                                            Foreground="Crimson"
+                                                                            FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+                                                                            FontSize="16"
+                                                                            Visibility="{Binding Path=RequestElements.Count, Converter={scc:SimpleCase Case=0, IfMatch=Collapsed, Else=Visible}}">
                                                                     <ItemsControl.Resources>
                                                                         <Style TargetType="{x:Type Hyperlink}"
-                                                                        BasedOn="{StaticResource {x:Type Hyperlink}}">
+                                                                                BasedOn="{StaticResource {x:Type Hyperlink}}">
                                                                             <Setter Property="TextElement.Foreground">
                                                                                 <Setter.Value>
                                                                                     <SolidColorBrush Color="{Binding Source={x:Static Colors.Crimson}, BindsDirectlyToSource=True, Converter={StaticResource LightColorConverter}}" />
@@ -1372,6 +1381,60 @@
                                                         </StackPanel>
                                                     </ScrollViewer>
                                                 </Border>
+                                                <!--<Border DockPanel.Dock="Left"
+                                                            MinWidth="220"
+                                                            MaxHeight="338"
+                                                            Margin="0,0,8,0"
+                                                            Padding="7"
+                                                            Background="{StaticResource CommBackgroundBrush}"
+                                                            BorderBrush="{StaticResource CommBorderBrush}"
+                                                            BorderThickness="2"
+                                                            CornerRadius="8"
+                                                            Visibility="Visible"
+                                                            DataContext="{Binding Path=SelectedForeignPower.OutgoingMessage}"
+                                                            IsEnabled="{Binding Path=SelectedForeignPower.OutgoingMessage}">
+                                                            
+                                                    <ScrollViewer HorizontalScrollBarVisibility="Disabled"
+                                                                  VerticalScrollBarVisibility="Auto">
+                                                        --><!--Visibility="{Binding Path=IsMessageEditInProgress, Converter={StaticResource BooleanToVisibilityConverter}}">--><!--
+                                                        <ItemsControl Margin="24,12,0,0"
+                                                                            ItemsSource="{Binding Path=RequestElements}"
+                                                                            HorizontalContentAlignment="Center"
+                                                                            Foreground="Crimson"
+                                                                            FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+                                                                            FontSize="16"
+                                                                            Visibility="{Binding Path=RequestElements.Count, Converter={scc:SimpleCase Case=0, IfMatch=Collapsed, Else=Visible}}">
+                                                            <ItemsControl.Resources>
+                                                                <Style TargetType="{x:Type Hyperlink}"
+                                                                                BasedOn="{StaticResource {x:Type Hyperlink}}">
+                                                                    <Setter Property="TextElement.Foreground">
+                                                                        <Setter.Value>
+                                                                            <SolidColorBrush Color="{Binding Source={x:Static Colors.Crimson}, BindsDirectlyToSource=True, Converter={StaticResource LightColorConverter}}" />
+                                                                        </Setter.Value>
+                                                                    </Setter>
+                                                                </Style>
+                                                            </ItemsControl.Resources>
+                                                        </ItemsControl>
+                                                        --><!--<ItemsControl Margin="24,12,0,0"
+                                                                            ItemsSource="{Binding Path=OfferElements}"
+                                                                            HorizontalContentAlignment="Center"
+                                                                            Foreground="LimeGreen"
+                                                                            FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+                                                                            FontSize="16"
+                                                                            Visibility="{Binding Path=OfferElements.Count, Converter={scc:SimpleCase Case=0, IfMatch=Collapsed, Else=Visible}}">
+                                                            <ItemsControl.Resources>
+                                                                <Style TargetType="{x:Type Hyperlink}"
+                                                                                BasedOn="{StaticResource {x:Type Hyperlink}}">
+                                                                    <Setter Property="TextElement.Foreground">
+                                                                        <Setter.Value>
+                                                                            <SolidColorBrush Color="{Binding Source={x:Static Colors.LimeGreen}, BindsDirectlyToSource=True, Converter={StaticResource LightColorConverter}}" />
+                                                                        </Setter.Value>
+                                                                    </Setter>
+                                                                </Style>
+                                                            </ItemsControl.Resources>
+                                                        </ItemsControl>--><!--
+                                                    </ScrollViewer>
+                                                </Border>-->
                                             </StackPanel>
                                         </DockPanel>
                                     </StackPanel>

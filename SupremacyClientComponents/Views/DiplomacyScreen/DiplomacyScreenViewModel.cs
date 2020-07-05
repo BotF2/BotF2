@@ -198,7 +198,7 @@ namespace Supremacy.Client.Views
         #region DeclareWarCommandButton
         private bool CanExecuteDeclareWarCommand()
         {
-            Refresh();
+            //Refresh();
             return CanExecuteDeclareWarCommandCore(out ForeignPowerViewModel foreignPower);
         }
 
@@ -237,7 +237,7 @@ namespace Supremacy.Client.Views
 
             InvalidateCommands();
             OnCommandVisibilityChanged();
-            Refresh();
+            //Refresh();
         }
         #endregion DeclareWarCommandButton
 
@@ -245,7 +245,7 @@ namespace Supremacy.Client.Views
         #region EndWarCommandButton
         private bool CanExecuteEndWarCommand()
         {
-            Refresh();
+            //Refresh();
             return CanExecuteEndWarCommandCore(out ForeignPowerViewModel foreignPower);
         }
 
@@ -284,7 +284,7 @@ namespace Supremacy.Client.Views
 
             InvalidateCommands();
             OnCommandVisibilityChanged();
-            Refresh();
+           // Refresh();
         }
         #endregion EndWarCommandButton
 
@@ -292,7 +292,7 @@ namespace Supremacy.Client.Views
         #region OpenBordersCommandButton
         private bool CanExecuteOpenBordersCommand()
         {
-            Refresh();
+            //Refresh();
             return CanExecuteOpenBordersCommandCore(out ForeignPowerViewModel foreignPower);
         }
 
@@ -337,7 +337,7 @@ namespace Supremacy.Client.Views
 
             InvalidateCommands();
             OnCommandVisibilityChanged();
-            Refresh();
+            //Refresh();
         }
         #endregion OpenBordersCommandButton
 
@@ -345,7 +345,7 @@ namespace Supremacy.Client.Views
         #region NonAgressionCommandButton
         private bool CanExecuteNonAgressionCommand()
         {
-            Refresh();
+           //Refresh();
             return CanExecuteNonAgressionCommandCore(out ForeignPowerViewModel foreignPower);
         }
 
@@ -390,7 +390,7 @@ namespace Supremacy.Client.Views
 
             InvalidateCommands();
             OnCommandVisibilityChanged();
-            Refresh();
+            //Refresh();
         }
         #endregion NonAgressionCommandButton
 
@@ -398,7 +398,7 @@ namespace Supremacy.Client.Views
         #region AffiliationCommandButton
         private bool CanExecuteAffiliationCommand()
         {
-            Refresh();
+            //Refresh();
             return CanExecuteAffiliationCommandCore(out ForeignPowerViewModel foreignPower);
         }
 
@@ -443,7 +443,7 @@ namespace Supremacy.Client.Views
 
             InvalidateCommands();
             OnCommandVisibilityChanged();
-            Refresh();
+           // Refresh();
         }
         #endregion AffiliationCommandButton
 
@@ -451,7 +451,7 @@ namespace Supremacy.Client.Views
         #region DefenceAllianceCommandButton
         private bool CanExecuteDefenceAllianceCommand()
         {
-            Refresh();
+            //Refresh();
             return CanExecuteDefenceAllianceCommandCore(out ForeignPowerViewModel foreignPower);
         }
 
@@ -496,7 +496,7 @@ namespace Supremacy.Client.Views
 
             InvalidateCommands();
             OnCommandVisibilityChanged();
-            Refresh();
+           // Refresh();
         }
         #endregion DefenceAllianceCommandButton
 
@@ -504,7 +504,7 @@ namespace Supremacy.Client.Views
         #region FullAllianceCommandButton
         private bool CanExecuteFullAllianceCommand()
         {
-            Refresh();
+            //Refresh();
             return CanExecuteFullAllianceCommandCore(out ForeignPowerViewModel foreignPower);
         }
 
@@ -543,7 +543,7 @@ namespace Supremacy.Client.Views
 
             InvalidateCommands();
             OnCommandVisibilityChanged();
-            Refresh();
+           // Refresh();
         }
         #endregion FullAllianceCommandButton
 
@@ -551,7 +551,7 @@ namespace Supremacy.Client.Views
         #region MembershipCommandButton
         private bool CanExecuteMembershipCommand()
         {
-            Refresh();
+           // Refresh();
             return CanExecuteMembershipCommandCore(out ForeignPowerViewModel foreignPower);
         }
 
@@ -590,28 +590,30 @@ namespace Supremacy.Client.Views
 
             InvalidateCommands();
             OnCommandVisibilityChanged();
-            Refresh();
+            //Refresh();
         }
         #endregion MembershipCommandButton
 
-
         private bool CanExecuteEditMessageCommand()
-        {          
-            return DisplayMode == DiplomacyScreenDisplayMode.Outbox &&
-                   SelectedForeignPower != null &&
-                   SelectedForeignPower.OutgoingMessage != null &&
-                   !SelectedForeignPower.OutgoingMessage.IsEditing;
+        {
+            return DisplayMode == DiplomacyScreenDisplayMode.Outbox; //&&
+                   //SelectedForeignPower != null &&
+                   //SelectedForeignPower.OutgoingMessage != null &&
+                   //!SelectedForeignPower.OutgoingMessage.IsEditing;
         }
 
         private void ExecuteEditMessageCommand()
         {
             if (!CanExecuteEditMessageCommand())
                 return;
-
-            SelectedForeignPower.OutgoingMessage.Edit();
-
-            OnCommandVisibilityChanged();
-            OnIsMessageEditInProgressChanged();
+            if (SelectedForeignPower != null &&
+                SelectedForeignPower.OutgoingMessage != null &&
+                !SelectedForeignPower.OutgoingMessage.IsEditing)
+            {
+                SelectedForeignPower.OutgoingMessage.Edit();
+                OnCommandVisibilityChanged();
+                OnIsMessageEditInProgressChanged();
+            }
         }
 
         private bool CanExecuteSendMessageCommand()
@@ -619,8 +621,8 @@ namespace Supremacy.Client.Views
             return DisplayMode == DiplomacyScreenDisplayMode.Outbox &&
                    SelectedForeignPower != null &&
                    SelectedForeignPower.OutgoingMessage != null &&
-                   SelectedForeignPower.OutgoingMessage.IsEditing &&
-                   SelectedForeignPower.OutgoingMessage.Elements.Count != 0;
+                   SelectedForeignPower.OutgoingMessage.IsEditing; //&&
+                   //SelectedForeignPower.OutgoingMessage.Elements.Count != 0;
         }
 
         private void ExecuteSendMessageCommand()
@@ -634,7 +636,7 @@ namespace Supremacy.Client.Views
             
             OnCommandVisibilityChanged();
             OnIsMessageEditInProgressChanged();
-            Refresh();
+            //Refresh();
         }
 
         private bool CanExecuteCancelMessageCommand()
@@ -828,7 +830,10 @@ namespace Supremacy.Client.Views
 
         public ICommand SendMessageCommand
         {
-            get { return _sendMessageCommand; }
+            get
+            {
+                return _sendMessageCommand;
+            }
         }
 
         public ICommand CancelMessageCommand

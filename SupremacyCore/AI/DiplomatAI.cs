@@ -97,7 +97,7 @@ namespace Supremacy.AI
 
                 if (true)//(!aCiv.IsHuman)
                 {
-                    GameLog.Client.Deuterium.DebugFormat("## Beging DiplomacyAI for aCiv AI .......................");
+                    GameLog.Client.Diplomacy.DebugFormat("## Beging DiplomacyAI for aCiv AI .......................");
                     #region First Impression
                     // First impression delta trust and regard by traits
                     if (!foreignPower.DiplomacyData.FirstDiplomaticAction)
@@ -147,6 +147,11 @@ namespace Supremacy.AI
                                     DiplomacyHelper.ApplyTrustChange(foreignPower.Counterparty, foreignPower.Owner,
                                         value / 2 + greedy);
                                 }
+                                if (clause.ClauseType == ClauseType.RequestGiveCredits)
+                                {
+                                    foreignPower.AddRegardEvent(new RegardEvent(5, RegardEventType.NoRegardEvent, -100));
+                                    DiplomacyHelper.ApplyTrustChange(foreignPower.Counterparty, foreignPower.Owner, -100);
+                                }
                             }
                         }
 
@@ -194,6 +199,12 @@ namespace Supremacy.AI
                                             int chance = num.Next(1, (similarTraits + 2));
                                             if (chance != 1) accepted = true; break;
                                         }
+                                    case ClauseType.OfferGiveCredits:
+                                        accepted = true;
+                                        break;
+                                    //case ClauseType.TreatyWarPact
+                                    case ClauseType.RequestGiveCredits:
+                                        break;
 
                                     default:
                                         break;
