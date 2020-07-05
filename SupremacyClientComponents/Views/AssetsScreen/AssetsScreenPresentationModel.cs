@@ -104,12 +104,12 @@ namespace Supremacy.Client.Views
                 {
                     _totalIntelligenceProduction = MyLocalCivManager.TotalIntelligenceProduction;
          
-                    GameLog.Core.UI.DebugFormat("Get TotalIntelProcudtion ={0}", _totalIntelligenceProduction);
+                    //GameLog.Client.Intel.DebugFormat("Get TotalIntelProduction ={0}", _totalIntelligenceProduction);
                     return _totalIntelligenceProduction;
                 }
                 catch (Exception e)
                 {
-                    GameLog.Core.UI.DebugFormat("Problem occured at TotalIntelligenceProduction get, exception {0} {1}", e.Message, e.TargetSite);
+                    GameLog.Client.Intel.DebugFormat("Problem occured at TotalIntelligenceProduction get, exception {0} {1}", e.Message, e.TargetSite);
                     return 0;
                 }
             }
@@ -120,12 +120,12 @@ namespace Supremacy.Client.Views
                     _totalIntelligenceProduction = MyLocalCivManager.TotalIntelligenceProduction;
                     FillUpDefense();
                     _totalIntelligenceProduction = value;
-                    GameLog.Core.UI.DebugFormat("Set TotalIntelProcudtion ={0}", _totalIntelligenceProduction);
+                    GameLog.Client.Intel.DebugFormat("Set TotalIntelProduction ={0}", _totalIntelligenceProduction);
                     NotifyPropertyChanged("TotalIntelligenceProduction");
                 }
                 catch (Exception e)
                 {
-                    GameLog.Core.UI.DebugFormat("Problem occured at TotalIntelligenceProduction set, Exception {0} {1}", e.Message, e.StackTrace);
+                    GameLog.Client.Intel.DebugFormat("Problem occured at TotalIntelligenceProduction set, Exception {0} {1}", e.Message, e.StackTrace);
                 }
             }
         }
@@ -137,7 +137,7 @@ namespace Supremacy.Client.Views
             {
                 FillUpDefense();          
                 _totalIntelligenceDefenseAccumulated = MyLocalCivManager.TotalIntelligenceDefenseAccumulated.CurrentValue;
-                GameLog.Core.UI.DebugFormat("Get TotalIntelDefenseAccumulated ={0}", _totalIntelligenceDefenseAccumulated);
+                GameLog.Client.Intel.DebugFormat("Get TotalIntelDefenseAccumulated ={0}", _totalIntelligenceDefenseAccumulated);
                 return _totalIntelligenceDefenseAccumulated;
             }
             set
@@ -146,7 +146,7 @@ namespace Supremacy.Client.Views
                //_totalIntelligenceDefenseAccumulated = IntelHelper.DefenseAccumulatedInteInt;
                 _totalIntelligenceDefenseAccumulated = MyLocalCivManager.TotalIntelligenceDefenseAccumulated.CurrentValue;
                 _totalIntelligenceDefenseAccumulated = value;
-                GameLog.Core.UI.DebugFormat("Set TotalIntelDefenseAccumulated ={0}", _totalIntelligenceDefenseAccumulated);
+                GameLog.Client.Intel.DebugFormat("Set TotalIntelDefenseAccumulated ={0}", _totalIntelligenceDefenseAccumulated);
                 NotifyPropertyChanged("TotalIntelligenceDefenseAccumulated");
             }
         }
@@ -157,7 +157,7 @@ namespace Supremacy.Client.Views
             {
                 FillUpDefense();
                 _totalIntelligenceAttackingAccumulated = MyLocalCivManager.TotalIntelligenceAttackingAccumulated.CurrentValue;
-                GameLog.Core.UI.DebugFormat("Get TotalIntelDefenseAccumulated ={0}", _totalIntelligenceAttackingAccumulated);
+                GameLog.Client.Intel.DebugFormat("Get TotalIntelDefenseAccumulated ={0}", _totalIntelligenceAttackingAccumulated);
                 return _totalIntelligenceAttackingAccumulated;
             }
             set
@@ -166,18 +166,18 @@ namespace Supremacy.Client.Views
                // _totalIntelligenceAttackingAccumulated = IntelHelper.AttackingAccumulatedInteInt;
                 _totalIntelligenceAttackingAccumulated = MyLocalCivManager.TotalIntelligenceAttackingAccumulated.CurrentValue;
                 _totalIntelligenceAttackingAccumulated = value;
-                GameLog.Core.UI.DebugFormat("Set TotalIntelDefenseAccumulated ={0}", _totalIntelligenceAttackingAccumulated);
+                GameLog.Client.Intel.DebugFormat("Set TotalIntelDefenseAccumulated ={0}", _totalIntelligenceAttackingAccumulated);
                 NotifyPropertyChanged("TotalIntelligenceAttackingAccumulated");
             }
         }
         public Meter UpdateAttackingAccumulated(Civilization attackingCiv)
         {
             Meter attackMeter = GameContext.Current.CivilizationManagers[attackingCiv].TotalIntelligenceAttackingAccumulated;
-            GameLog.Core.UI.DebugFormat("Before update attackMeter ={0} for attakcing civ ={1}", attackMeter, attackingCiv);
+            GameLog.Client.Intel.DebugFormat("Before update attackMeter ={0} for attakcing civ ={1}", attackMeter, attackingCiv);
             int newAttackIntelligence = 0;
             Int32.TryParse(attackMeter.CurrentValue.ToString(), out newAttackIntelligence);
             _totalIntelligenceAttackingAccumulated = newAttackIntelligence;
-            GameLog.Core.UI.DebugFormat(" After update attackMeter ={0} for attacking civ ={1}", attackMeter, attackingCiv);
+            GameLog.Client.Intel.DebugFormat(" After update attackMeter ={0} for attacking civ ={1}", attackMeter, attackingCiv);
             return attackMeter;
         }
         protected virtual void FillUpDefense()
@@ -392,7 +392,7 @@ namespace Supremacy.Client.Views
         }
         protected virtual void OnColoniesChanged()
         {
-            //GameLog.Core.UI.DebugFormat("AssetsScreenPresenterModel OnColoniesChange at line 228");
+            //GameLog.Client.Intel.DebugFormat("AssetsScreenPresenterModel OnColoniesChange at line 228");
             ColoniesChanged.Raise(this);
             OnPropertyChanged("Colonies");
         }
@@ -551,6 +551,66 @@ namespace Supremacy.Client.Views
             get
             {
                 return GameContext.Current.TurnNumber;
+            }
+        }
+
+        public int TotalDilithium
+        {
+            get
+            {
+                var civManager = MyLocalCivManager; // not this DesignTimeObjects.LocalCivManager.Civilization
+                try
+                {
+                    //GameLog.Core.Intel.DebugFormat("TotalPopulation ={0}", civManager.TotalPopulation);
+                    return civManager.Resources.Dilithium.CurrentValue;
+                }
+                catch (Exception e)
+                {
+                    GameLog.Core.GameData.WarnFormat("Problem occured at TotalDilithium: {0} {1}", e.Message, e.StackTrace);
+                    GameLog.Core.General.Error(e);
+                    //Meter zero = new Meter(0, 0, 0);
+                    return 0; 
+
+                }
+            }
+        }
+        public int TotalDeuterium
+        {
+            get
+            {
+                var civManager = MyLocalCivManager; // not this DesignTimeObjects.LocalCivManager.Civilization
+                try
+                {
+                    //GameLog.Core.Intel.DebugFormat("TotalPopulation ={0}", civManager.TotalPopulation);
+                    return civManager.Resources.Deuterium.CurrentValue;
+                }
+                catch (Exception e)
+                {
+                    GameLog.Core.GameData.WarnFormat("Problem occured at TotalDeuterium: {0} {1}", e.Message, e.StackTrace);
+                    GameLog.Core.General.Error(e);
+                    //Meter zero = new Meter(0, 0, 0);
+                    return 0;
+                }
+            }
+        }
+
+        public int TotalRawMaterials
+        {
+            get
+            {
+                var civManager = MyLocalCivManager; // not this DesignTimeObjects.LocalCivManager.Civilization
+                try
+                {
+                    //GameLog.Core.Intel.DebugFormat("TotalPopulation ={0}", civManager.TotalPopulation);
+                    return civManager.Resources.RawMaterials.CurrentValue;
+                }
+                catch (Exception e)
+                {
+                    GameLog.Core.GameData.WarnFormat("Problem occured at TotalRawMaterials: {0} {1}", e.Message, e.StackTrace);
+                    GameLog.Core.General.Error(e);
+                    //Meter zero = new Meter(0, 0, 0);
+                    return 0;
+                }
             }
         }
 
