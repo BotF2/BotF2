@@ -989,6 +989,7 @@
                                             <StackPanel Orientation="Horizontal">
                                                 <Border DockPanel.Dock="Left"
                                                             MinWidth="220"
+                                                            MinHeight="45"
                                                             MaxHeight="338"
                                                             Margin="0,0,8,0"
                                                             Padding="7"
@@ -1024,8 +1025,9 @@
         Out Box Right
         =============================
         -->
-                                                <Border Padding="7"                                                        
-                                                        MaxHeight="335"
+                                                <Border Padding="7" 
+                                                        MinHeight="45"
+                                                        MaxHeight="338"
                                                         Background="{StaticResource CommBackgroundBrush}"
                                                         BorderBrush="{StaticResource CommBorderBrush}"
                                                         BorderThickness="2"
