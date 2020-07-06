@@ -239,6 +239,16 @@ namespace Supremacy.Client.Views
 
         #endregion
 
+        public int MemberMessage
+        {
+            get
+            {
+                if (Status == ForeignPowerStatus.OwnerIsMember)
+                    return 1;
+                else return 0;
+            }
+        }
+
         #region IncomingMessageCategory Property
 
         [field: NonSerialized]

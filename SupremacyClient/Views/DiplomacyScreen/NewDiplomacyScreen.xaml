@@ -407,53 +407,6 @@
                       Margin="0,2,0,0"
                       Data="F1 M 0,0L 0,16C 0,22.3652 2.52857,28.4697 7.02944,32.9706C 11.5303,37.4714 17.6348,40 24,40L 168,40L 168,27.0263L 148,27.0263C 143.582,27.0263 140,23.4446 140,19.0263L 140,0L 0,0 Z" />
 
-                <!-- Upper-Lower Left Corner -->
-
-                <Grid
-                      Grid.Column="0"
-                      Grid.ColumnSpan="2"
-                      Grid.Row="4"
-                    >
-              <!--Grid.Column="0"
-              Grid.ColumnSpan="2"
-              Grid.Row="4"-->
-                    <!--<Grid.RowDefinitions>
-                        <RowDefinition Height="20" />
-                        <RowDefinition Height="20" />
-                    </Grid.RowDefinitions>
-                    <Path x:Name="UpperLowerLeftCorner"-->
-
-                          
-              <!--scc:VisibilityGroupScopeBehavior.VisibilityGroup="DiplomacyScreenVisibilityScopes.Default"
-              Width="168"
-              Height="40"
-                          Grid.RowSpan="2"
-
-              Fill="{StaticResource LCARS_Card_ObsidianGradient_TopLeft_BottomRight}"
-              Margin="0,2,0,0"
-              Data="F1 M 0,40L 0,24C 0,17.6348 2.52857,11.5303 7.02944,7.02944C 11.5303,2.52857 17.6348,0 24,0L 168,0L 168,12.9737L 
-                          148,12.9737C 143.582,12.9737 140,16.5554 140,20.9737L 140,40L 0,40 Z" />-->
-
-                    <!--<TextBlock
-                        Grid.Row="0"
-                        Grid.Column="0"
-                        HorizontalAlignment="Center"
-                        Text ="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry='NoteOutboxForSendLine1'}"
-                        FontSize="16"
-                        Foreground="{StaticResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"           
-                        >
-                    </TextBlock>
-                    <TextBlock
-                        Grid.Row="1"
-                        Grid.Column="0"
-                        HorizontalAlignment="Left"
-                        Text ="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry='NoteOutboxForSendLine2'}"
-                        FontSize="16"
-                        Foreground="{StaticResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"           
-                        >
-                    </TextBlock>-->
-                </Grid>
-
                 <!-- Lower Left Buttons -->
                 <StackPanel x:Name="InboxButtons"
                             Grid.Column="0"
@@ -475,127 +428,7 @@
                           DisplayMode="GroupedVertically"
                           Margin="0,2,0,0" />
                 </StackPanel>
-                <!--<scc:GameItemsControl x:Name="OutboxButtons"
-                              Grid.Column="0"
-                              Grid.Row="5"
-                              Margin="0,2,0,0"
-                              Context="VerticalGroupItem"
-                              Visibility="{Binding Path=AreNewMessageCommandsVisible, Converter={StaticResource BooleanToVisibilityConverter}}"
-                              IsEnabled="{Binding Path=AreNewMessageCommandsVisible, Converter={StaticResource BooleanToVisibilityConverter}}">
-                    <scc:GameButton x:Name="ProposalButton"
-                          Label="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry='NewMessageButtonText', CharacterCasing=Upper}"
-                          Margin="0,0,0,0"
-                          ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry='NewMessageButtonTooltipText', CharacterCasing=Upper}"
-                          Command="{Binding Path=MakeProposalCommand}"
-                          IsEnabled="True"/>
-                    <scc:GameButton x:Name="DeclareWarButton"
-                          Label="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry='DeclareWarButtonText', CharacterCasing=Upper}"
-                          Margin="0,2,0,0"
-                          ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry='DeclareWarButtonTooltipText', CharacterCasing=Upper}"                                    
-                          Command="{Binding Path=DeclareWarCommand}" 
-                          IsEnabled="{Binding Path=DeclareWarCommand}">
-                    </scc:GameButton>
-                    <scc:GameButton x:Name="EndWarButton"
-                          Label="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry='EndWarButtonText', CharacterCasing=Upper}"
-                          Margin="0,2,0,0"
-                          ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry='EndWarButtonTooltipText', CharacterCasing=Upper}"                                    
-                          Command="{Binding Path=CeaseFireCommand}" 
-                          IsEnabled="{Binding Path=CeaseFireCommand}">
-                    </scc:GameButton>
-                    <scc:GameButton x:Name="OpenBordersButton"
-                          Label="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry='OpenBordersButtonText', CharacterCasing=Upper}"
-                          Margin="0,2,0,0"
-                          ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry='OpenBordersButtonTooltipText', CharacterCasing=Upper}"
-                          Command="{Binding Path=OpenBordersCommand}" 
-                          IsEnabled="{Binding Path=OpenBordersCommand}"/>
-                    <scc:GameButton x:Name="NonAgressionButton"
-                          Label="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry='NonAgressionButtonText', CharacterCasing=Upper}"
-                          Margin="0,2,0,0"
-                          ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry='NonAgressionButtonTooltipText', CharacterCasing=Upper}"
-                          Command="{Binding Path=NonAgressionCommand}" 
-                          IsEnabled="{Binding Path=NonAgressionCommand}"/>
-                    <scc:GameButton x:Name="AffiliationButton"
-                          Label="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry='AffiliationButtonText', CharacterCasing=Upper}"
-                          Margin="0,2,0,0"
-                          ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry='AffiliationButtonTooltipText', CharacterCasing=Upper}"
-                          Command="{Binding Path=AffiliationCommand}" 
-                          IsEnabled="{Binding Path=AffiliationCommand}"/>
-                    <scc:GameButton x:Name="DefenceAllianceButton"
-                          Label="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry='DefenceAllianceButtonText', CharacterCasing=Upper}"
-                          Margin="0,2,0,0"
-                          ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry='DefenceAllianceButtonTooltipText', CharacterCasing=Upper}"
-                          Command="{Binding Path=DefenceAllianceCommand}" 
-                          IsEnabled="{Binding Path=DefenceAllianceCommand}"/>
-                    <scc:GameButton x:Name="FullAllianceButton"
-                          Label="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry='FullAllianceButtonText', CharacterCasing=Upper}"
-                          Margin="0,2,0,0"
-                          ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry='FullAllianceButtonTooltipText', CharacterCasing=Upper}"
-                          Command="{Binding Path=FullAllianceCommand}" 
-                          Visibility="{Binding Path=IsFullAllianceButtonVisible, Converter={StaticResource BooleanToVisibilityConverter}}"
-                          IsEnabled="{Binding Path=IsFullAllianceButtonVisible, Converter={StaticResource BooleanToVisibilityConverter}}"/>
-                    <scc:GameButton x:Name="MembershipButton"
-                          Label="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry='MembershipButtonText', CharacterCasing=Upper}"
-                          Margin="0,2,0,0"
-                          ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry='MembershipButtonTooltipText', CharacterCasing=Upper}"
-                          Command="{Binding Path=MembershipCommand}" 
-                          Visibility="{Binding Path=IsMembershipButtonVisible, Converter={StaticResource BooleanToVisibilityConverter}}"
-                          IsEnabled="{Binding Path=IsMembershipButtonVisible, Converter={StaticResource BooleanToVisibilityConverter}}"/>
-                </scc:GameItemsControl>
-                <scc:GameItemsControl x:Name="DraftButtons"
-                              Grid.Column="0"
-                              Grid.Row="5"
-                              Context="VerticalGroupItem"
-                              Margin="0,2,0,0"
-                              Visibility="Visible"
-                              IsEnabled="True">
-                    <scc:GameButton Label="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry='SendMessageButtonText', CharacterCasing=Upper}"
-                          Command="{Binding Path=SendMessageCommand}"
-                          IsEnabled="{Binding Path=SendMessageCommand}"/>
-                    <scc:GameButton Label="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry='EditMessageButtonText', CharacterCasing=Upper}"
-                          Margin="0,2,0,0"
-                          Command="{Binding Path=EditMessageCommand}"
-                          IsEnabled="{Binding Path=EditMessageCommand}"/>
-                    <scc:GameButton Label="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry='CancelMessageButtonText', CharacterCasing=Upper}"
-                          Margin="0,2,0,0"
-                          Command="{Binding Path=CancelMessageCommand}"
-                          IsEnabled="{Binding Path=CancelMessageCommand}"/>
-                </scc:GameItemsControl>-->
-
-                <!-- Lower Left Side -->
-                <!--<DockPanel x:Name="LowerLeftSide"
-                   Grid.Column="0"
-                   Grid.Row="6"
-                   scc:VisibilityGroupScopeBehavior.VisibilityGroup="DiplomacyScreenVisibilityScopes.Default"
-                   Margin="0,2,0,0">
-                    <Border Background="{StaticResource LCARS_AzureGradient_TopLeft_BottomRight}"
-                  Width="69" />
-                    <Border Background="{StaticResource LCARS_AzureGradient_TopLeft_BottomRight}"
-                  Width="69"
-                  Margin="2,0,0,0" />
-                </DockPanel>-->
-
-                <!-- Lower Left Corner -->
-                <!--<Path x:Name="LowerLeftCorner"
-              Grid.Column="0"
-              Grid.ColumnSpan="2"
-              Grid.Row="7"
-              Width="168"
-              Height="56"
-              Fill="{StaticResource LCARS_Card_ObsidianGradient_TopLeft_BottomRight}"
-              Margin="0,2,0,0"
-              Data="F1 M 0,0L 0,32C 0,38.3652 2.52857,44.4697 7.02944,48.9706C 11.5303,53.4714 17.6348,56 24,56L 168,56L 168,28L 148,28C 143.582,28 140,24.4183 140,20L 140,0L 0,0 Z" />
-
-                 --><!--Upper Horizontal Divider 
-                <Border x:Name="UpperHorizontalDivider"
-                Grid.Column="2"
-                Grid.Row="0"
-                scc:VisibilityGroupScopeBehavior.VisibilityGroup="DiplomacyScreenVisibilityScopes.RelationshipGraph"
-                Background="{StaticResource LCARS_AzureGradient_Top_Bottom}"
-                Height="28"
-                Margin="2,0,2,0"
-                VerticalAlignment="Top"
-                Grid.ColumnSpan="3" />-->
-
+                
                 <!-- Upper-Middle Left Horizontal Divider -->
                 <Border x:Name="UpperMiddleLeftHorizontalDivider"
                     Grid.Column="2"
@@ -821,12 +654,12 @@
                                          Title="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry=EffectiveRegard, CharacterCasing=Upper}"
                                          DisplayMemberBinding="{Binding Path=EffectiveRegard, Mode=OneWay, Converter={StaticResource LocalizedEnumStringConverter}}"
                                          VisiblePosition="3" />
-                            <xcdg:Column FieldName="OutgoingMessageCategory"
+                            <!--<xcdg:Column FieldName="OutgoingMessageCategory"
                                          Title="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry=Outgoing, CharacterCasing=Upper}"
                                          Width="150"
                                          ReadOnly="True"
                                          VisiblePosition="4"
-                                         DisplayMemberBinding="{Binding Path=OutgoingMessageCategory, Converter={StaticResource LocalizedEnumStringConverter}}" />
+                                         DisplayMemberBinding="{Binding Path=OutgoingMessageCategory, Converter={StaticResource LocalizedEnumStringConverter}}" />-->
                             <xcdg:Column FieldName="IncomingMessageCategory"
                                          Title="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry=Incoming, CharacterCasing=Upper}"
                                          Width="150"
@@ -995,7 +828,7 @@
                                     <StackPanel Orientation="Vertical">
                                         <Border Padding="7"
                                                 MinHeight="45"
-                                                MaxHeight="138"
+                                                MaxHeight="150"
                                                 Background="{StaticResource CommBackgroundBrush}"
                                                 BorderBrush="{StaticResource CommBorderBrush}"
                                                 BorderThickness="2"
@@ -1013,6 +846,16 @@
                                                             Foreground="{StaticResource HeaderTextBrush}"
                                                             Margin="5,0,10,0"
                                                             Text="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry=ActiveAgreementsHeader, CharacterCasing=Upper}" />
+                                                    <TextBlock DockPanel.Dock="Top"
+                                                            TextAlignment="Left"
+                                                            TextWrapping="Wrap"
+                                                            TextTrimming="CharacterEllipsis"
+                                                            FontSize="15pt"
+                                                            FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
+                                                            Foreground="LightGoldenrodYellow"
+                                                            Margin="5,0,10,0"
+                                                            Text="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry=MemberHeader, CharacterCasing=Upper}" 
+                                                            Visibility="{Binding Path=MemberMessage, Converter={scc:SimpleCase Case=0, IfMatch=Collapsed, Else=Visible}}"/>
                                                     <ItemsControl ItemsSource="{Binding Path=ActiveAgreements}"
                                                             HorizontalContentAlignment="Center"
                                                                 VerticalContentAlignment="Top"
@@ -1030,10 +873,9 @@
                                                         </ItemsControl.Resources>
                                                     </ItemsControl>
                                                 </StackPanel>
-
                                             </ScrollViewer>
                                         </Border>
-                                        <!--
+            <!--
           ============================
           In Box
           ============================
@@ -1194,8 +1036,7 @@
                                                     <ScrollViewer HorizontalScrollBarVisibility="Disabled"
                                                                     VerticalScrollBarVisibility="Auto">
                                                         <StackPanel Orientation="Vertical">
-                                                            <TextBlock TextAlignment="Left" 
-                                                                       
+                                                            <TextBlock TextAlignment="Left"                                                                      
                                                                     TextWrapping="Wrap"            
                                                                     TextTrimming="CharacterEllipsis"
                                                                     FontSize="16pt"
@@ -1797,20 +1638,20 @@
         ================================================================================ 
         -->
                 <StackPanel x:Name="RelationshipInfoPanel"
-                    Grid.Column="4"
-                    Grid.Row="5"
-                    Grid.RowSpan="2"
-                    scc:VisibilityGroupScopeBehavior.VisibilityGroup="DiplomacyScreenVisibilityScopes.Default"
-                    Orientation="Vertical"
-                    DataContext="{Binding}"
-                    Margin="7,-14,-14,0"
-                    VerticalAlignment="Top">
+                            Grid.Column="4"
+                            Grid.Row="5"
+                            Grid.RowSpan="2"
+                            scc:VisibilityGroupScopeBehavior.VisibilityGroup="DiplomacyScreenVisibilityScopes.Default"
+                            Orientation="Vertical"
+                            DataContext="{Binding}"
+                            Margin="7,-14,-14,0"
+                            VerticalAlignment="Top">
                     <!--Race Image-->
                     <Border Width="194"
-                  Height="194"
-                  BorderBrush="White"
-                  BorderThickness="2"
-                  CornerRadius="12">
+                          Height="194"
+                          BorderBrush="White"
+                          BorderThickness="2"
+                          CornerRadius="12">
                         <Border.Background>
                             <ImageBrush ImageSource="{Binding Path=SelectedForeignPower.Counterparty, Converter={StaticResource CivImageConverter}}"
                           Stretch="UniformToFill" />
@@ -1842,30 +1683,30 @@
 
                         <!--Row 0 = Regard -->
                         <TextBlock Grid.Row="0" Grid.Column="0" 
-                           FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
-                           FontSize="21"
-                           Foreground="{StaticResource HeaderTextBrush}"
-                           Text="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry='RegardMeterCaption', CharacterCasing=Upper}"
-                           TextAlignment="Right"
-                           TextWrapping="Wrap"
-                           TextTrimming="CharacterEllipsis"
-                           Margin="0,6,6,-1"
-                           VerticalAlignment="Center" />
+                                   FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
+                                   FontSize="21"
+                                   Foreground="{StaticResource HeaderTextBrush}"
+                                   Text="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry='RegardMeterCaption', CharacterCasing=Upper}"
+                                   TextAlignment="Right"
+                                   TextWrapping="Wrap"
+                                   TextTrimming="CharacterEllipsis"
+                                   Margin="0,6,6,-1"
+                                   VerticalAlignment="Center" />
 
                         <s:BlockBar 
-                        Grid.Row="0"                            
-                        Grid.Column="1"
-                        IsReadOnly="True"
-                        Height="21"
-                        Margin="0,6,0,0"
-                        BlockCount="30"
-                        BlockMargin="2"
-                        Minimum="{Binding Path=SelectedForeignPower.CounterpartyRegard.Minimum, Mode=OneWay}"
-                        Maximum="{Binding Path=SelectedForeignPower.CounterpartyRegard.Maximum, Mode=OneWay}"
-                        Value="{Binding Path=SelectedForeignPower.CounterpartyRegard.CurrentValue, Mode=OneWay}">
+                                Grid.Row="0"                            
+                                Grid.Column="1"
+                                IsReadOnly="True"
+                                Height="21"
+                                Margin="0,6,0,0"
+                                BlockCount="30"
+                                BlockMargin="2"
+                                Minimum="{Binding Path=SelectedForeignPower.CounterpartyRegard.Minimum, Mode=OneWay}"
+                                Maximum="{Binding Path=SelectedForeignPower.CounterpartyRegard.Maximum, Mode=OneWay}"
+                                Value="{Binding Path=SelectedForeignPower.CounterpartyRegard.CurrentValue, Mode=OneWay}">
                             <s:BlockBar.ToolTip>
                                 <MultiBinding Converter="{StaticResource StringFormatConverter}"
-                              ConverterParameter="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry='RegardMeterTooltip'}">
+                                              ConverterParameter="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry='RegardMeterTooltip'}">
                                     <Binding Path="SelectedForeignPower.CounterpartyRegard.CurrentValue" />
                                     <Binding Path="SelectedForeignPower.CounterpartyRegard.Maximum" />
                                 </MultiBinding>
@@ -1873,38 +1714,38 @@
                         </s:BlockBar>
 
                         <TextBlock Grid.Row="0" Grid.Column="2"
-                    FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
-                     FontSize="18"
-                     Foreground="{StaticResource HeaderTextBrush}"
-                     Text="{Binding Path=SelectedForeignPower.CounterpartyRegard.CurrentValue}"
-                     TextAlignment="Right"
-                     TextWrapping="Wrap"
-                     TextTrimming="CharacterEllipsis"
+                                    FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+                                     FontSize="18"
+                                     Foreground="{StaticResource HeaderTextBrush}"
+                                     Text="{Binding Path=SelectedForeignPower.CounterpartyRegard.CurrentValue}"
+                                     TextAlignment="Right"
+                                     TextWrapping="Wrap"
+                                     TextTrimming="CharacterEllipsis"
                                    VerticalAlignment="Center" 
                      Margin="6,6,0,0" />
 
                         <!--Row 1 = Trust-->
                         <TextBlock Grid.Row="1" Grid.Column="0"
-                       FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
-                       FontSize="21"
-                       Foreground="{StaticResource HeaderTextBrush}"
-                       Text="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry='TrustMeterCaption', CharacterCasing=Upper}"
-                       TextAlignment="Right"
-                       TextWrapping="Wrap"
-                       TextTrimming="CharacterEllipsis"
-                       Margin="0,3,6,8"
-                       VerticalAlignment="Center" />
+                                   FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
+                                   FontSize="21"
+                                   Foreground="{StaticResource HeaderTextBrush}"
+                                   Text="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry='TrustMeterCaption', CharacterCasing=Upper}"
+                                   TextAlignment="Right"
+                                   TextWrapping="Wrap"
+                                   TextTrimming="CharacterEllipsis"
+                                   Margin="0,3,6,8"
+                                   VerticalAlignment="Center" />
 
                         <s:BlockBar Grid.Column="1"
-                        Grid.Row="1"
-                        IsReadOnly="True"
-                        Height="21"
-                        Margin="0,3,0,8"
-                        BlockCount="30"
-                        BlockMargin="2"
-                        Minimum="{Binding Path=SelectedForeignPower.CounterpartyTrust.Minimum, Mode=OneWay}"
-                        Maximum="{Binding Path=SelectedForeignPower.CounterpartyTrust.Maximum, Mode=OneWay}"
-                        Value="{Binding Path=SelectedForeignPower.CounterpartyTrust.CurrentValue, Mode=OneWay}">
+                                    Grid.Row="1"
+                                    IsReadOnly="True"
+                                    Height="21"
+                                    Margin="0,3,0,8"
+                                    BlockCount="30"
+                                    BlockMargin="2"
+                                    Minimum="{Binding Path=SelectedForeignPower.CounterpartyTrust.Minimum, Mode=OneWay}"
+                                    Maximum="{Binding Path=SelectedForeignPower.CounterpartyTrust.Maximum, Mode=OneWay}"
+                                    Value="{Binding Path=SelectedForeignPower.CounterpartyTrust.CurrentValue, Mode=OneWay}">
                             <s:BlockBar.ToolTip>
                                 <MultiBinding Converter="{StaticResource StringFormatConverter}"
                               ConverterParameter="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry='TrustMeterTooltip'}">

@@ -765,9 +765,7 @@ namespace Supremacy.Client.Views
         // DiplayMode
         public ICommand SetDisplayModeCommand
         {
-            get { 
-                return _setDisplayModeCommand;
-            }
+            get { return _setDisplayModeCommand; }
         }
 
         public ICommand CommendCommand
