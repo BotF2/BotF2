@@ -16,7 +16,7 @@
                        xmlns:client="clr-namespace:Supremacy.Client"
                        xmlns:diplomacyScreen="clr-namespace:Supremacy.Client.Views.DiplomacyScreen"
                        mc:Ignorable="d"
-                       d:DesignHeight="800"
+                       d:DesignHeight="850"
                        d:DesignWidth="1280"
                        d:DataContext="{x:Static scc:DiplomacyScreenViewModel.DesignInstance}">
     <i:Interaction.Behaviors>
@@ -280,8 +280,8 @@
     <scc:GamePopupSite>
         <Border Background="#66000000">
             <Grid SnapsToDevicePixels="True"
-            Margin="6"
-            Background="Black">
+                    Margin="6"
+                    Background="Black">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="140" />
                     <ColumnDefinition Width="28" />
@@ -824,11 +824,11 @@
                             <ScrollViewer HorizontalScrollBarVisibility="Disabled"
                                             VerticalScrollBarVisibility="Auto">
                                 <DockPanel LastChildFill="True"
-                                            Margin="0,0,7,0">
+                                            Margin="0,0,5,0">
                                     <StackPanel Orientation="Vertical">
-                                        <Border Padding="7"
+                                        <Border Padding="2"
                                                 MinHeight="45"
-                                                MaxHeight="150"
+                                                MaxHeight="120"
                                                 Background="{StaticResource CommBackgroundBrush}"
                                                 BorderBrush="{StaticResource CommBorderBrush}"
                                                 BorderThickness="2"
@@ -844,18 +844,66 @@
                                                             FontSize="15pt"
                                                             FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
                                                             Foreground="{StaticResource HeaderTextBrush}"
-                                                            Margin="5,0,10,0"
+                                                            Margin="2,0,10,0"
                                                             Text="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry=ActiveAgreementsHeader, CharacterCasing=Upper}" />
-                                                    <TextBlock DockPanel.Dock="Top"
-                                                            TextAlignment="Left"
-                                                            TextWrapping="Wrap"
-                                                            TextTrimming="CharacterEllipsis"
-                                                            FontSize="15pt"
-                                                            FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
-                                                            Foreground="LightGoldenrodYellow"
-                                                            Margin="5,0,10,0"
-                                                            Text="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry=MemberHeader, CharacterCasing=Upper}" 
-                                                            Visibility="{Binding Path=MemberMessage, Converter={scc:SimpleCase Case=0, IfMatch=Collapsed, Else=Visible}}"/>
+                                                    <Grid>
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="Auto"/>
+                                                        </Grid.ColumnDefinitions>
+                                                        <Grid.RowDefinitions>
+                                                            <RowDefinition Height="Auto"/>
+                                                        </Grid.RowDefinitions> 
+                                                        <TextBlock DockPanel.Dock="Top"
+                                                                   Grid.Column="0"
+                                                                   Grid.Row="0"
+                                                                    TextAlignment="Left"
+                                                                    TextWrapping="Wrap"
+                                                                    TextTrimming="CharacterEllipsis"
+                                                                    FontSize="15pt"
+                                                                    FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
+                                                                    Foreground="LightGoldenrodYellow"
+                                                                    Margin="5,0,10,0"
+                                                                    Text="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry=MemberHeader, CharacterCasing=Upper}" 
+                                                                    Visibility="{Binding Path=MemberMessage, Converter={scc:SimpleCase Case=0, IfMatch=Collapsed, Else=Visible}}"/>
+                                                        <TextBlock DockPanel.Dock="Top"
+                                                                   Grid.Column="0"
+                                                                   Grid.Row="0"
+                                                                    TextAlignment="Left"
+                                                                    TextWrapping="Wrap"
+                                                                    TextTrimming="CharacterEllipsis"
+                                                                    FontSize="15pt"
+                                                                    FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
+                                                                    Foreground="Red"
+                                                                    Margin="5,0,10,0"
+                                                                    Text="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry=AtWarHeader, CharacterCasing=Upper}" 
+                                                                    Visibility="{Binding Path=AtWarMessage, Converter={scc:SimpleCase Case=0, IfMatch=Collapsed, Else=Visible}}"/>
+                                                        <TextBlock DockPanel.Dock="Top"
+                                                                   Grid.Column="0"
+                                                                   Grid.Row="0"
+                                                                    TextAlignment="Left"
+                                                                    TextWrapping="Wrap"
+                                                                    TextTrimming="CharacterEllipsis"
+                                                                    FontSize="15pt"
+                                                                    FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
+                                                                    Foreground="LightCyan"
+                                                                    Margin="5,0,10,0"
+                                                                    Text="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry=AlliesHeader, CharacterCasing=Upper}" 
+                                                                    Visibility="{Binding Path=AlliesMessage, Converter={scc:SimpleCase Case=0, IfMatch=Collapsed, Else=Visible}}"/>
+                                                        <TextBlock DockPanel.Dock="Top"
+                                                                    Grid.Column="0"
+                                                                    Grid.Row="0"
+                                                                    TextAlignment="Left"
+                                                                    TextWrapping="Wrap"
+                                                                    TextTrimming="CharacterEllipsis"
+                                                                    FontSize="15pt"
+                                                                    FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
+                                                                    Foreground="LightCyan"
+                                                                    Background="Black"
+                                                                    Margin="5,0,10,0"
+                                                                    VerticalAlignment="Center"
+                                                                    Text="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry=SelectForeignPowerHeader}" 
+                                                                    Visibility="{Binding Path=SelectForeignPowerMessage, Converter={scc:SimpleCase Case=0, IfMatch=Collapsed, Else=Visible}}"/>
+                                                    </Grid>
                                                     <ItemsControl ItemsSource="{Binding Path=ActiveAgreements}"
                                                             HorizontalContentAlignment="Center"
                                                                 VerticalContentAlignment="Top"
@@ -880,7 +928,8 @@
           In Box
           ============================
           -->
-                                        <Border Padding="7"
+                                        <Border Padding="2"
+                                                MinHeight="2"
                                                 Background="{StaticResource CommBackgroundBrush}"
                                                 BorderBrush="{StaticResource CommBorderBrush}"
                                                 BorderThickness="2"
@@ -894,8 +943,8 @@
                                                         FontSize="20"
                                                         FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
                                                         Foreground="{StaticResource HeaderTextBrush}"
-                                                        Margin="0,0,0,0"
-                                                        Text="{Binding Converter={scc:SimpleCase Case={x:Null}, IfMatch='', Else={sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry=InboxHeader, CharacterCasing=Upper}}}" />
+                                                        Margin="3,2,0,0"
+                                                        Text="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry=InboxHeader, CharacterCasing=Upper}" />
                                                 <ContentPresenter TextBlock.Foreground="{StaticResource DefaultTextBrush}"
                                                                     TextBlock.FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                                                                     TextBlock.FontSize="16"
@@ -985,14 +1034,14 @@
         =======================================================
         -->
                                         <DockPanel LastChildFill="True"
-                                            Margin="0,0,7,0">
+                                            Margin="0,0,2,0">
                                             <StackPanel Orientation="Horizontal">
                                                 <Border DockPanel.Dock="Left"
                                                             MinWidth="220"
                                                             MinHeight="45"
                                                             MaxHeight="338"
                                                             Margin="0,0,8,0"
-                                                            Padding="7"
+                                                            Padding="5"
                                                             Background="{StaticResource CommBackgroundBrush}"
                                                             BorderBrush="{StaticResource CommBorderBrush}"
                                                             BorderThickness="2"
@@ -1025,7 +1074,7 @@
         Out Box Right
         =============================
         -->
-                                                <Border Padding="7" 
+                                                <Border Padding="5" 
                                                         MinHeight="45"
                                                         MaxHeight="338"
                                                         Background="{StaticResource CommBackgroundBrush}"
@@ -1038,14 +1087,38 @@
                                                     <ScrollViewer HorizontalScrollBarVisibility="Disabled"
                                                                     VerticalScrollBarVisibility="Auto">
                                                         <StackPanel Orientation="Vertical">
-                                                            <TextBlock TextAlignment="Left"                                                                      
-                                                                    TextWrapping="Wrap"            
-                                                                    TextTrimming="CharacterEllipsis"
-                                                                    FontSize="16pt"
-                                                                    Foreground="{DynamicResource {x:Static scc:ClientResources.AlertTextForegroundBrushKey}}"
-                                                                    Margin="4"
-                                                                    Text="To send a message press the SEND button" 
-                                                                    Visibility="{Binding Path=IsEditing, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                                                            <Grid>
+                                                                <Grid.ColumnDefinitions>
+                                                                    <ColumnDefinition Width="Auto"/>
+                                                                </Grid.ColumnDefinitions>
+                                                                <Grid.RowDefinitions>
+                                                                    <RowDefinition Height="Auto"/>
+                                                                </Grid.RowDefinitions>
+                                                                <TextBlock TextAlignment="Left"
+                                                                           Grid.Column="0"
+                                                                           Grid.Row="0"
+                                                                            TextWrapping="Wrap"            
+                                                                            TextTrimming="CharacterEllipsis"
+                                                                            FontSize="16pt"
+                                                                            Foreground="{DynamicResource {x:Static scc:ClientResources.AlertTextForegroundBrushKey}}"
+                                                                            Margin="4"
+                                                                            Text="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry=SendHeader}" 
+                                                                            Visibility="{Binding Path=IsEditing, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                                                                <TextBlock DockPanel.Dock="Top"
+                                                                           Grid.Column="0"
+                                                                           Grid.Row="0"
+                                                                            TextAlignment="Left"
+                                                                            TextWrapping="Wrap"
+                                                                            TextTrimming="CharacterEllipsis"
+                                                                            FontSize="15pt"
+                                                                            FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
+                                                                            Foreground="LightCyan"
+                                                                           Background="Black"
+                                                                            Margin="3,0,0,0"
+                                                                           VerticalAlignment="Center"
+                                                                            Text="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry=NoOutgoingMessageHeader}" 
+                                                                            Visibility="{Binding Path=NoOutgoingMessage, Converter={scc:SimpleCase Case=0, IfMatch=Collapsed, Else=Visible}}"/>
+                                                            </Grid>
                                                             <TextBlock TextAlignment="Center"
                                                                         TextWrapping="Wrap"
                                                                         TextTrimming="CharacterEllipsis"

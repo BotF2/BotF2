@@ -248,6 +248,45 @@ namespace Supremacy.Client.Views
                 else return 0;
             }
         }
+        public int AtWarMessage
+        {
+            get
+            {
+                if (Status == ForeignPowerStatus.AtWar)
+                    return 1;
+                else return 0;
+            }
+        }
+
+        public int AlliesMessage
+        {
+            get
+            {
+                if (Status == ForeignPowerStatus.Allied)
+                    return 1;
+                else return 0;
+            }
+        }
+
+        public int SelectForeignPowerMessage
+        {
+            get
+            {
+                if (_foreignPower == null)
+                    return 1;
+                else return 0;
+            }
+        }
+
+        public int NoOutgoingMessage
+        {
+            get
+            {
+                if (OutgoingMessage == null)
+                    return 1;
+                else return 0;
+            }
+        }
 
         #region IncomingMessageCategory Property
 
