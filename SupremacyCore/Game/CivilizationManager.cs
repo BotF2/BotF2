@@ -43,6 +43,7 @@ namespace Supremacy.Game
         private readonly Meter _totalPopulation;
         private readonly Meter _totalResearch;
         private readonly Treasury _treasury;
+        private int _maintenanceCostLastTurn;
         private readonly UniverseObjectList<Colony> _colonies;
         private List<Civilization> _spiedCivList;
 
@@ -64,6 +65,7 @@ namespace Supremacy.Game
         {
             _credits = new Meter(5000, Meter.MinValue, Meter.MaxValue);
             _treasury = new Treasury(5000);
+            _maintenanceCostLastTurn = 0;
             _resources = new ResourcePool();
             _colonies = new UniverseObjectList<Colony>();
 
@@ -171,10 +173,21 @@ namespace Supremacy.Game
         }
 
         /// <summary>
-        /// Gets the civilization's resource pool.
+        /// Gets the civilization's MaintenanceCostLastTurn.
         /// </summary>
-        /// <value>The resource pool.</value>
-        [NotNull]
+        public int MaintenanceCostLastTurn
+        {
+            get { return _maintenanceCostLastTurn; }
+            set { _maintenanceCostLastTurn = value; }
+        }
+
+
+
+/// <summary>
+/// Gets the civilization's resource pool.
+/// </summary>
+/// <value>The resource pool.</value>
+[NotNull]
         public ResourcePool Resources
         {
             get { return _resources; }
