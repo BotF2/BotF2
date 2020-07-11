@@ -428,10 +428,10 @@ namespace Supremacy.Game
             ParallelForEach(civManagers, civManager =>
             {
                 GameContext.PushThreadContext(game);
-                //civManager.SitRepEntries.Clear();
+                civManager.SitRepEntries.Clear();
                 try
                 {
-                    civManager.SitRepEntries.Clear();
+                    //civManager.SitRepEntries.Clear();
 
                     try
                     {

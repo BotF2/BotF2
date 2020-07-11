@@ -38,20 +38,23 @@ namespace Supremacy.Client.Views
         private void UpdateIncomingMessage()
         {
             GameLog.Client.Diplomacy.DebugFormat("Checking for IncomingMessage out of *ResponseReceived...");
-            if (_foreignPower.ResponseReceived == null)
-            {
-                GameLog.Client.Diplomacy.DebugFormat("$$ _foreignPower.ResponseReceived = no incoming message yet");
-                return;
-            }
-
+            //if (_foreignPower.ResponseReceived == null)
+            //{
+            //    GameLog.Client.Diplomacy.DebugFormat("$$ _foreignPower.ResponseReceived = no incoming message yet");
+            //    return;
+            //}
+            if (_foreignPower.ResponseReceived != null)
+            { 
             IncomingMessage = DiplomacyMessageViewModel.FromReponse(_foreignPower.ResponseReceived);
             GameLog.Client.Diplomacy.DebugFormat("$$ Found IncomingMessage out of *ResponseReceived from {0}: {1}", _foreignPower.Owner, IncomingMessage);
+            }
 
-            if (_foreignPower.ProposalReceived.IncludesTreaty() == true)
+            else if (_foreignPower.ProposalReceived.IncludesTreaty() == true)
             {
                 IncomingMessage = DiplomacyMessageViewModel.FromProposal(_foreignPower.ProposalReceived);
                 GameLog.Client.Diplomacy.DebugFormat("$$ Found IncomingMessage out of *ResponseReceived from {0}: {1}", _foreignPower.Owner, IncomingMessage);
             }
+           
 
         }
 
