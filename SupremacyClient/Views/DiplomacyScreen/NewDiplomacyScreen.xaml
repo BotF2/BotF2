@@ -407,12 +407,13 @@
                       Data="F1 M 0,0L 0,16C 0,22.3652 2.52857,28.4697 7.02944,32.9706C 11.5303,37.4714 17.6348,40 24,40L 168,40L 168,27.0263L 148,27.0263C 143.582,27.0263 140,23.4446 140,19.0263L 140,0L 0,0 Z" />
 
                 <!-- Lower Left Buttons -->
-                <StackPanel x:Name="InboxButtons"
+                <!--<StackPanel x:Name="InboxButtons"
                             Grid.Column="0"
                             Grid.Row="5"
                             Orientation="Vertical"
                             Margin="0,2,0,0"
-                            Visibility="{Binding Path=AreIncomingMessageCommandsVisible, Converter={StaticResource BooleanToVisibilityConverter}}">
+                            Visibility="Visible">
+                    --><!--{Binding Path=AreIncomingMessageCommandsVisible, Converter={StaticResource BooleanToVisibilityConverter}}">--><!--
                     <scc:GameButton Label="ACCEPT"
                           Context="VerticalGroupItem"
                           DisplayMode="GroupedVertically" />
@@ -426,7 +427,7 @@
                           Context="VerticalGroupItem"
                           DisplayMode="GroupedVertically"
                           Margin="0,2,0,0" />
-                </StackPanel>
+                </StackPanel>-->
                 
                 <!-- Upper-Middle Left Horizontal Divider -->
                 <Border x:Name="UpperMiddleLeftHorizontalDivider"
@@ -1024,6 +1025,32 @@
                                                             </Style>
                                                         </ItemsControl.Resources>
                                                     </ItemsControl>
+                                                    <StackPanel x:Name="InboxButtons"
+                                                                Grid.Column="0"
+                                                                Grid.Row="5"
+                                                                Orientation="Vertical"
+                                                                Margin="0,2,0,0"
+                                                                Visibility="{Binding Path=AreIncomingMessageCommandsVisible, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                                        <scc:GameButton Label="ACCEPT"
+                                                                          Context="VerticalGroupItem"
+                                                                          DisplayMode="GroupedVertically" 
+                                                                        IsChecked="{Binding RelativeSource={RelativeSource Self}, Path=CommandParameter.(scc:CheckableCommandParameter.IsChecked), Mode=TwoWay}"/>
+                                                        <scc:GameButton x:Name="CounterButton"
+                                                                          Label="COUNTER"
+                                                                          Context="VerticalGroupItem"
+                                                                          DisplayMode="GroupedVertically"
+                                                                          Margin="0,2,0,0"
+                                                                          Visibility="Visible"
+                                                                        IsChecked="{Binding RelativeSource={RelativeSource Self}, Path=CommandParameter.(scc:CheckableCommandParameter.IsChecked), Mode=TwoWay}"/>
+                                                        <scc:GameButton Label="REJECT"
+                                                                          Context="VerticalGroupItem"
+                                                                          DisplayMode="GroupedVertically"
+                                                                          Margin="0,2,0,0"
+                                                                        IsChecked="{Binding RelativeSource={RelativeSource Self}, Path=CommandParameter.(scc:CheckableCommandParameter.IsChecked), Mode=TwoWay}"/>
+                                                        <!--<scc:GameButton.CommandParameter>
+                                                            <scc:CheckableCommandParameter InnerParameter="{x:Static scc:DiplomacyMessageViewMode.Accept}" />
+                                                        </scc:GameButton.CommandParameter>-->
+                                                    </StackPanel>
                                                 </StackPanel>
                                             </StackPanel>
                                         </Border>

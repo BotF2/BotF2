@@ -40,12 +40,19 @@ namespace Supremacy.Client.Views
             GameLog.Client.Diplomacy.DebugFormat("Checking for IncomingMessage out of *ResponseReceived...");
             if (_foreignPower.ResponseReceived == null)
             {
-                GameLog.Client.Diplomacy.DebugFormat("_foreignPower.ResponseReceived = no incoming message yet");
+                GameLog.Client.Diplomacy.DebugFormat("$$ _foreignPower.ResponseReceived = no incoming message yet");
                 return;
             }
 
             IncomingMessage = DiplomacyMessageViewModel.FromReponse(_foreignPower.ResponseReceived);
-            GameLog.Client.Diplomacy.DebugFormat("Found IncomingMessage out of *ResponseReceived from {0}: {1}", _foreignPower.Owner, IncomingMessage);
+            GameLog.Client.Diplomacy.DebugFormat("$$ Found IncomingMessage out of *ResponseReceived from {0}: {1}", _foreignPower.Owner, IncomingMessage);
+
+            if (_foreignPower.ProposalReceived.IncludesTreaty() == true)
+            {
+                IncomingMessage = DiplomacyMessageViewModel.FromProposal(_foreignPower.ProposalReceived);
+                GameLog.Client.Diplomacy.DebugFormat("$$ Found IncomingMessage out of *ResponseReceived from {0}: {1}", _foreignPower.Owner, IncomingMessage);
+            }
+
         }
 
         private void UpdateActiveAgreements()
@@ -300,7 +307,7 @@ namespace Supremacy.Client.Views
                 // move Gamelog to the three detail places
                 // 
                 //GameLog.Client.Diplomacy.DebugFormat("Proposal received ? ={0}, Response received = {1}, Statement Received ={2}", _foreignPower.ProposalReceived, _foreignPower.ResponseReceived, _foreignPower.StatementReceived);
-                return ResolveMessageCategory(_foreignPower.ProposalReceived ?? (object)_foreignPower.ResponseReceived ?? _foreignPower.StatementReceived);
+                return ResolveMessageCategory(_foreignPower.ProposalReceived ?? (object)_foreignPower.ResponseReceived ?? _foreignPower.StatementReceived ?? (object)_foreignPower.ProposalReceived);
             }
         }
 

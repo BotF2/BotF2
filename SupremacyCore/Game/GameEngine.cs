@@ -716,7 +716,7 @@ namespace Supremacy.Game
                 foreach (var civ2 in GameContext.Current.Civilizations)
                 {
                   
-                    GameLog.Core.Diplomacy.DebugFormat("$$ Checking for {0} vs {1}", civ1, civ2);
+                    //GameLog.Core.Diplomacy.DebugFormat("$$ Checking for {0} vs {1}", civ1, civ2);
                     //var orderCiv1 = new Civilization();
                     //var orderCiv2 = new Civilization();
                     if (civ1 == civ2)

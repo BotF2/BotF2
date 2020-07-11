@@ -966,7 +966,7 @@ namespace Supremacy.Client.Views
 
         public static DiplomacyMessageViewModel FromReponse([NotNull] IResponse response)
         {
-            GameLog.Core.Diplomacy.DebugFormat("at FromResponse() with turnSent ={0} tone ={1}", response.TurnSent, response.Tone);
+            GameLog.Core.Diplomacy.DebugFormat("$$ at FromResponse() with turnSent ={0} tone ={1}", response.TurnSent, response.Tone);
             if (response == null)
                 throw new ArgumentNullException("response");
 
@@ -1007,6 +1007,53 @@ namespace Supremacy.Client.Views
                           {
                               Tone = response.Proposal.Tone,
                           };
+
+            message._treatyLeadInTextScript.ScriptCode = QuoteString(LookupDiplomacyText(leadInId, message._tone, message._sender) ?? string.Empty);
+            message.TreatyLeadInText = message._treatyLeadInTextScript.Evaluate<string>(message._leadInRuntimeParameters);
+            GameLog.Core.Diplomacy.DebugFormat("message ={0}", message);
+            return message;
+        }
+
+        public static DiplomacyMessageViewModel FromProposal([NotNull] IProposal proposal)
+        {
+            GameLog.Core.Diplomacy.DebugFormat("$$ at FromResponse() with turnSent ={0} tone ={1}", proposal.TurnSent, proposal.Clauses);
+            if (proposal == null)
+                throw new ArgumentNullException("proposal");
+
+            DiplomacyStringID leadInId;
+             
+            switch ((object)proposal.Clauses) // not all cases used below, ToDo
+            {
+                case ClauseType.TreatyOpenBorders:
+                    leadInId = DiplomacyStringID.OpenBordersClause;
+                    break;
+                case ClauseType.TreatyAffiliation:
+                    leadInId = DiplomacyStringID.AffiliationClause;
+                    break;
+                case ClauseType.TreatyDefensiveAlliance:
+                    leadInId = DiplomacyStringID.DefensiveAllianceClause;
+                    break;
+                case ClauseType.TreatyFullAlliance:
+                    leadInId = DiplomacyStringID.FullAllianceClause;
+                    break;
+                case ClauseType.TreatyMembership:
+                    leadInId = DiplomacyStringID.MembershipClause;
+                    break;
+                case ClauseType.TreatyNonAggression:
+                    leadInId = DiplomacyStringID.NonAggressionPactClause;
+                    break;
+                case ClauseType.TreatyWarPact:
+                    leadInId = DiplomacyStringID.WarPactClause;
+                    break;
+                default:
+                    leadInId = DiplomacyStringID.OpenBordersClause;
+                    break;
+            }
+
+            var message = new DiplomacyMessageViewModel(proposal.Sender, proposal.Recipient)
+            {
+                Tone = proposal.Tone,
+            };
 
             message._treatyLeadInTextScript.ScriptCode = QuoteString(LookupDiplomacyText(leadInId, message._tone, message._sender) ?? string.Empty);
             message.TreatyLeadInText = message._treatyLeadInTextScript.Evaluate<string>(message._leadInRuntimeParameters);

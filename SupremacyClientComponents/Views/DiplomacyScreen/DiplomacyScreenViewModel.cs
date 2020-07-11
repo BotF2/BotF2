@@ -1047,7 +1047,10 @@ namespace Supremacy.Client.Views
 
                 //works, mostly not needed
                 //if (selectedForeignPower != null)
-                //GameLog.Core.Diplomacy.DebugFormat("DisplayMode is Inbox, SelectedForeignPower ={0}", selectedForeignPower.Counterparty.Key);
+                GameLog.Core.Diplomacy.DebugFormat("DisplayMode is Inbox, SelectedForeignPower ={0}, Incoming Message Sender ={1} recipient = {2} ",
+                    selectedForeignPower.Counterparty.Key,
+                    selectedForeignPower.IncomingMessage.Sender.Key,
+                    selectedForeignPower.IncomingMessage.Recipient.Key);
 
                 return selectedForeignPower != null && selectedForeignPower.IncomingMessage != null && 
                        !selectedForeignPower.IncomingMessage.IsStatement;
