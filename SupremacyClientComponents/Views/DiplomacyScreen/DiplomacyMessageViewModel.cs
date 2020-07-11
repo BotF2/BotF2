@@ -166,10 +166,12 @@ namespace Supremacy.Client.Views
             get { return _elements.All(o => o.ElementType <= DiplomacyMessageElementType.DenounceSabotageStatement); }
         }
 
+       
+
         internal IDiplomaticExchange CreateMessage()
-        {
-            return IsStatement ? (IDiplomaticExchange)CreateStatement() : CreateProposal();
-        }
+            {
+                return IsStatement ? (IDiplomaticExchange)CreateStatement() : CreateProposal();
+            }
 
         public void Send()
         {

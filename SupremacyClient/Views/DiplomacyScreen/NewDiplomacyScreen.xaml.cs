@@ -1,11 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Media;
+using Microsoft.Practices.Composite.Regions;
+using Obtics.Collections;
 using Supremacy.Client.Context;
 using Supremacy.Client.Controls;
 using Supremacy.Diplomacy;
+using Supremacy.Entities;
 using Supremacy.Game;
 using Supremacy.UI;
 using Supremacy.Utility;
@@ -23,6 +27,33 @@ namespace Supremacy.Client.Views.DiplomacyScreen
         {
             TextBlockExtensions.AddHyperlinkClickedHandler(this, OnMessageParameterLinkClick);
             InitializeComponent();
+        }
+
+        private void clickAcceptCounterReject(object sender, RoutedEventArgs e)
+        {
+            RadioButton radioButton = sender as RadioButton;
+            if (radioButton != null)
+            {
+                var response = (string)radioButton.Content;
+                if (Model.SelectedForeignPower != null)
+                {
+                    var player = (ICivIdentity)Model.PlayerCivilization;
+                    var coutner = (ICivIdentity)Model.SelectedForeignPower.Owner;
+                    ForeignPower power = new ForeignPower(player, coutner);
+                    if (response == "ACCEPT")
+                    {
+                        power.PendingAction = PendingDiplomacyAction.AcceptProposal;
+                    }
+                    else if (response == "COUNTER")
+                    {
+                        power.PendingAction = PendingDiplomacyAction.None;
+                    }
+                    else if (response == "REJECT")
+                    {
+                        power.PendingAction = PendingDiplomacyAction.RejectProposal;
+                    }
+                }
+            }
         }
 
         #region Implementation of IActiveAware

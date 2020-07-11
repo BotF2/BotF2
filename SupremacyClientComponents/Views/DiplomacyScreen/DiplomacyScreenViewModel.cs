@@ -1033,26 +1033,19 @@ namespace Supremacy.Client.Views
         {
             get
             {
-                if (DisplayMode != DiplomacyScreenDisplayMode.Overview)
+                if (DisplayMode != DiplomacyScreenDisplayMode.Outbox)
                 {
                     //GameLog.Core.Diplomacy.DebugFormat("DisplayMode not DiplomacyScreenDispalyMode.Inbox" );
                     return false;
-                }
-                else
-                {
-                    GameLog.Core.Diplomacy.DebugFormat("DisplayMode = OverView selected");
                 }
 
                 var selectedForeignPower = SelectedForeignPower;
 
                 //works, mostly not needed
                 //if (selectedForeignPower != null)
-                GameLog.Core.Diplomacy.DebugFormat("DisplayMode is Inbox, SelectedForeignPower ={0}, Incoming Message Sender ={1} recipient = {2} ",
-                    selectedForeignPower.Counterparty.Key,
-                    selectedForeignPower.IncomingMessage.Sender.Key,
-                    selectedForeignPower.IncomingMessage.Recipient.Key);
+                //GameLog.Core.Diplomacy.DebugFormat("DisplayMode is Inbox, SelectedForeignPower ={0}", selectedForeignPower.Counterparty.Key);
 
-                return selectedForeignPower != null && selectedForeignPower.IncomingMessage != null && 
+                return selectedForeignPower != null && selectedForeignPower.IncomingMessage != null &&
                        !selectedForeignPower.IncomingMessage.IsStatement;
             }
         }
