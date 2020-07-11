@@ -75,10 +75,10 @@ namespace Supremacy.Diplomacy.Visitors
         protected override void VisitRequestBreakAgreementClause(IClause clause) { /* TODO */ }
         protected override void VisitOfferGiveCreditsClause(IClause clause) { /* TODO */ }
         protected override void VisitRequestGiveCreditsClause(IClause clause) { /* TODO */ }
-        protected override void VisitOfferGiveResourcesClause(IClause clause) { /* TODO */ }
-        protected override void VisitRequestGiveResourcesClause(IClause clause) { /* TODO */ }
-        protected override void VisitOfferMapDataClause(IClause clause) { /* TODO */ }
-        protected override void VisitRequestMapDataClause(IClause clause) { /* TODO */ }
+        //protected override void VisitOfferGiveResourcesClause(IClause clause) { /* TODO */ }
+        //protected override void VisitRequestGiveResourcesClause(IClause clause) { /* TODO */ }
+        //protected override void VisitOfferMapDataClause(IClause clause) { /* TODO */ }
+        //protected override void VisitRequestMapDataClause(IClause clause) { /* TODO */ }
         protected override void VisitOfferHonorMilitaryAgreementClause(IClause clause) { /* TODO */ }
         protected override void VisitRequestHonorMilitaryAgreementClause(IClause clause) { /* TODO */ }
         protected override void VisitOfferEndEmbargoClause(IClause clause) { /* TODO */ }

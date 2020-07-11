@@ -716,7 +716,7 @@ namespace Supremacy.Game
                 foreach (var civ2 in GameContext.Current.Civilizations)
                 {
                   
-                    //GameLog.Core.Diplomacy.DebugFormat("Checking for {0} vs {1}", civ1, civ2);
+                    GameLog.Core.Diplomacy.DebugFormat("$$ Checking for {0} vs {1}", civ1, civ2);
                     //var orderCiv1 = new Civilization();
                     //var orderCiv2 = new Civilization();
                     if (civ1 == civ2)
@@ -743,22 +743,25 @@ namespace Supremacy.Game
 
                     var ForeignPower = diplomat1.GetForeignPower(civ2);
                     var ForeignPowerStatus = diplomat1.GetForeignPower(civ2).DiplomacyData.Status;
-                   // GameLog.Core.Diplomacy.DebugFormat("---------------------------------------");
-                   // GameLog.Core.Diplomacy.DebugFormat("foreignPowerStatus = {2} for {0} vs {1}", civ1, civ2, ForeignPowerStatus);
+                    // GameLog.Core.Diplomacy.DebugFormat("---------------------------------------");
+                    // GameLog.Core.Diplomacy.DebugFormat("foreignPowerStatus = {2} for {0} vs {1}", civ1, civ2, ForeignPowerStatus);
 
 
-                    //if (civ1.CivID == 1 && civ2.CivID == 4)  // Terrans, incoming from Cardassians
-                    //    ;  // do nothing else = emtpy line
+                    if (civ1.CivID == 1 && civ2.CivID == 4)  // Terrans, incoming from Cardassians
+                        GameLog.Client.Diplomacy.DebugFormat("$$ Terran && Cardassians");
 
+                    // Wait a turn for population of PendingAction.AcceptProposal and PendingAction.RejectProposal by downstream AI accept or reject
+                    // save the accept and reject in LastProposal and act during the next turn
+                    // ??? where does it reject human player to human player proposals?
                     switch (ForeignPower.PendingAction)
                     {
                         case PendingDiplomacyAction.AcceptProposal:
-                                            GameLog.Core.Diplomacy.DebugFormat("AcceptProposal = {2} for {0} vs {1}, pending {3}", civ1, civ2, ForeignPowerStatus, ForeignPower.PendingAction.ToString());
+                                            GameLog.Core.Diplomacy.DebugFormat("$$ AcceptProposal = {2} for {0} vs {1}, pending {3}", civ1, civ2, ForeignPowerStatus, ForeignPower.PendingAction.ToString());
                             if (ForeignPower.LastProposalReceived != null)
                                         AcceptProposalVisitor.Visit(ForeignPower.LastProposalReceived);
                             break;
                         case PendingDiplomacyAction.RejectProposal:
-                                            GameLog.Core.Diplomacy.DebugFormat("RejectProposal = {2} for {0} vs {1}, pending {3}", civ1, civ2, ForeignPowerStatus, ForeignPower.PendingAction.ToString());
+                                            GameLog.Core.Diplomacy.DebugFormat("$$ RejectProposal = {2} for {0} vs {1}, pending {3}", civ1, civ2, ForeignPowerStatus, ForeignPower.PendingAction.ToString());
                             if (ForeignPower.LastProposalReceived != null)
                                         RejectProposalVisitor.Visit(ForeignPower.LastProposalReceived);                            
                             break;
@@ -824,7 +827,7 @@ namespace Supremacy.Game
                     // just for testing especially generating break point
                     //if (civ1.CivID == 1 && civ2.CivID == 4 || civ1.CivID == 4 && civ2.CivID == 1)  // Terrans, incoming from Cardassians
                     //{
-                        _gameLog = "### Checking ForeignerPower - see next line";
+                        //_gameLog = "### Checking ForeignerPower - see next line";
 
                     //if (civ1.CivID == 2 && civ2.CivID == 4)  // just for break point for these two
                     //{
@@ -1001,8 +1004,8 @@ namespace Supremacy.Game
                     var statementSent = foreignPower.StatementSent;
                     if (statementSent != null)
                     {
-                        //if (civ1.CivID == 1 && civ2.CivID == 4)  // Terrans, incoming from Cardassians
-                        //    ;  // do nothing else = emtpy line
+                       
+                        //  do nothing else = emtpy line
                         foreignPower.CounterpartyForeignPower.StatementReceived = statementSent;
                         foreignPower.LastStatementSent = statementSent;
                         foreignPower.StatementSent = null;
@@ -1061,7 +1064,7 @@ namespace Supremacy.Game
             }
 
             /*
-            // Third: Fulfull agreement obligations
+            // Third: Fulfill agreement obligations
              */
             foreach (var agreement in GameContext.Current.AgreementMatrix)
                 AgreementFulfillmentVisitor.Visit(agreement);

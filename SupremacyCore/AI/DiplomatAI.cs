@@ -71,15 +71,15 @@ namespace Supremacy.AI
                 int fewestTotalTraits = countArray.Min();    
 
                 int similarTraits = (countCommon *10 / fewestTotalTraits); // (a double from 1 to 0) * 10 
-                GameLog.Client.Diplomacy.DebugFormat("## similar traits ={0} counterparty ={1} traits ={2} owner ={3} traits ={4}",
-                    similarTraits, foreignPower.Counterparty.Key,foreignPower.Counterparty.Traits, foreignPower.Owner.Key, foreignPower.Owner.Traits );
+               // GameLog.Client.Diplomacy.DebugFormat("## similar traits ={0} counterparty ={1} traits ={2} owner ={3} traits ={4}",
+                    //similarTraits, foreignPower.Counterparty.Key,foreignPower.Counterparty.Traits, foreignPower.Owner.Key, foreignPower.Owner.Traits );
 
                 /*
                  * look for human to human proposals
                  */
                 if (aCiv.IsHuman && otherCiv.IsHuman)
                 {
-                    GameLog.Client.Diplomacy.DebugFormat("!! HUMAN counterparty {0} to HUMAN owner {1}...",
+                    GameLog.Client.Diplomacy.DebugFormat("$$ HUMAN counterparty {0} to HUMAN owner {1}...",
                         foreignPower.Counterparty.Key, foreignPower.Owner.Key);
                     if (foreignPower.ProposalReceived != null)
                     {
@@ -88,7 +88,7 @@ namespace Supremacy.AI
                             foreach (var clause in foreignPower.ProposalReceived.Clauses)
                             {
 
-                                GameLog.Client.Diplomacy.DebugFormat("%% Clause {0} duration {1}",
+                                GameLog.Client.Diplomacy.DebugFormat("$$ Clause {0} duration {1}",
                                         clause.ClauseType.ToString(), clause.Duration);                                      
                             }
                         }
@@ -211,7 +211,7 @@ namespace Supremacy.AI
                                 }
                             }
 
-
+                            // switch in GameEngine picks up PendingAction on next turn and calls AcceptProposalVisitor.Visit(ForeignPower.LastProposalReceived); and Reject...
                             if (accepted == true)
                             {
                                 foreignPower.PendingAction = PendingDiplomacyAction.AcceptProposal;

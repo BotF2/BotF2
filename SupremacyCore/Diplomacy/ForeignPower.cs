@@ -96,10 +96,7 @@ namespace Supremacy.Diplomacy
 
                 if (DiplomacyData.Status != ForeignPowerStatus.AtWar)
                     return true;
-                //if (DiplomacyData.Status != ForeignPowerStatus.OwnerIsMember)
-                //    return false;
-                //if (DiplomacyData.Status != ForeignPowerStatus.CounterpartyIsMember)
-                //    return false;
+ 
                 var turnsSinceWarDeclaration = GameContext.Current.TurnNumber - LastStatusChange;
                 if (turnsSinceWarDeclaration <= 3)
                     return false;

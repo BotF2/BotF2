@@ -107,16 +107,19 @@ namespace Supremacy.Diplomacy.Visitors
         protected override void VisitRequestStopPiracyClause(IClause clause) { /* TODO */ }
         protected override void VisitOfferBreakAgreementClause(IClause clause) { /* TODO */ }
         protected override void VisitRequestBreakAgreementClause(IClause clause) { /* TODO */ }
-        protected override void VisitOfferGiveCreditsClause(IClause clause) { /* TODO */ }
+        protected override void VisitOfferGiveCreditsClause(IClause clause)
+        {
+            // this method call is in CreditObligationFulfillmentVisitor.cs to fulfill transfer of credits
+        }
         protected override void VisitRequestGiveCreditsClause(IClause clause) { /* TODO */ }
-        protected override void VisitOfferGiveResourcesClause(IClause clause) { /* TODO */ }
-        protected override void VisitRequestGiveResourcesClause(IClause clause) { /* TODO */ }
-        protected override void VisitOfferMapDataClause(IClause clause) { /* TODO */ }
-        protected override void VisitRequestMapDataClause(IClause clause) { /* TODO */ }
+        //protected override void VisitOfferGiveResourcesClause(IClause clause) { /* TODO */ }
+        //protected override void VisitRequestGiveResourcesClause(IClause clause) { /* TODO */ }
+        //protected override void VisitOfferMapDataClause(IClause clause) { /* TODO */ }
+        //protected override void VisitRequestMapDataClause(IClause clause) { /* TODO */ }
         protected override void VisitOfferHonorMilitaryAgreementClause(IClause clause) { /* TODO */ }
         protected override void VisitRequestHonorMilitaryAgreementClause(IClause clause) { /* TODO */ }
-        protected override void VisitOfferEndEmbargoClause(IClause clause) { /* TODO */ }
-        protected override void VisitRequestEndEmbargoClause(IClause clause) { /* TODO */ }
+        //protected override void VisitOfferEndEmbargoClause(IClause clause) { /* TODO */ }
+        //protected override void VisitRequestEndEmbargoClause(IClause clause) { /* TODO */ }
         
         protected override void VisitWarPactClause(IClause clause)
         {
