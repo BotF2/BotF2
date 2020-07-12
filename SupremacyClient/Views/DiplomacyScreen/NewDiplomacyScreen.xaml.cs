@@ -39,25 +39,27 @@ namespace Supremacy.Client.Views.DiplomacyScreen
                 if (Model.SelectedForeignPower != null)
                 {
                     int turn = GameContext.Current.TurnNumber;
-                    var player = (ICivIdentity)Model.SelectedForeignPower.Owner;
-                    var counterParty = (ICivIdentity)Model.SelectedForeignPower.Counterparty;
-                    ForeignPower power = new ForeignPower(player, counterParty);
+                    //var player = (ICivIdentity)Model.SelectedForeignPower.Owner;
+                    //var counterParty = (ICivIdentity)Model.SelectedForeignPower.Counterparty;
+                    //ForeignPower power = new ForeignPower(player, counterParty);
+                    var playerEmpireId = AppContext.LocalPlayer.EmpireID; // local player
+                    var playerDiplomat = Diplomat.Get(playerEmpireId);
+                    var foreignPower = playerDiplomat.GetForeignPower(Model.SelectedForeignPower.Counterparty);
+                    //if(power.ResponseReceived != null && power.ResponseReceived.Proposal != null)
+                    //    GameLog.Client.Diplomacy.DebugFormat("$$ ResponseReceived Proposal clauses ={0}", power.ResponseReceived.Proposal.Clauses.ToString());
+                    //if (power.ResponseSent != null && power.ResponseSent.Proposal != null)
+                    //    GameLog.Client.Diplomacy.DebugFormat("$$ ResponseSent Proposal clauses ={0}", power.ResponseSent.Proposal.Clauses.ToString());
+                    //if (power.PendingAction != null)
+                    //    GameLog.Client.Diplomacy.DebugFormat("$$ PendingAction ={0}", power.PendingAction.ToString());
+                    //if (power.ProposalReceived != null)
+                    //    GameLog.Client.Diplomacy.DebugFormat("$$ ProposalReceived Clauses ={0}", power.ProposalReceived.Clauses.ToString());
+                    //if (power.ProposalSent != null)
+                    //    GameLog.Client.Diplomacy.DebugFormat("$$ ProposalSent clauses ={0}", power.ProposalSent.Clauses.ToString());
 
-                    GameLog.Client.Diplomacy.DebugFormat("$$ ResponseReceived Proposals ={0} ResponseSent ={1}",
-                             power.ResponseReceived.Proposal.Clauses.ToString(),
-                             power.ResponseSent.Proposal.Clauses.ToString());
-                    GameLog.Client.Diplomacy.DebugFormat("$$ PendingAction ={0} ProposalReceived ={1}",
-                           power.PendingAction.ToString(),
-                           power.ProposalReceived.Clauses.ToString());
-                    GameLog.Client.Diplomacy.DebugFormat("$$ ProposalSent ={0}",
-                             power.ProposalSent.Clauses.ToString());
-
-                    if  (response == "ACCEPT" || response == "COUNTER" || response == "REJECT") //power.ProposalReceived != null
+                    if  ((response == "ACCEPT" || response == "COUNTER" || response == "REJECT") && foreignPower.ProposalReceived != null) //&& power.ResponseReceived.Proposal != null)
                     {
-         
-
-                       NewProposal proposal = new NewProposal(Model.PlayerCivilization, Model.SelectedForeignPower.Counterparty, power.ProposalReceived.Clauses);
-
+                        NewProposal proposal = new NewProposal(foreignPower.Owner, foreignPower.Counterparty, foreignPower.ProposalReceived.Clauses);
+                 
                         if (response == "ACCEPT")
                         {
                            AcceptProposalVisitor.Visit(proposal, turn);
