@@ -42,29 +42,38 @@ namespace Supremacy.Client.Views.DiplomacyScreen
                     var player = (ICivIdentity)Model.SelectedForeignPower.Owner;
                     var counterParty = (ICivIdentity)Model.SelectedForeignPower.Counterparty;
                     ForeignPower power = new ForeignPower(player, counterParty);
-                    if (power.ProposalReceived != null && (response == "ACCEPT" || response == "COUNTER" || response == "REJECT"))
+                    if (power.ResponseReceived != null && (response == "ACCEPT" || response == "COUNTER" || response == "REJECT"))
                     {
-                        NewProposal proposal = new NewProposal(Model.PlayerCivilization, Model.SelectedForeignPower.Counterparty, power.ProposalReceived.Clauses);
+                        GameLog.Client.Diplomacy.DebugFormat("$$ ResponseReceived Proposals ={0} ResponseSent ={1}",
+                            power.ResponseReceived.Proposal.Clauses.ToString(),
+                            power.ResponseSent.Proposal.Clauses.ToString());
+                        GameLog.Client.Diplomacy.DebugFormat("$$ PendingAction ={0} ProposalReceived ={1}",
+                               power.PendingAction.ToString(),
+                               power.ProposalReceived.Clauses.ToString());
+                        GameLog.Client.Diplomacy.DebugFormat("$$ ProposalSent ={0}",
+                                 power.ProposalSent.Clauses.ToString());
+
+                       NewProposal proposal = new NewProposal(Model.PlayerCivilization, Model.SelectedForeignPower.Counterparty, power.ResponseReceived.Proposal.Clauses);
 
                         if (response == "ACCEPT")
                         {
-                            AcceptProposalVisitor.Visit(proposal, turn);
+                           AcceptProposalVisitor.Visit(proposal, turn);
 
                             //power.PendingAction = PendingDiplomacyAction.AcceptProposal;
 
                         }
                         else if (response == "COUNTER")
                         {
-                            power.PendingAction = PendingDiplomacyAction.None;
+                            //power.PendingAction = PendingDiplomacyAction.None;
 
                         }
                         else if (response == "REJECT")
                         {
-                            RejectProposalVisitor.Visit(proposal, turn);
+                           RejectProposalVisitor.Visit(proposal, turn);
                             //power.PendingAction = PendingDiplomacyAction.RejectProposal;
                         }
-                        power.LastProposalReceived = power.ProposalReceived;
-                        power.ProposalReceived = null;
+                        //power.LastProposalReceived = power.ProposalReceived;
+                        //power.ProposalReceived = null;
                     }
                 }
             }
