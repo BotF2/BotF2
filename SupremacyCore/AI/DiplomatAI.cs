@@ -210,8 +210,9 @@ namespace Supremacy.AI
                                         break;
                                 }
                             }
-
-                            // switch in GameEngine picks up PendingAction on next turn and calls AcceptProposalVisitor.Visit(ForeignPower.LastProposalReceived); and Reject...
+                            /*
+                            /switch in GameEngine picks up PendingAction on next turn and calls AcceptProposalVisitor.Visit(ForeignPower.LastProposalReceived); and Reject...
+                            */
                             if (accepted == true)
                             {
                                 foreignPower.PendingAction = PendingDiplomacyAction.AcceptProposal;

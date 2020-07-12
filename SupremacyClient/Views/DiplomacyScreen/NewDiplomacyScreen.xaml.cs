@@ -9,6 +9,7 @@ using Obtics.Collections;
 using Supremacy.Client.Context;
 using Supremacy.Client.Controls;
 using Supremacy.Diplomacy;
+using Supremacy.Diplomacy.Visitors;
 using Supremacy.Entities;
 using Supremacy.Game;
 using Supremacy.UI;
@@ -37,22 +38,27 @@ namespace Supremacy.Client.Views.DiplomacyScreen
                 var response = (string)radioButton.Content;
                 if (Model.SelectedForeignPower != null)
                 {
+                    int turn = GameContext.Current.TurnNumber;
                     var player = (ICivIdentity)Model.PlayerCivilization;
-                    var coutner = (ICivIdentity)Model.SelectedForeignPower.Counterparty;
-                    ForeignPower power = new ForeignPower(player, coutner);
+                    var counterParty = (ICivIdentity)Model.SelectedForeignPower.Counterparty;
+                    ForeignPower power = new ForeignPower(player, counterParty);
+                    NewProposal proposal = new NewProposal(Model.PlayerCivilization, Model.SelectedForeignPower.Counterparty, power.ResponseSent.Proposal.Clauses );
+                    
                     if (response == "ACCEPT")
                     {
-                       // HumanAccepts(ForeignPower power);
+                        AcceptProposalVisitor.Visit(proposal, turn);
+     
                         power.PendingAction = PendingDiplomacyAction.AcceptProposal;
-                       //  power.LastProposalReceived =
+
                     }
                     else if (response == "COUNTER")
                     {
                         power.PendingAction = PendingDiplomacyAction.None;
-                        //power.ResponseSent
+
                     }
                     else if (response == "REJECT")
                     {
+                        RejectProposalVisitor.Visit(proposal, turn);
                         power.PendingAction = PendingDiplomacyAction.RejectProposal;
                     }
                     power.LastProposalReceived = power.ProposalReceived;
