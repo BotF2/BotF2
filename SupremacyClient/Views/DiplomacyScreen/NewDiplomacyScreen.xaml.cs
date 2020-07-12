@@ -42,18 +42,21 @@ namespace Supremacy.Client.Views.DiplomacyScreen
                     var player = (ICivIdentity)Model.SelectedForeignPower.Owner;
                     var counterParty = (ICivIdentity)Model.SelectedForeignPower.Counterparty;
                     ForeignPower power = new ForeignPower(player, counterParty);
-                    if (power.ResponseReceived != null && (response == "ACCEPT" || response == "COUNTER" || response == "REJECT"))
-                    {
-                        GameLog.Client.Diplomacy.DebugFormat("$$ ResponseReceived Proposals ={0} ResponseSent ={1}",
-                            power.ResponseReceived.Proposal.Clauses.ToString(),
-                            power.ResponseSent.Proposal.Clauses.ToString());
-                        GameLog.Client.Diplomacy.DebugFormat("$$ PendingAction ={0} ProposalReceived ={1}",
-                               power.PendingAction.ToString(),
-                               power.ProposalReceived.Clauses.ToString());
-                        GameLog.Client.Diplomacy.DebugFormat("$$ ProposalSent ={0}",
-                                 power.ProposalSent.Clauses.ToString());
 
-                       NewProposal proposal = new NewProposal(Model.PlayerCivilization, Model.SelectedForeignPower.Counterparty, power.ResponseReceived.Proposal.Clauses);
+                    GameLog.Client.Diplomacy.DebugFormat("$$ ResponseReceived Proposals ={0} ResponseSent ={1}",
+                             power.ResponseReceived.Proposal.Clauses.ToString(),
+                             power.ResponseSent.Proposal.Clauses.ToString());
+                    GameLog.Client.Diplomacy.DebugFormat("$$ PendingAction ={0} ProposalReceived ={1}",
+                           power.PendingAction.ToString(),
+                           power.ProposalReceived.Clauses.ToString());
+                    GameLog.Client.Diplomacy.DebugFormat("$$ ProposalSent ={0}",
+                             power.ProposalSent.Clauses.ToString());
+
+                    if  (response == "ACCEPT" || response == "COUNTER" || response == "REJECT") //power.ProposalReceived != null
+                    {
+         
+
+                       NewProposal proposal = new NewProposal(Model.PlayerCivilization, Model.SelectedForeignPower.Counterparty, power.ResponseProposal.Clauses);
 
                         if (response == "ACCEPT")
                         {
