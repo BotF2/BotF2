@@ -42,11 +42,11 @@ namespace Supremacy.Client.Views.DiplomacyScreen
                     var player = (ICivIdentity)Model.SelectedForeignPower.Owner;
                     var counterParty = (ICivIdentity)Model.SelectedForeignPower.Counterparty;
                     ForeignPower power = new ForeignPower(player, counterParty);
-                    NewProposal proposal = new NewProposal(Model.PlayerCivilization, Model.SelectedForeignPower.Counterparty, power.ResponseSent.Proposal.Clauses );
+                    //NewProposal proposal = new NewProposal(Model.PlayerCivilization, Model.SelectedForeignPower.Counterparty, power.ResponseSent.Proposal.Clauses );
                     
                     if (response == "ACCEPT")
                     {
-                        AcceptProposalVisitor.Visit(proposal, turn);
+                        //AcceptProposalVisitor.Visit(proposal, turn);
      
                         power.PendingAction = PendingDiplomacyAction.AcceptProposal;
 
@@ -58,7 +58,7 @@ namespace Supremacy.Client.Views.DiplomacyScreen
                     }
                     else if (response == "REJECT")
                     {
-                        RejectProposalVisitor.Visit(proposal, turn);
+                        //RejectProposalVisitor.Visit(proposal, turn);
                         power.PendingAction = PendingDiplomacyAction.RejectProposal;
                     }
                     power.LastProposalReceived = power.ProposalReceived;
