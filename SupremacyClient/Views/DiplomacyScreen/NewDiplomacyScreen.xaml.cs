@@ -36,10 +36,10 @@ namespace Supremacy.Client.Views.DiplomacyScreen
             if (radioButton != null)
             {
                 var response = (string)radioButton.Content;
-                if (Model.SelectedForeignPower != null && Model.AreIncomingMessageCommandsVisible)
+                if (Model.SelectedForeignPower != null)
                 {
                     int turn = GameContext.Current.TurnNumber;
-                    var player = (ICivIdentity)Model.PlayerCivilization;
+                    var player = (ICivIdentity)Model.SelectedForeignPower.Owner;
                     var counterParty = (ICivIdentity)Model.SelectedForeignPower.Counterparty;
                     ForeignPower power = new ForeignPower(player, counterParty);
                     NewProposal proposal = new NewProposal(Model.PlayerCivilization, Model.SelectedForeignPower.Counterparty, power.ResponseSent.Proposal.Clauses );
