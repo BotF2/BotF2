@@ -36,7 +36,7 @@ namespace Supremacy.Client.Views.DiplomacyScreen
             if (radioButton != null)
             {
                 var response = (string)radioButton.Content;
-                if (Model.SelectedForeignPower != null)
+                if (Model.SelectedForeignPower != null && Model.AreIncomingMessageCommandsVisible)
                 {
                     int turn = GameContext.Current.TurnNumber;
                     var player = (ICivIdentity)Model.PlayerCivilization;
