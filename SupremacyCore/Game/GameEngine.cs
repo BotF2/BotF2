@@ -884,7 +884,7 @@ namespace Supremacy.Game
                                       ;
                         }
 
-                    GameLog.Core.Diplomacy.DebugFormat("------------------------------------------");
+                   // GameLog.Core.Diplomacy.DebugFormat("------------------------------------------");
                     //GameLog.Core.Diplomacy.DebugFormat("received a 'Sabotage'-Diplomacy-Statement, Tone = {0}", foreignPower.StatementReceived.Tone.ToString());
 
                     if (_gameLog.Length > 44)  // not only the entry phrase...

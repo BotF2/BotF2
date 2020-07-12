@@ -23,7 +23,11 @@ namespace Supremacy.Client.Views
         public ForeignPowerViewModel([NotNull] ForeignPower foreignPower)
          {
             if (foreignPower == null)
+            {
+                return;
                 throw new ArgumentNullException("foreignPower");
+                
+            }
 
             _foreignPower = foreignPower;
             _activeAgreements = new ObservableCollection<ActiveAgreementViewModel>();
@@ -38,11 +42,11 @@ namespace Supremacy.Client.Views
         private void UpdateIncomingMessage()
         {
             GameLog.Client.Diplomacy.DebugFormat("Checking for IncomingMessage out of *ResponseReceived...");
-            //if (_foreignPower.ResponseReceived == null)
-            //{
-            //    GameLog.Client.Diplomacy.DebugFormat("$$ _foreignPower.ResponseReceived = no incoming message yet");
-            //    return;
-            //}
+            if (_foreignPower.ResponseReceived == null)
+            {
+                GameLog.Client.Diplomacy.DebugFormat("$$ _foreignPower.ResponseReceived = no incoming message yet");
+                return;
+            }
             if (_foreignPower.ResponseReceived != null)
             { 
             IncomingMessage = DiplomacyMessageViewModel.FromReponse(_foreignPower.ResponseReceived);
@@ -308,8 +312,7 @@ namespace Supremacy.Client.Views
             get
             {
                 // move Gamelog to the three detail places
-                // 
-                //GameLog.Client.Diplomacy.DebugFormat("Proposal received ? ={0}, Response received = {1}, Statement Received ={2}", _foreignPower.ProposalReceived, _foreignPower.ResponseReceived, _foreignPower.StatementReceived);
+                GameLog.Client.Diplomacy.DebugFormat("Proposal received ? ={0}, Response received = {1}, Statement Received ={2}, Proposal Received ={3}", _foreignPower.ProposalReceived, _foreignPower.ResponseReceived, _foreignPower.StatementReceived, _foreignPower.ProposalReceived);
                 return ResolveMessageCategory(_foreignPower.ProposalReceived ?? (object)_foreignPower.ResponseReceived ?? _foreignPower.StatementReceived ?? (object)_foreignPower.ProposalReceived);
             }
         }

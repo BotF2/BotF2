@@ -38,20 +38,25 @@ namespace Supremacy.Client.Views.DiplomacyScreen
                 if (Model.SelectedForeignPower != null)
                 {
                     var player = (ICivIdentity)Model.PlayerCivilization;
-                    var coutner = (ICivIdentity)Model.SelectedForeignPower.Owner;
+                    var coutner = (ICivIdentity)Model.SelectedForeignPower.Counterparty;
                     ForeignPower power = new ForeignPower(player, coutner);
                     if (response == "ACCEPT")
                     {
+                       // HumanAccepts(ForeignPower power);
                         power.PendingAction = PendingDiplomacyAction.AcceptProposal;
+                       //  power.LastProposalReceived =
                     }
                     else if (response == "COUNTER")
                     {
                         power.PendingAction = PendingDiplomacyAction.None;
+                        //power.ResponseSent
                     }
                     else if (response == "REJECT")
                     {
                         power.PendingAction = PendingDiplomacyAction.RejectProposal;
                     }
+                    power.LastProposalReceived = power.ProposalReceived;
+                    power.ProposalReceived = null;
                 }
             }
         }
