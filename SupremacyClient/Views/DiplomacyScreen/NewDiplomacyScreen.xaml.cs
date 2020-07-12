@@ -56,7 +56,7 @@ namespace Supremacy.Client.Views.DiplomacyScreen
                     {
          
 
-                       NewProposal proposal = new NewProposal(Model.PlayerCivilization, Model.SelectedForeignPower.Counterparty, power.ResponseProposal.Clauses);
+                       NewProposal proposal = new NewProposal(Model.PlayerCivilization, Model.SelectedForeignPower.Counterparty, power.ProposalReceived.Clauses);
 
                         if (response == "ACCEPT")
                         {
