@@ -856,7 +856,7 @@
                                                 CornerRadius="8"
                                                 DataContext="{Binding Path=SelectedForeignPower}">
                                             <ScrollViewer HorizontalScrollBarVisibility="Disabled"
-                                                            VerticalScrollBarVisibility="Auto">
+                                                          VerticalScrollBarVisibility="Auto">
                                                 <StackPanel Orientation="Horizontal" >
                                                     <TextBlock DockPanel.Dock="Top"
                                                             TextAlignment="Left"
@@ -1061,7 +1061,7 @@
                                                                 VerticalAlignment="Top"
                                                                 GroupName="0"
                                                                 Content="ACCEPT"
-                                                                Margin="2,0,12,0"
+                                                                Margin="2,5,12,0"
                                                                 Checked="clickAcceptCounterReject"/>
                                                             </StackPanel>
                                                             <StackPanel>
@@ -1070,7 +1070,7 @@
                                                                 VerticalAlignment="Top"
                                                                 GroupName="0"                             
                                                                 Content="COUNTER"
-                                                                Margin="0,0,12,0"
+                                                                Margin="0,5,12,0"
                                                                 Checked="clickAcceptCounterReject"/>
                                                             </StackPanel>
                                                             <StackPanel>
@@ -1078,13 +1078,40 @@
                                                                 x:Name="REJECT"
                                                                 VerticalAlignment="Top"
                                                                 GroupName="0"
+                                                                Margin="0,5,0,0"
                                                                 Content="REJECT"                              
                                                                 Checked="clickAcceptCounterReject"/>
                                                             </StackPanel>
                                                         </StackPanel>
                                                         <StackPanel Orientation="Horizontal" Grid.Column="0" Grid.Row="0">
-                                                            
-                                                        </StackPanel>
+                                                          <TextBlock Text="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry=NoIncomingHeader, CharacterCasing=Upper}" 
+                                                                   
+                                                                   Visibility="{Binding Path=HasOfferLeadInText, Converter={StaticResource BooleanToVisibilityConverter}}"
+                                                                   TextWrapping="Wrap"
+                                                                   TextBlock.Foreground="{StaticResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"
+                                                                   TextBlock.FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+                                                                   TextBlock.FontSize="12pt"
+                                                                   Background="Black"
+                                                                   Margin="0,5,0,0" />
+                                                          <ItemsControl Margin="0,0,0,0"
+                                                                          ItemsSource="{Binding Path=OfferElements}"
+                                                                          HorizontalContentAlignment="Center"
+                                                                          Foreground="LimeGreen"
+                                                                          FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+                                                                          FontSize="16"
+                                                                          Visibility="{Binding Path=OfferElements.Count, Converter={scc:SimpleCase Case=0, IfMatch=Visible, Else=Collasped}}">
+                                                            <ItemsControl.Resources>
+                                                              <Style TargetType="{x:Type Hyperlink}"
+                                                                      BasedOn="{StaticResource {x:Type Hyperlink}}">
+                                                                <Setter Property="TextElement.Foreground">
+                                                                  <Setter.Value>
+                                                                    <SolidColorBrush Color="{Binding Source={x:Static Colors.LimeGreen}, BindsDirectlyToSource=True, Converter={StaticResource LightColorConverter}}" />
+                                                                  </Setter.Value>
+                                                                </Setter>
+                                                              </Style>
+                                                            </ItemsControl.Resources>
+                                                          </ItemsControl>
+                                                      </StackPanel>
                                                     </Grid>
                                                     <!--<StackPanel x:Name="InboxButtons"
                                                                 Grid.Column="0"
