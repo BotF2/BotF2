@@ -933,11 +933,11 @@
                                                             FontSize="16">
                                                         <ItemsControl.Resources>
                                                             <Style TargetType="{x:Type Hyperlink}"
-                                                                BasedOn="{StaticResource {x:Type Hyperlink}}">
+                                                                   BasedOn="{StaticResource {x:Type Hyperlink}}">
                                                                 <Setter Property="TextElement.Foreground"
-                                                                Value="{StaticResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}" />
+                                                                        Value="{StaticResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}" />
                                                                 <Setter Property="IsEnabled"
-                                                                Value="False" />
+                                                                        Value="False" />
                                                             </Style>
                                                         </ItemsControl.Resources>
                                                     </ItemsControl>
@@ -959,13 +959,13 @@
                                                 DataContext="{Binding Path=SelectedForeignPower.IncomingMessage}">
                                             <StackPanel Orientation="Horizontal">
                                                 <TextBlock TextAlignment="Left"
-                                                        TextWrapping="Wrap"
-                                                        TextTrimming="CharacterEllipsis"
-                                                        FontSize="20"
-                                                        FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
-                                                        Foreground="{StaticResource HeaderTextBrush}"
-                                                        Margin="3,2,0,0"
-                                                        Text="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry=InboxHeader, CharacterCasing=Upper}" />
+                                                            TextWrapping="Wrap"
+                                                            TextTrimming="CharacterEllipsis"
+                                                            FontSize="20"
+                                                            FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
+                                                            Foreground="{StaticResource HeaderTextBrush}"
+                                                            Margin="3,2,0,0"
+                                                            Text="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry=InboxHeader, CharacterCasing=Upper}" />
                                                 <ContentPresenter TextBlock.Foreground="{StaticResource DefaultTextBrush}"
                                                                     TextBlock.FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                                                                     TextBlock.FontSize="16"
@@ -1048,7 +1048,7 @@
                                                     </ItemsControl>
                                                     <Grid>
                                                         <Grid.ColumnDefinitions>
-                                                            <ColumnDefinition Width="Auto" />
+                                                            <ColumnDefinition Width="224" />
                                                         </Grid.ColumnDefinitions>
                                                         <Grid.RowDefinitions>
                                                             <RowDefinition Height="Auto" />
@@ -1084,34 +1084,46 @@
                                                             </StackPanel>
                                                         </StackPanel>
                                                         <StackPanel Orientation="Horizontal" Grid.Column="0" Grid.Row="0">
-                                                          <TextBlock Text="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry=NoIncomingHeader, CharacterCasing=Upper}" 
-                                                                   
-                                                                   Visibility="{Binding Path=HasOfferLeadInText, Converter={StaticResource BooleanToVisibilityConverter}}"
-                                                                   TextWrapping="Wrap"
-                                                                   TextBlock.Foreground="{StaticResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"
-                                                                   TextBlock.FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
-                                                                   TextBlock.FontSize="12pt"
-                                                                   Background="Black"
-                                                                   Margin="0,5,0,0" />
-                                                          <ItemsControl Margin="0,0,0,0"
-                                                                          ItemsSource="{Binding Path=OfferElements}"
-                                                                          HorizontalContentAlignment="Center"
-                                                                          Foreground="LimeGreen"
-                                                                          FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
-                                                                          FontSize="16"
-                                                                          Visibility="{Binding Path=OfferElements.Count, Converter={scc:SimpleCase Case=0, IfMatch=Visible, Else=Collasped}}">
-                                                            <ItemsControl.Resources>
-                                                              <Style TargetType="{x:Type Hyperlink}"
-                                                                      BasedOn="{StaticResource {x:Type Hyperlink}}">
-                                                                <Setter Property="TextElement.Foreground">
-                                                                  <Setter.Value>
-                                                                    <SolidColorBrush Color="{Binding Source={x:Static Colors.LimeGreen}, BindsDirectlyToSource=True, Converter={StaticResource LightColorConverter}}" />
-                                                                  </Setter.Value>
-                                                                </Setter>
-                                                              </Style>
-                                                            </ItemsControl.Resources>
-                                                          </ItemsControl>
-                                                      </StackPanel>
+                                                            <!--<TextBlock Text="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry=NoIncomingHeader, CharacterCasing=Upper}" 
+                                                                         HorizontalAlignment="Center"
+                                                                         VerticalAlignment="Center"
+                                                                     
+                                                                         TextWrapping="Wrap"
+                                                                         TextBlock.Foreground="{StaticResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"
+                                                                         TextBlock.FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+                                                                         TextBlock.FontSize="12pt"
+                                                                         Background="Black"
+                                                                         Margin="0,5,0,0" 
+                                                                        Visibility="{Binding Path=HasTreatyLeadInText, Converter={StaticResource BooleanToVisibilityConverter}}"/>-->
+                                                            <TextBlock Text="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry=NoIncomingHeader, CharacterCasing=Upper}" 
+                                                                         HorizontalAlignment="Center"
+                                                                         VerticalAlignment="Center"
+                                                                         Visibility="{Binding Path=HasTreatyLeadInText, Converter={StaticResource BooleanToVisibilityConverter}}"
+                                                                         TextWrapping="Wrap"
+                                                                         TextBlock.Foreground="{StaticResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"
+                                                                         TextBlock.FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+                                                                         TextBlock.FontSize="12pt"
+                                                                         Background="Black"
+                                                                         Margin="0,5,0,0" />
+                                                            <ItemsControl Margin="0,0,0,0"
+                                                                              ItemsSource="{Binding Path=TreatyElements}"
+                                                                              HorizontalContentAlignment="Center"
+                                                                              Foreground="LimeGreen"
+                                                                              FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+                                                                              FontSize="16"
+                                                                              Visibility="{Binding Path=TreatyElements.Count, Converter={scc:SimpleCase Case=0, IfMatch=Collasped, Else=Visible}}">
+                                                                <ItemsControl.Resources>
+                                                                    <Style TargetType="{x:Type Hyperlink}"
+                                                                          BasedOn="{StaticResource {x:Type Hyperlink}}">
+                                                                        <Setter Property="TextElement.Foreground">
+                                                                            <Setter.Value>
+                                                                                <SolidColorBrush Color="{Binding Source={x:Static Colors.LimeGreen}, BindsDirectlyToSource=True, Converter={StaticResource LightColorConverter}}" />
+                                                                            </Setter.Value>
+                                                                        </Setter>
+                                                                    </Style>
+                                                                </ItemsControl.Resources>
+                                                            </ItemsControl>
+                                                        </StackPanel>
                                                     </Grid>
                                                     <!--<StackPanel x:Name="InboxButtons"
                                                                 Grid.Column="0"
