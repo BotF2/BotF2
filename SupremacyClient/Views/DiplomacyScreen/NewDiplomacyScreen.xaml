@@ -1111,7 +1111,7 @@
                                                                               Foreground="LimeGreen"
                                                                               FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                                                                               FontSize="16"
-                                                                              Visibility="{Binding Path=TreatyElements.Count, Converter={scc:SimpleCase Case=0, IfMatch=Collapsed, Else=Visible}}">
+                                                                              Visibility="Visible"> <!--{Binding Path=TreatyElements.Count, Converter={scc:SimpleCase Case=0, IfMatch=Collapsed, Else=Visible}}">-->
                                                                 <ItemsControl.Resources>
                                                                     <Style TargetType="{x:Type Hyperlink}"
                                                                           BasedOn="{StaticResource {x:Type Hyperlink}}">
