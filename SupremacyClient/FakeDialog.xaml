@@ -42,12 +42,14 @@
       </Button>-->
         </StackPanel>
 
-        <TabControl x:Name="OptionsRegion"
+        <TabControl x:Name="FakeDialogRegion"
                 cal:RegionManager.RegionName="{x:Static scc:ClientRegions.OptionsPages}">
             <TabControl.ItemContainerStyle>
                 <Style TargetType="{x:Type TabItem}" BasedOn="{StaticResource {x:Type TabItem}}">
                     <Setter Property="Header"
-                  Value="{Binding Path=(scc:IClientOptionsPage.Header)}" />
+                  Value="{Binding Path=(scc:IClientOptionsPage.Header)}" />                            
+                            <!--Value="FakeDialog" />"-->
+
                 </Style>
             </TabControl.ItemContainerStyle>
         </TabControl>
