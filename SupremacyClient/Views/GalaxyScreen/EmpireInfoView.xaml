@@ -7,6 +7,7 @@
                        TextElement.FontSize="{DynamicResource {x:Static scc:ClientResources.InfoPaneFontSizeKey}}"
                        TextElement.FontFamily="{DynamicResource {x:Static scc:ClientResources.InfoPaneFontFamilyKey}}"
                        TextElement.FontWeight="{DynamicResource {x:Static scc:ClientResources.InfoPaneFontWeightKey}}">
+    <!--File:EmpireInfoView.xaml-->
   <wpfcontrib:AutoGrid DataContext="{Binding Path=(scc:GameScreenViewBase.AppContext).LocalPlayerEmpire, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type scc:GalaxyScreenView}}}">
     <wpfcontrib:AutoGrid.ColumnDefinitions>
       <ColumnDefinition Width="Auto" />
@@ -24,6 +25,12 @@
     <TextBlock Foreground="{Binding Path=Credits.LastChange, Converter={StaticResource NetValueBrushConverter}, ConverterParameter={StaticResource DefaultTextBrush}}"
                HorizontalAlignment="Right"
                Text="{Binding Path=Credits.LastChange, Mode=OneWay}" />
+     <TextBlock Foreground="{StaticResource HeaderTextBrush}"
+               HorizontalAlignment="Left"
+               Text="{Binding Source={s:StringResource MAINTENANCE_COST_LAST_TURN}, Mode=OneTime, Converter={StaticResource UpperCaseConverter}}" />
+    <TextBlock Foreground="{Binding Path=Credits.LastChange, Converter={StaticResource NetValueBrushConverter}, ConverterParameter={StaticResource DefaultTextBrush}}"
+               HorizontalAlignment="Right"
+               Text="{Binding Path=MaintenanceCostLastTurn, Mode=OneWay}" />
 
     <TextBlock Foreground="{StaticResource HeaderTextBrush}"
             HorizontalAlignment="Left"
