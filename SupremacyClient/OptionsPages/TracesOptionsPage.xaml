@@ -5,12 +5,18 @@
              xmlns:local="clr-namespace:Supremacy.Client"
              xmlns:scc="http://schemas.startreksupremacy.com/xaml/presentation">
     <!--File:TracesOptionsPage.xaml-->
-    <scc:AutoGrid Orientation="Vertical">
+    <Grid >
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="140" />
+            <ColumnDefinition Width="18" />
+            <ColumnDefinition Width="120" />
             <ColumnDefinition Width="10" />
             <ColumnDefinition Width="3" />
-            <ColumnDefinition Width="140" />
+            <ColumnDefinition Width="18" />
+            <ColumnDefinition Width="120" />
+            <ColumnDefinition Width="10" />
+            <ColumnDefinition Width="3" />
+            <ColumnDefinition Width="18" />
+            <ColumnDefinition Width="120" />
             <ColumnDefinition Width="10" />
             <ColumnDefinition Width="3" />
             <ColumnDefinition Width="*" />
@@ -37,10 +43,8 @@
             <RowDefinition Height="18" />
             <RowDefinition Height="18" />
             <RowDefinition Height="18" />
-            <RowDefinition Height="18" />
-            <RowDefinition Height="18" />
-            <RowDefinition Height="18" />
-            <RowDefinition Height="18" />
+
+
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
@@ -48,7 +52,7 @@
 
         <TextBlock
         Grid.ColumnSpan="7"
-        Grid.Column="0"
+        Grid.Column="1"
         Grid.Row="0"
         FontSize="14pt"
         Foreground="White"
@@ -70,7 +74,7 @@
 
          <!--ToDo: bring back and work more on it-->
         <!--<scc:GameButton x:Name="AllTracesButton"
-                    Grid.Row="2" Grid.Column="0" VerticalAlignment="Center"
+                    Grid.Row="2" Grid.Column="1" VerticalAlignment="Center"
                     DisplayMode="Tiny"
                     Label="All"
                     Foreground="Black"
@@ -81,7 +85,7 @@
                      />
 
         <scc:GameButton x:Name="SomeTracesButton"
-                    Grid.Row="2" Grid.Column="3" VerticalAlignment="Center"
+                    Grid.Row="2" Grid.Column="4" VerticalAlignment="Center"
                     DisplayMode="Tiny"
                     Label="Some"
                     Foreground="Black"
@@ -92,7 +96,7 @@
                      />
 
         <scc:GameButton x:Name="NoneTracesButton"
-                    Grid.Row="2" Grid.Column="6" VerticalAlignment="Center"
+                    Grid.Row="2" Grid.Column="8" VerticalAlignment="Center"
                     DisplayMode="Tiny"
                     Label="None"
                     Foreground="Black"
@@ -103,21 +107,21 @@
                      />-->
 
 
-        <RadioButton Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Grid.RowSpan="2" VerticalAlignment="Center"
+        <RadioButton Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Grid.RowSpan="2" VerticalAlignment="Center"
         IsChecked="{Binding Source={x:Static scc:ClientSettings.Current}, Path=(scc:ClientSettings.Traces_SetAll), Mode=TwoWay}"
         GroupName="Traces_Group"
                   Content="{s:StringResource SETTINGS_TRACES_SET_ALL}"
         ToolTip="{s:StringResource SETTINGS_TRACES_SET_ALL_TOOLTIP}" 
         />
 
-        <RadioButton Grid.Row="1" Grid.Column="3" Grid.ColumnSpan="2" Grid.RowSpan="2" VerticalAlignment="Center"
+        <RadioButton Grid.Row="1" Grid.Column="4" Grid.ColumnSpan="2" Grid.RowSpan="2" VerticalAlignment="Center"
         IsChecked="{Binding Source={x:Static scc:ClientSettings.Current}, Path=(scc:ClientSettings.Traces_SetSome), Mode=TwoWay}"
         GroupName="Traces_Group"
                   Content="{s:StringResource SETTINGS_TRACES_SET_SOME}"
         ToolTip="{s:StringResource SETTINGS_TRACES_SET_SOME_TOOLTIP}" 
         />
 
-        <RadioButton Grid.Row="1" Grid.Column="6" Grid.ColumnSpan="2" Grid.RowSpan="2" VerticalAlignment="Center"
+        <RadioButton Grid.Row="1" Grid.Column="8" Grid.ColumnSpan="2" Grid.RowSpan="2" VerticalAlignment="Center"
         IsChecked="{Binding Source={x:Static scc:ClientSettings.Current}, Path=(scc:ClientSettings.Traces_ClearAll), Mode=TwoWay}"
         GroupName="Traces_Group"
                   Content="{s:StringResource SETTINGS_TRACES_CLEAR_ALL}"
@@ -125,67 +129,95 @@
         />
 
 
-        <CheckBox Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2"
+        <!--Column="0"-->
+        <CheckBox Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2"
         IsChecked="{Binding Source={x:Static scc:ClientSettings.Current}, Path=(scc:ClientSettings.TracesAI), Mode=TwoWay}"
         Content="{s:StringResource SETTINGS_TRACES_AI}"
         ToolTip="{s:StringResource SETTINGS_TRACES_AI_TOOLTIP}" 
         />
 
-        <CheckBox Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2"
+        <CheckBox Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="2"
         IsChecked="{Binding Source={x:Static scc:ClientSettings.Current}, Path=(scc:ClientSettings.TracesAudio), Mode=TwoWay}"
         Content="{s:StringResource SETTINGS_TRACES_AUDIO}"
         ToolTip="{s:StringResource SETTINGS_TRACES_AUDIO_TOOLTIP}" 
         />
 
-        <CheckBox Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2"
+        <CheckBox Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="2"
         IsChecked="{Binding Source={x:Static scc:ClientSettings.Current}, Path=(scc:ClientSettings.TracesCivsAndRaces), Mode=TwoWay}"
         Content="{s:StringResource SETTINGS_TRACES_CIVS_AND_RACES}"
         ToolTip="{s:StringResource SETTINGS_TRACES_CIVS_AND_RACES_TOOLTIP}" 
         />
 
-        <CheckBox Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2"
+        <!--Variation 1: Checkbox in Column 0, separate TextBlock in Column 1 using a margin of 20-->
+        
+        <!--<CheckBox Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="1"
+        IsChecked="{Binding Source={x:Static scc:ClientSettings.Current}, Path=(scc:ClientSettings.TracesCivsAndRaces), Mode=TwoWay}"
+        Content="{s:StringResource SETTINGS_TRACES_CIVS_AND_RACES}"
+        ToolTip="{s:StringResource SETTINGS_TRACES_CIVS_AND_RACES_TOOLTIP}" 
+        />
+
+        <TextBlock Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="1" Margin="20,0,0,0" FontSize="14"
+        Text="{s:StringResource SETTINGS_TRACES_CIVS_AND_RACES}"
+        ToolTip="{s:StringResource SETTINGS_TRACES_CIVS_AND_RACES_TOOLTIP}" 
+        />-->
+
+        <CheckBox Grid.Row="6" Grid.Column="1" Grid.ColumnSpan="3"
         IsChecked="{Binding Source={x:Static scc:ClientSettings.Current}, Path=(scc:ClientSettings.TracesColonies), Mode=TwoWay}"
         Content="{s:StringResource SETTINGS_TRACES_COLONIES}"
         ToolTip="{s:StringResource SETTINGS_TRACES_COLONIES_TOOLTIP}" 
         />
 
-        <CheckBox Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="2"
+        <CheckBox Grid.Row="7" Grid.Column="1" Grid.ColumnSpan="2"
         IsChecked="{Binding Source={x:Static scc:ClientSettings.Current}, Path=(scc:ClientSettings.TracesCombat), Mode=TwoWay}"
         Content="{s:StringResource SETTINGS_TRACES_COMBAT}"
         ToolTip="{s:StringResource SETTINGS_TRACES_COMBAT_TOOLTIP}" 
         />
 
-        <CheckBox Grid.Row="8" Grid.Column="0" Grid.ColumnSpan="2"
+        <CheckBox Grid.Row="8" Grid.Column="1" Grid.ColumnSpan="2"
         IsChecked="{Binding Source={x:Static scc:ClientSettings.Current}, Path=(scc:ClientSettings.TracesCombatDetails), Mode=TwoWay}"
         Content="{s:StringResource SETTINGS_TRACES_COMBATDETAILS}"
         ToolTip="{s:StringResource SETTINGS_TRACES_COMBATDETAILS_TOOLTIP}" 
         />
 
-        <CheckBox Grid.Row="9" Grid.Column="0" Grid.ColumnSpan="2"
+        <!--Variation 2 (Reg likes this more): Checkbox in Column 1, separate CheckBox for Details in front = Column 0-->
+
+        <!--<CheckBox Grid.Row="8" Grid.Column="0" Grid.ColumnSpan="1"
+        IsChecked="{Binding Source={x:Static scc:ClientSettings.Current}, Path=(scc:ClientSettings.TracesCombat), Mode=TwoWay}"
+        Content="{s:StringResource SETTINGS_TRACES_COMBAT}"
+        ToolTip="{s:StringResource SETTINGS_TRACES_COMBAT_TOOLTIP}" 
+        />
+
+        <CheckBox Grid.Row="8" Grid.Column="1" Grid.ColumnSpan="2"
+        IsChecked="{Binding Source={x:Static scc:ClientSettings.Current}, Path=(scc:ClientSettings.TracesCombatDetails), Mode=TwoWay}"
+        Content="{s:StringResource SETTINGS_TRACES_COMBATDETAILS}"
+        ToolTip="{s:StringResource SETTINGS_TRACES_COMBATDETAILS_TOOLTIP}" 
+        />-->
+
+        <CheckBox Grid.Row="9" Grid.Column="1" Grid.ColumnSpan="2"
         IsChecked="{Binding Source={x:Static scc:ClientSettings.Current}, Path=(scc:ClientSettings.TracesCredits), Mode=TwoWay}"
         Content="{s:StringResource SETTINGS_TRACES_CREDITS}"
         ToolTip="{s:StringResource SETTINGS_TRACES_CREDITS_TOOLTIP}" 
         />
 
-        <CheckBox Grid.Row="10" Grid.Column="0" Grid.ColumnSpan="2"
+        <CheckBox Grid.Row="10" Grid.Column="1" Grid.ColumnSpan="2"
         IsChecked="{Binding Source={x:Static scc:ClientSettings.Current}, Path=(scc:ClientSettings.TracesDeuterium), Mode=TwoWay}"
         Content="{s:StringResource SETTINGS_TRACES_DEUTERIUM}"
         ToolTip="{s:StringResource SETTINGS_TRACES_DEUTERIUM_TOOLTIP}" 
         />
 
-        <CheckBox Grid.Row="11" Grid.Column="0" Grid.ColumnSpan="2"
+        <CheckBox Grid.Row="11" Grid.Column="1" Grid.ColumnSpan="2"
         IsChecked="{Binding Source={x:Static scc:ClientSettings.Current}, Path=(scc:ClientSettings.TracesDilithium), Mode=TwoWay}"
         Content="{s:StringResource SETTINGS_TRACES_DILITHIUM}"
         ToolTip="{s:StringResource SETTINGS_TRACES_DILITHIUM_TOOLTIP}" 
         />
 
-        <CheckBox Grid.Row="12" Grid.Column="0" Grid.ColumnSpan="2"
+        <CheckBox Grid.Row="12" Grid.Column="1" Grid.ColumnSpan="2"
         IsChecked="{Binding Source={x:Static scc:ClientSettings.Current}, Path=(scc:ClientSettings.TracesDiplomacy), Mode=TwoWay}"
         Content="{s:StringResource SETTINGS_TRACES_DIPLOMACY}"
         ToolTip="{s:StringResource SETTINGS_TRACES_DIPLOMACY_TOOLTIP}" 
         />
 
-        <CheckBox Grid.Row="13" Grid.Column="0" Grid.ColumnSpan="2"
+        <CheckBox Grid.Row="13" Grid.Column="1" Grid.ColumnSpan="2"
         IsChecked="{Binding Source={x:Static scc:ClientSettings.Current}, Path=(scc:ClientSettings.TracesEnergy), Mode=TwoWay}"
         Content="{s:StringResource SETTINGS_TRACES_ENERGY}"
         ToolTip="{s:StringResource SETTINGS_TRACES_ENERGY_TOOLTIP}" 
@@ -193,55 +225,55 @@
 
 
         <!--column 3 (2nd one)-->
-        <CheckBox Grid.Row="3" Grid.Column="3" Grid.ColumnSpan="2"
+        <CheckBox Grid.Row="3" Grid.Column="4" Grid.ColumnSpan="2"
         IsChecked="{Binding Source={x:Static scc:ClientSettings.Current}, Path=(scc:ClientSettings.TracesEvents), Mode=TwoWay}"
         Content="{s:StringResource SETTINGS_TRACES_EVENTS}"
         ToolTip="{s:StringResource SETTINGS_TRACES_EVENTS_TOOLTIP}" 
         />
 
-        <CheckBox Grid.Row="4" Grid.Column="3" Grid.ColumnSpan="2"
+        <CheckBox Grid.Row="4" Grid.Column="4" Grid.ColumnSpan="2"
         IsChecked="{Binding Source={x:Static scc:ClientSettings.Current}, Path=(scc:ClientSettings.TracesGalaxyGenerator), Mode=TwoWay}"
         Content="{s:StringResource SETTINGS_TRACES_GALAXY_GENERATOR}"
         ToolTip="{s:StringResource SETTINGS_TRACES_GALAXY_GENERATOR_TOOLTIP}" 
         />
 
-        <CheckBox Grid.Row="5" Grid.Column="3" Grid.ColumnSpan="2"
+        <CheckBox Grid.Row="5" Grid.Column="4" Grid.ColumnSpan="2"
         IsChecked="{Binding Source={x:Static scc:ClientSettings.Current}, Path=(scc:ClientSettings.TracesGameData), Mode=TwoWay}"
         Content="{s:StringResource SETTINGS_TRACES_GAMEDATA}"
         ToolTip="{s:StringResource SETTINGS_TRACES_GAMEDATA_TOOLTIP}" 
         />
 
-        <CheckBox Grid.Row="6" Grid.Column="3" Grid.ColumnSpan="2"
+        <CheckBox Grid.Row="6" Grid.Column="4" Grid.ColumnSpan="2"
         IsChecked="{Binding Source={x:Static scc:ClientSettings.Current}, Path=(scc:ClientSettings.TracesGameInitData), Mode=TwoWay}"
         Content="{s:StringResource SETTINGS_TRACES_GAMEINITDATA}"
         ToolTip="{s:StringResource SETTINGS_TRACES_GAMEINITDATA_TOOLTIP}" 
         />
 
-        <CheckBox Grid.Row="7" Grid.Column="3" Grid.ColumnSpan="2"
+        <CheckBox Grid.Row="7" Grid.Column="4" Grid.ColumnSpan="2"
         IsChecked="{Binding Source={x:Static scc:ClientSettings.Current}, Path=(scc:ClientSettings.TracesGeneral), Mode=TwoWay}"
         Content="{s:StringResource SETTINGS_TRACES_GENERAL}"
         ToolTip="{s:StringResource SETTINGS_TRACES_GENERAL_TOOLTIP}" 
         />
 
-        <CheckBox Grid.Row="8" Grid.Column="3" Grid.ColumnSpan="2"
+        <CheckBox Grid.Row="8" Grid.Column="4" Grid.ColumnSpan="2"
         IsChecked="{Binding Source={x:Static scc:ClientSettings.Current}, Path=(scc:ClientSettings.TracesIntel), Mode=TwoWay}"
         Content="{s:StringResource SETTINGS_TRACES_INTEL}"
         ToolTip="{s:StringResource SETTINGS_TRACES_INTEL_TOOLTIP}" 
         />
 
-        <CheckBox Grid.Row="9" Grid.Column="3" Grid.ColumnSpan="2"
+        <CheckBox Grid.Row="9" Grid.Column="4" Grid.ColumnSpan="2"
         IsChecked="{Binding Source={x:Static scc:ClientSettings.Current}, Path=(scc:ClientSettings.TracesMapData), Mode=TwoWay}"
         Content="{s:StringResource SETTINGS_TRACES_MAPDATA}"
         ToolTip="{s:StringResource SETTINGS_TRACES_MAPDATA_TOOLTIP}" 
         />
 
-        <CheckBox Grid.Row="10" Grid.Column="3" Grid.ColumnSpan="2"
+        <CheckBox Grid.Row="10" Grid.Column="4" Grid.ColumnSpan="2"
         IsChecked="{Binding Source={x:Static scc:ClientSettings.Current}, Path=(scc:ClientSettings.TracesMultiPlay), Mode=TwoWay}"
         Content="{s:StringResource SETTINGS_TRACES_MULTIPLAY}"
         ToolTip="{s:StringResource SETTINGS_TRACES_MULTIPLAY_TOOLTIP}" 
         />
 
-        <CheckBox Grid.Row="11" Grid.Column="3" Grid.ColumnSpan="2"
+        <CheckBox Grid.Row="11" Grid.Column="4" Grid.ColumnSpan="2"
         IsChecked="{Binding Source={x:Static scc:ClientSettings.Current}, Path=(scc:ClientSettings.TracesProduction), Mode=TwoWay}"
         Content="{s:StringResource SETTINGS_TRACES_PRODUCTION}"
         ToolTip="{s:StringResource SETTINGS_TRACES_PRODUCTION_TOOLTIP}" 
@@ -249,93 +281,93 @@
 
         <!--<CheckBox 
         Grid.ColumnSpan="2"
-        Grid.Column="3" 
+        Grid.Column="4" 
         Grid.Row="12"
         IsChecked="{Binding Source={x:Static scc:ClientSettings.Current}, Path=(scc:ClientSettings.TracesReportErrorsToEmail), Mode=TwoWay}"
         Content="{s:StringResource SETTINGS_TRACES_REPORT_ERRORS_TO_EMAIL}"
         ToolTip="{s:StringResource SETTINGS_TRACES_REPORT_ERRORS_TO_EMAIL_TOOLTIP}"
         />-->
 
-        <CheckBox Grid.Row="12" Grid.Column="3" Grid.ColumnSpan="2"
+        <CheckBox Grid.Row="12" Grid.Column="4" Grid.ColumnSpan="2"
         IsChecked="{Binding Source={x:Static scc:ClientSettings.Current}, Path=(scc:ClientSettings.TracesResearch), Mode=TwoWay}"
         Content="{s:StringResource SETTINGS_TRACES_RESEARCH}"
         ToolTip="{s:StringResource SETTINGS_TRACES_RESEARCH_TOOLTIP}" 
         />
 
         <!--column 6 (3rd column)-->
-        <CheckBox Grid.Row="3" Grid.Column="6" Grid.ColumnSpan="2"
+        <CheckBox Grid.Row="3" Grid.Column="8" Grid.ColumnSpan="2"
         IsChecked="{Binding Source={x:Static scc:ClientSettings.Current}, Path=(scc:ClientSettings.TracesSaveLoad), Mode=TwoWay}"
         Content="{s:StringResource SETTINGS_TRACES_SAVELOAD}"
         ToolTip="{s:StringResource SETTINGS_TRACES_SAVELOAD_TOOLTIP}"
         />
 
-        <CheckBox Grid.Row="4" Grid.Column="6" Grid.ColumnSpan="2"
+        <CheckBox Grid.Row="4" Grid.Column="8" Grid.ColumnSpan="2"
         IsChecked="{Binding Source={x:Static scc:ClientSettings.Current}, Path=(scc:ClientSettings.TracesShips), Mode=TwoWay}"
         Content="{s:StringResource SETTINGS_TRACES_SHIPS}"
         ToolTip="{s:StringResource SETTINGS_TRACES_SHIPS_TOOLTIP}"
         />
 
-        <CheckBox Grid.Row="5" Grid.Column="6" Grid.ColumnSpan="2"
+        <CheckBox Grid.Row="5" Grid.Column="8" Grid.ColumnSpan="2"
         IsChecked="{Binding Source={x:Static scc:ClientSettings.Current}, Path=(scc:ClientSettings.TracesShipProduction), Mode=TwoWay}"
         Content="{s:StringResource SETTINGS_TRACES_SHIPPRODUCTION}"
         ToolTip="{s:StringResource SETTINGS_TRACES_SHIPPRODUCTION_TOOLTIP}" 
         />
 
-        <CheckBox Grid.Row="6" Grid.Column="6" Grid.ColumnSpan="2"
+        <CheckBox Grid.Row="6" Grid.Column="8" Grid.ColumnSpan="2"
         IsChecked="{Binding Source={x:Static scc:ClientSettings.Current}, Path=(scc:ClientSettings.TracesStations), Mode=TwoWay}"
         Content="{s:StringResource SETTINGS_TRACES_STATIONS}"
         ToolTip="{s:StringResource SETTINGS_TRACES_STATIONS_TOOLTIP}"
         />
 
-        <CheckBox Grid.Row="7" Grid.Column="6" Grid.ColumnSpan="2"
+        <CheckBox Grid.Row="7" Grid.Column="8" Grid.ColumnSpan="2"
         IsChecked="{Binding Source={x:Static scc:ClientSettings.Current}, Path=(scc:ClientSettings.TracesStructures), Mode=TwoWay}"
         Content="{s:StringResource SETTINGS_TRACES_STRUCTURES}"
         ToolTip="{s:StringResource SETTINGS_TRACES_STRUCTURES_TOOLTIP}" 
         />
         
-        <CheckBox Grid.Row="8" Grid.Column="6" Grid.ColumnSpan="2"
+        <CheckBox Grid.Row="8" Grid.Column="8" Grid.ColumnSpan="2"
         IsChecked="{Binding Source={x:Static scc:ClientSettings.Current}, Path=(scc:ClientSettings.TracesSystemAssault), Mode=TwoWay}"
         Content="{s:StringResource SETTINGS_TRACES_SYSTEMASSAULT}"
         ToolTip="{s:StringResource SETTINGS_TRACES_SYSTEMASSAULT_TOOLTIP}"
         />
 
-        <CheckBox Grid.Row="9" Grid.Column="6" Grid.ColumnSpan="2"
+        <CheckBox Grid.Row="9" Grid.Column="8" Grid.ColumnSpan="2"
         IsChecked="{Binding Source={x:Static scc:ClientSettings.Current}, Path=(scc:ClientSettings.TracesSystemAssaultDetails), Mode=TwoWay}"
         Content="{s:StringResource SETTINGS_TRACES_SYSTEMASSAULTDETAILS}"
         ToolTip="{s:StringResource SETTINGS_TRACES_SYSTEMASSAULTDETAILS_TOOLTIP}"
         />
 
-        <CheckBox Grid.Row="10" Grid.Column="6" Grid.ColumnSpan="2"
+        <CheckBox Grid.Row="10" Grid.Column="8" Grid.ColumnSpan="2"
         IsChecked="{Binding Source={x:Static scc:ClientSettings.Current}, Path=(scc:ClientSettings.TracesTest), Mode=TwoWay}"
         Content="{s:StringResource SETTINGS_TRACES_TEST}"
         ToolTip="{s:StringResource SETTINGS_TRACES_TEST_TOOLTIP}"
         />
 
-        <CheckBox Grid.Row="11" Grid.Column="6" Grid.ColumnSpan="2"
+        <CheckBox Grid.Row="11" Grid.Column="8" Grid.ColumnSpan="2"
         IsChecked="{Binding Source={x:Static scc:ClientSettings.Current}, Path=(scc:ClientSettings.TracesTradeRoutes), Mode=TwoWay}"
         Content="{s:StringResource SETTINGS_TRACES_TRADEROUTES}"
         ToolTip="{s:StringResource SETTINGS_TRACES_TRADEROUTES_TOOLTIP}"
         />
 
-        <CheckBox Grid.Row="12" Grid.Column="6" Grid.ColumnSpan="2"
+        <CheckBox Grid.Row="12" Grid.Column="8" Grid.ColumnSpan="2"
         IsChecked="{Binding Source={x:Static scc:ClientSettings.Current}, Path=(scc:ClientSettings.TracesUI), Mode=TwoWay}"
         Content="{s:StringResource SETTINGS_TRACES_UI}"
         ToolTip="{s:StringResource SETTINGS_TRACES_UI_TOOLTIP}"
         />
 
-        <CheckBox Grid.Row="13" Grid.Column="6" Grid.ColumnSpan="2"
+        <CheckBox Grid.Row="13" Grid.Column="8" Grid.ColumnSpan="2"
         IsChecked="{Binding Source={x:Static scc:ClientSettings.Current}, Path=(scc:ClientSettings.TracesXMLCheck), Mode=TwoWay}"
         Content="{s:StringResource SETTINGS_TRACES_XMLCHECK}"
         ToolTip="{s:StringResource SETTINGS_TRACES_XMLCHECK_TOOLTIP}"
         />
 
-        <CheckBox Grid.Row="14" Grid.Column="6" Grid.ColumnSpan="2"
+        <CheckBox Grid.Row="14" Grid.Column="8" Grid.ColumnSpan="2"
         IsChecked="{Binding Source={x:Static scc:ClientSettings.Current}, Path=(scc:ClientSettings.TracesXML2CSVOutput), Mode=TwoWay}"
         Content="{s:StringResource SETTINGS_TRACES_XML2CSV_OUTPUT}"
         ToolTip="{s:StringResource SETTINGS_TRACES_XML2CSV_OUTPUT_TOOLTIP}"
         />
 
-        <CheckBox Grid.Row="14" Grid.Column="3" Grid.ColumnSpan="2"
+        <CheckBox Grid.Row="14" Grid.Column="4" Grid.ColumnSpan="2"
             IsChecked="{Binding Source={x:Static scc:ClientSettings.Current}, Path=(scc:ClientSettings.TracesSitReps), Mode=TwoWay}"
             Content="{s:StringResource SETTINGS_TRACES_SITREPS}"
             ToolTip="{s:StringResource SETTINGS_TRACES_SITREPS_TOOLTIP}"
@@ -343,11 +375,11 @@
 
         <!--<CheckBox
         Grid.ColumnSpan="2"
-        Grid.Column="0"
+        Grid.Column="1"
         Grid.Row="19"
         IsChecked="{Binding Source={x:Static scc:ClientSettings.Current}, Path=(scc:ClientSettings.ReportErrors), Mode=TwoWay}"
         Content="{s:StringResource SETTINGS_REPORT_ERRORS}"
         ToolTip="{s:StringResource SETTINGS_REPORT_ERRORS_TOOLTIP}"
         />-->
-    </scc:AutoGrid>
+    </Grid>
 </UserControl>
