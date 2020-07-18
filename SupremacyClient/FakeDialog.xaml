@@ -15,9 +15,10 @@
             xmlns:s="clr-namespace:Supremacy.Client;assembly=SupremacyWPF"
             xmlns:scc="http://schemas.startreksupremacy.com/xaml/presentation"
             xmlns:cal="http://www.codeplex.com/CompositeWPF"
-            Width="480"
-            Height="480"
-            Header="Settings"
+            Width="280"
+            Height="180"
+            Header="Fake Dialog"
+            HasBorder="False"
             Background="Transparent"
             SnapsToDevicePixels="True">
     <DockPanel LastChildFill="True">
@@ -30,7 +31,7 @@
               Style="{DynamicResource LCARS_StandardButtonStyle}"
               IsCancel="True"
               Margin="0,0,6,0">
-                <AccessText Text="{s:StringResource SETTINGS_ACCEPT}" />
+                <AccessText Text="{s:StringResource SETTINGS_JUST_CLOSE}" />
             </Button>
             <!-- CANCEL makes trouble while running out of Visual Studio ....
         <Button x:Name="CancelButton"
@@ -42,17 +43,18 @@
       </Button>-->
         </StackPanel>
 
-        <TabControl x:Name="FakeDialogRegion"
+        <TextBlock Text="PRESS   ESCAPE" HorizontalAlignment="Center"/>
+        <!--<TabControl x:Name="FakeDialogRegion"
                 cal:RegionManager.RegionName="{x:Static scc:ClientRegions.OptionsPages}">
             <TabControl.ItemContainerStyle>
                 <Style TargetType="{x:Type TabItem}" BasedOn="{StaticResource {x:Type TabItem}}">
                     <Setter Property="Header"
                   Value="{Binding Path=(scc:IClientOptionsPage.Header)}" />                            
-                            <!--Value="FakeDialog" />"-->
+                            --><!--Value="FakeDialog" />"--><!--
 
                 </Style>
             </TabControl.ItemContainerStyle>
-        </TabControl>
+        </TabControl>-->
 
     </DockPanel>
 </scc:Dialog>
