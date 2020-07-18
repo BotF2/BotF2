@@ -33,7 +33,7 @@ namespace Supremacy.Client.Views
             _activeAgreements = new ObservableCollection<ActiveAgreementViewModel>();
             _activeAgreementsView = new ReadOnlyObservableCollection<ActiveAgreementViewModel>(_activeAgreements);
 
-            GameLog.Client.Diplomacy.DebugFormat("foreignPower = {0}", foreignPower.Owner.ShortName);
+            GameLog.Client.Diplomacy.DebugFormat("foreignPower Owner = {0}", foreignPower.Owner.ShortName);
 
             UpdateIncomingMessage();
             UpdateActiveAgreements();
@@ -41,22 +41,22 @@ namespace Supremacy.Client.Views
 
         private void UpdateIncomingMessage()
         {
-            GameLog.Client.Diplomacy.DebugFormat("Checking for IncomingMessage out of *ResponseReceived...");
-            if (_foreignPower.ResponseReceived == null)
+            GameLog.Client.Diplomacy.DebugFormat("Checking for IncomingMessage...");
+            if (_foreignPower.ResponseReceived == null && _foreignPower.ProposalReceived == null)
             {
-                GameLog.Client.Diplomacy.DebugFormat("$$ _foreignPower.ResponseReceived = no incoming message yet");
+                GameLog.Client.Diplomacy.DebugFormat("$$ _foreignPower Response and Proposal = null, no incoming message yet");
                 return;
             }
             if (_foreignPower.ResponseReceived != null)
             { 
             IncomingMessage = DiplomacyMessageViewModel.FromReponse(_foreignPower.ResponseReceived);
-            GameLog.Client.Diplomacy.DebugFormat("$$ Found IncomingMessage out of *ResponseReceived from {0}: {1}", _foreignPower.Owner, IncomingMessage);
+            GameLog.Client.Diplomacy.DebugFormat("$$ Incoming Response Owner {0} CounterParty {1} Message {2}", _foreignPower.Owner, _foreignPower.Counterparty, IncomingMessage);
             }
 
             else if (_foreignPower.ProposalReceived.IncludesTreaty() == true)
             {
                 IncomingMessage = DiplomacyMessageViewModel.FromProposal(_foreignPower.ProposalReceived);
-                GameLog.Client.Diplomacy.DebugFormat("$$ Found IncomingMessage out of *ResponseReceived from {0}: {1}", _foreignPower.Owner, IncomingMessage);
+                GameLog.Client.Diplomacy.DebugFormat("$$ Incoming Proposal Owner {0} CounterParty {1} Message {2}", _foreignPower.Owner, _foreignPower.Counterparty, IncomingMessage);
             }
            
 
@@ -75,6 +75,15 @@ namespace Supremacy.Client.Views
             }
         }
 
+        public int SeeTreatyResponce
+        {
+            get
+            {
+                if (IncomingMessage != null)
+                    return 1;
+                else return 0;
+            }
+        }
         public Civilization Counterparty
         {
             get
@@ -312,7 +321,7 @@ namespace Supremacy.Client.Views
             get
             {
                 // move Gamelog to the three detail places
-                GameLog.Client.Diplomacy.DebugFormat("Proposal received ? ={0}, Response received = {1}, Statement Received ={2}, Proposal Received ={3}", _foreignPower.ProposalReceived, _foreignPower.ResponseReceived, _foreignPower.StatementReceived, _foreignPower.ProposalReceived);
+                GameLog.Client.Diplomacy.DebugFormat("$$ Proposal received ? ={0}, Response received = {1}, Statement Received ={2}, Proposal Received ={3}", _foreignPower.ProposalReceived, _foreignPower.ResponseReceived, _foreignPower.StatementReceived, _foreignPower.ProposalReceived);
                 return ResolveMessageCategory(_foreignPower.ProposalReceived ?? (object)_foreignPower.ResponseReceived ?? _foreignPower.StatementReceived ?? (object)_foreignPower.ProposalReceived);
             }
         }

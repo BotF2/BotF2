@@ -1018,7 +1018,7 @@ namespace Supremacy.Client.Views
 
         public static DiplomacyMessageViewModel FromProposal([NotNull] IProposal proposal)
         {
-            GameLog.Core.Diplomacy.DebugFormat("$$ at FromResponse() with turnSent ={0} tone ={1}", proposal.TurnSent, proposal.Clauses);
+            GameLog.Core.Diplomacy.DebugFormat("$$ at FromProposal() with turnSent ={0} Recipient ={1} sender ={2}", proposal.TurnSent, proposal.Recipient, proposal.Sender);
             if (proposal == null)
                 throw new ArgumentNullException("proposal");
 
