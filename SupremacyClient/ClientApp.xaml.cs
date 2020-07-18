@@ -1,4 +1,4 @@
-// ClientApp.xaml.cs
+// File:ClientApp.xaml.cs
 //
 // Copyright (c) 2007 Mike Strobel
 //
