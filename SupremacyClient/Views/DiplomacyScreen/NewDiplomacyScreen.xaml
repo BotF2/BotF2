@@ -16,7 +16,7 @@
                        xmlns:client="clr-namespace:Supremacy.Client"
                        xmlns:diplomacyScreen="clr-namespace:Supremacy.Client.Views.DiplomacyScreen"
                        mc:Ignorable="d"
-                       d:DesignHeight="850"
+                       d:DesignHeight="900"
                        d:DesignWidth="1280"
                        d:DataContext="{x:Static scc:DiplomacyScreenViewModel.DesignInstance}">
     <i:Interaction.Behaviors>
@@ -26,6 +26,40 @@
     <Control.Resources>
         
         <scc:LocalizedEnumStringConverter x:Key="LocalizedEnumStringConverter" />
+
+        <Style TargetType="{x:Type xcdg:DataGridControl}">
+            <Setter Property="Background"
+            Value="Transparent" />
+            <Setter Property="Foreground"
+            Value="{StaticResource DefaultTextBrush}" />
+            <Setter Property="FontFamily"
+            Value="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}" />
+            <Setter Property="FontSize"
+            Value="12pt" />
+            <Setter Property="BorderBrush"
+            Value="{x:Null}" />
+            <Setter Property="BorderThickness"
+            Value="0" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type xcdg:DataGridControl}">
+                        <Border Background="{TemplateBinding Background}"
+                  BorderBrush="{TemplateBinding BorderBrush}"
+                  BorderThickness="{TemplateBinding BorderThickness}">
+                            <AdornerDecorator>
+                                <xcdg:TableViewScrollViewer x:Name="PART_ScrollViewer"
+                                          ShowRowSelectorPane="False"
+                                          xcdg:GroupLevelIndicatorPane.ShowIndicators="False"
+                                                            ScrollViewer.VerticalScrollBarVisibility="Visible">
+
+                                    <ItemsPresenter />
+                                </xcdg:TableViewScrollViewer>
+                            </AdornerDecorator>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
 
         <Style TargetType="{x:Type RadioButton}">
             <Setter Property="Foreground" Value="White"/>
@@ -315,9 +349,9 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Height="56" />
                     <RowDefinition Height="Auto" />
-                    <RowDefinition Height="*"
-                         MinHeight="72"
-                         MaxHeight="72" />
+                    <RowDefinition Height="Auto"/>
+                    <!--MinHeight="72"
+                         MaxHeight="72" />-->
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="*"
@@ -325,14 +359,25 @@
                     <RowDefinition Height="4*" />
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
-
+                <Border x:Name="something"
+                        Grid.Column="0"
+                        Grid.ColumnSpan="1"
+                        Grid.Row="0"
+                        Grid.RowSpan="1"
+                        Margin="0,58,0,0"
+                        Width="168"
+                        BorderThickness="1"
+                        VerticalAlignment="Stretch"
+                        Background="Gray"/>
                 <!-- Upper Left Corner -->
                 <Path x:Name="UpperLeftCorner"
                     Grid.Column="0"
                     Grid.ColumnSpan="2"
                     Grid.Row="0"
+                    Grid.RowSpan="2"
                     Width="168"
-                    Height="56"
+
+                    VerticalAlignment="Stretch"
                     Fill="{StaticResource LCARS_Card_ObsidianGradient_TopLeft_BottomRight}"
                     Data="F1 M 0,56L 0,24C 0,17.6348 2.52857,11.5303 7.02944,7.02944C 11.5303,2.52857 17.6348,0 24,0L 168,0L 168,28L 148,28C 143.582,28 140,31.5817 140,36L 140,56L 0,56 Z" />
 
@@ -402,7 +447,7 @@
                       Grid.Column="0"
                       Grid.Row="2"
                       Grid.RowSpan="{Binding Path=DisplayMode, Converter={scc:SimpleCase Case=Overview, IfMatch=5, Else=1}}"
-                      Margin="0,2,0,0">
+                      Margin="0,0,0,0">
                     <Border Background="{StaticResource LCARS_AzureGradient_TopLeft_BottomRight}"
                           BorderThickness="0"
                           Width="69"
@@ -424,7 +469,7 @@
                       Width="168"
                       Height="40"
                       Fill="{StaticResource LCARS_Card_ObsidianGradient_TopLeft_BottomRight}"
-                      Margin="0,2,0,0"
+                      Margin="0,0,0,0"
                       Data="F1 M 0,0L 0,16C 0,22.3652 2.52857,28.4697 7.02944,32.9706C 11.5303,37.4714 17.6348,40 24,40L 168,40L 168,27.0263L 148,27.0263C 143.582,27.0263 140,23.4446 140,19.0263L 140,0L 0,0 Z" />
 
                 <!-- Lower Left Buttons -->
@@ -539,12 +584,25 @@
                         Height="28"
                         Margin="2,0,2,0"
                         VerticalAlignment="Bottom" />
+                <Border x:Name="another"
+                    Grid.Column="6"
+                    Grid.ColumnSpan="1"
+                    Grid.Row="0"
+                    Grid.RowSpan="1"
+                    Margin="0,58,0,0"
+                    BorderThickness="1"
+                    VerticalAlignment="Stretch"
+                    Background="Gray">
+
+
+                </Border>
 
                 <!-- Upper Right Corner -->
                 <Path x:Name="UpperRightCorner"
                         Grid.Column="5"
                         Grid.ColumnSpan="2"
                         Grid.Row="0"
+                      VerticalAlignment="Top"
                         Width="56"
                         Height="56"
                         Fill="{StaticResource LCARS_Card_ObsidianGradient_TopLeft_BottomRight}"
@@ -608,8 +666,8 @@
                 <Grid Grid.Column="2"
                       Grid.ColumnSpan="3"
                       Grid.Row="0"
-                      Grid.RowSpan="3"
-                      Margin="2,0,2,0">
+                      Grid.RowSpan="4"
+                      Margin="2,0,2,15">
                     <Grid.Resources>
                         <DataTemplate x:Key="BoolCellEditor">
                             <TextBlock x:Name="ValueText"
@@ -638,6 +696,7 @@
                                 BorderBrush="{x:Null}"
                                 BorderThickness="0"
                                 ReadOnly="True"
+                                MaxHeight="280"
                                 SelectionMode="Single"
                                 ItemsSource="{Binding Path=ForeignPowers}"
                                 SelectedItem="{Binding Path=SelectedForeignPower, Mode=TwoWay}"
@@ -820,7 +879,7 @@
                            Visibility="Visible"
                            LastChildFill="True"
                            VerticalAlignment="Top"
-                           MaxHeight="438"
+                           MaxHeight="446"
                            Margin="0,0,0,0">
                     <!--
           ================================================================================
@@ -957,7 +1016,7 @@
                                                 CornerRadius="8"
                                                 Margin="0,2,0,2"
                                                 DataContext="{Binding Path=SelectedForeignPower.IncomingMessage}">
-                                            <StackPanel Orientation="Horizontal">
+                                            <StackPanel Orientation="Vertical">
                                                 <TextBlock TextAlignment="Left"
                                                             TextWrapping="Wrap"
                                                             TextTrimming="CharacterEllipsis"
@@ -1083,7 +1142,7 @@
                                                                 Checked="clickAcceptCounterReject"/>
                                                             </StackPanel>
                                                         </StackPanel>
-                                                        <StackPanel Orientation="Horizontal" Grid.Column="0" Grid.Row="0">
+                                                        <StackPanel Grid.Column="0" Grid.Row="0">
                                                             <!--<TextBlock Text="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry=NoIncomingHeader, CharacterCasing=Upper}" 
                                                                          HorizontalAlignment="Center"
                                                                          VerticalAlignment="Center"
@@ -1098,20 +1157,20 @@
                                                             <TextBlock Text="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry=NoIncomingHeader, CharacterCasing=Upper}" 
                                                                          HorizontalAlignment="Center"
                                                                          VerticalAlignment="Center"
-                                                                         Visibility="{Binding Path=HasTreatyLeadInText, Converter={StaticResource BooleanToVisibilityConverter}}"
-                                                                         TextWrapping="Wrap"
+                                                                         Visibility="{Binding Path=SeeTreatyResponceButtons, Converter={scc:SimpleCase Case=0, IfMatch=Collapsed, Else=Visible}}"
+                                                                         TextWrapping="NoWrap"
                                                                          TextBlock.Foreground="{StaticResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"
                                                                          TextBlock.FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                                                                          TextBlock.FontSize="12pt"
                                                                          Background="Black"
                                                                          Margin="0,5,0,0" />
-                                                            <ItemsControl Margin="0,0,0,0"
+                                                            <!--<ItemsControl Margin="0,0,0,0"
                                                                               ItemsSource="{Binding Path=TreatyElements}"
                                                                               HorizontalContentAlignment="Center"
                                                                               Foreground="LimeGreen"
                                                                               FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                                                                               FontSize="16"
-                                                                              Visibility="Visible"> <!--{Binding Path=TreatyElements.Count, Converter={scc:SimpleCase Case=0, IfMatch=Collapsed, Else=Visible}}">-->
+                                                                              Visibility="{Binding Path=TreatyElements.Count, Converter={scc:SimpleCase Case=0, IfMatch=Collapsed, Else=Visible}}">
                                                                 <ItemsControl.Resources>
                                                                     <Style TargetType="{x:Type Hyperlink}"
                                                                           BasedOn="{StaticResource {x:Type Hyperlink}}">
@@ -1122,7 +1181,7 @@
                                                                         </Setter>
                                                                     </Style>
                                                                 </ItemsControl.Resources>
-                                                            </ItemsControl>
+                                                            </ItemsControl>-->
                                                         </StackPanel>
                                                     </Grid>
                                                     <!--<StackPanel x:Name="InboxButtons"
@@ -1174,7 +1233,7 @@
                                                         Grid.Column="0"
                                                         MinWidth="154"
                                                         MinHeight="45"
-                                                        MaxHeight="338"
+                                                        MaxHeight="335"
                                                         Margin="0,0,2,0"
                                                         Padding="5"
                                                         Background="{StaticResource CommBackgroundBrush}"
@@ -1937,8 +1996,8 @@
               Grid.RowSpan="6"
               scc:VisibilityGroupScopeBehavior.VisibilityGroup="DiplomacyScreenVisibilityScopes.RelationshipGraph">
                     <Viewbox Stretch="Uniform"
-                   StretchDirection="Both"
-                   SnapsToDevicePixels="True">
+                           StretchDirection="DownOnly"
+                           SnapsToDevicePixels="True">
                         <s:NodeGraph NodesBindingPath="Children"
                          CenterObject="{Binding Path=SelectedGraphNode, Mode=TwoWay}"
                          PenSelector="{x:Static diplomacyScreen:DiplomacyGraphPenSelector.Instance}"
@@ -1950,14 +2009,16 @@
                 </Grid>
 
                 <scc:GameButton Label="{s:StringResource Key=RESET_GRAPH, Case=Upper}"
-                        Grid.Column="4"
-                        Grid.Row="7"
+                        Grid.Column="2"
+                        Grid.Row="0"
+                        HorizontalAlignment="Left"
+                        MaxWidth="180"
                         scc:VisibilityGroupScopeBehavior.VisibilityGroup="DiplomacyScreenVisibilityScopes.RelationshipGraph"
                         Height="28"
                         DisplayMode="GroupedVertically"
                         Command="{Binding ResetGraphCommand}"
                         VerticalAlignment="Bottom"
-                        Margin="-28,0,2,0" />
+                        Margin="0,0,2,0" />
             </Grid>
         </Border>
     </scc:GamePopupSite>

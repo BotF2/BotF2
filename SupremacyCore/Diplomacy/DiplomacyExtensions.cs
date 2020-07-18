@@ -43,7 +43,7 @@ namespace Supremacy.Diplomacy
                 case ClauseType.TreatyDefensiveAlliance:
                 case ClauseType.TreatyFullAlliance:
                 case ClauseType.TreatyCeaseFire:
-                //case ClauseType.TreatyWarPact:
+                case ClauseType.TreatyWarPact:
                 case ClauseType.TreatyAffiliation:
                 case ClauseType.TreatyNonAggression:
                 case ClauseType.TreatyOpenBorders:

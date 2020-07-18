@@ -423,6 +423,16 @@ namespace Supremacy.Client.Views
             get { return !string.IsNullOrWhiteSpace(TreatyLeadInText); }
         }
 
+        public int SeeTreatyResponceButtons
+        {
+            get
+            {
+                if (HasTreatyLeadInText)
+                    return 0;
+                else return 1;
+            }
+        }
+
         protected virtual void OnHasTreatyLeadInTextChanged()
         {
             HasTreatyLeadInTextChanged.Raise(this);

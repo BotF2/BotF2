@@ -75,15 +75,6 @@ namespace Supremacy.Client.Views
             }
         }
 
-        public int SeeTreatyResponce
-        {
-            get
-            {
-                if (IncomingMessage != null)
-                    return 1;
-                else return 0;
-            }
-        }
         public Civilization Counterparty
         {
             get
