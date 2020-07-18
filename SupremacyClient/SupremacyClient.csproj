@@ -308,6 +308,9 @@
     <Compile Include="Views\AssetsScreen\SystemListItem.xaml.cs">
       <DependentUpon>SystemListItem.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ClientTracesDialog.xaml.cs">
+      <DependentUpon>ClientTracesDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\ColonyScreen\ColonyInfoScreen.xaml.cs">
       <DependentUpon>ColonyInfoScreen.xaml</DependentUpon>
     </Compile>
@@ -905,6 +908,10 @@
     <Page Include="Views\AssetsScreen\SystemListItem.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ClientTracesDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\ColonyScreen\ColonyBuildProjectInfoView.xaml">
       <SubType>Designer</SubType>

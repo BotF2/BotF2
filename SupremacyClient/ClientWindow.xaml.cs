@@ -294,6 +294,12 @@ namespace Supremacy.Client
 
             InputBindings.Add(
                 new KeyBinding(
+                    ClientCommands.TracesCommand,
+                    Key.Z,
+                    ModifierKeys.Control));
+
+            InputBindings.Add(
+                new KeyBinding(
                     ClientCommands.FakeCommand,
                     Key.F11,
                     ModifierKeys.Control));
