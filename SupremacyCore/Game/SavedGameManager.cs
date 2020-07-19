@@ -10,6 +10,7 @@ using Supremacy.Annotations;
 using Supremacy.IO;
 using Supremacy.Messages;
 using Supremacy.Messaging;
+using Supremacy.Resources;
 using Supremacy.Tech;
 using Supremacy.Utility;
 using System;
@@ -29,8 +30,16 @@ namespace Supremacy.Game
 
         public static string SavedGameDirectory
         {
-            get { return Path.Combine(StorageManager.UserLocalProfileFolder, "Saved Games", Assembly.GetExecutingAssembly().GetName().Version.ToString()); }
+            get 
+            { 
+                //string _text = Path.Combine(ResourceManager.GetResourcePath(""), "SavedGames", Assembly.GetExecutingAssembly().GetName().Version.ToString());
+                //GameLog.Client.SaveLoad.DebugFormat("SavedGameDirectory = {0}", _text);
+                //Console.WriteLine(_text);
+
+                return Path.Combine("SavedGames", Assembly.GetExecutingAssembly().GetName().Version.ToString()); 
+            }
         }
+
 
         /// <summary>
         /// Finds the saved games on the disk.
@@ -68,11 +77,20 @@ namespace Supremacy.Game
             foreach (var fileName in fileNames)
             {
                 var header = LoadSavedGameHeader(fileName);
+                string _currentGameVersionString = Assembly.GetExecutingAssembly().GetName().Version.ToString();
                 if (header != null)
                 {
-                    if (header.GameVersion == Assembly.GetExecutingAssembly().GetName().Version.ToString())
+                    if (header.GameVersion == _currentGameVersionString)
                     {
                         savedGames.Add(header);
+                    }
+                    else
+                    {
+                        GameLog.Client.SaveLoad.DebugFormat("currentGameVersion = {2}, but {1} for {0}"
+                            , header.FileName
+                            , header.GameVersion
+                            , _currentGameVersionString
+                            );
                     }
                 }
             }
@@ -100,12 +118,24 @@ namespace Supremacy.Game
                 }
                 else
                 {
-                    fullPath = Path.Combine(SavedGameDirectory, FixFileName(fileName));
+                    string _shortSavedGameDirectory = SavedGameDirectory; //.Replace(".\\", "");
+                    fullPath = Path.Combine(Environment.CurrentDirectory, _shortSavedGameDirectory, FixFileName(fileName));
+                    //Console.WriteLine(fullPath);
+                    fullPath = fullPath.Replace(_shortSavedGameDirectory + "\\" + _shortSavedGameDirectory, _shortSavedGameDirectory);  // removing double _shortSavedGameDirectory
+                    //Console.WriteLine(fullPath);
                 }
+
+                string _text = Environment.NewLine + "   fullPath =        " + fullPath;
+                Console.WriteLine(_text);
+                // works but doubled     GameLog.Client.SaveLoad.DebugFormat(_text);
 
                 SavedGameHeader header;
                 using (var fileStream = File.Open(fullPath, FileMode.Open, FileAccess.Read, FileShare.Read))
                 {
+                    GameLog.Client.SaveLoad.DebugFormat(Environment.NewLine + "   reading HEADER of {0}"
+                        , fileStream.Name
+                        );
+
                     header = SavedGameHeader.Read(fileStream);
                 }
 
@@ -120,6 +150,10 @@ namespace Supremacy.Game
             }
             catch
             {
+                string _text = "is the file there ? ...not able to read HEADER of " + fileName; // command line parameter ... e.g. started out of VS
+                Console.WriteLine(_text);
+                GameLog.Client.SaveLoad.DebugFormat(_text);
+
                 return null;
             }
         }
@@ -206,7 +240,7 @@ namespace Supremacy.Game
                 throw new ArgumentNullException("header");
 
             return new FileInfo(Path.Combine(
-                StorageManager.UserLocalProfileFolder,
+                ResourceManager.GetResourcePath(""),
                 SavedGameDirectory,
                 FixFileName(header.FileName)));
         }

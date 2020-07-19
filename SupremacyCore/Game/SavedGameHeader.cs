@@ -212,6 +212,13 @@ namespace Supremacy.Game
                 header.SlotStatus[i] = (SlotStatus)reader.ReadByte();
             }
 
+            string _text = "   "
+                /*+ Environment.NewLine*/ + ";Turn;" + header.TurnNumber
+                /*+ Environment.NewLine*/ + ";GameVersion;" + header.GameVersion
+                /*+ Environment.NewLine + ";FileName   ;" + reader.   --- no filename available here*/
+                ;
+            GameLog.Client.SaveLoad.DebugFormat(_text);
+
             return header;
         }
     }
