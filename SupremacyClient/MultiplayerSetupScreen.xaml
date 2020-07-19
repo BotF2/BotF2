@@ -18,6 +18,7 @@
       xmlns:local="clr-namespace:Supremacy.Client"
       HasBorder="True"
       MinWidth="480"
+      Background="Black"
       x:Name="mpSetupScreen">
   <scc:Dialog.Resources>
     <Style TargetType="{x:Type Button}"
@@ -92,6 +93,7 @@
 
   <DockPanel LastChildFill="True"
            TextBlock.FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+           Background="Transparent"
            TextBlock.FontSize="12pt"
            TextBlock.Foreground="White">
     <DockPanel DockPanel.Dock="Top"
@@ -109,16 +111,53 @@
                Foreground="{StaticResource LCARS_BeigeTextBrush}"
                VerticalAlignment="Center"
                Background="#00000000"/>
-    </DockPanel>
-    <DockPanel DockPanel.Dock="Top"
-               Margin="0,7,0,0"
+            <!--<Button x:Name="HostGameButton"
+              Command="{x:Static local:MultiplayerSetupScreen.HostGameCommand}"
+              DockPanel.Dock="Right"
+              Margin="4,0,4,0"
+              VerticalAlignment="Center">
+                <AccessText Text="{s:StringResource Key=MP_SETUP_HOST_GAME, Case=Upper}" />
+            </Button>-->
+        </DockPanel>
+        <DockPanel DockPanel.Dock="Top"
+               Margin="0,21,0,0"
+               LastChildFill="True">
+            <TextBlock x:Name="MP_SELECT_TEXT" 
+                       Foreground="Aqua"
+                       DockPanel.Dock="Left"
+                       Text="{s:StringResource Key=MP_SELECT_TEXT}">
+
+            </TextBlock>
+        </DockPanel>
+        <DockPanel DockPanel.Dock="Top"
+               Margin="0,14,0,0"
+               LastChildFill="True">
+            <TextBlock x:Name="MP_INFO_TEXT" 
+                       DockPanel.Dock="Left"
+                       Foreground="Aqua"
+                       VerticalAlignment="Center"
+                       Text="{s:StringResource Key=MP_SETUP_HOST_GAME_INFO_TEXT}">
+                
+            </TextBlock>
+            <Button x:Name="HostGameButton"
+              Command="{x:Static local:MultiplayerSetupScreen.HostGameCommand}"
+              DockPanel.Dock="Right"
+              Margin="4,0,4,0"
+              VerticalAlignment="Center">
+                <AccessText Text="{s:StringResource Key=MP_SETUP_HOST_GAME, Case=Upper}" VerticalAlignment="Center"/>
+            </Button>
+        </DockPanel>
+        <DockPanel DockPanel.Dock="Top"
+               Margin="0,21,0,0"
+                   
                LastChildFill="True">
       <Label DockPanel.Dock="Left"
              Foreground="{StaticResource LCARS_BlueTextBrush}"
              VerticalAlignment="Center"
+             BorderThickness="2"
              Padding="0"
              Target="{Binding ElementName=DirectConnectAddress}">
-        <AccessText Text="{s:StringResource MP_SETUP_DIRECT_CONNECT}" />
+                <AccessText Text="{s:StringResource MP_SETUP_DIRECT_CONNECT}" Foreground="Aqua"/>
       </Label>
       <Button DockPanel.Dock="Right"
               Margin="7,0,0,0"
@@ -135,16 +174,16 @@
     </DockPanel>
     <Label DockPanel.Dock="Top"
            Foreground="{StaticResource LCARS_BlueTextBrush}"
-           Margin="0,14,0,0"
+           Margin="0,21,0,0"
            Target="{Binding ElementName=PART_ServerList}">
-      <AccessText Text="{s:StringResource MP_SETUP_SERVER_LIST}" />
+            <AccessText Text="{s:StringResource MP_SETUP_SERVER_LIST}" Foreground="Aqua"/>
     </Label>
     <ListBox x:Name="PART_ServerList"
              DockPanel.Dock="Top"
-             Margin="0,4,0,0"
+             Margin="0,2,0,0"
              Foreground="{StaticResource LCARS_BeigeTextBrush}"
-             Background="Transparent"
-             Height="320"/>
+             Background="#00000000"
+             Height="120"/>
     <DockPanel DockPanel.Dock="Bottom"
                LastChildFill="True"
                Margin="0,14,0,0">
@@ -159,17 +198,17 @@
               Command="{x:Static local:MultiplayerSetupScreen.CancelCommand}"
               IsCancel="True"
               DockPanel.Dock="Right"
-              Margin="0,0,0,0"
+              Margin="10,0,0,0"
               VerticalAlignment="Center">
         <AccessText Text="{s:StringResource Key=MP_SETUP_CANCEL, Case=Upper}" />
       </Button>
-      <Button x:Name="HostGameButton"
+      <!--<Button x:Name="HostGameButton"
               Command="{x:Static local:MultiplayerSetupScreen.HostGameCommand}"
               DockPanel.Dock="Left"
               Margin="4,0,4,0"
               VerticalAlignment="Center">
         <AccessText Text="{s:StringResource Key=MP_SETUP_HOST_GAME, Case=Upper}" />
-      </Button>
+      </Button>-->
     </DockPanel>
   </DockPanel>
 
