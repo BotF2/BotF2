@@ -28,50 +28,10 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
+// DoTurn at Line 163
+
 namespace Supremacy.Game
 {
-    /// <summary>
-    /// Defines the turn processing phases used by the game engine.
-    /// </summary>
-    public enum TurnPhase : byte
-    {
-        WaitOnPlayers = 0,
-        PreTurnOperations,
-       // SpyOperations,
-        ResetObjects,
-        FleetMovement,
-        Combat,
-        PopulationGrowth,
-        Research,
-        Scrapping,
-        Maintenance,
-        ShipProduction,
-        Production,
-        Trade,
-       // Intelligence,
-        Morale,
-        MapUpdates,
-        PostTurnOperations,
-        SendUpdates,
-        Diplomacy,
-        WaitOnAIPlayers
-    }
-
-    /// <summary>
-    /// Delegate used for event handlers related to changes in the current turn phase.
-    /// </summary>
-    public delegate void TurnPhaseEventHandler(TurnPhase phase);
-
-    /// <summary>
-    /// Delegate used for event handlers related to the initiation of combat.
-    /// </summary>
-    public delegate void CombatEventHandler(List<CombatAssets> assets);
-
-    /// <summary>
-    /// Delegate used for event handlers related to the initiation of system invasions.
-    /// </summary>
-    public delegate void InvasionEventHandler(InvasionArena invasionArena);
-
     /// <summary>
     /// The turn processing engine used in the game.
     /// </summary>
@@ -80,6 +40,10 @@ namespace Supremacy.Game
         //private Civilization _spyAttacking;
         //private Civilization _spyAttacked;
         //private int _spyCredits;
+
+        public int _gameTurnNumber = 0;  // internal use
+
+
         #region Public Members
 
         /// <summary>
@@ -162,7 +126,7 @@ namespace Supremacy.Game
             {
                 foreach (var scriptedEvent in game.ScriptedEvents)
                 {
-                    //if (GameContext.Current.TurnNumber >= 50)
+                    if (GameContext.Current.TurnNumber > 2)
                         scriptedEvent.OnTurnPhaseFinished(game, phase);
                 }
             }
@@ -376,7 +340,7 @@ namespace Supremacy.Game
             foreach (var fleet in fleets)
                 fleet.LocationChanged -= HandleFleetLocationChanged;
         }
-        #endregion
+        #endregion DoTurn
 
         #region HandleFleetLocationChanged() Method
         private void HandleFleetLocationChanged(object sender, EventArgs e)
@@ -593,6 +557,7 @@ namespace Supremacy.Game
 
 
             game.TurnNumber = 1;
+            _gameTurnNumber = 1;
         }
         #endregion
 
@@ -1568,20 +1533,48 @@ namespace Supremacy.Game
         {
             foreach (Civilization civ in GameContext.Current.Civilizations)
             {
+                int _civMaintance = 0;
+
                 CivilizationManager civManager = GameContext.Current.CivilizationManagers[civ];
                 foreach (Colony colony in civManager.Colonies)
                 {
-                    colony.EnsureEnergyForBuildings();
+                    int _shutdowned = colony.EnsureEnergyForBuildings();
+
+                    if (_shutdowned > 0)
+                        GameLog.Core.Energy.DebugFormat("Turn {0}: Shutdown for {1} at {2} {3} {4} "
+                        , _gameTurnNumber
+                        , _shutdowned
+                        , colony.Name
+                        , colony.Location
+                        , colony.Owner
+                        );
                 }
 
                 foreach (TechObject item in GameContext.Current.Universe.FindOwned<TechObject>(civ))
                 {
-                    civManager.Credits.AdjustCurrent(-item.Design.MaintenanceCost);
-                    GameLog.Core.Credits.DebugFormat("MaintenanceCost {3} for {0} {1} {2} at {4}", item.ObjectID, item.Name, item.Design
+                    _civMaintance  += item.Design.MaintenanceCost;
+
+                    if (item.Design.MaintenanceCost > 0)
+                        GameLog.Core.Credits.DebugFormat("Turn {0}: {4} MaintenanceCost for {1} {3} {2} at {5} {6}"
+                            , _gameTurnNumber
+                            , item.ObjectID
+                            , item.Name
+                            , item.Design
                         , item.Design.MaintenanceCost
                         , item.Location
+                            , item.Owner
                         );
                 }
+
+                civManager.Credits.AdjustCurrent(_civMaintance *-1);
+                civManager.MaintenanceCostLastTurn = _civMaintance;
+                GameLog.Core.Credits.DebugFormat("Turn {0}: {3} _civMaintenanceCost for {1} {2} "
+                    , _gameTurnNumber
+                    , civ.CivID
+                    , civ.Key
+                    , _civMaintance
+                    );
+
             }
         }
         #endregion
@@ -1598,9 +1591,9 @@ namespace Supremacy.Game
             {
                 GameContext.PushThreadContext(game);
 
-                GameLog.Core.Production.DebugFormat("#####################################################");
-                string _turnNumberString = GameContext.Current.TurnNumber.ToString();
-                GameLog.Core.Production.DebugFormat("Turn {0}: DoProduction for Civilization {1}", _turnNumberString, civ.Name);
+                //GameLog.Core.Production.DebugFormat("#####################################################");
+                //string _gameTurnNumber = GameContext.Current.TurnNumber.ToString();
+                GameLog.Core.Production.DebugFormat("Turn {0}: ######################################### DoProduction for Civilization {1}", _gameTurnNumber, civ.Name);
 
                 try
                 {
@@ -1633,10 +1626,12 @@ namespace Supremacy.Game
                         civManager.TotalIntelligenceDefenseAccumulated.CurrentValue,
                         civManager.TotalIntelligenceAttackingAccumulated.CurrentValue);
                     //Get the resources available for the civilization
-                    ResourceValueCollection totalResourcesAvailable = new ResourceValueCollection();
-                    totalResourcesAvailable[ResourceType.Deuterium] = civManager.Resources.Deuterium.CurrentValue;
-                    totalResourcesAvailable[ResourceType.Dilithium] = civManager.Resources.Dilithium.CurrentValue;
-                    totalResourcesAvailable[ResourceType.RawMaterials] = civManager.Resources.RawMaterials.CurrentValue;
+                    ResourceValueCollection totalResourcesAvailable = new ResourceValueCollection
+                    {
+                        [ResourceType.Deuterium] = civManager.Resources.Deuterium.CurrentValue,
+                        [ResourceType.Dilithium] = civManager.Resources.Dilithium.CurrentValue,
+                        [ResourceType.RawMaterials] = civManager.Resources.RawMaterials.CurrentValue
+                    };
 
                     GameLog.Core.Production.DebugFormat("Turn {5}: {0} credits, {1} deuterium, {2} dilithium, {3} duranium available in total for {4}"
                         , civManager.Credits.CurrentValue
@@ -1658,12 +1653,14 @@ namespace Supremacy.Game
                     foreach (Colony colony in colonies)
                     {
                         GameLog.Core.Production.DebugFormat("--------------------------------------------------------------");
-                        GameLog.Core.Production.DebugFormat("Turn {3}: DoProduction for Colony {0}", colony.Name, civ.Name, civManager.Credits, GameContext.Current.TurnNumber);
+                        GameLog.Core.Production.DebugFormat("Turn {3}: DoProduction for Colony {0} ({1}, Credits = {2})"
+                            , colony.Name, civ.Name, civManager.Credits, GameContext.Current.TurnNumber);
 
                         //See if there is actually anything to build for this colony
                         if (!colony.BuildSlots[0].HasProject && colony.BuildQueue.IsEmpty())
                         {
-                            GameLog.Core.Production.DebugFormat("Nothing to do for Colony {0} ({1})", colony.Name, civ.Name);
+                            GameLog.Core.Production.DebugFormat("Turn {2}: Nothing to do for Colony {0} ({1})"
+                                , colony.Name, civ.Name, GameContext.Current.TurnNumber);
                             continue;
                         }
 
@@ -1714,11 +1711,13 @@ namespace Supremacy.Game
                                 tmpResources[ResourceType.RawMaterials] = 999999;
                                 civManager.Credits.AdjustCurrent(colony.BuildSlots[0].Project.GetTotalCreditsCost());
                                 colony.BuildSlots[0].Project.Advance(ref tmpIndustry, tmpResources);
-                                GameLog.Core.Production.DebugFormat("{0} credits applied to {1} on {2} ({3})",
+                                GameLog.Core.Production.DebugFormat("Turn {4}: {0} credits applied to {1} on {2} ({3})",
                                     tmpIndustry,
                                     colony.BuildSlots[0].Project.BuildDesign.Name,
                                     colony.Name,
-                                    civ.Name);
+                                    civ.Name,
+                                    _gameTurnNumber
+                                    );
                             }
                             else
                             {
@@ -1730,8 +1729,8 @@ namespace Supremacy.Game
                                 int dilithiumUsed = totalResourcesBefore[ResourceType.Dilithium] - totalResourcesAvailable[ResourceType.Dilithium];
                                 int rawMaterialsUsed = totalResourcesBefore[ResourceType.RawMaterials] - totalResourcesAvailable[ResourceType.RawMaterials];
 
-                                GameLog.Core.ShipProduction.DebugFormat("{0} deuterium, {1} dilithium, {2} raw materials applied to {3} on {4}",
-                                    deuteriumUsed, dilithiumUsed, rawMaterialsUsed, colony.BuildSlots[0].Project, colony);
+                                GameLog.Core.ShipProduction.DebugFormat("Turn {5}: {0} deuterium, {1} dilithium, {2} raw materials applied to {3} on {4}",
+                                    deuteriumUsed, dilithiumUsed, rawMaterialsUsed, colony.BuildSlots[0].Project, colony, _gameTurnNumber);
 
                                 civManager.Resources.Deuterium.AdjustCurrent(-1 * deuteriumUsed);
                                 civManager.Resources.Dilithium.AdjustCurrent(-1 * dilithiumUsed);
@@ -1740,7 +1739,7 @@ namespace Supremacy.Game
 
                             if (colony.BuildSlots[0].Project.IsCompleted)
                             {
-                                GameLog.Core.Production.DebugFormat("Construction of {0} finished on {1} ({2})", colony.BuildSlots[0].Project.BuildDesign.Name, colony.Name, civ.Name);
+                                GameLog.Core.Production.DebugFormat("Turn {3}: Construction of {0} finished on {1} ({2})", colony.BuildSlots[0].Project.BuildDesign.Name, colony.Name, civ.Name, _gameTurnNumber);
                                 colony.BuildSlots[0].Project.Finish();
                                 colony.BuildSlots[0].Project = null;
                                 continue;
@@ -2162,6 +2161,7 @@ namespace Supremacy.Game
             }
 
             GameContext.Current.TurnNumber++;
+            _gameTurnNumber = GameContext.Current.TurnNumber;
         }
         #endregion
 
@@ -2280,4 +2280,46 @@ namespace Supremacy.Game
         }
         // ReSharper restore UnusedMethodReturnValue.Local
     }
+
+    /// <summary>
+    /// Defines the turn processing phases used by the game engine.
+    /// </summary>
+    public enum TurnPhase : byte
+    {
+        WaitOnPlayers = 0,
+        PreTurnOperations,
+        // SpyOperations,
+        ResetObjects,
+        FleetMovement,
+        Combat,
+        PopulationGrowth,
+        Research,
+        Scrapping,
+        Maintenance,
+        ShipProduction,
+        Production,
+        Trade,
+        // Intelligence,
+        Morale,
+        MapUpdates,
+        PostTurnOperations,
+        SendUpdates,
+        Diplomacy,
+        WaitOnAIPlayers
+    }
+
+    /// <summary>
+    /// Delegate used for event handlers related to changes in the current turn phase.
+    /// </summary>
+    public delegate void TurnPhaseEventHandler(TurnPhase phase);
+
+    /// <summary>
+    /// Delegate used for event handlers related to the initiation of combat.
+    /// </summary>
+    public delegate void CombatEventHandler(List<CombatAssets> assets);
+
+    /// <summary>
+    /// Delegate used for event handlers related to the initiation of system invasions.
+    /// </summary>
+    public delegate void InvasionEventHandler(InvasionArena invasionArena);
 }
