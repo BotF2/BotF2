@@ -319,6 +319,7 @@ namespace Supremacy.Client
 
             Licenser.LicenseKey = "DGF20-AUTJ7-3K8MD-DNNA";
 
+            Console.WriteLine("Next: DesiredAnimationFrameRate");   // File.IO.error next
             Timeline.DesiredFrameRateProperty.OverrideMetadata(
                typeof(Timeline),
                new FrameworkPropertyMetadata(ClientSettings.Current.DesiredAnimationFrameRate));
