@@ -21,7 +21,7 @@ namespace Supremacy.IO
     {
         //private const string UserProfileFolderName = "Star Trek Supremacy";
         private const string UserProfileFolderName = ".";  // . = current folder
-        private const string SettingsFilename = "B2-Settings.dat";
+        private const string SettingsFilename = "Settings.dat";
 
         public static string UserLocalProfileFolder
         {
