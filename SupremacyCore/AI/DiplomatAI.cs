@@ -234,11 +234,12 @@ namespace Supremacy.AI
 
 
                         }
-                        #endregion Proposals
                         foreignPower.LastProposalReceived = foreignPower.ProposalReceived;
                         foreignPower.ProposalReceived = null;
+                    #endregion Proposals
                     }
-                    
+                    foreignPower.UpdateRegardAndTrustMeters();
+                    foreignPower.UpdateStatus();
                 }
 
                 if (true) // for human and non human alike )

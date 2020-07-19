@@ -159,7 +159,10 @@ namespace Supremacy.Diplomacy.Visitors
             MoveTrappedShips(Proposal.Recipient);
         }
 
-        protected override void VisitTreatyOpenBordersClause(IClause clause) { /* TODO */ }
+        protected override void VisitTreatyOpenBordersClause(IClause clause)
+        {
+            /* TODO */ 
+        }
         protected override void VisitTreatyTradePactClause(IClause clause) { /* TODO */ }
         protected override void VisitTreatyResearchPactClause(IClause clause) { /* TODO */ }
         protected override void VisitTreatyAffiliationClause(IClause clause) { /* TODO */ }

@@ -192,12 +192,12 @@ namespace Supremacy.Diplomacy
         }
 
         public static Diplomat Get([NotNull] ICivIdentity owner)
-        {
+           {
             if (owner == null)
                 throw new ArgumentNullException("owner");
 
             var _diplomats = GameContext.Current.Diplomats[owner.CivID];
-
+            GameLog.Client.Diplomacy.DebugFormat(" owner ={0} {1} Diplomat owner ={2} seat of government ={3}", owner, owner.CivID, _diplomats.Owner.Key, _diplomats.SeatOfGovernment.Name);
             return GameContext.Current.Diplomats[owner.CivID];
         }
 

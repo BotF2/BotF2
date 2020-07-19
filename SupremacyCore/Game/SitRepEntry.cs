@@ -2881,22 +2881,27 @@ namespace Supremacy.Game
             get
             {
                 string StarTypeFullText = "";
-                switch (ScienceShip.Sector.System.StarType)
+                if (ScienceShip != null) // science ship distroyed < null ref 
                 {
-                    case StarType.Blue:
-                    case StarType.Orange:
-                    case StarType.Red:
-                    case StarType.White:
-                    case StarType.Yellow:
-                         StarTypeFullText = ScienceShip.Sector.System.StarType.ToString() + " star";
-                        break;
-                    default:
-                        StarTypeFullText = ScienceShip.Sector.System.StarType.ToString();
-                        break;
-                }
+                    switch (ScienceShip.Sector.System.StarType)
+                    {
+                        case StarType.Blue:
+                        case StarType.Orange:
+                        case StarType.Red:
+                        case StarType.White:
+                        case StarType.Yellow:
+                        case StarType.Wormhole:
+                            StarTypeFullText = ScienceShip.Sector.System.StarType.ToString() + " star";
+                            break;
+                        default:
+                            StarTypeFullText = ScienceShip.Sector.System.StarType.ToString();
+                            break;
+                    }
 
-                return string.Format(ResourceManager.GetString("SITREP_RESEARCH_SCIENCE_SHIP"),
-                    ScienceShip.Name, ScienceShip.Sector, StarTypeFullText, _researchGained, StarTypeFullText);
+                    return string.Format(ResourceManager.GetString("SITREP_RESEARCH_SCIENCE_SHIP"),
+                        ScienceShip.Name, ScienceShip.Sector, StarTypeFullText, _researchGained, StarTypeFullText);
+                }
+                else return string.Format(ResourceManager.GetString("SITREP_RESEARCH_SCIENCE_SHIP_RESULT_UNKNOWN"));
             }
         }
 

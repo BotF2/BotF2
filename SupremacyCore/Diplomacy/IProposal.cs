@@ -198,7 +198,7 @@ namespace Supremacy.Diplomacy
                     //case ClauseType.TreatyResearchPact:
                     //case ClauseType.TreatyTradePact:
                     case ClauseType.TreatyMembership:
-                        // doesn't work
+                        // GameLog doesn't work
                         //GameLog.Core.Diplomacy.DebugFormat("hasTreaty: ClauseType = {0}", clause.ClauseType.ToString()/*, proposal.ToString()*/);
                         return true;
                 }

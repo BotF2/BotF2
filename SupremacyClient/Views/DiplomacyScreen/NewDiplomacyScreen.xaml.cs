@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
@@ -38,13 +39,16 @@ namespace Supremacy.Client.Views.DiplomacyScreen
                 var response = (string)radioButton.Content;
                 if (Model.SelectedForeignPower != null)
                 {
-                    int turn = GameContext.Current.TurnNumber;
-                    //var player = (ICivIdentity)Model.SelectedForeignPower.Owner;
-                    //var counterParty = (ICivIdentity)Model.SelectedForeignPower.Counterparty;
-                    //ForeignPower power = new ForeignPower(player, counterParty);
-                    var playerEmpireId = AppContext.LocalPlayer.EmpireID; // local player
-                    var playerDiplomat = Diplomat.Get(playerEmpireId);
-                    var foreignPower = playerDiplomat.GetForeignPower(Model.SelectedForeignPower.Counterparty);
+                    // NEED TO UPDATE? foreignPower.ProposalReceived - it is does not get here from somewhere, look in DiplomacyAI
+                    var selectedCiv = Model.SelectedForeignPower.Counterparty;
+
+                    var playerEmpire = AppContext.LocalPlayer; // local player
+                    Diplomat diplomat = new Diplomat(selectedCiv);
+                    
+                    var foreignPower = diplomat.GetForeignPower(playerEmpire);    //  Model.SelectedForeignPower.Counterparty);
+                    //int turn = GameContext.Current.TurnNumber;
+                    //Diplomat otherDiplomate = new Diplomat(playerEmpire);
+                    //var otherForeignPower = otherDiplomate.GetForeignPower(selectedCiv);
                     //if(power.ResponseReceived != null && power.ResponseReceived.Proposal != null)
                     //    GameLog.Client.Diplomacy.DebugFormat("$$ ResponseReceived Proposal clauses ={0}", power.ResponseReceived.Proposal.Clauses.ToString());
                     //if (power.ResponseSent != null && power.ResponseSent.Proposal != null)
@@ -56,29 +60,25 @@ namespace Supremacy.Client.Views.DiplomacyScreen
                     //if (power.ProposalSent != null)
                     //    GameLog.Client.Diplomacy.DebugFormat("$$ ProposalSent clauses ={0}", power.ProposalSent.Clauses.ToString());
 
-                    if  ((response == "ACCEPT" || response == "COUNTER" || response == "REJECT") && foreignPower.ProposalReceived != null) //&& power.ResponseReceived.Proposal != null)
+                    if  (response == "ACCEPT" || response == "COUNTER" || response == "REJECT") //&& foreignPower.ProposalReceived != null) 
                     {
-                        NewProposal proposal = new NewProposal(foreignPower.Owner, foreignPower.Counterparty, foreignPower.ProposalReceived.Clauses);
+                        //NewProposal proposal = new NewProposal(foreignPower.Owner, foreignPower.Counterparty, foreignPower.ProposalReceived.Clauses);
                  
                         if (response == "ACCEPT")
                         {
-                           AcceptProposalVisitor.Visit(proposal, turn);
-
-                            //power.PendingAction = PendingDiplomacyAction.AcceptProposal;
-
+    
+                            foreignPower.PendingAction = PendingDiplomacyAction.AcceptProposal;
                         }
                         else if (response == "COUNTER")
                         {
-                            //power.PendingAction = PendingDiplomacyAction.None;
-
+                            foreignPower.PendingAction = PendingDiplomacyAction.None;
                         }
                         else if (response == "REJECT")
                         {
-                           RejectProposalVisitor.Visit(proposal, turn);
-                            //power.PendingAction = PendingDiplomacyAction.RejectProposal;
+                           foreignPower.PendingAction = PendingDiplomacyAction.RejectProposal;
                         }
-                        //power.LastProposalReceived = power.ProposalReceived;
-                        //power.ProposalReceived = null;
+                        foreignPower.LastProposalReceived = foreignPower.ProposalReceived;
+                        foreignPower.ProposalReceived = null;
                     }
                 }
             }

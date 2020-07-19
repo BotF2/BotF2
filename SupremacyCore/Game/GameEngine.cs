@@ -717,7 +717,7 @@ namespace Supremacy.Game
 
                     // Wait a turn for population of PendingAction.AcceptProposal and PendingAction.RejectProposal by downstream AI accept or reject
                     // save the accept and reject in LastProposal and act during the next turn
-                    // ??? where does it reject human player to human player proposals?
+                    
                     switch (ForeignPower.PendingAction)
                     {
                         case PendingDiplomacyAction.AcceptProposal:

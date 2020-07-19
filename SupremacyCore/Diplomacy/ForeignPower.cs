@@ -463,6 +463,32 @@ namespace Supremacy.Diplomacy
             }
         }
 
+        //public void UpdateStatus(ForeignPower counterpartyForeignPower, ForeignPower foreignPower)
+        //{
+        //    ForeignPowerStatus ownerStatus;
+        //    ForeignPowerStatus counterpartyStatus;
+        // //var something = counterpartyForeignPower.DiplomacyData.Status
+        //    ResolveStatus(out ownerStatus, out counterpartyStatus);
+
+        //    if (DiplomacyData.Status != ownerStatus)
+        //    {
+        //        DiplomacyData.LastStatusChange = GameContext.Current.TurnNumber;
+        //        DiplomacyData.Status = ownerStatus;
+        //    }
+
+            
+        //    if (counterpartyForeignPower.DiplomacyData.Status != counterpartyStatus)
+        //    {
+        //        counterpartyForeignPower.DiplomacyData.LastStatusChange = GameContext.Current.TurnNumber;
+        //        counterpartyForeignPower.DiplomacyData.Status = counterpartyStatus;
+        //    }
+        //    if (foreignPower.DiplomacyData.Status != ownerStatus)
+        //    {
+        //        foreignPower.DiplomacyData.LastStatusChange = GameContext.Current.TurnNumber;
+        //        foreignPower.DiplomacyData.Status = ownerStatus;
+        //    }
+        //}
+
         #region Implementation of ICivIdentity
 
         int ICivIdentity.CivID
