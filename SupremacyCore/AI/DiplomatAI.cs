@@ -99,7 +99,9 @@ namespace Supremacy.AI
                 {
                     GameLog.Client.Diplomacy.DebugFormat("## Beging DiplomacyAI for aCiv AI .......................");
                     #region First Impression
-                    // First impression delta trust and regard by traits
+                    /*
+                     First impression delta trust and regard by traits
+                    */
                     if (!foreignPower.DiplomacyData.FirstDiplomaticAction)
                     {
                         foreignPower.DiplomacyData.FirstDiplomaticAction = true;
@@ -123,14 +125,14 @@ namespace Supremacy.AI
                     }
                     #endregion First Impressions
 
-                    #region Propsals to AI aCiv
+                    #region Proposal Treaty to AI aCiv
                     /*
-                      proposals
+                      proposals TREATY
                     */
                     if (foreignPower.ProposalReceived != null)
                     {
                         if (aCiv == foreignPower.ProposalReceived.Recipient)
-                        {
+                        {// give credit regard and trust
                             foreach (var clause in foreignPower.ProposalReceived.Clauses)
                             {
                                 if (clause.ClauseType == ClauseType.OfferGiveCredits)
@@ -160,8 +162,10 @@ namespace Supremacy.AI
                             foreignPower.PendingAction.ToString(), foreignPower.Counterparty.ShortName,
                             foreignPower.Owner.ShortName);
                         //if (foreignPower.DiplomacyData.Status == ForeignPowerStatus.Affiliated)
-
-                        if (foreignPower.ProposalReceived != null && !aCiv.IsHuman) //!(aCiv.IsHuman && otherCiv.IsHuman))
+                        /*
+                         AI evaluates accept reject
+                         */
+                        if (foreignPower.ProposalReceived != null && !aCiv.IsHuman) // aCiv is owner of the foreignpower looking for a ProposalRecieved
                         {
                             bool accepted = false;
                             int regard = foreignPower.DiplomacyData.Regard.CurrentValue;
@@ -239,7 +243,7 @@ namespace Supremacy.AI
                     #endregion Proposals
                     }
                     foreignPower.UpdateRegardAndTrustMeters();
-                    foreignPower.UpdateStatus();
+                    //foreignPower.UpdateStatus(); this is done in AcceptProposalVisitor.Visit
                 }
 
                 if (true) // for human and non human alike )
@@ -385,7 +389,7 @@ namespace Supremacy.AI
                     #endregion Responses 
 
                     foreignPower.UpdateRegardAndTrustMeters();
-                    foreignPower.UpdateStatus();
+                    //foreignPower.UpdateStatus();
                 }
             }
 
