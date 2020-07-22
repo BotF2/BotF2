@@ -311,8 +311,8 @@
         <DataTemplate x:Key="StipulationTreeItemTemplate"
                     DataType="{x:Type scc:DiplomacyMessageAvailableElement}">
             <TextBlock Foreground="{StaticResource DefaultTextBrush}"
-                   FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
-                   Margin="8,4,0,0">
+                       FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+                       Margin="8,4,0,0">
           <Hyperlink Command="{Binding Path=AddCommand}"
                      Foreground="{StaticResource DefaultTextBrush}">
             <TextBlock Text="{Binding Path=Description}" />

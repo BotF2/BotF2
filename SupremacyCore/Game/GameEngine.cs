@@ -950,7 +950,7 @@ namespace Supremacy.Game
                     {
                         //if (civ1.CivID == 1 && civ2.CivID == 4)  // Terrans, incoming from Cardassians
                         //    ;
-                            foreignPower.CounterpartyForeignPower.ProposalReceived = proposalSent;
+                        foreignPower.CounterpartyForeignPower.ProposalReceived = proposalSent;
                         foreignPower.LastProposalSent = proposalSent;
                         foreignPower.ProposalSent = null;
 

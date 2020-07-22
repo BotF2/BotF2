@@ -40,15 +40,13 @@ namespace Supremacy.Client.Views.DiplomacyScreen
                 if (Model.SelectedForeignPower != null)
                 {
                     // NEED TO UPDATE? foreignPower.ProposalReceived - it is does not get here from somewhere, look in DiplomacyAI
-                    var selectedCiv = Model.SelectedForeignPower.Counterparty;
+                    var senderCiv = Model.SelectedForeignPower.Counterparty;
 
                     var playerEmpire = AppContext.LocalPlayer; // local player
-                    Diplomat diplomat = new Diplomat(selectedCiv);
-                    
-                    var foreignPower = diplomat.GetForeignPower(playerEmpire);    //  Model.SelectedForeignPower.Counterparty);
-                    //int turn = GameContext.Current.TurnNumber;
-                    //Diplomat otherDiplomate = new Diplomat(playerEmpire);
-                    //var otherForeignPower = otherDiplomate.GetForeignPower(selectedCiv);
+                    Diplomat diplomatR = new Diplomat(playerEmpire);
+
+                    var foreignPower = diplomatR.GetForeignPower(senderCiv);
+
                     //if(power.ResponseReceived != null && power.ResponseReceived.Proposal != null)
                     //    GameLog.Client.Diplomacy.DebugFormat("$$ ResponseReceived Proposal clauses ={0}", power.ResponseReceived.Proposal.Clauses.ToString());
                     //if (power.ResponseSent != null && power.ResponseSent.Proposal != null)
