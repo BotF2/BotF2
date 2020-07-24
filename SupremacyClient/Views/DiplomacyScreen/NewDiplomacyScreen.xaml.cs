@@ -41,22 +41,10 @@ namespace Supremacy.Client.Views.DiplomacyScreen
                 {
                     // NEED TO UPDATE? foreignPower.ProposalReceived - it is does not get here from somewhere, look in DiplomacyAI
                     var senderCiv = Model.SelectedForeignPower.Counterparty;
-
                     var playerEmpire = AppContext.LocalPlayer; // local player
-                    Diplomat diplomatR = new Diplomat(playerEmpire);
+                    var diplomatR = Diplomat.Get(playerEmpire);
 
-                    var foreignPower = diplomatR.GetForeignPower(senderCiv);
-
-                    //if(power.ResponseReceived != null && power.ResponseReceived.Proposal != null)
-                    //    GameLog.Client.Diplomacy.DebugFormat("$$ ResponseReceived Proposal clauses ={0}", power.ResponseReceived.Proposal.Clauses.ToString());
-                    //if (power.ResponseSent != null && power.ResponseSent.Proposal != null)
-                    //    GameLog.Client.Diplomacy.DebugFormat("$$ ResponseSent Proposal clauses ={0}", power.ResponseSent.Proposal.Clauses.ToString());
-                    //if (power.PendingAction != null)
-                    //    GameLog.Client.Diplomacy.DebugFormat("$$ PendingAction ={0}", power.PendingAction.ToString());
-                    //if (power.ProposalReceived != null)
-                    //    GameLog.Client.Diplomacy.DebugFormat("$$ ProposalReceived Clauses ={0}", power.ProposalReceived.Clauses.ToString());
-                    //if (power.ProposalSent != null)
-                    //    GameLog.Client.Diplomacy.DebugFormat("$$ ProposalSent clauses ={0}", power.ProposalSent.Clauses.ToString());
+                    var foreignPower = diplomatR.GetForeignPower(senderCiv); 
 
                     if  (response == "ACCEPT" || response == "COUNTER" || response == "REJECT") //&& foreignPower.ProposalReceived != null) 
                     {

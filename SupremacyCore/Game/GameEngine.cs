@@ -711,10 +711,6 @@ namespace Supremacy.Game
                     // GameLog.Core.Diplomacy.DebugFormat("---------------------------------------");
                     // GameLog.Core.Diplomacy.DebugFormat("foreignPowerStatus = {2} for {0} vs {1}", civ1, civ2, ForeignPowerStatus);
 
-
-                    //if (civ1.CivID == 1 && civ2.CivID == 4)  // Terrans, incoming from Cardassians
-                       // GameLog.Client.Diplomacy.DebugFormat("$$ Terran && Cardassians");
-
                     // Wait a turn for population of PendingAction.AcceptProposal and PendingAction.RejectProposal by downstream AI accept or reject
                     // save the accept and reject in LastProposal and act during the next turn
                     
@@ -997,7 +993,7 @@ namespace Supremacy.Game
                         foreignPower.CounterpartyForeignPower.ResponseReceived = responseSent; // cross over sent to received
                         GameLog.Client.Diplomacy.DebugFormat("{0} sent Responce {1} to {2}", foreignPower.Owner.Key, foreignPower.ResponseSent.ToString(), foreignPower.Counterparty.Key);
                         foreignPower.LastResponseSent = responseSent;
-                        GameLog.Client.Diplomacy.DebugFormat("Response Sent stored in LastResponseSent, {0}", foreignPower.ResponseSent.ToString());
+                        GameLog.Client.Diplomacy.DebugFormat("Response Sent stored in LasResponseSent, {0}", foreignPower.ResponseSent.ToString());
                         foreignPower.ResponseSent = null;
 
                         if (responseSent.ResponseType != ResponseType.NoResponse &&
