@@ -713,7 +713,7 @@ namespace Supremacy.Game
 
 
                     if (civ1.CivID == 1 && civ2.CivID == 4)  // Terrans, incoming from Cardassians
-                        GameLog.Client.Diplomacy.DebugFormat("$$ Terran && Cardassians");
+                       // GameLog.Client.Diplomacy.DebugFormat("$$ Terran && Cardassians");
 
                     // Wait a turn for population of PendingAction.AcceptProposal and PendingAction.RejectProposal by downstream AI accept or reject
                     // save the accept and reject in LastProposal and act during the next turn
@@ -721,12 +721,12 @@ namespace Supremacy.Game
                     switch (ForeignPower.PendingAction)
                     {
                         case PendingDiplomacyAction.AcceptProposal:
-                                            GameLog.Core.Diplomacy.DebugFormat("$$ AcceptProposal = {2} for {0} vs {1}, pending {3}", civ1, civ2, ForeignPowerStatus, ForeignPower.PendingAction.ToString());
+                                            GameLog.Core.Diplomacy.DebugFormat("$$ Accept Status = {2} for {0} vs {1}, pending {3}", civ1, civ2, ForeignPowerStatus.ToString(), ForeignPower.PendingAction.ToString());
                             if (ForeignPower.LastProposalReceived != null)
                                         AcceptProposalVisitor.Visit(ForeignPower.LastProposalReceived);
                             break;
                         case PendingDiplomacyAction.RejectProposal:
-                                            GameLog.Core.Diplomacy.DebugFormat("$$ RejectProposal = {2} for {0} vs {1}, pending {3}", civ1, civ2, ForeignPowerStatus, ForeignPower.PendingAction.ToString());
+                                            GameLog.Core.Diplomacy.DebugFormat("$$ Reject Status = {2} for {0} vs {1}, pending {3}", civ1, civ2, ForeignPowerStatus.ToString(), ForeignPower.PendingAction.ToString());
                             if (ForeignPower.LastProposalReceived != null)
                                         RejectProposalVisitor.Visit(ForeignPower.LastProposalReceived);                            
                             break;
@@ -768,8 +768,6 @@ namespace Supremacy.Game
                     }
                 }
             }
-
-
 
             /*
             // Second: Schedule delivery of outbound messages  Including Statementreceived
@@ -948,12 +946,11 @@ namespace Supremacy.Game
                     var proposalSent = foreignPower.ProposalSent;
                     if (proposalSent != null)
                     {
-                        //if (civ1.CivID == 1 && civ2.CivID == 4)  // Terrans, incoming from Cardassians
-                        //    ;
                         foreignPower.CounterpartyForeignPower.ProposalReceived = proposalSent;
                         foreignPower.LastProposalSent = proposalSent;
                         foreignPower.ProposalSent = null;
-
+                        GameLog.Client.Diplomacy.DebugFormat("** Proposal to LastProposal {0} Counterparty {1}, Owner {2}", foreignPower.LastProposalSent.ToString(), foreignPower.Counterparty.ToString(), foreignPower.Owner.ToString()); ;
+                        
                         if (civ1.IsEmpire)
                             civManagers[civ1].SitRepEntries.Add(new DiplomaticSitRepEntry(civ1, proposalSent));
 

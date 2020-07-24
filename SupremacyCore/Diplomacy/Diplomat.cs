@@ -197,7 +197,7 @@ namespace Supremacy.Diplomacy
                 throw new ArgumentNullException("owner");
 
             var _diplomats = GameContext.Current.Diplomats[owner.CivID];
-            GameLog.Client.Diplomacy.DebugFormat(" owner ={0} {1} Diplomat owner ={2} seat of government ={3}", owner, owner.CivID, _diplomats.Owner.Key, _diplomats.SeatOfGovernment.Name);
+           // GameLog.Client.Diplomacy.DebugFormat(" owner ={0} {1} Diplomat owner ={2} seat of government ={3}", owner, owner.CivID, _diplomats.Owner.Key, _diplomats.SeatOfGovernment.Name);
             return GameContext.Current.Diplomats[owner.CivID];
         }
 

@@ -15,6 +15,7 @@ using Supremacy.Entities;
 using Supremacy.Game;
 
 using System.Linq;
+using Supremacy.Utility;
 
 namespace Supremacy.Diplomacy
 {
@@ -136,12 +137,13 @@ namespace Supremacy.Diplomacy
         }
 
         public static IProposal GetLastProposalSent(this Diplomat source, ICivIdentity civ)
-        {
+        {            
             if (source == null)
                 return null;
             var envoy = source.GetForeignPower(civ);
             if (envoy != null)
                 return envoy.LastProposalSent;
+            GameLog.Client.Diplomacy.DebugFormat("*** Get Last Proposal Sent ={0}, Counterparty {1}, Owner {2}", envoy.LastResponseSent.ToString(), envoy.Counterparty, envoy.Owner);
             return null;
         }
 
@@ -152,6 +154,7 @@ namespace Supremacy.Diplomacy
             var envoy = source.GetForeignPower(civ);
             if (envoy != null)
                 return envoy.LastProposalReceived;
+            GameLog.Client.Diplomacy.DebugFormat("*** Get Last Proposal Received ={0} Counterparty {1}, Owner {2}", envoy.LastResponseReceived.ToString(), envoy.Counterparty, envoy.Owner);
             return null;
         }
 

@@ -87,7 +87,6 @@ namespace Supremacy.AI
                         {
                             foreach (var clause in foreignPower.ProposalReceived.Clauses)
                             {
-
                                 GameLog.Client.Diplomacy.DebugFormat("$$ Clause {0} duration {1}",
                                         clause.ClauseType.ToString(), clause.Duration);                                      
                             }
