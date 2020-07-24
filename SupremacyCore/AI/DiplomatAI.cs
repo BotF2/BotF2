@@ -242,7 +242,7 @@ namespace Supremacy.AI
                     #endregion Proposals
                     }
                     foreignPower.UpdateRegardAndTrustMeters();
-                    //foreignPower.UpdateStatus(); this is done in AcceptProposalVisitor.Visit
+                    //foreignPower.UpdateStatus();// this is done in AcceptProposalVisitor.Visit
                 }
 
                 if (true) // for human and non human alike )

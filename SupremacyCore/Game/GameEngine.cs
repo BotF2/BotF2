@@ -712,7 +712,7 @@ namespace Supremacy.Game
                     // GameLog.Core.Diplomacy.DebugFormat("foreignPowerStatus = {2} for {0} vs {1}", civ1, civ2, ForeignPowerStatus);
 
 
-                    if (civ1.CivID == 1 && civ2.CivID == 4)  // Terrans, incoming from Cardassians
+                    //if (civ1.CivID == 1 && civ2.CivID == 4)  // Terrans, incoming from Cardassians
                        // GameLog.Client.Diplomacy.DebugFormat("$$ Terran && Cardassians");
 
                     // Wait a turn for population of PendingAction.AcceptProposal and PendingAction.RejectProposal by downstream AI accept or reject
@@ -800,25 +800,25 @@ namespace Supremacy.Game
                     #region Gamelogs
                     if (foreignPower.ProposalReceived != null)
                             _gameLog += Environment.NewLine + "ProposalReceived: "
-                                      + foreignPower.ProposalReceived.Sender + " vs "
+                                      + foreignPower.ProposalReceived.Sender + " to "
                                       + foreignPower.ProposalReceived.Recipient + ": > "
                                       + foreignPower.ProposalReceived.Clauses.ToString()
                                       + Environment.NewLine;
                         if (foreignPower.ProposalSent != null)
                             _gameLog += Environment.NewLine + "ProposalSent: "
-                                      + foreignPower.ProposalSent.Sender + " vs "
+                                      + foreignPower.ProposalSent.Sender + " to "
                                       + foreignPower.ProposalSent.Recipient + ": > "
                                       + foreignPower.ProposalSent.Clauses.ToString()
                                       + Environment.NewLine;
                         if (foreignPower.ResponseReceived != null)
                             _gameLog += Environment.NewLine + "ResponseReceived: "
-                                      + foreignPower.ResponseReceived.Sender + " vs "
+                                      + foreignPower.ResponseReceived.Sender + " to "
                                       + foreignPower.ResponseReceived.Recipient + ": > "
                                       + foreignPower.ResponseReceived.ResponseType.ToString()
                                       + Environment.NewLine;
                         if (foreignPower.ResponseSent != null)
                             _gameLog += Environment.NewLine + "ResponseSent: "
-                                      + foreignPower.ResponseSent.Sender + " vs "
+                                      + foreignPower.ResponseSent.Sender + " to "
                                       + foreignPower.ResponseSent.Recipient + ": > "
                                       + foreignPower.ResponseSent.ResponseType.ToString()
                                       + Environment.NewLine;
@@ -828,7 +828,7 @@ namespace Supremacy.Game
                             //string parameterString = foreignPower.StatementSent.Parameter.ToString() ?? "";
 
                             _gameLog += Environment.NewLine + "StatementReceived: "
-                                      + foreignPower.StatementReceived.Sender + " vs "
+                                      + foreignPower.StatementReceived.Sender + " to "
                                       + foreignPower.StatementReceived.Recipient + ": > "
                                       + ", Parameter = " //+ parameterString
                                       + Environment.NewLine
@@ -840,7 +840,7 @@ namespace Supremacy.Game
                             //string parameterString = foreignPower.StatementSent.Parameter.ToString() ?? "";
 
                             _gameLog += Environment.NewLine + "StatementSent: "
-                                      + foreignPower.StatementSent.Sender + " vs "
+                                      + foreignPower.StatementSent.Sender + " to "
                                       + foreignPower.StatementSent.Recipient + ": > "
                                       + ", Parameter = " //+ parameterString
                                       + Environment.NewLine
@@ -949,7 +949,7 @@ namespace Supremacy.Game
                         foreignPower.CounterpartyForeignPower.ProposalReceived = proposalSent;
                         foreignPower.LastProposalSent = proposalSent;
                         foreignPower.ProposalSent = null;
-                        GameLog.Client.Diplomacy.DebugFormat("** Proposal to LastProposal {0} Counterparty {1}, Owner {2}", foreignPower.LastProposalSent.ToString(), foreignPower.Counterparty.ToString(), foreignPower.Owner.ToString()); ;
+                        GameLog.Client.Diplomacy.DebugFormat("** ProposalSent becomes Counterparty ProposalReceived [{0}], Counterparty = {1}, Owner = {2}", foreignPower.LastProposalSent.ToString(), foreignPower.Counterparty.ToString(), foreignPower.Owner.ToString()); ;
                         
                         if (civ1.IsEmpire)
                             civManagers[civ1].SitRepEntries.Add(new DiplomaticSitRepEntry(civ1, proposalSent));
@@ -994,10 +994,10 @@ namespace Supremacy.Game
                     var responseSent = foreignPower.ResponseSent;
                     if (responseSent != null)
                     {
-                        //if (civ1.CivID == 1 && civ2.CivID == 4)  // Terrans, incoming from Cardassians
-                        //    ;  // do nothing else = emtpy line
-                        foreignPower.CounterpartyForeignPower.ResponseReceived = responseSent;
+                        foreignPower.CounterpartyForeignPower.ResponseReceived = responseSent; // cross over sent to received
+                        GameLog.Client.Diplomacy.DebugFormat("{0} sent Responce {1} to {2}", foreignPower.Owner.Key, foreignPower.ResponseSent.ToString(), foreignPower.Counterparty.Key);
                         foreignPower.LastResponseSent = responseSent;
+                        GameLog.Client.Diplomacy.DebugFormat("Response Sent stored in LastResponseSent, {0}", foreignPower.ResponseSent.ToString());
                         foreignPower.ResponseSent = null;
 
                         if (responseSent.ResponseType != ResponseType.NoResponse &&

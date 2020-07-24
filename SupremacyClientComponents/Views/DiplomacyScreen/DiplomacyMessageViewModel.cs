@@ -449,9 +449,11 @@ namespace Supremacy.Client.Views
 
             if (_treatyElements.Count != 0)
             {
-                var isWarPact = _treatyElements[0].ElementType == DiplomacyMessageElementType.TreatyWarPact;
+                var isWarPact = _treatyElements[0].ElementType == DiplomacyMessageElementType.TreatyWarPact; // bool  
 
                 treatyLeadInId = isWarPact ? DiplomacyStringID.WarPactLeadIn : DiplomacyStringID.ProposalLeadIn;
+                if (treatyLeadInId == DiplomacyStringID.ProposalLeadIn)
+                    GameLog.Client.Diplomacy.DebugFormat("** Treaty Leadin text set, {0}", treatyLeadInId.ToString());
 
                 if (_offerElements.Count != 0)
                     offerLeadInId = isWarPact ? DiplomacyStringID.WarPactOffersLeadIn : DiplomacyStringID.ProposalOffersLeadIn;
@@ -607,12 +609,10 @@ namespace Supremacy.Client.Views
                     break;
                 case DiplomacyMessageElementActionCategory.Propose:
                     _treatyElements.Add(element);
-                    //if (element.Tone == Tone.Indignant)
-                    //{
+                    GameLog.Client.Diplomacy.DebugFormat("Proposal element added to _treatyElemetns, {0}", element.ToString());
                     st = ResourceManager.GetString("PROPOSE_DIALOG_HINT"); // need to update the embassy screen with a new window to get the send button activated without delay.
                     var result_Propose = MessageDialog.Show(st, MessageDialogButtons.Ok);
                     GameLog.Client.Diplomacy.DebugFormat("PROPOSE_DIALOG_HINT is outcommented");
-                    //}
                     break;
                 case DiplomacyMessageElementActionCategory.Commend:
                     _statementElements.Add(element);
