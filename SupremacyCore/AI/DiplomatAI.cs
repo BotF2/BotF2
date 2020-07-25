@@ -17,8 +17,19 @@ namespace Supremacy.AI
 
     public static class DiplomatAI
     {
+        //private static ForeignPower _foreignPower = new ForeignPower(GameContext.Current.CivilizationManagers.Last().Civilization, GameContext.Current.CivilizationManagers.First());
+        //private static bool _acceptReject = false;
+        //private static Dictionary<ForeignPower, bool> _acceptRejectDictionary = new Dictionary<ForeignPower, bool> { {_foreignPower, false} };
+        //public static bool AcceptReject
+        //{
+        //    get { return _acceptReject; }
+        //    set { _acceptReject = value; }
+        //}
+
+      
         public static void DoTurn([NotNull] ICivIdentity civ) // pass in all civs to process Diplomacy
         {
+   
             if (civ == null)
                 throw new ArgumentNullException("civ");
 
@@ -160,11 +171,13 @@ namespace Supremacy.AI
                             "## foreignPower PendingAction ={0} Counterparty = {1} Onwer = {2}",
                             foreignPower.PendingAction.ToString(), foreignPower.Counterparty.ShortName,
                             foreignPower.Owner.ShortName);
-                        //if (foreignPower.DiplomacyData.Status == ForeignPowerStatus.Affiliated)
-                        /*
-                         AI evaluates accept reject
-                         */
-                        if (foreignPower.ProposalReceived != null && !aCiv.IsHuman) // aCiv is owner of the foreignpower looking for a ProposalRecieved
+
+  
+                            //if (foreignPower.DiplomacyData.Status == ForeignPowerStatus.Affiliated)
+                            /*
+                             AI evaluates accept reject
+                             */
+                            if (foreignPower.ProposalReceived != null && !aCiv.IsHuman) // aCiv is owner of the foreignpower looking for a ProposalRecieved
                         {
                             bool accepted = false;
                             int regard = foreignPower.DiplomacyData.Regard.CurrentValue;
@@ -452,6 +465,27 @@ namespace Supremacy.AI
                 DiplomacyHelper.ApplyTrustChange(foreignPow.Counterparty, foreignPow.Owner, (-30 + degree));
             }
         }
+        //public static void AcceptingRejecting(Diplomat diplomat, Civilization senderCiv, string acceptReject)
+        //{
+        //    var foreignPower = diplomat.GetForeignPower(senderCiv);
+            
+        //    if (acceptReject == "ACCEPT" || acceptReject == "COUNTER" || acceptReject == "REJECT") //&& foreignPower.ProposalReceived != null) 
+        //    {
+        //        if (acceptReject == "ACCEPT")
+        //        {
+        //            DiplomatAI._acceptRejectDictionary.Add(foreignPower, true);
+        //        }
+        //        else if (acceptReject == "COUNTER")
+        //        {
+        //            //foreignPower.PendingAction = PendingDiplomacyAction.None;
+        //        }
+        //        else if (acceptReject == "REJECT")
+        //        {
+        //            DiplomatAI._acceptRejectDictionary.Add(foreignPower, false);
+        //        }
+        //    }
+        //}
+
         #endregion   
     }
 }

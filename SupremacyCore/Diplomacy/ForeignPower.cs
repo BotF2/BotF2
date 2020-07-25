@@ -463,31 +463,23 @@ namespace Supremacy.Diplomacy
             }
         }
 
-        //public void UpdateStatus(ForeignPower counterpartyForeignPower, ForeignPower foreignPower)
-        //{
-        //    ForeignPowerStatus ownerStatus;
-        //    ForeignPowerStatus counterpartyStatus;
-        // //var something = counterpartyForeignPower.DiplomacyData.Status
-        //    ResolveStatus(out ownerStatus, out counterpartyStatus);
+        public void AcceptingRejecting(string acceptReject) 
+        {
+            bool accepting = false;
+            if (acceptReject == "ACCEPT")
+                accepting = true;
 
-        //    if (DiplomacyData.Status != ownerStatus)
-        //    {
-        //        DiplomacyData.LastStatusChange = GameContext.Current.TurnNumber;
-        //        DiplomacyData.Status = ownerStatus;
-        //    }
-
-            
-        //    if (counterpartyForeignPower.DiplomacyData.Status != counterpartyStatus)
-        //    {
-        //        counterpartyForeignPower.DiplomacyData.LastStatusChange = GameContext.Current.TurnNumber;
-        //        counterpartyForeignPower.DiplomacyData.Status = counterpartyStatus;
-        //    }
-        //    if (foreignPower.DiplomacyData.Status != ownerStatus)
-        //    {
-        //        foreignPower.DiplomacyData.LastStatusChange = GameContext.Current.TurnNumber;
-        //        foreignPower.DiplomacyData.Status = ownerStatus;
-        //    }
-        //}
+            if (accepting)
+            {
+                PendingAction = PendingDiplomacyAction.AcceptProposal;
+            }
+            else
+            {
+                PendingAction = PendingDiplomacyAction.RejectProposal;
+            }
+            LastProposalReceived = ProposalReceived;
+            ProposalReceived = null;
+        }
 
         #region Implementation of ICivIdentity
 

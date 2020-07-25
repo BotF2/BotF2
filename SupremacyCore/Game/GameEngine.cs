@@ -38,12 +38,8 @@ namespace Supremacy.Game
     /// </summary>
     public class GameEngine
     {
-        //private Civilization _spyAttacking;
-        //private Civilization _spyAttacked;
-        //private int _spyCredits;
 
         public int _gameTurnNumber = 0;  // internal use
-
 
         #region Public Members
 
@@ -72,22 +68,11 @@ namespace Supremacy.Game
         /// </summary>
         public event EventHandler<ParameterEventArgs<Fleet>> FleetLocationChanged;
 
-        public bool acceptReject = false;
-        //public Dictionary<int, bool>
-            var acceptRejectDictionary = new Dictionary<int, bool> { 999, false};
-
         public object GameContent { get; private set; }
         public object AppContext { get; private set; }
-        //public Civilization SpyAttacking { get => _spyAttacking; set => _spyAttacking = value; }
-        //public Civilization SpyAttacked { get => _spyAttacked; set => _spyAttacked = value; }
-        //public int SpyCredits { get => spyCredits; set => spyCredits = value; }
+
         #endregion
-        //public void SendStealCreditsData(Civilization attacking, Civilization attacked, int credits)
-        //{
-        //    _spyAttacking = attacking;
-        //    _spyAttacked = attacked;
-        //    _spyCredits = credits;
-        //}
+
         #region Private Members
         /// <summary>
         /// Blocks the execution of the turn processing engine while waiting on players
@@ -715,10 +700,10 @@ namespace Supremacy.Game
                     var foreignPowerStatus = diplomat1.GetForeignPower(civ2).DiplomacyData.Status;
                     // GameLog.Core.Diplomacy.DebugFormat("---------------------------------------");
                     // GameLog.Core.Diplomacy.DebugFormat("foreignPowerStatus = {2} for {0} vs {1}", civ1, civ2, ForeignPowerStatus);
-
+                    
                     // Wait a turn for population of PendingAction.AcceptProposal and PendingAction.RejectProposal by downstream AI accept or reject
                     // save the accept and reject in LastProposal and act during the next turn
-                    
+
                     switch (foreignPower.PendingAction)
                     {
                         case PendingDiplomacyAction.AcceptProposal:
@@ -731,22 +716,9 @@ namespace Supremacy.Game
                             if (foreignPower.LastProposalReceived != null)
                                         RejectProposalVisitor.Visit(foreignPower.LastProposalReceived);                            
                             break;
-                        case PendingDiplomacyAction.None:
-                            {
-                                if (acceptRejectDictionary.ContainsKey(foreignPower.OwnerID))
-                                {
-                                    if(acceptRejectDictionary[foreignPower.OwnerID] == true)
-                                    {
-                                        AcceptProposalVisitor.Visit(foreignPower.LastProposalReceived);
-                                    }
-                                    else { RejectProposalVisitor.Visit(foreignPower.LastProposalReceived); }
-                                }
-
-                            }
-                            break;
                     }
                     foreignPower.PendingAction = PendingDiplomacyAction.None;
-
+                 
                     // Ships gets new owner on joining empire
                     if (civ1.IsEmpire && !civ2.IsEmpire && civ1.Key != "Borg")
                     {
@@ -1045,6 +1017,7 @@ namespace Supremacy.Game
             foreach (var agreement in GameContext.Current.AgreementMatrix)
                 AgreementFulfillmentVisitor.Visit(agreement);
         }
+
         #endregion
 
         #region DoCombat() Method
@@ -2290,12 +2263,12 @@ namespace Supremacy.Game
                 body);
         }
         // ReSharper restore UnusedMethodReturnValue.Local
-        public void GetAcceptReject(ForeignPower foreignPower)
-        {
-            if (foreignPower.PendingAction == PendingDiplomacyAction.AcceptProposal)
-                acceptReject = true;
-            acceptRejectDictionary.Add(foreignPower.OwnerID, acceptReject);
-        }
+        //public void GetAcceptReject(ForeignPower foreignPower)
+        //{
+        //    if (foreignPower.PendingAction == PendingDiplomacyAction.AcceptProposal)
+        //        AcceptProposalVisitor.Visit(foreignPower.LastProposalReceived);
+        //    else RejectProposalVisitor.Visit(foreignPower.LastProposalReceived); 
+        //}
     }
 
     /// <summary>

@@ -7,6 +7,7 @@ using System.Windows.Documents;
 using System.Windows.Media;
 using Microsoft.Practices.Composite.Regions;
 using Obtics.Collections;
+using Supremacy.AI;
 using Supremacy.Client.Context;
 using Supremacy.Client.Controls;
 using Supremacy.Diplomacy;
@@ -38,42 +39,14 @@ namespace Supremacy.Client.Views.DiplomacyScreen
             {
                 var response = (string)radioButton.Content;
                 if (Model.SelectedForeignPower != null)
-                {
-                    // NEED TO UPDATE? foreignPower.ProposalReceived - it is does not get here from somewhere, look in DiplomacyAI
+                {                 
                     var senderCiv = Model.SelectedForeignPower.Counterparty;
-                    var playerEmpire = AppContext.LocalPlayer; // local player
-                    var diplomatR = Diplomat.Get(playerEmpire.CivID);
-
-                    var foreignPower = diplomatR.GetForeignPower(senderCiv);
-                    foreignPower.LastProposalReceived = foreignPower.ProposalReceived;
-                    foreignPower.ProposalReceived = null;
-                    GameEngine engine = new GameEngine();
-                   
-                    if  (response == "ACCEPT" || response == "COUNTER" || response == "REJECT") //&& foreignPower.ProposalReceived != null) 
-                    {                     
-                        if (response == "ACCEPT")
-                        {
-
-                            //AcceptProposalVisitor.Visit(foreignPower.LastProposalReceived);
-                            foreignPower.PendingAction = PendingDiplomacyAction.AcceptProposal;
-                            engine.GetAcceptReject(foreignPower);
-                        }
-                        else if (response == "COUNTER")
-                        {
-                            //foreignPower.PendingAction = PendingDiplomacyAction.None;
-                        }
-                        else if (response == "REJECT")
-                        {
-                            //RejectProposalVisitor.Visit(foreignPower.LastProposalReceived);
-                            foreignPower.PendingAction = PendingDiplomacyAction.RejectProposal;
-                            engine.GetAcceptReject(foreignPower);
-                        }
-                        //foreignPower.LastProposalReceived = foreignPower.ProposalReceived;
-                        //foreignPower.ProposalReceived = null;
-                    }
+                    var playerEmpire = AppContext.LocalPlayerEmpire.Civilization; // local player
+                    var diplomat = Diplomat.Get(playerEmpire);
+                    var foreignPower = diplomat.GetForeignPower(senderCiv);
+                    foreignPower.AcceptingRejecting(response);
                 }
             }
-
         }
 
         #region Implementation of IActiveAware
