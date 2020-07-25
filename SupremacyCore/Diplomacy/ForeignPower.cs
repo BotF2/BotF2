@@ -27,7 +27,7 @@ namespace Supremacy.Diplomacy
     {
         None,
         AcceptProposal,
-        RejectProposal,
+        RejectProposal
     }
 
     [Serializable]

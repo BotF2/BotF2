@@ -706,28 +706,28 @@ namespace Supremacy.Game
                         continue;
                         }
 
-                    var ForeignPower = diplomat1.GetForeignPower(civ2);
-                    var ForeignPowerStatus = diplomat1.GetForeignPower(civ2).DiplomacyData.Status;
+                    var foreignPower = diplomat1.GetForeignPower(civ2);
+                    var foreignPowerStatus = diplomat1.GetForeignPower(civ2).DiplomacyData.Status;
                     // GameLog.Core.Diplomacy.DebugFormat("---------------------------------------");
                     // GameLog.Core.Diplomacy.DebugFormat("foreignPowerStatus = {2} for {0} vs {1}", civ1, civ2, ForeignPowerStatus);
 
                     // Wait a turn for population of PendingAction.AcceptProposal and PendingAction.RejectProposal by downstream AI accept or reject
                     // save the accept and reject in LastProposal and act during the next turn
                     
-                    switch (ForeignPower.PendingAction)
+                    switch (foreignPower.PendingAction)
                     {
                         case PendingDiplomacyAction.AcceptProposal:
-                                            GameLog.Core.Diplomacy.DebugFormat("$$ Accept Status = {2} for {0} vs {1}, pending {3}", civ1, civ2, ForeignPowerStatus.ToString(), ForeignPower.PendingAction.ToString());
-                            if (ForeignPower.LastProposalReceived != null)
-                                        AcceptProposalVisitor.Visit(ForeignPower.LastProposalReceived);
+                                            GameLog.Core.Diplomacy.DebugFormat("$$ Accept Status = {2} for {0} vs {1}, pending {3}", civ1, civ2, foreignPowerStatus.ToString(), foreignPower.PendingAction.ToString());
+                            if (foreignPower.LastProposalReceived != null)
+                                        AcceptProposalVisitor.Visit(foreignPower.LastProposalReceived);
                             break;
                         case PendingDiplomacyAction.RejectProposal:
-                                            GameLog.Core.Diplomacy.DebugFormat("$$ Reject Status = {2} for {0} vs {1}, pending {3}", civ1, civ2, ForeignPowerStatus.ToString(), ForeignPower.PendingAction.ToString());
-                            if (ForeignPower.LastProposalReceived != null)
-                                        RejectProposalVisitor.Visit(ForeignPower.LastProposalReceived);                            
+                                            GameLog.Core.Diplomacy.DebugFormat("$$ Reject Status = {2} for {0} vs {1}, pending {3}", civ1, civ2, foreignPowerStatus.ToString(), foreignPower.PendingAction.ToString());
+                            if (foreignPower.LastProposalReceived != null)
+                                        RejectProposalVisitor.Visit(foreignPower.LastProposalReceived);                            
                             break;
                     }
-                    ForeignPower.PendingAction = PendingDiplomacyAction.None;
+                    foreignPower.PendingAction = PendingDiplomacyAction.None;
 
                     // Ships gets new owner on joining empire
                     if (civ1.IsEmpire && !civ2.IsEmpire && civ1.Key != "Borg")

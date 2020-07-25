@@ -42,7 +42,7 @@ namespace Supremacy.Client.Views.DiplomacyScreen
                     // NEED TO UPDATE? foreignPower.ProposalReceived - it is does not get here from somewhere, look in DiplomacyAI
                     var senderCiv = Model.SelectedForeignPower.Counterparty;
                     var playerEmpire = AppContext.LocalPlayer; // local player
-                    var diplomatR = Diplomat.Get(playerEmpire);
+                    var diplomatR = Diplomat.Get(playerEmpire.CivID);
 
                     var foreignPower = diplomatR.GetForeignPower(senderCiv); 
 
@@ -52,20 +52,35 @@ namespace Supremacy.Client.Views.DiplomacyScreen
                  
                         if (response == "ACCEPT")
                         {
-    
-                            foreignPower.PendingAction = PendingDiplomacyAction.AcceptProposal;
+                            AcceptProposalVisitor.Visit(foreignPower.ProposalReceived);
+                            //foreignPower.PendingAction = PendingDiplomacyAction.AcceptProposal;
                         }
                         else if (response == "COUNTER")
                         {
-                            foreignPower.PendingAction = PendingDiplomacyAction.None;
+                            //foreignPower.PendingAction = PendingDiplomacyAction.None;
                         }
                         else if (response == "REJECT")
                         {
-                           foreignPower.PendingAction = PendingDiplomacyAction.RejectProposal;
+                            RejectProposalVisitor.Visit(foreignPower.ProposalReceived);
+                            //foreignPower.PendingAction = PendingDiplomacyAction.RejectProposal;
                         }
                         foreignPower.LastProposalReceived = foreignPower.ProposalReceived;
                         foreignPower.ProposalReceived = null;
                     }
+                    //switch (foreignPower.PendingAction)
+                    //{
+                    //    case PendingDiplomacyAction.AcceptProposal:
+                    //        GameLog.Core.Diplomacy.DebugFormat("$$ Accept Status = {2} for {0} vs {1}, pending {3}", civ1, civ2, foreignPowerStatus.ToString(), foreignPower.PendingAction.ToString());
+                    //        if (foreignPower.LastProposalReceived != null)
+                    //            AcceptProposalVisitor.Visit(foreignPower.LastProposalReceived);
+                    //        break;
+                    //    case PendingDiplomacyAction.RejectProposal:
+                    //        GameLog.Core.Diplomacy.DebugFormat("$$ Reject Status = {2} for {0} vs {1}, pending {3}", civ1, civ2, foreignPowerStatus.ToString(), foreignPower.PendingAction.ToString());
+                    //        if (foreignPower.LastProposalReceived != null)
+                    //            RejectProposalVisitor.Visit(foreignPower.LastProposalReceived);
+                    //        break;
+                    //}
+                    //foreignPower.PendingAction = PendingDiplomacyAction.None;
                 }
             }
         }
