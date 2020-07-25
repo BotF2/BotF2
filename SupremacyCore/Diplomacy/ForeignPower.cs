@@ -523,7 +523,7 @@ namespace Supremacy.Diplomacy
 
         void IOwnedDataSerializable.SerializeOwnedData(SerializationWriter writer, object context)
         {
-            GameLog.Client.Diplomacy.DebugFormat("SerializeOwnedData ....");
+           // GameLog.Client.Diplomacy.DebugFormat("SerializeOwnedData ....");
             writer.WriteObject(_regardEvents);
             writer.WriteObject(_diplomacyData);
             

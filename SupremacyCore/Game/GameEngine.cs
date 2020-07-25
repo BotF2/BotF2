@@ -25,6 +25,7 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -70,6 +71,10 @@ namespace Supremacy.Game
         /// Occurs when a Fleet moves to a new location.
         /// </summary>
         public event EventHandler<ParameterEventArgs<Fleet>> FleetLocationChanged;
+
+        public bool acceptReject = false;
+        //public Dictionary<int, bool>
+            var acceptRejectDictionary = new Dictionary<int, bool> { 999, false};
 
         public object GameContent { get; private set; }
         public object AppContext { get; private set; }
@@ -725,6 +730,19 @@ namespace Supremacy.Game
                                             GameLog.Core.Diplomacy.DebugFormat("$$ Reject Status = {2} for {0} vs {1}, pending {3}", civ1, civ2, foreignPowerStatus.ToString(), foreignPower.PendingAction.ToString());
                             if (foreignPower.LastProposalReceived != null)
                                         RejectProposalVisitor.Visit(foreignPower.LastProposalReceived);                            
+                            break;
+                        case PendingDiplomacyAction.None:
+                            {
+                                if (acceptRejectDictionary.ContainsKey(foreignPower.OwnerID))
+                                {
+                                    if(acceptRejectDictionary[foreignPower.OwnerID] == true)
+                                    {
+                                        AcceptProposalVisitor.Visit(foreignPower.LastProposalReceived);
+                                    }
+                                    else { RejectProposalVisitor.Visit(foreignPower.LastProposalReceived); }
+                                }
+
+                            }
                             break;
                     }
                     foreignPower.PendingAction = PendingDiplomacyAction.None;
@@ -2272,6 +2290,12 @@ namespace Supremacy.Game
                 body);
         }
         // ReSharper restore UnusedMethodReturnValue.Local
+        public void GetAcceptReject(ForeignPower foreignPower)
+        {
+            if (foreignPower.PendingAction == PendingDiplomacyAction.AcceptProposal)
+                acceptReject = true;
+            acceptRejectDictionary.Add(foreignPower.OwnerID, acceptReject);
+        }
     }
 
     /// <summary>

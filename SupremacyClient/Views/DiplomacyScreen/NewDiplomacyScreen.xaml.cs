@@ -44,16 +44,19 @@ namespace Supremacy.Client.Views.DiplomacyScreen
                     var playerEmpire = AppContext.LocalPlayer; // local player
                     var diplomatR = Diplomat.Get(playerEmpire.CivID);
 
-                    var foreignPower = diplomatR.GetForeignPower(senderCiv); 
-
+                    var foreignPower = diplomatR.GetForeignPower(senderCiv);
+                    foreignPower.LastProposalReceived = foreignPower.ProposalReceived;
+                    foreignPower.ProposalReceived = null;
+                    GameEngine engine = new GameEngine();
+                   
                     if  (response == "ACCEPT" || response == "COUNTER" || response == "REJECT") //&& foreignPower.ProposalReceived != null) 
-                    {
-                        //NewProposal proposal = new NewProposal(foreignPower.Owner, foreignPower.Counterparty, foreignPower.ProposalReceived.Clauses);
-                 
+                    {                     
                         if (response == "ACCEPT")
                         {
-                            AcceptProposalVisitor.Visit(foreignPower.ProposalReceived);
-                            //foreignPower.PendingAction = PendingDiplomacyAction.AcceptProposal;
+
+                            //AcceptProposalVisitor.Visit(foreignPower.LastProposalReceived);
+                            foreignPower.PendingAction = PendingDiplomacyAction.AcceptProposal;
+                            engine.GetAcceptReject(foreignPower);
                         }
                         else if (response == "COUNTER")
                         {
@@ -61,28 +64,16 @@ namespace Supremacy.Client.Views.DiplomacyScreen
                         }
                         else if (response == "REJECT")
                         {
-                            RejectProposalVisitor.Visit(foreignPower.ProposalReceived);
-                            //foreignPower.PendingAction = PendingDiplomacyAction.RejectProposal;
+                            //RejectProposalVisitor.Visit(foreignPower.LastProposalReceived);
+                            foreignPower.PendingAction = PendingDiplomacyAction.RejectProposal;
+                            engine.GetAcceptReject(foreignPower);
                         }
-                        foreignPower.LastProposalReceived = foreignPower.ProposalReceived;
-                        foreignPower.ProposalReceived = null;
+                        //foreignPower.LastProposalReceived = foreignPower.ProposalReceived;
+                        //foreignPower.ProposalReceived = null;
                     }
-                    //switch (foreignPower.PendingAction)
-                    //{
-                    //    case PendingDiplomacyAction.AcceptProposal:
-                    //        GameLog.Core.Diplomacy.DebugFormat("$$ Accept Status = {2} for {0} vs {1}, pending {3}", civ1, civ2, foreignPowerStatus.ToString(), foreignPower.PendingAction.ToString());
-                    //        if (foreignPower.LastProposalReceived != null)
-                    //            AcceptProposalVisitor.Visit(foreignPower.LastProposalReceived);
-                    //        break;
-                    //    case PendingDiplomacyAction.RejectProposal:
-                    //        GameLog.Core.Diplomacy.DebugFormat("$$ Reject Status = {2} for {0} vs {1}, pending {3}", civ1, civ2, foreignPowerStatus.ToString(), foreignPower.PendingAction.ToString());
-                    //        if (foreignPower.LastProposalReceived != null)
-                    //            RejectProposalVisitor.Visit(foreignPower.LastProposalReceived);
-                    //        break;
-                    //}
-                    //foreignPower.PendingAction = PendingDiplomacyAction.None;
                 }
             }
+
         }
 
         #region Implementation of IActiveAware
