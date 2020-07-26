@@ -1063,7 +1063,7 @@
                                                                 TextBlock.FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                                                                 TextBlock.FontSize="12pt"
                                                                 Margin="10,5,0,0" />
-                                                    <ItemsControl Margin="24,12,0,0"
+                                                    <ItemsControl Margin="5,12,0,0"
                                                                 ItemsSource="{Binding Path=TreatyElements}"
                                                                 HorizontalContentAlignment="Center"
                                                                 Foreground="DodgerBlue"
@@ -1088,7 +1088,7 @@
                                                                 TextBlock.FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                                                                 TextBlock.FontSize="12pt"
                                                                 Margin="0,12,0,0" />
-                                                    <ItemsControl Margin="24,12,0,0"
+                                                    <ItemsControl Margin="5,12,0,0"
                                                                     ItemsSource="{Binding Path=OfferElements}"
                                                                     HorizontalContentAlignment="Center"
                                                                     Foreground="LimeGreen"
@@ -1113,7 +1113,7 @@
                                                                     TextBlock.FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                                                                     TextBlock.FontSize="12pt"
                                                                     Margin="0,12,0,0" />
-                                                    <ItemsControl Margin="24,12,0,0"
+                                                    <ItemsControl Margin="5,12,0,0"
                                                                     ItemsSource="{Binding Path=RequestElements}"
                                                                     HorizontalContentAlignment="Center"
                                                                     Foreground="Crimson"
@@ -1147,6 +1147,7 @@
                                                                     GroupName="0"
                                                                     Content="ACCEPT"
                                                                     Margin="2,5,12,0"
+                                                                    Visibility="{Binding Path=HideAcceptReject, Converter={scc:SimpleCase Case=0, IfMatch=Collapsed, Else=Visible}}"
                                                                     Checked="clickAcceptCounterReject"/>
                                                             </StackPanel>
                                                             <!--<StackPanel>
@@ -1164,7 +1165,8 @@
                                                                     VerticalAlignment="Top"
                                                                     GroupName="0"
                                                                     Margin="0,5,0,0"
-                                                                    Content="REJECT"                              
+                                                                    Content="REJECT"
+                                                                    Visibility="{Binding Path=HideAcceptReject, Converter={scc:SimpleCase Case=0, IfMatch=Collapsed, Else=Visible}}"
                                                                     Checked="clickAcceptCounterReject"/>
                                                             </StackPanel>
                                                         </StackPanel>
@@ -1183,12 +1185,12 @@
                                                             <TextBlock Text="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry=NoIncomingHeader, CharacterCasing=Upper}" 
                                                                          HorizontalAlignment="Center"
                                                                          VerticalAlignment="Center"
-                                                                         Visibility="{Binding Path=SeeTreatyResponceButtons, Converter={scc:SimpleCase Case=0, IfMatch=Collapsed, Else=Visible}}"
+                                                                         Visibility="{Binding Path=HideAcceptRejectButtons, Converter={scc:SimpleCase Case=0, IfMatch=Collapsed, Else=Visible}}"
                                                                          TextWrapping="NoWrap"
-                                                                         TextBlock.Foreground="{StaticResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"
+                                                                         TextBlock.Foreground="Black" 
                                                                          TextBlock.FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                                                                          TextBlock.FontSize="12pt"
-                                                                         Background="Black"
+                                                                         Background="DarkGray"
                                                                          Margin="0,5,0,0" />
                                                             <!--<ItemsControl Margin="0,0,0,0"
                                                                               ItemsSource="{Binding Path=TreatyElements}"
@@ -1426,7 +1428,7 @@
                                                                             </Setter>
                                                                         </Style>
                                                                     </StackPanel.Resources>
-                                                                    <ItemsControl Margin="24,12,0,0"
+                                                                    <ItemsControl Margin="5,12,0,0"
                                                                                 ItemsSource="{Binding Path=StatementElements}"
                                                                                 HorizontalContentAlignment="Center"
                                                                                 Foreground="{StaticResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"
@@ -1501,7 +1503,7 @@
                                                                         TextBlock.FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                                                                         TextBlock.FontSize="12pt"
                                                                         Margin="0,12,0,0" />
-                                                                    <ItemsControl Margin="24,12,0,0"
+                                                                    <ItemsControl Margin="5,12,0,0"
                                                                         ItemsSource="{Binding Path=RequestElements}"
                                                                         HorizontalContentAlignment="Center"
                                                                         Foreground="Crimson"

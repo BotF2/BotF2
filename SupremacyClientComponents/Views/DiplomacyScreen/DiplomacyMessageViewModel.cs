@@ -166,8 +166,6 @@ namespace Supremacy.Client.Views
             get { return _elements.All(o => o.ElementType <= DiplomacyMessageElementType.DenounceSabotageStatement); }
         }
 
-       
-
         internal IDiplomaticExchange CreateMessage()
             {
                 return IsStatement ? (IDiplomaticExchange)CreateStatement() : CreateProposal();
@@ -423,12 +421,15 @@ namespace Supremacy.Client.Views
             get { return !string.IsNullOrWhiteSpace(TreatyLeadInText); }
         }
 
-        public int SeeTreatyResponceButtons
+        public int HideAcceptRejectButtons
         {
             get
             {
+                if (IsStatement)
+                    return 1;
                 if (HasTreatyLeadInText)
                     return 0;
+          
                 else return 1;
             }
         }
