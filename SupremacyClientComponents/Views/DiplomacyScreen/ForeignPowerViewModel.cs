@@ -280,6 +280,15 @@ namespace Supremacy.Client.Views
                 else return 0;
             }
         }
+        public int AffiliatedMessage
+        {
+            get
+            {
+                if (Status == ForeignPowerStatus.Affiliated)
+                    return 1;
+                else return 0;
+            }
+        }
 
         public int SelectForeignPowerMessage
         {

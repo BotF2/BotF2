@@ -176,7 +176,7 @@
         <DataTemplate DataType="{x:Type scc:ActiveAgreementViewModel}">
             <DockPanel LastChildFill="True">
                 <scc:RichTextBlock DockPanel.Dock="Top"
-                             Margin="0,12,0,0"
+                             Margin="0,0,0,0"
                              RichText="{Binding Path=Description}"
                              TextWrapping="Wrap" />
                 <ItemsControl Margin="24,0,0,0"
@@ -920,24 +920,28 @@
                                                 DataContext="{Binding Path=SelectedForeignPower}">
                                             <ScrollViewer HorizontalScrollBarVisibility="Disabled"
                                                           VerticalScrollBarVisibility="Auto">
-                                                <StackPanel Orientation="Horizontal" >
-                                                    <TextBlock DockPanel.Dock="Top"
-                                                            TextAlignment="Left"
-                                                            TextWrapping="Wrap"
-                                                            TextTrimming="CharacterEllipsis"
-                                                            FontSize="15pt"
-                                                            FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
-                                                            Foreground="{StaticResource HeaderTextBrush}"
-                                                            Margin="2,0,10,0"
-                                                            Text="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry=ActiveAgreementsHeader, CharacterCasing=Upper}" />
-                                                    <Grid>
-                                                        <Grid.ColumnDefinitions>
-                                                            <ColumnDefinition Width="Auto"/>
-                                                        </Grid.ColumnDefinitions>
-                                                        <Grid.RowDefinitions>
-                                                            <RowDefinition Height="Auto"/>
-                                                        </Grid.RowDefinitions> 
+                                                <StackPanel Orientation="Vertical" >
+                                                    <StackPanel Orientation="Horizontal" >
                                                         <TextBlock DockPanel.Dock="Top"
+                                                                   Grid.Column="0"
+                                                                   Grid.Row="0"
+                                                                    TextAlignment="Left"
+                                                                    TextWrapping="Wrap"
+                                                                    TextTrimming="CharacterEllipsis"
+                                                                    FontSize="15pt"
+                                                                    FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
+                                                                    Foreground="{StaticResource HeaderTextBrush}"
+                                                                    Margin="2,0,10,0"
+                                                                    Text="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry=ActiveAgreementsHeader, CharacterCasing=Upper}" />
+                                                        <StackPanel>
+                                                            <Grid>
+                                                                <Grid.ColumnDefinitions>
+                                                                    <ColumnDefinition Width="Auto"/>
+                                                                </Grid.ColumnDefinitions>
+                                                                <Grid.RowDefinitions>
+                                                                    <RowDefinition Height="Auto"/>
+                                                                </Grid.RowDefinitions>
+                                                                <TextBlock DockPanel.Dock="Top"
                                                                    Grid.Column="0"
                                                                    Grid.Row="0"
                                                                     TextAlignment="Left"
@@ -974,6 +978,18 @@
                                                                     Text="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry=AlliesHeader, CharacterCasing=Upper}" 
                                                                     Visibility="{Binding Path=AlliesMessage, Converter={scc:SimpleCase Case=0, IfMatch=Collapsed, Else=Visible}}"/>
                                                         <TextBlock DockPanel.Dock="Top"
+                                                                   Grid.Column="0"
+                                                                   Grid.Row="0"
+                                                                    TextAlignment="Left"
+                                                                    TextWrapping="Wrap"
+                                                                    TextTrimming="CharacterEllipsis"
+                                                                    FontSize="15pt"
+                                                                    FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
+                                                                    Foreground="LightCyan"
+                                                                    Margin="5,0,10,0"
+                                                                    Text="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry=AffiliatedHeader, CharacterCasing=Upper}" 
+                                                                    Visibility="{Binding Path=AffiliatedMessage, Converter={scc:SimpleCase Case=0, IfMatch=Collapsed, Else=Visible}}"/>
+                                                        <TextBlock DockPanel.Dock="Top"
                                                                     Grid.Column="0"
                                                                     Grid.Row="0"
                                                                     TextAlignment="Left"
@@ -987,15 +1003,21 @@
                                                                     VerticalAlignment="Center"
                                                                     Text="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry=SelectForeignPowerHeader}" 
                                                                     Visibility="{Binding Path=SelectForeignPowerMessage, Converter={scc:SimpleCase Case=0, IfMatch=Collapsed, Else=Visible}}"/>
-                                                    </Grid>
+                                                            </Grid>
+                                                        </StackPanel>
+                                                        </StackPanel>
                                                     <ItemsControl ItemsSource="{Binding Path=ActiveAgreements}"
-                                                                    HorizontalContentAlignment="Center"
+                                                                  Grid.Column="0"
+                                                                  Grid.Row="1"
+                                                                   Margin="5,0,0,0"  
+                                                                    HorizontalContentAlignment="Left"
                                                                     VerticalContentAlignment="Top"
                                                                     Foreground="{StaticResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}"
                                                                     FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                                                                     FontSize="16">
-                                                        <ItemsControl.Resources>
+                                                        <ItemsControl.Resources >
                                                             <Style TargetType="{x:Type Hyperlink}"
+
                                                                    BasedOn="{StaticResource {x:Type Hyperlink}}">
                                                                 <Setter Property="TextElement.Foreground"
                                                                         Value="{StaticResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}" />
@@ -1429,7 +1451,7 @@
                                                                             TextBlock.FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                                                                             TextBlock.FontSize="12pt"
                                                                             Margin="0,12,0,0" />
-                                                                    <ItemsControl Margin="24,12,0,0"
+                                                                    <ItemsControl Margin="5,12,0,0"
                                                                             ItemsSource="{Binding Path=TreatyElements}"
                                                                             HorizontalContentAlignment="Center"
                                                                             Foreground="DodgerBlue"
@@ -1454,7 +1476,7 @@
                                                                         TextBlock.FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                                                                         TextBlock.FontSize="12pt"
                                                                         Margin="0,12,0,0" />
-                                                                    <ItemsControl Margin="24,12,0,0"
+                                                                    <ItemsControl Margin="5,12,0,0"
                                                                         ItemsSource="{Binding Path=OfferElements}"
                                                                         HorizontalContentAlignment="Center"
                                                                         Foreground="LimeGreen"
