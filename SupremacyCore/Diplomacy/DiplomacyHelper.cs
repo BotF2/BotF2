@@ -294,7 +294,7 @@ namespace Supremacy.Diplomacy
         }
         public static void ClearAcceptRejectDictionary()
         {
-            _acceptRejectDicionary.Clear();
+            _acceptRejectDictionary.Clear();
         }
         public static void AcceptRejectDictionary(ForeignPower foreignPower, bool accepted)
         {
