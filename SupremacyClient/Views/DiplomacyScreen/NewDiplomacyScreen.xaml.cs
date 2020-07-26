@@ -47,7 +47,7 @@ namespace Supremacy.Client.Views.DiplomacyScreen
                     var playerEmpire = AppContext.LocalPlayerEmpire.Civilization; // local player
                     var diplomat = Diplomat.Get(playerEmpire);
                     var foreignPower = diplomat.GetForeignPower(senderCiv);
-                    DiplomacyHelper.AcceptReject(foreignPower, accepting);
+                    DiplomacyHelper.AcceptRejectDictionary(foreignPower, accepting);
                 }
             }
         }

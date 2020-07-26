@@ -252,6 +252,8 @@ namespace Supremacy.Diplomacy
                     continue;
                 if (aCiv == otherCiv)
                     continue;
+                if (!otherCiv.IsEmpire)
+                    continue;
                 var foreignPower = diplomat.GetForeignPower(otherCiv);
                 string powerID = foreignPower.CounterpartyID.ToString() + foreignPower.OwnerID.ToString();
                 var accepting = _acceptRejectDicionary.ContainsKey(powerID) ? true : false;
@@ -290,7 +292,7 @@ namespace Supremacy.Diplomacy
                 }
             }
         }
-        public static void AcceptReject(ForeignPower foreignPower, bool accepted)
+        public static void AcceptRejectDictionary(ForeignPower foreignPower, bool accepted)
         {
             string foreignPowerID = foreignPower.CounterpartyID.ToString() + foreignPower.OwnerID.ToString();
             if (_acceptRejectDicionary == null)
