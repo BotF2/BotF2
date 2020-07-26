@@ -125,7 +125,7 @@ namespace Supremacy.Game
                     //Console.WriteLine(fullPath);
                 }
 
-                string _text = Environment.NewLine + "   fullPath =        " + fullPath;
+                string _text = /*Environment.NewLine + */"   fullPath =        " + fullPath;
                 Console.WriteLine(_text);
                 // works but doubled     GameLog.Client.SaveLoad.DebugFormat(_text);
 
