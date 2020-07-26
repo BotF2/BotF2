@@ -964,11 +964,11 @@ namespace Supremacy.Game
                         if (statementSent.StatementType == StatementType.WarDeclaration)
                             foreignPower.DeclareWar();
 
-                        //if (statementSent.StatementType == StatementType.SabotageOrder && statementSent.Tone == Tone.Indignant)
+                        //if (statementSent.StatementType == StatementType.StealCredits) // think we do steal and others above in the switch
                         //{
                         //    // wrong - this is the place "Statement" has been SEND
                         //    //GameLog.Core.Diplomacy.DebugFormat("received a 'StealCredits'-Diplomacy-Statement");
-                        //    //IntelHelper.ExecuteStealCredits(civ1, civ2, "Diplo-Terrorists");
+                        //    //IntelHelper.SabotageStealCreditsExecute(civ1, civ2, "Diplo-Terrorists"); // need and int ratio 
                         //}
                     }
                     else
@@ -983,7 +983,7 @@ namespace Supremacy.Game
                         foreignPower.CounterpartyForeignPower.ResponseReceived = responseSent; // cross over sent to received
                         GameLog.Client.Diplomacy.DebugFormat("{0} sent Responce {1} to {2}", foreignPower.Owner.Key, foreignPower.ResponseSent.ToString(), foreignPower.Counterparty.Key);
                         foreignPower.LastResponseSent = responseSent;
-                        GameLog.Client.Diplomacy.DebugFormat("Response Sent stored in LasResponseSent, {0}", foreignPower.ResponseSent.ToString());
+                        GameLog.Client.Diplomacy.DebugFormat("Response Sent stored in LastResponseSent, {0}", foreignPower.ResponseSent.ToString());
                         foreignPower.ResponseSent = null;
 
                         if (responseSent.ResponseType != ResponseType.NoResponse &&
