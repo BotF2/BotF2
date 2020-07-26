@@ -698,8 +698,9 @@ namespace Supremacy.Game
 
                     var foreignPower = diplomat1.GetForeignPower(civ2);
                     var foreignPowerStatus = diplomat1.GetForeignPower(civ2).DiplomacyData.Status;
-                    // GameLog.Core.Diplomacy.DebugFormat("---------------------------------------");
-                    // GameLog.Core.Diplomacy.DebugFormat("foreignPowerStatus = {2} for {0} vs {1}", civ1, civ2, ForeignPowerStatus);
+                    
+                    //GameLog.Core.Diplomacy.DebugFormat("---------------------------------------");
+                    //GameLog.Core.Diplomacy.DebugFormat("foreignPowerStatus = {2} for {0} vs {1}", civ1, civ2, foreignPowerStatus.ToString());
                     
                     // Wait a turn for population of PendingAction.AcceptProposal and PendingAction.RejectProposal by downstream AI accept or reject
                     // save the accept and reject in LastProposal and act during the next turn
@@ -707,7 +708,8 @@ namespace Supremacy.Game
                     switch (foreignPower.PendingAction)
                     {
                         case PendingDiplomacyAction.AcceptProposal:
-                                            GameLog.Core.Diplomacy.DebugFormat("$$ Accept Status = {2} for {0} vs {1}, pending {3}", civ1, civ2, foreignPowerStatus.ToString(), foreignPower.PendingAction.ToString());
+                                            GameLog.Core.Diplomacy.DebugFormat("$$ Accept Status = {2} for {0} vs {1}, pendingValue={3}"
+                                                , civ1, civ2, foreignPowerStatus.ToString(), foreignPower.PendingAction.ToString());
                             if (foreignPower.LastProposalReceived != null)
                                         AcceptProposalVisitor.Visit(foreignPower.LastProposalReceived);
                             break;
@@ -716,7 +718,22 @@ namespace Supremacy.Game
                             if (foreignPower.LastProposalReceived != null)
                                         RejectProposalVisitor.Visit(foreignPower.LastProposalReceived);                            
                             break;
+                        //case PendingDiplomacyAction.None:
+                        //    {
+                        //        GameLog.Core.Diplomacy.DebugFormat("$$ NONE = {2} for {0} vs {1}, pending {3}", civ1, civ2, foreignPowerStatus.ToString(), foreignPower.PendingAction.ToString());
+                        //        ////////if (_acceptRejectDictionary.ContainsKey(foreignPower.OwnerID))
+                        //        ////////{
+                        //        ////////    if (_acceptRejectDictionary[foreignPower.OwnerID] == true)
+                        //        ////////    {
+                        //        ////////        AcceptProposalVisitor.Visit(foreignPower.LastProposalReceived);
+                        //        ////////    }
+                        //        ////////    else { RejectProposalVisitor.Visit(foreignPower.LastProposalReceived); }
+                        //        ////////}
+
+                        //    }
+                        //    break;
                     }
+                    GameLog.Core.Diplomacy.DebugFormat("Next: foreignPower.PendingAction = NONE for {0} vs {1}, status {2}, pending {3}", foreignPower.Owner, foreignPower.Counterparty, foreignPowerStatus.ToString(), foreignPower.PendingAction.ToString());
                     foreignPower.PendingAction = PendingDiplomacyAction.None;
                  
                     // Ships gets new owner on joining empire
@@ -910,6 +927,7 @@ namespace Supremacy.Game
                         }
                     }
 
+                    _gameLog = "what's next + ";
 
                         if (foreignPower.StatementSent != null)
                         _gameLog += Environment.NewLine + "(relevant is just the receive on HOSTING side.... StatementSent: "
@@ -926,7 +944,8 @@ namespace Supremacy.Game
                                     + foreignPower.PendingAction.ToString()
                                     + Environment.NewLine;
 
-                    GameLog.Core.Diplomacy.DebugFormat(_gameLog); 
+                    if (_gameLog != "what's next + ")
+                        GameLog.Core.Diplomacy.DebugFormat(_gameLog); 
 
                     //  Second.2 = proposalSent
                     var proposalSent = foreignPower.ProposalSent;
@@ -935,7 +954,8 @@ namespace Supremacy.Game
                         foreignPower.CounterpartyForeignPower.ProposalReceived = proposalSent;
                         foreignPower.LastProposalSent = proposalSent;
                         foreignPower.ProposalSent = null;
-                        GameLog.Client.Diplomacy.DebugFormat("** ProposalSent becomes Counterparty ProposalReceived [{0}], Counterparty = {1}, Owner = {2}", foreignPower.LastProposalSent.ToString(), foreignPower.Counterparty.ToString(), foreignPower.Owner.ToString()); ;
+                        GameLog.Client.Diplomacy.DebugFormat("** ProposalSent becomes Counterparty ProposalReceived [{0}], Counterparty = {1}, Owner = {2}"
+                            , foreignPower.LastProposalSent.Clauses[0].ClauseType.ToString(), foreignPower.Counterparty.ToString(), foreignPower.Owner.ToString()); ;
                         
                         if (civ1.IsEmpire)
                             civManagers[civ1].SitRepEntries.Add(new DiplomaticSitRepEntry(civ1, proposalSent));
@@ -981,7 +1001,8 @@ namespace Supremacy.Game
                     if (responseSent != null)
                     {
                         foreignPower.CounterpartyForeignPower.ResponseReceived = responseSent; // cross over sent to received
-                        GameLog.Client.Diplomacy.DebugFormat("{0} sent Responce {1} to {2}", foreignPower.Owner.Key, foreignPower.ResponseSent.ToString(), foreignPower.Counterparty.Key);
+                        GameLog.Client.Diplomacy.DebugFormat("{0} sent Response {1} to {2}"
+                            , foreignPower.Owner.Key, foreignPower.ResponseSent.Proposal.ToString(), foreignPower.Counterparty.Key);
                         foreignPower.LastResponseSent = responseSent;
                         GameLog.Client.Diplomacy.DebugFormat("Response Sent stored in LastResponseSent, {0}", foreignPower.ResponseSent.ToString());
                         foreignPower.ResponseSent = null;

@@ -311,8 +311,9 @@ namespace Supremacy.Diplomacy
             if (_acceptRejectDictionary != null)
                 GameLog.Client.Diplomacy.DebugFormat("Turn {0}: _acceptRejectDicionary.Count = {1}, Pair(Counter/Owner) = {2}"
                     , GameContext.Current.TurnNumber
-                    , foreignPowerID
                     , _acceptRejectDictionary.Count
+                    , foreignPowerID
+
                     );
         }
         public static void BreakAgreement([NotNull] IAgreement agreement)

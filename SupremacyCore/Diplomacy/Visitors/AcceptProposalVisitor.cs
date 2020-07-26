@@ -41,6 +41,12 @@ namespace Supremacy.Diplomacy.Visitors
         {
             if (proposal == null)
                 throw new ArgumentNullException("proposal");
+            GameLog.Client.Diplomacy.DebugFormat("Proposal ACCEPTED: Sender {0} vs {1} for {2}"
+                , proposal.Sender.Key
+                , proposal.Recipient.Key
+                , proposal.Clauses[0].ClauseType
+                
+                );
 
             var visitor = new AcceptProposalVisitor(proposal);
 

@@ -69,7 +69,8 @@ namespace Supremacy.Client.Views
             foreach (var agreement in agreements.OrderByDescending(o => (int)o.StartTurn))
             {
                 _activeAgreements.Add(new ActiveAgreementViewModel(agreement));
-                GameLog.Client.Diplomacy.DebugFormat("added for sender = {1} to recipient = {2}: agrement = {0}", agreement, agreement.Sender, agreement.Recipient);
+                GameLog.Client.Diplomacy.DebugFormat("added for sender = {1} to recipient = {2}: agrement = {0}"
+                    , agreement.Proposal.Clauses[0].ClauseType.ToString(), agreement.Sender, agreement.Recipient);
             }
         }
 
