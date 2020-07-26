@@ -37,17 +37,28 @@ namespace Supremacy.Client.Views.DiplomacyScreen
             RadioButton radioButton = sender as RadioButton;
             if (radioButton != null)
             {
+
                 var response = (string)radioButton.Content;
                 if (Model.SelectedForeignPower != null)
                 {
                     bool accepting = false;
                     if (response == "ACCEPT")
                             accepting = true;
+
                     var senderCiv = Model.SelectedForeignPower.Counterparty;
                     var playerEmpire = AppContext.LocalPlayerEmpire.Civilization; // local player
                     var diplomat = Diplomat.Get(playerEmpire);
                     var foreignPower = diplomat.GetForeignPower(senderCiv);
                     DiplomacyHelper.AcceptRejectDictionary(foreignPower, accepting);
+
+                    GameLog.Client.Diplomacy.DebugFormat("Turn {0}: Player = {1}, Sender = {2} vs counterParty {3}, Button response = {4} "
+                        , GameContext.Current.TurnNumber
+                        , playerEmpire.Key
+                        , foreignPower.Owner
+
+                        , foreignPower.Counterparty.Key
+                        , response
+                        );
                 }
             }
         }

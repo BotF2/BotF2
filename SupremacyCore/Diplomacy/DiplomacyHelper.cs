@@ -28,7 +28,7 @@ namespace Supremacy.Diplomacy
     {
         private static readonly IList<Civilization> EmptyCivilizations = new Civilization[0];
         private static CollectionBase<RegardEvent> _regardEvents;
-        private static Dictionary<string, bool> _acceptRejectDicionary;
+        private static Dictionary<string, bool> _acceptRejectDictionary;
 
         public static ForeignPowerStatus GetForeignPowerStatus([NotNull] ICivIdentity owner, [NotNull] ICivIdentity counterparty)
         {
@@ -248,7 +248,7 @@ namespace Supremacy.Diplomacy
             
             foreach (var otherCiv in GameContext.Current.Civilizations)
             {
-                if (_acceptRejectDicionary == null)
+                if (_acceptRejectDictionary == null)
                     continue;
                 if (aCiv == otherCiv)
                     continue;
@@ -256,10 +256,10 @@ namespace Supremacy.Diplomacy
                     continue;
                 var foreignPower = diplomat.GetForeignPower(otherCiv);
                 string powerID = foreignPower.CounterpartyID.ToString() + foreignPower.OwnerID.ToString();
-                var accepting = _acceptRejectDicionary.ContainsKey(powerID) ? true : false;
+                var accepting = _acceptRejectDictionary.ContainsKey(powerID) ? true : false;
                 if (accepting)
                 {
-                    if (_acceptRejectDicionary[powerID])
+                    if (_acceptRejectDictionary[powerID])
                     {
                         if (foreignPower.ProposalReceived != null) // aCiv is owner of the foreignpower looking for a ProposalRecieved
                         {
@@ -295,18 +295,25 @@ namespace Supremacy.Diplomacy
         public static void AcceptRejectDictionary(ForeignPower foreignPower, bool accepted)
         {
             string foreignPowerID = foreignPower.CounterpartyID.ToString() + foreignPower.OwnerID.ToString();
-            if (_acceptRejectDicionary == null)
+            if (_acceptRejectDictionary == null)
             {
                 Dictionary<string, bool> dictionary = new Dictionary<string, bool>() { { foreignPowerID, accepted } };
-                _acceptRejectDicionary = dictionary;
+                _acceptRejectDictionary = dictionary;
+                GameLog.Client.Diplomacy.DebugFormat("Generated new _acceptRejectDicionary");
             }
-            else if (_acceptRejectDicionary.ContainsKey(foreignPowerID))
+            else if (_acceptRejectDictionary.ContainsKey(foreignPowerID))
             {
-                _acceptRejectDicionary.Remove(foreignPowerID);
-                _acceptRejectDicionary.Add(foreignPowerID, accepted);
+                _acceptRejectDictionary.Remove(foreignPowerID);
+                _acceptRejectDictionary.Add(foreignPowerID, accepted);
             }
-            else { _acceptRejectDicionary.Add(foreignPowerID, accepted); }
+            else { _acceptRejectDictionary.Add(foreignPowerID, accepted); }
 
+            if (_acceptRejectDictionary != null)
+                GameLog.Client.Diplomacy.DebugFormat("Turn {0}: _acceptRejectDicionary.Count = {1}, Pair(Counter/Owner) = {2}"
+                    , GameContext.Current.TurnNumber
+                    , foreignPowerID
+                    , _acceptRejectDictionary.Count
+                    );
         }
         public static void BreakAgreement([NotNull] IAgreement agreement)
         {
