@@ -292,6 +292,10 @@ namespace Supremacy.Diplomacy
                 }
             }
         }
+        public static void ClearAcceptRejectDictionary()
+        {
+            _acceptRejectDicionary.Clear();
+        }
         public static void AcceptRejectDictionary(ForeignPower foreignPower, bool accepted)
         {
             string foreignPowerID = foreignPower.CounterpartyID.ToString() + foreignPower.OwnerID.ToString();
