@@ -16,17 +16,7 @@ namespace Supremacy.AI
 {
 
     public static class DiplomatAI
-    {
-        //private static ForeignPower _foreignPower = new ForeignPower(GameContext.Current.CivilizationManagers.Last().Civilization, GameContext.Current.CivilizationManagers.First());
-        //private static bool _acceptReject = false;
-        //private static Dictionary<ForeignPower, bool> _acceptRejectDictionary = new Dictionary<ForeignPower, bool> { {_foreignPower, false} };
-        //public static bool AcceptReject
-        //{
-        //    get { return _acceptReject; }
-        //    set { _acceptReject = value; }
-        //}
-
-      
+    {      
         public static void DoTurn([NotNull] ICivIdentity civ) // pass in all civs to process Diplomacy
         {
    
@@ -177,7 +167,7 @@ namespace Supremacy.AI
                             /*
                              AI evaluates accept reject
                              */
-                            if (foreignPower.ProposalReceived != null && !aCiv.IsHuman) // aCiv is owner of the foreignpower looking for a ProposalRecieved
+                        if (foreignPower.ProposalReceived != null && !aCiv.IsHuman) // aCiv is owner of the foreignpower looking for a ProposalRecieved
                         {
                             bool accepted = false;
                             int regard = foreignPower.DiplomacyData.Regard.CurrentValue;

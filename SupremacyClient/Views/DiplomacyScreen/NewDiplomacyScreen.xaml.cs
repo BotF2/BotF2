@@ -39,12 +39,15 @@ namespace Supremacy.Client.Views.DiplomacyScreen
             {
                 var response = (string)radioButton.Content;
                 if (Model.SelectedForeignPower != null)
-                {                 
+                {
+                    bool accepting = false;
+                    if (response == "ACCEPT")
+                            accepting = true;
                     var senderCiv = Model.SelectedForeignPower.Counterparty;
                     var playerEmpire = AppContext.LocalPlayerEmpire.Civilization; // local player
                     var diplomat = Diplomat.Get(playerEmpire);
                     var foreignPower = diplomat.GetForeignPower(senderCiv);
-                    foreignPower.AcceptingRejecting(response);
+                    DiplomacyHelper.AcceptReject(foreignPower, accepting);
                 }
             }
         }

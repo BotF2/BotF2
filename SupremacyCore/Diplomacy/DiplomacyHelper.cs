@@ -28,6 +28,7 @@ namespace Supremacy.Diplomacy
     {
         private static readonly IList<Civilization> EmptyCivilizations = new Civilization[0];
         private static CollectionBase<RegardEvent> _regardEvents;
+        private static Dictionary<string, bool> _acceptRejectDicionary;
 
         public static ForeignPowerStatus GetForeignPowerStatus([NotNull] ICivIdentity owner, [NotNull] ICivIdentity counterparty)
         {
@@ -238,6 +239,73 @@ namespace Supremacy.Diplomacy
                 GameLog.Client.Diplomacy.DebugFormat("************** Diplo: SendWarDeclaration turned to RECEIVED at ForeignPower...");
         }
 
+        public static void AcceptingRejecting([NotNull] ICivIdentity civ)
+        {
+            if (civ == null)
+                throw new ArgumentNullException("civ");
+            var aCiv = (Civilization)civ;
+            var diplomat = Diplomat.Get(civ);
+            
+            foreach (var otherCiv in GameContext.Current.Civilizations)
+            {
+                if (_acceptRejectDicionary == null)
+                    continue;
+                if (aCiv == otherCiv)
+                    continue;
+                var foreignPower = diplomat.GetForeignPower(otherCiv);
+                string powerID = foreignPower.CounterpartyID.ToString() + foreignPower.OwnerID.ToString();
+                var accepting = _acceptRejectDicionary.ContainsKey(powerID) ? true : false;
+                if (accepting)
+                {
+                    if (_acceptRejectDicionary[powerID])
+                    {
+                        if (foreignPower.ProposalReceived != null) // aCiv is owner of the foreignpower looking for a ProposalRecieved
+                        {
+                            foreignPower.PendingAction = PendingDiplomacyAction.AcceptProposal;
+
+                            GameLog.Client.Diplomacy.DebugFormat(
+                                "## PendingAction: ACCEPT ={0} reset by clause - regard value, Counterparty = {1} Onwer = {2}",
+                                foreignPower.PendingAction.ToString(), foreignPower.Counterparty.ShortName,
+                                foreignPower.Owner.ShortName);
+                            foreignPower.LastProposalReceived = foreignPower.ProposalReceived;
+                            foreignPower.ProposalReceived = null;
+                        }
+
+                        else
+                        {
+                            if (foreignPower.ProposalReceived != null)
+                            {
+                                foreignPower.PendingAction = PendingDiplomacyAction.RejectProposal;
+
+                                GameLog.Client.Diplomacy.DebugFormat(
+                                    "## PendingAction: REJECT ={0} reset by clause - regard value, Counterparty = {1} Onwer = {2}",
+                                    foreignPower.PendingAction.ToString(), foreignPower.Counterparty.ShortName,
+                                    foreignPower.Owner.ShortName);
+                                foreignPower.LastProposalReceived = foreignPower.ProposalReceived;
+                                foreignPower.ProposalReceived = null;
+                            }
+
+                        }
+                    }
+                }
+            }
+        }
+        public static void AcceptReject(ForeignPower foreignPower, bool accepted)
+        {
+            string foreignPowerID = foreignPower.CounterpartyID.ToString() + foreignPower.OwnerID.ToString();
+            if (_acceptRejectDicionary == null)
+            {
+                Dictionary<string, bool> dictionary = new Dictionary<string, bool>() { { foreignPowerID, accepted } };
+                _acceptRejectDicionary = dictionary;
+            }
+            else if (_acceptRejectDicionary.ContainsKey(foreignPowerID))
+            {
+                _acceptRejectDicionary.Remove(foreignPowerID);
+                _acceptRejectDicionary.Add(foreignPowerID, accepted);
+            }
+            else { _acceptRejectDicionary.Add(foreignPowerID, accepted); }
+
+        }
         public static void BreakAgreement([NotNull] IAgreement agreement)
         {
             if (agreement == null)

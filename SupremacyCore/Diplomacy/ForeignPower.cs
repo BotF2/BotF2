@@ -463,23 +463,23 @@ namespace Supremacy.Diplomacy
             }
         }
 
-        public void AcceptingRejecting(string acceptReject) 
-        {
-            bool accepting = false;
-            if (acceptReject == "ACCEPT")
-                accepting = true;
+        //public void AcceptingRejecting(string acceptReject) 
+        //{
+        //    bool accepting = false;
+        //    if (acceptReject == "ACCEPT")
+        //        accepting = true;
 
-            if (accepting)
-            {
-                PendingAction = PendingDiplomacyAction.AcceptProposal;
-            }
-            else
-            {
-                PendingAction = PendingDiplomacyAction.RejectProposal;
-            }
-            LastProposalReceived = ProposalReceived;
-            ProposalReceived = null;
-        }
+        //    if (accepting)
+        //    {
+        //        PendingAction = PendingDiplomacyAction.AcceptProposal;
+        //    }
+        //    else
+        //    {
+        //        PendingAction = PendingDiplomacyAction.RejectProposal;
+        //    }
+        //    LastProposalReceived = ProposalReceived;
+        //    ProposalReceived = null;
+        //}
 
         #region Implementation of ICivIdentity
 

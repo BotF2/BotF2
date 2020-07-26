@@ -2167,6 +2167,8 @@ namespace Supremacy.Game
 
                     try
                     {
+                        if (civ.IsHuman)
+                            DiplomacyHelper.AcceptingRejecting(civ);
                         if (civ.IsHuman && !autoTurnCiv.Contains(civ))
                             return;
 
