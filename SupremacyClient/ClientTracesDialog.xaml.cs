@@ -44,8 +44,8 @@ namespace Supremacy.Client
 
             CommandBindings.Add(
                 new CommandBinding(
-                    GenericCommands.TracesSetAllCommand,
-                    OnGenericCommandsTracesSetAllCommandExecuted));
+                    GenericCommands.TracesSetAllwithoutDetailsCommand,
+                    OnGenericCommandsTracesSetAllwithoutDetailsCommandExecuted));
 
             CommandBindings.Add(
                 new CommandBinding(
@@ -75,7 +75,7 @@ namespace Supremacy.Client
             Close();
         }
 
-        private void OnGenericCommandsTracesSetAllCommandExecuted(object source, ExecutedRoutedEventArgs e)
+        private void OnGenericCommandsTracesSetAllwithoutDetailsCommandExecuted(object source, ExecutedRoutedEventArgs e)
         {
             ClientSettings.Current.TracesAudio = true;
 

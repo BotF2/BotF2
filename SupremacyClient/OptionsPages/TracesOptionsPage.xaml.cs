@@ -17,7 +17,14 @@ namespace Supremacy.Client.OptionsPages
             if (resourceManager == null)
                 throw new ArgumentNullException("resourceManager");
             _resourceManager = resourceManager;
-            InitializeComponent();
+            try
+            {
+                InitializeComponent();
+            }
+            catch
+            {
+                _ = System.Windows.MessageBox.Show("Problem with Traces-Screen (CTRL+Z)", "WARNING", System.Windows.MessageBoxButton.OK);
+            }
         }
 
         public string Header
