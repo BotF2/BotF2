@@ -2103,7 +2103,8 @@ namespace Supremacy.Game
         #region DoPostTurnOperations() Method
         private void DoPostTurnOperations(GameContext game)
         {
-            DiplomacyHelper.ClearAcceptRejectDictionary();
+            DiplomacyHelper.SendAcceptRejectDictionary();
+            //DiplomacyHelper.ClearAcceptRejectDictionary(); do this for older turns?
             //IntelHelper.ExecuteIntelOrders(); // now update results of spy operations on host computer, steal and sabotage, remove production facilities, just before we end the turn
 
             //GameContext.Current.CivilizationManagers[attackedCiv].Credits.AdjustCurrent(stolenCredits * -1);

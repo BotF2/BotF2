@@ -21,6 +21,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Media;
+using System.Web.Services.Description;
 
 namespace Supremacy.Diplomacy
 {
@@ -291,6 +292,11 @@ namespace Supremacy.Diplomacy
                     }
                 }
             }
+        }
+
+        public static void SendAcceptRejectDictionary()
+        {
+           // Message to host computer with data on acceptReject dictionary
         }
         public static void ClearAcceptRejectDictionary()
         {
