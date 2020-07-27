@@ -121,7 +121,9 @@ namespace Supremacy.Diplomacy
         TreatyAffiliation,
         TreatyDefensiveAlliance,
         TreatyFullAlliance,
-        TreatyMembership
+        TreatyMembership,
+        TreatyAcceptRejectDictionary
+            
     }
 
     public enum RegardEventType : byte

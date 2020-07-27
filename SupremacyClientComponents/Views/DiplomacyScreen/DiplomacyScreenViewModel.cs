@@ -63,6 +63,7 @@ namespace Supremacy.Client.Views
         private readonly DelegateCommand _declareWarCommand;
         private readonly DelegateCommand _endWarCommand;  // other naming in the code: CeaseFire
         private readonly DelegateCommand _openBordersCommand;
+        private readonly DelegateCommand _acceptRejectCommand;
         private readonly DelegateCommand _nonAgressionCommand;
         private readonly DelegateCommand _affiliationCommand;
         private readonly DelegateCommand _defenceAllianceCommand;
@@ -91,6 +92,7 @@ namespace Supremacy.Client.Views
             _declareWarCommand = new DelegateCommand(ExecuteDeclareWarCommand, CanExecuteDeclareWarCommand);
             _endWarCommand = new DelegateCommand(ExecuteEndWarCommand, CanExecuteEndWarCommand);
             _openBordersCommand = new DelegateCommand(ExecuteOpenBordersCommand, CanExecuteOpenBordersCommand);
+            _acceptRejectCommand = new DelegateCommand(ExecuteAcceptRejectDictionaryCommand, CanExecuteAcceptRejectDictionaryCommand);
             _nonAgressionCommand = new DelegateCommand(ExecuteNonAgressionCommand, CanExecuteNonAgressionCommand);
             _affiliationCommand = new DelegateCommand(ExecuteAffiliationCommand, CanExecuteAffiliationCommand);
             _defenceAllianceCommand = new DelegateCommand(ExecuteDefenceAllianceCommand, CanExecuteDefenceAllianceCommand);
@@ -341,6 +343,56 @@ namespace Supremacy.Client.Views
         }
         #endregion OpenBordersCommandButton
 
+        #region SendAcceptRejectDictionary
+
+        private bool CanExecuteAcceptRejectDictionaryCommand()
+        {
+            //Refresh();
+            return CanExecuteAcceptRejectDictionaryCommandCore(out ForeignPowerViewModel foreignPower);
+        }
+        private bool CanExecuteAcceptRejectDictionaryCommandCore(out ForeignPowerViewModel selectedForeignPower)
+        {
+            selectedForeignPower = SelectedForeignPower;
+
+            return selectedForeignPower != null; // &&
+                   //selectedForeignPower.OutgoingMessage == null &&
+                   //selectedForeignPower.Status != ForeignPowerStatus.AtWar;
+            //// conditions for TradeRoute
+            ////agreementMatrix.IsAgreementActive(firstCiv, secondCiv, ClauseType.TreatyOpenBorders) ||
+            ////agreementMatrix.IsAgreementActive(firstCiv, secondCiv, ClauseType.TreatyTradePact) ||
+            ////agreementMatrix.IsAgreementActive(firstCiv, secondCiv, ClauseType.TreatyAffiliation) ||
+            ////agreementMatrix.IsAgreementActive(firstCiv, secondCiv, ClauseType.TreatyDefensiveAlliance) ||
+            ////agreementMatrix.IsAgreementActive(firstCiv, secondCiv, ClauseType.TreatyFullAlliance);
+        }
+        private void ExecuteAcceptRejectDictionaryCommand()
+        {
+            ForeignPowerViewModel foreignPower;
+
+            if (!CanExecuteAcceptRejectDictionaryCommandCore(out foreignPower))
+                return;
+
+            DisplayMode = DiplomacyScreenDisplayMode.Outbox; // new
+
+            //AreOutgoingMessageCommandsVisibleChanged.Raise(this);
+            //OnPropertyChanged("AreOutgoingMessageCommandsVisible");
+
+            var message = new DiplomacyMessageViewModel(_playerCivilization, _selectedForeignPower.Counterparty);
+
+            message.Edit();
+
+            var acceptRejectElement = message.AvailableElements.FirstOrDefault(o => o.ElementType == DiplomacyMessageElementType.UpdateAcceptRejectDictionaryStatement);
+            if (acceptRejectElement == null || !acceptRejectElement.AddCommand.CanExecute(null))
+                return;
+
+            acceptRejectElement.AddCommand.Execute(null);
+
+            foreignPower.OutgoingMessage = message;
+
+            InvalidateCommands();
+            //OnCommandVisibilityChanged();
+            //Refresh();
+        }
+        #endregion SendAcceptRejectDictionary
 
         #region NonAgressionCommandButton
         private bool CanExecuteNonAgressionCommand()
@@ -1317,6 +1369,8 @@ namespace Supremacy.Client.Views
                     return DiplomacyMessageElementType.TreatyFullAllianceClause;
                 case ClauseType.TreatyMembership:
                     return DiplomacyMessageElementType.TreatyMembershipClause;
+                case ClauseType.TreatyAcceptRejectDictionary:
+                    return DiplomacyMessageElementType.UpdateAcceptRejectDictionaryStatement;
                 default:
                     throw new ArgumentOutOfRangeException("clauseType", "Unknown clause type: " + clauseType);
             }
@@ -1379,6 +1433,7 @@ namespace Supremacy.Client.Views
                     return ClauseType.TreatyFullAlliance;
                 case DiplomacyMessageElementType.TreatyMembershipClause:
                     return ClauseType.TreatyMembership;
+                case DiplomacyMessageElementType.UpdateAcceptRejectDictionaryClause:
                 default:
                     return ClauseType.NoClause;
             }
@@ -1411,7 +1466,7 @@ namespace Supremacy.Client.Views
                 //    return StatementType.DenounceInvasion;
                 //case DiplomacyMessageElementType.DenounceSabotageStatement:
                 //    return StatementType.DenounceSabotage;
-                case DiplomacyMessageElementType.UpdateAcceptRejectDictionary:
+                case DiplomacyMessageElementType.UpdateAcceptRejectDictionaryStatement: // do we need this?
                     return StatementType.UpdateAcceptRejectDictionary;
                 default:
                     return StatementType.NoStatement;
