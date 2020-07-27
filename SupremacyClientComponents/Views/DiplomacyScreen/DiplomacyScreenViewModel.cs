@@ -1411,6 +1411,8 @@ namespace Supremacy.Client.Views
                 //    return StatementType.DenounceInvasion;
                 //case DiplomacyMessageElementType.DenounceSabotageStatement:
                 //    return StatementType.DenounceSabotage;
+                case DiplomacyMessageElementType.UpdateAcceptRejectDictionary:
+                    return StatementType.UpdateAcceptRejectDictionary;
                 default:
                     return StatementType.NoStatement;
             }

@@ -49,6 +49,8 @@ namespace Supremacy.Client.Views
         TreatyAffiliationClause,
         TreatyDefensiveAllianceClause,
         TreatyFullAllianceClause,
-        TreatyMembershipClause
+        TreatyMembershipClause,
+
+        UpdateAcceptRejectDictionaryStatement
     }
 }

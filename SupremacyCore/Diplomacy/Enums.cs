@@ -70,7 +70,8 @@ namespace Supremacy.Diplomacy
         StealResearch,
         SabotageFood,
         SabotageEnergy,
-        SabotageIndustry
+        SabotageIndustry,
+        UpdateAcceptRejectDictionary
     }
 
     public enum ResponseType : byte

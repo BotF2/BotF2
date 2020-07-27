@@ -162,16 +162,6 @@ namespace Supremacy.Client.Views.DiplomacyScreen
             }
         }
 
-        //internal int HideAcceptReject
-        //{
-        //    get
-        //    {
-        //        //if (IncomingMessageCategory != DiplomaticMessageCategory.Treaty && IncomingMessageCategory != DiplomaticMessageCategory.WarPact)
-        //        //    return 0;
-        //        return 0;
-        //    }
-        //}
-
         #region INodeGraphPenSelector Members
         public Pen GetPen(object parentNode, object childNode)
         {
