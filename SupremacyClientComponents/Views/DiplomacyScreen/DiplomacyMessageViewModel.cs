@@ -34,11 +34,13 @@ namespace Supremacy.Client.Views
         private readonly ObservableCollection<DiplomacyMessageElement> _requestElements;
         private readonly ObservableCollection<DiplomacyMessageElement> _statementElements;
         private readonly ObservableCollection<DiplomacyMessageElement> _treatyElements;
+        private readonly ObservableCollection<DiplomacyMessageElement> _acceptRejectElements;
         private readonly ReadOnlyObservableCollection<DiplomacyMessageElement> _elementsView;
         private readonly ReadOnlyObservableCollection<DiplomacyMessageElement> _offerElementsView;
         private readonly ReadOnlyObservableCollection<DiplomacyMessageElement> _requestElementsView;
         private readonly ReadOnlyObservableCollection<DiplomacyMessageElement> _statementElementsView;
         private readonly ReadOnlyObservableCollection<DiplomacyMessageElement> _treatyElementsView;
+       // private readonly ReadOnlyObservableCollection<DiplomacyMessageElement> _acceptRejectElementsView; // no view of this???
         private readonly ObservableCollection<DiplomacyMessageAvailableElement> _availableElements;
         private readonly ReadOnlyObservableCollection<DiplomacyMessageAvailableElement> _availableElementsView;
 
@@ -66,9 +68,10 @@ namespace Supremacy.Client.Views
             _elementsView = new ReadOnlyObservableCollection<DiplomacyMessageElement>(_elements);
             _availableElements = new ObservableCollection<DiplomacyMessageAvailableElement>();
             _availableElementsView = new ReadOnlyObservableCollection<DiplomacyMessageAvailableElement>(_availableElements);
-
             _treatyElements = new ObservableCollection<DiplomacyMessageElement>();
             _treatyElementsView = new ReadOnlyObservableCollection<DiplomacyMessageElement>(_treatyElements);
+            _acceptRejectElements = new ObservableCollection<DiplomacyMessageElement>();
+            // _acceptRejectElementsView = new ReadOnlyObservableCollection<DiplomacyMessageElement>(_acceptRejectElements); // no view becasue we do not see it??
             _offerElements = new ObservableCollection<DiplomacyMessageElement>();
             _offerElementsView = new ReadOnlyObservableCollection<DiplomacyMessageElement>(_offerElements);
             _requestElements = new ObservableCollection<DiplomacyMessageElement>();
@@ -156,6 +159,11 @@ namespace Supremacy.Client.Views
             get { return _statementElementsView; }
         }
 
+        //public ReadOnlyObservableCollection<DiplomacyMessageElement> AcceptRejectElements  // we do not view this??? 
+        //{
+        //    get { return _acceptRejectElementsView; }
+        //}
+
         public ReadOnlyObservableCollection<DiplomacyMessageAvailableElement> AvailableElements
         {
             get { return _availableElementsView; }
@@ -173,6 +181,14 @@ namespace Supremacy.Client.Views
 
         public void Send()
         {
+            // Need Accept Reject to do this. Move it out of the send button.
+            // var acceptReject = CreatAcceptReject();
+            // if(acceptReject = null)
+            // return;
+            // _sendAcceptReject = new SendAcceptRejectOrder(acceptingRejecting);
+            // ServiceLocator.Current.GetInstance<IPlayerOrderService>().AddOrder(_sendOrder);
+            // IsEditing = false;
+            // _availableElements.Clear();
             var isStatement = _elements.All(o => o.ElementType <= DiplomacyMessageElementType.DenounceSabotageStatement);
             if (isStatement)
             {
@@ -630,6 +646,9 @@ namespace Supremacy.Client.Views
                     var result_DeclareWar = MessageDialog.Show(st, MessageDialogButtons.Ok);
                     GameLog.Client.Diplomacy.DebugFormat("DECLARE_WAR_DIALOG_HINT is outcommented");
                     _statementElements.Add(element);
+                    break;
+                case DiplomacyMessageElementActionCategory.SendAcceptReject:
+                    _acceptRejectElements.Add(element);
                     break;
             }
 

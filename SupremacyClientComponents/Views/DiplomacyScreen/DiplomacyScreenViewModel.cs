@@ -677,6 +677,19 @@ namespace Supremacy.Client.Views
                    //SelectedForeignPower.OutgoingMessage.Elements.Count != 0;
         }
 
+        public void ExecuteSendAcceptRejectCommand() // call this in GameEngine ???
+        {
+            //if (!CanExecuteSendAcceptRejectCommand())
+            //    return;
+
+            //SelectedForeignPower.OutgoingMessage.Send(); // need 
+            //GameLog.Client.Diplomacy.DebugFormat("Diplo Message: SEND button pressed...");
+            //SelectedForeignPower.OnOutgoingMessageCategoryChanged();
+
+            //OnCommandVisibilityChanged();
+            //OnIsMessageEditInProgressChanged();
+        }
+
         private void ExecuteSendMessageCommand()
         {
             if (!CanExecuteSendMessageCommand())
@@ -1369,8 +1382,8 @@ namespace Supremacy.Client.Views
                     return DiplomacyMessageElementType.TreatyFullAllianceClause;
                 case ClauseType.TreatyMembership:
                     return DiplomacyMessageElementType.TreatyMembershipClause;
-                case ClauseType.TreatyAcceptRejectDictionary:
-                    return DiplomacyMessageElementType.UpdateAcceptRejectDictionaryStatement;
+                //case ClauseType.TreatyAcceptRejectDictionary:  
+                //    return DiplomacyMessageElementType.UpdateAcceptRejectDictionaryStatement;
                 default:
                     throw new ArgumentOutOfRangeException("clauseType", "Unknown clause type: " + clauseType);
             }

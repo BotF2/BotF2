@@ -122,7 +122,7 @@ namespace Supremacy.Diplomacy
         TreatyDefensiveAlliance,
         TreatyFullAlliance,
         TreatyMembership,
-        TreatyAcceptRejectDictionary
+        //TreatyAcceptRejectDictionary
             
     }
 

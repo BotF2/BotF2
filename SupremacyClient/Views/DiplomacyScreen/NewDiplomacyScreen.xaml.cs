@@ -49,7 +49,8 @@ namespace Supremacy.Client.Views.DiplomacyScreen
                     var playerEmpire = AppContext.LocalPlayerEmpire.Civilization; // local player
                     var diplomat = Diplomat.Get(playerEmpire);
                     var foreignPower = diplomat.GetForeignPower(senderCiv);
-                    DiplomacyHelper.AcceptRejectDictionary(foreignPower, accepting);
+                    int turn = GameContext.Current.TurnNumber;
+                    DiplomacyHelper.AcceptRejectDictionary(foreignPower, accepting, turn);
 
                     GameLog.Client.Diplomacy.DebugFormat("Turn {0}: Button response = {4}, Player = {1}, Sender = {2} vs counterParty {3}"
                         , GameContext.Current.TurnNumber

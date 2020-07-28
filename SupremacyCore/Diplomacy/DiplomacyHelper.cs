@@ -296,15 +296,17 @@ namespace Supremacy.Diplomacy
 
         public static void SendAcceptRejectDictionary()
         {
-           // Message to host computer with data on acceptReject dictionary
+            //var message = _acceptRejectDictionary;
+  
         }
         public static void ClearAcceptRejectDictionary()
         {
             if (_acceptRejectDictionary != null)
                 _acceptRejectDictionary.Clear();
         }
-        public static void AcceptRejectDictionary(ForeignPower foreignPower, bool accepted)
+        public static void AcceptRejectDictionary(ForeignPower foreignPower, bool accepted, int turn)
         {
+            int turnNumber = turn; // in case we need this to time clearing of dictionary - Dictionary<string, Tuple<bool, int>>(); or ValueType is a Class with bool and int.
             string foreignPowerID = foreignPower.CounterpartyID.ToString() + foreignPower.OwnerID.ToString();
             if (_acceptRejectDictionary == null)
             {
