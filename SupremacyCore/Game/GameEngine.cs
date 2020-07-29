@@ -782,8 +782,6 @@ namespace Supremacy.Game
 
                 foreach (var civ2 in GameContext.Current.Civilizations)
                 {
-                    //if (civ1.CivID == 4 && civ2.CivID == 2)  // just for break point for these two
-                    //    ;  // doing nothing
                     if (civ1 == civ2)
                         continue;
 
@@ -794,11 +792,6 @@ namespace Supremacy.Game
                     //if (civ1.CivID == 1 && civ2.CivID == 4 || civ1.CivID == 4 && civ2.CivID == 1)  // Terrans, incoming from Cardassians
                     //{
                         //_gameLog = "### Checking ForeignerPower - see next line";
-
-                    //if (civ1.CivID == 2 && civ2.CivID == 4)  // just for break point for these two
-                    //{
-                    //    // doing nothing
-                    //}
 
                     #region Gamelogs
                     if (foreignPower.ProposalReceived != null)
@@ -885,7 +878,67 @@ namespace Supremacy.Game
                                 break;
                             case StatementType.CommendWar:
                             case StatementType.DenounceWar:
-                            case StatementType.WarDeclaration:  
+                            case StatementType.WarDeclaration:
+                            case StatementType.T01:
+                            case StatementType.T02:
+                            case StatementType.T03:
+                            case StatementType.T04:
+                            case StatementType.T05:
+                            case StatementType.T10:
+                            case StatementType.T12:
+                            case StatementType.T13:
+                            case StatementType.T14:
+                            case StatementType.T15:
+                            case StatementType.T20:
+                            case StatementType.T21:
+                            case StatementType.T23:
+                            case StatementType.T24:
+                            case StatementType.T25:
+                            case StatementType.T30:
+                            case StatementType.T31:
+                            case StatementType.T32:
+                            case StatementType.T34: 
+                            case StatementType.T35: 
+                            case StatementType.T40: 
+                            case StatementType.T41: 
+                            case StatementType.T42: 
+                            case StatementType.T43: 
+                            case StatementType.T45: 
+                            case StatementType.T50: 
+                            case StatementType.T51: 
+                            case StatementType.T52: 
+                            case StatementType.T53: 
+                            case StatementType.T54:
+                            case StatementType.F01:
+                            case StatementType.F02:
+                            case StatementType.F03:
+                            case StatementType.F04:
+                            case StatementType.F05:
+                            case StatementType.F10:
+                            case StatementType.F12:
+                            case StatementType.F13:
+                            case StatementType.F14:
+                            case StatementType.F15:
+                            case StatementType.F20:
+                            case StatementType.F21:
+                            case StatementType.F23:
+                            case StatementType.F24:
+                            case StatementType.F25:
+                            case StatementType.F30:
+                            case StatementType.F31:
+                            case StatementType.F32:
+                            case StatementType.F34:
+                            case StatementType.F35:
+                            case StatementType.F40:
+                            case StatementType.F41:
+                            case StatementType.F42:
+                            case StatementType.F43:
+                            case StatementType.F45:
+                            case StatementType.F50:
+                            case StatementType.F51:
+                            case StatementType.F52:
+                            case StatementType.F53:
+                            case StatementType.F54:
                                 break;
                             default:
                                 break;
@@ -921,6 +974,67 @@ namespace Supremacy.Game
                             case StatementType.CommendWar:
                             case StatementType.DenounceWar:
                             case StatementType.WarDeclaration:
+                            case StatementType.T01:
+                            case StatementType.T02:
+                            case StatementType.T03:
+                            case StatementType.T04:
+                            case StatementType.T05:
+                            case StatementType.T10:
+                            case StatementType.T12:
+                            case StatementType.T13:
+                            case StatementType.T14:
+                            case StatementType.T15:
+                            case StatementType.T20:
+                            case StatementType.T21:
+                            case StatementType.T23:
+                            case StatementType.T24:
+                            case StatementType.T25:
+                            case StatementType.T30:
+                            case StatementType.T31:
+                            case StatementType.T32:
+                            case StatementType.T34:
+                            case StatementType.T35:
+                            case StatementType.T40:
+                            case StatementType.T41:
+                            case StatementType.T42:
+                            case StatementType.T43:
+                            case StatementType.T45:
+                            case StatementType.T50:
+                            case StatementType.T51:
+                            case StatementType.T52:
+                            case StatementType.T53:
+                            case StatementType.T54:
+                            case StatementType.F01:
+                            case StatementType.F02:
+                            case StatementType.F03:
+                            case StatementType.F04:
+                            case StatementType.F05:
+                            case StatementType.F10:
+                            case StatementType.F12:
+                            case StatementType.F13:
+                            case StatementType.F14:
+                            case StatementType.F15:
+                            case StatementType.F20:
+                            case StatementType.F21:
+                            case StatementType.F23:
+                            case StatementType.F24:
+                            case StatementType.F25:
+                            case StatementType.F30:
+                            case StatementType.F31:
+                            case StatementType.F32:
+                            case StatementType.F34:
+                            case StatementType.F35:
+                            case StatementType.F40:
+                            case StatementType.F41:
+                            case StatementType.F42:
+                            case StatementType.F43:
+                            case StatementType.F45:
+                            case StatementType.F50:
+                            case StatementType.F51:
+                            case StatementType.F52:
+                            case StatementType.F53:
+                            case StatementType.F54:
+                                DiplomacyHelper.GetAcceptRejectDictionaryFromStatement(foreignPower.LastStatementReceived);
                                 break;
                             default:
                                 break;
@@ -971,8 +1085,7 @@ namespace Supremacy.Game
                     //  Second.3 = statementSent
                     var statementSent = foreignPower.StatementSent;
                     if (statementSent != null)
-                    {
-                       
+                    {                       
                         //  do nothing else = emtpy line
                         foreignPower.CounterpartyForeignPower.StatementReceived = statementSent;
                         foreignPower.LastStatementSent = statementSent;
@@ -983,6 +1096,69 @@ namespace Supremacy.Game
 
                         if (statementSent.StatementType == StatementType.WarDeclaration)
                             foreignPower.DeclareWar();
+                        if (statementSent.StatementType == StatementType.F01 ||
+                            statementSent.StatementType == StatementType.F02 ||
+                            statementSent.StatementType == StatementType.F03 ||
+                            statementSent.StatementType == StatementType.F04 ||
+                            statementSent.StatementType == StatementType.F05 ||
+                            statementSent.StatementType == StatementType.F10 ||
+                            statementSent.StatementType == StatementType.F12 ||
+                            statementSent.StatementType == StatementType.F13 ||
+                            statementSent.StatementType == StatementType.F14 ||
+                            statementSent.StatementType == StatementType.F15 ||
+                            statementSent.StatementType == StatementType.F20 ||
+                            statementSent.StatementType == StatementType.F21 ||
+                            statementSent.StatementType == StatementType.F23 ||
+                            statementSent.StatementType == StatementType.F24 ||
+                            statementSent.StatementType == StatementType.F25 ||
+                            statementSent.StatementType == StatementType.F30 ||
+                            statementSent.StatementType == StatementType.F31 ||
+                            statementSent.StatementType == StatementType.F32 ||
+                            statementSent.StatementType == StatementType.F34 ||
+                            statementSent.StatementType == StatementType.F35 ||
+                            statementSent.StatementType == StatementType.F40 ||
+                            statementSent.StatementType == StatementType.F41 ||
+                            statementSent.StatementType == StatementType.F42 ||
+                            statementSent.StatementType == StatementType.F43 ||
+                            statementSent.StatementType == StatementType.F45 ||
+                            statementSent.StatementType == StatementType.F50 ||
+                            statementSent.StatementType == StatementType.F51 ||
+                            statementSent.StatementType == StatementType.F52 ||
+                            statementSent.StatementType == StatementType.F53 ||
+                            statementSent.StatementType == StatementType.F54 ||
+                            statementSent.StatementType == StatementType.T01 ||
+                            statementSent.StatementType == StatementType.T02 ||
+                            statementSent.StatementType == StatementType.T03 ||
+                            statementSent.StatementType == StatementType.T04 ||
+                            statementSent.StatementType == StatementType.T05 ||
+                            statementSent.StatementType == StatementType.T10 ||
+                            statementSent.StatementType == StatementType.T12 ||
+                            statementSent.StatementType == StatementType.T13 ||
+                            statementSent.StatementType == StatementType.T14 ||
+                            statementSent.StatementType == StatementType.T15 ||
+                            statementSent.StatementType == StatementType.T20 ||
+                            statementSent.StatementType == StatementType.T21 ||
+                            statementSent.StatementType == StatementType.T23 ||
+                            statementSent.StatementType == StatementType.T24 ||
+                            statementSent.StatementType == StatementType.T25 ||
+                            statementSent.StatementType == StatementType.T30 ||
+                            statementSent.StatementType == StatementType.T31 ||
+                            statementSent.StatementType == StatementType.T32 ||
+                            statementSent.StatementType == StatementType.T34 ||
+                            statementSent.StatementType == StatementType.T35 ||
+                            statementSent.StatementType == StatementType.T40 ||
+                            statementSent.StatementType == StatementType.T41 ||
+                            statementSent.StatementType == StatementType.T42 ||
+                            statementSent.StatementType == StatementType.T43 ||
+                            statementSent.StatementType == StatementType.T45 ||
+                            statementSent.StatementType == StatementType.T50 ||
+                            statementSent.StatementType == StatementType.T51 ||
+                            statementSent.StatementType == StatementType.T52 ||
+                            statementSent.StatementType == StatementType.T53 ||
+                            statementSent.StatementType == StatementType.T54)                           
+                        { 
+                            // do something??
+                        }
 
                         //if (statementSent.StatementType == StatementType.StealCredits) // think we do steal and others above in the switch
                         //{
@@ -2103,7 +2279,7 @@ namespace Supremacy.Game
         #region DoPostTurnOperations() Method
         private void DoPostTurnOperations(GameContext game)
         {
-            DiplomacyHelper.SendAcceptRejectDictionary();
+            //DiplomacyHelper.SendAcceptRejectDictionary();
             //DiplomacyHelper.ClearAcceptRejectDictionary(); do this for older turns?
             //IntelHelper.ExecuteIntelOrders(); // now update results of spy operations on host computer, steal and sabotage, remove production facilities, just before we end the turn
 

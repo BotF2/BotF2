@@ -294,11 +294,163 @@ namespace Supremacy.Diplomacy
             }
         }
 
-        public static void SendAcceptRejectDictionary()
+        private static string GetEnumString(StatementType value)
         {
-            //var message = _acceptRejectDictionary;
-  
+            return Enum.GetName(typeof(StatementType), value);
         }
+
+        public static void GetAcceptRejectDictionaryFromStatement(Statement _lastStatmentRecieved)
+        {
+            int turnNumber = GameContext.Current.TurnNumber;
+            var _statementType = _lastStatmentRecieved.StatementType;
+            string statementAsString = GetEnumString(_statementType);
+            string _civIDs = statementAsString.Substring(1,2); 
+          
+
+            switch (_statementType)
+            {
+                case StatementType.T01:
+                    AcceptRejectDictionary(_civIDs, true, turnNumber);
+                    break;
+                case StatementType.T02:
+                    break;
+                case StatementType.T03:
+                    break;
+                case StatementType.T04:
+                    break;
+                case StatementType.T05:
+                    break;
+                case StatementType.T10:
+                    break;
+                case StatementType.T12:
+                    break;
+                case StatementType.T13:
+                    break;
+                case StatementType.T14:
+                    break;
+                case StatementType.T15:
+                    break;
+                case StatementType.T20:
+                    break;
+                case StatementType.T21:
+                    break;
+                case StatementType.T23:
+                    break;
+                case StatementType.T24:
+                    break;
+                case StatementType.T25:
+                    break;
+                case StatementType.T30:
+                    break;
+                case StatementType.T31:
+                    break;
+                case StatementType.T32:
+                    break;
+                case StatementType.T34:
+                    break;
+                case StatementType.T35:
+                    break;
+                case StatementType.T40:
+                    break;
+                case StatementType.T41:
+                    break;
+                case StatementType.T42:
+                    break;
+                case StatementType.T43:
+                    break;
+                case StatementType.T45:
+                    break;
+                case StatementType.T50:
+                    break;
+                case StatementType.T51:
+                    break;
+                case StatementType.T52:
+                    break;
+                case StatementType.T53:
+                    break;
+                case StatementType.T54:
+                    break;
+                case StatementType.F01:
+                    break;
+                case StatementType.F02:
+                    break;
+                case StatementType.F03:
+                    break;
+                case StatementType.F04:
+                    break;
+                case StatementType.F05:
+                    break;
+                case StatementType.F10:
+                    break;
+                case StatementType.F12:
+                    break;
+                case StatementType.F13:
+                    break;
+                case StatementType.F14:
+                    break;
+                case StatementType.F15:
+                    break;
+                case StatementType.F20:
+                    break;
+                case StatementType.F21:
+                    break;
+                case StatementType.F23:
+                    break;
+                case StatementType.F24:
+                    break;
+                case StatementType.F25:
+                    break;
+                case StatementType.F30:
+                    break;
+                case StatementType.F31:
+                    break;
+                case StatementType.F32:
+                    break;
+                case StatementType.F34:
+                    break;
+                case StatementType.F35:
+                    break;
+                case StatementType.F40:
+                    break;
+                case StatementType.F41:
+                    break;
+                case StatementType.F42:
+                    break;
+                case StatementType.F43:
+                    break;
+                case StatementType.F45:
+                    break;
+                case StatementType.F50:
+                    break;
+                case StatementType.F51:
+                    break;
+                case StatementType.F52:
+                    break;
+                case StatementType.F53:
+                    break;
+                case StatementType.F54:
+                    break;
+                case StatementType.CommendWar:
+                case StatementType.DenounceWar:
+                case StatementType.WarDeclaration:
+                case StatementType.StealCredits:
+                case StatementType.StealResearch:
+                case StatementType.SabotageFood:
+                case StatementType.SabotageEnergy:
+                case StatementType.SabotageIndustry:
+                default:
+                    break;
+            }
+
+            //var acceptRejectElement = message.AvailableElements.FirstOrDefault(o => o.ElementType == DiplomacyMessageElementType.UpdateAcceptRejectDictionaryStatement);
+            //if (acceptRejectElement == null || !acceptRejectElement.AddCommand.CanExecute(null))
+            //return;
+
+            //acceptRejectElement.AddCommand.Execute(null);
+
+            //foreignPower.OutgoingMessage = message;
+        }
+
         public static void ClearAcceptRejectDictionary()
         {
             if (_acceptRejectDictionary != null)
@@ -326,6 +478,32 @@ namespace Supremacy.Diplomacy
                     , GameContext.Current.TurnNumber
                     , _acceptRejectDictionary.Count
                     , foreignPowerID
+
+                    );
+        }
+        public static void AcceptRejectDictionary(string civIDs, bool accepted, int turn)
+        {
+            int turnNumber = turn; // in case we need this to time clearing of dictionary - Dictionary<string, Tuple<bool, int>>(); or ValueType is a Class with bool and int.
+            //string foreignPowerID = foreignPower.CounterpartyID.ToString() + foreignPower.OwnerID.ToString();
+            
+            if (_acceptRejectDictionary == null)
+            {
+                Dictionary<string, bool> dictionary = new Dictionary<string, bool>() { { civIDs, accepted } };
+                _acceptRejectDictionary = dictionary;
+                GameLog.Client.Diplomacy.DebugFormat("Generated new _acceptRejectDicionary");
+            }
+            else if (_acceptRejectDictionary.ContainsKey(civIDs))
+            {
+                _acceptRejectDictionary.Remove(civIDs);
+                _acceptRejectDictionary.Add(civIDs, accepted);
+            }
+            else { _acceptRejectDictionary.Add(civIDs, accepted); }
+
+            if (_acceptRejectDictionary != null)
+                GameLog.Client.Diplomacy.DebugFormat("Turn {0}: _acceptRejectDicionary.Count = {1}, Pair(Counter/Owner) = {2}"
+                    , GameContext.Current.TurnNumber
+                    , _acceptRejectDictionary.Count
+                    , civIDs
 
                     );
         }

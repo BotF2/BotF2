@@ -13,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Security.Policy;
 using System.Windows.Input;
 
 namespace Supremacy.Client.Views
@@ -63,7 +64,7 @@ namespace Supremacy.Client.Views
         private readonly DelegateCommand _declareWarCommand;
         private readonly DelegateCommand _endWarCommand;  // other naming in the code: CeaseFire
         private readonly DelegateCommand _openBordersCommand;
-        private readonly DelegateCommand _acceptRejectCommand;
+        //private readonly DelegateCommand _acceptRejectCommand;
         private readonly DelegateCommand _nonAgressionCommand;
         private readonly DelegateCommand _affiliationCommand;
         private readonly DelegateCommand _defenceAllianceCommand;
@@ -92,7 +93,7 @@ namespace Supremacy.Client.Views
             _declareWarCommand = new DelegateCommand(ExecuteDeclareWarCommand, CanExecuteDeclareWarCommand);
             _endWarCommand = new DelegateCommand(ExecuteEndWarCommand, CanExecuteEndWarCommand);
             _openBordersCommand = new DelegateCommand(ExecuteOpenBordersCommand, CanExecuteOpenBordersCommand);
-            _acceptRejectCommand = new DelegateCommand(ExecuteAcceptRejectDictionaryCommand, CanExecuteAcceptRejectDictionaryCommand);
+            //_acceptRejectCommand = new DelegateCommand(ExecuteAcceptRejectDictionaryCommand, CanExecuteAcceptRejectDictionaryCommand);
             _nonAgressionCommand = new DelegateCommand(ExecuteNonAgressionCommand, CanExecuteNonAgressionCommand);
             _affiliationCommand = new DelegateCommand(ExecuteAffiliationCommand, CanExecuteAffiliationCommand);
             _defenceAllianceCommand = new DelegateCommand(ExecuteDefenceAllianceCommand, CanExecuteDefenceAllianceCommand);
@@ -366,29 +367,114 @@ namespace Supremacy.Client.Views
         }
         private void ExecuteAcceptRejectDictionaryCommand()
         {
-            ForeignPowerViewModel foreignPower;
+            //var localPlayer = AppContext.LocalPlayerEmpire.Civilization;
+            //Diplomat diplomat1 = Diplomat.Get(localPlayer);
+            //var empireCount = GameContext.Current.Civilizations.Where(o => o.IsEmpire).Count();
+            //var empireCivsList = GameContext.Current.Civilizations.Where(o => o.IsEmpire).ToList();
+            //List<int> empireIdList = new List<int>();
+            //foreach (var empireCiv in empireCivsList)
+            //{
+            //    empireIdList.Add(empireCiv.CivID);
+            //}
 
-            if (!CanExecuteAcceptRejectDictionaryCommandCore(out foreignPower))
-                return;
+            ////for (int i = 0; i < empireCount; i++)
+            //foreach (var empireID in empireIdList)
 
-            DisplayMode = DiplomacyScreenDisplayMode.Outbox; // new
+            //{
+            //    if (empireID == localPlayer.CivID)
+            //        continue;
+
+            //    var ForeignPower = diplomat1.GetForeignPower(GameContext.Current.CivilizationManagers[empireID]);
+
+            //    //if (diplomat1.GetLastStatementSent(ForeignPower) != null)
+            //    //{
+
+            //   // bool _checkedVisibleForSabotagePending = true;
+
+            //    //_checkedVisibleForSabotagePending = CheckingVisibityForSabotagePending(diplomat1, ForeignPower);
+
+            //    //if (ForeignPower.LastStatementSent != null)
+            //    if (diplomat1.GetLastStatementSent(ForeignPower) != null)
+            //    {
+            //        int _statementSentInTurn = diplomat1.GetLastStatementSent(ForeignPower).TurnSent;
+
+            //        if (_statementSentInTurn == 99999)
+            //            _statementSentInTurn = 1;
+            //        //switch (ForeignPower.LastStatementSent.StatementType)
+            //        if (GameContext.Current.TurnNumber < _statementSentInTurn + 2)
+            //            switch (diplomat1.GetLastStatementSent(ForeignPower).StatementType)
+            //            {
+            //                case StatementType.StealCredits:
+            //                case StatementType.StealResearch:
+            //                case StatementType.SabotageFood:
+            //                case StatementType.SabotageIndustry:
+            //                case StatementType.SabotageEnergy:
+            //                    _checkedVisibleForSabotagePending = false;
+            //                    //_visibleForSabotagePending = false;
+            //                    break;
+            //                case StatementType.CommendWar:
+            //                case StatementType.DenounceWar:
+            //                case StatementType.WarDeclaration:
+            //                    break;
+            //                default:
+            //                    break;
+            //            }
+
+            //    }
+
+            //_checkedVisibleForSabotagePending = _visibleForSabotagePending;
+
+            // just for testing      _checkedVisibleForSabotagePending = true;
+            //if (_checkedVisibleForSabotagePending == false)
+            //    switch (empireID)
+            //    {
+            //        case 0:
+            //            Close_0_SabotageButtons();
+            //            break;
+            //        case 1:
+            //            Close_1_SabotageButtons();
+            //            break;
+            //        case 2:
+            //            Close_2_SabotageButtons();
+            //            break;
+            //        case 3:
+            //            Close_3_SabotageButtons();
+            //            break;
+            //        case 4:
+            //            Close_4_SabotageButtons();
+            //            break;
+            //        case 5:
+            //            Close_5_SabotageButtons();
+            //            break;
+            //        case 6:
+            //            Close_6_SabotageButtons();
+            //            break;
+            //        default: break;
+            //    }
+            //}
+            //ForeignPowerViewModel foreignPower;
+
+            //if (!CanExecuteAcceptRejectDictionaryCommandCore(out foreignPower))
+            //    return;
+
+            //DisplayMode = DiplomacyScreenDisplayMode.Outbox; // new
 
             //AreOutgoingMessageCommandsVisibleChanged.Raise(this);
             //OnPropertyChanged("AreOutgoingMessageCommandsVisible");
 
-            var message = new DiplomacyMessageViewModel(_playerCivilization, _selectedForeignPower.Counterparty);
+            //var message = new DiplomacyMessageViewModel(_playerCivilization, _selectedForeignPower.Counterparty);
 
-            message.Edit();
+            //message.Edit();
 
-            var acceptRejectElement = message.AvailableElements.FirstOrDefault(o => o.ElementType == DiplomacyMessageElementType.UpdateAcceptRejectDictionaryStatement);
-            if (acceptRejectElement == null || !acceptRejectElement.AddCommand.CanExecute(null))
-                return;
+            ////var acceptRejectElement = message.AvailableElements.FirstOrDefault(o => o.ElementType == DiplomacyMessageElementType.UpdateAcceptRejectDictionaryStatement);
+            ////if (acceptRejectElement == null || !acceptRejectElement.AddCommand.CanExecute(null))
+            ////return;
 
-            acceptRejectElement.AddCommand.Execute(null);
+            ////acceptRejectElement.AddCommand.Execute(null);
 
-            foreignPower.OutgoingMessage = message;
+            //foreignPower.OutgoingMessage = message;
 
-            InvalidateCommands();
+            //InvalidateCommands();
             //OnCommandVisibilityChanged();
             //Refresh();
         }
@@ -698,7 +784,7 @@ namespace Supremacy.Client.Views
             SelectedForeignPower.OutgoingMessage.Send();
             GameLog.Client.Diplomacy.DebugFormat("Diplo Message: SEND button pressed...");
             SelectedForeignPower.OnOutgoingMessageCategoryChanged();
-            
+
             OnCommandVisibilityChanged();
             OnIsMessageEditInProgressChanged();
             //Refresh();
@@ -1446,7 +1532,7 @@ namespace Supremacy.Client.Views
                     return ClauseType.TreatyFullAlliance;
                 case DiplomacyMessageElementType.TreatyMembershipClause:
                     return ClauseType.TreatyMembership;
-                case DiplomacyMessageElementType.UpdateAcceptRejectDictionaryClause:
+                //case DiplomacyMessageElementType.UpdateAcceptRejectDictionaryClause:
                 default:
                     return ClauseType.NoClause;
             }
@@ -1479,8 +1565,6 @@ namespace Supremacy.Client.Views
                 //    return StatementType.DenounceInvasion;
                 //case DiplomacyMessageElementType.DenounceSabotageStatement:
                 //    return StatementType.DenounceSabotage;
-                case DiplomacyMessageElementType.UpdateAcceptRejectDictionaryStatement: // do we need this?
-                    return StatementType.UpdateAcceptRejectDictionary;
                 default:
                     return StatementType.NoStatement;
             }

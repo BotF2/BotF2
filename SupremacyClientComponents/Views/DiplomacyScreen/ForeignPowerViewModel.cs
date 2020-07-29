@@ -481,6 +481,66 @@ namespace Supremacy.Client.Views
                     case StatementType.SabotageEnergy:
                     case StatementType.StealCredits:
                     case StatementType.StealResearch:
+                    case StatementType.F01:
+                    case StatementType.F02:
+                    case StatementType.F03:
+                    case StatementType.F04:
+                    case StatementType.F05:
+                    case StatementType.F10:
+                    case StatementType.F12:
+                    case StatementType.F13:
+                    case StatementType.F14:
+                    case StatementType.F15:
+                    case StatementType.F20:
+                    case StatementType.F21:
+                    case StatementType.F23:
+                    case StatementType.F24:
+                    case StatementType.F25:
+                    case StatementType.F30:
+                    case StatementType.F31:
+                    case StatementType.F32:
+                    case StatementType.F34:
+                    case StatementType.F35:
+                    case StatementType.F40:
+                    case StatementType.F41:
+                    case StatementType.F42:
+                    case StatementType.F43:
+                    case StatementType.F45:
+                    case StatementType.F50:
+                    case StatementType.F51:
+                    case StatementType.F52:
+                    case StatementType.F53:
+                    case StatementType.F54:
+                    case StatementType.T01:
+                    case StatementType.T02:
+                    case StatementType.T03:
+                    case StatementType.T04:
+                    case StatementType.T05:
+                    case StatementType.T10:
+                    case StatementType.T12:
+                    case StatementType.T13:
+                    case StatementType.T14:
+                    case StatementType.T15:
+                    case StatementType.T20:
+                    case StatementType.T21:
+                    case StatementType.T23:
+                    case StatementType.T24:
+                    case StatementType.T25:
+                    case StatementType.T30:
+                    case StatementType.T31:
+                    case StatementType.T32:
+                    case StatementType.T34:
+                    case StatementType.T35:
+                    case StatementType.T40:
+                    case StatementType.T41:
+                    case StatementType.T42:
+                    case StatementType.T43:
+                    case StatementType.T45:
+                    case StatementType.T50:
+                    case StatementType.T51:
+                    case StatementType.T52:
+                    case StatementType.T53:
+                    case StatementType.T54:
                         //GameLog.Client.Diplomacy.DebugFormat("Message Statement");
                         return DiplomaticMessageCategory.Statement;
                     

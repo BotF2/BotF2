@@ -390,68 +390,67 @@ namespace Supremacy.Client.Views
                     //if (diplomat1.GetLastStatementSent(ForeignPower) != null)
                     //{
 
-                        bool _checkedVisibleForSabotagePending = true;
+                    bool _checkedVisibleForSabotagePending = true;
 
-                        //_checkedVisibleForSabotagePending = CheckingVisibityForSabotagePending(diplomat1, ForeignPower);
+                    //_checkedVisibleForSabotagePending = CheckingVisibityForSabotagePending(diplomat1, ForeignPower);
 
-                        //if (ForeignPower.LastStatementSent != null)
-                        if (diplomat1.GetLastStatementSent(ForeignPower) != null)
-                        {
-                            int _statementSentInTurn = diplomat1.GetLastStatementSent(ForeignPower).TurnSent;
+                    //if (ForeignPower.LastStatementSent != null)
+                    if (diplomat1.GetLastStatementSent(ForeignPower) != null)
+                    {
+                        int _statementSentInTurn = diplomat1.GetLastStatementSent(ForeignPower).TurnSent;
 
-                            if (_statementSentInTurn == 99999)
-                                _statementSentInTurn = 1;
-                            //switch (ForeignPower.LastStatementSent.StatementType)
-                            if (GameContext.Current.TurnNumber < _statementSentInTurn + 2)
-                                switch (diplomat1.GetLastStatementSent(ForeignPower).StatementType)
-                                {
-                                    case StatementType.StealCredits:
-                                    case StatementType.StealResearch:
-                                    case StatementType.SabotageFood:
-                                    case StatementType.SabotageIndustry:
-                                    case StatementType.SabotageEnergy:
-                                        _checkedVisibleForSabotagePending = false;
-                                        //_visibleForSabotagePending = false;
-                                        break;
-                                    case StatementType.CommendWar:
-                                    case StatementType.DenounceWar:
-                                    case StatementType.WarDeclaration:
-                                        break;
-                                    default:
-                                        break;
-                                }
-
-                        }
-
-                        //_checkedVisibleForSabotagePending = _visibleForSabotagePending;
-
-                        // just for testing      _checkedVisibleForSabotagePending = true;
-                        if (_checkedVisibleForSabotagePending == false)
-                            switch (empireID)
+                        if (_statementSentInTurn == 99999)
+                            _statementSentInTurn = 1;
+                        //switch (ForeignPower.LastStatementSent.StatementType)
+                        if (GameContext.Current.TurnNumber < _statementSentInTurn + 2)
+                            switch (diplomat1.GetLastStatementSent(ForeignPower).StatementType)
                             {
-                                case 0:
-                                    Close_0_SabotageButtons();
+                                case StatementType.StealCredits:
+                                case StatementType.StealResearch:
+                                case StatementType.SabotageFood:
+                                case StatementType.SabotageIndustry:
+                                case StatementType.SabotageEnergy:
+                                    _checkedVisibleForSabotagePending = false;
+                                    //_visibleForSabotagePending = false;
                                     break;
-                                case 1:
-                                    Close_1_SabotageButtons();
+                                case StatementType.CommendWar:
+                                case StatementType.DenounceWar:
+                                case StatementType.WarDeclaration:
                                     break;
-                                case 2:
-                                    Close_2_SabotageButtons();
+                                default:
                                     break;
-                                case 3:
-                                    Close_3_SabotageButtons();
-                                    break;
-                                case 4:
-                                    Close_4_SabotageButtons();
-                                    break;
-                                case 5:
-                                    Close_5_SabotageButtons();
-                                    break;
-                                case 6:
-                                    Close_6_SabotageButtons();
-                                    break;
-                                default: break;
                             }
+                    }
+
+                    //_checkedVisibleForSabotagePending = _visibleForSabotagePending;
+
+                    // just for testing      _checkedVisibleForSabotagePending = true;
+                    if (_checkedVisibleForSabotagePending == false)
+                        switch (empireID)
+                        {
+                            case 0:
+                                Close_0_SabotageButtons();
+                                break;
+                            case 1:
+                                Close_1_SabotageButtons();
+                                break;
+                            case 2:
+                                Close_2_SabotageButtons();
+                                break;
+                            case 3:
+                                Close_3_SabotageButtons();
+                                break;
+                            case 4:
+                                Close_4_SabotageButtons();
+                                break;
+                            case 5:
+                                Close_5_SabotageButtons();
+                                break;
+                            case 6:
+                                Close_6_SabotageButtons();
+                                break;
+                            default: break;
+                        }
                 }
 
                 Dictionary<int, Civilization> empireCivsDictionary = new Dictionary<int, Civilization>();
