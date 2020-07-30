@@ -34,7 +34,7 @@ namespace Supremacy.Client.Views
         private readonly ObservableCollection<DiplomacyMessageElement> _requestElements;
         private readonly ObservableCollection<DiplomacyMessageElement> _statementElements;
         private readonly ObservableCollection<DiplomacyMessageElement> _treatyElements;
-        private readonly ObservableCollection<DiplomacyMessageElement> _acceptRejectElements;
+        //private readonly ObservableCollection<DiplomacyMessageElement> _acceptRejectElements;
         private readonly ReadOnlyObservableCollection<DiplomacyMessageElement> _elementsView;
         private readonly ReadOnlyObservableCollection<DiplomacyMessageElement> _offerElementsView;
         private readonly ReadOnlyObservableCollection<DiplomacyMessageElement> _requestElementsView;
@@ -70,7 +70,7 @@ namespace Supremacy.Client.Views
             _availableElementsView = new ReadOnlyObservableCollection<DiplomacyMessageAvailableElement>(_availableElements);
             _treatyElements = new ObservableCollection<DiplomacyMessageElement>();
             _treatyElementsView = new ReadOnlyObservableCollection<DiplomacyMessageElement>(_treatyElements);
-            _acceptRejectElements = new ObservableCollection<DiplomacyMessageElement>();
+            //_acceptRejectElements = new ObservableCollection<DiplomacyMessageElement>();
             // _acceptRejectElementsView = new ReadOnlyObservableCollection<DiplomacyMessageElement>(_acceptRejectElements); // no view becasue we do not see it??
             _offerElements = new ObservableCollection<DiplomacyMessageElement>();
             _offerElementsView = new ReadOnlyObservableCollection<DiplomacyMessageElement>(_offerElements);
@@ -177,9 +177,14 @@ namespace Supremacy.Client.Views
         {
             get { return _elements.All(o => o.ElementType > DiplomacyMessageElementType.TreatyWarPact); }
         }
-        internal bool HasMessages
+
+        internal bool HasProposal
         {
-            get { return _elements.All(o => o.ElementType <= DiplomacyMessageElementType.TreatyMembershipClause); }
+            get { return _treatyElements.All(o => o.ActionCategory == DiplomacyMessageElementActionCategory.Propose); }
+        }
+        internal bool HasTreatyElement
+        {
+            get { return _treatyElements.Any(o => o.Description.Length >1); }
         }
         internal IDiplomaticExchange CreateMessage()
             {
@@ -188,14 +193,6 @@ namespace Supremacy.Client.Views
 
         public void Send()
         {
-            // Need Accept Reject to do this. Move it out of the send button.
-            // var acceptReject = CreatAcceptReject();
-            // if(acceptReject = null)
-            // return;
-            // _sendAcceptReject = new SendAcceptRejectOrder(acceptingRejecting);
-            // ServiceLocator.Current.GetInstance<IPlayerOrderService>().AddOrder(_sendOrder);
-            // IsEditing = false;
-            // _availableElements.Clear();
             var isStatement = _elements.All(o => o.ElementType <= DiplomacyMessageElementType.DenounceSabotageStatement);
             if (isStatement)
             {
@@ -448,7 +445,17 @@ namespace Supremacy.Client.Views
         {
             get
             {
-                if (IsTreaty)
+                //var avaiableElements = _availableElements.Count; //0 responce
+                //var elements = _elements.Count;//0 responce
+                //var yesNo = _isEditing;//     false multi
+                //var leadInParam = _leadInParameters.Count;//0 responce 2 Multi
+                //var leadinRunTimeParam = _leadInRuntimeParameters.Count;//0 responce
+                //var offerElements = _offerElements.Count;//0 responce
+                //var treatyElemetns = _treatyElements.Count; //0 responce 
+                var maybe = HasProposal; // true minor
+                var couldbe = HasTreatyElement; // false minor
+
+                if (IsTreaty) 
                     return 0;
                 else return 1;
             }
@@ -651,8 +658,8 @@ namespace Supremacy.Client.Views
                     GameLog.Client.Diplomacy.DebugFormat("DECLARE_WAR_DIALOG_HINT is outcommented");
                     _statementElements.Add(element);
                     break;
-                case DiplomacyMessageElementActionCategory.SendAcceptReject:
-                    _acceptRejectElements.Add(element);
+                //case DiplomacyMessageElementActionCategory.SendAcceptReject:
+                //    _acceptRejectElements.Add(element);
                     break;
             }
 
