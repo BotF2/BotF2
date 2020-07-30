@@ -173,7 +173,14 @@ namespace Supremacy.Client.Views
         {
             get { return _elements.All(o => o.ElementType <= DiplomacyMessageElementType.DenounceSabotageStatement); }
         }
-
+        internal bool IsTreaty
+        {
+            get { return _elements.All(o => o.ElementType > DiplomacyMessageElementType.TreatyWarPact); }
+        }
+        internal bool HasMessages
+        {
+            get { return _elements.All(o => o.ElementType <= DiplomacyMessageElementType.TreatyMembershipClause); }
+        }
         internal IDiplomaticExchange CreateMessage()
             {
                 return IsStatement ? (IDiplomaticExchange)CreateStatement() : CreateProposal();
@@ -441,11 +448,8 @@ namespace Supremacy.Client.Views
         {
             get
             {
-                if (IsStatement)
-                    return 1;
-                if (HasTreatyLeadInText)
+                if (IsTreaty)
                     return 0;
-          
                 else return 1;
             }
         }

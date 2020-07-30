@@ -939,6 +939,7 @@ namespace Supremacy.Game
                             case StatementType.F52:
                             case StatementType.F53:
                             case StatementType.F54:
+                                DiplomacyHelper.ReadAcceptRejectDictionaryFromStatement(foreignPower.StatementReceived);
                                 break;
                             default:
                                 break;
@@ -1033,8 +1034,7 @@ namespace Supremacy.Game
                             case StatementType.F51:
                             case StatementType.F52:
                             case StatementType.F53:
-                            case StatementType.F54:
-                                DiplomacyHelper.GetAcceptRejectDictionaryFromStatement(foreignPower.LastStatementReceived);
+                            case StatementType.F54:                               
                                 break;
                             default:
                                 break;
@@ -1083,6 +1083,7 @@ namespace Supremacy.Game
                     }
 
                     //  Second.3 = statementSent
+                    
                     var statementSent = foreignPower.StatementSent;
                     if (statementSent != null)
                     {                       
@@ -1157,7 +1158,7 @@ namespace Supremacy.Game
                             statementSent.StatementType == StatementType.T53 ||
                             statementSent.StatementType == StatementType.T54)                           
                         { 
-                            // do something??
+                            // Think this is a do nothing
                         }
 
                         //if (statementSent.StatementType == StatementType.StealCredits) // think we do steal and others above in the switch

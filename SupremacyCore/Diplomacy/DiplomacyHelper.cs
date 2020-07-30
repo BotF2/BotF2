@@ -22,6 +22,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Media;
 using System.Web.Services.Description;
+using System.Windows.Navigation;
 
 namespace Supremacy.Diplomacy
 {
@@ -299,136 +300,331 @@ namespace Supremacy.Diplomacy
             return Enum.GetName(typeof(StatementType), value);
         }
 
-        public static void GetAcceptRejectDictionaryFromStatement(Statement _lastStatmentRecieved)
+        public static StatementType GetStatementType(bool accepting, Civilization sender, Civilization localPlayerCiv)
+        {
+            string TrueFalse = "F";
+            if (accepting == true)
+                TrueFalse = "T";
+
+            string nameOfStatementType = TrueFalse + sender.CivID.ToString() + localPlayerCiv.CivID.ToString();
+            switch (nameOfStatementType)
+            {
+                case "T01":
+                    {
+                        return StatementType.T01;
+                    }
+                case "T02":
+                    {
+                        return StatementType.T02;
+                    }
+                case "T03":
+                    {
+                        return StatementType.T03;
+                    }
+                case "T04":
+                    {
+                        return StatementType.T04;
+                    }
+                case "T05":
+                    {
+                        return StatementType.T05;
+                    }
+                case "T10":
+                    {
+                        return StatementType.T10;
+                    }
+                case "T12":
+                    {
+                        return StatementType.T12;
+                    }
+                case "T13":
+                    {
+                        return StatementType.T13;
+                    }
+                case "T14":
+                    {
+                        return StatementType.T14;
+                    }
+                case "T15":
+                    {
+                        return StatementType.T15;
+                    }
+                case "T20":
+                    {
+                        return StatementType.T20;
+                    }
+                case "T21":
+                    {
+                        return StatementType.T21;
+                    }
+                case "T23":
+                    {
+                        return StatementType.T23;
+                    }
+                case "T24":
+                    {
+                        return StatementType.T24;
+                    }
+                case "T25":
+                    {
+                        return StatementType.T25;
+                    }
+                case "T30":
+                    {
+                        return StatementType.T30;
+                    }
+                case "T31":
+                    {
+                        return StatementType.T31;
+                    }
+                case "T32":
+                    {
+                        return StatementType.T32;
+                    }
+                case "T34":
+                    {
+                        return StatementType.T34;
+                    }
+                case "T35":
+                    {
+                        return StatementType.T35;
+                    }
+                case "T40":
+                    {
+                        return StatementType.T40;
+                    }
+                case "T41":
+                    {
+                        return StatementType.T41;
+                    }
+                case "T42":
+                    {
+                        return StatementType.T42;
+                    }
+                case "T43":
+                    {
+                        return StatementType.T43;
+                    }
+                case "T45":
+                    {
+                        return StatementType.T45;
+                    }
+                case "T50":
+                    {
+                        return StatementType.T50;
+                    }
+                case "T51":
+                    {
+                        return StatementType.T51;
+                    }
+                case "T52":
+                    {
+                        return StatementType.T52;
+                    }
+                case "T53":
+                    {
+                        return StatementType.T53;
+                    }
+                case "T54":
+                    {
+                        return StatementType.T54;
+                    }
+                case "F01":
+                    {
+                        return StatementType.F01;
+                    }
+                case "F02":
+                    {
+                        return StatementType.F02;
+                    }
+                case "F03":
+                    {
+                        return StatementType.F03;
+                    }
+                case "F04":
+                    {
+                        return StatementType.F04;
+                    }
+                case "F05":
+                    {
+                        return StatementType.F05;
+                    }
+                case "F10":
+                    {
+                        return StatementType.F10;
+                    }
+                case "F12":
+                    {
+                        return StatementType.F12;
+                    }
+                case "F13":
+                    {
+                        return StatementType.F13;
+                    }
+                case "F14":
+                    {
+                        return StatementType.F14;
+                    }
+                case "F15":
+                    {
+                        return StatementType.F15;
+                    }
+                case "F20":
+                    {
+                        return StatementType.F20;
+                    }
+                case "F21":
+                    {
+                        return StatementType.F21;
+                    }
+                case "F23":
+                    {
+                        return StatementType.F23;
+                    }
+                case "F24":
+                    {
+                        return StatementType.F24;
+                    }
+                case "F25":
+                    {
+                        return StatementType.F25;
+                    }
+                case "F30":
+                    {
+                        return StatementType.F30;
+                    }
+                case "F31":
+                    {
+                        return StatementType.F31;
+                    }
+                case "F32":
+                    {
+                        return StatementType.F32;
+                    }
+                case "F34":
+                    {
+                        return StatementType.F34;
+                    }
+                case "F35":
+                    {
+                        return StatementType.F35;
+                    }
+                case "F40":
+                    {
+                        return StatementType.F40;
+                    }
+                case "F41":
+                    {
+                        return StatementType.F41;
+                    }
+                case "F42":
+                    {
+                        return StatementType.F42;
+                    }
+                case "F43":
+                    {
+                        return StatementType.F43;
+                    }
+                case "F45":
+                    {
+                        return StatementType.F45;
+                    }
+                case "F50":
+                    {
+                        return StatementType.F50;
+                    }
+                case "F51":
+                    {
+                        return StatementType.F51;
+                    }
+                case "F52":
+                    {
+                        return StatementType.F52;
+                    }
+                case "F53":
+                    {
+                        return StatementType.F53;
+                    }
+                case "F54":
+                    {
+                        return StatementType.F54;
+                    }
+                default:
+                    break;
+            }
+            return StatementType.F01;
+        }
+
+        public static void ReadAcceptRejectDictionaryFromStatement(Statement _statmentRecieved)
         {
             int turnNumber = GameContext.Current.TurnNumber;
-            var _statementType = _lastStatmentRecieved.StatementType;
+            var _statementType = _statmentRecieved.StatementType;
             string statementAsString = GetEnumString(_statementType);
             string _civIDs = statementAsString.Substring(1,2); 
           
-
             switch (_statementType)
             {
                 case StatementType.T01:
-                    AcceptRejectDictionary(_civIDs, true, turnNumber);
-                    break;
                 case StatementType.T02:
-                    break;
                 case StatementType.T03:
-                    break;
                 case StatementType.T04:
-                    break;
                 case StatementType.T05:
-                    break;
                 case StatementType.T10:
-                    break;
                 case StatementType.T12:
-                    break;
                 case StatementType.T13:
-                    break;
                 case StatementType.T14:
-                    break;
                 case StatementType.T15:
-                    break;
                 case StatementType.T20:
-                    break;
                 case StatementType.T21:
-                    break;
                 case StatementType.T23:
-                    break;
                 case StatementType.T24:
-                    break;
                 case StatementType.T25:
-                    break;
                 case StatementType.T30:
-                    break;
                 case StatementType.T31:
-                    break;
                 case StatementType.T32:
-                    break;
                 case StatementType.T34:
-                    break;
                 case StatementType.T35:
-                    break;
                 case StatementType.T40:
-                    break;
                 case StatementType.T41:
-                    break;
                 case StatementType.T42:
-                    break;
                 case StatementType.T43:
-                    break;
                 case StatementType.T45:
-                    break;
                 case StatementType.T50:
-                    break;
                 case StatementType.T51:
-                    break;
                 case StatementType.T52:
-                    break;
                 case StatementType.T53:
-                    break;
                 case StatementType.T54:
-                    break;
                 case StatementType.F01:
-                    break;
                 case StatementType.F02:
-                    break;
                 case StatementType.F03:
-                    break;
                 case StatementType.F04:
-                    break;
                 case StatementType.F05:
-                    break;
                 case StatementType.F10:
-                    break;
                 case StatementType.F12:
-                    break;
                 case StatementType.F13:
-                    break;
                 case StatementType.F14:
-                    break;
                 case StatementType.F15:
-                    break;
                 case StatementType.F20:
-                    break;
                 case StatementType.F21:
-                    break;
                 case StatementType.F23:
-                    break;
                 case StatementType.F24:
-                    break;
                 case StatementType.F25:
-                    break;
                 case StatementType.F30:
-                    break;
                 case StatementType.F31:
-                    break;
                 case StatementType.F32:
-                    break;
                 case StatementType.F34:
-                    break;
                 case StatementType.F35:
-                    break;
                 case StatementType.F40:
-                    break;
                 case StatementType.F41:
-                    break;
                 case StatementType.F42:
-                    break;
                 case StatementType.F43:
-                    break;
                 case StatementType.F45:
-                    break;
                 case StatementType.F50:
-                    break;
                 case StatementType.F51:
-                    break;
                 case StatementType.F52:
-                    break;
                 case StatementType.F53:
-                    break;
                 case StatementType.F54:
+                    AcceptRejectDictionary(_civIDs, true, turnNumber);
                     break;
                 case StatementType.CommendWar:
                 case StatementType.DenounceWar:
@@ -478,7 +674,6 @@ namespace Supremacy.Diplomacy
                     , GameContext.Current.TurnNumber
                     , _acceptRejectDictionary.Count
                     , foreignPowerID
-
                     );
         }
         public static void AcceptRejectDictionary(string civIDs, bool accepted, int turn)

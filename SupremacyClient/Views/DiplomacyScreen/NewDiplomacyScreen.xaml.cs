@@ -37,7 +37,6 @@ namespace Supremacy.Client.Views.DiplomacyScreen
             RadioButton radioButton = sender as RadioButton;
             if (radioButton != null)
             {
-
                 var response = (string)radioButton.Content;
                 if (Model.SelectedForeignPower != null)
                 {
@@ -49,16 +48,26 @@ namespace Supremacy.Client.Views.DiplomacyScreen
                     var playerEmpire = AppContext.LocalPlayerEmpire.Civilization; // local player
                     var diplomat = Diplomat.Get(playerEmpire);
                     var foreignPower = diplomat.GetForeignPower(senderCiv);
+                    bool localPlayerIsHosting = AppContext.IsGameHost;
                     int turn = GameContext.Current.TurnNumber;
-                    DiplomacyHelper.AcceptRejectDictionary(foreignPower, accepting, turn);
+                    if (localPlayerIsHosting)
+                    {
+                        DiplomacyHelper.AcceptRejectDictionary(foreignPower, accepting, turn);
+                    }
+                    else
+                    {
+                        var _statementType = DiplomacyHelper.GetStatementType(accepting, (Civilization)senderCiv, playerEmpire); // first is bool, then sender ID, last localCivID in Dictinary Key
+                        Statement statementToSend = new Statement((Civilization)sender, playerEmpire, _statementType , Tone.Receptive, turn); //DiplomacyExtensions.GetStatementSent(diplomat, senderCiv);
+                        foreignPower.StatementSent = statementToSend;
+                    }
 
-                    GameLog.Client.Diplomacy.DebugFormat("Turn {0}: Button response = {4}, Player = {1}, Sender = {2} vs counterParty {3}"
+                    GameLog.Client.Diplomacy.DebugFormat("Turn {0}: Button response = {4}, Player = {1}, Sender = {2} vs counterParty {3} local player is host ={4}"
                         , GameContext.Current.TurnNumber
                         , playerEmpire.Key
                         , foreignPower.Owner
-
                         , foreignPower.Counterparty.Key
                         , response
+                        , localPlayerIsHosting
                         );
                 }
             }
