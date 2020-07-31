@@ -21,6 +21,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Media;
+using System.Runtime.CompilerServices;
 using System.Web.Services.Description;
 using System.Windows.Navigation;
 
@@ -241,7 +242,7 @@ namespace Supremacy.Diplomacy
                 GameLog.Client.Diplomacy.DebugFormat("************** Diplo: SendWarDeclaration turned to RECEIVED at ForeignPower...");
         }
 
-        public static void AcceptingRejecting([NotNull] ICivIdentity civ)
+        public static void AcceptingRejecting([NotNull] ICivIdentity civ) // ready dictionary for entry regarding this civ
         {
             if (civ == null)
                 throw new ArgumentNullException("civ");
@@ -258,7 +259,7 @@ namespace Supremacy.Diplomacy
                     continue;
                 var foreignPower = diplomat.GetForeignPower(otherCiv);
                 string powerID = foreignPower.CounterpartyID.ToString() + foreignPower.OwnerID.ToString();
-                var accepting = _acceptRejectDictionary.ContainsKey(powerID) ? true : false;
+                var accepting = _acceptRejectDictionary.ContainsKey(powerID) ? true : false; // check dictionary with key for bool value
                 if (accepting)
                 {
                     if (_acceptRejectDictionary[powerID])
@@ -550,12 +551,12 @@ namespace Supremacy.Diplomacy
                         return StatementType.F54;
                     }
                 default:
-                    break;
+                    return StatementType.NoStatement;                    
             }
-            return StatementType.F01;
+
         }
 
-        public static void ReadAcceptRejectDictionaryFromStatement(Statement _statmentRecieved)
+        public static void AcceptRejectDictionaryFromStatement(Statement _statmentRecieved) // find statement in foreignPower during GameEngine and here creat dictionary entry from it
         {
             int turnNumber = GameContext.Current.TurnNumber;
             var _statementType = _statmentRecieved.StatementType;
@@ -624,7 +625,7 @@ namespace Supremacy.Diplomacy
                 case StatementType.F52:
                 case StatementType.F53:
                 case StatementType.F54:
-                    AcceptRejectDictionary(_civIDs, true, turnNumber);
+                    AcceptRejectDictionary(_civIDs, true, turnNumber); // creat dictionary entry from StatementType
                     break;
                 case StatementType.CommendWar:
                 case StatementType.DenounceWar:
@@ -634,6 +635,7 @@ namespace Supremacy.Diplomacy
                 case StatementType.SabotageFood:
                 case StatementType.SabotageEnergy:
                 case StatementType.SabotageIndustry:
+                    break;
                 default:
                     break;
             }

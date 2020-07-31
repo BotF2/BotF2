@@ -52,13 +52,18 @@ namespace Supremacy.Client.Views.DiplomacyScreen
                     int turn = GameContext.Current.TurnNumber;
                     if (localPlayerIsHosting)
                     {
-                        DiplomacyHelper.AcceptRejectDictionary(foreignPower, accepting, turn);
+                        GameLog.Client.Diplomacy.DebugFormat("Local player IS Host....");
+                        DiplomacyHelper.AcceptRejectDictionary(foreignPower, accepting, turn); // creat entry for game host
                     }
                     else
-                    {
-                        var _statementType = DiplomacyHelper.GetStatementType(accepting, (Civilization)senderCiv, playerEmpire); // first is bool, then sender ID, last localCivID in Dictinary Key
-                        Statement statementToSend = new Statement((Civilization)sender, playerEmpire, _statementType , Tone.Receptive, turn); //DiplomacyExtensions.GetStatementSent(diplomat, senderCiv);
-                        foreignPower.StatementSent = statementToSend;
+                    {      // creat entry for none host human player that clicked the accept - reject radio button         
+                        var _statementType = DiplomacyHelper.GetStatementType(accepting, (Civilization)senderCiv, playerEmpire); // first is bool, then sender ID, last localCivID in Dictinary Key                       
+                        GameLog.Client.Diplomacy.DebugFormat("Local player IS NOT Host, statementType = {0}", Enum.GetName(typeof(StatementType), _statementType));
+                        if (_statementType != StatementType.NoStatement)
+                        {
+                            Statement statementToSend = new Statement((Civilization)sender, playerEmpire, _statementType, Tone.Receptive, turn); //DiplomacyExtensions.GetStatementSent(diplomat, senderCiv);
+                            foreignPower.StatementSent = statementToSend; // load statement to send in foreignPower, statment type carries key for dictionary entery
+                        }
                     }
 
                     GameLog.Client.Diplomacy.DebugFormat("Turn {0}: Button response = {4}, Player = {1}, Sender = {2} vs counterParty {3} local player is host ={4}"

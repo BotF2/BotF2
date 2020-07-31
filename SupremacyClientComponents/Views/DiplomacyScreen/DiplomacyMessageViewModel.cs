@@ -463,10 +463,10 @@ namespace Supremacy.Client.Views
 
                 */
 
-                int decider = 1;
+                int decider = 1; // accept and reject buttons hidden if decider = 1, exposed if decider = 0.
                 if (IsTreaty)
                     decider = 0;
-                if (foreignPower.ResponseReceived != null || foreignPower.ResponseReceived != null)
+                if (foreignPower.ResponseReceived != null)
                     decider = 1;
                 if (decider == 0)
                 return 0;

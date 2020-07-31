@@ -879,7 +879,7 @@ namespace Supremacy.Game
                             case StatementType.CommendWar:
                             case StatementType.DenounceWar:
                             case StatementType.WarDeclaration:
-                            case StatementType.T01:
+                            case StatementType.T01: // read statement type off of foreignPower and send it to accept - reject dictionary
                             case StatementType.T02:
                             case StatementType.T03:
                             case StatementType.T04:
@@ -939,8 +939,11 @@ namespace Supremacy.Game
                             case StatementType.F52:
                             case StatementType.F53:
                             case StatementType.F54:
-                                DiplomacyHelper.ReadAcceptRejectDictionaryFromStatement(foreignPower.StatementReceived);
-                                break;
+                                {
+                                    GameLog.Core.Diplomacy.DebugFormat("Read Statement Type = {0} from foreignPower", Enum.GetName(typeof(StatementType), foreignPower.StatementReceived.StatementType));
+                                    DiplomacyHelper.AcceptRejectDictionaryFromStatement(foreignPower.StatementReceived);
+                                    break;
+                                }
                             default:
                                 break;
                         }
@@ -975,7 +978,7 @@ namespace Supremacy.Game
                             case StatementType.CommendWar:
                             case StatementType.DenounceWar:
                             case StatementType.WarDeclaration:
-                            case StatementType.T01:
+                            case StatementType.T01: // do we need this to send to dictionary as well, see above ??? I think StatementRecieved becomes LastStatementRecieved by itself
                             case StatementType.T02:
                             case StatementType.T03:
                             case StatementType.T04:
@@ -2368,7 +2371,7 @@ namespace Supremacy.Game
                     try
                     {
                         if (civ.IsHuman)
-                            DiplomacyHelper.AcceptingRejecting(civ);
+                            DiplomacyHelper.AcceptingRejecting(civ); // read accept reject dictionary for entry involving this civ
                         if (civ.IsHuman && !autoTurnCiv.Contains(civ))
                             return;
 
