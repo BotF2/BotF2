@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using System.Windows.Data;
@@ -178,14 +179,6 @@ namespace Supremacy.Client.Views
             get { return _elements.All(o => o.ElementType > DiplomacyMessageElementType.TreatyWarPact); }
         }
 
-        internal bool HasProposal
-        {
-            get { return _treatyElements.All(o => o.ActionCategory == DiplomacyMessageElementActionCategory.Propose); }
-        }
-        internal bool HasTreatyElement
-        {
-            get { return _treatyElements.Any(o => o.Description.Length >1); }
-        }
         internal IDiplomaticExchange CreateMessage()
             {
                 return IsStatement ? (IDiplomaticExchange)CreateStatement() : CreateProposal();
@@ -445,18 +438,38 @@ namespace Supremacy.Client.Views
         {
             get
             {
-                //var avaiableElements = _availableElements.Count; //0 responce
-                //var elements = _elements.Count;//0 responce
-                //var yesNo = _isEditing;//     false multi
-                //var leadInParam = _leadInParameters.Count;//0 responce 2 Multi
-                //var leadinRunTimeParam = _leadInRuntimeParameters.Count;//0 responce
-                //var offerElements = _offerElements.Count;//0 responce
-                //var treatyElemetns = _treatyElements.Count; //0 responce 
-                var maybe = HasProposal; // true minor
-                var couldbe = HasTreatyElement; // false minor
+                var sender = _sender;
+                var recipient = _recipient;
+                var diplomat = Diplomat.Get(recipient);
+                var foreignPower = diplomat.GetForeignPower(sender);
 
-                if (IsTreaty) 
-                    return 0;
+                /*
+                 * Looking here for what part of foreignPower can be used to control if the accept-reject buttons are hidden or not
+                 
+                //int turn = GameContext.Current.TurnNumber;
+                //var ResponseSent = foreignPower.ResponseSent; //AI turn 2 null, Multi null
+                var LastResponseSent = foreignPower.LastProposalSent; //**AI turn2 clause=2, Multi null
+                var ResponseReceived = foreignPower.ResponseReceived; //**AI turn2 responceType accept, Multi null
+                //var LastResponseReceived = foreignPower.LastResponseReceived; //AI turn 2 null, Multi null
+                //var StatementSent = foreignPower.StatementSent; //AI turn 2 null, Multi null
+                var LastStatementSent = foreignPower.LastStatementSent;//**AI turn 2 null
+               // var StatementReceived = foreignPower.StatementReceived; //AI turn 2 null, Multi null
+               //var LastStatementReceived = foreignPower.LastStatementReceived;//AI turn 2 null, Multi null
+               //var ProposalSent = foreignPower.ProposalSent;//AI turn 2 null, Multi null
+                var LastProposalSent = foreignPower.LastProposalSent;//**AI clauses=1, Multi null
+                var ProposalReceived = foreignPower.ProposalReceived;//**AI turn 2 null, Multi clauses=1
+                //var LastProposalRecieved = foreignPower.LastProposalReceived;//AI turn 2 null, Multi null
+                //var PendingAction = foreignPower.PendingAction;//AI turn2 none, Multi none
+
+                */
+
+                int decider = 1;
+                if (IsTreaty)
+                    decider = 0;
+                if (foreignPower.ResponseReceived != null || foreignPower.ResponseReceived != null)
+                    decider = 1;
+                if (decider == 0)
+                return 0;
                 else return 1;
             }
         }
