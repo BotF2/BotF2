@@ -57,16 +57,16 @@ namespace Supremacy.Client.Views.DiplomacyScreen
                     }
                     else
                     {      // creat entry for none host human player that clicked the accept - reject radio button         
-                        var _statementType = DiplomacyHelper.GetStatementType(accepting, (Civilization)senderCiv, playerEmpire); // first is bool, then sender ID, last localCivID in Dictinary Key                       
+                        var _statementType = DiplomacyHelper.GetStatementType(accepting,  playerEmpire, (Civilization)senderCiv); // first is bool, then sender ID, last localCivID in Dictinary Key                       
                         GameLog.Client.Diplomacy.DebugFormat("Local player IS NOT Host, statementType = {0}", Enum.GetName(typeof(StatementType), _statementType));
                         if (_statementType != StatementType.NoStatement)
                         {
-                            Statement statementToSend = new Statement((Civilization)sender, playerEmpire, _statementType, Tone.Receptive, turn); //DiplomacyExtensions.GetStatementSent(diplomat, senderCiv);
+                            Statement statementToSend = new Statement(senderCiv, playerEmpire, _statementType, Tone.Receptive, turn); //DiplomacyExtensions.GetStatementSent(diplomat, senderCiv);
                             foreignPower.StatementSent = statementToSend; // load statement to send in foreignPower, statment type carries key for dictionary entery
                         }
                     }
 
-                    GameLog.Client.Diplomacy.DebugFormat("Turn {0}: Button response = {4}, Player = {1}, Sender = {2} vs counterParty {3} local player is host ={4}"
+                    GameLog.Client.Diplomacy.DebugFormat("Turn {0}: Button response = {4}, Player = {1}, Sender = {2} vs counterParty {3} local player is host ={5}"
                         , GameContext.Current.TurnNumber
                         , playerEmpire.Key
                         , foreignPower.Owner
