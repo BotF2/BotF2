@@ -31,7 +31,7 @@ namespace Supremacy.Diplomacy
     {
         private static readonly IList<Civilization> EmptyCivilizations = new Civilization[0];
         private static CollectionBase<RegardEvent> _regardEvents;
-        private static Dictionary<string, bool> _acceptRejectDictionary;
+        private static Dictionary<string, bool> _acceptRejectDictionary = new Dictionary<string, bool> { {"D99", false } };
 
         public static ForeignPowerStatus GetForeignPowerStatus([NotNull] ICivIdentity owner, [NotNull] ICivIdentity counterparty)
         {
@@ -251,8 +251,12 @@ namespace Supremacy.Diplomacy
             
             foreach (var otherCiv in GameContext.Current.Civilizations)
             {
-                if (_acceptRejectDictionary == null)
-                    continue;
+                //if (_acceptRejectDictionary == null)
+                //{
+                //    GameLog.Core.Diplomacy.DebugFormat("Civ ={0}, otherciv = {1} Dictionary = {2}", aCiv.Key, otherCiv.Key, "null");
+                //    continue;
+                //}
+                   
                 if (aCiv == otherCiv)
                     continue;
                 if (!otherCiv.IsEmpire)
@@ -651,7 +655,7 @@ namespace Supremacy.Diplomacy
 
         public static void ClearAcceptRejectDictionary()
         {
-            if (_acceptRejectDictionary != null)
+            //if (_acceptRejectDictionary != null)
                 _acceptRejectDictionary.Clear();
         }
         public static void AcceptRejectDictionary(ForeignPower foreignPower, bool accepted, int turn)
@@ -671,7 +675,7 @@ namespace Supremacy.Diplomacy
             }
             else { _acceptRejectDictionary.Add(foreignPowerID, accepted); }
 
-            if (_acceptRejectDictionary != null)
+            //if (_acceptRejectDictionary != null)
                 GameLog.Client.Diplomacy.DebugFormat("Turn {0}: _acceptRejectDicionary.Count = {1}, Pair(Counter/Owner) = {2}"
                     , GameContext.Current.TurnNumber
                     , _acceptRejectDictionary.Count
@@ -696,7 +700,7 @@ namespace Supremacy.Diplomacy
             }
             else { _acceptRejectDictionary.Add(civIDs, accepted); }
 
-            if (_acceptRejectDictionary != null)
+            //if (_acceptRejectDictionary != null)
                 GameLog.Client.Diplomacy.DebugFormat("Turn {0}: _acceptRejectDicionary.Count = {1}, Pair(Counter/Owner) = {2}"
                     , GameContext.Current.TurnNumber
                     , _acceptRejectDictionary.Count
