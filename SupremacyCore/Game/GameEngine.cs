@@ -718,22 +718,10 @@ namespace Supremacy.Game
                             if (foreignPower.LastProposalReceived != null)
                                         RejectProposalVisitor.Visit(foreignPower.LastProposalReceived);                            
                             break;
-                        //case PendingDiplomacyAction.None:
-                        //    {
-                        //        GameLog.Core.Diplomacy.DebugFormat("$$ NONE = {2} for {0} vs {1}, pending {3}", civ1, civ2, foreignPowerStatus.ToString(), foreignPower.PendingAction.ToString());
-                        //        ////////if (_acceptRejectDictionary.ContainsKey(foreignPower.OwnerID))
-                        //        ////////{
-                        //        ////////    if (_acceptRejectDictionary[foreignPower.OwnerID] == true)
-                        //        ////////    {
-                        //        ////////        AcceptProposalVisitor.Visit(foreignPower.LastProposalReceived);
-                        //        ////////    }
-                        //        ////////    else { RejectProposalVisitor.Visit(foreignPower.LastProposalReceived); }
-                        //        ////////}
-
-                        //    }
-                        //    break;
+                        default:
+                            break;
                     }
-                    GameLog.Core.Diplomacy.DebugFormat("Next: foreignPower.PendingAction = NONE for {0} vs {1}, status {2}, pending {3}", foreignPower.Owner, foreignPower.Counterparty, foreignPowerStatus.ToString(), foreignPower.PendingAction.ToString());
+                    //GameLog.Core.Diplomacy.DebugFormat("Next: foreignPower.PendingAction = NONE for {0} vs {1}, status {2}, pending {3}", foreignPower.Owner, foreignPower.Counterparty, foreignPowerStatus.ToString(), foreignPower.PendingAction.ToString());
                     foreignPower.PendingAction = PendingDiplomacyAction.None;
                  
                     // Ships gets new owner on joining empire
@@ -938,7 +926,10 @@ namespace Supremacy.Game
                             case StatementType.F53:
                             case StatementType.F54:
                                 {
-                                    GameLog.Core.Diplomacy.DebugFormat("Read Statement Type = {0} from foreignPower", Enum.GetName(typeof(StatementType), foreignPower.StatementReceived.StatementType));
+                                    GameLog.Core.Diplomacy.DebugFormat("StatementReceived Statement Type = {0} foreignPower Counterparty {1}, Owner {2}",
+                                        Enum.GetName(typeof(StatementType), foreignPower.StatementReceived.StatementType),
+                                        foreignPower.Counterparty.Key,
+                                        foreignPower.Owner.Key);
                                     DiplomacyHelper.AcceptRejectDictionaryFromStatement(foreignPower.StatementReceived);
                                     break;
                                 }
@@ -977,10 +968,8 @@ namespace Supremacy.Game
                                 IntelHelper.SabotageEnergyExecute(civ2, civ1, foreignPower.LastStatementReceived.Parameter.ToString(), 99999);
                                 foreignPower.LastStatementReceived = null;
                                 break;
-                            case StatementType.CommendWar:
-                            case StatementType.DenounceWar:
-                            case StatementType.WarDeclaration:
-                            case StatementType.T01: // do we need this to send to dictionary as well, see above ??? I think StatementRecieved becomes LastStatementRecieved by itself
+
+                            case StatementType.T01: 
                             case StatementType.T02:
                             case StatementType.T03:
                             case StatementType.T04:
@@ -1040,7 +1029,15 @@ namespace Supremacy.Game
                             case StatementType.F52:
                             case StatementType.F53:
                             case StatementType.F54:
+                                GameLog.Core.Diplomacy.DebugFormat("LastStatementReceived Statement Type = {0} foreignPower counterparyt {1}, owner {2}",
+                                    Enum.GetName(typeof(StatementType), foreignPower.StatementReceived.StatementType),
+                                    foreignPower.Counterparty.Key,
+                                    foreignPower.Owner.Key);
                                 DiplomacyHelper.AcceptRejectDictionaryFromStatement(foreignPower.LastStatementReceived);
+                                break;
+                            case StatementType.CommendWar:
+                            case StatementType.DenounceWar:
+                            case StatementType.WarDeclaration:
                                 break;
                             default:
                                 break;
@@ -1093,7 +1090,7 @@ namespace Supremacy.Game
                     var statementSent = foreignPower.StatementSent;
                     if (statementSent != null)
                     {                       
-                        //  do nothing else = emtpy line
+                        // StatementSent becomes counterparty StatementReceived
                         foreignPower.CounterpartyForeignPower.StatementReceived = statementSent;
                         foreignPower.LastStatementSent = statementSent;
                         foreignPower.StatementSent = null;
@@ -1164,7 +1161,10 @@ namespace Supremacy.Game
                             statementSent.StatementType == StatementType.T53 ||
                             statementSent.StatementType == StatementType.T54)                           
                         { 
-                            // Think this is a do nothing
+                            GameLog.Core.Diplomacy.DebugFormat("StatementSend Type = {0} becomes Conouterparty StatementReceived, foreignPower counterparyt {1}, owner {2}",
+                                    Enum.GetName(typeof(StatementType), statementSent.StatementType),
+                                    foreignPower.Counterparty.Key,
+                                    foreignPower.Owner.Key);
                         }
 
                         //if (statementSent.StatementType == StatementType.StealCredits) // think we do steal and others above in the switch

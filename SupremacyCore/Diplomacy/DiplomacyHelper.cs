@@ -267,6 +267,7 @@ namespace Supremacy.Diplomacy
                 bool accepting = false;
                 bool otherAccepting = false;
                 string powerID = foreignPower.CounterpartyID.ToString() + foreignPower.OwnerID.ToString();
+                string reversePowerID = foreignPower.OwnerID.ToString() + foreignPower.CounterpartyID.ToString() ;
                 string otherPowerID = otherForeignPower.CounterpartyID.ToString() + otherForeignPower.OwnerID.ToString();
 
                 if (_acceptRejectDictionary.ContainsKey(powerID)) // check dictionary with key for bool value
