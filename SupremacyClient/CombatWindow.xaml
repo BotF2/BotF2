@@ -291,8 +291,30 @@
             </StackPanel>
         </DataTemplate>
 
-        <!--Main Combat Window - Begin-->
+        <Style TargetType="{x:Type Button}">
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="SnapsToDevicePixels" Value="True"/>
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="Background">
+                <Setter.Value>
+                    <SolidColorBrush Color="Red" Opacity="0.8" />
+                </Setter.Value>
+            </Setter>
+            <!--<Setter Property="Effect">
+                <Setter.Value>
+                    <DropShadowEffect
+                        ShadowDepth="3"
+                        Direction="330"
+                        Color="Black"
+                        Opacity="1"
+                        BlurRadius="3"/>
+                </Setter.Value>
+            </Setter>-->
+        </Style>
+
+
     </FrameworkElement.Resources>
+        <!--Main Combat Window - Begin-->    
     <Grid 
         Height="750"
         Width="1275">
@@ -921,6 +943,17 @@
                 Content="{s:StringResource COMBAT_CLOSE}"
                 Visibility="Collapsed"
                 Click="OnCloseButtonClicked" Grid.RowSpan="1"/>
+
+        <Button x:Name="EscapeButton"
+                Margin="0,106,0,0"
+                        
+                Grid.Column="0"
+                Grid.Row="0"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                Content="X"
+                Visibility="Visible"
+                Click="OnEscapeButtonClicked" />
     </Grid>
 </scc:Dialog>
 <!--Main Combat Window -END-->

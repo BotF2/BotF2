@@ -444,6 +444,15 @@ namespace Supremacy.Client
         private void OnCloseButtonClicked(object sender, RoutedEventArgs e)
         {
             DialogResult = true;
+            //_combatWindowVisible = false;
+        }
+
+        private void OnEscapeButtonClicked(object sender, RoutedEventArgs e)
+        {
+            // useful if CLOSE-Button doesn't appear
+            DialogResult = true;
+            this.Close();
+            //_combatWindowVisible = false;
         }
 
     }
