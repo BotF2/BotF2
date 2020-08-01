@@ -31,7 +31,7 @@ namespace Supremacy.Diplomacy
     {
         private static readonly IList<Civilization> EmptyCivilizations = new Civilization[0];
         private static CollectionBase<RegardEvent> _regardEvents;
-        private static Dictionary<string, bool> _acceptRejectDictionary = new Dictionary<string, bool> { {"D99", false } };
+        private static Dictionary<string, bool> _acceptRejectDictionary = new Dictionary<string, bool> { {"98", false } };
 
         public static ForeignPowerStatus GetForeignPowerStatus([NotNull] ICivIdentity owner, [NotNull] ICivIdentity counterparty)
         {
@@ -45,7 +45,7 @@ namespace Supremacy.Diplomacy
             _regardEvents = new CollectionBase<RegardEvent>();
             return GameContext.Current.DiplomacyData[owner.CivID, counterparty.CivID].Status;
         }
-            // ToDo look at bringing diplomatic ships to use the old diplomatic code and set up the Civilization-to-diplomat map for games (GameContext.Current.Diplomats)
+           
         public static void ApplyGlobalTrustChange([NotNull] ICivIdentity civ, int trustDelta) 
         {
             if (civ == null)
@@ -262,12 +262,21 @@ namespace Supremacy.Diplomacy
                 if (!otherCiv.IsEmpire)
                     continue;
                 var foreignPower = diplomat.GetForeignPower(otherCiv);
+                var otherDiplomat = Diplomat.Get(otherCiv);
+                var otherForeignPower = otherDiplomat.GetForeignPower(civ);
+                bool accepting = false;
+                bool otherAccepting = false;
                 string powerID = foreignPower.CounterpartyID.ToString() + foreignPower.OwnerID.ToString();
-                var accepting = _acceptRejectDictionary.ContainsKey(powerID) ? true : false; // check dictionary with key for bool value
+                string otherPowerID = otherForeignPower.CounterpartyID.ToString() + otherForeignPower.OwnerID.ToString();
+
+                if (_acceptRejectDictionary.ContainsKey(powerID)) // check dictionary with key for bool value
+                    {
+                       accepting = _acceptRejectDictionary[powerID];
+                    }
                 if (accepting)
                 {
-                    if (_acceptRejectDictionary[powerID])
-                    {
+                    //if (_acceptRejectDictionary[powerID])
+                    //{
                         if (foreignPower.ProposalReceived != null) // aCiv is owner of the foreignpower looking for a ProposalRecieved
                         {
                             foreignPower.PendingAction = PendingDiplomacyAction.AcceptProposal;
@@ -295,7 +304,44 @@ namespace Supremacy.Diplomacy
                             }
 
                         }
-                    }
+                    //}
+                }
+                if (_acceptRejectDictionary.ContainsKey(otherPowerID)) // check dictionary with key for bool value
+                {
+                    otherAccepting = _acceptRejectDictionary[otherPowerID];
+                }
+                if (otherAccepting)
+                {
+                    //if (_acceptRejectDictionary[otherPowerID])
+                    //{
+                        if (otherForeignPower.ProposalReceived != null) // aCiv is owner of the foreignpower looking for a ProposalRecieved
+                        {
+                            otherForeignPower.PendingAction = PendingDiplomacyAction.AcceptProposal;
+
+                            GameLog.Client.Diplomacy.DebugFormat(
+                                "## PendingAction: ACCEPT ={0} reset by clause - regard value, Counterparty = {1} Onwer = {2}",
+                                otherForeignPower.PendingAction.ToString(), otherForeignPower.Counterparty.ShortName,
+                                otherForeignPower.Owner.ShortName);
+                            otherForeignPower.LastProposalReceived = otherForeignPower.ProposalReceived;
+                            otherForeignPower.ProposalReceived = null;
+                        }
+
+                        else
+                        {
+                            if (otherForeignPower.ProposalReceived != null)
+                            {
+                                otherForeignPower.PendingAction = PendingDiplomacyAction.RejectProposal;
+
+                                GameLog.Client.Diplomacy.DebugFormat(
+                                    "## PendingAction: REJECT ={0} reset by clause - regard value, Counterparty = {1} Onwer = {2}",
+                                    otherForeignPower.PendingAction.ToString(), otherForeignPower.Counterparty.ShortName,
+                                    otherForeignPower.Owner.ShortName);
+                                otherForeignPower.LastProposalReceived = otherForeignPower.ProposalReceived;
+                                otherForeignPower.ProposalReceived = null;
+                            }
+
+                        }
+                    //}
                 }
             }
         }
@@ -599,6 +645,8 @@ namespace Supremacy.Diplomacy
                 case StatementType.T52:
                 case StatementType.T53:
                 case StatementType.T54:
+                    AcceptRejectDictionary(_civIDs, true, turnNumber);
+                    break;
                 case StatementType.F01:
                 case StatementType.F02:
                 case StatementType.F03:
@@ -629,7 +677,7 @@ namespace Supremacy.Diplomacy
                 case StatementType.F52:
                 case StatementType.F53:
                 case StatementType.F54:
-                    AcceptRejectDictionary(_civIDs, true, turnNumber); // creat dictionary entry from StatementType
+                    AcceptRejectDictionary(_civIDs, false, turnNumber); // creat dictionary entry from StatementType
                     break;
                 case StatementType.CommendWar:
                 case StatementType.DenounceWar:
@@ -662,13 +710,13 @@ namespace Supremacy.Diplomacy
         {
             int turnNumber = turn; // in case we need this to time clearing of dictionary - Dictionary<string, Tuple<bool, int>>(); or ValueType is a Class with bool and int.
             string foreignPowerID = foreignPower.CounterpartyID.ToString() + foreignPower.OwnerID.ToString();
-            if (_acceptRejectDictionary == null)
-            {
-                Dictionary<string, bool> dictionary = new Dictionary<string, bool>() { { foreignPowerID, accepted } };
-                _acceptRejectDictionary = dictionary;
-                GameLog.Client.Diplomacy.DebugFormat("Generated new _acceptRejectDicionary");
-            }
-            else if (_acceptRejectDictionary.ContainsKey(foreignPowerID))
+            //if (_acceptRejectDictionary == null)
+            //{
+            //    Dictionary<string, bool> dictionary = new Dictionary<string, bool>() { { foreignPowerID, accepted } };
+            //    _acceptRejectDictionary = dictionary;
+            //    GameLog.Client.Diplomacy.DebugFormat("Generated new _acceptRejectDicionary");
+            //}
+            if (_acceptRejectDictionary.ContainsKey(foreignPowerID))
             {
                 _acceptRejectDictionary.Remove(foreignPowerID);
                 _acceptRejectDictionary.Add(foreignPowerID, accepted);
@@ -687,13 +735,13 @@ namespace Supremacy.Diplomacy
             int turnNumber = turn; // in case we need this to time clearing of dictionary - Dictionary<string, Tuple<bool, int>>(); or ValueType is a Class with bool and int.
             //string foreignPowerID = foreignPower.CounterpartyID.ToString() + foreignPower.OwnerID.ToString();
             
-            if (_acceptRejectDictionary == null)
-            {
-                Dictionary<string, bool> dictionary = new Dictionary<string, bool>() { { civIDs, accepted } };
-                _acceptRejectDictionary = dictionary;
-                GameLog.Client.Diplomacy.DebugFormat("Generated new _acceptRejectDicionary");
-            }
-            else if (_acceptRejectDictionary.ContainsKey(civIDs))
+            //if (_acceptRejectDictionary == null)
+            //{
+            //    Dictionary<string, bool> dictionary = new Dictionary<string, bool>() { { civIDs, accepted } };
+            //    _acceptRejectDictionary = dictionary;
+            //    GameLog.Client.Diplomacy.DebugFormat("Generated new _acceptRejectDicionary");
+            //}
+            if (_acceptRejectDictionary.ContainsKey(civIDs))
             {
                 _acceptRejectDictionary.Remove(civIDs);
                 _acceptRejectDictionary.Add(civIDs, accepted);

@@ -876,9 +876,7 @@ namespace Supremacy.Game
                                 if (civ2.CivID > civ1.CivID)
                                     IntelHelper.SabotageEnergyExecute(civ2, civ1, foreignPower.StatementReceived.Parameter.ToString(), 99999);
                                 break;
-                            case StatementType.CommendWar:
-                            case StatementType.DenounceWar:
-                            case StatementType.WarDeclaration:
+
                             case StatementType.T01: // read statement type off of foreignPower and send it to accept - reject dictionary
                             case StatementType.T02:
                             case StatementType.T03:
@@ -944,6 +942,10 @@ namespace Supremacy.Game
                                     DiplomacyHelper.AcceptRejectDictionaryFromStatement(foreignPower.StatementReceived);
                                     break;
                                 }
+                            case StatementType.CommendWar:
+                            case StatementType.DenounceWar:
+                            case StatementType.WarDeclaration:
+                                break;
                             default:
                                 break;
                         }
@@ -1037,7 +1039,8 @@ namespace Supremacy.Game
                             case StatementType.F51:
                             case StatementType.F52:
                             case StatementType.F53:
-                            case StatementType.F54:                               
+                            case StatementType.F54:
+                                DiplomacyHelper.AcceptRejectDictionaryFromStatement(foreignPower.LastStatementReceived);
                                 break;
                             default:
                                 break;
