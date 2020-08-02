@@ -6,6 +6,7 @@ using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Media;
 using Microsoft.Practices.Composite.Regions;
+using Microsoft.Practices.ServiceLocation;
 using Obtics.Collections;
 using Supremacy.AI;
 using Supremacy.Client.Context;
@@ -26,6 +27,7 @@ namespace Supremacy.Client.Views.DiplomacyScreen
     /// </summary>
     public partial class NewDiplomacyScreen : INewDiplomacyScreenView
     {
+        private Order _sendOrder;
         public NewDiplomacyScreen()
         {
             TextBlockExtensions.AddHyperlinkClickedHandler(this, OnMessageParameterLinkClick);
@@ -69,6 +71,9 @@ namespace Supremacy.Client.Views.DiplomacyScreen
                         {
                             
                             Statement statementToSend = new Statement( senderCiv, playerEmpire, _statementType, Tone.Receptive, turn); //DiplomacyExtensions.GetStatementSent(diplomat, senderCiv);
+                            _sendOrder = new SendStatementOrder(statementToSend);
+
+                            ServiceLocator.Current.GetInstance<IPlayerOrderService>().AddOrder(_sendOrder);
                             foreignPower.StatementSent = statementToSend; // load statement to send in foreignPower, statment type carries key for dictionary entery
                             GameLog.Client.Diplomacy.DebugFormat("!! RESPONSE: Statement sender ={0} to recipient ={1}", statementToSend.Sender.Key, statementToSend.Recipient.Key);
 

@@ -698,13 +698,16 @@ namespace Supremacy.Game
 
                     var foreignPower = diplomat1.GetForeignPower(civ2);
                     var foreignPowerStatus = diplomat1.GetForeignPower(civ2).DiplomacyData.Status;
-                    
+
                     //GameLog.Core.Diplomacy.DebugFormat("---------------------------------------");
                     //GameLog.Core.Diplomacy.DebugFormat("foreignPowerStatus = {2} for {0} vs {1}", civ1, civ2, foreignPowerStatus.ToString());
-                    
+
                     // Wait a turn for population of PendingAction.AcceptProposal and PendingAction.RejectProposal by downstream AI accept or reject
                     // save the accept and reject in LastProposal and act during the next turn
-
+                    if (civ1.CivID == 1 && civ2.CivID == 4)
+                        ;
+                    if (civ1.CivID == 4 && civ2.CivID == 1)
+                        ;
                     switch (foreignPower.PendingAction)
                     {
                         case PendingDiplomacyAction.AcceptProposal:
