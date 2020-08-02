@@ -58,13 +58,15 @@ namespace Supremacy.Client.Views.DiplomacyScreen
                     else
                     {      // creat entry for none host human player that clicked the accept - reject radio button         
                         var _statementType = DiplomacyHelper.GetStatementType(accepting, (Civilization)senderCiv, playerEmpire); // first is bool, then sender ID(now the local player), last new receipient, in Dictinary Key                       
-                        GameLog.Client.Diplomacy.DebugFormat("Local player IS NOT Host, statementType = {0} accepting? {1} sender ={2}", Enum.GetName(typeof(StatementType), _statementType));
+                        GameLog.Client.Diplomacy.DebugFormat("Local player IS NOT Host, statementType = {0} accepting? {1} sender ={2}",
+                            Enum.GetName(typeof(StatementType), _statementType),
+                            senderCiv.Key);
                         if (_statementType != StatementType.NoStatement)
                         {
                             
                             Statement statementToSend = new Statement( senderCiv, playerEmpire, _statementType, Tone.Receptive, turn); //DiplomacyExtensions.GetStatementSent(diplomat, senderCiv);
                             foreignPower.StatementSent = statementToSend; // load statement to send in foreignPower, statment type carries key for dictionary entery
-                            GameLog.Client.Diplomacy.DebugFormat("!! Statement sender ={1} to recipient ={2}", statementToSend.Sender.Key, statementToSend.Recipient.Key);
+                            GameLog.Client.Diplomacy.DebugFormat("!! Statement sender ={0} to recipient ={1}", statementToSend.Sender.Key, statementToSend.Recipient.Key);
                         }
                     }
 

@@ -271,13 +271,11 @@ namespace Supremacy.Diplomacy
                 string otherPowerID = otherForeignPower.CounterpartyID.ToString() + otherForeignPower.OwnerID.ToString();
 
                 if (_acceptRejectDictionary.ContainsKey(powerID)) // check dictionary with key for bool value
-                    {
-                       accepting = _acceptRejectDictionary[powerID];
-                    }
-                if (accepting)
                 {
-                    //if (_acceptRejectDictionary[powerID])
-                    //{
+                    accepting = _acceptRejectDictionary[powerID];
+                    if (accepting)
+                    {
+
                         if (foreignPower.ProposalReceived != null) // aCiv is owner of the foreignpower looking for a ProposalRecieved
                         {
                             foreignPower.PendingAction = PendingDiplomacyAction.AcceptProposal;
@@ -289,32 +287,30 @@ namespace Supremacy.Diplomacy
                             foreignPower.LastProposalReceived = foreignPower.ProposalReceived;
                             foreignPower.ProposalReceived = null;
                         }
-
-                        else
+                    }
+                    else
+                    {
+                        if (foreignPower.ProposalReceived != null)
                         {
-                            if (foreignPower.ProposalReceived != null)
-                            {
-                                foreignPower.PendingAction = PendingDiplomacyAction.RejectProposal;
+                            foreignPower.PendingAction = PendingDiplomacyAction.RejectProposal;
 
-                                GameLog.Client.Diplomacy.DebugFormat(
-                                    "## PendingAction: REJECT ={0} reset by clause - regard value, Counterparty = {1} Onwer = {2}",
-                                    foreignPower.PendingAction.ToString(), foreignPower.Counterparty.ShortName,
-                                    foreignPower.Owner.ShortName);
-                                foreignPower.LastProposalReceived = foreignPower.ProposalReceived;
-                                foreignPower.ProposalReceived = null;
-                            }
-
+                            GameLog.Client.Diplomacy.DebugFormat(
+                                "## PendingAction: REJECT ={0} reset by clause - regard value, Counterparty = {1} Onwer = {2}",
+                                foreignPower.PendingAction.ToString(), foreignPower.Counterparty.ShortName,
+                                foreignPower.Owner.ShortName);
+                            foreignPower.LastProposalReceived = foreignPower.ProposalReceived;
+                            foreignPower.ProposalReceived = null;
                         }
-                    //}
+
+                    }
+
                 }
                 if (_acceptRejectDictionary.ContainsKey(otherPowerID)) // check dictionary with key for bool value
                 {
                     otherAccepting = _acceptRejectDictionary[otherPowerID];
-                }
-                if (otherAccepting)
-                {
-                    //if (_acceptRejectDictionary[otherPowerID])
-                    //{
+
+                    if (otherAccepting)
+                    {
                         if (otherForeignPower.ProposalReceived != null) // aCiv is owner of the foreignpower looking for a ProposalRecieved
                         {
                             otherForeignPower.PendingAction = PendingDiplomacyAction.AcceptProposal;
@@ -326,23 +322,23 @@ namespace Supremacy.Diplomacy
                             otherForeignPower.LastProposalReceived = otherForeignPower.ProposalReceived;
                             otherForeignPower.ProposalReceived = null;
                         }
+                    }
 
-                        else
+                    else
+                    {
+                        if (otherForeignPower.ProposalReceived != null)
                         {
-                            if (otherForeignPower.ProposalReceived != null)
-                            {
-                                otherForeignPower.PendingAction = PendingDiplomacyAction.RejectProposal;
+                            otherForeignPower.PendingAction = PendingDiplomacyAction.RejectProposal;
 
-                                GameLog.Client.Diplomacy.DebugFormat(
-                                    "## PendingAction: REJECT ={0} reset by clause - regard value, Counterparty = {1} Onwer = {2}",
-                                    otherForeignPower.PendingAction.ToString(), otherForeignPower.Counterparty.ShortName,
-                                    otherForeignPower.Owner.ShortName);
-                                otherForeignPower.LastProposalReceived = otherForeignPower.ProposalReceived;
-                                otherForeignPower.ProposalReceived = null;
-                            }
-
+                            GameLog.Client.Diplomacy.DebugFormat(
+                                "## PendingAction: REJECT ={0} reset by clause - regard value, Counterparty = {1} Onwer = {2}",
+                                otherForeignPower.PendingAction.ToString(), otherForeignPower.Counterparty.ShortName,
+                                otherForeignPower.Owner.ShortName);
+                            otherForeignPower.LastProposalReceived = otherForeignPower.ProposalReceived;
+                            otherForeignPower.ProposalReceived = null;
                         }
-                    //}
+
+                    }                    
                 }
             }
         }
