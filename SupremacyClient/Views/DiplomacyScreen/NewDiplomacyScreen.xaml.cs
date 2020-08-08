@@ -49,9 +49,9 @@ namespace Supremacy.Client.Views.DiplomacyScreen
                     var senderCiv = Model.SelectedForeignPower.Counterparty; // sender of proposal treaty
                     var playerEmpire = AppContext.LocalPlayerEmpire.Civilization; // local player reciever of proposal treaty
                     var diplomat = Diplomat.Get(playerEmpire);
-                    //var otherDiplomat = Diplomat.Get(senderCiv);
+                    var otherDiplomat = Diplomat.Get(senderCiv);
                     var foreignPower = diplomat.GetForeignPower(senderCiv);
-                    //var otherForeignPower = otherDiplomat.GetForeignPower(playerEmpire);
+                    var otherForeignPower = otherDiplomat.GetForeignPower(playerEmpire);
                     bool localPlayerIsHosting = AppContext.IsGameHost;
                     int turn = GameContext.Current.TurnNumber;
                     if (localPlayerIsHosting)
@@ -72,28 +72,28 @@ namespace Supremacy.Client.Views.DiplomacyScreen
                             );
                         if (_statementType != StatementType.NoStatement)
                         {
-                            
-                            Statement statementToSend = new Statement( senderCiv, playerEmpire, _statementType, Tone.Receptive, turn); //DiplomacyExtensions.GetStatementSent(diplomat, senderCiv);
+                            Statement statementToSend = new Statement(playerEmpire, senderCiv, _statementType, Tone.Receptive, turn);
+                            //Statement statementToSend = new Statement( senderCiv, playerEmpire, _statementType, Tone.Receptive, turn); //DiplomacyExtensions.GetStatementSent(diplomat, senderCiv);
                             _sendOrder = new SendStatementOrder(statementToSend);
 
                             ServiceLocator.Current.GetInstance<IPlayerOrderService>().AddOrder(_sendOrder);
-                            foreignPower.StatementSent = statementToSend; // load statement to send in foreignPower, statment type carries key for dictionary entery
-                            GameLog.Client.Diplomacy.DebugFormat("!! RESPONSE: Statement sender ={0} to recipient ={1}", statementToSend.Sender.Key, statementToSend.Recipient.Key);
+                            //foreignPower.StatementSent = statementToSend; // load statement to send in foreignPower, statment type carries key for dictionary entery
+                            //GameLog.Client.Diplomacy.DebugFormat("!! RESPONSE: Statement sender ={0} to recipient ={1}", statementToSend.Sender.Key, statementToSend.Recipient.Key);
 
                             //statementToSend = new Statement(playerEmpire, senderCiv, _statementType, Tone.Receptive, turn); //DiplomacyExtensions.GetStatementSent(diplomat, senderCiv);
-                            //otherForeignPower.StatementSent = statementToSend; // load statement to send in foreignPower, statment type carries key for dictionary entery
-                            //GameLog.Client.Diplomacy.DebugFormat("!! foreignPower.StatementSent *other*ForeignPower Recipient ={0} to Sender ={1}"
-                            //    , statementToSend.Recipient.Key
-                            //    , statementToSend.Sender.Key
-                            //    );
+                            otherForeignPower.StatementSent = statementToSend; // load statement to send in foreignPower, statment type carries key for dictionary entery
+                            GameLog.Client.Diplomacy.DebugFormat("!! foreignPower.StatementSent *other*ForeignPower Recipient ={0} to Sender ={1}"
+                                , statementToSend.Recipient.Key
+                                , statementToSend.Sender.Key
+                                );
                         }
                     }
 
                     GameLog.Client.Diplomacy.DebugFormat("Turn {0}: Button response = {4}, Player = {1}, Sender = {2} vs counterParty {3} local player is host ={5}"
                         , GameContext.Current.TurnNumber
                         , playerEmpire.Key
-                        , foreignPower.Owner
-                        , foreignPower.Counterparty.Key
+                        , otherForeignPower.Owner
+                        , otherForeignPower.Counterparty.Key
                         , response
                         , localPlayerIsHosting
                         );
