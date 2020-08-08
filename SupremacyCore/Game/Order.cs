@@ -20,6 +20,7 @@ using Supremacy.Utility;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 
 namespace Supremacy.Game
 {
@@ -56,6 +57,8 @@ namespace Supremacy.Game
         {
             get
             {
+                if (_executionContext == null && GameContext.Current != null)
+                    return GameContext.Current.Civilizations[_ownerId];
                 if (_executionContext != null)
                     return _executionContext.Civilizations[_ownerId];
                 //if (_ownerId == Civilization.InvalidID)

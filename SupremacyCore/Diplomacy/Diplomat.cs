@@ -106,7 +106,8 @@ namespace Supremacy.Diplomacy
                 throw new ArgumentNullException("counterparty");
 
             if (counterparty.CivID == OwnerID)
-                return null;
+                GameLog.Client.Diplomacy.DebugFormat("counterpartyID = {0} OwnerID ={1}", counterparty.CivID, OwnerID);
+            //    return null;
 
             ForeignPower foreignPower;
 
