@@ -251,18 +251,18 @@ namespace Supremacy.Diplomacy
             
             foreach (var otherCiv in GameContext.Current.Civilizations)
             {
-                if (_acceptRejectDictionary == null)
-                {
-                    GameLog.Core.Diplomacy.DebugFormat("Civ ={0}, otherciv = {1} Dictionary = {2}", aCiv.Key, otherCiv.Key, "null");
-                    continue;
-                }
+                //if (_acceptRejectDictionary == null)
+                //{
+                //    GameLog.Core.Diplomacy.DebugFormat("Civ ={0}, otherciv = {1} Dictionary = {2}", aCiv.Key, otherCiv.Key, "null");
+                //    continue;
+                //}
 
                 if (aCiv == otherCiv)
                     continue;
                 if (!otherCiv.IsEmpire)
                     continue;
-                //var foreignPower = diplomat.GetForeignPower(otherCiv);
-                var foreignPower = diplomat.GetForeignPower(aCiv);
+                var foreignPower = diplomat.GetForeignPower(otherCiv);
+                //var foreignPower = diplomat.GetForeignPower(aCiv);
                 //var otherDiplomat = Diplomat.Get(otherCiv);
                 //var otherForeignPower = otherDiplomat.GetForeignPower(civ);
                 bool accepting = false;
@@ -270,7 +270,10 @@ namespace Supremacy.Diplomacy
                 string powerID = foreignPower.CounterpartyID.ToString() + foreignPower.OwnerID.ToString();
                 //string reversePowerID = foreignPower.OwnerID.ToString() + foreignPower.CounterpartyID.ToString() ;
                 // string otherPowerID = otherForeignPower.CounterpartyID.ToString() + otherForeignPower.OwnerID.ToString();
-                GameLog.Client.Diplomacy.DebugFormat("Dictionar foreignPower.Owner = {0}, counterpary ={1} powerID ={2}", foreignPower.OwnerID, foreignPower.CounterpartyID, powerID.ToString());
+                GameLog.Client.Diplomacy.DebugFormat("Dictionar foreignPower.Owner = {0}, counterpary ={1} powerID ={2}"
+                    , foreignPower.OwnerID
+                    , foreignPower.CounterpartyID
+                    , powerID.ToString());
                 if (_acceptRejectDictionary.ContainsKey(powerID)) // check dictionary with key for bool value
                 {
                     accepting = _acceptRejectDictionary[powerID];
