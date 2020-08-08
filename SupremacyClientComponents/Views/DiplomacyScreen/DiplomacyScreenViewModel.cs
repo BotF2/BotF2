@@ -1356,7 +1356,7 @@ namespace Supremacy.Client.Views
 
             foreach (var civ in GameContext.Current.Civilizations)
             {
-                if (civ.CivID == playerEmpireId || !DiplomacyHelper.IsContactMade(playerEmpireId, civ.CivID))
+                if (civ.CivID == playerEmpireId || !DiplomacyHelper.IsContactMade(playerEmpireId, civ.CivID) || playerDiplomat.GetForeignPower(civ) != null)
                     continue;
 
                 var foreignPower = playerDiplomat.GetForeignPower(civ);
