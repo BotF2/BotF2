@@ -1105,72 +1105,72 @@ namespace Supremacy.Game
 
                         if (statementSent.StatementType == StatementType.WarDeclaration)
                             foreignPower.DeclareWar();
-                        if (statementSent.StatementType == StatementType.F01 ||
-                            statementSent.StatementType == StatementType.F02 ||
-                            statementSent.StatementType == StatementType.F03 ||
-                            statementSent.StatementType == StatementType.F04 ||
-                            statementSent.StatementType == StatementType.F05 ||
-                            statementSent.StatementType == StatementType.F10 ||
-                            statementSent.StatementType == StatementType.F12 ||
-                            statementSent.StatementType == StatementType.F13 ||
-                            statementSent.StatementType == StatementType.F14 ||
-                            statementSent.StatementType == StatementType.F15 ||
-                            statementSent.StatementType == StatementType.F20 ||
-                            statementSent.StatementType == StatementType.F21 ||
-                            statementSent.StatementType == StatementType.F23 ||
-                            statementSent.StatementType == StatementType.F24 ||
-                            statementSent.StatementType == StatementType.F25 ||
-                            statementSent.StatementType == StatementType.F30 ||
-                            statementSent.StatementType == StatementType.F31 ||
-                            statementSent.StatementType == StatementType.F32 ||
-                            statementSent.StatementType == StatementType.F34 ||
-                            statementSent.StatementType == StatementType.F35 ||
-                            statementSent.StatementType == StatementType.F40 ||
-                            statementSent.StatementType == StatementType.F41 ||
-                            statementSent.StatementType == StatementType.F42 ||
-                            statementSent.StatementType == StatementType.F43 ||
-                            statementSent.StatementType == StatementType.F45 ||
-                            statementSent.StatementType == StatementType.F50 ||
-                            statementSent.StatementType == StatementType.F51 ||
-                            statementSent.StatementType == StatementType.F52 ||
-                            statementSent.StatementType == StatementType.F53 ||
-                            statementSent.StatementType == StatementType.F54 ||
-                            statementSent.StatementType == StatementType.T01 ||
-                            statementSent.StatementType == StatementType.T02 ||
-                            statementSent.StatementType == StatementType.T03 ||
-                            statementSent.StatementType == StatementType.T04 ||
-                            statementSent.StatementType == StatementType.T05 ||
-                            statementSent.StatementType == StatementType.T10 ||
-                            statementSent.StatementType == StatementType.T12 ||
-                            statementSent.StatementType == StatementType.T13 ||
-                            statementSent.StatementType == StatementType.T14 ||
-                            statementSent.StatementType == StatementType.T15 ||
-                            statementSent.StatementType == StatementType.T20 ||
-                            statementSent.StatementType == StatementType.T21 ||
-                            statementSent.StatementType == StatementType.T23 ||
-                            statementSent.StatementType == StatementType.T24 ||
-                            statementSent.StatementType == StatementType.T25 ||
-                            statementSent.StatementType == StatementType.T30 ||
-                            statementSent.StatementType == StatementType.T31 ||
-                            statementSent.StatementType == StatementType.T32 ||
-                            statementSent.StatementType == StatementType.T34 ||
-                            statementSent.StatementType == StatementType.T35 ||
-                            statementSent.StatementType == StatementType.T40 ||
-                            statementSent.StatementType == StatementType.T41 ||
-                            statementSent.StatementType == StatementType.T42 ||
-                            statementSent.StatementType == StatementType.T43 ||
-                            statementSent.StatementType == StatementType.T45 ||
-                            statementSent.StatementType == StatementType.T50 ||
-                            statementSent.StatementType == StatementType.T51 ||
-                            statementSent.StatementType == StatementType.T52 ||
-                            statementSent.StatementType == StatementType.T53 ||
-                            statementSent.StatementType == StatementType.T54)                           
-                        { 
-                            GameLog.Core.Diplomacy.DebugFormat("StatementSend Type = {0} becomes Conouterparty StatementReceived, foreignPower counterparyt {1}, owner {2}",
-                                    Enum.GetName(typeof(StatementType), statementSent.StatementType),
-                                    foreignPower.Counterparty.Key,
-                                    foreignPower.Owner.Key);
-                        }
+                        //if (statementSent.StatementType == StatementType.F01 ||
+                        //    statementSent.StatementType == StatementType.F02 ||
+                        //    statementSent.StatementType == StatementType.F03 ||
+                        //    statementSent.StatementType == StatementType.F04 ||
+                        //    statementSent.StatementType == StatementType.F05 ||
+                        //    statementSent.StatementType == StatementType.F10 ||
+                        //    statementSent.StatementType == StatementType.F12 ||
+                        //    statementSent.StatementType == StatementType.F13 ||
+                        //    statementSent.StatementType == StatementType.F14 ||
+                        //    statementSent.StatementType == StatementType.F15 ||
+                        //    statementSent.StatementType == StatementType.F20 ||
+                        //    statementSent.StatementType == StatementType.F21 ||
+                        //    statementSent.StatementType == StatementType.F23 ||
+                        //    statementSent.StatementType == StatementType.F24 ||
+                        //    statementSent.StatementType == StatementType.F25 ||
+                        //    statementSent.StatementType == StatementType.F30 ||
+                        //    statementSent.StatementType == StatementType.F31 ||
+                        //    statementSent.StatementType == StatementType.F32 ||
+                        //    statementSent.StatementType == StatementType.F34 ||
+                        //    statementSent.StatementType == StatementType.F35 ||
+                        //    statementSent.StatementType == StatementType.F40 ||
+                        //    statementSent.StatementType == StatementType.F41 ||
+                        //    statementSent.StatementType == StatementType.F42 ||
+                        //    statementSent.StatementType == StatementType.F43 ||
+                        //    statementSent.StatementType == StatementType.F45 ||
+                        //    statementSent.StatementType == StatementType.F50 ||
+                        //    statementSent.StatementType == StatementType.F51 ||
+                        //    statementSent.StatementType == StatementType.F52 ||
+                        //    statementSent.StatementType == StatementType.F53 ||
+                        //    statementSent.StatementType == StatementType.F54 ||
+                        //    statementSent.StatementType == StatementType.T01 ||
+                        //    statementSent.StatementType == StatementType.T02 ||
+                        //    statementSent.StatementType == StatementType.T03 ||
+                        //    statementSent.StatementType == StatementType.T04 ||
+                        //    statementSent.StatementType == StatementType.T05 ||
+                        //    statementSent.StatementType == StatementType.T10 ||
+                        //    statementSent.StatementType == StatementType.T12 ||
+                        //    statementSent.StatementType == StatementType.T13 ||
+                        //    statementSent.StatementType == StatementType.T14 ||
+                        //    statementSent.StatementType == StatementType.T15 ||
+                        //    statementSent.StatementType == StatementType.T20 ||
+                        //    statementSent.StatementType == StatementType.T21 ||
+                        //    statementSent.StatementType == StatementType.T23 ||
+                        //    statementSent.StatementType == StatementType.T24 ||
+                        //    statementSent.StatementType == StatementType.T25 ||
+                        //    statementSent.StatementType == StatementType.T30 ||
+                        //    statementSent.StatementType == StatementType.T31 ||
+                        //    statementSent.StatementType == StatementType.T32 ||
+                        //    statementSent.StatementType == StatementType.T34 ||
+                        //    statementSent.StatementType == StatementType.T35 ||
+                        //    statementSent.StatementType == StatementType.T40 ||
+                        //    statementSent.StatementType == StatementType.T41 ||
+                        //    statementSent.StatementType == StatementType.T42 ||
+                        //    statementSent.StatementType == StatementType.T43 ||
+                        //    statementSent.StatementType == StatementType.T45 ||
+                        //    statementSent.StatementType == StatementType.T50 ||
+                        //    statementSent.StatementType == StatementType.T51 ||
+                        //    statementSent.StatementType == StatementType.T52 ||
+                        //    statementSent.StatementType == StatementType.T53 ||
+                        //    statementSent.StatementType == StatementType.T54)                           
+                        //{ 
+                        //    GameLog.Core.Diplomacy.DebugFormat("StatementSend Type = {0} becomes Conouterparty StatementReceived, foreignPower counterparyt {1}, owner {2}",
+                        //            Enum.GetName(typeof(StatementType), statementSent.StatementType),
+                        //            foreignPower.Counterparty.Key,
+                        //            foreignPower.Owner.Key);
+                        //}
 
                         //if (statementSent.StatementType == StatementType.StealCredits) // think we do steal and others above in the switch
                         //{
