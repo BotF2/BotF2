@@ -49,9 +49,9 @@ namespace Supremacy.Client.Views.DiplomacyScreen
                     var senderCiv = Model.SelectedForeignPower.Counterparty; // sender of proposal treaty
                     var playerEmpire = AppContext.LocalPlayerEmpire.Civilization; // local player reciever of proposal treaty
                     var diplomat = Diplomat.Get(playerEmpire);
-                    var otherDiplomat = Diplomat.Get(senderCiv);
+                    //var otherDiplomat = Diplomat.Get(senderCiv);
                     var foreignPower = diplomat.GetForeignPower(senderCiv);
-                    var otherForeignPower = otherDiplomat.GetForeignPower(playerEmpire);
+                    //var otherForeignPower = otherDiplomat.GetForeignPower(playerEmpire);
                     bool localPlayerIsHosting = AppContext.IsGameHost;
                     int turn = GameContext.Current.TurnNumber;
                     if (localPlayerIsHosting)
@@ -80,12 +80,12 @@ namespace Supremacy.Client.Views.DiplomacyScreen
                             foreignPower.StatementSent = statementToSend; // load statement to send in foreignPower, statment type carries key for dictionary entery
                             GameLog.Client.Diplomacy.DebugFormat("!! RESPONSE: Statement sender ={0} to recipient ={1}", statementToSend.Sender.Key, statementToSend.Recipient.Key);
 
-                            statementToSend = new Statement(playerEmpire, senderCiv, _statementType, Tone.Receptive, turn); //DiplomacyExtensions.GetStatementSent(diplomat, senderCiv);
-                            otherForeignPower.StatementSent = statementToSend; // load statement to send in foreignPower, statment type carries key for dictionary entery
-                            GameLog.Client.Diplomacy.DebugFormat("!! foreignPower.StatementSent *other*ForeignPower Recipient ={0} to Sender ={1}"
-                                , statementToSend.Recipient.Key
-                                , statementToSend.Sender.Key
-                                );
+                            //statementToSend = new Statement(playerEmpire, senderCiv, _statementType, Tone.Receptive, turn); //DiplomacyExtensions.GetStatementSent(diplomat, senderCiv);
+                            //otherForeignPower.StatementSent = statementToSend; // load statement to send in foreignPower, statment type carries key for dictionary entery
+                            //GameLog.Client.Diplomacy.DebugFormat("!! foreignPower.StatementSent *other*ForeignPower Recipient ={0} to Sender ={1}"
+                            //    , statementToSend.Recipient.Key
+                            //    , statementToSend.Sender.Key
+                            //    );
                         }
                     }
 
