@@ -46,8 +46,8 @@ namespace Supremacy.Client.Views.DiplomacyScreen
                     if (response == "ACCEPT")
                             accepting = true;
 
-                    var senderCiv = Model.SelectedForeignPower.Counterparty;
-                    var playerEmpire = AppContext.LocalPlayerEmpire.Civilization; // local player
+                    var senderCiv = Model.SelectedForeignPower.Counterparty; // sender of proposal treaty
+                    var playerEmpire = AppContext.LocalPlayerEmpire.Civilization; // local player reciever of proposal treaty
                     var diplomat = Diplomat.Get(playerEmpire);
                     var otherDiplomat = Diplomat.Get(senderCiv);
                     var foreignPower = diplomat.GetForeignPower(senderCiv);
@@ -60,12 +60,15 @@ namespace Supremacy.Client.Views.DiplomacyScreen
                         DiplomacyHelper.AcceptRejectDictionary(foreignPower, accepting, turn); // creat entry for game host
                     }
                     else
-                    {      // creat entry for none host human player that clicked the accept - reject radio button         
+                    {   // creat entry for none host human player that clicked the accept - reject radio button         
                         StatementType _statementType = DiplomacyHelper.GetStatementType(accepting, (Civilization)senderCiv, playerEmpire); // first is bool, then sender ID(now the local player), last new receipient, in Dictinary Key                       
-                        GameLog.Client.Diplomacy.DebugFormat("Local player IS NOT Host, statementType = {0} accepting = {1} sender ={2}"
+                        GameLog.Client.Diplomacy.DebugFormat("Local player IS NOT Host, statementType = {0} accepting = {1} sender ={2} counterpartyID {3} local = {4} OwnerID ={5}"
                             , Enum.GetName(typeof(StatementType), _statementType)
                             , accepting
                             , senderCiv.Key
+                            , foreignPower.CounterpartyID
+                            , playerEmpire.Key
+                            , foreignPower.OwnerID
                             );
                         if (_statementType != StatementType.NoStatement)
                         {
@@ -79,7 +82,7 @@ namespace Supremacy.Client.Views.DiplomacyScreen
 
                             statementToSend = new Statement(playerEmpire, senderCiv, _statementType, Tone.Receptive, turn); //DiplomacyExtensions.GetStatementSent(diplomat, senderCiv);
                             otherForeignPower.StatementSent = statementToSend; // load statement to send in foreignPower, statment type carries key for dictionary entery
-                            GameLog.Client.Diplomacy.DebugFormat("!! RESPONSE: Statement *other*ForeignPower Recipient ={0} to Sender ={1}"
+                            GameLog.Client.Diplomacy.DebugFormat("!! foreignPower.StatementSent *other*ForeignPower Recipient ={0} to Sender ={1}"
                                 , statementToSend.Recipient.Key
                                 , statementToSend.Sender.Key
                                 );

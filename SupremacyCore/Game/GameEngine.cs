@@ -668,6 +668,8 @@ namespace Supremacy.Game
             // FIRST: Pending Actions
             foreach (var civ1 in GameContext.Current.Civilizations)
             {
+                if (civ1.IsHuman)
+                    DiplomacyHelper.AcceptingRejecting(civ1);
                 foreach (var civ2 in GameContext.Current.Civilizations)
                 {
                   
@@ -2376,8 +2378,8 @@ namespace Supremacy.Game
 
                     try
                     {
-                        if (civ.IsHuman)
-                            DiplomacyHelper.AcceptingRejecting(civ); // read accept reject dictionary for entry involving this civ
+                        //if (civ.IsHuman)
+                        //    DiplomacyHelper.AcceptingRejecting(civ); // read accept reject dictionary for entry involving this civ
                         if (civ.IsHuman && !autoTurnCiv.Contains(civ))
                             return;
 
