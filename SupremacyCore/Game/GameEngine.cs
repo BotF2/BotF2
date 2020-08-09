@@ -718,11 +718,11 @@ namespace Supremacy.Game
                                             GameLog.Core.Diplomacy.DebugFormat("$$ Accept Status = {2} for {0} vs {1}, ProposalReceived clauses ={3}"
                                                 , civ1
                                                 , civ2
-                                                , foreignPower.LastProposalReceived.Clauses.Count()
+                                                , foreignPower.ProposalReceived.Clauses.Count()
                                                 , foreignPower.PendingAction.ToString());
 
-                            if (foreignPower.LastProposalReceived != null)
-                                        AcceptProposalVisitor.Visit(foreignPower.LastProposalReceived);
+                            if (foreignPower.ProposalReceived != null)
+                                        AcceptProposalVisitor.Visit(foreignPower.ProposalReceived);
 
                             break;
 
@@ -730,11 +730,11 @@ namespace Supremacy.Game
                             GameLog.Core.Diplomacy.DebugFormat("$$ Reject Status = {2} for {0} vs {1}, ProposalReceived clauses ={3}"
                               , civ1
                               , civ2
-                              , foreignPower.LastProposalReceived.Clauses.Count()
+                              , foreignPower.ProposalReceived.Clauses.Count()
                               , foreignPower.PendingAction.ToString());
 
-                            if (foreignPower.LastProposalReceived != null)
-                                        RejectProposalVisitor.Visit(foreignPower.LastProposalReceived);
+                            if (foreignPower.ProposalReceived != null)
+                                        RejectProposalVisitor.Visit(foreignPower.ProposalReceived);
 
                             break;
                         default:

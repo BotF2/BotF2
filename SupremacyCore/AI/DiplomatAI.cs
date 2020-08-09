@@ -240,8 +240,8 @@ namespace Supremacy.AI
 
 
                         }
-                        foreignPower.LastProposalReceived = foreignPower.ProposalReceived;
-                        foreignPower.ProposalReceived = null;
+                        //foreignPower.LastProposalReceived = foreignPower.ProposalReceived;
+                        //foreignPower.ProposalReceived = null;
                     #endregion Proposals
                     }
                     foreignPower.UpdateRegardAndTrustMeters();

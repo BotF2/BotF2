@@ -309,8 +309,8 @@ namespace Supremacy.Diplomacy
                 }
 
             }
-            foreignPower.LastProposalReceived = foreignPower.ProposalReceived;
-            foreignPower.ProposalReceived = null;
+            //foreignPower.LastProposalReceived = foreignPower.ProposalReceived;
+            //foreignPower.ProposalReceived = null;
         }     
         public static void AcceptingRejecting([NotNull] ICivIdentity civ) // reading dictionary for entry regarding this civ
         {
@@ -358,21 +358,13 @@ namespace Supremacy.Diplomacy
                                 , foreignPower.Counterparty.ShortName
                                 , foreignPower.Owner.ShortName);
 
-                            foreignPower.LastProposalReceived = foreignPower.ProposalReceived;
-                            foreignPower.ProposalReceived = null;
+                            //foreignPower.LastProposalReceived = foreignPower.ProposalReceived;
+                            //foreignPower.ProposalReceived = null;
                             GameLog.Client.Diplomacy.DebugFormat("LastProposalReceived ={0} on foreignPower.Owner ={1} clause count ={2}"
                                 , foreignPower.LastProposalReceived.ToString()
                                 , foreignPower.LastProposalReceived.Clauses.Count()
                                 );
                         }
-                        //if (foreignPower.ResponseReceived != null)
-                        //    GameLog.Client.Diplomacy.DebugFormat("foreignPower owner ={0} ResponseReceived = {1}"
-                        //        , foreignPower.Owner
-                        //        , Enum.GetName(typeof(StatementType), foreignPower.ResponseReceived.ResponseType));
-                        //if (foreignPower.LastResponseReceived != null)
-                        //    GameLog.Client.Diplomacy.DebugFormat("foreignPower owner ={0} LastResponseReceived = {1}"
-                        //        , foreignPower.Owner
-                        //        , Enum.GetName(typeof(StatementType), foreignPower.LastResponseReceived.ResponseType));
                     }
                     else
                     {
@@ -384,8 +376,8 @@ namespace Supremacy.Diplomacy
                                 "## PendingAction: REJECT ={0} reset by clause - regard value, Counterparty = {1} Onwer = {2}",
                                 foreignPower.PendingAction.ToString(), foreignPower.Counterparty.ShortName,
                                 foreignPower.Owner.ShortName);
-                            foreignPower.LastProposalReceived = foreignPower.ProposalReceived;
-                            foreignPower.ProposalReceived = null;
+                            //foreignPower.LastProposalReceived = foreignPower.ProposalReceived;
+                            //foreignPower.ProposalReceived = null;
                         }
 
                     }
