@@ -251,12 +251,6 @@ namespace Supremacy.Diplomacy
             
             foreach (var otherCiv in GameContext.Current.Civilizations)
             {
-                //if (_acceptRejectDictionary == null)
-                //{
-                //    GameLog.Core.Diplomacy.DebugFormat("Civ ={0}, otherciv = {1} Dictionary = {2}", aCiv.Key, otherCiv.Key, "null");
-                //    continue;
-                //}
-
                 if (aCiv == otherCiv)
                     continue;
                 if (!otherCiv.IsEmpire)
@@ -270,27 +264,45 @@ namespace Supremacy.Diplomacy
                 string powerID = foreignPower.CounterpartyID.ToString() + foreignPower.OwnerID.ToString();
                 //string reversePowerID = foreignPower.OwnerID.ToString() + foreignPower.CounterpartyID.ToString() ;
                 // string otherPowerID = otherForeignPower.CounterpartyID.ToString() + otherForeignPower.OwnerID.ToString();
-                GameLog.Client.Diplomacy.DebugFormat("Dictionar foreignPower.Owner = {0}, counterpary ={1} powerID ={2}"
+                GameLog.Client.Diplomacy.DebugFormat("Check Dictionar foreignPower.Owner = {0}, counterpary ={1} powerID ={2}"
                     , foreignPower.OwnerID
                     , foreignPower.CounterpartyID
                     , powerID.ToString());
                 if (_acceptRejectDictionary.ContainsKey(powerID)) // check dictionary with key for bool value
                 {
+                    GameLog.Client.Diplomacy.DebugFormat("Found it in Dictionary");
                     accepting = _acceptRejectDictionary[powerID];
                     if (accepting)
                     {
-
+                        if (foreignPower.ProposalReceived == null && foreignPower.OwnerID == 1)
+                            GameLog.Client.Diplomacy.DebugFormat("Hey!!! why is the damn ProposalReceived null for foreignPower.OwnerID 1");
+                        if (foreignPower.ProposalReceived == null && foreignPower.OwnerID == 4)
+                            GameLog.Client.Diplomacy.DebugFormat("Hey!!! why is the damn ProposalReceived null for foreignPower.OwnerID 4");
                         if (foreignPower.ProposalReceived != null) // aCiv is owner of the foreignpower looking for a ProposalRecieved
                         {
                             foreignPower.PendingAction = PendingDiplomacyAction.AcceptProposal;
 
                             GameLog.Client.Diplomacy.DebugFormat(
-                                "## PendingAction: ACCEPT ={0} reset by clause - regard value, Counterparty = {1} Onwer = {2}",
-                                foreignPower.PendingAction.ToString(), foreignPower.Counterparty.ShortName,
-                                foreignPower.Owner.ShortName);
+                                "## PendingAction: ACCEPT ={0}, Counterparty = {1} Onwer = {2}"
+                                , foreignPower.PendingAction.ToString()
+                                , foreignPower.Counterparty.ShortName
+                                , foreignPower.Owner.ShortName);
+
                             foreignPower.LastProposalReceived = foreignPower.ProposalReceived;
                             foreignPower.ProposalReceived = null;
+                            GameLog.Client.Diplomacy.DebugFormat("LastProposalReceived ={0} on foreignPower.Owner ={1} clause count ={2}"
+                                , foreignPower.LastProposalReceived.ToString()
+                                , foreignPower.LastProposalReceived.Clauses.Count()
+                                );
                         }
+                        if (foreignPower.ResponseReceived != null)
+                            GameLog.Client.Diplomacy.DebugFormat("foreignPower owner ={0} ResponseReceived = {1}"
+                                , foreignPower.Owner
+                                , Enum.GetName(typeof(StatementType), foreignPower.ResponseReceived.ResponseType));
+                        if (foreignPower.LastResponseReceived != null)
+                            GameLog.Client.Diplomacy.DebugFormat("foreignPower owner ={0} LastResponseReceived = {1}"
+                                , foreignPower.Owner
+                                , Enum.GetName(typeof(StatementType), foreignPower.LastResponseReceived.ResponseType));
                     }
                     else
                     {
@@ -612,8 +624,8 @@ namespace Supremacy.Diplomacy
             int turnNumber = GameContext.Current.TurnNumber;
             var _statementType = _statmentRecieved.StatementType;
             string statementAsString = GetEnumString(_statementType);
-            string _civIDs = statementAsString.Substring(1,2); 
-          
+            string _civIDs = statementAsString.Substring(1,2);
+            GameLog.Client.Diplomacy.DebugFormat("Read Statement for Dictionary Value = {0}, current turn = {1}",_civIDs, turnNumber );
             switch (_statementType)
             {
                 case StatementType.T01:
@@ -707,7 +719,7 @@ namespace Supremacy.Diplomacy
             //if (_acceptRejectDictionary != null)
                 _acceptRejectDictionary.Clear();
         }
-        public static void AcceptRejectDictionary(ForeignPower foreignPower, bool accepted, int turn)
+        public static void AcceptRejectDictionary(ForeignPower foreignPower, bool accepted, int turn)  // called from AI
         {
             int turnNumber = turn; // in case we need this to time clearing of dictionary - Dictionary<string, Tuple<bool, int>>(); or ValueType is a Class with bool and int.
             string foreignPowerID = foreignPower.CounterpartyID.ToString() + foreignPower.OwnerID.ToString();
@@ -753,9 +765,7 @@ namespace Supremacy.Diplomacy
                 GameLog.Client.Diplomacy.DebugFormat("Turn {0}: _acceptRejectDicionary.Count = {1}, Pair(Counter/Owner) = {2}"
                     , GameContext.Current.TurnNumber
                     , _acceptRejectDictionary.Count
-                    , civIDs
-
-                    );
+                    , civIDs);
         }
         public static void BreakAgreement([NotNull] IAgreement agreement)
         {

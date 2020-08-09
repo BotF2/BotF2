@@ -704,7 +704,6 @@ namespace Supremacy.Game
                     //GameLog.Core.Diplomacy.DebugFormat("---------------------------------------");
                     //GameLog.Core.Diplomacy.DebugFormat("foreignPowerStatus = {2} for {0} vs {1}", civ1, civ2, foreignPowerStatus.ToString());
 
-                    // Wait a turn for population of PendingAction.AcceptProposal and PendingAction.RejectProposal by downstream AI accept or reject
                     // save the accept and reject in LastProposal and act during the next turn
                     if (civ1.CivID == 1 && civ2.CivID == 4)
                         ;
@@ -713,8 +712,8 @@ namespace Supremacy.Game
                     switch (foreignPower.PendingAction)
                     {
                         case PendingDiplomacyAction.AcceptProposal:
-                                            GameLog.Core.Diplomacy.DebugFormat("$$ Accept Status = {2} for {0} vs {1}, pendingValue={3}"
-                                                , civ1, civ2, foreignPowerStatus.ToString(), foreignPower.PendingAction.ToString());
+                                            GameLog.Core.Diplomacy.DebugFormat("$$ Accept Status = {2} for {0} vs {1}, LastProposalReceived clauses ={3}"
+                                                , civ1, civ2, foreignPower.LastProposalReceived.Clauses.Count(), foreignPower.PendingAction.ToString());
                             if (foreignPower.LastProposalReceived != null)
                                         AcceptProposalVisitor.Visit(foreignPower.LastProposalReceived);
                             break;
@@ -820,6 +819,7 @@ namespace Supremacy.Game
                                       + foreignPower.StatementReceived.Sender + " to "
                                       + foreignPower.StatementReceived.Recipient + ": > "
                                       + ", Parameter = " //+ parameterString
+                                      + Enum.GetName(typeof(StatementType), foreignPower.StatementReceived.StatementType)
                                       + Environment.NewLine
                                       ;
                         }
@@ -931,7 +931,7 @@ namespace Supremacy.Game
                             case StatementType.F53:
                             case StatementType.F54:
                                 {
-                                    GameLog.Core.Diplomacy.DebugFormat("StatementReceived Statement Type = {0} foreignPower Counterparty {1}, Owner {2}",
+                                    GameLog.Core.Diplomacy.DebugFormat("Send for Dictionary Entery {0} foreignPower Counterparty {1}, Owner {2}",
                                         Enum.GetName(typeof(StatementType), foreignPower.StatementReceived.StatementType),
                                         foreignPower.Counterparty.Key,
                                         foreignPower.Owner.Key);
@@ -1097,11 +1097,15 @@ namespace Supremacy.Game
                     {                       
                         // StatementSent becomes counterparty StatementReceived
                         foreignPower.CounterpartyForeignPower.StatementReceived = statementSent;
+                        GameLog.Client.Diplomacy.DebugFormat("foreignPower.Owner {0} got StatementReceived {1} from {2}"
+                            , foreignPower.CounterpartyForeignPower.Owner.Key
+                            , Enum.GetName(typeof(StatementType), statementSent.StatementType)
+                            , statementSent.Sender.Key);
                         foreignPower.LastStatementSent = statementSent;
                         foreignPower.StatementSent = null;
-
-                        GameLog.Core.Diplomacy.DebugFormat("foreignPower.Owner = {0}", foreignPower.Owner.Key);
-                        GameLog.Core.Diplomacy.DebugFormat("CounterpartyForeignPower.Owner = {0}", foreignPower.CounterpartyForeignPower.Owner.Key);
+                        
+                        //GameLog.Core.Diplomacy.DebugFormat("foreignPower.Owner = {0}", foreignPower.Owner.Key);
+                        //GameLog.Core.Diplomacy.DebugFormat("CounterpartyForeignPower.Owner = {0}", foreignPower.CounterpartyForeignPower.Owner.Key);
 
                         if (statementSent.StatementType == StatementType.WarDeclaration)
                             foreignPower.DeclareWar();
@@ -1188,7 +1192,7 @@ namespace Supremacy.Game
                     var responseSent = foreignPower.ResponseSent;
                     if (responseSent != null)
                     {
-                        foreignPower.CounterpartyForeignPower.ResponseReceived = responseSent; // cross over sent to received
+                        foreignPower.CounterpartyForeignPower.ResponseReceived = responseSent; // cross over response sent to response received
                         GameLog.Client.Diplomacy.DebugFormat("{0} sent Response {1} to {2}"
                             , foreignPower.Owner.Key, foreignPower.ResponseSent.Proposal.ToString(), foreignPower.Counterparty.Key);
                         foreignPower.LastResponseSent = responseSent;
