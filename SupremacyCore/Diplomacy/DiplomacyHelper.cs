@@ -242,7 +242,7 @@ namespace Supremacy.Diplomacy
                 GameLog.Client.Diplomacy.DebugFormat("************** Diplo: SendWarDeclaration turned to RECEIVED at ForeignPower...");
         }
 
-        public static void AcceptingRejecting([NotNull] ICivIdentity civ) // ready dictionary for entry regarding this civ
+        public static void AcceptingRejecting([NotNull] ICivIdentity civ) // reading dictionary for entry regarding this civ
         {
             if (civ == null)
                 throw new ArgumentNullException("civ");

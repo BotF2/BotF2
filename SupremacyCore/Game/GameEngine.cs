@@ -712,15 +712,24 @@ namespace Supremacy.Game
                     switch (foreignPower.PendingAction)
                     {
                         case PendingDiplomacyAction.AcceptProposal:
-                                            GameLog.Core.Diplomacy.DebugFormat("$$ Accept Status = {2} for {0} vs {1}, LastProposalReceived clauses ={3}"
-                                                , civ1, civ2, foreignPower.LastProposalReceived.Clauses.Count(), foreignPower.PendingAction.ToString());
-                            if (foreignPower.LastProposalReceived != null)
-                                        AcceptProposalVisitor.Visit(foreignPower.LastProposalReceived);
+                                            GameLog.Core.Diplomacy.DebugFormat("$$ Accept Status = {2} for {0} vs {1}, ProposalReceived clauses ={3}"
+                                                , civ1
+                                                , civ2
+                                                , foreignPower.ProposalReceived.Clauses.Count()
+                                                , foreignPower.PendingAction.ToString());
+
+                            if (foreignPower.ProposalReceived != null)
+                                        AcceptProposalVisitor.Visit(foreignPower.ProposalReceived);
                             break;
                         case PendingDiplomacyAction.RejectProposal:
-                                            GameLog.Core.Diplomacy.DebugFormat("$$ Reject Status = {2} for {0} vs {1}, pending {3}", civ1, civ2, foreignPowerStatus.ToString(), foreignPower.PendingAction.ToString());
-                            if (foreignPower.LastProposalReceived != null)
-                                        RejectProposalVisitor.Visit(foreignPower.LastProposalReceived);                            
+                            GameLog.Core.Diplomacy.DebugFormat("$$ Reject Status = {2} for {0} vs {1}, ProposalReceived clauses ={3}"
+                              , civ1
+                              , civ2
+                              , foreignPower.ProposalReceived.Clauses.Count()
+                              , foreignPower.PendingAction.ToString());
+
+                            if (foreignPower.ProposalReceived != null)
+                                        RejectProposalVisitor.Visit(foreignPower.ProposalReceived);                            
                             break;
                         default:
                             break;
@@ -931,7 +940,7 @@ namespace Supremacy.Game
                             case StatementType.F53:
                             case StatementType.F54:
                                 {
-                                    GameLog.Core.Diplomacy.DebugFormat("Send for Dictionary Entery {0} foreignPower Counterparty {1}, Owner {2}",
+                                    GameLog.Core.Diplomacy.DebugFormat("Statement sent for Dictionary Entery {0} foreignPower Counterparty {1}, Owner {2}",
                                         Enum.GetName(typeof(StatementType), foreignPower.StatementReceived.StatementType),
                                         foreignPower.Counterparty.Key,
                                         foreignPower.Owner.Key);

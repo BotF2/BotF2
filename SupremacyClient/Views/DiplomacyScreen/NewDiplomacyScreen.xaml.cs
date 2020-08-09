@@ -5,6 +5,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Media;
+using Microsoft.Practices.Composite.Presentation.Commands;
 using Microsoft.Practices.Composite.Regions;
 using Microsoft.Practices.ServiceLocation;
 using Obtics.Collections;
@@ -99,6 +100,7 @@ namespace Supremacy.Client.Views.DiplomacyScreen
                         );
                 }
             }
+            radioButton.IsChecked = false; ;
         }
 
         #region Implementation of IActiveAware
