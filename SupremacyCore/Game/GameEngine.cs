@@ -718,21 +718,24 @@ namespace Supremacy.Game
                                             GameLog.Core.Diplomacy.DebugFormat("$$ Accept Status = {2} for {0} vs {1}, ProposalReceived clauses ={3}"
                                                 , civ1
                                                 , civ2
-                                                , foreignPower.ProposalReceived.Clauses.Count()
+                                                , foreignPower.LastProposalReceived.Clauses.Count()
                                                 , foreignPower.PendingAction.ToString());
 
-                            if (foreignPower.ProposalReceived != null)
-                                        AcceptProposalVisitor.Visit(foreignPower.ProposalReceived);
+                            if (foreignPower.LastProposalReceived != null)
+                                        AcceptProposalVisitor.Visit(foreignPower.LastProposalReceived);
+
                             break;
+
                         case PendingDiplomacyAction.RejectProposal:
                             GameLog.Core.Diplomacy.DebugFormat("$$ Reject Status = {2} for {0} vs {1}, ProposalReceived clauses ={3}"
                               , civ1
                               , civ2
-                              , foreignPower.ProposalReceived.Clauses.Count()
+                              , foreignPower.LastProposalReceived.Clauses.Count()
                               , foreignPower.PendingAction.ToString());
 
-                            if (foreignPower.ProposalReceived != null)
-                                        RejectProposalVisitor.Visit(foreignPower.ProposalReceived);                            
+                            if (foreignPower.LastProposalReceived != null)
+                                        RejectProposalVisitor.Visit(foreignPower.LastProposalReceived);
+
                             break;
                         default:
                             break;
@@ -987,7 +990,7 @@ namespace Supremacy.Game
                                 foreignPower.LastStatementReceived = null;
                                 break;
 
-                            case StatementType.T01: 
+                            case StatementType.T01:
                             case StatementType.T02:
                             case StatementType.T03:
                             case StatementType.T04:
@@ -1048,11 +1051,11 @@ namespace Supremacy.Game
                             case StatementType.F53:
                             case StatementType.F54:
                                 GameLog.Core.Diplomacy.DebugFormat("LastStatementReceived Statement Type = {0} foreignPower counterparyt {1}, owner {2}",
-                                    Enum.GetName(typeof(StatementType), foreignPower.StatementReceived.StatementType),
+                                    Enum.GetName(typeof(StatementType), foreignPower.LastStatementReceived.StatementType),
                                     foreignPower.Counterparty.Key,
                                     foreignPower.Owner.Key);
                                 //DiplomacyHelper.AcceptRejectDictionaryFromStatement(foreignPower.LastStatementReceived);
-                                DiplomacyHelper.SpecificCivAcceptingRejecting(foreignPower.StatementReceived.StatementType);
+                                DiplomacyHelper.SpecificCivAcceptingRejecting(foreignPower.LastStatementReceived.StatementType);
                                 break;
                             case StatementType.CommendWar:
                             case StatementType.DenounceWar:

@@ -309,6 +309,8 @@ namespace Supremacy.Diplomacy
                 }
 
             }
+            foreignPower.LastProposalReceived = foreignPower.ProposalReceived;
+            foreignPower.ProposalReceived = null;
         }     
         public static void AcceptingRejecting([NotNull] ICivIdentity civ) // reading dictionary for entry regarding this civ
         {
