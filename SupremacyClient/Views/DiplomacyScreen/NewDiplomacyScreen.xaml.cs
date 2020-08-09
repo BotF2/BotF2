@@ -100,7 +100,7 @@ namespace Supremacy.Client.Views.DiplomacyScreen
                         );
                 }
             }
-            radioButton.IsChecked = false; ;
+            //radioButton.IsChecked = false; ;
         }
 
         #region Implementation of IActiveAware
