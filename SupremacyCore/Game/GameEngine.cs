@@ -705,16 +705,21 @@ namespace Supremacy.Game
                     //GameLog.Core.Diplomacy.DebugFormat("foreignPowerStatus = {2} for {0} vs {1}", civ1, civ2, foreignPowerStatus.ToString());
 
                     // save the accept and reject in LastProposal and act during the next turn
-
+                    //if (civ1.CivID == 1 && civ2.CivID == 4)
+                    //    ;
+                    //if (civ1.CivID == 4 && civ2.CivID == 1)
+                    //    ;
+                    if (civ1.IsHuman && civ2.IsHuman)
+                        DiplomacyHelper.SpecificCivAcceptingRejecting(foreignPower);
 
                     switch (foreignPower.PendingAction)
                     {
                         case PendingDiplomacyAction.AcceptProposal:
-                                            //GameLog.Core.Diplomacy.DebugFormat("$$ Accept Status = {2} for {0} vs {1}, ProposalReceived clauses ={3}"
-                                            //    , civ1
-                                            //    , civ2
-                                            //    , foreignPower.ProposalReceived.Clauses.Count()
-                                            //    , foreignPower.PendingAction.ToString());
+                                            GameLog.Core.Diplomacy.DebugFormat("$$ Accept Status = {2} for {0} vs {1}, ProposalReceived clauses ={3}"
+                                                , civ1
+                                                , civ2
+                                                , foreignPower.ProposalReceived.Clauses.Count()
+                                                , foreignPower.PendingAction.ToString());
 
                             if (foreignPower.ProposalReceived != null)
                                         AcceptProposalVisitor.Visit(foreignPower.ProposalReceived);
