@@ -637,92 +637,92 @@ namespace Supremacy.Diplomacy
 
         }
 
-        //public static void AcceptRejectDictionaryFromStatement(Statement _statmentRecieved) // find statement in foreignPower during GameEngine and here creat dictionary entry from it
-        //{
-        //    int turnNumber = GameContext.Current.TurnNumber;
-        //    var _statementType = _statmentRecieved.StatementType;
-        //    string statementAsString = GetEnumString(_statementType);
-        //    string _civIDs = statementAsString.Substring(1,2);
-        //    GameLog.Client.Diplomacy.DebugFormat("Read Statement for Dictionary Value = {0}, current turn = {1}",_civIDs, turnNumber );
-        //    switch (_statementType)
-        //    {
-        //        case StatementType.T01:
-        //        case StatementType.T02:
-        //        case StatementType.T03:
-        //        case StatementType.T04:
-        //        case StatementType.T05:
-        //        case StatementType.T10:
-        //        case StatementType.T12:
-        //        case StatementType.T13:
-        //        case StatementType.T14:
-        //        case StatementType.T15:
-        //        case StatementType.T20:
-        //        case StatementType.T21:
-        //        case StatementType.T23:
-        //        case StatementType.T24:
-        //        case StatementType.T25:
-        //        case StatementType.T30:
-        //        case StatementType.T31:
-        //        case StatementType.T32:
-        //        case StatementType.T34:
-        //        case StatementType.T35:
-        //        case StatementType.T40:
-        //        case StatementType.T41:
-        //        case StatementType.T42:
-        //        case StatementType.T43:
-        //        case StatementType.T45:
-        //        case StatementType.T50:
-        //        case StatementType.T51:
-        //        case StatementType.T52:
-        //        case StatementType.T53:
-        //        case StatementType.T54:
-        //            AcceptRejectDictionary(_civIDs, true, turnNumber);
-        //            break;
-        //        case StatementType.F01:
-        //        case StatementType.F02:
-        //        case StatementType.F03:
-        //        case StatementType.F04:
-        //        case StatementType.F05:
-        //        case StatementType.F10:
-        //        case StatementType.F12:
-        //        case StatementType.F13:
-        //        case StatementType.F14:
-        //        case StatementType.F15:
-        //        case StatementType.F20:
-        //        case StatementType.F21:
-        //        case StatementType.F23:
-        //        case StatementType.F24:
-        //        case StatementType.F25:
-        //        case StatementType.F30:
-        //        case StatementType.F31:
-        //        case StatementType.F32:
-        //        case StatementType.F34:
-        //        case StatementType.F35:
-        //        case StatementType.F40:
-        //        case StatementType.F41:
-        //        case StatementType.F42:
-        //        case StatementType.F43:
-        //        case StatementType.F45:
-        //        case StatementType.F50:
-        //        case StatementType.F51:
-        //        case StatementType.F52:
-        //        case StatementType.F53:
-        //        case StatementType.F54:
-        //            AcceptRejectDictionary(_civIDs, false, turnNumber); // creat dictionary entry from StatementType
-        //            break;
-        //        case StatementType.CommendWar:
-        //        case StatementType.DenounceWar:
-        //        case StatementType.WarDeclaration:
-        //        case StatementType.StealCredits:
-        //        case StatementType.StealResearch:
-        //        case StatementType.SabotageFood:
-        //        case StatementType.SabotageEnergy:
-        //        case StatementType.SabotageIndustry:
-        //            break;
-        //        default:
-        //            break;
-        //    }
-        //}
+        public static void AcceptRejectDictionaryFromStatement(Statement _statmentRecieved) // find statement in foreignPower during GameEngine and here creat dictionary entry from it
+        {
+            int turnNumber = GameContext.Current.TurnNumber;
+            var _statementType = _statmentRecieved.StatementType;
+            string statementAsString = GetEnumString(_statementType);
+            string _civIDs = statementAsString.Substring(1, 2);
+            GameLog.Client.Diplomacy.DebugFormat("Read Statement for Dictionary Value = {0}, current turn = {1}", _civIDs, turnNumber);
+            switch (_statementType)
+            {
+                case StatementType.T01:
+                case StatementType.T02:
+                case StatementType.T03:
+                case StatementType.T04:
+                case StatementType.T05:
+                case StatementType.T10:
+                case StatementType.T12:
+                case StatementType.T13:
+                case StatementType.T14:
+                case StatementType.T15:
+                case StatementType.T20:
+                case StatementType.T21:
+                case StatementType.T23:
+                case StatementType.T24:
+                case StatementType.T25:
+                case StatementType.T30:
+                case StatementType.T31:
+                case StatementType.T32:
+                case StatementType.T34:
+                case StatementType.T35:
+                case StatementType.T40:
+                case StatementType.T41:
+                case StatementType.T42:
+                case StatementType.T43:
+                case StatementType.T45:
+                case StatementType.T50:
+                case StatementType.T51:
+                case StatementType.T52:
+                case StatementType.T53:
+                case StatementType.T54:
+                    AcceptRejectDictionary(_civIDs, true, turnNumber);
+                    break;
+                case StatementType.F01:
+                case StatementType.F02:
+                case StatementType.F03:
+                case StatementType.F04:
+                case StatementType.F05:
+                case StatementType.F10:
+                case StatementType.F12:
+                case StatementType.F13:
+                case StatementType.F14:
+                case StatementType.F15:
+                case StatementType.F20:
+                case StatementType.F21:
+                case StatementType.F23:
+                case StatementType.F24:
+                case StatementType.F25:
+                case StatementType.F30:
+                case StatementType.F31:
+                case StatementType.F32:
+                case StatementType.F34:
+                case StatementType.F35:
+                case StatementType.F40:
+                case StatementType.F41:
+                case StatementType.F42:
+                case StatementType.F43:
+                case StatementType.F45:
+                case StatementType.F50:
+                case StatementType.F51:
+                case StatementType.F52:
+                case StatementType.F53:
+                case StatementType.F54:
+                    AcceptRejectDictionary(_civIDs, false, turnNumber); // creat dictionary entry from StatementType
+                    break;
+                case StatementType.CommendWar:
+                case StatementType.DenounceWar:
+                case StatementType.WarDeclaration:
+                case StatementType.StealCredits:
+                case StatementType.StealResearch:
+                case StatementType.SabotageFood:
+                case StatementType.SabotageEnergy:
+                case StatementType.SabotageIndustry:
+                    break;
+                default:
+                    break;
+            }
+        }
 
         public static void ClearAcceptRejectDictionary()
         {
@@ -753,30 +753,30 @@ namespace Supremacy.Diplomacy
                     , foreignPowerID
                     );
         }
-        //public static void AcceptRejectDictionary(string civIDs, bool accepted, int turn)
-        //{
-        //    int turnNumber = turn; // in case we need this to time clearing of dictionary - Dictionary<string, Tuple<bool, int>>(); or ValueType is a Class with bool and int.
-        //    //string foreignPowerID = foreignPower.CounterpartyID.ToString() + foreignPower.OwnerID.ToString();
-            
-        //    //if (_acceptRejectDictionary == null)
-        //    //{
-        //    //    Dictionary<string, bool> dictionary = new Dictionary<string, bool>() { { civIDs, accepted } };
-        //    //    _acceptRejectDictionary = dictionary;
-        //    //    GameLog.Client.Diplomacy.DebugFormat("Generated new _acceptRejectDicionary");
-        //    //}
-        //    if (_acceptRejectDictionary.ContainsKey(civIDs))
-        //    {
-        //        _acceptRejectDictionary.Remove(civIDs);
-        //        _acceptRejectDictionary.Add(civIDs, accepted);
-        //    }
-        //    else { _acceptRejectDictionary.Add(civIDs, accepted); }
+        public static void AcceptRejectDictionary(string civIDs, bool accepted, int turn)
+        {
+            int turnNumber = turn; // in case we need this to time clearing of dictionary - Dictionary<string, Tuple<bool, int>>(); or ValueType is a Class with bool and int.
+                                   //string foreignPowerID = foreignPower.CounterpartyID.ToString() + foreignPower.OwnerID.ToString();
 
-        //    //if (_acceptRejectDictionary != null)
-        //        GameLog.Client.Diplomacy.DebugFormat("Turn {0}: _acceptRejectDicionary.Count = {1}, Pair(Counter/Owner) = {2}"
-        //            , GameContext.Current.TurnNumber
-        //            , _acceptRejectDictionary.Count
-        //            , civIDs);
-        //}
+            //if (_acceptRejectDictionary == null)
+            //{
+            //    Dictionary<string, bool> dictionary = new Dictionary<string, bool>() { { civIDs, accepted } };
+            //    _acceptRejectDictionary = dictionary;
+            //    GameLog.Client.Diplomacy.DebugFormat("Generated new _acceptRejectDicionary");
+            //}
+            if (_acceptRejectDictionary.ContainsKey(civIDs))
+            {
+                _acceptRejectDictionary.Remove(civIDs);
+                _acceptRejectDictionary.Add(civIDs, accepted);
+            }
+            else { _acceptRejectDictionary.Add(civIDs, accepted); }
+
+            //if (_acceptRejectDictionary != null)
+            GameLog.Client.Diplomacy.DebugFormat("Turn {0}: _acceptRejectDicionary.Count = {1}, Pair(Counter/Owner) = {2}"
+                , GameContext.Current.TurnNumber
+                , _acceptRejectDictionary.Count
+                , civIDs);
+        }
         public static void BreakAgreement([NotNull] IAgreement agreement)
         {
             if (agreement == null)
