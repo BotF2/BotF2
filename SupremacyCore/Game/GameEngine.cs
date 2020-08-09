@@ -947,7 +947,8 @@ namespace Supremacy.Game
                                         Enum.GetName(typeof(StatementType), foreignPower.StatementReceived.StatementType),
                                         foreignPower.Counterparty.Key,
                                         foreignPower.Owner.Key);
-                                    DiplomacyHelper.AcceptRejectDictionaryFromStatement(foreignPower.StatementReceived);
+                                    //DiplomacyHelper.AcceptRejectDictionaryFromStatement(foreignPower.StatementReceived);
+                                    DiplomacyHelper.SpecificCivAcceptingRejecting(foreignPower.StatementReceived.StatementType);
                                     break;
                                 }
                             case StatementType.CommendWar:
@@ -1050,7 +1051,8 @@ namespace Supremacy.Game
                                     Enum.GetName(typeof(StatementType), foreignPower.StatementReceived.StatementType),
                                     foreignPower.Counterparty.Key,
                                     foreignPower.Owner.Key);
-                                DiplomacyHelper.AcceptRejectDictionaryFromStatement(foreignPower.LastStatementReceived);
+                                //DiplomacyHelper.AcceptRejectDictionaryFromStatement(foreignPower.LastStatementReceived);
+                                DiplomacyHelper.SpecificCivAcceptingRejecting(foreignPower.StatementReceived.StatementType);
                                 break;
                             case StatementType.CommendWar:
                             case StatementType.DenounceWar:
