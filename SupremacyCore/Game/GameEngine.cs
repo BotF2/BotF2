@@ -709,8 +709,8 @@ namespace Supremacy.Game
                     //    ;
                     //if (civ1.CivID == 4 && civ2.CivID == 1)
                     //    ;
-                    if (civ1.IsHuman && civ2.IsHuman)
-                        DiplomacyHelper.SpecificCivAcceptingRejecting(foreignPower);
+                    //if (civ1.IsHuman && civ2.IsHuman)
+                    //    DiplomacyHelper.SpecificCivAcceptingRejecting(foreignPower);
 
                     switch (foreignPower.PendingAction)
                     {
