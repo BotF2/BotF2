@@ -275,9 +275,8 @@ namespace Supremacy.Diplomacy
                         , foreignPower.PendingAction.ToString()
                         , foreignPower.Counterparty.ShortName
                         , foreignPower.Owner.ShortName);
-
-                    foreignPower.LastProposalReceived = foreignPower.ProposalReceived;
-                    foreignPower.ProposalReceived = null;
+                    //foreignPower.LastProposalReceived = foreignPower.ProposalReceived;
+                    //foreignPower.ProposalReceived = null;
                     //GameLog.Client.Diplomacy.DebugFormat("LastProposalReceived ={0} on foreignPower.Owner ={1} clause count ={2}"
                     //    , foreignPower.LastProposalReceived.ToString()
                     //    , foreignPower.LastProposalReceived.Clauses.Count()
@@ -294,8 +293,8 @@ namespace Supremacy.Diplomacy
                         "## PendingAction: REJECT ={0} reset by clause - regard value, Counterparty = {1} Onwer = {2}",
                         foreignPower.PendingAction.ToString(), foreignPower.Counterparty.ShortName,
                         foreignPower.Owner.ShortName);
-                    foreignPower.LastProposalReceived = foreignPower.ProposalReceived;
-                    foreignPower.ProposalReceived = null;
+                    //foreignPower.LastProposalReceived = foreignPower.ProposalReceived;
+                    //foreignPower.ProposalReceived = null;
                 }
 
             }
