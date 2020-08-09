@@ -192,17 +192,6 @@ namespace Supremacy.Diplomacy
 
             return diplomat.SeatOfGovernment;
         }
-        //public static Ship GetOwner([NotNull] Civilization who)
-        //{
-        //    if (who == null)
-        //        throw new ArgumentNullException("who");
-
-        //    var diplomat = GameContext.Current.Diplomats[who.CivID];
-        //    if (diplomat == null)
-        //        return null;
-
-        //    return diplomat.Owner;
-        //}
 
         public static void SendWarDeclaration([NotNull] Civilization declaringCiv, [NotNull] Civilization targetCiv, Tone tone = Tone.Calm)
         {
@@ -244,8 +233,6 @@ namespace Supremacy.Diplomacy
 
         public static void SpecificCivAcceptingRejecting([NotNull] StatementType statementType)
         {
-            //int turnNumber = GameContext.Current.TurnNumber;
-            //var _statementType = _statmentRecieved.StatementType;
             string statementAsString = GetEnumString(statementType);
             string otherCivID = statementAsString.Substring(1, 1);
             string aCivID = statementAsString.Substring(2, 1);
@@ -326,14 +313,11 @@ namespace Supremacy.Diplomacy
                 if (!otherCiv.IsEmpire)
                     continue;
                 var foreignPower = diplomat.GetForeignPower(otherCiv);
-                //var foreignPower = diplomat.GetForeignPower(aCiv);
-                //var otherDiplomat = Diplomat.Get(otherCiv);
-                //var otherForeignPower = otherDiplomat.GetForeignPower(civ);
+
                 bool accepting = false;
-                //bool otherAccepting = false;
+
                 string powerID = foreignPower.CounterpartyID.ToString() + foreignPower.OwnerID.ToString();
-                //string reversePowerID = foreignPower.OwnerID.ToString() + foreignPower.CounterpartyID.ToString() ;
-                // string otherPowerID = otherForeignPower.CounterpartyID.ToString() + otherForeignPower.OwnerID.ToString();
+
                 GameLog.Client.Diplomacy.DebugFormat("Check Dictionar foreignPower.Owner = {0}, counterpary ={1} powerID ={2}"
                     , foreignPower.OwnerID
                     , foreignPower.CounterpartyID
@@ -360,10 +344,10 @@ namespace Supremacy.Diplomacy
 
                             //foreignPower.LastProposalReceived = foreignPower.ProposalReceived;
                             //foreignPower.ProposalReceived = null;
-                            GameLog.Client.Diplomacy.DebugFormat("LastProposalReceived ={0} on foreignPower.Owner ={1} clause count ={2}"
-                                , foreignPower.LastProposalReceived.ToString()
-                                , foreignPower.LastProposalReceived.Clauses.Count()
-                                );
+                            //GameLog.Client.Diplomacy.DebugFormat("LastProposalReceived ={0} on foreignPower.Owner ={1} clause count ={2}"
+                            //    , foreignPower.LastProposalReceived.ToString()
+                            //    , foreignPower.LastProposalReceived.Clauses.Count()
+                            //    );
                         }
                     }
                     else

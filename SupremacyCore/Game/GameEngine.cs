@@ -1246,6 +1246,7 @@ namespace Supremacy.Game
              */
             foreach (var agreement in GameContext.Current.AgreementMatrix)
                 AgreementFulfillmentVisitor.Visit(agreement);
+         
         }
 
         #endregion

@@ -514,8 +514,8 @@ namespace Supremacy.WCF
                 catch (Exception)
                 {
                     GameLog.Core.General.DebugFormat("Hit await, ************** issue #398 *******************");
-                    Thread.Sleep(0200);
-                   // goto OH;      
+                    Thread.Sleep(0050);
+                    goto OH;      
                 }
 
 

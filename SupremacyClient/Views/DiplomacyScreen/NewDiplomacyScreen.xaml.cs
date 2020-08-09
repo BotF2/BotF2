@@ -29,14 +29,17 @@ namespace Supremacy.Client.Views.DiplomacyScreen
     public partial class NewDiplomacyScreen : INewDiplomacyScreenView
     {
         private Order _sendOrder;
+
         public NewDiplomacyScreen()
         {
             TextBlockExtensions.AddHyperlinkClickedHandler(this, OnMessageParameterLinkClick);
             InitializeComponent();
         }
 
-        private void clickAcceptCounterReject(object sender, RoutedEventArgs e)
+    private void clickAcceptCounterReject(object sender, RoutedEventArgs e)
         {
+            //CheckRadioButton();
+            int turn = GameContext.Current.TurnNumber;
             RadioButton radioButton = sender as RadioButton;
             if (radioButton != null)
             {
@@ -54,7 +57,7 @@ namespace Supremacy.Client.Views.DiplomacyScreen
                     var foreignPower = diplomat.GetForeignPower(senderCiv);
                     var otherForeignPower = otherDiplomat.GetForeignPower(playerEmpire);
                     bool localPlayerIsHosting = AppContext.IsGameHost;
-                    int turn = GameContext.Current.TurnNumber;
+                   // int turn = GameContext.Current.TurnNumber;
                     if (localPlayerIsHosting)
                     {
                         GameLog.Client.Diplomacy.DebugFormat("Local player IS Host....");
@@ -73,17 +76,12 @@ namespace Supremacy.Client.Views.DiplomacyScreen
                             );
                         if (_statementType != StatementType.NoStatement)
                         {
-                            Statement statementToSend = new Statement(playerEmpire, senderCiv, _statementType, Tone.Receptive, turn);
-                            //Statement statementToSend = new Statement( senderCiv, playerEmpire, _statementType, Tone.Receptive, turn); //DiplomacyExtensions.GetStatementSent(diplomat, senderCiv);
+                            Statement statementToSend = new Statement(playerEmpire, senderCiv, _statementType, Tone.Receptive, turn);                   
                             _sendOrder = new SendStatementOrder(statementToSend);
-
                             ServiceLocator.Current.GetInstance<IPlayerOrderService>().AddOrder(_sendOrder);
-                            //foreignPower.StatementSent = statementToSend; // load statement to send in foreignPower, statment type carries key for dictionary entery
-                            //GameLog.Client.Diplomacy.DebugFormat("!! RESPONSE: Statement sender ={0} to recipient ={1}", statementToSend.Sender.Key, statementToSend.Recipient.Key);
 
-                            //statementToSend = new Statement(playerEmpire, senderCiv, _statementType, Tone.Receptive, turn); //DiplomacyExtensions.GetStatementSent(diplomat, senderCiv);
                             otherForeignPower.StatementSent = statementToSend; // load statement to send in foreignPower, statment type carries key for dictionary entery
-                           // foreignPower.StatementSent = statementToSend;
+
                             GameLog.Client.Diplomacy.DebugFormat("!! foreignPower.StatementSent *other*ForeignPower Recipient ={0} to Sender ={1}"
                                 , statementToSend.Recipient.Key
                                 , statementToSend.Sender.Key
@@ -101,7 +99,7 @@ namespace Supremacy.Client.Views.DiplomacyScreen
                         );
                 }
             }
-            //radioButton.IsChecked = false; ;
+           // radioButton.IsEnabled = false;
         }
 
         #region Implementation of IActiveAware
@@ -203,8 +201,8 @@ namespace Supremacy.Client.Views.DiplomacyScreen
             }
         }
 
-        #region INodeGraphPenSelector Members
-        public Pen GetPen(object parentNode, object childNode)
+    #region INodeGraphPenSelector Members
+    public Pen GetPen(object parentNode, object childNode)
         {
             var node1 = parentNode as DiplomacyGraphNode;
             var node2 = childNode as DiplomacyGraphNode;
