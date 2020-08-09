@@ -242,6 +242,67 @@ namespace Supremacy.Diplomacy
                 GameLog.Client.Diplomacy.DebugFormat("************** Diplo: SendWarDeclaration turned to RECEIVED at ForeignPower...");
         }
 
+        public static void SpecificCivAcceptingRejecting([NotNull] Civilization aCiv, Civilization otherCiv)
+        {
+            var diplomat = Diplomat.Get(aCiv);
+            var foreignPower = diplomat.GetForeignPower(otherCiv);
+            bool accepting = false;
+            string powerID = foreignPower.CounterpartyID.ToString() + foreignPower.OwnerID.ToString();
+            if (_acceptRejectDictionary.ContainsKey(powerID)) // check dictionary with key for bool value
+            {
+                GameLog.Client.Diplomacy.DebugFormat("Found it in Dictionary");
+                accepting = _acceptRejectDictionary[powerID];
+                if (accepting)
+                {
+                    if (foreignPower.ProposalReceived == null && foreignPower.OwnerID == 1)
+                        GameLog.Client.Diplomacy.DebugFormat("Hey!!! why is the damn ProposalReceived null for foreignPower.OwnerID 1");
+                    if (foreignPower.ProposalReceived == null && foreignPower.OwnerID == 4)
+                        GameLog.Client.Diplomacy.DebugFormat("Hey!!! why is the damn ProposalReceived null for foreignPower.OwnerID 4");
+                    if (foreignPower.ProposalReceived != null) // aCiv is owner of the foreignpower looking for a ProposalRecieved
+                    {
+                        foreignPower.PendingAction = PendingDiplomacyAction.AcceptProposal;
+
+                        GameLog.Client.Diplomacy.DebugFormat(
+                            "## PendingAction: ACCEPT ={0}, Counterparty = {1} Onwer = {2}"
+                            , foreignPower.PendingAction.ToString()
+                            , foreignPower.Counterparty.ShortName
+                            , foreignPower.Owner.ShortName);
+
+                        //foreignPower.LastProposalReceived = foreignPower.ProposalReceived;
+                        //foreignPower.ProposalReceived = null;
+                        GameLog.Client.Diplomacy.DebugFormat("LastProposalReceived ={0} on foreignPower.Owner ={1} clause count ={2}"
+                            , foreignPower.LastProposalReceived.ToString()
+                            , foreignPower.LastProposalReceived.Clauses.Count()
+                            );
+                    }
+                    if (foreignPower.ResponseReceived != null)
+                        GameLog.Client.Diplomacy.DebugFormat("foreignPower owner ={0} ResponseReceived = {1}"
+                            , foreignPower.Owner
+                            , Enum.GetName(typeof(StatementType), foreignPower.ResponseReceived.ResponseType));
+                    if (foreignPower.LastResponseReceived != null)
+                        GameLog.Client.Diplomacy.DebugFormat("foreignPower owner ={0} LastResponseReceived = {1}"
+                            , foreignPower.Owner
+                            , Enum.GetName(typeof(StatementType), foreignPower.LastResponseReceived.ResponseType));
+                }
+                else
+                {
+                    if (foreignPower.ProposalReceived != null)
+                    {
+                        foreignPower.PendingAction = PendingDiplomacyAction.RejectProposal;
+
+                        GameLog.Client.Diplomacy.DebugFormat(
+                            "## PendingAction: REJECT ={0} reset by clause - regard value, Counterparty = {1} Onwer = {2}",
+                            foreignPower.PendingAction.ToString(), foreignPower.Counterparty.ShortName,
+                            foreignPower.Owner.ShortName);
+                        //foreignPower.LastProposalReceived = foreignPower.ProposalReceived;
+                        //foreignPower.ProposalReceived = null;
+                    }
+
+                }
+
+            }
+        }
+
         public static void AcceptingRejecting([NotNull] ICivIdentity civ) // reading dictionary for entry regarding this civ
         {
             if (civ == null)
