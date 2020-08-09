@@ -38,7 +38,6 @@ namespace Supremacy.Client.Views.DiplomacyScreen
 
     private void clickAcceptCounterReject(object sender, RoutedEventArgs e)
         {
-            //CheckRadioButton();
             int turn = GameContext.Current.TurnNumber;
             RadioButton radioButton = sender as RadioButton;
             if (radioButton != null)
@@ -57,7 +56,7 @@ namespace Supremacy.Client.Views.DiplomacyScreen
                     var foreignPower = diplomat.GetForeignPower(senderCiv);
                     var otherForeignPower = otherDiplomat.GetForeignPower(playerEmpire);
                     bool localPlayerIsHosting = AppContext.IsGameHost;
-                   // int turn = GameContext.Current.TurnNumber;
+
                     if (localPlayerIsHosting)
                     {
                         GameLog.Client.Diplomacy.DebugFormat("Local player IS Host....");
@@ -99,7 +98,6 @@ namespace Supremacy.Client.Views.DiplomacyScreen
                         );
                 }
             }
-           // radioButton.IsEnabled = false;
         }
 
         #region Implementation of IActiveAware
