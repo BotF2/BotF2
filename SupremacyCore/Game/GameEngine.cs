@@ -748,7 +748,7 @@ namespace Supremacy.Game
                     //GameLog.Core.Diplomacy.DebugFormat("Next: foreignPower.PendingAction = NONE for {0} vs {1}, status {2}, pending {3}", foreignPower.Owner, foreignPower.Counterparty, foreignPowerStatus.ToString(), foreignPower.PendingAction.ToString());
                     foreignPower.PendingAction = PendingDiplomacyAction.None;
                  
-                    // Ships gets new owner on joining empire
+                    // Ships gets new owner on joining empire - colonies are done in AccpetPropsalVisitor
                     if (civ1.IsEmpire && !civ2.IsEmpire && civ1.Key != "Borg")
                     {
                         var currentDiplomat = Diplomat.Get(civ1);
@@ -764,7 +764,7 @@ namespace Supremacy.Game
                                     var minorCivHome = targetMinor.HomeColony;
                                     int gainedResearchPoints = minorCivHome.NetResearch;                                      
                                     var ship = (Ship)minorsObject;
-                                    ship.Owner = civ1;
+                                    ship.Owner = civ1; 
                                     var newfleet = ship.CreateFleet();
                                     newfleet.Owner = civ1;
                                     newfleet.SetOrder(FleetOrders.EngageOrder.Create());
@@ -1593,6 +1593,26 @@ namespace Supremacy.Game
                             1);
 
                         fuelLocations.Add(station.Location);
+                        // stations of other civs we can use to travel
+                        foreach (var whoElse in game.Civilizations)
+                        {
+                            List<Civilization> aggreableCivs = (from Civilization in GameContext.Current.Civilizations
+                                                                where GameContext.Current.AgreementMatrix.IsAgreementActive(civ, whoElse, ClauseType.TreatyDefensiveAlliance) ||
+                                                                      GameContext.Current.AgreementMatrix.IsAgreementActive(civ, whoElse, ClauseType.TreatyFullAlliance) ||
+                                                                      GameContext.Current.AgreementMatrix.IsAgreementActive(civ, whoElse, ClauseType.TreatyAffiliation)
+                                                                select whoElse).ToList();
+                            if (aggreableCivs != null)
+                            {
+                                foreach (Civilization who in aggreableCivs)
+                                {
+                                    foreach (var anotherSation in game.Universe.FindOwned<Station>(who))
+                                    {
+                                        if (anotherSation != null)
+                                        fuelLocations.Add(anotherSation.Location);
+                                    }
+                                }
+                            }
+                        }
                     }
 
                     foreach (var colony in civManager.Colonies)
