@@ -716,15 +716,18 @@ namespace Supremacy.Game
                     {
                     case PendingDiplomacyAction.AcceptProposal:
                         {
-                                GameLog.Core.Diplomacy.DebugFormat("$$ Accept Status = {2} for {0} vs {1}"//, ProposalReceived clauses ={3}"
+                                GameLog.Core.Diplomacy.DebugFormat("$$ Accept Status = {2} for {0} vs {1}"
                                     , civ1
                                     , civ2
-                                    //, foreignPower.ProposalReceived.Clauses.Count()
                                     , foreignPower.PendingAction.ToString());
 
                                 if (foreignPower.ProposalReceived != null)
                                 AcceptProposalVisitor.Visit(foreignPower.ProposalReceived);
-
+                                //GameLog.Core.Diplomacy.DebugFormat("$$ CounterParty LastProposalSent count = {0} Owner LastProposalReceived count = {1} ProposalReceived count = {2}"
+                                //    , foreignPower.CounterpartyForeignPower.LastProposalSent.Clauses.Count()
+                                //    , foreignPower.LastProposalReceived.Clauses.Count()
+                                //    , foreignPower.ProposalReceived.Clauses.Count());
+                                    
                             foreignPower.LastProposalReceived = foreignPower.ProposalReceived;
                             foreignPower.ProposalReceived = null;
                             break;
@@ -737,8 +740,8 @@ namespace Supremacy.Game
                               //, foreignPower.ProposalReceived.Clauses.Count()
                               , foreignPower.PendingAction.ToString());
 
-                            if (foreignPower.ProposalReceived != null)
-                                        RejectProposalVisitor.Visit(foreignPower.ProposalReceived);
+                            if (foreignPower.CounterpartyForeignPower.LastProposalSent != null)
+                                        RejectProposalVisitor.Visit(foreignPower.CounterpartyForeignPower.LastProposalSent);
                             foreignPower.LastProposalReceived = foreignPower.ProposalReceived;
                             foreignPower.ProposalReceived = null;
                             break;
@@ -2505,6 +2508,7 @@ namespace Supremacy.Game
             CombatReset.Set();
         }
         #endregion
+
 
         // ReSharper disable UnusedMethodReturnValue.Local
         private static ParallelLoopResult ParallelForEach<TSource>(

@@ -1139,7 +1139,7 @@ namespace Supremacy.Client.Views
             OnMembershipButtonVisibleChanged();
             if (IsFullAllianceButtonVisible) {}
             OnFullAllianceButtonVisibleChanged();
-
+            
         }
 
         #endregion

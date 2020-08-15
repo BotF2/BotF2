@@ -1142,9 +1142,9 @@
                                                             <!--Visibility="{Binding Path=SelectForeignPowerMessage, Converter={scc:SimpleCase Case=0, IfMatch=Collapsed, Else=Visible}}">-->
                                                             <StackPanel>
                                                                 <RadioButton
-                                                                    x:Name="ACCEPT"                                                               
+                                                                    x:Name="RadioAccept"                                                               
                                                                     VerticalAlignment="Top"
-                                                                    GroupName="0"
+                                                                    GroupName="DiplomacyRadioButton"
                                                                     Content="ACCEPT"
                                                                     Margin="2,5,12,0"
                                                                     Visibility="{Binding Path=HideAcceptReject, Converter={scc:SimpleCase Case=0, IfMatch=Collapsed, Else=Visible}}"
@@ -1154,16 +1154,16 @@
                                                                 <RadioButton
                                                                     x:Name="COUNTER"
                                                                     VerticalAlignment="Top"
-                                                                    GroupName="0"                             
+                                                                    GroupName="DiplomacyRadioButton"                             
                                                                     Content="COUNTER"
                                                                     Margin="0,5,12,0"
                                                                     Checked="clickAcceptCounterReject"/>
                                                             </StackPanel>-->
                                                             <StackPanel>
                                                                 <RadioButton
-                                                                    x:Name="REJECT"
+                                                                    x:Name="RadioReject"
                                                                     VerticalAlignment="Top"
-                                                                    GroupName="0"
+                                                                    GroupName="DiplomacyRadioButton"
                                                                     Margin="2,5,12,0"
                                                                     Content="REJECT"
                                                                     Visibility="{Binding Path=HideAcceptReject, Converter={scc:SimpleCase Case=0, IfMatch=Collapsed, Else=Visible}}"
@@ -1171,12 +1171,13 @@
                                                             </StackPanel>
                                                             <StackPanel>
                                                                 <RadioButton
-                                                                    x:Name="CLEAR"
+                                                                    x:Name="RadioNoResponse"
                                                                     VerticalAlignment="Top"
-                                                                    GroupName="0"                             
+                                                                    GroupName="DiplomacyRadioButton"                             
                                                                     Content="NO RESPONSE"
                                                                     Margin="2,5,12,0"
-                                                                    Checked="clickAcceptCounterReject"/>
+                                                                    Checked="clickAcceptCounterReject"
+                                                                    />
                                                             </StackPanel>
                                                         </StackPanel>
                                                         <StackPanel Grid.Column="0" Grid.Row="0">

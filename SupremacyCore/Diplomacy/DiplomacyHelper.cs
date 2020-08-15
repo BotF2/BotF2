@@ -251,55 +251,40 @@ namespace Supremacy.Diplomacy
        
             if (accepting)
             {
-                if (foreignPower.ProposalReceived == null && foreignPower.OwnerID == 1)
-                    GameLog.Client.Diplomacy.DebugFormat("Hey!!! why is the damn ProposalReceived null for foreignPower.OwnerID 1");
-                if (foreignPower.ProposalReceived == null && foreignPower.OwnerID == 4)
-                    GameLog.Client.Diplomacy.DebugFormat("Hey!!! why is the damn ProposalReceived null for foreignPower.OwnerID 4");
-                if (foreignPower.ProposalReceived != null) // aCiv is owner of the foreignpower looking for a ProposalRecieved
+                if (foreignPower.CounterpartyForeignPower.LastProposalSent != null) // aCiv is owner of the foreignpower looking for a ProposalRecieved
                 {
-                    foreignPower.PendingAction = PendingDiplomacyAction.AcceptProposal;
+                    AcceptProposalVisitor.Visit(foreignPower.CounterpartyForeignPower.LastProposalSent);
+                    var civManagers = GameContext.Current.CivilizationManagers;
+                    var civ1 = foreignPower.CounterpartyForeignPower.Owner;
+                    var civ2 = foreignPower.Owner;
 
-                    GameLog.Client.Diplomacy.DebugFormat(
-                        "## PendingAction: ACCEPT ={0}, Counterparty = {1} Onwer = {2}"
-                        , foreignPower.PendingAction.ToString()
-                        , foreignPower.Counterparty.ShortName
-                        , foreignPower.Owner.ShortName);
+                        civManagers[civ1].SitRepEntries.Add(new DiplomaticSitRepEntry(civ1, foreignPower.ResponseSent));
 
-                    //foreignPower.LastProposalReceived = foreignPower.ProposalReceived;
-                    //foreignPower.ProposalReceived = null;
-                    //GameLog.Client.Diplomacy.DebugFormat("LastProposalReceived ={0} on foreignPower.Owner ={1} clause count ={2}"
-                       // foreignPower.LastProposalReceived.ToString()
-                       // , foreignPower.LastProposalReceived.Clauses.Count()
-                        //);
+
+                        civManagers[civ2].SitRepEntries.Add(new DiplomaticSitRepEntry(civ2, foreignPower.ResponseSent));
+
+                    foreignPower.CounterpartyForeignPower.LastProposalSent = null;
                 }
-                if (foreignPower.ResponseReceived != null)
-                    GameLog.Client.Diplomacy.DebugFormat("foreignPower owner ={0} ResponseReceived = {1}"
-                        , foreignPower.Owner
-                        , Enum.GetName(typeof(StatementType), foreignPower.ResponseReceived.ResponseType));
-                if (foreignPower.LastResponseReceived != null)
-                    GameLog.Client.Diplomacy.DebugFormat("foreignPower owner ={0} LastResponseReceived = {1}"
-                        , foreignPower.Owner
-                        , Enum.GetName(typeof(StatementType), foreignPower.LastResponseReceived.ResponseType));
             }
             else
             {
-                if (foreignPower.ProposalReceived != null)
-                {
-                    foreignPower.PendingAction = PendingDiplomacyAction.RejectProposal;
+                RejectProposalVisitor.Visit(foreignPower.CounterpartyForeignPower.LastProposalSent);
+                var civManagers = GameContext.Current.CivilizationManagers;
+                var civ1 = foreignPower.CounterpartyForeignPower.Owner;
+                var civ2 = foreignPower.Owner;
 
-                    GameLog.Client.Diplomacy.DebugFormat(
-                        "## PendingAction: REJECT ={0} reset by clause - regard value, Counterparty = {1} Onwer = {2}",
-                        foreignPower.PendingAction.ToString(), foreignPower.Counterparty.ShortName,
-                        foreignPower.Owner.ShortName);
-                    //foreignPower.LastProposalReceived = foreignPower.ProposalReceived;
-                    //foreignPower.ProposalReceived = null;
-                }
+                civManagers[civ1].SitRepEntries.Add(new DiplomaticSitRepEntry(civ1, foreignPower.ResponseSent));
+
+
+                civManagers[civ2].SitRepEntries.Add(new DiplomaticSitRepEntry(civ2, foreignPower.ResponseSent));
+
+                foreignPower.CounterpartyForeignPower.LastProposalSent = null;
 
             }
             //foreignPower.LastProposalReceived = foreignPower.ProposalReceived;
             //foreignPower.ProposalReceived = null;
         }     
-        public static void AcceptingRejecting([NotNull] ICivIdentity civ) // reading dictionary for entry regarding this civ
+        public static void AcceptingRejecting([NotNull] ICivIdentity civ) // writing dictionary for entry regarding this civ
         {
             if (civ == null)
                 throw new ArgumentNullException("civ");
@@ -341,7 +326,12 @@ namespace Supremacy.Diplomacy
                                 , foreignPower.PendingAction.ToString()
                                 , foreignPower.Counterparty.ShortName
                                 , foreignPower.Owner.ShortName);
-
+                            //if(foreignPower.ProposalReceived != null)
+                            //GameLog.Client.Diplomacy.DebugFormat(
+                            //   "## ProposlaReceived count={0},  = {1} LastProposalReceived= {2}"
+                            //   , foreignPower.ProposalReceived.Clauses.Count()
+                            //   , foreignPower.LastProposalReceived.Clauses.Count()
+                            //   , foreignPower.Owner.ShortName);
                             //foreignPower.LastProposalReceived = foreignPower.ProposalReceived;
                             //foreignPower.ProposalReceived = null;
                             //GameLog.Client.Diplomacy.DebugFormat("LastProposalReceived ={0} on foreignPower.Owner ={1} clause count ={2}"

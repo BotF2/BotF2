@@ -99,7 +99,7 @@ namespace Supremacy.Client.Views.DiplomacyScreen
                 }
             }
         }
-
+        
         #region Implementation of IActiveAware
 
         private bool _isActive;
@@ -109,6 +109,9 @@ namespace Supremacy.Client.Views.DiplomacyScreen
             get { return _isActive; }
             set
             {
+                RadioAccept.IsChecked = false;
+                RadioReject.IsChecked = false;
+                RadioNoResponse.IsChecked = false;
                 if (value == _isActive)
                     return;
 
