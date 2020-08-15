@@ -1097,14 +1097,7 @@ namespace Supremacy.Client.Views
         public ForeignPowerViewModel SelectedForeignPower
         {
             get
-            {
-       
-                //if (_selectedForeignPower.Owner != null)
-                //    GameLog.Client.Diplomacy.DebugFormat("_selectedForeignPower GET = {0}", _selectedForeignPower.Owner);
-                //else
-                //{
-                //    GameLog.Client.Diplomacy.DebugFormat("_selectedForeignPower is NULL");
-                //}
+            {      
                 return _selectedForeignPower;
             }
             set
@@ -1113,13 +1106,6 @@ namespace Supremacy.Client.Views
                     return;
 
                 _selectedForeignPower = value;
-
-                //if (_selectedForeignPower.Owner != null)
-                //    GameLog.Client.Diplomacy.DebugFormat("_selectedForeignPower SET = {0}", _selectedForeignPower.Owner);
-                //else
-                //{
-                //    GameLog.Client.Diplomacy.DebugFormat("_selectedForeignPower is NULL");
-                //}
 
                 OnSelectedForeignPowerChanged();
             }

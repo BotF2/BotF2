@@ -671,11 +671,7 @@ namespace Supremacy.Game
                 if (civ1.IsHuman)
                     DiplomacyHelper.AcceptingRejecting(civ1);
                 foreach (var civ2 in GameContext.Current.Civilizations)
-                {
-                  
-                    //GameLog.Core.Diplomacy.DebugFormat("$$ Checking for {0} vs {1}", civ1, civ2);
-                    //var orderCiv1 = new Civilization();
-                    //var orderCiv2 = new Civilization();
+                {                
                     if (civ1 == civ2)
                         continue;
 
@@ -704,49 +700,39 @@ namespace Supremacy.Game
                     //GameLog.Core.Diplomacy.DebugFormat("---------------------------------------");
                     //GameLog.Core.Diplomacy.DebugFormat("foreignPowerStatus = {2} for {0} vs {1}", civ1, civ2, foreignPowerStatus.ToString());
 
-                    // save the accept and reject in LastProposal and act during the next turn
-                    //if (civ1.CivID == 1 && civ2.CivID == 4)
-                    //    ;
-                    //if (civ1.CivID == 4 && civ2.CivID == 1)
-                    //    ;
-                    //if (civ1.IsHuman && civ2.IsHuman)
-                    //    DiplomacyHelper.SpecificCivAcceptingRejecting(foreignPower);
-
                     switch (foreignPower.PendingAction)
                     {
                     case PendingDiplomacyAction.AcceptProposal:
                         {
-                                GameLog.Core.Diplomacy.DebugFormat("$$ Accept Status = {2} for {0} vs {1}"
-                                    , civ1
-                                    , civ2
-                                    , foreignPower.PendingAction.ToString());
+                            GameLog.Core.Diplomacy.DebugFormat("$$ Accept Status = {2} for {0} vs {1}"
+                                , civ1
+                                , civ2
+                                , foreignPower.PendingAction.ToString());
 
-                                if (foreignPower.ProposalReceived != null)
-                                AcceptProposalVisitor.Visit(foreignPower.ProposalReceived);
-                                //GameLog.Core.Diplomacy.DebugFormat("$$ CounterParty LastProposalSent count = {0} Owner LastProposalReceived count = {1} ProposalReceived count = {2}"
-                                //    , foreignPower.CounterpartyForeignPower.LastProposalSent.Clauses.Count()
-                                //    , foreignPower.LastProposalReceived.Clauses.Count()
-                                //    , foreignPower.ProposalReceived.Clauses.Count());
-                                    
+                            if (foreignPower.ProposalReceived != null)
+                            AcceptProposalVisitor.Visit(foreignPower.ProposalReceived);
+                                   
                             foreignPower.LastProposalReceived = foreignPower.ProposalReceived;
                             foreignPower.ProposalReceived = null;
                             break;
                         }
 
-                        case PendingDiplomacyAction.RejectProposal:
-                            GameLog.Core.Diplomacy.DebugFormat("$$ Reject Status = {2} for {0} vs {1}"// ProposalReceived clauses ={3}"
-                              , civ1
-                              , civ2
-                              //, foreignPower.ProposalReceived.Clauses.Count()
-                              , foreignPower.PendingAction.ToString());
+                    case PendingDiplomacyAction.RejectProposal:
+                        {
+                            GameLog.Core.Diplomacy.DebugFormat("$$ Reject Status = {2} for {0} vs {1}"
+                                , civ1
+                                , civ2
+                                , foreignPower.PendingAction.ToString());
 
-                            if (foreignPower.CounterpartyForeignPower.LastProposalSent != null)
-                                        RejectProposalVisitor.Visit(foreignPower.CounterpartyForeignPower.LastProposalSent);
+                            if (foreignPower.ProposalReceived != null)
+                                RejectProposalVisitor.Visit(foreignPower.ProposalReceived);
+
                             foreignPower.LastProposalReceived = foreignPower.ProposalReceived;
                             foreignPower.ProposalReceived = null;
                             break;
-                        default:
-                            break;
+                        }
+                    default:
+                        break;
                     }
                     //GameLog.Core.Diplomacy.DebugFormat("Next: foreignPower.PendingAction = NONE for {0} vs {1}, status {2}, pending {3}", foreignPower.Owner, foreignPower.Counterparty, foreignPowerStatus.ToString(), foreignPower.PendingAction.ToString());
                     foreignPower.PendingAction = PendingDiplomacyAction.None;
@@ -958,7 +944,7 @@ namespace Supremacy.Game
                                         Enum.GetName(typeof(StatementType), foreignPower.StatementReceived.StatementType),
                                         foreignPower.Counterparty.Key,
                                         foreignPower.Owner.Key);
-                                    //DiplomacyHelper.AcceptRejectDictionaryFromStatement(foreignPower.StatementReceived);
+
                                     DiplomacyHelper.SpecificCivAcceptingRejecting(foreignPower.StatementReceived.StatementType);
                                     break;
                                 }

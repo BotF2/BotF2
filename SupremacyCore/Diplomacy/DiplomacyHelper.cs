@@ -260,7 +260,6 @@ namespace Supremacy.Diplomacy
 
                         civManagers[civ1].SitRepEntries.Add(new DiplomaticSitRepEntry(civ1, foreignPower.ResponseSent));
 
-
                         civManagers[civ2].SitRepEntries.Add(new DiplomaticSitRepEntry(civ2, foreignPower.ResponseSent));
 
                     foreignPower.CounterpartyForeignPower.LastProposalSent = null;
@@ -268,21 +267,21 @@ namespace Supremacy.Diplomacy
             }
             else
             {
-                RejectProposalVisitor.Visit(foreignPower.CounterpartyForeignPower.LastProposalSent);
-                var civManagers = GameContext.Current.CivilizationManagers;
-                var civ1 = foreignPower.CounterpartyForeignPower.Owner;
-                var civ2 = foreignPower.Owner;
+                if (foreignPower.CounterpartyForeignPower.LastProposalSent != null) // aCiv is owner of the foreignpower looking for a ProposalRecieved
+                {
+                    RejectProposalVisitor.Visit(foreignPower.CounterpartyForeignPower.LastProposalSent);
+                    var civManagers = GameContext.Current.CivilizationManagers;
+                    var civ1 = foreignPower.CounterpartyForeignPower.Owner;
+                    var civ2 = foreignPower.Owner;
 
-                civManagers[civ1].SitRepEntries.Add(new DiplomaticSitRepEntry(civ1, foreignPower.ResponseSent));
+                    civManagers[civ1].SitRepEntries.Add(new DiplomaticSitRepEntry(civ1, foreignPower.ResponseSent));
 
+                    civManagers[civ2].SitRepEntries.Add(new DiplomaticSitRepEntry(civ2, foreignPower.ResponseSent));
 
-                civManagers[civ2].SitRepEntries.Add(new DiplomaticSitRepEntry(civ2, foreignPower.ResponseSent));
-
-                foreignPower.CounterpartyForeignPower.LastProposalSent = null;
+                    foreignPower.CounterpartyForeignPower.LastProposalSent = null;
+                }
 
             }
-            //foreignPower.LastProposalReceived = foreignPower.ProposalReceived;
-            //foreignPower.ProposalReceived = null;
         }     
         public static void AcceptingRejecting([NotNull] ICivIdentity civ) // writing dictionary for entry regarding this civ
         {
@@ -705,14 +704,6 @@ namespace Supremacy.Diplomacy
                 default:
                     break;
             }
-
-            //var acceptRejectElement = message.AvailableElements.FirstOrDefault(o => o.ElementType == DiplomacyMessageElementType.UpdateAcceptRejectDictionaryStatement);
-            //if (acceptRejectElement == null || !acceptRejectElement.AddCommand.CanExecute(null))
-            //return;
-
-            //acceptRejectElement.AddCommand.Execute(null);
-
-            //foreignPower.OutgoingMessage = message;
         }
 
         public static void ClearAcceptRejectDictionary()
@@ -724,12 +715,7 @@ namespace Supremacy.Diplomacy
         {
             int turnNumber = turn; // in case we need this to time clearing of dictionary - Dictionary<string, Tuple<bool, int>>(); or ValueType is a Class with bool and int.
             string foreignPowerID = foreignPower.CounterpartyID.ToString() + foreignPower.OwnerID.ToString();
-            //if (_acceptRejectDictionary == null)
-            //{
-            //    Dictionary<string, bool> dictionary = new Dictionary<string, bool>() { { foreignPowerID, accepted } };
-            //    _acceptRejectDictionary = dictionary;
-            //    GameLog.Client.Diplomacy.DebugFormat("Generated new _acceptRejectDicionary");
-            //}
+
             if (_acceptRejectDictionary.ContainsKey(foreignPowerID))
             {
                 _acceptRejectDictionary.Remove(foreignPowerID);
@@ -737,24 +723,16 @@ namespace Supremacy.Diplomacy
             }
             else { _acceptRejectDictionary.Add(foreignPowerID, accepted); }
 
-            //if (_acceptRejectDictionary != null)
-                GameLog.Client.Diplomacy.DebugFormat("Turn {0}: _acceptRejectDicionary.Count = {1}, Pair(Counter/Owner) = {2}"
-                    , GameContext.Current.TurnNumber
-                    , _acceptRejectDictionary.Count
-                    , foreignPowerID
-                    );
+            GameLog.Client.Diplomacy.DebugFormat("Turn {0}: _acceptRejectDicionary.Count = {1}, Pair(Counter/Owner) = {2}"
+                , GameContext.Current.TurnNumber
+                , _acceptRejectDictionary.Count
+                , foreignPowerID
+                );
         }
         public static void AcceptRejectDictionary(string civIDs, bool accepted, int turn)
         {
             int turnNumber = turn; // in case we need this to time clearing of dictionary - Dictionary<string, Tuple<bool, int>>(); or ValueType is a Class with bool and int.
-            //string foreignPowerID = foreignPower.CounterpartyID.ToString() + foreignPower.OwnerID.ToString();
-            
-            //if (_acceptRejectDictionary == null)
-            //{
-            //    Dictionary<string, bool> dictionary = new Dictionary<string, bool>() { { civIDs, accepted } };
-            //    _acceptRejectDictionary = dictionary;
-            //    GameLog.Client.Diplomacy.DebugFormat("Generated new _acceptRejectDicionary");
-            //}
+
             if (_acceptRejectDictionary.ContainsKey(civIDs))
             {
                 _acceptRejectDictionary.Remove(civIDs);
