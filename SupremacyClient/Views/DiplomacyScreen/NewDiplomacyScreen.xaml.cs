@@ -64,7 +64,7 @@ namespace Supremacy.Client.Views.DiplomacyScreen
                     }
                     else
                     {   // creat entry for none host human player that clicked the accept - reject radio button         
-                        StatementType _statementType = DiplomacyHelper.GetStatementType(accepting, (Civilization)senderCiv, playerEmpire); // first is bool, then sender ID(now the local player), last new receipient, in Dictinary Key                       
+                        StatementType _statementType = DiplomacyHelper.GetStatementType(accepting, senderCiv, playerEmpire); // first is bool, then sender ID(now the local player), last new receipient, in Dictinary Key                       
                         GameLog.Client.Diplomacy.DebugFormat("Local player IS NOT Host, statementType = {0} accepting = {1} sender ={2} counterpartyID {3} local = {4} OwnerID ={5}"
                             , Enum.GetName(typeof(StatementType), _statementType)
                             , accepting
@@ -88,7 +88,7 @@ namespace Supremacy.Client.Views.DiplomacyScreen
                         }
                     }
 
-                    GameLog.Client.Diplomacy.DebugFormat("Turn {0}: Button response = {4}, Player = {1}, Sender = {2} vs counterParty {3} local player is host ={5}"
+                    GameLog.Client.Diplomacy.DebugFormat("Turn {0}: Button response = {4}, Player = {1}, otherForeignPower.Owner= {2} to otherForeignPower.CounmterParty = {3} local player is host ={5}"
                         , GameContext.Current.TurnNumber
                         , playerEmpire.Key
                         , otherForeignPower.Owner

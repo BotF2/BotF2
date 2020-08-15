@@ -716,13 +716,13 @@ namespace Supremacy.Game
                     {
                     case PendingDiplomacyAction.AcceptProposal:
                         {
-                            GameLog.Core.Diplomacy.DebugFormat("$$ Accept Status = {2} for {0} vs {1}, ProposalReceived clauses ={3}"
-                                , civ1
-                                , civ2
-                                , foreignPower.ProposalReceived.Clauses.Count()
-                                , foreignPower.PendingAction.ToString());
+                                GameLog.Core.Diplomacy.DebugFormat("$$ Accept Status = {2} for {0} vs {1}"//, ProposalReceived clauses ={3}"
+                                    , civ1
+                                    , civ2
+                                    //, foreignPower.ProposalReceived.Clauses.Count()
+                                    , foreignPower.PendingAction.ToString());
 
-                            if (foreignPower.ProposalReceived != null)
+                                if (foreignPower.ProposalReceived != null)
                                 AcceptProposalVisitor.Visit(foreignPower.ProposalReceived);
 
                             foreignPower.LastProposalReceived = foreignPower.ProposalReceived;
@@ -731,10 +731,10 @@ namespace Supremacy.Game
                         }
 
                         case PendingDiplomacyAction.RejectProposal:
-                            GameLog.Core.Diplomacy.DebugFormat("$$ Reject Status = {2} for {0} vs {1}, ProposalReceived clauses ={3}"
+                            GameLog.Core.Diplomacy.DebugFormat("$$ Reject Status = {2} for {0} vs {1}"// ProposalReceived clauses ={3}"
                               , civ1
                               , civ2
-                              , foreignPower.ProposalReceived.Clauses.Count()
+                              //, foreignPower.ProposalReceived.Clauses.Count()
                               , foreignPower.PendingAction.ToString());
 
                             if (foreignPower.ProposalReceived != null)
