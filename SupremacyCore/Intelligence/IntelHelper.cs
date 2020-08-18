@@ -319,8 +319,6 @@ namespace Supremacy.Intelligence
                 return;
             if (attackedCiv == null)
                 return;
-            //if (colony == null)
-            //    return;
 
             ratio = GetIntelRatio(attackedCivManager, attackingCivManager);
             Int32.TryParse(attackedCivManager.TotalIntelligenceDefenseAccumulated.ToString(), out defenseIntelligence);  // TotalIntelligence of attacked civ

@@ -226,7 +226,7 @@ namespace Supremacy.Diplomacy
                         new WarDeclaredSitRepEntry(
                             civ,
                             owner,
-                            counterparty));                    
+                            counterparty));    
                 }
             }
         }

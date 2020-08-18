@@ -293,7 +293,8 @@ namespace Supremacy.Diplomacy
         MakeDemand,
         ResearchTech,
         Target,
-        MakeDemandProtectorate
+        MakeDemandProtectorate,
+            ForeignPowerChanged
     }
 
     /// <summary>

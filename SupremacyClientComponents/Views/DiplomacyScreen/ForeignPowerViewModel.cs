@@ -26,7 +26,6 @@ namespace Supremacy.Client.Views
             {
                 return;
                 throw new ArgumentNullException("foreignPower");
-                
             }
 
             _foreignPower = foreignPower;
@@ -34,7 +33,7 @@ namespace Supremacy.Client.Views
             _activeAgreementsView = new ReadOnlyObservableCollection<ActiveAgreementViewModel>(_activeAgreements);
 
             GameLog.Client.Diplomacy.DebugFormat("foreignPower Owner = {0}", foreignPower.Owner.ShortName);
-
+            
             UpdateIncomingMessage();
             UpdateActiveAgreements();
         }

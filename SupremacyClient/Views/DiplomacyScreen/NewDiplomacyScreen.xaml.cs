@@ -1,19 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
+
+using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
+using System.Windows.Input;
 using System.Windows.Media;
 using Microsoft.Practices.Composite.Presentation.Commands;
 using Microsoft.Practices.Composite.Regions;
 using Microsoft.Practices.ServiceLocation;
+using Microsoft.Xna.Framework.Graphics;
 using Obtics.Collections;
 using Supremacy.AI;
 using Supremacy.Client.Context;
 using Supremacy.Client.Controls;
 using Supremacy.Diplomacy;
-using Supremacy.Diplomacy.Visitors;
 using Supremacy.Entities;
 using Supremacy.Game;
 using Supremacy.UI;
@@ -26,29 +30,107 @@ namespace Supremacy.Client.Views.DiplomacyScreen
     /// <summary>
     /// Interaction logic for NewDiplomacyScreen.xaml
     /// </summary>
-    public partial class NewDiplomacyScreen : INewDiplomacyScreenView
+    public partial class NewDiplomacyScreen : INewDiplomacyScreenView, System.ComponentModel.INotifyPropertyChanged
     {
         private Order _sendOrder;
+      //private ForeignPowerViewModel _selectedForeignPower;
+      // private int _turn = 0;
+        private string _response = "....";
 
         public NewDiplomacyScreen()
         {
             TextBlockExtensions.AddHyperlinkClickedHandler(this, OnMessageParameterLinkClick);
             InitializeComponent();
+            this.DataContext = this;
+
+        }
+        public string Response
+        {
+            get
+            {
+                return _response; }
+            set
+            {
+                
+               // int selectedForeignPowerID = DiplomacyData.SelectedForeignPowerID;
+                //if (selectedForeignPowerID != Model.SelectedForeignPower.Owner.CivID)
+                //    {
+                //        _response = "...";
+                //        RaisePropertyChanged("Response");
+                //        return;
+                //    }
+                _response = value;
+                RaisePropertyChanged("Response");
+            }
+        }
+        //private void _self_MouseDown(object sender, MouseButtonEventArgs e)
+        //{
+        //    SelecteForeignPower.Focus();
+        //}
+        //public void UpdateSelectedForeignPower()
+        //{
+        //    //do something
+        //}
+        public ForeignPowerViewModel SelectedForeignPower
+        {
+            get
+            {
+                if (DiplomacyScreenViewModel.DesignInstance.SelectedForeignPower == Model.SelectedForeignPower)
+                {
+                    RadioAccept.IsChecked = false;
+                    RadioReject.IsChecked = false;
+
+                }
+                return DiplomacyScreenViewModel.DesignInstance.SelectedForeignPower;
+
+            }
+            //set
+            //{
+            //    if (DiplomacyScreenViewModel.DesignInstance.SelectedForeignPower == Model.SelectedForeignPower)
+            //        return;
+            //    _selectedForeignPower = value;
+            //    RadioAccept.IsChecked = false;
+            //    RadioReject.IsChecked = false;
+            //    //RadioNoResponse.IsChecked = false;
+            //}
+        }
+        private void OnMouseDownOutsideElement(object sender, MouseButtonEventArgs e)
+        {
+            Mouse.RemovePreviewMouseDownOutsideCapturedElementHandler(this, OnMouseDownOutsideElement);
+            ReleaseMouseCapture();
+            RadioAccept.IsChecked = false;
+            RadioReject.IsChecked = false;
+            //RadioNoResponse.IsChecked = false;
+        }
+        private void RadioAccept_OnMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            RadioAccept.Focus();
+            CaptureMouse();
+            Mouse.AddPreviewMouseDownOutsideCapturedElementHandler(this, OnMouseDownOutsideElement);
         }
 
-    private void clickAcceptCounterReject(object sender, RoutedEventArgs e)
+        private void clickAcceptCounterReject(object sender, RoutedEventArgs e)
         {
             int turn = GameContext.Current.TurnNumber;
             RadioButton radioButton = sender as RadioButton;
             if (radioButton != null)
             {
+                
                 var response = (string)radioButton.Content;
                 if (Model.SelectedForeignPower != null)
                 {
                     bool accepting = false;
                     if (response == "ACCEPT")
-                            accepting = true;
-
+                    {
+                        accepting = true;
+                        Response = "ACCEPTED";
+                    }
+                    else
+                    {
+                        Response = "REJECTED";
+                    }
+                    var somthing = SelectedForeignPower;
+                    //_turn = GameContext.Current.TurnNumber;
                     var senderCiv = Model.SelectedForeignPower.Counterparty; // sender of proposal treaty
                     var playerEmpire = AppContext.LocalPlayerEmpire.Civilization; // local player reciever of proposal treaty
                     var diplomat = Diplomat.Get(playerEmpire);
@@ -75,7 +157,7 @@ namespace Supremacy.Client.Views.DiplomacyScreen
                             );
                         if (_statementType != StatementType.NoStatement)
                         {
-                            Statement statementToSend = new Statement(playerEmpire, senderCiv, _statementType, Tone.Receptive, turn);                   
+                            Statement statementToSend = new Statement(playerEmpire, senderCiv, _statementType, Tone.Receptive, turn);
                             _sendOrder = new SendStatementOrder(statementToSend);
                             ServiceLocator.Current.GetInstance<IPlayerOrderService>().AddOrder(_sendOrder);
 
@@ -88,18 +170,19 @@ namespace Supremacy.Client.Views.DiplomacyScreen
                         }
                     }
 
-                    GameLog.Client.Diplomacy.DebugFormat("Turn {0}: Button response = {4}, Player = {1}, otherForeignPower.Owner= {2} to otherForeignPower.CounmterParty = {3} local player is host ={5}"
+                    GameLog.Client.Diplomacy.DebugFormat("Turn {0}: Button _response = {4} response {5}, Player = {1}, otherForeignPower.Owner= {2} to otherForeignPower.CounmterParty = {3} local player is host ={6}"
                         , GameContext.Current.TurnNumber
                         , playerEmpire.Key
                         , otherForeignPower.Owner
                         , otherForeignPower.Counterparty.Key
+                        , _response
                         , response
                         , localPlayerIsHosting
                         );
                 }
             }
         }
-        
+
         #region Implementation of IActiveAware
 
         private bool _isActive;
@@ -111,7 +194,7 @@ namespace Supremacy.Client.Views.DiplomacyScreen
             {
                 RadioAccept.IsChecked = false;
                 RadioReject.IsChecked = false;
-                RadioNoResponse.IsChecked = false;
+                //RadioNoResponse.IsChecked = false;
                 if (value == _isActive)
                     return;
 
@@ -124,6 +207,14 @@ namespace Supremacy.Client.Views.DiplomacyScreen
         public event EventHandler IsActiveChanged;
 
         #endregion
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        private void RaisePropertyChanged(string propertyName)
+        {
+            if (this.PropertyChanged != null)
+                this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+        }
 
         #region Implementation of IGameScreenView<DiplomacyScreenViewModel>
 
@@ -156,6 +247,11 @@ namespace Supremacy.Client.Views.DiplomacyScreen
 
             if (element.EditParameterCommand.CanExecute(contentTemplate))
                 element.EditParameterCommand.Execute(contentTemplate);
+        }
+
+        private void SelecteForeignPower_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+
         }
     }
 

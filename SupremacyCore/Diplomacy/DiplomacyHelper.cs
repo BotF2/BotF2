@@ -206,7 +206,7 @@ namespace Supremacy.Diplomacy
                 GameLog.Core.Diplomacy.ErrorFormat(
                     "Civilization {0} attempted to declare war on itself.",
                     declaringCiv.ShortName);
-
+                
                 return;
             }
           
@@ -261,8 +261,9 @@ namespace Supremacy.Diplomacy
                         civManagers[civ1].SitRepEntries.Add(new DiplomaticSitRepEntry(civ1, foreignPower.ResponseSent));
 
                         civManagers[civ2].SitRepEntries.Add(new DiplomaticSitRepEntry(civ2, foreignPower.ResponseSent));
-
+               
                     foreignPower.CounterpartyForeignPower.LastProposalSent = null;
+                    foreignPower.ResponseSent = null;
                 }
             }
             else
@@ -279,6 +280,7 @@ namespace Supremacy.Diplomacy
                     civManagers[civ2].SitRepEntries.Add(new DiplomaticSitRepEntry(civ2, foreignPower.ResponseSent));
 
                     foreignPower.CounterpartyForeignPower.LastProposalSent = null;
+                    foreignPower.ResponseSent = null;
                 }
 
             }

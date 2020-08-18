@@ -626,8 +626,6 @@ namespace Supremacy.Game
                     int shipsDamaged = 0;
                     int shipsDestroyed = 0;
 
-
-
                     if (fleet.Ships != null) // Update FixBlackholeCrash (hopefully) 2 March 2019
                     {
                         
@@ -1568,6 +1566,15 @@ namespace Supremacy.Game
                             fleet.SensorRange,
                             0,
                             1);
+
+                        foreach (var otherCiv in GameContext.Current.Civilizations)
+                        {
+                            if (fleet.Owner != otherCiv)
+                            {
+                                // ToDo: find if fleet is in area controled by other civ and check for Non-Aggression Pact violation
+                            }
+                        }
+
                     }
                     //stations
                     foreach (var station in game.Universe.FindOwned<Station>(civ))

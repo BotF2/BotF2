@@ -19,12 +19,13 @@
                        d:DesignHeight="764"
                        d:DesignWidth="1280"
                        d:DataContext="{x:Static scc:DiplomacyScreenViewModel.DesignInstance}">
+
     <i:Interaction.Behaviors>
         <scc:VisibilityGroupScopeBehavior VisibilityGroup="DiplomacyScreenVisibilityScopes.RelationshipGraph" Visibility="{Binding Path=DisplayMode, Converter={scc:SimpleCase Case=Overview, IfMatch=Visible, Else=Hidden}}" />
         <scc:VisibilityGroupScopeBehavior VisibilityGroup="DiplomacyScreenVisibilityScopes.Default" Visibility="{Binding Path=DisplayMode, Converter={scc:SimpleCase Case=Overview, IfMatch=Hidden, Else=Visible}}" />
     </i:Interaction.Behaviors>
+    
     <Control.Resources>
-        
         <scc:LocalizedEnumStringConverter x:Key="LocalizedEnumStringConverter" />
 
         <Style TargetType="{x:Type xcdg:DataGridControl}">
@@ -44,14 +45,13 @@
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type xcdg:DataGridControl}">
                         <Border Background="{TemplateBinding Background}"
-                  BorderBrush="{TemplateBinding BorderBrush}"
-                  BorderThickness="{TemplateBinding BorderThickness}">
+                                  BorderBrush="{TemplateBinding BorderBrush}"
+                                  BorderThickness="{TemplateBinding BorderThickness}">
                             <AdornerDecorator>
                                 <xcdg:TableViewScrollViewer x:Name="PART_ScrollViewer"
                                           ShowRowSelectorPane="False"
                                           xcdg:GroupLevelIndicatorPane.ShowIndicators="False"
-                                                            ScrollViewer.VerticalScrollBarVisibility="Visible">
-
+                                          ScrollViewer.VerticalScrollBarVisibility="Visible">
                                     <ItemsPresenter />
                                 </xcdg:TableViewScrollViewer>
                             </AdornerDecorator>
@@ -160,13 +160,13 @@
             <DockPanel LastChildFill="True"
                    HorizontalAlignment="Left">
                 <Button DockPanel.Dock="Right"
-                  Command="{Binding Path=RemoveCommand}"
-                  CommandParameter="{Binding}"
-                  Style="{StaticResource RemoveMessageElementButtonStyle}"
-                  VerticalAlignment="Top"
-                  Visibility="{Binding Path=IsEditing, Converter={StaticResource BooleanToVisibilityConverter}}"
-                  IsEnabled="{Binding Path=IsEditing, Converter={StaticResource BooleanToVisibilityConverter}}"
-                  Margin="6,-1,0,-1" />
+                      Command="{Binding Path=RemoveCommand}"
+                      CommandParameter="{Binding}"
+                      Style="{StaticResource RemoveMessageElementButtonStyle}"
+                      VerticalAlignment="Top"
+                      Visibility="{Binding Path=IsEditing, Converter={StaticResource BooleanToVisibilityConverter}}"
+                      IsEnabled="{Binding Path=IsEditing, Converter={StaticResource BooleanToVisibilityConverter}}"
+                      Margin="6,-1,0,-1" />
                 <scc:RichTextBlock Grid.Column="0"
                              RichText="{Binding Path=Description}"
                              TextWrapping="Wrap" />
@@ -332,7 +332,7 @@
 -->
     </Control.Resources>
 
-    <scc:GamePopupSite>
+    <scc:GamePopupSite >
         <Border Background="#66000000">
             <Grid SnapsToDevicePixels="True"
                     Margin="6"
@@ -690,8 +690,9 @@
                             </DataTemplate.Triggers>
                         </DataTemplate>
                     </Grid.Resources>
-
-                    <xcdg:DataGridControl x:Name="PART_CivilizationList"
+                    <Grid x:Name="SelecteForeignPower"
+                          KeyDown="SelecteForeignPower_KeyDown" >
+                        <xcdg:DataGridControl x:Name="PART_CivilizationList"
                                 scc:VisibilityGroupScopeBehavior.VisibilityGroup="DiplomacyScreenVisibilityScopes.Default"
                                 Background="Transparent"
                                 Foreground="{StaticResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"
@@ -735,15 +736,15 @@
 
                             <!--Attitude-->
                             <xcdg:Column FieldName="EffectiveRegard"
-                                         Title="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry=EffectiveRegard, CharacterCasing=Upper}"
-                                         DisplayMemberBinding="{Binding Path=EffectiveRegard, Mode=OneWay, Converter={StaticResource LocalizedEnumStringConverter}}"
-                                         VisiblePosition="3" />
+                                        Title="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry=EffectiveRegard, CharacterCasing=Upper}"
+                                        DisplayMemberBinding="{Binding Path=EffectiveRegard, Mode=OneWay, Converter={StaticResource LocalizedEnumStringConverter}}"
+                                        VisiblePosition="3" />
                             <!--<xcdg:Column FieldName="OutgoingMessageCategory"
-                                         Title="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry=Outgoing, CharacterCasing=Upper}"
-                                         Width="150"
-                                         ReadOnly="True"
-                                         VisiblePosition="4"
-                                         DisplayMemberBinding="{Binding Path=OutgoingMessageCategory, Converter={StaticResource LocalizedEnumStringConverter}}" />-->
+                                    Title="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry=Outgoing, CharacterCasing=Upper}"
+                                    Width="150"
+                                    ReadOnly="True"
+                                    VisiblePosition="4"
+                                    DisplayMemberBinding="{Binding Path=OutgoingMessageCategory, Converter={StaticResource LocalizedEnumStringConverter}}" />-->
                             <xcdg:Column FieldName="IncomingMessageCategory"
                                          Title="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry=Incoming, CharacterCasing=Upper}"
                                          Width="150"
@@ -782,6 +783,7 @@
                         </xcdg:DataGridControl.View>
                     </xcdg:DataGridControl>
                 </Grid>
+            </Grid>
                 
                 <!--
         ================================================================================
@@ -1043,14 +1045,25 @@
                                                 Margin="0,2,0,2"
                                                 DataContext="{Binding Path=SelectedForeignPower.IncomingMessage}">
                                             <StackPanel Orientation="Vertical">
-                                                <TextBlock TextAlignment="Left"
+                                                <StackPanel Orientation="Horizontal">
+                                                    <TextBlock TextAlignment="Left"
+                                                                TextWrapping="Wrap"
+                                                                TextTrimming="CharacterEllipsis"
+                                                                FontSize="20"
+                                                                FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
+                                                                Foreground="{StaticResource HeaderTextBrush}"
+                                                                Margin="3,2,0,0"
+                                                                Text="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry=InboxHeader, CharacterCasing=Upper}" />
+                                                    <TextBlock Name="acceptReject"
+                                                            TextAlignment="Left"
                                                             TextWrapping="Wrap"
                                                             TextTrimming="CharacterEllipsis"
-                                                            FontSize="20"
+                                                            FontSize="18"
                                                             FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
-                                                            Foreground="{StaticResource HeaderTextBrush}"
-                                                            Margin="3,2,0,0"
-                                                            Text="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry=InboxHeader, CharacterCasing=Upper}" />
+                                                            Foreground="LimeGreen"
+                                                            Margin="10,2,0,0"
+                                                            Text="{Binding Path=Response, ElementName=_self, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                                </StackPanel>
                                                 <ContentPresenter TextBlock.Foreground="{StaticResource DefaultTextBrush}"
                                                                     TextBlock.FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                                                                     TextBlock.FontSize="16"
@@ -1169,7 +1182,7 @@
                                                                     Visibility="{Binding Path=HideAcceptReject, Converter={scc:SimpleCase Case=0, IfMatch=Collapsed, Else=Visible}}"
                                                                     Checked="clickAcceptCounterReject"/>
                                                             </StackPanel>
-                                                            <StackPanel>
+                                                            <!--<StackPanel>
                                                                 <RadioButton
                                                                     x:Name="RadioNoResponse"
                                                                     VerticalAlignment="Top"
@@ -1178,7 +1191,7 @@
                                                                     Margin="2,5,12,0"
                                                                     Checked="clickAcceptCounterReject"
                                                                     />
-                                                            </StackPanel>
+                                                            </StackPanel>-->
                                                         </StackPanel>
                                                         <StackPanel Grid.Column="0" Grid.Row="0">
                                                             <!--<TextBlock Text="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry=NoIncomingHeader, CharacterCasing=Upper}" 

@@ -178,6 +178,25 @@ namespace Supremacy.Client.Views
         {
             get { return _elements.All(o => o.ElementType > DiplomacyMessageElementType.TreatyWarPact); }
         }
+        public int HideAcceptRejectButtons
+        {
+            get
+            {
+                var sender = _sender;
+                var recipient = _recipient;
+                var diplomat = Diplomat.Get(recipient);
+                var foreignPower = diplomat.GetForeignPower(sender);
+
+                int decider = 1; // accept and reject buttons hidden if decider = 1, exposed if decider = 0.
+                if (IsTreaty)
+                    decider = 0;
+                if (foreignPower.ResponseReceived != null)
+                    decider = 1;
+                if (decider == 0)
+                    return 0;
+                else return 1;
+            }
+        }
 
         internal IDiplomaticExchange CreateMessage()
             {
@@ -434,52 +453,11 @@ namespace Supremacy.Client.Views
             get { return !string.IsNullOrWhiteSpace(TreatyLeadInText); }
         }
 
-        public int HideAcceptRejectButtons
-        {
-            get
-            {
-                var sender = _sender;
-                var recipient = _recipient;
-                var diplomat = Diplomat.Get(recipient);
-                var foreignPower = diplomat.GetForeignPower(sender);
-
-                /*
-                 * Looking here for what part of foreignPower can be used to control if the accept-reject buttons are hidden or not
-                 
-                //int turn = GameContext.Current.TurnNumber;
-                //var ResponseSent = foreignPower.ResponseSent; //AI turn 2 null, Multi null
-                var LastResponseSent = foreignPower.LastProposalSent; //**AI turn2 clause=2, Multi null
-                var ResponseReceived = foreignPower.ResponseReceived; //**AI turn2 responceType accept, Multi null
-                //var LastResponseReceived = foreignPower.LastResponseReceived; //AI turn 2 null, Multi null
-                //var StatementSent = foreignPower.StatementSent; //AI turn 2 null, Multi null
-                var LastStatementSent = foreignPower.LastStatementSent;//**AI turn 2 null
-               // var StatementReceived = foreignPower.StatementReceived; //AI turn 2 null, Multi null
-               //var LastStatementReceived = foreignPower.LastStatementReceived;//AI turn 2 null, Multi null
-               //var ProposalSent = foreignPower.ProposalSent;//AI turn 2 null, Multi null
-                var LastProposalSent = foreignPower.LastProposalSent;//**AI clauses=1, Multi null
-                var ProposalReceived = foreignPower.ProposalReceived;//**AI turn 2 null, Multi clauses=1
-                //var LastProposalRecieved = foreignPower.LastProposalReceived;//AI turn 2 null, Multi null
-                //var PendingAction = foreignPower.PendingAction;//AI turn2 none, Multi none
-
-                */
-
-                int decider = 1; // accept and reject buttons hidden if decider = 1, exposed if decider = 0.
-                if (IsTreaty)
-                    decider = 0;
-                if (foreignPower.ResponseReceived != null)
-                    decider = 1;
-                if (decider == 0)
-                return 0;
-                else return 1;
-            }
-        }
-
         protected virtual void OnHasTreatyLeadInTextChanged()
         {
             HasTreatyLeadInTextChanged.Raise(this);
             OnPropertyChanged("HasTreatyLeadInText");
         }
-
         #endregion
 
         private void UpdateLeadInText()
