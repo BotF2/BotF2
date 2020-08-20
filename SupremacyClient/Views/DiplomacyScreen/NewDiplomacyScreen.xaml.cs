@@ -71,29 +71,29 @@ namespace Supremacy.Client.Views.DiplomacyScreen
         //{
         //    //do something
         //}
-        public ForeignPowerViewModel SelectedForeignPower
-        {
-            get
-            {
-                if (DiplomacyScreenViewModel.DesignInstance.SelectedForeignPower == Model.SelectedForeignPower)
-                {
-                    RadioAccept.IsChecked = false;
-                    RadioReject.IsChecked = false;
+        //public ForeignPowerViewModel SelectedForeignPower
+        //{
+        //    get
+        //    {
+        //        if (DiplomacyScreenViewModel.DesignInstance.SelectedForeignPower == Model.SelectedForeignPower)
+        //        {
+        //            RadioAccept.IsChecked = false;
+        //            RadioReject.IsChecked = false;
 
-                }
-                return DiplomacyScreenViewModel.DesignInstance.SelectedForeignPower;
+        //        }
+        //        return DiplomacyScreenViewModel.DesignInstance.SelectedForeignPower;
 
-            }
-            //set
-            //{
-            //    if (DiplomacyScreenViewModel.DesignInstance.SelectedForeignPower == Model.SelectedForeignPower)
-            //        return;
-            //    _selectedForeignPower = value;
-            //    RadioAccept.IsChecked = false;
-            //    RadioReject.IsChecked = false;
-            //    //RadioNoResponse.IsChecked = false;
-            //}
-        }
+        //    }
+        //    //set
+        //    //{
+        //    //    if (DiplomacyScreenViewModel.DesignInstance.SelectedForeignPower == Model.SelectedForeignPower)
+        //    //        return;
+        //    //    _selectedForeignPower = value;
+        //    //    RadioAccept.IsChecked = false;
+        //    //    RadioReject.IsChecked = false;
+        //    //    //RadioNoResponse.IsChecked = false;
+        //    //}
+        //}
         private void OnMouseDownOutsideElement(object sender, MouseButtonEventArgs e)
         {
             Mouse.RemovePreviewMouseDownOutsideCapturedElementHandler(this, OnMouseDownOutsideElement);
@@ -102,17 +102,14 @@ namespace Supremacy.Client.Views.DiplomacyScreen
             RadioReject.IsChecked = false;
             //RadioNoResponse.IsChecked = false;
         }
-        private void RadioAccept_OnMouseDown(object sender, MouseButtonEventArgs e)
-        {
-            RadioAccept.Focus();
-            CaptureMouse();
-            Mouse.AddPreviewMouseDownOutsideCapturedElementHandler(this, OnMouseDownOutsideElement);
-        }
-
         private void clickAcceptCounterReject(object sender, RoutedEventArgs e)
         {
-            int turn = GameContext.Current.TurnNumber;
+
+            //int turn = GameContext.Current.TurnNumber;
             RadioButton radioButton = sender as RadioButton;
+            radioButton.Focus();
+            CaptureMouse();
+            Mouse.AddPreviewMouseDownOutsideCapturedElementHandler(this, OnMouseDownOutsideElement);
             if (radioButton != null)
             {
                 
@@ -129,8 +126,8 @@ namespace Supremacy.Client.Views.DiplomacyScreen
                     {
                         Response = "REJECTED";
                     }
-                    var somthing = SelectedForeignPower;
-                    //_turn = GameContext.Current.TurnNumber;
+                    //var somthing = SelectedForeignPower;
+                    int turn = GameContext.Current.TurnNumber;
                     var senderCiv = Model.SelectedForeignPower.Counterparty; // sender of proposal treaty
                     var playerEmpire = AppContext.LocalPlayerEmpire.Civilization; // local player reciever of proposal treaty
                     var diplomat = Diplomat.Get(playerEmpire);

@@ -43,10 +43,6 @@ namespace Supremacy.Client.Views
                 _designInstance.SelectedForeignPower.OutgoingMessage.AvailableElements.First(o => o.ActionCategory == DiplomacyMessageElementActionCategory.Propose).AddCommand.Execute(null);
                 _designInstance.SelectedForeignPower.OutgoingMessage.AvailableElements.First(o => o.ActionCategory == DiplomacyMessageElementActionCategory.Offer).AddCommand.Execute(null);
                
-                int selelectedForeignPowerID = _designInstance.SelectedForeignPower.Owner.CivID;
-
-               // DiplomacyData.SendSelectedForeignPower(selelectedForeignPowerID);
-
                 return _designInstance;
             }
         }

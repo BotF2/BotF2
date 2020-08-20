@@ -690,8 +690,7 @@
                             </DataTemplate.Triggers>
                         </DataTemplate>
                     </Grid.Resources>
-                    <Grid x:Name="SelecteForeignPower"
-                          KeyDown="SelecteForeignPower_KeyDown" >
+                  <Grid>
                         <xcdg:DataGridControl x:Name="PART_CivilizationList"
                                 scc:VisibilityGroupScopeBehavior.VisibilityGroup="DiplomacyScreenVisibilityScopes.Default"
                                 Background="Transparent"
@@ -782,7 +781,7 @@
                             </xcdg:TableView>
                         </xcdg:DataGridControl.View>
                     </xcdg:DataGridControl>
-                </Grid>
+                  </Grid>
             </Grid>
                 
                 <!--
