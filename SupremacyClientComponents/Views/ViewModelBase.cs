@@ -86,6 +86,8 @@ namespace Supremacy.Client.Views
             InvalidateCommands();
         }
 
+        internal abstract void RaisePropertyChangedEvent(string v);
+
         #region Implementation of INotifyPropertyChanged
 
         [NonSerialized] private PropertyChangedEventHandler _propertyChanged;

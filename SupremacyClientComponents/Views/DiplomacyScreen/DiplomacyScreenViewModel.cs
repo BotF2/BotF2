@@ -62,14 +62,21 @@ namespace Supremacy.Client.Views
 
         public ListButtons RadioButtonSelected // button selected by user
         {
-            get { return _radioButtonSelected; }
+            get
+            { 
+                return _radioButtonSelected;
+            }
             set
             {
                 _radioButtonSelected = value;
-                RaisePropertyChanged("RadioButtonSelected");
-            }
+                RaisePropertyChangedEvent("RadioButtonSelected");
+                
+            }            
         }
-
+        internal override void RaisePropertyChangedEvent(string v)
+        {
+            
+        }
         public string Response
         {
             get
