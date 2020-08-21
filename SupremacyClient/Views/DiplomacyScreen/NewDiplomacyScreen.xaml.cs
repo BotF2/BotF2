@@ -63,37 +63,7 @@ namespace Supremacy.Client.Views.DiplomacyScreen
                 RaisePropertyChanged("Response");
             }
         }
-        //private void _self_MouseDown(object sender, MouseButtonEventArgs e)
-        //{
-        //    SelecteForeignPower.Focus();
-        //}
-        //public void UpdateSelectedForeignPower()
-        //{
-        //    //do something
-        //}
-        //public ForeignPowerViewModel SelectedForeignPower
-        //{
-        //    get
-        //    {
-        //        if (DiplomacyScreenViewModel.DesignInstance.SelectedForeignPower == Model.SelectedForeignPower)
-        //        {
-        //            RadioAccept.IsChecked = false;
-        //            RadioReject.IsChecked = false;
 
-        //        }
-        //        return DiplomacyScreenViewModel.DesignInstance.SelectedForeignPower;
-
-        //    }
-        //    //set
-        //    //{
-        //    //    if (DiplomacyScreenViewModel.DesignInstance.SelectedForeignPower == Model.SelectedForeignPower)
-        //    //        return;
-        //    //    _selectedForeignPower = value;
-        //    //    RadioAccept.IsChecked = false;
-        //    //    RadioReject.IsChecked = false;
-        //    //    //RadioNoResponse.IsChecked = false;
-        //    //}
-        //}
         private void OnMouseDownOutsideElement(object sender, MouseButtonEventArgs e)
         {
             Mouse.RemovePreviewMouseDownOutsideCapturedElementHandler(this, OnMouseDownOutsideElement);
@@ -102,83 +72,83 @@ namespace Supremacy.Client.Views.DiplomacyScreen
             RadioReject.IsChecked = false;
             //RadioNoResponse.IsChecked = false;
         }
-        private void clickAcceptCounterReject(object sender, RoutedEventArgs e)
-        {
+        //private void clickAcceptCounterReject(object sender, RoutedEventArgs e)
+        //{
 
-            //int turn = GameContext.Current.TurnNumber;
-            RadioButton radioButton = sender as RadioButton;
-            radioButton.Focus();
-            CaptureMouse();
-            Mouse.AddPreviewMouseDownOutsideCapturedElementHandler(this, OnMouseDownOutsideElement);
-            if (radioButton != null)
-            {
-                
-                var response = (string)radioButton.Content;
-                if (Model.SelectedForeignPower != null)
-                {
-                    bool accepting = false;
-                    if (response == "ACCEPT")
-                    {
-                        accepting = true;
-                        Response = "ACCEPTED";
-                    }
-                    else
-                    {
-                        Response = "REJECTED";
-                    }
-                    //var somthing = SelectedForeignPower;
-                    int turn = GameContext.Current.TurnNumber;
-                    var senderCiv = Model.SelectedForeignPower.Counterparty; // sender of proposal treaty
-                    var playerEmpire = AppContext.LocalPlayerEmpire.Civilization; // local player reciever of proposal treaty
-                    var diplomat = Diplomat.Get(playerEmpire);
-                    var otherDiplomat = Diplomat.Get(senderCiv);
-                    var foreignPower = diplomat.GetForeignPower(senderCiv);
-                    var otherForeignPower = otherDiplomat.GetForeignPower(playerEmpire);
-                    bool localPlayerIsHosting = AppContext.IsGameHost;
+        //    int turn = GameContext.Current.TurnNumber;
+        //    RadioButton radioButton = sender as RadioButton;
+        //    radioButton.Focus();
+        //    CaptureMouse();
+        //    Mouse.AddPreviewMouseDownOutsideCapturedElementHandler(this, OnMouseDownOutsideElement);
+        //    if (radioButton != null)
+        //    {
 
-                    if (localPlayerIsHosting)
-                    {
-                        GameLog.Client.Diplomacy.DebugFormat("Local player IS Host....");
-                        DiplomacyHelper.AcceptRejectDictionary(foreignPower, accepting, turn); // creat entry for game host
-                    }
-                    else
-                    {   // creat entry for none host human player that clicked the accept - reject radio button         
-                        StatementType _statementType = DiplomacyHelper.GetStatementType(accepting, senderCiv, playerEmpire); // first is bool, then sender ID(now the local player), last new receipient, in Dictinary Key                       
-                        GameLog.Client.Diplomacy.DebugFormat("Local player IS NOT Host, statementType = {0} accepting = {1} sender ={2} counterpartyID {3} local = {4} OwnerID ={5}"
-                            , Enum.GetName(typeof(StatementType), _statementType)
-                            , accepting
-                            , senderCiv.Key
-                            , foreignPower.CounterpartyID
-                            , playerEmpire.Key
-                            , foreignPower.OwnerID
-                            );
-                        if (_statementType != StatementType.NoStatement)
-                        {
-                            Statement statementToSend = new Statement(playerEmpire, senderCiv, _statementType, Tone.Receptive, turn);
-                            _sendOrder = new SendStatementOrder(statementToSend);
-                            ServiceLocator.Current.GetInstance<IPlayerOrderService>().AddOrder(_sendOrder);
+        //        var response = (string)radioButton.Content;
+        //        if (Model.SelectedForeignPower != null)
+        //        {
+        //            bool accepting = false;
+        //            if (response == "ACCEPT")
+        //            {
+        //                accepting = true;
+        //                Response = "ACCEPTED";
+        //            }
+        //            else
+        //            {
+        //                Response = "REJECTED";
+        //            }
+        //            var somthing = SelectedForeignPower;
+        //            int turn = GameContext.Current.TurnNumber;
+        //            var senderCiv = Model.SelectedForeignPower.Counterparty; // sender of proposal treaty
+        //            var playerEmpire = AppContext.LocalPlayerEmpire.Civilization; // local player reciever of proposal treaty
+        //            var diplomat = Diplomat.Get(playerEmpire);
+        //            var otherDiplomat = Diplomat.Get(senderCiv);
+        //            var foreignPower = diplomat.GetForeignPower(senderCiv);
+        //            var otherForeignPower = otherDiplomat.GetForeignPower(playerEmpire);
+        //            bool localPlayerIsHosting = AppContext.IsGameHost;
 
-                            otherForeignPower.StatementSent = statementToSend; // load statement to send in foreignPower, statment type carries key for dictionary entery
+        //            if (localPlayerIsHosting)
+        //            {
+        //                GameLog.Client.Diplomacy.DebugFormat("Local player IS Host....");
+        //                DiplomacyHelper.AcceptRejectDictionary(foreignPower, accepting, turn); // creat entry for game host
+        //            }
+        //            else
+        //            {   // creat entry for none host human player that clicked the accept - reject radio button         
+        //                StatementType _statementType = DiplomacyHelper.GetStatementType(accepting, senderCiv, playerEmpire); // first is bool, then sender ID(now the local player), last new receipient, in Dictinary Key                       
+        //                GameLog.Client.Diplomacy.DebugFormat("Local player IS NOT Host, statementType = {0} accepting = {1} sender ={2} counterpartyID {3} local = {4} OwnerID ={5}"
+        //                    , Enum.GetName(typeof(StatementType), _statementType)
+        //                    , accepting
+        //                    , senderCiv.Key
+        //                    , foreignPower.CounterpartyID
+        //                    , playerEmpire.Key
+        //                    , foreignPower.OwnerID
+        //                    );
+        //                if (_statementType != StatementType.NoStatement)
+        //                {
+        //                    Statement statementToSend = new Statement(playerEmpire, senderCiv, _statementType, Tone.Receptive, turn);
+        //                    _sendOrder = new SendStatementOrder(statementToSend);
+        //                    ServiceLocator.Current.GetInstance<IPlayerOrderService>().AddOrder(_sendOrder);
 
-                            GameLog.Client.Diplomacy.DebugFormat("!! foreignPower.StatementSent *other*ForeignPower Recipient ={0} to Sender ={1}"
-                                , statementToSend.Recipient.Key
-                                , statementToSend.Sender.Key
-                                );
-                        }
-                    }
+        //                    otherForeignPower.StatementSent = statementToSend; // load statement to send in foreignPower, statment type carries key for dictionary entery
 
-                    GameLog.Client.Diplomacy.DebugFormat("Turn {0}: Button _response = {4} response {5}, Player = {1}, otherForeignPower.Owner= {2} to otherForeignPower.CounmterParty = {3} local player is host ={6}"
-                        , GameContext.Current.TurnNumber
-                        , playerEmpire.Key
-                        , otherForeignPower.Owner
-                        , otherForeignPower.Counterparty.Key
-                        , _response
-                        , response
-                        , localPlayerIsHosting
-                        );
-                }
-            }
-        }
+        //                    GameLog.Client.Diplomacy.DebugFormat("!! foreignPower.StatementSent *other*ForeignPower Recipient ={0} to Sender ={1}"
+        //                        , statementToSend.Recipient.Key
+        //                        , statementToSend.Sender.Key
+        //                        );
+        //                }
+        //            }
+
+        //            GameLog.Client.Diplomacy.DebugFormat("Turn {0}: Button _response = {4} response {5}, Player = {1}, otherForeignPower.Owner= {2} to otherForeignPower.CounmterParty = {3} local player is host ={6}"
+        //                , GameContext.Current.TurnNumber
+        //                , playerEmpire.Key
+        //                , otherForeignPower.Owner
+        //                , otherForeignPower.Counterparty.Key
+        //                , _response
+        //                , response
+        //                , localPlayerIsHosting
+        //                );
+        //        }
+        //    }
+        //}
 
         #region Implementation of IActiveAware
 
