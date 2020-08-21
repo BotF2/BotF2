@@ -30,7 +30,7 @@ namespace Supremacy.Client.Views.DiplomacyScreen
     /// <summary>
     /// Interaction logic for NewDiplomacyScreen.xaml
     /// </summary>
-    public partial class NewDiplomacyScreen : INewDiplomacyScreenView, System.ComponentModel.INotifyPropertyChanged
+    public partial class NewDiplomacyScreen : INewDiplomacyScreenView //System.ComponentModel.INotifyPropertyChanged
     {
         private Order _sendOrder;
       //private ForeignPowerViewModel _selectedForeignPower;
@@ -44,34 +44,34 @@ namespace Supremacy.Client.Views.DiplomacyScreen
             this.DataContext = this;
 
         }
-        public string Response
-        {
-            get
-            {
-                return _response; }
-            set
-            {
+        //public string Response
+        //{
+        //    get
+        //    {
+        //        return _response; }
+        //    set
+        //    {
                 
-               // int selectedForeignPowerID = DiplomacyData.SelectedForeignPowerID;
-                //if (selectedForeignPowerID != Model.SelectedForeignPower.Owner.CivID)
-                //    {
-                //        _response = "...";
-                //        RaisePropertyChanged("Response");
-                //        return;
-                //    }
-                _response = value;
-                RaisePropertyChanged("Response");
-            }
-        }
+        //       // int selectedForeignPowerID = DiplomacyData.SelectedForeignPowerID;
+        //        //if (selectedForeignPowerID != Model.SelectedForeignPower.Owner.CivID)
+        //        //    {
+        //        //        _response = "...";
+        //        //        RaisePropertyChanged("Response");
+        //        //        return;
+        //        //    }
+        //        _response = value;
+        //        RaisePropertyChanged("Response");
+        //    }
+        //}
 
-        private void OnMouseDownOutsideElement(object sender, MouseButtonEventArgs e)
-        {
-            Mouse.RemovePreviewMouseDownOutsideCapturedElementHandler(this, OnMouseDownOutsideElement);
-            ReleaseMouseCapture();
-            RadioAccept.IsChecked = false;
-            RadioReject.IsChecked = false;
-            //RadioNoResponse.IsChecked = false;
-        }
+        //private void OnMouseDownOutsideElement(object sender, MouseButtonEventArgs e)
+        //{
+        //    Mouse.RemovePreviewMouseDownOutsideCapturedElementHandler(this, OnMouseDownOutsideElement);
+        //    ReleaseMouseCapture();
+        //    RadioAccept.IsChecked = false;
+        //    RadioReject.IsChecked = false;
+        //    //RadioNoResponse.IsChecked = false;
+        //}
         //private void clickAcceptCounterReject(object sender, RoutedEventArgs e)
         //{
 
@@ -159,8 +159,8 @@ namespace Supremacy.Client.Views.DiplomacyScreen
             get { return _isActive; }
             set
             {
-                RadioAccept.IsChecked = false;
-                RadioReject.IsChecked = false;
+                //RadioAccept.IsChecked = false;
+                //RadioReject.IsChecked = false;
                 //RadioNoResponse.IsChecked = false;
                 if (value == _isActive)
                     return;
@@ -175,13 +175,13 @@ namespace Supremacy.Client.Views.DiplomacyScreen
 
         #endregion
 
-        public event PropertyChangedEventHandler PropertyChanged;
+        //public event PropertyChangedEventHandler PropertyChanged;
 
-        private void RaisePropertyChanged(string propertyName)
-        {
-            if (this.PropertyChanged != null)
-                this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-        }
+        //private void RaisePropertyChanged(string propertyName)
+        //{
+        //    if (this.PropertyChanged != null)
+        //        this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+        //}
 
         #region Implementation of IGameScreenView<DiplomacyScreenViewModel>
 

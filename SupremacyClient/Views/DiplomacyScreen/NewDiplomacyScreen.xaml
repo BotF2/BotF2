@@ -15,11 +15,12 @@
                        xmlns:DiplomacyScreen="clr-namespace:Supremacy.Client.Views"
                        xmlns:client="clr-namespace:Supremacy.Client"
                        xmlns:diplomacyScreen="clr-namespace:Supremacy.Client.Views.DiplomacyScreen"
+                       xmlns:xcrb="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                        mc:Ignorable="d"
                        d:DesignHeight="764"
                        d:DesignWidth="1280"
                        d:DataContext="{x:Static scc:DiplomacyScreenViewModel.DesignInstance}">
-
+    
     <i:Interaction.Behaviors>
         <scc:VisibilityGroupScopeBehavior VisibilityGroup="DiplomacyScreenVisibilityScopes.RelationshipGraph" Visibility="{Binding Path=DisplayMode, Converter={scc:SimpleCase Case=Overview, IfMatch=Visible, Else=Hidden}}" />
         <scc:VisibilityGroupScopeBehavior VisibilityGroup="DiplomacyScreenVisibilityScopes.Default" Visibility="{Binding Path=DisplayMode, Converter={scc:SimpleCase Case=Overview, IfMatch=Hidden, Else=Visible}}" />
@@ -61,27 +62,40 @@
             </Setter>
         </Style>
 
-        <Style TargetType="{x:Type RadioButton}">
-            <Setter Property="Foreground" Value="White"/>
-            <Setter Property="SnapsToDevicePixels" Value="True"/>
-            <Setter Property="FontSize" Value="16"/>
-            <Setter Property="Background">
+        <Style x:Key="RadioButtonList" TargetType="{x:Type ListBox}">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="ItemContainerStyle">
                 <Setter.Value>
-                    <SolidColorBrush Color="Red" Opacity="0.8" />
+                    <Style TargetType="{x:Type ListBoxItem}" >
+                        <Setter Property="Margin" Value="5" />
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                                    <Border BorderThickness="0" Background="Transparent">
+                                        <RadioButton 
+                                            Focusable="False"
+                                            IsHitTestVisible="False"
+                                            IsChecked="{TemplateBinding IsSelected}">
+                                            <ContentPresenter />
+                                        </RadioButton>
+                                    </Border>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
                 </Setter.Value>
             </Setter>
-            <Setter Property="Effect">
+            <Setter Property="Control.Template">
                 <Setter.Value>
-                    <DropShadowEffect
-                        ShadowDepth="3"
-                        Direction="330"
-                        Color="Black"
-                        Opacity="1"
-                        BlurRadius="3"/>
+                    <ControlTemplate TargetType="{x:Type ListBox}">
+                        <Border BorderThickness="0" Padding="0" BorderBrush="Transparent" Background="Transparent" Name="Bd" SnapsToDevicePixels="True">
+                            <ItemsPresenter SnapsToDevicePixels="{TemplateBinding UIElement.SnapsToDevicePixels}" />
+                        </Border>
+                    </ControlTemplate>
                 </Setter.Value>
             </Setter>
         </Style>
-
+        
         <Style x:Key="RemoveMessageElementButtonStyle"
              TargetType="{x:Type Button}">
             <Setter Property="Width"
@@ -690,8 +704,8 @@
                             </DataTemplate.Triggers>
                         </DataTemplate>
                     </Grid.Resources>
-                  <Grid>
-                        <xcdg:DataGridControl x:Name="PART_CivilizationList"
+
+                    <xcdg:DataGridControl x:Name="PART_CivilizationList"
                                 scc:VisibilityGroupScopeBehavior.VisibilityGroup="DiplomacyScreenVisibilityScopes.Default"
                                 Background="Transparent"
                                 Foreground="{StaticResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"
@@ -781,8 +795,7 @@
                             </xcdg:TableView>
                         </xcdg:DataGridControl.View>
                     </xcdg:DataGridControl>
-                  </Grid>
-            </Grid>
+                </Grid>
                 
                 <!--
         ================================================================================
@@ -1053,7 +1066,7 @@
                                                                 Foreground="{StaticResource HeaderTextBrush}"
                                                                 Margin="3,2,0,0"
                                                                 Text="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry=InboxHeader, CharacterCasing=Upper}" />
-                                                    <TextBlock Name="acceptReject"
+                                                    <!--<TextBlock Name="acceptReject"
                                                             TextAlignment="Left"
                                                             TextWrapping="Wrap"
                                                             TextTrimming="CharacterEllipsis"
@@ -1061,7 +1074,7 @@
                                                             FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
                                                             Foreground="LimeGreen"
                                                             Margin="10,2,0,0"
-                                                            Text="{Binding Path=Response, ElementName=_self, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                                            Text="{Binding Path=Response, ElementName=_self, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />-->
                                                 </StackPanel>
                                                 <ContentPresenter TextBlock.Foreground="{StaticResource DefaultTextBrush}"
                                                                     TextBlock.FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
@@ -1152,45 +1165,22 @@
                                                         </Grid.RowDefinitions>
                                                         <StackPanel Orientation="Horizontal" Grid.Column="0" Grid.Row="0">
                                                             <!--Visibility="{Binding Path=SelectForeignPowerMessage, Converter={scc:SimpleCase Case=0, IfMatch=Collapsed, Else=Visible}}">-->
-                                                            <StackPanel>
-                                                                <RadioButton
-                                                                    x:Name="RadioAccept"                                                               
-                                                                    VerticalAlignment="Top"
-                                                                    GroupName="DiplomacyRadioButton"
-                                                                    Content="ACCEPT"
-                                                                    Margin="2,5,12,0"
-                                                                    Visibility="{Binding Path=HideAcceptReject, Converter={scc:SimpleCase Case=0, IfMatch=Collapsed, Else=Visible}}"
-                                                                    Checked="clickAcceptCounterReject"/>
-                                                            </StackPanel>
-                                                            <!--<StackPanel>
-                                                                <RadioButton
-                                                                    x:Name="COUNTER"
-                                                                    VerticalAlignment="Top"
-                                                                    GroupName="DiplomacyRadioButton"                             
-                                                                    Content="COUNTER"
-                                                                    Margin="0,5,12,0"
-                                                                    Checked="clickAcceptCounterReject"/>
-                                                            </StackPanel>-->
-                                                            <StackPanel>
-                                                                <RadioButton
-                                                                    x:Name="RadioReject"
-                                                                    VerticalAlignment="Top"
-                                                                    GroupName="DiplomacyRadioButton"
-                                                                    Margin="2,5,12,0"
-                                                                    Content="REJECT"
-                                                                    Visibility="{Binding Path=HideAcceptReject, Converter={scc:SimpleCase Case=0, IfMatch=Collapsed, Else=Visible}}"
-                                                                    Checked="clickAcceptCounterReject"/>
-                                                            </StackPanel>
-                                                            <!--<StackPanel>
-                                                                <RadioButton
-                                                                    x:Name="RadioNoResponse"
-                                                                    VerticalAlignment="Top"
-                                                                    GroupName="DiplomacyRadioButton"                             
-                                                                    Content="NO RESPONSE"
-                                                                    Margin="2,5,12,0"
-                                                                    Checked="clickAcceptCounterReject"
-                                                                    />
-                                                            </StackPanel>-->
+                                                            <!--<StackPanel>-->
+                                                            <ListBox Style="{StaticResource RadioButtonList}"
+                                                                         SelectedValuePath="Tag"
+                                                                         SelectedValue="{Binding Path=RadioButtonSelected}">
+                                                                <ListBoxItem Tag="RadioAccept">
+                                                                    RadioAccept
+                                                                </ListBoxItem>
+                                                                <!--Visibility="{Binding Path=HideAcceptReject, Converter={scc:SimpleCase Case=0, IfMatch=Collapsed, Else=Visible}}"-->                                                                                        
+
+                                                                <ListBoxItem Tag="RadioReject">
+                                                                    RadioReject
+                                                                </ListBoxItem>
+                                                                    <!--Visibility="{Binding Path=HideAcceptReject, Converter={scc:SimpleCase Case=0, IfMatch=Collapsed, Else=Visible}}"-->
+   
+                                                            </ListBox>
+                                                            <!--</StackPanel>-->
                                                         </StackPanel>
                                                         <StackPanel Grid.Column="0" Grid.Row="0">
                                                             <!--<TextBlock Text="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry=NoIncomingHeader, CharacterCasing=Upper}" 
@@ -1204,7 +1194,7 @@
                                                                          Background="Black"
                                                                          Margin="0,5,0,0" 
                                                                         Visibility="{Binding Path=HasTreatyLeadInText, Converter={StaticResource BooleanToVisibilityConverter}}"/>-->
-                                                            <TextBlock Text="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry=NoIncomingHeader, CharacterCasing=Upper}" 
+                                                            <!--<TextBlock Text="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry=NoIncomingHeader, CharacterCasing=Upper}" 
                                                                          HorizontalAlignment="Center"
                                                                          VerticalAlignment="Center"
                                                                          Visibility="{Binding Path=HideAcceptRejectButtons, Converter={scc:SimpleCase Case=0, IfMatch=Collapsed, Else=Visible}}"
@@ -1213,7 +1203,7 @@
                                                                          TextBlock.FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                                                                          TextBlock.FontSize="12pt"
                                                                          Background="DarkGray"
-                                                                         Margin="0,5,0,0" />
+                                                                         Margin="0,5,0,0" />-->
                                                             <!--<ItemsControl Margin="0,0,0,0"
                                                                               ItemsSource="{Binding Path=TreatyElements}"
                                                                               HorizontalContentAlignment="Center"
