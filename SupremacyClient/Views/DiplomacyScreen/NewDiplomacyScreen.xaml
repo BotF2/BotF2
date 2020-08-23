@@ -15,6 +15,7 @@
                        xmlns:DiplomacyScreen="clr-namespace:Supremacy.Client.Views"
                        xmlns:client="clr-namespace:Supremacy.Client"
                        xmlns:diplomacyScreen="clr-namespace:Supremacy.Client.Views.DiplomacyScreen"
+
                        mc:Ignorable="d"
                        d:DesignHeight="764"
                        d:DesignWidth="1280"
@@ -57,27 +58,6 @@
                             </AdornerDecorator>
                         </Border>
                     </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-
-        <Style TargetType="{x:Type RadioButton}">
-            <Setter Property="Foreground" Value="White"/>
-            <Setter Property="SnapsToDevicePixels" Value="True"/>
-            <Setter Property="FontSize" Value="16"/>
-            <Setter Property="Background">
-                <Setter.Value>
-                    <SolidColorBrush Color="Red" Opacity="0.8" />
-                </Setter.Value>
-            </Setter>
-            <Setter Property="Effect">
-                <Setter.Value>
-                    <DropShadowEffect
-                        ShadowDepth="3"
-                        Direction="330"
-                        Color="Black"
-                        Opacity="1"
-                        BlurRadius="3"/>
                 </Setter.Value>
             </Setter>
         </Style>
@@ -156,6 +136,23 @@
             <Setter Property="Margin" Value="2,2,2,2">
             </Setter>
         </Style>
+
+        <!--<Style TargetType="{x:Type scc:GameButton }" x:Key="specificButton">
+
+            <Setter Property="BorderThickness" Value="5" />
+            <Setter Property="Foreground" Value="Black" />
+            <Setter Property="BorderBrush" >
+                <Setter.Value>
+                    <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
+                        <GradientStop Color="Yellow" Offset="0.0" />
+                        <GradientStop Color="Red" Offset="0.25" />
+                        <GradientStop Color="Blue" Offset="0.75" />
+                        <GradientStop Color="LimeGreen" Offset="1.0" />
+                    </LinearGradientBrush>
+                </Setter.Value>
+            </Setter>
+        </Style>-->
+
         <DataTemplate DataType="{x:Type scc:DiplomacyMessageElement}">
             <DockPanel LastChildFill="True"
                    HorizontalAlignment="Left">
@@ -320,16 +317,6 @@
         </TextBlock>
         </DataTemplate>
 
-        <!--<DataTemplate x:Key="OutgoingMessageTemplate">
-            <TextBlock Text="{Binding Path=Name, Converter={StaticResource UpperCaseConverter}}"
-                   Foreground="{StaticResource HeaderTextBrush}"
-                   FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
-                   Margin="0,8,0,0" />
-        </DataTemplate>-->
-
-        <!--
-    </ResourceDictionary>
--->
     </Control.Resources>
 
     <scc:GamePopupSite >
@@ -350,15 +337,10 @@
                     <RowDefinition Height="56" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto"/>
-                    <!--MinHeight="72"
-                         MaxHeight="72" />-->
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="*"/>
-                    <!--<RowDefinition Height="4" />
-                    <RowDefinition Height="*"
-                           MinHeight="100"
-                         MaxHeight="400"/>-->
+
                 </Grid.RowDefinitions>
                 <Border x:Name="UpperLeftbox"
                         Grid.Column="0"
@@ -403,28 +385,7 @@
                             <scc:CheckableCommandParameter InnerParameter="{x:Static scc:DiplomacyScreenDisplayMode.Overview}" />
                         </scc:GameButton.CommandParameter>
                     </scc:GameButton>
-                    <!--<scc:GameButton x:Name="PART_ViewButton_Agreements"
-                          Label="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry='AgreementsButtonText', CharacterCasing=Upper}"
-                          DisplayMode="GroupedVertically"
-                          ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry='AgreementsButtonTooltipText'}"
-                          Command="{Binding Path=SetDisplayModeCommand}"
-                          IsChecked="{Binding RelativeSource={RelativeSource Self}, Path=CommandParameter.(scc:CheckableCommandParameter.IsChecked), Mode=TwoWay}"
-                          Margin="0,2,0,0">
-                        <scc:GameButton.CommandParameter>
-                            <scc:CheckableCommandParameter InnerParameter="{x:Static scc:DiplomacyScreenDisplayMode.Outbox}" />
-                        </scc:GameButton.CommandParameter>
-                    </scc:GameButton>
-                    <scc:GameButton x:Name="PART_ViewButton_Inbox"
-                          Label="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry='InboxButtonText', CharacterCasing=Upper}"
-                          DisplayMode="GroupedVertically"
-                          ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry='InboxButtonTooltipText'}"
-                          Command="{Binding Path=SetDisplayModeCommand}"
-                          IsChecked="{Binding RelativeSource={RelativeSource Self}, Path=CommandParameter.(scc:CheckableCommandParameter.IsChecked), Mode=TwoWay}"
-                          Margin="0,2,0,0">
-                        <scc:GameButton.CommandParameter>
-                            <scc:CheckableCommandParameter InnerParameter="{x:Static scc:DiplomacyScreenDisplayMode.Outbox}" />
-                        </scc:GameButton.CommandParameter>
-                    </scc:GameButton>-->
+   
                     <scc:GameButton x:Name="PART_ViewButton_Outbox"
                           Label="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry='OutboxButtonText', CharacterCasing=Upper}"
                           DisplayMode="GroupedVertically"
@@ -477,31 +438,6 @@
                       Margin="0,0,0,0"
                       Data="F1 M 0,0L 0,16C 0,22.3652 2.52857,28.4697 7.02944,32.9706C 11.5303,37.4714 17.6348,40 24,40L 168,40L 168,27.0263L 148,27.0263C 143.582,27.0263 140,23.4446 140,19.0263L 140,0L 0,0 Z" />
 
-                <!-- Lower Left Buttons -->
-                <!--<StackPanel x:Name="InboxButtons"
-                            Grid.Column="0"
-                            Grid.Row="5"
-                            Orientation="Vertical"
-                            Margin="0,2,0,0"
-                            Visibility="Visible">
-                    -->
-                <!--{Binding Path=AreIncomingMessageCommandsVisible, Converter={StaticResource BooleanToVisibilityConverter}}">-->
-                <!--
-                    <scc:GameButton Label="ACCEPT"
-                          Context="VerticalGroupItem"
-                          DisplayMode="GroupedVertically" />
-                    <scc:GameButton x:Name="CounterButton"
-                          Label="COUNTER"
-                          Context="VerticalGroupItem"
-                          DisplayMode="GroupedVertically"
-                          Margin="0,2,0,0"
-                          Visibility="Collapsed" />
-                    <scc:GameButton Label="REJECT"
-                          Context="VerticalGroupItem"
-                          DisplayMode="GroupedVertically"
-                          Margin="0,2,0,0" />
-                </StackPanel>-->
-
                 <!-- Upper-Middle Left Horizontal Divider -->
                 <Border x:Name="UpperMiddleLeftHorizontalDivider"
                     Grid.Column="2"
@@ -511,16 +447,6 @@
                     Height="13"
                     Margin="2,0,2,0"
                     VerticalAlignment="Bottom" />
-
-                <!--Lower-Middle Left Horizontal Divider -->
-                <!--<Border x:Name="LowerMiddleLeftHorizontalDivider"
-                            Grid.Column="2"
-                            Grid.Row="4"
-                            scc:VisibilityGroupScopeBehavior.VisibilityGroup="DiplomacyScreenVisibilityScopes.Default"
-                            Background="{StaticResource LCARS_Card_ObsidianGradient_Top_Bottom}"
-                            Height="13"
-                            Margin="2,2,2,0"
-                            VerticalAlignment="Top" />-->
 
                 <!-- Upper-Middle Right Horizontal Divider -->
                 <Border x:Name="UpperMiddleRightHorizontalDivider"
@@ -574,14 +500,15 @@
                       Data="F1M0,41.9932L0,13.9977C1.85621,13.9977 3.6364,13.2603 4.94894,11.9478 6.26148,10.6353 6.99886,8.85507 6.99886,6.99886L6.99886,0 20.9966,0 20.9966,6.99886C20.9966,8.85508 21.734,10.6353 23.0465,11.9478 24.359,13.2603 26.1392,13.9977 27.9954,13.9977L27.9954,41.9932 0,41.9932z" />
 
                 <!-- Lower-Left Horizontal Divider -->
-                <!--
+                
                 <Border x:Name="LowerLeftHorizontalDivider"
-                        Grid.Column="2"
+                        Grid.Column="0"
                         Grid.Row="7"
+                        Grid.ColumnSpan="3"
                         Background="{StaticResource LCARS_AzureGradient_Top_Bottom}"
                         Height="28"
                         Margin="2,0,2,0"
-                        VerticalAlignment="Bottom" />-->
+                        VerticalAlignment="Bottom" />
 
                 <!-- Lower-Right Horizontal Divider -->
                 <Border x:Name="LowerRightHorizontalDivider"
@@ -946,67 +873,67 @@
                                                                     <RowDefinition Height="Auto"/>
                                                                 </Grid.RowDefinitions>
                                                                 <TextBlock DockPanel.Dock="Top"
-                                                                   Grid.Column="0"
-                                                                   Grid.Row="0"
-                                                                    TextAlignment="Left"
-                                                                    TextWrapping="Wrap"
-                                                                    TextTrimming="CharacterEllipsis"
-                                                                    FontSize="15pt"
-                                                                    FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
-                                                                    Foreground="LightGoldenrodYellow"
-                                                                    Margin="5,0,10,0"
-                                                                    Text="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry=MemberHeader, CharacterCasing=Upper}" 
-                                                                    Visibility="{Binding Path=MemberMessage, Converter={scc:SimpleCase Case=0, IfMatch=Collapsed, Else=Visible}}"/>
+                                                                           Grid.Column="0"
+                                                                           Grid.Row="0"
+                                                                            TextAlignment="Left"
+                                                                            TextWrapping="Wrap"
+                                                                            TextTrimming="CharacterEllipsis"
+                                                                            FontSize="15pt"
+                                                                            FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
+                                                                            Foreground="LightGoldenrodYellow"
+                                                                            Margin="5,0,10,0"
+                                                                            Text="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry=MemberHeader, CharacterCasing=Upper}" 
+                                                                            Visibility="{Binding Path=MemberMessage, Converter={scc:SimpleCase Case=0, IfMatch=Collapsed, Else=Visible}}"/>
                                                                 <TextBlock DockPanel.Dock="Top"
-                                                                   Grid.Column="0"
-                                                                   Grid.Row="0"
-                                                                    TextAlignment="Left"
-                                                                    TextWrapping="Wrap"
-                                                                    TextTrimming="CharacterEllipsis"
-                                                                    FontSize="15pt"
-                                                                    FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
-                                                                    Foreground="Red"
-                                                                    Margin="5,0,10,0"
-                                                                    Text="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry=AtWarHeader, CharacterCasing=Upper}" 
-                                                                    Visibility="{Binding Path=AtWarMessage, Converter={scc:SimpleCase Case=0, IfMatch=Collapsed, Else=Visible}}"/>
+                                                                           Grid.Column="0"
+                                                                           Grid.Row="0"
+                                                                            TextAlignment="Left"
+                                                                            TextWrapping="Wrap"
+                                                                            TextTrimming="CharacterEllipsis"
+                                                                            FontSize="15pt"
+                                                                            FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
+                                                                            Foreground="Red"
+                                                                            Margin="5,0,10,0"
+                                                                            Text="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry=AtWarHeader, CharacterCasing=Upper}" 
+                                                                            Visibility="{Binding Path=AtWarMessage, Converter={scc:SimpleCase Case=0, IfMatch=Collapsed, Else=Visible}}"/>
                                                                 <TextBlock DockPanel.Dock="Top"
-                                                                   Grid.Column="0"
-                                                                   Grid.Row="0"
-                                                                    TextAlignment="Left"
-                                                                    TextWrapping="Wrap"
-                                                                    TextTrimming="CharacterEllipsis"
-                                                                    FontSize="15pt"
-                                                                    FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
-                                                                    Foreground="LightCyan"
-                                                                    Margin="5,0,10,0"
-                                                                    Text="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry=AlliesHeader, CharacterCasing=Upper}" 
-                                                                    Visibility="{Binding Path=AlliesMessage, Converter={scc:SimpleCase Case=0, IfMatch=Collapsed, Else=Visible}}"/>
+                                                                           Grid.Column="0"
+                                                                           Grid.Row="0"
+                                                                            TextAlignment="Left"
+                                                                            TextWrapping="Wrap"
+                                                                            TextTrimming="CharacterEllipsis"
+                                                                            FontSize="15pt"
+                                                                            FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
+                                                                            Foreground="LightCyan"
+                                                                            Margin="5,0,10,0"
+                                                                            Text="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry=AlliesHeader, CharacterCasing=Upper}" 
+                                                                            Visibility="{Binding Path=AlliesMessage, Converter={scc:SimpleCase Case=0, IfMatch=Collapsed, Else=Visible}}"/>
                                                                 <TextBlock DockPanel.Dock="Top"
-                                                                   Grid.Column="0"
-                                                                   Grid.Row="0"
-                                                                    TextAlignment="Left"
-                                                                    TextWrapping="Wrap"
-                                                                    TextTrimming="CharacterEllipsis"
-                                                                    FontSize="15pt"
-                                                                    FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
-                                                                    Foreground="LightCyan"
-                                                                    Margin="5,0,10,0"
-                                                                    Text="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry=AffiliatedHeader, CharacterCasing=Upper}" 
-                                                                    Visibility="{Binding Path=AffiliatedMessage, Converter={scc:SimpleCase Case=0, IfMatch=Collapsed, Else=Visible}}"/>
+                                                                           Grid.Column="0"
+                                                                           Grid.Row="0"
+                                                                            TextAlignment="Left"
+                                                                            TextWrapping="Wrap"
+                                                                            TextTrimming="CharacterEllipsis"
+                                                                            FontSize="15pt"
+                                                                            FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
+                                                                            Foreground="LightCyan"
+                                                                            Margin="5,0,10,0"
+                                                                            Text="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry=AffiliatedHeader, CharacterCasing=Upper}" 
+                                                                            Visibility="{Binding Path=AffiliatedMessage, Converter={scc:SimpleCase Case=0, IfMatch=Collapsed, Else=Visible}}"/>
                                                                 <TextBlock DockPanel.Dock="Top"
-                                                                    Grid.Column="0"
-                                                                    Grid.Row="0"
-                                                                    TextAlignment="Left"
-                                                                    TextWrapping="Wrap"
-                                                                    TextTrimming="CharacterEllipsis"
-                                                                    FontSize="15pt"
-                                                                    FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
-                                                                    Foreground="{DynamicResource {x:Static scc:ClientResources.AlertTextForegroundBrushKey}}"
-                                                                    Background="Black"
-                                                                    Margin="5,0,10,0"
-                                                                    VerticalAlignment="Center"
-                                                                    Text="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry=SelectForeignPowerHeader}" 
-                                                                    Visibility="{Binding Path=SelectForeignPowerMessage, Converter={scc:SimpleCase Case=0, IfMatch=Collapsed, Else=Visible}}"/>
+                                                                            Grid.Column="0"
+                                                                            Grid.Row="0"
+                                                                            TextAlignment="Left"
+                                                                            TextWrapping="Wrap"
+                                                                            TextTrimming="CharacterEllipsis"
+                                                                            FontSize="15pt"
+                                                                            FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
+                                                                            Foreground="{DynamicResource {x:Static scc:ClientResources.AlertTextForegroundBrushKey}}"
+                                                                            Background="Black"
+                                                                            Margin="5,0,10,0"
+                                                                            VerticalAlignment="Center"
+                                                                            Text="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry=SelectForeignPowerHeader}" 
+                                                                            Visibility="{Binding Path=SelectForeignPowerMessage, Converter={scc:SimpleCase Case=0, IfMatch=Collapsed, Else=Visible}}"/>
                                                             </Grid>
                                                         </StackPanel>
                                                     </StackPanel>
@@ -1046,17 +973,32 @@
                                                 CornerRadius="8"
                                                 Margin="0,2,0,2"
                                                 DataContext="{Binding Path=SelectedForeignPower.IncomingMessage}">
-                                            <StackPanel Orientation="Vertical">
-                                                <StackPanel Orientation="Horizontal">
-                                                    <TextBlock TextAlignment="Left"
-                                                                TextWrapping="Wrap"
-                                                                TextTrimming="CharacterEllipsis"
-                                                                FontSize="20"
-                                                                FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
-                                                                Foreground="{StaticResource HeaderTextBrush}"
-                                                                Margin="3,2,0,0"
-                                                                Text="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry=InboxHeader, CharacterCasing=Upper}" />
-                                                    <TextBlock Name="acceptReject"
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="210"/>
+                                                    <ColumnDefinition Width="100"/>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                    <ColumnDefinition Width="*"/>
+                                                </Grid.ColumnDefinitions>
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="Auto"/>
+                                                    <RowDefinition Height="*"/>
+                                                </Grid.RowDefinitions>
+ 
+                                                <TextBlock Grid.Row="0"
+                                                            Grid.Column="0"
+                                                            TextAlignment="Left"
+                                                            TextWrapping="Wrap"
+                                                            TextTrimming="CharacterEllipsis"
+                                                            FontSize="20"
+                                                            FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
+                                                            Foreground="{StaticResource HeaderTextBrush}"
+                                                            Margin="3,2,0,0"
+                                                            Text="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry=InboxHeader, CharacterCasing=Upper}" />
+                                                <TextBlock Name="acceptReject"
+                                                            Grid.Row="0"
+                                                            Grid.Column="1"
                                                             TextAlignment="Left"
                                                             TextWrapping="Wrap"
                                                             TextTrimming="CharacterEllipsis"
@@ -1065,29 +1007,65 @@
                                                             Foreground="LimeGreen"
                                                             Margin="10,2,0,0"
                                                             Text="{Binding Path=Response, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                                </StackPanel>
+                                                <scc:GameButton x:Name="ButtonAccept" 
+                                                                Grid.Row="0"
+                                                                Grid.Column="2"
+                                                                FontSize="16"                                                           
+                                                                Command="{Binding Path=SetAcceptButton}"       
+                                                                Label="ACCEPT"
+                                                                Margin="50,0,5,5"
+                                                                MinHeight="12"
+                                                                MaxHeight="26"                                                               
+                                                                Visibility="{Binding Path=HideAcceptReject, Converter={scc:SimpleCase Case=0, IfMatch=Collapsed, Else=Visible}}"/>
+                                                <scc:GameButton x:Name="ButtonReject"
+                                                                Grid.Row="0"
+                                                                Grid.Column="3"
+                                                                FontSize="16"                                                             
+                                                                Command="{Binding Path=SetRejectButton}"
+                                                                Margin="5,0,5,5"
+                                                                MinHeight="12"
+                                                                MaxHeight="26"
+                                                                Label="REJECT"
+                                                                Visibility="{Binding Path=HideAcceptReject, Converter={scc:SimpleCase Case=0, IfMatch=Collapsed, Else=Visible}}"/>
+                                                <TextBlock Text="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry=NoIncomingHeader, CharacterCasing=Upper}" 
+                                                            Grid.Row="0"
+                                                            Grid.Column="2"
+                                                            Grid.ColumnSpan="2"
+                                                            HorizontalAlignment="Center"
+                                                            VerticalAlignment="Top"
+                                                            Height="25"
+                                                            Visibility="{Binding Path=HideAcceptRejectButtons, Converter={scc:SimpleCase Case=0, IfMatch=Collapsed, Else=Visible}}"
+                                                            TextWrapping="NoWrap"
+                                                            TextBlock.Foreground="Black" 
+                                                            TextBlock.FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+                                                            TextBlock.FontSize="14pt"
+                                                            Background="DarkGray"
+                                                            Margin="0,0,0,0" />
                                                 <ContentPresenter TextBlock.Foreground="{StaticResource DefaultTextBrush}"
                                                                     TextBlock.FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                                                                     TextBlock.FontSize="16"
                                                                     Margin="0,0,0,0" />
-                                                <StackPanel Orientation="Horizontal">
+                                                <StackPanel Orientation="Horizontal"
+                                                            Grid.Row="1"
+                                                            Grid.Column="0"
+                                                            Grid.ColumnSpan="5">
                                                     <TextBlock Text="{Binding Path=TreatyLeadInText}"
-                                                                Visibility="{Binding Path=HasTreatyLeadInText, Converter={StaticResource BooleanToVisibilityConverter}}"
-                                                                TextWrapping="Wrap"
-                                                                TextBlock.Foreground="{StaticResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"
-                                                                TextBlock.FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
-                                                                TextBlock.FontSize="12pt"
-                                                                Margin="10,5,0,0" />
+                                                                    Visibility="{Binding Path=HasTreatyLeadInText, Converter={StaticResource BooleanToVisibilityConverter}}"
+                                                                    TextWrapping="Wrap"
+                                                                    TextBlock.Foreground="{StaticResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"
+                                                                    TextBlock.FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+                                                                    TextBlock.FontSize="12pt"
+                                                                    Margin="10,5,0,0" />
                                                     <ItemsControl Margin="5,12,0,0"
-                                                                ItemsSource="{Binding Path=TreatyElements}"
-                                                                HorizontalContentAlignment="Center"
-                                                                Foreground="DodgerBlue"
-                                                                FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
-                                                                FontSize="16"
-                                                                Visibility="{Binding Path=TreatyElements.Count, Converter={scc:SimpleCase Case=0, IfMatch=Collapsed, Else=Visible}}">
+                                                                    ItemsSource="{Binding Path=TreatyElements}"
+                                                                    HorizontalContentAlignment="Center"
+                                                                    Foreground="DodgerBlue"
+                                                                    FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+                                                                    FontSize="16"
+                                                                    Visibility="{Binding Path=TreatyElements.Count, Converter={scc:SimpleCase Case=0, IfMatch=Collapsed, Else=Visible}}">
                                                         <ItemsControl.Resources>
                                                             <Style TargetType="{x:Type Hyperlink}"
-                                                                    BasedOn="{StaticResource {x:Type Hyperlink}}">
+                                                                        BasedOn="{StaticResource {x:Type Hyperlink}}">
                                                                 <Setter Property="TextElement.Foreground">
                                                                     <Setter.Value>
                                                                         <SolidColorBrush Color="{Binding Source={x:Static Colors.DodgerBlue}, BindsDirectlyToSource=True, Converter={StaticResource LightColorConverter}}" />
@@ -1097,22 +1075,22 @@
                                                         </ItemsControl.Resources>
                                                     </ItemsControl>
                                                     <TextBlock Text="{Binding Path=OfferLeadInText}"
-                                                                Visibility="{Binding Path=HasOfferLeadInText, Converter={StaticResource BooleanToVisibilityConverter}}"
-                                                                TextWrapping="Wrap"
-                                                                TextBlock.Foreground="{StaticResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"
-                                                                TextBlock.FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
-                                                                TextBlock.FontSize="12pt"
-                                                                Margin="0,12,0,0" />
+                                                                    Visibility="{Binding Path=HasOfferLeadInText, Converter={StaticResource BooleanToVisibilityConverter}}"
+                                                                    TextWrapping="Wrap"
+                                                                    TextBlock.Foreground="{StaticResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"
+                                                                    TextBlock.FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+                                                                    TextBlock.FontSize="12pt"
+                                                                    Margin="0,12,0,0" />
                                                     <ItemsControl Margin="5,12,0,0"
-                                                                    ItemsSource="{Binding Path=OfferElements}"
-                                                                    HorizontalContentAlignment="Center"
-                                                                    Foreground="LimeGreen"
-                                                                    FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
-                                                                    FontSize="16"
-                                                                    Visibility="{Binding Path=OfferElements.Count, Converter={scc:SimpleCase Case=0, IfMatch=Collapsed, Else=Visible}}">
+                                                                        ItemsSource="{Binding Path=OfferElements}"
+                                                                        HorizontalContentAlignment="Center"
+                                                                        Foreground="LimeGreen"
+                                                                        FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+                                                                        FontSize="16"
+                                                                        Visibility="{Binding Path=OfferElements.Count, Converter={scc:SimpleCase Case=0, IfMatch=Collapsed, Else=Visible}}">
                                                         <ItemsControl.Resources>
                                                             <Style TargetType="{x:Type Hyperlink}"
-                                                                    BasedOn="{StaticResource {x:Type Hyperlink}}">
+                                                                        BasedOn="{StaticResource {x:Type Hyperlink}}">
                                                                 <Setter Property="TextElement.Foreground">
                                                                     <Setter.Value>
                                                                         <SolidColorBrush Color="{Binding Source={x:Static Colors.LimeGreen}, BindsDirectlyToSource=True, Converter={StaticResource LightColorConverter}}" />
@@ -1122,12 +1100,12 @@
                                                         </ItemsControl.Resources>
                                                     </ItemsControl>
                                                     <TextBlock Text="{Binding Path=RequestLeadInText}"
-                                                                    Visibility="{Binding Path=HasRequestLeadInText, Converter={StaticResource BooleanToVisibilityConverter}}"
-                                                                    TextWrapping="Wrap"
-                                                                    TextBlock.Foreground="{StaticResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"
-                                                                    TextBlock.FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
-                                                                    TextBlock.FontSize="12pt"
-                                                                    Margin="0,12,0,0" />
+                                                                Visibility="{Binding Path=HasRequestLeadInText, Converter={StaticResource BooleanToVisibilityConverter}}"
+                                                                TextWrapping="Wrap"
+                                                                TextBlock.Foreground="{StaticResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"
+                                                                TextBlock.FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+                                                                TextBlock.FontSize="12pt"
+                                                                Margin="0,12,0,0" />
                                                     <ItemsControl Margin="5,12,0,0"
                                                                     ItemsSource="{Binding Path=RequestElements}"
                                                                     HorizontalContentAlignment="Center"
@@ -1137,7 +1115,7 @@
                                                                     Visibility="{Binding Path=RequestElements.Count, Converter={scc:SimpleCase Case=0, IfMatch=Collapsed, Else=Visible}}">
                                                         <ItemsControl.Resources>
                                                             <Style TargetType="{x:Type Hyperlink}"
-                                                                    BasedOn="{StaticResource {x:Type Hyperlink}}">
+                                                                        BasedOn="{StaticResource {x:Type Hyperlink}}">
                                                                 <Setter Property="TextElement.Foreground">
                                                                     <Setter.Value>
                                                                         <SolidColorBrush Color="{Binding Source={x:Static Colors.Crimson}, BindsDirectlyToSource=True, Converter={StaticResource LightColorConverter}}" />
@@ -1146,129 +1124,9 @@
                                                             </Style>
                                                         </ItemsControl.Resources>
                                                     </ItemsControl>
-                                                    <Grid>
-                                                        <Grid.ColumnDefinitions>
-                                                            <ColumnDefinition Width="265" />
-                                                        </Grid.ColumnDefinitions>
-                                                        <Grid.RowDefinitions>
-                                                            <RowDefinition Height="Auto" />
-                                                        </Grid.RowDefinitions>
-                                                        <StackPanel Orientation="Horizontal" Grid.Column="0" Grid.Row="0">
-                                                            <!--Visibility="{Binding Path=SelectForeignPowerMessage, Converter={scc:SimpleCase Case=0, IfMatch=Collapsed, Else=Visible}}">-->
-                                                            <StackPanel>
-                                                                <RadioButton
-                                                                    x:Name="RadioAccept"                                                               
-                                                                    VerticalAlignment="Top"
-                                                                    GroupName="DiplomacyRadioButton"
-                                                                    Content="ACCEPT"
-                                                                    Margin="2,5,12,0"
-                                                                    Visibility="{Binding Path=HideAcceptReject, Converter={scc:SimpleCase Case=0, IfMatch=Collapsed, Else=Visible}}"
-                                                                    Checked="clickAcceptCounterReject"/>
-                                                            </StackPanel>
-                                                            <!--<StackPanel>
-                                                                <RadioButton
-                                                                    x:Name="COUNTER"
-                                                                    VerticalAlignment="Top"
-                                                                    GroupName="DiplomacyRadioButton"                             
-                                                                    Content="COUNTER"
-                                                                    Margin="0,5,12,0"
-                                                                    Checked="clickAcceptCounterReject"/>
-                                                            </StackPanel>-->
-                                                            <StackPanel>
-                                                                <RadioButton
-                                                                    x:Name="RadioReject"
-                                                                    VerticalAlignment="Top"
-                                                                    GroupName="DiplomacyRadioButton"
-                                                                    Margin="2,5,12,0"
-                                                                    Content="REJECT"
-                                                                    Visibility="{Binding Path=HideAcceptReject, Converter={scc:SimpleCase Case=0, IfMatch=Collapsed, Else=Visible}}"
-                                                                    Checked="clickAcceptCounterReject"/>
-                                                            </StackPanel>
-                                                            <!--<StackPanel>
-                                                                <RadioButton
-                                                                    x:Name="RadioNoResponse"
-                                                                    VerticalAlignment="Top"
-                                                                    GroupName="DiplomacyRadioButton"                             
-                                                                    Content="NO RESPONSE"
-                                                                    Margin="2,5,12,0"
-                                                                    Checked="clickAcceptCounterReject"
-                                                                    />
-                                                            </StackPanel>-->
-                                                        </StackPanel>
-                                                        <StackPanel Grid.Column="0" Grid.Row="0">
-                                                            <!--<TextBlock Text="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry=NoIncomingHeader, CharacterCasing=Upper}" 
-                                                                         HorizontalAlignment="Center"
-                                                                         VerticalAlignment="Center"
-                                                                     
-                                                                         TextWrapping="Wrap"
-                                                                         TextBlock.Foreground="{StaticResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"
-                                                                         TextBlock.FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
-                                                                         TextBlock.FontSize="12pt"
-                                                                         Background="Black"
-                                                                         Margin="0,5,0,0" 
-                                                                        Visibility="{Binding Path=HasTreatyLeadInText, Converter={StaticResource BooleanToVisibilityConverter}}"/>-->
-                                                            <TextBlock Text="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.DiplomacyScreen}, Entry=NoIncomingHeader, CharacterCasing=Upper}" 
-                                                                         HorizontalAlignment="Center"
-                                                                         VerticalAlignment="Center"
-                                                                         Visibility="{Binding Path=HideAcceptRejectButtons, Converter={scc:SimpleCase Case=0, IfMatch=Collapsed, Else=Visible}}"
-                                                                         TextWrapping="NoWrap"
-                                                                         TextBlock.Foreground="Black" 
-                                                                         TextBlock.FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
-                                                                         TextBlock.FontSize="12pt"
-                                                                         Background="DarkGray"
-                                                                         Margin="0,5,0,0" />
-                                                            <!--<ItemsControl Margin="0,0,0,0"
-                                                                              ItemsSource="{Binding Path=TreatyElements}"
-                                                                              HorizontalContentAlignment="Center"
-                                                                              Foreground="LimeGreen"
-                                                                              FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
-                                                                              FontSize="16"
-                                                                              Visibility="{Binding Path=TreatyElements.Count, Converter={scc:SimpleCase Case=0, IfMatch=Collapsed, Else=Visible}}">
-                                                                <ItemsControl.Resources>
-                                                                    <Style TargetType="{x:Type Hyperlink}"
-                                                                          BasedOn="{StaticResource {x:Type Hyperlink}}">
-                                                                        <Setter Property="TextElement.Foreground">
-                                                                            <Setter.Value>
-                                                                                <SolidColorBrush Color="{Binding Source={x:Static Colors.LimeGreen}, BindsDirectlyToSource=True, Converter={StaticResource LightColorConverter}}" />
-                                                                            </Setter.Value>
-                                                                        </Setter>
-                                                                    </Style>
-                                                                </ItemsControl.Resources>
-                                                            </ItemsControl>-->
-                                                        </StackPanel>
-                                                    </Grid>
-                                                    <!--<StackPanel x:Name="InboxButtons"
-                                                                Grid.Column="0"
-                                                                Grid.Row="5"
-                                                                Orientation="Vertical"
-                                                                Margin="0,2,0,0"
-                                                                Visibility="{Binding Path=AreIncomingMessageCommandsVisible, Converter={StaticResource BooleanToVisibilityConverter}}">
-                                                        <scc:GameButton Label="ACCEPT"
-                                                                          Context="VerticalGroupItem"
-                                                                          DisplayMode="GroupedVertically" 
-                                                                        IsChecked="{Binding RelativeSource={RelativeSource Self}, Path=CommandParameter.(scc:CheckableCommandParameter.IsChecked), Mode=TwoWay}"/>
-                                                        <scc:GameButton x:Name="CounterButton"
-                                                                          Label="COUNTER"
-                                                                          Context="VerticalGroupItem"
-                                                                          DisplayMode="GroupedVertically"
-                                                                          Margin="0,2,0,0"
-                                                                          Visibility="Visible"
-                                                                        IsChecked="{Binding RelativeSource={RelativeSource Self}, Path=CommandParameter.(scc:CheckableCommandParameter.IsChecked), Mode=TwoWay}"/>
-                                                        <scc:GameButton Label="REJECT"
-                                                                          Context="VerticalGroupItem"
-                                                                          DisplayMode="GroupedVertically"
-                                                                          Margin="0,2,0,0"
-                                                                        IsChecked="{Binding RelativeSource={RelativeSource Self}, Path=CommandParameter.(scc:CheckableCommandParameter.IsChecked), Mode=TwoWay}"/>
-                                                        -->
-                                                    <!--<scc:GameButton.CommandParameter>
-                                                            <scc:CheckableCommandParameter InnerParameter="{x:Static scc:DiplomacyMessageViewMode.Accept}" />
-                                                        </scc:GameButton.CommandParameter>-->
-                                                    <!--
-                                                    </StackPanel>-->
                                                 </StackPanel>
-                                            </StackPanel>
+                                            </Grid>
                                         </Border>
-
                                         <!--
                     =======================================================
                     OutBox Left - List of Proposals and Statments to send
@@ -1288,18 +1146,18 @@
                                                         <RowDefinition Height="*"/>
                                                     </Grid.RowDefinitions>
                                                     <Border DockPanel.Dock="Left"
-                                                        Grid.Column="0"
-                                                        MinWidth="154"
-                                                        MinHeight="45"
-                                                        MaxHeight="335"
-                                                        Margin="0,0,2,0"
-                                                        Padding="5"
-                                                        Background="{StaticResource CommBackgroundBrush}"
-                                                        BorderBrush="{StaticResource CommBorderBrush}"
-                                                        BorderThickness="2"
-                                                        CornerRadius="8"
-                                                        Visibility="Visible" 
-                                                        IsEnabled="{Binding IsMessageEditInProgress, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                                            Grid.Column="0"
+                                                            MinWidth="154"
+                                                            MinHeight="45"
+                                                            MaxHeight="335"
+                                                            Margin="0,0,2,0"
+                                                            Padding="5"
+                                                            Background="{StaticResource CommBackgroundBrush}"
+                                                            BorderBrush="{StaticResource CommBorderBrush}"
+                                                            BorderThickness="2"
+                                                            CornerRadius="8"
+                                                            Visibility="Visible" 
+                                                            IsEnabled="{Binding IsMessageEditInProgress, Converter={StaticResource BooleanToVisibilityConverter}}">
                                                         <ScrollViewer HorizontalScrollBarVisibility="Disabled"
                                                                   VerticalScrollBarVisibility="Auto">
                                                             <ItemsControl Background="Transparent"

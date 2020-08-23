@@ -67,10 +67,10 @@ namespace Supremacy.Client.Views
                 return _designInstance;
             }
         }
-        internal override void RaisePropertyChangedEvent(string v)
-        {
-            // do nothing here
-        }
+        //internal override void RaisePropertyChangedEvent(string v)
+        //{
+        //    // do nothing here
+        //}
         private readonly StateManager<SystemAssaultScreenState> _stateManager;
 
         private readonly DelegateCommand<InvasionUnit> _standbyOrderCommand;

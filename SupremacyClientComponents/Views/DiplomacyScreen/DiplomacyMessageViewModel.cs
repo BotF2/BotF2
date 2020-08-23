@@ -4,11 +4,12 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
+using System.Net;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using System.Windows.Data;
-
+using System.Windows.Input;
 using Microsoft.Practices.ServiceLocation;
 
 using Supremacy.Annotations;
@@ -53,8 +54,12 @@ namespace Supremacy.Client.Views
 
         private readonly ScriptParameters _leadInParameters;
         private readonly RuntimeScriptParameters _leadInRuntimeParameters;
-
+        private readonly DelegateCommand<ICheckableCommandParameter> _setAcceptButton;
+        private readonly DelegateCommand<ICheckableCommandParameter> _setRejectButton;
+        private Dictionary<int, string> _acceptedRejected = new Dictionary<int, string> { { 99, "placeHolder" } };
         private Order _sendOrder;
+        private string _response = "....";
+       // private ForeignPowerViewModel _selectedForeignPower;
 
         public DiplomacyMessageViewModel([NotNull] Civilization sender, [NotNull] Civilization recipient)
         {
@@ -62,7 +67,8 @@ namespace Supremacy.Client.Views
                 throw new ArgumentNullException("sender");
             if (recipient == null)
                 throw new ArgumentNullException("recipient");
-
+            _setAcceptButton = new DelegateCommand<ICheckableCommandParameter>(ExecuteSetAcceptButton, CanExecuteSetAcceptButton);
+            _setRejectButton = new DelegateCommand<ICheckableCommandParameter>(ExecuteSetRejectButton, CanExecuteSetRejectButton);
             _sender = sender;
             _recipient = recipient;
             _elements = new ObservableCollection<DiplomacyMessageElement>();
@@ -112,6 +118,24 @@ namespace Supremacy.Client.Views
             CollectionViewSource.GetDefaultView(_availableElementsView).GroupDescriptions.Add(new PropertyGroupDescription("ActionDescription"));
         }
 
+        //public int SetAcceptBotton { get; set; }
+
+        public ForeignPowerViewModel SelectedForeignPower
+        {
+            get
+            {
+
+                    return DiplomacyScreenViewModel.DesignInstance.SelectedForeignPower;
+
+            }
+            set
+            {
+
+                SelectedForeignPower = DiplomacyScreenViewModel.DesignInstance.SelectedForeignPower;
+
+            }
+        }
+
         private bool CanExecuteRemoveElementCommand(DiplomacyMessageElement element)
         {
             return IsEditing && element != null && _elements.Contains(element);
@@ -123,6 +147,38 @@ namespace Supremacy.Client.Views
                 return;
 
             RemoveElement(element);
+        }
+
+        public ICommand SetAcceptButton
+        {
+            get { return _setAcceptButton; }
+        }
+
+        public ICommand SetRejectButton
+        {
+            get { return _setRejectButton; }
+        }
+
+        public string Response
+        {
+            get
+            {
+                return _response;
+            }
+            set
+            {
+                bool methodOverload = true;
+                if (_response != value)
+                {
+                    _response = value;
+                    OnPropertyChanged(methodOverload, "Response");
+                }
+            }
+        }
+
+        public Dictionary<int, string> AcceptedRejected
+        {
+            get { return _acceptedRejected; }
         }
 
         public Civilization Sender
@@ -995,7 +1051,99 @@ namespace Supremacy.Client.Views
 
         public void InvalidateCommands()
         {
+            _setAcceptButton.RaiseCanExecuteChanged();
+            _setRejectButton.RaiseCanExecuteChanged();
             _removeElementCommand.RaiseCanExecuteChanged();
+        }
+
+        private void ExecuteSetAcceptButton(ICheckableCommandParameter p)
+        {
+            if (!CanExecuteSetAcceptButton(p))
+                return;
+            bool accepting = true;
+            ProcessAcceptReject(accepting);
+
+            InvalidateCommands();
+        }
+
+        private bool CanExecuteSetAcceptButton(ICheckableCommandParameter p)
+        {
+            if (p == null)
+                return false;
+
+            return true;
+        }
+
+        private void ExecuteSetRejectButton(ICheckableCommandParameter p)
+        {
+            if (!CanExecuteSetRejectButton(p))
+                return;
+            bool accepting = false;
+            ProcessAcceptReject(accepting);
+
+            InvalidateCommands();
+        }
+
+
+        private void ProcessAcceptReject(bool accepting)
+        {
+            int turn = GameContext.Current.TurnNumber;
+            //SelectedForeignPower = DiplomacyScreenViewModel.DesignInstance.SelectedForeignPower;
+            var senderCiv = SelectedForeignPower.Counterparty; // sender of proposal treaty
+
+            var playerEmpire = DiplomacyScreenViewModel.DesignInstance.LocalPalyer; // local player reciever of proposal treaty
+            var diplomat = Diplomat.Get(playerEmpire);
+            var otherDiplomat = Diplomat.Get(senderCiv);
+            var foreignPower = diplomat.GetForeignPower(senderCiv);
+            var otherForeignPower = otherDiplomat.GetForeignPower(playerEmpire);
+            bool localPlayerIsHosting = DiplomacyScreenViewModel.DesignInstance.localIsHost;
+            string Accepted = "ACCEPTED";
+            if (accepting == false)
+                Accepted = "REJECTED";
+            Response = Accepted;
+
+            if (_acceptedRejected.ContainsKey(SelectedForeignPower.Owner.CivID))
+                return;
+            else _acceptedRejected.Add(SelectedForeignPower.Owner.CivID, Accepted);
+
+            if (localPlayerIsHosting)
+            {
+                GameLog.Client.Diplomacy.DebugFormat("Local player IS Host....");
+                DiplomacyHelper.AcceptRejectDictionary(foreignPower, accepting, turn); // creat entry for game host
+            }
+            else
+            {   // creat entry for none host human player that clicked the accept - reject radio button         
+                StatementType _statementType = DiplomacyHelper.GetStatementType(accepting, senderCiv, playerEmpire); // first is bool, then sender ID(now the local player), last new receipient, in Dictinary Key                       
+                GameLog.Client.Diplomacy.DebugFormat("Local player IS NOT Host, statementType = {0} accepting = {1} sender ={2} counterpartyID {3} local = {4} OwnerID ={5}"
+                    , Enum.GetName(typeof(StatementType), _statementType)
+                    , accepting
+                    , senderCiv.Key
+                    , foreignPower.CounterpartyID
+                    , playerEmpire.Key
+                    , foreignPower.OwnerID
+                    );
+                if (_statementType != StatementType.NoStatement)
+                {
+                    Statement statementToSend = new Statement(playerEmpire, senderCiv, _statementType, Tone.Receptive, turn);
+                    _sendOrder = new SendStatementOrder(statementToSend);
+                    ServiceLocator.Current.GetInstance<IPlayerOrderService>().AddOrder(_sendOrder);
+
+                    otherForeignPower.StatementSent = statementToSend; // load statement to send in foreignPower, statment type carries key for dictionary entery
+
+                    GameLog.Client.Diplomacy.DebugFormat("!! foreignPower.StatementSent *other*ForeignPower Recipient ={0} to Sender ={1}"
+                        , statementToSend.Recipient.Key
+                        , statementToSend.Sender.Key
+                        );
+                }
+            }
+        }
+
+        private bool CanExecuteSetRejectButton(ICheckableCommandParameter p)
+        {
+            if (p == null)
+                return false;
+
+            return true;
         }
 
         public static DiplomacyMessageViewModel FromReponse([NotNull] IResponse response)
@@ -1093,6 +1241,15 @@ namespace Supremacy.Client.Views
             message.TreatyLeadInText = message._treatyLeadInTextScript.Evaluate<string>(message._leadInRuntimeParameters);
             GameLog.Core.Diplomacy.DebugFormat("message ={0}", message);
             return message;
+        }
+
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        public void OnPropertyChanged(bool placeHolder, string propertyName)
+        {
+            if(placeHolder)
+                _propertyChanged.Raise(this, propertyName);
         }
 
         #region Implementation of INotifyPropertyChanged
