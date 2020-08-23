@@ -107,7 +107,17 @@ namespace Supremacy.Collections
                     }
                 }
 
-                throw new KeyNotFoundException();
+                // if reaching this, next will be the KeyNotFoundException
+                int itemsCount = -1;
+                if (Items != null) itemsCount = Items.Count();
+                string KeyNotFoundString = "KeyNotFoundString, Count of Keys: " + itemsCount;
+                Console.WriteLine(KeyNotFoundString);
+                foreach (var item in Items)
+                {
+                    Console.WriteLine(item);
+                    KeyNotFoundString += "," + item;
+                }
+                throw new KeyNotFoundException(KeyNotFoundString);
             }
         }
 
