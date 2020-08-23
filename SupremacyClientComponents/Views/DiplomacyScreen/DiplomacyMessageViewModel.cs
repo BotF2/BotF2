@@ -118,24 +118,6 @@ namespace Supremacy.Client.Views
             CollectionViewSource.GetDefaultView(_availableElementsView).GroupDescriptions.Add(new PropertyGroupDescription("ActionDescription"));
         }
 
-        //public int SetAcceptBotton { get; set; }
-
-        public ForeignPowerViewModel SelectedForeignPower
-        {
-            get
-            {
-
-                    return DiplomacyScreenViewModel.DesignInstance.SelectedForeignPower;
-
-            }
-            set
-            {
-
-                SelectedForeignPower = DiplomacyScreenViewModel.DesignInstance.SelectedForeignPower;
-
-            }
-        }
-
         private bool CanExecuteRemoveElementCommand(DiplomacyMessageElement element)
         {
             return IsEditing && element != null && _elements.Contains(element);
@@ -1088,9 +1070,8 @@ namespace Supremacy.Client.Views
         private void ProcessAcceptReject(bool accepting)
         {
             int turn = GameContext.Current.TurnNumber;
-            //SelectedForeignPower = DiplomacyScreenViewModel.DesignInstance.SelectedForeignPower;
-            var senderCiv = SelectedForeignPower.Counterparty; // sender of proposal treaty
-
+            var selectedForeignPower = DiplomacyScreenViewModel.DesignInstance.SelectedForeignPower;
+            var senderCiv = selectedForeignPower.Counterparty; // sender of proposal treaty
             var playerEmpire = DiplomacyScreenViewModel.DesignInstance.LocalPalyer; // local player reciever of proposal treaty
             var diplomat = Diplomat.Get(playerEmpire);
             var otherDiplomat = Diplomat.Get(senderCiv);
@@ -1102,9 +1083,9 @@ namespace Supremacy.Client.Views
                 Accepted = "REJECTED";
             Response = Accepted;
 
-            if (_acceptedRejected.ContainsKey(SelectedForeignPower.Owner.CivID))
+            if (_acceptedRejected.ContainsKey(selectedForeignPower.Owner.CivID))
                 return;
-            else _acceptedRejected.Add(SelectedForeignPower.Owner.CivID, Accepted);
+            else _acceptedRejected.Add(selectedForeignPower.Owner.CivID, Accepted);
 
             if (localPlayerIsHosting)
             {

@@ -314,10 +314,10 @@ namespace Supremacy.Diplomacy
                     accepting = _acceptRejectDictionary[powerID];
                     if (accepting)
                     {
-                        if (foreignPower.ProposalReceived == null && foreignPower.OwnerID == 1)
-                            GameLog.Client.Diplomacy.DebugFormat("Hey!!! why is the damn ProposalReceived null for foreignPower.OwnerID 1");
-                        if (foreignPower.ProposalReceived == null && foreignPower.OwnerID == 4)
-                            GameLog.Client.Diplomacy.DebugFormat("Hey!!! why is the damn ProposalReceived null for foreignPower.OwnerID 4");
+                        //if (foreignPower.ProposalReceived == null && foreignPower.OwnerID == 1)
+                        //    GameLog.Client.Diplomacy.DebugFormat("Hey!!! why is the damn ProposalReceived null for foreignPower.OwnerID 1");
+                        //if (foreignPower.ProposalReceived == null && foreignPower.OwnerID == 4)
+                        //    GameLog.Client.Diplomacy.DebugFormat("Hey!!! why is the damn ProposalReceived null for foreignPower.OwnerID 4");
                         if (foreignPower.ProposalReceived != null) // aCiv is owner of the foreignpower looking for a ProposalRecieved
                         {
                             foreignPower.PendingAction = PendingDiplomacyAction.AcceptProposal;
