@@ -23,7 +23,6 @@ namespace Supremacy.Game
     {
         private TableMap _resourceTables;
         private TableMap _universeTables;
-        private TableMap _map24x15;
         private TableMap _moraleTables;
         private TableMap _enumTables;
         private TableMap _shipTables;
@@ -124,9 +123,7 @@ namespace Supremacy.Game
                                  ResourceManager.GetResourcePath(tablesPath + "ResourceTables.txt")),
                              _universeTables = TableMap.ReadFromFile(
                                  ResourceManager.GetResourcePath(tablesPath + "UniverseTables.txt")),
-                            _map24x15 = TableMap.ReadFromFile(
-                                 ResourceManager.GetResourcePath(tablesPath + "UniverseMap24x15.txt")),
-                            _moraleTables = TableMap.ReadFromFile(
+                             _moraleTables = TableMap.ReadFromFile(
                                  ResourceManager.GetResourcePath(tablesPath + "MoraleTables.txt")),
                              _enumTables = TableMap.ReadFromFile(
                                  ResourceManager.GetResourcePath(tablesPath + "EnumStrings.txt")),

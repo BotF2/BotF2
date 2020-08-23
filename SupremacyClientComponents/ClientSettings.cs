@@ -820,6 +820,7 @@ namespace Supremacy.Client
             {
                 SetValue(Traces_SetSelection2Property, value);
 
+
                 GameLog.Client.General.InfoFormat("#### Log.Txt: Traces (** Selection 2 **) set to DEBUG (press ingame CTRL + O)");  // in Log.Txt only DEBUG = yes get a line
 
                 if (value == true)

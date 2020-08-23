@@ -2,7 +2,6 @@ using log4net.Appender;
 using log4net.Core;
 
 using Supremacy.Messaging;
-using System;
 
 namespace Supremacy.Utility
 {
@@ -35,7 +34,6 @@ namespace Supremacy.Utility
                     return;
 
                 Channel.Publish(loggingEvent);
-                //Console.WriteLine("Log.txt: " + loggingEvent.RenderedMessage); // writes every Log.Txt line additional to Console
             }
         }
 

@@ -176,28 +176,27 @@ namespace Supremacy.Game
 
             try
             {
-                _textDatabase = reader.Read<ITextDatabase>(); Console.WriteLine("");
-                
-                _localGame.TurnNumber = _turnNumber = reader.ReadOptimizedInt32(); Console.WriteLine("read ... TurnNumber");
-                _localGame.Options = _options = reader.Read<GameOptions>(); Console.WriteLine("read ... Options");
-                _localGame.GameMod = _gameMod = reader.Read<GameMod>(); Console.WriteLine("read ... GameMod");
-                _localGame.Civilizations = _civilizations = reader.Read<CivDatabase>(); Console.WriteLine("read ... Civilizations");
-                _localGame.CivilizationManagers = new CivilizationManagerMap(); Console.WriteLine("read ... CivilizationManagers");
-                _localGame.CivilizationManagers.AddRange((_civManagers = reader.ReadArray<CivilizationManager>())); Console.WriteLine("read ... ReadArray<CivilizationManager>");
-                _localGame.Races = _races = reader.Read<RaceDatabase>(); Console.WriteLine("read ... Races");
-                _localGame.Universe = _universe = reader.Read<UniverseManager>(); Console.WriteLine("read ... Universe");
-                _localGame.TechDatabase = _techDatabase = reader.Read<TechDatabase>(); Console.WriteLine("read ... TechDatabase");
-                _localGame.Tables = _tables = reader.Read<GameTables>(); Console.WriteLine("read ... Tables");
-                _localGame.ResearchMatrix = _researchMatrix = reader.Read<ResearchMatrix>(); Console.WriteLine("read ... ResearchMatrix");
-                _localGame.SectorClaims = _sectorClaims = reader.Read<SectorClaimGrid>(); Console.WriteLine("read ... SectorClaims");
-                _localGame.TechTrees = _techTrees = reader.Read<TechTreeMap>(); Console.WriteLine("read ... TechTrees");
-                _localGame.StrategyDatabase = _strategyDatabase = reader.Read<StrategyDatabase>(); Console.WriteLine("read ... StrategyDatabase");
-                _localGame.DiplomacyData = _diplomacyData = reader.Read<CivilizationPairedMap<IDiplomacyData>>(); Console.WriteLine("read ... DiplomacyData");
-                _localGame.AgreementMatrix = _agreementMatrix = reader.Read<AgreementMatrix>(); Console.WriteLine("read ... AgreementMatrix");
+                _textDatabase = reader.Read<ITextDatabase>();
+                _localGame.TurnNumber = _turnNumber = reader.ReadOptimizedInt32();
+                _localGame.Options = _options = reader.Read<GameOptions>();
+                _localGame.GameMod = _gameMod = reader.Read<GameMod>();
+                _localGame.Civilizations = _civilizations = reader.Read<CivDatabase>();
+                _localGame.CivilizationManagers = new CivilizationManagerMap();
+                _localGame.CivilizationManagers.AddRange((_civManagers = reader.ReadArray<CivilizationManager>()));
+                _localGame.Races = _races = reader.Read<RaceDatabase>();
+                _localGame.Universe = _universe = reader.Read<UniverseManager>();
+                _localGame.TechDatabase = _techDatabase = reader.Read<TechDatabase>();
+                _localGame.Tables = _tables = reader.Read<GameTables>();
+                _localGame.ResearchMatrix = _researchMatrix = reader.Read<ResearchMatrix>();
+                _localGame.SectorClaims = _sectorClaims = reader.Read<SectorClaimGrid>();
+                _localGame.TechTrees = _techTrees = reader.Read<TechTreeMap>();
+                _localGame.StrategyDatabase = _strategyDatabase = reader.Read<StrategyDatabase>();
+                _localGame.DiplomacyData = _diplomacyData = reader.Read<CivilizationPairedMap<IDiplomacyData>>();
+                _localGame.AgreementMatrix = _agreementMatrix = reader.Read<AgreementMatrix>();
 
-                _localGame.Diplomats = new CivilizationKeyedMap<Diplomat>(o => o.OwnerID); Console.WriteLine("new ... Diplomats");
+                _localGame.Diplomats = new CivilizationKeyedMap<Diplomat>(o => o.OwnerID);
 
-                _diplomats = reader.ReadArray<Diplomat>(); Console.WriteLine("read ... Diplomats");
+                _diplomats = reader.ReadArray<Diplomat>();
 
                 if (_diplomats != null)
                 {
