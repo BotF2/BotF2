@@ -20,6 +20,7 @@ using Supremacy.IO.Serialization;
 using Supremacy.Tech;
 using Supremacy.Text;
 using Supremacy.Universe;
+using Supremacy.Utility;
 
 namespace Supremacy.Game
 {
@@ -153,7 +154,7 @@ namespace Supremacy.Game
                 data._techTrees = game.TechTrees;
                 data._strategyDatabase = game.StrategyDatabase;
                 data._diplomacyData = game.DiplomacyData;
-                data._diplomats = new[] { Diplomat.Get(player) }; //game.Diplomats.ToArray();
+                data._diplomats = game.Diplomats.ToArray(); //new[] { Diplomat.Get(player) }; //game.Diplomats.ToArray();
                 data._agreementMatrix = game.AgreementMatrix;
 
                 data._civManagers.ForEach(o => o.Compact());
@@ -176,7 +177,6 @@ namespace Supremacy.Game
             try
             {
                 _textDatabase = reader.Read<ITextDatabase>();
-
                 _localGame.TurnNumber = _turnNumber = reader.ReadOptimizedInt32();
                 _localGame.Options = _options = reader.Read<GameOptions>();
                 _localGame.GameMod = _gameMod = reader.Read<GameMod>();

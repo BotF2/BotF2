@@ -32,7 +32,7 @@ namespace Supremacy.Scripting.Ast
                 return base.ResolveAsTypeStep(ec, silent);
             }
 
-            var errorCount = ec.CompilerErrorCount;
+            int errorCount = ec.CompilerErrorCount;
             Left = ec.LookupNamespaceAlias(Alias);
             
             if (Left == null)
@@ -47,9 +47,11 @@ namespace Supremacy.Scripting.Ast
                 return null;
             }
 
-            var fullNamedExpression = base.ResolveAsTypeStep(ec, silent);
+            FullNamedExpression fullNamedExpression = base.ResolveAsTypeStep(ec, silent);
             if (fullNamedExpression == null)
+            {
                 return null;
+            }
 
             if (Left.ExpressionClass == ExpressionClass.Type)
             {

@@ -22,6 +22,7 @@ namespace Supremacy.Client.Views
         public const string SelectedPlanetaryBuildProjectInfo = "SelectedPlanetaryBuildProjectInfo";
         public const string SelectedShipyardBuildProjectInfo = "SelectedShipyardBuildProjectInfo";
         public const string StructureList = "StructureList";
+        public const string HandlingList = "HandlingList";
 
         public static IEnumerable<string> GetRegionNames()
         {
@@ -29,7 +30,7 @@ namespace Supremacy.Client.Views
                    {
                        ColonyInfo, ProductionManagement, PlanetaryBuildQueue, ShipyardBuildQueue,
                        PlanetaryBuildList, ShipyardBuildList, SelectedPlanetaryBuildProjectInfo,
-                       SelectedShipyardBuildProjectInfo, StructureList
+                       SelectedShipyardBuildProjectInfo, StructureList,HandlingList
                    };
         }
     }

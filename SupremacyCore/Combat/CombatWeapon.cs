@@ -23,20 +23,11 @@ namespace Supremacy.Combat
 
         private CombatWeapon() { }
 
-        public Meter MaxDamage
-        {
-            get { return _maxDamage; }
-        }
+        public Meter MaxDamage => _maxDamage;
 
-        public bool IsBeamWeapon
-        {
-            get { return (_weaponType == WeaponDeliveryType.Beam); }
-        }
+        public bool IsBeamWeapon => _weaponType == WeaponDeliveryType.Beam;
 
-        public bool CanFire
-        {
-            get { return (_maxDamage.CurrentValue > 0); }
-        }
+        public bool CanFire => _maxDamage.CurrentValue > 0;
 
         public void Discharge()
         {
@@ -46,9 +37,11 @@ namespace Supremacy.Combat
         public void Recharge()
         {
             if (_maxDamage.IsMaximized)
+            {
                 return;
+            }
 
-            var maxDamage = (_maxDamage.LastValue == _maxDamage.Maximum)
+            int maxDamage = (_maxDamage.LastValue == _maxDamage.Maximum)
                                 ? (int)(_recharge * _maxDamage.Maximum)
                                 : _maxDamage.Maximum;
 
@@ -57,7 +50,7 @@ namespace Supremacy.Combat
 
         public static CombatWeapon CreateBeamWeapon(Orbital orbital)
         {
-            var weapon = new CombatWeapon();
+            CombatWeapon weapon = new CombatWeapon();
             if (orbital.IsCombatant)
             {
                 weapon._maxDamage = new Meter(
@@ -74,33 +67,37 @@ namespace Supremacy.Combat
 
         private static CombatWeapon CreateWeapon(WeaponType weaponType)
         {
-            var weapon = new CombatWeapon
-                         {
-                             _weaponType = weaponType.DeliveryType,
-                             _maxDamage = new Meter(
+            return new CombatWeapon
+            {
+                _weaponType = weaponType.DeliveryType,
+                _maxDamage = new Meter(
                                  weaponType.Damage,
                                  0,
                                  weaponType.Damage),
-                             _recharge = weaponType.Refire
-                         };
-
-            return weapon;
+                _recharge = weaponType.Refire
+            };
         }
 
         public static CombatWeapon[] CreateWeapons(Orbital orbital)
         {
             if (orbital == null)
-                throw new ArgumentNullException("orbital");
+            {
+                throw new ArgumentNullException(nameof(orbital));
+            }
 
-            var beams = orbital.OrbitalDesign.PrimaryWeapon.Count;
-            var torpedoes = orbital.OrbitalDesign.SecondaryWeapon.Count;
-            var weapons = new CombatWeapon[beams + torpedoes];
+            int beams = orbital.OrbitalDesign.PrimaryWeapon.Count;
+            int torpedoes = orbital.OrbitalDesign.SecondaryWeapon.Count;
+            CombatWeapon[] weapons = new CombatWeapon[beams + torpedoes];
 
-            for (var i = 0; i < beams; i++)
+            for (int i = 0; i < beams; i++)
+            {
                 weapons[i] = CreateWeapon(orbital.OrbitalDesign.PrimaryWeapon);
+            }
 
-            for (var i = beams; i < (beams + torpedoes); i++)
+            for (int i = beams; i < (beams + torpedoes); i++)
+            {
                 weapons[i] = CreateWeapon(orbital.OrbitalDesign.SecondaryWeapon);
+            }
 
             return weapons;
         }

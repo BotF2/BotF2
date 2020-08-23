@@ -9,8 +9,9 @@
              d:DesignWidth="720"
              d:DesignHeight="240"
              d:DataContext="{x:Static scc:ColonyScreenPresentationModel.DesignInstance}">
+             <!--xmlns:scm="clr-namespace:System.ComponentModel;assembly=WindowsBase"-->
 
-  <DockPanel LastChildFill="True">
+    <DockPanel LastChildFill="True">
     <Grid DockPanel.Dock="Bottom" Margin="7">
       <Grid.ColumnDefinitions>
         <ColumnDefinition Width="Auto" />
@@ -81,8 +82,15 @@
                   Grid.IsSharedSizeScope="True"
                   Focusable="False"
                   IsTabStop="False"
-                  ItemsSource="{Binding Path=SelectedColony.Buildings}">
+                  ItemsSource="{Binding Path=SelectedColony.Buildings}"
+        >
       <ItemsControl.Resources>
+          <!--tried Sorting - the xmlns:scm="clr-namespace: should be looking at a Supremacy name space to get Building.IsActive-->
+                <!--<CollectionViewSource x:Key="Viewsource" Source="Binding Path=SelectedColony.Buildings">
+                    <CollectionViewSource.SortDescriptions> // should be sorting on properties, not descriptions
+                        <scm:SortDescription PropertyName="Name" Direction="Descending"/>
+                    </CollectionViewSource.SortDescriptions>
+                </CollectionViewSource>-->
         <DataTemplate x:Key="StructureListItemTemplate">
           <Border Padding="7"
                   scc:InfoCardService.InfoCardHeader="{Binding RelativeSource={RelativeSource Self}, Path=(scc:InfoCardService.InfoCardSubject).(scc:InfoCardSubject.Data), Mode=OneWay}"

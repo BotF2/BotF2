@@ -105,19 +105,29 @@ namespace Supremacy.Scripting.Utility
             ma &= MethodAttributes.MemberAccessMask;
 
             if (ma == MethodAttributes.Assembly)
+            {
                 return "internal";
+            }
 
             if (ma == MethodAttributes.Family)
+            {
                 return "protected";
+            }
 
             if (ma == MethodAttributes.Public)
+            {
                 return "public";
+            }
 
             if (ma == MethodAttributes.FamORAssem)
+            {
                 return "protected internal";
+            }
 
             if (ma == MethodAttributes.Private)
+            {
                 return "private";
+            }
 
             throw new ArgumentOutOfRangeException("ma");
         }
@@ -129,28 +139,47 @@ namespace Supremacy.Scripting.Utility
             if (isToplevel)
             {
                 if ((modFlags & Public) != 0)
+                {
                     t = TypeAttributes.Public;
+                }
                 else if ((modFlags & Private) != 0)
+                {
                     t = TypeAttributes.NotPublic;
+                }
             }
             else
             {
                 if ((modFlags & Public) != 0)
+                {
                     t = TypeAttributes.NestedPublic;
+                }
                 else if ((modFlags & Private) != 0)
+                {
                     t = TypeAttributes.NestedPrivate;
+                }
                 else if ((modFlags & (Protected | Internal)) == (Protected | Internal))
+                {
                     t = TypeAttributes.NestedFamORAssem;
+                }
                 else if ((modFlags & Protected) != 0)
+                {
                     t = TypeAttributes.NestedFamily;
+                }
                 else if ((modFlags & Internal) != 0)
+                {
                     t = TypeAttributes.NestedAssembly;
+                }
             }
 
             if ((modFlags & Sealed) != 0)
+            {
                 t |= TypeAttributes.Sealed;
+            }
+
             if ((modFlags & Abstract) != 0)
+            {
                 t |= TypeAttributes.Abstract;
+            }
 
             return t;
         }
@@ -160,69 +189,107 @@ namespace Supremacy.Scripting.Utility
             FieldAttributes fa = 0;
 
             if ((modFlags & Public) != 0)
+            {
                 fa |= FieldAttributes.Public;
+            }
+
             if ((modFlags & Private) != 0)
+            {
                 fa |= FieldAttributes.Private;
+            }
+
             if ((modFlags & Protected) != 0)
             {
                 if ((modFlags & Internal) != 0)
+                {
                     fa |= FieldAttributes.FamORAssem;
+                }
                 else
+                {
                     fa |= FieldAttributes.Family;
+                }
             }
             else
             {
                 if ((modFlags & Internal) != 0)
+                {
                     fa |= FieldAttributes.Assembly;
+                }
             }
 
             if ((modFlags & Static) != 0)
+            {
                 fa |= FieldAttributes.Static;
+            }
+
             if ((modFlags & Readonly) != 0)
+            {
                 fa |= FieldAttributes.InitOnly;
+            }
 
             return fa;
         }
 
         public static MethodAttributes MethodAttr(int modFlags)
         {
-            var ma = MethodAttributes.HideBySig;
+            MethodAttributes ma = MethodAttributes.HideBySig;
 
             if ((modFlags & Public) != 0)
+            {
                 ma |= MethodAttributes.Public;
+            }
             else if ((modFlags & Private) != 0)
+            {
                 ma |= MethodAttributes.Private;
+            }
             else if ((modFlags & Protected) != 0)
             {
                 if ((modFlags & Internal) != 0)
+                {
                     ma |= MethodAttributes.FamORAssem;
+                }
                 else
+                {
                     ma |= MethodAttributes.Family;
+                }
             }
             else
             {
                 if ((modFlags & Internal) != 0)
+                {
                     ma |= MethodAttributes.Assembly;
+                }
             }
 
             if ((modFlags & Static) != 0)
+            {
                 ma |= MethodAttributes.Static;
+            }
+
             if ((modFlags & Abstract) != 0)
             {
                 ma |= MethodAttributes.Abstract | MethodAttributes.Virtual;
             }
             if ((modFlags & Sealed) != 0)
+            {
                 ma |= MethodAttributes.Final;
+            }
 
             if ((modFlags & Virtual) != 0)
+            {
                 ma |= MethodAttributes.Virtual;
+            }
 
             if ((modFlags & Override) != 0)
+            {
                 ma |= MethodAttributes.Virtual;
+            }
             else
             {
                 if ((ma & MethodAttributes.Virtual) != 0)
+                {
                     ma |= MethodAttributes.NewSlot;
+                }
             }
 
             return ma;
@@ -235,12 +302,12 @@ namespace Supremacy.Scripting.Utility
         // </summary>
         public static int Check(int allowed, int mod, int defAccess, SourceSpan span, ParseContext parseContext)
         {
-            var invalidFlags = (~allowed) & (mod & (Top - 1));
+            int invalidFlags = (~allowed) & mod & (Top - 1);
             int i;
 
             if (invalidFlags == 0)
             {
-                var a = mod;
+                int a = mod;
 
                 //
                 // If no accessibility bits provided
@@ -250,7 +317,10 @@ namespace Supremacy.Scripting.Utility
                 {
                     mod |= defAccess;
                     if (defAccess != 0)
+                    {
                         mod |= DefaultAccessModifer;
+                    }
+
                     return mod;
                 }
 
@@ -261,7 +331,7 @@ namespace Supremacy.Scripting.Utility
                 // 1 and 4 (so the shift 3 basically merges them)
                 //
                 a &= 15;
-                a |= (a >> 3);
+                a |= a >> 3;
                 a = ((a & 2) >> 1) + (a & 5);
                 a = ((a & 4) >> 2) + (a & 3);
 
@@ -280,7 +350,9 @@ namespace Supremacy.Scripting.Utility
             for (i = 1; i <= Top; i <<= 1)
             {
                 if ((i & invalidFlags) == 0)
+                {
                     continue;
+                }
 
                 parseContext.ReportError(
                     106,

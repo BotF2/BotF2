@@ -13,23 +13,23 @@ namespace Supremacy.Scripting.Ast
 
         public ShimExpression([NotNull] Expression expression)
         {
-            if (expression == null)
-                throw new ArgumentNullException("expression");
-            _expression = expression;
+            _expression = expression ?? throw new ArgumentNullException("expression");
         }
 
         public Expression Expression
         {
-            get { return _expression; }
+            get => _expression;
             set
             {
                 _expression = value;
 
                 if (_expression != null)
+                {
                     Type = _expression.Type;
+                }
             }
         }
-        
+
         public override void Walk(AstVisitor prefix, AstVisitor postfix)
         {
             Walk(ref _expression, prefix, postfix);

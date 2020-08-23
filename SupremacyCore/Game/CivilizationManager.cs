@@ -41,7 +41,9 @@ namespace Supremacy.Game
         private readonly ResourcePool _resources;
         private readonly List<SitRepEntry> _sitRepEntries;
         private readonly Meter _totalPopulation;
+        private readonly Meter _totalResearch;
         private readonly Treasury _treasury;
+        private int _maintenanceCostLastTurn;
         private readonly UniverseObjectList<Colony> _colonies;
         private List<Civilization> _spiedCivList;
 
@@ -63,6 +65,7 @@ namespace Supremacy.Game
         {
             _credits = new Meter(5000, Meter.MinValue, Meter.MaxValue);
             _treasury = new Treasury(5000);
+            _maintenanceCostLastTurn = 0;
             _resources = new ResourcePool();
             _colonies = new UniverseObjectList<Colony>();
 
@@ -72,6 +75,9 @@ namespace Supremacy.Game
 
             _totalPopulation = new Meter();
             _totalPopulation.PropertyChanged += OnTotalPopulationPropertyChanged;
+
+            _totalResearch = new Meter();
+            _totalResearch.PropertyChanged += OnTotalResearchPropertyChanged;
 
             _totalIntelligenceAttackingAccumulated = new Meter(0, 0, Meter.MaxValue);
             _totalIntelligenceAttackingAccumulated.PropertyChanged += OnTotalIntelligenceAttackingAccumulatedPropertyChanged;
@@ -141,6 +147,15 @@ namespace Supremacy.Game
         }
 
         /// <summary>
+        /// Gets the total research of all the civilization's colonies.
+        /// </summary>
+        /// <value>The total population.</value>
+        public Meter TotalResearch
+        {
+            get { return _totalResearch; }
+        }
+
+        /// <summary>
         /// Gets the credits in the civilization's treasury.
         /// </summary>
         /// <value>The credits.</value>
@@ -158,10 +173,21 @@ namespace Supremacy.Game
         }
 
         /// <summary>
-        /// Gets the civilization's resource pool.
+        /// Gets the civilization's MaintenanceCostLastTurn.
         /// </summary>
-        /// <value>The resource pool.</value>
-        [NotNull]
+        public int MaintenanceCostLastTurn
+        {
+            get { return _maintenanceCostLastTurn; }
+            set { _maintenanceCostLastTurn = value; }
+        }
+
+
+
+/// <summary>
+/// Gets the civilization's resource pool.
+/// </summary>
+/// <value>The resource pool.</value>
+[NotNull]
         public ResourcePool Resources
         {
             get { return _resources; }
@@ -256,7 +282,7 @@ namespace Supremacy.Game
                 {
                     baseIntel *= bonus.Amount;
                 }
-                GameLog.Client.UI.DebugFormat("TotalIntelProduction = {0}", baseIntel);
+                GameLog.Client.Intel.DebugFormat("TotalIntelProduction = {0}", baseIntel);
                 return baseIntel;
             }
         }
@@ -270,7 +296,7 @@ namespace Supremacy.Game
                 {
                     updateMeter.CurrentValue = TotalIntelligenceProduction;
                 }
-                GameLog.Client.UI.DebugFormat("TotalIntelAttackingAccumulated = {0}", updateMeter.CurrentValue);
+                GameLog.Client.Intel.DebugFormat("TotalIntelAttackingAccumulated = {0}", updateMeter.CurrentValue);
                 return updateMeter;
             }
         }
@@ -280,7 +306,7 @@ namespace Supremacy.Game
             get
             {
                 var updateMeter = _totalIntelligenceDefenseAccumulated;
-                GameLog.Client.UI.DebugFormat("TotalIntelDefenseAccumulated = {0}", updateMeter.CurrentValue);
+                GameLog.Client.Intel.DebugFormat("TotalIntelDefenseAccumulated = {0}", updateMeter.CurrentValue);
                 if (_totalIntelligenceDefenseAccumulated.CurrentValue == 0)
                 {
                     updateMeter.CurrentValue = TotalIntelligenceProduction;
@@ -386,7 +412,7 @@ namespace Supremacy.Game
             _spiedCivList.AddRange(civList);
             //foreach (var item in civList)
             //{
-            //    GameLog.Client.UI.DebugFormat("Updated the spied list = {0}", item);
+            //    GameLog.Client.Intel.DebugFormat("Updated the spied list = {0}", item);
             //}
         }
 
@@ -507,6 +533,11 @@ namespace Supremacy.Game
             if (e.PropertyName == "CurrentValue")
                 OnPropertyChanged("AverageMorale");
         }
+        private void OnTotalResearchPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == "CurrentValue")
+                OnPropertyChanged("AverageMorale");
+        }
         private void OnInstallingSpyNetworkPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             if (e.PropertyName == "CurrentValue")
@@ -514,14 +545,14 @@ namespace Supremacy.Game
         }
         private void OnTotalIntelligenceAttackingAccumulatedPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            GameLog.Client.UI.DebugFormat("OnTotalIntelAttackingAccumulated sender ={0} property changed ={1}", sender.ToString(), e.PropertyName.ToString());
+            GameLog.Client.Intel.DebugFormat("OnTotalIntelAttackingAccumulated sender ={0} property changed ={1}", sender.ToString(), e.PropertyName.ToString());
             if (e.PropertyName == "CurrentValue")
                 OnPropertyChanged("TotalIntelligenceAttackingAccumulated");
         }
 
         private void OnTotalIntelligenceDefenseAccumulatedPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            GameLog.Client.UI.DebugFormat("OnTotalIntelDefenceAccumulated sender ={0} property changed ={1}", sender.ToString(), e.PropertyName.ToString());
+            GameLog.Client.Intel.DebugFormat("OnTotalIntelDefenceAccumulated sender ={0} property changed ={1}", sender.ToString(), e.PropertyName.ToString());
             if (e.PropertyName == "CurrentValue")
                 OnPropertyChanged("TotalIntelligenceDefenseAccumulated");
         }

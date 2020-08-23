@@ -38,22 +38,26 @@ namespace Supremacy.Scripting.Ast
 
         protected bool CheckConstraints(ParseContext ec, int index)
         {
-            var atype = ArgumentTypes[index];
-            var ptype = GenericParameters[index];
+            Type atype = ArgumentTypes[index];
+            Type ptype = GenericParameters[index];
 
             if (atype == ptype)
+            {
                 return true;
+            }
 
             Expression aexpr = new EmptyExpression(atype);
 
-            var gc = TypeManager.GetTypeParameterConstraints(ptype);
+            GenericConstraints gc = TypeManager.GetTypeParameterConstraints(ptype);
             if (gc == null)
+            {
                 return true;
+            }
 
             bool isClass, isStruct;
             if (atype.IsGenericParameter)
             {
-                var agc = TypeManager.GetTypeParameterConstraints(atype);
+                GenericConstraints agc = TypeManager.GetTypeParameterConstraints(atype);
                 if (agc != null)
                 {
 /*
@@ -133,7 +137,9 @@ namespace Supremacy.Scripting.Ast
             if (gc.HasClassConstraint)
             {
                 if (!CheckConstraint(ec, ptype, aexpr, gc.ClassConstraint))
+                {
                     return false;
+                }
             }
 
             //
@@ -142,7 +148,9 @@ namespace Supremacy.Scripting.Ast
             if (gc.InterfaceConstraints != null)
             {
                 if (gc.InterfaceConstraints.Any(it => !CheckConstraint(ec, ptype, aexpr, it)))
+                {
                     return false;
+                }
             }
 
             //
@@ -150,13 +158,19 @@ namespace Supremacy.Scripting.Ast
             //
 
             if (!gc.HasConstructorConstraint)
+            {
                 return true;
+            }
 
             if (TypeManager.IsValueType(atype))
+            {
                 return true;
+            }
 
             if (HasDefaultConstructor(atype))
+            {
                 return true;
+            }
 
             if (!Silent)
             {
@@ -189,18 +203,18 @@ namespace Supremacy.Scripting.Ast
             //
             if (TypeManager.HasGenericArguments(ctype))
             {
-                var types = ctype.GetGenericArguments();
-                var newArgs = new TypeArguments();
+                Type[] types = ctype.GetGenericArguments();
+                TypeArguments newArgs = new TypeArguments();
 
-                for (var i = 0; i < types.Length; i++)
+                for (int i = 0; i < types.Length; i++)
                 {
-                    var t = types[i];
+                    Type t = types[i];
                     if (t.IsGenericParameter)
                     {
-                        var pos = t.GenericParameterPosition;
+                        int pos = t.GenericParameterPosition;
                         if (t.DeclaringMethod == null && this is MethodConstraintChecker)
                         {
-                            var parent = ((MethodConstraintChecker)this).DeclaringType;
+                            Type parent = ((MethodConstraintChecker)this).DeclaringType;
                             t = parent.GetGenericArguments()[pos];
                         }
                         else
@@ -211,15 +225,17 @@ namespace Supremacy.Scripting.Ast
                     newArgs.Add(new TypeExpression(t) { Span = Span });
                 }
 
-                var ct = new GenericTypeExpression(ctype, newArgs, Span);
+                GenericTypeExpression ct = new GenericTypeExpression(ctype, newArgs, Span);
                 if (ct.ResolveAsTypeStep(ec, false) == null)
+                {
                     return false;
+                }
 
-                ctype = (ct).Type;
+                ctype = ct.Type;
             }
             else if (ctype.IsGenericParameter)
             {
-                var pos = ctype.GenericParameterPosition;
+                int pos = ctype.GenericParameterPosition;
                 if (ctype.DeclaringMethod == null)
                 {
                     // FIXME: Implement
@@ -228,13 +244,17 @@ namespace Supremacy.Scripting.Ast
                 ctype = ArgumentTypes[pos];
             }
 
-            var expressionType = expr.Type;
+            Type expressionType = expr.Type;
 
             if (TypeUtils.IsImplicitlyConvertible(expressionType, ctype))
+            {
                 return true;
+            }
 
             if (Silent)
+            {
                 return false;
+            }
 
             if (TypeUtils.IsNullableType(expressionType) && ctype.IsInterface)
             {
@@ -271,11 +291,13 @@ namespace Supremacy.Scripting.Ast
         private static bool HasDefaultConstructor(Type atype)
         {
             if (atype.IsAbstract)
+            {
                 return false;
+            }
 
             atype = TypeManager.DropGenericTypeArguments(atype);
 
-            var list = TypeManager.MemberLookup(
+            MemberInfo[] list = TypeManager.MemberLookup(
                 null,
                 null,
                 atype,
@@ -284,10 +306,9 @@ namespace Supremacy.Scripting.Ast
                 ConstructorInfo.ConstructorName,
                 null);
 
-            if (list == null)
-                return false;
-
-            return list
+            return list == null
+                ? false
+                : list
                 .OfType<MethodBase>()
                 .Select(TypeManager.GetParameterData)
                 .Any(o => o.Count == 0);
@@ -322,7 +343,7 @@ namespace Supremacy.Scripting.Ast
             SourceSpan loc,
             bool silent = false)
         {
-            var checker = new TypeConstraintChecker(
+            TypeConstraintChecker checker = new TypeConstraintChecker(
                 gt,
                 genParams,
                 typeArguments,

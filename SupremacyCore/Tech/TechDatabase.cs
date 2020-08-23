@@ -13,19 +13,16 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization;
-using System.Windows.Automation;
 using System.Xml;
 using System.Xml.Schema;
 
 using Supremacy.Buildings;
-using Supremacy.Client;
 using Supremacy.Collections;
-
 using Supremacy.Economy;
-using Supremacy.Game;
 using Supremacy.Orbitals;
 using Supremacy.Resources;
 using Supremacy.Utility;
+
 
 namespace Supremacy.Tech
 {
@@ -635,13 +632,15 @@ namespace Supremacy.Tech
 
                         "CE_LaborCost" + separator +
                         "CE_Category" + separator +
+                        "CE_UnitOutput" + separator +
 
                         // just placeholder
                         //"CE_Bonus" + separator +  // no bonus for ProdFac, because Type_1_Dilithium is not used - the Dilithium >BUILDING=Structure< is in usage
                         //"CE_Restrictions" + separator +   // no buildcondition for ProdFac, because Type_1_Dilithium is not used - the Dilithium >BUILDING=Structure<s is in usage
                         "CE_Prerequisites" + separator +
                         "CE_ObsoletedItems" + separator +
-                        "CE_UpgradeOptions"
+                        "CE_UpgradeOptions" + separator +
+                        "CE_Image" 
                         ;
 
                     streamWriter.WriteLine(strHeader);
@@ -665,6 +664,13 @@ namespace Supremacy.Tech
                             if (PF.Key.Contains("RAWMATERIALS"))
                                 category = "RawMaterials";
                         }
+
+                        //doesn't work
+                        string imageString = "";
+                        //if (PF.Image != null)
+                        //    {
+                        //        try { imageString = PF.Image; } catch { }
+                        //    }
 
                         string obsDesign = "";
                         foreach (var obsolete in PF.ObsoletedDesigns)
@@ -723,13 +729,7 @@ namespace Supremacy.Tech
                         line =
                         "ProductionFacility" + separator +
                         PF.Key + separator +
-                        //PF.Image + separator +
-
-
-                        //shipyard.DesignID + separator +   // not useful for current working
-                        //shipyard.ShipType + separator +  // moved down for current working
-                        //shipyard.ClassName + separator +  // moved down for current working
-                        //shipyard.Key;   // just for testing
+                        
 
                         //<TechRequirements>
                         "xx" + separator + // needs to be empty for "<TechRequirements></TechRequirements>" + separator +  
@@ -759,12 +759,9 @@ namespace Supremacy.Tech
 
                         PF.BuildCost + separator +
                         PF.IsUniversallyAvailable + separator +
-
                         PF.LaborCost + separator +
-
                         category + separator +
-
-
+                        PF.UnitOutput.ToString() + separator +
 
                         // just placeholders
                         //"Bonus for " + PF.Key + separator +
@@ -773,15 +770,19 @@ namespace Supremacy.Tech
                         //"Restrictions for " + PF.Key + separator +
                         //_buildcondition + separator +       // no buildcondition for ProdFac, because Type_1_Dilithium is not used - the Dilithium >BUILDING=Structure<s is in usage
 
+
+                        // + separator +  // doesn't work
+
                         //"Prerequisites for " + PF.Key + separator +
-                        prerequisitesCollection + separator + // works ??
+                        prerequisitesCollection + separator + 
 
                         //"ObsoletedItems for " + PF.Key + separator +
-                        obsDesign + separator + // works ??
+                        obsDesign + separator + 
 
                         //"UpgradeOptions for " + PF.Key                                                
-                        upgradeDesign + separator // + // works ??
+                        upgradeDesign + separator +
 
+                        imageString
                         ;
 
                         //Console.WriteLine("{0}", line);

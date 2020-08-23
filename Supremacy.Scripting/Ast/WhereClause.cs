@@ -9,13 +9,13 @@ namespace Supremacy.Scripting.Ast
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public Expression Predicate
         {
-            get { return Expression; }
-            set { Expression = value; }
+            get => Expression;
+            set => Expression = value;
         }
 
         public Expression Body
         {
-            get { return null; }
+            get => null;
             set { return; }
         }
 
@@ -23,7 +23,7 @@ namespace Supremacy.Scripting.Ast
         {
             sw.Write("where ");
 
-            var indentShift = "where ".Length;
+            int indentShift = "where ".Length;
 
             sw.Indent += indentShift;
 
@@ -41,9 +41,6 @@ namespace Supremacy.Scripting.Ast
             DumpChild(Next, sw, indentChange);
         }
 
-        protected override string MethodName
-        {
-            get { return "Where"; }
-        }
+        protected override string MethodName => "Where";
     }
 }

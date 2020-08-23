@@ -19,12 +19,12 @@ namespace Supremacy.Scripting.Ast
 
         public CastExpression([NotNull] Expression child, [NotNull] Type destinationType)
         {
-            if (child == null)
-                throw new ArgumentNullException("child");
             if (destinationType == null)
+            {
                 throw new ArgumentNullException("destinationType");
+            }
 
-            _child = child;
+            _child = child ?? throw new ArgumentNullException("child");
             _destinationType = new TypeExpression(destinationType);
 
             Type = destinationType;
@@ -32,27 +32,19 @@ namespace Supremacy.Scripting.Ast
 
         public CastExpression([NotNull] Expression child, [NotNull] FullNamedExpression destinationType)
         {
-            if (child == null)
-                throw new ArgumentNullException("child");
-            if (destinationType == null)
-                throw new ArgumentNullException("destinationType");
-
-            _child = child;
-            _destinationType = destinationType;
+            _child = child ?? throw new ArgumentNullException("child");
+            _destinationType = destinationType ?? throw new ArgumentNullException("destinationType");
 
             Type = destinationType.Type;
         }
 
         public CastExpression() { }
 
-        public Type UnderlyingType
-        {
-            get { return (Child == null) ? null : Child.Type; }
-        }
+        public Type UnderlyingType => Child?.Type;
 
         public FullNamedExpression DestinationType
         {
-            get { return _destinationType; }
+            get => _destinationType;
             set
             {
                 _destinationType = value;
@@ -62,19 +54,13 @@ namespace Supremacy.Scripting.Ast
 
         public Expression Child
         {
-            get { return _child; }
-            set { _child = value; }
+            get => _child;
+            set => _child = value;
         }
 
-        public override bool IsNull
-        {
-            get { return Child.IsNull; }
-        }
+        public override bool IsNull => Child.IsNull;
 
-        public override bool ShouldParenthesize
-        {
-            get { return true; }
-        }
+        public override bool ShouldParenthesize => true;
 
         public override void Walk(AstVisitor prefix, AstVisitor postfix)
         {
@@ -85,18 +71,23 @@ namespace Supremacy.Scripting.Ast
         public override Expression DoResolve(ParseContext parseContext)
         {
             if (ExpressionClass != ExpressionClass.Invalid)
+            {
                 return this;
+            }
 
             _destinationType = _destinationType.ResolveAsTypeStep(parseContext, false);
 
             Type = _destinationType.Type;
 
             if (Type == null)
+            {
                 return null;
+            }
 
-            var childLambda = _child as LambdaExpression;
-            if (childLambda != null)
-                childLambda.ImplicitStandardConversionExists(parseContext, Type);
+            if (_child is LambdaExpression childLambda)
+            {
+                _ = childLambda.ImplicitStandardConversionExists(parseContext, Type);
+            }
 
             _child = _child.Resolve(parseContext);
 
@@ -117,9 +108,10 @@ namespace Supremacy.Scripting.Ast
         {
             base.CloneTo(cloneContext, target);
 
-            var clone = target as CastExpression;
-            if (clone == null)
+            if (!(target is CastExpression clone))
+            {
                 return;
+            }
 
             clone._child = Clone(cloneContext, _child);
             clone._destinationType = Clone(cloneContext, _destinationType);
@@ -134,12 +126,16 @@ namespace Supremacy.Scripting.Ast
             sw.Write(") ");
 
             if (!Child.IsPrimaryExpression)
+            {
                 sw.Write("(");
+            }
 
             Child.Dump(sw, indentChange);
 
             if (!Child.IsPrimaryExpression)
+            {
                 sw.Write(")");
+            }
         }
     }
 
@@ -153,8 +149,7 @@ namespace Supremacy.Scripting.Ast
 
         public override Expression DoResolve(ParseContext ec)
         {
-            var childCast = Child as CastExpression;
-            if (childCast != null)
+            if (Child is CastExpression childCast)
             {
                 DestinationType = DestinationType;
                 return childCast.DoResolve(ec);
@@ -166,22 +161,19 @@ namespace Supremacy.Scripting.Ast
         public static Expression Create(Expression child, Type type)
         {
             // Avoid unwraping and wraping of the same type
-            var unwrap = child as Unwrap;
-            if (unwrap != null && TypeManager.IsEqual(child.Type, type.GetGenericArguments()[0]))
-                return unwrap.Original;
-
-            return new Wrap(child, type);
+            return child is Unwrap unwrap && TypeManager.IsEqual(child.Type, type.GetGenericArguments()[0])
+                ? unwrap.Original
+                : new Wrap(child, type);
         }
     }
 
     public class Unwrap : Expression
     {
-        private Expression _child;
         private NullableInfo _info;
 
         private Unwrap(Expression child)
         {
-            _child = child;
+            Original = child;
             _info = new NullableInfo(child.Type);
 
             Span = child.Span;
@@ -198,32 +190,23 @@ namespace Supremacy.Scripting.Ast
         {
             base.CloneTo(cloneContext, target);
 
-            var clone = target as Unwrap;
-            if (clone == null)
+            if (!(target is Unwrap clone))
+            {
                 return;
+            }
 
-            clone._child = Clone(cloneContext, _child);
+            clone.Original = Clone(cloneContext, Original);
             clone._info = _info;
         }
 
-        public Expression Original
-        {
-            get { return _child; }
-        }
+        public Expression Original { get; private set; }
 
-        public override bool IsNull
-        {
-            get { return _child.IsNull; }
-        }
+        public override bool IsNull => Original.IsNull;
 
         public static Expression Create(Expression expr)
         {
             // Avoid unwraping and wraping of same type
-            var wrap = expr as Wrap;
-            if (wrap != null)
-                return wrap.Child;
-
-            return Create(expr, false);
+            return expr is Wrap wrap ? wrap.Child : Create(expr, false);
         }
 
         public static Unwrap Create(Expression expr, bool useDefaultValue)
@@ -243,35 +226,28 @@ namespace Supremacy.Scripting.Ast
 
         public override bool Equals(object obj)
         {
-            var unwrap = obj as Unwrap;
-            return (unwrap != null) && _child.Equals(unwrap._child);
+            return (obj is Unwrap unwrap) && Original.Equals(unwrap.Original);
         }
 
         public override int GetHashCode()
         {
-            return _child.GetHashCode();
+            return Original.GetHashCode();
         }
 
         public override MSAst TransformCore(ScriptGenerator generator)
         {
-            return _child.Transform(generator);
+            return Original.Transform(generator);
         }
 
         #region Nested type: InternalWrap
         protected class InternalWrap : Expression
         {
-            private Expression _child;
             private NullableInfo _info;
 
             public InternalWrap([NotNull] Expression child, [NotNull] NullableInfo info, SourceSpan location)
             {
-                if (child == null)
-                    throw new ArgumentNullException("child");
-                if (info == null)
-                    throw new ArgumentNullException("info");
-
-                _child = child;
-                _info = info;
+                Child = child ?? throw new ArgumentNullException("child");
+                _info = info ?? throw new ArgumentNullException("info");
 
                 Span = location;
                 Type = _info.Type;
@@ -282,18 +258,16 @@ namespace Supremacy.Scripting.Ast
             {
                 base.CloneTo(cloneContext, target);
 
-                var clone = target as InternalWrap;
-                if (clone == null)
+                if (!(target is InternalWrap clone))
+                {
                     return;
+                }
 
-                clone._child = Clone(cloneContext, _child);
+                clone.Child = Clone(cloneContext, Child);
                 clone._info = _info;
             }
 
-            public Expression Child
-            {
-                get { return _child; }
-            }
+            public Expression Child { get; private set; }
 
             public override Expression DoResolve(ParseContext ec)
             {
@@ -317,8 +291,8 @@ namespace Supremacy.Scripting.Ast
             Type = type;
             UnderlyingType = type.GetGenericArguments()[0];
 
-            var hasValuePi = type.GetProperty("HasValue", Type.EmptyTypes);
-            var valuePi = type.GetProperty("Value", Type.EmptyTypes);
+            PropertyInfo hasValuePi = type.GetProperty("HasValue", Type.EmptyTypes);
+            PropertyInfo valuePi = type.GetProperty("Value", Type.EmptyTypes);
 
             GetValueOrDefault = type.GetMethod("GetValueOrDefault", Type.EmptyTypes);
             HasValue = hasValuePi.GetGetMethod(false);
@@ -337,15 +311,9 @@ namespace Supremacy.Scripting.Ast
 
         public static Expression Create(Expression child, Type type)
         {
-            var c = child as ConstantExpression;
-            if (c != null)
-                return new EmptyConstantCastExpression(c, type);
-
-            var e = child as EmptyCastExpression;
-            if (e != null)
-                return new EmptyCastExpression(e.Child, type);
-
-            return new EmptyCastExpression(child, type);
+            return child is ConstantExpression c
+                ? (Expression)new EmptyConstantCastExpression(c, type)
+                : (Expression)(child is EmptyCastExpression e ? new EmptyCastExpression(e.Child, type) : new EmptyCastExpression(child, type));
         }
     }
 

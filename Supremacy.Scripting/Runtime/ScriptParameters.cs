@@ -19,7 +19,9 @@ namespace Supremacy.Scripting
         public ScriptParameters Merge([NotNull] IEnumerable<ScriptParameter> otherParameters)
         {
             if (otherParameters == null)
+            {
                 throw new ArgumentNullException("otherParameters");
+            }
 
             return new ScriptParameters(this.Concat(otherParameters));
         }
@@ -27,7 +29,9 @@ namespace Supremacy.Scripting
         public ScriptParameters Merge([NotNull] params ScriptParameter[] otherParameters)
         {
             if (otherParameters == null)
+            {
                 throw new ArgumentNullException("otherParameters");
+            }
 
             return new ScriptParameters(this.Concat(otherParameters));
         }

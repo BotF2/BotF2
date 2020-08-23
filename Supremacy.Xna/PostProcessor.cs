@@ -53,8 +53,8 @@ namespace Supremacy.Xna
             _hdrEffect = contentManager.Load<Effect>(@"Resources\Effects\pp_HDR");
 
             // Initialize our buffers
-            var width = (float)graphicsDevice.PresentationParameters.BackBufferWidth;
-            var height = (float)graphicsDevice.PresentationParameters.BackBufferHeight;
+            float width = (float)graphicsDevice.PresentationParameters.BackBufferWidth;
+            float height = (float)graphicsDevice.PresentationParameters.BackBufferHeight;
 
             // Two buffers we'll swap between, so we can adapt the luminance            
             _currentFrameLuminance = new RenderTarget2D(
@@ -64,7 +64,7 @@ namespace Supremacy.Xna
             _lastFrameAdaptedLuminance = new RenderTarget2D(
                 graphicsDevice, 1, 1, 1, SurfaceFormat.Single, RenderTargetUsage.DiscardContents);
 
-            var depthStencil = graphicsDevice.DepthStencilBuffer;
+            DepthStencilBuffer depthStencil = graphicsDevice.DepthStencilBuffer;
             graphicsDevice.DepthStencilBuffer = null;
 
             graphicsDevice.SetRenderTarget(0, _lastFrameAdaptedLuminance);
@@ -74,19 +74,21 @@ namespace Supremacy.Xna
             graphicsDevice.DepthStencilBuffer = depthStencil;
 
             // We need a luminance chain
-            var chainLength = 1;
-            var startSize = (int)MathHelper.Min(width / 16, height / 16);
+            int chainLength = 1;
+            int startSize = (int)MathHelper.Min(width / 16, height / 16);
             
             int size;
             
             for (size = 16; size < startSize; size *= 4)
+            {
                 chainLength++;
+            }
 
             _luminanceChain = new RenderTarget2D[chainLength];
 
             size /= 4;
 
-            for (var i = 0; i < chainLength; i++)
+            for (int i = 0; i < chainLength; i++)
             {
                 _luminanceChain[i] = new RenderTarget2D(graphicsDevice, size, size, 1, SurfaceFormat.Single);
                 size /= 4;
@@ -120,17 +122,19 @@ namespace Supremacy.Xna
             float sigma,
             bool encoded)
         {
-            var blurH = GetIntermediateTexture(
+            IntermediateTexture blurH = GetIntermediateTexture(
                 source.Width,
                 source.Height,
                 source.Format,
                 source.MultiSampleType,
                 source.MultiSampleQuality);
 
-            var baseTechniqueName = "GaussianBlur";
+            string baseTechniqueName = "GaussianBlur";
 
             if (encoded)
-                baseTechniqueName = baseTechniqueName + "Encode";
+            {
+                baseTechniqueName += "Encode";
+            }
 
             // Do horizontal pass first
             _blurEffect.CurrentTechnique = _blurEffect.Techniques[baseTechniqueName + "H"];
@@ -154,11 +158,13 @@ namespace Supremacy.Xna
         /// <param name="encoded">If true, the source is encoded in LogLuv format</param>
         protected void GenerateDownscaleTargetSW(RenderTarget2D source, RenderTarget2D result, bool encoded)
         {
-            var techniqueName = "Downscale4";
+            string techniqueName = "Downscale4";
             if (encoded)
+            {
                 techniqueName += "Encode";
+            }
 
-            var downscale1 = GetIntermediateTexture(source.Width / 4, source.Height / 4, source.Format);
+            IntermediateTexture downscale1 = GetIntermediateTexture(source.Width / 4, source.Height / 4, source.Format);
             _scalingEffect.CurrentTechnique = _scalingEffect.Techniques[techniqueName];
             PostProcess(source, downscale1.RenderTarget, _scalingEffect);
 
@@ -174,16 +180,16 @@ namespace Supremacy.Xna
         /// <param name="result">The RT in which to store the result</param>
         protected void GenerateDownscaleTargetHW(RenderTarget2D source, RenderTarget2D result)
         {
-            var downscale1 = GetIntermediateTexture(source.Width / 2, source.Height / 2, source.Format);
+            IntermediateTexture downscale1 = GetIntermediateTexture(source.Width / 2, source.Height / 2, source.Format);
             _scalingEffect.CurrentTechnique = _scalingEffect.Techniques["ScaleHW"];
             PostProcess(source, downscale1.RenderTarget, _scalingEffect);
 
-            var downscale2 = GetIntermediateTexture(source.Width / 2, source.Height / 2, source.Format);
+            IntermediateTexture downscale2 = GetIntermediateTexture(source.Width / 2, source.Height / 2, source.Format);
             _scalingEffect.CurrentTechnique = _scalingEffect.Techniques["ScaleHW"];
             PostProcess(downscale1.RenderTarget, downscale2.RenderTarget, _scalingEffect);
             downscale1.InUse = false;
 
-            var downscale3 = GetIntermediateTexture(source.Width / 2, source.Height / 2, source.Format);
+            IntermediateTexture downscale3 = GetIntermediateTexture(source.Width / 2, source.Height / 2, source.Format);
             _scalingEffect.CurrentTechnique = _scalingEffect.Techniques["ScaleHW"];
             PostProcess(downscale2.RenderTarget, downscale3.RenderTarget, _scalingEffect);
             downscale2.InUse = false;
@@ -202,16 +208,15 @@ namespace Supremacy.Xna
         protected void CalculateAverageLuminance(RenderTarget2D downscaleBuffer, float dt, bool encoded)
         {
             // Calculate the initial luminance
-            if (encoded)
-                _hdrEffect.CurrentTechnique = _hdrEffect.Techniques["LuminanceEncode"];
-            else
-                _hdrEffect.CurrentTechnique = _hdrEffect.Techniques["Luminance"];
+            _hdrEffect.CurrentTechnique = encoded ? _hdrEffect.Techniques["LuminanceEncode"] : _hdrEffect.Techniques["Luminance"];
             PostProcess(downscaleBuffer, _luminanceChain[0], _hdrEffect);
 
             // Repeatedly downscale            
             _scalingEffect.CurrentTechnique = _scalingEffect.Techniques["Downscale4"];
-            for (var i = 1; i < _luminanceChain.Length; i++)
+            for (int i = 1; i < _luminanceChain.Length; i++)
+            {
                 PostProcess(_luminanceChain[i - 1], _luminanceChain[i], _scalingEffect);
+            }
 
             // Final downscale            
             _scalingEffect.CurrentTechnique = _scalingEffect.Techniques["Downscale4Luminance"];
@@ -220,7 +225,7 @@ namespace Supremacy.Xna
             // Adapt the luminance, to simulate slowly adjust exposure
             _hdrEffect.Parameters["g_fDT"].SetValue(dt);
             _hdrEffect.CurrentTechnique = _hdrEffect.Techniques["CalcAdaptedLuminance"];
-            var sources = new RenderTarget2D[2];
+            RenderTarget2D[] sources = new RenderTarget2D[2];
             sources[0] = _currentFrameLuminance;
             sources[1] = _lastFrameAdaptedLuminance;
             PostProcess(sources, _currentFrameAdaptedLuminance, _hdrEffect);
@@ -237,50 +242,51 @@ namespace Supremacy.Xna
         public void ToneMap(RenderTarget2D source, RenderTarget2D result, float dt, bool encoded, bool preferHWScaling)
         {
             // Downscale to 1/16 size
-            var downscaleTarget = GetIntermediateTexture(
+            IntermediateTexture downscaleTarget = GetIntermediateTexture(
                 source.Width / 16, source.Height / 16, source.Format);
             if (preferHWScaling && (encoded || _canFilterFp16))
+            {
                 GenerateDownscaleTargetHW(source, downscaleTarget.RenderTarget);
+            }
             else
+            {
                 GenerateDownscaleTargetSW(source, downscaleTarget.RenderTarget, encoded);
+            }
 
             // Get the luminance
             CalculateAverageLuminance(downscaleTarget.RenderTarget, dt, encoded);
 
             // Do the bloom first
-            var threshold = GetIntermediateTexture(
+            IntermediateTexture threshold = GetIntermediateTexture(
                 downscaleTarget.RenderTarget.Width, downscaleTarget.RenderTarget.Height, source.Format);
             _thresholdEffect.Parameters["g_fThreshold"].SetValue(BloomThreshold);
             _thresholdEffect.Parameters["g_fMiddleGrey"].SetValue(ToneMapKey);
             _thresholdEffect.Parameters["g_fMaxLuminance"].SetValue(MaxLuminance);
-            if (encoded)
-                _thresholdEffect.CurrentTechnique = _thresholdEffect.Techniques["ThresholdEncode"];
-            else
-                _thresholdEffect.CurrentTechnique = _thresholdEffect.Techniques["Threshold"];
-            var sources2 = new RenderTarget2D[2];
+            _thresholdEffect.CurrentTechnique = encoded ? _thresholdEffect.Techniques["ThresholdEncode"] : _thresholdEffect.Techniques["Threshold"];
+            RenderTarget2D[] sources2 = new RenderTarget2D[2];
             sources2[0] = downscaleTarget.RenderTarget;
             sources2[1] = _currentFrameAdaptedLuminance;
             PostProcess(sources2, threshold.RenderTarget, _thresholdEffect);
 
-            var postBlur = GetIntermediateTexture(
+            IntermediateTexture postBlur = GetIntermediateTexture(
                 downscaleTarget.RenderTarget.Width, downscaleTarget.RenderTarget.Height, SurfaceFormat.Color);
             Blur(threshold.RenderTarget, postBlur.RenderTarget, BlurSigma, encoded);
             threshold.InUse = false;
 
             // Scale it back to half of full size (will do the final scaling step when sampling
             // the bloom texture during tone mapping).
-            var upscale1 = GetIntermediateTexture(
+            IntermediateTexture upscale1 = GetIntermediateTexture(
                 source.Width / 8, source.Height / 8, SurfaceFormat.Color);
             _scalingEffect.CurrentTechnique = _scalingEffect.Techniques["ScaleHW"];
             PostProcess(postBlur.RenderTarget, upscale1.RenderTarget, _scalingEffect);
             postBlur.InUse = false;
 
-            var upscale2 = GetIntermediateTexture(
+            IntermediateTexture upscale2 = GetIntermediateTexture(
                 source.Width / 4, source.Height / 4, SurfaceFormat.Color);
             PostProcess(upscale1.RenderTarget, upscale2.RenderTarget, _scalingEffect);
             upscale1.InUse = false;
 
-            var bloom = GetIntermediateTexture(source.Width / 2, source.Height / 2, SurfaceFormat.Color);
+            IntermediateTexture bloom = GetIntermediateTexture(source.Width / 2, source.Height / 2, SurfaceFormat.Color);
             PostProcess(upscale2.RenderTarget, bloom.RenderTarget, _scalingEffect);
             upscale2.InUse = false;
 
@@ -288,14 +294,11 @@ namespace Supremacy.Xna
             _hdrEffect.Parameters["g_fMiddleGrey"].SetValue(ToneMapKey);
             _hdrEffect.Parameters["g_fMaxLuminance"].SetValue(MaxLuminance);
             _hdrEffect.Parameters["g_fBloomMultiplier"].SetValue(BloomMultiplier);
-            var sources3 = new RenderTarget2D[3];
+            RenderTarget2D[] sources3 = new RenderTarget2D[3];
             sources3[0] = source;
             sources3[1] = _currentFrameAdaptedLuminance;
             sources3[2] = bloom.RenderTarget;
-            if (encoded)
-                _hdrEffect.CurrentTechnique = _hdrEffect.Techniques["ToneMapEncode"];
-            else
-                _hdrEffect.CurrentTechnique = _hdrEffect.Techniques["ToneMap"];
+            _hdrEffect.CurrentTechnique = encoded ? _hdrEffect.Techniques["ToneMapEncode"] : _hdrEffect.Techniques["ToneMap"];
             PostProcess(sources3, result, _hdrEffect);
 
             // Flip the luminance textures
@@ -310,8 +313,11 @@ namespace Supremacy.Xna
         /// </summary>
         public void FlushCache()
         {
-            foreach (var intermediateTexture in _intermediateTextures)
+            foreach (IntermediateTexture intermediateTexture in _intermediateTextures)
+            {
                 intermediateTexture.RenderTarget.Dispose();
+            }
+
             _intermediateTextures.Clear();
         }
 
@@ -323,7 +329,7 @@ namespace Supremacy.Xna
         /// <param name="effect">The effect to use</param>
         protected void PostProcess(RenderTarget2D source, RenderTarget2D result, Effect effect)
         {
-            var sources = new RenderTarget2D[1];
+            RenderTarget2D[] sources = new RenderTarget2D[1];
             sources[0] = source;
             PostProcess(sources, result, effect);
         }
@@ -339,8 +345,10 @@ namespace Supremacy.Xna
             _graphicsDevice.SetRenderTarget(0, result);
             _graphicsDevice.Clear(Color.Black);
 
-            for (var i = 0; i < sources.Length; i++)
+            for (int i = 0; i < sources.Length; i++)
+            {
                 effect.Parameters["SourceTexture" + i].SetValue(sources[i].GetTexture());
+            }
 
             effect.Parameters["g_vSourceDimensions"].SetValue(new Vector2(sources[0].Width, sources[0].Height));
 
@@ -396,7 +404,7 @@ namespace Supremacy.Xna
 
             // Look for a matching rendertarget in the cache
 
-            var match = _intermediateTextures.FirstOrDefault(
+            IntermediateTexture match = _intermediateTextures.FirstOrDefault(
                 t => !t.InUse &&
                      height == t.RenderTarget.Height &&
                      format == t.RenderTarget.Format &&
@@ -411,7 +419,7 @@ namespace Supremacy.Xna
             }
 
             // We didn't find one, let's make one
-            var newTexture = new IntermediateTexture
+            IntermediateTexture newTexture = new IntermediateTexture
                              {
                                  RenderTarget = new RenderTarget2D(
                                      _graphicsDevice,
@@ -438,7 +446,7 @@ namespace Supremacy.Xna
         /// <returns></returns>
         protected VertexDeclaration CreateQuadVertexDeclaration()
         {
-            var declElements = new VertexElement[2];
+            VertexElement[] declElements = new VertexElement[2];
             declElements[0].Offset = 0;
             declElements[0].Stream = 0;
             declElements[0].UsageIndex = 0;
@@ -462,9 +470,9 @@ namespace Supremacy.Xna
         protected VertexBuffer CreateFullScreenQuad(VertexDeclaration vertexDeclaration)
         {
             // Create a vertex buffer for the quad, and fill it in
-            var vertexBuffer = new VertexBuffer(
+            VertexBuffer vertexBuffer = new VertexBuffer(
                 _graphicsDevice, typeof(QuadVertex), vertexDeclaration.GetVertexStrideSize(0) * 4, BufferUsage.None);
-            var vbData = new QuadVertex[4];
+            QuadVertex[] vbData = new QuadVertex[4];
 
             // Upper right
             vbData[0].Position = new Vector3(1, 1, 1);
@@ -493,7 +501,7 @@ namespace Supremacy.Xna
         /// <param name="rt2">The second RT</param>
         protected void Swap(ref RenderTarget2D rt1, ref RenderTarget2D rt2)
         {
-            var temp = rt1;
+            RenderTarget2D temp = rt1;
             rt1 = rt2;
             rt2 = temp;
         }
@@ -526,44 +534,64 @@ namespace Supremacy.Xna
         public void Dispose()
         {
             if (_blurEffect != null && !_blurEffect.IsDisposed)
+            {
                 _blurEffect.Dispose();
+            }
 
             if (_currentFrameLuminance != null && !_currentFrameLuminance.IsDisposed)
+            {
                 _currentFrameLuminance.Dispose();
+            }
 
-            if (_hdrEffect != null && !_hdrEffect.IsDisposed) 
+            if (_hdrEffect != null && !_hdrEffect.IsDisposed)
+            {
                 _hdrEffect.Dispose();
+            }
 
             while (_intermediateTextures.Count != 0)
             {
-                var intermediateTexture = _intermediateTextures[0];
+                IntermediateTexture intermediateTexture = _intermediateTextures[0];
 
                 if (intermediateTexture.RenderTarget != null && !intermediateTexture.RenderTarget.IsDisposed)
+                {
                     intermediateTexture.RenderTarget.Dispose();
+                }
 
                 _intermediateTextures.RemoveAt(0);
             }
 
-            foreach (var renderTarget in _luminanceChain)
+            foreach (RenderTarget2D renderTarget in _luminanceChain)
             {
                 if (renderTarget != null && !renderTarget.IsDisposed)
+                {
                     renderTarget.Dispose();
+                }
             }
 
             if (_quadVb != null && !_quadVb.IsDisposed)
+            {
                 _quadVb.Dispose();
+            }
 
             if (_scalingEffect != null && !_scalingEffect.IsDisposed)
+            {
                 _scalingEffect.Dispose();
+            }
 
             if (_thresholdEffect != null && !_thresholdEffect.IsDisposed)
+            {
                 _thresholdEffect.Dispose();
+            }
 
             if (_currentFrameAdaptedLuminance != null && !_currentFrameAdaptedLuminance.IsDisposed)
+            {
                 _currentFrameAdaptedLuminance.Dispose();
+            }
 
             if (_lastFrameAdaptedLuminance != null && !_lastFrameAdaptedLuminance.IsDisposed)
+            {
                 _lastFrameAdaptedLuminance.Dispose();
+            }
         }
 
         #endregion

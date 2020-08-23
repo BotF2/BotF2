@@ -17,10 +17,7 @@ namespace Supremacy.Scripting.Ast
         private FullNamedExpression _targetType;
         private Expression _operand;
 
-        public Expression Operand
-        {
-            get { return _operand; }
-        }
+        public Expression Operand => _operand;
 
         public ConvertExpression() { }
 
@@ -28,13 +25,8 @@ namespace Supremacy.Scripting.Ast
 
         public ConvertExpression([NotNull] FullNamedExpression targetType, [NotNull] Expression operand, SourceSpan span)
         {
-            if (targetType == null)
-                throw new ArgumentNullException("targetType");
-            if (operand == null)
-                throw new ArgumentNullException("operand");
-
-            _operand = operand;
-            _targetType = targetType;
+            _operand = operand ?? throw new ArgumentNullException("operand");
+            _targetType = targetType ?? throw new ArgumentNullException("targetType");
 
             Span = span;
             Type = _targetType.Type;
@@ -44,9 +36,10 @@ namespace Supremacy.Scripting.Ast
         {
             base.CloneTo(cloneContext, target);
 
-            var clone = target as ConvertExpression;
-            if (clone == null)
+            if (!(target is ConvertExpression clone))
+            {
                 return;
+            }
 
             clone._operand = Clone(cloneContext, _operand);
             clone._targetType = Clone(cloneContext, _targetType);
@@ -60,19 +53,16 @@ namespace Supremacy.Scripting.Ast
 
         public FullNamedExpression TargetType
         {
-            get { return _targetType; }
+            get => _targetType;
             set
             {
                 _targetType = value;
-                Type = (_targetType == null) ? null : _targetType.Type;
+                Type = _targetType?.Type;
             }
         }
 
         [DefaultValue(false)]
-        public override bool IsPrimaryExpression
-        {
-            get { return IsImplicitConversionRequired && _operand.IsPrimaryExpression; }
-        }
+        public override bool IsPrimaryExpression => IsImplicitConversionRequired && _operand.IsPrimaryExpression;
 
         public override void Walk(AstVisitor prefix, AstVisitor postfix)
         {
@@ -96,19 +86,18 @@ namespace Supremacy.Scripting.Ast
 
         public override MSAst TransformCore(ScriptGenerator generator)
         {
-            var transformedOperator = _operand.Transform(generator);
+            MSAst transformedOperator = _operand.Transform(generator);
 
             if (transformedOperator.Type == _targetType.Type)
-                return transformedOperator;
-
-            if (Type == TypeManager.CoreTypes.String)
             {
-                return MSAst.Call(
-                    transformedOperator,
-                    CommonMembers.ObjectToString);
+                return transformedOperator;
             }
 
-            return generator.ConvertTo(
+            return Type == TypeManager.CoreTypes.String
+                ? MSAst.Call(
+                    transformedOperator,
+                    CommonMembers.ObjectToString)
+                : generator.ConvertTo(
                 Type,
                 IsImplicitConversionRequired
                     ? ConversionResultKind.ImplicitCast
@@ -131,26 +120,26 @@ namespace Supremacy.Scripting.Ast
             if (source is LambdaExpression)
             {
                 if (((LambdaExpression)source).ImplicitStandardConversionExists(ec, destinationType))
+                {
                     return source;
+                }
 
-                var returnType = destinationType;
+                Type returnType = destinationType;
                 
                 if (TypeManager.IsDelegateType(returnType))
+                {
                     returnType = returnType.GetMethod("Invoke").ReturnType;
+                }
 
-                if (TypeManager.IsEqual(((LambdaExpression)source).Body.Type, returnType))
-                    return source;
-
-                return null;
+                return TypeManager.IsEqual(((LambdaExpression)source).Body.Type, returnType) ? source : null;
             }
-            
-            if (TypeManager.IsEqual(source.Type, destinationType))
-                return source;
 
-            return new ConvertExpression(TypeExpression.Create(destinationType), source, location)
+            return TypeManager.IsEqual(source.Type, destinationType)
+                ? source
+                : new ConvertExpression(TypeExpression.Create(destinationType), source, location)
                    {
                        IsImplicitConversionRequired = true
-                   }.Resolve(ec);
+                }.Resolve(ec);
         }
 
         public static Expression MakeExplicitConversion(ParseContext ec, Expression source, Type destinationType, SourceSpan location)
@@ -169,14 +158,18 @@ namespace Supremacy.Scripting.Ast
             // From null to any nullable type
             //
             if (exprType == TypeManager.CoreTypes.Null)
+            {
                 return ec == null ? EmptyExpression.Null : LiftedNullExpression.Create(targetType, expr.Span);
+            }
 
             // S -> T?
-            var elementType = targetType.GetGenericArguments()[0];
+            Type elementType = targetType.GetGenericArguments()[0];
 
             // S? -> T?
             if (TypeManager.IsNullableType(exprType))
+            {
                 exprType = exprType.GetGenericArguments()[0];
+            }
 
             //
             // Predefined implicit identity or implicit numeric conversion
@@ -186,48 +179,42 @@ namespace Supremacy.Scripting.Ast
             // Handles probing
             if (ec == null)
             {
-                if (exprType == elementType)
-                    return EmptyExpression.Null;
-
-                return MakeImplicitNumericConversion(ec, null, exprType, elementType);
+                return exprType == elementType ? EmptyExpression.Null : MakeImplicitNumericConversion(ec, null, exprType, elementType);
             }
 
-            Expression unwrap;
-            if (exprType != expr.Type)
-                unwrap = Unwrap.Create(expr);
-            else
-                unwrap = expr;
-
+            Expression unwrap = exprType != expr.Type ? Unwrap.Create(expr) : expr;
             Expression conv = exprType == elementType ? unwrap : MakeImplicitNumericConversion(ec, unwrap, exprType, elementType);
             if (conv == null)
+            {
                 return null;
+            }
 
             if (exprType != expr.Type)
+            {
                 return new LiftedExpression(conv, unwrap, targetType).Resolve(ec);
+            }
 
             // Do constant optimization for S -> T?
             if (unwrap is ConstantExpression)
+            {
                 conv = ((ConstantExpression)unwrap).ConvertImplicitly(elementType);
+            }
 
             return Wrap.Create(conv, targetType);
         }
 
         internal static Expression MakeImplicitNumericConversion(ParseContext ec, Expression value, Type sourceType, Type targetType)
         {
-            if (!TypeUtils.IsImplicitNumericConversion(sourceType, targetType))
-                return null;
-            if (TypeManager.IsEqual(sourceType, targetType))
-                return value;
-            return MakeImplicitConversion(ec, value, targetType, value.Span);
+            return !TypeUtils.IsImplicitNumericConversion(sourceType, targetType)
+                ? null
+                : TypeManager.IsEqual(sourceType, targetType) ? value : MakeImplicitConversion(ec, value, targetType, value.Span);
         }
 
         public static bool ImplicitConversionExists(ParseContext ec, Expression source, Type targetType)
         {
-            var sourceLambda = source as LambdaExpression;
-            if (sourceLambda != null)
-                return sourceLambda.ImplicitStandardConversionExists(ec, targetType);
-
-            return TypeUtils.IsImplicitlyConvertible(source.Type, targetType, true);
+            return source is LambdaExpression sourceLambda
+                ? sourceLambda.ImplicitStandardConversionExists(ec, targetType)
+                : TypeUtils.IsImplicitlyConvertible(source.Type, targetType, true);
         }
     }
 }

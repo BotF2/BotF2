@@ -23,28 +23,18 @@ namespace Supremacy.Scripting.Runtime
 {
     public class ScriptGenerator
     {
-        private readonly CompilerContext _compilerContext;
         private readonly ScriptLanguageContext _sxeContext;
-        private readonly BinderState _binder;
 
         internal ScriptGenerator(ScriptLanguageContext sxeContext, CompilerContext compilerContext)
         {
-            if (sxeContext == null)
-                throw new ArgumentNullException("sxeContext");
-            if (compilerContext == null)
-                throw new ArgumentNullException("compilerContext");
-
-            _sxeContext = sxeContext;
-            _compilerContext = compilerContext;
-            _binder = sxeContext.DefaultBinderState;
+            _sxeContext = sxeContext ?? throw new ArgumentNullException("sxeContext");
+            CompilerContext = compilerContext ?? throw new ArgumentNullException("compilerContext");
+            Binder = sxeContext.DefaultBinderState;
 
             Scope = new ScriptScope(null, "<Default>", compilerContext.SourceUnit.Document);
         }
 
-        internal CompilerContext CompilerContext
-        {
-            get { return _compilerContext; }
-        }
+        internal CompilerContext CompilerContext { get; }
 
         internal ScriptScope Scope { get; private set; }
 
@@ -60,18 +50,15 @@ namespace Supremacy.Scripting.Runtime
 
         internal ScriptScope PushNewScope()
         {
-            return (Scope = new ScriptScope(Scope, null, Scope.Document));
+            return Scope = new ScriptScope(Scope, null, Scope.Document);
         }
 
         internal void PopScope()
         {
             Scope = Scope.Parent;
         }
-        
-        internal LanguageContext Context
-        {
-            get { return _sxeContext; }
-        }
+
+        internal LanguageContext Context => _sxeContext;
 
         #region Binding Methods
 
@@ -82,16 +69,16 @@ namespace Supremacy.Scripting.Runtime
 
         internal MSAst Operator(ExpressionType op, MSAst left, MSAst right)
         {
-            var returnType = ((op == ExpressionType.IsTrue) || (op == ExpressionType.IsFalse)) ? typeof(bool) : typeof(object);
+            Type returnType = ((op == ExpressionType.IsTrue) || (op == ExpressionType.IsFalse)) ? typeof(bool) : typeof(object);
             if (right == null)
             {
                 return MSAst.Dynamic(
-                    _binder.UnaryOperation(op),
+                    Binder.UnaryOperation(op),
                     returnType,
                     left);
             }
             return MSAst.Dynamic(
-                _binder.BinaryOperation(op),
+                Binder.BinaryOperation(op),
                 returnType,
                 left,
                 right);
@@ -99,14 +86,14 @@ namespace Supremacy.Scripting.Runtime
 
         internal MSAst GetMember(MSAst target, string memberName)
         {
-            var binder = Microsoft.CSharp.RuntimeBinder.Binder.GetMember(CSharpBinderFlags.None, memberName, null, new[] { CSharpArgumentInfo.Create(CSharpArgumentInfoFlags.None, null) });
+            System.Runtime.CompilerServices.CallSiteBinder binder = Microsoft.CSharp.RuntimeBinder.Binder.GetMember(CSharpBinderFlags.None, memberName, null, new[] { CSharpArgumentInfo.Create(CSharpArgumentInfoFlags.None, null) });
             return MSAst.Dynamic(binder, typeof(object), target);
         }
 
         internal MSAst Invoke(MSAst target, Type[] typeArguments, MSAst[] arguments)
         {
             return MSAst.Dynamic(
-                _binder.Invoke(arguments.Length),
+                Binder.Invoke(arguments.Length),
                 typeof(object),
                 ArrayUtils.Insert(
                     target,
@@ -117,7 +104,7 @@ namespace Supremacy.Scripting.Runtime
         internal MSAst InvokeQueryMethod(MSAst target, string methodName, MSAst[] arguments)
         {
             return MSAst.Dynamic(
-                new SxeQueryMethodBinder(_binder.Binder, methodName, false, new CallInfo(arguments.Length)),
+                new SxeQueryMethodBinder(Binder.Binder, methodName, false, new CallInfo(arguments.Length)),
                 typeof(object),
                 ArrayUtils.Insert(
                     target,
@@ -127,12 +114,12 @@ namespace Supremacy.Scripting.Runtime
 
         internal MSAst InvokeStaticMember(MSAst target, string memberName, Type[] typeArguments, MSAst[] arguments)
         {
-            var newArgs = ArrayUtils.Insert(
+            MSAst[] newArgs = ArrayUtils.Insert(
                 //MSAst.Constant(typeof(Enumerable)),
                 target,
                 arguments);
-            
-            var binder = Microsoft.CSharp.RuntimeBinder.Binder.InvokeMember(
+
+            System.Runtime.CompilerServices.CallSiteBinder binder = Microsoft.CSharp.RuntimeBinder.Binder.InvokeMember(
                 CSharpBinderFlags.None,
                 memberName,
                 typeArguments,
@@ -148,34 +135,29 @@ namespace Supremacy.Scripting.Runtime
         internal MSAst Call(string methodName, MSAst instance = null, Type type = null, params MSAst[] arguments)
         {
             if (((instance == null) && (type == null)) || ((instance != null) && (type != null)))
+            {
                 throw new ArgumentException("Either 'instance' or 'type' must be specified, but not both.");
+            }
 
             List<MethodBase> candidates;
 
-            var isCandidate =
-                (Func<MethodBase, bool>)
-                (m => (m.Name == methodName) &&
+            bool isCandidate(MethodBase m) => (m.Name == methodName) &&
                       ((m.GetParameters().Length == arguments.Length) ||
-                       (BinderHelpers.IsParamsMethod(m) && ((m.GetParameters().Length + 1) <= arguments.Length))));
+                       (BinderHelpers.IsParamsMethod(m) && ((m.GetParameters().Length + 1) <= arguments.Length)));
 
-            if (type != null)
-            {
-                candidates = type
+            candidates = type != null
+                ? type
                     .GetMethods(BindingFlags.Public | BindingFlags.Static)
-                    .Where(isCandidate)
+                    .Where((Func<MethodBase, bool>)isCandidate)
+                    .Cast<MethodBase>()
+                    .ToList()
+                : instance.Type
+                    .GetMethods(BindingFlags.Public | BindingFlags.Static)
+                    .Where((Func<MethodBase, bool>)isCandidate)
                     .Cast<MethodBase>()
                     .ToList();
-            }
-            else
-            {
-                candidates = instance.Type
-                    .GetMethods(BindingFlags.Public | BindingFlags.Static)
-                    .Where(isCandidate)
-                    .Cast<MethodBase>()
-                    .ToList();
-            }
-            
-            return _binder.Binder.CallMethod(
+
+            return Binder.Binder.CallMethod(
                 _sxeContext.OverloadResolver.CreateOverloadResolver(
                 arguments.Select(o => DynamicUtils.ObjectToMetaObject(null, o)).ToList(),
                 new CallSignature(arguments.Length),
@@ -185,12 +167,12 @@ namespace Supremacy.Scripting.Runtime
 
         internal MSAst InvokeMember(MSAst target, string memberName, Type[] typeArguments, MSAst[] arguments)
         {
-            var newArgs = ArrayUtils.Insert(
+            MSAst[] newArgs = ArrayUtils.Insert(
                 //MSAst.Constant(typeof(Enumerable)),
                 target,
                 arguments);
 
-            var binder = Microsoft.CSharp.RuntimeBinder.Binder.InvokeMember(
+            System.Runtime.CompilerServices.CallSiteBinder binder = Microsoft.CSharp.RuntimeBinder.Binder.InvokeMember(
                 CSharpBinderFlags.None,
                 memberName,
                 Enumerable.Empty<Type>(),
@@ -205,13 +187,13 @@ namespace Supremacy.Scripting.Runtime
 
         internal MSAst GetIndex(MSAst target, MSAst index)
         {
-            return MSAst.Dynamic(_binder.GetIndex(1), typeof(object), target, index);
+            return MSAst.Dynamic(Binder.GetIndex(1), typeof(object), target, index);
         }
 
         internal MSAst GetIndex(MSAst target, params MSAst[] arguments)
         {
             return MSAst.Dynamic(
-                _binder.GetIndex(arguments.Length),
+                Binder.GetIndex(arguments.Length),
                 typeof(object),
                 ArrayUtils.Insert(
                     target,
@@ -321,7 +303,10 @@ namespace Supremacy.Scripting.Runtime
         internal MSAst AddSpan(SourceSpan span, MSAst expression)
         {
             if (Scope.Document != null)
+            {
                 expression = Utils.AddDebugInfo(expression, Scope.Document, span.Start, span.End);
+            }
+
             return expression;
         }
 
@@ -335,16 +320,13 @@ namespace Supremacy.Scripting.Runtime
             return Operator(ExpressionType.IsFalse, operand, null);
         }
 
-        internal BinderState Binder
-        {
-            get { return _binder; }
-        }
+        internal BinderState Binder { get; }
         #endregion
 
         #region Conversions
         internal MSAst ConvertTo(Type toType, ConversionResultKind kind, MSAst expression)
         {
-            return _binder.Binder.ConvertTo(toType, kind, expression);
+            return Binder.Binder.ConvertTo(toType, kind, expression);
         }
         #endregion
     }

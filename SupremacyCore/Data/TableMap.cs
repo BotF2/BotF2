@@ -17,7 +17,7 @@ using System.IO;
 namespace Supremacy.Data
 {
     [Serializable]
-    public sealed class TableMap : ICollection<Table>, IEnumerable<Table>
+    public sealed class TableMap : ICollection<Table>
     {
         private readonly OrderedDictionary _tables;
         private readonly object _syncRoot;
@@ -29,11 +29,20 @@ namespace Supremacy.Data
                 lock (_syncRoot)
                 {
                     if (_tables.Contains(tableName))
+                    {
                         return (Table)_tables[tableName];
+                    }
+
                     return null;
                 }
             }
-            set { lock (_syncRoot) _tables[tableName] = value; }
+            set
+            {
+                lock (_syncRoot)
+                {
+                    _tables[tableName] = value;
+                }
+            }
         }
 
         public TableMap()
@@ -52,11 +61,16 @@ namespace Supremacy.Data
                 return false;
             }
             table = (Table)_tables[tableName];
-            GameLog.Core.GameInitData.DebugFormat("tableName = {0} for string rowKey, string columnKey, out string value", tableName);
 
-            TableRow<string> row;
-            if (!table.TryGetRow(rowKey, out row))
+            if (GameLog.Core.GameInitData.IsDebugEnabled)
+            {
+                GameLog.Core.GameInitData.DebugFormat("tableName = {0} for string rowKey, string columnKey, out string value", tableName);
+            }
+
+            if (!table.TryGetRow(rowKey, out TableRow<string> row))
+            {
                 return false;
+            }
 
             return row.TryGetColumn(columnKey, out value);
         }
@@ -73,17 +87,20 @@ namespace Supremacy.Data
             table = (Table)_tables[tableName];
             GameLog.Core.GameInitData.DebugFormat("tableName = {0} for TRowKey rowKey, string columnKey, out string value", tableName);
 
-            var typedTable = table as Table<TRowKey>;
+            Table<TRowKey> typedTable = table as Table<TRowKey>;
             if (typedTable == null)
+            {
                 return false;
+            }
 
-            TableRow<TRowKey> row;
-            if (!typedTable.TryGetRow(rowKey, out row))
+            if (!typedTable.TryGetRow(rowKey, out TableRow<TRowKey> row))
+            {
                 return false;
+            }
 
             return row.TryGetColumn(columnKey, out value);
         }
-        
+
         public bool TryGetValue(string tableName, string rowKey, int columnIndex, out string value)
         {
             value = null;
@@ -101,11 +118,14 @@ namespace Supremacy.Data
             // SitRepCategory       out of EnumStrings.txt is looking for translation for research fields like First Contact...
 
             if (tableName != "MessageDialogButtons" && tableName != "TechCategory" && tableName != "SitRepCategory")  // this one in EnumStrings.txt is looking for translation for OK / CANCEL and so on ... used thousands times
+            {
                 GameLog.Core.GameInitData.DebugFormat("tableName = {0} for string rowKey, int columnIndex, out string value", tableName);
+            }
 
-            TableRow<string> row;
-            if (!table.TryGetRow(rowKey, out row))
+            if (!table.TryGetRow(rowKey, out TableRow<string> row))
+            {
                 return false;
+            }
 
             return row.TryGetColumn(columnIndex, out value);
         }
@@ -122,17 +142,20 @@ namespace Supremacy.Data
             table = (Table)_tables[tableName];
             GameLog.Core.GameInitData.DebugFormat("tableName = {0} for TRowKey rowKey, int columnIndex, out string value", tableName);
 
-            var typedTable = table as Table<TRowKey>;
+            Table<TRowKey> typedTable = table as Table<TRowKey>;
             if (typedTable == null)
+            {
                 return false;
+            }
 
-            TableRow<TRowKey> row;
-            if (!typedTable.TryGetRow(rowKey, out row))
+            if (!typedTable.TryGetRow(rowKey, out TableRow<TRowKey> row))
+            {
                 return false;
+            }
 
             return row.TryGetColumn(columnIndex, out value);
         }
-        
+
         public bool TryGetValue(string tableName, int rowIndex, string columnKey, out string value)
         {
             value = null;
@@ -146,15 +169,19 @@ namespace Supremacy.Data
             GameLog.Core.GameInitData.DebugFormat("tableName = {0} for int rowIndex, string columnKey, out string value", tableName);
 
             if (rowIndex < 0 || rowIndex >= table.RowsInternal.Count)
+            {
                 return false;
+            }
 
-            var row = table.RowsInternal[rowIndex];
+            TableRow<string> row = table.RowsInternal[rowIndex];
             if (row == null)
+            {
                 return false;
+            }
 
             return row.TryGetColumn(columnKey, out value);
         }
-        
+
         public bool TryGetValue(string tableName, int rowIndex, int columnIndex, out string value)
         {
             value = null;
@@ -167,16 +194,18 @@ namespace Supremacy.Data
             table = (Table)_tables[tableName];
             GameLog.Core.GameInitData.DebugFormat("tableName = {0} for int rowIndex, int columnIndex, out string value", tableName);
 
-            var row = table.RowsInternal[rowIndex];
+            TableRow<string> row = table.RowsInternal[rowIndex];
             if (row == null)
+            {
                 return false;
+            }
 
             return row.TryGetColumn(columnIndex, out value);
         }
 
         public void Write(string path)
         {
-            var writer = new StreamWriter(path);
+            StreamWriter writer = new StreamWriter(path);
             Write(writer);
             GameLog.Core.GameInitData.DebugFormat("writer = {0}", writer);
             writer.Flush();
@@ -226,9 +255,8 @@ namespace Supremacy.Data
                     //GameLog.Core.GameInitData.DebugFormat("newTable.Name = {0}", newTable.Name);
 
                     //int i = 0;
-                    string tableContentString = newTable.Name + ": ";
+                    _ = newTable.Name + ": ";
 
-                    
                     //int tableRowMax = _tables.newTable.Rows.Count;
                     ////for (int i = 0; Table(newTable); i++)
                     //    foreach (var entry in newTable.Rows.Count)
@@ -242,14 +270,13 @@ namespace Supremacy.Data
                     //        }
                     //GameLog.Core.GameInitData.DebugFormat("newTable.Name = {0}", tableContentString);
                 }
-
             }
         }
 
         #region IEnumerable<Table> Members
         public IEnumerator<Table> GetEnumerator()
         {
-            return (System.Collections.Generic.IEnumerator<Table>)_tables.Values.GetEnumerator();
+            return (IEnumerator<Table>)_tables.Values.GetEnumerator();
         }
         #endregion
 

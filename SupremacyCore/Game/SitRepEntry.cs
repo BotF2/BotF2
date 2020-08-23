@@ -753,7 +753,7 @@ namespace Supremacy.Game
                 text = string.Format("!!! MISSING TEXT: {0}.{1} !!!", typeof(DiplomacySitRepStringKey).Name, key);
                 return text;
             }
-
+            GameLog.Client.Diplomacy.DebugFormat("LocalizedText localString ={0}", localizedString.ToString());
             var scriptParameters = new ScriptParameters(
                 new ScriptParameter("$sender", typeof(Civilization)),
                 new ScriptParameter("$recipient", typeof(Civilization)));
@@ -818,7 +818,7 @@ namespace Supremacy.Game
                         return detailed ? default(DiplomacySitRepStringKey?) : DiplomacySitRepStringKey.CeaseFireProposedSummaryText;
                     if (proposal.HasClause(ClauseType.TreatyNonAggression))
                         return detailed ? default(DiplomacySitRepStringKey?) : DiplomacySitRepStringKey.NonAggressionPactProposedSummaryText;
-                    if (proposal.HasClause(ClauseType.TreatyOpenBorders) || proposal.HasClause(ClauseType.TreatyTradePact))
+                    if (proposal.HasClause(ClauseType.TreatyOpenBorders) /*|| proposal.HasClause(ClauseType.TreatyTradePact)*/)
                         return detailed ? default(DiplomacySitRepStringKey?) : DiplomacySitRepStringKey.OpenBordersProposedSummaryText;
                     if (proposal.HasClause(ClauseType.TreatyAffiliation))
                         return detailed ? default(DiplomacySitRepStringKey?) : DiplomacySitRepStringKey.AffiliationProposedSummaryText;
@@ -850,7 +850,7 @@ namespace Supremacy.Game
                             return detailed ? default(DiplomacySitRepStringKey?) : DiplomacySitRepStringKey.CeaseFireAcceptedSummaryText;
                         if (proposal.HasClause(ClauseType.TreatyNonAggression))
                             return detailed ? DiplomacySitRepStringKey.NonAggressionPactAcceptedDetailText : DiplomacySitRepStringKey.NonAggressionPactAcceptedSummaryText;
-                        if (proposal.HasClause(ClauseType.TreatyOpenBorders) || proposal.HasClause(ClauseType.TreatyTradePact))
+                        if (proposal.HasClause(ClauseType.TreatyOpenBorders) /*|| proposal.HasClause(ClauseType.TreatyTradePact)*/)
                             return detailed ? DiplomacySitRepStringKey.OpenBordersAcceptedDetailText : DiplomacySitRepStringKey.OpenBordersAcceptedSummaryText;
                         if (proposal.HasClause(ClauseType.TreatyAffiliation))
                             return detailed ? DiplomacySitRepStringKey.AffiliationAcceptedDetailText : DiplomacySitRepStringKey.AffiliationAcceptedSummaryText;
@@ -872,19 +872,19 @@ namespace Supremacy.Game
                     if (proposal.HasTreaty())
                     {
                         if (proposal.HasClause(ClauseType.TreatyCeaseFire))
-                            return detailed ? default(DiplomacySitRepStringKey?) : DiplomacySitRepStringKey.CeaseFireRejectedSummaryText;
+                            return DiplomacySitRepStringKey.CeaseFireRejectedSummaryText;
                         if (proposal.HasClause(ClauseType.TreatyNonAggression))
-                            return detailed ? default(DiplomacySitRepStringKey?) : DiplomacySitRepStringKey.NonAggressionPactRejectedSummaryText;
-                        if (proposal.HasClause(ClauseType.TreatyOpenBorders) || proposal.HasClause(ClauseType.TreatyTradePact))
-                            return detailed ? default(DiplomacySitRepStringKey?) : DiplomacySitRepStringKey.OpenBordersRejectedSummaryText;
+                            return DiplomacySitRepStringKey.NonAggressionPactRejectedSummaryText;
+                        if (proposal.HasClause(ClauseType.TreatyOpenBorders) /*|| proposal.HasClause(ClauseType.TreatyTradePact)*/)
+                            return DiplomacySitRepStringKey.OpenBordersRejectedSummaryText;
                         if (proposal.HasClause(ClauseType.TreatyAffiliation))
-                            return detailed ? default(DiplomacySitRepStringKey?) : DiplomacySitRepStringKey.AffiliationRejectedSummaryText;
+                            return DiplomacySitRepStringKey.AffiliationRejectedSummaryText;
                         if (proposal.HasClause(ClauseType.TreatyDefensiveAlliance))
-                            return detailed ? default(DiplomacySitRepStringKey?) : DiplomacySitRepStringKey.DefensiveAllianceRejectedSummaryText;
+                            return DiplomacySitRepStringKey.DefensiveAllianceRejectedSummaryText;
                         if (proposal.HasClause(ClauseType.TreatyFullAlliance))
-                            return detailed ? default(DiplomacySitRepStringKey?) : DiplomacySitRepStringKey.FullAllianceRejectedSummaryText;
+                            return DiplomacySitRepStringKey.FullAllianceRejectedSummaryText;
                         if (proposal.HasClause(ClauseType.TreatyMembership))
-                            return detailed ? default(DiplomacySitRepStringKey?) : DiplomacySitRepStringKey.MembershipRejectedSummaryText;
+                            return DiplomacySitRepStringKey.MembershipRejectedSummaryText;
                     }
 
                     if (proposal.IsDemand())
@@ -1728,68 +1728,68 @@ namespace Supremacy.Game
         }
     }
 
-    [Serializable]
-    public class NewRaidSitRepEntry : SitRepEntry
-    {
-        private readonly int _systemId;
-        private readonly int _gainedCredits;
-        private readonly int _totalCredits;
+    //[Serializable]
+    //public class NewRaidSitRepEntry : SitRepEntry
+    //{
+    //    private readonly int _systemId;
+    //    private readonly int _gainedCredits;
+    //    private readonly int _totalCredits;
 
-        public StarSystem System
-        {
-            get { return GameContext.Current.Universe.Get<StarSystem>(_systemId); }
-        }
+    //    public StarSystem System
+    //    {
+    //        get { return GameContext.Current.Universe.Get<StarSystem>(_systemId); }
+    //    }
 
-        public override SitRepAction Action
-        {
-            get { return SitRepAction.CenterOnSector; }
-        }
+    //    public override SitRepAction Action
+    //    {
+    //        get { return SitRepAction.CenterOnSector; }
+    //    }
 
-        public override object ActionTarget
-        {
-            get { return System.Sector; }
-        }
+    //    public override object ActionTarget
+    //    {
+    //        get { return System.Sector; }
+    //    }
 
-        public override SitRepCategory Categories
-        {
-            get { return SitRepCategory.ColonyStatus; }
-        }
+    //    public override SitRepCategory Categories
+    //    {
+    //        get { return SitRepCategory.ColonyStatus; }
+    //    }
 
-        public override string SummaryText
-        {
-            get
-            {
-                if (_gainedCredits > 0)
-                {
-                    return string.Format(ResourceManager.GetString("SITREP_RAID_SUCCESSFULLY"),
-                        //"The {0} at {1} have been raided: we got {2} of {3} credits.",
-                        System.Owner, System.Name, _gainedCredits, _totalCredits);
-                }
-                else
-                {
-                    return string.Format(ResourceManager.GetString("SITREP_RAID_NO_SUCCESS"),
-                        //"Our spies have tried to raid the {0} at {1} but they had no success.",
-                        System.Owner, System.Name);
-                }
-            }
-        }
+    //    public override string SummaryText
+    //    {
+    //        get
+    //        {
+    //            if (_gainedCredits > 0)
+    //            {
+    //                return string.Format(ResourceManager.GetString("SITREP_RAID_SUCCESSFULLY"),
+    //                    //"The {0} at {1} have been raided: we got {2} of {3} credits.",
+    //                    System.Owner, System.Name, _gainedCredits, _totalCredits);
+    //            }
+    //            else
+    //            {
+    //                return string.Format(ResourceManager.GetString("SITREP_RAID_NO_SUCCESS"),
+    //                    //"Our spies have tried to raid the {0} at {1} but they had no success.",
+    //                    System.Owner, System.Name);
+    //            }
+    //        }
+    //    }
 
-        public override bool IsPriority
-        {
-            get { return true; }
-        }
+    //    public override bool IsPriority
+    //    {
+    //        get { return true; }
+    //    }
 
-        public NewRaidSitRepEntry(Civilization owner, Colony colony, int gainedCredits, int totalCredits)
-            : base(owner, SitRepPriority.Red)
-        {
-            if (colony == null)
-                throw new ArgumentNullException("colony");
-            _systemId = colony.System.ObjectID;
+    //    public NewRaidSitRepEntry(Civilization owner, Colony colony, int gainedCredits, int totalCredits)
+    //        : base(owner, SitRepPriority.Red)
+    //    {
+    //        if (colony == null)
+    //            throw new ArgumentNullException("colony");
+    //        _systemId = colony.System.ObjectID;
 
-            _gainedCredits = gainedCredits;
-            _totalCredits = totalCredits;
-        }
-    }
+    //        _gainedCredits = gainedCredits;
+    //        _totalCredits = totalCredits;
+    //    }
+    //}
 
     [Serializable]
     public class NewSabotagedSitRepEntry : SitRepEntry
@@ -1854,7 +1854,13 @@ namespace Supremacy.Game
         }
         public override string DetailText
         {
-            get { return SummaryText; }
+            get 
+            {
+                string _detailText = SummaryText;
+                _detailText = _detailText.Replace("  ", "[nl][nl]");
+
+                return _detailText; 
+            }
         }
         public override string DetailImage
         {
@@ -2011,7 +2017,13 @@ namespace Supremacy.Game
         }
         public override string DetailText
         {
-            get { return SummaryText; }
+            get 
+            {
+                string _detailText = SummaryText;
+                _detailText = _detailText.Replace("  ", "[nl][nl]");
+
+                return _detailText;
+            }
         }
         public override string DetailImage
         {
@@ -2869,22 +2881,27 @@ namespace Supremacy.Game
             get
             {
                 string StarTypeFullText = "";
-                switch (ScienceShip.Sector.System.StarType)
+                if (ScienceShip != null) // science ship distroyed < null ref 
                 {
-                    case StarType.Blue:
-                    case StarType.Orange:
-                    case StarType.Red:
-                    case StarType.White:
-                    case StarType.Yellow:
-                         StarTypeFullText = ScienceShip.Sector.System.StarType.ToString() + " star";
-                        break;
-                    default:
-                        StarTypeFullText = ScienceShip.Sector.System.StarType.ToString();
-                        break;
-                }
+                    switch (ScienceShip.Sector.System.StarType)
+                    {
+                        case StarType.Blue:
+                        case StarType.Orange:
+                        case StarType.Red:
+                        case StarType.White:
+                        case StarType.Yellow:
+                        case StarType.Wormhole:
+                            StarTypeFullText = ScienceShip.Sector.System.StarType.ToString() + " star";
+                            break;
+                        default:
+                            StarTypeFullText = ScienceShip.Sector.System.StarType.ToString();
+                            break;
+                    }
 
-                return string.Format(ResourceManager.GetString("SITREP_RESEARCH_SCIENCE_SHIP"),
-                    ScienceShip.Name, ScienceShip.Sector, StarTypeFullText, _researchGained, StarTypeFullText);
+                    return string.Format(ResourceManager.GetString("SITREP_RESEARCH_SCIENCE_SHIP"),
+                        ScienceShip.Name, ScienceShip.Sector, StarTypeFullText, _researchGained, StarTypeFullText);
+                }
+                else return string.Format(ResourceManager.GetString("SITREP_RESEARCH_SCIENCE_SHIP_RESULT_UNKNOWN"));
             }
         }
 

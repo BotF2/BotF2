@@ -22,14 +22,11 @@ namespace Supremacy.Scripting.Ast
 
         public Expression ExtensionExpression
         {
-            get { return _extensionExpression; }
-            set { _extensionExpression = value; }
+            get => _extensionExpression;
+            set => _extensionExpression = value;
         }
 
-        public override bool IsStatic
-        {
-            get { return true; }
-        }
+        public override bool IsStatic => true;
 
         public override void Walk(AstVisitor prefix, AstVisitor postfix)
         {
@@ -43,9 +40,10 @@ namespace Supremacy.Scripting.Ast
         {
             base.CloneTo(cloneContext, target);
 
-            var clone = target as ExtensionMethodGroupExpression;
-            if (clone == null)
+            if (!(target is ExtensionMethodGroupExpression clone))
+            {
                 return;
+            }
 
             clone._extensionArgument = Clone(cloneContext, _extensionArgument);
             clone.ExtensionExpression = Clone(cloneContext, ExtensionExpression);
@@ -54,16 +52,22 @@ namespace Supremacy.Scripting.Ast
         public override MethodGroupExpression OverloadResolve(ParseContext ec, ref Arguments arguments, bool mayFail, SourceSpan location)
         {
             if (arguments == null)
+            {
                 arguments = new Arguments(1);
+            }
 
             arguments.Insert(0, new Argument(ExtensionExpression));
-            var mg = ResolveOverloadExtensions(ec, ref arguments, location);
+            MethodGroupExpression mg = ResolveOverloadExtensions(ec, ref arguments, location);
 
             // Store resolved argument and restore original arguments
             if (mg != null)
+            {
                 ((ExtensionMethodGroupExpression)mg)._extensionArgument = arguments[0];
+            }
             else
-                arguments.RemoveAt(0);	// Clean-up modified arguments for error reporting
+            {
+                arguments.RemoveAt(0); // Clean-up modified arguments for error reporting
+            }
 
             return mg;
         }
@@ -71,11 +75,8 @@ namespace Supremacy.Scripting.Ast
         private MethodGroupExpression ResolveOverloadExtensions(ParseContext ec, ref Arguments arguments, SourceSpan location)
         {
             // Use normal resolve rules
-            var mg = base.OverloadResolve(ec, ref arguments, true, location);
-            if (mg != null)
-                return mg;
-
-            return null;
-        }		
+            MethodGroupExpression mg = base.OverloadResolve(ec, ref arguments, true, location);
+            return mg ?? null;
+        }
     }
 }

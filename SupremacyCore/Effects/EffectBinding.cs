@@ -186,21 +186,22 @@ namespace Supremacy.Effects
                 }
                 else
                 {
-                    var descriptionScript = new ScriptExpression
-                                            {
-                                                ScriptCode = Effect.DescriptionExpression,
-                                                Parameters = EffectGroupBinding.EffectGroup.CustomScriptParameters
-                                            };
+                    ScriptExpression descriptionScript = new ScriptExpression
+                    {
+                        ScriptCode = Effect.DescriptionExpression,
+                        Parameters = EffectGroupBinding.EffectGroup.CustomScriptParameters
+                    };
 
-                    var runtimeScriptParameters = EffectGroupBinding.EffectGroup.CustomRuntimeScriptParameters;
+                    RuntimeScriptParameters runtimeScriptParameters = EffectGroupBinding.EffectGroup.CustomRuntimeScriptParameters;
 
                     _description = descriptionScript.Evaluate(runtimeScriptParameters) as IValueProvider;
                 }
             }
 
-            var observableDescription = _description as INotifyPropertyChanged;
-            if (observableDescription != null)
+            if (_description is INotifyPropertyChanged observableDescription)
+            {
                 observableDescription.PropertyChanged += OnDescriptionPropertyChanged;
+            }
         }
 
         private ScriptParameters GetMergedScriptParameters()

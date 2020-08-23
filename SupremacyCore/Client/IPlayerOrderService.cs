@@ -34,9 +34,14 @@ namespace Supremacy.Client
         public static int RemoveOrders([NotNull] this IPlayerOrderService orderService, [NotNull] IEnumerable<Order> orders)
         {
             if (orderService == null)
-                throw new ArgumentNullException("orderService");
+            {
+                throw new ArgumentNullException(nameof(orderService));
+            }
+
             if (orders == null)
-                throw new ArgumentNullException("orders");
+            {
+                throw new ArgumentNullException(nameof(orders));
+            }
 
             return orders.Count(orderService.RemoveOrder);
         }
@@ -45,22 +50,35 @@ namespace Supremacy.Client
             where TOrder : Order
         {
             if (orderService == null)
-                throw new ArgumentNullException("orderService");
-            if (predicate == null)
-                throw new ArgumentNullException("predicate");
-
-            var removedCount = 0;
-            var orders = orderService.Orders;
-
-            for (var i = 0; i < orders.Count; i++)
             {
-                var order = orders[i] as TOrder;
-                if (order == null)
+                throw new ArgumentNullException(nameof(orderService));
+            }
+
+            if (predicate == null)
+            {
+                throw new ArgumentNullException(nameof(predicate));
+            }
+
+            int removedCount = 0;
+            ReadOnlyCollection<Order> orders = orderService.Orders;
+
+            for (int i = 0; i < orders.Count; i++)
+            {
+                if (!(orders[i] is TOrder order))
+                {
                     continue;
+                }
+
                 if (!predicate(order))
+                {
                     continue;
+                }
+
                 if (!orderService.RemoveOrder(order))
+                {
                     continue;
+                }
+
                 --i;
                 ++removedCount;
             }

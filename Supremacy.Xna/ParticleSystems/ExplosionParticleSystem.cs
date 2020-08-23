@@ -8,7 +8,7 @@ namespace Supremacy.Xna
     /// <summary>
     /// Custom particle system for creating the fiery part of the explosions.
     /// </summary>
-    class ExplosionParticleSystem : ParticleSystem
+    internal class ExplosionParticleSystem : ParticleSystem
     {
         public ExplosionParticleSystem(GraphicsDevice graphicsDevice, ContentManager content)
             : base(graphicsDevice, content) { }

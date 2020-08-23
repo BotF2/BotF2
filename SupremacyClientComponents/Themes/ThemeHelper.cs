@@ -42,9 +42,9 @@ namespace Supremacy.Client.Themes
 
                 return true;
             }
-            catch
+            catch (Exception e)
             {
-                GameLog.Client.GameData.DebugFormat("ThemeHelper.cs: problem at try sharedResources");
+                GameLog.Client.GameData.DebugFormat("ThemeHelper.cs: problem at try sharedResources Exception {0} {1}", e.Message, e.StackTrace);
             }
             
             resources = null;

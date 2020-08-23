@@ -5,7 +5,7 @@ namespace Supremacy.Scripting.Ast
     public static class CompilerErrors
     {
         public static readonly ErrorInfo StaticMemberCannotBeAccessedWithInstanceReference = new ErrorInfo(
-            176, 
+            176,
             "Static member '{0}' cannot be accessed with an instance reference, qualify it with a type name instead.");
 
         public static readonly ErrorInfo InterpolatedExpressionCannotContainBraces = new ErrorInfo(
@@ -35,7 +35,7 @@ namespace Supremacy.Scripting.Ast
         
         public static readonly ErrorInfo FriendAssemblyNameNotMatching = new ErrorInfo(
             281,
-            "Friend access was granted to '{0}', but the output assembly is named '{1}'.  " + 
+            "Friend access was granted to '{0}', but the output assembly is named '{1}'.  " +
             "Try adding a reference to '{0}' or change the output assembly name to match it.");
 
         public static readonly ErrorInfo MemberIsObsolete = new ErrorInfo(

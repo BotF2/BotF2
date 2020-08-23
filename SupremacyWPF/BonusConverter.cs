@@ -25,14 +25,12 @@ using Supremacy.Utility;
 
 namespace Supremacy.Client
 {
-    [ValueConversion(typeof(Bonus), typeof(String))]
+    [ValueConversion(typeof(Bonus), typeof(string))]
     public class BonusDescriptionConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value is Bonus)
-                return BonusDescriptions.GetDescription((Bonus)value);
-            return value;
+            return value is Bonus ? BonusDescriptions.GetDescription((Bonus)value) : value;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
@@ -41,7 +39,7 @@ namespace Supremacy.Client
         }
     }
 
-    [ValueConversion(typeof(BonusType), typeof(String))]
+    [ValueConversion(typeof(BonusType), typeof(string))]
     public class BonusTypeConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
@@ -80,34 +78,38 @@ namespace Supremacy.Client
                     if (i > 0)
                     {
                         if (commaSeparated)
+                        {
                             sb.Append(", ");
+                        }
                         else
+                        {
                             sb.Append("\n");
+                        }
                     }
-                    sb.Append(BonusDescriptions.GetDescription(bonuses[i]));
+                    _ = sb.Append(BonusDescriptions.GetDescription(bonuses[i]));
                 }
                 
             }
             else if (value is ShipyardDesign)
             {
-                sb.Append(ResourceManager.GetString("SHIPYARD_BONUS_BUILDS_SHIPS"));
+                _ = sb.Append(ResourceManager.GetString("SHIPYARD_BONUS_BUILDS_SHIPS"));
             }
-            else if (value is BuildingDesign)
+            else if (value is BuildingDesign bDesign)
             {
-                var bDesign = (BuildingDesign)value;
-                for (var i = 0; i < bDesign.Bonuses.Count; i++)
+                for (int i = 0; i < bDesign.Bonuses.Count; i++)
                 {
                     if (i > 0)
-                        sb.Append(commaSeparated ? ", " : "\n");
-                    sb.Append(BonusDescriptions.GetDescription(bDesign.Bonuses[i]));
+                    {
+                        _ = sb.Append(commaSeparated ? ", " : "\n");
+                    }
+
+                    _ = sb.Append(BonusDescriptions.GetDescription(bDesign.Bonuses[i]));
                 }
             }
-            else if (value is ProductionFacilityDesign)
+            else if (value is ProductionFacilityDesign pfDesign)
             {
-                var pfDesign = (ProductionFacilityDesign)value;
-
                 BonusType bonusType;
-                
+
                 switch (pfDesign.Category)
                 {
                     default:
@@ -123,11 +125,14 @@ namespace Supremacy.Client
                     case ProductionCategory.Research:
                         bonusType = BonusType.Research;
                         break;
+                    case ProductionCategory.Intelligence:
+                        bonusType = BonusType.Intelligence;
+                        break;
                 }
-                
-                var bonus = new Bonus(bonusType, pfDesign.UnitOutput);
 
-                sb.Append(BonusDescriptions.GetDescription(bonus));
+                Bonus bonus = new Bonus(bonusType, pfDesign.UnitOutput);
+
+                _ = sb.Append(BonusDescriptions.GetDescription(bonus));
             }
             return sb.ToString();
         }
@@ -143,30 +148,40 @@ namespace Supremacy.Client
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            var buildRestriction = value as BuildRestriction?;
+            BuildRestriction? buildRestriction = value as BuildRestriction?;
             if (buildRestriction == null)
+            {
                 return string.Empty;
+            }
 
             if (buildRestriction == BuildRestriction.None)
+            {
                 return BuildRestrictionDescriptions.GetDescription(buildRestriction.Value);
+            }
 
-            var sb = new StringBuilder();
-            var commaSeparated = (parameter != null);
+            StringBuilder sb = new StringBuilder();
+            bool commaSeparated = parameter != null;
 
-            foreach (var restriction in EnumHelper.GetValues<BuildRestriction>())
+            foreach (BuildRestriction restriction in EnumHelper.GetValues<BuildRestriction>())
             {
                 if (restriction == BuildRestriction.None || (buildRestriction & restriction) != restriction)
+                {
                     continue;
+                }
 
                 if (sb.Length != 0)
                 {
                     if (commaSeparated)
+                    {
                         sb.Append(", ");
+                    }
                     else
+                    {
                         sb.Append("\n");
+                    }
                 }
 
-                sb.Append(BuildRestrictionDescriptions.GetDescription(restriction));
+                _ = sb.Append(BuildRestrictionDescriptions.GetDescription(restriction));
             }
 
             return sb.ToString();
@@ -184,15 +199,14 @@ namespace Supremacy.Client
         #region IValueConverter Members
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return String.Format("{0:#,0}", value);
+            return string.Format("{0:#,0}", value);
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
             if (value != null)
             {
-                decimal number;
-                if (decimal.TryParse(value.ToString(), out number))
+                if (decimal.TryParse(value.ToString(), out decimal number))
                 {
                     TypeConverter converter = TypeDescriptor.GetConverter(targetType);
                     if (converter.CanConvertFrom(typeof(decimal)))
@@ -213,17 +227,19 @@ namespace Supremacy.Client
         #region IValueConverter Members
         public override object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            var designs = value as IEnumerable<TechObjectDesign> ?? Enumerable.Empty<TechObjectDesign>();
+            IEnumerable<TechObjectDesign> designs = value as IEnumerable<TechObjectDesign> ?? Enumerable.Empty<TechObjectDesign>();
             try
             {
-                var localPlayerEmpire = AppContext.LocalPlayerEmpire;
-                var techTree = localPlayerEmpire.TechTree.ToHashSet();
+                Game.CivilizationManager localPlayerEmpire = AppContext.LocalPlayerEmpire;
+                HashSet<TechObjectDesign> techTree = localPlayerEmpire.TechTree.ToHashSet();
 
-                foreach (var memberCivilization in DiplomacyHelper.GetMemberCivilizations(localPlayerEmpire.Civilization))
+                foreach (Entities.Civilization memberCivilization in DiplomacyHelper.GetMemberCivilizations(localPlayerEmpire.Civilization))
                 {
-                    var memberTechTree = AppContext.CurrentGame.TechTrees[memberCivilization];
+                    TechTree memberTechTree = AppContext.CurrentGame.TechTrees[memberCivilization];
                     if (memberTechTree != null)
+                    {
                         techTree.UnionWith(memberTechTree);
+                    }
                 }
 
                 return designs.Where(techTree.Contains);

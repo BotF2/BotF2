@@ -17,15 +17,16 @@ namespace Supremacy.Scripting.Utility
         internal static bool IsStatic(this Type type)
         {
             if (type == null)
+            {
                 throw new ArgumentNullException("type");
+            }
+
             return type.IsSealed && type.IsAbstract;
         }
         
         internal static Type GetNonNullableType(this Type type)
         {
-            if (IsNullableType(type))
-                return type.GetGenericArguments()[0];
-            return type;
+            return IsNullableType(type) ? type.GetGenericArguments()[0] : type;
         }
 
 
@@ -44,9 +45,7 @@ namespace Supremacy.Scripting.Utility
         internal static bool IsNumeric(this Type type)
         {
             type = GetNonNullableType(type);
-            if (!type.IsEnum)
-                return IsNumeric(Type.GetTypeCode(type));
-            return false;
+            return !type.IsEnum ? IsNumeric(Type.GetTypeCode(type)) : false;
         }
 
         internal static bool IsNumeric(this TypeCode typeCode)
@@ -155,17 +154,15 @@ namespace Supremacy.Scripting.Utility
 
         internal static bool CanAssign(Type to, Expression from)
         {
-            if (CanAssign(to, from.Type)) return true;
-
-            if (to.IsValueType &&
-                to.IsGenericType &&
-                to.GetGenericTypeDefinition() == typeof(Nullable<>) &&
-                ConstantCheck.Check(from, null))
+            if (CanAssign(to, from.Type))
             {
                 return true;
             }
 
-            return false;
+            return to.IsValueType &&
+                to.IsGenericType &&
+                to.GetGenericTypeDefinition() == typeof(Nullable<>) &&
+                ConstantCheck.Check(from, null);
         }
 
         internal static bool CanAssign(Type to, Type from)
@@ -305,10 +302,12 @@ namespace Supremacy.Scripting.Utility
         {
             // If it's a visible type, we're done
             if (type.IsVisible)
+            {
                 return type;
+            }
 
             // Get the visible base type
-            var baseType = type;
+            Type baseType = type;
             do
             {
                 baseType = baseType.BaseType;
@@ -335,8 +334,10 @@ namespace Supremacy.Scripting.Utility
             type = GetNonNullableType(type);
             
             if (type.IsEnum)
+            {
                 return true;
-            
+            }
+
             switch (Type.GetTypeCode(type))
             {
                 case TypeCode.Boolean:
@@ -378,36 +379,36 @@ namespace Supremacy.Scripting.Utility
         internal static bool AreReferenceAssignable(Type dest, Type src)
         {
             if (dest == src)
+            {
                 return true;
-            if (!dest.IsValueType && !src.IsValueType && AreAssignable(dest, src))
-                return true;
-            return false;
+            }
+
+            return !dest.IsValueType && !src.IsValueType && AreAssignable(dest, src);
         }
-        
+
         internal static bool AreAssignable(Type dest, Type src)
         {
             if (dest == src)
+            {
                 return true;
-            
+            }
+
             if (dest.IsAssignableFrom(src))
+            {
                 return true;
-            
+            }
+
             if (dest.IsArray && src.IsArray && dest.GetArrayRank() == src.GetArrayRank() &&
                 AreReferenceAssignable(dest.GetElementType(), src.GetElementType()))
             {
                 return true;
             }
-            
-            if (src.IsArray && dest.IsGenericType &&
+
+            return src.IsArray && dest.IsGenericType &&
                 (dest.GetGenericTypeDefinition() == typeof(System.Collections.Generic.IEnumerable<>)
                 || dest.GetGenericTypeDefinition() == typeof(System.Collections.Generic.IList<>)
                 || dest.GetGenericTypeDefinition() == typeof(System.Collections.Generic.ICollection<>))
-                && (/* TODO: Fix this ghetto-ass shit. */ dest.GetGenericArguments()[0].IsGenericParameter || (dest.GetGenericArguments()[0] == src.GetElementType())))
-            {
-                return true;
-            }
-
-            return false;
+                && (/* TODO: Fix this ghetto-ass shit. */ dest.GetGenericArguments()[0].IsGenericParameter || (dest.GetGenericArguments()[0] == src.GetElementType()));
         }
 
         internal static bool IsImplicitlyConvertible(Type source, Type destination)
@@ -426,24 +427,28 @@ namespace Supremacy.Scripting.Utility
                 }
             }
 
-            if (source.IsGenericType && 
-                destination.IsGenericType && 
+            if (source.IsGenericType &&
+                destination.IsGenericType &&
                 !source.IsGenericTypeDefinition)
             {
                 if (destination.IsGenericTypeDefinition)
-                    return (source.GetGenericTypeDefinition() == destination);
+                {
+                    return source.GetGenericTypeDefinition() == destination;
+                }
 
-                var sArgs = source.GetGenericArguments();
-                var dArgs = destination.GetGenericArguments();
+                Type[] sArgs = source.GetGenericArguments();
+                Type[] dArgs = destination.GetGenericArguments();
 
                 if (sArgs.Length == dArgs.Length)
                 {
-                    var success = !sArgs
+                    bool success = !sArgs
                         .Where((t, i) => !dArgs[i].IsGenericParameter && !AreAssignable(t, dArgs[i]))
                         .Any();
 
                     if (success)
+                    {
                         return true;
+                    }
                 }
             }
 
@@ -462,23 +467,27 @@ namespace Supremacy.Scripting.Utility
         internal static MethodInfo GetUserDefinedCoercionMethod(Type convertFrom, Type convertToType, bool implicitOnly)
         {
             // check for implicit coercions first
-            var nnExprType = GetNonNullableType(convertFrom);
-            var nnConvType = GetNonNullableType(convertToType);
-            
+            Type nnExprType = GetNonNullableType(convertFrom);
+            Type nnConvType = GetNonNullableType(convertToType);
+
             // try exact match on types
-            var eMethods = nnExprType.GetMethods(BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
-            var method = FindConversionOperator(eMethods, convertFrom, convertToType, implicitOnly);
+            MethodInfo[] eMethods = nnExprType.GetMethods(BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
+            MethodInfo method = FindConversionOperator(eMethods, convertFrom, convertToType, implicitOnly);
 
             if (method != null)
+            {
                 return method;
-            
-            var cMethods = nnConvType.GetMethods(BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
+            }
+
+            MethodInfo[] cMethods = nnConvType.GetMethods(BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
             
             method = FindConversionOperator(cMethods, convertFrom, convertToType, implicitOnly);
 
             if (method != null)
+            {
                 return method;
-            
+            }
+
             // try lifted conversion
             if (nnExprType != convertFrom || nnConvType != convertToType)
             {
@@ -486,7 +495,9 @@ namespace Supremacy.Scripting.Utility
                          FindConversionOperator(cMethods, nnExprType, nnConvType, implicitOnly);
                 
                 if (method != null)
+                {
                     return method;
+                }
             }
 
             return null;
@@ -510,8 +521,8 @@ namespace Supremacy.Scripting.Utility
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
         internal static bool IsImplicitNumericConversion(Type source, Type destination)
         {
-            var tcSource = Type.GetTypeCode(source);
-            var tcDest = Type.GetTypeCode(destination);
+            TypeCode tcSource = Type.GetTypeCode(source);
+            TypeCode tcDest = Type.GetTypeCode(destination);
 
             switch (tcSource)
             {
@@ -612,7 +623,7 @@ namespace Supremacy.Scripting.Utility
                     }
                     return false;
                 case TypeCode.Single:
-                    return (tcDest == TypeCode.Double);
+                    return tcDest == TypeCode.Double;
             }
             return false;
         }

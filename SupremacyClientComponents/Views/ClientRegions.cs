@@ -13,6 +13,8 @@ namespace Supremacy.Client
     {
         public const string MainMenu = "MainMenu";
         public const string OptionsPages = "OptionsPages";
+        public const string TracesPages = "TracesPages";
+        public const string FakeDialog = "FakeDialog";  // planed: emtpy dialog - used in future for updating screens behind
         public const string NavigationMenu = "NavigationMenu";
         public const string GameScreens = "GameScreens";
         public const string Dialogs = "Dialogs";

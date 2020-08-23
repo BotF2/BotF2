@@ -6,67 +6,62 @@ namespace Supremacy.Scripting.Ast
 {
     public class ObjectCreationExpression : Expression
     {
-        private readonly Arguments _arguments;
         private Expression _objectType;
 
         public ObjectCreationExpression()
         {
-            _arguments = new Arguments();
+            Arguments = new Arguments();
         }
 
         public ObjectInitializerExpression Initializer { get; set; }
 
         public Expression ObjectType
         {
-            get { return _objectType; }
-            set { _objectType = value; }
+            get => _objectType;
+            set => _objectType = value;
         }
 
-        public Arguments Arguments
-        {
-            get { return _arguments; }
-        }
+        public Arguments Arguments { get; }
 
-        public bool HasArguments
-        {
-            get { return (_arguments.Count != 0); }
-        }
+        public bool HasArguments => Arguments.Count != 0;
 
         public override void Walk(AstVisitor prefix, AstVisitor postfix)
         {
             Walk(ref _objectType, prefix, postfix);
 
-            for (var i = 0; i < _arguments.Count; i++)
+            for (int i = 0; i < Arguments.Count; i++)
             {
-                var argument = _arguments[i];
+                Argument argument = Arguments[i];
                 Walk(ref argument, prefix, postfix);
-                _arguments[i] = argument;
+                Arguments[i] = argument;
             }
         }
 
         public override Expression DoResolve(Runtime.ParseContext parseContext)
         {
-            var typeExpression = _objectType = _objectType.ResolveAsTypeStep(parseContext, false);
+            Expression typeExpression = _objectType = _objectType.ResolveAsTypeStep(parseContext, false);
             if (typeExpression == null)
+            {
                 return base.DoResolve(parseContext);
+            }
 
-            _arguments.Resolve(parseContext);
+            Arguments.Resolve(parseContext);
 
             Type = typeExpression.Type;
 
-            var initializer = Initializer;
+            ObjectInitializerExpression initializer = Initializer;
 
             if (initializer == null)
             {
                 return new NewExpression(
                     _objectType,
-                    _arguments,
+                    Arguments,
                     Span).Resolve(parseContext);
             }
 
             if (initializer is CollectionInitializerExpression)
             {
-                var genericInterfaces = TypeManager.DropGenericTypeArguments(Type).GetInterfaces()
+                System.Collections.Generic.IEnumerable<System.Type> genericInterfaces = TypeManager.DropGenericTypeArguments(Type).GetInterfaces()
                     .Where(o => o.IsGenericType)
                     .Select(o => o.GetGenericTypeDefinition());
 
@@ -84,7 +79,7 @@ namespace Supremacy.Scripting.Ast
 
             return new NewInitExpression(
                 _objectType,
-                _arguments,
+                Arguments,
                 initializer,
                 Span).Resolve(parseContext);
         }
@@ -98,12 +93,14 @@ namespace Supremacy.Scripting.Ast
             if (HasArguments)
             {
                 sw.Write("(");
-                _arguments.Dump(sw);
+                Arguments.Dump(sw);
                 sw.Write(")");
             }
 
             if (Initializer != null)
+            {
                 DumpChild(Initializer, sw);
+            }
         }
     }
 }

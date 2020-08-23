@@ -23,7 +23,7 @@ namespace Supremacy.Xna
 
         private static TimeSpan CounterToTimeSpan(long delta)
         {
-            var ticks = (delta * 0x989680L) / Frequency;
+            long ticks = delta * 0x989680L / Frequency;
             return TimeSpan.FromTicks(ticks);
         }
 
@@ -40,9 +40,11 @@ namespace Supremacy.Xna
             _suspendCount--;
 
             if (_suspendCount > 0)
+            {
                 return;
+            }
 
-            var counter = Counter;
+            long counter = Counter;
 
             _timeLostToSuspension += counter - _suspendStartTime;
             _suspendStartTime = 0L;
@@ -50,7 +52,7 @@ namespace Supremacy.Xna
 
         internal void Step()
         {
-            var counter = Counter;
+            long counter = Counter;
 
             if (!_lastRealTimeValid)
             {
@@ -89,7 +91,7 @@ namespace Supremacy.Xna
 
             try
             {
-                var adjustedTime = _lastRealTime + _timeLostToSuspension;
+                long adjustedTime = _lastRealTime + _timeLostToSuspension;
                 _elapsedAdjustedTime = CounterToTimeSpan(counter - adjustedTime);
                 _timeLostToSuspension = 0L;
             }
@@ -106,32 +108,19 @@ namespace Supremacy.Xna
             _suspendCount++;
 
             if (_suspendCount == 1)
+            {
                 _suspendStartTime = Counter;
+            }
         }
 
-        internal static long Counter
-        {
-            get { return Stopwatch.GetTimestamp(); }
-        }
+        internal static long Counter => Stopwatch.GetTimestamp();
 
-        internal TimeSpan CurrentTime
-        {
-            get { return (_currentTimeBase + _currentTimeOffset); }
-        }
+        internal TimeSpan CurrentTime => (_currentTimeBase + _currentTimeOffset);
 
-        internal TimeSpan ElapsedAdjustedTime
-        {
-            get { return _elapsedAdjustedTime; }
-        }
+        internal TimeSpan ElapsedAdjustedTime => _elapsedAdjustedTime;
 
-        internal TimeSpan ElapsedTime
-        {
-            get { return _elapsedTime; }
-        }
+        internal TimeSpan ElapsedTime => _elapsedTime;
 
-        internal static long Frequency
-        {
-            get { return Stopwatch.Frequency; }
-        }
+        internal static long Frequency => Stopwatch.Frequency;
     }
 }

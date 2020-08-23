@@ -10,10 +10,6 @@ namespace Supremacy.Scripting.Utility
         private static readonly Dictionary<string, OperatorInfo> _operatorsByMethod;
         private static readonly OperatorInfo[] _operators;
 
-        private readonly string _signatureName;
-        private readonly string _name;
-        private readonly ExpressionType _operator;
-
         static OperatorInfo()
         {
             _operators = new List<OperatorInfo>
@@ -169,62 +165,50 @@ namespace Supremacy.Scripting.Utility
 
         private OperatorInfo(ExpressionType op, string name, string signatureName)
         {
-            _operator = op;
-            _name = name;
-            _signatureName = signatureName;
+            Operator = op;
+            Name = name;
+            SignatureName = signatureName;
         }
 
         /// <summary>The operator the OperatorInfo provides info for.</summary>
-        public ExpressionType Operator
-        {
-            get { return _operator; }
-        }
+        public ExpressionType Operator { get; }
 
         /// <summary>
         ///   The primary method name associated with the method.  This method name is
         ///   usally in the form of op_Operator (e.g. op_Addition).
         /// </summary>
-        public string Name
-        {
-            get { return _name; }
-        }
+        public string Name { get; }
 
         /// <summary>
         ///   The secondary method name associated with the method.  This method name is
         ///   usually a standard .NET method name with pascal casing (e.g. Add).
         /// </summary>
-        public string SignatureName
-        {
-            get { return _signatureName; }
-        }
+        public string SignatureName { get; }
 
         /// <summary>Given an operator returns the OperatorInfo associated with the operator or null</summary>
         public static OperatorInfo GetOperatorInfo(ExpressionType op)
         {
-            return _operators.FirstOrDefault(info => info._operator == op);
+            return _operators.FirstOrDefault(info => info.Operator == op);
         }
 
         public static OperatorInfo GetOperatorInfo(string name)
         {
-            OperatorInfo operatorInfo;
-            if (_operatorsByMethod.TryGetValue(name, out operatorInfo))
-                return operatorInfo;
-            return null;
+            return _operatorsByMethod.TryGetValue(name, out OperatorInfo operatorInfo) ? operatorInfo : null;
         }
 
         public static string GetSignatureName(string name)
         {
             if (name == "op_Implicit")
+            {
                 return "implicit";
+            }
 
             if (name == "op_Explicit")
+            {
                 return "explicit";
+            }
 
-            OperatorInfo operatorInfo;
-            if (_operatorsByMethod.TryGetValue(name, out operatorInfo))
-                return operatorInfo.SignatureName;
-
-            return null;
+            return _operatorsByMethod.TryGetValue(name, out OperatorInfo operatorInfo) ? operatorInfo.SignatureName : null;
         }
     }
 }

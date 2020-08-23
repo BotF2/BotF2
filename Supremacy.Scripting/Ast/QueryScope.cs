@@ -52,7 +52,9 @@ namespace Supremacy.Scripting.Ast
             ProcessParameters();
 
             if (parent != null)
+            {
                 base.CheckParentConflictName(parent.TopLevel, lt.VariableName, lt.Span);
+            }
         }
 
         public QueryScope(CompilerContext ctx, Scope parent, ParametersCompiled parameters, RangeDeclaration lt, SourceLocation startLocation)
@@ -75,7 +77,7 @@ namespace Supremacy.Scripting.Ast
 
         public void AddTransparentParameter(RangeDeclaration name)
         {
-            base.CheckParentConflictName(this, name.VariableName, name.Span);
+            _ = base.CheckParentConflictName(this, name.VariableName, name.Span);
 
             Parameters = new ParametersCompiled(new TransparentParameter(this, Parameters, name));
         }
@@ -90,21 +92,27 @@ namespace Supremacy.Scripting.Ast
         //
         protected override Expression GetParameterReferenceExpression(string name, SourceSpan span)
         {
-            var reference = base.GetParameterReferenceExpression(name, span);
+            Expression reference = base.GetParameterReferenceExpression(name, span);
             if (reference != null)
+            {
                 return reference;
+            }
 
-            var transparentParameter = Parameters[0] as TransparentParameter;
+            TransparentParameter transparentParameter = Parameters[0] as TransparentParameter;
             while (transparentParameter != null)
             {
                 if (transparentParameter.Identifier == name)
+                {
                     break;
+                }
 
-                var nextTransparentParameter = transparentParameter.Parent[0] as TransparentParameter;
+                TransparentParameter nextTransparentParameter = transparentParameter.Parent[0] as TransparentParameter;
                 if (nextTransparentParameter == null)
                 {
                     if (transparentParameter.Parent.GetParameterIndexByName(name) >= 0)
+                    {
                         break;
+                    }
                 }
 
                 transparentParameter = nextTransparentParameter;
@@ -113,27 +121,27 @@ namespace Supremacy.Scripting.Ast
             if (transparentParameter != null)
             {
                 reference = new NameExpression
-                            {
-                                Name = Parameters[0].Name,
-                                Span = span
-                            };
-                
-                var transparentParameterCursor = (TransparentParameter)Parameters[0];
+                {
+                    Name = Parameters[0].Name,
+                    Span = span
+                };
+
+                TransparentParameter transparentParameterCursor = (TransparentParameter)Parameters[0];
                 while (transparentParameterCursor != transparentParameter)
                 {
                     transparentParameterCursor = (TransparentParameter)transparentParameterCursor.Parent[0];
                     reference = new MemberAccessExpression
-                                {
-                                    Left = reference,
-                                    Name = transparentParameterCursor.Name
-                                };
+                    {
+                        Left = reference,
+                        Name = transparentParameterCursor.Name
+                    };
                 }
 
                 return new MemberAccessExpression
-                       {
-                           Left = reference,
-                           Name = name
-                       };
+                {
+                    Left = reference,
+                    Name = name
+                };
             }
 
             return null;

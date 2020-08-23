@@ -24,7 +24,6 @@ namespace Supremacy.Scripting.Ast
     public class PropertyExpression : MemberExpression
     {
         private readonly Type _containerType;
-        private readonly PropertyInfo _propertyInfo;
         private MethodInfo _getter, _setter;
         private bool _isStatic;
 
@@ -35,7 +34,7 @@ namespace Supremacy.Scripting.Ast
         {
             _isStatic = false;
             _containerType = containerType;
-            _propertyInfo = propertyInfo;
+            PropertyInfo = propertyInfo;
 
             Type = propertyInfo.PropertyType;
             ExpressionClass = ExpressionClass.PropertyAccess;
@@ -44,50 +43,35 @@ namespace Supremacy.Scripting.Ast
             ResolveAccessors(containerType);
         }
 
-        public override string Name
-        {
-            get { return _propertyInfo.Name; }
-        }
+        public override string Name => PropertyInfo.Name;
 
-        public override bool IsInstance
-        {
-            get { return !_isStatic; }
-        }
+        public override bool IsInstance => !_isStatic;
 
-        public override bool IsStatic
-        {
-            get { return _isStatic; }
-        }
+        public override bool IsStatic => _isStatic;
 
-        public override Type DeclaringType
-        {
-            get { return _propertyInfo.DeclaringType; }
-        }
+        public override Type DeclaringType => PropertyInfo.DeclaringType;
 
-        public PropertyInfo PropertyInfo
-        {
-            get { return _propertyInfo; }
-        }
+        public PropertyInfo PropertyInfo { get; }
 
         public override MSAst TransformCore(ScriptGenerator generator)
         {
             return MSAst.Property(
-                (InstanceExpression == null) ? null : InstanceExpression.Transform(generator),
+                InstanceExpression?.Transform(generator),
                 PropertyInfo);
         }
 
         public override string GetSignatureForError()
         {
-            return TypeManager.GetFullNameSignature(_propertyInfo);
+            return TypeManager.GetFullNameSignature(PropertyInfo);
         }
 
-        void FindAccessors(Type invocationType)
+        private void FindAccessors(Type invocationType)
         {
             const BindingFlags flags = BindingFlags.Public | BindingFlags.NonPublic |
                                        BindingFlags.Static | BindingFlags.Instance |
                                        BindingFlags.DeclaredOnly;
 
-            Type current = _propertyInfo.DeclaringType;
+            Type current = PropertyInfo.DeclaringType;
             for (; current != null; current = current.BaseType)
             {
                 MemberInfo[] group = TypeManager.MemberLookup(
@@ -96,28 +80,38 @@ namespace Supremacy.Scripting.Ast
                     current,
                     MemberTypes.Property,
                     flags,
-                    _propertyInfo.Name,
+                    PropertyInfo.Name,
                     null);
 
                 if (group == null)
+                {
                     continue;
+                }
 
                 if (group.Length != 1)
+                {
                     // Oooops, can this ever happen ?
                     return;
+                }
 
-                var pi = (PropertyInfo)group[0];
+                PropertyInfo pi = (PropertyInfo)group[0];
 
                 if (_getter == null)
+                {
                     _getter = pi.GetGetMethod(true);
+                }
 
                 if (_setter == null)
+                {
                     _setter = pi.GetSetMethod(true);
+                }
 
                 MethodInfo accessor = _getter ?? _setter;
 
                 if (!accessor.IsVirtual)
+                {
                     return;
+                }
             }
         }
 
@@ -126,24 +120,24 @@ namespace Supremacy.Scripting.Ast
         // hold the information for the accessibility of its setter/getter
         //
         // TODO: Refactor to use some kind of cache together with GetPropertyFromAccessor
-        void ResolveAccessors(Type containerType)
+        private void ResolveAccessors(Type containerType)
         {
             FindAccessors(containerType);
 
             if (_getter != null)
             {
-                var theGetter = TypeManager.DropGenericMethodArguments(_getter);
+                MethodBase theGetter = TypeManager.DropGenericMethodArguments(_getter);
                 _isStatic = theGetter.IsStatic;
             }
 
             if (_setter != null)
             {
-                var theSetter = TypeManager.DropGenericMethodArguments(_setter);
+                MethodBase theSetter = TypeManager.DropGenericMethodArguments(_setter);
                 _isStatic = theSetter.IsStatic;
             }
         }
 
-        bool InstanceResolve(ParseContext ec, bool leftInstance, bool mustDoCs1540Check)
+        private bool InstanceResolve(ParseContext ec, bool leftInstance, bool mustDoCs1540Check)
         {
             if (_isStatic)
             {
@@ -159,10 +153,14 @@ namespace Supremacy.Scripting.Ast
 
             InstanceExpression = InstanceExpression.DoResolve(ec);
             if (leftInstance && InstanceExpression != null)
+            {
                 InstanceExpression = InstanceExpression.ResolveLValue(ec, EmptyExpression.LValueMemberAccess);
+            }
 
             if (InstanceExpression == null)
+            {
                 return false;
+            }
 
             if (mustDoCs1540Check && (InstanceExpression != EmptyExpression.Null) &&
                 !TypeManager.IsInstantiationOfSameGenericType(InstanceExpression.Type, null) &&
@@ -174,7 +172,7 @@ namespace Supremacy.Scripting.Ast
             return true;
         }
 
-        void Error_PropertyNotFound(ParseContext ec, MethodInfo mi, bool getter)
+        private void Error_PropertyNotFound(ParseContext ec, MethodInfo mi, bool getter)
         {
             // TODO: correctly we should compare arguments but it will lead to bigger changes
             if (mi is MethodBuilder)
@@ -182,12 +180,12 @@ namespace Supremacy.Scripting.Ast
                 return;
             }
 
-            var sig = new StringBuilder(TypeManager.GetCSharpName(mi.DeclaringType));
-            sig.Append('.');
-            var iparams = TypeManager.GetParameterData(mi);
-            sig.Append(getter ? "get_" : "set_");
-            sig.Append(Name);
-            sig.Append(iparams.GetSignatureForError());
+            StringBuilder sig = new StringBuilder(TypeManager.GetCSharpName(mi.DeclaringType));
+            _ = sig.Append('.');
+            ParametersCollection iparams = TypeManager.GetParameterData(mi);
+            _ = sig.Append(getter ? "get_" : "set_");
+            _ = sig.Append(Name);
+            _ = sig.Append(iparams.GetSignatureForError());
 
             ec.ReportError(
                 1546,
@@ -201,17 +199,21 @@ namespace Supremacy.Scripting.Ast
 
         public bool IsAccessibleFrom(Type invocationType, bool lvalue)
         {
-            bool dummy;
             MethodInfo accessor = lvalue ? _setter : _getter;
             if (accessor == null && lvalue)
+            {
                 accessor = _getter;
-            return accessor != null && IsAccessorAccessible(invocationType, accessor, out dummy);
+            }
+
+            return accessor != null && IsAccessorAccessible(invocationType, accessor, out _);
         }
 
-        bool IsSingleDimensionalArrayLength()
+        private bool IsSingleDimensionalArrayLength()
         {
             if (DeclaringType != TypeManager.CoreTypes.Array || _getter == null || Name != "Length")
+            {
                 return false;
+            }
 
             string tName = InstanceExpression.Type.Name;
             int tNameLen = tName.Length;
@@ -221,26 +223,30 @@ namespace Supremacy.Scripting.Ast
         public override Expression DoResolve(ParseContext ec)
         {
             if (_resolved)
+            {
                 return this;
+            }
 
-            var mustDoCs1540Check = false;
-            var result = ResolveGetter(ec, ref mustDoCs1540Check);
+            bool mustDoCs1540Check = false;
+            bool result = ResolveGetter(ec, ref mustDoCs1540Check);
 
             if (!result)
             {
                 if (InstanceExpression != null)
                 {
-                    var exprType = InstanceExpression.Type;
+                    _ = InstanceExpression.Type;
                 }
 
-                ResolveGetter(ec, ref mustDoCs1540Check);
+                _ = ResolveGetter(ec, ref mustDoCs1540Check);
                 return null;
             }
 
             if (!InstanceResolve(ec, false, mustDoCs1540Check))
+            {
                 return null;
+            }
 
-            if (_propertyInfo.PropertyType.IsPointer)
+            if (PropertyInfo.PropertyType.IsPointer)
             {
                 // TODO: UnsafeError(ec, loc);
             }
@@ -250,17 +256,17 @@ namespace Supremacy.Scripting.Ast
             return this;
         }
 
-        override public Expression DoResolveLValue(ParseContext parseContext, Expression rightSide)
+        public override Expression DoResolveLValue(ParseContext parseContext, Expression rightSide)
         {
             if (rightSide == EmptyExpression.OutAccess)
             {
-                if (parseContext.CurrentScope.TopLevel.GetParameterReference(_propertyInfo.Name, Span) is MemberAccessExpression)
+                if (parseContext.CurrentScope.TopLevel.GetParameterReference(PropertyInfo.Name, Span) is MemberAccessExpression)
                 {
                     parseContext.ReportError(
                         1939,
                         string.Format(
                             "A range variable '{0}' may not be passed as a 'ref' or 'out' parameter.",
-                            _propertyInfo.Name),
+                            PropertyInfo.Name),
                         Severity.Error,
                         Span);
                 }
@@ -270,7 +276,7 @@ namespace Supremacy.Scripting.Ast
                         206,
                         string.Format(
                             "A property or indexer '{0}' may not be passed as a 'ref' or 'out' parameter.",
-                            _propertyInfo.Name),
+                            PropertyInfo.Name),
                         Severity.Error,
                         Span);
                 }
@@ -291,15 +297,17 @@ namespace Supremacy.Scripting.Ast
                 // the caller routine.  This only avoids double error reporting.
                 //
                 if (_getter == null)
+                {
                     return null;
+                }
 
-                if (parseContext.CurrentScope.TopLevel.GetParameterReference(_propertyInfo.Name, Span) is MemberAccessExpression)
+                if (parseContext.CurrentScope.TopLevel.GetParameterReference(PropertyInfo.Name, Span) is MemberAccessExpression)
                 {
                     parseContext.ReportError(
                         1947,
                         string.Format(
                             "A range variable '{0}' cannot be assigned to.  Consider using 'let' clause to store the value.",
-                            _propertyInfo.Name),
+                            PropertyInfo.Name),
                         Span);
                 }
                 else
@@ -327,8 +335,7 @@ namespace Supremacy.Scripting.Ast
                 return null;
             }
 
-            bool mustDoCs1540Check;
-            if (!IsAccessorAccessible(null, _setter, out mustDoCs1540Check))
+            if (!IsAccessorAccessible(null, _setter, out bool mustDoCs1540Check))
             {
                 {
                     parseContext.ReportError(
@@ -340,11 +347,12 @@ namespace Supremacy.Scripting.Ast
                 return null;
             }
 
-            if (!InstanceResolve(parseContext, TypeManager.IsStruct(_propertyInfo.DeclaringType), mustDoCs1540Check))
+            if (!InstanceResolve(parseContext, TypeManager.IsStruct(PropertyInfo.DeclaringType), mustDoCs1540Check))
+            {
                 return null;
+            }
 
-
-            if (_propertyInfo.PropertyType.IsPointer)
+            if (PropertyInfo.PropertyType.IsPointer)
             {
                 // TODO: UnsafeError(parseContext, this.Span);
             }
@@ -352,7 +360,7 @@ namespace Supremacy.Scripting.Ast
             return this;
         }
 
-        bool ResolveGetter(ParseContext ec, ref bool mustDoCs1540Check)
+        private bool ResolveGetter(ParseContext ec, ref bool mustDoCs1540Check)
         {
             if ((_typeArguments != null) && _typeArguments.Any())
             {
@@ -378,7 +386,9 @@ namespace Supremacy.Scripting.Ast
                 // the caller routine.  This only avoids double error reporting.
                 //
                 if (_setter == null)
+                {
                     return false;
+                }
 
                 if (InstanceExpression != EmptyExpression.Null)
                 {
@@ -386,7 +396,7 @@ namespace Supremacy.Scripting.Ast
                         154,
                         string.Format(
                             "The property or indexer '{0}' cannot be used in this context because it lacks the 'get' accessor.",
-                            TypeManager.GetFullNameSignature(_propertyInfo)),
+                            TypeManager.GetFullNameSignature(PropertyInfo)),
                         Span);
 
                     return false;
@@ -417,12 +427,16 @@ namespace Supremacy.Scripting.Ast
         public override void Dump(SourceWriter sw, int indentChange)
         {
             if (_isStatic)
+            {
                 sw.Write(TypeManager.GetCSharpName(_containerType));
+            }
             else
+            {
                 DumpChild(InstanceExpression, sw, indentChange);
+            }
 
             sw.Write(".");
-            sw.Write(_propertyInfo.Name);
+            sw.Write(PropertyInfo.Name);
         }
     }
 

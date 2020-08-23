@@ -23,7 +23,7 @@ namespace Supremacy.Scripting.Ast
         private static bool Prefix(ParseContext parseContext, ref IAst ast)
         {
             ast.BeginInit(parseContext, true);
-            return true; 
+            return true;
         }
 
         private static bool Postfix(ParseContext parseContext, ref IAst ast)

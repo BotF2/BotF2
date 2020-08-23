@@ -26,9 +26,7 @@ namespace Supremacy.Collections
 
         public CollectionBaseDebugView(ICollection<T> collection)
         {
-            if (collection == null)
-                throw new ArgumentNullException("collection");
-            _collection = collection;
+            _collection = collection ?? throw new ArgumentNullException(nameof(collection));
         }
 
         [DebuggerBrowsable(DebuggerBrowsableState.RootHidden)]
@@ -36,7 +34,7 @@ namespace Supremacy.Collections
         {
             get
             {
-                var items = new T[_collection.Count];
+                T[] items = new T[_collection.Count];
                 _collection.CopyTo(items, 0);
                 return items;
             }
@@ -69,9 +67,7 @@ namespace Supremacy.Collections
 
         public CollectionBase(IList<T> list)
         {
-            if (list == null)
-                throw new ArgumentNullException("list");
-            _items = list;
+            _items = list ?? throw new ArgumentNullException(nameof(list));
             _suppressChangeNotificationsScope = new StateScope();
         }
 
@@ -80,26 +76,24 @@ namespace Supremacy.Collections
             return new ReadOnlyCollectionBase<T>(_items);
         }
 
-        public int Count
-        {
-            get { return _items.Count; }
-        }
+        public int Count => _items.Count;
 
-        protected IList<T> Items
-        {
-            get { return _items; }
-        }
+        protected IList<T> Items => _items;
 
         public T this[int index]
         {
-            get { return _items[index]; }
+            get => _items[index];
             set
             {
                 if (_items.IsReadOnly)
+                {
                     ThrowNotSupportedOnReadOnlyCollection();
+                }
 
                 if ((index < 0) || (index >= _items.Count))
-                    throw new ArgumentOutOfRangeException("index");
+                {
+                    throw new ArgumentOutOfRangeException(nameof(index));
+                }
 
                 SetItem(index, value);
             }
@@ -108,7 +102,9 @@ namespace Supremacy.Collections
         public void Add(T item)
         {
             if (_items.IsReadOnly)
+            {
                 ThrowNotSupportedOnReadOnlyCollection();
+            }
 
             InsertItem(_items.Count, item);
         }
@@ -116,7 +112,9 @@ namespace Supremacy.Collections
         public void Clear()
         {
             if (_items.IsReadOnly)
+            {
                 ThrowNotSupportedOnReadOnlyCollection();
+            }
 
             ClearItems();
         }
@@ -144,7 +142,9 @@ namespace Supremacy.Collections
         public void Insert(int index, T item)
         {
             if ((index < 0) || (index > _items.Count))
-                throw new ArgumentOutOfRangeException("index");
+            {
+                throw new ArgumentOutOfRangeException(nameof(index));
+            }
 
             InsertItem(index, item);
         }
@@ -152,11 +152,15 @@ namespace Supremacy.Collections
         public bool Remove(T item)
         {
             if (_items.IsReadOnly)
+            {
                 ThrowNotSupportedOnReadOnlyCollection();
+            }
 
-            var index = _items.IndexOf(item);
+            int index = _items.IndexOf(item);
             if (index < 0)
+            {
                 return false;
+            }
 
             RemoveItem(index);
             return true;
@@ -165,10 +169,14 @@ namespace Supremacy.Collections
         public void RemoveAt(int index)
         {
             if (_items.IsReadOnly)
+            {
                 ThrowNotSupportedOnReadOnlyCollection();
+            }
 
             if ((index < 0) || (index >= _items.Count))
-                throw new ArgumentOutOfRangeException("index");
+            {
+                throw new ArgumentOutOfRangeException(nameof(index));
+            }
 
             RemoveItem(index);
         }
@@ -181,7 +189,7 @@ namespace Supremacy.Collections
 
         protected virtual void RemoveItem(int index)
         {
-            var item = _items[index];
+            T item = _items[index];
             _items.RemoveAt(index);
             OnCollectionChanged(NotifyCollectionChangedAction.Remove, item, index);
         }
@@ -194,25 +202,19 @@ namespace Supremacy.Collections
 
         protected virtual void SetItem(int index, T item)
         {
-            var oldItem = _items[index];
+            T oldItem = _items[index];
             _items[index] = item;
             OnCollectionChanged(NotifyCollectionChangedAction.Replace, oldItem, item, index);
         }
 
-        bool ICollection<T>.IsReadOnly
-        {
-            get { return _items.IsReadOnly; }
-        }
+        bool ICollection<T>.IsReadOnly => _items.IsReadOnly;
 
         IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
         }
 
-        public virtual bool IsSynchronized
-        {
-            get { return true; }
-        }
+        public virtual bool IsSynchronized => true;
 
         public object SyncRoot
         {
@@ -220,11 +222,14 @@ namespace Supremacy.Collections
             {
                 if (_syncRoot == null)
                 {
-                    var c = _items as ICollection;
-                    if (c != null)
+                    if (_items is ICollection c)
+                    {
                         _syncRoot = c.SyncRoot;
+                    }
                     else
-                        Interlocked.CompareExchange(ref _syncRoot, new object(), null);
+                    {
+                        _ = Interlocked.CompareExchange(ref _syncRoot, new object(), null);
+                    }
                 }
                 return _syncRoot;
             }
@@ -233,55 +238,69 @@ namespace Supremacy.Collections
         void ICollection.CopyTo(Array array, int index)
         {
             if (array == null)
-                throw new ArgumentNullException("array");
+            {
+                throw new ArgumentNullException(nameof(array));
+            }
 
             if (array.Rank != 1)
-                throw new ArgumentException(SR.ArgumentException_ArrayMustBeSingleDimensional, "array");
+            {
+                throw new ArgumentException(SR.ArgumentException_ArrayMustBeSingleDimensional, nameof(array));
+            }
 
             if (array.GetLowerBound(0) != 0)
-                throw new ArgumentException(SR.ArgumentException_ArrayHasNonZeroLowerBound, "array");
+            {
+                throw new ArgumentException(SR.ArgumentException_ArrayHasNonZeroLowerBound, nameof(array));
+            }
 
             if (index < 0)
-                throw new ArgumentOutOfRangeException("index", SR.ArgumentOutOfRangeException_ValueMustBeNonNegative);
+            {
+                throw new ArgumentOutOfRangeException(nameof(index), SR.ArgumentOutOfRangeException_ValueMustBeNonNegative);
+            }
 
             if ((array.Length - index) < Count)
-                throw new ArgumentOutOfRangeException("index", SR.ArgumentOutOfRangeException_IndexIsOutsideArrayBounds);
+            {
+                throw new ArgumentOutOfRangeException(nameof(index), SR.ArgumentOutOfRangeException_IndexIsOutsideArrayBounds);
+            }
 
-            var typedArray = array as T[];
-            if (typedArray != null)
+            if (array is T[] typedArray)
             {
                 _items.CopyTo(typedArray, index);
             }
             else
             {
-                var targetType = array.GetType().GetElementType();
-                var sourceType = typeof(T);
+                Type targetType = array.GetType().GetElementType();
+                Type sourceType = typeof(T);
                 if (!(targetType.IsAssignableFrom(sourceType) || sourceType.IsAssignableFrom(targetType)))
-                    throw new ArgumentException(SR.ArgumentException_ArrayTypeIncompatibleWithCollectionType, "array");
+                {
+                    throw new ArgumentException(SR.ArgumentException_ArrayTypeIncompatibleWithCollectionType, nameof(array));
+                }
 
                 /*
                  * We can't cast array of value type to object[], so we don't support widening of primitive types here.
                  */
-                var objects = array as object[];
-                if (objects == null)
-                    throw new ArgumentException(SR.ArgumentException_ArrayTypeIncompatibleWithCollectionType, "array");
+                if (!(array is object[] objects))
+                {
+                    throw new ArgumentException(SR.ArgumentException_ArrayTypeIncompatibleWithCollectionType, nameof(array));
+                }
 
-                var count = _items.Count;
+                int count = _items.Count;
                 try
                 {
-                    for (var i = 0; i < count; i++)
+                    for (int i = 0; i < count; i++)
+                    {
                         objects[index++] = _items[i];
+                    }
                 }
                 catch (ArrayTypeMismatchException)
                 {
-                    throw new ArgumentException(SR.ArgumentException_ArrayTypeIncompatibleWithCollectionType, "array");
+                    throw new ArgumentException(SR.ArgumentException_ArrayTypeIncompatibleWithCollectionType, nameof(array));
                 }
             }
         }
 
         object IList.this[int index]
         {
-            get { return _items[index]; }
+            get => _items[index];
             set
             {
                 VerifyValueType(value);
@@ -289,28 +308,18 @@ namespace Supremacy.Collections
             }
         }
 
-        bool IList.IsReadOnly
-        {
-            get { return _items.IsReadOnly; }
-        }
+        bool IList.IsReadOnly => _items.IsReadOnly;
 
-        bool IList.IsFixedSize
-        {
-            get
-            {
-                // There is no IList<T>.IsFixedSize, so we must assume false if our
-                // internal item collection does not implement IList
-                var list = _items as IList;
-                if (list != null)
-                    return list.IsFixedSize;
-                return false;
-            }
-        }
+        // There is no IList<T>.IsFixedSize, so we must assume false if our
+        // internal item collection does not implement IList
+        bool IList.IsFixedSize => _items is IList list && list.IsFixedSize;
 
         int IList.Add(object value)
         {
             if (_items.IsReadOnly)
+            {
                 ThrowNotSupportedOnReadOnlyCollection();
+            }
 
             VerifyValueType(value);
             Add((T)value);
@@ -319,22 +328,20 @@ namespace Supremacy.Collections
 
         bool IList.Contains(object value)
         {
-            if (IsCompatibleObject(value))
-                return Contains((T)value);
-            return false;
+            return IsCompatibleObject(value) && Contains((T)value);
         }
 
         int IList.IndexOf(object value)
         {
-            if (IsCompatibleObject(value))
-                return IndexOf((T)value);
-            return -1;
+            return IsCompatibleObject(value) ? IndexOf((T)value) : -1;
         }
 
         void IList.Insert(int index, object value)
         {
             if (_items.IsReadOnly)
+            {
                 ThrowNotSupportedOnReadOnlyCollection();
+            }
 
             VerifyValueType(value);
             Insert(index, (T)value);
@@ -343,24 +350,32 @@ namespace Supremacy.Collections
         void IList.Remove(object value)
         {
             if (_items.IsReadOnly)
+            {
                 ThrowNotSupportedOnReadOnlyCollection();
+            }
 
             if (IsCompatibleObject(value))
-                Remove((T)value);
+            {
+                _ = Remove((T)value);
+            }
         }
 
         public void AddRange(IEnumerable<T> items)
         {
             if (items == null)
-                throw new ArgumentNullException("items");
+            {
+                throw new ArgumentNullException(nameof(items));
+            }
 
-            var itemList = items as IList ?? items.ToList();
-            var insertionIndex = Count;
+            IList itemList = items as IList ?? items.ToList();
+            int insertionIndex = Count;
 
             using (_suppressChangeNotificationsScope.Enter())
             {
-                foreach (var item in itemList.Cast<T>())
+                foreach (T item in itemList.Cast<T>())
+                {
                     Add(item);
+                }
             }
 
             OnCollectionChanged(
@@ -373,21 +388,25 @@ namespace Supremacy.Collections
         public void RemoveRange(IEnumerable<T> items)
         {
             if (items == null)
-                throw new ArgumentNullException("items");
+            {
+                throw new ArgumentNullException(nameof(items));
+            }
 
-            var changeEvents = new List<NotifyCollectionChangedEventArgs>();
-            var lastItemIndex = -1;
-            var firstItemIndex = -1;
-            var changedItems = new List<T>();
+            List<NotifyCollectionChangedEventArgs> changeEvents = new List<NotifyCollectionChangedEventArgs>();
+            int lastItemIndex = -1;
+            int firstItemIndex = -1;
+            List<T> changedItems = new List<T>();
 
             using (_suppressChangeNotificationsScope.Enter())
             {
-                foreach (var item in items)
+                foreach (T item in items)
                 {
                     if (Count == 0)
+                    {
                         break;
+                    }
 
-                    var itemIndex = Items.IndexOf(item);
+                    int itemIndex = Items.IndexOf(item);
 
                     RemoveItem(itemIndex);
 
@@ -396,29 +415,23 @@ namespace Supremacy.Collections
                         changedItems.Add(item);
 
                         if (firstItemIndex < 0)
+                        {
                             firstItemIndex = itemIndex;
+                        }
 
                         lastItemIndex = itemIndex;
                     }
                     else
                     {
-                        NotifyCollectionChangedEventArgs args;
-
-                        if (changedItems.Count == 1)
-                        {
-                            args = new NotifyCollectionChangedEventArgs(
+                        NotifyCollectionChangedEventArgs args = changedItems.Count == 1
+                            ? new NotifyCollectionChangedEventArgs(
                                 NotifyCollectionChangedAction.Remove,
                                 changedItems[0],
-                                firstItemIndex);
-                        }
-                        else
-                        {
-                            args = new NotifyCollectionChangedEventArgs(
+                                firstItemIndex)
+                            : new NotifyCollectionChangedEventArgs(
                                 NotifyCollectionChangedAction.Remove,
                                 changedItems,
                                 firstItemIndex);
-                        }
-
                         changeEvents.Add(args);
 
                         changedItems = new List<T>();
@@ -428,8 +441,10 @@ namespace Supremacy.Collections
                 }
             }
 
-            foreach (var changeEvent in changeEvents)
+            foreach (NotifyCollectionChangedEventArgs changeEvent in changeEvents)
+            {
                 OnCollectionChanged(changeEvent);
+            }
         }
 
         private static void ThrowNotSupportedOnReadOnlyCollection()
@@ -445,7 +460,9 @@ namespace Supremacy.Collections
         private static void VerifyValueType(object value)
         {
             if (IsCompatibleObject(value))
+            {
                 return;
+            }
 
             throw new ArgumentException(
                 string.Format(
@@ -456,9 +473,10 @@ namespace Supremacy.Collections
 
         public void TrimExcess()
         {
-            var itemList = _items as List<T>;
-            if (itemList == null)
+            if (!(_items is List<T> itemList))
+            {
                 return;
+            }
 
             itemList.TrimExcess();
         }
@@ -470,11 +488,11 @@ namespace Supremacy.Collections
         protected virtual void OnCollectionChanged(NotifyCollectionChangedEventArgs e)
         {
             if (_suppressChangeNotificationsScope.IsWithin)
+            {
                 return;
+            }
 
-            var handler = CollectionChanged;
-            if (handler != null)
-                handler(this, e);
+            CollectionChanged?.Invoke(this, e);
         }
 
         protected void OnCollectionChanged(NotifyCollectionChangedAction action, object item, int index)
@@ -532,18 +550,25 @@ namespace Supremacy.Collections
         #endregion
 
         #region Deserialization Callback
-        [OnDeserialized]
-        private void OnDeserialized(StreamingContext context)
-        {
-            Initialize();
-        }
+        //Commented out because of StreamingContext not being used
+
+        //[OnDeserialized]
+        //private void OnDeserialized(StreamingContext context)
+        //{
+        //    Initialize();
+        //}
 
         private void Initialize()
         {
             if (_syncRoot == null)
+            {
                 _syncRoot = new object();
+            }
+
             if (_suppressChangeNotificationsScope == null)
+            {
                 _suppressChangeNotificationsScope = new StateScope();
+            }
         }
         #endregion
 

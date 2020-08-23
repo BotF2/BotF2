@@ -38,11 +38,12 @@ namespace Supremacy.Client
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             if (value == null)
+            {
                 return null;
-            var civ = value as Civilization;
-            if (civ != null)
-                return Convert(civ.Key);
-            return Convert(value.ToString()) ?? value;
+            }
+
+            Civilization civ = value as Civilization;
+            return civ != null ? Convert(civ.Key) : Convert(value.ToString()) ?? value;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
@@ -56,7 +57,9 @@ namespace Supremacy.Client
             for (int i = 0; i < key.Length; i++)
             {
                 if (char.IsLetterOrDigit(key[i]))
-                    filename.Append(char.ToLowerInvariant(key[i]));
+                {
+                    _ = filename.Append(char.ToLowerInvariant(key[i]));
+                }
             }
             return filename.ToString();
         }
@@ -64,7 +67,10 @@ namespace Supremacy.Client
         public ImageSource Convert(string civKey)
         {
             if (string.IsNullOrEmpty(civKey))
+            {
                 return null;
+            }
+
             string baseDir = Environment.CurrentDirectory;
             foreach (string folder in Folders)
             {
@@ -82,11 +88,9 @@ namespace Supremacy.Client
                     }
                 }
             }
-            if (File.Exists(ResourceManager.GetResourcePath(ImageMissingPath)))
-            {
-                return ImageCache.Current.Get(ResourceManager.GetResourceUri(ImageMissingPath));
-            }
-            return null;
+            return File.Exists(ResourceManager.GetResourcePath(ImageMissingPath))
+                ? ImageCache.Current.Get(ResourceManager.GetResourceUri(ImageMissingPath))
+                : null;
         }
     }
 }

@@ -19,7 +19,9 @@ namespace Supremacy.Scripting.Ast
             : this(left, name, isDoubleColon, loc)
         {
             if (args != null && args.Count > 0)
+            {
                 TypeArguments = args;
+            }
         }
 
         public MemberName() : this(null) { }
@@ -60,7 +62,10 @@ namespace Supremacy.Scripting.Ast
             : this(null, right.Name, false, right.TypeArguments, loc)
         {
             if (right.IsDoubleColon)
+            {
                 throw new SyntaxErrorException("Cannot append double_colon member name");
+            }
+
             Left = (right.Left == null) ? left : new MemberName(left, right.Left);
         }
 
@@ -70,43 +75,34 @@ namespace Supremacy.Scripting.Ast
             return GetName(false);
         }
 
-        public bool IsGeneric
-        {
-            get
-            {
-                if (TypeArguments != null)
-                    return true;
-                if (Left != null)
-                    return Left.IsGeneric;
-                return false;
-            }
-        }
+        public bool IsGeneric => TypeArguments != null ? true : Left != null ? Left.IsGeneric : false;
 
         public string GetName(bool isGeneric)
         {
             string name = isGeneric ? BaseName : Name;
-            if (Left != null)
-                return Left.GetName(isGeneric) + (IsDoubleColon ? "::" : ".") + name;
-
-            return name;
+            return Left != null ? Left.GetName(isGeneric) + (IsDoubleColon ? "::" : ".") + name : name;
         }
 
         public TypeNameExpression GetTypeExpression()
         {
             if (Left == null)
+            {
                 return new TypeNameExpression(BaseName, TypeArguments, Span);
+            }
 
             if (IsDoubleColon)
             {
                 if (Left.Left != null)
+                {
                     throw new SyntaxErrorException("The left side of a :: should be an identifier");
+                }
 
-                var qualifiedAliasMember = new QualifiedAliasMember
-                                           {
-                                               Alias = Left.Name,
-                                               Name = Name,
-                                               Span = Span
-                                           };
+                QualifiedAliasMember qualifiedAliasMember = new QualifiedAliasMember
+                {
+                    Alias = Left.Name,
+                    Name = Name,
+                    Span = Span
+                };
 
                 qualifiedAliasMember.TypeArguments.Add(TypeArguments);
 
@@ -114,13 +110,13 @@ namespace Supremacy.Scripting.Ast
             }
 
             Expression lexpr = Left.GetTypeExpression();
-            
-            var memberAccessExpression = new MemberAccessExpression
-                   {
-                       Name = Name,
-                       Span = Span,
-                       Left = lexpr
-                   };
+
+            MemberAccessExpression memberAccessExpression = new MemberAccessExpression
+            {
+                Name = Name,
+                Span = Span,
+                Left = lexpr
+            };
             
             memberAccessExpression.TypeArguments.Add(TypeArguments);
 
@@ -129,28 +125,23 @@ namespace Supremacy.Scripting.Ast
 
         public string GetSignatureForError()
         {
-            var append = (TypeArguments == null) ? string.Empty : "<" + TypeArguments.GetSignatureForError() + ">";
+            string append = (TypeArguments == null) ? string.Empty : "<" + TypeArguments.GetSignatureForError() + ">";
             if (Left == null)
+            {
                 return Name + append;
-            var connect = IsDoubleColon ? "::" : ".";
+            }
+
+            string connect = IsDoubleColon ? "::" : ".";
             return Left.GetSignatureForError() + connect + Name + append;
         }
 
         public MemberName Clone()
         {
-            var leftClone = Left == null ? null : Left.Clone();
+            MemberName leftClone = Left?.Clone();
             return new MemberName(leftClone, Name, IsDoubleColon, TypeArguments, Span);
         }
 
-        public string BaseName
-        {
-            get
-            {
-                if (TypeArguments != null)
-                    return MakeName(Name, TypeArguments);
-                return Name;
-            }
-        }
+        public string BaseName => TypeArguments != null ? MakeName(Name, TypeArguments) : Name;
 
         public override bool Equals(object other)
         {
@@ -159,51 +150,40 @@ namespace Supremacy.Scripting.Ast
 
         public bool Equals(MemberName other)
         {
-            if (this == other)
-                return true;
-            if (other == null || Name != other.Name)
-                return false;
-            if (IsDoubleColon != other.IsDoubleColon)
-                return false;
-
-            if ((TypeArguments != null) &&
-                (other.TypeArguments == null || TypeArguments.Count != other.TypeArguments.Count))
-                return false;
-
-            if ((TypeArguments == null) && (other.TypeArguments != null))
-                return false;
-
-            if (Left == null)
-                return other.Left == null;
-
-            return Left.Equals(other.Left);
+            return this == other
+                ? true
+                : other == null || Name != other.Name
+                ? false
+                : IsDoubleColon != other.IsDoubleColon
+                ? false
+                : (TypeArguments != null) &&
+                (other.TypeArguments == null || TypeArguments.Count != other.TypeArguments.Count)
+                ? false
+                : (TypeArguments == null) && (other.TypeArguments != null) ? false : Left == null ? other.Left == null : Left.Equals(other.Left);
         }
 
         public override int GetHashCode()
         {
             int hash = Name.GetHashCode();
             for (MemberName n = Left; n != null; n = n.Left)
+            {
                 hash ^= n.Name.GetHashCode();
+            }
+
             if (IsDoubleColon)
+            {
                 hash ^= 0xbadc01d;
+            }
 
             if (TypeArguments != null)
+            {
                 hash ^= TypeArguments.Count << 5;
+            }
 
             return hash & 0x7FFFFFFF;
         }
 
-        public int CountTypeArguments
-        {
-            get
-            {
-                if (TypeArguments != null)
-                    return TypeArguments.Count;
-                if (Left != null)
-                    return Left.CountTypeArguments;
-                return 0;
-            }
-        }
+        public int CountTypeArguments => TypeArguments != null ? TypeArguments.Count : Left != null ? Left.CountTypeArguments : 0;
 
         public string Name { get; set; }
 
@@ -217,10 +197,7 @@ namespace Supremacy.Scripting.Ast
 
         public static string MakeName(string name, TypeArguments args)
         {
-            if (args == null || args.Count == 0)
-                return name;
-
-            return name + "`" + args.Count;
+            return args == null || args.Count == 0 ? name : name + "`" + args.Count;
         }
 
         public static string MakeName(string name, int count)

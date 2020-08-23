@@ -6,8 +6,10 @@
              xmlns:scc="http://schemas.startreksupremacy.com/xaml/presentation"
              mc:Ignorable="d" 
              d:DesignHeight="730" d:DesignWidth="300">
+    
+    <!--File:CheatMenu.xaml-->
+    
     <Grid Margin="0,-4,0,4">
-        
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
             <ColumnDefinition Width="100" />

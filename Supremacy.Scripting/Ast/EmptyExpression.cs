@@ -37,7 +37,7 @@ namespace Supremacy.Scripting.Ast
 
         public static EmptyExpression Grab()
         {
-            var result = _temp ?? new EmptyExpression();
+            EmptyExpression result = _temp ?? new EmptyExpression();
             _temp = null;
             return result;
         }

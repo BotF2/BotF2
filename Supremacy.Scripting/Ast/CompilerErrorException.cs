@@ -9,20 +9,11 @@ namespace Supremacy.Scripting.Ast
         private readonly ErrorInfo _errorInfo;
         private readonly object[] _messageArgs;
 
-        public int ErrorCode
-        {
-            get { return _errorInfo.Code; }
-        }
+        public int ErrorCode => _errorInfo.Code;
 
-        public Severity ErrorSeverity
-        {
-            get { return _errorInfo.Severity; }
-        }
+        public Severity ErrorSeverity => _errorInfo.Severity;
 
-        public string ErrorMessage
-        {
-            get { return _errorInfo.FormatMessage(_messageArgs); }
-        }
+        public string ErrorMessage => _errorInfo.FormatMessage(_messageArgs);
 
         internal CompilerErrorException(ErrorInfo errorInfo, params object[] messageArgs)
         {

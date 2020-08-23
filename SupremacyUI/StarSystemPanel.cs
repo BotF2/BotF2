@@ -91,7 +91,7 @@ namespace Supremacy.UI
             FoodBonusImage = new CachedBitmap(
                 new BitmapImage(
                     new Uri(
-                        "Resources/Images/Resources/food.png",
+                        "Resources/Images/ScreenIcons/food.png",
                         UriKind.Relative)),
                 BitmapCreateOptions.None,
                 BitmapCacheOption.OnLoad);
@@ -100,7 +100,7 @@ namespace Supremacy.UI
             EnergyBonusImage = new CachedBitmap(
                 new BitmapImage(
                     new Uri(
-                        "Resources/Images/Resources/energy.png",
+                        "Resources/Images/ScreenIcons/energy_bonus.png",
                         UriKind.Relative)),
                 BitmapCreateOptions.None,
                 BitmapCacheOption.OnLoad);
@@ -109,7 +109,7 @@ namespace Supremacy.UI
             DilithiumBonusImage = new CachedBitmap(
                 new BitmapImage(
                     new Uri(
-                        "Resources/Images/Resources/dilithium.png",
+                        "Resources/Images/ScreenIcons/dilithium.png",
                         UriKind.Relative)),
                 BitmapCreateOptions.None,
                 BitmapCacheOption.OnLoad);
@@ -118,7 +118,7 @@ namespace Supremacy.UI
             RawMaterialsBonusImage = new CachedBitmap(
                 new BitmapImage(
                     new Uri(
-                        "Resources/Images/Resources/rawmaterials.png",
+                        "Resources/Images/ScreenIcons/rawmaterials.png",
                         UriKind.Relative)),
                 BitmapCreateOptions.None,
                 BitmapCacheOption.OnLoad);
@@ -139,9 +139,10 @@ namespace Supremacy.UI
             DependencyObject source,
             DependencyPropertyChangedEventArgs e)
         {
-            var panel = source as StarSystemPanel;
-            if (panel != null)
+            if (source is StarSystemPanel panel)
+            {
                 panel.Refresh();
+            }
         }
         #endregion
 
@@ -168,7 +169,7 @@ namespace Supremacy.UI
             AddLogicalChild(_grid);
             AddVisualChild(_grid);
 
-            ClientEvents.GameEnding.Subscribe(OnGameEnding, ThreadOption.UIThread);
+            _ = ClientEvents.GameEnding.Subscribe(OnGameEnding, ThreadOption.UIThread);
 
             _regionContextChangeHandler = new DelegatingWeakPropertyChangedListener(OnRegionContextChanged);
 
@@ -181,7 +182,7 @@ namespace Supremacy.UI
                 _regionContextChangeHandler,
                 "Value");
 
-            Channel<TurnStartedMessage>.Public.ObserveOnDispatcher().Subscribe(_ => Refresh());
+            _ = Channel<TurnStartedMessage>.Public.ObserveOnDispatcher().Subscribe(_ => Refresh());
         }
 
         private void OnGameEnding(ClientEventArgs e)
@@ -202,7 +203,10 @@ namespace Supremacy.UI
             get
             {
                 if (s_appContext == null)
+                {
                     s_appContext = ServiceLocator.Current.GetInstance<IAppContext>();
+                }
+
                 return s_appContext;
             }
         }
@@ -212,49 +216,46 @@ namespace Supremacy.UI
             get
             {
                 if (s_resourceManager == null)
+                {
                     s_resourceManager = ServiceLocator.Current.GetInstance<IResourceManager>();
+                }
+
                 return s_resourceManager;
             }
         }
         // ReSharper restore MemberCanBeMadeStatic.Local
 
-        public Sector Sector
-        {
-            get { return _regionContext.Value as Sector; }
-        }
+        public Sector Sector => _regionContext.Value as Sector;
 
         public bool ShowStats
         {
-            get { return (bool)GetValue(ShowStatsProperty); }
-            set { SetValue(ShowStatsProperty, value); }
+            get => (bool)GetValue(ShowStatsProperty);
+            set => SetValue(ShowStatsProperty, value);
         }
 
         public StarSystem System
         {
             get
             {
-                var sector = Sector;
-                if (sector != null)
-                    return sector.System;
-                return null;
+                Sector sector = Sector;
+                return sector?.System;
             }
         }
 
-        protected override int VisualChildrenCount
-        {
-            get { return 1; }
-        }
+        protected override int VisualChildrenCount => 1;
         #endregion
 
         #region Public and Protected Methods
         public void Refresh()
         {
-            var system = System;
+            StarSystem system = System;
             //GameLog.Client.UI.DebugFormat("trying to refreshing PlanetView for {0}", system.Name);
             _grid.Children.Clear();
 
             if (ShowStats)
+            {
                 DisplayStats(system);
+            }
             //GameLog.Client.UI.DebugFormat("refreshing StarSystemPanel");
             if ((system != null) && IsScanned(system.Sector) && StarHelper.SupportsPlanets(system)) // && IsScanned(system.Sector) && StarHelper.SupportsPlanets(system))
                 {
@@ -272,10 +273,10 @@ namespace Supremacy.UI
         #region Private Methods
         private void DisplayStats(StarSystem system)
         {
-            var statsPanel = new StackPanel();
-            var fontSize = new FontSizeConverter();
-            var name = new TextBlock();
-            var details = new TextBlock();
+            StackPanel statsPanel = new StackPanel();
+            FontSizeConverter fontSize = new FontSizeConverter();
+            TextBlock name = new TextBlock();
+            TextBlock details = new TextBlock();
 
             name.FontFamily = FontFamily;
             name.FontSize = (double)fontSize.ConvertFrom("14pt");
@@ -293,18 +294,21 @@ namespace Supremacy.UI
             statsPanel.Margin = new Thickness(0, 0, 14, 0);
             statsPanel.CanHorizontallyScroll = false;
             if (!double.IsNaN(ActualWidth))
+            {
                 statsPanel.MaxWidth = ActualWidth;
-            statsPanel.Children.Add(name);
+            }
+
+            _ = statsPanel.Children.Add(name);
 
             if (!IsScanned(Sector))
             {
                 name.Text = ResourceManager.GetString("UNKNOWN_SECTOR");
             }
-            else if ((system != null) && (system.StarType == StarType.Nebula) && (!IsExplored(Sector) || system.Planets.Count == 0) )
+            else if ((system != null) && (system.StarType == StarType.Nebula) && (!IsExplored(Sector) || system.Planets.Count == 0))
             {
                 name.Text = ResourceManager.GetString("STAR_TYPE_NEBULA");
                 details.Text = ResourceManager.GetString("STAR_TYPE_NEBULA_DESCRIPTION");
-                statsPanel.Children.Add(details);
+                _ = statsPanel.Children.Add(details);
             }
             else if ((system != null) && !IsExplored(Sector) && StarHelper.SupportsPlanets(system))
             {
@@ -317,45 +321,45 @@ namespace Supremacy.UI
                     case StarType.BlackHole:
                         name.Text = ResourceManager.GetString("STAR_TYPE_BLACKHOLE");
                         details.Text = ResourceManager.GetString("STAR_TYPE_BLACKHOLE_DESCRIPTION");
-                        statsPanel.Children.Add(details);
+                        _ = statsPanel.Children.Add(details);
                         break;
                     case StarType.Wormhole:
                         name.Text = string.Format(ResourceManager.GetString("WORMHOLE_NAME_FORMAT"),
                             system.Name);
                         details.Text = ResourceManager.GetString("STAR_TYPE_WORMHOLE_DESCRIPTION");
-                        statsPanel.Children.Add(details);
+                        _ = statsPanel.Children.Add(details);
                         break;
                     case StarType.Quasar:
                         name.Text = ResourceManager.GetString("STAR_TYPE_QUASAR");
                         details.Text = ResourceManager.GetString("STAR_TYPE_QUASAR_DESCRIPTION");
-                        statsPanel.Children.Add(details);
+                        _ = statsPanel.Children.Add(details);
                         break;
 
                     case StarType.NeutronStar:
                         name.Text = ResourceManager.GetString("STAR_TYPE_NEUTRONSTAR");
                         details.Text = ResourceManager.GetString("STAR_TYPE_NEUTRONSTAR_DESCRIPTION");
-                        statsPanel.Children.Add(details);
+                        _ = statsPanel.Children.Add(details);
                         break;
 
                     case StarType.RadioPulsar:
                         name.Text = ResourceManager.GetString("STAR_TYPE_RADIOPULSAR");
                         details.Text = ResourceManager.GetString("STAR_TYPE_RADIOPULSAR_DESCRIPTION");
-                        statsPanel.Children.Add(details);
+                        _ = statsPanel.Children.Add(details);
                         break;
 
                     case StarType.XRayPulsar:
                         name.Text = ResourceManager.GetString("STAR_TYPE_XRAYPULSAR");
                         details.Text = ResourceManager.GetString("STAR_TYPE_XRAYPULSAR_DESCRIPTION");
-                        statsPanel.Children.Add(details);
+                        _ = statsPanel.Children.Add(details);
                         break;
 
                     default:
-                        var morale = new TextBlock();
-                        var population = new TextBlock();
-                        var growth = new TextBlock();
-                        var health = new TextBlock();
-                        var race = new TextBlock();
-                        var orbitals = new TextBlock();
+                        TextBlock morale = new TextBlock();
+                        TextBlock population = new TextBlock();
+                        TextBlock growth = new TextBlock();
+                        TextBlock health = new TextBlock();
+                        TextBlock race = new TextBlock();
+                        TextBlock orbitals = new TextBlock();
 
                         morale.FontFamily = FontFamily;
                         population.FontFamily = FontFamily;
@@ -378,16 +382,11 @@ namespace Supremacy.UI
                                             = orbitals.Foreground
                                             = Brushes.Beige;
 
-                        if (system.StarType == StarType.Nebula)
-                        {
-                            name.Text = string.Format(
+                        name.Text = system.StarType == StarType.Nebula
+                            ? string.Format(
                                 ResourceManager.GetString("NEBULA_NAME_FORMAT"),
-                                system.Name);
-                        }
-                        else
-                        {
-                            name.Text = system.Name;
-                        }
+                                system.Name)
+                            : system.Name;
 
                         if (system.HasColony)
                         {
@@ -435,13 +434,14 @@ namespace Supremacy.UI
                             BindingOperations.ClearBinding(orbitals, TextBlock.TextProperty);
                         }
 
-                        statsPanel.Children.Add(race);
-                        statsPanel.Children.Add(population);
-                        statsPanel.Children.Add(growth);
-                        if (system.HasColony) {
-                            statsPanel.Children.Add(health);
-                            statsPanel.Children.Add(morale);
-                            statsPanel.Children.Add(orbitals);
+                        _ = statsPanel.Children.Add(race);
+                        _ = statsPanel.Children.Add(population);
+                        _ = statsPanel.Children.Add(growth);
+                        if (system.HasColony)
+                        {
+                            _ = statsPanel.Children.Add(health);
+                            _ = statsPanel.Children.Add(morale);
+                            _ = statsPanel.Children.Add(orbitals);
                         }
 
                         break;
@@ -452,15 +452,15 @@ namespace Supremacy.UI
                 name.Text = ResourceManager.GetString("EMPTY_SPACE");
             }
 
-            _grid.Children.Add(statsPanel);
+            _ = _grid.Children.Add(statsPanel);
         }
 
         private void DisplayVisuals(StarSystem system)
         {
             //GameLog.Client.UI.DebugFormat("DisplayVisuals for {0} {1}", system.Location, system.Name);
-            var starContainer = new Grid();
-            var view = new Viewbox();
-            var visuals = new StackPanel();
+            Grid starContainer = new Grid();
+            Viewbox view = new Viewbox();
+            StackPanel visuals = new StackPanel();
 
             starContainer.Margin = new Thickness(14, 0, 0, 0);
             starContainer.MaxHeight = 128;
@@ -477,18 +477,18 @@ namespace Supremacy.UI
             if (IsExplored(Sector))
             {
                 //GameLog.Client.UI.DebugFormat("{0} {1} is explored and planets are displayed", Sector.Location, Sector.Name);
-                foreach (var planet in system.Planets.Reverse())
+                foreach (Planet planet in system.Planets.Reverse())
                 {
                     //GameLog.Client.UI.DebugFormat("planet {0}", planet.Name);
                     if (planet.PlanetType == PlanetType.Asteroids)
                     {
-                        var asteroids = new AsteroidsView { Margin = new Thickness(0, 0, 14, 0) };
+                        AsteroidsView asteroids = new AsteroidsView { Margin = new Thickness(0, 0, 14, 0) };
                         visuals.Children.Add(asteroids);
                     }
                     else
                     {
-                        var planetContainer = new Grid();
-                        var planet3d = new PlanetView3D
+                        Grid planetContainer = new Grid();
+                        PlanetView3D planet3d = new PlanetView3D
                         {
                             Planet = planet,
                             StarSystem = system
@@ -496,10 +496,10 @@ namespace Supremacy.UI
                         planetContainer.Margin = new Thickness(0, 0, 14, 0);
                         planetContainer.HorizontalAlignment = HorizontalAlignment.Right;
                         planetContainer.VerticalAlignment = VerticalAlignment.Center;
-                        planetContainer.Children.Add(planet3d);
+                        _ = planetContainer.Children.Add(planet3d);
                         if (planet.HasFoodBonus)
                         {
-                            var bonusIcon = new Image
+                            Image bonusIcon = new Image
                             {
                                 Source = TryFindResource("Images:Resources:Food") as ImageSource ?? FoodBonusImage,
                                 Width = PlanetBonusIconSize,
@@ -515,11 +515,11 @@ namespace Supremacy.UI
                                     [typeof(PlanetBonus).Name]
                                     [PlanetBonus.Food.ToString()][0]
                             };
-                            planetContainer.Children.Add(bonusIcon);
+                            _ = planetContainer.Children.Add(bonusIcon);
                         }
                         else if (planet.HasEnergyBonus)
                         {
-                            var bonusIcon = new Image
+                            Image bonusIcon = new Image
                             {
                                 Source = EnergyBonusImage,
                                 Width = PlanetBonusIconSize,
@@ -535,10 +535,10 @@ namespace Supremacy.UI
                                     [typeof(PlanetBonus).Name]
                                     [PlanetBonus.Energy.ToString()][0]
                             };
-                            planetContainer.Children.Add(bonusIcon);
+                            _ = planetContainer.Children.Add(bonusIcon);
                         }
                         //GameLog.Client.UI.DebugFormat("trying add planetContainer {0}", planetContainer.Name);
-                        visuals.Children.Add(planetContainer);
+                        _ = visuals.Children.Add(planetContainer);
                     }
                 }
             }
@@ -548,7 +548,7 @@ namespace Supremacy.UI
 
             if (system.StarType == StarType.Nebula)
             {
-                var starImage = new Image { Source = NebulaImage };
+                Image starImage = new Image { Source = NebulaImage };
                 star = starImage;
             }
             else
@@ -568,7 +568,10 @@ namespace Supremacy.UI
             else
             {
                 if (IsExplored(Sector))
+                {
                     starToolTip = system.Name + "\n";
+                }
+
                 starToolTip += ResourceManager.GetString(
                     "STAR_TYPE_" + system.StarType.ToString().ToUpper());
             }
@@ -580,13 +583,13 @@ namespace Supremacy.UI
                                       ResourceManager.GetString("QUADRANT"));
 
             //GameLog.Client.UI.DebugFormat("trying add starContainer {0}", starContainer.Name);
-            starContainer.Children.Add(star);
+            _ = starContainer.Children.Add(star);
 
             if (IsExplored(system.Sector))
             {
                 if (system.HasRawMaterialsBonus)
                 {
-                    var bonusIcon = new Image
+                    Image bonusIcon = new Image
                     {
                         Source = RawMaterialsBonusImage,
                         Width = SystemBonusIconSize,
@@ -597,11 +600,11 @@ namespace Supremacy.UI
                             [typeof(SystemBonus).Name]
                             [SystemBonus.RawMaterials.ToString()][0]
                     };
-                    starContainer.Children.Add(bonusIcon);
+                    _ = starContainer.Children.Add(bonusIcon);
                 }
                 if (system.HasDilithiumBonus)
                 {
-                    var bonusIcon = new Image
+                    Image bonusIcon = new Image
                     {
                         Source = DilithiumBonusImage,
                         Width = SystemBonusIconSize,
@@ -617,7 +620,7 @@ namespace Supremacy.UI
                             [typeof(SystemBonus).Name]
                             [SystemBonus.Dilithium.ToString()][0]
                     };
-                    starContainer.Children.Add(bonusIcon);
+                    _ = starContainer.Children.Add(bonusIcon);
                 }
             }
 
@@ -630,21 +633,17 @@ namespace Supremacy.UI
             view.StretchDirection = StretchDirection.DownOnly;
             view.Child = visuals;
             //GameLog.Client.UI.DebugFormat("trying add view {0}", view.Name);
-            _grid.Children.Add(view);
+            _ = _grid.Children.Add(view);
         }
 
         private bool IsExplored(Sector sector)
         {
-            if (sector == null)
-                return false;
-            return AppContext.LocalPlayerEmpire.MapData.IsExplored(sector.Location);
+            return sector == null ? false : AppContext.LocalPlayerEmpire.MapData.IsExplored(sector.Location);
         }
 
         private bool IsScanned(Sector sector)
         {
-            if (sector == null)
-                return false;
-            return AppContext.LocalPlayerEmpire.MapData.IsScanned(sector.Location);
+            return sector == null ? false : AppContext.LocalPlayerEmpire.MapData.IsScanned(sector.Location);
         }
         #endregion
     }

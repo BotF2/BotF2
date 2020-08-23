@@ -28,6 +28,7 @@ namespace Supremacy.Diplomacy
         Detested,
         TotalWar,
         ColdWar,
+        Cold,
         Neutral,
         Friend,
         Allied,
@@ -51,20 +52,86 @@ namespace Supremacy.Diplomacy
     {
         NoStatement,
         CommendWar = 0,
-        CommendRelationship,
-        CommendAssault,
-        CommendInvasion,
-        CommendSabotage,
+        //CommendRelationship,
+        //CommendAssault,
+        //CommendInvasion,
+        //CommendSabotage,
         DenounceWar,
-        DenounceRelationship,
-        DenounceAssault,
-        DenounceInvasion,
-        DenounceSabotage,
-        ThreatenDestroyColony,
-        ThreatenTradeEmbargo,
-        ThreatenDeclareWar,
+        //DenounceRelationship,
+        //DenounceAssault,
+        //DenounceInvasion,
+        //DenounceSabotage,
+        //ThreatenDestroyColony,
+        //ThreatenTradeEmbargo,
+        //ThreatenDeclareWar,
         WarDeclaration,
-        SabotageOrder
+        //SabotageOrder,
+        StealCredits,
+        StealResearch,
+        SabotageFood,
+        SabotageEnergy,
+        SabotageIndustry,
+        T01,
+        T02,
+        T03,
+        T04,
+        T05,
+        T10,
+        T12,
+        T13,
+        T14,
+        T15,
+        T20,
+        T21,
+        T23,
+        T24,
+        T25,
+        T30,
+        T31,
+        T32,
+        T34,
+        T35,
+        T40,
+        T41,
+        T42,
+        T43,
+        T45,
+        T50,
+        T51,
+        T52,
+        T53,
+        T54,
+        F01,
+        F02,
+        F03,
+        F04,
+        F05,
+        F10,
+        F12,
+        F13,
+        F14,
+        F15,
+        F20,
+        F21,
+        F23,
+        F24,
+        F25,
+        F30,
+        F31,
+        F32,
+        F34,
+        F35,
+        F40,
+        F41,
+        F42,
+        F43,
+        F45,
+        F50,
+        F51,
+        F52,
+        F53,
+        F54
+
     }
 
     public enum ResponseType : byte
@@ -81,40 +148,42 @@ namespace Supremacy.Diplomacy
     {
         NoClause,
 
-        OfferWithdrawTroops,
-        RequestWithdrawTroops,
+        //OfferWithdrawTroops,
+        //RequestWithdrawTroops,
 
-        OfferStopPiracy,
-        RequestStopPiracy,
+        //OfferStopPiracy, // this could become OfferStopSpying
+        //RequestStopPiracy,
 
-        OfferBreakAgreement,
-        RequestBreakAgreement,
-
+        //OfferBreakAgreement,
+        //RequestBreakAgreement,
+        // proposal
         OfferGiveCredits,
         RequestGiveCredits,
 
-        OfferGiveResources,
-        RequestGiveResources,
+        //OfferGiveResources,
+        //RequestGiveResources,
 
-        OfferMapData,
-        RequestMapData,
+        //OfferMapData,
+        //RequestMapData,
 
-        OfferHonorMilitaryAgreement,
-        RequestHonorMilitaryAgreement,
+        //OfferHonorMilitaryAgreement,
+        //RequestHonorMilitaryAgreement,
 
-        OfferEndEmbargo,
-        RequestEndEmbargo,
-
+        //OfferEndEmbargo,
+        //RequestEndEmbargo,
+        // proposals
         TreatyWarPact,
         TreatyCeaseFire,
         TreatyNonAggression,
         TreatyOpenBorders,
-        TreatyTradePact,
-        TreatyResearchPact,
+        //TreatyTradePact,
+        //TreatyResearchPact,
         TreatyAffiliation,
         TreatyDefensiveAlliance,
         TreatyFullAlliance,
-        TreatyMembership
+        TreatyMembership,
+        //TreatyAcceptRejectDictionary
+            
     }
 
     public enum RegardEventType : byte
@@ -132,7 +201,13 @@ namespace Supremacy.Diplomacy
         EnemySharesQuadrant,
         DeclaredWar,
         CapturedColony,
-        HealedPopulation
+        TreatyCounter,
+        TreatyReject,
+        HealedPopulation,
+        TreatyProposal,
+        TreatyAccept, 
+        DiplomaticShip,
+        TraitsInCommon
     }
 
     [Flags]
@@ -218,7 +293,8 @@ namespace Supremacy.Diplomacy
         MakeDemand,
         ResearchTech,
         Target,
-        MakeDemandProtectorate
+        MakeDemandProtectorate,
+            ForeignPowerChanged
     }
 
     /// <summary>

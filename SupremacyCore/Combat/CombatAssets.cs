@@ -1,4 +1,4 @@
-// CombatAssets.cs
+// File:CombatAssets.cs
 //
 // Copyright (c) 2007 Mike Strobel
 //
@@ -21,102 +21,59 @@ namespace Supremacy.Combat
     [Serializable]
     public class CombatAssets : IEquatable<CombatAssets>
     {
-        private int _combatId;
-        private readonly int _ownerId;
-        private readonly MapLocation _location;
-        private readonly List<CombatUnit> _combatShips;
-        private readonly List<CombatUnit> _nonCombatShips;
-        private readonly List<CombatUnit> _escapedShips;
-        private readonly List<CombatUnit> _destroyedShips;
-        private readonly List<CombatUnit> _assimilatedShips;
-        private CombatUnit _station;
-
         public CombatAssets(Civilization owner, MapLocation location) : this(-1, owner, location) { }
 
         public CombatAssets(int combatId, Civilization owner, MapLocation location)
         {
             if (owner == null)
-                throw new ArgumentNullException("owner");
-            _combatId = combatId;
-            _ownerId = owner.CivID;
-            _location = location;
-            _combatShips = new List<CombatUnit>();
-            _nonCombatShips = new List<CombatUnit>();
-            _escapedShips = new List<CombatUnit>();
-            _destroyedShips = new List<CombatUnit>();
-            _assimilatedShips = new List<CombatUnit>();
+            {
+                throw new ArgumentNullException(nameof(owner));
+            }
+
+            CombatID = combatId;
+            OwnerID = owner.CivID;
+            Location = location;
+            CombatShips = new List<CombatUnit>();
+            NonCombatShips = new List<CombatUnit>();
+            EscapedShips = new List<CombatUnit>();
+            DestroyedShips = new List<CombatUnit>();
+            AssimilatedShips = new List<CombatUnit>();
         }
         public CombatAssets()
         {
+        }
+        public int CombatID { get; internal set; }
 
-        }
-        public int CombatID
-        {
-            get { return _combatId; }
-            internal set { _combatId = value; }
-        }
+        public int OwnerID { get; }
 
-        public int OwnerID
-        {
-            get { return _ownerId; }
-        }
+        public Civilization Owner => GameContext.Current.Civilizations[OwnerID];
 
-        public Civilization Owner
-        {
-            get { return GameContext.Current.Civilizations[_ownerId]; }
-        }
+        public MapLocation Location { get; }
 
-        public MapLocation Location
-        {
-            get { return _location; }
-        }
+        public Sector Sector => GameContext.Current.Universe.Map[Location];
 
-        public Sector Sector
-        {
-            get { return GameContext.Current.Universe.Map[_location]; }
-        }
+        public List<CombatUnit> CombatShips { get; }
 
-        public List<CombatUnit> CombatShips
-        {
-            get { return _combatShips; }
-        }
+        public List<CombatUnit> NonCombatShips { get; }
 
-        public List<CombatUnit> NonCombatShips
-        {
-            get { return _nonCombatShips; }
-        }
+        public List<CombatUnit> EscapedShips { get; }
 
-        public List<CombatUnit> EscapedShips
-        {
-            get { return _escapedShips; }
-        }
+        public List<CombatUnit> DestroyedShips { get; }
 
-        public List<CombatUnit> DestroyedShips
-        {
-            get { return _destroyedShips; }
-        }
+        public List<CombatUnit> AssimilatedShips { get; }
 
-        public List<CombatUnit> AssimilatedShips
-        {
-            get { return _assimilatedShips; }
-        }
-
-        public CombatUnit Station
-        {
-            get { return _station; }
-            set { _station = value; }
-        }
+        public CombatUnit Station { get; set; }
 
         public bool IsTransport
         {
             get
             {
-                if (_combatShips.Any(cs => cs.Source.OrbitalDesign.ShipType == "Transport"))
+                if (CombatShips.Any(cs => cs.Source.OrbitalDesign.ShipType == "Transport"))
                 {
                     return true;
                 }
 
-                if (_nonCombatShips.Any(ncs => ncs.Source.OrbitalDesign.ShipType == "Transport"))
+                if (NonCombatShips.Any(ncs => ncs.Source.OrbitalDesign.ShipType == "Transport"))
                 {
                     return true;
                 }
@@ -129,12 +86,12 @@ namespace Supremacy.Combat
         {
             get
             {
-                if (_combatShips.Any(cs => cs.Source.OrbitalDesign.ShipType == "Spy"))
+                if (CombatShips.Any(cs => cs.Source.OrbitalDesign.ShipType == "Spy"))
                 {
                     return true;
                 }
 
-                if (_nonCombatShips.Any(ncs => ncs.Source.OrbitalDesign.ShipType == "Spy"))
+                if (NonCombatShips.Any(ncs => ncs.Source.OrbitalDesign.ShipType == "Spy"))
                 {
                     return true;
                 }
@@ -147,12 +104,12 @@ namespace Supremacy.Combat
         {
             get
             {
-                if (_combatShips.Any(cs => cs.Source.OrbitalDesign.ShipType == "Diplomatic"))
+                if (CombatShips.Any(cs => cs.Source.OrbitalDesign.ShipType == "Diplomatic"))
                 {
                     return true;
                 }
 
-                if (_nonCombatShips.Any(ncs => ncs.Source.OrbitalDesign.ShipType == "Diplomatic"))
+                if (NonCombatShips.Any(ncs => ncs.Source.OrbitalDesign.ShipType == "Diplomatic"))
                 {
                     return true;
                 }
@@ -161,68 +118,93 @@ namespace Supremacy.Combat
             }
         }
 
-
-        public bool HasSurvivingAssets
-        {
-            get { return CombatShips.Any() || NonCombatShips.Any() || ((Station != null) && !Station.IsDestroyed); }
-        }
-         public bool HasEscapedAssets
-        {
-            get { return EscapedShips.Any(); }
-        }
+        public bool HasSurvivingAssets => CombatShips.Count > 0 || NonCombatShips.Count > 0 || (Station?.IsDestroyed == false);
+        public bool HasEscapedAssets => EscapedShips.Count > 0;
         public void UpdateAllSources()
         {
-            foreach (CombatUnit shipStats in _combatShips)
+            foreach (CombatUnit shipStats in CombatShips)
+            {
                 shipStats.UpdateSource();
-            foreach (CombatUnit shipStats in _nonCombatShips)
+            }
+
+            foreach (CombatUnit shipStats in NonCombatShips)
+            {
                 shipStats.UpdateSource();
-            foreach (CombatUnit shipStats in _escapedShips)
+            }
+
+            foreach (CombatUnit shipStats in EscapedShips)
+            {
                 shipStats.UpdateSource();
-            foreach (CombatUnit shipStats in _destroyedShips)
+            }
+
+            foreach (CombatUnit shipStats in DestroyedShips)
+            {
                 shipStats.UpdateSource();
-            foreach (CombatUnit shipStats in _assimilatedShips)
+            }
+
+            foreach (CombatUnit shipStats in AssimilatedShips)
+            {
                 shipStats.UpdateSource();
-            if (_station != null)
-                _station.UpdateSource();
+            }
+
+            Station?.UpdateSource();
         }
 
         public static bool operator ==(CombatAssets a, CombatAssets b)
         {
             if (ReferenceEquals(a, b))
+            {
                 return true;
-            if (((object)a == null) || ((object)b == null))
+            }
+
+            if ((a is null) || (b is null))
+            {
                 return false;
-            return ((a._combatId == b._combatId)
-                    && (a._ownerId == b._ownerId));
+            }
+
+            return (a.CombatID == b.CombatID)
+                    && (a.OwnerID == b.OwnerID);
         }
 
         public static bool operator !=(CombatAssets a, CombatAssets b)
         {
             if (ReferenceEquals(a, b))
+            {
                 return false;
-            if (((object)a == null) || ((object)b == null))
+            }
+
+            if ((a is null) || (b is null))
+            {
                 return true;
-            return ((a._combatId != b._combatId)
-                    || (a._ownerId != b._ownerId));
+            }
+
+            return (a.CombatID != b.CombatID)
+                    || (a.OwnerID != b.OwnerID);
         }
 
-        public bool Equals(CombatAssets combatAssets)
+        public bool Equals(CombatAssets other)
         {
-            if (combatAssets == null)
+            if (other == null)
+            {
                 return false;
-            return (_combatId == combatAssets._combatId) && (_ownerId == combatAssets._ownerId);
+            }
+
+            return (CombatID == other.CombatID) && (OwnerID == other.OwnerID);
         }
 
         public override bool Equals(object obj)
         {
             if (ReferenceEquals(this, obj))
+            {
                 return true;
+            }
+
             return Equals(obj as CombatAssets);
         }
 
         public override int GetHashCode()
         {
-            return _combatId + 29 * _ownerId;
+            return CombatID + (29 * OwnerID);
         }
     }
 }

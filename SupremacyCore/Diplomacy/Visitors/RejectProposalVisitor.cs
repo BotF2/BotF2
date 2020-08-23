@@ -54,13 +54,13 @@ namespace Supremacy.Diplomacy.Visitors
             var diplomat = Diplomat.Get(proposal.Recipient);
             var foreignPower = diplomat.GetForeignPower(proposal.Sender);
 
-            GameContext.Current.AgreementMatrix.AddAgreement(agreement);
+            //GameContext.Current.AgreementMatrix.AddAgreement(agreement);
 
             var response = new Response(ResponseType.Reject, proposal);
             GameLog.Core.Diplomacy.DebugFormat("RejectProposal from {1} to {0}", diplomat, foreignPower, agreement.Data.ToString());
 
             foreignPower.ResponseSent = response;
-            foreignPower.UpdateStatus();
+            //foreignPower.UpdateStatus();
 
             //return agreement;
         }
@@ -75,10 +75,10 @@ namespace Supremacy.Diplomacy.Visitors
         protected override void VisitRequestBreakAgreementClause(IClause clause) { /* TODO */ }
         protected override void VisitOfferGiveCreditsClause(IClause clause) { /* TODO */ }
         protected override void VisitRequestGiveCreditsClause(IClause clause) { /* TODO */ }
-        protected override void VisitOfferGiveResourcesClause(IClause clause) { /* TODO */ }
-        protected override void VisitRequestGiveResourcesClause(IClause clause) { /* TODO */ }
-        protected override void VisitOfferMapDataClause(IClause clause) { /* TODO */ }
-        protected override void VisitRequestMapDataClause(IClause clause) { /* TODO */ }
+        //protected override void VisitOfferGiveResourcesClause(IClause clause) { /* TODO */ }
+        //protected override void VisitRequestGiveResourcesClause(IClause clause) { /* TODO */ }
+        //protected override void VisitOfferMapDataClause(IClause clause) { /* TODO */ }
+        //protected override void VisitRequestMapDataClause(IClause clause) { /* TODO */ }
         protected override void VisitOfferHonorMilitaryAgreementClause(IClause clause) { /* TODO */ }
         protected override void VisitRequestHonorMilitaryAgreementClause(IClause clause) { /* TODO */ }
         protected override void VisitOfferEndEmbargoClause(IClause clause) { /* TODO */ }

@@ -27,6 +27,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Windows;
 
 namespace Supremacy.Game
@@ -163,7 +164,6 @@ namespace Supremacy.Game
         [NonSerialized]
         private GameTables _tables;
         private ResearchMatrix _researchMatrix;
-      //  private IntelMatrix _intelMatrix;
         private SectorClaimGrid _sectorClaims;
         private TechTreeMap _techTrees;
         private CivilizationPairedMap<IDiplomacyData> _diplomacyData;
@@ -269,20 +269,24 @@ namespace Supremacy.Game
             if (textDatabase == null)
                 throw new ArgumentNullException("textDatabase");
 
-            var techObjectTable = textDatabase.GetTable<ITechObjectTextDatabaseEntry>();
+            var techObjectTable = textDatabase.GetTable<ITechObjectTextDatabaseEntry>(); //Does this every get any data?????
 
             foreach (var design in _techDatabase)
             {
-                LocalizedTextGroup localizedText;
+                ///GameLog.Client.GameInitData.DebugFormat("THE design Key ={0}; Name ={1}; Description ={2}", design.Key, design.Name, design.Description);
+                LocalizedTextGroup localizedText; // This is Orbital Batteries Only!!! 
                 if (LocalizedTextDatabase.Instance.Groups.TryGetValue(new TechObjectTextGroupKey(design.Key), out localizedText))
                 {
+                    //GameLog.Client.GameInitData.DebugFormat("###### textDatabase localizedTest = {0} {1} {2} {3} {4}",
+                    //    localizedText.DefaultEntry, localizedText.DefaultLocalText, localizedText.Entries, localizedText.Key, design.Key );
                     design.LocalizedText = localizedText;
                     continue;
                 }
-                ITextDatabaseEntry<ITechObjectTextDatabaseEntry> entry;
-                if (!techObjectTable.TryGetEntry(design.Key, out entry))
+                ITextDatabaseEntry<ITechObjectTextDatabaseEntry> entry; 
+                if (!techObjectTable.TryGetEntry(design.Key, out entry)) 
                     continue;
                 design.TextDatabaseEntry = entry.GetLocalizedEntry(ResourceManager.CurrentLocale);
+                //GameLog.Client.GameInitData.DebugFormat("THE ^^TextDatabaseEntry ={0} {1}", design.TextDatabaseEntry.Name, design.TextDatabaseEntry.Description);
             }
         }
 

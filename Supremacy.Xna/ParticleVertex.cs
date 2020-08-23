@@ -6,7 +6,7 @@ namespace Supremacy.Xna
     /// <summary>
     /// Custom vertex structure for drawing point sprite particles.
     /// </summary>
-    struct ParticleVertex
+    internal struct ParticleVertex
     {
         // Stores the starting position of the particle.
         public Vector3 Position;

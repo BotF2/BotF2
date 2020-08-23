@@ -5,8 +5,6 @@ using System.Reflection;
 
 using Microsoft.Scripting.Runtime;
 
-using Supremacy.Annotations;
-
 namespace Supremacy.Scripting.Utility
 {
     public static partial class TypeManager
@@ -23,7 +21,6 @@ namespace Supremacy.Scripting.Utility
 
         public static class CoreTypes
         {
-            [UsedImplicitly]
             private static readonly dynamic _dynamic; // It used by GetField("_dynamic", ...), if you removed this line be leave GetField() call, the game will crash mid-game
 
             public static readonly Type Dynamic = typeof(CoreTypes).GetField("_dynamic", BindingFlags.NonPublic | BindingFlags.Static).FieldType;

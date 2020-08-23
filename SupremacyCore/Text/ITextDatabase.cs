@@ -44,7 +44,6 @@ namespace Supremacy.Text
     public interface ITechObjectTextDatabaseEntry : ILocalizedTextDatabaseEntry
     {
         string Name { get; set; }
-        //string ClassLevel { get; set; }
         string Description { get; set; }
         string Custom1 { get; set; }
         string Custom2 { get; set; }
@@ -55,7 +54,6 @@ namespace Supremacy.Text
     {
         string SingularName { get; set; }
         string PluralName { get; set; }
-        //string ClassLevel { get; set; }
         string Description { get; set; }
     }
 
@@ -74,6 +72,7 @@ namespace Supremacy.Text
         public static ClientTextDatabase Load(string path)
         {
             var doc = XDocument.Load(path);
+            
             var database = new ClientTextDatabase();
 
             var techObjectTable = database.TechObjectTextTable;
@@ -99,7 +98,7 @@ namespace Supremacy.Text
             //streamWriter = new StreamWriter(file);
             String strHeader = "";  // first line of output files
 
-            if (GameLog.Core.GameInitData.IsDebugEnabled == true)
+
             try // avoid hang up if this file is opened by another program 
             {
 
@@ -139,7 +138,6 @@ namespace Supremacy.Text
                             (string)localizedEntryElement.Attribute("Language"),
                             (string)localizedEntryElement.Element("Name"),
                             (string)localizedEntryElement.Element("Description"),
-                            //(string)localizedEntryElement.Element("ClassLevel"),
                             (string)localizedEntryElement.Element("Custom1"),
                             (string)localizedEntryElement.Element("Custom2")
                             );
@@ -197,7 +195,6 @@ namespace Supremacy.Text
                             (string)localizedEntryElement.Attribute("Language"),
                             (string)localizedEntryElement.Element("SingularName"),
                             (string)localizedEntryElement.Element("PluralName"),
-                            //(string)localizedEntryElement.Element("ClassLevel"),
                             (string)localizedEntryElement.Element("Description"));
 
                         entry.AddInternal(localizedEntry);
@@ -529,7 +526,6 @@ namespace Supremacy.Text
             public TechObjectTextDatabaseEntry(
                 [NotNull] string language,
                 string name,
-                //string classLevel,
                 string description,
                 string custom1,
                 string custom2)
@@ -540,8 +536,6 @@ namespace Supremacy.Text
 
                 if (name != null)
                     name = name.Trim();
-                //if (classLevel != null)
-                //    classLevel = classLevel.Trim();
                 if (description != null)
                     description = description.Trim();
                 if (custom1 != null)
@@ -550,7 +544,6 @@ namespace Supremacy.Text
                     custom2 = custom2.Trim();
 
                 Name = name;
-                //ClassLevel = classLevel;
                 Description = description;
                 Custom1 = custom1;
                 Custom2 = custom2;

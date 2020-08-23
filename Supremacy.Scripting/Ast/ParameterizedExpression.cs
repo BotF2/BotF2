@@ -10,10 +10,7 @@ namespace Supremacy.Scripting.Ast
     {
         private readonly List<LocalDeclaration> _locals = new List<LocalDeclaration>();
 
-        public IList<LocalDeclaration> Locals
-        {
-            get { return _locals; }
-        }
+        public IList<LocalDeclaration> Locals => _locals;
 
         public override void Walk(AstVisitor prefix, AstVisitor postfix)
         {
@@ -24,23 +21,27 @@ namespace Supremacy.Scripting.Ast
 
         public override MSAst TransformCore(ScriptGenerator generator)
         {
-            var expression = Expression;
+            Expression expression = Expression;
             if (expression == null)
+            {
                 return MSAst.Default(typeof(object));
+            }
 
-            var locals = _locals.ToArray();
-            var scope = generator.PushNewScope();
+            LocalDeclaration[] locals = _locals.ToArray();
+            ScriptScope scope = generator.PushNewScope();
 
             try
             {
-                var localInitializers = locals.Select(o => o.Initializer.Transform(generator)).ToArray();
+                MSAst[] localInitializers = locals.Select(o => o.Initializer.Transform(generator)).ToArray();
                 //var existingParamCount = generator.Scope.Parent.Locals.Count();
 
-                foreach (var local in locals)
+                foreach (LocalDeclaration local in locals)
+                {
                     scope.CreateParameter(local.VariableName);
+                }
 
-                var lambdaBody = expression.Transform(generator);
-                var innerLambda = scope.FinishScope(lambdaBody);
+                MSAst lambdaBody = expression.Transform(generator);
+                System.Linq.Expressions.LambdaExpression innerLambda = scope.FinishScope(lambdaBody);
 
                 return MSAst.Invoke(
                     innerLambda,
@@ -55,7 +56,7 @@ namespace Supremacy.Scripting.Ast
 
         public override void Dump(SourceWriter sw, int indentChange)
         {
-            foreach (var local in _locals)
+            foreach (LocalDeclaration local in _locals)
             {
                 DumpChild(local, sw, indentChange);
                 sw.WriteLine();
@@ -72,7 +73,7 @@ namespace Supremacy.Scripting.Ast
 
             if (Scope == null)
             {
-                var parameters = new ParametersCompiled(
+                ParametersCompiled parameters = new ParametersCompiled(
                     Locals.Select(o => new Parameter(o.VariableName, null, o.Span)));
 
                 Scope = new TopLevelScope(
@@ -85,13 +86,17 @@ namespace Supremacy.Scripting.Ast
                     Span.Start);
 
                 for (int i = 0; i < parameters.Count; i++)
+                {
                     parameters[i].Scope = Scope;
+                }
             }
 
             parseContext.CurrentScope = Scope;
 
             if (raiseInitialized)
+            {
                 OnInitialized();
+            }
         }
 
         public override Expression DoResolve(ParseContext parseContext)

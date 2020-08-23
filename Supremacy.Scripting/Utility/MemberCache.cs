@@ -36,14 +36,11 @@ namespace Supremacy.Scripting.Utility
 
             // If we have a base class (we have a base class unless we're
             // TypeManager.object_type), we deep-copy its MemberCache here.
-            if (Container.BaseCache != null)
-                MemberHash = SetupCache(Container.BaseCache);
-            else
-                MemberHash = new Hashtable();
+            MemberHash = Container.BaseCache != null ? SetupCache(Container.BaseCache) : new Hashtable();
 
             // If this is neither a dynamic type nor an interface, create a special
             // method cache with all declared and inherited methods.
-            var type = container.Type;
+            Type type = container.Type;
             if (!(type is TypeBuilder) && !type.IsInterface &&
                 !TypeManager.IsGenericType(type) && !TypeManager.IsGenericParameter(type) &&
                 (Container.BaseCache == null || Container.BaseCache.MethodHash != null))
@@ -59,10 +56,7 @@ namespace Supremacy.Scripting.Utility
         public MemberCache(Type baseType, IMemberContainer container)
         {
             Container = container;
-            if (baseType == null)
-                MemberHash = new Hashtable();
-            else
-                MemberHash = SetupCache(TypeHandle.GetMemberCache(baseType));
+            MemberHash = baseType == null ? new Hashtable() : SetupCache(TypeHandle.GetMemberCache(baseType));
         }
 
         public MemberCache(Type[] ifaces)
@@ -75,10 +69,14 @@ namespace Supremacy.Scripting.Utility
 
             MemberHash = new Hashtable();
             if (ifaces == null)
+            {
                 return;
+            }
 
-            foreach (var itype in ifaces)
+            foreach (Type itype in ifaces)
+            {
                 AddCacheContents(TypeHandle.GetMemberCache(itype));
+            }
         }
 
         public MemberCache(IMemberContainer container, Type baseClass, Type[] ifaces)
@@ -87,20 +85,22 @@ namespace Supremacy.Scripting.Utility
 
             // If we have a base class (we have a base class unless we're
             // TypeManager.object_type), we deep-copy its MemberCache here.
-            if (Container.BaseCache != null)
-                MemberHash = SetupCache(Container.BaseCache);
-            else
-                MemberHash = new Hashtable();
+            MemberHash = Container.BaseCache != null ? SetupCache(Container.BaseCache) : new Hashtable();
 
             if (baseClass != null)
+            {
                 AddCacheContents(TypeHandle.GetMemberCache(baseClass));
+            }
+
             if (ifaces != null)
             {
-                foreach (var itype in ifaces)
+                foreach (Type itype in ifaces)
                 {
-                    var cache = TypeHandle.GetMemberCache(itype);
+                    MemberCache cache = TypeHandle.GetMemberCache(itype);
                     if (cache != null)
+                    {
                         AddCacheContents(cache);
+                    }
                 }
             }
         }
@@ -109,10 +109,12 @@ namespace Supremacy.Scripting.Utility
         private static Hashtable SetupCache(MemberCache baseClass)
         {
             if (baseClass == null)
+            {
                 return new Hashtable();
+            }
 
-            var hash = new Hashtable(baseClass.MemberHash.Count);
-            var it = baseClass.MemberHash.GetEnumerator();
+            Hashtable hash = new Hashtable(baseClass.MemberHash.Count);
+            IDictionaryEnumerator it = baseClass.MemberHash.GetEnumerator();
             while (it.MoveNext())
             {
                 hash.Add(it.Key, ((ArrayList)it.Value).Clone());
@@ -124,20 +126,25 @@ namespace Supremacy.Scripting.Utility
         /// <summary>Add the contents of `cache' to the member_hash.</summary>
         private void AddCacheContents(MemberCache cache)
         {
-            var it = cache.MemberHash.GetEnumerator();
+            IDictionaryEnumerator it = cache.MemberHash.GetEnumerator();
             while (it.MoveNext())
             {
-                var list = (ArrayList)MemberHash[it.Key];
+                ArrayList list = (ArrayList)MemberHash[it.Key];
                 if (list == null)
-                    MemberHash[it.Key] = list = new ArrayList();
-
-                var entries = (ArrayList)it.Value;
-                for (var i = entries.Count - 1; i >= 0; i--)
                 {
-                    var entry = (CacheEntry)entries[i];
+                    MemberHash[it.Key] = list = new ArrayList();
+                }
+
+                ArrayList entries = (ArrayList)it.Value;
+                for (int i = entries.Count - 1; i >= 0; i--)
+                {
+                    CacheEntry entry = (CacheEntry)entries[i];
 
                     if (entry.Container != cache.Container)
+                    {
                         break;
+                    }
+
                     list.Add(entry);
                 }
             }
@@ -178,7 +185,9 @@ namespace Supremacy.Scripting.Utility
         public void AddInterface(MemberCache baseCache)
         {
             if (baseCache.MemberHash.Count > 0)
+            {
                 AddCacheContents(baseCache);
+            }
         }
 
         private void AddMember(
@@ -189,7 +198,7 @@ namespace Supremacy.Scripting.Utility
             MemberInfo member)
         {
             // We use a name-based hash table of ArrayList's.
-            var list = (ArrayList)MemberHash[name];
+            ArrayList list = (ArrayList)MemberHash[name];
             if (list == null)
             {
                 list = new ArrayList(1);
@@ -201,7 +210,7 @@ namespace Supremacy.Scripting.Utility
             // We cannot add new members in front of the list since this'd be an
             // expensive operation, that's why the list is sorted in reverse order
             // (ie. members from the current class are coming last).
-            list.Add(new CacheEntry(container, member, mt, bf));
+            _ = list.Add(new CacheEntry(container, member, mt, bf));
         }
 
         /// <summary>
@@ -211,19 +220,21 @@ namespace Supremacy.Scripting.Utility
         /// </summary>
         private void AddMembers(MemberTypes mt, BindingFlags bf, IMemberContainer container)
         {
-            var members = container.GetMembers(mt, bf);
+            MemberInfo[] members = container.GetMembers(mt, bf);
 
-            foreach (var member in members)
+            foreach (MemberInfo member in members)
             {
-                var name = member.Name;
+                string name = member.Name;
 
                 AddMember(mt, bf, container, name, member);
 
                 if (member is MethodInfo)
                 {
-                    var gname = TypeManager.GetMethodName((MethodInfo)member);
+                    string gname = TypeManager.GetMethodName((MethodInfo)member);
                     if (gname != name)
+                    {
                         AddMember(mt, bf, container, gname, member);
+                    }
                 }
             }
         }
@@ -251,46 +262,50 @@ namespace Supremacy.Scripting.Utility
 
             Array.Reverse(members);
 
-            foreach (var member in members)
+            foreach (MethodBase member in members)
             {
-                var name = member.Name;
+                string name = member.Name;
 
                 // We use a name-based hash table of ArrayList's.
-                var list = (ArrayList)MethodHash[name];
+                ArrayList list = (ArrayList)MethodHash[name];
                 if (list == null)
                 {
                     list = new ArrayList(1);
                     MethodHash.Add(name, list);
                 }
 
-                var curr = (MethodInfo)member;
+                MethodInfo curr = (MethodInfo)member;
                 while (curr.IsVirtual && (curr.Attributes & MethodAttributes.NewSlot) == 0)
                 {
-                    var baseMethod = curr.GetBaseDefinition();
+                    MethodInfo baseMethod = curr.GetBaseDefinition();
 
                     if (baseMethod == curr)
+                    {
                         // Not every virtual function needs to have a NewSlot flag.
                         break;
+                    }
 
-                    _overrides.Add(curr);
-                    list.Add(new CacheEntry(null, baseMethod, MemberTypes.Method, bf));
+                    _ = _overrides.Add(curr);
+                    _ = list.Add(new CacheEntry(null, baseMethod, MemberTypes.Method, bf));
                     curr = baseMethod;
                 }
 
                 if (_overrides.Count > 0)
                 {
-                    foreach (var t in _overrides)
+                    foreach (object t in _overrides)
                         TypeManager.RegisterOverride((MethodBase)t, curr);
                     _overrides.Clear();
                 }
 
                 // Unfortunately, the elements returned by Type.GetMethods() aren't
                 // sorted so we need to do this check for every member.
-                var newBf = bf;
+                BindingFlags newBf = bf;
                 if (member.DeclaringType == type)
+                {
                     newBf |= BindingFlags.DeclaredOnly;
+                }
 
-                list.Add(new CacheEntry(Container, member, MemberTypes.Method, newBf));
+                _ = list.Add(new CacheEntry(Container, member, MemberTypes.Method, newBf));
             }
         }
 
@@ -300,32 +315,62 @@ namespace Supremacy.Scripting.Utility
         /// </summary>
         protected static EntryType GetEntryType(MemberTypes mt, BindingFlags bf)
         {
-            var type = EntryType.None;
+            EntryType type = EntryType.None;
 
             if ((mt & MemberTypes.Constructor) != 0)
+            {
                 type |= EntryType.Constructor;
+            }
+
             if ((mt & MemberTypes.Event) != 0)
+            {
                 type |= EntryType.Event;
+            }
+
             if ((mt & MemberTypes.Field) != 0)
+            {
                 type |= EntryType.Field;
+            }
+
             if ((mt & MemberTypes.Method) != 0)
+            {
                 type |= EntryType.Method;
+            }
+
             if ((mt & MemberTypes.Property) != 0)
+            {
                 type |= EntryType.Property;
+            }
             // Nested types are returned by static and instance searches.
             if ((mt & MemberTypes.NestedType) != 0)
+            {
                 type |= EntryType.NestedType | EntryType.Static | EntryType.Instance;
+            }
 
             if ((bf & BindingFlags.Instance) != 0)
+            {
                 type |= EntryType.Instance;
+            }
+
             if ((bf & BindingFlags.Static) != 0)
+            {
                 type |= EntryType.Static;
+            }
+
             if ((bf & BindingFlags.Public) != 0)
+            {
                 type |= EntryType.Public;
+            }
+
             if ((bf & BindingFlags.NonPublic) != 0)
+            {
                 type |= EntryType.NonPublic;
+            }
+
             if ((bf & BindingFlags.DeclaredOnly) != 0)
+            {
                 type |= EntryType.Declared;
+            }
 
             return type;
         }
@@ -422,16 +467,15 @@ namespace Supremacy.Scripting.Utility
             // a method or constructor.
             //
             if (list.Count == 1 && !(list[0] is MethodBase))
+            {
                 return true;
+            }
 
             //
             // Multiple properties: we query those just to find out the indexer
             // name
             //
-            if ((list.Count > 0) && (list[0] is PropertyInfo))
-                return true;
-
-            return false;
+            return (list.Count > 0) && (list[0] is PropertyInfo);
         }
 
         /// 
@@ -466,27 +510,27 @@ namespace Supremacy.Scripting.Utility
             object criteria)
         {
             if (_usingGlobal)
+            {
                 throw new Exception();
+            }
 
-            var declaredOnly = (bf & BindingFlags.DeclaredOnly) != 0;
-            var methodSearch = mt == MemberTypes.Method;
+            bool declaredOnly = (bf & BindingFlags.DeclaredOnly) != 0;
+            bool methodSearch = mt == MemberTypes.Method;
             // If we have a method cache and we aren't already doing a method-only search,
             // then we restart a method search if the first match is a method.
-            var doMethodSearch = !methodSearch && (MethodHash != null);
+            bool doMethodSearch = !methodSearch && (MethodHash != null);
 
-            ArrayList applicable;
+            ArrayList applicable = methodSearch && (MethodHash != null) ? (ArrayList)MethodHash[name] : (ArrayList)MemberHash[name];
 
             // If this is a method-only search, we try to use the method cache if
             // possible; a lookup in the method cache will return a MemberInfo with
             // the correct ReflectedType for inherited methods.
 
-            if (methodSearch && (MethodHash != null))
-                applicable = (ArrayList)MethodHash[name];
-            else
-                applicable = (ArrayList)MemberHash[name];
 
             if (applicable == null)
+            {
                 return _emptyMemberInfo;
+            }
 
             //
             // 32  slots gives 53 rss/54 size
@@ -498,20 +542,20 @@ namespace Supremacy.Scripting.Utility
             _global.Clear();
             _usingGlobal = true;
 
-            var type = GetEntryType(mt, bf);
+            EntryType type = GetEntryType(mt, bf);
 
-            var current = Container;
+            IMemberContainer current = Container;
 
-            var doInterfaceSearch = current.IsInterface;
+            bool doInterfaceSearch = current.IsInterface;
 
             // `applicable' is a list of all members with the given member name `name'
             // in the current class and all its base classes.  The list is sorted in
             // reverse order due to the way how the cache is initialy created (to speed
             // things up, we're doing a deep-copy of our base).
 
-            for (var i = applicable.Count - 1; i >= 0; i--)
+            for (int i = applicable.Count - 1; i >= 0; i--)
             {
-                var entry = (CacheEntry)applicable[i];
+                CacheEntry entry = (CacheEntry)applicable[i];
 
                 // This happens each time we're walking one level up in the class
                 // hierarchy.  If we're doing a DeclaredOnly search, we must abort
@@ -521,21 +565,29 @@ namespace Supremacy.Scripting.Utility
                 if (entry.Container != current)
                 {
                     if (declaredOnly)
+                    {
                         break;
+                    }
 
                     if (!doInterfaceSearch && DoneSearching(_global))
+                    {
                         break;
+                    }
 
                     current = entry.Container;
                 }
 
                 // Is the member of the correct type ?
                 if ((entry.EntryType & type & EntryType.MaskType) == 0)
+                {
                     continue;
+                }
 
                 // Is the member static/non-static ?
                 if ((entry.EntryType & type & EntryType.MaskStatic) == 0)
+                {
                     continue;
+                }
 
                 // Apply the filter to it.
                 if (filter(entry.Member, criteria))
@@ -549,7 +601,7 @@ namespace Supremacy.Scripting.Utility
                     // base member is from same interface, so only top level member will be returned
                     if (doInterfaceSearch && _global.Count > 0)
                     {
-                        var memberAlreadyExists = _global
+                        bool memberAlreadyExists = _global
                             .Where(mi => !(mi is MethodBase))
                             .Any(
                             mi =>
@@ -557,7 +609,9 @@ namespace Supremacy.Scripting.Utility
                                 TypeManager.GetInterfaces(mi.DeclaringType), entry.Member.DeclaringType));
 
                         if (memberAlreadyExists)
+                        {
                             continue;
+                        }
                     }
 
                     _global.Add(entry.Member);
@@ -581,14 +635,18 @@ namespace Supremacy.Scripting.Utility
         /// <summary>Returns true if iterface exists in any base interfaces (ifaces)</summary>
         private static bool IsInterfaceBaseInterface(Type[] ifaces, Type ifaceToFind)
         {
-            foreach (var iface in ifaces)
+            foreach (Type iface in ifaces)
             {
                 if (iface == ifaceToFind)
+                {
                     return true;
+                }
 
-                var baseInterfaces = TypeManager.GetInterfaces(iface);
+                Type[] baseInterfaces = TypeManager.GetInterfaces(iface);
                 if (baseInterfaces.Length > 0 && IsInterfaceBaseInterface(baseInterfaces, ifaceToFind))
+                {
                     return true;
+                }
             }
             return false;
         }
@@ -596,15 +654,19 @@ namespace Supremacy.Scripting.Utility
         // find the nested type @name in @this.
         public Type FindNestedType(string name)
         {
-            var applicable = (ArrayList)MemberHash[name];
+            ArrayList applicable = (ArrayList)MemberHash[name];
             if (applicable == null)
-                return null;
-
-            for (var i = applicable.Count - 1; i >= 0; i--)
             {
-                var entry = (CacheEntry)applicable[i];
+                return null;
+            }
+
+            for (int i = applicable.Count - 1; i >= 0; i--)
+            {
+                CacheEntry entry = (CacheEntry)applicable[i];
                 if ((entry.EntryType & EntryType.NestedType & EntryType.MaskType) != 0)
+                {
                     return (Type)entry.Member;
+                }
             }
 
             return null;
@@ -612,20 +674,24 @@ namespace Supremacy.Scripting.Utility
 
         public MemberInfo FindBaseEvent(Type invocationType, string name)
         {
-            var applicable = (ArrayList)MemberHash[name];
+            ArrayList applicable = (ArrayList)MemberHash[name];
             if (applicable == null)
+            {
                 return null;
+            }
 
             //
             // Walk the chain of events, starting from the top.
             //
-            for (var i = applicable.Count - 1; i >= 0; i--)
+            for (int i = applicable.Count - 1; i >= 0; i--)
             {
-                var entry = (CacheEntry)applicable[i];
+                CacheEntry entry = (CacheEntry)applicable[i];
                 if ((entry.EntryType & EntryType.Event) == 0)
+                {
                     continue;
+                }
 
-                var ei = (EventInfo)entry.Member;
+                EventInfo ei = (EventInfo)entry.Member;
                 return ei.GetAddMethod(true);
             }
 
@@ -638,14 +704,11 @@ namespace Supremacy.Scripting.Utility
         //
         public ArrayList FindExtensionMethods(Assembly thisAssembly, Type extensionType, string name, bool publicOnly)
         {
-            ArrayList entries;
-            if (MethodHash != null)
-                entries = (ArrayList)MethodHash[name];
-            else
-                entries = (ArrayList)MemberHash[name];
-
+            ArrayList entries = MethodHash != null ? (ArrayList)MethodHash[name] : (ArrayList)MemberHash[name];
             if (entries == null)
+            {
                 return EmptyArrayList;
+            }
 
             const EntryType entryType = EntryType.Static | EntryType.Method | EntryType.NotExtensionMethod;
             const EntryType foundEntryType = entryType & ~EntryType.NotExtensionMethod;
@@ -655,21 +718,25 @@ namespace Supremacy.Scripting.Utility
             {
                 if ((entry.EntryType & entryType) == foundEntryType)
                 {
-                    var mb = (MethodBase)entry.Member;
+                    MethodBase mb = (MethodBase)entry.Member;
 
                     // Simple accessibility check
                     if ((entry.EntryType & EntryType.Public) == 0 && publicOnly)
                     {
-                        var ma = mb.Attributes & MethodAttributes.MemberAccessMask;
+                        MethodAttributes ma = mb.Attributes & MethodAttributes.MemberAccessMask;
                         if (ma != MethodAttributes.Assembly && ma != MethodAttributes.FamORAssem)
+                        {
                             continue;
+                        }
 
                         if (!TypeManager.IsThisOrFriendAssembly(thisAssembly, mb.DeclaringType.Assembly))
+                        {
                             continue;
+                        }
                     }
 
-                    var pd = TypeManager.GetParameterData(mb);
-                    var exType = pd.ExtensionMethodType;
+                    Ast.ParametersCollection pd = TypeManager.GetParameterData(mb);
+                    Type exType = pd.ExtensionMethodType;
 
                     if (exType == null)
                     {
@@ -679,7 +746,10 @@ namespace Supremacy.Scripting.Utility
 
                     //if (implicit conversion between ex_type and extensionType exist) {
                     if (candidates == null)
+                    {
                         candidates = new ArrayList(2);
+                    }
+
                     candidates.Add(mb);
                     //}
                 }
@@ -699,40 +769,51 @@ namespace Supremacy.Scripting.Utility
             ArrayList applicable = null;
 
             if (MethodHash != null)
+            {
                 applicable = (ArrayList)MethodHash[name];
+            }
 
             if (applicable != null)
             {
-                for (var i = applicable.Count - 1; i >= 0; i--)
+                for (int i = applicable.Count - 1; i >= 0; i--)
                 {
-                    var entry = (CacheEntry)applicable[i];
+                    CacheEntry entry = (CacheEntry)applicable[i];
                     if ((entry.EntryType & EntryType.Public) != 0)
+                    {
                         return entry.Member;
+                    }
                 }
             }
 
             if (MemberHash == null)
+            {
                 return null;
+            }
+
             applicable = (ArrayList)MemberHash[name];
 
             if (applicable != null)
             {
-                for (var i = applicable.Count - 1; i >= 0; i--)
+                for (int i = applicable.Count - 1; i >= 0; i--)
                 {
-                    var entry = (CacheEntry)applicable[i];
+                    CacheEntry entry = (CacheEntry)applicable[i];
                     if ((entry.EntryType & EntryType.Public) != 0 & entry.Member != ignoreMember)
                     {
                         if (ignoreComplexTypes)
                         {
                             if ((entry.EntryType & EntryType.Method) != 0)
+                            {
                                 continue;
+                            }
 
                             // Does exist easier way how to detect indexer ?
                             if ((entry.EntryType & EntryType.Property) != 0)
                             {
-                                var argTypes = TypeManager.GetParameterData((PropertyInfo)entry.Member);
+                                Ast.ParametersCollection argTypes = TypeManager.GetParameterData((PropertyInfo)entry.Member);
                                 if (argTypes.Count > 0)
+                                {
                                     continue;
+                                }
                             }
                         }
                         return entry.Member;
@@ -748,17 +829,22 @@ namespace Supremacy.Scripting.Utility
         public Hashtable GetPublicMembers()
         {
             if (_lowercaseTable != null)
+            {
                 return _lowercaseTable;
+            }
 
             _lowercaseTable = new Hashtable();
             foreach (DictionaryEntry entry in MemberHash)
             {
-                var members = (ArrayList)entry.Value;
-                foreach (var t in members) {
-                    var memberEntry = (CacheEntry)t;
+                ArrayList members = (ArrayList)entry.Value;
+                foreach (var t in members)
+                {
+                    CacheEntry memberEntry = (CacheEntry)t;
 
                     if ((memberEntry.EntryType & EntryType.Public) == 0)
+                    {
                         continue;
+                    }
 
                     // TODO: Does anyone know easier way how to detect that member is internal ?
                     switch (memberEntry.EntryType & EntryType.MaskType)
@@ -769,30 +855,42 @@ namespace Supremacy.Scripting.Utility
                         case EntryType.Field:
                             if ((((FieldInfo)memberEntry.Member).Attributes &
                                  (FieldAttributes.Assembly | FieldAttributes.Public)) == FieldAttributes.Assembly)
+                            {
                                 continue;
+                            }
+
                             break;
 
                         case EntryType.Method:
                             if ((((MethodInfo)memberEntry.Member).Attributes &
                                  (MethodAttributes.Assembly | MethodAttributes.Public)) == MethodAttributes.Assembly)
+                            {
                                 continue;
+                            }
+
                             break;
 
                         case EntryType.Property:
-                            var pi = (PropertyInfo)memberEntry.Member;
+                            PropertyInfo pi = (PropertyInfo)memberEntry.Member;
                             if (pi.GetSetMethod() == null && pi.GetGetMethod() == null)
+                            {
                                 continue;
+                            }
+
                             break;
 
                         case EntryType.Event:
-                            var ei = (EventInfo)memberEntry.Member;
-                            var mi = ei.GetAddMethod();
+                            EventInfo ei = (EventInfo)memberEntry.Member;
+                            MethodInfo mi = ei.GetAddMethod();
                             if ((mi.Attributes & (MethodAttributes.Assembly | MethodAttributes.Public)) ==
                                 MethodAttributes.Assembly)
+                            {
                                 continue;
+                            }
+
                             break;
                     }
-                    var lcase = ((string)entry.Key).ToLower(CultureInfo.InvariantCulture);
+                    string lcase = ((string)entry.Key).ToLower(CultureInfo.InvariantCulture);
                     _lowercaseTable[lcase] = memberEntry.Member;
                     break;
                 }
@@ -800,9 +898,6 @@ namespace Supremacy.Scripting.Utility
             return _lowercaseTable;
         }
 
-        public Hashtable Members
-        {
-            get { return MemberHash; }
-        }
+        public Hashtable Members => MemberHash;
     }
 }

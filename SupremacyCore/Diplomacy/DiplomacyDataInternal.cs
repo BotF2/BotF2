@@ -118,6 +118,10 @@ namespace Supremacy.Diplomacy
                 ContactTurn = contactTurn == 0 ? GameContext.Current.TurnNumber : contactTurn;
         }
 
+        public void SetFirstDiplomaticAction(bool firstDiplomaticAction)
+        {
+            FirstDiplomaticAction = firstDiplomaticAction;
+        }
         #endregion
 
         #region IDiplomacyData Members
@@ -141,6 +145,11 @@ namespace Supremacy.Diplomacy
         {
             get { return _baseData.ContactTurn; }
             protected set { _baseData.ContactTurn = value; }
+        }
+        public bool FirstDiplomaticAction
+        {
+            get { return _baseData.FirstDiplomaticAction; }
+            set { _baseData.FirstDiplomaticAction = value; }
         }
 
         public int ContactDuration

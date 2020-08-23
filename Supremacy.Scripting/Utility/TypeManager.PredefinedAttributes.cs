@@ -24,7 +24,10 @@ namespace Supremacy.Scripting.Utility
                 get
                 {
                     if (_dynamic == null)
+                    {
                         _dynamic = typeof(DynamicAttribute);
+                    }
+
                     return _dynamic;
                 }
             }
@@ -34,7 +37,10 @@ namespace Supremacy.Scripting.Utility
                 get
                 {
                     if (_extension == null)
+                    {
                         _extension = typeof(ExtensionAttribute);
+                    }
+
                     return _extension;
                 }
             }
@@ -44,7 +50,10 @@ namespace Supremacy.Scripting.Utility
                 get
                 {
                     if (_paramArray == null)
+                    {
                         _paramArray = typeof(ParamArrayAttribute);
+                    }
+
                     return _paramArray;
                 }
             }
@@ -54,7 +63,10 @@ namespace Supremacy.Scripting.Utility
                 get
                 {
                     if (_defaultMember == null)
+                    {
                         _defaultMember = typeof(DefaultMemberAttribute);
+                    }
+
                     return _defaultMember;
                 }
             }
@@ -64,7 +76,10 @@ namespace Supremacy.Scripting.Utility
                 get
                 {
                     if (_decimalConstant == null)
+                    {
                         _decimalConstant = typeof(DecimalConstantAttribute);
+                    }
+
                     return _decimalConstant;
                 }
             }
@@ -74,7 +89,10 @@ namespace Supremacy.Scripting.Utility
                 get
                 {
                     if (_fixedBuffer == null)
+                    {
                         _fixedBuffer = typeof(FixedBufferAttribute);
+                    }
+
                     return _fixedBuffer;
                 }
             }
@@ -84,7 +102,10 @@ namespace Supremacy.Scripting.Utility
                 get
                 {
                     if (_clsCompliant == null)
+                    {
                         _clsCompliant = typeof(CLSCompliantAttribute);
+                    }
+
                     return _clsCompliant;
                 }
             }
@@ -94,7 +115,10 @@ namespace Supremacy.Scripting.Utility
                 get
                 {
                     if (_obsolete == null)
+                    {
                         _obsolete = typeof(ObsoleteAttribute);
+                    }
+
                     return _obsolete;
                 }
             }
@@ -104,7 +128,10 @@ namespace Supremacy.Scripting.Utility
                 get
                 {
                     if (_conditional == null)
+                    {
                         _conditional = typeof(ConditionalAttribute);
+                    }
+
                     return _conditional;
                 }
             }

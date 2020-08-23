@@ -23,13 +23,13 @@
             Color="Tan" />
     
     <SolidColorBrush x:Key="HeaderTextBrush"
-            Color="#ff7c00a7"/>
+            Color="#CF88DF"/>
     <SolidColorBrush x:Key="LCARS_HeaderBrush"
-            Color="#ff7c00a7"/>
+            Color="#DB62F6"/>
     <SolidColorBrush x:Key="DefaultTextBrush"
-            Color="#ff9b00ae"/>
+            Color="#D335F6"/>
     <SolidColorBrush x:Key="DisabledTextBrush"
-            Color="#FF4f0485"/>
+            Color="#E4C9EA"/>
     <SolidColorBrush x:Key="SelectionBrush"
             Color="#7f87DB7A" />
 

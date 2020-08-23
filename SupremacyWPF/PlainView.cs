@@ -21,8 +21,8 @@ namespace Supremacy.Client
 
         public Style ItemContainerStyle
         {
-            get { return (Style)GetValue(ItemContainerStyleProperty); }
-            set { SetValue(ItemContainerStyleProperty, value); }
+            get => (Style)GetValue(ItemContainerStyleProperty);
+            set => SetValue(ItemContainerStyleProperty, value);
         }
 
         public static readonly DependencyProperty ItemTemplateProperty =
@@ -30,8 +30,8 @@ namespace Supremacy.Client
 
         public DataTemplate ItemTemplate
         {
-            get { return (DataTemplate)GetValue(ItemTemplateProperty); }
-            set { SetValue(ItemTemplateProperty, value); }
+            get => (DataTemplate)GetValue(ItemTemplateProperty);
+            set => SetValue(ItemTemplateProperty, value);
         }
 
         public static readonly DependencyProperty ItemWidthProperty =
@@ -39,8 +39,8 @@ namespace Supremacy.Client
 
         public double ItemWidth
         {
-            get { return (double)GetValue(ItemWidthProperty); }
-            set { SetValue(ItemWidthProperty, value); }
+            get => (double)GetValue(ItemWidthProperty);
+            set => SetValue(ItemWidthProperty, value);
         }
 
 
@@ -49,18 +49,12 @@ namespace Supremacy.Client
 
         public double ItemHeight
         {
-            get { return (double)GetValue(ItemHeightProperty); }
-            set { SetValue(ItemHeightProperty, value); }
+            get => (double)GetValue(ItemHeightProperty);
+            set => SetValue(ItemHeightProperty, value);
         }
 
 
-        protected override object DefaultStyleKey
-        {
-            get
-            {
-                return new ComponentResourceKey(GetType(), "PlainViewDSK");
-            }
-        }
+        protected override object DefaultStyleKey => new ComponentResourceKey(GetType(), "PlainViewDSK");
 
     }
 }

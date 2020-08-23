@@ -1,0 +1,348 @@
+﻿<UserControl x:Class="Supremacy.Client.Views.ColonyHandlingListView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:s="http://schemas.startreksupremacy.com/xaml/core"
+             xmlns:scc="http://schemas.startreksupremacy.com/xaml/presentation"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:scm="clr-namespace:System.ComponentModel;assembly=WindowsBase"
+             mc:Ignorable="d"
+             d:DesignWidth="720"
+             d:DesignHeight="240"
+             d:DataContext="{x:Static scc:ColonyScreenPresentationModel.DesignInstance}">
+
+  <DockPanel LastChildFill="True">
+
+      <!--DockPanel LEFT-->
+        <Grid DockPanel.Dock="Left" Margin="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="0" />  <!--Empty-->
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+       
+            <ScrollViewer CanContentScroll="True"
+                Width="600"
+                Height="Auto"
+                Grid.Column="1"
+                ScrollViewer.VerticalScrollBarVisibility="Visible"
+                ScrollViewer.HorizontalScrollBarVisibility="Auto">
+                <!--SystemProductionPanel-->
+                <s:SystemProductionPanel x:Name="SystemProductionPanel" />
+            </ScrollViewer>
+        </Grid>
+
+      <!--OrbitalBattery-->
+        <Grid DockPanel.Dock="Top" Margin="2">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="Auto" />
+        <ColumnDefinition Width="Auto" />
+        <ColumnDefinition Width="*" />
+        <ColumnDefinition Width="Auto" />
+      </Grid.ColumnDefinitions>
+      <Border Grid.Column="0"
+              VerticalAlignment="Center"
+              BorderBrush="{StaticResource BorderBrush}"
+              BorderThickness="2"
+              CornerRadius="4"
+              Width="48"
+              Height="38">
+        <Border.Background>
+          <ImageBrush ImageSource="{Binding Path=SelectedColony.OrbitalBatteryDesign.Image, Converter={StaticResource TechObjectImageConverter}}" />
+        </Border.Background>
+      </Border>
+      <StackPanel Grid.Column="1"
+                  Orientation="Vertical"
+                  VerticalAlignment="Center"
+                  HorizontalAlignment="Stretch"
+                  Margin="7,0,14,0"
+                  TextBlock.FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}">
+        <TextBlock FontSize="14pt"
+                   Foreground="{StaticResource LCARS_HeaderBrush}"
+                   Text="{Binding Path=SelectedColony.OrbitalBatteryDesign.Name, Converter={StaticResource StringResourceConverter}, FallbackValue='Orbital Battery'}"/>
+                <TextBlock Foreground="{StaticResource DefaultTextBrush}"
+                   FontSize="11pt"
+                   TextWrapping="NoWrap"
+                   TextTrimming="CharacterEllipsis"
+                   Text="{Binding Path=SelectedColony.OrbitalBatteryDesign.UnitEnergyCost, StringFormat='{}{0} Energy Cost'}"  />
+      </StackPanel>
+
+<!--
+      <TextBlock Grid.Column="1"
+                 Foreground="{StaticResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"
+                 Text="{Binding Path=SelectedColony.OrbitalBatteryDesign.Name}"
+                 Margin="0,0,14,0"
+                 VerticalAlignment="Center" />
+-->
+      <s:UnitActivationBar Grid.Column="2"
+                           Units="{Binding Path=SelectedColony.TotalOrbitalBatteries, Mode=OneWay}"
+                           MaxActiveUnits="{Binding Path=MaxActiveOrbitalBatteries, Mode=TwoWay}"
+                           ActiveUnits="{Binding Path=ActiveOrbitalBatteries, Mode=TwoWay}" />
+      <TextBlock Grid.Column="3"
+                 Foreground="Transparent"
+                 FontSize="14pt"
+                 FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+                 Margin="7,0,0,0"
+                 VerticalAlignment="Center"
+                 Text="999 / 999" />
+      <TextBlock Grid.Column="3"
+                 Foreground="{StaticResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"
+                 FontSize="14pt"
+                 FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+                 Margin="7,0,0,0"
+                 VerticalAlignment="Center">
+        <TextBlock.Text>
+          <MultiBinding StringFormat="{}{0} / {1}" FallbackValue="0 / 0">
+            <Binding Path="SelectedColony.ActiveOrbitalBatteries" />
+            <Binding Path="SelectedColony.TotalOrbitalBatteries" />
+          </MultiBinding>
+        </TextBlock.Text>
+      </TextBlock>
+    </Grid>
+        <!--End of OrbitalBatteries-->
+    
+      <!--Structures-->
+        <ItemsControl DockPanel.Dock="Right"
+                  Grid.IsSharedSizeScope="True"
+                      
+                  Focusable="False"
+                  IsTabStop="False"
+                  ItemsSource="{Binding Path=SelectedColony.Buildings}">
+      <ItemsControl.Resources>
+        <DataTemplate x:Key="HandlingListItemTemplate">
+          <Border Padding="2"
+                  scc:InfoCardService.InfoCardHeader="{Binding RelativeSource={RelativeSource Self}, Path=(scc:InfoCardService.InfoCardSubject).(scc:InfoCardSubject.Data), Mode=OneWay}"
+                  scc:InfoCardService.InfoCardContent="{Binding RelativeSource={RelativeSource Self}, Path=(scc:InfoCardService.InfoCardSubject).(scc:InfoCardSubject.Data), Mode=OneWay}">
+            <scc:InfoCardService.InfoCardHeaderTemplate>
+            <DataTemplate DataType="{x:Type s:Building}">
+                                <!--<ItemsControl>
+                                    <ItemsControl.Resources>
+                                        <CollectionViewSource x:Key="Viewsource" Source="Binding Path=SelectedColony.Buildings">
+                                            <CollectionViewSource.SortDescriptions>
+                                                <scm:SortDescription PropertyName="IsActive" Direction="Descending"/>
+                                            </CollectionViewSource.SortDescriptions>
+                                        </CollectionViewSource>
+                                    </ItemsControl.Resources>
+                                </ItemsControl>-->
+
+
+
+                                <!--<DataTemplate.Resources>
+                                    <CollectionViewSource x:Key="Viewsource" Source="Binding Path=SelectedColony.Buildings">
+                                        <CollectionViewSource.SortDescriptions>
+                                            <scm:SortDescription PropertyName="IsActive" />
+                                        </CollectionViewSource.SortDescriptions>
+                                        
+                                    </CollectionViewSource>
+                                </DataTemplate.Resources>-->
+                <DockPanel LastChildFill="True">
+                                    <!--<Viewbox></Viewbox>-->
+                    
+                    
+                    
+                  <Border DockPanel.Dock="Left"
+                          VerticalAlignment="Top"
+                          CornerRadius="4"
+                          Margin="0,0,2,0"
+                          Width="28"
+                          Height="18"
+                          Background="Black">
+                    <Border x:Name="ImageBorder"
+                            BorderBrush="White"
+                            BorderThickness="2"
+                            CornerRadius="4">
+                      <!--<Border.Background>
+                        <ImageBrush ImageSource="{Binding Path=(s:TechObject.Design).(s:TechObjectDesign.Image), Converter={StaticResource TechObjectImageConverter}}" />
+                      </Border.Background>-->
+                    </Border>
+                  </Border>
+                  <StackPanel Orientation="Horizontal"
+                              TextBlock.FontSize="{DynamicResource {x:Static scc:ClientResources.DefaultFontSizeKey}}"
+                              TextBlock.FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+                              TextBlock.Foreground="{DynamicResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}">
+                    <TextBlock Text="{Binding Path=BuildingDesign.Name}"
+                               FontSize="{DynamicResource {x:Static scc:ClientResources.HeaderFontSizeKey}}"
+                               FontWeight="{DynamicResource {x:Static scc:ClientResources.HeaderFontWeightKey}}"
+                               Foreground="{DynamicResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}" />
+                    <TextBlock x:Name="AgeText"
+                               Text="{Binding Path=Age, Mode=OneWay, StringFormat='{}Constructed {0} turns ago'}" />
+                    <WrapPanel>
+                      <TextBlock Text="Status: " />
+                      <TextBlock x:Name="StatusText"
+                                 Text="Online"
+                                 Foreground="LimeGreen" />
+                    </WrapPanel>
+                    <scc:GameButton Label="{s:StringResource Scrap}"
+                                    Margin="0,2,0,0"
+                                    DisplayMode="CheckBox"
+                                    HorizontalAlignment="Left"
+                                    VerticalAlignment="Center"
+                                    Command="{x:Static scc:ColonyScreenCommands.ToggleBuildingScrapCommand}">
+                      <scc:GameButton.CommandParameter>
+                        <scc:CheckableCommandParameter InnerParameter="{Binding Mode=OneWay}" />
+                      </scc:GameButton.CommandParameter>
+                    </scc:GameButton>
+                  </StackPanel>
+                </DockPanel>
+                <DataTemplate.Triggers>
+                  <DataTrigger Binding="{Binding Path=IsActive}"
+                               Value="False">
+                    <Setter TargetName="StatusText"
+                            Property="Text"
+                            Value="Offline" />
+                    <Setter TargetName="StatusText"
+                            Property="Foreground"
+                            Value="Crimson" />
+                  </DataTrigger>
+                  <DataTrigger Binding="{Binding Path=Age}"
+                               Value="1">
+                    <Setter TargetName="AgeText"
+                            Property="Text"
+                            Value="Constructed last turn" />
+                  </DataTrigger>
+                </DataTemplate.Triggers>
+              </DataTemplate>
+            </scc:InfoCardService.InfoCardHeaderTemplate>
+            <scc:InfoCardService.InfoCardContentTemplate>
+              <DataTemplate DataType="{x:Type s:Building}">
+                <TabControl Margin="-5">
+                  <TabItem Header="Specifications">
+                    <ContentControl Style="{DynamicResource TechObjectInfoPanelStyle}">
+                      <scc:TechObjectDesignViewModel Design="{Binding Path=BuildingDesign}"
+                                                     Location="{Binding Path=Location}"
+                                                     Civilization="{Binding Path=Owner}" />
+                    </ContentControl>
+                  </TabItem>
+                  <TabItem Header="Description">
+                    <DockPanel LastChildFill="True">
+                      <TextBlock DockPanel.Dock="Top"
+                                 TextWrapping="Wrap"
+                                 FontFamily="{DynamicResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
+                                 FontSize="{DynamicResource {x:Static scc:ClientResources.HeaderFontSizeKey}}"
+                                 FontWeight="{DynamicResource {x:Static scc:ClientResources.HeaderFontWeightKey}}"
+                                 Text="{Binding Path=(s:Building.BuildingDesign).(s:TechObjectDesign.Name)}" />
+                      <TextBlock TextWrapping="Wrap"
+                                 Margin="0,11,0,0"
+                                 FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+                                 FontSize="{DynamicResource {x:Static scc:ClientResources.DefaultFontSizeKey}}"
+                                 FontWeight="{DynamicResource {x:Static scc:ClientResources.DefaultFontWeightKey}}"
+                                 Text="{Binding Path=(s:Building.BuildingDesign).(s:TechObjectDesign.Description)}" />
+                    </DockPanel>
+                  </TabItem>
+                </TabControl>
+              </DataTemplate>
+            </scc:InfoCardService.InfoCardContentTemplate>
+            <scc:InfoCardService.InfoCardSubject>
+              <scc:UniverseObjectInfoCardSubject Target="{Binding Mode=OneTime}" />
+            </scc:InfoCardService.InfoCardSubject>
+            <Button x:Name="ActivateButton"
+                    Command="{Binding Path=DataContext.ToggleBuildingIsActiveCommand, Mode=OneWay, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ItemsControl}}}"
+                    CommandParameter="{Binding}"
+                    Focusable="False"
+                    ContextMenuService.ShowOnDisabled="True"
+                    Style="{StaticResource LCARS_BaseButtonStyle}">
+              <Button.Template>
+                <ControlTemplate TargetType="{x:Type Button}">
+                  <ContentPresenter />
+                </ControlTemplate>
+              </Button.Template>
+              <Button.ContextMenu>
+                <ContextMenu>
+                  <MenuItem Header="{s:StringResource Scrap}"
+                            IsCheckable="True"
+                            IsChecked="{Binding Path=Scrap, Mode=OneWay}"
+                            Command="{x:Static scc:ColonyScreenCommands.ToggleBuildingScrapCommand}"
+                            CommandParameter="{Binding}" />
+                </ContextMenu>
+              </Button.ContextMenu>
+                
+              <Grid>
+                <Grid.ColumnDefinitions>
+                  <ColumnDefinition SharedSizeGroup="HandlingListItem_ImageColumn" />
+                  <ColumnDefinition SharedSizeGroup="HandlingListItem_TextColumn" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                                    <!--<RowDefinition Height="10">-->
+                  <RowDefinition SharedSizeGroup="HandlingListItem_Row" />
+                </Grid.RowDefinitions>
+                <Border x:Name="ImageBorder"
+                        Grid.Column="0"
+                        VerticalAlignment="Center"
+                        BorderBrush="{StaticResource HeaderTextBrush}"
+                        BorderThickness="2"
+                        CornerRadius="4"
+                        Width="35"
+                        Height="28">
+                  <Border.Background>
+                    <ImageBrush ImageSource="{Binding Path=(s:TechObject.Design).Image, Converter={StaticResource TechObjectImageConverter}}" />
+                  </Border.Background>
+                </Border>
+                <StackPanel Grid.Column="1"
+                            Orientation="Horizontal"
+                            VerticalAlignment="Center"
+                            HorizontalAlignment="Stretch"
+                            Margin="7,0,7,0"
+                            TextBlock.FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}">
+                  <TextBlock FontSize="12pt">
+                  <TextBlock Foreground="{StaticResource HeaderTextBrush}"
+                             Text="{Binding Path=(s:TechObject.Design).Name, Converter={StaticResource StringResourceConverter}}" />
+                  <TextBlock x:Name="ScrapText"
+                             Foreground="Crimson"
+                             Text="(SCRAP)"
+                             Opacity="0.0" />
+                </TextBlock>
+                             <TextBlock Foreground="{StaticResource DefaultTextBrush}"
+                             FontSize="10pt"
+                             TextWrapping="NoWrap"
+                             TextTrimming="CharacterEllipsis">
+                  <TextBlock x:Name="EnergyCostText">
+                    <TextBlock Text="{Binding Path=(s:Building.BuildingDesign).EnergyCost}" />
+                    <TextBlock Text="Energy," />
+                  </TextBlock>
+                  <TextBlock Text="{Binding Path=Design, Converter={StaticResource BonusConverter}, ConverterParameter=CommaSeparated}" />
+                </TextBlock>
+              </StackPanel>
+              </Grid>
+            </Button>
+          </Border>
+          <DataTemplate.Triggers>
+            <DataTrigger Binding="{Binding Path=IsActive}"
+                         Value="False">
+              <Setter TargetName="ImageBorder"
+                      Property="Opacity"
+                      Value="0.25" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Path=Scrap}"
+                         Value="True">
+              <Setter TargetName="ScrapText"
+                      Property="Opacity"
+                      Value="1.0" />
+            </DataTrigger> 
+            <DataTrigger Binding="{Binding Path=Design.AlwaysOnline}"
+                         Value="True">
+              <Setter TargetName="EnergyCostText"
+                      Property="Visibility"
+                      Value="Collapsed" />
+            </DataTrigger>
+             
+          </DataTemplate.Triggers>
+        </DataTemplate>
+      </ItemsControl.Resources>
+        
+      <ItemsControl.Template>
+        <ControlTemplate TargetType="{x:Type ItemsControl}">
+          <ScrollViewer CanContentScroll="True"
+                        VerticalScrollBarVisibility="Visible"
+                        HorizontalScrollBarVisibility="Auto">
+            <WrapPanel Orientation="Vertical"
+                       IsItemsHost="True" />
+          </ScrollViewer>
+        </ControlTemplate>
+      </ItemsControl.Template>
+      <ItemsControl.ItemTemplate>
+        <StaticResource ResourceKey="HandlingListItemTemplate" />
+      </ItemsControl.ItemTemplate>
+    </ItemsControl>
+  </DockPanel>
+</UserControl>

@@ -11,18 +11,16 @@ namespace Supremacy.Scripting.Ast
         public Expression IfTrue { get; set; }
         public Expression IfFalse { get; set; }
 
-        public override bool ShouldParenthesize
-        {
-            get { return true; }
-        }
+        public override bool ShouldParenthesize => true;
 
         public override void CloneTo<T>(CloneContext cloneContext, T target)
         {
             base.CloneTo(cloneContext, target);
 
-            var clone = target as ConditionalExpression;
-            if (clone == null)
+            if (!(target is ConditionalExpression clone))
+            {
                 return;
+            }
 
             clone.Test = Clone(cloneContext, Test);
             clone.IfTrue = Clone(cloneContext, IfTrue);
@@ -36,19 +34,21 @@ namespace Supremacy.Scripting.Ast
             IfFalse = IfFalse.Resolve(parseContext);
 
             if (Test == null || IfTrue == null || IfFalse == null)
+            {
                 return null;
+            }
 
             ExpressionClass = ExpressionClass.Value;
 
-            var trueType = IfTrue.Type;
-            var falseType = IfFalse.Type;
+            System.Type trueType = IfTrue.Type;
+            System.Type falseType = IfFalse.Type;
 
             Type = trueType;
 
             // First, if an implicit conversion exists from IfTrue to IfFalse, then the result type is of type IfFalse.Type
             if (!TypeManager.IsEqual(trueType, falseType))
             {
-                var conv = ConvertExpression.MakeImplicitConversion(parseContext, IfTrue, falseType, Span);
+                Expression conv = ConvertExpression.MakeImplicitConversion(parseContext, IfTrue, falseType, Span);
                 if (conv != null)
                 {
                     // Check if both can convert implicitly to each other's type
@@ -84,10 +84,9 @@ namespace Supremacy.Scripting.Ast
             }
 
             // Dead code optimalization
-            var c = Test as ConstantExpression;
-            if (c != null)
+            if (Test is ConstantExpression c)
             {
-                var isFalse = c.IsDefaultValue;
+                bool isFalse = c.IsDefaultValue;
 
                 parseContext.ReportError(
                     CompilerErrors.UnreachableExpression,

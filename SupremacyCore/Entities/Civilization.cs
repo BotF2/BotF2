@@ -48,7 +48,7 @@ namespace Supremacy.Entities
 
     public enum CivTraits : ushort
     {
-        Warlike = 0x0001,
+        Warlike = 0x0001, // only used in one line in DiplomacyHelper.cs at this time
         Peaceful = 0x0002,
         Superiority = 0x0004,
         Submissive = 0x0008,
@@ -154,55 +154,6 @@ namespace Supremacy.Entities
             }
         }
 
-        // not in Civilization, only in CivManager !!
-
-        //public List<IntelHelper.NewIntelOrders> IntelOrdersGoingToHost
-        //{
-        //    get
-        //    {
-        //        //if (_intelOrdersGoingToHost == null)
-        //        //{
-        //        //    var _DummyintelOrdersGoingToHost = new NewIntelOrders();
-        //        //    _DummyintelOrdersGoingToHost.AttackedCivID = 0;
-        //        //    _DummyintelOrdersGoingToHost.AttackingCivID = 1;
-        //        //    _DummyintelOrdersGoingToHost.Intel_Order = "StealCredits";
-        //        //    _DummyintelOrdersGoingToHost.Intel_Order_Blamed = "Blam_out";
-        //        //    _intelOrdersGoingToHost.Add(_DummyintelOrdersGoingToHost);
-        //        //}
-        //        //var _intelOrdersGoingToHost = value;
-        //        return _intelOrdersGoingToHost;
-        //    }
-        //    set
-        //    {
-        //        // code here to .Add civs to list as spy ships install spy network
-        //        _intelOrdersGoingToHost = value;
-        //    }
-        //}
-
-        // not in Civilization, only in CivManager !!
-
-        //public List<IntelHelper.NewIntelOrders> IntelOrdersIncomingToHost
-        //{
-        //    get
-        //    {
-        //        //if (_intelOrdersIncomingToHost == null)
-        //        //{
-        //        //    var _DummyintelOrdersIncomingToHost = new NewIntelOrders();
-        //        //    _DummyintelOrdersIncomingToHost.AttackedCivID = 0;
-        //        //    _DummyintelOrdersIncomingToHost.AttackingCivID = 1;
-        //        //    _DummyintelOrdersIncomingToHost.Intel_Order = "StealCredits";
-        //        //    _DummyintelOrdersIncomingToHost.Intel_Order_Blamed = "Blam_out";
-        //        //    _intelOrdersIncomingToHost.Add(_DummyintelOrdersIncomingToHost);
-        //        //}
-        //        //var _intelOrdersGoingToHost = value;
-        //        return _intelOrdersIncomingToHost;
-        //    }
-        //    set
-        //    {
-        //        // code here to .Add civs to list as spy ships install spy network
-        //        _intelOrdersIncomingToHost = value;
-        //    }
-        //}
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Civilization"/> class from XML data.
@@ -569,9 +520,9 @@ namespace Supremacy.Entities
                 {
                     return (_raceId == Race.InvalidRaceKey) ? null : GameContext.Current.Races[_raceId];
                 }
-                catch
+                catch (Exception e)
                 {
-                    GameLog.Core.GameData.ErrorFormat("##### Problem with Race = {0}", Race);
+                    GameLog.Core.GameData.ErrorFormat("##### Problem with Race = {0} {1} {2}", Race, e.Message, e.StackTrace);
                     
                 }
                 return (_raceId == Race.InvalidRaceKey) ? null : GameContext.Current.Races[_raceId];

@@ -10,9 +10,7 @@ namespace Supremacy.Client
         #region Implementation of IValueConverter
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value == null)
-                return true;
-            return (value.ToString() == string.Empty);
+            return value == null ? true : (object)(value.ToString() == string.Empty);
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

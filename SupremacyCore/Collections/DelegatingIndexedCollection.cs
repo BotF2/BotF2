@@ -21,17 +21,10 @@ namespace Supremacy.Collections
             [NotNull] Func<TCollection, int> countCallback,
             [NotNull] Func<TCollection, int, TValue> indexerCallback)
         {
-            if (asEnumerableCallback == null)
-                throw new ArgumentNullException("asEnumerableCallback");
-            if (countCallback == null)
-                throw new ArgumentNullException("countCallback");
-            if (indexerCallback == null)
-                throw new ArgumentNullException("indexerCallback");
-
             _baseCollection = baseCollection;
-            _asEnumerableCallback = asEnumerableCallback;
-            _countCallback = countCallback;
-            _indexerCallback = indexerCallback;
+            _asEnumerableCallback = asEnumerableCallback ?? throw new ArgumentNullException(nameof(asEnumerableCallback));
+            _countCallback = countCallback ?? throw new ArgumentNullException(nameof(countCallback));
+            _indexerCallback = indexerCallback ?? throw new ArgumentNullException(nameof(indexerCallback));
         }
 
         public IEnumerator<TValue> GetEnumerator()
@@ -44,15 +37,9 @@ namespace Supremacy.Collections
             return GetEnumerator();
         }
 
-        public int Count
-        {
-            get { return _countCallback(_baseCollection); }
-        }
+        public int Count => _countCallback(_baseCollection);
 
-        public TValue this[int index]
-        {
-            get { return _indexerCallback(_baseCollection, index); }
-        }
+        public TValue this[int index] => _indexerCallback(_baseCollection, index);
 
         public bool Contains(TValue value)
         {
@@ -61,13 +48,16 @@ namespace Supremacy.Collections
 
         public int IndexOf(TValue value)
         {
-            var i = 0;
-            var enumerator = _asEnumerableCallback(_baseCollection).GetEnumerator();
+            int i = 0;
+            IEnumerator<TValue> enumerator = _asEnumerableCallback(_baseCollection).GetEnumerator();
 
             while (enumerator.MoveNext())
             {
                 if (Equals(enumerator.Current, value))
+                {
                     return i;
+                }
+
                 ++i;
             }
 
@@ -77,19 +67,23 @@ namespace Supremacy.Collections
         public void CopyTo([NotNull] TValue[] array, int destinationIndex)
         {
             if (array == null)
-                throw new ArgumentNullException("array");
+            {
+                throw new ArgumentNullException(nameof(array));
+            }
 
             if (destinationIndex < 0 ||
                 destinationIndex + Count >= (array.Length + destinationIndex))
             {
-                throw new ArgumentOutOfRangeException("destinationIndex");
+                throw new ArgumentOutOfRangeException(nameof(destinationIndex));
             }
 
-            var i = destinationIndex;
-            var enumerator = _asEnumerableCallback(_baseCollection).GetEnumerator();
+            int i = destinationIndex;
+            IEnumerator<TValue> enumerator = _asEnumerableCallback(_baseCollection).GetEnumerator();
 
             while (enumerator.MoveNext())
+            {
                 array[i++] = enumerator.Current;
+            }
         }
     }
 }

@@ -18,59 +18,68 @@ namespace Supremacy.Scripting.Ast
         private readonly ObjectInitializerExpression _initializer;
         private readonly IEnumerable<NewInitMemberBinding> _memberBindings;
 
-        public NewInitExpression([NotNull] Expression type, [NotNull] Arguments arguments, [NotNull] ObjectInitializerExpression initializer, SourceSpan location) 
+        public NewInitExpression([NotNull] Expression type, [NotNull] Arguments arguments, [NotNull] ObjectInitializerExpression initializer, SourceSpan location)
             : base(type, arguments, location)
         {
             if (type == null)
+            {
                 throw new ArgumentNullException("type");
-            if (arguments == null)
-                throw new ArgumentNullException("arguments");
-            if (initializer == null)
-                throw new ArgumentNullException("initializer");
+            }
 
-            _initializer = initializer;
+            if (arguments == null)
+            {
+                throw new ArgumentNullException("arguments");
+            }
+
+            _initializer = initializer ?? throw new ArgumentNullException("initializer");
         }
 
         public NewInitExpression([NotNull] Expression type, [NotNull] Arguments arguments, [NotNull] IEnumerable<NewInitMemberBinding> memberBindings, SourceSpan location)
             : base(type, arguments, location)
         {
             if (type == null)
+            {
                 throw new ArgumentNullException("type");
+            }
+
             if (arguments == null)
+            {
                 throw new ArgumentNullException("arguments");
-            if (memberBindings == null)
-                throw new ArgumentNullException("memberBindings");
+            }
 
-            _memberBindings = memberBindings;
+            _memberBindings = memberBindings ?? throw new ArgumentNullException("memberBindings");
         }
 
-        protected override bool HasInitializer
-        {
-            get { return ((_initializer != null) || (_memberBindings != null)); }
-        }
+        protected override bool HasInitializer => (_initializer != null) || (_memberBindings != null);
 
         public override Expression DoResolve(ParseContext parseContext)
         {
             if (ExpressionClass != ExpressionClass.Invalid)
+            {
                 return this;
+            }
 
-            var baseResolved = base.DoResolve(parseContext);
+            Expression baseResolved = base.DoResolve(parseContext);
 
             if (Type == null)
+            {
                 return null;
+            }
 
-            var previous = parseContext.CurrentInitializerVariable;
+            Expression previous = parseContext.CurrentInitializerVariable;
 
             parseContext.CurrentInitializerVariable = new InitializerTargetExpression(this);
 
             if (_initializer != null)
             {
-                _initializer.Resolve(parseContext);
+                _ = _initializer.Resolve(parseContext);
             }
             else
             {
-                foreach (var memberBinding in _memberBindings)
-                    memberBinding.DoResolve(parseContext);
+                foreach (NewInitMemberBinding memberBinding in _memberBindings)
+                {
+                    _ = memberBinding.DoResolve(parseContext);
+                }
             }
                
             parseContext.CurrentInitializerVariable = previous;
@@ -89,7 +98,7 @@ namespace Supremacy.Scripting.Ast
 
             if (_initializer is CollectionInitializerExpression)
             {
-                var elementInitializers = _initializer.Initializers
+                IEnumerable<MSAst.ElementInit> elementInitializers = _initializer.Initializers
                     .Cast<CollectionElementInitializer>()
                     .Select(o => o.TransformInitializer(generator));
 
@@ -98,7 +107,7 @@ namespace Supremacy.Scripting.Ast
                     elementInitializers);
             }
 
-            var memberBindings = _initializer.Initializers
+            IEnumerable<MSAst.MemberBinding> memberBindings = _initializer.Initializers
                 .Cast<ElementInitializer>()
                 .Select(o => o.TransformMemberBinding(generator));
 
@@ -120,10 +129,13 @@ namespace Supremacy.Scripting.Ast
                 sw.Write(" { ");
 
                 int i = 0;
-                foreach (var memberBinding in _memberBindings)
+                foreach (NewInitMemberBinding memberBinding in _memberBindings)
                 {
                     if (i++ != 0)
+                    {
                         sw.Write(", ");
+                    }
+
                     DumpChild(memberBinding, sw, indentChange);
                 }
 
@@ -134,19 +146,16 @@ namespace Supremacy.Scripting.Ast
         #region Dependent Type: InitializerTargetExpression
         private sealed class InitializerTargetExpression : Expression
         {
-            private readonly NewInitExpression _newInstance;
-
             public InitializerTargetExpression([NotNull] NewInitExpression newInstance)
             {
-                if (newInstance == null)
-                    throw new ArgumentNullException("newInstance");
-
-                _newInstance = newInstance;
+                NewInstance = newInstance ?? throw new ArgumentNullException("newInstance");
 
                 Type = newInstance.Type;
                 ExpressionClass = newInstance.ExpressionClass;
                 Span = newInstance.Span;
             }
+
+            public NewInitExpression NewInstance { get; }
 
             public override Expression DoResolve(ParseContext ec)
             {
@@ -163,47 +172,33 @@ namespace Supremacy.Scripting.Ast
 
     public class NewInitMemberBinding : Expression
     {
-        private readonly MemberInfo _member;
-        private Expression _initializer;
-
         public NewInitMemberBinding(MemberInfo member, Expression initializer)
         {
-            if (member == null)
-                throw new ArgumentNullException("member");
-            if (initializer == null)
-                throw new ArgumentNullException("initializer");
-
-            _member = member;
-            _initializer = initializer;
+            Member = member ?? throw new ArgumentNullException("member");
+            Initializer = initializer ?? throw new ArgumentNullException("initializer");
         }
 
-        public MemberInfo Member
-        {
-            get { return _member; }
-        }
+        public MemberInfo Member { get; }
 
-        public Expression Initializer
-        {
-            get { return _initializer; }
-        }
+        public Expression Initializer { get; private set; }
 
         public MSAst.MemberAssignment MakeAssignment(ScriptGenerator generator)
         {
             return MSAst.Expression.Bind(
-                _member,
-                _initializer.Transform(generator));
+                Member,
+                Initializer.Transform(generator));
         }
 
         public override void Dump(SourceWriter sw, int indentChange)
         {
             sw.Write(Member.Name);
             sw.Write(" = ");
-            DumpChild(_initializer, sw, indentChange);                
+            DumpChild(Initializer, sw, indentChange);           
         }
 
         public override Expression DoResolve(ParseContext parseContext)
         {
-            _initializer = _initializer.Resolve(parseContext);
+            Initializer = Initializer.Resolve(parseContext);
             return this;
         }
     }

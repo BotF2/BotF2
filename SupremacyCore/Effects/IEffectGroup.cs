@@ -189,49 +189,41 @@ namespace Supremacy.Effects
         private string EvaluateActivationDescription()
         {
             if (_activation == null || string.IsNullOrWhiteSpace(_activation.DescriptionExpression))
+            {
                 return null;
+            }
 
-            var script = new ScriptExpression
-                         {
-                             ScriptCode = _activation.DescriptionExpression,
-                             Parameters = new ScriptParameters(CustomScriptParameters)
-                         };
+            ScriptExpression script = new ScriptExpression
+            {
+                ScriptCode = _activation.DescriptionExpression,
+                Parameters = new ScriptParameters(CustomScriptParameters)
+            };
 
-            var result = script.Evaluate(CustomRuntimeScriptParameters);
-            
-            var stringValueProvider = result as IValueProvider<string>;
-            if (stringValueProvider != null)
-                return stringValueProvider.Value;
+            object result = script.Evaluate(CustomRuntimeScriptParameters);
 
-            var valueProvider = result as IValueProvider;
-            if (valueProvider != null)
-                return valueProvider.Value as string;
-
-            return result as string;
+            return result is IValueProvider<string> stringValueProvider
+                ? stringValueProvider.Value
+                : result is IValueProvider valueProvider ? valueProvider.Value as string : result as string;
         }
 
         private string EvaluateScopeDescription()
         {
             if (string.IsNullOrWhiteSpace(_scope.DescriptionExpression))
+            {
                 return null;
+            }
 
-            var script = new ScriptExpression
-                         {
-                             ScriptCode = _scope.DescriptionExpression,
-                             Parameters = new ScriptParameters(CustomScriptParameters)
-                         };
+            ScriptExpression script = new ScriptExpression
+            {
+                ScriptCode = _scope.DescriptionExpression,
+                Parameters = new ScriptParameters(CustomScriptParameters)
+            };
 
-            var result = script.Evaluate(CustomRuntimeScriptParameters);
+            object result = script.Evaluate(CustomRuntimeScriptParameters);
 
-            var stringValueProvider = result as IValueProvider<string>;
-            if (stringValueProvider != null)
-                return stringValueProvider.Value;
-
-            var valueProvider = result as IValueProvider;
-            if (valueProvider != null)
-                return valueProvider.Value as string;
-
-            return result as string;
+            return result is IValueProvider<string> stringValueProvider
+                ? stringValueProvider.Value
+                : result is IValueProvider valueProvider ? valueProvider.Value as string : result as string;
         }
 
         private EffectParameter CreateTargetParameter()

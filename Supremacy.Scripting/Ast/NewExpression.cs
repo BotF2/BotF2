@@ -20,98 +20,122 @@ namespace Supremacy.Scripting.Ast
         private Arguments _arguments;
 
         private Type _resolvedType;
-        private MethodGroupExpression _constructor;
 
-        public NewExpression ([NotNull] Expression requestedType, Arguments arguments, SourceSpan location)
+        public NewExpression([NotNull] Expression requestedType, Arguments arguments, SourceSpan location)
         {
-            if (requestedType == null)
-                throw new ArgumentNullException("requestedType");
-
-            _requestedType = requestedType;
+            _requestedType = requestedType ?? throw new ArgumentNullException("requestedType");
             _arguments = arguments;
 
             Span = location;
         }
 
-        public MethodGroupExpression Constructor
-        {
-            get { return _constructor; }
-        }
+        public MethodGroupExpression Constructor { get; private set; }
 
-        public Arguments Arguments
-        {
-            get { return _arguments; }
-        }
+        public Arguments Arguments => _arguments;
 
-        protected virtual bool HasInitializer
-        {
-            get { return false; }
-        }
+        protected virtual bool HasInitializer => false;
 
-        public bool IsDefaultValueType
-        {
-            get
-            {
-                return TypeManager.IsValueType(Type) &&
+        public bool IsDefaultValueType => TypeManager.IsValueType(Type) &&
                        !HasInitializer &&
                        ((Arguments == null) || (Arguments.Count == 0));
-            }
-        }
 
-        public static ConstantExpression Constantify (Type t)
+        public static ConstantExpression Constantify(Type t)
 		{
-			if (t == TypeManager.CoreTypes.Int32)
-				return new ConstantExpression<int>(0);
-			if (t == TypeManager.CoreTypes.UInt32)
-                return new ConstantExpression<uint>(0u);
-			if (t == TypeManager.CoreTypes.Int64)
-                return new ConstantExpression<long>(0L);
-			if (t == TypeManager.CoreTypes.UInt64)
-                return new ConstantExpression<ulong>(0uL);
-			if (t == TypeManager.CoreTypes.Single)
-                return new ConstantExpression<float>(0f);
-			if (t == TypeManager.CoreTypes.Double)
-                return new ConstantExpression<double>(0d);
-			if (t == TypeManager.CoreTypes.Int16)
-                return new ConstantExpression<short>(0);
-			if (t == TypeManager.CoreTypes.UInt16)
-                return new ConstantExpression<ushort>(0);
-			if (t == TypeManager.CoreTypes.SByte)
-                return new ConstantExpression<sbyte>(0);
-			if (t == TypeManager.CoreTypes.Byte)
-                return new ConstantExpression<byte>(0);
-			if (t == TypeManager.CoreTypes.Char)
-                return new ConstantExpression<char>('\0');
-			if (t == TypeManager.CoreTypes.Boolean)
-                return new ConstantExpression<bool>(false);
-			if (t == TypeManager.CoreTypes.Decimal)
-                return new ConstantExpression<decimal>(0m);
-            if (TypeManager.IsEnumType(t))
-                return new EnumConstantExpression(Constantify(Enum.GetUnderlyingType(t)), t);
-			if (TypeManager.IsNullableType (t))
-				return LiftedNullExpression.Create(t, SourceSpan.None);
+            if (t == TypeManager.CoreTypes.Int32)
+            {
+                return new ConstantExpression<int>(0);
+            }
 
-			return null;
-		}
+            if (t == TypeManager.CoreTypes.UInt32)
+            {
+                return new ConstantExpression<uint>(0u);
+            }
+
+            if (t == TypeManager.CoreTypes.Int64)
+            {
+                return new ConstantExpression<long>(0L);
+            }
+
+            if (t == TypeManager.CoreTypes.UInt64)
+            {
+                return new ConstantExpression<ulong>(0uL);
+            }
+
+            if (t == TypeManager.CoreTypes.Single)
+            {
+                return new ConstantExpression<float>(0f);
+            }
+
+            if (t == TypeManager.CoreTypes.Double)
+            {
+                return new ConstantExpression<double>(0d);
+            }
+
+            if (t == TypeManager.CoreTypes.Int16)
+            {
+                return new ConstantExpression<short>(0);
+            }
+
+            if (t == TypeManager.CoreTypes.UInt16)
+            {
+                return new ConstantExpression<ushort>(0);
+            }
+
+            if (t == TypeManager.CoreTypes.SByte)
+            {
+                return new ConstantExpression<sbyte>(0);
+            }
+
+            if (t == TypeManager.CoreTypes.Byte)
+            {
+                return new ConstantExpression<byte>(0);
+            }
+
+            if (t == TypeManager.CoreTypes.Char)
+            {
+                return new ConstantExpression<char>('\0');
+            }
+
+            if (t == TypeManager.CoreTypes.Boolean)
+            {
+                return new ConstantExpression<bool>(false);
+            }
+
+            if (t == TypeManager.CoreTypes.Decimal)
+            {
+                return new ConstantExpression<decimal>(0m);
+            }
+
+            if (TypeManager.IsEnumType(t))
+            {
+                return new EnumConstantExpression(Constantify(Enum.GetUnderlyingType(t)), t);
+            }
+
+            return TypeManager.IsNullableType(t) ? LiftedNullExpression.Create(t, SourceSpan.None) : null;
+        }
 
         public override Expression DoResolve(ParseContext ec)
         {
-            var typeExpression = _requestedType.ResolveAsTypeTerminal(ec, false);
+            TypeExpression typeExpression = _requestedType.ResolveAsTypeTerminal(ec, false);
             if (typeExpression == null)
+            {
                 return null;
+            }
 
             Type = _resolvedType = typeExpression.Type;
 
             if (Arguments == null)
             {
-                var c = Constantify(_resolvedType);
+                ConstantExpression c = Constantify(_resolvedType);
                 if (c != null)
+                {
                     return ReducedExpression.Create(c, this);
+                }
             }
 
             if (TypeManager.IsGenericParameter(_resolvedType))
             {
-                var gc = TypeManager.GetTypeParameterConstraints(_resolvedType);
+                GenericConstraints gc = TypeManager.GetTypeParameterConstraints(_resolvedType);
 
                 if ((gc == null) || (!gc.HasConstructorConstraint && !gc.IsValueType))
                 {
@@ -165,7 +189,7 @@ namespace Supremacy.Scripting.Ast
                 return null;
             }
 
-            var isStruct = TypeManager.IsStruct(_resolvedType);
+            bool isStruct = TypeManager.IsStruct(_resolvedType);
             ExpressionClass = ExpressionClass.Value;
 
             //
@@ -173,10 +197,12 @@ namespace Supremacy.Scripting.Ast
             // so we have to manually ignore it.
             //
             if (isStruct && (_arguments != null) && !_arguments.Any())
+            {
                 return this;
+            }
 
             // For member-lookup, treat 'new Foo (bar)' as call to 'foo.ctor (bar)', where 'foo' is of type 'Foo'.
-            var memberLookup = MemberLookupFinal(
+            Expression memberLookup = MemberLookupFinal(
                 ec,
                 _resolvedType,
                 _resolvedType,
@@ -186,22 +212,26 @@ namespace Supremacy.Scripting.Ast
                 Span);
 
             if (_arguments != null)
+            {
                 _arguments.Resolve(ec);
+            }
 
             if (memberLookup == null)
+            {
                 return null;
+            }
 
-            _constructor = memberLookup as MethodGroupExpression;
+            Constructor = memberLookup as MethodGroupExpression;
             
-            if (_constructor == null)
+            if (Constructor == null)
             {
                 memberLookup.OnErrorUnexpectedKind(ec, ResolveFlags.MethodGroup, Span);
                 return null;
             }
 
-            _constructor = _constructor.OverloadResolve(ec, ref _arguments, false, Span);
+            Constructor = Constructor.OverloadResolve(ec, ref _arguments, false, Span);
 
-            return (_constructor == null) ? null : this;
+            return (Constructor == null) ? null : this;
         }
 
         public override void Walk(AstVisitor prefix, AstVisitor postfix)
@@ -209,12 +239,14 @@ namespace Supremacy.Scripting.Ast
             Walk(ref _requestedType, prefix, postfix);
 
             if (_arguments != null)
+            {
                 WalkList(_arguments, prefix, postfix);
+            }
         }
 
         public override MSAst.Expression TransformCore(ScriptGenerator generator)
         {
-            var constructorInfo = (ConstructorInfo)_constructor;
+            ConstructorInfo constructorInfo = (ConstructorInfo)Constructor;
             //if (this.ExpressionType.IsGenericType)
             return MSAst.Expression.New(
                 constructorInfo,
@@ -236,23 +268,30 @@ namespace Supremacy.Scripting.Ast
                 sw.Write(TypeManager.GetCSharpName(_resolvedType));
             }
 
-            var hasArguments = (_arguments != null) && _arguments.Any();
+            bool hasArguments = (_arguments != null) && _arguments.Any();
 
             if (hasArguments || !HasInitializer)
+            {
                 sw.Write("(");
+            }
 
             if (hasArguments)
             {
                 for (int i = 0; i < _arguments.Count; i++)
                 {
                     if (i == 0)
+                    {
                         sw.Write(", ");
+                    }
+
                     DumpChild(_arguments[i], sw, indentChange);
                 }
             }
 
             if (hasArguments || !HasInitializer)
+            {
                 sw.Write(")");
+            }
         }
     }
 }

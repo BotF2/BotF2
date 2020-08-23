@@ -23,9 +23,7 @@ namespace Supremacy.Collections
 
         public KeyedCollectionBaseDebugView(KeyedCollectionBase<TKey, TValue> target)
         {
-            if (target == null)
-                throw new ArgumentNullException("target");
-            _target = target;
+            _target = target ?? throw new ArgumentNullException(nameof(target));
         }
 
         [DebuggerBrowsable(DebuggerBrowsableState.RootHidden)]
@@ -33,7 +31,7 @@ namespace Supremacy.Collections
         {
             get
             {
-                var items = new TValue[_target.Count];
+                TValue[] items = new TValue[_target.Count];
                 _target.CopyTo(items, 0);
                 return items;
             }
@@ -65,43 +63,48 @@ namespace Supremacy.Collections
 
         public KeyedCollectionBase(Func<TValue, TKey> keyRetriever, IEqualityComparer<TKey> comparer, int dictionaryCreationThreshold)
         {
-            if (keyRetriever == null)
-                throw new ArgumentNullException("keyRetriever");
-
             if (dictionaryCreationThreshold < NeverCreateDictionaryThreshold)
-                throw new ArgumentOutOfRangeException("dictionaryCreationThreshold");
+            {
+                throw new ArgumentOutOfRangeException(nameof(dictionaryCreationThreshold));
+            }
 
             if (comparer == null)
+            {
                 comparer = EqualityComparer<TKey>.Default;
+            }
 
             if (dictionaryCreationThreshold == NeverCreateDictionaryThreshold)
+            {
                 dictionaryCreationThreshold = int.MaxValue;
+            }
 
-            _keyRetriever = keyRetriever;
+            _keyRetriever = keyRetriever ?? throw new ArgumentNullException(nameof(keyRetriever));
             _keyComparer = comparer;
             _threshold = dictionaryCreationThreshold;
         }
 
-        public IEqualityComparer<TKey> KeyComparer
-        {
-            get { return _keyComparer ?? EqualityComparer<TKey>.Default; }
-        }
+        public IEqualityComparer<TKey> KeyComparer => _keyComparer ?? EqualityComparer<TKey>.Default;
 
         public virtual TValue this[TKey key]
         {
             get
             {
-                if (ReferenceEquals(key, null))
-                    throw new ArgumentNullException("key");
-                
-                TValue value;
-                if ((_keyValueMap != null) && _keyValueMap.TryGetValue(key, out value))
-                    return value;
+                if (key == null)
+                {
+                    throw new ArgumentNullException(nameof(key));
+                }
 
-                foreach (var item in Items)
+                if ((_keyValueMap != null) && _keyValueMap.TryGetValue(key, out TValue value))
+                {
+                    return value;
+                }
+
+                foreach (TValue item in Items)
                 {
                     if (_keyComparer.Equals(GetKeyForItem(item), key))
+                    {
                         return item;
+                    }
                 }
 
                 throw new KeyNotFoundException();
@@ -110,68 +113,69 @@ namespace Supremacy.Collections
 
         public int RemoveRange(IEnumerable<TKey> keys)
         {
-            var values = new List<TValue>();
-            
-            foreach (var key in keys)
+            List<TValue> values = new List<TValue>();
+
+            foreach (TKey key in keys)
             {
-                TValue value;
-                if (TryGetValue(key, out value))
+                if (TryGetValue(key, out TValue value))
+                {
                     values.Add(value);
+                }
             }
 
-            var removedItemCount = values.Count;
+            int removedItemCount = values.Count;
 
-            base.RemoveRange(values);
+            RemoveRange(values);
 
             return removedItemCount;
         }
 
         public bool Contains(TKey key)
         {
-            if (ReferenceEquals(key, null))
-                throw new ArgumentNullException("key");
-            
-            if (_keyValueMap != null)
-                return _keyValueMap.ContainsKey(key);
+            if (key == null)
+            {
+                throw new ArgumentNullException(nameof(key));
+            }
 
-            return Items.Any(o => _keyComparer.Equals(GetKeyForItem(o), key));
+            return _keyValueMap != null ? _keyValueMap.ContainsKey(key) : Items.Any(o => _keyComparer.Equals(GetKeyForItem(o), key));
         }
 
         public virtual bool TryGetValue(TKey key, out TValue value)
         {
-            if (_keyValueMap != null)
+            if (_keyValueMap != null && _keyValueMap.TryGetValue(key, out value))
             {
-                if (_keyValueMap.TryGetValue(key, out value))
-                    return true;
+                return true;
             }
 
-            foreach (var item in Items.Where(o => KeyComparer.Equals(GetKeyForItem(o), key)))
+            foreach (TValue item in Items.Where(o => KeyComparer.Equals(GetKeyForItem(o), key)))
             {
                 value = item;
                 return true;
             }
 
-            value = default(TValue);
+            value = default;
             return false;
         }
 
         public bool Remove(TKey key)
         {
-            if (ReferenceEquals(key, null))
-                throw new ArgumentNullException("key");
-            
-            if (_keyValueMap != null)
+            if (key == null)
             {
-                TValue value;
-                if (_keyValueMap.TryGetValue(key, out value))
-                    return Remove(value);
-                return false;
+                throw new ArgumentNullException(nameof(key));
             }
 
-            for (var i = 0; i < Items.Count; i++)
+            if (_keyValueMap != null)
+            {
+                return _keyValueMap.TryGetValue(key, out TValue value) && Remove(value);
+            }
+
+            for (int i = 0; i < Items.Count; i++)
             {
                 if (!_keyComparer.Equals(GetKeyForItem(Items[i]), key))
+                {
                     continue;
+                }
+
                 RemoveItem(i);
                 return true;
             }
@@ -181,51 +185,55 @@ namespace Supremacy.Collections
 
         public bool Replace(TKey key, TValue newValue)
         {
-            TValue oldValue;
-
-            return TryGetValue(key, out oldValue) &&
+            return TryGetValue(key, out TValue oldValue) &&
                    Replace(oldValue, newValue);
         }
 
         public bool Replace(TValue oldValue, TValue newValue)
         {
-            var index = IndexOf(oldValue);
+            int index = IndexOf(oldValue);
             if (index < 0)
+            {
                 return false;
-            
+            }
+
             SetItem(index, newValue);
 
             return true;
         }
 
-        protected internal IDictionary<TKey, TValue> KeyValueMap
-        {
-            get { return _keyValueMap; }
-        }
+        protected internal IDictionary<TKey, TValue> KeyValueMap => _keyValueMap;
 
         protected void ChangeItemKey(TValue item, TKey newKey)
         {
-            var oldKey = GetKeyForItem(item);
-            
+            TKey oldKey = GetKeyForItem(item);
+
             if (!Contains(item))
+            {
                 throw new ArgumentException("Item does not exist in the collection.");
+            }
 
             if (_keyComparer.Equals(oldKey, newKey))
+            {
                 return;
+            }
 
-            if (!ReferenceEquals(newKey, null))
+            if (newKey is object)
+            {
                 AddKey(newKey, item);
+            }
 
-            if (!ReferenceEquals(oldKey, null))
+            if (oldKey is object)
+            {
                 RemoveKey(oldKey);
+            }
         }
 
         protected override void ClearItems()
         {
             base.ClearItems();
 
-            if (_keyValueMap != null)
-                _keyValueMap.Clear();
+            _keyValueMap?.Clear();
 
             _keyCount = 0;
         }
@@ -237,40 +245,51 @@ namespace Supremacy.Collections
 
         protected override void InsertItem(int index, TValue item)
         {
-            var key = GetKeyForItem(item);
-            
-            if (!ReferenceEquals(key, null))
+            TKey key = GetKeyForItem(item);
+
+            if (key is object)
+            {
                 AddKey(key, item);
+            }
 
             base.InsertItem(index, item);
         }
 
         protected override void RemoveItem(int index)
         {
-            var key = GetKeyForItem(Items[index]);
-            
-            if (!ReferenceEquals(key, null))
+            TKey key = GetKeyForItem(Items[index]);
+
+            if (key is object)
+            {
                 RemoveKey(key);
+            }
 
             base.RemoveItem(index);
         }
 
         protected override void SetItem(int index, TValue item)
         {
-            var newKey = GetKeyForItem(item);
-            var oldKey = GetKeyForItem(Items[index]);
+            TKey newKey = GetKeyForItem(item);
+            TKey oldKey = GetKeyForItem(Items[index]);
 
             if (_keyComparer.Equals(oldKey, newKey))
             {
-                if (!ReferenceEquals(newKey, null) && (_keyValueMap != null))
+                if (newKey is object && (_keyValueMap != null))
+                {
                     _keyValueMap[newKey] = item;
+                }
             }
             else
             {
-                if (!ReferenceEquals(newKey, null))
+                if (newKey is object)
+                {
                     AddKey(newKey, item);
-                if (!ReferenceEquals(oldKey, null))
+                }
+
+                if (oldKey is object)
+                {
                     RemoveKey(oldKey);
+                }
             }
 
             base.SetItem(index, item);
@@ -294,12 +313,16 @@ namespace Supremacy.Collections
             _keyRetriever = reader.Read<Func<TValue, TKey>>();
 
             if (Count < _threshold)
+            {
                 return;
+            }
 
             _keyValueMap = new Dictionary<TKey, TValue>(Count, KeyComparer);
 
-            foreach (var item in Items)
+            foreach (TValue item in Items)
+            {
                 AddKey(GetKeyForItem(item), item);
+            }
         }
 
         private void AddKey(TKey key, TValue item)
@@ -307,9 +330,13 @@ namespace Supremacy.Collections
             if (_keyValueMap != null)
             {
                 if (_keyValueMap.ContainsKey(key))
+                {
                     OnKeyCollision(key, item);
+                }
                 else
+                {
                     _keyValueMap.Add(key, item);
+                }
             }
             else if (_keyCount == _threshold)
             {
@@ -319,7 +346,10 @@ namespace Supremacy.Collections
             else
             {
                 if (Contains(key))
+                {
                     OnKeyCollision(key, item);
+                }
+
                 _keyCount++;
             }
         }
@@ -337,20 +367,23 @@ namespace Supremacy.Collections
 
         private void RemoveKey(TKey key)
         {
-            if (ReferenceEquals(key, null))
-                throw new ArgumentNullException("key");
-            
+            if (key == null)
+            {
+                throw new ArgumentNullException(nameof(key));
+            }
+
             if (_keyValueMap != null)
+            {
                 _keyValueMap.Remove(key);
+            }
             else
+            {
                 _keyCount--;
+            }
         }
 
         #region Implementation of IIndexedKeyedCollection<TKey,TValue>
-        public IEnumerable<TKey> Keys
-        {
-            get { return Items.Select(GetKeyForItem).Where(o => !ReferenceEquals(o, null)); }
-        }
+        public IEnumerable<TKey> Keys => Items.Select(GetKeyForItem).Where(o => o is object);
         #endregion
     }
 }

@@ -10,6 +10,7 @@ using Supremacy.Economy;
 using Supremacy.Entities;
 using Supremacy.Game;
 using Supremacy.Intelligence;
+using Supremacy.Resources;
 using Supremacy.Types;
 using Supremacy.Universe;
 using Supremacy.Utility;
@@ -243,8 +244,8 @@ namespace Supremacy.Client.Views
         }
         private void OnIsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
+
             var _civLocalPlayer = _appContext.LocalPlayer.Empire;
-            // GameLog.Client.UI.DebugFormat("_civLocalPlayer = {0}", _civLocalPlayer.Key);
 
             if (IsVisible)
             {
@@ -254,101 +255,215 @@ namespace Supremacy.Client.Views
                 // GameLog.Client.UI.DebugFormat("SpiedZeroCiv checking visible .... _spiedOneCiv = {0}, _civLocalPlayer = {1}", _spiedZeroCiv, _civLocalPlayer);
                 if (AssetsHelper.IsSpiedZero(_civLocalPlayer) || IntelHelper.ShowNetwork_0)
                 {
-                    EmpireExpanderZero.Visibility = Visibility.Visible;
-                    SabotageEnergyZero.Visibility = Visibility.Visible;
-                    SabotageFoodZero.Visibility = Visibility.Visible;
-                    SabotageIndustryZero.Visibility = Visibility.Visible;
-                    StealResearchZero.Visibility = Visibility.Visible;
-                    StealCreditsZero.Visibility = Visibility.Visible;
+                    //var ForeignPower = diplomat1.GetForeignPower(GameContext.Current.CivilizationManagers[0]);
+                    //_checkedVisibleForSabotagePending = CheckingVisibityForSabotagePending(diplomat1, ForeignPower);
+
+                    //if (_checkedVisibleForSabotagePending)
+                    //{
+                        EmpireExpanderZero.Visibility = Visibility.Visible;
+                        SabotageEnergyZero.Visibility = Visibility.Visible;
+                        SabotageFoodZero.Visibility = Visibility.Visible;
+                        SabotageIndustryZero.Visibility = Visibility.Visible;
+                        StealResearchZero.Visibility = Visibility.Visible;
+                        StealCreditsZero.Visibility = Visibility.Visible;
+                    //}
                 }
                 //GameLog.Client.UI.DebugFormat("SpiedOneCiv checking visible .... _spiedOneCiv = {0}, _civLocalPlayer = {1}", _spiedOneCiv, _civLocalPlayer);
                 if (AssetsHelper.IsSpiedOne(_civLocalPlayer) || IntelHelper.ShowNetwork_1)
                 {
-                    EmpireExpanderOne.Visibility = Visibility.Visible;
-                    SabotageEnergyOne.Visibility = Visibility.Visible;
-                    SabotageFoodOne.Visibility = Visibility.Visible;
-                    SabotageIndustryOne.Visibility = Visibility.Visible;
-                    StealResearchOne.Visibility = Visibility.Visible;
-                    StealCreditsOne.Visibility = Visibility.Visible;
+                    //var ForeignPower = diplomat1.GetForeignPower(GameContext.Current.CivilizationManagers[1]);
+                    //_checkedVisibleForSabotagePending = CheckingVisibityForSabotagePending(diplomat1, ForeignPower);
+
+                    //if (_checkedVisibleForSabotagePending)
+                    //{
+                        EmpireExpanderOne.Visibility = Visibility.Visible;
+                        SabotageEnergyOne.Visibility = Visibility.Visible;
+                        SabotageFoodOne.Visibility = Visibility.Visible;
+                        SabotageIndustryOne.Visibility = Visibility.Visible;
+                        StealResearchOne.Visibility = Visibility.Visible;
+                        StealCreditsOne.Visibility = Visibility.Visible;
+                    //}
                 }
                 // GameLog.Client.UI.DebugFormat("SpiedTwoCiv checking visible .... _spiedTwoCiv = {0}, _civLocalPlayer = {1}", _spiedTwoCiv, _civLocalPlayer);
                 if (AssetsHelper.IsSpiedTwo(_civLocalPlayer) || IntelHelper.ShowNetwork_2)
                 {
-                    EmpireExpanderTwo.Visibility = Visibility.Visible;
-                    SabotageEnergyTwo.Visibility = Visibility.Visible;
-                    SabotageFoodTwo.Visibility = Visibility.Visible;
-                    SabotageIndustryTwo.Visibility = Visibility.Visible;
-                    StealResearchTwo.Visibility = Visibility.Visible;
-                    StealCreditsTwo.Visibility = Visibility.Visible;
+                    //var ForeignPower = diplomat1.GetForeignPower(GameContext.Current.CivilizationManagers[2]);
+                    //_checkedVisibleForSabotagePending = CheckingVisibityForSabotagePending(diplomat1, ForeignPower);
+
+                    //if (_checkedVisibleForSabotagePending)
+                    //{
+                        EmpireExpanderTwo.Visibility = Visibility.Visible;
+                        SabotageEnergyTwo.Visibility = Visibility.Visible;
+                        SabotageFoodTwo.Visibility = Visibility.Visible;
+                        SabotageIndustryTwo.Visibility = Visibility.Visible;
+                        StealResearchTwo.Visibility = Visibility.Visible;
+                        StealCreditsTwo.Visibility = Visibility.Visible;
+                    //}
                 }
                 //GameLog.Client.UI.DebugFormat("SpiedThreeCiv checking visible .... _spiedThreeCiv = {0}, _civLocalPlayer = {1}", _spiedThreeCiv, _civLocalPlayer);
                 if (AssetsHelper.IsSpiedThree(_civLocalPlayer) || IntelHelper.ShowNetwork_3)
                 {
-                    EmpireExpanderThree.Visibility = Visibility.Visible;
-                    SabotageEnergyThree.Visibility = Visibility.Visible;
-                    SabotageFoodThree.Visibility = Visibility.Visible;
-                    SabotageIndustryThree.Visibility = Visibility.Visible;
-                    StealResearchThree.Visibility = Visibility.Visible;
-                    StealCreditsThree.Visibility = Visibility.Visible;
+                    //var ForeignPower = diplomat1.GetForeignPower(GameContext.Current.CivilizationManagers[3]);
+                    //_checkedVisibleForSabotagePending = CheckingVisibityForSabotagePending(diplomat1, ForeignPower);
+
+                    //if (_checkedVisibleForSabotagePending)
+                    //{
+                        EmpireExpanderThree.Visibility = Visibility.Visible;
+                        SabotageEnergyThree.Visibility = Visibility.Visible;
+                        SabotageFoodThree.Visibility = Visibility.Visible;
+                        SabotageIndustryThree.Visibility = Visibility.Visible;
+                        StealResearchThree.Visibility = Visibility.Visible;
+                        StealCreditsThree.Visibility = Visibility.Visible;
+                    //}
                 }
                 //GameLog.Client.UI.DebugFormat("SpiedCiv cFourhecking visible .... _spiedFourCiv = {0}, _civLocalPlayer = {1}", _spiedFourCiv, _civLocalPlayer);
                 if (AssetsHelper.IsSpiedFour(_civLocalPlayer) || IntelHelper.ShowNetwork_4)
                 {
-                    EmpireExpanderFour.Visibility = Visibility.Visible;
-                    SabotageEnergyFour.Visibility = Visibility.Visible;
-                    SabotageFoodFour.Visibility = Visibility.Visible;
-                    SabotageIndustryFour.Visibility = Visibility.Visible;
-                    StealResearchFour.Visibility = Visibility.Visible;
-                    StealCreditsFour.Visibility = Visibility.Visible;
+                    //var ForeignPower = diplomat1.GetForeignPower(GameContext.Current.CivilizationManagers[4]);
+                    //_checkedVisibleForSabotagePending = CheckingVisibityForSabotagePending(diplomat1, ForeignPower);
+
+                    //if (_checkedVisibleForSabotagePending)
+                    //{
+                        EmpireExpanderFour.Visibility = Visibility.Visible;
+                        SabotageEnergyFour.Visibility = Visibility.Visible;
+                        SabotageFoodFour.Visibility = Visibility.Visible;
+                        SabotageIndustryFour.Visibility = Visibility.Visible;
+                        StealResearchFour.Visibility = Visibility.Visible;
+                        StealCreditsFour.Visibility = Visibility.Visible;
+                    //}
                 }
                 //GameLog.Client.UI.DebugFormat("SpiedFiveCiv checking visible .... _spiedFiveCiv = {0}, _civLocalPlayer = {1}", _spiedFiveCiv, _civLocalPlayer);
                 if (AssetsHelper.IsSpiedFive(_civLocalPlayer) || IntelHelper.ShowNetwork_5)
                 {
-                    EmpireExpanderFive.Visibility = Visibility.Visible;
-                    SabotageEnergyFive.Visibility = Visibility.Visible;
-                    SabotageFoodFive.Visibility = Visibility.Visible;
-                    SabotageIndustryFive.Visibility = Visibility.Visible;
-                    StealResearchFive.Visibility = Visibility.Visible;
-                    StealCreditsFive.Visibility = Visibility.Visible;
+                    //var ForeignPower = diplomat1.GetForeignPower(GameContext.Current.CivilizationManagers[5]);
+                    //_checkedVisibleForSabotagePending = CheckingVisibityForSabotagePending(diplomat1, ForeignPower);
+
+                    //if (_checkedVisibleForSabotagePending)
+                    //{
+                        EmpireExpanderFive.Visibility = Visibility.Visible;
+                        SabotageEnergyFive.Visibility = Visibility.Visible;
+                        SabotageFoodFive.Visibility = Visibility.Visible;
+                        SabotageIndustryFive.Visibility = Visibility.Visible;
+                        StealResearchFive.Visibility = Visibility.Visible;
+                        StealCreditsFive.Visibility = Visibility.Visible;
+                    //}
                 }
                 //GameLog.Client.UI.DebugFormat("SpiedSixCiv checking visible .... _spiedSixCiv = {0}, _civLocalPlayer = {1}", _spiedSixCiv, _civLocalPlayer);
                 if (AssetsHelper.IsSpiedSix(_civLocalPlayer) || IntelHelper.ShowNetwork_6)
                 {
-                    EmpireExpanderSix.Visibility = Visibility.Visible;
-                    SabotageEnergySix.Visibility = Visibility.Visible;
-                    SabotageFoodSix.Visibility = Visibility.Visible;
-                    SabotageIndustrySix.Visibility = Visibility.Visible;
-                    StealResearchSix.Visibility = Visibility.Visible;
-                    StealCreditsSix.Visibility = Visibility.Visible;
+                    //var ForeignPower = diplomat1.GetForeignPower(GameContext.Current.CivilizationManagers[1]);
+                    //_checkedVisibleForSabotagePending = CheckingVisibityForSabotagePending(diplomat1, ForeignPower);
+
+                    //if (_checkedVisibleForSabotagePending)
+                    //{
+                        EmpireExpanderSix.Visibility = Visibility.Visible;
+                        SabotageEnergySix.Visibility = Visibility.Visible;
+                        SabotageFoodSix.Visibility = Visibility.Visible;
+                        SabotageIndustrySix.Visibility = Visibility.Visible;
+                        StealResearchSix.Visibility = Visibility.Visible;
+                        StealCreditsSix.Visibility = Visibility.Visible;
+                    //}
                 }
                 //GameLog.Client.UI.DebugFormat("end  of checking visible");
 
-                List<CivilizationManager> spyableCivManagers = new List<CivilizationManager>();
 
-                var shortList = GameContext.Current.CivilizationManagers; // only CivilizationMangers in game and in CivID numerical sequence
-                foreach (var manager in shortList)
+                // GameLog.Client.UI.DebugFormat("_civLocalPlayer = {0}", _civLocalPlayer.Key);
+
+                Diplomat diplomat1 = Diplomat.Get(GameContext.Current.CivilizationManagers[_civLocalPlayer.CivID]);
+                var empireCount = GameContext.Current.Civilizations.Where(o => o.IsEmpire).Count();
+                var empireCivsList = GameContext.Current.Civilizations.Where(o => o.IsEmpire).ToList();
+                List<int> empireIdList = new List<int>();
+                foreach (var empireCiv in empireCivsList)
                 {
-                    if (manager.Civilization.IsEmpire && manager.Civilization != _civLocalPlayer) // bool is empire and is not the local player
-                    {
-                        spyableCivManagers.Add(manager);
-                        // GameLog.Client.UI.DebugFormat("spyableCivManagers.ADD: manager = {0}", manager.Civilization.Key);
-                    }
+                    empireIdList.Add(empireCiv.CivID);
                 }
-                Dictionary<int, Civilization> empireCivsDictionary = new Dictionary<int, Civilization>();
-                List<Civilization> empireCivsList = new List<Civilization>();
 
-                int counting = 0;
-                foreach (var civManager in spyableCivManagers)
+                //for (int i = 0; i < empireCount; i++)
+                foreach (var empireID in empireIdList)
+
                 {
-                    empireCivsDictionary.Add(civManager.CivilizationID, civManager.Civilization); //dictionary of civs that can be spied on with key set to CivID
-                    empireCivsList.Add(civManager.Civilization); // list of civs that can be spied on by local player and in CivID sequence
-                                                                 //GameLog.Client.UI.DebugFormat("Add civ = {0} to blame dictionary at key ={1}", civManager.Civilization.Key, civManager.CivilizationID);
-                                                                 // GameLog.Client.UI.DebugFormat("Add civ.Key = {0} to blame list at index ={1}", civManager.Civilization.Key, counting);
-                    counting++;
+                    if (empireID == _civLocalPlayer.CivID)
+                        continue;
+
+                    var ForeignPower = diplomat1.GetForeignPower(GameContext.Current.CivilizationManagers[empireID]);
+
+                    //if (diplomat1.GetLastStatementSent(ForeignPower) != null)
+                    //{
+
+                    bool _checkedVisibleForSabotagePending = true;
+
+                    //_checkedVisibleForSabotagePending = CheckingVisibityForSabotagePending(diplomat1, ForeignPower);
+
+                    //if (ForeignPower.LastStatementSent != null)
+                    if (diplomat1.GetLastStatementSent(ForeignPower) != null)
+                    {
+                        int _statementSentInTurn = diplomat1.GetLastStatementSent(ForeignPower).TurnSent;
+
+                        if (_statementSentInTurn == 99999)
+                            _statementSentInTurn = 1;
+                        //switch (ForeignPower.LastStatementSent.StatementType)
+                        if (GameContext.Current.TurnNumber < _statementSentInTurn + 2)
+                            switch (diplomat1.GetLastStatementSent(ForeignPower).StatementType)
+                            {
+                                case StatementType.StealCredits:
+                                case StatementType.StealResearch:
+                                case StatementType.SabotageFood:
+                                case StatementType.SabotageIndustry:
+                                case StatementType.SabotageEnergy:
+                                    _checkedVisibleForSabotagePending = false;
+                                    //_visibleForSabotagePending = false;
+                                    break;
+                                case StatementType.CommendWar:
+                                case StatementType.DenounceWar:
+                                case StatementType.WarDeclaration:
+                                    break;
+                                default:
+                                    break;
+                            }
+                    }
+
+                    //_checkedVisibleForSabotagePending = _visibleForSabotagePending;
+
+                    // just for testing      _checkedVisibleForSabotagePending = true;
+                    if (_checkedVisibleForSabotagePending == false)
+                        switch (empireID)
+                        {
+                            case 0:
+                                Close_0_SabotageButtons();
+                                break;
+                            case 1:
+                                Close_1_SabotageButtons();
+                                break;
+                            case 2:
+                                Close_2_SabotageButtons();
+                                break;
+                            case 3:
+                                Close_3_SabotageButtons();
+                                break;
+                            case 4:
+                                Close_4_SabotageButtons();
+                                break;
+                            case 5:
+                                Close_5_SabotageButtons();
+                                break;
+                            case 6:
+                                Close_6_SabotageButtons();
+                                break;
+                            default: break;
+                        }
+                }
+
+                Dictionary<int, Civilization> empireCivsDictionary = new Dictionary<int, Civilization>();
+
+                foreach (var civ in empireCivsList)
+                {
+                    empireCivsDictionary.Add(civ.CivID, civ); //dictionary of civs that can be spied on with key set to CivID
+                    //GameLog.Client.UI.DebugFormat("Add civ = {0} to blame dictionary at key ={1}", civManager.Civilization.Key, civManager.CivilizationID);
+                    // GameLog.Client.UI.DebugFormat("Add civ.Key = {0} to blame list at index ={1}", civManager.Civilization.Key, counting);
                 }
                 //GameLog.Client.UI.DebugFormat("FED: begin of checking BLAME visible");
 
-                if (empireCivsDictionary.Keys.Contains(0) &&
+                if (empireCivsDictionary.Keys.Contains(0) && _civLocalPlayer.CivID != 0 &&
                     GameContext.Current.DiplomacyData[_civLocalPlayer, empireCivsDictionary[0]].IsContactMade())
                 {
                     BlameFederation1.Visibility = Visibility.Visible;
@@ -360,7 +475,7 @@ namespace Supremacy.Client.Views
                 }
                 //GameLog.Client.UI.DebugFormat("FED: end   of checking BLAME visible");
 
-                if (empireCivsDictionary.Keys.Contains(1) &&
+                if (empireCivsDictionary.Keys.Contains(1) && _civLocalPlayer.CivID != 1 &&
                     GameContext.Current.DiplomacyData[_civLocalPlayer, empireCivsDictionary[1]].IsContactMade())
                 {
                     BlameTerranEmpire0.Visibility = Visibility.Visible;
@@ -370,7 +485,7 @@ namespace Supremacy.Client.Views
                     BlameTerranEmpire5.Visibility = Visibility.Visible;
                     BlameTerranEmpire6.Visibility = Visibility.Visible;
                 }
-                if (empireCivsDictionary.Keys.Contains(2) &&
+                if (empireCivsDictionary.Keys.Contains(2) && _civLocalPlayer.CivID != 2 &&
                     GameContext.Current.DiplomacyData[_civLocalPlayer, empireCivsDictionary[2]].IsContactMade())
                 {
                     BlameRomulans0.Visibility = Visibility.Visible;
@@ -380,7 +495,7 @@ namespace Supremacy.Client.Views
                     BlameRomulans5.Visibility = Visibility.Visible;
                     BlameRomulans6.Visibility = Visibility.Visible;
                 }
-                if (empireCivsDictionary.Keys.Contains(3) &&
+                if (empireCivsDictionary.Keys.Contains(3) && _civLocalPlayer.CivID != 3 &&
                     GameContext.Current.DiplomacyData[_civLocalPlayer, empireCivsDictionary[3]].IsContactMade())
                 {
                     BlameKlingons0.Visibility = Visibility.Visible;
@@ -391,7 +506,7 @@ namespace Supremacy.Client.Views
                     BlameKlingons6.Visibility = Visibility.Visible;
                 }
                 //GameLog.Client.UI.DebugFormat("CARD: begin of checking BLAME visible");
-                if (empireCivsDictionary.Keys.Contains(4) &&
+                if (empireCivsDictionary.Keys.Contains(4) && _civLocalPlayer.CivID != 4 &&
                     GameContext.Current.DiplomacyData[_civLocalPlayer, empireCivsDictionary[4]].IsContactMade()) // && sevenCivs[4].Key != "CARDASSIANS")
                 {
                     BlameCardassians0.Visibility = Visibility.Visible;
@@ -402,7 +517,7 @@ namespace Supremacy.Client.Views
                     BlameCardassians6.Visibility = Visibility.Visible;
                 }
 
-                if (empireCivsDictionary.Keys.Contains(5) &&
+                if (empireCivsDictionary.Keys.Contains(5) && _civLocalPlayer.CivID != 5 &&
                     GameContext.Current.DiplomacyData[_civLocalPlayer, empireCivsDictionary[5]].IsContactMade())
                 {
                     BlameDominion0.Visibility = Visibility.Visible;
@@ -413,7 +528,7 @@ namespace Supremacy.Client.Views
                     BlameDominion6.Visibility = Visibility.Visible;
                 }
 
-                if (empireCivsDictionary.Keys.Contains(6) &&
+                if (empireCivsDictionary.Keys.Contains(6) && _civLocalPlayer.CivID != 6 &&
                     GameContext.Current.DiplomacyData[_civLocalPlayer, empireCivsDictionary[6]].IsContactMade())
                 {
                     BlameBorg0.Visibility = Visibility.Visible;
@@ -427,6 +542,33 @@ namespace Supremacy.Client.Views
             else
                 PauseAnimations();
         }
+
+        private bool CheckingVisibityForSabotagePending(Diplomat diplomat1, ForeignPower foreignPower)
+        {
+            bool _visibleForSabotagePending = true;  // more often it is useful to have it visible !
+            if (foreignPower.LastStatementSent != null)
+            {
+                switch (foreignPower.LastStatementSent.StatementType)
+                {
+                    case StatementType.StealCredits:
+                    case StatementType.StealResearch:
+                    case StatementType.SabotageFood:
+                    case StatementType.SabotageIndustry:
+                    case StatementType.SabotageEnergy:
+                        _visibleForSabotagePending = false;
+                        break;
+                    case StatementType.CommendWar:
+                    case StatementType.DenounceWar:
+                    case StatementType.WarDeclaration:
+                        break;
+                    default:
+                        break;
+                }
+
+            }
+            return _visibleForSabotagePending;
+        }
+
         protected override AutomationPeer OnCreateAutomationPeer()
         {
             return null;
@@ -826,7 +968,7 @@ namespace Supremacy.Client.Views
                 //GameLog.Client.UI.DebugFormat("Expander Six ############### Blame Sting ={0}", _blameWhoSix);
             }
         }
-        private void CloseZero()
+        private void Close_0_SabotageButtons()
         {
             StealCreditsZero.Visibility = Visibility.Collapsed;
             StealResearchZero.Visibility = Visibility.Collapsed;
@@ -834,15 +976,22 @@ namespace Supremacy.Client.Views
             SabotageFoodZero.Visibility = Visibility.Collapsed;
             SabotageIndustryZero.Visibility = Visibility.Collapsed;
         }
-        private void CloseOne()
+        private void Close_1_SabotageButtons()
         {
+            StealCreditsZero.Visibility = Visibility.Collapsed;
+            StealResearchZero.Visibility = Visibility.Collapsed;
+            SabotageEnergyZero.Visibility = Visibility.Collapsed;
+            SabotageFoodZero.Visibility = Visibility.Collapsed;
+            SabotageIndustryZero.Visibility = Visibility.Collapsed;
+
+
             StealCreditsOne.Visibility = Visibility.Collapsed;
             StealResearchOne.Visibility = Visibility.Collapsed;
             SabotageEnergyOne.Visibility = Visibility.Collapsed;
             SabotageFoodOne.Visibility = Visibility.Collapsed;
             SabotageIndustryOne.Visibility = Visibility.Collapsed;
         }
-        private void CloseTwo()
+        private void Close_2_SabotageButtons()
         {
             StealCreditsTwo.Visibility = Visibility.Collapsed;
             StealResearchTwo.Visibility = Visibility.Collapsed;
@@ -850,7 +999,7 @@ namespace Supremacy.Client.Views
             SabotageFoodTwo.Visibility = Visibility.Collapsed;
             SabotageIndustryTwo.Visibility = Visibility.Collapsed;
         }
-        private void CloseThree()
+        private void Close_3_SabotageButtons()
         {
             StealCreditsThree.Visibility = Visibility.Collapsed;
             StealResearchThree.Visibility = Visibility.Collapsed;
@@ -858,7 +1007,7 @@ namespace Supremacy.Client.Views
             SabotageFoodThree.Visibility = Visibility.Collapsed;
             SabotageIndustryThree.Visibility = Visibility.Collapsed;
         }
-        private void CloseFour()
+        private void Close_4_SabotageButtons()
         {
             StealCreditsFour.Visibility = Visibility.Collapsed;
             StealResearchFour.Visibility = Visibility.Collapsed;
@@ -866,7 +1015,7 @@ namespace Supremacy.Client.Views
             SabotageFoodFour.Visibility = Visibility.Collapsed;
             SabotageIndustryFour.Visibility = Visibility.Collapsed;
         }
-        private void CloseFive()
+        private void Close_5_SabotageButtons()
         {
             StealCreditsFive.Visibility = Visibility.Collapsed;
             StealResearchFive.Visibility = Visibility.Collapsed;
@@ -874,7 +1023,7 @@ namespace Supremacy.Client.Views
             SabotageFoodFive.Visibility = Visibility.Collapsed;
             SabotageIndustryFive.Visibility = Visibility.Collapsed;
         }
-        private void CloseSix()
+        private void Close_6_SabotageButtons()
         {
             StealCreditsSix.Visibility = Visibility.Collapsed;
             StealResearchSix.Visibility = Visibility.Collapsed;
@@ -886,177 +1035,181 @@ namespace Supremacy.Client.Views
         private void OnCreditsZeroClick(object sender, RoutedEventArgs e) // we are using attacking spy civ as peramiter here in Creidt only so far
         {
             IntelHelper.SabotageStealCredits(AssetsScreenPresentationModel.LocalCiv, AssetsScreenPresentationModel.SpiedZeroCiv, _blameWhoZero); // blame);
-            CloseZero();
+            Close_0_SabotageButtons();
         }
         private void OnCreditsOneClick(object sender, RoutedEventArgs e)
         {
             IntelHelper.SabotageStealCredits(AssetsScreenPresentationModel.LocalCiv, AssetsScreenPresentationModel.SpiedOneCiv, _blameWhoOne);
-            CloseOne();
+            Close_1_SabotageButtons();
         }
         private void OnCreditsTwoClick(object sender, RoutedEventArgs e)
         {
             IntelHelper.SabotageStealCredits(AssetsScreenPresentationModel.LocalCiv, AssetsScreenPresentationModel.SpiedTwoCiv, _blameWhoTwo);
-            CloseTwo();
+            Close_2_SabotageButtons();
         }
         private void OnCreditsThreeClick(object sender, RoutedEventArgs e)
         {
             IntelHelper.SabotageStealCredits(AssetsScreenPresentationModel.LocalCiv, AssetsScreenPresentationModel.SpiedThreeCiv, _blameWhoThree);
-            CloseThree();
+            Close_3_SabotageButtons();
         }
         private void OnCreditsFourClick(object sender, RoutedEventArgs e)
         {
             IntelHelper.SabotageStealCredits(AssetsScreenPresentationModel.LocalCiv, AssetsScreenPresentationModel.SpiedFourCiv, _blameWhoFour);
-            CloseFour();
+            Close_4_SabotageButtons();
         }
         private void OnCreditsFiveClick(object sender, RoutedEventArgs e)
         {
             IntelHelper.SabotageStealCredits(AssetsScreenPresentationModel.LocalCiv, AssetsScreenPresentationModel.SpiedFiveCiv, _blameWhoFive);
-            CloseFive();
+            Close_5_SabotageButtons();
         }
         private void OnCreditsSixClick(object sender, RoutedEventArgs e)
         {
             IntelHelper.SabotageStealCredits(AssetsScreenPresentationModel.LocalCiv, AssetsScreenPresentationModel.SpiedSixCiv, _blameWhoSix);
-            CloseSix();
+            Close_6_SabotageButtons();
         }
         private void OnResearchZeroClick(object sender, RoutedEventArgs e)
         {
             IntelHelper.SabotageStealResearch(AssetsScreenPresentationModel.LocalCiv, AssetsScreenPresentationModel.SpiedZeroCiv, _blameWhoZero);
-            CloseZero();
+            Close_0_SabotageButtons();
         }
         private void OnResearchOneClick(object sender, RoutedEventArgs e)
         {
             IntelHelper.SabotageStealResearch(AssetsScreenPresentationModel.LocalCiv, AssetsScreenPresentationModel.SpiedOneCiv, _blameWhoOne);
-            CloseOne();
+            Close_1_SabotageButtons();
         }
         private void OnResearchTwoClick(object sender, RoutedEventArgs e)
         {
             IntelHelper.SabotageStealResearch(AssetsScreenPresentationModel.LocalCiv, AssetsScreenPresentationModel.SpiedTwoCiv, _blameWhoTwo);
-            CloseTwo();
+            Close_2_SabotageButtons();
         }
         private void OnResearchThreeClick(object sender, RoutedEventArgs e)
         {
             IntelHelper.SabotageStealResearch(AssetsScreenPresentationModel.LocalCiv, AssetsScreenPresentationModel.SpiedThreeCiv, _blameWhoThree);
-            CloseThree();
+            Close_3_SabotageButtons();
         }
         private void OnResearchFourClick(object sender, RoutedEventArgs e)
         {
             IntelHelper.SabotageStealResearch(AssetsScreenPresentationModel.LocalCiv, AssetsScreenPresentationModel.SpiedFourCiv, _blameWhoFour);
-            CloseFour();
+            Close_4_SabotageButtons();
         }
         private void OnResearchFiveClick(object sender, RoutedEventArgs e)
         {
             IntelHelper.SabotageStealResearch(AssetsScreenPresentationModel.LocalCiv, AssetsScreenPresentationModel.SpiedFiveCiv, _blameWhoFive);
-            CloseFive();
+            Close_5_SabotageButtons();
         }
         private void OnResearchSixClick(object sender, RoutedEventArgs e)
         {
             IntelHelper.SabotageStealResearch(AssetsScreenPresentationModel.LocalCiv, AssetsScreenPresentationModel.SpiedSixCiv, _blameWhoSix);
-            CloseSix();
+            Close_6_SabotageButtons();
         }
         private void OnEnergyZeroClick(object sender, RoutedEventArgs e)
         {
             IntelHelper.SabotageEnergy(AssetsScreenPresentationModel.LocalCiv, AssetsScreenPresentationModel.SpiedZeroCiv, _blameWhoZero); //, out removedEnergyFacilities);
-            CloseZero();
+            Close_0_SabotageButtons();
         }
         private void OnEnergyOneClick(object sender, RoutedEventArgs e)
         {
             IntelHelper.SabotageEnergy(AssetsScreenPresentationModel.LocalCiv, AssetsScreenPresentationModel.SpiedOneCiv, _blameWhoOne); //, out removedEnergyFacilities);
-            CloseOne();
+            Close_1_SabotageButtons();
         }
         private void OnEnergyTwoClick(object sender, RoutedEventArgs e)
         {
             IntelHelper.SabotageEnergy(AssetsScreenPresentationModel.LocalCiv, AssetsScreenPresentationModel.SpiedTwoCiv, _blameWhoTwo);
-            CloseTwo();
+            Close_2_SabotageButtons();
         }
         private void OnEnergyThreeClick(object sender, RoutedEventArgs e)
         {
             IntelHelper.SabotageEnergy(AssetsScreenPresentationModel.LocalCiv, AssetsScreenPresentationModel.SpiedThreeCiv, _blameWhoThree);
-            CloseThree();
+            Close_3_SabotageButtons();
         }
         private void OnEnergyFourClick(object sender, RoutedEventArgs e)
         {
             IntelHelper.SabotageEnergy(AssetsScreenPresentationModel.LocalCiv, AssetsScreenPresentationModel.SpiedFourCiv, _blameWhoFour);
-            CloseFour();
+            Close_4_SabotageButtons();
         }
         private void OnEnergyFiveClick(object sender, RoutedEventArgs e)
         {
             IntelHelper.SabotageEnergy(AssetsScreenPresentationModel.LocalCiv, AssetsScreenPresentationModel.SpiedFiveCiv, _blameWhoFive);
-            CloseFive();
+            Close_5_SabotageButtons();
         }
         private void OnEnergySixClick(object sender, RoutedEventArgs e)
         {
             IntelHelper.SabotageEnergy(AssetsScreenPresentationModel.LocalCiv, AssetsScreenPresentationModel.SpiedSixCiv, _blameWhoSix);
-            CloseSix();
+            Close_6_SabotageButtons();
         }
         private void OnFoodZeroClick(object sender, RoutedEventArgs e)
         {
             IntelHelper.SabotageFood(AssetsScreenPresentationModel.LocalCiv, AssetsScreenPresentationModel.SpiedZeroCiv, _blameWhoZero);
-            CloseZero();
+            Close_0_SabotageButtons();
         }
         private void OnFoodOneClick(object sender, RoutedEventArgs e)
         {
             IntelHelper.SabotageFood(AssetsScreenPresentationModel.LocalCiv, AssetsScreenPresentationModel.SpiedOneCiv, _blameWhoOne);
-            CloseOne();
+            Close_1_SabotageButtons();
         }
         private void OnFoodTwoClick(object sender, RoutedEventArgs e)
         {
             IntelHelper.SabotageFood(AssetsScreenPresentationModel.LocalCiv, AssetsScreenPresentationModel.SpiedTwoCiv, _blameWhoTwo);
-            CloseTwo();
+            Close_2_SabotageButtons();
         }
         private void OnFoodThreeClick(object sender, RoutedEventArgs e)
         {
             IntelHelper.SabotageFood(AssetsScreenPresentationModel.LocalCiv, AssetsScreenPresentationModel.SpiedThreeCiv, _blameWhoThree);
-            CloseThree();
+            Close_3_SabotageButtons();
         }
         private void OnFoodFourClick(object sender, RoutedEventArgs e)
         {
             IntelHelper.SabotageFood(AssetsScreenPresentationModel.LocalCiv, AssetsScreenPresentationModel.SpiedFourCiv, _blameWhoFour);
-            CloseFour();
+            Close_4_SabotageButtons();
         }
         private void OnFoodFiveClick(object sender, RoutedEventArgs e)
         {
             IntelHelper.SabotageFood(AssetsScreenPresentationModel.LocalCiv, AssetsScreenPresentationModel.SpiedFiveCiv, _blameWhoFive);
-            CloseFive();
+            Close_5_SabotageButtons();
         }
         private void OnFoodSixClick(object sender, RoutedEventArgs e)
         {
             IntelHelper.SabotageFood(AssetsScreenPresentationModel.LocalCiv, AssetsScreenPresentationModel.SpiedSixCiv, _blameWhoSix);
-            CloseSix();
+            Close_6_SabotageButtons();
         }
         private void OnIndustryZeroClick(object sender, RoutedEventArgs e)
         {
             IntelHelper.SabotageIndustry(AssetsScreenPresentationModel.LocalCiv, AssetsScreenPresentationModel.SpiedZeroCiv, _blameWhoZero);
-            CloseZero();
+            GameLog.Client.Intel.DebugFormat("LocalCiv ={0} spiedZeroCiv = {1}",
+                AssetsScreenPresentationModel.LocalCiv.Key, AssetsScreenPresentationModel.SpiedZeroCiv.Key);
+            Close_0_SabotageButtons();
         }
         private void OnIndustryOneClick(object sender, RoutedEventArgs e)
         {
             IntelHelper.SabotageIndustry(AssetsScreenPresentationModel.LocalCiv, AssetsScreenPresentationModel.SpiedOneCiv, _blameWhoOne);
-            CloseOne();
+            GameLog.Client.Intel.DebugFormat("LocalCiv ={0} spiedOneCiv = {1}", AssetsScreenPresentationModel.LocalCiv.Key, AssetsScreenPresentationModel.SpiedOneCiv.Key);
+            Close_1_SabotageButtons();
         }
         private void OnIndustryTwoClick(object sender, RoutedEventArgs e)
         {
             IntelHelper.SabotageIndustry(AssetsScreenPresentationModel.LocalCiv, AssetsScreenPresentationModel.SpiedTwoCiv, _blameWhoTwo);
-            CloseTwo();
+            Close_2_SabotageButtons();
         }
         private void OnIndustryThreeClick(object sender, RoutedEventArgs e)
         {
             IntelHelper.SabotageIndustry(AssetsScreenPresentationModel.LocalCiv, AssetsScreenPresentationModel.SpiedThreeCiv, _blameWhoThree);
-            CloseThree();
+            Close_3_SabotageButtons();
         }
         private void OnIndustryFourClick(object sender, RoutedEventArgs e)
         {
             IntelHelper.SabotageIndustry(AssetsScreenPresentationModel.LocalCiv, AssetsScreenPresentationModel.SpiedFourCiv, _blameWhoFour);
-            CloseFour();
+            GameLog.Client.Intel.DebugFormat("LocalCiv ={0} spiedFourCiv = {1}", AssetsScreenPresentationModel.LocalCiv.Key, AssetsScreenPresentationModel.SpiedFourCiv.Key);
+            Close_4_SabotageButtons();
         }
         private void OnIndustryFiveClick(object sender, RoutedEventArgs e)
         {
             IntelHelper.SabotageIndustry(AssetsScreenPresentationModel.LocalCiv, AssetsScreenPresentationModel.SpiedFiveCiv, _blameWhoFive);
-            CloseFive();
+            Close_5_SabotageButtons();
         }
         private void OnIndustrySixClick(object sender, RoutedEventArgs e)
         {
             IntelHelper.SabotageIndustry(AssetsScreenPresentationModel.LocalCiv, AssetsScreenPresentationModel.SpiedSixCiv, _blameWhoSix);
-            CloseSix();
+            Close_6_SabotageButtons();
         }
         #endregion
         public bool ReceiveWeakEvent(Type managerType, object sender, EventArgs e)

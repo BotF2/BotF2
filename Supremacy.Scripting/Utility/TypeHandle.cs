@@ -15,14 +15,7 @@ namespace Supremacy.Scripting.Utility
         private static TypeHandle _objectType;
         private static TypeHandle _arrayType;
         private readonly IMemberContainer _baseContainer;
-
-        private readonly string _fullName;
         private readonly int _id = ++_nextId;
-        private readonly bool _isInterface;
-        private readonly MemberCache _memberCache;
-        private readonly MemberCache _baseCache;
-
-        private readonly Type _type;
 
         static TypeHandle()
         {
@@ -31,17 +24,20 @@ namespace Supremacy.Scripting.Utility
 
         private TypeHandle(Type type)
         {
-            _type = type;
-            _fullName = type.FullName ?? type.Name;
+            Type = type;
+            Name = type.FullName ?? type.Name;
             if (type.BaseType != null)
             {
-                _baseCache = GetMemberCache(type.BaseType);
-                _baseContainer = _baseCache.Container;
+                BaseCache = GetMemberCache(type.BaseType);
+                _baseContainer = BaseCache.Container;
             }
             else if (type.IsInterface)
-                _baseCache = TypeManager.LookupBaseInterfacesCache(type);
-            _isInterface = type.IsInterface || TypeManager.IsGenericParameter(type);
-            _memberCache = new MemberCache(this);
+            {
+                BaseCache = TypeManager.LookupBaseInterfacesCache(type);
+            }
+
+            IsInterface = type.IsInterface || TypeManager.IsGenericParameter(type);
+            MemberCache = new MemberCache(this);
         }
 
         /// <summary>Returns the TypeHandle for TypeManager.object_type.</summary>
@@ -50,7 +46,9 @@ namespace Supremacy.Scripting.Utility
             get
             {
                 if (_objectType != null)
+                {
                     return _objectType;
+                }
 
                 _objectType = GetTypeHandle(TypeManager.CoreTypes.Object);
 
@@ -64,7 +62,9 @@ namespace Supremacy.Scripting.Utility
             get
             {
                 if (_arrayType != null)
+                {
                     return _arrayType;
+                }
 
                 _arrayType = GetTypeHandle(TypeManager.CoreTypes.Array);
 
@@ -72,47 +72,32 @@ namespace Supremacy.Scripting.Utility
             }
         }
 
-        public MemberCache MemberCache
-        {
-            get { return _memberCache; }
-        }
+        public MemberCache MemberCache { get; }
 
         // IMemberContainer methods
 
         #region IMemberContainer Members
-        public string Name
-        {
-            get { return _fullName; }
-        }
+        public string Name { get; }
 
-        public Type Type
-        {
-            get { return _type; }
-        }
+        public Type Type { get; }
 
-        public MemberCache BaseCache
-        {
-            get { return _baseCache; }
-        }
+        public MemberCache BaseCache { get; }
 
-        public bool IsInterface
-        {
-            get { return _isInterface; }
-        }
+        public bool IsInterface { get; }
 
         public MemberInfo[] GetMembers(MemberTypes mt, BindingFlags bf)
         {
             MemberInfo[] members;
 
-            if (_type is GenericTypeParameterBuilder)
+            if (Type is GenericTypeParameterBuilder)
                 return new MemberInfo[0];
 
             //_type = TypeManager.DropGenericTypeArguments(_type);
 
             if (mt == MemberTypes.Event)
-                members = _type.GetEvents(bf | BindingFlags.DeclaredOnly);
+                members = Type.GetEvents(bf | BindingFlags.DeclaredOnly);
             else
-                members = _type.FindMembers(
+                members = Type.FindMembers(
                     mt,
                     bf | BindingFlags.DeclaredOnly,
                     null,
@@ -133,9 +118,11 @@ namespace Supremacy.Scripting.Utility
         /// </summary>
         private static TypeHandle GetTypeHandle(Type t)
         {
-            var handle = (TypeHandle)_typeHash[t];
+            TypeHandle handle = (TypeHandle)_typeHash[t];
             if (handle != null)
+            {
                 return handle;
+            }
 
             handle = new TypeHandle(t);
             _typeHash.Add(t, handle);
@@ -166,7 +153,7 @@ namespace Supremacy.Scripting.Utility
             MemberFilter filter,
             object criteria)
         {
-            return _memberCache.FindMembers(mt, bf, name, filter, criteria);
+            return MemberCache.FindMembers(mt, bf, name, filter, criteria);
         }
 
         public override string ToString()
@@ -186,9 +173,11 @@ namespace Supremacy.Scripting.Utility
         //
         protected override int GetHash(object key)
         {
-            var tb = key as TypeBuilder;
+            TypeBuilder tb = key as TypeBuilder;
             if (tb != null && tb.BaseType == TypeManager.CoreTypes.Enum && tb.BaseType != null)
+            {
                 key = tb.BaseType;
+            }
 
             return base.GetHash(key);
         }

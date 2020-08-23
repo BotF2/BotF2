@@ -420,19 +420,23 @@ namespace Supremacy.Client
             try
             {
                 _screenPresenters.Add(_container.Resolve<IGalaxyScreenPresenter>());
-                GameLog.Client.UI.DebugFormat("DONE: IGalaxyScreenPresenter");
+                GameLog.Client.UI.DebugFormat("DONE: IGalaxyScreenPresenter");  // F1-Screen
 
                 _screenPresenters.Add(_container.Resolve<IColonyScreenPresenter>());
-                GameLog.Client.UI.DebugFormat("DONE: IColonyScreenPresenter");
+                GameLog.Client.UI.DebugFormat("DONE: IColonyScreenPresenter");  // F2-Screen
 
                 _screenPresenters.Add(_container.Resolve<ViewModelPresenter<DiplomacyScreenViewModel, INewDiplomacyScreenView>>());
-                GameLog.Client.UI.DebugFormat("DONE: INewDiplomacyScreenView");
+                GameLog.Client.UI.DebugFormat("DONE: INewDiplomacyScreenView");  // F3-Screen
 
                 _screenPresenters.Add(_container.Resolve<IScienceScreenPresenter>());
-                GameLog.Client.UI.DebugFormat("DONE: IScienceScreenPresenter");
+                GameLog.Client.UI.DebugFormat("DONE: IScienceScreenPresenter");  // F4-Screen
 
                 _screenPresenters.Add(_container.Resolve<IAssetsScreenPresenter>());
-                GameLog.Client.UI.DebugFormat("DONE: IAssetsScreenPresenter");
+                GameLog.Client.UI.DebugFormat("DONE: IAssetsScreenPresenter");  // F5-Screen
+
+                // XXXXX  not realized yet
+                //_screenPresenters.Add(_container.Resolve<IEncyclopediaScreenPresenter>());
+                //GameLog.Client.UI.DebugFormat("DONE: IEncyclopediaScreenPresenter");    // F7-Screen
 
                 foreach (var presenter in _screenPresenters)
                 {

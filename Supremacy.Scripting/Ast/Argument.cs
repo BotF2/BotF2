@@ -48,34 +48,26 @@ namespace Supremacy.Scripting.Ast
             }
         }
 
-        public bool IsByRef
-        {
-            get { return (ArgumentType == ArgumentType.Out || ArgumentType == ArgumentType.Ref); }
-        }
+        public bool IsByRef => ArgumentType == ArgumentType.Out || ArgumentType == ArgumentType.Ref;
 
-        public bool IsDefaultArgument
-        {
-            get { return (ArgumentType == ArgumentType.Default); }
-        }
+        public bool IsDefaultArgument => ArgumentType == ArgumentType.Default;
 
         public Expression Value
         {
-            get { return _value; }
-            set { _value = value ?? EmptyExpression.Null; }
+            get => _value;
+            set => _value = value ?? EmptyExpression.Null;
         }
 
-        public override SourceSpan Span
-        {
-            get { return (_value == null) ? SourceSpan.None : _value.Span; }
-        }
+        public override SourceSpan Span => (_value == null) ? SourceSpan.None : _value.Span;
 
         public override void CloneTo<T>(CloneContext cloneContext, T target)
         {
             base.CloneTo(cloneContext, target);
 
-            var clone = target as Argument;
-            if (clone == null)
+            if (!(target is Argument clone))
+            {
                 return;
+            }
 
             clone._value = Clone(cloneContext, _value);
             clone.ArgumentType = ArgumentType;
@@ -85,10 +77,7 @@ namespace Supremacy.Scripting.Ast
 
         public string GetSignatureForError()
         {
-            if (Value.ExpressionClass == ExpressionClass.MethodGroup)
-                return Value.ExpressionClassName;
-
-            return TypeManager.GetCSharpName(Value.Type);
+            return Value.ExpressionClass == ExpressionClass.MethodGroup ? Value.ExpressionClassName : TypeManager.GetCSharpName(Value.Type);
         }
 
         public override void Dump(SourceWriter sw, int indentChange)
@@ -99,8 +88,10 @@ namespace Supremacy.Scripting.Ast
         public void Resolve(ParseContext ec)
         {
             if (Value == EmptyExpression.Null)
+            {
                 return;
-            
+            }
+
             Value = Value.Resolve(ec);
         }
 
@@ -124,9 +115,10 @@ namespace Supremacy.Scripting.Ast
         {
             base.CloneTo(cloneContext, target);
 
-            var clone = target as NamedArgument;
-            if (clone == null)
+            if (!(target is NamedArgument clone))
+            {
                 return;
+            }
 
             clone.Name = Name;
         }

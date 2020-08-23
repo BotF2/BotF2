@@ -39,7 +39,7 @@ namespace Supremacy.Client
             }
             else
             {
-                string errors = "";
+                string errors = DateTime.Now + Environment.NewLine;
                 lock (_syncLock)
                 {
                     var innerException = exception;
@@ -61,10 +61,10 @@ namespace Supremacy.Client
                         MessageBoxButton.OK,
                         MessageBoxImage.Error);
 
-                    if (ClientSettings.Current.ReportErrors)
-                    {
+                    //if (ClientSettings.Current.ReportErrors)
+                    //{
                         ReportError(errors);
-                    }
+                    //}
 
                     Environment.Exit(Environment.ExitCode);
                 }

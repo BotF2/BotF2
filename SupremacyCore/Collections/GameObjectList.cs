@@ -36,10 +36,7 @@ namespace Supremacy.Collections
 
         public GameObjectList([NotNull] Func<int, T> lookupFunction)
         {
-            if (lookupFunction == null)
-                throw new ArgumentNullException("lookupFunction");
-
-            _lookupFunction = lookupFunction;
+            _lookupFunction = lookupFunction ?? throw new ArgumentNullException(nameof(lookupFunction));
             _internalList = new List<int>();
         }
 
@@ -64,7 +61,10 @@ namespace Supremacy.Collections
         public void Add([NotNull] T item)
         {
             if (item == null)
-                throw new ArgumentNullException("item");
+            {
+                throw new ArgumentNullException(nameof(item));
+            }
+
             Insert(_internalList.Count, item);
         }
 
@@ -76,7 +76,9 @@ namespace Supremacy.Collections
         public void AddRange([NotNull] IEnumerable<int> itemIds)
         {
             if (itemIds == null)
-                throw new ArgumentNullException("itemIds");
+            {
+                throw new ArgumentNullException(nameof(itemIds));
+            }
 
             InsertRange(_internalList.Count, itemIds);
         }
@@ -84,7 +86,10 @@ namespace Supremacy.Collections
         public void AddRange([NotNull] IEnumerable<T> items)
         {
             if (items == null)
-                throw new ArgumentNullException("items");
+            {
+                throw new ArgumentNullException(nameof(items));
+            }
+
             InsertRange(_internalList.Count, items);
         }
 
@@ -94,11 +99,9 @@ namespace Supremacy.Collections
             OnCollectionReset();
         }
 
-        public bool Contains([CanBeNull] T item)
+        public bool Contains([CanBeNull] T value)
         {
-            if (item == null)
-                return false;
-            return _internalList.Contains(item.ObjectID);
+            return value != null && _internalList.Contains(value.ObjectID);
         }
 
         public bool Contains(int itemId)
@@ -109,53 +112,60 @@ namespace Supremacy.Collections
         public void CopyTo(T[] array, int arrayIndex)
         {
             if (array == null)
-                throw new ArgumentNullException("array");
+            {
+                throw new ArgumentNullException(nameof(array));
+            }
+
             _internalList.Select(id => _lookupFunction(id)).ToArray().CopyTo(array, arrayIndex);
         }
 
         public bool Remove([CanBeNull] T item)
         {
             if (item == null)
+            {
                 return false;
+            }
+
             int index = _internalList.IndexOf(item.ObjectID);
             if (index < 0)
+            {
                 return false;
+            }
+
             RemoveAt(index);
             return true;
         }
 
         public bool Remove(int itemId)
         {
-            var index = _internalList.IndexOf(itemId);
+            int index = _internalList.IndexOf(itemId);
             if (index < 0)
+            {
                 return false;
+            }
+
             RemoveAt(index);
             return true;
         }
 
-        public int Count
-        {
-            get { return _internalList.Count; }
-        }
+        public int Count => _internalList.Count;
 
-        public bool IsReadOnly
-        {
-            get { return false; }
-        }
+        public bool IsReadOnly => false;
         #endregion
 
         #region Implementation of IList<T>
         public int IndexOf([CanBeNull] T item)
         {
-            if (item == null)
-                return -1;
-            return _internalList.IndexOf(item.ObjectID);
+            return item == null ? -1 : _internalList.IndexOf(item.ObjectID);
         }
 
         public void Insert(int index, [NotNull] T item)
         {
             if (item == null)
-                throw new ArgumentNullException("item");
+            {
+                throw new ArgumentNullException(nameof(item));
+            }
+
             _internalList.Insert(index, item.ObjectID);
             OnCollectionChanged(NotifyCollectionChangedAction.Add, item, index);
         }
@@ -163,7 +173,10 @@ namespace Supremacy.Collections
         public void InsertRange(int index, [NotNull] IEnumerable<T> items)
         {
             if (items == null)
-                throw new ArgumentNullException("items");
+            {
+                throw new ArgumentNullException(nameof(items));
+            }
+
             _internalList.InsertRange(index, items.Select(o => o.ObjectID));
             OnCollectionReset();
         }
@@ -177,36 +190,39 @@ namespace Supremacy.Collections
         public void InsertRange(int index, [NotNull] IEnumerable<int> itemIds)
         {
             if (itemIds == null)
-                throw new ArgumentNullException("itemIds");
+            {
+                throw new ArgumentNullException(nameof(itemIds));
+            }
+
             _internalList.InsertRange(index, itemIds);
             OnCollectionReset();
         }
 
         public void RemoveAt(int index)
         {
-            var item = _internalList[index];
+            int item = _internalList[index];
             _internalList.RemoveAt(index);
             OnCollectionChanged(NotifyCollectionChangedAction.Remove, item, index);
         }
 
-        T IList<T>.this[int itemId]
+        T IList<T>.this[int index]
         {
-            get { return this[itemId]; }
-            set { this[itemId] = value; }
+            get => this[index];
+            set => this[index] = value;
         }
 
-        T IIndexedEnumerable<T>.this[int itemId]
-        {
-            get { return this[itemId]; }
-        }
+        T IIndexedEnumerable<T>.this[int itemId] => this[itemId];
 
         public T this[int itemId]
         {
-            get { return _lookupFunction(_internalList[itemId]); }
+            get => _lookupFunction(_internalList[itemId]);
             set
             {
                 if (value == null)
+                {
                     throw new ArgumentNullException("value");
+                }
+
                 _internalList[itemId] = value.ObjectID;
             }
         }
@@ -217,9 +233,7 @@ namespace Supremacy.Collections
 
         protected virtual void OnCollectionChanged(NotifyCollectionChangedEventArgs e)
         {
-            var handler = CollectionChanged;
-            if (handler != null)
-                handler(this, e);
+            CollectionChanged?.Invoke(this, e);
 
             OnPropertyChanged(CountPropertyName);
             OnPropertyChanged(IndexerName);
@@ -227,9 +241,11 @@ namespace Supremacy.Collections
 
         protected void OnCollectionChanged(NotifyCollectionChangedAction action, Func<object> itemAccessor, int index)
         {
-            var handler = CollectionChanged;
+            NotifyCollectionChangedEventHandler handler = CollectionChanged;
             if (handler == null)
+            {
                 return;
+            }
 
             OnCollectionChanged(
                 new NotifyCollectionChangedEventArgs(
@@ -290,22 +306,26 @@ namespace Supremacy.Collections
             {
                 while (true)
                 {
-                    var oldHandler = _propertyChanged;
-                    var newHandler = (PropertyChangedEventHandler)Delegate.Combine(oldHandler, value);
+                    PropertyChangedEventHandler oldHandler = _propertyChanged;
+                    PropertyChangedEventHandler newHandler = (PropertyChangedEventHandler)Delegate.Combine(oldHandler, value);
 
                     if (Interlocked.CompareExchange(ref _propertyChanged, newHandler, oldHandler) == oldHandler)
+                    {
                         return;
+                    }
                 }
             }
             remove
             {
                 while (true)
                 {
-                    var oldHandler = _propertyChanged;
-                    var newHandler = (PropertyChangedEventHandler)Delegate.Remove(oldHandler, value);
+                    PropertyChangedEventHandler oldHandler = _propertyChanged;
+                    PropertyChangedEventHandler newHandler = (PropertyChangedEventHandler)Delegate.Remove(oldHandler, value);
 
                     if (Interlocked.CompareExchange(ref _propertyChanged, newHandler, oldHandler) == oldHandler)
+                    {
                         return;
+                    }
                 }
             }
         }

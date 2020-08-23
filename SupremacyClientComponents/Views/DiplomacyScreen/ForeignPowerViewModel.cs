@@ -21,31 +21,42 @@ namespace Supremacy.Client.Views
         private readonly ObservableCollection<ActiveAgreementViewModel> _activeAgreements;
         private readonly ReadOnlyObservableCollection<ActiveAgreementViewModel> _activeAgreementsView;
         public ForeignPowerViewModel([NotNull] ForeignPower foreignPower)
-        {
+         {
             if (foreignPower == null)
+            {
+                return;
                 throw new ArgumentNullException("foreignPower");
+            }
 
             _foreignPower = foreignPower;
             _activeAgreements = new ObservableCollection<ActiveAgreementViewModel>();
             _activeAgreementsView = new ReadOnlyObservableCollection<ActiveAgreementViewModel>(_activeAgreements);
 
-            //GameLog.Client.Diplomacy.DebugFormat("foreignPower = {0}", foreignPower.Owner);
-
+            GameLog.Client.Diplomacy.DebugFormat("foreignPower Owner = {0}", foreignPower.Owner.ShortName);
+            
             UpdateIncomingMessage();
             UpdateActiveAgreements();
         }
 
         private void UpdateIncomingMessage()
         {
-            //GameLog.Client.Diplomacy.DebugFormat("Checking for IncomingMessage...");
-            if (_foreignPower.ResponseReceived == null)
+            GameLog.Client.Diplomacy.DebugFormat("Checking for IncomingMessage...");
+            if (_foreignPower.ResponseReceived == null && _foreignPower.ProposalReceived == null)
             {
-                //GameLog.Client.Diplomacy.DebugFormat("_foreignPower.ResponseReceived = no incoming message yet");
+               // GameLog.Client.Diplomacy.DebugFormat("$$ _foreignPower Response and Proposal = null, no incoming message yet");
                 return;
             }
-
+            if (_foreignPower.ResponseReceived != null)
+            { 
             IncomingMessage = DiplomacyMessageViewModel.FromReponse(_foreignPower.ResponseReceived);
-            GameLog.Client.Diplomacy.DebugFormat("Found IncomingMessage from {0}: {1}", _foreignPower.Owner, IncomingMessage);
+            GameLog.Client.Diplomacy.DebugFormat("$$ Incoming Response Owner {0} CounterParty {1} Message {2}", _foreignPower.Owner.Key, _foreignPower.Counterparty.Key, IncomingMessage.ToString());
+            }
+
+            else if (_foreignPower.ProposalReceived.IncludesTreaty() == true)
+            {
+                IncomingMessage = DiplomacyMessageViewModel.FromProposal(_foreignPower.ProposalReceived);
+                GameLog.Client.Diplomacy.DebugFormat("$$ Incoming Proposal Owner {0} CounterParty {1} Message {2}", _foreignPower.Owner.Key, _foreignPower.Counterparty.Key, IncomingMessage.ToString());
+            }
         }
 
         private void UpdateActiveAgreements()
@@ -57,7 +68,8 @@ namespace Supremacy.Client.Views
             foreach (var agreement in agreements.OrderByDescending(o => (int)o.StartTurn))
             {
                 _activeAgreements.Add(new ActiveAgreementViewModel(agreement));
-                GameLog.Client.Diplomacy.DebugFormat("added for sender = {1} to recipient = {2}: agrement = {0}", agreement, agreement.Sender, agreement.Recipient);
+                GameLog.Client.Diplomacy.DebugFormat("added for sender = {1} to recipient = {2}: agrement = {0}"
+                    , agreement.Proposal.Clauses[0].ClauseType.ToString(), agreement.Sender, agreement.Recipient);
             }
         }
 
@@ -74,7 +86,7 @@ namespace Supremacy.Client.Views
         {
             get
             {
-                //GameLog.Client.Diplomacy.DebugFormat("_foreignPower.Counterparty.DiplomacyReport = {0}", _foreignPower.Counterparty.DiplomacyReport);
+                //works, but too long    GameLog.Client.Diplomacy.DebugFormat("_foreignPower.Counterparty.DiplomacyReport = {0}", _foreignPower.Counterparty.DiplomacyReport);
                 return _foreignPower.Counterparty.DiplomacyReport;
             }
         }
@@ -136,7 +148,7 @@ namespace Supremacy.Client.Views
         {
             get
             {
-                //GameLog.Client.Diplomacy.DebugFormat("Is Diplomat Available ={0}", _foreignPower.IsDiplomatAvailable);
+                GameLog.Client.Diplomacy.DebugFormat("Is Diplomat Available ={0}, false if AtWar", _foreignPower.IsDiplomatAvailable);
                 return _foreignPower.IsDiplomatAvailable;
             }
         }
@@ -211,18 +223,21 @@ namespace Supremacy.Client.Views
                 OnOutgoingMessageChanged();
 
                 string _gamelogPart2 = "";
-                //if (_outgoingMessage.Elements[0].ActionCategory == Actionc)
-
-
 
                 if (_outgoingMessage != null && _outgoingMessage.Elements.Count() > 0)
-                    GameLog.Client.Diplomacy.DebugFormat("OutgoingMessage SET = {0} >> {1}: {3} = {4} {5}",
-                   _outgoingMessage.Sender.Name, _outgoingMessage.Recipient.Name
-                   , _outgoingMessage.Elements.Count().ToString()
-                   , _outgoingMessage.Elements[0].ActionCategory.ToString()
-                   , _outgoingMessage.Elements[0].Description.ToString()
-                   , _gamelogPart2
-                   ); 
+                {
+                    for (int i = 0; i < _outgoingMessage.Elements.Count(); i++)
+                    {
+                        GameLog.Client.Diplomacy.DebugFormat(
+                            "OutgoingMessage SET = {0} to {1}, count{2}, {3} = {4} {5}",
+                            _outgoingMessage.Sender.Name, _outgoingMessage.Recipient.Name
+                            , _outgoingMessage.Elements.Count().ToString()
+                            , _outgoingMessage.Elements[i].ActionCategory.ToString()
+                            , _outgoingMessage.Elements[i].Description.ToString()
+                            , _gamelogPart2
+                        );
+                    }
+                }
             }
         }
 
@@ -236,6 +251,64 @@ namespace Supremacy.Client.Views
 
         #endregion
 
+        public int MemberMessage
+        {
+            get
+            {
+                if (Status == ForeignPowerStatus.OwnerIsMember)
+                    return 1;
+                else return 0;
+            }
+        }
+        public int AtWarMessage
+        {
+            get
+            {
+                if (Status == ForeignPowerStatus.AtWar)
+                    return 1;
+                else return 0;
+            }
+        }
+
+        public int AlliesMessage
+        {
+            get
+            {
+                if (Status == ForeignPowerStatus.Allied)
+                    return 1;
+                else return 0;
+            }
+        }
+        public int AffiliatedMessage
+        {
+            get
+            {
+                if (Status == ForeignPowerStatus.Affiliated)
+                    return 1;
+                else return 0;
+            }
+        }
+
+        public int SelectForeignPowerMessage
+        {
+            get
+            {
+                if (_foreignPower == null)
+                    return 1;
+                else return 0;
+            }
+        }
+
+        public int NoOutgoingMessage
+        {
+            get
+            {
+                if (OutgoingMessage == null)
+                    return 1;
+                else return 0;
+            }
+        }
+
         #region IncomingMessageCategory Property
 
         [field: NonSerialized]
@@ -245,10 +318,10 @@ namespace Supremacy.Client.Views
         {
             get
             {
-                // move Gamelog to the three detail places
-                // 
-                //GameLog.Client.Diplomacy.DebugFormat("Proposal received ? ={0}, Response received = {1}, Statement Received ={2}", _foreignPower.ProposalReceived, _foreignPower.ResponseReceived, _foreignPower.StatementReceived);
-                return ResolveMessageCategory(_foreignPower.ProposalReceived ?? (object)_foreignPower.ResponseReceived ?? _foreignPower.StatementReceived);
+                if (_foreignPower.ProposalReceived != null || _foreignPower.ResponseReceived != null || _foreignPower.StatementReceived != null|| _foreignPower.ProposalReceived != null)
+                GameLog.Client.Diplomacy.DebugFormat("$$ Proposal received ? ={0}, Response received = {1}, Statement Received ={2}, Proposal Received ={3}", _foreignPower.ProposalReceived, _foreignPower.ResponseReceived, _foreignPower.StatementReceived, _foreignPower.ProposalReceived);
+
+                return ResolveMessageCategory(_foreignPower.ProposalReceived ?? (object)_foreignPower.ResponseReceived ?? _foreignPower.StatementReceived ?? (object)_foreignPower.ProposalReceived);
             }
         }
 
@@ -269,6 +342,15 @@ namespace Supremacy.Client.Views
         {
             get
             {
+                try
+                {
+                    if (OutgoingMessage != null)
+                    {
+                       GameLog.Client.Diplomacy.DebugFormat("##### ........ OutgoingMessageCategory = {0} Sender ={1} first statement element ={2} latst ={3}", ResolveMessageCategory(OutgoingMessage).ToString(),
+                         OutgoingMessage.Sender.ShortName, OutgoingMessage.StatementElements.FirstOrDefault(), OutgoingMessage.StatementElements.LastOrDefault());
+                    }
+                }
+                catch { GameLog.Client.Diplomacy.DebugFormat("Unable to get outgoing message to reslove catagory"); }
                 if (ResolveMessageCategory(OutgoingMessage).ToString() != "None")
                     GameLog.Client.Diplomacy.DebugFormat("OutgoingMessageCategory = {0}", ResolveMessageCategory(OutgoingMessage));
                 return ResolveMessageCategory(OutgoingMessage);
@@ -332,12 +414,11 @@ namespace Supremacy.Client.Views
 
             if (viewModel != null)
             {
-                // worksGameLog.Client.Diplomacy.DebugFormat("Message: Sender ={1} *vs* Recipient = {0}", viewModel.Recipient, viewModel.Sender);
+                // works
+                GameLog.Client.Diplomacy.DebugFormat("Message: Sender ={1} *vs* Recipient = {0}", viewModel.Recipient, viewModel.Sender);
                 //GameLog.Client.Diplomacy.DebugFormat("Message: Sender ={1} *vs* Recipient = {0} - Category {2}", viewModel.Recipient, viewModel.Sender, proposal.ToString());
                 message = viewModel.CreateMessage(); // create statment vs create proposal
             }
-
-            //var proposal = message as IProposal;
 
             //GameLog.Client.Diplomacy.DebugFormat("proposal ={0}", proposal);
             if (proposal != null)
@@ -378,31 +459,95 @@ namespace Supremacy.Client.Views
                 return DiplomaticMessageCategory.Response;
             }
 
-            var statement = message as Statement;
+            Statement statement = message as Statement;
             
             if (statement != null)
             {
                 //GameLog.Client.Diplomacy.DebugFormat("Statement Recipient ={0} Sender ={1}", statement.Recipient, statement.Sender);
                 switch (statement.StatementType)
                 {
-                    case StatementType.CommendRelationship:
-                    case StatementType.CommendAssault:
-                    case StatementType.CommendInvasion:
-                    case StatementType.CommendSabotage:
+                    //case StatementType.CommendRelationship:
+                    //case StatementType.CommendAssault:
+                    //case StatementType.CommendInvasion:
+                    //case StatementType.CommendSabotage:
                     case StatementType.DenounceWar:
-                    case StatementType.DenounceRelationship:
-                    case StatementType.DenounceAssault:
-                    case StatementType.DenounceInvasion:
-                    case StatementType.DenounceSabotage:
-                    case StatementType.SabotageOrder:
-                        GameLog.Client.Diplomacy.DebugFormat("Message Statement");
+                    //case StatementType.DenounceRelationship:
+                    //case StatementType.DenounceAssault:
+                    //case StatementType.DenounceInvasion:
+                    //case StatementType.DenounceSabotage:
+                    case StatementType.SabotageFood:
+                    case StatementType.SabotageIndustry:
+                    case StatementType.SabotageEnergy:
+                    case StatementType.StealCredits:
+                    case StatementType.StealResearch:
+                    case StatementType.F01:
+                    case StatementType.F02:
+                    case StatementType.F03:
+                    case StatementType.F04:
+                    case StatementType.F05:
+                    case StatementType.F10:
+                    case StatementType.F12:
+                    case StatementType.F13:
+                    case StatementType.F14:
+                    case StatementType.F15:
+                    case StatementType.F20:
+                    case StatementType.F21:
+                    case StatementType.F23:
+                    case StatementType.F24:
+                    case StatementType.F25:
+                    case StatementType.F30:
+                    case StatementType.F31:
+                    case StatementType.F32:
+                    case StatementType.F34:
+                    case StatementType.F35:
+                    case StatementType.F40:
+                    case StatementType.F41:
+                    case StatementType.F42:
+                    case StatementType.F43:
+                    case StatementType.F45:
+                    case StatementType.F50:
+                    case StatementType.F51:
+                    case StatementType.F52:
+                    case StatementType.F53:
+                    case StatementType.F54:
+                    case StatementType.T01:
+                    case StatementType.T02:
+                    case StatementType.T03:
+                    case StatementType.T04:
+                    case StatementType.T05:
+                    case StatementType.T10:
+                    case StatementType.T12:
+                    case StatementType.T13:
+                    case StatementType.T14:
+                    case StatementType.T15:
+                    case StatementType.T20:
+                    case StatementType.T21:
+                    case StatementType.T23:
+                    case StatementType.T24:
+                    case StatementType.T25:
+                    case StatementType.T30:
+                    case StatementType.T31:
+                    case StatementType.T32:
+                    case StatementType.T34:
+                    case StatementType.T35:
+                    case StatementType.T40:
+                    case StatementType.T41:
+                    case StatementType.T42:
+                    case StatementType.T43:
+                    case StatementType.T45:
+                    case StatementType.T50:
+                    case StatementType.T51:
+                    case StatementType.T52:
+                    case StatementType.T53:
+                    case StatementType.T54:
+                        //GameLog.Client.Diplomacy.DebugFormat("Message Statement");
                         return DiplomaticMessageCategory.Statement;
                     
-                    case StatementType.ThreatenDestroyColony:
-                    case StatementType.ThreatenTradeEmbargo:
-                    case StatementType.ThreatenDeclareWar:
-                        GameLog.Client.Diplomacy.DebugFormat("Message Threat");
-                        return DiplomaticMessageCategory.Threat;
+                    //case StatementType.ThreatenDestroyColony:
+                    //case StatementType.ThreatenTradeEmbargo:
+                    //case StatementType.ThreatenDeclareWar:
+                    //    GameLog.Client.Diplomacy.DebugFormat("Message Threat");
+                        //return DiplomaticMessageCategory.Threat;
                 }
             }
             // a lot of times hitted without giving an info ... GameLog.Client.Diplomacy.DebugFormat("Message Category None");

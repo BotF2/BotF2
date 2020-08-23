@@ -1,6 +1,6 @@
-<!--
+<!-- 
   
-   Shared.xaml
+   File:Shared.xaml > for Borg
   
    Copyright (c) 2007 Mike Strobel
   
@@ -35,38 +35,46 @@
                    Color="#7f87DB7A" />
 
 
-    <FontFamily x:Key="{x:Static scc:ClientResources.HeaderFontFamilyKey}">pack://application:,,,/Resources/Fonts/#Federation Standard Text</FontFamily>
-  <FontFamily x:Key="{x:Static scc:ClientResources.DefaultFontFamilyKey}">pack://application:,,,/Resources/Fonts/#Federation Standard Text</FontFamily>
-    <FontFamily x:Key="{x:Static scc:ClientResources.InfoPaneFontFamilyKey}">pack://application:,,,/Resources/Fonts/#Federation Standard Text</FontFamily>
-
-  <system:Double x:Key="{x:Static scc:ClientResources.HeaderFontSizeKey}">18</system:Double>
-  <system:Double x:Key="{x:Static scc:ClientResources.DefaultFontSizeKey}">14</system:Double>
-  <system:Double x:Key="{x:Static scc:ClientResources.InfoPaneFontSizeKey}">16</system:Double>
-
+    <!--HeaderFont-->
+    <FontFamily x:Key="{x:Static scc:ClientResources.HeaderFontFamilyKey}">pack://application:,,,/Resources/Fonts/#Federation Standard Text</FontFamily>    
+    <system:Double x:Key="{x:Static scc:ClientResources.HeaderFontSizeKey}">18</system:Double>
     <FontWeight x:Key="{x:Static scc:ClientResources.HeaderFontWeightKey}">Normal</FontWeight>
-  <FontWeight x:Key="{x:Static scc:ClientResources.DefaultFontWeightKey}">Normal</FontWeight>
+
+    <!--DefaultFont-->
+    <FontFamily x:Key="{x:Static scc:ClientResources.DefaultFontFamilyKey}">pack://application:,,,/Resources/Fonts/#Federation Standard Text</FontFamily>    
+    <system:Double x:Key="{x:Static scc:ClientResources.DefaultFontSizeKey}">14</system:Double>   
+    <FontWeight x:Key="{x:Static scc:ClientResources.DefaultFontWeightKey}">Normal</FontWeight>
+
+    <!--InfoPaneFont-->
+    <FontFamily x:Key="{x:Static scc:ClientResources.InfoPaneFontFamilyKey}">pack://application:,,,/Resources/Fonts/#Federation Standard Text</FontFamily>    
+    <system:Double x:Key="{x:Static scc:ClientResources.InfoPaneFontSizeKey}">16</system:Double>    
     <FontWeight x:Key="{x:Static scc:ClientResources.InfoPaneFontWeightKey}">Normal</FontWeight>
 
-  <SolidColorBrush x:Key="{x:Static scc:ClientResources.ControlTextForegroundBrushKey}"
-                   Color="#ff000000" />   <!--Black-->
+    <!--SmallFont--><!--
+    <FontFamily x:Key="{x:Static scc:ClientResources.DefaultFontFamilyKey}">pack://application:,,,/Resources/Fonts/#Federation Standard Text</FontFamily>
+    <system:Double x:Key="{x:Static scc:ClientResources.SmallFontSizeKey}">10</system:Double>
+    <FontWeight x:Key="{x:Static scc:ClientResources.DefaultFontWeightKey}">Normal</FontWeight>-->
+
+    <SolidColorBrush x:Key="{x:Static scc:ClientResources.ControlTextForegroundBrushKey}"
+                    Color="#ff000000" />   <!--Black-->
     <!--<SolidColorBrush x:Key="{x:Static scc:ClientResources.ControlTextForegroundBrushKey}"
-                   Color="#ff77DC60" />  --><!--LightGreen-->
+                    Color="#ff77DC60" />  --><!--LightGreen-->
     <SolidColorBrush x:Key="{x:Static scc:ClientResources.HeaderTextForegroundBrushKey}"
-                   Color="#ff77DC60" />   <!--LightGreen-->
-  <SolidColorBrush x:Key="{x:Static scc:ClientResources.DefaultTextForegroundBrushKey}"
-                   Color="#ff36E50E" />  <!--Green-->
-  <SolidColorBrush x:Key="{x:Static scc:ClientResources.ImageBorderBrushKey}"
-                   Color="GreenYellow" /> <!--GreenYellow-->
+                    Color="#ff77DC60" />   <!--LightGreen-->
+    <SolidColorBrush x:Key="{x:Static scc:ClientResources.DefaultTextForegroundBrushKey}"
+                    Color="#ff36E50E" />  <!--Green-->
+    <SolidColorBrush x:Key="{x:Static scc:ClientResources.ImageBorderBrushKey}"
+                    Color="GreenYellow" /> <!--GreenYellow-->
     <SolidColorBrush x:Key="{x:Static scc:ClientResources.DisabledTextForegroundBrushKey}"
-                   Color="#ff41A52A" />   <!--DarkGreen-->
-  <SolidColorBrush x:Key="{x:Static scc:ClientResources.HighlightBrushKey}"
-                   Color="#7f87DB7A" />  <!--Transparent-->
-  <SolidColorBrush x:Key="{x:Static scc:ClientResources.InactiveHighlightBrushKey}"
-                   Color="#7f666666" />   <!--Transparent-->
-  <SolidColorBrush x:Key="{x:Static scc:ClientResources.AlertTextForegroundBrushKey}"
-                   Color="Crimson" />
-  <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}"
-                   Color="#7f87DB7A" />  <!--Transparent-->
+                    Color="#ff41A52A" />   <!--DarkGreen-->
+    <SolidColorBrush x:Key="{x:Static scc:ClientResources.HighlightBrushKey}"
+                    Color="#7f87DB7A" />  <!--Transparent-->
+    <SolidColorBrush x:Key="{x:Static scc:ClientResources.InactiveHighlightBrushKey}"
+                    Color="#7f666666" />   <!--Transparent-->
+    <SolidColorBrush x:Key="{x:Static scc:ClientResources.AlertTextForegroundBrushKey}"
+                    Color="Crimson" />
+    <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}"
+                    Color="#7f87DB7A" />  <!--Transparent-->
 
     <!--
     

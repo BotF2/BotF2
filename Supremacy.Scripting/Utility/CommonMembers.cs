@@ -14,7 +14,10 @@ namespace Supremacy.Scripting.Utility
             get
             {
                 if (_disposableDispose == null)
+                {
                     _disposableDispose = typeof(IDisposable).GetMethod("Dispose");
+                }
+
                 return _disposableDispose;
             }
         }
@@ -50,7 +53,10 @@ namespace Supremacy.Scripting.Utility
             get
             {
                 if (_toString == null)
+                {
                     _toString = typeof(object).GetMethod("ToString");
+                }
+
                 return _toString;
             }
         }

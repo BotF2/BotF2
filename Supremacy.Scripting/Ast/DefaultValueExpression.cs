@@ -17,16 +17,12 @@ namespace Supremacy.Scripting.Ast
 
         public DefaultValueExpression([NotNull] Expression typeExpression)
         {
-            if (typeExpression == null)
-                throw new ArgumentNullException("typeExpression");
-            _typeExpression = typeExpression;
+            _typeExpression = typeExpression ?? throw new ArgumentNullException("typeExpression");
         }
 
         public DefaultValueExpression([NotNull] Type resolvedType)
         {
-            if (resolvedType == null)
-                throw new ArgumentNullException("resolvedType");
-            _resolvedType = resolvedType;
+            _resolvedType = resolvedType ?? throw new ArgumentNullException("resolvedType");
             Type = resolvedType;
         }
 
@@ -34,9 +30,10 @@ namespace Supremacy.Scripting.Ast
         {
             base.CloneTo(cloneContext, target);
 
-            var clone = target as DefaultValueExpression;
-            if (clone == null)
+            if (!(target is DefaultValueExpression clone))
+            {
                 return;
+            }
 
             clone._typeExpression = Clone(cloneContext, _typeExpression);
             clone._resolvedType = _resolvedType;
@@ -44,14 +41,11 @@ namespace Supremacy.Scripting.Ast
 
         public Expression TypeExpression
         {
-            get { return _typeExpression; }
-            set { _typeExpression = value; }
+            get => _typeExpression;
+            set => _typeExpression = value;
         }
 
-        public override bool IsPrimaryExpression
-        {
-            get { return true; }
-        }
+        public override bool IsPrimaryExpression => true;
 
         public override MSAst TransformCore(ScriptGenerator generator)
         {
@@ -66,11 +60,15 @@ namespace Supremacy.Scripting.Ast
         public override Expression DoResolve(ParseContext parseContext)
         {
             if (_typeExpression == null)
+            {
                 return this;
+            }
 
-            var typeExpression = _typeExpression.ResolveAsTypeTerminal(parseContext, false);
+            TypeExpression typeExpression = _typeExpression.ResolveAsTypeTerminal(parseContext, false);
             if (typeExpression == null)
+            {
                 return null;
+            }
 
             _resolvedType = typeExpression.Type;
 
@@ -83,7 +81,9 @@ namespace Supremacy.Scripting.Ast
             }
 
             if (TypeManager.IsReferenceType(_resolvedType))
+            {
                 return ConstantExpression.Create(_resolvedType, null, Span);
+            }
 
             Type = _resolvedType;
             ExpressionClass = ExpressionClass.Variable;

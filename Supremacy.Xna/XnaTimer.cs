@@ -23,7 +23,9 @@ namespace Supremacy.Xna
             CheckAccess();
 
             if (_started)
+            {
                 return;
+            }
 
             _started = true;
 
@@ -42,12 +44,18 @@ namespace Supremacy.Xna
             CheckAccess();
 
             if (!_started)
+            {
                 return;
+            }
 
             if (_usingTimer)
+            {
                 _timer.Stop();
+            }
             else
+            {
                 CompositionTarget.Rendering -= OnTick;
+            }
 
             _usingTimer = false;
             _started = false;
@@ -55,9 +63,7 @@ namespace Supremacy.Xna
 
         private void OnTick(object sender, EventArgs e)
         {
-            var handler = Tick;
-            if (handler != null)
-                handler(this, EventArgs.Empty);
+            Tick?.Invoke(this, EventArgs.Empty);
         }
     }
 }

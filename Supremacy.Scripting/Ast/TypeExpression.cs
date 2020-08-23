@@ -13,19 +13,13 @@ namespace Supremacy.Scripting.Ast
 {
     public class TypeExpression : FullNamedExpression
     {
-        public override bool IsPrimaryExpression
-        {
-            get { return true; }
-        }
+        public override bool IsPrimaryExpression => true;
 
         protected TypeExpression() { }
 
         public TypeExpression(Type type)
         {
-            if (type == null)
-                throw new ArgumentNullException("type");
-
-            Type = type;
+            Type = type ?? throw new ArgumentNullException("type");
         }
 
         public TypeExpression(Type type, SourceSpan span)
@@ -37,17 +31,16 @@ namespace Supremacy.Scripting.Ast
         public static TypeExpression Create([NotNull] Type type, SourceSpan span = default(SourceSpan))
         {
             if (type == null)
-                throw new ArgumentNullException("type");
-            
-            if (type.IsGenericType && !type.IsGenericTypeDefinition)
             {
-                return new GenericTypeExpression(
-                    type,
-                    new TypeArguments(type.GetGenericArguments().Select(o => Create(o, span)).ToArray()),
-                    span);
+                throw new ArgumentNullException("type");
             }
 
-            return new TypeExpression(type, span);
+            return type.IsGenericType && !type.IsGenericTypeDefinition
+                ? new GenericTypeExpression(
+                    type,
+                    new TypeArguments(type.GetGenericArguments().Select(o => Create(o, span)).ToArray()),
+                    span)
+                : new TypeExpression(type, span);
         }
 
         public override System.Linq.Expressions.Expression TransformCore(ScriptGenerator generator)
@@ -66,7 +59,9 @@ namespace Supremacy.Scripting.Ast
         {
             var resolvedType = DoResolveAsTypeStep(ec);
             if (resolvedType == null)
+            {
                 return null;
+            }
 
             ExpressionClass = ExpressionClass.Type;
             return resolvedType;
@@ -83,25 +78,13 @@ namespace Supremacy.Scripting.Ast
         }
 
 
-        public virtual bool IsClass
-        {
-            get { return Type.IsClass; }
-        }
+        public virtual bool IsClass => Type.IsClass;
 
-        public virtual bool IsValueType
-        {
-            get { return TypeManager.IsStruct(Type); }
-        }
+        public virtual bool IsValueType => TypeManager.IsStruct(Type);
 
-        public virtual bool IsInterface
-        {
-            get { return Type.IsInterface; }
-        }
+        public virtual bool IsInterface => Type.IsInterface;
 
-        public virtual bool IsSealed
-        {
-            get { return Type.IsSealed; }
-        }
+        public virtual bool IsSealed => Type.IsSealed;
 
         public virtual bool CanInheritFrom()
         {

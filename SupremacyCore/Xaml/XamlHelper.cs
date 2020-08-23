@@ -13,13 +13,18 @@ namespace Supremacy.Xaml
         public static object LoadInto([NotNull] object instance, [NotNull] string fileName)
         {
             if (instance == null)
-                throw new ArgumentNullException("instance");
-            if (fileName == null)
-                throw new ArgumentNullException("fileName");
-
-            using (var xmlReader = XmlReader.Create(fileName))
             {
-                var xamlReader = new XamlXmlReader(xmlReader);
+                throw new ArgumentNullException(nameof(instance));
+            }
+
+            if (fileName == null)
+            {
+                throw new ArgumentNullException(nameof(fileName));
+            }
+
+            using (XmlReader xmlReader = XmlReader.Create(fileName))
+            {
+                XamlXmlReader xamlReader = new XamlXmlReader(xmlReader);
                 return LoadInto(instance, xamlReader);
             }
         }
@@ -27,13 +32,18 @@ namespace Supremacy.Xaml
         public static object LoadInto([NotNull] object instance, [NotNull] Stream stream)
         {
             if (instance == null)
-                throw new ArgumentNullException("instance");
-            if (stream == null)
-                throw new ArgumentNullException("stream");
-
-            using (var xmlReader = XmlReader.Create(stream))
             {
-                var xamlReader = new XamlXmlReader(xmlReader);
+                throw new ArgumentNullException(nameof(instance));
+            }
+
+            if (stream == null)
+            {
+                throw new ArgumentNullException(nameof(stream));
+            }
+
+            using (XmlReader xmlReader = XmlReader.Create(stream))
+            {
+                XamlXmlReader xamlReader = new XamlXmlReader(xmlReader);
                 return LoadInto(instance, xamlReader);
             }
         }
@@ -41,25 +51,35 @@ namespace Supremacy.Xaml
         public static object LoadInto([NotNull] object instance, [NotNull] TextReader textReader)
         {
             if (instance == null)
-                throw new ArgumentNullException("instance");
-            if (textReader == null)
-                throw new ArgumentNullException("textReader");
-
-            using (var reader = XmlReader.Create(textReader))
             {
-                var xamlReader = new XamlXmlReader(reader);
+                throw new ArgumentNullException(nameof(instance));
+            }
+
+            if (textReader == null)
+            {
+                throw new ArgumentNullException(nameof(textReader));
+            }
+
+            using (XmlReader reader = XmlReader.Create(textReader))
+            {
+                XamlXmlReader xamlReader = new XamlXmlReader(reader);
                 return LoadInto(instance, xamlReader);
             }
         }
-        
+
         public static object LoadInto([NotNull] object instance, [NotNull] XmlReader xmlReader)
         {
             if (instance == null)
-                throw new ArgumentNullException("instance");
-            if (xmlReader == null)
-                throw new ArgumentNullException("xmlReader");
+            {
+                throw new ArgumentNullException(nameof(instance));
+            }
 
-            using (var xamlReader = new XamlXmlReader(xmlReader))
+            if (xmlReader == null)
+            {
+                throw new ArgumentNullException(nameof(xmlReader));
+            }
+
+            using (XamlXmlReader xamlReader = new XamlXmlReader(xmlReader))
             {
                 return LoadInto(instance, xamlReader);
             }
@@ -68,11 +88,16 @@ namespace Supremacy.Xaml
         public static object LoadInto([NotNull] object instance, [NotNull] XamlReader xamlReader)
         {
             if (instance == null)
-                throw new ArgumentNullException("instance");
-            if (xamlReader == null)
-                throw new ArgumentNullException("xamlReader");
+            {
+                throw new ArgumentNullException(nameof(instance));
+            }
 
-            var xamlWriter = new XamlObjectWriter(
+            if (xamlReader == null)
+            {
+                throw new ArgumentNullException(nameof(xamlReader));
+            }
+
+            XamlObjectWriter xamlWriter = new XamlObjectWriter(
                 xamlReader.SchemaContext,
                 new XamlObjectWriterSettings
                 {
@@ -87,16 +112,21 @@ namespace Supremacy.Xaml
         public static void ParseInto([NotNull] object instance, [NotNull] string xaml)
         {
             if (instance == null)
-                throw new ArgumentNullException("instance");
-            if (xaml == null)
-                throw new ArgumentNullException("xaml");
-
-            var input = new StringReader(xaml);
-
-            using (var xmlReader = XmlReader.Create(input))
             {
-                var xamlReader = new XamlXmlReader(xmlReader);
-                LoadInto(instance, xamlReader);
+                throw new ArgumentNullException(nameof(instance));
+            }
+
+            if (xaml == null)
+            {
+                throw new ArgumentNullException(nameof(xaml));
+            }
+
+            StringReader input = new StringReader(xaml);
+
+            using (XmlReader xmlReader = XmlReader.Create(input))
+            {
+                XamlXmlReader xamlReader = new XamlXmlReader(xmlReader);
+                _ = LoadInto(instance, xamlReader);
             }
         }
     }

@@ -21,13 +21,18 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Media;
+using System.Runtime.CompilerServices;
+using System.Web.Services.Description;
+using System.Windows.Navigation;
 
 namespace Supremacy.Diplomacy
 {
     public static class DiplomacyHelper
     {
         private static readonly IList<Civilization> EmptyCivilizations = new Civilization[0];
-          
+        private static CollectionBase<RegardEvent> _regardEvents;
+        private static Dictionary<string, bool> _acceptRejectDictionary = new Dictionary<string, bool> { {"98", false } };
+
         public static ForeignPowerStatus GetForeignPowerStatus([NotNull] ICivIdentity owner, [NotNull] ICivIdentity counterparty)
         {
             if (owner == null)
@@ -37,11 +42,11 @@ namespace Supremacy.Diplomacy
 
             if (owner.CivID == counterparty.CivID)
                 return ForeignPowerStatus.NoContact;
-
+            _regardEvents = new CollectionBase<RegardEvent>();
             return GameContext.Current.DiplomacyData[owner.CivID, counterparty.CivID].Status;
         }
-            // ToDo look at bringin diplomatic ships to use the old diplomatic code and set up the Civilization-to-diplomat map for games (GameContext.Current.Diplomats)
-        public static void ApplyGlobalTrustChange([NotNull] ICivIdentity civ, int trustDelta)
+           
+        public static void ApplyGlobalTrustChange([NotNull] ICivIdentity civ, int trustDelta) 
         {
             if (civ == null)
                 throw new ArgumentNullException("civ");
@@ -75,26 +80,37 @@ namespace Supremacy.Diplomacy
 
                 var foreignPower = diplomat.GetForeignPower(civ);
 
-                if (civId == otherPower.CivID)
+                if (otherPower.CivID == diplomat.OwnerID)
                 {
                     //var foreignPower = diplomat.GetForeignPower(civ);
-                    GameLog.Core.Diplomacy.DebugFormat("BEFORE: civ = {0}, otherPower.CivID = {1}, trustDelta = {2}, diplomat.Owner = {3}, foreignPower.OwnerID = {4}, CurrentTrust = {5}",
-                                    civ, otherPower.CivID, trustDelta, diplomat.Owner, foreignPower.OwnerID, foreignPower.DiplomacyData.Trust.CurrentValue);
+                    //GameLog.Core.Diplomacy.DebugFormat(
+                    //    "BEFORE: civ = {0}, otherPower = {1}, trustDelta = {2}, diplomat.Owner = {3}, foreignPower = {4}, CurrentTrust = {5}",
+                    //    GameContext.Current.CivilizationManagers[civ.CivID].Civilization.ShortName,
+                    //    GameContext.Current.CivilizationManagers[otherPower.CivID].Civilization.ShortName,
+                    //    trustDelta, diplomat.Owner,
+                    //    GameContext.Current.CivilizationManagers[foreignPower.OwnerID].Civilization.ShortName,
+                    //    foreignPower.DiplomacyData.Trust.CurrentValue);
 
                     if (foreignPower != null)
                         foreignPower.DiplomacyData.Trust.AdjustCurrent(trustDelta);
                     foreignPower.DiplomacyData.Trust.UpdateAndReset();
 
-                    GameLog.Core.Diplomacy.DebugFormat("AFTER : civ = {0}, otherPower.CivID = {1}, trustDelta = {2}, diplomat.Owner = {3}, foreignPower.OwnerID = {4}, CurrentTrust = {5}",
-                            civ, otherPower.CivID, trustDelta, diplomat.Owner, foreignPower.OwnerID, foreignPower.DiplomacyData.Trust.CurrentValue);
+                    //GameLog.Core.Diplomacy.DebugFormat(
+                    //    "AFTER : civ = {0}, otherPower = {1}, trustDelta = {2}, diplomat.Owner = {3}, foreignPower = {4}, CurrentTrust = {5}",
+                    //    GameContext.Current.CivilizationManagers[civ.CivID].Civilization.ShortName,
+                    //    GameContext.Current.CivilizationManagers[otherPower.CivID].Civilization.ShortName,
+                    //    trustDelta, diplomat.Owner,
+                    //    GameContext.Current.CivilizationManagers[foreignPower.OwnerID].Civilization.ShortName,
+                    //    foreignPower.DiplomacyData.Trust.CurrentValue);
                 }
 
                 if (foreignPower != null)
                 {
-                    foreignPower.DiplomacyData.Trust.AdjustCurrent(trustDelta);
-                    foreignPower.DiplomacyData.Trust.UpdateAndReset();
+                    //foreignPower.DiplomacyData.Trust.AdjustCurrent(trustDelta);
+                    //foreignPower.DiplomacyData.Trust.UpdateAndReset();
                     foreignPower.UpdateRegardAndTrustMeters();
                 }
+                
             }
         }
         //Regard makes crashes
@@ -133,6 +149,37 @@ namespace Supremacy.Diplomacy
                 }
             }
         }
+        public static void ApplyRegardDecay(RegardEventCategories category, RegardDecay decay)
+        {
+            for (var i = 0; i < _regardEvents.Count; i++)
+            {
+                var regardEvent = _regardEvents[i];
+
+                // Regard events with a fixed duration do not decay.
+                if (regardEvent.Duration > 0)
+                    continue;
+
+                var regard = regardEvent.Regard;
+                if (regard == 0)
+                {
+                    _regardEvents.RemoveAt(i--);
+                    continue;
+                }
+
+                if (!regardEvent.Type.GetCategories().HasFlag(category))
+                    continue;
+
+                if (regard > 0)
+                    regard = Math.Max(0, (int)(regard * decay.Positive));
+                else
+                    regard = Math.Min(0, (int)(regard * decay.Negative));
+
+                if (regard == 0)
+                    _regardEvents.RemoveAt(i--);
+                else
+                    regardEvent.Regard = regard;
+            }
+        }
 
         public static Colony GetSeatOfGovernment([NotNull] Civilization who)
         {
@@ -145,17 +192,6 @@ namespace Supremacy.Diplomacy
 
             return diplomat.SeatOfGovernment;
         }
-        //public static Ship GetOwner([NotNull] Civilization who)
-        //{
-        //    if (who == null)
-        //        throw new ArgumentNullException("who");
-
-        //    var diplomat = GameContext.Current.Diplomats[who.CivID];
-        //    if (diplomat == null)
-        //        return null;
-
-        //    return diplomat.Owner;
-        //}
 
         public static void SendWarDeclaration([NotNull] Civilization declaringCiv, [NotNull] Civilization targetCiv, Tone tone = Tone.Calm)
         {
@@ -170,7 +206,7 @@ namespace Supremacy.Diplomacy
                 GameLog.Core.Diplomacy.ErrorFormat(
                     "Civilization {0} attempted to declare war on itself.",
                     declaringCiv.ShortName);
-
+                
                 return;
             }
           
@@ -195,6 +231,523 @@ namespace Supremacy.Diplomacy
                 GameLog.Client.Diplomacy.DebugFormat("************** Diplo: SendWarDeclaration turned to RECEIVED at ForeignPower...");
         }
 
+        public static void SpecificCivAcceptingRejecting([NotNull] StatementType statementType)
+        {
+            string statementAsString = GetEnumString(statementType);
+            string otherCivID = statementAsString.Substring(1, 1);
+            string aCivID = statementAsString.Substring(2, 1);
+            string trueFalse = statementAsString.Substring(0, 1);
+            int aCivint = Int32.Parse(aCivID);
+            int otherCivint = Int32.Parse(otherCivID);
+            Civilization aCiv = GameContext.Current.Civilizations[aCivint];
+            Civilization otherCiv = GameContext.Current.Civilizations[otherCivint];
+            var diplomat = Diplomat.Get(aCiv);
+            var foreignPower = diplomat.GetForeignPower(otherCiv);
+            bool accepting = false;
+            if (trueFalse == "T")
+            {
+                accepting = true;
+            }
+       
+            if (accepting)
+            {
+                if (foreignPower.CounterpartyForeignPower.LastProposalSent != null) // aCiv is owner of the foreignpower looking for a ProposalRecieved
+                {
+                    AcceptProposalVisitor.Visit(foreignPower.CounterpartyForeignPower.LastProposalSent);
+                    var civManagers = GameContext.Current.CivilizationManagers;
+                    var civ1 = foreignPower.CounterpartyForeignPower.Owner;
+                    var civ2 = foreignPower.Owner;
+
+                        civManagers[civ1].SitRepEntries.Add(new DiplomaticSitRepEntry(civ1, foreignPower.ResponseSent));
+
+                        civManagers[civ2].SitRepEntries.Add(new DiplomaticSitRepEntry(civ2, foreignPower.ResponseSent));
+               
+                    foreignPower.CounterpartyForeignPower.LastProposalSent = null;
+                    foreignPower.ResponseSent = null;
+                }
+            }
+            else
+            {
+                if (foreignPower.CounterpartyForeignPower.LastProposalSent != null) // aCiv is owner of the foreignpower looking for a ProposalRecieved
+                {
+                    RejectProposalVisitor.Visit(foreignPower.CounterpartyForeignPower.LastProposalSent);
+                    var civManagers = GameContext.Current.CivilizationManagers;
+                    var civ1 = foreignPower.CounterpartyForeignPower.Owner;
+                    var civ2 = foreignPower.Owner;
+
+                    civManagers[civ1].SitRepEntries.Add(new DiplomaticSitRepEntry(civ1, foreignPower.ResponseSent));
+
+                    civManagers[civ2].SitRepEntries.Add(new DiplomaticSitRepEntry(civ2, foreignPower.ResponseSent));
+
+                    foreignPower.CounterpartyForeignPower.LastProposalSent = null;
+                    foreignPower.ResponseSent = null;
+                }
+
+            }
+        }     
+        public static void AcceptingRejecting([NotNull] ICivIdentity civ) // writing dictionary for entry regarding this civ
+        {
+            if (civ == null)
+                throw new ArgumentNullException("civ");
+            var aCiv = (Civilization)civ;
+            var diplomat = Diplomat.Get(civ);
+            
+            foreach (var otherCiv in GameContext.Current.Civilizations)
+            {
+                if (aCiv == otherCiv)
+                    continue;
+                if (!otherCiv.IsEmpire)
+                    continue;
+                var foreignPower = diplomat.GetForeignPower(otherCiv);
+
+                bool accepting = false;
+
+                string powerID = foreignPower.CounterpartyID.ToString() + foreignPower.OwnerID.ToString();
+
+                GameLog.Client.Diplomacy.DebugFormat("Check Dictionar foreignPower.Owner = {0}, counterpary ={1} powerID ={2}"
+                    , foreignPower.OwnerID
+                    , foreignPower.CounterpartyID
+                    , powerID.ToString());
+                if (_acceptRejectDictionary.ContainsKey(powerID)) // check dictionary with key for bool value
+                {
+                    GameLog.Client.Diplomacy.DebugFormat("Found it in Dictionary");
+                    accepting = _acceptRejectDictionary[powerID];
+                    if (accepting)
+                    {
+                        if (foreignPower.ProposalReceived == null && foreignPower.OwnerID == 1)
+                            GameLog.Client.Diplomacy.DebugFormat("Hey!!! why is the damn ProposalReceived null for foreignPower.OwnerID 1");
+                        if (foreignPower.ProposalReceived == null && foreignPower.OwnerID == 4)
+                            GameLog.Client.Diplomacy.DebugFormat("Hey!!! why is the damn ProposalReceived null for foreignPower.OwnerID 4");
+                        if (foreignPower.ProposalReceived != null) // aCiv is owner of the foreignpower looking for a ProposalRecieved
+                        {
+                            foreignPower.PendingAction = PendingDiplomacyAction.AcceptProposal;
+
+                            GameLog.Client.Diplomacy.DebugFormat(
+                                "## PendingAction: ACCEPT ={0}, Counterparty = {1} Onwer = {2}"
+                                , foreignPower.PendingAction.ToString()
+                                , foreignPower.Counterparty.ShortName
+                                , foreignPower.Owner.ShortName);
+                            //if(foreignPower.ProposalReceived != null)
+                            //GameLog.Client.Diplomacy.DebugFormat(
+                            //   "## ProposlaReceived count={0},  = {1} LastProposalReceived= {2}"
+                            //   , foreignPower.ProposalReceived.Clauses.Count()
+                            //   , foreignPower.LastProposalReceived.Clauses.Count()
+                            //   , foreignPower.Owner.ShortName);
+                            //foreignPower.LastProposalReceived = foreignPower.ProposalReceived;
+                            //foreignPower.ProposalReceived = null;
+                            //GameLog.Client.Diplomacy.DebugFormat("LastProposalReceived ={0} on foreignPower.Owner ={1} clause count ={2}"
+                            //    , foreignPower.LastProposalReceived.ToString()
+                            //    , foreignPower.LastProposalReceived.Clauses.Count()
+                            //    );
+                        }
+                    }
+                    else
+                    {
+                        if (foreignPower.ProposalReceived != null)
+                        {
+                            foreignPower.PendingAction = PendingDiplomacyAction.RejectProposal;
+
+                            GameLog.Client.Diplomacy.DebugFormat(
+                                "## PendingAction: REJECT ={0} reset by clause - regard value, Counterparty = {1} Onwer = {2}",
+                                foreignPower.PendingAction.ToString(), foreignPower.Counterparty.ShortName,
+                                foreignPower.Owner.ShortName);
+                            //foreignPower.LastProposalReceived = foreignPower.ProposalReceived;
+                            //foreignPower.ProposalReceived = null;
+                        }
+
+                    }
+
+                }
+            }
+        }
+
+        private static string GetEnumString(StatementType value)
+        {
+            return Enum.GetName(typeof(StatementType), value);
+        }
+
+        public static StatementType GetStatementType(bool accepting, Civilization sender, Civilization localPlayerCiv)
+        {
+            string TrueFalse = "F";
+            if (accepting == true)
+                TrueFalse = "T";
+
+            string nameOfStatementType = TrueFalse + sender.CivID.ToString() + localPlayerCiv.CivID.ToString();
+            switch (nameOfStatementType)
+            {
+                case "T01":
+                    {
+                        return StatementType.T01;
+                    }
+                case "T02":
+                    {
+                        return StatementType.T02;
+                    }
+                case "T03":
+                    {
+                        return StatementType.T03;
+                    }
+                case "T04":
+                    {
+                        return StatementType.T04;
+                    }
+                case "T05":
+                    {
+                        return StatementType.T05;
+                    }
+                case "T10":
+                    {
+                        return StatementType.T10;
+                    }
+                case "T12":
+                    {
+                        return StatementType.T12;
+                    }
+                case "T13":
+                    {
+                        return StatementType.T13;
+                    }
+                case "T14":
+                    {
+                        return StatementType.T14;
+                    }
+                case "T15":
+                    {
+                        return StatementType.T15;
+                    }
+                case "T20":
+                    {
+                        return StatementType.T20;
+                    }
+                case "T21":
+                    {
+                        return StatementType.T21;
+                    }
+                case "T23":
+                    {
+                        return StatementType.T23;
+                    }
+                case "T24":
+                    {
+                        return StatementType.T24;
+                    }
+                case "T25":
+                    {
+                        return StatementType.T25;
+                    }
+                case "T30":
+                    {
+                        return StatementType.T30;
+                    }
+                case "T31":
+                    {
+                        return StatementType.T31;
+                    }
+                case "T32":
+                    {
+                        return StatementType.T32;
+                    }
+                case "T34":
+                    {
+                        return StatementType.T34;
+                    }
+                case "T35":
+                    {
+                        return StatementType.T35;
+                    }
+                case "T40":
+                    {
+                        return StatementType.T40;
+                    }
+                case "T41":
+                    {
+                        return StatementType.T41;
+                    }
+                case "T42":
+                    {
+                        return StatementType.T42;
+                    }
+                case "T43":
+                    {
+                        return StatementType.T43;
+                    }
+                case "T45":
+                    {
+                        return StatementType.T45;
+                    }
+                case "T50":
+                    {
+                        return StatementType.T50;
+                    }
+                case "T51":
+                    {
+                        return StatementType.T51;
+                    }
+                case "T52":
+                    {
+                        return StatementType.T52;
+                    }
+                case "T53":
+                    {
+                        return StatementType.T53;
+                    }
+                case "T54":
+                    {
+                        return StatementType.T54;
+                    }
+                case "F01":
+                    {
+                        return StatementType.F01;
+                    }
+                case "F02":
+                    {
+                        return StatementType.F02;
+                    }
+                case "F03":
+                    {
+                        return StatementType.F03;
+                    }
+                case "F04":
+                    {
+                        return StatementType.F04;
+                    }
+                case "F05":
+                    {
+                        return StatementType.F05;
+                    }
+                case "F10":
+                    {
+                        return StatementType.F10;
+                    }
+                case "F12":
+                    {
+                        return StatementType.F12;
+                    }
+                case "F13":
+                    {
+                        return StatementType.F13;
+                    }
+                case "F14":
+                    {
+                        return StatementType.F14;
+                    }
+                case "F15":
+                    {
+                        return StatementType.F15;
+                    }
+                case "F20":
+                    {
+                        return StatementType.F20;
+                    }
+                case "F21":
+                    {
+                        return StatementType.F21;
+                    }
+                case "F23":
+                    {
+                        return StatementType.F23;
+                    }
+                case "F24":
+                    {
+                        return StatementType.F24;
+                    }
+                case "F25":
+                    {
+                        return StatementType.F25;
+                    }
+                case "F30":
+                    {
+                        return StatementType.F30;
+                    }
+                case "F31":
+                    {
+                        return StatementType.F31;
+                    }
+                case "F32":
+                    {
+                        return StatementType.F32;
+                    }
+                case "F34":
+                    {
+                        return StatementType.F34;
+                    }
+                case "F35":
+                    {
+                        return StatementType.F35;
+                    }
+                case "F40":
+                    {
+                        return StatementType.F40;
+                    }
+                case "F41":
+                    {
+                        return StatementType.F41;
+                    }
+                case "F42":
+                    {
+                        return StatementType.F42;
+                    }
+                case "F43":
+                    {
+                        return StatementType.F43;
+                    }
+                case "F45":
+                    {
+                        return StatementType.F45;
+                    }
+                case "F50":
+                    {
+                        return StatementType.F50;
+                    }
+                case "F51":
+                    {
+                        return StatementType.F51;
+                    }
+                case "F52":
+                    {
+                        return StatementType.F52;
+                    }
+                case "F53":
+                    {
+                        return StatementType.F53;
+                    }
+                case "F54":
+                    {
+                        return StatementType.F54;
+                    }
+                default:
+                    return StatementType.NoStatement;                    
+            }
+
+        }
+
+        public static void AcceptRejectDictionaryFromStatement(Statement _statmentRecieved) // find statement in foreignPower during GameEngine and here creat dictionary entry from it
+        {
+            int turnNumber = GameContext.Current.TurnNumber;
+            var _statementType = _statmentRecieved.StatementType;
+            string statementAsString = GetEnumString(_statementType);
+            string _civIDs = statementAsString.Substring(1,2);
+            GameLog.Client.Diplomacy.DebugFormat("Read Statement for Dictionary Value = {0}, current turn = {1}",_civIDs, turnNumber );
+            switch (_statementType)
+            {
+                case StatementType.T01:
+                case StatementType.T02:
+                case StatementType.T03:
+                case StatementType.T04:
+                case StatementType.T05:
+                case StatementType.T10:
+                case StatementType.T12:
+                case StatementType.T13:
+                case StatementType.T14:
+                case StatementType.T15:
+                case StatementType.T20:
+                case StatementType.T21:
+                case StatementType.T23:
+                case StatementType.T24:
+                case StatementType.T25:
+                case StatementType.T30:
+                case StatementType.T31:
+                case StatementType.T32:
+                case StatementType.T34:
+                case StatementType.T35:
+                case StatementType.T40:
+                case StatementType.T41:
+                case StatementType.T42:
+                case StatementType.T43:
+                case StatementType.T45:
+                case StatementType.T50:
+                case StatementType.T51:
+                case StatementType.T52:
+                case StatementType.T53:
+                case StatementType.T54:
+                    AcceptRejectDictionary(_civIDs, true, turnNumber);
+                    break;
+                case StatementType.F01:
+                case StatementType.F02:
+                case StatementType.F03:
+                case StatementType.F04:
+                case StatementType.F05:
+                case StatementType.F10:
+                case StatementType.F12:
+                case StatementType.F13:
+                case StatementType.F14:
+                case StatementType.F15:
+                case StatementType.F20:
+                case StatementType.F21:
+                case StatementType.F23:
+                case StatementType.F24:
+                case StatementType.F25:
+                case StatementType.F30:
+                case StatementType.F31:
+                case StatementType.F32:
+                case StatementType.F34:
+                case StatementType.F35:
+                case StatementType.F40:
+                case StatementType.F41:
+                case StatementType.F42:
+                case StatementType.F43:
+                case StatementType.F45:
+                case StatementType.F50:
+                case StatementType.F51:
+                case StatementType.F52:
+                case StatementType.F53:
+                case StatementType.F54:
+                    AcceptRejectDictionary(_civIDs, false, turnNumber); // creat dictionary entry from StatementType
+                    break;
+                case StatementType.CommendWar:
+                case StatementType.DenounceWar:
+                case StatementType.WarDeclaration:
+                case StatementType.StealCredits:
+                case StatementType.StealResearch:
+                case StatementType.SabotageFood:
+                case StatementType.SabotageEnergy:
+                case StatementType.SabotageIndustry:
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        public static void ClearAcceptRejectDictionary()
+        {
+            //if (_acceptRejectDictionary != null)
+                _acceptRejectDictionary.Clear();
+        }
+        public static void AcceptRejectDictionary(ForeignPower foreignPower, bool accepted, int turn)  // called from AI
+        {
+            int turnNumber = turn; // in case we need this to time clearing of dictionary - Dictionary<string, Tuple<bool, int>>(); or ValueType is a Class with bool and int.
+            string foreignPowerID = foreignPower.CounterpartyID.ToString() + foreignPower.OwnerID.ToString();
+
+            if (_acceptRejectDictionary.ContainsKey(foreignPowerID))
+            {
+                _acceptRejectDictionary.Remove(foreignPowerID);
+                _acceptRejectDictionary.Add(foreignPowerID, accepted);
+            }
+            else { _acceptRejectDictionary.Add(foreignPowerID, accepted); }
+
+            GameLog.Client.Diplomacy.DebugFormat("Turn {0}: _acceptRejectDicionary.Count = {1}, Pair(Counter/Owner) = {2}"
+                , GameContext.Current.TurnNumber
+                , _acceptRejectDictionary.Count
+                , foreignPowerID
+                );
+        }
+        public static void AcceptRejectDictionary(string civIDs, bool accepted, int turn)
+        {
+            int turnNumber = turn; // in case we need this to time clearing of dictionary - Dictionary<string, Tuple<bool, int>>(); or ValueType is a Class with bool and int.
+
+            if (_acceptRejectDictionary.ContainsKey(civIDs))
+            {
+                _acceptRejectDictionary.Remove(civIDs);
+                _acceptRejectDictionary.Add(civIDs, accepted);
+            }
+            else { _acceptRejectDictionary.Add(civIDs, accepted); }
+
+            //if (_acceptRejectDictionary != null)
+                GameLog.Client.Diplomacy.DebugFormat("Turn {0}: _acceptRejectDicionary.Count = {1}, Pair(Counter/Owner) = {2}"
+                    , GameContext.Current.TurnNumber
+                    , _acceptRejectDictionary.Count
+                    , civIDs);
+        }
         public static void BreakAgreement([NotNull] IAgreement agreement)
         {
             if (agreement == null)
@@ -316,65 +869,6 @@ namespace Supremacy.Diplomacy
                 sectorOwner = GameContext.Current.SectorClaims.GetOwner(sector.Location);
 
             // GameLog.Core.Diplomacy.DebugFormat("traveller ={0}, sector location ={1}", traveller.Key, sector.Location);
-
-            // You can go to the homeworld of other players no first contact and only after that with declaration of war. ToDo let camouflage ships in
-            //if (sector.System != null)
-            //{
-            //    if (sector.System.Owner != null)
-            //    {
-            //        if (GameContext.Current.Universe.HomeColonyLookup[traveller] != sector.System.Colony &&
-            //            GameContext.Current.Universe.HomeColonyLookup[sectorOwner] == sector.System.Colony &&
-            //            DiplomacyHelper.IsContactMade(traveller, sectorOwner) &&
-            //            !DiplomacyHelper.AreAtWar(traveller, sectorOwner))
-            //        {
-            //            travel = false;
-            //        }
-                    //if (GameContext.Current.Universe.HomeColonyLookup[traveller] != sector.System.Colony &&
-                    //    GameContext.Current.Universe.HomeColonyLookup[sectorOwner] == sector.System.Colony)
-                    //{
-                    //    var map = GameContext.Current.Universe.Map;
-                    //    List<CombatAssets> localCamouflagedShips = new List<CombatAssets>();
-                    //    List<Sector> localSectors = new List<Sector>();
-                    //    //localSectors.Add(sector);
-                    //    int xLow = sector.Location.X - 6;
-                    //    int xHigh = sector.Location.X + 6;
-                    //    if (xLow < 0)
-                    //        xLow = 0;
-                    //    if (xHigh > map.Width + 1)
-                    //        xHigh = map.Width + 1;
-                    //    int yLow = sector.Location.Y - 6;
-                    //    int yHigh = sector.Location.Y + 6;
-                    //    if (yLow < 0)
-                    //        yLow = 0;
-                    //    if (yHigh < map.Height + 1)
-                    //        yHigh = map.Height + 1;
-
-                    //    for (int x = xLow; x <= xHigh; x++)
-                    //    {
-                    //        for (int y = yLow; y <= (xHigh); y++)
-                    //        {
-                    //            var nearSector = map[x, y];
-                    //            if (nearSector != null)
-                    //            {
-                    //                localSectors.Add(nearSector);
-                    //            }
-                    //        }
-                    //    }
-
-                    //    foreach (var aSector in localSectors)
-                    //    {
-
-                    //        localCamouflagedShips.AddRange(CombatHelper.GetCamouflageAssets(aSector.Location));
-                    //        localCamouflagedShips.Distinct();
-                    //    }
-                    //    if (localCamouflagedShips.Count > 0)
-                    //    {
-                    //        // need a way to make this only for the camou ships
-                    //        travel = true;
-                    //    }
-                    //}
-            //    }   
-            //}
 
             return travel;
         }
@@ -547,7 +1041,7 @@ namespace Supremacy.Diplomacy
             var agreementMatrix = GameContext.Current.AgreementMatrix;
 
             return agreementMatrix.IsAgreementActive(firstCiv, secondCiv, ClauseType.TreatyOpenBorders) ||
-                   agreementMatrix.IsAgreementActive(firstCiv, secondCiv, ClauseType.TreatyTradePact) ||
+                   //agreementMatrix.IsAgreementActive(firstCiv, secondCiv, ClauseType.TreatyTradePact) ||
                    agreementMatrix.IsAgreementActive(firstCiv, secondCiv, ClauseType.TreatyAffiliation) ||
                    agreementMatrix.IsAgreementActive(firstCiv, secondCiv, ClauseType.TreatyDefensiveAlliance) ||
                    agreementMatrix.IsAgreementActive(firstCiv, secondCiv, ClauseType.TreatyFullAlliance);
@@ -620,7 +1114,6 @@ namespace Supremacy.Diplomacy
 
                 ApplyTrustChange(firstCiv, secondCiv, foreignPower.DiplomacyData.Trust.CurrentValue * -1);
                 ApplyRegardChange(firstCiv, secondCiv, foreignPower.DiplomacyData.Regard.CurrentValue * -1);
-
 
                 //GameLog.Core.Diplomacy.DebugFormat("foreignPower = {3}, firstManager.Civilization.Key = {0}, second = {1}, TrustDelta {2}", 
                 //    firstManager.Civilization.Key, secondManager.Civilization.Key, trustDelta, foreignPower.DiplomacyData);

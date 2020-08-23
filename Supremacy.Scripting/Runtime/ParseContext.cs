@@ -107,8 +107,6 @@ namespace Supremacy.Scripting.Runtime
         }
         #endregion
 
-        private readonly CompilerContext _compiler;
-        private readonly ScriptLanguageContext _languageContext;
         private readonly List<NamespaceTracker> _importedNamespaces;
         private readonly Dictionary<string, FullNamedExpression> _registeredAliases; 
         private Options _flags;
@@ -119,11 +117,8 @@ namespace Supremacy.Scripting.Runtime
 
         public ParseContext([Annotations.NotNull] CompilerContext compiler)
         {
-            if (compiler == null)
-                throw new ArgumentNullException("compiler");
-
-            _compiler = compiler;
-            _languageContext = (ScriptLanguageContext)compiler.SourceUnit.LanguageContext;
+            Compiler = compiler ?? throw new ArgumentNullException("compiler");
+            LanguageContext = (ScriptLanguageContext)compiler.SourceUnit.LanguageContext;
             _importedNamespaces = new List<NamespaceTracker>();
             _registeredAliases = new Dictionary<string, FullNamedExpression>();
         }
@@ -132,31 +127,22 @@ namespace Supremacy.Scripting.Runtime
             : this(compiler)
         {
             if (compiler == null)
+            {
                 throw new ArgumentNullException("compiler");
+            }
 
             _flags |= options;
         }
 
-        public CompilerContext Compiler
-        {
-            get { return _compiler; }
-        }
+        public CompilerContext Compiler { get; }
 
-        public bool IsInProbingMode
-        {
-            get { return (_flags & Options.ProbingMode) != 0; }
-        }
+        public bool IsInProbingMode => (_flags & Options.ProbingMode) != 0;
 
-        public bool IsVariableCapturingRequired
-        {
-            get { return !IsInProbingMode; }
-        }
+        public bool IsVariableCapturingRequired => !IsInProbingMode;
 
         public bool MustCaptureVariable(IKnownVariable variable)
         {
-            if (CurrentAnonymousMethod == null)
-                return false;
-            return (variable.Scope.TopLevel != CurrentScope.TopLevel);
+            return CurrentAnonymousMethod == null ? false : variable.Scope.TopLevel != CurrentScope.TopLevel;
         }
 
         public bool HasSet(Options options)
@@ -239,67 +225,68 @@ namespace Supremacy.Scripting.Runtime
                 error.Severity);
         }
 
-        public int CompilerErrorCount
-        {
-            get { return ((ErrorCounter)Compiler.Errors).ErrorCount; }
-        }
+        public int CompilerErrorCount => ((ErrorCounter)Compiler.Errors).ErrorCount;
 
-        public ScriptLanguageContext LanguageContext
-        {
-            get { return _languageContext; }
-        }
+        public ScriptLanguageContext LanguageContext { get; }
 
-        public bool ConstantCheckState
-        {
-            get { return ((_flags & Options.ConstantCheckState) == Options.ConstantCheckState); }
-        }
+        public bool ConstantCheckState => (_flags & Options.ConstantCheckState) == Options.ConstantCheckState;
 
         public void ImportNamespace(NamespaceTracker importedNamespace)
         {
             if (!_importedNamespaces.Contains(importedNamespace))
+            {
                 _importedNamespaces.Add(importedNamespace);
+            }
         }
 
         public void AddUsing([Annotations.NotNull] UsingEntry entry)
         {
             if (entry == null)
+            {
                 throw new ArgumentNullException("entry");
+            }
 
-            var aliasEntry = entry as UsingAliasEntry;
-            if (aliasEntry != null)
+            if (entry is UsingAliasEntry aliasEntry)
             {
                 AddUsingAlias(aliasEntry);
                 return;
             }
 
-            var @namespace = entry.Resolve(this) as NamespaceExpression;
-            if ((@namespace != null) && !_importedNamespaces.Contains(@namespace.Tracker))
+            if ((entry.Resolve(this) is NamespaceExpression @namespace) && !_importedNamespaces.Contains(@namespace.Tracker))
+            {
                 _importedNamespaces.Add(@namespace.Tracker);
+            }
         }
 
         public void AddUsingAlias([Annotations.NotNull] UsingAliasEntry entry)
         {
             if (entry == null)
+            {
                 throw new ArgumentNullException("entry");
+            }
 
-            var resolved = entry.Resolve(this);
+            FullNamedExpression resolved = entry.Resolve(this);
             if ((resolved != null) && !_registeredAliases.ContainsKey(entry.Alias))
+            {
                 _registeredAliases[entry.Alias] = resolved;
+            }
         }
 
         public bool IsTypeVisible(Type type)
         {
             if (type == null)
+            {
                 throw new ArgumentNullException("type");
+            }
 
             if (type.IsGenericType)
-                type = type.GetGenericTypeDefinition();
-
-            MemberTracker memberTracker;
-            if (_languageContext.ScriptVisibleNamespaces.TryGetValue((SymbolId)type.Name, out memberTracker))
             {
-                var typeGroup = memberTracker as TypeGroup;
-                if ((typeGroup != null) && typeGroup.Types.Contains(type))
+                type = type.GetGenericTypeDefinition();
+            }
+
+            if (LanguageContext.ScriptVisibleNamespaces.TryGetValue((SymbolId)type.Name, out MemberTracker memberTracker))
+            {
+                if ((memberTracker is TypeGroup typeGroup) && typeGroup.Types.Contains(type))
                     return true;
 
                 var typeTracker = memberTracker as TypeTracker;
@@ -313,11 +300,11 @@ namespace Supremacy.Scripting.Runtime
         #region Implementation of IMemberContext
         public ExtensionMethodGroupExpression LookupExtensionMethod(Type extensionType, string name, SourceSpan location)
         {
-            var openExtendedType = TypeManager.DropGenericTypeArguments(extensionType);
+            Type openExtendedType = TypeManager.DropGenericTypeArguments(extensionType);
 
-            var extendingTypes = _languageContext.DefaultBinderState.Binder.GetExtensionTypes(openExtendedType);
+            IList<Type> extendingTypes = LanguageContext.DefaultBinderState.Binder.GetExtensionTypes(openExtendedType);
 
-            var members =
+            MemberInfo[] members =
                 (
                     from extendingType in extendingTypes
                     where IsTypeVisible(extendingType)
@@ -329,12 +316,11 @@ namespace Supremacy.Scripting.Runtime
                         publicOnly: true)
                     select method
                 ).ToArray();
-                
 
-            if (members.Length == 0)
-                return null;
 
-            return new ExtensionMethodGroupExpression(
+            return members.Length == 0
+                ? null
+                : new ExtensionMethodGroupExpression(
                 members,
                 extensionType,
                 location);
@@ -359,45 +345,51 @@ namespace Supremacy.Scripting.Runtime
 
             bool found;
 
-            var trackerGroup = ns as NamespaceGroupTracker;
-            if (trackerGroup != null)
+            if (ns is NamespaceGroupTracker trackerGroup)
+            {
                 found = trackerGroup.TryGetValue((SymbolId)name, out tracker);
+            }
             else
                 found = ns.TryGetValue((SymbolId)name, out tracker);
 
             if (found)
             {
-                var namespaceTracker = tracker as NamespaceTracker;
-                if (namespaceTracker != null)
+                if (tracker is NamespaceTracker namespaceTracker)
                 {
                     fne = new NamespaceExpression(namespaceTracker);
                 }
                 else
                 {
-                    var typeGroup = tracker as TypeGroup;
-                    if (typeGroup != null)
+                    if (tracker is TypeGroup typeGroup)
+                    {
                         fne = new TypeExpression(typeGroup.GetTypeForArity(genericArity).Type, location);
+                    }
                     else
                         fne = new TypeExpression(((TypeTracker)tracker).Type);
                 }
             }
 
             if (fne != null)
+            {
                 return fne;
+            }
 
             //
             // Check using entries.
             //
-            var conflicts = _importedNamespaces
+            IEnumerable<FullNamedExpression> conflicts = _importedNamespaces
                 .Select(importedNamespace => LookupNamespaceOrType(importedNamespace, name, location, true))
                 .Where(match => (match != null) && (match is TypeExpression));
 
-            foreach (var conflict in conflicts)
+            foreach (FullNamedExpression conflict in conflicts)
             {
                 if (fne != null)
                 {
                     if (!ignoreAmbiguousReferences)
+                    {
                         OnErrorAmbiguousTypeReference(location, name, fne, conflict);
+                    }
+
                     return null;
                 }
 
@@ -409,21 +401,22 @@ namespace Supremacy.Scripting.Runtime
 
         public FullNamedExpression LookupNamespaceOrType(string name, SourceSpan location, bool ignoreAmbiguousReferences, int genericArity = 0)
         {
-            FullNamedExpression match;
 
-            if (_registeredAliases.TryGetValue(name, out match))
-                return match;
-
-            MemberTracker rootNamespaceMember;
-            if (_languageContext.GlobalRootNamespace.TryGetValue((SymbolId)name, out rootNamespaceMember))
+            if (_registeredAliases.TryGetValue(name, out FullNamedExpression match))
             {
-                var topLevelNamespace = rootNamespaceMember as NamespaceTracker;
-                if (topLevelNamespace != null)
+                return match;
+            }
+
+            if (LanguageContext.GlobalRootNamespace.TryGetValue((SymbolId)name, out MemberTracker rootNamespaceMember))
+            {
+                if (rootNamespaceMember is NamespaceTracker topLevelNamespace)
+                {
                     return new NamespaceExpression(topLevelNamespace);
+                }
             }
 
             return _importedNamespaces
-                .Concat(_languageContext.ScriptVisibleNamespaces.IncludedNamespaces)
+                .Concat(LanguageContext.ScriptVisibleNamespaces.IncludedNamespaces)
                 .Distinct()
                 .Select(ns => LookupNamespaceOrType(ns, name, location, ignoreAmbiguousReferences, genericArity))
                 .Where(result => result != null)
@@ -434,13 +427,12 @@ namespace Supremacy.Scripting.Runtime
         {
             FullNamedExpression aliasTarget;
             if (_registeredAliases.TryGetValue(alias, out aliasTarget))
+            {
                 return aliasTarget;
+            }
 
-            var namespaceTracker = _languageContext.LookupAliasedNamespaceGroup(alias);
-            if (namespaceTracker == null)
-                return null;
-
-            return new NamespaceExpression(namespaceTracker);
+            NamespaceTracker namespaceTracker = LanguageContext.LookupAliasedNamespaceGroup(alias);
+            return namespaceTracker == null ? null : new NamespaceExpression(namespaceTracker);
         }
         #endregion
     }

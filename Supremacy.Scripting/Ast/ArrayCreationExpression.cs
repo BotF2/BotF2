@@ -15,63 +15,47 @@ namespace Supremacy.Scripting.Ast
 {
     public class ArrayCreationExpression : Expression
     {
-        private readonly List<Expression> _dimensions;
-        private readonly List<Expression> _arrayData;
-
         private FullNamedExpression _baseType;
         private ArrayInitializerExpression _initializer;
-        private int _resolvedDimensions;
-        private Type _resolvedElementType;
 
         public override void CloneTo<T>(CloneContext cloneContext, T target)
         {
             base.CloneTo(cloneContext, target);
 
-            var clone = target as ArrayCreationExpression;
-            if (clone == null)
+            if (!(target is ArrayCreationExpression clone))
+            {
                 return;
+            }
 
             clone._baseType = Clone(cloneContext, _baseType);
             clone._initializer = Clone(cloneContext, _initializer);
-            clone._resolvedDimensions = _resolvedDimensions;
-            clone._resolvedElementType = _resolvedElementType;
+            clone.ResolvedDimensions = ResolvedDimensions;
+            clone.ResolvedElementType = ResolvedElementType;
             
             clone.RankSpecifier = RankSpecifier;
 
-            _dimensions.CloneTo(cloneContext, clone._dimensions);
-            _arrayData.CloneTo(cloneContext, clone._arrayData);
+            Dimensions.CloneTo(cloneContext, clone.Dimensions);
+            ArrayData.CloneTo(cloneContext, clone.ArrayData);
         }
 
-        protected List<Expression> ArrayData
-        {
-            get { return _arrayData; }
-        }
+        protected List<Expression> ArrayData { get; }
 
-        public Type ResolvedElementType
-        {
-            get { return _resolvedElementType; }
-            protected set { _resolvedElementType = value; }
-        }
+        public Type ResolvedElementType { get; protected set; }
 
-        public int ResolvedDimensions
-        {
-            get { return _resolvedDimensions; }
-            protected set { _resolvedDimensions = value; }
-        }
+        public int ResolvedDimensions { get; protected set; }
 
         public ArrayCreationExpression()
         {
-            _dimensions = new List<Expression>();
-            _arrayData = new List<Expression>();
+            Dimensions = new List<Expression>();
+            ArrayData = new List<Expression>();
         }
 
         public FullNamedExpression BaseType
         {
-            get { return _baseType; }
+            get => _baseType;
             set
             {
-                var composedCast = value as ComposedCastExpression;
-                if (composedCast != null)
+                if (value is ComposedCastExpression composedCast)
                 {
                     value = composedCast.Left;
                     RankSpecifier = composedCast.DimensionSpecifier + RankSpecifier;
@@ -84,19 +68,16 @@ namespace Supremacy.Scripting.Ast
 
         public ArrayInitializerExpression Initializer
         {
-            get { return _initializer; }
-            set { _initializer = value; }
+            get => _initializer;
+            set => _initializer = value;
         }
 
-        public List<Expression> Dimensions
-        {
-            get { return _dimensions; }
-        }
+        public List<Expression> Dimensions { get; }
 
         public override void Walk(AstVisitor prefix, AstVisitor postfix)
         {
             Walk(ref _baseType, prefix, postfix);
-            WalkList(_dimensions, prefix, postfix);
+            WalkList(Dimensions, prefix, postfix);
             Walk(ref _initializer, prefix, postfix);
         }
 
@@ -112,21 +93,28 @@ namespace Supremacy.Scripting.Ast
 
             sw.Write("[");
 
-            var i = 0;
-            foreach (var dimension in _dimensions)
+            int i = 0;
+            foreach (Expression dimension in Dimensions)
             {
                 if (i++ != 0)
+                {
                     sw.Write(", ");
+                }
+
                 DumpChild(dimension, sw);
             }
 
             sw.Write("]");
 
             if (RankSpecifier != null)
+            {
                 sw.Write(RankSpecifier.Substring(2));
+            }
 
             if (_initializer == null)
+            {
                 return;
+            }
 
             sw.Write(" ");
             DumpChild(_initializer, sw);
@@ -134,16 +122,13 @@ namespace Supremacy.Scripting.Ast
 
         public override MSAst TransformCore(ScriptGenerator generator)
         {
-            if (_initializer != null)
-            {
-                return MSAst.NewArrayInit(
-                    _resolvedElementType,
-                    _arrayData.Select(o => o.Transform(generator)));
-            }
-
-            return MSAst.NewArrayBounds(
-                _resolvedElementType,
-                _dimensions.Select(o => o.Transform(generator)));
+            return _initializer != null
+                ? MSAst.NewArrayInit(
+                    ResolvedElementType,
+                    ArrayData.Select(o => o.Transform(generator)))
+                : MSAst.NewArrayBounds(
+                ResolvedElementType,
+                Dimensions.Select(o => o.Transform(generator)));
         }
 
         private bool ResolveArrayType(ParseContext ec)
@@ -151,34 +136,38 @@ namespace Supremacy.Scripting.Ast
             if (_baseType == null)
             {
                 ec.ReportError(
-                    622, 
+                    622,
                     "Can only use array initializer expressions to assign to array types.  Try using a new expression instead.",
                     Span);
 
                 return false;
             }
 
-            var arrayQualifier = new StringBuilder();
+            StringBuilder arrayQualifier = new StringBuilder();
 
             //
             // `In the first form allocates an array instace of the type that results
             // from deleting each of the individual expression from the expression list'
             //
-            if (RankSpecifier == null ||  _dimensions.Count > 0)
+            if (RankSpecifier == null || Dimensions.Count > 0)
             {
-                arrayQualifier.Append("[");
-                for (var i = _dimensions.Count - 1; i > 0; i--)
-                    arrayQualifier.Append(",");
-                arrayQualifier.Append("]");
+                _ = arrayQualifier.Append("[");
+                for (int i = Dimensions.Count - 1; i > 0; i--)
+                    _ = arrayQualifier.Append(",");
+                _ = arrayQualifier.Append("]");
             }
 
             if (RankSpecifier != null)
-                arrayQualifier.Append(RankSpecifier);
+            {
+                _ = arrayQualifier.Append(RankSpecifier);
+            }
 
             _baseType = _baseType.Resolve(ec) as FullNamedExpression;
             
             if (_baseType == null)
+            {
                 return false;
+            }
 
             //
             // Lookup the type
@@ -186,12 +175,14 @@ namespace Supremacy.Scripting.Ast
             TypeExpression arrayTypeExpr = new ComposedCastExpression(_baseType, arrayQualifier.ToString(), Span);
             arrayTypeExpr = arrayTypeExpr.ResolveAsTypeTerminal(ec, false);
             if (arrayTypeExpr == null)
+            {
                 return false;
+            }
 
             Type = arrayTypeExpr.Type;
             
-            _resolvedElementType = Type.GetElementType();
-            _resolvedDimensions = Type.GetArrayRank();
+            ResolvedElementType = Type.GetElementType();
+            ResolvedDimensions = Type.GetArrayRank();
 
             return true;
         }
@@ -199,25 +190,33 @@ namespace Supremacy.Scripting.Ast
         public override Expression DoResolve(ParseContext ec)
         {
             if (Type != null)
+            {
                 return this;
+            }
 
             if (!ResolveArrayType(ec))
+            {
                 return null;
+            }
 
             //
             // First step is to validate the initializers and fill
             // in any missing bits
             //
             if (!ResolveInitializers(ec))
-                return null;
-
-            for (var i = 0; i < _dimensions.Count; ++i)
             {
-                var e = _dimensions[i].Resolve(ec);
-                if (e == null)
-                    continue;
+                return null;
+            }
 
-                _dimensions[i] = e;
+            for (int i = 0; i < Dimensions.Count; ++i)
+            {
+                Expression e = Dimensions[i].Resolve(ec);
+                if (e == null)
+                {
+                    continue;
+                }
+
+                Dimensions[i] = e;
             }
 
             ExpressionClass = ExpressionClass.Value;
@@ -227,20 +226,26 @@ namespace Supremacy.Scripting.Ast
         protected bool ResolveInitializers(ParseContext ec)
         {
             if (_initializer == null)
-                return _dimensions.Any();
+            {
+                return Dimensions.Any();
+            }
 
             //
             // We use this to store all the date values in the order in which we
             // will need to store them in the byte blob later
             //
-            var arrayData = new List<Expression>();
-            var bounds = new System.Collections.Specialized.HybridDictionary();
+            _ = new List<Expression>();
+            _ = new System.Collections.Specialized.HybridDictionary();
 
-            if (_dimensions != null && _dimensions.Count != 0)
-                return CheckIndices(ec, _initializer.Values, 0, true, _resolvedDimensions);
+            if (Dimensions != null && Dimensions.Count != 0)
+            {
+                return CheckIndices(ec, _initializer.Values, 0, true, ResolvedDimensions);
+            }
 
-            if (!CheckIndices(ec, _initializer.Values, 0, false, _resolvedDimensions))
+            if (!CheckIndices(ec, _initializer.Values, 0, false, ResolvedDimensions))
+            {
                 return false;
+            }
 
             //UpdateIndices();
 
@@ -251,13 +256,12 @@ namespace Supremacy.Scripting.Ast
         {
             element = element.Resolve(ec);
 
-            if (element == null)
-                return null;
-
-            return ConvertExpression.MakeImplicitConversion(
+            return element == null
+                ? null
+                : ConvertExpression.MakeImplicitConversion(
                 ec,
                 element,
-                _resolvedElementType,
+                ResolvedElementType,
                 Span);
         }
 
@@ -265,12 +269,14 @@ namespace Supremacy.Scripting.Ast
         {
             if (explicitDimensions)
             {
-                var a = _dimensions[idx];
+                Expression a = Dimensions[idx];
                 a = a.Resolve(ec);
                 if (a == null)
+                {
                     return false;
+                }
 
-                var c = a as ConstantExpression;
+                ConstantExpression c = a as ConstantExpression;
                 if (c != null)
                 {
                     c = c.ConvertImplicitly(TypeManager.CoreTypes.Int32);
@@ -285,7 +291,7 @@ namespace Supremacy.Scripting.Ast
                     return false;
                 }
 
-                var value = (int)c.Value;
+                int value = (int)c.Value;
                 if (value != probe.Count)
                 {
                     ec.ReportError(
@@ -299,33 +305,34 @@ namespace Supremacy.Scripting.Ast
                 //bounds[idx] = value;
             }
 
-            for (var i = 0; i < probe.Count; ++i)
+            for (int i = 0; i < probe.Count; ++i)
             {
-                var o = probe[i];
-                var subProbe = o as ArrayInitializerExpression;
-                if (subProbe != null)
+                Expression o = probe[i];
+                if (o is ArrayInitializerExpression subProbe)
                 {
-                    if (idx + 1 >= _resolvedDimensions)
+                    if (idx + 1 >= ResolvedDimensions)
                     {
                         ec.ReportError(
-                            623, 
+                            623,
                             "Array initializers can only be used in a variable or field initializer.  Try using a new expression instead.",
                             subProbe.Span);
 
                         return false;
                     }
 
-                    var subProbeCheck = CheckIndices(ec, subProbe.Values, idx + 1, explicitDimensions, childBounds - 1);
+                    bool subProbeCheck = CheckIndices(ec, subProbe.Values, idx + 1, explicitDimensions, childBounds - 1);
                     if (!subProbeCheck)
+                    {
                         return false;
+                    }
 
                     probe[i] = new ArrayCreationExpression
-                               {
-                                   _baseType = _baseType,
-                                   _initializer = subProbe,
-                                   RankSpecifier = RankSpecifier.Substring(RankSpecifier.IndexOf(']') + 1),
-                                   Span = subProbe.Span
-                               }.Resolve(ec);
+                    {
+                        _baseType = _baseType,
+                        _initializer = subProbe,
+                        RankSpecifier = RankSpecifier.Substring(RankSpecifier.IndexOf(']') + 1),
+                        Span = subProbe.Span
+                    }.Resolve(ec);
                 }
                 else if (childBounds > 1)
                 {
@@ -336,13 +343,14 @@ namespace Supremacy.Scripting.Ast
                 }
                 else
                 {
-                    var element = ResolveArrayElement(ec, o);
+                    Expression element = ResolveArrayElement(ec, o);
                     if (element == null)
+                    {
                         continue;
+                    }
 
                     // Initializers with the default values can be ignored
-                    var c = element as ConstantExpression;
-                    if (c != null)
+                    if (element is ConstantExpression)
                     {
                         //if (c.IsDefaultInitializer(_resolvedElementType))
                         //{
@@ -350,7 +358,7 @@ namespace Supremacy.Scripting.Ast
                         //}
                     }
 
-                    _arrayData.Add(element);
+                    ArrayData.Add(element);
                 }
             }
 
@@ -362,7 +370,7 @@ namespace Supremacy.Scripting.Ast
     {
         public override string RankSpecifier
         {
-            get { return base.RankSpecifier; }
+            get => base.RankSpecifier;
             set
             {
                 if (value != null)
@@ -371,7 +379,9 @@ namespace Supremacy.Scripting.Ast
                     {
                         ResolvedDimensions = 0;
                         while (value[++ResolvedDimensions] == ',')
+                        {
                             continue;
+                        }
                     }
                     else
                     {
@@ -385,12 +395,16 @@ namespace Supremacy.Scripting.Ast
         public override Expression DoResolve(ParseContext ec)
         {
             if (Type != null)
+            {
                 return this;
+            }
 
             if (!ResolveInitializers(ec))
+            {
                 return null;
+            }
 
-            if (ResolvedElementType == null || 
+            if (ResolvedElementType == null ||
                 ResolvedElementType == TypeManager.CoreTypes.Null ||
                 ResolvedElementType == TypeManager.CoreTypes.Void ||
                 (Dimensions.Any() && Dimensions.Count != ResolvedDimensions))
@@ -414,11 +428,14 @@ namespace Supremacy.Scripting.Ast
 
         protected void UnifyInitializerElement(ParseContext ec)
         {
-            for (var i = 0; i < ArrayData.Count; ++i)
+            for (int i = 0; i < ArrayData.Count; ++i)
             {
-                var e = ArrayData[i];
+                Expression e = ArrayData[i];
                 if (e == null)
+                {
                     continue;
+                }
+
                 ArrayData[i] = ConvertExpression.MakeImplicitConversion(
                     ec,
                     e,
@@ -436,7 +453,9 @@ namespace Supremacy.Scripting.Ast
             if (ResolvedElementType == null)
             {
                 if ((element.Type != TypeManager.CoreTypes.Null) && !(element is LambdaExpression))
+                {
                     ResolvedElementType = element.Type;
+                }
 
                 return element;
             }
@@ -474,10 +493,7 @@ namespace Supremacy.Scripting.Ast
             _values = new List<Expression>();
         }
 
-        public IList<Expression> Values
-        {
-            get { return _values; }
-        }
+        public IList<Expression> Values => _values;
 
         public override void Walk(AstVisitor prefix, AstVisitor postfix)
         {
@@ -488,9 +504,10 @@ namespace Supremacy.Scripting.Ast
         {
             base.CloneTo(cloneContext, target);
 
-            var clone = target as ArrayInitializerExpression;
-            if (clone == null)
+            if (!(target is ArrayInitializerExpression clone))
+            {
                 return;
+            }
 
             _values.CloneTo(cloneContext, clone._values);
         }
@@ -500,18 +517,22 @@ namespace Supremacy.Scripting.Ast
             sw.Write("{");
 
             var i = 0;
-            foreach (var value in _values)
+            foreach (Expression value in _values)
             {
                 if (i++ != 0)
+                {
                     sw.Write(",");
-                
+                }
+
                 sw.Write(" ");
                 
                 DumpChild(value, sw);
             }
 
             if (i != 0)
+            {
                 sw.Write(" ");
+            }
 
             sw.Write("}");
         }

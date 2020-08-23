@@ -10,13 +10,7 @@ namespace Supremacy.Scripting.Ast
 {
     public abstract class QueryClause : ShimExpression
     {
-        private TopLevelScope _scope;
-
-        public TopLevelScope Scope
-        {
-            get { return _scope; }
-            set { _scope = value; }
-        }
+        public TopLevelScope Scope { get; set; }
 
         public override void BeginInit(ParseContext parseContext, bool raiseInitialized)
         {
@@ -38,7 +32,9 @@ namespace Supremacy.Scripting.Ast
             parseContext.CurrentScope = _queryScope;
 
             if (raiseInitialized)
+            {
                 OnInitialized();
+            }
         }
 
         public override void EndInit(ParseContext parseContext)
@@ -56,16 +52,21 @@ namespace Supremacy.Scripting.Ast
 		{
 			base.CloneTo (cloneContext, target);
 
-            var targetQueryClause = target as QueryClause;
-            if (targetQueryClause == null)
+            if (!(target is QueryClause targetQueryClause))
+            {
                 return;
+            }
 
-            if (_scope != null)
-                targetQueryClause._scope = _scope.Clone<TopLevelScope>(cloneContext);
+            if (Scope != null)
+            {
+                targetQueryClause.Scope = Scope.Clone<TopLevelScope>(cloneContext);
+            }
 
-			if (Next != null)
+            if (Next != null)
+            {
                 targetQueryClause.Next = Clone(cloneContext, Next);
-		}
+            }
+        }
 
         public override Expression DoResolve(ParseContext ec)
         {
@@ -74,21 +75,23 @@ namespace Supremacy.Scripting.Ast
 
         public virtual Expression BuildQueryClause(ParseContext ec, Expression leftSide)
         {
-            Arguments arguments;
 
-            CreateArguments(ec, out arguments);
+            CreateArguments(ec, out Arguments arguments);
 
             leftSide = CreateQueryExpression(leftSide, arguments);
             
             if (Next != null)
             {
-                var selectClause = Next as SelectClause;
-                if ((selectClause == null) || selectClause.IsRequired)
+                if ((!(Next is SelectClause selectClause)) || selectClause.IsRequired)
+                {
                     return Next.BuildQueryClause(ec, leftSide);
+                }
 
                 // Skip transparent select clause if any clause follows
                 if (Next.Next != null)
+                {
                     return Next.Next.BuildQueryClause(ec, leftSide);
+                }
             }
 
             return leftSide;
@@ -98,40 +101,40 @@ namespace Supremacy.Scripting.Ast
         {
             args = new Arguments(2);
 
-            var selector = new LambdaExpression
-                           {
-                               Scope = Scope,
-                               Body = Expression
-                           };
+            LambdaExpression selector = new LambdaExpression
+            {
+                Scope = Scope,
+                Body = Expression
+            };
 
-            args.Add(new Argument(selector));
+            _ = args.Add(new Argument(selector));
         }
 
         protected Expression CreateQueryExpression(Expression target, Arguments arguments)
         {
-            var invocation = new QueryExpressionInvocation
-                             {
-                                 Target = new QueryExpressionAccess
-                                          {
-                                              Name = MethodName,
-                                              Left = target
-                                          }
-                             };
+            QueryExpressionInvocation invocation = new QueryExpressionInvocation
+            {
+                Target = new QueryExpressionAccess
+                {
+                    Name = MethodName,
+                    Left = target
+                }
+            };
             invocation.Arguments.AddRange(arguments);
             return invocation;
         }
 
         protected Expression CreateQueryExpression(Expression lSide, TypeArguments typeArguments, Arguments arguments)
         {
-            var e = new QueryExpressionInvocation
-                    {
-                        Target = new QueryExpressionAccess
-                                 {
-                                     Left = lSide,
-                                     Name = MethodName,
-                                     Span = Span
-                                 }
-                    };
+            QueryExpressionInvocation e = new QueryExpressionInvocation
+            {
+                Target = new QueryExpressionAccess
+                {
+                    Left = lSide,
+                    Name = MethodName,
+                    Span = Span
+                }
+            };
 
             e.TypeArguments.Add(typeArguments);
             e.Arguments.AddRange(arguments);
@@ -146,14 +149,11 @@ namespace Supremacy.Scripting.Ast
 
         public virtual QueryClause Next
         {
-            get { return _next; }
-            set { _next = value; }
+            get => _next;
+            set => _next = value;
         }
 
-        public QueryClause Tail
-        {
-            get { return (Next == null) ? this : Next.Tail; }
-        }
+        public QueryClause Tail => (Next == null) ? this : Next.Tail;
 
         public override void Walk(AstVisitor prefix, AstVisitor postfix)
         {
@@ -169,8 +169,8 @@ namespace Supremacy.Scripting.Ast
             protected override MethodGroupExpression DoResolveOverload(ParseContext ec)
             {
                 MethodGroup.CustomErrorHandler = this;
-                var arguments = Arguments;
-                var rmg = MethodGroup.OverloadResolve(ec, ref arguments, false, Span);
+                Arguments arguments = Arguments;
+                MethodGroupExpression rmg = MethodGroup.OverloadResolve(ec, ref arguments, false, Span);
                 Arguments = arguments;
                 return rmg;
             }
@@ -190,16 +190,16 @@ namespace Supremacy.Scripting.Ast
 
             public bool NoExactMatch(ParseContext ec, MethodBase method)
             {
-                var pd = TypeManager.GetParameterData(method);
-                var sourceType = pd.ExtensionMethodType;
+                ParametersCollection pd = TypeManager.GetParameterData(method);
+                System.Type sourceType = pd.ExtensionMethodType;
                 if (sourceType != null)
                 {
-                    var a = Arguments[0];
+                    Argument a = Arguments[0];
 
                     if (TypeManager.IsGenericType(sourceType) && TypeManager.ContainsGenericParameters(sourceType))
                     {
-                        var tic = new TypeInferenceContext(sourceType.GetGenericArguments());
-                        tic.OutputTypeInference(ec, a.Value, sourceType);
+                        TypeInferenceContext tic = new TypeInferenceContext(sourceType.GetGenericArguments());
+                        _ = tic.OutputTypeInference(ec, a.Value, sourceType);
                         if (tic.FixAllTypes(ec))
                         {
                             sourceType = TypeManager.DropGenericTypeArguments(sourceType).MakeGenericType(tic.InferredTypeArguments);
@@ -221,7 +221,9 @@ namespace Supremacy.Scripting.Ast
                 }
 
                 if (!method.IsGenericMethod)
+                {
                     return false;
+                }
 
                 if (MethodGroup.Name == "SelectMany")
                 {
@@ -248,8 +250,8 @@ namespace Supremacy.Scripting.Ast
 
             public new QueryExpressionAccess Target
             {
-                get { return base.Target as QueryExpressionAccess; }
-                set { base.Target = value; }
+                get => base.Target as QueryExpressionAccess;
+                set => base.Target = value;
             }
         }
     }
@@ -261,8 +263,8 @@ namespace Supremacy.Scripting.Ast
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public Expression Initializer
         {
-            get { return Expression; }
-            set { Expression = value; }
+            get => Expression;
+            set => Expression = value;
         }
 
         public AnonymousMemberDeclarator(Expression initializer, string name, SourceSpan span)
@@ -281,8 +283,7 @@ namespace Supremacy.Scripting.Ast
 
         public override bool Equals(object o)
         {
-            var other = o as AnonymousMemberDeclarator;
-            return (other != null) && (other.Name == Name);
+            return (o is AnonymousMemberDeclarator other) && (other.Name == Name);
         }
 
         public override int GetHashCode()
@@ -292,8 +293,7 @@ namespace Supremacy.Scripting.Ast
 
         public override Expression DoResolve(ParseContext ec)
         {
-            var literal = Expression as LiteralExpression;
-            if ((literal != null) && (literal.Kind == LiteralKind.Null))
+            if ((Expression is LiteralExpression literal) && (literal.Kind == LiteralKind.Null))
             {
                 OnInvalidInitializerError(ec, Expression.GetType().Name);
                 return null;
@@ -302,16 +302,24 @@ namespace Supremacy.Scripting.Ast
             if (Name == null)
             {
                 if (Expression is NameExpression)
+                {
                     Name = ((NameExpression)Expression).Name;
+                }
                 else if (Expression is MemberAccessExpression)
+                {
                     Name = ((MemberAccessExpression)Expression).Name;
+                }
                 else if (Expression is MemberInitializerExpression)
+                {
                     Name = ((MemberInitializerExpression)Expression).MemberName;
+                }
                 else
+                {
                     OnInvalidInitializerError(ec, Expression.GetType().Name);
+                }
             }
 
-            return (Initializer = Initializer.Resolve(ec));
+            return Initializer = Initializer.Resolve(ec);
         }
 
         protected virtual void OnInvalidInitializerError(ParseContext ec, string initializer)

@@ -641,6 +641,151 @@ namespace Supremacy.Client.Views
 
         #endregion
 
+        #region ActiveFoodFacilites Property
+
+        [field: NonSerialized]
+        public event EventHandler ActiveFoodFacilitesChanged;
+
+        private int _activeFoodFacilites;
+
+        public int ActiveFoodFacilites
+        {
+            get { return _activeFoodFacilites; }
+            set
+            {
+                if (Equals(value, _activeFoodFacilites))
+                    return;
+
+                _activeFoodFacilites = value;
+
+                OnActiveFoodFacilitesChanged();
+            }
+        }
+
+        protected virtual void OnActiveFoodFacilitesChanged()
+        {
+            ActiveFoodFacilitesChanged.Raise(this);
+            OnPropertyChanged("ActiveFoodFacilites");
+        }
+
+        #endregion
+
+        #region ActiveIndustryFacilites Property
+
+        [field: NonSerialized]
+        public event EventHandler ActiveIndustryFacilitesChanged;
+
+        private int _activeIndustryFacilites;
+
+        public int ActiveIndustryFacilites
+        {
+            get { return _activeIndustryFacilites; }
+            set
+            {
+                if (Equals(value, _activeIndustryFacilites))
+                    return;
+
+                _activeIndustryFacilites = value;
+
+                OnActiveIndustryFacilitesChanged();
+            }
+        }
+
+        protected virtual void OnActiveIndustryFacilitesChanged()
+        {
+            ActiveIndustryFacilitesChanged.Raise(this);
+            OnPropertyChanged("ActiveIndustryFacilites");
+        }
+
+        #endregion
+
+        #region ActiveEnergyFacilites Property
+
+        [field: NonSerialized]
+        public event EventHandler ActiveEnergyFacilitesChanged;
+
+        private int _activeEnergyFacilites;
+
+        public int ActiveEnergyFacilites
+        {
+            get { return _activeEnergyFacilites; }
+            set
+            {
+                if (Equals(value, _activeEnergyFacilites))
+                    return;
+
+                _activeEnergyFacilites = value;
+
+                OnActiveEnergyFacilitesChanged();
+            }
+        }
+
+        protected virtual void OnActiveEnergyFacilitesChanged()
+        {
+            ActiveEnergyFacilitesChanged.Raise(this);
+            OnPropertyChanged("ActiveEnergyFacilites");
+        }
+
+        #endregion
+
+        #region ActiveResearchFacilites Property
+
+        [field: NonSerialized]
+        public event EventHandler ActiveResearchFacilitesChanged;
+
+        private int _activeResearchFacilites;
+
+        public int ActiveResearchFacilites
+        {
+            get { return _activeResearchFacilites; }
+            set
+            {
+                if (Equals(value, _activeResearchFacilites))
+                    return;
+
+                _activeResearchFacilites = value;
+
+                OnActiveResearchFacilitesChanged();
+            }
+        }
+
+        protected virtual void OnActiveResearchFacilitesChanged()
+        {
+            ActiveResearchFacilitesChanged.Raise(this);
+            OnPropertyChanged("ActiveResearchFacilites");
+        }
+
+        #endregion
+
+        #region ActiveIntelligenceFacilites Property
+
+        [field: NonSerialized]
+        public event EventHandler ActiveIntelligenceFacilitesChanged;
+
+        private int _activeIntelligenceFacilites;
+
+        public int ActiveIntelligenceFacilites
+        {
+            get { return _activeIntelligenceFacilites; }
+            set
+            {
+                if (Equals(value, _activeIntelligenceFacilites))
+                    return;
+
+                _activeIntelligenceFacilites = value;
+
+                OnActiveIntelligenceFacilitesChanged();
+            }
+        }
+
+        protected virtual void OnActiveIntelligenceFacilitesChanged()
+        {
+            ActiveIntelligenceFacilitesChanged.Raise(this);
+            OnPropertyChanged("ActiveIntelligenceFacilites");
+        }
+
+        #endregion
+
         #region ActiveOrbitalBatteries Property
 
         [field: NonSerialized]

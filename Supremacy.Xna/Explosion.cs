@@ -16,8 +16,8 @@ namespace Supremacy.Xna
     {
         #region Constants
 
-        const int numExplosionParticles = 30;
-        const float projectileLifespan = 0f;
+        private const int numExplosionParticles = 30;
+        private const float projectileLifespan = 0f;
 
         #endregion
 
@@ -42,12 +42,12 @@ namespace Supremacy.Xna
             // Start at the origin, firing in a random (but roughly upward) direction.
             _position = Vector3.Zero;
 
-            var r = RandomProvider.Shared.NextDouble() * 100;
-            var theta = RandomProvider.Shared.NextDouble() * MathHelper.TwoPi;
+            double r = RandomProvider.Shared.NextDouble() * 100;
+            double theta = RandomProvider.Shared.NextDouble() * MathHelper.TwoPi;
 
             _position.X = (float)(r * Math.Cos(theta));
             _position.Y = (float)(r * Math.Sin(theta));
-            _position.Z = (float)(r);
+            _position.Z = (float)r;
         }
 
 
@@ -56,7 +56,7 @@ namespace Supremacy.Xna
         /// </summary>
         public bool Update(XnaTime gameTime)
         {
-            var elapsedTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
+            float elapsedTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
 
             // Simple projectile physics.
             _position += _velocity * elapsedTime;
@@ -68,8 +68,10 @@ namespace Supremacy.Xna
             if (_age > projectileLifespan)
             {
                 for (int i = 0; i < numExplosionParticles; i++)
+                {
                     _explosionParticles.AddParticle(_position, Vector3.Zero);
-                
+                }
+
                 return false;
             }
                 

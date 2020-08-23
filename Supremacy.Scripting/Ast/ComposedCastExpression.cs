@@ -31,17 +31,18 @@ namespace Supremacy.Scripting.Ast
 
         public FullNamedExpression Left
         {
-            get { return _left; }
-            set { _left = value; }
+            get => _left;
+            set => _left = value;
         }
 
         public override void CloneTo<T>(CloneContext cloneContext, T target)
         {
-            base.CloneTo<T>(cloneContext, target);
+            base.CloneTo(cloneContext, target);
 
-            var clone = target as ComposedCastExpression;
-            if (clone == null)
+            if (!(target is ComposedCastExpression clone))
+            {
                 return;
+            }
 
             clone.Left = Clone(cloneContext, Left);
             clone.DimensionSpecifier = DimensionSpecifier;
@@ -54,16 +55,21 @@ namespace Supremacy.Scripting.Ast
 
         protected override TypeExpression DoResolveAsTypeStep(ParseContext ec)
         {
-            var leftExpression = Left.ResolveAsTypeTerminal(ec, false);
+            TypeExpression leftExpression = Left.ResolveAsTypeTerminal(ec, false);
             if (leftExpression == null)
+            {
                 return null;
+            }
 
-            var leftType = leftExpression.Type;
+            System.Type leftType = leftExpression.Type;
             if ((DimensionSpecifier.Length > 0) && (DimensionSpecifier[0] == '?'))
             {
                 TypeExpression nullable = new NullableTypeExpression(leftExpression, Span);
                 if (DimensionSpecifier.Length > 1)
+                {
                     nullable = new ComposedCastExpression(nullable, DimensionSpecifier.Substring(1), Span);
+                }
+
                 return nullable.ResolveAsTypeTerminal(ec, false);
             }
 
@@ -92,13 +98,12 @@ namespace Supremacy.Scripting.Ast
                 }
             }
 
-            if (DimensionSpecifier != "")
-                Type = TypeManager.GetConstructedType(leftType, DimensionSpecifier);
-            else
-                Type = leftType;
+            Type = DimensionSpecifier != "" ? TypeManager.GetConstructedType(leftType, DimensionSpecifier) : leftType;
 
             if (Type == null)
+            {
                 throw new InternalErrorException("Couldn't create computed type " + leftType + DimensionSpecifier);
+            }
 
             ExpressionClass = ExpressionClass.Type;
             return this;

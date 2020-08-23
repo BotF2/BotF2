@@ -7,15 +7,12 @@ namespace Supremacy.Scripting.Ast
         private Expression _type;
         public string Name { get; set; }
 
-        public bool HasExplicitType
-        {
-            get { return (_type != null); }
-        }
+        public bool HasExplicitType => (_type != null);
 
         public Expression Type
         {
-            get { return _type; }
-            set { _type = value; }
+            get => _type;
+            set => _type = value;
         }
 
         public override void Walk(AstVisitor prefix, AstVisitor postfix)
@@ -25,7 +22,7 @@ namespace Supremacy.Scripting.Ast
 
         public override void Dump(SourceWriter sw, int indentChange)
         {
-            var type = Type;
+            Expression type = Type;
             if (type != null)
             {
                 type.Dump(sw, indentChange);

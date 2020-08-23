@@ -18,38 +18,25 @@ using Supremacy.Utility;
 
 namespace Supremacy.Combat
 {
-
     [Serializable]
-    public class  CombatTargetPrimaries 
+    public class CombatTargetPrimaries
     {
-        private readonly int _combatId;
-        private readonly int _ownerId; 
         private readonly Dictionary<int, Civilization> _targetPrimaries;
 
-        public int CombatID
-        {
-            get { return _combatId; }
-        }
+        public int CombatID { get; }
 
-        public int OwnerID
-        {
-            get { return _ownerId; }
-        }
-        public Civilization Owner
-        {
-            get { return GameContext.Current.Civilizations[_ownerId]; }
-        }
+        public int OwnerID { get; }
+        public Civilization Owner => GameContext.Current.Civilizations[OwnerID];
 
         public CombatTargetPrimaries(Civilization owner, int combatId)
         {
             if (owner == null)
             {
-                throw new ArgumentNullException("owner");
+                throw new ArgumentNullException(nameof(owner));
             }
-            _ownerId = owner.CivID;
+            OwnerID = owner.CivID;
             _targetPrimaries = new Dictionary<int, Civilization>();
-            _combatId = combatId;
-
+            CombatID = combatId;
         }
 
         public void SetTargetOneCiv(Orbital source, Civilization targetOne)
@@ -66,7 +53,10 @@ namespace Supremacy.Combat
         public bool IsTargetOneSet(Orbital source)
         {
             if (source == null)
+            {
                 return false;
+            }
+
             return _targetPrimaries.ContainsKey(source.ObjectID);
         }
 
@@ -74,7 +64,7 @@ namespace Supremacy.Combat
         {
             if (source == null)
             {
-                throw new ArgumentNullException("source");
+                throw new ArgumentNullException(nameof(source));
             }
             if (!_targetPrimaries.ContainsKey(source.ObjectID))
             {
@@ -82,8 +72,7 @@ namespace Supremacy.Combat
                 //throw new ArgumentException("No target one has been set for the specified source");
             }
             GameLog.Core.CombatDetails.DebugFormat("Orbital name {0} in GetTargetOne() targeting {1}", source.Name, _targetPrimaries[source.ObjectID]);
-            return _targetPrimaries[source.ObjectID];           
+            return _targetPrimaries[source.ObjectID];
         }
-
     }
 }

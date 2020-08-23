@@ -79,7 +79,7 @@
                    Margin="14,0,7,0"
                    ToolTip="{s:StringResource DILITHIUM}">
               <Image.Source>
-                <BitmapImage UriSource="vfs:///Resources/Images/Resources/dilithium.png" />
+                <BitmapImage UriSource="vfs:///Resources/Images/ScreenIcons/dilithium.png" />
               </Image.Source>
             </Image>
             <TextBlock Grid.Column="1"
@@ -95,7 +95,7 @@
                    Margin="14,0,7,0"
                    ToolTip="{s:StringResource DEUTERIUM}">
               <Image.Source>
-                <BitmapImage UriSource="vfs:///Resources/Images/Resources/deuterium.png" />
+                <BitmapImage UriSource="vfs:///Resources/Images/ScreenIcons/deuterium.png" />
               </Image.Source>
             </Image>
             <TextBlock Grid.Column="1"
@@ -111,7 +111,7 @@
                    Margin="14,0,7,0"
                    ToolTip="{s:StringResource RAW_MATERIALS}">
               <Image.Source>
-                <BitmapImage UriSource="vfs:///Resources/Images/Resources/rawmaterials.png" />
+                <BitmapImage UriSource="vfs:///Resources/Images/ScreenIcons/rawmaterials.png" />
               </Image.Source>
             </Image>
             <TextBlock Grid.Column="3"
@@ -220,7 +220,7 @@
                    Margin="14,0,7,0"
                    ToolTip="{s:StringResource DILITHIUM}">
               <Image.Source>
-                <BitmapImage UriSource="vfs:///Resources/Images/Resources/dilithium.png" />
+                <BitmapImage UriSource="vfs:///Resources/Images/ScreenIcons/dilithium.png" />
               </Image.Source>
             </Image>
             <TextBlock Grid.Column="1"
@@ -236,7 +236,7 @@
                    Margin="14,0,7,0"
                    ToolTip="{s:StringResource DEUTERIUM}">
               <Image.Source>
-                <BitmapImage UriSource="vfs:///Resources/Images/Resources/deuterium.png" />
+                <BitmapImage UriSource="vfs:///Resources/Images/ScreenIcons/deuterium.png" />
               </Image.Source>
             </Image>
             <TextBlock Grid.Column="1"
@@ -252,7 +252,7 @@
                    Margin="14,0,7,0"
                    ToolTip="{s:StringResource RAW_MATERIALS}">
               <Image.Source>
-                <BitmapImage UriSource="vfs:///Resources/Images/Resources/rawmaterials.png" />
+                <BitmapImage UriSource="vfs:///Resources/Images/ScreenIcons/rawmaterials.png" />
               </Image.Source>
             </Image>
             <TextBlock Grid.Column="3"
@@ -268,7 +268,7 @@
                    Margin="14,0,7,0"
                    ToolTip="{s:StringResource OFFICERS}">
               <Image.Source>
-                <BitmapImage UriSource="vfs:///Resources/Images/Resources/personnel.png" />
+                <BitmapImage UriSource="vfs:///Resources/Images/ScreenIcons/personnel.png" />
               </Image.Source>
             </Image>
             <TextBlock Grid.Column="3"

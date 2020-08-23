@@ -8,7 +8,6 @@ using Supremacy.Annotations;
 using Supremacy.Entities;
 using Supremacy.Game;
 using Supremacy.Intelligence;
-using Supremacy.SpyOperations;
 using Supremacy.Types;
 using Supremacy.Universe;
 using Supremacy.Utility;
@@ -20,9 +19,11 @@ namespace Supremacy.Client.Views
 {
     public class AssetsScreenPresentationModel : PresentationModelBase, INotifyPropertyChanged
     {
+        protected Meter _totalResearch;
         protected int _totalIntelligenceProduction;
         protected int _totalIntelligenceDefenseAccumulated;
         protected int _totalIntelligenceAttackingAccumulated;
+        protected int _valuesFromTurn;
         private List<Civilization> _localSpyingCivList;
 
         #region designInstance stuff
@@ -77,7 +78,7 @@ namespace Supremacy.Client.Views
 
         public List<Civilization> LocalSpyingCivList
         {
-            get 
+            get
             {
                 if (MyLocalCivManager.Civilization.CivID == 0)
                 {
@@ -91,7 +92,7 @@ namespace Supremacy.Client.Views
                 if (MyLocalCivManager.Civilization.CivID == 5) _localSpyingCivList = IntelHelper._spyingCiv_5_List;
                 if (MyLocalCivManager.Civilization.CivID == 6) _localSpyingCivList = IntelHelper._spyingCiv_6_List;
 
-                return _localSpyingCivList; 
+                return _localSpyingCivList;
             }
         }
 
@@ -103,12 +104,12 @@ namespace Supremacy.Client.Views
                 {
                     _totalIntelligenceProduction = MyLocalCivManager.TotalIntelligenceProduction;
          
-                    GameLog.Core.UI.DebugFormat("Get TotalIntelProcudtion ={0}", _totalIntelligenceProduction);
+                    //GameLog.Client.Intel.DebugFormat("Get TotalIntelProduction ={0}", _totalIntelligenceProduction);
                     return _totalIntelligenceProduction;
                 }
-                catch
+                catch (Exception e)
                 {
-                    GameLog.Core.UI.DebugFormat("Problem occured at TotalIntelligenceProduction get...");
+                    GameLog.Client.Intel.DebugFormat("Problem occured at TotalIntelligenceProduction get, exception {0} {1}", e.Message, e.TargetSite);
                     return 0;
                 }
             }
@@ -119,12 +120,12 @@ namespace Supremacy.Client.Views
                     _totalIntelligenceProduction = MyLocalCivManager.TotalIntelligenceProduction;
                     FillUpDefense();
                     _totalIntelligenceProduction = value;
-                    GameLog.Core.UI.DebugFormat("Set TotalIntelProcudtion ={0}", _totalIntelligenceProduction);
+                    GameLog.Client.Intel.DebugFormat("Set TotalIntelProduction ={0}", _totalIntelligenceProduction);
                     NotifyPropertyChanged("TotalIntelligenceProduction");
                 }
-                catch
+                catch (Exception e)
                 {
-                    GameLog.Core.UI.DebugFormat("Problem occured at TotalIntelligenceProduction set...");
+                    GameLog.Client.Intel.DebugFormat("Problem occured at TotalIntelligenceProduction set, Exception {0} {1}", e.Message, e.StackTrace);
                 }
             }
         }
@@ -136,7 +137,7 @@ namespace Supremacy.Client.Views
             {
                 FillUpDefense();          
                 _totalIntelligenceDefenseAccumulated = MyLocalCivManager.TotalIntelligenceDefenseAccumulated.CurrentValue;
-                GameLog.Core.UI.DebugFormat("Get TotalIntelDefenseAccumulated ={0}", _totalIntelligenceDefenseAccumulated);
+                GameLog.Client.Intel.DebugFormat("Get TotalIntelDefenseAccumulated ={0}", _totalIntelligenceDefenseAccumulated);
                 return _totalIntelligenceDefenseAccumulated;
             }
             set
@@ -145,7 +146,7 @@ namespace Supremacy.Client.Views
                //_totalIntelligenceDefenseAccumulated = IntelHelper.DefenseAccumulatedInteInt;
                 _totalIntelligenceDefenseAccumulated = MyLocalCivManager.TotalIntelligenceDefenseAccumulated.CurrentValue;
                 _totalIntelligenceDefenseAccumulated = value;
-                GameLog.Core.UI.DebugFormat("Set TotalIntelDefenseAccumulated ={0}", _totalIntelligenceDefenseAccumulated);
+                GameLog.Client.Intel.DebugFormat("Set TotalIntelDefenseAccumulated ={0}", _totalIntelligenceDefenseAccumulated);
                 NotifyPropertyChanged("TotalIntelligenceDefenseAccumulated");
             }
         }
@@ -156,7 +157,7 @@ namespace Supremacy.Client.Views
             {
                 FillUpDefense();
                 _totalIntelligenceAttackingAccumulated = MyLocalCivManager.TotalIntelligenceAttackingAccumulated.CurrentValue;
-                GameLog.Core.UI.DebugFormat("Get TotalIntelDefenseAccumulated ={0}", _totalIntelligenceAttackingAccumulated);
+                GameLog.Client.Intel.DebugFormat("Get TotalIntelDefenseAccumulated ={0}", _totalIntelligenceAttackingAccumulated);
                 return _totalIntelligenceAttackingAccumulated;
             }
             set
@@ -165,18 +166,18 @@ namespace Supremacy.Client.Views
                // _totalIntelligenceAttackingAccumulated = IntelHelper.AttackingAccumulatedInteInt;
                 _totalIntelligenceAttackingAccumulated = MyLocalCivManager.TotalIntelligenceAttackingAccumulated.CurrentValue;
                 _totalIntelligenceAttackingAccumulated = value;
-                GameLog.Core.UI.DebugFormat("Set TotalIntelDefenseAccumulated ={0}", _totalIntelligenceAttackingAccumulated);
+                GameLog.Client.Intel.DebugFormat("Set TotalIntelDefenseAccumulated ={0}", _totalIntelligenceAttackingAccumulated);
                 NotifyPropertyChanged("TotalIntelligenceAttackingAccumulated");
             }
         }
         public Meter UpdateAttackingAccumulated(Civilization attackingCiv)
         {
             Meter attackMeter = GameContext.Current.CivilizationManagers[attackingCiv].TotalIntelligenceAttackingAccumulated;
-            GameLog.Core.UI.DebugFormat("Before update attackMeter ={0} for attakcing civ ={1}", attackMeter, attackingCiv);
+            GameLog.Client.Intel.DebugFormat("Before update attackMeter ={0} for attakcing civ ={1}", attackMeter, attackingCiv);
             int newAttackIntelligence = 0;
             Int32.TryParse(attackMeter.CurrentValue.ToString(), out newAttackIntelligence);
             _totalIntelligenceAttackingAccumulated = newAttackIntelligence;
-            GameLog.Core.UI.DebugFormat(" After update attackMeter ={0} for attacking civ ={1}", attackMeter, attackingCiv);
+            GameLog.Client.Intel.DebugFormat(" After update attackMeter ={0} for attacking civ ={1}", attackMeter, attackingCiv);
             return attackMeter;
         }
         protected virtual void FillUpDefense()
@@ -211,9 +212,11 @@ namespace Supremacy.Client.Views
             _spiedFourColonies = DesignTimeObjects.SpiedCivFour.Colonies;
             _spiedFiveColonies = DesignTimeObjects.SpiedCivFive.Colonies;
             _spiedSixColonies = DesignTimeObjects.SpiedCivSix.Colonies;
+            _totalResearch = GameContext.Current.CivilizationManagers[MyLocalCivManager.Civilization].Research.CumulativePoints;
             _totalIntelligenceProduction = GameContext.Current.CivilizationManagers[MyLocalCivManager.Civilization].TotalIntelligenceProduction;
             _totalIntelligenceAttackingAccumulated = GameContext.Current.CivilizationManagers[MyLocalCivManager.Civilization].TotalIntelligenceAttackingAccumulated.CurrentValue;
             _totalIntelligenceDefenseAccumulated = GameContext.Current.CivilizationManagers[MyLocalCivManager.Civilization].TotalIntelligenceDefenseAccumulated.CurrentValue;
+            _valuesFromTurn = GameContext.Current.TurnNumber;
 
             OnPropertyChanged("InstallingSpyNetwork");
             OnPropertyChanged("TotalIntelligenceAttackingAccumulated");
@@ -226,6 +229,7 @@ namespace Supremacy.Client.Views
         [field: NonSerialized]
         public event EventHandler ColoniesChanged;
         public event EventHandler TotalPopulationChanged;
+        public event EventHandler TotalResearchChanged;
         public event EventHandler InstallingSpyNetworkChanged;
         public event EventHandler TotalIntelligenceProductionChanged;
         public event EventHandler TotalIntelligenceAttackingAccumulatedChanged;
@@ -281,6 +285,7 @@ namespace Supremacy.Client.Views
                 FillUpDefense();
                 OnColoniesChanged();
                 OnTotalPopulationChanged();
+                OnTotalResearchChanged();
                 OnInstallingSpyNetworkChanged();
                 OnTotalIntelligenceProductionChanged();
                 OnTotalIntelligenceAttackingAccumulatedChanged();
@@ -387,7 +392,7 @@ namespace Supremacy.Client.Views
         }
         protected virtual void OnColoniesChanged()
         {
-            //GameLog.Core.UI.DebugFormat("AssetsScreenPresenterModel OnColoniesChange at line 228");
+            //GameLog.Client.Intel.DebugFormat("AssetsScreenPresenterModel OnColoniesChange at line 228");
             ColoniesChanged.Raise(this);
             OnPropertyChanged("Colonies");
         }
@@ -395,6 +400,16 @@ namespace Supremacy.Client.Views
         {
             TotalPopulationChanged.Raise(this);
             OnPropertyChanged("TotalPopulation");
+        }
+        protected virtual void OnTotalResearchChanged()
+        {
+            TotalResearchChanged.Raise(this);
+            OnPropertyChanged("TotalResearch");
+        }
+        protected virtual void OnValuesFromTurnChanged()
+        {
+            TotalIntelligenceProductionChanged.Raise(this);
+            OnPropertyChanged("ValuesFromTurn");
         }
         protected virtual void OnInstallingSpyNetworkChanged()
         {
@@ -421,20 +436,10 @@ namespace Supremacy.Client.Views
             SpiedZeroColoniesChanged.Raise(this);
             OnPropertyChanged("SpiedZeroColonies");
         }
-        protected virtual void OnSpiedZeroTotalPopulationChanged()
-        {
-            SpiedZeroTotalPopulationChanged.Raise(this);
-            OnPropertyChanged("SpiedZeroTotalPopulation");
-        }
         protected virtual void OnSpiedOneColoniesChanged()
         {
             SpiedOneColoniesChanged.Raise(this);
             OnPropertyChanged("SpiedOneColonies");
-        }
-        protected virtual void OnSpiedOneTotalPopulationChanged()
-        {
-            SpiedOneTotalPopulationChanged.Raise(this);
-            OnPropertyChanged("SpiedOneTotalPopulation");
         }
         protected virtual void OnSpiedTwoColoniesChanged()
         {
@@ -461,7 +466,16 @@ namespace Supremacy.Client.Views
             SpiedSixColoniesChanged.Raise(this);
             OnPropertyChanged("SpiedSixColonies");
         }
-
+        protected virtual void OnSpiedZeroTotalPopulationChanged()
+        {
+            SpiedZeroTotalPopulationChanged.Raise(this);
+            OnPropertyChanged("SpiedZeroTotalPopulation");
+        }
+        protected virtual void OnSpiedOneTotalPopulationChanged()
+        {
+            SpiedOneTotalPopulationChanged.Raise(this);
+            OnPropertyChanged("SpiedOneTotalPopulation");
+        }
         protected virtual void OnSpiedTwoTotalPopulationChanged()
         {
             SpiedTwoTotalPopulationChanged.Raise(this);
@@ -502,11 +516,100 @@ namespace Supremacy.Client.Views
                 }
                 catch (Exception e)
                 {
-                    GameLog.Core.Stations.WarnFormat("Problem occured at TotalPopulation:");
+                    GameLog.Core.GameData.WarnFormat("Problem occured at TotalPopulation: {0} {1}", e.Message, e.StackTrace);
                     GameLog.Core.General.Error(e);
                     Meter zero = new Meter(0, 0, 0);
                     return zero; //civManager.TotalPopulation;
 
+                }
+            }
+        }
+
+        public int TotalResearch
+        {
+            get
+            {
+                var civManager = MyLocalCivManager; // not this DesignTimeObjects.LocalCivManager.Civilization
+                try
+                {
+                    //GameLog.Core.Intel.DebugFormat("TotalPopulation ={0}", civManager.TotalPopulation);
+                    return civManager.Research.CumulativePoints.CurrentValue;
+                }
+                catch (Exception e)
+                {
+                    GameLog.Core.GameData.WarnFormat("Problem occured at TotalResearch: {0} {1}", e.Message, e.StackTrace);
+                    GameLog.Core.General.Error(e);
+                    //Meter zero = new Meter(0, 0, 0);
+                    return 0; //civManager.TotalPopulation;
+
+                }
+            }
+        }
+
+        public int ValuesFromTurn
+        {
+            get
+            {
+                return GameContext.Current.TurnNumber;
+            }
+        }
+
+        public int TotalDilithium
+        {
+            get
+            {
+                var civManager = MyLocalCivManager; // not this DesignTimeObjects.LocalCivManager.Civilization
+                try
+                {
+                    //GameLog.Core.Intel.DebugFormat("TotalPopulation ={0}", civManager.TotalPopulation);
+                    return civManager.Resources.Dilithium.CurrentValue;
+                }
+                catch (Exception e)
+                {
+                    GameLog.Core.GameData.WarnFormat("Problem occured at TotalDilithium: {0} {1}", e.Message, e.StackTrace);
+                    GameLog.Core.General.Error(e);
+                    //Meter zero = new Meter(0, 0, 0);
+                    return 0; 
+
+                }
+            }
+        }
+        public int TotalDeuterium
+        {
+            get
+            {
+                var civManager = MyLocalCivManager; // not this DesignTimeObjects.LocalCivManager.Civilization
+                try
+                {
+                    //GameLog.Core.Intel.DebugFormat("TotalPopulation ={0}", civManager.TotalPopulation);
+                    return civManager.Resources.Deuterium.CurrentValue;
+                }
+                catch (Exception e)
+                {
+                    GameLog.Core.GameData.WarnFormat("Problem occured at TotalDeuterium: {0} {1}", e.Message, e.StackTrace);
+                    GameLog.Core.General.Error(e);
+                    //Meter zero = new Meter(0, 0, 0);
+                    return 0;
+                }
+            }
+        }
+
+        public int TotalRawMaterials
+        {
+            get
+            {
+                var civManager = MyLocalCivManager; // not this DesignTimeObjects.LocalCivManager.Civilization
+                try
+                {
+                    //GameLog.Core.Intel.DebugFormat("TotalPopulation ={0}", civManager.TotalPopulation);
+                    return civManager.Resources.RawMaterials.CurrentValue;
+                }
+                catch (Exception e)
+                {
+                    GameLog.Core.GameData.WarnFormat("Problem occured at TotalRawMaterials: {0} {1}", e.Message, e.StackTrace);
+                    GameLog.Core.General.Error(e);
+                    //Meter zero = new Meter(0, 0, 0);
+                    return 0;
                 }
             }
         }
@@ -856,9 +959,9 @@ namespace Supremacy.Client.Views
                     var civManager = GameContext.Current.CivilizationManagers[DesignTimeObjects.CivilizationManager.Civilization];
                     return civManager.Credits;
                 }
-                catch
+                catch (Exception e)
                 {
-                    GameLog.Core.Intel.WarnFormat("Problem occured at CreditsEmpire:");
+                    GameLog.Core.Intel.WarnFormat("Problem occured at CreditsEmpire: {0} {1}", e.Message, e.StackTrace);
                     Meter zero = new Meter(0, 0, 0);
                     return zero;
                 }

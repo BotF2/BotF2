@@ -127,7 +127,6 @@ namespace Supremacy.Tech
     public static class TechObjectStringKeys
     {
         public static readonly object Name = new TechObjectStringKey("Name");
-        //public static readonly object ClassLevel = new TechObjectStringKey("ClassLevel");
         public static readonly object Description = new TechObjectStringKey("Description");
     }
 
@@ -136,7 +135,6 @@ namespace Supremacy.Tech
     public class TechObjectStringKey : IEquatable<TechObjectStringKey>
     {
         private readonly string _name;
-        ////private readonly string _classLevel;
 
         public TechObjectStringKey([NotNull] string name)
         {
@@ -144,21 +142,13 @@ namespace Supremacy.Tech
                 throw new ArgumentNullException("name");
             _name = name;
 
-            //if (classLevel == null)
-            //    _classLevel = name;
-            //        throw new ArgumentNullException("classLevel");
-            //GameLog.Client.GameData.DebugFormat("TechObjectStringKey-Name={0}", Name);
+            GameLog.Client.GameData.DebugFormat("TechObjectStringKey-Name={0}", Name);
         }
 
         public string Name
         {
             get { return _name; }
         }
-
-        //public string ClassName
-        //{
-        //    get { return _classLevel; }
-        //}
 
         public bool Equals(TechObjectStringKey other)
         {
@@ -328,27 +318,6 @@ namespace Supremacy.Tech
                 return string.Empty;
             }
         }
-
-        /// <summary>
-        /// Gets or sets the classLevel.
-        /// </summary>
-        /// <value>The classlevel.</value>
-        //public string ClassLevel
-        //{
-        //    get
-        //    {
-        //        if (_localizedText != null)
-        //        {
-        //            var classlevel = _localizedText.GetString(TechObjectStringKeys.ClassLevel);
-        //            if (classlevel != null)
-        //                return classlevel;
-        //        }
-        //        if (TryEnsureObjectString())
-        //            return TextDatabaseEntry.ClassLevel;
-        //        return string.Empty;
-        //    }
-        //}
-
         protected bool TryEnsureObjectString()
         {
             //if (!_objectStringLoaded && (ObjectString == null))
@@ -1131,7 +1100,6 @@ namespace Supremacy.Tech
                 _textDatabaseEntry = value;
                 OnPropertyChanged("TextDatabaseEntry");
                 OnPropertyChanged("Name");
-                //OnPropertyChanged("ClassLevel");
                 OnPropertyChanged("Description");
                 OnPropertyChanged("EncyclopediaHeading");
                 OnPropertyChanged("EncyclopediaText");
@@ -1147,7 +1115,6 @@ namespace Supremacy.Tech
                 _localizedText = value;
                 OnPropertyChanged("LocalizedText");
                 OnPropertyChanged("Name");
-                //OnPropertyChanged("ClassLevel");
                 OnPropertyChanged("Description");
                 OnPropertyChanged("EncyclopediaHeading");
                 OnPropertyChanged("EncyclopediaText");

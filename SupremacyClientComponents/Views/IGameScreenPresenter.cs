@@ -1,4 +1,4 @@
-// IGameScreenPresenter.cs
+// File:IGameScreenPresenter.cs
 //
 // Copyright (c) 2009 Mike Strobel
 //
@@ -52,10 +52,11 @@ namespace Supremacy.Client.Views
 
     public class DiplomacyScreenPresentationModel { }
     public class ScienceScreenPresentationModel { }
+    public class EncyclopediaScreenPresentationModel { }
     public class IntelScreenPresentationModel { }
 
     public interface IDiplomacyScreenPresenter : IGameScreenPresenter<DiplomacyScreenPresentationModel, IDiplomacyScreenView> { }
     public interface IScienceScreenPresenter : IGameScreenPresenter<ScienceScreenPresentationModel, IScienceScreenView> { }
-    //public interface IIntelScreenPresenter : IGameScreenPresenter<IntelScreenPresentationModel, IIntelScreenView> { }
+    public interface IEncyclopediaScreenPresenter : IGameScreenPresenter<EncyclopediaScreenPresentationModel, IEncyclopediaScreenView> { }
     public interface IAssetsScreenPresenter : IGameScreenPresenter<AssetsScreenPresentationModel, IAssetsScreenView> { }
 }

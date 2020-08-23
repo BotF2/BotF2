@@ -44,7 +44,9 @@ namespace Supremacy.Xna
         public Sun(StarType starType)
         {
             if (starType >= StarType.Nebula)
+            {
                 throw new ArgumentOutOfRangeException("starType");
+            }
 
             _starType = starType;
         }
@@ -53,8 +55,10 @@ namespace Supremacy.Xna
         {
             if (_starMaps != null)
             {
-                foreach (var starMap in _starMaps)
+                foreach (Texture2D starMap in _starMaps)
+                {
                     starMap.Dispose();
+                }
 
                 _starMaps = null;
             }
@@ -63,7 +67,9 @@ namespace Supremacy.Xna
         public void Create(IGraphicsDeviceService graphicsService, ContentManager contentManager, Camera camera)
         {
             if (_isDisposed)
+            {
                 throw new ObjectDisposedException("This Sun object has been disposed.");
+            }
 
             _camera = camera;
             _contentManager = contentManager;
@@ -92,8 +98,8 @@ namespace Supremacy.Xna
 
         private void CreateStarMaps()
         {
-            var starType = _starType;
-            var starMaps = new Texture2D[NumFrames];
+            StarType starType = _starType;
+            Texture2D[] starMaps = new Texture2D[NumFrames];
 
             starMaps[0] = _contentManager.Load<Texture2D>(@"Resources\Textures\" + starType + "1");
             starMaps[1] = _contentManager.Load<Texture2D>(@"Resources\Textures\" + starType + "2");
@@ -117,19 +123,19 @@ namespace Supremacy.Xna
             //other shader variables
             //TODO: Fix up shader for evolved backdrop to ignore the color in the vertex format
 
-            var buffer = new VertexBuffer(
+            VertexBuffer buffer = new VertexBuffer(
                 _graphicsService.GraphicsDevice,
                 typeof(VertexPositionColor),
                 columns * rows * 6,
                 BufferUsage.WriteOnly);
 
-            var data = new VertexPositionColor[columns * rows * 6];
-            
+            VertexPositionColor[] data = new VertexPositionColor[columns * rows * 6];
+
             //Buffer coordinates are 0.0-1.0 so we can use them as the base texture coordinates too
-            var pointCount = 0;
-            for (var x = 0; x < columns; x++)
+            int pointCount = 0;
+            for (int x = 0; x < columns; x++)
             {
-                for (var y = 0; y < rows; y++)
+                for (int y = 0; y < rows; y++)
                 {
                     data[pointCount + 0] = new VertexPositionColor(new Vector3(x / (float)columns, y / (float)rows, 0), Color.White);
                     data[pointCount + 1] = new VertexPositionColor(new Vector3((x + 1) / (float)columns, y / (float)rows, 0), Color.White);
@@ -159,7 +165,9 @@ namespace Supremacy.Xna
             }
 
             if (_currentFrame > 4)
+            {
                 _currentFrame = 0;
+            }
 
             _rotation.Z += (float)(elapsedTime.TotalSeconds / RotationRate);
 
@@ -174,9 +182,11 @@ namespace Supremacy.Xna
         public void Render()
         {
             if (_isDisposed || _starMaps == null)
+            {
                 return;
+            }
 
-            var device = _graphicsService.GraphicsDevice;
+            GraphicsDevice device = _graphicsService.GraphicsDevice;
 
             device.VertexDeclaration = _vertexDecl;
             device.Vertices[0].SetSource(_buffer, 0, VertexPositionColor.SizeInBytes);
@@ -184,18 +194,22 @@ namespace Supremacy.Xna
             _worldParam.SetValue(World);
             _worldViewProjectionParam.SetValue(World * _camera.View * _camera.Projection);
 
-            var currentFactor = (float)(_currentTime / FrameTransitionTime);
+            float currentFactor = (float)(_currentTime / FrameTransitionTime);
 
             _blendFactor.SetValue(currentFactor);
 
-            var sun = _starMaps;
+            Texture2D[] sun = _starMaps;
 
             _sun1TextureParam.SetValue(sun[_currentFrame]);
 
             if (_currentFrame < 4)
+            {
                 _sun0TextureParam.SetValue(sun[_currentFrame + 1]);
+            }
             else
+            {
                 _sun0TextureParam.SetValue(sun[0]);
+            }
 
             _effect.Begin();
             _effect.Techniques[0].Passes[0].Begin();
@@ -211,7 +225,9 @@ namespace Supremacy.Xna
         public void Dispose()
         {
             if (_isDisposed)
+            {
                 return;
+            }
 
             _isDisposed = true;
 

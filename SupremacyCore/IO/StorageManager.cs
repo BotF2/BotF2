@@ -1,4 +1,4 @@
-// StorageManager.cs
+// File:StorageManager.cs
 //
 // Copyright (c) 2007 Mike Strobel
 //
@@ -7,6 +7,7 @@
 //
 // All other rights reserved.
 
+using Supremacy.Resources;
 using Supremacy.Utility;
 using System;
 using System.Collections;
@@ -18,7 +19,8 @@ namespace Supremacy.IO
 {
     public static class StorageManager
     {
-        private const string UserProfileFolderName = "Star Trek Supremacy";
+        //private const string UserProfileFolderName = "Star Trek Supremacy";
+        private const string UserProfileFolderName = ".";  // . = current folder
         private const string SettingsFilename = "Settings.dat";
 
         public static string UserLocalProfileFolder
@@ -26,8 +28,10 @@ namespace Supremacy.IO
             get
             {
                 return Path.Combine(
-                    Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+                    //Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+                    ResourceManager.GetResourcePath(""),
                     UserProfileFolderName);
+                //return UserProfileFolderName;
             }
         }
 
@@ -36,7 +40,8 @@ namespace Supremacy.IO
             get
             {
                 return Path.Combine(
-                    Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+                    //Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+                    ResourceManager.GetResourcePath(""),
                     UserProfileFolderName);
             }
         }

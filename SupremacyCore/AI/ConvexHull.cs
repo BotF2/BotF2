@@ -31,23 +31,20 @@ namespace Supremacy.AI
         #endregion
 
         #region Properties
-        public ConvexHull this[int index]
-        {
-            get { return _items[index]; }
-        }
+        public ConvexHull this[int index] => _items[index];
 
-        public IList<ConvexHull> Items
-        {
-            get {return _items.AsReadOnly(); }
-        }
+        public IList<ConvexHull> Items => _items.AsReadOnly();
 
         public IEnumerable<MapLocation> CombinedInterior
         {
             get
             {
-                var locations = Enumerable.Empty<MapLocation>();
+                IEnumerable<MapLocation> locations = Enumerable.Empty<MapLocation>();
                 foreach (ConvexHull item in _items)
+                {
                     locations = locations.Concat(item.Interior);
+                }
+
                 return locations;
             }
         }
@@ -115,15 +112,9 @@ namespace Supremacy.AI
         #endregion
 
         #region Properties
-        public MapLocation[] Points
-        {
-            get { return (MapLocation[])_points.Clone(); }
-        }
+        public MapLocation[] Points => (MapLocation[])_points.Clone();
 
-        public IEnumerable<MapLocation> Interior
-        {
-            get { return this; }
-        }
+        public IEnumerable<MapLocation> Interior => this;
         #endregion
 
         #region IEnumerable<MapLocation> Members
@@ -136,7 +127,9 @@ namespace Supremacy.AI
                 {
                     MapLocation location = new MapLocation(x, y);
                     if (Contains(location))
+                    {
                         yield return location;
+                    }
                 }
             }
         }
@@ -173,7 +166,9 @@ namespace Supremacy.AI
             PlaneSet[] planes = new PlaneSet[_points.Length];
 
             if (_points.Length < 3)
+            {
                 return _points.Contains(point);
+            }
 
             flipEdge = (_points[0].X - _points[1].X) * (_points[1].Y - _points[2].Y) > (_points[0].Y - _points[1].Y) * (_points[1].X - _points[2].X);
 
@@ -200,7 +195,7 @@ namespace Supremacy.AI
             for (int p0 = _points.Length + 1, i = 0; --p0 > 0; i++)
             {
                 // Test if the point is outside this edge.
-                if ((planes[i].VX * tX + planes[i].VY * tY > planes[i].C) && (planes[i].VX * tX2 + planes[i].VY * tY2 > planes[i].C))
+                if (((planes[i].VX * tX) + (planes[i].VY * tY) > planes[i].C) && ((planes[i].VX * tX2) + (planes[i].VY * tY2) > planes[i].C))
                 {
                     return false;
                 }

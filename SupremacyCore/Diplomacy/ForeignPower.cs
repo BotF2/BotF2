@@ -27,7 +27,7 @@ namespace Supremacy.Diplomacy
     {
         None,
         AcceptProposal,
-        RejectProposal,
+        RejectProposal
     }
 
     [Serializable]
@@ -91,12 +91,12 @@ namespace Supremacy.Diplomacy
         {
             get
             {
-                if (!IsContactMade)
+                if (!IsContactMade || DiplomacyData.Status == ForeignPowerStatus.OwnerIsMember || DiplomacyData.Status == ForeignPowerStatus.CounterpartyIsMember)
                     return false;
 
                 if (DiplomacyData.Status != ForeignPowerStatus.AtWar)
                     return true;
-
+ 
                 var turnsSinceWarDeclaration = GameContext.Current.TurnNumber - LastStatusChange;
                 if (turnsSinceWarDeclaration <= 3)
                     return false;
@@ -166,35 +166,38 @@ namespace Supremacy.Diplomacy
             }
         }
 
-        public void BeginEmbargo()
-        {
-            var agreements = GameContext.Current.AgreementMatrix;
+        //public void BeginEmbargo()
+        //{
+        //    var agreements = GameContext.Current.AgreementMatrix;
 
-            foreach (var agreement in agreements)
-            {
-                foreach (var clause in agreement.Proposal.Clauses)
-                {
-                    if (clause.ClauseType == ClauseType.TreatyTradePact)
-                    {
-                        DiplomacyHelper.BreakAgreement(agreement);
-                    }
+        //    foreach (var agreement in agreements)
+        //    {
+        //        foreach (var clause in agreement.Proposal.Clauses)
+        //        {
+        //            if (clause.ClauseType == ClauseType.TreatyTradePact)
+        //            {
+        //                DiplomacyHelper.BreakAgreement(agreement);
+        //            }
 
-                }
-            }
-            // TODO: Break any trade agreements
-            IsEmbargoInPlace = true;
-        }
+        //        }
+        //    }
+        //    // TODO: Break any trade agreements
+        //    IsEmbargoInPlace = true;
+        //}
 
-        public void EndEmbargo()
-        {
-            IsEmbargoInPlace = false;
-        }
+        //public void EndEmbargo()
+        //{
+        //    IsEmbargoInPlace = false;
+        //}
 
         public void DeclareWar()
         {
             if (DiplomacyData.Status == ForeignPowerStatus.AtWar)
                 return;
-
+            if (DiplomacyData.Status == ForeignPowerStatus.OwnerIsMember)
+                return;
+            if (DiplomacyData.Status == ForeignPowerStatus.CounterpartyIsMember)
+                return;
             if (!IsContactMade)
                 MakeContact();
 
@@ -223,7 +226,7 @@ namespace Supremacy.Diplomacy
                         new WarDeclaredSitRepEntry(
                             civ,
                             owner,
-                            counterparty));                    
+                            counterparty));    
                 }
             }
         }
@@ -325,7 +328,18 @@ namespace Supremacy.Diplomacy
             regardMeter.SaveCurrentAndResetToBase();
 
             foreach (var regardEvent in _regardEvents)
+            {
+                //GameLog.Client.Diplomacy.DebugFormat("### regardEvent regard ={0}, turn ={1} Type ={2} duration ={3}",
+                //    regardEvent.Regard, regardEvent.Turn, regardEvent.Type.ToString(), regardEvent.Duration);
+
                 regardMeter.AdjustCurrent(regardEvent.Regard);
+
+                //GameLog.Client.Diplomacy.DebugFormat("### Regard ={0} Owner ={1} CounterParty ={2}",
+                //    DiplomacyData.Regard,
+                //    GameContext.Current.CivilizationManagers[OwnerID].Civilization.ShortName,
+                //    GameContext.Current.CivilizationManagers[CounterpartyID].Civilization.ShortName);
+            }
+
         }
 
         protected void ResolveStatus(out ForeignPowerStatus ownerStatus, out ForeignPowerStatus counterpartyStatus)
@@ -363,8 +377,9 @@ namespace Supremacy.Diplomacy
                 return;
             }
 
-            if (agreementMatrix.IsAgreementActive(owner, counterparty, ClauseType.TreatyTradePact) ||
-                agreementMatrix.IsAgreementActive(owner, counterparty, ClauseType.TreatyResearchPact) ||
+            if (
+            //agreementMatrix.IsAgreementActive(owner, counterparty, ClauseType.TreatyTradePact) ||
+            //    agreementMatrix.IsAgreementActive(owner, counterparty, ClauseType.TreatyResearchPact) ||
                 agreementMatrix.IsAgreementActive(owner, counterparty, ClauseType.TreatyOpenBorders))
             {
                 ownerStatus = ForeignPowerStatus.Friendly;
@@ -448,6 +463,24 @@ namespace Supremacy.Diplomacy
             }
         }
 
+        //public void AcceptingRejecting(string acceptReject) 
+        //{
+        //    bool accepting = false;
+        //    if (acceptReject == "ACCEPT")
+        //        accepting = true;
+
+        //    if (accepting)
+        //    {
+        //        PendingAction = PendingDiplomacyAction.AcceptProposal;
+        //    }
+        //    else
+        //    {
+        //        PendingAction = PendingDiplomacyAction.RejectProposal;
+        //    }
+        //    LastProposalReceived = ProposalReceived;
+        //    ProposalReceived = null;
+        //}
+
         #region Implementation of ICivIdentity
 
         int ICivIdentity.CivID
@@ -482,6 +515,7 @@ namespace Supremacy.Diplomacy
 
         void IOwnedDataSerializable.SerializeOwnedData(SerializationWriter writer, object context)
         {
+           // GameLog.Client.Diplomacy.DebugFormat("SerializeOwnedData ....");
             writer.WriteObject(_regardEvents);
             writer.WriteObject(_diplomacyData);
             

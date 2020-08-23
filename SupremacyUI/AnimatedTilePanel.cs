@@ -25,11 +25,12 @@ namespace Supremacy.UI
             Unloaded += new RoutedEventHandler(AniTilePanel_Unloaded);
         }
 
-        void AniTilePanel_Loaded(object sender, RoutedEventArgs e)
+        private void AniTilePanel_Loaded(object sender, RoutedEventArgs e)
         {
             CompositionTarget.Rendering += CompositionTarget_Rendering;
         }
-        void AniTilePanel_Unloaded(object sender, RoutedEventArgs e)
+
+        private void AniTilePanel_Unloaded(object sender, RoutedEventArgs e)
         {
             CompositionTarget.Rendering -= CompositionTarget_Rendering;
         }
@@ -44,13 +45,10 @@ namespace Supremacy.UI
                 child.Measure(theChildSize);
             }
 
-            int childrenPerRow;
-
             // Figure out how many children fit on each row
-            if (availableSize.Width == Double.PositiveInfinity)
-                childrenPerRow = Children.Count;
-            else
-                childrenPerRow = Math.Max(1, (int)Math.Floor(availableSize.Width / ItemWidth));
+            int childrenPerRow = availableSize.Width == double.PositiveInfinity
+                ? Children.Count
+                : Math.Max(1, (int)Math.Floor(availableSize.Width / ItemWidth));
 
             // Calculate the width and height this results in
             double width = childrenPerRow * ItemWidth;
@@ -95,8 +93,8 @@ namespace Supremacy.UI
         #region public properties
         public double ItemWidth
         {
-            get { return (double)GetValue(ItemWidthProperty); }
-            set { SetValue(ItemWidthProperty, value); }
+            get => (double)GetValue(ItemWidthProperty);
+            set => SetValue(ItemWidthProperty, value);
         }
 
         // Using a DependencyProperty as the backing store for ItemWidth.  This enables animation, styling, binding, etc...
@@ -106,7 +104,7 @@ namespace Supremacy.UI
 
         public double ItemHeight
         {
-            get { return (double)GetValue(ItemHeightProperty); }
+            get => (double)GetValue(ItemHeightProperty);
             set { SetValue(ItemHeightProperty, value); }
         }
 
@@ -118,18 +116,12 @@ namespace Supremacy.UI
 
         public static readonly DependencyProperty DampeningProperty = DependencyProperty.Register(
             "Dampening", typeof(double), typeof(AnimatedTilePanel),
-            new FrameworkPropertyMetadata((double).8));
+            new FrameworkPropertyMetadata(.8));
 
         public double Dampening
         {
-            get
-            {
-                return (double)GetValue(DampeningProperty);
-            }
-            set
-            {
-                SetValue(DampeningProperty, value);
-            }
+            get => (double)GetValue(DampeningProperty);
+            set => SetValue(DampeningProperty, value);
         }
 
         public static readonly DependencyProperty AttractionProperty = DependencyProperty.Register(
@@ -138,14 +130,8 @@ namespace Supremacy.UI
 
         public double Attraction
         {
-            get
-            {
-                return (double)GetValue(AttractionProperty);
-            }
-            set
-            {
-                SetValue(AttractionProperty, value);
-            }
+            get => (double)GetValue(AttractionProperty);
+            set => SetValue(AttractionProperty, value);
         }
         #endregion
 
@@ -192,7 +178,7 @@ namespace Supremacy.UI
 
         #region private methods
 
-        void CompositionTarget_Rendering(object sender, EventArgs e)
+        private void CompositionTarget_Rendering(object sender, EventArgs e)
         {
             long nowTick = DateTime.Now.Ticks;
             long diff = nowTick - _lastTick;
@@ -205,12 +191,11 @@ namespace Supremacy.UI
 
             foreach (UIElement child in Children)
             {
-                updateElement(child, seconds, dampening, attractionFactor);
+                UpdateElement(child, seconds, dampening, attractionFactor);
             }
         }
 
-
-        static void updateElement(UIElement element, double seconds, double dampening, double attractionFactor)
+        private static void UpdateElement(UIElement element, double seconds, double dampening, double attractionFactor)
         {
             Point current = (Point)element.GetValue(ChildLocationProperty);
             Point target = (Point)element.GetValue(ChildTargetProperty);
@@ -244,13 +229,13 @@ namespace Supremacy.UI
             double fudge = 0;
             if (totalChildren > childrenPerRow)
             {
-                fudge = (panelWidth - childrenPerRow * itemWidth) / childrenPerRow;
+                fudge = (panelWidth - (childrenPerRow * itemWidth)) / childrenPerRow;
                 Debug.Assert(fudge >= 0);
             }
 
             int row = index / childrenPerRow;
             int column = index % childrenPerRow;
-            return new Point(.5 * fudge + column * (itemWidth + fudge), row * itemHeight);
+            return new Point((.5 * fudge) + (column * (itemWidth + fudge)), row * itemHeight);
         }
 
 

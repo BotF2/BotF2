@@ -25,20 +25,16 @@ namespace Supremacy.Combat
                 }
                 return _oppositionFleets;
             }
-            set
-            {
-                _oppositionFleets = value;
-            }
+            set => _oppositionFleets = value;
         }
         public int MaxOppositionScanStrengh { get; set; }
 
         public TakeSidesAssets(MapLocation location)
         {
-            var fleetsAtLocation = GameContext.Current.Universe.FindAt<Fleet>(location).ToList();
+            List<Fleet> fleetsAtLocation = GameContext.Current.Universe.FindAt<Fleet>(location).ToList();
 
             if (fleetsAtLocation != null)
             {
-
                 for (int i = 0; i < fleetsAtLocation.Count; i++)
                 {
                     for (int j = 0; j < fleetsAtLocation.Count; j++)
@@ -46,7 +42,7 @@ namespace Supremacy.Combat
                         if (CombatHelper.WillEngage(fleetsAtLocation[j].Owner, fleetsAtLocation[i].Owner)) // ToDo 3+ directional scan
                         {
                             OppositionFleets.Add(fleetsAtLocation[j]);
-                            OppositionFleets.Distinct();
+                            _ = OppositionFleets.Distinct();
                         }
 
                         //if (OppositionFleets.Count() > 0)
@@ -54,9 +50,9 @@ namespace Supremacy.Combat
 
                         MaxOppositionScanStrengh = 0;
 
-                        if (OppositionFleets.Count() > 0)
+                        if (OppositionFleets.Count > 0)
                         {
-                            foreach (var fleet in OppositionFleets)
+                            foreach (Fleet fleet in OppositionFleets)
                             {
                                 //GameLog.Core.Combat.DebugFormat("{0} {1} ScanStrength = {2}, MaxOppositionScanStrengh = {3}", fleet.ObjectID, fleet.Name, fleet.ScanStrength, MaxOppositionScanStrengh);
                                 if (fleet.ScanStrength > MaxOppositionScanStrengh)
@@ -66,7 +62,6 @@ namespace Supremacy.Combat
                                     //    fleet.ObjectID, fleet.Name, fleet.ScanStrength, MaxOppositionScanStrengh);
                                 }
                             }
-                           
                         }
                     }
                 }

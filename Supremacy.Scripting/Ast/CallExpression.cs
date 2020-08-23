@@ -12,7 +12,6 @@ namespace Supremacy.Scripting.Ast
 {
     public class CallExpression : Expression
     {
-        private Arguments _arguments;
         private TypeArguments _typeArguments;
         private MethodInfo _method;
         private Expression _target;
@@ -20,99 +19,77 @@ namespace Supremacy.Scripting.Ast
         public CallExpression()
         {
             _typeArguments = new TypeArguments();
-            _arguments = new Arguments();
+            Arguments = new Arguments();
         }
 
         public CallExpression(string methodName, Expression target, IEnumerable<Argument> arguments)
             : this()
         {
-            if (methodName == null)
-                throw new ArgumentNullException("methodName");
-            if (target == null)
-                throw new ArgumentNullException("target");
-
-            MethodName = methodName;
-            Target = target;
+            MethodName = methodName ?? throw new ArgumentNullException("methodName");
+            Target = target ?? throw new ArgumentNullException("target");
 
             if (arguments != null)
+            {
                 Arguments.AddRange(arguments);
+            }
         }
 
         public CallExpression(MethodInfo method, Expression target, IEnumerable<Argument> arguments)
             : this()
         {
-            if (method == null)
-                throw new ArgumentNullException("method");
-            if (target == null)
-                throw new ArgumentNullException("target");
-
-            Method = method;
-            Target = target;
+            Method = method ?? throw new ArgumentNullException("method");
+            Target = target ?? throw new ArgumentNullException("target");
 
             if (arguments != null)
+            {
                 Arguments.AddRange(arguments);
+            }
         }
 
         public MethodInfo Method
         {
-            get { return _method; }
+            get => _method;
             set
             {
                 _method = value;
-                Type = (_method == null) ? null : _method.ReturnType;
+                Type = _method?.ReturnType;
             }
         }
 
         public Expression Target
         {
-            get { return _target; }
-            set { _target = value; }
+            get => _target;
+            set => _target = value;
         }
 
         public string MethodName { get; set; }
 
-        public virtual TypeArguments TypeArguments
-        {
-            get
-            {
-                var memberAccess = Target as MemberAccessExpression;
-                if (memberAccess != null)
-                    return memberAccess.TypeArguments;
-                return _typeArguments;
-            }
-        }
+        public virtual TypeArguments TypeArguments => Target is MemberAccessExpression memberAccess ? memberAccess.TypeArguments : _typeArguments;
 
-        public Arguments Arguments
-        {
-            get { return _arguments; }
-        }
+        public Arguments Arguments { get; private set; }
 
-        public override bool IsPrimaryExpression
-        {
-            get { return true; }
-        }
+        public override bool IsPrimaryExpression => true;
 
         public override void Walk(AstVisitor prefix, AstVisitor postfix)
         {
             Walk(ref _target, prefix, postfix);
 
-            for (var i = 0; i < _arguments.Count; i++)
+            for (int i = 0; i < Arguments.Count; i++)
             {
-                var argument = _arguments[i];
+                Argument argument = Arguments[i];
                 Walk(ref argument, prefix, postfix);
-                _arguments[i] = argument;
+                Arguments[i] = argument;
             }
         }
 
         public override MSAst TransformCore(ScriptGenerator generator)
         {
-            var target = Target;
-            var type = (Type)null;
-            var targetType = target as TypeExpression;
+            Expression target = Target;
+            Type type = (Type)null;
 
             MSAst transformedTarget;
 
-            if (targetType != null)
+            if (target is TypeExpression targetType)
             {
                 type = targetType.Type;
                 transformedTarget = MSAst.Constant(type, typeof(Type));
@@ -122,7 +99,7 @@ namespace Supremacy.Scripting.Ast
                 transformedTarget = target.Transform(generator);
             }
 
-            var method = Method;
+            MethodInfo method = Method;
             if (method != null)
             {
                 return MSAstUtil.ComplexCallHelper(
@@ -131,31 +108,29 @@ namespace Supremacy.Scripting.Ast
                     Arguments.Select(o => o.Value.Transform(generator)).ToArray());
             }
 
-            if (type != null)
-            {
-                return MSAst.Call(
+            return type != null
+                ? MSAst.Call(
                     type,
                     MethodName,
                     TypeArguments.ResolvedTypes,
-                    _arguments.Transform(generator));
-            }
-
-            return MSAst.Call(
+                    Arguments.Transform(generator))
+                : MSAst.Call(
                 transformedTarget,
                 MethodName,
                 TypeArguments.ResolvedTypes,
-                _arguments.Transform(generator));
+                Arguments.Transform(generator));
         }
 
         public override void CloneTo<T>(CloneContext cloneContext, T target)
         {
             base.CloneTo(cloneContext, target);
 
-            var clone = target as CallExpression;
-            if (clone == null)
+            if (!(target is CallExpression clone))
+            {
                 return;
+            }
 
-            clone._arguments = _arguments.Clone(cloneContext);
+            clone.Arguments = Arguments.Clone(cloneContext);
             clone._typeArguments = _typeArguments.Clone();
             clone._target = Clone(cloneContext, _target);
             clone._method = _method;
@@ -163,15 +138,19 @@ namespace Supremacy.Scripting.Ast
 
         public override void Dump(SourceWriter sw, int indentChange)
         {
-            var parenthesize = !_target.IsPrimaryExpression;
+            bool parenthesize = !_target.IsPrimaryExpression;
 
             if (parenthesize)
+            {
                 sw.Write("(");
+            }
 
             _target.Dump(sw, indentChange);
 
             if (parenthesize)
+            {
                 sw.Write(")");
+            }
 
             sw.Write(".");
             sw.Write(Method != null ? Method.Name : MethodName);
@@ -179,12 +158,14 @@ namespace Supremacy.Scripting.Ast
             if (_typeArguments.Count != 0)
             {
                 sw.Write("<");
-                for (var i = 0; i < _typeArguments.Count; i++)
+                for (int i = 0; i < _typeArguments.Count; i++)
                 {
-                    var typeArgument = _typeArguments[i];
+                    FullNamedExpression typeArgument = _typeArguments[i];
 
                     if (i != 0)
+                    {
                         sw.Write(", ");
+                    }
 
                     typeArgument.Dump(sw, indentChange);
                 }
@@ -193,9 +174,9 @@ namespace Supremacy.Scripting.Ast
 
             sw.Write("(");
 
-            for (var i = 0; i < _arguments.Count; i++)
+            for (int i = 0; i < Arguments.Count; i++)
             {
-                var argument = _arguments[i];
+                Argument argument = Arguments[i];
 
                 if (i != 0)
                     sw.Write(", ");
@@ -208,20 +189,24 @@ namespace Supremacy.Scripting.Ast
 
         public override Expression DoResolve(ParseContext parseContext)
         {
-            var targetResolved = Target.Resolve(
+            Expression targetResolved = Target.Resolve(
                 parseContext,
                 ResolveFlags.VariableOrValue | ResolveFlags.MethodGroup);
 
             if (targetResolved == null)
+            {
                 return null;
+            }
 
             Target = targetResolved;
 
-            var arguments = Arguments;
+            Arguments arguments = Arguments;
             if (arguments != null)
-                _arguments.Resolve(parseContext);
+            {
+                Arguments.Resolve(parseContext);
+            }
 
-            _typeArguments.Resolve(parseContext);
+            _ = _typeArguments.Resolve(parseContext);
 
             return this;
         }

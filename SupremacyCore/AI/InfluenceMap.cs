@@ -41,7 +41,10 @@ namespace Supremacy.AI
         public InfluenceMap(GameContext game)
         {
             if (game == null)
-                throw new ArgumentNullException("game");
+            {
+                throw new ArgumentNullException(nameof(game));
+            }
+
             _values = new ulong[game.Universe.Map.Width, game.Universe.Map.Height];
         }
 
@@ -102,15 +105,17 @@ namespace Supremacy.AI
 
         void IOwnedDataSerializable.DeserializeOwnedData(SerializationReader reader, object context)
         {
-            var width = reader.ReadOptimizedInt32();
-            var height = reader.ReadOptimizedInt32();
+            int width = reader.ReadOptimizedInt32();
+            int height = reader.ReadOptimizedInt32();
 
-            var values = new ulong[width, height];
+            ulong[,] values = new ulong[width, height];
 
-            for (var x = 0; x < width; x++)
+            for (int x = 0; x < width; x++)
             {
-                for (var y = 0; y < height; y++)
+                for (int y = 0; y < height; y++)
+                {
                     values[x, y] = reader.ReadUInt64();
+                }
             }
 
             _values = values;
@@ -118,17 +123,19 @@ namespace Supremacy.AI
 
         void IOwnedDataSerializable.SerializeOwnedData(SerializationWriter writer, object context)
         {
-            var values = _values;
-            var width = values.GetLength(0);
-            var height = values.GetLength(1);
+            ulong[,] values = _values;
+            int width = values.GetLength(0);
+            int height = values.GetLength(1);
 
             writer.WriteOptimized(width);
             writer.WriteOptimized(height);
 
-            for (var x = 0; x < width; x++)
+            for (int x = 0; x < width; x++)
             {
-                for (var y = 0; y < height; y++)
+                for (int y = 0; y < height; y++)
+                {
                     writer.Write(values[x, y]);
+                }
             }
         }
     }

@@ -106,7 +106,8 @@ namespace Supremacy.Diplomacy
                 throw new ArgumentNullException("counterparty");
 
             if (counterparty.CivID == OwnerID)
-                return null;
+                GameLog.Client.Diplomacy.DebugFormat("counterpartyID = {0} OwnerID ={1}", counterparty.CivID, OwnerID);
+            //    return null;
 
             ForeignPower foreignPower;
 
@@ -157,23 +158,23 @@ namespace Supremacy.Diplomacy
                         }
                         break;
 
-                    case ClauseType.OfferGiveResources:
-                        if (proposal.Sender == Owner)
-                        {
-                            var resources = clause.GetData<ResourceValueCollection>();
-                            if (resources != null && !ownerResources.MeetsOrExceeds(resources))
-                                return false;
-                        }
-                        break;
+                    //case ClauseType.OfferGiveResources:
+                    //    if (proposal.Sender == Owner)
+                    //    {
+                    //        var resources = clause.GetData<ResourceValueCollection>();
+                    //        if (resources != null && !ownerResources.MeetsOrExceeds(resources))
+                    //            return false;
+                    //    }
+                    //    break;
 
-                    case ClauseType.RequestGiveResources:
-                        if (proposal.Recipient == Owner)
-                        {
-                            var resources = clause.GetData<ResourceValueCollection>();
-                            if (resources != null && !ownerResources.MeetsOrExceeds(resources))
-                                return false;
-                        }
-                        break;
+                    //case ClauseType.RequestGiveResources:
+                    //    if (proposal.Recipient == Owner)
+                    //    {
+                    //        var resources = clause.GetData<ResourceValueCollection>();
+                    //        if (resources != null && !ownerResources.MeetsOrExceeds(resources))
+                    //            return false;
+                    //    }
+                    //    break;
                 }
             }
             return true;
@@ -195,8 +196,6 @@ namespace Supremacy.Diplomacy
         {
             if (owner == null)
                 throw new ArgumentNullException("owner");
-
-            var _diplomats = GameContext.Current.Diplomats[owner.CivID];
 
             return GameContext.Current.Diplomats[owner.CivID];
         }

@@ -12,8 +12,8 @@ namespace Supremacy.Scripting.Ast
 
         public Expression Value
         {
-            get { return _value; }
-            set { _value = value; }
+            get => _value;
+            set => _value = value;
         }
 
         public override void Walk(AstVisitor prefix, AstVisitor postfix)
@@ -23,8 +23,8 @@ namespace Supremacy.Scripting.Ast
 
         public Expression DoResolve(ParseContext parseContext, Expression leftSide)
         {
-            var memberName = MemberName;
-            var memberInfo = (MemberInfo)leftSide.Type.GetProperty(memberName) ??
+            string memberName = MemberName;
+            MemberInfo memberInfo = (MemberInfo)leftSide.Type.GetProperty(memberName) ??
                              leftSide.Type.GetField(memberName);
             
             return new NewInitMemberBinding(

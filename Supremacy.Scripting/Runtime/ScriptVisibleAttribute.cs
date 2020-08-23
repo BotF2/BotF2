@@ -20,46 +20,38 @@ namespace Supremacy.Scripting.Runtime
         Inherited = true)]
     public class ScriptVisibleNamespaceAttribute : Attribute
     {
-        private readonly string _clrNamespace;
-        private readonly AssemblyName _assemblyName;
-
         public ScriptVisibleNamespaceAttribute(string clrNamespace)
         {
-            if (clrNamespace == null)
-                throw new ArgumentNullException("clrNamespace");
-            _clrNamespace = clrNamespace;
+            ClrNamespace = clrNamespace ?? throw new ArgumentNullException("clrNamespace");
         }
 
         public ScriptVisibleNamespaceAttribute(string clrNamespace, string assemblyName)
             : this(clrNamespace)
         {
             if (assemblyName == null)
+            {
                 throw new ArgumentNullException("assemblyName");
-            _assemblyName = new AssemblyName(assemblyName);
+            }
+
+            AssemblyName = new AssemblyName(assemblyName);
         }
 
-        public string ClrNamespace
-        {
-            get { return _clrNamespace; }
-        }
+        public string ClrNamespace { get; }
 
-        public AssemblyName AssemblyName
-        {
-            get { return _assemblyName; }
-        }
+        public AssemblyName AssemblyName { get; }
     }
 
     public class ScriptVisibleNamespace
     {
         public ScriptVisibleNamespace(string clrNamespace, AssemblyName assemblyName)
         {
-            if (clrNamespace == null)
-                throw new ArgumentNullException("clrNamespace");
-
-            ClrNamespace = clrNamespace;
+            ClrNamespace = clrNamespace ?? throw new ArgumentNullException("clrNamespace");
 
             if (assemblyName == null)
+            {
                 return;
+            }
+
             try { Assembly = Assembly.Load(assemblyName); }
             catch
             {

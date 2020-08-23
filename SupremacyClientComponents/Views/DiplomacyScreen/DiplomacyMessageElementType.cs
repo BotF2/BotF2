@@ -9,7 +9,7 @@ namespace Supremacy.Client.Views
         CommendAssaultStatement,
         CommendInvasionStatement,
         CommendSabotageStatement,
-
+        
         DenounceWarStatement,
         DenounceTreatyStatement,
         DenounceAssaultStatement,
@@ -49,6 +49,6 @@ namespace Supremacy.Client.Views
         TreatyAffiliationClause,
         TreatyDefensiveAllianceClause,
         TreatyFullAllianceClause,
-        TreatyMembershipClause
+        TreatyMembershipClause        
     }
 }

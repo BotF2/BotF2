@@ -26,11 +26,14 @@ namespace Supremacy.Scripting
         [ConstructorArgument("name")]
         public string Name
         {
-            get { return _name; }
+            get => _name;
             set
             {
                 if (value == _name)
+                {
                     return;
+                }
+
                 _name = value;
                 OnPropertyChanged("Name");
             }
@@ -44,27 +47,28 @@ namespace Supremacy.Scripting
             {
                 if (_type == null)
                 {
-                    if (_typeName == null)
-                        Type = typeof(object);
-                    else
-                        Type = Type.GetType(_typeName);
+                    Type = _typeName == null ? typeof(object) : Type.GetType(_typeName);
                 }
                 return _type;
             }
             set
             {
                 if (value == null)
+                {
                     value = typeof(object);
+                }
 
                 _type = value;
                 _typeName = value.FullName + ", " + value.Assembly.GetName().Name;
 
                 OnPropertyChanged("Type");
 
-                var defaultValue = DefaultValue;
+                object defaultValue = DefaultValue;
 
                 if (!IsValidValue(ref defaultValue))
+                {
                     defaultValue = _type.IsValueType ? Activator.CreateInstance(_type) : null;
+                }
 
                 DefaultValue = defaultValue;
             }
@@ -72,23 +76,27 @@ namespace Supremacy.Scripting
 
         public bool IsValidValue(ref object baseValue)
         {
-            var type = Type;
+            Type type = Type;
 
             if (baseValue == null)
+            {
                 return !type.IsValueType;
+            }
 
-            var sourceType = baseValue.GetType();
+            Type sourceType = baseValue.GetType();
 
             if (type.IsAssignableFrom(sourceType))
+            {
                 return true;
+            }
 
-            var targetConverter = TypeDescriptor.GetConverter(type);
+            TypeConverter targetConverter = TypeDescriptor.GetConverter(type);
 
             if (targetConverter.CanConvertFrom(sourceType))
             {
                 //try
                 {
-                    var convertedValue = targetConverter.ConvertFrom(baseValue);
+                    object convertedValue = targetConverter.ConvertFrom(baseValue);
                     baseValue = convertedValue;
                     return true;
                 }
@@ -101,7 +109,7 @@ namespace Supremacy.Scripting
             {
                 //try
                 {
-                    var convertedValue = targetConverter.ConvertTo(baseValue, type);
+                    object convertedValue = targetConverter.ConvertTo(baseValue, type);
                     baseValue = convertedValue;
                     return true;
                 }
@@ -115,11 +123,14 @@ namespace Supremacy.Scripting
         [ConstructorArgument("isRequired")]
         public bool IsRequired
         {
-            get { return _isRequired; }
+            get => _isRequired;
             set
             {
                 if (value == _isRequired)
+                {
                     return;
+                }
+
                 _isRequired = value;
                 OnPropertyChanged("IsRequired");
             }
@@ -129,7 +140,7 @@ namespace Supremacy.Scripting
         [ConstructorArgument("defaultValue")]
         public object DefaultValue
         {
-            get { return _defaultValue; }
+            get => _defaultValue;
             set
             {
                 _defaultValue = value;
@@ -140,34 +151,38 @@ namespace Supremacy.Scripting
         private void VerifyValid()
         {
             if (string.IsNullOrWhiteSpace(Name))
+            {
                 throw new InvalidOperationException("Parameter must have a valid Name.");
+            }
 
-            var defaultValue = DefaultValue;
+            object defaultValue = DefaultValue;
             if (!IsValidValue(ref defaultValue))
             {
                 if (IsRequired)
+                {
                     throw new InvalidOperationException("");
+                }
             }
         }
 
         public bool Equals(ScriptParameter other)
         {
-            if (ReferenceEquals(null, other))
+            if (other is null)
+            {
                 return false;
-            if (ReferenceEquals(this, other))
-                return true;
-            return Equals(other.Name, Name) && Equals(other.Type, Type);
+            }
+
+            return ReferenceEquals(this, other) ? true : Equals(other.Name, Name) && Equals(other.Type, Type);
         }
 
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj))
+            if (obj is null)
+            {
                 return false;
-            if (ReferenceEquals(this, obj))
-                return true;
-            if (obj.GetType() != typeof(ScriptParameter))
-                return false;
-            return Equals((ScriptParameter)obj);
+            }
+
+            return ReferenceEquals(this, obj) ? true : obj.GetType() != typeof(ScriptParameter) ? false : Equals((ScriptParameter)obj);
         }
 
         public override int GetHashCode()
@@ -184,9 +199,7 @@ namespace Supremacy.Scripting
 
         private void OnPropertyChanged(string propertyName)
         {
-            var handler = PropertyChanged;
-            if (handler != null)
-                handler(this, new PropertyChangedEventArgs(propertyName));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
         #endregion
 
@@ -201,18 +214,13 @@ namespace Supremacy.Scripting
         #endregion
 
         #region Implementation of ISupportInitializeNotification
-        public bool IsInitialized
-        {
-            get { throw new NotImplementedException(); }
-        }
+        public bool IsInitialized => throw new NotImplementedException();
 
         public event EventHandler Initialized;
 
         public void OnInitialized()
         {
-            var handler = Initialized;
-            if (handler != null)
-                handler(this, EventArgs.Empty);
+            Initialized?.Invoke(this, EventArgs.Empty);
         }
         #endregion
     }

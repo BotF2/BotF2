@@ -20,30 +20,11 @@ namespace Supremacy.UI
         #endregion
 
         #region Properties
-        public T OldValue
-        {
-            get
-            {
-                if (_baseArgs.OldValue == null)
-                    return default(T);
-                return (T)_baseArgs.OldValue;
-            }
-        }
+        public T OldValue => _baseArgs.OldValue == null ? default : (T)_baseArgs.OldValue;
 
-        public T NewValue
-        {
-            get
-            {
-                if (_baseArgs.NewValue == null)
-                    return default(T);
-                return (T)_baseArgs.NewValue;
-            }
-        }
+        public T NewValue => _baseArgs.NewValue == null ? default : (T)_baseArgs.NewValue;
 
-        public DependencyProperty Property
-        {
-            get { return _baseArgs.Property; }
-        }
+        public DependencyProperty Property => _baseArgs.Property;
         #endregion
     }
 }

@@ -1,4 +1,4 @@
-// StreamUtility.cs
+// File:StreamUtility.cs
 //
 // Copyright (c) 2007 Mike Strobel
 //
@@ -7,7 +7,6 @@
 //
 // All other rights reserved.
 
-using System.Diagnostics;
 using System.IO;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters;

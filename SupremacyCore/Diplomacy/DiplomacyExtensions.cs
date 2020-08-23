@@ -15,6 +15,7 @@ using Supremacy.Entities;
 using Supremacy.Game;
 
 using System.Linq;
+using Supremacy.Utility;
 
 namespace Supremacy.Diplomacy
 {
@@ -43,12 +44,12 @@ namespace Supremacy.Diplomacy
                 case ClauseType.TreatyDefensiveAlliance:
                 case ClauseType.TreatyFullAlliance:
                 case ClauseType.TreatyCeaseFire:
-                //case ClauseType.TreatyWarPact:
+                case ClauseType.TreatyWarPact:
                 case ClauseType.TreatyAffiliation:
                 case ClauseType.TreatyNonAggression:
                 case ClauseType.TreatyOpenBorders:
-                case ClauseType.TreatyResearchPact:
-                case ClauseType.TreatyTradePact:
+                //case ClauseType.TreatyResearchPact:
+                //case ClauseType.TreatyTradePact:
                     return true;
             }
             return false;
@@ -136,12 +137,13 @@ namespace Supremacy.Diplomacy
         }
 
         public static IProposal GetLastProposalSent(this Diplomat source, ICivIdentity civ)
-        {
+        {            
             if (source == null)
                 return null;
             var envoy = source.GetForeignPower(civ);
             if (envoy != null)
                 return envoy.LastProposalSent;
+            GameLog.Client.Diplomacy.DebugFormat("*** Get Last Proposal Sent ={0}, Counterparty {1}, Owner {2}", envoy.LastResponseSent.ToString(), envoy.Counterparty, envoy.Owner);
             return null;
         }
 
@@ -152,6 +154,7 @@ namespace Supremacy.Diplomacy
             var envoy = source.GetForeignPower(civ);
             if (envoy != null)
                 return envoy.LastProposalReceived;
+            GameLog.Client.Diplomacy.DebugFormat("*** Get Last Proposal Received ={0} Counterparty {1}, Owner {2}", envoy.LastResponseReceived.ToString(), envoy.Counterparty, envoy.Owner);
             return null;
         }
 
@@ -172,6 +175,25 @@ namespace Supremacy.Diplomacy
             var envoy = source.GetForeignPower(civ);
             if (envoy != null)
                 return envoy.LastResponseReceived;
+            return null;
+        }
+
+        public static Statement GetStatementSent(this Diplomat source, ICivIdentity civ)
+        {
+            if (source == null)
+                return null;
+            var envoy = source.GetForeignPower(civ);
+            if (envoy != null)
+                return envoy.StatementSent;
+            return null;
+        }
+        public static Statement GetLastStatementSent(this Diplomat source, ICivIdentity civ)
+        {
+            if (source == null)
+                return null;
+            var envoy = source.GetForeignPower(civ);
+            if (envoy != null)
+                return envoy.LastStatementSent;
             return null;
         }
 
@@ -414,15 +436,15 @@ namespace Supremacy.Diplomacy
                 where d.Status == ForeignPowerStatus.AtWar && d.CounterpartyID != source.OwnerID
                 select civilizations[d.CounterpartyID]);
 
-            if (includeProposal != null)
-            {
-                foreach (var clauses in includeProposal.Clauses.Where(o => o.ClauseType == ClauseType.RequestHonorMilitaryAgreement))
-                {
-                    var otherCiv = clauses.Data as Civilization;
-                    if (otherCiv != null)
-                        atWarWith.Remove(otherCiv);
-                }
-            }
+            //if (includeProposal != null)
+            //{
+            //    foreach (var clauses in includeProposal.Clauses.Where(o => o.ClauseType == ClauseType.RequestHonorMilitaryAgreement))
+            //    {
+            //        var otherCiv = clauses.Data as Civilization;
+            //        if (otherCiv != null)
+            //            atWarWith.Remove(otherCiv);
+            //    }
+            //}
 
             foreach (var civilization in atWarWith)
                 yield return civilization;
@@ -456,15 +478,15 @@ namespace Supremacy.Diplomacy
                 where d.Status == ForeignPowerStatus.AtWar && d.CounterpartyID != civ.CivID
                 select civilizations[d.CounterpartyID]);
 
-            if (includeProposal != null)
-            {
-                foreach (var clauses in includeProposal.Clauses.Where(o => o.ClauseType ==ClauseType.OfferHonorMilitaryAgreement))
-                {
-                    var otherCiv = clauses.Data as Civilization;
-                    if (otherCiv != null)
-                        atWarWith.Remove(otherCiv);
-                }
-            }
+            //if (includeProposal != null)
+            //{
+            //    foreach (var clauses in includeProposal.Clauses.Where(o => o.ClauseType ==ClauseType.OfferHonorMilitaryAgreement))
+            //    {
+            //        var otherCiv = clauses.Data as Civilization;
+            //        if (otherCiv != null)
+            //            atWarWith.Remove(otherCiv);
+            //    }
+            //}
 
             foreach (var civilization in atWarWith)
                 yield return civilization;

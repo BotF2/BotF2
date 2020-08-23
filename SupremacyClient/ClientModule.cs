@@ -1,3 +1,4 @@
+// File:ClientModule.cs
 // Copyright (c) 2009 Mike Strobel
 //
 // This source code is subject to the terms of the Microsoft Reciprocal License (Ms-RL).
@@ -25,7 +26,6 @@ using Supremacy.Game;
 using Supremacy.Messages;
 using Supremacy.Messaging;
 using Supremacy.Resources;
-using Supremacy.Scripting;
 using Supremacy.Types;
 using Supremacy.UI;
 using Supremacy.Utility;
@@ -62,8 +62,12 @@ namespace Supremacy.Client
         private readonly ISoundPlayer _soundPlayer;
 
         private readonly ClientOptionsDialog _optionsDialog;
+        private readonly ClientTracesDialog _tracesDialog;
+        private readonly FakeDialog _fakeDialog;
 
         private readonly DelegateCommand<object> _optionsCommand;
+        private readonly DelegateCommand<object> _tracesCommand;
+        private readonly DelegateCommand<object> _fakeCommand;
         private readonly DelegateCommand<object> _logTxtCommand;
         private readonly DelegateCommand<object> _errorTxtCommand;
         private readonly DelegateCommand<object> _startSinglePlayerGameCommand;
@@ -124,9 +128,16 @@ namespace Supremacy.Client
             _navigationCommands = _container.Resolve<INavigationCommandsProxy>();
 
             _optionsDialog = new ClientOptionsDialog();
-
             _optionsCommand = new DelegateCommand<object>(
                 ExecuteOptionsCommand);
+
+            _tracesDialog = new ClientTracesDialog();
+            _tracesCommand = new DelegateCommand<object>(
+                ExecuteTracesCommand);
+
+            _fakeDialog = new FakeDialog();
+            _fakeCommand = new DelegateCommand<object>(
+                ExecuteFakeCommand);
 
             _logTxtCommand = new DelegateCommand<object>(
                 ExecuteLogTxtCommand);
@@ -173,7 +184,18 @@ namespace Supremacy.Client
 
             //MessageDialog.Show(creditsPage, MessageDialogButtons.Close);
 
-            MessageDialog.Show("Please have a look to Credits.xaml !", MessageDialogButtons.Close);
+            //MessageDialog.Show("Please have a look to Credits.xaml !", MessageDialogButtons.Close);
+
+            string file = "Credits_for_Rise_of_the_UFP.pdf";
+            try
+            {
+                if (System.IO.File.Exists(file))
+                    System.Diagnostics.Process.Start(file);
+            }
+            catch
+            {
+                MessageDialog.Show("Please have a look to Credits.xaml !", MessageDialogButtons.Close);
+            }
         }
 
         private void ExecuteHostMultiplayerGameCommand(string playerName)
@@ -201,6 +223,16 @@ namespace Supremacy.Client
         private void ExecuteOptionsCommand(object obj)
         {
             _optionsDialog.ShowDialog();
+        }
+
+        private void ExecuteTracesCommand(object obj)
+        {
+            _tracesDialog.ShowDialog();
+        }
+
+        private void ExecuteFakeCommand(object obj)
+        {
+            _fakeDialog.ShowDialog();
         }
 
         private void ExecuteLogTxtCommand(object obj)
@@ -397,6 +429,7 @@ namespace Supremacy.Client
             _container.RegisterType<DiplomacyScreenViewModel>(new ExternallyControlledLifetimeManager());
             _container.RegisterType<ScienceScreenPresentationModel>(new ExternallyControlledLifetimeManager());
             _container.RegisterType<AssetsScreenPresentationModel>(new ExternallyControlledLifetimeManager());
+            _container.RegisterType<EncyclopediaScreenPresentationModel>(new ExternallyControlledLifetimeManager());
             _container.RegisterType<SystemAssaultScreenViewModel>(new ContainerControlledLifetimeManager());
 
             _container.RegisterType<IGalaxyScreenView, GalaxyScreenView>(new ExternallyControlledLifetimeManager());
@@ -405,6 +438,7 @@ namespace Supremacy.Client
             _container.RegisterType<IScienceScreenView, ResearchScreen>(new ExternallyControlledLifetimeManager());
            // _container.RegisterType<IIntelScreenView, IntelScreen>(new ExternallyControlledLifetimeManager());
             _container.RegisterType<IAssetsScreenView, AssetsScreen>(new ExternallyControlledLifetimeManager());
+            _container.RegisterType<IEncyclopediaScreenView, EncyclopediaScreen>(new ExternallyControlledLifetimeManager());
             _container.RegisterType<ILobbyScreenView, MultiplayerLobby>(new ContainerControlledLifetimeManager());
             _container.RegisterType<ISystemAssaultScreenView, SystemAssaultScreen>(new ContainerControlledLifetimeManager());
 
@@ -413,6 +447,8 @@ namespace Supremacy.Client
             _container.RegisterType<IDiplomacyScreenPresenter, DiplomacyScreenPresenter>(new ExternallyControlledLifetimeManager());
             _container.RegisterType<IScienceScreenPresenter, ScienceScreenPresenter>(new ExternallyControlledLifetimeManager());
             _container.RegisterType<IAssetsScreenPresenter, AssetsScreenPresenter>(new ExternallyControlledLifetimeManager());
+            //_container.RegisterType<IScienceScreenPresenter, EncyclodepiaScreenPresenter>(new ExternallyControlledLifetimeManager());
+            _container.RegisterType<IEncyclopediaScreenPresenter, EncyclopediaScreenPresenter>(new ExternallyControlledLifetimeManager());
 
             _regionViewRegistry.RegisterViewWithRegion(ClientRegions.GameScreens, StandardGameScreens.MenuScreen, typeof(MenuScreen));
             _regionViewRegistry.RegisterViewWithRegion(ClientRegions.GameScreens, StandardGameScreens.MultiplayerLobby, typeof(ILobbyScreenView));
@@ -420,13 +456,15 @@ namespace Supremacy.Client
             // first is first shown in Options
             _regionViewRegistry.RegisterViewWithRegion(ClientRegions.OptionsPages, typeof(AllOptionsPage));
             //_regionViewRegistry.RegisterViewWithRegion(ClientRegions.OptionsPages, typeof(SecondOptionsPage));
-            _regionViewRegistry.RegisterViewWithRegion(ClientRegions.OptionsPages, typeof(TracesOptionsPage));
+            //_regionViewRegistry.RegisterViewWithRegion(ClientRegions.OptionsPages, typeof(TracesOptionsPage));   // moved into own Dialog
+            _regionViewRegistry.RegisterViewWithRegion(ClientRegions.TracesPages, typeof(TracesOptionsPage));
+            _regionViewRegistry.RegisterViewWithRegion(ClientRegions.FakeDialog, typeof(FakeDialog));
             //_regionViewRegistry.RegisterViewWithRegion(ClientRegions.OptionsPages, typeof(AudioOptionsPage));   // remove outcomment to be shown again
             //_regionViewRegistry.RegisterViewWithRegion(ClientRegions.OptionsPages, typeof(GraphicsOptionsPage));  // remove outcomment to be shown again
             //_regionViewRegistry.RegisterViewWithRegion(ClientRegions.OptionsPages, typeof(GeneralOptionsPage));
             //_regionViewRegistry.RegisterViewWithRegion(ClientRegions.OptionsPages, typeof(AllOptionsPage));
 
-           // _regionViewRegistry.RegisterViewWithRegion(AssetsScreenRegions.SpyList, typeof(SpyListView)); // keep it simple for now
+            // _regionViewRegistry.RegisterViewWithRegion(AssetsScreenRegions.SpyList, typeof(SpyListView)); // keep it simple for now
             //_regionViewRegistry.RegisterViewWithRegion(AssetsScreenRegions.EmpireOverview, typeof(EmpireInfoView));
             //_regionViewRegistry.RegisterViewWithRegion(AssetsScreenRegions.EmpireResources, typeof(EmpireResourcesView));
             //_regionViewRegistry.RegisterViewWithRegion(AssetsScreenRegions.GalaxyGrid, typeof(GalaxyGridView));
@@ -457,6 +495,7 @@ namespace Supremacy.Client
             _regionViewRegistry.RegisterViewWithRegion(ColonyScreenRegions.ShipyardBuildList, ColonyScreenRegions.ShipyardBuildList, typeof(ColonyShipyardBuildListView));
             _regionViewRegistry.RegisterViewWithRegion(ColonyScreenRegions.SelectedShipyardBuildProjectInfo, ColonyScreenRegions.SelectedShipyardBuildProjectInfo, typeof(ColonyBuildProjectInfoView));
             _regionViewRegistry.RegisterViewWithRegion(ColonyScreenRegions.StructureList, ColonyScreenRegions.StructureList, typeof(ColonyStructureListView));
+            _regionViewRegistry.RegisterViewWithRegion(ColonyScreenRegions.HandlingList, ColonyScreenRegions.HandlingList, typeof(ColonyHandlingListView));
         }
 
         private void RegisterEventHandlers()
@@ -623,6 +662,8 @@ namespace Supremacy.Client
             bool gameControllerExists = (Interlocked.CompareExchange(ref _gameController, null, null) != null);
 
             _optionsCommand.IsActive = true;
+            _tracesCommand.IsActive = true;
+            _fakeCommand.IsActive = true;
             _logTxtCommand.IsActive = true;
             _errorTxtCommand.IsActive = true;
             _showCreditsDialogCommand.IsActive = true;
@@ -783,6 +824,8 @@ namespace Supremacy.Client
         private void RegisterCommandHandlers()
         {
             ClientCommands.OptionsCommand.RegisterCommand(_optionsCommand);
+            ClientCommands.TracesCommand.RegisterCommand(_tracesCommand);
+            ClientCommands.FakeCommand.RegisterCommand(_fakeCommand);
             ClientCommands.LogTxtCommand.RegisterCommand(_logTxtCommand);
             ClientCommands.ErrorTxtCommand.RegisterCommand(_errorTxtCommand);
             ClientCommands.StartSinglePlayerGame.RegisterCommand(_startSinglePlayerGameCommand);

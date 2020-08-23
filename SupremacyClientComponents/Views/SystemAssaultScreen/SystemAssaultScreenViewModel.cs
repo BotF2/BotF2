@@ -67,7 +67,10 @@ namespace Supremacy.Client.Views
                 return _designInstance;
             }
         }
-
+        //internal override void RaisePropertyChangedEvent(string v)
+        //{
+        //    // do nothing here
+        //}
         private readonly StateManager<SystemAssaultScreenState> _stateManager;
 
         private readonly DelegateCommand<InvasionUnit> _standbyOrderCommand;
@@ -603,9 +606,9 @@ namespace Supremacy.Client.Views
 
                     // 
                 }
-                catch
+                catch (Exception e)
                 {
-                    //GroundCombatOdds = 99;
+                    GameLog.Client.SystemAssault.DebugFormat("Exception {0} {1}", e.Message, e.StackTrace);
                 }
 
                 //GroundCombatOddsValue = GroundCombatOddsValue / 100;

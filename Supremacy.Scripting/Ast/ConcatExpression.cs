@@ -32,9 +32,10 @@ namespace Supremacy.Scripting.Ast
         {
             base.CloneTo(cloneContext, target);
 
-            var clone = target as ConcatExpression;
-            if (clone == null)
+            if (!(target is ConcatExpression clone))
+            {
                 return;
+            }
 
             clone._arguments = _arguments.Clone(cloneContext);
         }
@@ -49,15 +50,13 @@ namespace Supremacy.Scripting.Ast
             //
             // Constant folding
             //
-            var sc = operand as ConstantExpression<string>;
-            if (sc != null)
+            if (operand is ConstantExpression<string> sc)
             {
                 if (_arguments.Count != 0)
                 {
-                    var lastArgument = _arguments[_arguments.Count - 1];
-                    var lastExprConstant = lastArgument.Value as ConstantExpression<string>;
+                    Argument lastArgument = _arguments[_arguments.Count - 1];
 
-                    if (lastExprConstant != null)
+                    if (lastArgument.Value is ConstantExpression<string> lastExprConstant)
                     {
                         lastArgument.Value = new ConstantExpression<string>(
                             lastExprConstant.Value + sc.Value,
@@ -72,18 +71,17 @@ namespace Supremacy.Scripting.Ast
                 //
                 // Multiple (3+) concatenation are resolved as multiple StringConcat instances
                 //
-                var concatOper = operand as ConcatExpression;
-                if (concatOper != null)
+                if (operand is ConcatExpression concatOper)
                 {
                     _arguments.AddRange(concatOper._arguments);
                     return;
                 }
             }
 
-            _arguments.Add(new Argument(operand));
+            _ = _arguments.Add(new Argument(operand));
         }
 
-		public override MSAst.Expression TransformCore (ScriptGenerator generator)
+        public override MSAst.Expression TransformCore(ScriptGenerator generator)
 		{
             //if (_arguments.Count != 2)
             //    throw new InvalidOperationException("arguments.Count != 2");
@@ -101,15 +99,23 @@ namespace Supremacy.Scripting.Ast
         public override void Dump(SourceWriter sw, int indentChange)
         {
             int i = 0;
-            foreach (var argument in _arguments)
+            foreach (Argument argument in _arguments)
             {
                 if (i++ != 0)
+                {
                     sw.Write(" + ");
+                }
+
                 if (!argument.Value.IsPrimaryExpression)
+                {
                     sw.Write("(");
+                }
+
                 DumpChild(argument.Value, sw, indentChange);
                 if (!argument.Value.IsPrimaryExpression)
+                {
                     sw.Write(")");
+                }
             }
         }
     }

@@ -91,9 +91,9 @@ namespace Supremacy.UI
                 CurrentFrame,
                 CurrentFrame + 255,
                 new Duration(new TimeSpan(0, 0, 30)))
-                    {
-                        RepeatBehavior = RepeatBehavior.Forever
-                    };
+            {
+                RepeatBehavior = RepeatBehavior.Forever
+            };
 
             _animationClock = _animation.CreateClock();
 
@@ -105,38 +105,46 @@ namespace Supremacy.UI
         #region Properties
         public int CurrentFrame
         {
-            get { return (int)GetValue(CurrentFrameProperty); }
-            private set { SetValue(CurrentFrameProperty, value); }
+            get => (int)GetValue(CurrentFrameProperty);
+            private set => SetValue(CurrentFrameProperty, value);
         }
 
-        protected override int VisualChildrenCount
-        {
-            get { return 1; }
-        }
+        protected override int VisualChildrenCount => 1;
         #endregion
 
         #region IAnimationsHost Members
         public void PauseAnimations()
         {
             if (!_animationClock.IsPaused && _animationClock.Controller != null)
+            {
                 _animationClock.Controller.Pause();
+            }
         }
 
         public void ResumeAnimations()
         {
             if (_animationClock.Controller == null)
+            {
                 return;
+            }
 
             if (_animationClock.CurrentState == ClockState.Stopped)
+            {
                 _animationClock.Controller.Begin();
+            }
+
             if (_animationClock.IsPaused)
+            {
                 _animationClock.Controller.Resume();
+            }
         }
 
         public void StopAnimations()
         {
             if (_animationClock.Controller == null)
+            {
                 return;
+            }
 
             _animationClock.Controller.Pause();
             _animationClock.Controller.Remove();
@@ -153,17 +161,23 @@ namespace Supremacy.UI
 
         private void OnLoaded(object sender, RoutedEventArgs e)
         {
-            if (ClientSettings.Current.EnableAnimation)  
+            if (ClientSettings.Current.EnableAnimation)
+            {
                 StartAnimations();
+            }
         }
 
         private void StartAnimations()
         {
             if (!HasAnimatedProperties)
+            {
                 ApplyAnimationClock(CurrentFrameProperty, _animationClock);
+            }
 
-            if(ClientSettings.Current.EnableAnimation)
+            if (ClientSettings.Current.EnableAnimation)
+            {
                 ResumeAnimations();
+            }
         }
 
         protected override Size ArrangeOverride(Size finalSize)
@@ -187,9 +201,14 @@ namespace Supremacy.UI
         {
             base.OnPropertyChanged(e);
             if (e.Property != CurrentFrameProperty)
+            {
                 return;
+            }
+
             if (IsVisible)
+            {
                 _imageBrush.ImageSource = Frames[(int)e.NewValue % 255];
+            }
         }
         #endregion
     }

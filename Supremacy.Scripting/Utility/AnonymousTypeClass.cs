@@ -10,27 +10,22 @@ namespace Supremacy.Scripting.Utility
     internal class AnonymousTypeClass
     {
         private readonly Dictionary<string, FieldInfo> _fieldLookup;
-        private readonly Type _type;
 
         public AnonymousTypeClass(AnonymousObjectInitializer initializer, Type type)
         {
             if (initializer == null)
+            {
                 throw new ArgumentNullException("initializer");
+            }
 
-            _type = type;
+            Type = type;
             _fieldLookup = initializer.MemberDeclarators.ToDictionary(
                 o => o.Name,
                 o => type.GetField(o.Name));
         }
 
-        public Type Type
-        {
-            get { return _type; }
-        }
+        public Type Type { get; }
 
-        public MemberInfo this[string name]
-        {
-            get { return _fieldLookup[name]; }
-        }
+        public MemberInfo this[string name] => _fieldLookup[name];
     }
 }

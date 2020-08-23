@@ -4,10 +4,6 @@ namespace Supremacy.Xna
 {
     public class Camera
     {
-        /// <summary>
-        /// A global projection matrix since it never changes
-        /// </summary>
-        private readonly Matrix _projection;
 
         /// <summary>
         /// A global view matrix since it never changes
@@ -19,20 +15,17 @@ namespace Supremacy.Xna
         /// </summary>
         private Vector3 _viewPosition;
 
-        public Matrix Projection
-        {
-            get { return _projection; }
-        }
+        public Matrix Projection { get; }
 
         public Matrix View
         {
-            get { return _view; }
-            set { _view = value; }
+            get => _view;
+            set => _view = value;
         }
 
         public Vector3 ViewPosition
         {
-            get { return _viewPosition; }
+            get => _viewPosition;
             set
             {
                 _viewPosition = value;
@@ -42,12 +35,12 @@ namespace Supremacy.Xna
 
         public Camera(Matrix projection)
         {
-            _projection = projection;
+            Projection = projection;
         }
 
         public Camera(float fov, float aspectRatio, float nearPlane, float farPlane)
         {
-            _projection = Matrix.CreatePerspectiveFieldOfView(fov, aspectRatio, nearPlane, farPlane);
+            Projection = Matrix.CreatePerspectiveFieldOfView(fov, aspectRatio, nearPlane, farPlane);
         }
     }
 }

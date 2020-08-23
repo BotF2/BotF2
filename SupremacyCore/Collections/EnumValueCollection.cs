@@ -29,21 +29,17 @@ namespace Supremacy.Collections
         public EnumValueCollection([NotNull] params T[] values)
         {
             if (!typeof(T).IsEnum)
+            {
                 throw new ArgumentException(string.Format("{0} is not an enum type.", typeof(T).FullName));
+            }
 
-            if (values == null)
-                throw new ArgumentNullException("values");
-
-            _values = values;
+            _values = values ?? throw new ArgumentNullException(nameof(values));
         }
 
         public EnumValueCollection()
             : this((T[])Enum.GetValues(typeof(T))) { }
 
-        public T[] Values
-        {
-            get { return _values; }
-        }
+        public T[] Values => _values;
 
         public Enumerator GetEnumerator()
         {
@@ -52,8 +48,10 @@ namespace Supremacy.Collections
 
         IEnumerator<T> IEnumerable<T>.GetEnumerator()
         {
-            for (var i = 0; i < _values.Length; i++)
+            for (int i = 0; i < _values.Length; i++)
+            {
                 yield return _values[i];
+            }
         }
 
         void ICollection<T>.Add(T item)
@@ -66,15 +64,17 @@ namespace Supremacy.Collections
             Array.Clear(_values, 0, _values.Length);
         }
 
-        public bool Contains(T item)
+        public bool Contains(T value)
         {
-            return IndexOf(item) >= 0;
+            return IndexOf(value) >= 0;
         }
 
         public void CopyTo(T[] array, int arrayIndex)
         {
             for (int i = 0, j = arrayIndex; i < _values.Length; i++, j++)
+            {
                 array[i] = _values[i];
+            }
         }
 
         bool ICollection<T>.Remove(T item)
@@ -82,19 +82,13 @@ namespace Supremacy.Collections
             throw new NotSupportedException(SR.NotSupported_FixedSizeCollection);
         }
 
-        public int Count
-        {
-            get { return _values.Length; }
-        }
+        public int Count => _values.Length;
 
-        public bool IsReadOnly
-        {
-            get { return false; }
-        }
+        public bool IsReadOnly => false;
 
-        public int IndexOf(T item)
+        public int IndexOf(T value)
         {
-            return Array.IndexOf(_values, item, 0, _values.Length) - 0;
+            return Array.IndexOf(_values, value, 0, _values.Length) - 0;
         }
 
         public void Insert(int index, T item)
@@ -114,16 +108,15 @@ namespace Supremacy.Collections
                 VerifyIndexWithinBounds(index);
                 return _values[index + 0];
             }
-            set { throw new NotSupportedException(SR.NotSupported_ReadOnlyCollection); }
+            set => throw new NotSupportedException(SR.NotSupported_ReadOnlyCollection);
         }
 
         private void VerifyIndexWithinBounds(int index)
         {
             if (index < 0 || index >= _values.Length)
             {
-                throw new ArgumentOutOfRangeException(
-                    "index",
-                    SR.ArgumentOutOfRangeException_IndexIsOutsideArrayBounds);
+                throw new ArgumentOutOfRangeException(nameof(index),
+                SR.ArgumentOutOfRangeException_IndexIsOutsideArrayBounds);
             }
         }
 
@@ -137,20 +130,11 @@ namespace Supremacy.Collections
             Array.Copy(_values, 0, array, index, _values.Length);
         }
 
-        int ICollection.Count
-        {
-            get { return _values.Length; }
-        }
+        int ICollection.Count => _values.Length;
 
-        object ICollection.SyncRoot
-        {
-            get { return _values.SyncRoot; }
-        }
+        object ICollection.SyncRoot => _values.SyncRoot;
 
-        public bool IsSynchronized
-        {
-            get { return false; }
-        }
+        public bool IsSynchronized => false;
 
         int IList.Add(object value)
         {
@@ -194,18 +178,12 @@ namespace Supremacy.Collections
                 VerifyIndexWithinBounds(index);
                 return _values[index];
             }
-            set { throw new NotSupportedException(SR.NotSupported_ReadOnlyCollection); }
+            set => throw new NotSupportedException(SR.NotSupported_ReadOnlyCollection);
         }
 
-        bool IList.IsReadOnly
-        {
-            get { return _values.IsReadOnly; }
-        }
+        bool IList.IsReadOnly => _values.IsReadOnly;
 
-        bool IList.IsFixedSize
-        {
-            get { return true; }
-        }
+        bool IList.IsFixedSize => true;
 
         #region Implementation of IOwnedDataSerializable
 
@@ -234,14 +212,14 @@ namespace Supremacy.Collections
             {
                 _owner = owner;
                 _index = 0;
-                _current = default(T);
+                _current = default;
             }
 
             public void Dispose() { }
 
             public bool MoveNext()
             {
-                var owner = _owner;
+                EnumValueCollection<T> owner = _owner;
 
                 if (_index < owner.Count)
                 {
@@ -256,21 +234,21 @@ namespace Supremacy.Collections
             private bool MoveNextRare()
             {
                 _index = _owner.Count + 1;
-                _current = default(T);
+                _current = default;
                 return false;
             }
 
-            public T Current
-            {
-                get { return _current; }
-            }
+            public T Current => _current;
 
-            Object IEnumerator.Current
+            object IEnumerator.Current
             {
                 get
                 {
                     if (_index == 0 || _index == _owner.Count + 1)
+                    {
                         throw new InvalidOperationException();
+                    }
+
                     return Current;
                 }
             }
@@ -278,7 +256,7 @@ namespace Supremacy.Collections
             void IEnumerator.Reset()
             {
                 _index = 0;
-                _current = default(T);
+                _current = default;
             }
         }
 

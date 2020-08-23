@@ -1,0 +1,60 @@
+﻿<!--  File:FakeDialog.xaml
+  
+   Copyright (c) 2007 Mike Strobel - All other rights reserved.
+  
+   This source code is subject to the terms of the Microsoft Reciprocal License (Ms-RL).
+   For details, see <http://www.opensource.org/licenses/ms-rl.html>.   -->
+    
+    <!--This window is just for updating other windows without any other use ... 
+    ...just getting focus and giving focus back to other windows-->
+
+<scc:Dialog x:Class="Supremacy.Client.FakeDialog"
+            xmlns="http://schemas.microsoft.com/netfx/2007/xaml/presentation"
+            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+            xmlns:local="clr-namespace:Supremacy.Client"
+            xmlns:s="clr-namespace:Supremacy.Client;assembly=SupremacyWPF"
+            xmlns:scc="http://schemas.startreksupremacy.com/xaml/presentation"
+            xmlns:cal="http://www.codeplex.com/CompositeWPF"
+            Width="280"
+            Height="180"
+            Header="Fake Dialog"
+            HasBorder="False"
+            Background="Transparent"
+            SnapsToDevicePixels="True">
+    <DockPanel LastChildFill="True">
+        <StackPanel DockPanel.Dock="Bottom"
+                Margin="0,12,0,0"
+                Orientation="Horizontal"
+                HorizontalAlignment="Center">
+            <Button x:Name="AcceptButton"
+              Command="{x:Static local:GenericCommands.AcceptCommand}"
+              Style="{DynamicResource LCARS_StandardButtonStyle}"
+              IsCancel="True"
+              Margin="0,0,6,0">
+                <AccessText Text="{s:StringResource SETTINGS_JUST_CLOSE}" />
+            </Button>
+            <!-- CANCEL makes trouble while running out of Visual Studio ....
+        <Button x:Name="CancelButton"
+              Command="{x:Static local:GenericCommands.CancelCommand}"
+              Style="{DynamicResource LCARS_StandardButtonStyle}"
+              IsCancel="True"
+              Margin="0,0,0,0">
+        <AccessText Text="{s:StringResource SETTINGS_CANCEL}" />
+      </Button>-->
+        </StackPanel>
+
+        <TextBlock Text="PRESS   ESCAPE" HorizontalAlignment="Center"/>
+        <!--<TabControl x:Name="FakeDialogRegion"
+                cal:RegionManager.RegionName="{x:Static scc:ClientRegions.OptionsPages}">
+            <TabControl.ItemContainerStyle>
+                <Style TargetType="{x:Type TabItem}" BasedOn="{StaticResource {x:Type TabItem}}">
+                    <Setter Property="Header"
+                  Value="{Binding Path=(scc:IClientOptionsPage.Header)}" />                            
+                            --><!--Value="FakeDialog" />"--><!--
+
+                </Style>
+            </TabControl.ItemContainerStyle>
+        </TabControl>-->
+
+    </DockPanel>
+</scc:Dialog>

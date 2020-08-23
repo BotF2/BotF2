@@ -11,33 +11,38 @@ namespace Supremacy.Scripting.Ast
         public void AddVariableMap(Parameter from, Parameter to)
         {
             if (_variableMap == null)
+            {
                 _variableMap = new Dictionary<Parameter, Parameter>();
+            }
 
-            Parameter existingClone;
 
-            if (_variableMap.TryGetValue(from, out existingClone) && existingClone != to)
+            if (_variableMap.TryGetValue(from, out Parameter existingClone) && existingClone != to)
+            {
                 throw new ArgumentException("AddVariableMap: tried to map a variable that has already been mapped.", "from");
+            }
 
             _variableMap[from] = to;
         }
 
         public void AddBlockMap(Scope from, Scope to)
         {
-            Scope existingClone;
 
-            if (_scopeMap.TryGetValue(from, out existingClone) && existingClone != to)
+            if (_scopeMap.TryGetValue(from, out Scope existingClone) && existingClone != to)
+            {
                 throw new ArgumentException("AddBlockMap: tried to map a block that has already been mapped.", "from");
+            }
 
             _scopeMap[from] = to;
         }
 
         public Scope LookupBlock(Scope from)
         {
-            Scope result;
 
-            if (_scopeMap.TryGetValue(from, out result))
+            if (_scopeMap.TryGetValue(from, out Scope result))
+            {
                 return result;
-            
+            }
+
             result = from.Clone<Scope>(this);
             _scopeMap[from] = result;
             
@@ -49,16 +54,16 @@ namespace Supremacy.Scripting.Ast
         /// </summary>
         public Scope RemapBlockCopy(Scope from)
         {
-            Scope clone;
-            return _scopeMap.TryGetValue(from, out clone) ? clone : from;
+            return _scopeMap.TryGetValue(from, out Scope clone) ? clone : from;
         }
 
         public Parameter LookupVariable(Parameter from)
         {
-            Parameter result;
-            
-            if (!_variableMap.TryGetValue(from, out result))
+
+            if (!_variableMap.TryGetValue(from, out Parameter result))
+            {
                 throw new ArgumentException("LookupVariable: looking up a variable that has not been registered yet.");
+            }
 
             return result;
         }

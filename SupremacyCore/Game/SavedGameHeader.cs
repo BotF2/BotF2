@@ -1,3 +1,4 @@
+// File:SavedGameHeader.cs
 // Copyright (c) 2007 Mike Strobel
 //
 // This source code is subject to the terms of the Microsoft Reciprocal License (Ms-RL).
@@ -210,6 +211,13 @@ namespace Supremacy.Game
                 header.SlotClaims[i] = (SlotClaim)reader.ReadByte();
                 header.SlotStatus[i] = (SlotStatus)reader.ReadByte();
             }
+
+            string _text = "   "
+                /*+ Environment.NewLine*/ + ";Turn;" + header.TurnNumber
+                /*+ Environment.NewLine*/ + ";GameVersion;" + header.GameVersion
+                /*+ Environment.NewLine + ";FileName   ;" + reader.   --- no filename available here*/
+                ;
+            GameLog.Client.SaveLoad.DebugFormat(_text);
 
             return header;
         }

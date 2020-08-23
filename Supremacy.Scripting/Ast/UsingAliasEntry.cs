@@ -11,10 +11,10 @@ namespace Supremacy.Scripting.Ast
         public UsingEntry Clone(CloneContext cloneContext)
         {
             return new UsingEntry
-                   {
-                       Name = Ast.Clone(cloneContext, Name),
-                       Resolved = Ast.Clone(cloneContext, Resolved)
-                   };
+            {
+                Name = Ast.Clone(cloneContext, Name),
+                Resolved = Ast.Clone(cloneContext, Resolved)
+            };
         }
 
         public string GetSignatureForError()
@@ -30,13 +30,13 @@ namespace Supremacy.Scripting.Ast
         public virtual FullNamedExpression Resolve(ParseContext rc)
         {
             if (Resolved != null)
+            {
                 return Resolved as NamespaceExpression;
+            }
 
-            var memberAccess = Name as MemberAccessExpression;
-            if (memberAccess != null)
-                Resolved = memberAccess.ResolveNamespaceOrType(rc, false);
-            else
-                Resolved = Name.Resolve(rc) as FullNamedExpression;
+            Resolved = Name is MemberAccessExpression memberAccess
+                ? memberAccess.ResolveNamespaceOrType(rc, false)
+                : Name.Resolve(rc) as FullNamedExpression;
 
             if (Resolved == null)
             {
@@ -59,10 +59,14 @@ namespace Supremacy.Scripting.Ast
         public override FullNamedExpression Resolve(ParseContext rc)
         {
             if (Resolved != null || Name == null)
+            {
                 return Resolved;
+            }
 
             if (rc == null)
+            {
                 return null;
+            }
 
             base.Resolve(rc);
             
@@ -73,7 +77,9 @@ namespace Supremacy.Scripting.Ast
             }
 
             if (Resolved is TypeExpression)
+            {
                 Resolved = Resolved.ResolveAsBaseTerminal(rc, false);
+            }
 
             return Resolved;
         }

@@ -17,7 +17,7 @@ namespace Supremacy.Client
         public static void UpdateJumpList()
         {
             //works    GameLog.Print("UpdateJumpList (List of saved games)");
-            var savedGames = (
+            System.Collections.Generic.List<SavedGameHeader> savedGames = (
                                  from savedGame in SavedGameManager.FindSavedGames()
                                  let file = SavedGameManager.GetSavedGameFile(savedGame)
                                  where file.Exists
@@ -27,7 +27,7 @@ namespace Supremacy.Client
                 .Take(10)
                 .ToList();
 
-            var jumpListCreated = false;
+            bool jumpListCreated = false;
             JumpList jumpList = null;
 
             _ = Application.Current.Dispatcher.Invoke(
@@ -45,12 +45,12 @@ namespace Supremacy.Client
                 jumpList.JumpItems.Clear();
             }
 
-            var entryExe = typeof(ClientModule).Assembly.Location;
+            string entryExe = typeof(ClientModule).Assembly.Location;
 
-            var singlePlayerCategory = ResourceManager.GetString("SAVED_SINGLE_PLAYER_GAMES_CATEGORY");
-            var multiplayerCategory = ResourceManager.GetString("SAVED_MULTIPLAYER_GAMES_CATEGORY");
-            var singlePlayerDescription = ResourceManager.GetString("SAVED_SINGLE_PLAYER_GAME_DESCRIPTION");
-            var multiplayerDescription = ResourceManager.GetString("SAVED_MULTIPLAYER_GAME_DESCRIPTION");
+            string singlePlayerCategory = ResourceManager.GetString("SAVED_SINGLE_PLAYER_GAMES_CATEGORY");
+            string multiplayerCategory = ResourceManager.GetString("SAVED_MULTIPLAYER_GAMES_CATEGORY");
+            string singlePlayerDescription = ResourceManager.GetString("SAVED_SINGLE_PLAYER_GAME_DESCRIPTION");
+            string multiplayerDescription = ResourceManager.GetString("SAVED_MULTIPLAYER_GAME_DESCRIPTION");
 
             var iconFiles = savedGames
                 .Select(o => o.LocalPlayerEmpireName)
@@ -58,7 +58,7 @@ namespace Supremacy.Client
                 .Select(o => new { EmpireName = o, IconFile = FindEmpireShellIcon(o) })
                 .ToDictionary(o => o.EmpireName);
 
-            foreach (var savedGame in savedGames)
+            foreach (SavedGameHeader savedGame in savedGames)
             {
                 AddToJumpList(
                     jumpList,
@@ -126,11 +126,13 @@ namespace Supremacy.Client
                 string iconFile;
 
                 if (empireName == null)
+                {
                     empireName = "Default";
+                }
 
-                var empireIconFile = empireName + ".ico";
+                string empireIconFile = empireName + ".ico";
 
-                var currentMod = ResourceManager.CurrentMod;
+                GameMod currentMod = ResourceManager.CurrentMod;
 
                 //if (currentMod == null)   // just says whether "command line argument MOD" or not or similar
                 //    GameLog.Print("currentMod == null");
@@ -142,13 +144,17 @@ namespace Supremacy.Client
                     GameLog.Client.General.DebugFormat("{0} is used out of {1}...maybe check \\Resources\\Shell", empireIconFile, iconDirectory);
 
                     if (File.Exists(iconFile))
+                    {
                         return iconFile;
+                    }
                 }
 
                 iconFile = Path.Combine(PathHelper.GetWorkingDirectory(), iconDirectory, empireIconFile);
 
                 if (File.Exists(iconFile))
+                {
                     return iconFile;
+                }
 
                 if (currentMod != null)
                 {
@@ -157,13 +163,17 @@ namespace Supremacy.Client
                     GameLog.Client.General.DebugFormat("defaultIcon {0} is used ...maybe check \\Resources\\Shell", defaultIconName);
                     
                     if (File.Exists(iconFile))
+                    {
                         return iconFile;
+                    }
                 }
 
                 iconFile = Path.Combine(PathHelper.GetWorkingDirectory(), iconDirectory, defaultIconName);
 
                 if (File.Exists(iconFile))
+                {
                     return iconFile;
+                }
             }
             catch (Exception e)
             {

@@ -21,15 +21,15 @@ namespace Supremacy.UI
 
         public NumericUpDown()
         {
-            updateValueString();
+            UpdateValueString();
         }
 
         #region Properties
         #region Value
         public decimal Value
         {
-            get { return (decimal)GetValue(ValueProperty); }
-            set { SetValue(ValueProperty, value); }
+            get => (decimal)GetValue(ValueProperty);
+            set => SetValue(ValueProperty, value);
         }
 
         /// <summary>
@@ -57,7 +57,7 @@ namespace Supremacy.UI
 
             control.OnValueChanged(e);
 
-            control.updateValueString();
+            control.UpdateValueString();
         }
 
         /// <summary>
@@ -75,7 +75,7 @@ namespace Supremacy.UI
             NumericUpDown control = (NumericUpDown)element;
 
             newValue = Math.Max(control.Minimum, Math.Min(control.Maximum, newValue));
-            newValue = Decimal.Round(newValue, control.DecimalPlaces);
+            newValue = decimal.Round(newValue, control.DecimalPlaces);
 
             return newValue;
         }
@@ -83,8 +83,8 @@ namespace Supremacy.UI
         #region Minimum
         public decimal Minimum
         {
-            get { return (decimal)GetValue(MinimumProperty); }
-            set { SetValue(MinimumProperty, value); }
+            get => (decimal)GetValue(MinimumProperty);
+            set => SetValue(MinimumProperty, value);
         }
 
         public static readonly DependencyProperty MinimumProperty =
@@ -104,14 +104,14 @@ namespace Supremacy.UI
         {
             decimal minimum = (decimal)value;
             NumericUpDown control = (NumericUpDown)element;
-            return Decimal.Round(minimum, control.DecimalPlaces);
+            return decimal.Round(minimum, control.DecimalPlaces);
         }
         #endregion
         #region Maximum
         public decimal Maximum
         {
-            get { return (decimal)GetValue(MaximumProperty); }
-            set { SetValue(MaximumProperty, value); }
+            get => (decimal)GetValue(MaximumProperty);
+            set => SetValue(MaximumProperty, value);
         }
 
         public static readonly DependencyProperty MaximumProperty =
@@ -138,8 +138,8 @@ namespace Supremacy.UI
         #region Change
         public decimal Change
         {
-            get { return (decimal)GetValue(ChangeProperty); }
-            set { SetValue(ChangeProperty, value); }
+            get => (decimal)GetValue(ChangeProperty);
+            set => SetValue(ChangeProperty, value);
         }
 
         public static readonly DependencyProperty ChangeProperty =
@@ -172,13 +172,13 @@ namespace Supremacy.UI
             //previous Change
             if (coercedNewChange < newChange)
             {
-                coercedNewChange = smallestForDecimalPlaces(control.DecimalPlaces);
+                coercedNewChange = SmallestForDecimalPlaces(control.DecimalPlaces);
             }
 
             return coercedNewChange;
         }
 
-        private static decimal smallestForDecimalPlaces(int decimalPlaces)
+        private static decimal SmallestForDecimalPlaces(int decimalPlaces)
         {
             if (decimalPlaces < 0)
             {
@@ -199,8 +199,8 @@ namespace Supremacy.UI
         #region DecimalPlaces
         public int DecimalPlaces
         {
-            get { return (int)GetValue(DecimalPlacesProperty); }
-            set { SetValue(DecimalPlacesProperty, value); }
+            get => (int)GetValue(DecimalPlacesProperty);
+            set => SetValue(DecimalPlacesProperty, value);
         }
 
         public static readonly DependencyProperty DecimalPlacesProperty =
@@ -218,7 +218,7 @@ namespace Supremacy.UI
             control.CoerceValue(MinimumProperty);
             control.CoerceValue(MaximumProperty);
             control.CoerceValue(ValueProperty);
-            control.updateValueString();
+            control.UpdateValueString();
         }
 
         private static bool ValidateDecimalPlaces(object value)
@@ -230,26 +230,20 @@ namespace Supremacy.UI
         #endregion
 
         #region ValueString
-        public string ValueString
-        {
-            get
-            {
-                return (string)GetValue(ValueStringProperty);
-            }
-        }
+        public string ValueString => (string)GetValue(ValueStringProperty);
 
         private static readonly DependencyPropertyKey ValueStringPropertyKey =
             DependencyProperty.RegisterAttachedReadOnly("ValueString", typeof(string), typeof(NumericUpDown), new PropertyMetadata());
 
         public static readonly DependencyProperty ValueStringProperty = ValueStringPropertyKey.DependencyProperty;
 
-        private void updateValueString()
+        private void UpdateValueString()
         {
             _numberFormatInfo.NumberDecimalDigits = DecimalPlaces;
             string newValueString = Value.ToString("f", _numberFormatInfo);
             SetValue(ValueStringPropertyKey, newValueString);
         }
-        private NumberFormatInfo _numberFormatInfo = new NumberFormatInfo();
+        private readonly NumberFormatInfo _numberFormatInfo = new NumberFormatInfo();
         #endregion
 
         #endregion
@@ -274,44 +268,30 @@ namespace Supremacy.UI
 
         #region Commands
 
-        public static RoutedCommand IncreaseCommand
-        {
-            get
-            {
-                return _increaseCommand;
-            }
-        }
-        public static RoutedCommand DecreaseCommand
-        {
-            get
-            {
-                return _decreaseCommand;
-            }
-        }
+        public static RoutedCommand IncreaseCommand { get; private set; }
+        public static RoutedCommand DecreaseCommand { get; private set; }
 
         private static void InitializeCommands()
         {
-            _increaseCommand = new RoutedCommand("IncreaseCommand", typeof(NumericUpDown));
-            CommandManager.RegisterClassCommandBinding(typeof(NumericUpDown), new CommandBinding(_increaseCommand, OnIncreaseCommand));
-            CommandManager.RegisterClassInputBinding(typeof(NumericUpDown), new InputBinding(_increaseCommand, new KeyGesture(Key.Up)));
+            IncreaseCommand = new RoutedCommand("IncreaseCommand", typeof(NumericUpDown));
+            CommandManager.RegisterClassCommandBinding(typeof(NumericUpDown), new CommandBinding(IncreaseCommand, OnIncreaseCommand));
+            CommandManager.RegisterClassInputBinding(typeof(NumericUpDown), new InputBinding(IncreaseCommand, new KeyGesture(Key.Up)));
 
-            _decreaseCommand = new RoutedCommand("DecreaseCommand", typeof(NumericUpDown));
-            CommandManager.RegisterClassCommandBinding(typeof(NumericUpDown), new CommandBinding(_decreaseCommand, OnDecreaseCommand));
-            CommandManager.RegisterClassInputBinding(typeof(NumericUpDown), new InputBinding(_decreaseCommand, new KeyGesture(Key.Down)));
+            DecreaseCommand = new RoutedCommand("DecreaseCommand", typeof(NumericUpDown));
+            CommandManager.RegisterClassCommandBinding(typeof(NumericUpDown), new CommandBinding(DecreaseCommand, OnDecreaseCommand));
+            CommandManager.RegisterClassInputBinding(typeof(NumericUpDown), new InputBinding(DecreaseCommand, new KeyGesture(Key.Down)));
         }
 
         private static void OnIncreaseCommand(object sender, ExecutedRoutedEventArgs e)
         {
-            NumericUpDown control = sender as NumericUpDown;
-            if (control != null)
+            if (sender is NumericUpDown control)
             {
                 control.OnIncrease();
             }
         }
         private static void OnDecreaseCommand(object sender, ExecutedRoutedEventArgs e)
         {
-            NumericUpDown control = sender as NumericUpDown;
-            if (control != null)
+            if (sender is NumericUpDown control)
             {
                 control.OnDecrease();
             }
@@ -326,9 +306,6 @@ namespace Supremacy.UI
         {
             SetValue(ValueProperty, CoerceValue(this, Value - Change));
         }
-
-        private static RoutedCommand _increaseCommand;
-        private static RoutedCommand _decreaseCommand;
         #endregion
 
         /// <summary>
