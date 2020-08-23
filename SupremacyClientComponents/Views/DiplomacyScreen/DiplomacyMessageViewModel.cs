@@ -686,7 +686,7 @@ namespace Supremacy.Client.Views
                     _treatyElements.Add(element);
                     GameLog.Client.Diplomacy.DebugFormat("Proposal element added to _treatyElemetns, {0}", element.ToString());
                     st = ResourceManager.GetString("PROPOSE_DIALOG_HINT"); // need to update the embassy screen with a new window to get the send button activated without delay.
-                    var result_Propose = MessageDialog.Show(st, MessageDialogButtons.Ok);
+                    //var result_Propose = MessageDialog.Show(st, MessageDialogButtons.Ok);
                     GameLog.Client.Diplomacy.DebugFormat("PROPOSE_DIALOG_HINT is outcommented");
                     break;
                 case DiplomacyMessageElementActionCategory.Commend:
@@ -707,7 +707,7 @@ namespace Supremacy.Client.Views
                     break;
                 //case DiplomacyMessageElementActionCategory.SendAcceptReject:
                 //    _acceptRejectElements.Add(element);
-                    break;
+                   // break;
             }
 
             PopulateAvailableElements();

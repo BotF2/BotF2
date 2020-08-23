@@ -501,14 +501,14 @@
 
                 <!-- Lower-Left Horizontal Divider -->
                 
-                <Border x:Name="LowerLeftHorizontalDivider"
+                <!--<Border x:Name="LowerLeftHorizontalDivider"
                         Grid.Column="0"
                         Grid.Row="7"
                         Grid.ColumnSpan="3"
                         Background="{StaticResource LCARS_AzureGradient_Top_Bottom}"
                         Height="28"
                         Margin="2,0,2,0"
-                        VerticalAlignment="Bottom" />
+                        VerticalAlignment="Bottom" />-->
 
                 <!-- Lower-Right Horizontal Divider -->
                 <Border x:Name="LowerRightHorizontalDivider"
