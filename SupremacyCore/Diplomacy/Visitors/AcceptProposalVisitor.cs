@@ -41,6 +41,12 @@ namespace Supremacy.Diplomacy.Visitors
         {
             if (proposal == null)
                 throw new ArgumentNullException("proposal");
+            GameLog.Client.Diplomacy.DebugFormat("Proposal ACCEPTED: Sender {0} vs {1} for {2}"
+                , proposal.Sender.Key
+                , proposal.Recipient.Key
+                , proposal.Clauses[0].ClauseType
+                
+                );
 
             var visitor = new AcceptProposalVisitor(proposal);
 
@@ -107,16 +113,19 @@ namespace Supremacy.Diplomacy.Visitors
         protected override void VisitRequestStopPiracyClause(IClause clause) { /* TODO */ }
         protected override void VisitOfferBreakAgreementClause(IClause clause) { /* TODO */ }
         protected override void VisitRequestBreakAgreementClause(IClause clause) { /* TODO */ }
-        protected override void VisitOfferGiveCreditsClause(IClause clause) { /* TODO */ }
+        protected override void VisitOfferGiveCreditsClause(IClause clause)
+        {
+            // this method call is in CreditObligationFulfillmentVisitor.cs to fulfill transfer of credits
+        }
         protected override void VisitRequestGiveCreditsClause(IClause clause) { /* TODO */ }
-        protected override void VisitOfferGiveResourcesClause(IClause clause) { /* TODO */ }
-        protected override void VisitRequestGiveResourcesClause(IClause clause) { /* TODO */ }
-        protected override void VisitOfferMapDataClause(IClause clause) { /* TODO */ }
-        protected override void VisitRequestMapDataClause(IClause clause) { /* TODO */ }
+        //protected override void VisitOfferGiveResourcesClause(IClause clause) { /* TODO */ }
+        //protected override void VisitRequestGiveResourcesClause(IClause clause) { /* TODO */ }
+        //protected override void VisitOfferMapDataClause(IClause clause) { /* TODO */ }
+        //protected override void VisitRequestMapDataClause(IClause clause) { /* TODO */ }
         protected override void VisitOfferHonorMilitaryAgreementClause(IClause clause) { /* TODO */ }
         protected override void VisitRequestHonorMilitaryAgreementClause(IClause clause) { /* TODO */ }
-        protected override void VisitOfferEndEmbargoClause(IClause clause) { /* TODO */ }
-        protected override void VisitRequestEndEmbargoClause(IClause clause) { /* TODO */ }
+        //protected override void VisitOfferEndEmbargoClause(IClause clause) { /* TODO */ }
+        //protected override void VisitRequestEndEmbargoClause(IClause clause) { /* TODO */ }
         
         protected override void VisitWarPactClause(IClause clause)
         {
@@ -156,7 +165,10 @@ namespace Supremacy.Diplomacy.Visitors
             MoveTrappedShips(Proposal.Recipient);
         }
 
-        protected override void VisitTreatyOpenBordersClause(IClause clause) { /* TODO */ }
+        protected override void VisitTreatyOpenBordersClause(IClause clause)
+        {
+            /* TODO */ 
+        }
         protected override void VisitTreatyTradePactClause(IClause clause) { /* TODO */ }
         protected override void VisitTreatyResearchPactClause(IClause clause) { /* TODO */ }
         protected override void VisitTreatyAffiliationClause(IClause clause) { /* TODO */ }
@@ -180,7 +192,7 @@ namespace Supremacy.Diplomacy.Visitors
             }
 
             var transferredColonyIds = new List<int>();
-
+            // Transferr Ship Owner in GameEngine DoDiplomacy
             foreach (var colony in GameContext.Current.Universe.FindOwned<Colony>(member))
             {
                 colony.TakeOwnership(empire, false);

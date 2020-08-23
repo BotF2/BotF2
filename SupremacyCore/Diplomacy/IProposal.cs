@@ -114,14 +114,14 @@ namespace Supremacy.Diplomacy
             {
                 switch (clause.ClauseType)
                 {
-                    case ClauseType.RequestBreakAgreement:
-                    case ClauseType.RequestEndEmbargo:
+                    //case ClauseType.RequestBreakAgreement:
+                    //case ClauseType.RequestEndEmbargo:
                     case ClauseType.RequestGiveCredits:
-                    case ClauseType.RequestGiveResources:
-                    case ClauseType.RequestHonorMilitaryAgreement:
-                    case ClauseType.RequestMapData:
-                    case ClauseType.RequestStopPiracy:
-                    case ClauseType.RequestWithdrawTroops:
+                    //case ClauseType.RequestGiveResources:
+                    //case ClauseType.RequestHonorMilitaryAgreement:
+                    //case ClauseType.RequestMapData:
+                    //case ClauseType.RequestStopPiracy:
+                    //case ClauseType.RequestWithdrawTroops:
                     case ClauseType.TreatyDefensiveAlliance:
                     case ClauseType.TreatyFullAlliance:
                     case ClauseType.TreatyCeaseFire:
@@ -129,8 +129,8 @@ namespace Supremacy.Diplomacy
                     case ClauseType.TreatyAffiliation:
                     case ClauseType.TreatyNonAggression:
                     case ClauseType.TreatyOpenBorders:
-                    case ClauseType.TreatyResearchPact:
-                    case ClauseType.TreatyTradePact:
+                    //case ClauseType.TreatyResearchPact:
+                    //case ClauseType.TreatyTradePact:
                     case ClauseType.TreatyMembership:
                         return false;
                     default:
@@ -150,14 +150,14 @@ namespace Supremacy.Diplomacy
             {
                 switch (clause.ClauseType)
                 {
-                    case ClauseType.OfferBreakAgreement:
-                    case ClauseType.OfferEndEmbargo:
+                    //case ClauseType.OfferBreakAgreement:
+                    //case ClauseType.OfferEndEmbargo:
                     case ClauseType.OfferGiveCredits:
-                    case ClauseType.OfferGiveResources:
-                    case ClauseType.OfferHonorMilitaryAgreement:
-                    case ClauseType.OfferMapData:
-                    case ClauseType.OfferStopPiracy:
-                    case ClauseType.OfferWithdrawTroops:
+                    //case ClauseType.OfferGiveResources:
+                    //case ClauseType.OfferHonorMilitaryAgreement:
+                    //case ClauseType.OfferMapData:
+                    //case ClauseType.OfferStopPiracy:
+                    //case ClauseType.OfferWithdrawTroops:
                     case ClauseType.TreatyDefensiveAlliance:
                     case ClauseType.TreatyFullAlliance:
                     case ClauseType.TreatyCeaseFire:
@@ -165,8 +165,8 @@ namespace Supremacy.Diplomacy
                     case ClauseType.TreatyAffiliation:
                     case ClauseType.TreatyNonAggression:
                     case ClauseType.TreatyOpenBorders:
-                    case ClauseType.TreatyResearchPact:
-                    case ClauseType.TreatyTradePact:
+                    //case ClauseType.TreatyResearchPact:
+                    //case ClauseType.TreatyTradePact:
                     case ClauseType.TreatyMembership:
                         return false;
                     default:
@@ -195,10 +195,10 @@ namespace Supremacy.Diplomacy
                     case ClauseType.TreatyAffiliation:
                     case ClauseType.TreatyNonAggression:
                     case ClauseType.TreatyOpenBorders:
-                    case ClauseType.TreatyResearchPact:
-                    case ClauseType.TreatyTradePact:
+                    //case ClauseType.TreatyResearchPact:
+                    //case ClauseType.TreatyTradePact:
                     case ClauseType.TreatyMembership:
-                        // doesn't work
+                        // GameLog doesn't work
                         //GameLog.Core.Diplomacy.DebugFormat("hasTreaty: ClauseType = {0}", clause.ClauseType.ToString()/*, proposal.ToString()*/);
                         return true;
                 }
@@ -225,7 +225,8 @@ namespace Supremacy.Diplomacy
             if (visitor == null)
                 throw new ArgumentNullException("visitor");
 
-            GameLog.Core.Diplomacy.DebugFormat("Visitor = {0}: Accepting proposal = {1}", visitor.ToString(), proposal.ToString());
+            GameLog.Core.Diplomacy.DebugFormat("Visitor = {0}: Accepting proposal = {1}"
+                , visitor.ToString(), proposal.ToString());
 
             if (proposal.IsGift())
             {

@@ -18,38 +18,28 @@ using Supremacy.Utility;
 
 namespace Supremacy.Combat
 {
-
     [Serializable]
-    public class  CombatTargetSecondaries //: IEnumerable<CombatTargetTwo>
+    public class CombatTargetSecondaries //: IEnumerable<CombatTargetTwo>
     {
-        private readonly int _combatId;
-        private readonly int _ownerId;
         private readonly Dictionary<int, Civilization> _targetSecondaries;
 
-        public int CombatID
-        {
-            get { return _combatId; }
-        }
+        public int CombatID { get; }
 
-        public int OwnerID
-        {
-            get { return _ownerId; }
-        }
+        public int OwnerID { get; }
 
-        public Civilization Owner
-        {
-            get { return GameContext.Current.Civilizations[_ownerId]; }
-        }
+        public Civilization Owner => GameContext.Current.Civilizations[OwnerID];
 
         public CombatTargetSecondaries(Civilization owner, int combatId)
- 
+
         {
             if (owner == null)
-                throw new ArgumentNullException("owner");
+            {
+                throw new ArgumentNullException(nameof(owner));
+            }
 
-            _ownerId = owner.CivID;
+            OwnerID = owner.CivID;
             _targetSecondaries = new Dictionary<int, Civilization>();
-            _combatId = combatId;
+            CombatID = combatId;
         }
 
         public void SetTargetTwoCiv(Orbital source, Civilization targetTwo)
@@ -63,21 +53,25 @@ namespace Supremacy.Combat
         public void ClearTargetTwo(Orbital source)
         {
             if (source == null)
+            {
                 return;
+            }
+
             _targetSecondaries.Remove(source.ObjectID);
-        
         }
 
         public void Clear()
         {
             _targetSecondaries.Clear();
-           
         }
 
         public bool IsTargetTwoSet(Orbital source)
         {
             if (source == null)
+            {
                 return false;
+            }
+
             return _targetSecondaries.ContainsKey(source.ObjectID);
         }
 
@@ -85,7 +79,7 @@ namespace Supremacy.Combat
         {
             if (source == null)
             {
-                throw new ArgumentNullException("source");
+                throw new ArgumentNullException(nameof(source));
             }
             if (!_targetSecondaries.ContainsKey(source.ObjectID))
             {
@@ -95,6 +89,5 @@ namespace Supremacy.Combat
             GameLog.Core.CombatDetails.DebugFormat("Orbital name {0} in GetTargetTwo() targeting {1}", source.Name, _targetSecondaries[source.ObjectID]);
             return _targetSecondaries[source.ObjectID];
         }
-
     }
 }

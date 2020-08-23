@@ -154,7 +154,7 @@ namespace Supremacy.Game
                 data._techTrees = game.TechTrees;
                 data._strategyDatabase = game.StrategyDatabase;
                 data._diplomacyData = game.DiplomacyData;
-                data._diplomats = new[] { Diplomat.Get(player) }; //game.Diplomats.ToArray();
+                data._diplomats = game.Diplomats.ToArray(); //new[] { Diplomat.Get(player) }; //game.Diplomats.ToArray();
                 data._agreementMatrix = game.AgreementMatrix;
 
                 data._civManagers.ForEach(o => o.Compact());

@@ -10,18 +10,19 @@
 using Obtics.Values;
 using Supremacy.Annotations;
 using Supremacy.Buildings;
+using Supremacy.Client;
 using Supremacy.Collections;
 using Supremacy.Diplomacy;
 using Supremacy.Economy;
 using Supremacy.Effects;
 using Supremacy.Entities;
 using Supremacy.Game;
-using Supremacy.Intelligence;
 using Supremacy.IO.Serialization;
 using Supremacy.Orbitals;
 using Supremacy.Tech;
 using Supremacy.Types;
 using Supremacy.Utility;
+
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -96,6 +97,21 @@ namespace Supremacy.Universe
         private IValueProvider<int> _scrappedOrbitalBatteries;
         private IValueProvider<int> _totalOrbitalBatteries;
 
+        private IValueProvider<int> _activeFoodFacilities;
+        private IValueProvider<int> _totalFoodFacilities;
+
+        private IValueProvider<int> _activeIndustryFacilities;
+        private IValueProvider<int> _totalIndustryFacilities;
+
+        private IValueProvider<int> _activeEnergyFacilities;
+        private IValueProvider<int> _totalEnergyFacilities;
+
+        private IValueProvider<int> _activeResearchFacilities;
+        private IValueProvider<int> _totalResearchFacilities;
+
+        private IValueProvider<int> _activeIntelligenceFacilities;
+        private IValueProvider<int> _totalIntelligenceFacilities;
+
         private ColonyFacilitiesAccessor _activeFacilitiesProvider;
         private ColonyFacilitiesAccessor _scrappedFacilitiesProvider;
         private ColonyFacilitiesAccessor _totalFacilitiesProvider;
@@ -110,6 +126,8 @@ namespace Supremacy.Universe
         private ObservableCollection<BuildQueueItem> _buildQueue;
         private BuildSlot _buildSlot;
         private Meter _creditsFromTrade;
+        private int _tradeRoutesPossible = -1;
+        private int _tradeRoutesAssigned = -1;
         private int[] _facilityTypes;
         private int _orbitalBatteryDesign;
         private Meter _foodReserves;
@@ -124,6 +142,7 @@ namespace Supremacy.Universe
         private int _shipyardId;
         private int _systemId = -1;
         private CollectionBase<TradeRoute> _tradeRoutes;
+
         private Colony()
         {
             Initialize();
@@ -257,6 +276,36 @@ namespace Supremacy.Universe
             get { return _totalFacilitiesProvider; }
         }
 
+        public ColonyFacilitiesAccessor FoodActiveFacilities
+        {
+            get { return _activeFacilitiesProvider; }
+        }
+        public ColonyFacilitiesAccessor IndustryActiveFacilities
+        {
+            get { return _activeFacilitiesProvider; }
+        }
+        public ColonyFacilitiesAccessor EnergyActiveFacilities
+        {
+            get { return _activeFacilitiesProvider; }
+        }
+        public ColonyFacilitiesAccessor ResearchActiveFacilities
+        {
+            get { return _activeFacilitiesProvider; }
+        }
+        public ColonyFacilitiesAccessor IntelligenceActiveFacilities
+        {
+            get { return _activeFacilitiesProvider; }
+        }
+        public int AvailableLabor
+        {
+            get 
+            {
+                int _available = GetAvailableLabor() / 10 * -1;
+                if (_available < 1)
+                    _available = 0;
+                return _available; 
+            }
+        }
         public OrbitalBatteryDesign OrbitalBatteryDesign
         {
             get
@@ -421,6 +470,35 @@ namespace Supremacy.Universe
             }
         }
 
+        public string ShipyardSlot_1_Status(ShipyardBuildSlot buildSlot)
+        {
+            string status = this.GetShipyardSlotStatus(buildSlot);
+            //return status;
+            return "hello";
+        }
+
+        public string GetShipyardSlotStatus(ShipyardBuildSlot buildSlot)
+        {
+                if (buildSlot == null)
+                    return "not available";
+
+                var shipyard = Shipyard;
+                if (shipyard == null || !Equals(shipyard, buildSlot.Shipyard))
+                    return "error";
+
+                if (!buildSlot.IsActive)
+                    return "in-active";
+
+                if (shipyard.ShipyardDesign.BuildSlotEnergyCost > NetEnergy)
+                    return "out of energy";
+
+                string status = "hello";
+                status = buildSlot.Project.BuildDesign.ToString();
+                //return base.Name ?? ((System != null) ? System.Name : null); 
+
+                return status;
+        }
+
         /// <summary>
         /// Gets the population of this <see cref="Colony"/>.
         /// </summary>
@@ -529,6 +607,7 @@ namespace Supremacy.Universe
         {
             get
             {
+                int _taxCredits = 0;
                 var modifier = new OutputModifier(0, 1.0f);
                 var moraleMod = _morale.CurrentValue / (0.5f * MoraleHelper.MaxValue);
                 var adjustedPop = Population.CurrentValue * moraleMod;
@@ -541,13 +620,43 @@ namespace Supremacy.Universe
                     foreach (var bonus in building.BuildingDesign.Bonuses)
                     {
                         if (bonus.BonusType == BonusType.Credits)
+                        {
                             modifier.Bonus += bonus.Amount;
+                            GameLog.Core.Credits.DebugFormat("{0}: Bonus Credits Amount = {1}", building.Design, bonus.Amount);
+
+                        }
                         else if (bonus.BonusType == BonusType.PercentCredits)
+                        {
                             modifier.Efficiency += (bonus.Amount / 100f);
+                            GameLog.Core.Credits.DebugFormat("{0}: Bonus Credits Percent = {1}", building.Design, bonus.Amount/100f);
+                        }
                     }
                 }
 
-                return (int)((adjustedPop * modifier.Efficiency) + modifier.Bonus + NetIndustry * 3.5 + 500); // UPDATE 31 july *3 to *3.5 and +500
+
+                // it's: 
+                // a) Pop (* modifier, mostly 1.0) + modifier.Bonus (often 0) + NetIndustry
+                // b) NetIndustry: it's 150% tax income from NetIndustry, so more income from Industry than from Population
+                // c) base value = 200
+
+                // OLD - 31 july 2019 *3 to *3.5 and +500
+                _taxCredits = (int)((adjustedPop * modifier.Efficiency * moraleMod) + modifier.Bonus + NetIndustry * 1.5 + 200);
+
+                // only for LocalPlayer
+                //if (this.OwnerID == )
+                //GameLog.Core.Credits.DebugFormat("########## Turn;{0};MoraleMOD =;{4};Effic.MOD =;{5};BonusMOD =;{7};Pop =;{3};NetIndustry =;{6};TaxCredits =;{8}; for ;{1};{2}"
+                //    , GameContext.Current.TurnNumber
+                //    , this.Name
+                //    , Location
+                //    , adjustedPop
+                //    , moraleMod
+                //    , modifier.Efficiency
+                //    , NetIndustry
+                //    , modifier.Bonus
+                //    , _taxCredits
+                //);
+
+                return _taxCredits; 
             }
         }
 
@@ -663,7 +772,7 @@ namespace Supremacy.Universe
         {
             get
             {
-                GameLog.Client.UI.DebugFormat("NetIntelligence ={0}", GetProductionOutput(ProductionCategory.Intelligence));
+                //GameLog.Client.Intel.DebugFormat("NetIntelligence ={0}", GetProductionOutput(ProductionCategory.Intelligence));
                 return GetProductionOutput(ProductionCategory.Intelligence);
             }
         }
@@ -800,11 +909,47 @@ namespace Supremacy.Universe
             get { return _creditsFromTrade; }
         }
 
+        public int TradeRoutesPossible
+        {
+            get 
+            {
+
+                _tradeRoutesPossible = _tradeRoutes.Count - TradeRoutesAssigned;
+
+                if (_tradeRoutesPossible < 1)
+                    _tradeRoutesPossible = 0;
+
+                return _tradeRoutesPossible; 
+            }
+        }
+
+        public int TradeRoutesAssigned
+        {
+            get 
+            {
+                int tradeRouteAssigned = 0;
+                foreach (var tr in TradeRoutes)
+                {
+                    if (tr.IsAssigned)
+                    {
+                        tradeRouteAssigned += 1;
+                    }
+                }
+                return tradeRouteAssigned;
+            }
+        }
+
         public void UpdateCreditsFromTrade()
         {
             this.ResetCreditsFromTrade();
         }
+
+        public int TurnNumberValuesFrom()
+        {
+            return GameContext.Current.TurnNumber;
+        }
         #endregion
+
 
         private void Initialize()
         {
@@ -1526,6 +1671,67 @@ namespace Supremacy.Universe
             return shutDown;
         }
 
+        // FOOD
+        public int ActiveFoodFacilities
+        {
+            get { try { return GetActiveFacilities(ProductionCategory.Food); } catch { return 0; } }
+        }
+
+        public int TotalFoodFacilities
+        {
+            get { try { return GetTotalFacilities(ProductionCategory.Food); } catch { return 0; } }
+        }
+        // Industry
+        public int ActiveIndustryFacilities
+        {
+            get { try { return GetActiveFacilities(ProductionCategory.Industry); } catch { return 0; } }
+        }
+
+        public int TotalIndustryFacilities
+        {
+            get { try { return GetTotalFacilities(ProductionCategory.Industry); } catch { return 0; } }
+        }
+
+
+        // Energy
+        public int ActiveEnergyFacilities
+        {
+            get { try { return GetActiveFacilities(ProductionCategory.Energy); } catch { return 0; } }
+        }
+
+        public int TotalEnergyFacilities
+        {
+            get { try { return GetTotalFacilities(ProductionCategory.Energy); } catch { return 0; } }
+        }
+        // Research
+        public int ActiveResearchFacilities
+        {
+            get { try { return GetActiveFacilities(ProductionCategory.Research); } catch { return 0; } }
+        }
+
+        public int TotalResearchFacilities
+        {
+            get { try { return GetTotalFacilities(ProductionCategory.Research); } catch { return 0; } }
+        }
+        // Intelligence 
+        public int ActiveIntelligenceFacilities
+        {
+            get { try { return GetActiveFacilities(ProductionCategory.Intelligence); } catch { return 0; } }
+        }
+
+        public int TotalIntelligenceFacilities
+        {
+            get { try { return GetTotalFacilities(ProductionCategory.Intelligence); } catch { return 0; } }
+        }
+
+        public int EnergyCostEachOrbitalBattery
+        {
+            get { try { return OrbitalBatteryDesign.UnitEnergyCost; } catch { return 0; } }
+        }
+        /// <summary>
+        /// //////////
+        /// </summary>
+
         public int ActiveOrbitalBatteries
         {
             get { return _activeOrbitalBatteries.Value; }
@@ -2005,6 +2211,21 @@ namespace Supremacy.Universe
             _activeFacilitiesProvider = new ColonyFacilitiesAccessor(_activeFacilities);
             _scrappedFacilitiesProvider = new ColonyFacilitiesAccessor(_scrappedFacilities);
             _totalFacilitiesProvider = new ColonyFacilitiesAccessor(_totalFacilities);
+
+            _activeFoodFacilities = new ObservableValueProvider<int>();
+            _totalFoodFacilities = new ObservableValueProvider<int>();
+
+            _activeIndustryFacilities = new ObservableValueProvider<int>();
+            _totalIndustryFacilities = new ObservableValueProvider<int>();
+
+            _activeEnergyFacilities = new ObservableValueProvider<int>();
+            _totalEnergyFacilities = new ObservableValueProvider<int>();
+
+            _activeResearchFacilities = new ObservableValueProvider<int>();
+            _totalResearchFacilities = new ObservableValueProvider<int>();
+
+            _activeIntelligenceFacilities = new ObservableValueProvider<int>();
+            _totalIntelligenceFacilities = new ObservableValueProvider<int>();
         }
 
         public override void DeserializeOwnedData(SerializationReader reader, object context)

@@ -26,9 +26,7 @@ namespace Supremacy.Client
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if ((int)value < 0)
-                return Brushes.Red;
-            return parameter;
+            return (int)value < 0 ? Brushes.Red : parameter;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
@@ -42,9 +40,7 @@ namespace Supremacy.Client
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if ((int)value > 0)
-                return "+" + value;
-            return value.ToString();
+            return (int)value > 0 ? "+" + value : value.ToString();
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
@@ -58,24 +54,32 @@ namespace Supremacy.Client
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            var defaultBrush = Brushes.Transparent;
+            SolidColorBrush defaultBrush = Brushes.Transparent;
 
-            var civ = value as Civilization;
+            Civilization civ = value as Civilization;
             if (civ != null)
             {
-                var appContext = ServiceLocator.Current.GetInstance<IAppContext>();
+                IAppContext appContext = ServiceLocator.Current.GetInstance<IAppContext>();
                 if (appContext == null)
+                {
                     return defaultBrush;
+                }
 
                 if (civ.CivID == appContext.LocalPlayer.EmpireID)
+                {
                     return defaultBrush;
+                }
 
-                var playerCiv = appContext.LocalPlayer.Empire;
+                Civilization playerCiv = appContext.LocalPlayer.Empire;
                 if (playerCiv == null)
+                {
                     return defaultBrush;
+                }
 
                 if (!DiplomacyHelper.IsContactMade(playerCiv, civ))
+                {
                     return defaultBrush;
+                }
 
                 value = DiplomacyHelper.GetForeignPowerStatus(appContext.LocalPlayer.Empire, civ);
             }
@@ -107,7 +111,7 @@ namespace Supremacy.Client
 
                     case ForeignPowerStatus.OwnerIsUnreachable:
                     case ForeignPowerStatus.CounterpartyIsUnreachable:
-                        // TODO: Figure out the correct brush
+                    // TODO: Figure out the correct brush
 
                     default:
                         return defaultBrush; 

@@ -20,14 +20,14 @@ namespace Supremacy.UI
         static SpinnerButton()
         {
             DefaultStyleKeyProperty.OverrideMetadata(
-                typeof(SpinnerButton), 
+                typeof(SpinnerButton),
                 new FrameworkPropertyMetadata(typeof(SpinnerButton)));
             NextItemCommand = new RoutedCommand("NextItem", typeof(SpinnerButton));
         }
 
         public SpinnerButton()
         {
-            CommandBindings.Add(
+            _ = CommandBindings.Add(
                 new CommandBinding(NextItemCommand,
                                    NextItemExecuted));
         }

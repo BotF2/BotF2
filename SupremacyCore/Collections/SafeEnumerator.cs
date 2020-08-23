@@ -37,15 +37,9 @@ namespace Supremacy.Collections
             _inner.Reset();
         }
 
-        public T Current
-        {
-            get { return _inner.Current; }
-        }
+        public T Current => _inner.Current;
 
-        object IEnumerator.Current
-        {
-            get { return Current; }
-        }
+        object IEnumerator.Current => Current;
 
         #endregion
     }

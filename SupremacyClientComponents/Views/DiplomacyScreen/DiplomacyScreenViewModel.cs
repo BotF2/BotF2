@@ -1,25 +1,34 @@
 ﻿// File:DiplomacyScreenViewModel.cs
 using Microsoft.Practices.Composite.Presentation.Events;
 using Microsoft.Practices.Composite.Regions;
+using Microsoft.Practices.ServiceLocation;
 using Supremacy.Annotations;
 using Supremacy.Client.Context;
+using Supremacy.Client.Controls;
 using Supremacy.Client.Events;
 using Supremacy.Client.Input;
 using Supremacy.Diplomacy;
 using Supremacy.Entities;
 using Supremacy.Game;
+using Supremacy.Intelligence;
 using Supremacy.Utility;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
+using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 
 namespace Supremacy.Client.Views
 {
+
     public class DiplomacyScreenViewModel : ViewModelBase<INewDiplomacyScreenView, DiplomacyScreenViewModel>
     {
-
+        private bool _isMembershipButtonVisible;
+        private bool _isFullAllianceButtonVisible;
+       
         #region Design-Time Instance
 
         private static DiplomacyScreenViewModel _designInstance;
@@ -29,37 +38,42 @@ namespace Supremacy.Client.Views
             get
             {
                 if (_designInstance != null)
-                    return _designInstance;
-
+                    return _designInstance;               
                 // ReSharper disable AssignNullToNotNullAttribute
                 _designInstance = new DiplomacyScreenViewModel(DesignTimeAppContext.Instance, null);
                 // ReSharper restore AssignNullToNotNullAttribute
 
                 _designInstance.SelectedForeignPower = _designInstance.ForeignPowers.First();
                 _designInstance.DisplayMode = DiplomacyScreenDisplayMode.Outbox;
-
-                _designInstance.MakeProposalCommand.Execute(null);
+                
+                //_designInstance.MakeProposalCommand.Execute(null);
                 _designInstance.SelectedForeignPower.OutgoingMessage.AvailableElements.First(o => o.ActionCategory == DiplomacyMessageElementActionCategory.Propose).AddCommand.Execute(null);
                 _designInstance.SelectedForeignPower.OutgoingMessage.AvailableElements.First(o => o.ActionCategory == DiplomacyMessageElementActionCategory.Offer).AddCommand.Execute(null);
-
+               
                 return _designInstance;
             }
         }
 
         #endregion Design-Time Instance
 
+        public Civilization LocalPalyer => (Civilization)GameContext.Current.CivilizationManagers[AppContext.LocalPlayer.CivID].Civilization;
+        public bool localIsHost => AppContext.IsGameHost;
+
         private readonly ObservableCollection<ForeignPowerViewModel> _foreignPowers;
         private readonly ReadOnlyObservableCollection<ForeignPowerViewModel> _foreignPowersView;
-        
-        private readonly DelegateCommand<ICheckableCommandParameter> _setDisplayModeCommand;
+        /*
+          DISPLAY MODE
+         */
+        private readonly DelegateCommand<ICheckableCommandParameter> _setDisplayModeCommand; 
 
         private readonly DelegateCommand _commendCommand;
         private readonly DelegateCommand _denounceCommand;
         private readonly DelegateCommand _threatenCommand;
-        private readonly DelegateCommand _makeProposalCommand;
+        //private readonly DelegateCommand _makeProposalCommand;
         private readonly DelegateCommand _declareWarCommand;
         private readonly DelegateCommand _endWarCommand;  // other naming in the code: CeaseFire
         private readonly DelegateCommand _openBordersCommand;
+        //private readonly DelegateCommand _acceptRejectCommand;
         private readonly DelegateCommand _nonAgressionCommand;
         private readonly DelegateCommand _affiliationCommand;
         private readonly DelegateCommand _defenceAllianceCommand;
@@ -76,16 +90,19 @@ namespace Supremacy.Client.Views
         {
             _foreignPowers = new ObservableCollection<ForeignPowerViewModel>();
             _foreignPowersView = new ReadOnlyObservableCollection<ForeignPowerViewModel>(_foreignPowers);
-
+            // DISPLAY MODE
             _setDisplayModeCommand = new DelegateCommand<ICheckableCommandParameter>(ExecuteSetDisplayModeComand, CanExecuteSetDisplayModeComand);
 
             _commendCommand = new DelegateCommand(ExecuteCommendCommand, CanExecuteCommendCommand);
             _denounceCommand = new DelegateCommand(ExecuteDenounceCommand, CanExecuteDenounceCommand);
             _threatenCommand = new DelegateCommand(ExecuteThreatenCommand, CanExecuteThreatenCommand);
-            _makeProposalCommand = new DelegateCommand(ExecuteMakeProposalCommand, CanExecuteMakeProposalCommand);
+
+           // _makeProposalCommand = new DelegateCommand(ExecuteMakeProposalCommand, CanExecuteMakeProposalCommand);
+
             _declareWarCommand = new DelegateCommand(ExecuteDeclareWarCommand, CanExecuteDeclareWarCommand);
             _endWarCommand = new DelegateCommand(ExecuteEndWarCommand, CanExecuteEndWarCommand);
             _openBordersCommand = new DelegateCommand(ExecuteOpenBordersCommand, CanExecuteOpenBordersCommand);
+            //_acceptRejectCommand = new DelegateCommand(ExecuteAcceptRejectDictionaryCommand, CanExecuteAcceptRejectDictionaryCommand);
             _nonAgressionCommand = new DelegateCommand(ExecuteNonAgressionCommand, CanExecuteNonAgressionCommand);
             _affiliationCommand = new DelegateCommand(ExecuteAffiliationCommand, CanExecuteAffiliationCommand);
             _defenceAllianceCommand = new DelegateCommand(ExecuteDefenceAllianceCommand, CanExecuteDefenceAllianceCommand);
@@ -96,7 +113,6 @@ namespace Supremacy.Client.Views
             _cancelMessageCommand = new DelegateCommand(ExecuteCancelMessageCommand, CanExecuteCancelMessageCommand);
             _resetGraphCommand = new DelegateCommand(ExecuteResetGraphCommand);
             _setSelectedGraphNodeCommand = new DelegateCommand<DiplomacyGraphNode>(ExecuteSetSelectedGraphNodeCommand);
-
             Refresh();
         }
 
@@ -149,7 +165,7 @@ namespace Supremacy.Client.Views
         }
 
         private bool CanExecuteMakeProposalCommand()
-        {
+        {            
             if (!CanExecuteNewProposalCommandCore(out ForeignPowerViewModel selectedForeignPower))
                 return false;
 
@@ -187,6 +203,7 @@ namespace Supremacy.Client.Views
             OnCommandVisibilityChanged();
             OnIsMessageEditInProgressChanged();
             InvalidateCommands();
+            //Refresh(); crashes
         }
 
         #region DeclareWarCommandButton
@@ -212,7 +229,7 @@ namespace Supremacy.Client.Views
                 return;
 
             DisplayMode = DiplomacyScreenDisplayMode.Outbox; // new
-
+     
             AreOutgoingMessageCommandsVisibleChanged.Raise(this);
             OnPropertyChanged("AreOutgoingMessageCommandsVisible");
 
@@ -230,6 +247,7 @@ namespace Supremacy.Client.Views
 
             InvalidateCommands();
             OnCommandVisibilityChanged();
+            //Refresh();
         }
         #endregion DeclareWarCommandButton
 
@@ -245,7 +263,6 @@ namespace Supremacy.Client.Views
             selectedForeignPower = SelectedForeignPower;
 
             return selectedForeignPower != null &&
-                   //selectedForeignPower.OutgoingMessage == null &&
                    selectedForeignPower.Status == ForeignPowerStatus.AtWar;
         }
 
@@ -257,7 +274,7 @@ namespace Supremacy.Client.Views
                 return;
 
             DisplayMode = DiplomacyScreenDisplayMode.Outbox; // new
-
+       
             AreOutgoingMessageCommandsVisibleChanged.Raise(this);
             OnPropertyChanged("AreOutgoingMessageCommandsVisible");
 
@@ -275,6 +292,7 @@ namespace Supremacy.Client.Views
 
             InvalidateCommands();
             OnCommandVisibilityChanged();
+           // Refresh();
         }
         #endregion EndWarCommandButton
 
@@ -282,6 +300,7 @@ namespace Supremacy.Client.Views
         #region OpenBordersCommandButton
         private bool CanExecuteOpenBordersCommand()
         {
+            //Refresh();
             return CanExecuteOpenBordersCommandCore(out ForeignPowerViewModel foreignPower);
         }
 
@@ -290,7 +309,6 @@ namespace Supremacy.Client.Views
             selectedForeignPower = SelectedForeignPower;
 
             return selectedForeignPower != null &&
-                   //selectedForeignPower.OutgoingMessage == null &&
                    selectedForeignPower.Status != ForeignPowerStatus.AtWar;
        //// conditions for TradeRoute
        ////agreementMatrix.IsAgreementActive(firstCiv, secondCiv, ClauseType.TreatyOpenBorders) ||
@@ -308,7 +326,7 @@ namespace Supremacy.Client.Views
                 return;
 
             DisplayMode = DiplomacyScreenDisplayMode.Outbox; // new
-
+  
             AreOutgoingMessageCommandsVisibleChanged.Raise(this);
             OnPropertyChanged("AreOutgoingMessageCommandsVisible");
 
@@ -326,13 +344,38 @@ namespace Supremacy.Client.Views
 
             InvalidateCommands();
             OnCommandVisibilityChanged();
+            //Refresh();
         }
         #endregion OpenBordersCommandButton
 
+        #region SendAcceptRejectDictionary
+
+        private bool CanExecuteAcceptRejectDictionaryCommand()
+        {
+            //Refresh();
+            return CanExecuteAcceptRejectDictionaryCommandCore(out ForeignPowerViewModel foreignPower);
+        }
+        private bool CanExecuteAcceptRejectDictionaryCommandCore(out ForeignPowerViewModel selectedForeignPower)
+        {
+            selectedForeignPower = SelectedForeignPower;
+
+            return selectedForeignPower != null; // &&
+                   //selectedForeignPower.OutgoingMessage == null &&
+                   //selectedForeignPower.Status != ForeignPowerStatus.AtWar;
+            //// conditions for TradeRoute
+            ////agreementMatrix.IsAgreementActive(firstCiv, secondCiv, ClauseType.TreatyOpenBorders) ||
+            ////agreementMatrix.IsAgreementActive(firstCiv, secondCiv, ClauseType.TreatyTradePact) ||
+            ////agreementMatrix.IsAgreementActive(firstCiv, secondCiv, ClauseType.TreatyAffiliation) ||
+            ////agreementMatrix.IsAgreementActive(firstCiv, secondCiv, ClauseType.TreatyDefensiveAlliance) ||
+            ////agreementMatrix.IsAgreementActive(firstCiv, secondCiv, ClauseType.TreatyFullAlliance);
+        }
+
+        #endregion SendAcceptRejectDictionary
 
         #region NonAgressionCommandButton
         private bool CanExecuteNonAgressionCommand()
         {
+           //Refresh();
             return CanExecuteNonAgressionCommandCore(out ForeignPowerViewModel foreignPower);
         }
 
@@ -359,7 +402,7 @@ namespace Supremacy.Client.Views
                 return;
 
             DisplayMode = DiplomacyScreenDisplayMode.Outbox; // new
-
+     
             AreOutgoingMessageCommandsVisibleChanged.Raise(this);
             OnPropertyChanged("AreOutgoingMessageCommandsVisible");
 
@@ -377,6 +420,7 @@ namespace Supremacy.Client.Views
 
             InvalidateCommands();
             OnCommandVisibilityChanged();
+            //Refresh();
         }
         #endregion NonAgressionCommandButton
 
@@ -384,6 +428,7 @@ namespace Supremacy.Client.Views
         #region AffiliationCommandButton
         private bool CanExecuteAffiliationCommand()
         {
+            //Refresh();
             return CanExecuteAffiliationCommandCore(out ForeignPowerViewModel foreignPower);
         }
 
@@ -392,7 +437,6 @@ namespace Supremacy.Client.Views
             selectedForeignPower = SelectedForeignPower;
 
             return selectedForeignPower != null &&
-                   //selectedForeignPower.OutgoingMessage == null &&
                    selectedForeignPower.Status != ForeignPowerStatus.AtWar;
             //// conditions for TradeRoute
             ////agreementMatrix.IsAgreementActive(firstCiv, secondCiv, ClauseType.TreatyOpenBorders) ||
@@ -409,8 +453,8 @@ namespace Supremacy.Client.Views
             if (!CanExecuteAffiliationCommandCore(out foreignPower))
                 return;
 
-            _ = DiplomacyScreenDisplayMode.Outbox; // new
-
+            DisplayMode = DiplomacyScreenDisplayMode.Outbox; // new
+      
             AreOutgoingMessageCommandsVisibleChanged.Raise(this);
             OnPropertyChanged("AreOutgoingMessageCommandsVisible");
 
@@ -428,6 +472,7 @@ namespace Supremacy.Client.Views
 
             InvalidateCommands();
             OnCommandVisibilityChanged();
+           // Refresh();
         }
         #endregion AffiliationCommandButton
 
@@ -435,6 +480,7 @@ namespace Supremacy.Client.Views
         #region DefenceAllianceCommandButton
         private bool CanExecuteDefenceAllianceCommand()
         {
+            //Refresh();
             return CanExecuteDefenceAllianceCommandCore(out ForeignPowerViewModel foreignPower);
         }
 
@@ -461,7 +507,7 @@ namespace Supremacy.Client.Views
                 return;
 
             DisplayMode = DiplomacyScreenDisplayMode.Outbox; // new = DiplomacyScreenDisplayMode.Outbox; // new
-
+     
             AreOutgoingMessageCommandsVisibleChanged.Raise(this);
             OnPropertyChanged("AreOutgoingMessageCommandsVisible");
 
@@ -479,13 +525,14 @@ namespace Supremacy.Client.Views
 
             InvalidateCommands();
             OnCommandVisibilityChanged();
+           // Refresh();
         }
         #endregion DefenceAllianceCommandButton
-
 
         #region FullAllianceCommandButton
         private bool CanExecuteFullAllianceCommand()
         {
+            //Refresh();
             return CanExecuteFullAllianceCommandCore(out ForeignPowerViewModel foreignPower);
         }
 
@@ -494,7 +541,6 @@ namespace Supremacy.Client.Views
             selectedForeignPower = SelectedForeignPower;
 
             return selectedForeignPower != null &&
-                   //selectedForeignPower.OutgoingMessage == null &&
                    selectedForeignPower.Status != ForeignPowerStatus.AtWar;
         }
 
@@ -506,7 +552,7 @@ namespace Supremacy.Client.Views
                 return;
 
             DisplayMode = DiplomacyScreenDisplayMode.Outbox; // new = DiplomacyScreenDisplayMode.Outbox; // new
-
+      
             AreOutgoingMessageCommandsVisibleChanged.Raise(this);
             OnPropertyChanged("AreOutgoingMessageCommandsVisible");
 
@@ -524,6 +570,7 @@ namespace Supremacy.Client.Views
 
             InvalidateCommands();
             OnCommandVisibilityChanged();
+           // Refresh();
         }
         #endregion FullAllianceCommandButton
 
@@ -531,6 +578,7 @@ namespace Supremacy.Client.Views
         #region MembershipCommandButton
         private bool CanExecuteMembershipCommand()
         {
+           // Refresh();
             return CanExecuteMembershipCommandCore(out ForeignPowerViewModel foreignPower);
         }
 
@@ -539,7 +587,6 @@ namespace Supremacy.Client.Views
             selectedForeignPower = SelectedForeignPower;
 
             return selectedForeignPower != null &&
-                   //selectedForeignPower.OutgoingMessage == null &&
                    selectedForeignPower.Status != ForeignPowerStatus.AtWar;
         }
 
@@ -569,27 +616,30 @@ namespace Supremacy.Client.Views
 
             InvalidateCommands();
             OnCommandVisibilityChanged();
+            //Refresh();
         }
         #endregion MembershipCommandButton
 
-
         private bool CanExecuteEditMessageCommand()
         {
-            return DisplayMode == DiplomacyScreenDisplayMode.Outbox &&
-                   SelectedForeignPower != null &&
-                   SelectedForeignPower.OutgoingMessage != null &&
-                   !SelectedForeignPower.OutgoingMessage.IsEditing;
+            return DisplayMode == DiplomacyScreenDisplayMode.Outbox; //&&
+                   //SelectedForeignPower != null &&
+                   //SelectedForeignPower.OutgoingMessage != null &&
+                   //!SelectedForeignPower.OutgoingMessage.IsEditing;
         }
 
         private void ExecuteEditMessageCommand()
         {
             if (!CanExecuteEditMessageCommand())
                 return;
-
-            SelectedForeignPower.OutgoingMessage.Edit();
-
-            OnCommandVisibilityChanged();
-            OnIsMessageEditInProgressChanged();
+            if (SelectedForeignPower != null &&
+                SelectedForeignPower.OutgoingMessage != null &&
+                !SelectedForeignPower.OutgoingMessage.IsEditing)
+            {
+                SelectedForeignPower.OutgoingMessage.Edit();
+                OnCommandVisibilityChanged();
+                OnIsMessageEditInProgressChanged();
+            }
         }
 
         private bool CanExecuteSendMessageCommand()
@@ -597,8 +647,8 @@ namespace Supremacy.Client.Views
             return DisplayMode == DiplomacyScreenDisplayMode.Outbox &&
                    SelectedForeignPower != null &&
                    SelectedForeignPower.OutgoingMessage != null &&
-                   SelectedForeignPower.OutgoingMessage.IsEditing &&
-                   SelectedForeignPower.OutgoingMessage.Elements.Count != 0;
+                   SelectedForeignPower.OutgoingMessage.IsEditing; //&&
+                   //SelectedForeignPower.OutgoingMessage.Elements.Count != 0;
         }
 
         private void ExecuteSendMessageCommand()
@@ -612,6 +662,7 @@ namespace Supremacy.Client.Views
 
             OnCommandVisibilityChanged();
             OnIsMessageEditInProgressChanged();
+            //Refresh();
         }
 
         private bool CanExecuteCancelMessageCommand()
@@ -631,6 +682,7 @@ namespace Supremacy.Client.Views
 
             OnCommandVisibilityChanged();
             OnIsMessageEditInProgressChanged();
+            Refresh();
         }
 
         private void ExecuteSetDisplayModeComand(ICheckableCommandParameter p)
@@ -661,6 +713,15 @@ namespace Supremacy.Client.Views
 
         #endregion
 
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        private void RaisePropertyChanged(string propertyName)
+        {
+            if (this.PropertyChanged != null)
+                this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+        }
+
         protected override void UnregisterCommandAndEventHandlers()
         {
             base.UnregisterCommandAndEventHandlers();
@@ -684,7 +745,7 @@ namespace Supremacy.Client.Views
             _commendCommand.RaiseCanExecuteChanged();
             _denounceCommand.RaiseCanExecuteChanged();
             _threatenCommand.RaiseCanExecuteChanged();
-            _makeProposalCommand.RaiseCanExecuteChanged();
+            //_makeProposalCommand.RaiseCanExecuteChanged();
             _declareWarCommand.RaiseCanExecuteChanged();
             _endWarCommand.RaiseCanExecuteChanged();
             _openBordersCommand.RaiseCanExecuteChanged();
@@ -736,7 +797,7 @@ namespace Supremacy.Client.Views
         {
             get { return _foreignPowersView; }
         }
-
+        // DiplayMode
         public ICommand SetDisplayModeCommand
         {
             get { return _setDisplayModeCommand; }
@@ -757,10 +818,10 @@ namespace Supremacy.Client.Views
             get { return _threatenCommand; }
         }
 
-        public ICommand MakeProposalCommand
-        {
-            get { return _makeProposalCommand; }
-        }
+        //public ICommand MakeProposalCommand
+        //{
+        //    get { return _makeProposalCommand; }
+        //}
 
         public ICommand DeclareWarCommand
         {
@@ -802,7 +863,10 @@ namespace Supremacy.Client.Views
 
         public ICommand SendMessageCommand
         {
-            get { return _sendMessageCommand; }
+            get
+            {
+                return _sendMessageCommand;
+            }
         }
 
         public ICommand CancelMessageCommand
@@ -907,6 +971,7 @@ namespace Supremacy.Client.Views
 
         #endregion
 
+
         #region SelectedForeignPower Property
 
         [field: NonSerialized]
@@ -917,13 +982,7 @@ namespace Supremacy.Client.Views
         public ForeignPowerViewModel SelectedForeignPower
         {
             get
-            {
-                //if (_selectedForeignPower.Owner != null)
-                //    GameLog.Client.Diplomacy.DebugFormat("_selectedForeignPower GET = {0}", _selectedForeignPower.Owner);
-                //else
-                //{
-                //    GameLog.Client.Diplomacy.DebugFormat("_selectedForeignPower is NULL");
-                //}
+            {      
                 return _selectedForeignPower;
             }
             set
@@ -932,14 +991,6 @@ namespace Supremacy.Client.Views
                     return;
 
                 _selectedForeignPower = value;
-
-                //if (_selectedForeignPower.Owner != null)
-                //    GameLog.Client.Diplomacy.DebugFormat("_selectedForeignPower SET = {0}", _selectedForeignPower.Owner);
-                //else
-                //{
-                //    GameLog.Client.Diplomacy.DebugFormat("_selectedForeignPower is NULL");
-                //}
-
                 OnSelectedForeignPowerChanged();
             }
         }
@@ -948,9 +999,17 @@ namespace Supremacy.Client.Views
         {
             SelectedForeignPowerChanged.Raise(this);
             OnPropertyChanged("SelectedForeignPower");
+            if (_selectedForeignPower != null)
+                ExecuteMakeProposalCommand();
             OnAreOutgoingMessageCommandsVisibleChanged();
             OnAreIncomingMessageCommandsVisibleChanged();
+            if (AreNewMessageCommandsVisible){}
             OnAreNewMessageCommandsVisibleChanged();
+            if (IsMembershipButtonVisible){}
+            OnMembershipButtonVisibleChanged();
+            if (IsFullAllianceButtonVisible) {}
+            OnFullAllianceButtonVisibleChanged();
+            
         }
 
         #endregion
@@ -995,14 +1054,10 @@ namespace Supremacy.Client.Views
         {
             get
             {
-                if (DisplayMode != DiplomacyScreenDisplayMode.Inbox)
+                if (DisplayMode != DiplomacyScreenDisplayMode.Outbox)
                 {
                     //GameLog.Core.Diplomacy.DebugFormat("DisplayMode not DiplomacyScreenDispalyMode.Inbox" );
                     return false;
-                }
-                else
-                {
-                    GameLog.Core.Diplomacy.DebugFormat("DisplayMode = INBOX selected");
                 }
 
                 var selectedForeignPower = SelectedForeignPower;
@@ -1011,7 +1066,7 @@ namespace Supremacy.Client.Views
                 //if (selectedForeignPower != null)
                 //GameLog.Core.Diplomacy.DebugFormat("DisplayMode is Inbox, SelectedForeignPower ={0}", selectedForeignPower.Counterparty.Key);
 
-                return selectedForeignPower != null && selectedForeignPower.IncomingMessage != null && 
+                return selectedForeignPower != null && selectedForeignPower.IncomingMessage != null &&
                        !selectedForeignPower.IncomingMessage.IsStatement;
             }
         }
@@ -1033,15 +1088,14 @@ namespace Supremacy.Client.Views
         {
             get
             {
-                //if (DisplayMode != DiplomacyScreenDisplayMode.Outbox)
-                //    return false;
-
                 var selectedForeignPower = SelectedForeignPower;
 
                 return selectedForeignPower != null &&
                        selectedForeignPower.OutgoingMessage == null;
             }
+
         }
+
 
         protected virtual void OnAreNewMessageCommandsVisibleChanged()
         {
@@ -1049,6 +1103,46 @@ namespace Supremacy.Client.Views
             OnPropertyChanged("AreNewMessageCommandsVisible");
         }
 
+        #endregion
+         
+        #region IsMembershipButtonVisible Property
+
+        [field: NonSerialized]
+        public event EventHandler IsMembershipButtonVisibleChanged;
+        public bool IsMembershipButtonVisible
+        {
+            get
+            {
+                var selectedForeignPower = SelectedForeignPower;
+                _isMembershipButtonVisible = (selectedForeignPower != null && !selectedForeignPower.Counterparty.IsEmpire);
+                return _isMembershipButtonVisible;
+            }
+        }
+        protected virtual void OnMembershipButtonVisibleChanged()
+        {
+            IsMembershipButtonVisibleChanged.Raise(this);
+            OnPropertyChanged("IsMembershipButtonVisible");
+        }
+        #endregion
+
+        #region IsFullAllianceButtonVisible Property
+
+        [field: NonSerialized]
+        public event EventHandler IsFullAllianceButtonVisibleChanged;
+        public bool IsFullAllianceButtonVisible
+        {
+            get
+            {
+                var selectedForeignPower = SelectedForeignPower;
+                _isFullAllianceButtonVisible = (selectedForeignPower != null && selectedForeignPower.Counterparty.IsEmpire);
+                return _isFullAllianceButtonVisible;
+            }
+        }
+        protected virtual void OnFullAllianceButtonVisibleChanged()
+        {
+            IsFullAllianceButtonVisibleChanged.Raise(this);
+            OnPropertyChanged("IsFullAllianceButtonVisible");
+        }
         #endregion
 
         #region DisplayMode Property
@@ -1060,7 +1154,11 @@ namespace Supremacy.Client.Views
 
         public DiplomacyScreenDisplayMode DisplayMode
         {
-            get { return _displayMode; }
+            get
+            {                
+                //ForeignPowerShortName.
+                return _displayMode;
+            }
             set
             {
                 if (Equals(value, _displayMode))
@@ -1098,6 +1196,8 @@ namespace Supremacy.Client.Views
             }
         }
 
+        //public bool IsFullAllianceButtonVisible { get; private set; }
+
         protected virtual void OnIsMessageEditInProgressChanged()
         {
             IsMessageEditInProgressChanged.Raise(this);
@@ -1121,7 +1221,7 @@ namespace Supremacy.Client.Views
 
             _foreignPowers.Clear();
 
-            var playerEmpireId = AppContext.LocalPlayer.EmpireID;
+            var playerEmpireId = AppContext.LocalPlayer.EmpireID; // local player
             var playerDiplomat = Diplomat.Get(playerEmpireId);
 
             foreach (var civ in GameContext.Current.Civilizations)
@@ -1133,11 +1233,11 @@ namespace Supremacy.Client.Views
                 var foreignPowerViewModel = new ForeignPowerViewModel(foreignPower);
 
                 _foreignPowers.Add(foreignPowerViewModel);
-                GameLog.Client.Diplomacy.DebugFormat("Added ForeignPowerView: {2} (ID {1}) vs {0}: {3} ({4}/{5})", civ.ShortName, playerEmpireId, AppContext.LocalPlayer.Empire.Name
-                    , foreignPowerViewModel.Status
-                    , foreignPowerViewModel.CounterpartyRegard
-                    , foreignPowerViewModel.CounterpartyTrust
-                    );
+               // GameLog.Client.Diplomacy.DebugFormat("!!! View of local player {1} for {0}: {2} ({3}/{4})", civ.ShortName, AppContext.LocalPlayer.Empire.Name
+                    //, foreignPowerViewModel.Status
+                    //, foreignPowerViewModel.CounterpartyRegard
+                    //, foreignPowerViewModel.CounterpartyTrust
+                    //);
             }
 
             if (selectedForeignPower != null)
@@ -1183,40 +1283,41 @@ namespace Supremacy.Client.Views
 
         internal static DiplomacyMessageElementType ElementTypeFromClauseType(ClauseType clauseType)
         {
+            //GameLog.Client.Diplomacy.DebugFormat("((()))DiplomacyMessageFromClauseType ClauseType param ={0}", clauseType );
             switch (clauseType)
             {
-                case ClauseType.OfferWithdrawTroops:
-                    return DiplomacyMessageElementType.OfferWithdrawTroopsClause;
-                case ClauseType.RequestWithdrawTroops:
-                    return DiplomacyMessageElementType.RequestWithdrawTroopsClause;
-                case ClauseType.OfferStopPiracy:
-                    return DiplomacyMessageElementType.OfferStopPiracyClause;
-                case ClauseType.RequestStopPiracy:
-                    return DiplomacyMessageElementType.RequestStopPiracyClause;
-                case ClauseType.OfferBreakAgreement:
-                    return DiplomacyMessageElementType.OfferBreakAgreementClause;
-                case ClauseType.RequestBreakAgreement:
-                    return DiplomacyMessageElementType.RequestBreakAgreementClause;
+                //case ClauseType.OfferWithdrawTroops:
+                //    return DiplomacyMessageElementType.OfferWithdrawTroopsClause;
+                //case ClauseType.RequestWithdrawTroops:
+                //    return DiplomacyMessageElementType.RequestWithdrawTroopsClause;
+                //case ClauseType.OfferStopPiracy:
+                //    return DiplomacyMessageElementType.OfferStopPiracyClause;
+                //case ClauseType.RequestStopPiracy:
+                //    return DiplomacyMessageElementType.RequestStopPiracyClause;
+                //case ClauseType.OfferBreakAgreement:
+                //    return DiplomacyMessageElementType.OfferBreakAgreementClause;
+                //case ClauseType.RequestBreakAgreement:
+                //    return DiplomacyMessageElementType.RequestBreakAgreementClause;
                 case ClauseType.OfferGiveCredits:
                     return DiplomacyMessageElementType.OfferGiveCreditsClause;
                 case ClauseType.RequestGiveCredits:
                     return DiplomacyMessageElementType.RequestGiveCreditsClause;
-                case ClauseType.OfferGiveResources:
-                    return DiplomacyMessageElementType.OfferGiveResourcesClause;
-                case ClauseType.RequestGiveResources:
-                    return DiplomacyMessageElementType.RequestGiveResourcesClause;
-                case ClauseType.OfferMapData:
-                    return DiplomacyMessageElementType.OfferMapDataClause;
-                case ClauseType.RequestMapData:
-                    return DiplomacyMessageElementType.RequestMapDataClause;
-                case ClauseType.OfferHonorMilitaryAgreement:
-                    return DiplomacyMessageElementType.OfferHonorMilitaryAgreementClause;
-                case ClauseType.RequestHonorMilitaryAgreement:
-                    return DiplomacyMessageElementType.RequestHonorMilitaryAgreementClause;
-                case ClauseType.OfferEndEmbargo:
-                    return DiplomacyMessageElementType.OfferEndEmbargoClause;
-                case ClauseType.RequestEndEmbargo:
-                    return DiplomacyMessageElementType.RequestEndEmbargoClause;
+                //case ClauseType.OfferGiveResources:
+                //    return DiplomacyMessageElementType.OfferGiveResourcesClause;
+                //case ClauseType.RequestGiveResources:
+                    //return DiplomacyMessageElementType.RequestGiveResourcesClause;
+                //case ClauseType.OfferMapData:
+                //    return DiplomacyMessageElementType.OfferMapDataClause;
+                //case ClauseType.RequestMapData:
+                //    return DiplomacyMessageElementType.RequestMapDataClause;
+                //case ClauseType.OfferHonorMilitaryAgreement:
+                //    return DiplomacyMessageElementType.OfferHonorMilitaryAgreementClause;
+                //case ClauseType.RequestHonorMilitaryAgreement:
+                //    return DiplomacyMessageElementType.RequestHonorMilitaryAgreementClause;
+                //case ClauseType.OfferEndEmbargo:
+                //    return DiplomacyMessageElementType.OfferEndEmbargoClause;
+                //case ClauseType.RequestEndEmbargo:
+                //    return DiplomacyMessageElementType.RequestEndEmbargoClause;
                 case ClauseType.TreatyWarPact:
                     return DiplomacyMessageElementType.TreatyWarPact;
                 case ClauseType.TreatyCeaseFire:
@@ -1225,10 +1326,10 @@ namespace Supremacy.Client.Views
                     return DiplomacyMessageElementType.TreatyNonAggressionClause;
                 case ClauseType.TreatyOpenBorders:
                     return DiplomacyMessageElementType.TreatyOpenBordersClause;
-                case ClauseType.TreatyTradePact:
-                    return DiplomacyMessageElementType.TreatyTradePactClause;
-                case ClauseType.TreatyResearchPact:
-                    return DiplomacyMessageElementType.TreatyResearchPactClause;
+                //case ClauseType.TreatyTradePact:
+                //    return DiplomacyMessageElementType.TreatyTradePactClause;
+                //case ClauseType.TreatyResearchPact:
+                //    return DiplomacyMessageElementType.TreatyResearchPactClause;
                 case ClauseType.TreatyAffiliation:
                     return DiplomacyMessageElementType.TreatyAffiliationClause;
                 case ClauseType.TreatyDefensiveAlliance:
@@ -1237,47 +1338,50 @@ namespace Supremacy.Client.Views
                     return DiplomacyMessageElementType.TreatyFullAllianceClause;
                 case ClauseType.TreatyMembership:
                     return DiplomacyMessageElementType.TreatyMembershipClause;
+                //case ClauseType.TreatyAcceptRejectDictionary:  
+                //    return DiplomacyMessageElementType.UpdateAcceptRejectDictionaryStatement;
                 default:
                     throw new ArgumentOutOfRangeException("clauseType", "Unknown clause type: " + clauseType);
             }
         }
 
-        internal static ClauseType ElementTypeToClauseType(DiplomacyMessageElementType elementType)
+        internal static ClauseType ElementTypeToClauseType(DiplomacyMessageElementType elementType) // clicking send in Diplomatic Screen action
         {
+            //GameLog.Client.Diplomacy.DebugFormat("((()))ElementToClause DiploMessageElement param ={0}", elementType);
             switch (elementType)
             {
-                case DiplomacyMessageElementType.OfferWithdrawTroopsClause:
-                    return ClauseType.OfferWithdrawTroops;
-                case DiplomacyMessageElementType.RequestWithdrawTroopsClause:
-                    return ClauseType.RequestWithdrawTroops;
-                case DiplomacyMessageElementType.OfferStopPiracyClause:
-                    return ClauseType.OfferStopPiracy;
-                case DiplomacyMessageElementType.RequestStopPiracyClause:
-                    return ClauseType.RequestStopPiracy;
-                case DiplomacyMessageElementType.OfferBreakAgreementClause:
-                    return ClauseType.OfferBreakAgreement;
-                case DiplomacyMessageElementType.RequestBreakAgreementClause:
-                    return ClauseType.RequestBreakAgreement;
+                //case DiplomacyMessageElementType.OfferWithdrawTroopsClause:
+                //    return ClauseType.OfferWithdrawTroops;
+                //case DiplomacyMessageElementType.RequestWithdrawTroopsClause:
+                //    return ClauseType.RequestWithdrawTroops;
+                //case DiplomacyMessageElementType.OfferStopPiracyClause:
+                //    return ClauseType.OfferStopPiracy;
+                //case DiplomacyMessageElementType.RequestStopPiracyClause:
+                //    return ClauseType.RequestStopPiracy;
+                //case DiplomacyMessageElementType.OfferBreakAgreementClause:
+                //    return ClauseType.OfferBreakAgreement;
+                //case DiplomacyMessageElementType.RequestBreakAgreementClause:
+                //    return ClauseType.RequestBreakAgreement;
                 case DiplomacyMessageElementType.OfferGiveCreditsClause:
                     return ClauseType.OfferGiveCredits;
                 case DiplomacyMessageElementType.RequestGiveCreditsClause:
                     return ClauseType.RequestGiveCredits;
-                case DiplomacyMessageElementType.OfferGiveResourcesClause:
-                    return ClauseType.OfferGiveResources;
-                case DiplomacyMessageElementType.RequestGiveResourcesClause:
-                    return ClauseType.RequestGiveResources;
-                case DiplomacyMessageElementType.OfferMapDataClause:
-                    return ClauseType.OfferMapData;
-                case DiplomacyMessageElementType.RequestMapDataClause:
-                    return ClauseType.RequestMapData;
-                case DiplomacyMessageElementType.OfferHonorMilitaryAgreementClause:
-                    return ClauseType.OfferHonorMilitaryAgreement;
-                case DiplomacyMessageElementType.RequestHonorMilitaryAgreementClause:
-                    return ClauseType.RequestHonorMilitaryAgreement;
-                case DiplomacyMessageElementType.OfferEndEmbargoClause:
-                    return ClauseType.OfferEndEmbargo;
-                case DiplomacyMessageElementType.RequestEndEmbargoClause:
-                    return ClauseType.RequestEndEmbargo;
+                //case DiplomacyMessageElementType.OfferGiveResourcesClause:
+                //    return ClauseType.OfferGiveResources;
+                //case DiplomacyMessageElementType.RequestGiveResourcesClause:
+                //    return ClauseType.RequestGiveResources;
+                //case DiplomacyMessageElementType.OfferMapDataClause:
+                //    return ClauseType.OfferMapData;
+                //case DiplomacyMessageElementType.RequestMapDataClause:
+                //    return ClauseType.RequestMapData;
+                //case DiplomacyMessageElementType.OfferHonorMilitaryAgreementClause:
+                //    return ClauseType.OfferHonorMilitaryAgreement;
+                //case DiplomacyMessageElementType.RequestHonorMilitaryAgreementClause:
+                //    return ClauseType.RequestHonorMilitaryAgreement;
+                //case DiplomacyMessageElementType.OfferEndEmbargoClause:
+                //    return ClauseType.OfferEndEmbargo;
+                //case DiplomacyMessageElementType.RequestEndEmbargoClause:
+                //    return ClauseType.RequestEndEmbargo;
                 case DiplomacyMessageElementType.TreatyWarPact:
                     return ClauseType.TreatyWarPact;
                 case DiplomacyMessageElementType.TreatyCeaseFireClause:
@@ -1286,10 +1390,10 @@ namespace Supremacy.Client.Views
                     return ClauseType.TreatyNonAggression;
                 case DiplomacyMessageElementType.TreatyOpenBordersClause:
                     return ClauseType.TreatyOpenBorders;
-                case DiplomacyMessageElementType.TreatyTradePactClause:
-                    return ClauseType.TreatyTradePact;
-                case DiplomacyMessageElementType.TreatyResearchPactClause:
-                    return ClauseType.TreatyResearchPact;
+                //case DiplomacyMessageElementType.TreatyTradePactClause:
+                //    return ClauseType.TreatyTradePact;
+                //case DiplomacyMessageElementType.TreatyResearchPactClause:
+                //    return ClauseType.TreatyResearchPact;
                 case DiplomacyMessageElementType.TreatyAffiliationClause:
                     return ClauseType.TreatyAffiliation;
                 case DiplomacyMessageElementType.TreatyDefensiveAllianceClause:
@@ -1298,37 +1402,39 @@ namespace Supremacy.Client.Views
                     return ClauseType.TreatyFullAlliance;
                 case DiplomacyMessageElementType.TreatyMembershipClause:
                     return ClauseType.TreatyMembership;
+                //case DiplomacyMessageElementType.UpdateAcceptRejectDictionaryClause:
                 default:
                     return ClauseType.NoClause;
             }
         }
 
-        internal static StatementType ElementTypeToStatementType(DiplomacyMessageElementType elementType)
+        internal static StatementType ElementTypeToStatementType(DiplomacyMessageElementType elementType) // see your action element as statement on Diplomatic Screen
         {
+            //GameLog.Client.Diplomacy.DebugFormat("((()))ElementToStatement DiploMessageElement param ={0}", elementType);
             switch (elementType)
             {
                 case DiplomacyMessageElementType.WarDeclaration:
                     return StatementType.WarDeclaration;
                 case DiplomacyMessageElementType.CommendWarStatement:
                     return StatementType.CommendWar;
-                case DiplomacyMessageElementType.CommendTreatyStatement:
-                    return StatementType.CommendRelationship;
-                case DiplomacyMessageElementType.CommendAssaultStatement:
-                    return StatementType.CommendAssault;
-                case DiplomacyMessageElementType.CommendInvasionStatement:
-                    return StatementType.CommendInvasion;
-                case DiplomacyMessageElementType.CommendSabotageStatement:
-                    return StatementType.CommendSabotage;
+                //case DiplomacyMessageElementType.CommendTreatyStatement:
+                //    return StatementType.CommendRelationship;
+                //case DiplomacyMessageElementType.CommendAssaultStatement:
+                //    return StatementType.CommendAssault;
+                //case DiplomacyMessageElementType.CommendInvasionStatement:
+                //    return StatementType.CommendInvasion;
+                //case DiplomacyMessageElementType.CommendSabotageStatement:
+                //    return StatementType.CommendSabotage;
                 case DiplomacyMessageElementType.DenounceWarStatement:
                     return StatementType.DenounceWar;
-                case DiplomacyMessageElementType.DenounceTreatyStatement:
-                    return StatementType.DenounceRelationship;
-                case DiplomacyMessageElementType.DenounceAssaultStatement:
-                    return StatementType.DenounceAssault;
-                case DiplomacyMessageElementType.DenounceInvasionStatement:
-                    return StatementType.DenounceInvasion;
-                case DiplomacyMessageElementType.DenounceSabotageStatement:
-                    return StatementType.DenounceSabotage;
+                //case DiplomacyMessageElementType.DenounceTreatyStatement:
+                //    return StatementType.DenounceRelationship;
+                //case DiplomacyMessageElementType.DenounceAssaultStatement:
+                //    return StatementType.DenounceAssault;
+                //case DiplomacyMessageElementType.DenounceInvasionStatement:
+                //    return StatementType.DenounceInvasion;
+                //case DiplomacyMessageElementType.DenounceSabotageStatement:
+                //    return StatementType.DenounceSabotage;
                 default:
                     return StatementType.NoStatement;
             }

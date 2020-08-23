@@ -8,5 +8,7 @@ namespace Supremacy.Client.Views
         Commend,
         Denounce,
         WarDeclaration
+        //SendAcceptReject
+      
     }
 }

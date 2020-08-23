@@ -6,6 +6,8 @@ namespace Supremacy.Diplomacy
         OwnerIsSubjugated,
         CounterpartyIsSubjugated,
         AtWar,
+        Hostile,
+        Cold,
         Neutral,
         Peace,
         Friendly,

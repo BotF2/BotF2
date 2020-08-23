@@ -20,9 +20,9 @@ namespace Supremacy.Client
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (parameter != null)
-                return ResourceManager.GetString(value.ToString()).ToUpperInvariant();
-            return ResourceManager.GetString(value.ToString());
+            return parameter != null
+                ? ResourceManager.GetString(value.ToString()).ToUpperInvariant()
+                : ResourceManager.GetString(value.ToString());
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

@@ -30,13 +30,8 @@ namespace Supremacy.Client
     public abstract class ClientBase : INotifyPropertyChanged
     {
         #region Static Members
-        private static ClientBase _currentInstance;
 
-        public static ClientBase Current
-        {
-            get { return _currentInstance; }
-            set { _currentInstance = value; }
-        }
+        public static ClientBase Current { get; set; }
         #endregion
 
         #region Fields
@@ -63,9 +58,9 @@ namespace Supremacy.Client
         #endregion
 
         #region Properties
-        public IList<Order> Orders { get { return _orders.AsReadOnly(); } }
-        public IList<Order> Target1 { get { return _target1.AsReadOnly(); } }
-        public IList<Order> Target2 { get { return _target2.AsReadOnly(); } }
+        public IList<Order> Orders => _orders.AsReadOnly();
+        public IList<Order> Target1 => _target1.AsReadOnly();
+        public IList<Order> Target2 => _target2.AsReadOnly();
         public abstract GameContext Game { get; protected set; }
         public abstract TurnPhase TurnPhase { get; protected set; }
         public abstract Player LocalPlayer { get; protected set; }
@@ -94,95 +89,83 @@ namespace Supremacy.Client
             _orders = new List<Order>();
             _target1 = new List<Order>();
             _target2 = new List<Order>();
-
         }
         #endregion
 
         #region Event Invokers
         protected void OnGameStarting()
         {
-            if (GameStarting != null)
-                GameStarting();
+            GameStarting?.Invoke();
         }
 
         protected void OnGameStarted()
         {
             PlayerContext.Current = new PlayerContext(Players);
-            if (GameStarted != null)
-                GameStarted();
+            GameStarted?.Invoke();
         }
 
         protected void OnTurnPhaseChanged(TurnPhase phase)
         {
-            if (TurnPhaseChanged != null)
-                TurnPhaseChanged(phase);
+            TurnPhaseChanged?.Invoke(phase);
         }
 
         protected void OnTurnFinished()
         {
-            if (TurnFinished != null)
-                TurnFinished();
+            TurnFinished?.Invoke();
         }
 
         protected void OnPlayerTurnFinished()
         {
-            if (PlayerTurnFinished != null)
-                PlayerTurnFinished();
+            PlayerTurnFinished?.Invoke();
         }
 
         protected void OnPlayerJoined(Player player)
         {
-            if (PlayerJoined != null)
-                PlayerJoined(player);
+            PlayerJoined?.Invoke(player);
         }
 
         protected void OnPlayerExited(Player player)
         {
-            if (PlayerExited != null)
-                PlayerExited(player);
+            PlayerExited?.Invoke(player);
         }
 
         protected void OnConnected()
         {
-            if (Connected != null)
-                Connected();
+            Connected?.Invoke();
         }
 
         protected void OnConnectionBroken()
         {
-            if (ConnectionBroken != null)
-                ConnectionBroken();
+            ConnectionBroken?.Invoke();
         }
 
         protected void OnDisconnected()
         {
-            if (Disconnected != null)
-                Disconnected();
+            Disconnected?.Invoke();
         }
 
         protected void OnLobbyUpdated(LobbyData lobbyData)
         {
-            if (LobbyUpdated != null)
-                LobbyUpdated(lobbyData);
+            LobbyUpdated?.Invoke(lobbyData);
         }
 
         protected void OnChatMessageReceived(ChatMessage message)
         {
-            if (ChatMessageReceived != null)
-                ChatMessageReceived(message);
+            ChatMessageReceived?.Invoke(message);
         }
 
         protected void OnGameEnded()
         {
-            if (GameEnded != null)
-                GameEnded();
+            GameEnded?.Invoke();
             PlayerContext.Current = null;
         }
 
         protected void OnCombatUpdate(CombatUpdate update)
         {
             if ((update != null) && (CombatUpdate != null))
+            {
                 CombatUpdate(update);
+            }
         }
         #endregion
 
@@ -190,13 +173,18 @@ namespace Supremacy.Client
         public void AddOrder(Order order)
         {
             if (order == null)
+            {
                 return;
+            }
 
             order.Owner = LocalPlayer.Empire;
             lock (_orders)
             {
                 while ((_orders.Count > 0) && order.Overrides(_orders[_orders.Count - 1]))
+                {
                     _orders.RemoveAt(_orders.Count - 1);
+                }
+
                 _orders.Add(order);
             }
         }
@@ -204,7 +192,10 @@ namespace Supremacy.Client
         public bool RemoveOrder(Order order)
         {
             if (order == null)
+            {
                 return false;
+            }
+
             lock (_orders)
             {
                 return _orders.Remove(order);
@@ -218,13 +209,18 @@ namespace Supremacy.Client
         public void AddTarget1(Order target1)
         {
             if (target1 == null)
+            {
                 return;
+            }
 
             target1.Owner = LocalPlayer.Empire;
             lock (_target1)
             {
                 while ((_target1.Count > 0) && target1.Overrides(_target1[_target1.Count - 1]))
+                {
                     _target1.RemoveAt(_target1.Count - 1);
+                }
+
                 _target1.Add(target1);
             }
         }
@@ -232,7 +228,10 @@ namespace Supremacy.Client
         public bool RemoveTarget1(Order target1)
         {
             if (target1 == null)
+            {
                 return false;
+            }
+
             lock (_target1)
             {
                 return _target1.Remove(target1);
@@ -247,13 +246,18 @@ namespace Supremacy.Client
         public void AddTarget2(Order target)
         {
             if (target == null)
+            {
                 return;
+            }
 
             target.Owner = LocalPlayer.Empire;
             lock (_target2)
             {
                 while ((_target2.Count > 0) && target.Overrides(_target2[_target2.Count - 1]))
+                {
                     _target2.RemoveAt(_target2.Count - 1);
+                }
+
                 _target2.Add(target);
             }
         }
@@ -261,7 +265,10 @@ namespace Supremacy.Client
         public bool RemoveTarget2(Order target)
         {
             if (target == null)
+            {
                 return false;
+            }
+
             lock (_target2)
             {
                 return _target2.Remove(target);
@@ -286,8 +293,7 @@ namespace Supremacy.Client
 
         public void JoinGame(string playerName, string host)
         {
-            IPAddress hostAddress;
-            if (IPAddress.TryParse(host, out hostAddress))
+            if (IPAddress.TryParse(host, out IPAddress hostAddress))
             {
                 JoinGame(playerName, hostAddress);
             }
@@ -397,8 +403,7 @@ namespace Supremacy.Client
 
         protected void OnPropertyChanged(string propertyName)
         {
-            if (PropertyChanged != null)
-                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
         #endregion
     }

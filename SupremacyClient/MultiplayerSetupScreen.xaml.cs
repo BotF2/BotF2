@@ -71,6 +71,7 @@ namespace Supremacy.Client
             Unloaded += OnMultiplayerSetupScreenUnloaded;
 
             TryGetLastPlayerName();
+            TryGetLastIP();
         }
 
         void TryGetLastPlayerName()
@@ -78,6 +79,8 @@ namespace Supremacy.Client
             try
             {
                 PlayerName.Text = StorageManager.ReadSetting<string, string>("LastPlayerName");
+                //DirectConnectAddress = StorageManager.ReadSetting<string, string>("LastPlayerName");
+                //PlayerName. = StorageManager.ReadSetting<string, string>("LastPlayerName");
                 PlayerName.CaretIndex = PlayerName.Text.Length;
             }
             catch (Exception e)
@@ -94,6 +97,37 @@ namespace Supremacy.Client
                 if (playerName.Length > 0)
                 {
                     StorageManager.WriteSetting("LastPlayerName", playerName);
+                }
+            }
+            catch (Exception e)
+            {
+                GameLog.Client.General.Error(e);
+            }
+        }
+
+        void TryGetLastIP()
+        {
+            try
+            {
+                DirectConnectAddress.Text = StorageManager.ReadSetting<string, string>("DirectConnectAddressString");
+                //DirectConnectAddress = StorageManager.ReadSetting<string, string>("LastPlayerName");
+                //PlayerName. = StorageManager.ReadSetting<string, string>("LastPlayerName");
+                DirectConnectAddress.CaretIndex = PlayerName.Text.Length;
+            }
+            catch (Exception e)
+            {
+                GameLog.Client.General.Error(e);
+            }
+        }
+
+        void TrySetLastIP()
+        {
+            try
+            {
+                string DirectConnectAddressString = DirectConnectAddress.Text.Trim();
+                if (DirectConnectAddressString.Length > 0)
+                {
+                    StorageManager.WriteSetting("DirectConnectAddressString", DirectConnectAddressString);
                 }
             }
             catch (Exception e)
@@ -136,6 +170,7 @@ namespace Supremacy.Client
         void ExecuteDirectConnectCommand(object sender, ExecutedRoutedEventArgs e)
         {
             TrySetLastPlayerName();
+            TrySetLastIP();
             Close();
             ClientCommands.JoinMultiplayerGame.Execute(
                 new MultiplayerConnectParameters(

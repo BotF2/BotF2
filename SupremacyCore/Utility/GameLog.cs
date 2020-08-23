@@ -310,7 +310,8 @@ namespace Supremacy.Utility
         public static void SetRepositoryToErrorOnly(string repository)
         {
             ((log4net.Repository.Hierarchy.Logger)LogManager.GetLogger(repository).Logger).Level = Level.Error;
-            //works GameLog.Client.General.InfoFormat("Log.txt: Trace is set to ERROR only for '{0}' ", repository);
+            //works 
+            GameLog.Client.General.InfoFormat("Log.txt: Trace is set to ERROR only for '{0}' ", repository);
         }
     }
 }

@@ -26,6 +26,7 @@
   <Style x:Key="BuildShipButton"
            TargetType="{x:Type Button}">
     <Setter Property="Focusable" Value="False"/>
+    <Setter Property="IsEnabled" Value="True" />
     <Setter Property="IsTabStop" Value="False"/>
     <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
     <Setter Property="UseLayoutRounding" Value="True" />
@@ -237,8 +238,8 @@
                 <RowDefinition Height="40" />
                 <RowDefinition Height="40" />
               </Grid.RowDefinitions>
-              <Image Grid.Row="0" Source="vfs:///Resources/Images/Resources/RawMaterials.png" Width="24" ToolTip="{xs:EnumString {x:Static s:ResourceType.RawMaterials}}" />
-              <Image Grid.Row="1" Source="vfs:///Resources/Images/Resources/Dilithium.png" Width="24" ToolTip="{xs:EnumString {x:Static s:ResourceType.Dilithium}}" />
+              <Image Grid.Row="0" Source="vfs:///Resources/Images/ScreenIcons/RawMaterials.png" Width="24" ToolTip="{xs:EnumString {x:Static s:ResourceType.RawMaterials}}" />
+              <Image Grid.Row="1" Source="vfs:///Resources/Images/ScreenIcons/Dilithium.png" Width="24" ToolTip="{xs:EnumString {x:Static s:ResourceType.Dilithium}}" />
               <Image Grid.Row="2" Source="{StaticResource StopwatchImage}" Width="17" ToolTip="{xs:LocalizedString Group={x:Static s:LocalizedTextGroups.ColonyScreen}, Entry=SHIP_CONSTRUCTION_TIME_TOOLTIP}" />
 
               <!-- Invisible text to avoid shifting layouts -->

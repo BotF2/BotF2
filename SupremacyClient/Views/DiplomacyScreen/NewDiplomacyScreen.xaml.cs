@@ -1,11 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Linq;
+
+using System.Runtime.CompilerServices;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Documents;
+using System.Windows.Input;
 using System.Windows.Media;
+using Microsoft.Practices.Composite.Presentation.Commands;
+using Microsoft.Practices.Composite.Regions;
+using Microsoft.Practices.ServiceLocation;
+using Microsoft.Xna.Framework.Graphics;
+using Obtics.Collections;
+using Supremacy.AI;
 using Supremacy.Client.Context;
 using Supremacy.Client.Controls;
 using Supremacy.Diplomacy;
+using Supremacy.Entities;
 using Supremacy.Game;
 using Supremacy.UI;
 using Supremacy.Utility;
@@ -17,8 +30,9 @@ namespace Supremacy.Client.Views.DiplomacyScreen
     /// <summary>
     /// Interaction logic for NewDiplomacyScreen.xaml
     /// </summary>
-    public partial class NewDiplomacyScreen : INewDiplomacyScreenView
+    public partial class NewDiplomacyScreen : INewDiplomacyScreenView //System.ComponentModel.INotifyPropertyChanged
     {
+
         public NewDiplomacyScreen()
         {
             TextBlockExtensions.AddHyperlinkClickedHandler(this, OnMessageParameterLinkClick);
@@ -79,6 +93,11 @@ namespace Supremacy.Client.Views.DiplomacyScreen
             if (element.EditParameterCommand.CanExecute(contentTemplate))
                 element.EditParameterCommand.Execute(contentTemplate);
         }
+
+        private void SelecteForeignPower_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+
+        }
     }
 
     internal class DiplomacyGraphPenSelector : INodeGraphPenSelector
@@ -124,8 +143,8 @@ namespace Supremacy.Client.Views.DiplomacyScreen
             }
         }
 
-        #region INodeGraphPenSelector Members
-        public Pen GetPen(object parentNode, object childNode)
+    #region INodeGraphPenSelector Members
+    public Pen GetPen(object parentNode, object childNode)
         {
             var node1 = parentNode as DiplomacyGraphNode;
             var node2 = childNode as DiplomacyGraphNode;

@@ -52,11 +52,15 @@ namespace Supremacy.UI
             _fadingGCPs = new Dictionary<int, GraphContentPresenter>();
             _fadingGCPsNextKey = int.MinValue;
 
-            _nodeTemplateBinding = new Binding(NodeTemplateProperty.Name);
-            _nodeTemplateBinding.Source = this;
+            _nodeTemplateBinding = new Binding(NodeTemplateProperty.Name)
+            {
+                Source = this
+            };
 
-            _nodeTemplateSelectorBinding = new Binding(NodeTemplateSelectorProperty.Name);
-            _nodeTemplateSelectorBinding.Source = this;
+            _nodeTemplateSelectorBinding = new Binding(NodeTemplateSelectorProperty.Name)
+            {
+                Source = this
+            };
 
             _nodesChangedHandler = NodesCollectionChanged;
 
@@ -70,9 +74,13 @@ namespace Supremacy.UI
         private void HandleIsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
             if (IsVisible)
+            {
                 WireFrameTick();
+            }
             else
+            {
                 UnwireFrameTick();
+            }
         }
 
         #region overrides
@@ -130,8 +138,8 @@ namespace Supremacy.UI
 
         protected override Size ArrangeOverride(Size finalSize)
         {
-            _controlCenter.X = finalSize.Width/2;
-            _controlCenter.Y = finalSize.Height/2;
+            _controlCenter.X = finalSize.Width / 2;
+            _controlCenter.Y = finalSize.Height / 2;
 
             for (int i = 0; i < _needsArrange.Count; i++)
             {
@@ -205,9 +213,11 @@ namespace Supremacy.UI
         #region CenterObject Implementation
         private static PropertyMetadata GetCenterObjectPropertyMetadata()
         {
-            FrameworkPropertyMetadata fpm = new FrameworkPropertyMetadata();
-            fpm.AffectsMeasure = true;
-            fpm.PropertyChangedCallback = CenterObjectPropertyChanged;
+            FrameworkPropertyMetadata fpm = new FrameworkPropertyMetadata
+            {
+                AffectsMeasure = true,
+                PropertyChangedCallback = CenterObjectPropertyChanged
+            };
             return fpm;
         }
 
@@ -226,8 +236,8 @@ namespace Supremacy.UI
 
         public object CenterObject
         {
-            get { return GetValue(CenterObjectProperty); }
-            set { SetValue(CenterObjectProperty, value); }
+            get => GetValue(CenterObjectProperty);
+            set => SetValue(CenterObjectProperty, value);
         }
         #endregion
 
@@ -241,8 +251,8 @@ namespace Supremacy.UI
 
         public string NodesBindingPath
         {
-            get { return (string)GetValue(NodesBindingPathProperty); }
-            set { SetValue(NodesBindingPathProperty, value); }
+            get => (string)GetValue(NodesBindingPathProperty);
+            set => SetValue(NodesBindingPathProperty, value);
         }
 
         private static void NodesBindingPathPropertyChanged(
@@ -259,8 +269,8 @@ namespace Supremacy.UI
 
         public DataTemplate NodeTemplate
         {
-            get { return (DataTemplate)GetValue(NodeTemplateProperty); }
-            set { SetValue(NodeTemplateProperty, value); }
+            get => (DataTemplate)GetValue(NodeTemplateProperty);
+            set => SetValue(NodeTemplateProperty, value);
         }
         #endregion
 
@@ -270,8 +280,8 @@ namespace Supremacy.UI
 
         public DataTemplateSelector NodeTemplateSelector
         {
-            get { return (DataTemplateSelector)GetValue(NodeTemplateSelectorProperty); }
-            set { SetValue(NodeTemplateSelectorProperty, value); }
+            get => (DataTemplateSelector)GetValue(NodeTemplateSelectorProperty);
+            set => SetValue(NodeTemplateSelectorProperty, value);
         }
         #endregion
 
@@ -287,8 +297,8 @@ namespace Supremacy.UI
 
         public double CoefficientOfDampening
         {
-            get { return (double)GetValue(CoefficientOfDampeningProperty); }
-            set { SetValue(CoefficientOfDampeningProperty, value); }
+            get => (double)GetValue(CoefficientOfDampeningProperty);
+            set => SetValue(CoefficientOfDampeningProperty, value);
         }
 
         private static object CoerceCoefficientOfDampeningPropertyCallback(DependencyObject element, object baseValue)
@@ -298,18 +308,7 @@ namespace Supremacy.UI
 
         private static double CoerceCoefficientOfDampeningPropertyCallback(double baseValue)
         {
-            if (baseValue <= MinCOD)
-            {
-                return MinCOD;
-            }
-            else if (baseValue >= MaxCOD)
-            {
-                return MaxCOD;
-            }
-            else
-            {
-                return baseValue;
-            }
+            return baseValue <= MinCOD ? MinCOD : baseValue >= MaxCOD ? MaxCOD : baseValue;
         }
         #endregion
 
@@ -325,8 +324,8 @@ namespace Supremacy.UI
 
         public double FrameRate
         {
-            get { return (double)GetValue(FrameRateProperty); }
-            set { SetValue(FrameRateProperty, value); }
+            get => (double)GetValue(FrameRateProperty);
+            set => SetValue(FrameRateProperty, value);
         }
 
         private static object CoerceFrameRatePropertyCallback(DependencyObject element, object baseValue)
@@ -336,18 +335,7 @@ namespace Supremacy.UI
 
         private static double CoerceFrameRatePropertyCallback(double baseValue)
         {
-            if (baseValue <= MinCOD)
-            {
-                return MinCOD;
-            }
-            else if (baseValue >= MaxCOD)
-            {
-                return MaxCOD;
-            }
-            else
-            {
-                return baseValue;
-            }
+            return baseValue <= MinCOD ? MinCOD : baseValue >= MaxCOD ? MaxCOD : baseValue;
         }
         #endregion
 
@@ -359,14 +347,14 @@ namespace Supremacy.UI
 
         public Pen LinePen
         {
-            get { return (Pen)GetValue(LinePenProperty); }
-            set { SetValue(LinePenProperty, value); }
+            get => (Pen)GetValue(LinePenProperty);
+            set => SetValue(LinePenProperty, value);
         }
 
         public INodeGraphPenSelector PenSelector
         {
-            get { return _penSelector; }
-            set { _penSelector = value ?? this; }
+            get => _penSelector;
+            set => _penSelector = value ?? this;
         }
 
         // Using a DependencyProperty as the backing store for LinePen.  This enables animation, styling, binding, etc...
@@ -427,7 +415,7 @@ namespace Supremacy.UI
                 }
                 else
                 {
-                    BindingOperations.SetBinding(this, NodesProperty, theBinding);
+                    _ = BindingOperations.SetBinding(this, NodesProperty, theBinding);
                 }
             }
         }
@@ -517,7 +505,7 @@ namespace Supremacy.UI
                         _somethingInvalid = true;
                     }
 
-                    for (int j = (i + 1); j < _nodePresenters.Count; j++)
+                    for (int j = i + 1; j < _nodePresenters.Count; j++)
                     {
                         Vector distance = EnsureNonzeroVector(gcp.Location - _nodePresenters[j].Location);
 
@@ -586,14 +574,7 @@ namespace Supremacy.UI
 
         private static Vector EnsureNonzeroVector(Vector vector)
         {
-            if (vector.Length > 0)
-            {
-                return vector;
-            }
-            else
-            {
-                return new Vector(Rnd.NextDouble() - .5, Rnd.NextDouble() - .5);
-            }
+            return vector.Length > 0 ? vector : new Vector(Rnd.NextDouble() - .5, Rnd.NextDouble() - .5);
         }
 
         private static bool UpdateGraphCP(
@@ -603,7 +584,7 @@ namespace Supremacy.UI
             double frameRate,
             Point parentCenter)
         {
-            bool parentCenterChanged = (graphContentPresenter.ParentCenter != parentCenter);
+            bool parentCenterChanged = graphContentPresenter.ParentCenter != parentCenter;
             if (parentCenterChanged)
             {
                 graphContentPresenter.ParentCenter = parentCenter;
@@ -612,20 +593,20 @@ namespace Supremacy.UI
             //add system drag
             Debug.Assert(coefficientOfDampening > 0);
             Debug.Assert(coefficientOfDampening < 1);
-            graphContentPresenter.Velocity *= (1 - coefficientOfDampening*frameRate);
+            graphContentPresenter.Velocity *= 1 - coefficientOfDampening*frameRate;
 
             //add force
-            graphContentPresenter.Velocity += (forceVector*frameRate);
+            graphContentPresenter.Velocity += forceVector * frameRate;
 
             //apply terminalVelocity
             if (graphContentPresenter.Velocity.Length > TerminalVelocity)
             {
-                graphContentPresenter.Velocity *= (TerminalVelocity/graphContentPresenter.Velocity.Length);
+                graphContentPresenter.Velocity *= TerminalVelocity / graphContentPresenter.Velocity.Length;
             }
 
             if (graphContentPresenter.Velocity.Length > MinVelocity && forceVector.Length > MinVelocity)
             {
-                graphContentPresenter.Location += (graphContentPresenter.Velocity*frameRate);
+                graphContentPresenter.Location += graphContentPresenter.Velocity * frameRate;
                 return true;
             }
             else
@@ -637,7 +618,7 @@ namespace Supremacy.UI
 
         private static Vector[,] SetupForceVertors(int count)
         {
-            return new Vector[count,count];
+            return new Vector[count, count];
         }
 
         private void KillGCP(GraphContentPresenter gcp, bool isCenter)
@@ -690,8 +671,10 @@ namespace Supremacy.UI
 
         private static DoubleAnimation GetNewHideAnimation(NodeGraph owner, int key)
         {
-            DoubleAnimation da = new DoubleAnimation(0, HideDuration);
-            da.FillBehavior = FillBehavior.Stop;
+            DoubleAnimation da = new DoubleAnimation(0, HideDuration)
+            {
+                FillBehavior = FillBehavior.Stop
+            };
             HideAnimationManager ham = new HideAnimationManager(owner, key);
             da.Completed += ham.CompletedHandler;
             da.Freeze();
@@ -887,14 +870,12 @@ namespace Supremacy.UI
         {
             if (_nodesChanged)
             {
-                INotifyCollectionChanged oldList = _nodesInUse as INotifyCollectionChanged;
-                if (oldList != null)
+                if (_nodesInUse is INotifyCollectionChanged oldList)
                 {
                     oldList.CollectionChanged -= _nodesChangedHandler;
                 }
 
-                INotifyCollectionChanged newList = Nodes as INotifyCollectionChanged;
-                if (newList != null)
+                if (Nodes is INotifyCollectionChanged newList)
                 {
                     newList.CollectionChanged += _nodesChangedHandler;
                 }
@@ -1020,16 +1001,15 @@ namespace Supremacy.UI
             typeof(NodeGraph),
             GetNodesPropertyMetadata());
 
-        private IList Nodes
-        {
-            get { return (IList)GetValue(NodesProperty); }
-        }
+        private IList Nodes => (IList)GetValue(NodesProperty);
 
         private static PropertyMetadata GetNodesPropertyMetadata()
         {
-            FrameworkPropertyMetadata fpm = new FrameworkPropertyMetadata();
-            fpm.AffectsMeasure = true;
-            fpm.PropertyChangedCallback = NodesPropertyChanged;
+            FrameworkPropertyMetadata fpm = new FrameworkPropertyMetadata
+            {
+                AffectsMeasure = true,
+                PropertyChangedCallback = NodesPropertyChanged
+            };
             return fpm;
         }
 
@@ -1077,8 +1057,8 @@ namespace Supremacy.UI
             {
                 Content = content;
 
-                SetBinding(ContentTemplateProperty, nodeTemplateBinding);
-                SetBinding(ContentTemplateSelectorProperty, nodeTemplateSelectorBinding);
+                _ = SetBinding(ContentTemplateProperty, nodeTemplateBinding);
+                _ = SetBinding(ContentTemplateSelectorProperty, nodeTemplateSelectorBinding);
 
                 ScaleTransform = new ScaleTransform();
                 _translateTransform = new TranslateTransform();
@@ -1097,7 +1077,7 @@ namespace Supremacy.UI
 
             public Point Location
             {
-                get { return _location; }
+                get => _location;
                 set
                 {
                     if (_location != value)
@@ -1110,7 +1090,7 @@ namespace Supremacy.UI
 
             public Point ParentCenter
             {
-                get { return _parentCenter; }
+                get => _parentCenter;
                 set
                 {
                     if (_parentCenter != value)
@@ -1121,10 +1101,7 @@ namespace Supremacy.UI
                 }
             }
 
-            public Point ActualLocation
-            {
-                get { return new Point(_location.X + _parentCenter.X, _location.Y + _parentCenter.Y); }
-            }
+            public Point ActualLocation => new Point(_location.X + _parentCenter.X, _location.Y + _parentCenter.Y);
 
             protected override Size MeasureOverride(Size constraint)
             {
@@ -1136,11 +1113,11 @@ namespace Supremacy.UI
             {
                 _actualRenderSize = base.ArrangeOverride(_actualDesiredSize);
 
-                ScaleTransform.CenterX = _actualRenderSize.Width/2;
-                ScaleTransform.CenterY = _actualRenderSize.Height/2;
+                ScaleTransform.CenterX = _actualRenderSize.Width / 2;
+                ScaleTransform.CenterY = _actualRenderSize.Height / 2;
 
-                _centerVector.X = -_actualRenderSize.Width/2;
-                _centerVector.Y = -_actualRenderSize.Height/2;
+                _centerVector.X = -_actualRenderSize.Width / 2;
+                _centerVector.Y = -_actualRenderSize.Height / 2;
 
                 UpdateTransform();
 
@@ -1194,9 +1171,11 @@ namespace Supremacy.UI
             Binding newBinding = null;
             try
             {
-                newBinding = new Binding(bindingPath);
-                newBinding.Source = source;
-                newBinding.Mode = BindingMode.OneWay;
+                newBinding = new Binding(bindingPath)
+                {
+                    Source = source,
+                    Mode = BindingMode.OneWay
+                };
             }
             catch (InvalidOperationException)
             {
@@ -1228,14 +1207,7 @@ namespace Supremacy.UI
         private static Vector GetVector(int a, int b, Vector[,] vectors)
         {
             Debug.Assert(a != b);
-            if (a < b)
-            {
-                return vectors[a, b];
-            }
-            else
-            {
-                return -vectors[b, a];
-            }
+            return a < b ? vectors[a, b] : -vectors[b, a];
         }
 
         private static Vector GetSpringForce(Vector x)
@@ -1253,14 +1225,14 @@ namespace Supremacy.UI
 
         private static Vector GetAttractionForce(Vector x)
         {
-            Vector force = -.2*Normalize(x)*x.Length;
+            Vector force = -.2 * Normalize(x) * x.Length;
             Debug.Assert(IsGoodVector(force));
             return force;
         }
 
         private static Vector GetRepulsiveForce(Vector x)
         {
-            Vector force = .1*Normalize(x)/Math.Pow(x.Length/1000, 2);
+            Vector force = .1 * Normalize(x) / Math.Pow(x.Length / 1000, 2);
             Debug.Assert(IsGoodVector(force));
             return force;
         }
@@ -1275,11 +1247,11 @@ namespace Supremacy.UI
         private static Vector GetWallForce(Size area, Point location)
         {
             Vector force = new Vector();
-            force += (VerticalVector*GetForce(-location.Y - area.Height/2));
-            force += (-VerticalVector*GetForce(location.Y - area.Height/2));
+            force += VerticalVector * GetForce(-location.Y - (area.Height / 2));
+            force += -VerticalVector * GetForce(location.Y - (area.Height / 2));
 
-            force += (HorizontalVector*GetForce(-location.X - area.Width/2));
-            force += (-HorizontalVector*GetForce(location.X - area.Width/2));
+            force += HorizontalVector * GetForce(-location.X - (area.Width / 2));
+            force += -HorizontalVector * GetForce(location.X - (area.Width / 2));
 
             force *= 1000;
             return force;
@@ -1287,7 +1259,7 @@ namespace Supremacy.UI
 
         private static double GetForce(double x)
         {
-            return GetSCurve((x + 100)/200);
+            return GetSCurve((x + 100) / 200);
         }
 
         private static bool IsGoodDouble(double d)
@@ -1303,7 +1275,7 @@ namespace Supremacy.UI
         #region math
         private static double GetSCurve(double x)
         {
-            return 0.5 + Math.Sin(Math.Abs(x*(Math.PI/2)) - Math.Abs((x*(Math.PI/2)) - (Math.PI/2)))/2;
+            return 0.5 + (Math.Sin(Math.Abs(x * (Math.PI / 2)) - Math.Abs((x * (Math.PI / 2)) - (Math.PI / 2))) / 2);
         }
         #endregion
 

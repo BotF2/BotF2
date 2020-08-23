@@ -20,7 +20,10 @@ namespace Supremacy.Collections
                 get
                 {
                     if (_instance == null)
+                    {
                         _instance = new EmptyIndexedCollection<T>();
+                    }
+
                     return _instance;
                 }
             }
@@ -37,15 +40,9 @@ namespace Supremacy.Collections
             #endregion
 
             #region Implementation of IIndexedEnumerable<T>
-            public int Count
-            {
-                get { return 0; }
-            }
+            public int Count => 0;
 
-            public T this[int index]
-            {
-                get { throw new ArgumentOutOfRangeException("index"); }
-            }
+            public T this[int index] => throw new ArgumentOutOfRangeException(nameof(index));
             #endregion
 
             #region Implementation of IIndexedCollection<T>
@@ -72,12 +69,8 @@ namespace Supremacy.Collections
                 [NotNull] IIndexedEnumerable<TInternal> innerItems,
                 [NotNull] Func<TInternal, T> conversionCallback)
             {
-                if (innerItems == null)
-                    throw new ArgumentNullException("innerItems");
-                if (conversionCallback == null)
-                    throw new ArgumentNullException("conversionCallback");
-                _innerItems = innerItems;
-                _conversionCallback = conversionCallback;
+                _innerItems = innerItems ?? throw new ArgumentNullException(nameof(innerItems));
+                _conversionCallback = conversionCallback ?? throw new ArgumentNullException(nameof(conversionCallback));
             }
 
             public IEnumerator<T> GetEnumerator()
@@ -90,18 +83,11 @@ namespace Supremacy.Collections
                 return GetEnumerator();
             }
 
-            public int Count
-            {
-                get { return _innerItems.Count; }
-            }
+            public int Count => _innerItems.Count;
 
-            public T this[int index]
-            {
-                get { return _conversionCallback(_innerItems[index]); }
-            }
+            public T this[int index] => _conversionCallback(_innerItems[index]);
         }
         #endregion
-
 
         public static IIndexedEnumerable<T> Empty<T>()
         {
@@ -110,7 +96,7 @@ namespace Supremacy.Collections
 
         public static IIndexedEnumerable<TDestination> Cast<TSource, TDestination>(this IIndexedEnumerable<TSource> source)
         {
-            return new IndexedEnumerableWrapper<TDestination, TSource>(source, o => (TDestination)((object)o));
+            return new IndexedEnumerableWrapper<TDestination, TSource>(source, o => (TDestination)(object)o);
         }
 
         public static IIndexedEnumerable<T> Single<T>(T value)
@@ -121,9 +107,14 @@ namespace Supremacy.Collections
         public static IIndexedEnumerable<T> Concat<T>([NotNull] this IIndexedEnumerable<T> first, [NotNull] IIndexedEnumerable<T> second)
         {
             if (first == null)
-                throw new ArgumentNullException("first");
+            {
+                throw new ArgumentNullException(nameof(first));
+            }
+
             if (second == null)
-                throw new ArgumentNullException("second");
+            {
+                throw new ArgumentNullException(nameof(second));
+            }
 
             return new IndexedEnumerableConcatenation<T>(first, second);
         }
@@ -148,17 +139,17 @@ namespace Supremacy.Collections
                 return GetEnumerator();
             }
 
-            public int Count
-            {
-                get { return 1; }
-            }
+            public int Count => 1;
 
             public T this[int index]
             {
                 get
                 {
                     if (index != 0)
-                        throw new ArgumentOutOfRangeException("index");
+                    {
+                        throw new ArgumentOutOfRangeException(nameof(index));
+                    }
+
                     return _value;
                 }
             }
@@ -174,20 +165,17 @@ namespace Supremacy.Collections
 
             public IndexedEnumerableConcatenation([NotNull] IIndexedEnumerable<T> first, [NotNull] IIndexedEnumerable<T> second)
             {
-                if (first == null)
-                    throw new ArgumentNullException("first");
-                if (second == null)
-                    throw new ArgumentNullException("second");
-
-                _first = first;
-                _second = second;
+                _first = first ?? throw new ArgumentNullException(nameof(first));
+                _second = second ?? throw new ArgumentNullException(nameof(second));
                 _secondStart = first.Count;
             }
 
             public IEnumerator<T> GetEnumerator()
             {
-                for (var i = 0; i < Count; i++)
+                for (int i = 0; i < Count; i++)
+                {
                     yield return this[i];
+                }
             }
 
             IEnumerator IEnumerable.GetEnumerator()
@@ -195,22 +183,18 @@ namespace Supremacy.Collections
                 return GetEnumerator();
             }
 
-            public int Count
-            {
-                get { return _first.Count + _second.Count; }
-            }
+            public int Count => _first.Count + _second.Count;
 
             public T this[int index]
             {
                 get
                 {
                     if (index < 0 || index >= Count)
-                        throw new ArgumentOutOfRangeException("index");
+                    {
+                        throw new ArgumentOutOfRangeException(nameof(index));
+                    }
 
-                    if (index >= _secondStart)
-                        return _second[index - _secondStart];
-
-                    return _first[index];
+                    return index >= _secondStart ? _second[index - _secondStart] : _first[index];
                 }
             }
         }

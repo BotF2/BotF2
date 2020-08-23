@@ -10,6 +10,7 @@
 using System;
 using System.ComponentModel;
 using System.Runtime.Serialization;
+using System.Security.Policy;
 using System.Threading;
 using Supremacy.Annotations;
 using Supremacy.Collections;
@@ -53,7 +54,7 @@ namespace Supremacy.Diplomacy
         void SetContactTurn(int contactTurn = 0);
     }
 
-    [Serializable]      
+    [Serializable]
     public class DiplomacyData : IDiplomacyData, INotifyPropertyChanged, IOwnedDataSerializableAndRecreatable
     {
         private int _ownerId;
@@ -61,6 +62,7 @@ namespace Supremacy.Diplomacy
         private Meter _regard;
         private Meter _trust;
         private int _contactTurn;
+        private bool _firstDiplomaticAction;
         private int _lastStatusChange;
         private ForeignPowerStatus _diplomacyStatus;
 
@@ -74,6 +76,7 @@ namespace Supremacy.Diplomacy
             _ownerId = ownerId;
             _counterpartyId = counterpartyId;
             _contactTurn = 0;
+            _firstDiplomaticAction = false;
             _regard = new Meter(500, 0, 1000);
             _trust = new Meter(500, 0, 1000);
             _regard.CurrentValueChanged += OnRegardCurrentValueChanged;
@@ -121,6 +124,12 @@ namespace Supremacy.Diplomacy
             internal set { _contactTurn = value; }
         }
 
+        public bool FirstDiplomaticAction
+        {
+            get { return _firstDiplomaticAction; }
+            set { _firstDiplomaticAction = value; }
+        }
+        
         public int ContactDuration
         {
             get
@@ -241,6 +250,7 @@ namespace Supremacy.Diplomacy
             _regard = reader.Read<Meter>();
             _trust = reader.Read<Meter>();
             _contactTurn = reader.ReadOptimizedInt32();
+            _firstDiplomaticAction = reader.ReadBoolean();
             _diplomacyStatus = (ForeignPowerStatus)reader.ReadOptimizedInt32();
             _lastStatusChange = reader.ReadOptimizedInt32();
         }
@@ -252,6 +262,7 @@ namespace Supremacy.Diplomacy
             writer.WriteObject(_regard);
             writer.WriteObject(_trust);
             writer.WriteOptimized(_contactTurn);
+            writer.WriteObject(_firstDiplomaticAction);
             writer.WriteOptimized((int)_diplomacyStatus);
             writer.WriteOptimized(_lastStatusChange);
 

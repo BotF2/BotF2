@@ -38,37 +38,26 @@ namespace Supremacy.Collections
         [Serializable]
         protected internal sealed class Index
         {
-            private readonly Func<T, object> _accessor;
-            private readonly PropertyInfo _property;
-            private readonly Dictionary<int, HashSet<T>> _lookupTable;
+            public PropertyInfo Property { get; }
 
-            public PropertyInfo Property
-            {
-                get { return _property; }
-            }
+            public Func<T, object> Accessor { get; }
 
-            public Func<T, object> Accessor
-            {
-                get { return _accessor; }
-            }
-
-            public Dictionary<int, HashSet<T>> LookupTable
-            {
-                get { return _lookupTable; }
-            }
+            public Dictionary<int, HashSet<T>> LookupTable { get; }
 
             public Index(PropertyInfo property)
             {
-                _property = property;
-                _lookupTable = new Dictionary<int, HashSet<T>>(1);
+                Property = property;
+                LookupTable = new Dictionary<int, HashSet<T>>(1);
 
-                var itemParameter = E.Parameter(typeof(T));
-                var propertyAccess = (E)E.Property(itemParameter, property);
+                ParameterExpression itemParameter = E.Parameter(typeof(T));
+                E propertyAccess = E.Property(itemParameter, property);
 
                 if (propertyAccess.Type != typeof(object))
+                {
                     propertyAccess = E.Convert(propertyAccess, typeof(object));
+                }
 
-                _accessor = E.Lambda<Func<T, object>>(propertyAccess, itemParameter).Compile();
+                Accessor = E.Lambda<Func<T, object>>(propertyAccess, itemParameter).Compile();
             }
         }
         #endregion
@@ -78,19 +67,13 @@ namespace Supremacy.Collections
 
         private bool _isChangeNotificationEnabled;
         private readonly int _maxKeyCount;
-        private readonly IList<T> _internalCollection;
 
         [NonSerialized]
         protected ReaderWriterLockSlim SyncLock;
 
         [NonSerialized] private Dictionary<string, Index> _indexes;
 
-        private readonly IEqualityComparer<T> _comparer;
-
-        public IEqualityComparer<T> Comparer
-        {
-            get { return _comparer; }
-        }
+        public IEqualityComparer<T> Comparer { get; }
 
         public IndexedCollection()
             : this(InfiniteMaxKeyCount) { }
@@ -101,27 +84,24 @@ namespace Supremacy.Collections
         public IndexedCollection([CanBeNull] IIndexedEnumerable<T> initialContents)
             : this(DefaultMaxKeyCount, initialContents) { }
 
-        public IndexedCollection(int maxKeyCount, [CanBeNull] IIndexedEnumerable<T> initialContents) 
+        public IndexedCollection(int maxKeyCount, [CanBeNull] IIndexedEnumerable<T> initialContents)
             : this(maxKeyCount, initialContents, EqualityComparer<T>.Default) { }
 
         public IndexedCollection(int maxKeyCount, [CanBeNull] IIndexedEnumerable<T> initialContents, [NotNull] IEqualityComparer<T> comparer)
         {
-            if (comparer == null)
-                throw new ArgumentNullException("comparer");
-
             SyncLock = new ReaderWriterLockSlim(LockRecursionPolicy.SupportsRecursion);
 
             _maxKeyCount = maxKeyCount;
-            _comparer = comparer;
+            Comparer = comparer ?? throw new ArgumentNullException(nameof(comparer));
 
             if (initialContents != null)
             {
-                _internalCollection = new List<T>(initialContents.Count);
-                initialContents.CopyTo(_internalCollection, 0, initialContents.Count);
+                InternalCollection = new List<T>(initialContents.Count);
+                initialContents.CopyTo(InternalCollection, 0, initialContents.Count);
             }
             else
             {
-                _internalCollection = new List<T>();
+                InternalCollection = new List<T>();
             }
 
             BuildIndexes();
@@ -135,58 +115,62 @@ namespace Supremacy.Collections
 
         public IndexedCollection(int maxKeyCount, [CanBeNull] IList<T> initialContents, [NotNull] IEqualityComparer<T> comparer)
         {
-            if (comparer == null)
-                throw new ArgumentNullException("comparer");
-
             SyncLock = new ReaderWriterLockSlim(LockRecursionPolicy.SupportsRecursion);
 
             _maxKeyCount = maxKeyCount;
-            _comparer = comparer;
+            Comparer = comparer ?? throw new ArgumentNullException(nameof(comparer));
 
             if (initialContents != null)
             {
-                _internalCollection = new List<T>(initialContents.Count);
-                initialContents.CopyTo(_internalCollection);
+                InternalCollection = new List<T>(initialContents.Count);
+                initialContents.CopyTo(InternalCollection);
             }
             else
             {
-                _internalCollection = new List<T>();
+                InternalCollection = new List<T>();
             }
 
             BuildIndexes();
         }
 
-        protected IList<T> InternalCollection
-        {
-            get { return _internalCollection; }
-        }
+        protected IList<T> InternalCollection { get; }
 
         public bool IsChangeNotificationEnabled
         {
-            get { return _isChangeNotificationEnabled; }
+            get => _isChangeNotificationEnabled;
             set
             {
                 if (_isChangeNotificationEnabled == value)
+                {
                     return;
-                
+                }
+
                 SyncLock.EnterReadLock();
-                
+
                 try
                 {
                     if (_isChangeNotificationEnabled == value)
+                    {
                         return;
+                    }
 
                     _isChangeNotificationEnabled = value;
 
-                    foreach (var item in _internalCollection)
+                    foreach (T item in InternalCollection)
                     {
-                        var notifyPropertyChangedItem = item as INotifyPropertyChanged;
-                        if (notifyPropertyChangedItem == null)
+                        if (!(item is INotifyPropertyChanged notifyPropertyChangedItem))
+                        {
                             continue;
+                        }
+
                         if (value)
+                        {
                             notifyPropertyChangedItem.PropertyChanged += ItemPropertyChangedCallback;
+                        }
                         else
+                        {
                             notifyPropertyChangedItem.PropertyChanged -= ItemPropertyChangedCallback;
+                        }
                     }
                 }
                 finally
@@ -199,7 +183,9 @@ namespace Supremacy.Collections
         public void BuildIndexes()
         {
             if (_indexes != null)
+            {
                 return;
+            }
 
             SyncLock.EnterReadLock();
 
@@ -207,18 +193,18 @@ namespace Supremacy.Collections
             {
                 _indexes = new Dictionary<string, Index>();
 
-                var allProps = typeof(T).GetProperties();
-                foreach (var prop in allProps)
+                foreach (PropertyInfo prop in typeof(T).GetProperties())
                 {
-                    object[] attributes = prop.GetCustomAttributes(true);
-                    foreach (Attribute attribute in attributes)
+                    foreach (Attribute attribute in prop.GetCustomAttributes(true))
                     {
                         if (attribute is IndexableAttribute)
+                        {
                             _indexes.Add(prop.Name, new Index(prop));
+                        }
                     }
                 }
 
-                foreach (T item in _internalCollection)
+                foreach (T item in InternalCollection)
                 {
                     foreach (Index index in _indexes.Values)
                     {
@@ -235,63 +221,87 @@ namespace Supremacy.Collections
         protected internal int GetIndexableHashCode(object value)
         {
             if (value == null)
-                throw new ArgumentNullException("value");
-            return (Math.Abs(value.GetHashCode()) % _maxKeyCount);
+            {
+                throw new ArgumentNullException(nameof(value));
+            }
+
+            return Math.Abs(value.GetHashCode()) % _maxKeyCount;
         }
 
         public void OnItemPropertyChanged(T source, string propertyName)
         {
             if (Contains(source))
+            {
                 OnItemPropertyChangedInternal(source, propertyName);
+            }
         }
 
         protected void OnItemPropertyChangedInternal(T source, string propertyName)
         {
-            if (ReferenceEquals(source, null))
-                throw new ArgumentNullException("source");
+            if (source == null)
+            {
+                throw new ArgumentNullException(nameof(source));
+            }
+
             if (propertyName == null)
-                throw new ArgumentNullException("propertyName");
+            {
+                throw new ArgumentNullException(nameof(propertyName));
+            }
 
-            var index = GetIndexByProperty(propertyName);
+            Index index = GetIndexByProperty(propertyName);
             if (index == null)
+            {
                 return;
+            }
 
-            var propertyValue = index.Accessor(source);
+            object propertyValue = index.Accessor(source);
             if (propertyValue == null)
+            {
                 return;
-            
-            var hashCode = GetIndexableHashCode(propertyValue);
+            }
+
+            int hashCode = GetIndexableHashCode(propertyValue);
 
             SyncLock.EnterReadLock();
-            
+
             try
             {
                 if (!index.LookupTable.ContainsKey(hashCode))
+                {
                     index.LookupTable.Add(hashCode, new HashSet<T>());
+                }
                 else if (index.LookupTable[hashCode].Contains(source))
+                {
                     return;
+                }
 
-                index.LookupTable[hashCode].Add(source);
+                _ = index.LookupTable[hashCode].Add(source);
 
                 IList<int> removedKeys = null;
 
-                foreach (var lookupIndex in index.LookupTable.Keys)
+                foreach (int lookupIndex in index.LookupTable.Keys)
                 {
                     if (lookupIndex == hashCode)
+                    {
                         continue;
+                    }
 
                     if (index.LookupTable[lookupIndex].Remove(source) &&
                         index.LookupTable[lookupIndex].Count == 0)
                     {
                         if (removedKeys == null)
+                        {
                             removedKeys = new List<int>();
+                        }
 
                         removedKeys.Add(lookupIndex);
                     }
                 }
 
                 if (removedKeys != null)
+                {
                     index.LookupTable.RemoveRange(removedKeys);
+                }
             }
             finally
             {
@@ -306,32 +316,36 @@ namespace Supremacy.Collections
 
         public bool PropertyHasIndex(PropertyInfo property)
         {
-            if (property == null)
-                return false;
-            return _indexes.ContainsKey(property.Name);
+            return property != null && _indexes.ContainsKey(property.Name);
         }
 
         protected internal Index GetIndexByProperty(string propName)
         {
-            return (_indexes.ContainsKey(propName) ? _indexes[propName] : null);
+            return _indexes.ContainsKey(propName) ? _indexes[propName] : null;
         }
 
         private void ItemPropertyChangedCallback(object sender, PropertyChangedEventArgs e)
         {
-            OnItemPropertyChangedInternal((T) sender, e.PropertyName);
+            OnItemPropertyChangedInternal((T)sender, e.PropertyName);
         }
 
         protected void InsertIndexValue(Index index, T item)
         {
-            var propertyValue = index.Accessor(item);
+            object propertyValue = index.Accessor(item);
             if (propertyValue == null)
+            {
                 return;
+            }
 
-            var hashCode = GetIndexableHashCode(propertyValue);
+            int hashCode = GetIndexableHashCode(propertyValue);
             if (index.LookupTable.ContainsKey(hashCode))
-                index.LookupTable[hashCode].Add(item);
+            {
+                _ = index.LookupTable[hashCode].Add(item);
+            }
             else
+            {
                 index.LookupTable.Add(hashCode, new HashSet<T> { item });
+            }
         }
 
         #region ICollection<T> Members
@@ -343,20 +357,24 @@ namespace Supremacy.Collections
         protected void InsertItem(int listIndex, T item, bool upgradeableLockAlreadyHeld)
         {
             if ((listIndex < 0) || (listIndex > Count))
-                throw new ArgumentOutOfRangeException("listIndex");
+            {
+                throw new ArgumentOutOfRangeException(nameof(listIndex));
+            }
 
-            var downgraded = false;
+            bool downgraded = false;
             SyncLock.EnterUpgradeableReadLock();
             try
             {
                 if (Contains(item))
+                {
                     return;
+                }
 
                 SyncLock.EnterWriteLock();
 
                 try
                 {
-                    _internalCollection.Insert(listIndex, item);
+                    InternalCollection.Insert(listIndex, item);
                     OnItemAdded(item);
                 }
                 finally
@@ -382,33 +400,41 @@ namespace Supremacy.Collections
                     SyncLock.ExitUpgradeableReadLock();
                 }
             }
-
         }
 
         private void OnItemAdded(T item)
         {
-            foreach (var index in _indexes.Values)
+            foreach (Index index in _indexes.Values)
+            {
                 InsertIndexValue(index, item);
+            }
 
             if (!IsChangeNotificationEnabled)
+            {
                 return;
+            }
 
-            var notifyPropertyChangedItem = item as INotifyPropertyChanged;
-            if (notifyPropertyChangedItem != null)
+            if (item is INotifyPropertyChanged notifyPropertyChangedItem)
+            {
                 notifyPropertyChangedItem.PropertyChanged += ItemPropertyChangedCallback;
+            }
         }
 
         public void AddMany(IEnumerable<T> items)
         {
             if (!items.Any())
+            {
                 return;
+            }
 
             SyncLock.EnterWriteLock();
 
             try
             {
-                foreach (var item in items)
+                foreach (T item in items)
+                {
                     Add(item);
+                }
             }
             finally
             {
@@ -422,23 +448,29 @@ namespace Supremacy.Collections
             SyncLock.EnterUpgradeableReadLock();
             try
             {
-                foreach (var item in _internalCollection)
+                foreach (T item in InternalCollection)
                 {
                     if (!IsChangeNotificationEnabled)
+                    {
                         continue;
-                    var notifyPropertyChangedItem = item as INotifyPropertyChanged;
-                    if (notifyPropertyChangedItem != null)
+                    }
+
+                    if (item is INotifyPropertyChanged notifyPropertyChangedItem)
+                    {
                         notifyPropertyChangedItem.PropertyChanged -= ItemPropertyChangedCallback;
+                    }
                 }
 
                 SyncLock.EnterWriteLock();
 
                 try
                 {
-                    foreach (var index in _indexes.Values)
+                    foreach (Index index in _indexes.Values)
+                    {
                         index.LookupTable.Clear();
+                    }
 
-                    _internalCollection.Clear();
+                    InternalCollection.Clear();
                 }
                 finally
                 {
@@ -465,30 +497,29 @@ namespace Supremacy.Collections
             }
         }
 
-        public bool Contains(T item)
+        public bool Contains(T value)
         {
             SyncLock.EnterReadLock();
             try
             {
-                var comparer = Comparer;
-                var indexFound = false;
-                foreach (var index in _indexes.Values)
+                IEqualityComparer<T> comparer = Comparer;
+                bool indexFound = false;
+                foreach (Index index in _indexes.Values)
                 {
-                    var propertyValue = index.Accessor(item);
+                    object propertyValue = index.Accessor(value);
                     if (propertyValue != null)
                     {
-                        HashSet<T> indexItems;
-                        var indexableHashCode = GetIndexableHashCode(propertyValue);
+                        int indexableHashCode = GetIndexableHashCode(propertyValue);
 
-                        if (index.LookupTable.TryGetValue(indexableHashCode, out indexItems) && 
-                            indexItems.Contains(item, comparer))
+                        if (index.LookupTable.TryGetValue(indexableHashCode, out HashSet<T> indexItems) &&
+                            indexItems.Contains(value, comparer))
                         {
                             return true;
                         }
                     }
                     indexFound = true;
                 }
-                return !indexFound && _internalCollection.Contains(item);
+                return !indexFound && InternalCollection.Contains(value);
             }
             finally
             {
@@ -498,7 +529,7 @@ namespace Supremacy.Collections
 
         int IIndexedCollection<T>.IndexOf(T value)
         {
-            return _internalCollection.IndexOf(value);
+            return InternalCollection.IndexOf(value);
         }
 
         public void CopyTo(T[] array, int arrayIndex)
@@ -506,7 +537,7 @@ namespace Supremacy.Collections
             SyncLock.EnterReadLock();
             try
             {
-                _internalCollection.CopyTo(array, arrayIndex);
+                InternalCollection.CopyTo(array, arrayIndex);
             }
             finally
             {
@@ -514,10 +545,7 @@ namespace Supremacy.Collections
             }
         }
 
-        public bool IsEmpty
-        {
-            get { return (Count == 0); }
-        }
+        public bool IsEmpty => Count == 0;
 
         public int Count
         {
@@ -526,7 +554,7 @@ namespace Supremacy.Collections
                 SyncLock.EnterReadLock();
                 try
                 {
-                    return _internalCollection.Count;
+                    return InternalCollection.Count;
                 }
                 finally
                 {
@@ -535,30 +563,24 @@ namespace Supremacy.Collections
             }
         }
 
-        T IIndexedEnumerable<T>.this[int index]
-        {
-            get { return _internalCollection[index]; }
-        }
+        T IIndexedEnumerable<T>.this[int index] => InternalCollection[index];
 
-        public bool IsReadOnly
-        {
-            get { return false; }
-        }
+        public bool IsReadOnly => false;
 
         public bool Remove(T item)
         {
-            var downgraded = false;
+            bool downgraded = false;
             SyncLock.EnterUpgradeableReadLock();
             try
             {
-                var itemIndex = _internalCollection.IndexOf(item);
+                int itemIndex = InternalCollection.IndexOf(item);
                 if (itemIndex >= 0)
                 {
                     SyncLock.EnterWriteLock();
                     try
                     {
                         OnItemRemoved(item);
-                        _internalCollection.RemoveAt(itemIndex);
+                        InternalCollection.RemoveAt(itemIndex);
                     }
                     finally
                     {
@@ -578,45 +600,57 @@ namespace Supremacy.Collections
             finally
             {
                 if (downgraded)
+                {
                     SyncLock.ExitReadLock();
+                }
                 else
+                {
                     SyncLock.ExitUpgradeableReadLock();
+                }
             }
             return false;
         }
 
-        private void OnItemRemoved(T item) {
-            if (IsChangeNotificationEnabled)
+        private void OnItemRemoved(T item)
+        {
+            if (IsChangeNotificationEnabled && item is INotifyPropertyChanged notifyPropertyChangedItem)
             {
-                var notifyPropertyChangedItem = item as INotifyPropertyChanged;
-                if (notifyPropertyChangedItem != null)
-                    notifyPropertyChangedItem.PropertyChanged -= ItemPropertyChangedCallback;
+                notifyPropertyChangedItem.PropertyChanged -= ItemPropertyChangedCallback;
             }
 
-            foreach (var index in _indexes.Values)
+            foreach (Index index in _indexes.Values)
             {
-                var propertyValue = index.Accessor(item);
+                object propertyValue = index.Accessor(item);
                 if (propertyValue == null)
+                {
                     continue;
+                }
+
                 if (index.LookupTable.ContainsKey(GetIndexableHashCode(propertyValue)))
+                {
                     index.LookupTable[GetIndexableHashCode(propertyValue)].Remove(item);
+                }
             }
         }
 
         public int RemoveMany(IEnumerable<T> items)
         {
             if (!items.Any())
+            {
                 return 0;
+            }
 
-            var removedCount = 0;
+            int removedCount = 0;
             SyncLock.EnterWriteLock();
 
             try
             {
-                foreach (var item in items)
+                foreach (T item in items)
                 {
                     if (Remove(item))
+                    {
                         ++removedCount;
+                    }
                 }
             }
             finally
@@ -631,7 +665,7 @@ namespace Supremacy.Collections
         #region IEnumerable<T> Members
         public IEnumerator<T> GetEnumerator()
         {
-            return new SafeEnumerator<T>(_internalCollection, SyncLock);
+            return new SafeEnumerator<T>(InternalCollection, SyncLock);
         }
         #endregion
 
@@ -657,10 +691,12 @@ namespace Supremacy.Collections
 
         protected virtual void OnCollectionChanged(NotifyCollectionChangedEventArgs e)
         {
-            var handler = CollectionChanged;
+            NotifyCollectionChangedEventHandler handler = CollectionChanged;
             if (handler == null)
+            {
                 return;
-            
+            }
+
             SyncLock.EnterReadLock();
 
             try
@@ -719,14 +755,13 @@ namespace Supremacy.Collections
 
         protected void OnPropertyChanged(string propertyName)
         {
-            if (PropertyChanged != null)
-                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
         #region Implementation of IList<T>
         int IList<T>.IndexOf(T item)
         {
-            return _internalCollection.IndexOf(item);
+            return InternalCollection.IndexOf(item);
         }
 
         void IList<T>.Insert(int index, T item)
@@ -737,31 +772,38 @@ namespace Supremacy.Collections
 
         T IList<T>.this[int index]
         {
-            get { return _internalCollection[index]; }
-            set { ReplaceItem(index, value, false); }
+            get => InternalCollection[index];
+            set => ReplaceItem(index, value, false);
         }
 
         protected void ReplaceItem(int listIndex, T newItem, bool upgradeableLockAlreadyHeld)
         {
             if (listIndex < 0)
-                throw new ArgumentOutOfRangeException("listIndex");
-            if (ReferenceEquals(newItem, null))
-                throw new ArgumentNullException("newItem");
+            {
+                throw new ArgumentOutOfRangeException(nameof(listIndex));
+            }
 
-            var downgraded = false;
+            if (newItem == null)
+            {
+                throw new ArgumentNullException(nameof(newItem));
+            }
+
+            bool downgraded = false;
             SyncLock.EnterUpgradeableReadLock();
 
             try
             {
                 if (listIndex >= Count)
-                    throw new ArgumentOutOfRangeException("listIndex");
+                {
+                    throw new ArgumentOutOfRangeException(nameof(listIndex));
+                }
 
-                var oldItem = _internalCollection[listIndex];
+                T oldItem = InternalCollection[listIndex];
 
                 try
                 {
                     OnItemRemoved(oldItem);
-                    _internalCollection[listIndex] = newItem;
+                    InternalCollection[listIndex] = newItem;
                     OnItemAdded(newItem);
                 }
                 finally
@@ -781,9 +823,13 @@ namespace Supremacy.Collections
             finally
             {
                 if (downgraded)
+                {
                     SyncLock.ExitReadLock();
+                }
                 else
+                {
                     SyncLock.ExitUpgradeableReadLock();
+                }
             }
         }
         #endregion
@@ -800,7 +846,9 @@ namespace Supremacy.Collections
             IEqualityComparer<TKey> comparer)
         {
             if (outer == null || inner == null || outerKeySelector == null || innerKeySelector == null || resultSelector == null)
+            {
                 throw new ArgumentNullException();
+            }
 
             bool haveIndex = false;
 
@@ -813,7 +861,6 @@ namespace Supremacy.Collections
                 MemberExpression membExpOuter = (MemberExpression)outerKeySelector.Body;
                 Dictionary<int, HashSet<TInner>> innerIndex = new Dictionary<int, HashSet<TInner>>();
                 Dictionary<int, HashSet<T>> outerIndex = new Dictionary<int, HashSet<T>>();
-
 
                 if (inner.PropertyHasIndex(membExpInner.Member.Name)
                     && outer.PropertyHasIndex(membExpOuter.Member.Name))
@@ -828,15 +875,15 @@ namespace Supremacy.Collections
                     foreach (int outerKey in outerIndex.Keys)
                     {
                         HashSet<T> outerGroup = outerIndex[outerKey];
-                        HashSet<TInner> innerGroup;
-                        if (innerIndex.TryGetValue(outerKey, out innerGroup))
+                        if (innerIndex.TryGetValue(outerKey, out HashSet<TInner> innerGroup))
                         {
                             //do a join on the GROUPS based on key result
                             IEnumerable<TInner> innerEnum = innerGroup.AsEnumerable();
                             IEnumerable<T> outerEnum = outerGroup.AsEnumerable();
-                            IEnumerable<TResult> result = outerEnum.GroupJoin(innerEnum, outerKeySelector.Compile(), innerKeySelector.Compile(), resultSelector);
-                            foreach (TResult resultItem in result)
+                            foreach (TResult resultItem in outerEnum.GroupJoin(innerEnum, outerKeySelector.Compile(), innerKeySelector.Compile(), resultSelector))
+                            {
                                 yield return resultItem;
+                            }
                         }
                     }
                 }
@@ -846,11 +893,11 @@ namespace Supremacy.Collections
                 //do normal group join
                 IEnumerable<TInner> innerEnum = inner.AsEnumerable();
                 IEnumerable<T> outerEnum = outer.AsEnumerable();
-                IEnumerable<TResult> result = outerEnum.GroupJoin(innerEnum, outerKeySelector.Compile(), innerKeySelector.Compile(), resultSelector, comparer);
-                foreach (TResult resultItem in result)
+                foreach (TResult resultItem in outerEnum.GroupJoin(innerEnum, outerKeySelector.Compile(), innerKeySelector.Compile(), resultSelector, comparer))
+                {
                     yield return resultItem;
+                }
             }
-
         }
 
         public static IEnumerable<TResult> GroupJoin<T, TInner, TKey, TResult>(
@@ -872,7 +919,9 @@ namespace Supremacy.Collections
             IEqualityComparer<TKey> comparer)
         {
             if (outer == null || inner == null || outerKeySelector == null || innerKeySelector == null || resultSelector == null)
+            {
                 throw new ArgumentNullException();
+            }
 
             bool haveIndex = false;
             if (innerKeySelector.NodeType == ExpressionType.Lambda
@@ -884,7 +933,6 @@ namespace Supremacy.Collections
                 MemberExpression membExpOuter = (MemberExpression)outerKeySelector.Body;
                 Dictionary<int, HashSet<TInner>> innerIndex = null;
                 Dictionary<int, HashSet<T>> outerIndex = null;
-
 
                 if (inner.PropertyHasIndex(membExpInner.Member.Name)
                     && outer.PropertyHasIndex(membExpOuter.Member.Name))
@@ -899,15 +947,15 @@ namespace Supremacy.Collections
                     foreach (int outerKey in outerIndex.Keys)
                     {
                         HashSet<T> outerGroup = outerIndex[outerKey];
-                        HashSet<TInner> innerGroup;
-                        if (innerIndex.TryGetValue(outerKey, out innerGroup))
+                        if (innerIndex.TryGetValue(outerKey, out HashSet<TInner> innerGroup))
                         {
                             //do a join on the GROUPS based on key result
                             IEnumerable<TInner> innerEnum = innerGroup.AsEnumerable();
                             IEnumerable<T> outerEnum = outerGroup.AsEnumerable();
-                            IEnumerable<TResult> result = outerEnum.Join(innerEnum, outerKeySelector.Compile(), innerKeySelector.Compile(), resultSelector, comparer);
-                            foreach (TResult resultItem in result)
+                            foreach (TResult resultItem in outerEnum.Join(innerEnum, outerKeySelector.Compile(), innerKeySelector.Compile(), resultSelector, comparer))
+                            {
                                 yield return resultItem;
+                            }
                         }
                     }
                 }
@@ -917,12 +965,12 @@ namespace Supremacy.Collections
                 //this will happen if we don't have keys in the right places
                 IEnumerable<TInner> innerEnum = inner.AsEnumerable();
                 IEnumerable<T> outerEnum = outer.AsEnumerable();
-                IEnumerable<TResult> result = outerEnum.Join(innerEnum, outerKeySelector.Compile(), innerKeySelector.Compile(), resultSelector, comparer);
-                foreach (TResult resultItem in result)
+                foreach (TResult resultItem in outerEnum.Join(innerEnum, outerKeySelector.Compile(), innerKeySelector.Compile(), resultSelector, comparer))
+                {
                     yield return resultItem;
+                }
             }
         }
-
 
         public static IEnumerable<TResult> Join<T, TInner, TKey, TResult>(
             this IndexedCollection<T> outer,
@@ -934,14 +982,14 @@ namespace Supremacy.Collections
             return outer.Join(inner, outerKeySelector, innerKeySelector, resultSelector, EqualityComparer<TKey>.Default);
         }
 
-        private static bool HasIndexablePropertyOnLeft<T>(Expression leftSide, IndexedCollection<T> sourceCollection)
+        private static bool HasIndexablePropertyOnLeft<T>(E leftSide, IndexedCollection<T> sourceCollection)
         {
-            if (leftSide.NodeType == ExpressionType.MemberAccess)
-                return sourceCollection.PropertyHasIndex(((MemberExpression)leftSide).Member.Name);
-            return false;
+            return leftSide.NodeType == ExpressionType.MemberAccess
+                ? sourceCollection.PropertyHasIndex(((MemberExpression)leftSide).Member.Name)
+                : false;
         }
 
-        private static int? GetHashRight<T>(IndexedCollection<T> sourceCollection, Expression leftSide, Expression rightSide)
+        private static int? GetHashRight<T>(IndexedCollection<T> sourceCollection, E leftSide, E rightSide)
         {
             //rightside is where we get our hash...
             switch (rightSide.NodeType)
@@ -970,7 +1018,7 @@ namespace Supremacy.Collections
         {
             //our indexes work from the hash values of that which is indexed, regardless of type
             bool noIndex = true;
-            bool done = false;
+            const bool done = false;
             //IEnumerable<TSource> results;
             Expression<Func<TSource, bool>> innerExpr = expr;
 
@@ -1021,13 +1069,13 @@ namespace Supremacy.Collections
                     //Equality is a binary expression
                     BinaryExpression binExp = (BinaryExpression)expr.Body;
                     //Get some aliases for either side
-                    Expression leftSide = binExp.Left;
-                    Expression rightSide = binExp.Right;
+                    E leftSide = binExp.Left;
+                    E rightSide = binExp.Right;
 
                     int? hashRight = GetHashRight(sourceCollection, leftSide, rightSide);
 
                     //if we were able to create a hash from the right side (likely)
-                    if (hashRight.HasValue && HasIndexablePropertyOnLeft<TSource>(leftSide, sourceCollection))
+                    if (hashRight.HasValue && HasIndexablePropertyOnLeft(leftSide, sourceCollection))
                     {
                         //cast to MemberExpression - it allows us to get the property
                         MemberExpression propExp = (MemberExpression)leftSide;
@@ -1036,21 +1084,22 @@ namespace Supremacy.Collections
                                 sourceCollection.GetIndexByProperty(property).LookupTable;
                         if (myIndex.ContainsKey(hashRight.Value))
                         {
-                            IEnumerable<TSource> sourceEnum = myIndex[hashRight.Value].AsEnumerable<TSource>();
-                            IEnumerable<TSource> result = sourceEnum.Where<TSource>(expr.Compile());
-                            foreach (TSource item in result)
+                            IEnumerable<TSource> sourceEnum = myIndex[hashRight.Value].AsEnumerable();
+                            foreach (TSource item in sourceEnum.Where(expr.Compile()))
+                            {
                                 yield return item;
+                            }
                         }
                         noIndex = false; //we found an index, whether it had values or not is another matter
                     }
-
                 }
                 if (noIndex) //no index?  just do it the normal slow way then...
                 {
-                    IEnumerable<TSource> sourceEnum = sourceCollection.AsEnumerable<TSource>();
-                    IEnumerable<TSource> result = sourceEnum.Where<TSource>(expr.Compile());
-                    foreach (TSource resultItem in result)
+                    IEnumerable<TSource> sourceEnum = sourceCollection.AsEnumerable();
+                    foreach (TSource resultItem in sourceEnum.Where(expr.Compile()))
+                    {
                         yield return resultItem;
+                    }
                 }
             }
         }
@@ -1088,14 +1137,15 @@ namespace Supremacy.Collections
             where TSourceConstraint : TSource
         {
             if (source == null || keySelector == null || elementSelector == null) //comparer may be null
+            {
                 throw new ArgumentNullException();
+            }
 
             IndexedCollection<TSource>.Index index = null;
-            MemberExpression propExpr = keySelector.Body as MemberExpression;
             Lookup<TKey, TElement> lookup = new Lookup<TKey, TElement>(comparer);
             Func<TSource, TKey> keySelectorCompiled = keySelector.Compile();
 
-            if (propExpr != null)
+            if (keySelector.Body is MemberExpression propExpr)
             {
                 string property = propExpr.Member.Name;
                 index = source.GetIndexByProperty(property);
@@ -1103,16 +1153,19 @@ namespace Supremacy.Collections
 
             if (index != null)
             {
-                foreach (var key in index.LookupTable.Keys)
+                foreach (int key in index.LookupTable.Keys)
                 {
                     Grouping<TKey, TElement> group = null;
-                    foreach (var item in index.LookupTable[key])
+                    foreach (TSource item in index.LookupTable[key])
                     {
-                        if (item is TSourceConstraint)
+                        if (item is TSourceConstraint constraint)
                         {
                             if (group == null)
+                            {
                                 group = new Grouping<TKey, TElement>(keySelectorCompiled(item));
-                            group.Add(elementSelector((TSourceConstraint)item));
+                            }
+
+                            group.Add(elementSelector(constraint));
                         }
                     }
                     if (group != null)
@@ -1125,20 +1178,20 @@ namespace Supremacy.Collections
             {
                 foreach (TSource item in source)
                 {
-                    if (item is TSourceConstraint)
+                    if (item is TSourceConstraint constraint)
                     {
                         Grouping<TKey, TElement> group;
                         TKey key = keySelectorCompiled(item);
                         if (lookup.Contains(key))
                         {
-                            group = ((Grouping<TKey, TElement>)lookup.Dictionary[key]);
+                            group = (Grouping<TKey, TElement>)lookup.Dictionary[key];
                         }
                         else
                         {
                             group = new Grouping<TKey, TElement>(key);
                             lookup.Add(group);
                         }
-                        group.Add(elementSelector((TSourceConstraint)item));
+                        group.Add(elementSelector(constraint));
                     }
                 }
             }
@@ -1181,7 +1234,7 @@ namespace Supremacy.Collections
             Expression<Func<TSource, TKey>> keySelector,
             IEqualityComparer<TKey> comparer)
         {
-            return GroupBy(source, keySelector, delegate(TSource t) { return t; }, comparer);
+            return GroupBy(source, keySelector, (TSource t) => t, comparer);
         }
 
         public static IEnumerable<IGrouping<TKey, TElement>> GroupBy<TSource, TKey, TElement>(
@@ -1199,11 +1252,15 @@ namespace Supremacy.Collections
             IEqualityComparer<TKey> comparer)
         {
             if (source == null || keySelector == null || elementSelector == null) //comparer may be null
+            {
                 throw new ArgumentNullException();
+            }
 
             Lookup<TKey, TElement> lookup = ToLookup<TSource, TKey, TElement>(source, keySelector, elementSelector, comparer);
             foreach (TKey key in lookup.Keys)
+            {
                 yield return lookup.Dictionary[key];
+            }
         }
 
         public static IEnumerable<TResult> GroupBy<TSource, TKey, TResult>(
@@ -1221,11 +1278,15 @@ namespace Supremacy.Collections
             IEqualityComparer<TKey> comparer)
         {
             if (source == null || keySelector == null || resultSelector == null) //comparer may be null
+            {
                 throw new ArgumentNullException();
+            }
 
             Lookup<TKey, TSource> lookup = ToLookup(source, keySelector, comparer);
             foreach (TKey key in lookup.Keys)
+            {
                 yield return resultSelector(key, lookup[key]);
+            }
         }
 
         public static IEnumerable<TResult> GroupBy<TSource, TKey, TElement, TResult>(
@@ -1245,27 +1306,26 @@ namespace Supremacy.Collections
             IEqualityComparer<TKey> comparer)
         {
             if (source == null || keySelector == null || elementSelector == null || resultSelector == null) //comparer may be null
+            {
                 throw new ArgumentNullException();
+            }
 
             Lookup<TKey, TElement> lookup = ToLookup<TSource, TKey, TElement>(source, keySelector, elementSelector, comparer);
             foreach (TKey key in lookup.Keys)
+            {
                 yield return resultSelector(key, lookup[key]);
+            }
         }
     }
 
     public class Grouping<TKey, TElement> : List<TElement>, IGrouping<TKey, TElement>
     {
-        private readonly TKey _key;
-
         internal Grouping(TKey key)
         {
-            _key = key;
+            Key = key;
         }
 
-        public TKey Key
-        {
-            get { return _key; }
-        }
+        public TKey Key { get; }
     }
 
     public class Lookup<TKey, TElement> : ILookup<TKey, TElement>
@@ -1279,20 +1339,9 @@ namespace Supremacy.Collections
             Keys = new List<TKey>();
         }
 
-        public int Count
-        {
-            get { return Dictionary.Count; }
-        }
+        public int Count => Dictionary.Count;
 
-        public IEnumerable<TElement> this[TKey key]
-        {
-            get
-            {
-                if (Dictionary.ContainsKey(key))
-                    return Dictionary[key];
-                return Enumerable.Empty<TElement>();
-            }
-        }
+        public IEnumerable<TElement> this[TKey key] => Dictionary.ContainsKey(key) ? Dictionary[key] : Enumerable.Empty<TElement>();
 
         public bool Contains(TKey key)
         {
@@ -1302,7 +1351,9 @@ namespace Supremacy.Collections
         public IEnumerator<IGrouping<TKey, TElement>> GetEnumerator()
         {
             foreach (TKey key in Keys)
+            {
                 yield return Dictionary[key];
+            }
         }
 
         IEnumerator IEnumerable.GetEnumerator()

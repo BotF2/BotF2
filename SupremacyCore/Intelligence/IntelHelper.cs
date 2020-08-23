@@ -2,6 +2,7 @@
 using Microsoft.Practices.ServiceLocation;
 using Supremacy.Client;
 using Supremacy.Collections;
+using Supremacy.Combat;
 using Supremacy.Diplomacy;
 using Supremacy.Economy;
 using Supremacy.Entities;
@@ -13,6 +14,8 @@ using Supremacy.Utility;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Supremacy.Orbitals;
+using System.Linq;
 
 namespace Supremacy.Intelligence
 {
@@ -285,11 +288,11 @@ namespace Supremacy.Intelligence
             // coming from Buttons in each of the six expanders
             var attackedCivManager = GameContext.Current.CivilizationManagers[attackedCiv];
             var attackingCivManager = GameContext.Current.CivilizationManagers[attackingCiv];          
-            var _sendOrder = new SendStatementOrder(new Statement(attackingCiv, attackedCiv, StatementType.SabotageOrder, Tone.Indignant, blamed, 99999));
+            var _sendOrder = new SendStatementOrder(new Statement(attackingCiv, attackedCiv, StatementType.StealCredits, Tone.Enraged, blamed, GameContext.Current.TurnNumber));
             _sendOrder.Owner = attackingCiv;
             GameLog.Core.Diplomacy.DebugFormat("Create Statement for StealCredits: "+ Environment.NewLine 
-                + "sender = {0} *vs* Recipient = {1}:   StatementType = {3}, blamed = {4}, {2}"
-                                , attackingCiv, attackedCiv, "Tone.Indignant = StealCredits", "SabotageOrder", blamed + Environment.NewLine);
+                + "sender = {0} *vs* Recipient = {1}:   StatementType = {2} Tone ={3}, blamed = {4}"
+                                , attackingCiv, attackedCiv, _sendOrder.Statement.ToString(), _sendOrder.Statement.Tone.ToString(), blamed + Environment.NewLine);
             ServiceLocator.Current.GetInstance<IPlayerOrderService>().AddOrder(_sendOrder);
 
             var diploOrders = ServiceLocator.Current.GetInstance<IPlayerOrderService>().Orders;  // just for Break point controlling
@@ -316,8 +319,6 @@ namespace Supremacy.Intelligence
                 return;
             if (attackedCiv == null)
                 return;
-            //if (colony == null)
-            //    return;
 
             ratio = GetIntelRatio(attackedCivManager, attackingCivManager);
             Int32.TryParse(attackedCivManager.TotalIntelligenceDefenseAccumulated.ToString(), out defenseIntelligence);  // TotalIntelligence of attacked civ
@@ -438,12 +439,12 @@ namespace Supremacy.Intelligence
         // coming from Buttons in each of the six expanders
             var attackedCivManager = GameContext.Current.CivilizationManagers[attackedCiv];
             var attackingCivManager = GameContext.Current.CivilizationManagers[attackingCiv];
-            var _sendOrder = new SendStatementOrder(new Statement(attackingCiv, attackedCiv, StatementType.SabotageOrder, Tone.Impatient, blamed, 99999));
+            var _sendOrder = new SendStatementOrder(new Statement(attackingCiv, attackedCiv, StatementType.StealResearch, Tone.Enraged, blamed, GameContext.Current.TurnNumber));
             _sendOrder.Owner = attackingCiv;
 
             GameLog.Core.Diplomacy.DebugFormat("Create Statement for StealResearch: " + Environment.NewLine
-                    + "sender = {0} *vs* Recipient = {1}: {2}  StatementType = {3}, blamed = {4}"
-                    , attackingCiv, attackedCiv, "Tone.Impatient = StealResearch", "SabotageOrder", blamed + Environment.NewLine);
+                    + "sender = {0} *vs* Recipient = {1}: StatementType = {2}, tone ={3} blamed = {4}"
+                    , attackingCiv, attackedCiv, _sendOrder.Statement.ToString(), _sendOrder.Statement.Tone.ToString(), blamed + Environment.NewLine);
 
             ServiceLocator.Current.GetInstance<IPlayerOrderService>().AddOrder(_sendOrder);
 
@@ -587,12 +588,12 @@ namespace Supremacy.Intelligence
             // coming from Buttons in each of the six expanders
             var attackedCivManager = GameContext.Current.CivilizationManagers[attackedCiv];
             var attackingCivManager = GameContext.Current.CivilizationManagers[attackingCiv];
-            var _sendOrder = new SendStatementOrder(new Statement(attackingCiv, attackedCiv, StatementType.SabotageOrder, Tone.Annoyed, blamed, 99999));
+            var _sendOrder = new SendStatementOrder(new Statement(attackingCiv, attackedCiv, StatementType.SabotageFood, Tone.Enraged, blamed, GameContext.Current.TurnNumber));
             _sendOrder.Owner = attackingCiv;
 
             GameLog.Core.Diplomacy.DebugFormat("Create Statement for SabotageFood: " + Environment.NewLine
-                    + "StatementType = {3}, (Sender=) {0} *vs* {1} (Recipient), blamed = {4}, {5} = {2}"
-                    , attackingCiv, attackedCiv, "Tone.Annoyed = SabotageFood" + Environment.NewLine, "SabotageOrder", blamed, _sendOrder.Statement.Tone.ToString());
+                    + "StatementType = {2} (Sender=) {0} *vs* {1} (Recipient), blamed = {3}, Tone = {4}"
+                    , attackingCiv, attackedCiv, _sendOrder.Statement.ToString(), blamed, _sendOrder.Statement.Tone.ToString());
 
             ServiceLocator.Current.GetInstance<IPlayerOrderService>().AddOrder(_sendOrder);
         }
@@ -735,11 +736,11 @@ namespace Supremacy.Intelligence
             // coming from Buttons in each of the six expanders
             var attackedCivManager = GameContext.Current.CivilizationManagers[attackedCiv];
             var attackingCivManager = GameContext.Current.CivilizationManagers[attackingCiv];
-            var _sendOrder = new SendStatementOrder(new Statement(attackingCiv, attackedCiv, StatementType.SabotageOrder, Tone.Receptive, blamed, 99999));
+            var _sendOrder = new SendStatementOrder(new Statement(attackingCiv, attackedCiv, StatementType.SabotageEnergy, Tone.Enraged, blamed, GameContext.Current.TurnNumber));
             _sendOrder.Owner = attackingCiv;
             GameLog.Core.Diplomacy.DebugFormat("Create Statement for SabotageEnergy: " + Environment.NewLine
-                + "sender = {0} *vs* Recipient = {1}: {2}  StatementType = {3}, blamed = {4}"
-                                , attackingCiv, attackedCiv, "Tone.Receptive = SabotageEnergy", "SabotageOrder", blamed + Environment.NewLine);
+                + "sender = {0} *vs* Recipient = {1}: StatementType = {2}, blamed = {3} tone ={4}"
+                                , attackingCiv, attackedCiv, _sendOrder.Statement.ToString(), blamed, _sendOrder.Statement.Tone.ToString());
 
             ServiceLocator.Current.GetInstance<IPlayerOrderService>().AddOrder(_sendOrder);
         }
@@ -860,11 +861,11 @@ namespace Supremacy.Intelligence
             // coming from Buttons in each of the six expanders
             var attackedCivManager = GameContext.Current.CivilizationManagers[attackedCiv];
             var attackingCivManager = GameContext.Current.CivilizationManagers[attackingCiv];
-            var _sendOrder = new SendStatementOrder(new Statement(attackingCiv, attackedCiv, StatementType.SabotageOrder, Tone.Enraged, blamed, 99999));
+            var _sendOrder = new SendStatementOrder(new Statement(attackingCiv, attackedCiv, StatementType.SabotageIndustry, Tone.Enraged, blamed, GameContext.Current.TurnNumber));
             _sendOrder.Owner = attackingCiv;
             GameLog.Core.Diplomacy.DebugFormat("Create Statement for SabotageIndustry: " + Environment.NewLine
-                + "sender = {0} *vs* Recipient = {1}: {2}  StatementType = {3}, blamed = {4}"
-                                , attackingCiv, attackedCiv, "Tone.Enraged = SabotageIndustry", "SabotageOrder", blamed + Environment.NewLine);
+                + "sender = {0} *vs* Recipient = {1}: StatementType = {2}, Tone ={3}, blamed = {4}"
+                                , attackingCiv, attackedCiv, _sendOrder.Statement.StatementType.ToString(), _sendOrder.Statement.Tone.ToString(), blamed + Environment.NewLine);
             ServiceLocator.Current.GetInstance<IPlayerOrderService>().AddOrder(_sendOrder);
         }
 
@@ -880,7 +881,7 @@ namespace Supremacy.Intelligence
             Meter attackMeter = GameContext.Current.CivilizationManagers[attackingCiv].TotalIntelligenceAttackingAccumulated;
             int ratioLevel = -1;
 
-            GameLog.Core.Test.DebugFormat("**** Sabotage Industry, The attakING Spy Civ={0} the attackED civ={1}", attackingCiv.Key, attackedCiv.Key);
+            GameLog.Core.Intel.DebugFormat("**** Sabotage Industry, The attakING Spy Civ={0} the attackED civ={1}", attackingCiv.Key, attackedCiv.Key);
             int removeIndustryFacilities = -2; // -1 = failed, -2 = not worth
             int defenseIntelligence = -2;
 
@@ -979,6 +980,7 @@ namespace Supremacy.Intelligence
         }
         public static int GetIntelRatio(CivilizationManager attackedCivManager, CivilizationManager attackingCivManager)
         {
+            bool isSpyShipInHomeSystem = IsSpyShipInHomeSystem(attackedCivManager, attackingCivManager);
             bool daBorg = (attackedCivManager.Civilization.Key == "Borg");
             int ratio = -1;
             Int32.TryParse(attackedCivManager.TotalIntelligenceDefenseAccumulated.ToString(), out int defenseIntelligence);  // TotalIntelligence of attacked civ
@@ -1002,9 +1004,24 @@ namespace Supremacy.Intelligence
                 ratio += 20;
             if (daBorg)
                 ratio += 5;
+            if (isSpyShipInHomeSystem)
+                ratio += 10;
             return ratio;
+        }
+
+        public static bool IsSpyShipInHomeSystem(CivilizationManager attackedCivManager, CivilizationManager attackingCivManager)
+        {
+            var attackedHomeSystemLocation = attackedCivManager.SeatOfGovernment;
+            var fleetsAtSetOfGovernment = attackedHomeSystemLocation.Sector.GetFleets();
+            var attackingSpyShips = fleetsAtSetOfGovernment.Where(s => s.IsSpy && s.Owner == attackingCivManager.Civilization).ToList().Count();//Where(x => x.ShipType.ToString() == "Spy")).ToList();
+                 
+            if (attackingSpyShips > 0)
+            {
+                return true;
+            }
+            return false;
         }
     }
     #endregion
-    
+
 }

@@ -33,34 +33,36 @@ namespace Supremacy.UI
 
         #region Constructors
 
-        private static Collections.CollectionBase<string> GetStarNames()
-        {
-            var result = MessageDialog.Show("header", "Hello", MessageDialogButtons.Ok);
-            var file = new FileStream(
-                ResourceManager.GetResourcePath("Resources/Images/Animation1.txt"),
-                    FileMode.Open,
-                    FileAccess.Read);
-            var result3 = MessageDialog.Show("header", "Hello", MessageDialogButtons.Ok);
+        //Commented it out as it is not used according to Visual Studio
 
-            var reader = new StreamReader(file);
-            var names = new Collections.CollectionBase<string>();
+        //private static Collections.CollectionBase<string> GetStarNames()
+        //{
+        //    var result = MessageDialog.Show("header", "Hello", MessageDialogButtons.Ok);
+        //    var file = new FileStream(
+        //        ResourceManager.GetResourcePath("Resources/Images/Animation1.txt"),
+        //            FileMode.Open,
+        //            FileAccess.Read);
+        //    var result3 = MessageDialog.Show("header", "Hello", MessageDialogButtons.Ok);
 
-            while (!reader.EndOfStream)
-            {
-                var line = reader.ReadLine();
-                var result4 = MessageDialog.Show("header", "Hello", MessageDialogButtons.Ok);
+        //    var reader = new StreamReader(file);
+        //    var names = new Collections.CollectionBase<string>();
 
-                GameLog.Client.General.Error(string.Format(@"Error loading saved game '{0}'.", file));
+        //    while (!reader.EndOfStream)
+        //    {
+        //        var line = reader.ReadLine();
+        //        var result4 = MessageDialog.Show("header", "Hello", MessageDialogButtons.Ok);
 
-                if (line == null)
-                    break;
+        //        GameLog.Client.General.Error(string.Format(@"Error loading saved game '{0}'.", file));
 
-                names.Add(line.Trim());
-                var result2 = MessageDialog.Show("header", "Hello", MessageDialogButtons.Ok);
-            }
+        //        if (line == null)
+        //            break;
 
-            return names;
-        }
+        //        names.Add(line.Trim());
+        //        var result2 = MessageDialog.Show("header", "Hello", MessageDialogButtons.Ok);
+        //    }
+
+        //    return names;
+        //}
 
         static Animation()
         {
@@ -90,7 +92,7 @@ namespace Supremacy.UI
 
             for (int i = 0; i < Frames.Length; i++)
             {
-                var filename = ImagePath + string.Format("Images/Animation/animation1_{0:000}.png", i);
+                string filename = ImagePath + string.Format("Images/Animation/animation1_{0:000}.png", i);
                 if (File.Exists(filename))
                 {
                     Frames[i] = new CachedBitmap(
@@ -121,9 +123,9 @@ namespace Supremacy.UI
                 CurrentFrame,
                 CurrentFrame + 255,
                 new Duration(new TimeSpan(0, 9, 30)))
-                    {
-                        RepeatBehavior = RepeatBehavior.Forever
-                    };
+            {
+                RepeatBehavior = RepeatBehavior.Forever
+            };
 
             _animationClock = _animation.CreateClock();
 
@@ -136,38 +138,46 @@ namespace Supremacy.UI
         #region Properties
         public int CurrentFrame
         {
-            get { return (int)GetValue(CurrentFrameProperty); }
-            private set { SetValue(CurrentFrameProperty, value); }
+            get => (int)GetValue(CurrentFrameProperty);
+            private set => SetValue(CurrentFrameProperty, value);
         }
 
-        protected override int VisualChildrenCount
-        {
-            get { return 1; }
-        }
+        protected override int VisualChildrenCount => 1;
         #endregion
 
         #region IAnimationsHost Members
         public void PauseAnimations()
         {
             if (!_animationClock.IsPaused && _animationClock.Controller != null)
+            {
                 _animationClock.Controller.Pause();
+            }
         }
 
         public void ResumeAnimations()
         {
             if (_animationClock.Controller == null)
+            {
                 return;
+            }
 
             if (_animationClock.CurrentState == ClockState.Stopped)
+            {
                 _animationClock.Controller.Begin();
+            }
+
             if (_animationClock.IsPaused)
+            {
                 _animationClock.Controller.Resume();
+            }
         }
 
         public void StopAnimations()
         {
             if (_animationClock.Controller == null)
+            {
                 return;
+            }
 
             _animationClock.Controller.Pause();
             _animationClock.Controller.Remove();
@@ -190,7 +200,9 @@ namespace Supremacy.UI
         private void StartAnimations()
         {
             if (!HasAnimatedProperties)
+            {
                 ApplyAnimationClock(CurrentFrameProperty, _animationClock);
+            }
 
             ResumeAnimations();
         }
@@ -216,9 +228,14 @@ namespace Supremacy.UI
         {
             base.OnPropertyChanged(e);
             if (e.Property != CurrentFrameProperty)
+            {
                 return;
+            }
+
             if (IsVisible)
+            {
                 _imageBrush.ImageSource = Frames[(int)e.NewValue % 255];
+            }
         }
         #endregion
     }

@@ -34,7 +34,7 @@ namespace Supremacy.Client
         public SaveGameDialog()
         {
             InitializeComponent();
-
+            SaveButton.IsEnabled = true;
             IsVisibleChanged += SaveGameDialogIsVisibleChanged;
             
             InputBindings.Add(
@@ -56,8 +56,7 @@ namespace Supremacy.Client
                 new CommandBinding(GenericCommands.AcceptCommand,
                                    GenericCommandsAcceptCommandExecuted,
                                    GenericCommandsAcceptCommandCanExecute));
-
-
+            SaveButton.IsEnabled = true;
             SaveGameList.SelectionChanged += SaveGameListSelectionChanged;
         }
 
@@ -68,6 +67,7 @@ namespace Supremacy.Client
             {
                 SaveGameFilename.Text = header.FileName;
                 SaveGameInfoText.Visibility = Visibility.Visible;
+                SaveButton.IsEnabled = true;
             }
             else
             {
@@ -80,6 +80,7 @@ namespace Supremacy.Client
             try
             {
                 e.CanExecute = !String.IsNullOrEmpty(Path.GetFileName(SaveGameFilename.Text.Trim()));
+                SaveButton.IsEnabled = true;
             }
             catch
             {
@@ -137,7 +138,7 @@ namespace Supremacy.Client
         {
             if (!((bool)e.NewValue))
                 return;
-
+            SaveButton.IsEnabled = true;
             DataContext = SavedGameManager.FindSavedGames(includeAutoSave: false);
 
             SaveGameFilename.Clear();

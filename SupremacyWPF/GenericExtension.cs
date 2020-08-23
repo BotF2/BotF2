@@ -18,21 +18,9 @@ namespace Supremacy.Client
     [MarkupExtensionReturnType(typeof(object))]
     public class GenericExtension : MarkupExtension
     {
-        // The collection of design arguments for the generic design
-        private Collection<Type> _typeArguments = new Collection<Type>();
-        // The generic design name (e.g. Dictionary, for the Dictionary<K,V> case)
-        private string _typeName;
+        public Collection<Type> TypeArguments { get; } = new Collection<Type>();
 
-        public Collection<Type> TypeArguments
-        {
-            get { return _typeArguments; }
-        }
-
-        public string TypeName
-        {
-            get { return _typeName; }
-            set { _typeName = value; }
-        }
+        public string TypeName { get; set; }
 
         // Constructors
         public GenericExtension() { }
@@ -45,14 +33,14 @@ namespace Supremacy.Client
         // ProvideValue, which returns an object instance of the constructed generic design
         public override object ProvideValue(IServiceProvider serviceProvider)
         {
-            IXamlTypeResolver xamlTypeResolver = serviceProvider.GetService(typeof(IXamlTypeResolver)) as IXamlTypeResolver;
-
-            if (xamlTypeResolver == null)
+            if (!(serviceProvider.GetService(typeof(IXamlTypeResolver)) is IXamlTypeResolver xamlTypeResolver))
+            {
                 throw new Exception("The Generic markup extension requires an IXamlTypeResolver service provider");
+            }
 
             // Get e.g. "Collection`1" design
             Type genericType = xamlTypeResolver.Resolve(
-                _typeName + "`" + TypeArguments.Count.ToString());
+                TypeName + "`" + TypeArguments.Count.ToString());
 
             // Get an array of the design arguments
             Type[] typeArgumentArray = new Type[TypeArguments.Count];
@@ -70,25 +58,10 @@ namespace Supremacy.Client
     [MarkupExtensionReturnType(typeof(Type))]
     public class GenericTypeExtension : MarkupExtension
     {
-        // Type arguments.  This is read/write so that it can be
-        // set in Xaml attribute syntax with a design converter.
-        private Collection<Type> _typeArguments = new Collection<Type>();
-
-        // The generic design name (e.g. Dictionary, for the Dictionary<K,V> case)
-        private string _typeName;
-
         [TypeConverter(typeof(TypeCollectionConverter))]
-        public Collection<Type> TypeArguments
-        {
-            get { return _typeArguments; }
-            set { _typeArguments = value; }
-        }
+        public Collection<Type> TypeArguments { get; set; } = new Collection<Type>();
 
-        public string TypeName
-        {
-            get { return _typeName; }
-            set { _typeName = value; }
-        }
+        public string TypeName { get; set; }
 
         // Constructors
         public GenericTypeExtension() { }
@@ -101,13 +74,14 @@ namespace Supremacy.Client
         // ProvideValue, which returns the concrete object of the generic design
         public override object ProvideValue(IServiceProvider serviceProvider)
         {
-            IXamlTypeResolver xamlTypeResolver = serviceProvider.GetService(typeof(IXamlTypeResolver)) as IXamlTypeResolver;
-            if (xamlTypeResolver == null)
+            if (!(serviceProvider.GetService(typeof(IXamlTypeResolver)) is IXamlTypeResolver xamlTypeResolver))
+            {
                 throw new Exception("The Generic markup extension requires an IXamlTypeResolver service provider");
+            }
 
             // Get e.g. "Collection`1" design
             Type genericType = xamlTypeResolver.Resolve(
-                _typeName + "`" + TypeArguments.Count.ToString());
+                TypeName + "`" + TypeArguments.Count.ToString());
 
             // Get an array of the design arguments
             Type[] typeArgumentArray = new Type[TypeArguments.Count];

@@ -20,18 +20,23 @@ namespace Supremacy.Client
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
             if ((values == null) || (values.Length == 0))
+            {
                 return null;
+            }
+
             for (int i = 0; i < values.Length; i++)
             {
                 if (values[i] != null)
+                {
                     return values[i];
+                }
             }
             return null;
         }
 
         public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
         {
-            return new object[] {value};
+            return new object[] { value };
         }
         #endregion
     }
@@ -43,11 +48,16 @@ namespace Supremacy.Client
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
             if ((values == null) || (values.Length == 0))
+            {
                 return false;
+            }
+
             for (int i = 0; i < values.Length; i++)
             {
                 if (values[i] == parameter)
+                {
                     return true;
+                }
             }
             return false;
         }

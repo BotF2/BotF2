@@ -30,14 +30,11 @@ namespace Supremacy.UI
         public event EventHandler PoolSizeChanged;
         public event EventHandler FreePoolSizeChanged;
 
-        public ICollection<UnitActivationBar> Children
-        {
-            get { return _children; }
-        }
+        public ICollection<UnitActivationBar> Children => _children;
 
         public UnitActivationBar PoolBar
         {
-            get { return _poolBar; }
+            get => _poolBar;
             set
             {
                 if (_poolBar != null)
@@ -51,7 +48,10 @@ namespace Supremacy.UI
                 {
                     _poolBar.Group = this;
                     if (_children.Count > 0)
+                    {
                         _poolBar.UnitCost = _children.Min(o => o.UnitCost);
+                    }
+
                     _poolBar.Units = PoolSize / _poolBar.UnitCost;
                     _poolBar.MaxActiveUnits = FreePoolSize / _poolBar.UnitCost;
                 }
@@ -60,7 +60,7 @@ namespace Supremacy.UI
 
         public int PoolSize
         {
-            get { return _poolSize; }
+            get => _poolSize;
             set
             {
                 if (value < 0)
@@ -75,10 +75,7 @@ namespace Supremacy.UI
                     _poolBar.Units = _poolSize;
                     _poolBar.MaxActiveUnits = _poolSize;
                 }
-                if (PoolSizeChanged != null)
-                {
-                    PoolSizeChanged(this, new EventArgs());
-                }
+                PoolSizeChanged?.Invoke(this, new EventArgs());
                 ReconcilePool();
             }
         }
@@ -87,7 +84,7 @@ namespace Supremacy.UI
         {
             get
             {
-                var usedUnits = _children.Sum(child => (child.ActiveUnits * child.UnitCost));
+                int usedUnits = _children.Sum(child => child.ActiveUnits * child.UnitCost);
                 return Math.Max(_poolSize - usedUnits, 0);
             }
         }
@@ -106,7 +103,7 @@ namespace Supremacy.UI
                     "poolSize",
                     @"Value must be a non-negative integer");
             }
-            foreach (var child in _children)
+            foreach (UnitActivationBar child in _children)
             {
                 child.ActiveUnits = 0;
                 child.MaxActiveUnits = 0;
@@ -150,36 +147,30 @@ namespace Supremacy.UI
             object sender,
             DependencyPropertyChangedEventArgs<int> e)
         {
-            var source = sender as UnitActivationBar;
+            UnitActivationBar source = sender as UnitActivationBar;
             if (source == _poolBar)
+            {
                 return;
-            var freePoolSize = _lastFreePoolSize;
+            }
+
+            int freePoolSize = _lastFreePoolSize;
             ReconcilePool();
             _lastFreePoolSize = FreePoolSize;
             if ((freePoolSize != FreePoolSize) && (FreePoolSizeChanged != null))
+            {
                 FreePoolSizeChanged(this, new EventArgs());
+            }
         }
 
         private void ReconcilePool()
         {
-            var freePoolSize = FreePoolSize;
-            var adjustedFreePoolSize = -1;
+            int freePoolSize = FreePoolSize;
+            int adjustedFreePoolSize = -1;
 
             while ((freePoolSize < 0) && (adjustedFreePoolSize != freePoolSize))
             {
                 adjustedFreePoolSize = freePoolSize;
-
-                for (var i = _children.Count - 1; (freePoolSize < 0) && (i >= 0); i--)
-                {
-                    if (freePoolSize >= 0)
-                        break;
-
-                    if (_children[i].Decrement())
-                        continue;
-
-                    while ((freePoolSize < 0) && (_children[i].Decrement()))
-                        freePoolSize += _children[i].UnitCost;
-                }
+                freePoolSize = NewMethod(freePoolSize);
             }
 
             foreach (var child in _children)
@@ -195,6 +186,29 @@ namespace Supremacy.UI
             _poolBar.UnitCost = _children.Min(o => o.UnitCost);
             _poolBar.Units = PoolSize / _poolBar.UnitCost;
             _poolBar.MaxActiveUnits = FreePoolSize / _poolBar.UnitCost;
+        }
+
+        private int NewMethod(int freePoolSize)
+        {
+            for (int i = _children.Count - 1; (freePoolSize < 0) && (i >= 0); i--)
+            {
+                if (freePoolSize >= 0)
+                {
+                    break;
+                }
+
+                if (_children[i].Decrement())
+                {
+                    continue;
+                }
+
+                while ((freePoolSize < 0) && _children[i].Decrement())
+                {
+                    freePoolSize += _children[i].UnitCost;
+                }
+            }
+
+            return freePoolSize;
         }
     }
 
@@ -312,8 +326,7 @@ namespace Supremacy.UI
                     DefaultUnitBrush,
                     delegate(DependencyObject sender, DependencyPropertyChangedEventArgs e)
                     {
-                        var source = sender as UnitActivationBar;
-                        if (source != null)
+                        if (sender is UnitActivationBar source)
                         {
                             source.InvalidateVisual();
                         }
@@ -332,11 +345,12 @@ namespace Supremacy.UI
             DependencyObject sender,
             DependencyPropertyChangedEventArgs e)
         {
-            var source = sender as UnitActivationBar;
-            if (source == null)
+            if (!(sender is UnitActivationBar source))
+            {
                 return;
-            if (source.UnitsChanged != null)
-                source.UnitsChanged(source, new DependencyPropertyChangedEventArgs<int>(e));
+            }
+
+            source.UnitsChanged?.Invoke(source, new DependencyPropertyChangedEventArgs<int>(e));
             source.CoerceValue(MaxActiveUnitsProperty);
         }
 
@@ -344,9 +358,11 @@ namespace Supremacy.UI
             DependencyObject sender,
             DependencyPropertyChangedEventArgs e)
         {
-            var source = sender as UnitActivationBar;
-            if ((source == null) || (source.UnitCostChanged == null))
+            if ((!(sender is UnitActivationBar source)) || (source.UnitCostChanged == null))
+            {
                 return;
+            }
+
             source.UnitCostChanged(source, new DependencyPropertyChangedEventArgs<int>(e));
         }
 
@@ -354,9 +370,11 @@ namespace Supremacy.UI
             DependencyObject sender,
             DependencyPropertyChangedEventArgs e)
         {
-            var source = sender as UnitActivationBar;
-            if ((source == null) || (source.ActiveUnitsChanged == null))
+            if ((!(sender is UnitActivationBar source)) || (source.ActiveUnitsChanged == null))
+            {
                 return;
+            }
+
             source.ActiveUnitsChanged(source, new DependencyPropertyChangedEventArgs<int>(e));
         }
 
@@ -364,35 +382,33 @@ namespace Supremacy.UI
             DependencyObject sender,
             DependencyPropertyChangedEventArgs e)
         {
-            var source = sender as UnitActivationBar;
-            if (source == null)
+            if (!(sender is UnitActivationBar source))
+            {
                 return;
-            if (source.MaxActiveUnitsChanged != null)
-                source.MaxActiveUnitsChanged(source, new DependencyPropertyChangedEventArgs<int>(e));
+            }
+
+            source.MaxActiveUnitsChanged?.Invoke(source, new DependencyPropertyChangedEventArgs<int>(e));
             source.CoerceValue(ActiveUnitsProperty);
         }
 
         private static object CoerceUnitCost(DependencyObject sender, object value)
         {
             if ((int)value < 1)
+            {
                 value = 1;
+            }
+
             return value;
         }
 
         private static object CoerceActiveUnits(DependencyObject sender, object value)
         {
-            var source = sender as UnitActivationBar;
-            if (source == null)
-                return value;
-            return Math.Max(Math.Min((int)value, source.MaxActiveUnits), 0);
+            return !(sender is UnitActivationBar source) ? value : Math.Max(Math.Min((int)value, source.MaxActiveUnits), 0);
         }
 
         private static object CoerceMaxActiveUnits(DependencyObject sender, object value)
         {
-            var source = sender as UnitActivationBar;
-            if (source == null)
-                return value;
-            return Math.Max(Math.Min((int)value, source.Units), 0);
+            return !(sender is UnitActivationBar source) ? value : Math.Max(Math.Min((int)value, source.Units), 0);
         }
 
         private static bool ValidateValue(object value)
@@ -402,13 +418,12 @@ namespace Supremacy.UI
 
         private static bool ValidateUnitCost(object value)
         {
-            return ((int) value > 0);
+            return (int)value > 0;
         }
         #endregion
 
         #region Fields
         private Rect[] _unitBlockBounds;
-        private UnitActivationGroup _group;
         private ButtonBase _decrementButton;
         private ButtonBase _incrementButton;
         private UIElement _contentArea;
@@ -417,50 +432,48 @@ namespace Supremacy.UI
         #region Properties
         public int Units
         {
-            get { return (int)GetValue(UnitsProperty); }
-            set { SetValue(UnitsProperty, value); }
+            get => (int)GetValue(UnitsProperty);
+            set => SetValue(UnitsProperty, value);
         }
 
         public int UnitCost
         {
-            get { return (int) GetValue(UnitCostProperty); }
-            set { SetValue(UnitCostProperty, value); }
+            get => (int)GetValue(UnitCostProperty);
+            set => SetValue(UnitCostProperty, value);
         }
 
         public int ActiveUnits
         {
-            get { return (int) GetValue(ActiveUnitsProperty); }
-            set { SetValue(ActiveUnitsProperty, value); }
+            get => (int)GetValue(ActiveUnitsProperty);
+            set => SetValue(ActiveUnitsProperty, value);
         }
 
         public int MaxActiveUnits
         {
-            get { return (int) GetValue(MaxActiveUnitsProperty); }
+            get => (int)GetValue(MaxActiveUnitsProperty);
             set
             {
                 SetValue(MaxActiveUnitsProperty, value);
                 if (ActiveUnits > MaxActiveUnits)
+                {
                     ActiveUnits = MaxActiveUnits;
+                }
             }
         }
 
         public bool IsReadOnly
         {
-            get { return (bool) GetValue(IsReadOnlyProperty); }
-            set { SetValue(IsReadOnlyProperty, value); }
+            get => (bool)GetValue(IsReadOnlyProperty);
+            set => SetValue(IsReadOnlyProperty, value);
         }
 
         public Brush UnitBrush
         {
-            get { return GetValue(UnitBrushProperty) as Brush; }
-            set { SetValue(UnitBrushProperty, value); }
+            get => GetValue(UnitBrushProperty) as Brush;
+            set => SetValue(UnitBrushProperty, value);
         }
 
-        public UnitActivationGroup Group
-        {
-            get { return _group; }
-            internal set { _group = value; }
-        }
+        public UnitActivationGroup Group { get; internal set; }
         #endregion
 
         #region Events
@@ -476,15 +489,15 @@ namespace Supremacy.UI
             _incrementButton = null;
             _decrementButton = null;
             _contentArea = null;
-            CommandBindings.Add(
+            _ = CommandBindings.Add(
                 new CommandBinding(IncrementValueCommand,
                                    IncrementValueExecuted,
                                    CanIncrementValue));
-            CommandBindings.Add(
+            _ = CommandBindings.Add(
                 new CommandBinding(DecrementValueCommand,
                                    DecrementValueExecuted,
                                    CanDecrementValue));
-            CommandBindings.Add(
+            _ = CommandBindings.Add(
                 new CommandBinding(SetActiveUnitsCommand,
                                    SetValueExecuted));
         }
@@ -493,35 +506,33 @@ namespace Supremacy.UI
         #region Command Handlers
         private void CanIncrementValue(object sender, CanExecuteRoutedEventArgs e)
         {
-            if (IsReadOnly)
-                e.CanExecute = false;
-            else
-                e.CanExecute = (ActiveUnits < MaxActiveUnits);
+            e.CanExecute = IsReadOnly ? false : ActiveUnits < MaxActiveUnits;
         }
 
         private void CanDecrementValue(object sender, CanExecuteRoutedEventArgs e)
         {
-            if (IsReadOnly)
-                e.CanExecute = false;
-            else
-                e.CanExecute = (ActiveUnits > 0);
+            e.CanExecute = IsReadOnly ? false : ActiveUnits > 0;
         }
 
         private void IncrementValueExecuted(object sender, ExecutedRoutedEventArgs e)
         {
             if (!IsReadOnly)
-                Increment();
+            {
+                _ = Increment();
+            }
         }
 
         private void DecrementValueExecuted(object sender, ExecutedRoutedEventArgs e)
         {
             if (!IsReadOnly)
-                Decrement();
+            {
+                _ = Decrement();
+            }
         }
 
         private void SetValueExecuted(object sender, ExecutedRoutedEventArgs e)
         {
-            SetActiveUnits((int) e.Parameter);
+            SetActiveUnits((int)e.Parameter);
         }
         #endregion
 
@@ -580,24 +591,27 @@ namespace Supremacy.UI
         protected override void OnPreviewMouseLeftButtonDown(MouseButtonEventArgs e)
         {
             if (IsReadOnly)
+            {
                 return;
-            var hitResult = VisualTreeHelper.HitTest(this, e.GetPosition(this));
-            if ((hitResult.VisualHit != null))
+            }
+
+            HitTestResult hitResult = VisualTreeHelper.HitTest(this, e.GetPosition(this));
+            if (hitResult.VisualHit != null)
             {
                 if ((_incrementButton != null)
-                    && ((hitResult.VisualHit == _incrementButton) || (_incrementButton.IsAncestorOf(hitResult.VisualHit))))
+                    && ((hitResult.VisualHit == _incrementButton) || _incrementButton.IsAncestorOf(hitResult.VisualHit)))
                 {
                     base.OnPreviewMouseLeftButtonDown(e);
                     return;
                 }
                 if ((_decrementButton != null)
-                    && ((hitResult.VisualHit == _decrementButton) || (_decrementButton.IsAncestorOf(hitResult.VisualHit))))
+                    && ((hitResult.VisualHit == _decrementButton) || _decrementButton.IsAncestorOf(hitResult.VisualHit)))
                 {
                     base.OnPreviewMouseLeftButtonDown(e);
                     return;
                 }
             }
-            CaptureMouse();
+            _ = CaptureMouse();
             SetValueFromMousePosition(e.GetPosition(this));
         }
 
@@ -616,7 +630,9 @@ namespace Supremacy.UI
         protected void SetValueFromMousePosition(Point point)
         {
             if (_unitBlockBounds.Length <= 0)
+            {
                 return;
+            }
 
             if (point.X < _unitBlockBounds[0].Left)
             {
@@ -629,22 +645,27 @@ namespace Supremacy.UI
                 SetActiveUnits(Units);
                 return;
             }
-            
-            var closestIndex = -1;
-            var minDistance = double.MaxValue;
+
+            int closestIndex = -1;
+            double minDistance = double.MaxValue;
                     
-            for (var i = 0; i < _unitBlockBounds.Length; i++)
+            for (int i = 0; i < _unitBlockBounds.Length; i++)
             {
-                var centerX = _unitBlockBounds[i].Left + (_unitBlockBounds[i].Width / 2);
-                var distance = Math.Abs(point.X - centerX);
+                double centerX = _unitBlockBounds[i].Left + (_unitBlockBounds[i].Width / 2);
+                double distance = Math.Abs(point.X - centerX);
                 if (distance >= minDistance)
+                {
                     continue;
+                }
+
                 minDistance = distance;
                 closestIndex = i;
             }
                     
             if (closestIndex != -1)
+            {
                 SetActiveUnits(closestIndex + 1);
+            }
         }
 
         protected override void OnMouseLeftButtonUp(MouseButtonEventArgs e)
@@ -660,13 +681,16 @@ namespace Supremacy.UI
 
         protected override void OnRender(DrawingContext drawingContext)
         {
-            if (_unitBlockBounds.Length == 0)
-                return;
-
-            var guidelinesX = new double[2 * _unitBlockBounds.Length];
-            var guidelinesY = new[] { _unitBlockBounds[0].Top, _unitBlockBounds[0].Height };
             
-            for (var i = 0; i < _unitBlockBounds.Length; i++)
+            if (_unitBlockBounds.Length == 0)
+            {
+                return;
+            }
+
+            double[] guidelinesX = new double[2 * _unitBlockBounds.Length];
+            double[] guidelinesY = new[] { _unitBlockBounds[0].Top, _unitBlockBounds[0].Height };
+            
+            for (int i = 0; i < _unitBlockBounds.Length; i++)
             {
                 guidelinesX[2 * i] = _unitBlockBounds[i].Left;
                 guidelinesX[(2 * i) + 1] = _unitBlockBounds[i].Right;
@@ -677,11 +701,13 @@ namespace Supremacy.UI
                     guidelinesX,
                     guidelinesY));
 
-            for (var i = 0; i < _unitBlockBounds.Length; i++)
+            for (int i = 0; i < _unitBlockBounds.Length; i++)
             {
                 if (i == ActiveUnits)
+                {
                     drawingContext.PushOpacity(0.25);
-                
+                }
+
                 drawingContext.DrawRectangle(
                     UnitBrush,
                     null,
@@ -689,14 +715,16 @@ namespace Supremacy.UI
             }
 
             if (ActiveUnits < Units)
+            {
                 drawingContext.Pop();
+            }
 
             drawingContext.Pop();
         }
 
         protected Rect GetUnitBounds(int index, double unitBlockWidth)
         {
-            var offset = (_contentArea != null)
+            Point offset = (_contentArea != null)
                              ? _contentArea.TransformToAncestor(this).Transform(new Point(0, 0))
                              : new Point(0, 0);
 
@@ -711,33 +739,38 @@ namespace Supremacy.UI
 
         protected override Size ArrangeOverride(Size arrangeBounds)
         {
-            var result = base.ArrangeOverride(arrangeBounds);
+            Size result = base.ArrangeOverride(arrangeBounds);
 
-            var actualWidth = (_contentArea != null)
+            double actualWidth = (_contentArea != null)
                                   ? _contentArea.RenderSize.Width
                                   : ActualWidth;
 
             if ((Group != null) && (Group.Children.Count > 0))
             {
-                var maxSiblingWidth = Group.Children.Max(
+                double maxSiblingWidth = Group.Children.Max(
                     o => (o._contentArea != null)
                              ? o._contentArea.RenderSize.Width
                              : o.ActualWidth);
 
                 if (!double.IsNaN(maxSiblingWidth) && !double.IsInfinity(maxSiblingWidth) && (maxSiblingWidth < actualWidth))
+                {
                     actualWidth = maxSiblingWidth;
+                }
             }
 
-            if ((actualWidth != 0)
-                && !double.IsNaN(actualWidth)
-                && !double.IsInfinity(actualWidth))
+            ////if ((actualWidth != 0)
+            ////    && !double.IsNaN(actualWidth)
+            //    && !double.IsInfinity(actualWidth))
             {
-                var unitBlockWidth = Math.Round(Math.Max(Math.Min((actualWidth * 0.5) / GetMaxUnitsInGroup(), 24.0), 1.0));
+                //double unitBlockWidth = Math.Round(Math.Max(Math.Min(actualWidth * 0.5 / GetMaxUnitsInGroup(), 24.0), 1.0));
+                double unitBlockWidth = Math.Round(Math.Max(Math.Min(actualWidth * 0.5 / GetMaxUnitsInGroup(), 18.0), 1.0));
 
                 _unitBlockBounds = new Rect[Units];
 
-                for (var i = 0; i < Units; i++)
+                for (int i = 0; i < Units; i++)
+                {
                     _unitBlockBounds[i] = GetUnitBounds(i, unitBlockWidth);
+                }
             }
 
             return result;
@@ -745,25 +778,29 @@ namespace Supremacy.UI
 
         protected override Size MeasureOverride(Size constraint)
         {
-            var availableWidth = double.IsInfinity(constraint.Width) ? 32767 : constraint.Width;
-            var availableHeight = double.IsInfinity(constraint.Height) ? 32767 : constraint.Height;
+            double availableWidth = double.IsInfinity(constraint.Width) ? 32767 : constraint.Width;
+            double availableHeight = double.IsInfinity(constraint.Height) ? 32767 : constraint.Height;
 
             return new Size(availableWidth, Math.Min(availableHeight, MaxHeight));
         }
 
         private int GetMaxUnitsInGroup()
         {
-            var maxUnits = Units;
+            int maxUnits = Units;
 
-            if (_group != null)
+            if (Group != null)
             {
-                if ((_group.PoolBar != null) && (_group.PoolBar.Units > maxUnits))
-                    maxUnits = _group.PoolBar.Units;
-                
-                foreach (var sibling in _group.Children)
+                if ((Group.PoolBar != null) && (Group.PoolBar.Units > maxUnits))
+                {
+                    maxUnits = Group.PoolBar.Units;
+                }
+
+                foreach (UnitActivationBar sibling in Group.Children)
                 {
                     if (sibling.Units > maxUnits)
+                    {
                         maxUnits = sibling.Units;
+                    }
                 }
             }
 

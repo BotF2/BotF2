@@ -198,6 +198,14 @@ namespace Supremacy.Client
 
             InputBindings.Add(
                 new KeyBinding(
+                    _navigationCommands.ActivateScreen,
+                    new KeyGesture(Key.F7, ModifierKeys.None))
+                {
+                    CommandParameter = StandardGameScreens.EncyclopediaScreen
+                });
+
+            InputBindings.Add(
+                new KeyBinding(
                     ToggleFullScreenModeCommand,
                     Key.Enter,
                     ModifierKeys.Alt));
@@ -282,6 +290,18 @@ namespace Supremacy.Client
                 new KeyBinding(
                     ClientCommands.OptionsCommand,
                     Key.O,
+                    ModifierKeys.Control));
+
+            InputBindings.Add(
+                new KeyBinding(
+                    ClientCommands.TracesCommand,
+                    Key.Z,
+                    ModifierKeys.Control));
+
+            InputBindings.Add(
+                new KeyBinding(
+                    ClientCommands.FakeCommand,
+                    Key.F11,
                     ModifierKeys.Control));
 
             // CRTL+S makes saved file "_manual_save"

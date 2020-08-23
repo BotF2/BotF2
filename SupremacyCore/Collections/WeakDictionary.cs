@@ -13,16 +13,13 @@ namespace Supremacy.Collections
     // other weak references, is always considered to be alive. This 
     // facilitates handling null dictionary values, which are perfectly
     // legal.
-    public class WeakNullReference<T> : WeakReference<T> where T : class
+    public sealed class WeakNullReference<T> : WeakReference<T> where T : class
     {
         public static readonly WeakNullReference<T> Singleton = new WeakNullReference<T>();
 
         private WeakNullReference() : base(null) { }
 
-        public override bool IsAlive
-        {
-            get { return true; }
-        }
+        public override bool IsAlive => true;
     }
 
     // Provides a weak reference to an object of the given type to be used in
@@ -50,21 +47,25 @@ namespace Supremacy.Collections
     internal sealed class WeakKeyComparer<T> : IEqualityComparer<object>
         where T : class
     {
-
         private readonly IEqualityComparer<T> _comparer;
 
         internal WeakKeyComparer(IEqualityComparer<T> comparer)
         {
             if (comparer == null)
+            {
                 comparer = EqualityComparer<T>.Default;
+            }
 
             _comparer = comparer;
         }
 
         public int GetHashCode(object obj)
         {
-            var weakKey = obj as WeakKeyReference<T>;
-            if (weakKey != null) return weakKey.HashCode;
+            if (obj is WeakKeyReference<T> weakKey)
+            {
+                return weakKey.HashCode;
+            }
+
             return _comparer.GetHashCode((T)obj);
         }
 
@@ -88,25 +89,26 @@ namespace Supremacy.Collections
         // -------------------------------------------------
         public new bool Equals(object x, object y)
         {
-            bool xIsDead, yIsDead;
-            
-            var first = GetTarget(x, out xIsDead);
-            var second = GetTarget(y, out yIsDead);
+            T first = GetTarget(x, out bool xIsDead);
+            T second = GetTarget(y, out bool yIsDead);
 
             if (xIsDead)
+            {
                 return yIsDead && x == y;
+            }
 
             if (yIsDead)
+            {
                 return false;
+            }
 
             return _comparer.Equals(first, second);
         }
 
         private static T GetTarget(object obj, out bool isDead)
         {
-            var wref = obj as WeakKeyReference<T>;
             T target;
-            if (wref != null)
+            if (obj is WeakKeyReference<T> wref)
             {
                 target = wref.Target;
                 isDead = !wref.IsAlive;
@@ -123,14 +125,16 @@ namespace Supremacy.Collections
     /// <summary>
     /// Represents a dictionary mapping keys to values.
     /// </summary>
+    /// <typeparam name="TKey"></typeparam>
+    /// <typeparam name="TValue"></typeparam>
     /// 
     /// <remarks>
     /// Provides the plumbing for the portions of IDictionary<TKey,
     /// TValue> which can reasonably be implemented without any
     /// dependency on the underlying representation of the dictionary.
     /// </remarks>
-    [DebuggerDisplay("Count = {Count}")]
-    [DebuggerTypeProxy(Prefix + "DictionaryDebugView`2" + Suffix)]
+    ///[DebuggerDisplay("Count = {Count}")]
+    ///[DebuggerTypeProxy(Prefix + "DictionaryDebugView`2" + Suffix)]
     public abstract class BaseDictionary<TKey, TValue> : IDictionary<TKey, TValue>
     {
         private const string Prefix = "System.Collections.Generic.Mscorlib_";
@@ -148,17 +152,16 @@ namespace Supremacy.Collections
         public abstract IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator();
         protected abstract void SetValue(TKey key, TValue value);
 
-        public bool IsReadOnly
-        {
-            get { return false; }
-        }
+        public bool IsReadOnly => false;
 
         public ICollection<TKey> Keys
         {
             get
             {
                 if (_keys == null)
+                {
                     _keys = new KeyCollection(this);
+                }
 
                 return _keys;
             }
@@ -169,7 +172,9 @@ namespace Supremacy.Collections
             get
             {
                 if (_values == null)
+                {
                     _values = new ValueCollection(this);
+                }
 
                 return _values;
             }
@@ -179,16 +184,14 @@ namespace Supremacy.Collections
         {
             get
             {
-                TValue value;
-                if (!TryGetValue(key, out value))
+                if (!TryGetValue(key, out TValue value))
+                {
                     throw new KeyNotFoundException();
+                }
 
                 return value;
             }
-            set
-            {
-                SetValue(key, value);
-            }
+            set => SetValue(key, value);
         }
 
         public void Add(KeyValuePair<TKey, TValue> item)
@@ -198,9 +201,10 @@ namespace Supremacy.Collections
 
         public bool Contains(KeyValuePair<TKey, TValue> item)
         {
-            TValue value;
-            if (!TryGetValue(item.Key, out value))
+            if (!TryGetValue(item.Key, out TValue value))
+            {
                 return false;
+            }
 
             return EqualityComparer<TValue>.Default.Equals(value, item.Value);
         }
@@ -212,10 +216,7 @@ namespace Supremacy.Collections
 
         public bool Remove(KeyValuePair<TKey, TValue> item)
         {
-            if (!Contains(item))
-                return false;
-
-            return Remove(item.Key);
+            return !Contains(item) ? false : Remove(item.Key);
         }
 
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
@@ -232,15 +233,9 @@ namespace Supremacy.Collections
                 Dictionary = dictionary;
             }
 
-            public int Count
-            {
-                get { return Dictionary.Count; }
-            }
+            public int Count => Dictionary.Count;
 
-            public bool IsReadOnly
-            {
-                get { return true; }
-            }
+            public bool IsReadOnly => true;
 
             public void CopyTo(T[] array, int arrayIndex)
             {
@@ -249,16 +244,23 @@ namespace Supremacy.Collections
 
             public virtual bool Contains(T item)
             {
-                foreach (var element in this)
+                foreach (T element in this)
+                {
                     if (EqualityComparer<T>.Default.Equals(element, item))
+                    {
                         return true;
+                    }
+                }
+
                 return false;
             }
 
             public IEnumerator<T> GetEnumerator()
             {
-                foreach (var pair in Dictionary)
+                foreach (KeyValuePair<TKey, TValue> pair in Dictionary)
+                {
                     yield return GetItem(pair);
+                }
             }
 
             protected abstract T GetItem(KeyValuePair<TKey, TValue> pair);
@@ -317,16 +319,24 @@ namespace Supremacy.Collections
         private static void Copy<T>(ICollection<T> source, T[] array, int arrayIndex)
         {
             if (array == null)
-                throw new ArgumentNullException("array");
+            {
+                throw new ArgumentNullException(nameof(array));
+            }
 
             if (arrayIndex < 0 || arrayIndex > array.Length)
-                throw new ArgumentOutOfRangeException("arrayIndex");
+            {
+                throw new ArgumentOutOfRangeException(nameof(arrayIndex));
+            }
 
             if ((array.Length - arrayIndex) < source.Count)
+            {
                 throw new ArgumentException("Destination array is not large enough. Check array.Length and arrayIndex.");
+            }
 
-            foreach (var item in source)
+            foreach (T item in source)
+            {
                 array[arrayIndex++] = item;
+            }
         }
     }
 
@@ -335,6 +345,8 @@ namespace Supremacy.Collections
     /// to be garbage collected if there are no other references
     /// to them than from the dictionary itself.
     /// </summary>
+    /// <typeparam name="TKey"></typeparam>
+    /// <typeparam name="TValue"></typeparam>
     /// 
     /// <remarks>
     /// If either the key or value of a particular entry in the dictionary
@@ -351,7 +363,6 @@ namespace Supremacy.Collections
         where TKey : class
         where TValue : class
     {
-
         private readonly Dictionary<object, WeakReference<TValue>> _dictionary;
         private readonly WeakKeyComparer<TKey> _comparer;
 
@@ -374,17 +385,17 @@ namespace Supremacy.Collections
         // either the key or value objects have already been garbage
         // collected. Call RemoveCollectedEntries to weed out collected
         // entries and update the count accordingly.
-        public override int Count
-        {
-            get { return _dictionary.Count; }
-        }
+        public override int Count => _dictionary.Count;
 
         public override void Add(TKey key, TValue value)
         {
             if (key == null)
-                throw new ArgumentNullException("key");
-            var weakKey = new WeakKeyReference<TKey>(key, _comparer);
-            var weakValue = WeakReference<TValue>.Create(value);
+            {
+                throw new ArgumentNullException(nameof(key));
+            }
+
+            WeakKeyReference<TKey> weakKey = new WeakKeyReference<TKey>(key, _comparer);
+            WeakReference<TValue> weakValue = WeakReference<TValue>.Create(value);
             _dictionary.Add(weakKey, weakValue);
         }
 
@@ -400,8 +411,7 @@ namespace Supremacy.Collections
 
         public override bool TryGetValue(TKey key, out TValue value)
         {
-            WeakReference<TValue> weakValue;
-            if (_dictionary.TryGetValue(key, out weakValue))
+            if (_dictionary.TryGetValue(key, out WeakReference<TValue> weakValue))
             {
                 value = weakValue.Target;
                 return weakValue.IsAlive;
@@ -412,7 +422,7 @@ namespace Supremacy.Collections
 
         protected override void SetValue(TKey key, TValue value)
         {
-            var weakKey = new WeakKeyReference<TKey>(key, _comparer);
+            WeakKeyReference<TKey> weakKey = new WeakKeyReference<TKey>(key, _comparer);
             _dictionary[weakKey] = WeakReference<TValue>.Create(value);
         }
 
@@ -423,14 +433,16 @@ namespace Supremacy.Collections
 
         public override IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator()
         {
-            foreach (var kvp in _dictionary)
+            foreach (KeyValuePair<object, WeakReference<TValue>> kvp in _dictionary)
             {
-                var weakKey = (WeakReference<TKey>)(kvp.Key);
-                var weakValue = kvp.Value;
-                var key = weakKey.Target;
-                var value = weakValue.Target;
+                WeakReference<TKey> weakKey = (WeakReference<TKey>)kvp.Key;
+                WeakReference<TValue> weakValue = kvp.Value;
+                TKey key = weakKey.Target;
+                TValue value = weakValue.Target;
                 if (weakKey.IsAlive && weakValue.IsAlive)
+                {
                     yield return new KeyValuePair<TKey, TValue>(key, value);
+                }
             }
         }
 
@@ -441,25 +453,33 @@ namespace Supremacy.Collections
         public void RemoveCollectedEntries()
         {
             List<object> toRemove = null;
-            foreach (var pair in _dictionary)
+            foreach (KeyValuePair<object, WeakReference<TValue>> pair in _dictionary)
             {
-                var weakKey = (WeakReference<TKey>)(pair.Key);
-                var weakValue = pair.Value;
+                WeakReference<TKey> weakKey = (WeakReference<TKey>)pair.Key;
+                WeakReference<TValue> weakValue = pair.Value;
 
                 if (weakKey.IsAlive && weakValue.IsAlive)
+                {
                     continue;
+                }
 
                 if (toRemove == null)
+                {
                     toRemove = new List<object>();
+                }
 
                 toRemove.Add(weakKey);
             }
 
             if (toRemove == null)
+            {
                 return;
+            }
 
-            foreach (var key in toRemove)
+            foreach (object key in toRemove)
+            {
                 _dictionary.Remove(key);
+            }
         }
     }
 }

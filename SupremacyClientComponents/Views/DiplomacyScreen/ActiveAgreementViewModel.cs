@@ -1,3 +1,4 @@
+//File:ActiveAgreementViewModel.cs
 using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -197,7 +198,10 @@ namespace Supremacy.Client.Views
                     DiplomacyMessageElementActionCategory.Propose,
                     DiplomacyScreenViewModel.ElementTypeFromClauseType(clause.ClauseType),
                     null);
-
+                //GameLog.Client.Diplomacy.DebugFormat("((()))DiplomacyMessageFromClauseType out ElementType ={0}, sender ={1}, recipient ={2}",
+                //    DiplomacyScreenViewModel.ElementTypeFromClauseType(clause.ClauseType).ToString(),
+                //    proposal.Sender.ShortName,
+                //    proposal.Recipient.ShortName);
                 if (clause.ClauseType == ClauseType.OfferGiveCredits ||
                     clause.ClauseType == ClauseType.RequestGiveCredits)
                 {

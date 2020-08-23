@@ -164,7 +164,6 @@ namespace Supremacy.Game
         [NonSerialized]
         private GameTables _tables;
         private ResearchMatrix _researchMatrix;
-      //  private IntelMatrix _intelMatrix;
         private SectorClaimGrid _sectorClaims;
         private TechTreeMap _techTrees;
         private CivilizationPairedMap<IDiplomacyData> _diplomacyData;
@@ -274,20 +273,20 @@ namespace Supremacy.Game
 
             foreach (var design in _techDatabase)
             {
-                GameLog.Client.GameData.DebugFormat("THE design Key ={0}; Name ={1}; Description ={2}", design.Key, design.Name, design.Description);
+                ///GameLog.Client.GameInitData.DebugFormat("THE design Key ={0}; Name ={1}; Description ={2}", design.Key, design.Name, design.Description);
                 LocalizedTextGroup localizedText; // This is Orbital Batteries Only!!! 
                 if (LocalizedTextDatabase.Instance.Groups.TryGetValue(new TechObjectTextGroupKey(design.Key), out localizedText))
                 {
-                    GameLog.Client.GameData.DebugFormat("###### textDatabase localizedTest = {0} {1} {2} {3} {4}",
-                        localizedText.DefaultEntry, localizedText.DefaultLocalText, localizedText.Entries, localizedText.Key, design.Key );
+                    //GameLog.Client.GameInitData.DebugFormat("###### textDatabase localizedTest = {0} {1} {2} {3} {4}",
+                    //    localizedText.DefaultEntry, localizedText.DefaultLocalText, localizedText.Entries, localizedText.Key, design.Key );
                     design.LocalizedText = localizedText;
                     continue;
                 }
                 ITextDatabaseEntry<ITechObjectTextDatabaseEntry> entry; 
-                if (!techObjectTable.TryGetEntry(design.Key, out entry)) // Is this always false ????
+                if (!techObjectTable.TryGetEntry(design.Key, out entry)) 
                     continue;
                 design.TextDatabaseEntry = entry.GetLocalizedEntry(ResourceManager.CurrentLocale);
-                GameLog.Client.GameData.DebugFormat("THE ^^TextDatabaseEntry ={0} {1}", design.TextDatabaseEntry.Name, design.TextDatabaseEntry.Description);
+                //GameLog.Client.GameInitData.DebugFormat("THE ^^TextDatabaseEntry ={0} {1}", design.TextDatabaseEntry.Name, design.TextDatabaseEntry.Description);
             }
         }
 

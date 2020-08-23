@@ -19,7 +19,7 @@ namespace Supremacy.Client
     [MarkupExtensionReturnType(typeof(BitmapImage))]
     public sealed class ImageResource : MarkupExtension
     {
-        private string filename;
+        private readonly string filename;
 
         public ImageResource(string filename)
         {
@@ -29,10 +29,11 @@ namespace Supremacy.Client
         public override object ProvideValue(IServiceProvider serviceProvider)
         {
             if (filename == null)
+            {
                 return null;
-            if (!File.Exists(filename))
-                return null;
-            return ImageCache.Current.Get(ResourceManager.GetResourceUri(filename));
+            }
+
+            return !File.Exists(filename) ? null : ImageCache.Current.Get(ResourceManager.GetResourceUri(filename));
         }
     }
 }

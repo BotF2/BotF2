@@ -119,8 +119,8 @@ namespace Supremacy.Game
                 data._sectorClaims = game.SectorClaims;
                 data._agreementMatrix = game.AgreementMatrix;
                 data._diplomacyData = game.DiplomacyData;
-//                game.Diplomats.TryGetValue(player.EmpireID, out data._diplomat);
-                data._diplomats = new[] { Diplomat.Get(player) }; //game.Diplomats.ToArray();
+                //                game.Diplomats.TryGetValue(player.EmpireID, out data._diplomat);
+                data._diplomats = game.Diplomats.ToArray();//new[] { Diplomat.Get(player) }; //game.Diplomats.ToArray();
 
                 //var _diplomat = data._diplomats;  // just for have a look
                 

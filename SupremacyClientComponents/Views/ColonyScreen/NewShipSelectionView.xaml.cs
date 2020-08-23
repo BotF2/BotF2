@@ -21,8 +21,6 @@ namespace Supremacy.Client.Views
         {
             InitializeComponent();
 
-            
-
             BuildProject[] shipList = TechTreeHelper.GetShipyardBuildProjects(buildSlot.Shipyard)
                                         .OrderBy(s => s.BuildDesign.Key)
                                         .ToArray();

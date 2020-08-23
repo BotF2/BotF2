@@ -240,7 +240,7 @@
       <scc:GameLabel Grid.Column="12"
                   Grid.Row="1"
                   VerticalAlignment="Center"
-                  ImageSourceSmall="vfs:///Resources/Images/Resources/food.png"
+                  ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/food.png"
                   Label="{Binding Path=FoodReserves.CurrentValue}"
                   ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=FOOD_TOOL_TIP}" />
       <TextBlock Text="INDUSTRY ="
@@ -320,7 +320,7 @@
       <scc:GameLabel Grid.Column="8"
                   Grid.Row="2"
                   VerticalAlignment="Center"
-                  ImageSourceSmall="vfs:///Resources/Images/Resources/deuterium.png"
+                  ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/deuterium.png"
                   Label="{Binding Path=NetDeuterium}"
                   ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=DEUTERIUM_TOOL_TIP}" />-->
       <TextBlock Text="DILITHIUM ="
@@ -331,7 +331,7 @@
       <scc:GameLabel Grid.Column="12"
                   Grid.Row="2"
                   VerticalAlignment="Center"
-                  ImageSourceSmall="vfs:///Resources/Images/Resources/dilithium.png"
+                  ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/dilithium.png"
                   Label="{Binding Path=NetDilithium}"
                   ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=DILITHIUM_TOOL_TIP}" />
       <TextBlock Text="RAW MATERIALS ="
@@ -340,7 +340,7 @@
       <scc:GameLabel Grid.Column="16"
                   Grid.Row="2"
                   VerticalAlignment="Center"
-                  ImageSourceSmall="vfs:///Resources/Images/Resources/rawmaterials.png"
+                  ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/rawmaterials.png"
                   Label="{Binding Path=NetRawMaterials}"
                   ToolTip="{sx:LocalizedString Group={x:Static s:LocalizedTextGroups.AssetsScreen}, Entry=RAW_MATERIALS_TOOL_TIP}" />
         <!--<TextBlock Text="RESEARCH (empire) = "

@@ -326,6 +326,23 @@ namespace Supremacy.Client.Views
         }
     }
 
+    public class EncyclopediaScreenPresenter
+    : GameScreenPresenterBase<EncyclopediaScreenPresentationModel, IEncyclopediaScreenView>, IEncyclopediaScreenPresenter
+    {
+        #region Constructors and Finalizers
+        public EncyclopediaScreenPresenter(
+            [NotNull] IUnityContainer container,
+            [NotNull] EncyclopediaScreenPresentationModel model,
+            [NotNull] IEncyclopediaScreenView view)
+            : base(container, model, view) { }
+        #endregion
+
+        protected override string ViewName
+        {
+            get { return StandardGameScreens.EncyclopediaScreen; }
+        }
+    }
+
     //public class IntelScreenPresenter
     //    : GameScreenPresenterBase<IntelScreenPresentationModel, IIntelScreenView>, IIntelScreenPresenter
     //{

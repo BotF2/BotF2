@@ -313,7 +313,7 @@ namespace Supremacy.Orbitals
             _fuelReserve = new Meter(design.FuelCapacity, 0, design.FuelCapacity);
             _fuelReserve.CurrentValueChanged += FuelReserve_CurrentValueChanged;
             //_cloakStrength = design.CloakStrength;
-            //_camouflagedStrength = design.CamouflagedStrength;
+            //_camouflagedStrength = (byte)design.CamouflagedStrength;
         }
 
         /// <summary>

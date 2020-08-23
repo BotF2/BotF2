@@ -257,6 +257,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FakeDialog.xaml.cs">
+      <DependentUpon>FakeDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="OptionsPages\TracesOptionsPage.xaml.cs">
       <DependentUpon>TracesOptionsPage.xaml</DependentUpon>
     </Compile>
@@ -269,6 +272,7 @@
     <Compile Include="PopupTest.xaml.cs">
       <DependentUpon>PopupTest.xaml</DependentUpon>
     </Compile>
+    <Compile Include="EncyclopediaScreen.cs" />
     <Compile Include="ShellIntegration.cs" />
     <Compile Include="Views\AssetsHelper.cs" />
     <Compile Include="Views\AssetsScreen\AssetsScreen.xaml.cs">
@@ -304,6 +308,9 @@
     <Compile Include="Views\AssetsScreen\SystemListItem.xaml.cs">
       <DependentUpon>SystemListItem.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ClientTracesDialog.xaml.cs">
+      <DependentUpon>ClientTracesDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\ColonyScreen\ColonyInfoScreen.xaml.cs">
       <DependentUpon>ColonyInfoScreen.xaml</DependentUpon>
     </Compile>
@@ -327,6 +334,9 @@
     </Compile>
     <Compile Include="themes\ColorInfoScreen_Dom.xaml.cs">
       <DependentUpon>ColorInfoScreen_Dom.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ColonyScreen\ColonyHandlingListView.xaml.cs">
+      <DependentUpon>ColonyHandlingListView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\GalaxyScreen\CheatMenu.xaml.cs">
       <DependentUpon>CheatMenu.xaml</DependentUpon>
@@ -376,6 +386,10 @@
     <Page Include="GameOptionsPanel.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="FakeDialog.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -522,6 +536,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="themes\Federation\AffairsScreen.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="themes\Federation\EncyclopediaScreen.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -891,6 +909,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="ClientTracesDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Views\ColonyScreen\ColonyBuildProjectInfoView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -928,6 +950,10 @@
     <Page Include="Views\ColonyScreen\ColonyShipyardBuildQueueView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\ColonyScreen\ColonyHandlingListView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
