@@ -4,8 +4,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
-using System.Net;
-using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using System.Windows.Data;
@@ -19,7 +17,6 @@ using Supremacy.Collections;
 using Supremacy.Diplomacy;
 using Supremacy.Entities;
 using Supremacy.Game;
-using Supremacy.Intelligence;
 using Supremacy.Resources;
 using Supremacy.Scripting;
 using Supremacy.Text;
@@ -59,6 +56,7 @@ namespace Supremacy.Client.Views
         private Dictionary<int, string> _acceptedRejected = new Dictionary<int, string> { { 99, "placeHolder" } };
         private Order _sendOrder;
         private string _response = "....";
+        int _turnOfResponse;
 
         public DiplomacyMessageViewModel([NotNull] Civilization sender, [NotNull] Civilization recipient)
         {
@@ -143,23 +141,28 @@ namespace Supremacy.Client.Views
         {
             get
             {
-                string checkForResponse = "...";
                 int selectedID = DiplomacyScreenViewModel.DesignInstance.SelectedForeignPower.Owner.CivID;
                 if (_acceptedRejected.ContainsKey(selectedID))
-                    checkForResponse = _acceptedRejected[selectedID];
-                _response = checkForResponse;
-                return _response;
-                OnPropertyChanged(true, "Response");              
+                    return _acceptedRejected[selectedID];
+                return "...";                           
             }
             set
             {
-                //string checkForResponse = "...";
-                //int selectedID = DiplomacyScreenViewModel.DesignInstance.SelectedForeignPower.Owner.CivID;
-                //if (_acceptedRejected.ContainsKey(selectedID))
-                //    checkForResponse = _acceptedRejected[selectedID]; // wip here to return selectedforeignpower's response
-                //bool methodOverload = true;
                 if (_response != value)
                 {
+                    int turn = GameContext.Current.TurnNumber;
+                    if (_turnOfResponse != turn)
+                    {
+                        _acceptedRejected.Clear(); 
+                        _turnOfResponse = turn;
+                    }
+                    int selectedID = DiplomacyScreenViewModel.DesignInstance.SelectedForeignPower.Owner.CivID;
+                    if (_acceptedRejected.ContainsKey(selectedID))
+                    {
+                        _acceptedRejected.Remove(selectedID);
+                        _acceptedRejected.Add(selectedID, value);
+                    }
+                    else _acceptedRejected.Add(selectedID, value);
                     _response = value;
                     OnPropertyChanged(true, "Response");
                 }
@@ -1090,6 +1093,7 @@ namespace Supremacy.Client.Views
                 Accepted = "REJECTED";
             Response = Accepted;
             int selectedID = selectedForeignPower.Owner.CivID;
+            
             if (_acceptedRejected.ContainsKey(selectedID))
             {
                 if (_acceptedRejected[selectedID] != Accepted)
@@ -1107,7 +1111,7 @@ namespace Supremacy.Client.Views
             }
             else
             {   // creat entry for none host human player that clicked the accept - reject radio button         
-                StatementType _statementType = DiplomacyHelper.GetStatementType(accepting, senderCiv, playerEmpire); // first is bool, then sender ID(now the local player), last new receipient, in Dictinary Key                       
+                StatementType _statementType = DiplomacyHelper.GetStatementType(accepting, senderCiv, playerEmpire); // first is bool, 2nd sender ID(now the local player), last new receipient, in Dictinary Key                       
                 GameLog.Client.Diplomacy.DebugFormat("Local player IS NOT Host, statementType = {0} accepting = {1} sender ={2} counterpartyID {3} local = {4} OwnerID ={5}"
                     , Enum.GetName(typeof(StatementType), _statementType)
                     , accepting
