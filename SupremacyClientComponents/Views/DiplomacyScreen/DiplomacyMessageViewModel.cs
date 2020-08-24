@@ -59,7 +59,6 @@ namespace Supremacy.Client.Views
         private Dictionary<int, string> _acceptedRejected = new Dictionary<int, string> { { 99, "placeHolder" } };
         private Order _sendOrder;
         private string _response = "....";
-       // private ForeignPowerViewModel _selectedForeignPower;
 
         public DiplomacyMessageViewModel([NotNull] Civilization sender, [NotNull] Civilization recipient)
         {
@@ -77,8 +76,7 @@ namespace Supremacy.Client.Views
             _availableElementsView = new ReadOnlyObservableCollection<DiplomacyMessageAvailableElement>(_availableElements);
             _treatyElements = new ObservableCollection<DiplomacyMessageElement>();
             _treatyElementsView = new ReadOnlyObservableCollection<DiplomacyMessageElement>(_treatyElements);
-            //_acceptRejectElements = new ObservableCollection<DiplomacyMessageElement>();
-            // _acceptRejectElementsView = new ReadOnlyObservableCollection<DiplomacyMessageElement>(_acceptRejectElements); // no view becasue we do not see it??
+
             _offerElements = new ObservableCollection<DiplomacyMessageElement>();
             _offerElementsView = new ReadOnlyObservableCollection<DiplomacyMessageElement>(_offerElements);
             _requestElements = new ObservableCollection<DiplomacyMessageElement>();
@@ -149,6 +147,10 @@ namespace Supremacy.Client.Views
             }
             set
             {
+                string checkForResponse = "...";
+                int selectedID = DiplomacyScreenViewModel.DesignInstance.SelectedForeignPower.Owner.CivID;
+                if (_acceptedRejected.ContainsKey(selectedID))
+                    checkForResponse = _acceptedRejected[selectedID]; // wip here to return selectedforeignpower's response
                 bool methodOverload = true;
                 if (_response != value)
                 {
@@ -1066,7 +1068,6 @@ namespace Supremacy.Client.Views
             InvalidateCommands();
         }
 
-
         private void ProcessAcceptReject(bool accepting)
         {
             int turn = GameContext.Current.TurnNumber;
@@ -1082,10 +1083,16 @@ namespace Supremacy.Client.Views
             if (accepting == false)
                 Accepted = "REJECTED";
             Response = Accepted;
-
-            if (_acceptedRejected.ContainsKey(selectedForeignPower.Owner.CivID))
-                return;
-            else _acceptedRejected.Add(selectedForeignPower.Owner.CivID, Accepted);
+            int selectedID = selectedForeignPower.Owner.CivID;
+            if (_acceptedRejected.ContainsKey(selectedID))
+            {
+                if (_acceptedRejected[selectedID] != Accepted)
+                {
+                    _acceptedRejected.Remove(selectedID);
+                    _acceptedRejected.Add(selectedID, Accepted);
+                }
+            }                
+            else _acceptedRejected.Add(selectedID, Accepted);
 
             if (localPlayerIsHosting)
             {
