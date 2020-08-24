@@ -143,19 +143,25 @@ namespace Supremacy.Client.Views
         {
             get
             {
-                return _response;
-            }
-            set
-            {
                 string checkForResponse = "...";
                 int selectedID = DiplomacyScreenViewModel.DesignInstance.SelectedForeignPower.Owner.CivID;
                 if (_acceptedRejected.ContainsKey(selectedID))
-                    checkForResponse = _acceptedRejected[selectedID]; // wip here to return selectedforeignpower's response
-                bool methodOverload = true;
+                    checkForResponse = _acceptedRejected[selectedID];
+                _response = checkForResponse;
+                return _response;
+                OnPropertyChanged(true, "Response");              
+            }
+            set
+            {
+                //string checkForResponse = "...";
+                //int selectedID = DiplomacyScreenViewModel.DesignInstance.SelectedForeignPower.Owner.CivID;
+                //if (_acceptedRejected.ContainsKey(selectedID))
+                //    checkForResponse = _acceptedRejected[selectedID]; // wip here to return selectedforeignpower's response
+                //bool methodOverload = true;
                 if (_response != value)
                 {
                     _response = value;
-                    OnPropertyChanged(methodOverload, "Response");
+                    OnPropertyChanged(true, "Response");
                 }
             }
         }
