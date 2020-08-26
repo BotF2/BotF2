@@ -1608,39 +1608,6 @@ namespace Supremacy.Game
                                     }
                                 }
                             }
-                            //List<Civilization> notAggreableCivs = (from Civilization in GameContext.Current.Civilizations
-                            //                                    where GameContext.Current.AgreementMatrix.IsAgreementActive(civ, whoElse, ClauseType.TreatyNonAggression)                                                                
-                            //                                    select whoElse).ToList();
-                            //if (notAggreableCivs != null)
-                            //{
-                            //    foreach (Civilization who in notAggreableCivs)
-                            //    {
-                            //        foreach (var ship in game.Universe.FindOwned<Ship>(who))
-                            //        {
-                            //            if (ship != null)
-                            //            {
-                            //                //ToDo: move to DoSectorClaims
-                            //                // find ships inside others space and make for bad diplomatic relations
-                            //                //who.
-                            //                //ship.Location
-                            //                //var sectorObjects = GameContext.Current.Universe.FindOwned(who, Ship);
-                            //            }
-                            //        }
-                            //    }
-                            //}
-                            //List<Civilization> tradeCivs = (from Civilization in GameContext.Current.Civilizations
-                            //                                    where GameContext.Current.AgreementMatrix.IsAgreementActive(civ, whoElse, ClauseType.TreatyDefensiveAlliance) ||
-                            //                                          GameContext.Current.AgreementMatrix.IsAgreementActive(civ, whoElse, ClauseType.TreatyFullAlliance) ||
-                            //                                          GameContext.Current.AgreementMatrix.IsAgreementActive(civ, whoElse, ClauseType.TreatyAffiliation) ||
-                            //                                          GameContext.Current.AgreementMatrix.IsAgreementActive(civ, whoElse, ClauseType.TreatyOpenBorders)
-                            //                                    select whoElse).ToList();
-                            //if (tradeCivs != null)
-                            //{
-                            //    foreach (Civilization who in tradeCivs)
-                            //    {
-                            //        // ToDo: trade ?move to DoTrade???
-                            //    }
-                            //}
                         }
                     }
 
@@ -1750,6 +1717,16 @@ namespace Supremacy.Game
                                         continue;
                                     if (GameContext.Current.AgreementMatrix.IsAgreementActive(civ, whoElse, ClauseType.TreatyNonAggression))
                                     {
+                                        var whoFleets = GameContext.Current.Universe.Find<Fleet>().Where(o =>o.Owner == whoElse).ToList();
+                                        foreach(Fleet fleet in whoFleets)
+                                        {
+                                            if (sectorClaims.GetOwner(fleet.Location)== civ)
+                                            {
+                                                DiplomacyHelper.ApplyRegardChange(civ, whoElse, -200);
+                                                DiplomacyHelper.ApplyTrustChange(civ, whoElse, -200);
+                                               // DiplomacyHelper.BreakAgreement(GameContext.Current.Universe.Find<IAgreement>(ClauseType.TreatyAffiliation, true));
+                                            }
+                                        }
                                         //ToDo: find ships of whoElse in sector clamied by civ
                                         //List<Fleet> fleet = (from Fleet in game.
                                         //                                       where GameContext.Current.AgreementMatrix.IsAgreementActive(civ, whoElse, ClauseType.TreatyNonAggression)
