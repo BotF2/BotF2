@@ -1724,13 +1724,11 @@ namespace Supremacy.Game
                                             {
                                                 DiplomacyHelper.ApplyRegardChange(civ, whoElse, -200);
                                                 DiplomacyHelper.ApplyTrustChange(civ, whoElse, -200);
-                                               // DiplomacyHelper.BreakAgreement(GameContext.Current.Universe.Find<IAgreement>(ClauseType.TreatyAffiliation, true));
+                                                var activeAgreements = GameContext.Current.AgreementMatrix[civ.CivID, whoElse.CivID];
+                                                while (activeAgreements.Count > 0)
+                                                    BreakAgreementVisitor.BreakAgreement(activeAgreements[0]);
                                             }
                                         }
-                                        //ToDo: find ships of whoElse in sector clamied by civ
-                                        //List<Fleet> fleet = (from Fleet in game.
-                                        //                                       where GameContext.Current.AgreementMatrix.IsAgreementActive(civ, whoElse, ClauseType.TreatyNonAggression)
-                                        //                                       select whoElse).ToList();
                                     }   
                                 }
                                 //GameLog.Core.MapData.DebugFormat("{0} (Colony owner: {1}): SetScanned to -> True ", location.ToString(), colony.Owner);
