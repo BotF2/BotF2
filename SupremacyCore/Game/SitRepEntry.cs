@@ -707,268 +707,7 @@ namespace Supremacy.Game
         }
     }
 
-    [Serializable]
-    public sealed class DiplomaticSitRepEntry : SitRepEntry
-    {
-        private readonly IDiplomaticExchange _exchange;
-
-        [NonSerialized]
-        private string _summaryText;
-        [NonSerialized]
-        private string _detailText;
-        [NonSerialized]
-        private string _image;
-        [NonSerialized]
-        private bool _hasEvaluatedSummaryText;
-        [NonSerialized]
-        private bool _hasEvaluatedDetailText;
-
-        public DiplomaticSitRepEntry(Civilization owner, IDiplomaticExchange exchange)
-            : base(owner, SitRepPriority.Special)
-        {
-            if (exchange == null)
-                throw new ArgumentNullException("exchange");
-
-            _exchange = exchange;
-        }
-
-        private string EnsureText(ref string text, ref bool resolved, bool detailed)
-        {
-            if (resolved)
-                return text;
-
-            var key = ResolveTextKey(detailed);
-            if (key == null)
-            {
-                resolved = true;
-                text = null;
-                return text;
-            }
-
-
-            if (!LocalizedTextDatabase.Instance.Groups.TryGetValue(typeof(DiplomacySitRepStringKey), out LocalizedTextGroup textGroup) ||
-                !textGroup.Entries.TryGetValue(key.Value, out LocalizedString localizedString))
-            {
-                resolved = true;
-                text = string.Format("!!! MISSING TEXT: {0}.{1} !!!", typeof(DiplomacySitRepStringKey).Name, key);
-                return text;
-            }
-            GameLog.Client.Diplomacy.DebugFormat("LocalizedText localString ={0}", localizedString.ToString());
-            var scriptParameters = new ScriptParameters(
-                new ScriptParameter("$sender", typeof(Civilization)),
-                new ScriptParameter("$recipient", typeof(Civilization)));
-
-            var scriptExpression = new ScriptExpression(returnObservableResult: false)
-            {
-                Parameters = scriptParameters,
-                ScriptCode = StringHelper.QuoteString(localizedString.LocalText)
-            };
-
-            Civilization sender;
-            Civilization recipient;
-
-            var response = _exchange as IResponse;
-            if (response != null)
-            {
-                switch (response.ResponseType)
-                {
-                    case ResponseType.Accept:
-                    case ResponseType.Reject:
-                        sender = response.Proposal.Sender;
-                        recipient = response.Proposal.Recipient;
-                        break;
-                    case ResponseType.Counter:
-                        sender = response.CounterProposal.Sender;
-                        recipient = response.CounterProposal.Recipient;
-                        break;
-                    default:
-                        resolved = true;
-                        text = string.Format("!!! ERROR: UNEXPECTED RESPONSE TYPE: {0} !!!", response.ResponseType);
-                        return text;
-                }
-            }
-            else
-            {
-                sender = _exchange.Sender;
-                recipient = _exchange.Recipient;
-            }
-
-            var parameters = new RuntimeScriptParameters
-                             {
-                                 new RuntimeScriptParameter(scriptParameters[0], sender),
-                                 new RuntimeScriptParameter(scriptParameters[1], recipient)
-                             };
-
-            return scriptExpression.Evaluate<string>(parameters);
-        }
-
-        private DiplomacySitRepStringKey? ResolveTextKey(bool detailed)
-        {
-            var proposal = _exchange as IProposal;
-            var response = _exchange as IResponse;
-
-            if (proposal == null && response != null && response.ResponseType == ResponseType.Counter)
-                proposal = response.CounterProposal;
-
-            if (proposal != null)
-            {
-                if (proposal.HasTreaty())
-                {
-                    if (proposal.HasClause(ClauseType.TreatyCeaseFire))
-                        return detailed ? default(DiplomacySitRepStringKey?) : DiplomacySitRepStringKey.CeaseFireProposedSummaryText;
-                    if (proposal.HasClause(ClauseType.TreatyNonAggression))
-                        return detailed ? default(DiplomacySitRepStringKey?) : DiplomacySitRepStringKey.NonAggressionPactProposedSummaryText;
-                    if (proposal.HasClause(ClauseType.TreatyOpenBorders) /*|| proposal.HasClause(ClauseType.TreatyTradePact)*/)
-                        return detailed ? default(DiplomacySitRepStringKey?) : DiplomacySitRepStringKey.OpenBordersProposedSummaryText;
-                    if (proposal.HasClause(ClauseType.TreatyAffiliation))
-                        return detailed ? default(DiplomacySitRepStringKey?) : DiplomacySitRepStringKey.AffiliationProposedSummaryText;
-                    if (proposal.HasClause(ClauseType.TreatyDefensiveAlliance))
-                        return detailed ? default(DiplomacySitRepStringKey?) : DiplomacySitRepStringKey.DefensiveAllianceProposedSummaryText;
-                    if (proposal.HasClause(ClauseType.TreatyFullAlliance))
-                        return detailed ? default(DiplomacySitRepStringKey?) : DiplomacySitRepStringKey.FullAllianceProposedSummaryText;
-                    if (proposal.HasClause(ClauseType.TreatyMembership))
-                        return detailed ? default(DiplomacySitRepStringKey?) : DiplomacySitRepStringKey.MembershipProposedSummaryText;
-                }
-
-                if (proposal.IsGift())
-                    return detailed ? default(DiplomacySitRepStringKey?) : DiplomacySitRepStringKey.GiftOfferedSummaryText;
-                if (proposal.IsDemand())
-                    return detailed ? default(DiplomacySitRepStringKey?) : DiplomacySitRepStringKey.TributeDemandedSummaryText;
-                if (proposal.IsWarPact())
-                    return detailed ? default(DiplomacySitRepStringKey?) : DiplomacySitRepStringKey.WarPactProposedSummaryText;
-            }
-
-            if (response != null)
-            {
-                proposal = response.Proposal;
-
-                if (response.ResponseType == ResponseType.Accept)
-                {
-                    if (proposal.HasTreaty())
-                    {
-                        if (proposal.HasClause(ClauseType.TreatyCeaseFire))
-                            return detailed ? default(DiplomacySitRepStringKey?) : DiplomacySitRepStringKey.CeaseFireAcceptedSummaryText;
-                        if (proposal.HasClause(ClauseType.TreatyNonAggression))
-                            return detailed ? DiplomacySitRepStringKey.NonAggressionPactAcceptedDetailText : DiplomacySitRepStringKey.NonAggressionPactAcceptedSummaryText;
-                        if (proposal.HasClause(ClauseType.TreatyOpenBorders) /*|| proposal.HasClause(ClauseType.TreatyTradePact)*/)
-                            return detailed ? DiplomacySitRepStringKey.OpenBordersAcceptedDetailText : DiplomacySitRepStringKey.OpenBordersAcceptedSummaryText;
-                        if (proposal.HasClause(ClauseType.TreatyAffiliation))
-                            return detailed ? DiplomacySitRepStringKey.AffiliationAcceptedDetailText : DiplomacySitRepStringKey.AffiliationAcceptedSummaryText;
-                        if (proposal.HasClause(ClauseType.TreatyDefensiveAlliance))
-                            return detailed ? DiplomacySitRepStringKey.DefensiveAllianceAcceptedDetailText : DiplomacySitRepStringKey.DefensiveAllianceAcceptedSummaryText;
-                        if (proposal.HasClause(ClauseType.TreatyFullAlliance))
-                            return detailed ? DiplomacySitRepStringKey.FullAllianceAcceptedDetailText : DiplomacySitRepStringKey.FullAllianceAcceptedSummaryText;
-                        if (proposal.HasClause(ClauseType.TreatyMembership))
-                            return detailed ? DiplomacySitRepStringKey.MembershipAcceptedDetailText : DiplomacySitRepStringKey.MembershipAcceptedSummaryText;
-                    }
-
-                    if (proposal.IsDemand())
-                        return detailed ? default(DiplomacySitRepStringKey?) : DiplomacySitRepStringKey.TributeAcceptedSummaryText;
-                    if (proposal.IsWarPact())
-                        return detailed ? default(DiplomacySitRepStringKey?) : DiplomacySitRepStringKey.WarPactAcceptedSummaryText;
-                }
-                else if (response.ResponseType == ResponseType.Reject)
-                {
-                    if (proposal.HasTreaty())
-                    {
-                        if (proposal.HasClause(ClauseType.TreatyCeaseFire))
-                            return DiplomacySitRepStringKey.CeaseFireRejectedSummaryText;
-                        if (proposal.HasClause(ClauseType.TreatyNonAggression))
-                            return DiplomacySitRepStringKey.NonAggressionPactRejectedSummaryText;
-                        if (proposal.HasClause(ClauseType.TreatyOpenBorders) /*|| proposal.HasClause(ClauseType.TreatyTradePact)*/)
-                            return DiplomacySitRepStringKey.OpenBordersRejectedSummaryText;
-                        if (proposal.HasClause(ClauseType.TreatyAffiliation))
-                            return DiplomacySitRepStringKey.AffiliationRejectedSummaryText;
-                        if (proposal.HasClause(ClauseType.TreatyDefensiveAlliance))
-                            return DiplomacySitRepStringKey.DefensiveAllianceRejectedSummaryText;
-                        if (proposal.HasClause(ClauseType.TreatyFullAlliance))
-                            return DiplomacySitRepStringKey.FullAllianceRejectedSummaryText;
-                        if (proposal.HasClause(ClauseType.TreatyMembership))
-                            return DiplomacySitRepStringKey.MembershipRejectedSummaryText;
-                    }
-
-                    if (proposal.IsDemand())
-                        return detailed ? default(DiplomacySitRepStringKey?) : DiplomacySitRepStringKey.TributeRejectedSummaryText;
-                    if (proposal.IsWarPact())
-                        return detailed ? default(DiplomacySitRepStringKey?) : DiplomacySitRepStringKey.WarPactRejectedSummaryText;
-                }
-            }
-
-            var statement = _exchange as Statement;
-            if (statement != null)
-            {
-                if (statement.StatementType == StatementType.WarDeclaration)
-                    return detailed ? DiplomacySitRepStringKey.WarDeclaredDetailText : DiplomacySitRepStringKey.WarDeclaredSummaryText;
-            }
-
-            return null;
-        }
-
-        public override SitRepCategory Categories
-        {
-            get { return SitRepCategory.Diplomacy; }
-        }
-
-        public override string SummaryText
-        {
-            get { return EnsureText(ref _summaryText, ref _hasEvaluatedSummaryText, false); }
-        }
-
-        public override string DetailText
-        {
-            get { return EnsureText(ref _detailText, ref _hasEvaluatedDetailText, true); }
-        }
-
-        public override string DetailImage
-        {
-            get
-            {
-                if (_hasEvaluatedDetailText)
-                    return _image;
-
-                if (!HasDetails)
-                {
-                    _image = null;
-                    return _image;
-                }
-
-                Civilization sender;
-                Civilization recipient;
-
-                var response = _exchange as IResponse;
-                if (response != null)
-                {
-                    switch (response.ResponseType)
-                    {
-                        case ResponseType.Accept:
-                        case ResponseType.Reject:
-                            sender = response.Proposal.Sender;
-                            recipient = response.Proposal.Recipient;
-                            break;
-                        case ResponseType.Counter:
-                            sender = response.CounterProposal.Sender;
-                            recipient = response.CounterProposal.Recipient;
-                            break;
-                        default:
-                            _image = null;
-                            return _image;
-                    }
-                }
-                else
-                {
-                    sender = _exchange.Sender;
-                    recipient = _exchange.Recipient;
-                }
-
-                if (Owner == sender)
-                    _image = recipient.InsigniaPath;
-                else
-                    _image = sender.InsigniaPath;
-
-                return _image;
-            }
-        }
-    }
+ 
 
     [Serializable]
     public class EarthquakeSitRepEntry : SitRepEntry
@@ -3641,6 +3380,354 @@ namespace Supremacy.Game
             if (owner.Key == "BORG" && owner == aggressor)
             {
                 _detailText = new CivString(owner, CivString.DiplomacyCategory,"MESSAGE_SITREP_RESISTANCE_IS_FUTILE");
+            }
+        }
+    }
+    [Serializable]
+    public class ViolateTreatySitRepEntry : SitRepEntry
+    {
+        private readonly int _victimCivilizationID;
+        private readonly int _violatorCivilizationID;
+        private readonly CivString _detailText;
+
+        public override SitRepCategory Categories
+        {
+            get { return SitRepCategory.Diplomacy | SitRepCategory.Military; }
+        }
+
+        public override SitRepAction Action
+        {
+            get { return SitRepAction.CenterOnSector; }
+        }
+
+        public override string SummaryText
+        {
+            get
+            {
+                return string.Format(ResourceManager.GetString("SITREP_NONAGGRESSION_TREATY_VIOLATION"),
+                    Violator.LongName, Victim.LongName);
+            }
+        }
+
+        public override bool HasDetails
+        {
+            get { return ((Violator == Owner) || (Victim == Owner)); }
+        }
+
+        public override string DetailImage
+        {
+            get
+            {
+                return (Owner == Violator)
+                    ? Victim.InsigniaPath
+                    : Violator.InsigniaPath;
+            }
+        }
+
+        public override string DetailText
+        {
+            get { return string.Format(_detailText.Value, Victim.LongName); }
+        }
+
+        public override bool IsPriority
+        {
+            get { return true; }
+        }
+
+        public Civilization Victim
+        {
+            get { return GameContext.Current.Civilizations[_victimCivilizationID]; }
+        }
+
+        public Civilization Violator
+        {
+            get { return GameContext.Current.Civilizations[_violatorCivilizationID]; }
+        }
+
+        public ViolateTreatySitRepEntry(Civilization owner, Civilization victim) : this(owner, owner, victim) { }
+
+        public ViolateTreatySitRepEntry(Civilization owner, Civilization violator, Civilization victim)
+            : base(owner, SitRepPriority.Red)
+        {
+            if (violator == null)
+                throw new ArgumentNullException("violator");
+            if (victim == null)
+                throw new ArgumentNullException("victim");
+
+            _victimCivilizationID = victim.CivID;
+            _violatorCivilizationID = violator.CivID;
+
+            if (violator == owner || victim == owner)
+            {
+                _detailText = new CivString(
+                    owner,
+                    CivString.DiplomacyCategory,
+                    owner == violator
+                        ? "MESSAGE_SITREP_DETAILS_WAR_DECLARATION_US"
+                        : "MESSAGE_SITREP_DETAILS_WAR_DECLARATION_THEM");
+            }
+        }
+    }
+
+    [Serializable]
+    public sealed class DiplomaticSitRepEntry : SitRepEntry
+    {
+        private readonly IDiplomaticExchange _exchange;
+
+        [NonSerialized]
+        private string _summaryText;
+        [NonSerialized]
+        private string _detailText;
+        [NonSerialized]
+        private string _image;
+        [NonSerialized]
+        private bool _hasEvaluatedSummaryText;
+        [NonSerialized]
+        private bool _hasEvaluatedDetailText;
+
+        public DiplomaticSitRepEntry(Civilization owner, IDiplomaticExchange exchange)
+            : base(owner, SitRepPriority.Special)
+        {
+            if (exchange == null)
+                throw new ArgumentNullException("exchange");
+
+            _exchange = exchange;
+        }
+
+        private string EnsureText(ref string text, ref bool resolved, bool detailed)
+        {
+            if (resolved)
+                return text;
+
+            var key = ResolveTextKey(detailed);
+            if (key == null)
+            {
+                resolved = true;
+                text = null;
+                return text;
+            }
+
+
+            if (!LocalizedTextDatabase.Instance.Groups.TryGetValue(typeof(DiplomacySitRepStringKey), out LocalizedTextGroup textGroup) ||
+                !textGroup.Entries.TryGetValue(key.Value, out LocalizedString localizedString))
+            {
+                resolved = true;
+                text = string.Format("!!! MISSING TEXT: {0}.{1} !!!", typeof(DiplomacySitRepStringKey).Name, key);
+                return text;
+            }
+            GameLog.Client.Diplomacy.DebugFormat("LocalizedText localString ={0}", localizedString.ToString());
+            var scriptParameters = new ScriptParameters(
+                new ScriptParameter("$sender", typeof(Civilization)),
+                new ScriptParameter("$recipient", typeof(Civilization)));
+
+            var scriptExpression = new ScriptExpression(returnObservableResult: false)
+            {
+                Parameters = scriptParameters,
+                ScriptCode = StringHelper.QuoteString(localizedString.LocalText)
+            };
+
+            Civilization sender;
+            Civilization recipient;
+
+            var response = _exchange as IResponse;
+            if (response != null)
+            {
+                switch (response.ResponseType)
+                {
+                    case ResponseType.Accept:
+                    case ResponseType.Reject:
+                        sender = response.Proposal.Sender;
+                        recipient = response.Proposal.Recipient;
+                        break;
+                    case ResponseType.Counter:
+                        sender = response.CounterProposal.Sender;
+                        recipient = response.CounterProposal.Recipient;
+                        break;
+                    default:
+                        resolved = true;
+                        text = string.Format("!!! ERROR: UNEXPECTED RESPONSE TYPE: {0} !!!", response.ResponseType);
+                        return text;
+                }
+            }
+            else
+            {
+                sender = _exchange.Sender;
+                recipient = _exchange.Recipient;
+            }
+
+            var parameters = new RuntimeScriptParameters
+                             {
+                                 new RuntimeScriptParameter(scriptParameters[0], sender),
+                                 new RuntimeScriptParameter(scriptParameters[1], recipient)
+                             };
+
+            return scriptExpression.Evaluate<string>(parameters);
+        }
+
+        private DiplomacySitRepStringKey? ResolveTextKey(bool detailed)
+        {
+            var proposal = _exchange as IProposal;
+            var response = _exchange as IResponse;
+
+            if (proposal == null && response != null && response.ResponseType == ResponseType.Counter)
+                proposal = response.CounterProposal;
+
+            if (proposal != null)
+            {
+                if (proposal.HasTreaty())
+                {
+                    if (proposal.HasClause(ClauseType.TreatyCeaseFire))
+                        return detailed ? default(DiplomacySitRepStringKey?) : DiplomacySitRepStringKey.CeaseFireProposedSummaryText;
+                    if (proposal.HasClause(ClauseType.TreatyNonAggression))
+                        return detailed ? default(DiplomacySitRepStringKey?) : DiplomacySitRepStringKey.NonAggressionPactProposedSummaryText;
+                    if (proposal.HasClause(ClauseType.TreatyOpenBorders) /*|| proposal.HasClause(ClauseType.TreatyTradePact)*/)
+                        return detailed ? default(DiplomacySitRepStringKey?) : DiplomacySitRepStringKey.OpenBordersProposedSummaryText;
+                    if (proposal.HasClause(ClauseType.TreatyAffiliation))
+                        return detailed ? default(DiplomacySitRepStringKey?) : DiplomacySitRepStringKey.AffiliationProposedSummaryText;
+                    if (proposal.HasClause(ClauseType.TreatyDefensiveAlliance))
+                        return detailed ? default(DiplomacySitRepStringKey?) : DiplomacySitRepStringKey.DefensiveAllianceProposedSummaryText;
+                    if (proposal.HasClause(ClauseType.TreatyFullAlliance))
+                        return detailed ? default(DiplomacySitRepStringKey?) : DiplomacySitRepStringKey.FullAllianceProposedSummaryText;
+                    if (proposal.HasClause(ClauseType.TreatyMembership))
+                        return detailed ? default(DiplomacySitRepStringKey?) : DiplomacySitRepStringKey.MembershipProposedSummaryText;
+                }
+
+                if (proposal.IsGift())
+                    return detailed ? default(DiplomacySitRepStringKey?) : DiplomacySitRepStringKey.GiftOfferedSummaryText;
+                if (proposal.IsDemand())
+                    return detailed ? default(DiplomacySitRepStringKey?) : DiplomacySitRepStringKey.TributeDemandedSummaryText;
+                if (proposal.IsWarPact())
+                    return detailed ? default(DiplomacySitRepStringKey?) : DiplomacySitRepStringKey.WarPactProposedSummaryText;
+            }
+
+            if (response != null)
+            {
+                proposal = response.Proposal;
+
+                if (response.ResponseType == ResponseType.Accept)
+                {
+                    if (proposal.HasTreaty())
+                    {
+                        if (proposal.HasClause(ClauseType.TreatyCeaseFire))
+                            return detailed ? default(DiplomacySitRepStringKey?) : DiplomacySitRepStringKey.CeaseFireAcceptedSummaryText;
+                        if (proposal.HasClause(ClauseType.TreatyNonAggression))
+                            return detailed ? DiplomacySitRepStringKey.NonAggressionPactAcceptedDetailText : DiplomacySitRepStringKey.NonAggressionPactAcceptedSummaryText;
+                        if (proposal.HasClause(ClauseType.TreatyOpenBorders) /*|| proposal.HasClause(ClauseType.TreatyTradePact)*/)
+                            return detailed ? DiplomacySitRepStringKey.OpenBordersAcceptedDetailText : DiplomacySitRepStringKey.OpenBordersAcceptedSummaryText;
+                        if (proposal.HasClause(ClauseType.TreatyAffiliation))
+                            return detailed ? DiplomacySitRepStringKey.AffiliationAcceptedDetailText : DiplomacySitRepStringKey.AffiliationAcceptedSummaryText;
+                        if (proposal.HasClause(ClauseType.TreatyDefensiveAlliance))
+                            return detailed ? DiplomacySitRepStringKey.DefensiveAllianceAcceptedDetailText : DiplomacySitRepStringKey.DefensiveAllianceAcceptedSummaryText;
+                        if (proposal.HasClause(ClauseType.TreatyFullAlliance))
+                            return detailed ? DiplomacySitRepStringKey.FullAllianceAcceptedDetailText : DiplomacySitRepStringKey.FullAllianceAcceptedSummaryText;
+                        if (proposal.HasClause(ClauseType.TreatyMembership))
+                            return detailed ? DiplomacySitRepStringKey.MembershipAcceptedDetailText : DiplomacySitRepStringKey.MembershipAcceptedSummaryText;
+                    }
+
+                    if (proposal.IsDemand())
+                        return detailed ? default(DiplomacySitRepStringKey?) : DiplomacySitRepStringKey.TributeAcceptedSummaryText;
+                    if (proposal.IsWarPact())
+                        return detailed ? default(DiplomacySitRepStringKey?) : DiplomacySitRepStringKey.WarPactAcceptedSummaryText;
+                }
+                else if (response.ResponseType == ResponseType.Reject)
+                {
+                    if (proposal.HasTreaty())
+                    {
+                        if (proposal.HasClause(ClauseType.TreatyCeaseFire))
+                            return DiplomacySitRepStringKey.CeaseFireRejectedSummaryText;
+                        if (proposal.HasClause(ClauseType.TreatyNonAggression))
+                            return DiplomacySitRepStringKey.NonAggressionPactRejectedSummaryText;
+                        if (proposal.HasClause(ClauseType.TreatyOpenBorders) /*|| proposal.HasClause(ClauseType.TreatyTradePact)*/)
+                            return DiplomacySitRepStringKey.OpenBordersRejectedSummaryText;
+                        if (proposal.HasClause(ClauseType.TreatyAffiliation))
+                            return DiplomacySitRepStringKey.AffiliationRejectedSummaryText;
+                        if (proposal.HasClause(ClauseType.TreatyDefensiveAlliance))
+                            return DiplomacySitRepStringKey.DefensiveAllianceRejectedSummaryText;
+                        if (proposal.HasClause(ClauseType.TreatyFullAlliance))
+                            return DiplomacySitRepStringKey.FullAllianceRejectedSummaryText;
+                        if (proposal.HasClause(ClauseType.TreatyMembership))
+                            return DiplomacySitRepStringKey.MembershipRejectedSummaryText;
+                    }
+
+                    if (proposal.IsDemand())
+                        return detailed ? default(DiplomacySitRepStringKey?) : DiplomacySitRepStringKey.TributeRejectedSummaryText;
+                    if (proposal.IsWarPact())
+                        return detailed ? default(DiplomacySitRepStringKey?) : DiplomacySitRepStringKey.WarPactRejectedSummaryText;
+                }
+            }
+
+            var statement = _exchange as Statement;
+            if (statement != null)
+            {
+                if (statement.StatementType == StatementType.WarDeclaration)
+                    return detailed ? DiplomacySitRepStringKey.WarDeclaredDetailText : DiplomacySitRepStringKey.WarDeclaredSummaryText;
+            }
+
+            return null;
+        }
+
+        public override SitRepCategory Categories
+        {
+            get { return SitRepCategory.Diplomacy; }
+        }
+
+        public override string SummaryText
+        {
+            get { return EnsureText(ref _summaryText, ref _hasEvaluatedSummaryText, false); }
+        }
+
+        public override string DetailText
+        {
+            get { return EnsureText(ref _detailText, ref _hasEvaluatedDetailText, true); }
+        }
+
+        public override string DetailImage
+        {
+            get
+            {
+                if (_hasEvaluatedDetailText)
+                    return _image;
+
+                if (!HasDetails)
+                {
+                    _image = null;
+                    return _image;
+                }
+
+                Civilization sender;
+                Civilization recipient;
+
+                var response = _exchange as IResponse;
+                if (response != null)
+                {
+                    switch (response.ResponseType)
+                    {
+                        case ResponseType.Accept:
+                        case ResponseType.Reject:
+                            sender = response.Proposal.Sender;
+                            recipient = response.Proposal.Recipient;
+                            break;
+                        case ResponseType.Counter:
+                            sender = response.CounterProposal.Sender;
+                            recipient = response.CounterProposal.Recipient;
+                            break;
+                        default:
+                            _image = null;
+                            return _image;
+                    }
+                }
+                else
+                {
+                    sender = _exchange.Sender;
+                    recipient = _exchange.Recipient;
+                }
+
+                if (Owner == sender)
+                    _image = recipient.InsigniaPath;
+                else
+                    _image = sender.InsigniaPath;
+
+                return _image;
             }
         }
     }
