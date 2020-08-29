@@ -42,7 +42,7 @@ namespace Supremacy.Client.Views
                 // ReSharper disable AssignNullToNotNullAttribute
                 _designInstance = new DiplomacyScreenViewModel(DesignTimeAppContext.Instance, null);
                 // ReSharper restore AssignNullToNotNullAttribute
-
+                if (_designInstance.ForeignPowers != null)
                 _designInstance.SelectedForeignPower = _designInstance.ForeignPowers.First();
                 _designInstance.DisplayMode = DiplomacyScreenDisplayMode.Outbox;
                 
