@@ -53,7 +53,7 @@ namespace Supremacy.Client.Views
         private readonly RuntimeScriptParameters _leadInRuntimeParameters;
         private readonly DelegateCommand<ICheckableCommandParameter> _setAcceptButton;
         private readonly DelegateCommand<ICheckableCommandParameter> _setRejectButton;
-        private Dictionary<int, string> _acceptedRejected = new Dictionary<int, string> { { 99, "placeHolder" } };
+        private Dictionary<int, string> _acceptedRejected = new Dictionary<int, string> { { 999, "placeHolder" } };
         private Order _sendOrder;
         private string _response = "....";
         int _turnOfResponse;
@@ -141,12 +141,14 @@ namespace Supremacy.Client.Views
         {
             get
             {
+                int selectedID = 888;
                 if (DiplomacyScreenViewModel.DesignInstance.SelectedForeignPower != null)
                 {
-                    int selectedID = DiplomacyScreenViewModel.DesignInstance.SelectedForeignPower.Owner.CivID;
-                    if (_acceptedRejected.ContainsKey(selectedID))
-                        return _acceptedRejected[selectedID];
+                    selectedID = DiplomacyScreenViewModel.DesignInstance.SelectedForeignPower.Owner.CivID;
                 }
+                if (_acceptedRejected.ContainsKey(selectedID))
+                    return _acceptedRejected[selectedID];
+                //}
                 return "...";                           
             }
             set
@@ -1082,8 +1084,8 @@ namespace Supremacy.Client.Views
 
         private void ProcessAcceptReject(bool accepting)
         {
-            if (DiplomacyScreenViewModel.DesignInstance.SelectedForeignPower != null)
-            {
+            //if (DiplomacyScreenViewModel.DesignInstance.SelectedForeignPower != null)
+            //{
                 int turn = GameContext.Current.TurnNumber;
                 var selectedForeignPower = DiplomacyScreenViewModel.DesignInstance.SelectedForeignPower;
                 var senderCiv = selectedForeignPower.Counterparty; // sender of proposal treaty
@@ -1139,7 +1141,7 @@ namespace Supremacy.Client.Views
                             );
                     }
                 }
-            }
+            //}
         }
 
         private bool CanExecuteSetRejectButton(ICheckableCommandParameter p)
