@@ -42,14 +42,16 @@ namespace Supremacy.Client.Views
                 // ReSharper disable AssignNullToNotNullAttribute
                 _designInstance = new DiplomacyScreenViewModel(DesignTimeAppContext.Instance, null);
                 // ReSharper restore AssignNullToNotNullAttribute
-                if (_designInstance.ForeignPowers != null && _designInstance.ForeignPowers.Count() > 0)
-                _designInstance.SelectedForeignPower = _designInstance.ForeignPowers.First();
+                //if (_designInstance.ForeignPowers != null && _designInstance.ForeignPowers.Count() > 0)
+                //    _designInstance.SelectedForeignPower = _designInstance.ForeignPowers.First();
                 _designInstance.DisplayMode = DiplomacyScreenDisplayMode.Outbox;
-                
+
                 //_designInstance.MakeProposalCommand.Execute(null);
-                _designInstance.SelectedForeignPower.OutgoingMessage.AvailableElements.First(o => o.ActionCategory == DiplomacyMessageElementActionCategory.Propose).AddCommand.Execute(null);
-                _designInstance.SelectedForeignPower.OutgoingMessage.AvailableElements.First(o => o.ActionCategory == DiplomacyMessageElementActionCategory.Offer).AddCommand.Execute(null);
-               
+                if (_designInstance.SelectedForeignPower != null)
+                {
+                    _designInstance.SelectedForeignPower.OutgoingMessage.AvailableElements.First(o => o.ActionCategory == DiplomacyMessageElementActionCategory.Propose).AddCommand.Execute(null);
+                    _designInstance.SelectedForeignPower.OutgoingMessage.AvailableElements.First(o => o.ActionCategory == DiplomacyMessageElementActionCategory.Offer).AddCommand.Execute(null);
+                }
                 return _designInstance;
             }
         }
