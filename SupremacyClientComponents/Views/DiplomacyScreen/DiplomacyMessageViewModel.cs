@@ -1111,13 +1111,13 @@ namespace Supremacy.Client.Views
                 }
                 else _acceptedRejected.Add(selectedID, Accepted);
 
-                if (localPlayerIsHosting)
-                {
-                    GameLog.Client.Diplomacy.DebugFormat("Local player IS Host....");
+                //if (GameContext.Current.IsMultiplayerGame)//localPlayerIsHosting)
+                //{
+                    //GameLog.Client.Diplomacy.DebugFormat("Local player IS Host....");
                     DiplomacyHelper.AcceptRejectDictionary(foreignPower, accepting, turn); // creat entry for game host
-                }
-                else
-                {   // creat entry for none host human player that clicked the accept - reject radio button         
+                //}
+                //else
+                //{   // creat entry for none host human player that clicked the accept - reject radio button         
                     StatementType _statementType = DiplomacyHelper.GetStatementType(accepting, senderCiv, playerEmpire); // first is bool, 2nd sender ID(now the local player), last new receipient, in Dictinary Key                       
                     GameLog.Client.Diplomacy.DebugFormat("Local player IS NOT Host, statementType = {0} accepting = {1} sender ={2} counterpartyID {3} local = {4} OwnerID ={5}"
                         , Enum.GetName(typeof(StatementType), _statementType)
@@ -1140,7 +1140,7 @@ namespace Supremacy.Client.Views
                             , statementToSend.Sender.Key
                             );
                     }
-                }
+                //}
             //}
         }
 
