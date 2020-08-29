@@ -141,9 +141,12 @@ namespace Supremacy.Client.Views
         {
             get
             {
-                int selectedID = DiplomacyScreenViewModel.DesignInstance.SelectedForeignPower.Owner.CivID;
-                if (_acceptedRejected.ContainsKey(selectedID))
-                    return _acceptedRejected[selectedID];
+                if (DiplomacyScreenViewModel.DesignInstance.SelectedForeignPower != null)
+                {
+                    int selectedID = DiplomacyScreenViewModel.DesignInstance.SelectedForeignPower.Owner.CivID;
+                    if (_acceptedRejected.ContainsKey(selectedID))
+                        return _acceptedRejected[selectedID];
+                }
                 return "...";                           
             }
             set
