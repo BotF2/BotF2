@@ -3462,9 +3462,10 @@ namespace Supremacy.Game
                 _detailText = new CivString(
                     owner,
                     CivString.DiplomacyCategory,
-                    owner == violator
-                        ? "MESSAGE_SITREP_DETAILS_WAR_DECLARATION_US"
-                        : "MESSAGE_SITREP_DETAILS_WAR_DECLARATION_THEM");
+                    "SITREP_NONAGGRESSION_TREATY_VIOLATION");
+                    //owner == violator
+                    //    ? "MESSAGE_SITREP_DETAILS_WAR_DECLARATION_US"
+                    //    : "MESSAGE_SITREP_DETAILS_WAR_DECLARATION_THEM");
             }
         }
     }

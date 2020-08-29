@@ -1704,8 +1704,8 @@ namespace Supremacy.Game
                                 /* look for ships in violation of Non_Agression (no go into others space) treaty */
                                 foreach (Civilization whoElse in GameContext.Current.Civilizations)
                                 {
-                                    if (whoElse == civ)
-                                        continue;
+                                    //if (whoElse == civ)
+                                    //    continue;
                                     if (GameContext.Current.AgreementMatrix.IsAgreementActive(civ, whoElse, ClauseType.TreatyNonAggression))
                                     {
                                         GameLog.Core.Diplomacy.DebugFormat("*******Looking for NonAggression Treaties*******");
@@ -1727,6 +1727,7 @@ namespace Supremacy.Game
                                                 if (civ.IsEmpire)
                                                 {
                                                     civManager.SitRepEntries.Add(new ViolateTreatySitRepEntry(civ, whoElse));
+                                                    //civManager.SitRepEntries.Add(new ViolateTreatySitRepEntry(whoElse, civ));
                                                 }
                                             }
                                         }
