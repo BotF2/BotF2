@@ -3724,8 +3724,8 @@ namespace Supremacy.Game
                     owner,
                     CivString.DiplomacyCategory,
                     owner == aggressor
-                        ? "MESSAGE_SITREP_DETAILS_WAR_DECLARATION_US"
-                        : "MESSAGE_SITREP_DETAILS_WAR_DECLARATION_THEM");
+                        ? "MESSAGE_SITREP_DETAILS_NON_AGGRESSION_TREATY_US"
+                        : "MESSAGE_SITREP_DETAILS_NON_AGGRESSION_TREATY_THEM");
             }
             //if (owner.Key == "BORG" && owner == aggressor)
             //{
