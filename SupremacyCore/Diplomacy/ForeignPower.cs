@@ -231,7 +231,7 @@ namespace Supremacy.Diplomacy
             }
         }
 
-        public void ViolateNonAggression()
+        public void ViolateNonAggression(Civilization violator)
         {
             if (DiplomacyData.Status == ForeignPowerStatus.AtWar)
                 return;
@@ -261,7 +261,7 @@ namespace Supremacy.Diplomacy
                     GameContext.Current.CivilizationManagers[civ].SitRepEntries.Add(
                         new ViolateTreatySitRepEntry(
                             civ,
-                            owner,
+                            violator,
                             counterparty));
                 }
             }

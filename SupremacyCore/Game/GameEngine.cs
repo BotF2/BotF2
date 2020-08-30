@@ -1730,9 +1730,9 @@ namespace Supremacy.Game
                                                 //    //civManager.SitRepEntries.Add(new ViolateTreatySitRepEntry(whoElse, civ));
                                                 //}
                                                 ForeignPower foreignPower = new ForeignPower(civ, whoElse);
-                                                foreignPower.ViolateNonAggression();
-                                                ForeignPower otherForeignPower = new ForeignPower(whoElse, civ);
-                                                otherForeignPower.ViolateNonAggression();
+                                                foreignPower.ViolateNonAggression(whoElse);
+                                                //ForeignPower otherForeignPower = new ForeignPower(whoElse, civ);
+                                                //otherForeignPower.ViolateNonAggression();
                                             }
                                         }
                                     }
