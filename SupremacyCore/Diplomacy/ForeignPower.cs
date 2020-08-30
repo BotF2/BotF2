@@ -259,7 +259,7 @@ namespace Supremacy.Diplomacy
                     DiplomacyHelper.IsContactMade(civ, owner) && DiplomacyHelper.IsContactMade(civ, counterparty))
                 {
                     GameContext.Current.CivilizationManagers[civ].SitRepEntries.Add(
-                        new WarDeclaredSitRepEntry(
+                        new ViolateTreatySitRepEntry(
                             civ,
                             owner,
                             counterparty));
