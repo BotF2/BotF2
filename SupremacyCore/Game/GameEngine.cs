@@ -1731,6 +1731,8 @@ namespace Supremacy.Game
                                                 //}
                                                 ForeignPower foreignPower = new ForeignPower(civ, whoElse);
                                                 foreignPower.ViolateNonAggression();
+                                                ForeignPower otherForeignPower = new ForeignPower(whoElse, civ);
+                                                otherForeignPower.ViolateNonAggression();
                                             }
                                         }
                                     }
