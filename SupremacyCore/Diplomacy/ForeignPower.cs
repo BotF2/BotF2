@@ -231,6 +231,42 @@ namespace Supremacy.Diplomacy
             }
         }
 
+        public void ViolateNonAggression()
+        {
+            if (DiplomacyData.Status == ForeignPowerStatus.AtWar)
+                return;
+            if (DiplomacyData.Status == ForeignPowerStatus.OwnerIsMember)
+                return;
+            if (DiplomacyData.Status == ForeignPowerStatus.CounterpartyIsMember)
+                return;
+            if (!IsContactMade)
+                MakeContact();
+
+            var activeAgreements = GameContext.Current.AgreementMatrix[OwnerID, CounterpartyID];
+            while (activeAgreements.Count > 0)
+                BreakAgreementVisitor.BreakAgreement(activeAgreements[0]);
+
+            DiplomacyData.Status = ForeignPowerStatus.Hostile;
+            CounterpartyForeignPower.DiplomacyData.Status = ForeignPowerStatus.Hostile;
+
+
+            var owner = Owner;
+            var counterparty = Counterparty;
+
+            foreach (var civ in GameContext.Current.Civilizations)
+            {
+                if (civ == owner ||
+                    DiplomacyHelper.IsContactMade(civ, owner) && DiplomacyHelper.IsContactMade(civ, counterparty))
+                {
+                    GameContext.Current.CivilizationManagers[civ].SitRepEntries.Add(
+                        new WarDeclaredSitRepEntry(
+                            civ,
+                            owner,
+                            counterparty));
+                }
+            }
+        }
+
         public void CancelTreaty()
         {
             if (DiplomacyData.Status == ForeignPowerStatus.Neutral)

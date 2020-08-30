@@ -1717,18 +1717,20 @@ namespace Supremacy.Game
                                                 GameLog.Core.Diplomacy.DebugFormat("Got NonAggression Treaty for {0} vs {1}, trying for regard trust change and canel treaties", civ.Key, whoElse.Key);
                                                 DiplomacyHelper.ApplyRegardChange(civ, whoElse, -200);
                                                 DiplomacyHelper.ApplyTrustChange(civ, whoElse, -200);
-                                                var activeAgreements = GameContext.Current.AgreementMatrix[civ.CivID, whoElse.CivID];
+                                                //var activeAgreements = GameContext.Current.AgreementMatrix[civ.CivID, whoElse.CivID];
                                                 /* cancel all agreements */
-                                                while (activeAgreements.Count > 0)
-                                                {
-                                                    BreakAgreementVisitor.BreakAgreement(activeAgreements[0]);
-                                                }
+                                                //while (activeAgreements.Count > 0)
+                                                //{
+                                                //    BreakAgreementVisitor.BreakAgreement(activeAgreements[0]);
+                                                //}
                                                 /* sitrep for canceling all agreements */
-                                                if (civ.IsEmpire)
-                                                {
-                                                    civManager.SitRepEntries.Add(new ViolateTreatySitRepEntry(civ, whoElse));
-                                                    //civManager.SitRepEntries.Add(new ViolateTreatySitRepEntry(whoElse, civ));
-                                                }
+                                                //if (civ.IsEmpire)
+                                                //{
+                                                //    civManager.SitRepEntries.Add(new ViolateTreatySitRepEntry(civ, whoElse));
+                                                //    //civManager.SitRepEntries.Add(new ViolateTreatySitRepEntry(whoElse, civ));
+                                                //}
+                                                ForeignPower foreignPower = new ForeignPower(civ, whoElse);
+                                                foreignPower.ViolateNonAggression();
                                             }
                                         }
                                     }
