@@ -1566,17 +1566,8 @@ namespace Supremacy.Game
                             fleet.SensorRange,
                             0,
                             1);
-
-                        foreach (var otherCiv in GameContext.Current.Civilizations)
-                        {
-                            if (fleet.Owner != otherCiv)
-                            {
-                                // ToDo: find if fleet is in area controled by other civ and check for Non-Aggression Pact violation
-                            }
-                        }
-
                     }
-                    //stations
+                    /*stations */
                     foreach (var station in game.Universe.FindOwned<Station>(civ))
                     {
                         //GameLog.Core.MapData.DebugFormat("UpgradeScanStrength from STATION {0} {1} ({2}) at {3}, ScanStrength = {4}, Range = {5}", station.ObjectID, station.Name, 
@@ -1589,7 +1580,7 @@ namespace Supremacy.Game
                             1);
 
                         fuelLocations.Add(station.Location);
-                        // stations of other civs we can use to travel
+                        /* stations of other civs we can use to travel */
                         foreach (var whoElse in game.Civilizations)
                         {
                             List<Civilization> aggreableCivs = (from Civilization in GameContext.Current.Civilizations
@@ -1677,10 +1668,10 @@ namespace Supremacy.Game
             sectorClaims.ClearClaims();
 
             ParallelForEach(GameContext.Current.Civilizations.Where(o => o.IsEmpire).ToList(), civ => {
-                GameContext.PushThreadContext(game);
-                try
-                {
-                    var civManager = GameContext.Current.CivilizationManagers[civ];
+            GameContext.PushThreadContext(game);
+            try
+            {
+                var civManager = GameContext.Current.CivilizationManagers[civ];
 
                     foreach (var colony in civManager.Colonies)
                     {
@@ -1710,7 +1701,43 @@ namespace Supremacy.Game
                                     sectorClaims.AddClaim(location, civ, claimWeight);
 
                                 civManager.MapData.SetScanned(location, true);
-                                //GameLog.Core.MapData.DebugFormat("{0} (Colony owner: {1}): SetScanned to -> True ", location.ToString(), colony.Owner);
+                                /* look for ships in violation of Non_Agression (no go into others space) treaty */
+                                foreach (Civilization whoElse in GameContext.Current.Civilizations)
+                                {
+                                    //if (whoElse == civ)
+                                    //    continue;
+                                    if (GameContext.Current.AgreementMatrix.IsAgreementActive(civ, whoElse, ClauseType.TreatyNonAggression))
+                                    {
+                                        GameLog.Core.Diplomacy.DebugFormat("*******Looking for NonAggression Treaties*******");
+                                        var whosFleets = GameContext.Current.Universe.Find<Fleet>().Where(o => o.Owner == whoElse).ToList();
+                                        foreach (Fleet fleet in whosFleets)
+                                        {
+                                            if (sectorClaims.GetOwner(fleet.Location) == civ)
+                                            {
+                                                GameLog.Core.Diplomacy.DebugFormat("Got NonAggression Treaty for {0} vs {1}, trying for regard trust change and canel treaties", civ.Key, whoElse.Key);
+                                                DiplomacyHelper.ApplyRegardChange(civ, whoElse, -200);
+                                                DiplomacyHelper.ApplyTrustChange(civ, whoElse, -200);
+                                                //var activeAgreements = GameContext.Current.AgreementMatrix[civ.CivID, whoElse.CivID];
+                                                /* cancel all agreements */
+                                                //while (activeAgreements.Count > 0)
+                                                //{
+                                                //    BreakAgreementVisitor.BreakAgreement(activeAgreements[0]);
+                                                //}
+                                                /* sitrep for canceling all agreements */
+                                                //if (civ.IsEmpire)
+                                                //{
+                                                //    civManager.SitRepEntries.Add(new ViolateTreatySitRepEntry(civ, whoElse));
+                                                //    //civManager.SitRepEntries.Add(new ViolateTreatySitRepEntry(whoElse, civ));
+                                                //}
+                                                ForeignPower foreignPower = new ForeignPower(civ, whoElse);
+                                                foreignPower.ViolateNonAggression(whoElse);
+                                                ForeignPower otherForeignPower = new ForeignPower(whoElse, civ);
+                                                otherForeignPower.ViolateNonAggression(whoElse);
+                                            }
+                                        }
+                                    }
+                                    //GameLog.Core.MapData.DebugFormat("{0} (Colony owner: {1}): SetScanned to -> True ", location.ToString(), colony.Owner);
+                                }
                             }
                         }
                     }
@@ -2188,79 +2215,87 @@ namespace Supremacy.Game
             float targetMod = Number.ParseSingle(popModTable["Target"][0]);
 
             ParallelForEach(GameContext.Current.Civilizations, civ =>
-            {              
+            {
                 GameContext.PushThreadContext(game);
                 try
                 {
                     int popForTradeRoute;
                     var civManager = GameContext.Current.CivilizationManagers[civ.CivID];
-                    //if (civManager.Civilization.Key == "Borg")
-                    //    goto theCatch;
-                    /*
-                     * See what the minimum population level is for a new trade route for the
-                     * current civilization.  If one is not specified, use the default.
-                     */
+
+                            /*
+                             * See what the minimum population level is for a new trade route for the
+                             * current civilization.  If one is not specified, use the default.
+                             */
                     if (popReqTable[civManager.Civilization.Key] != null)
-                    {
                         popForTradeRoute = Number.ParseInt32(popReqTable[civManager.Civilization.Key][0]);
-                    }
                     else
                         popForTradeRoute = Number.ParseInt32(popReqTable[0][0]);
 
                     var colonies = GameContext.Current.Universe.FindOwned<Colony>(civ);
 
-                    /* Iterate through each colony... */
+                            /* Iterate through each colony... */
                     foreach (var colony in colonies)
                     {
-                        /*
-                         * For each established trade route, ensure that the target colony is
-                         * a valid choice.  If it isn't, break it.  Otherwise, calculate the
-                         * revised credit total.
-                         */
+                                /*
+                                 * For each established trade route, ensure that the target colony is
+                                 * a valid choice.  If it isn't, break it.  Otherwise, calculate the
+                                 * revised credit total.
+                                 */
                         foreach (var route in colony.TradeRoutes)
                         {
                             if (!route.IsValidTargetColony(route.TargetColony))
-                            {
                                 route.TargetColony = null;
-                            }
+                            /* do not appear to need this as treaties are already checked some place else? */  
+                            //if (route.TargetColony != null && route.TargetColony.Owner != null)
+                            //{
+                            //    var targetCiv = route.TargetColony.Owner;
+                            //    if (!GameContext.Current.AgreementMatrix.IsAgreementActive(civ, targetCiv, ClauseType.TreatyDefensiveAlliance) &&
+                            //    !GameContext.Current.AgreementMatrix.IsAgreementActive(civ, targetCiv, ClauseType.TreatyFullAlliance) &&
+                            //    !GameContext.Current.AgreementMatrix.IsAgreementActive(civ, targetCiv, ClauseType.TreatyAffiliation) &&
+                            //    !GameContext.Current.AgreementMatrix.IsAgreementActive(civ, targetCiv, ClauseType.TreatyOpenBorders))
+                            //    {
+                            //        GameLog.Core.Diplomacy.DebugFormat("!!! NO TRADE ROUTE because no treaty {0} vs {1}", civ, targetCiv);
+                            //        route.TargetColony = null;
+                            //    }
+                            //}
                             if (route.TargetColony != null)
                             {
-                            int sourceIndustry = route.SourceColony.NetIndustry + 1;  // avoiding a zero
-                            int targetIndustry = route.TargetColony.NetIndustry + 1;
+                                int sourceIndustry = route.SourceColony.NetIndustry + 1;  // avoiding a zero
+                                        int targetIndustry = route.TargetColony.NetIndustry + 1;
 
-                            route.Credits = 10 * (int)((sourceMod * sourceIndustry) + (targetMod * targetIndustry));
+                                route.Credits = 10 * (int)((sourceMod * sourceIndustry) + (targetMod * targetIndustry));
 
                             }
                         }
-                            
-                        /*
-                         * Calculate how many trade routes the colony is allowed to have.
-                         * Take into consideration any routes added by building bonuses.
-                         */
+
+                                /*
+                                 * Calculate how many trade routes the colony is allowed to have.
+                                 * Take into consideration any routes added by building bonuses.
+                                 */
                         int tradeRoutes = colony.Population.CurrentValue / popForTradeRoute;
-                            
+
                         tradeRoutes += colony.Buildings
                             .Where(o => o.IsActive)
                             .SelectMany(o => o.BuildingDesign.Bonuses)
                             .Where(o => o.BonusType == BonusType.TradeRoutes)
                             .Sum(o => o.Amount);
 
-                        /*
-                         * If the colony doesn't have as many trade routes as it should, then
-                         * we need to add some more.
-                         */
+                                /*
+                                 * If the colony doesn't have as many trade routes as it should, then
+                                 * we need to add some more.
+                                 */
                         if (tradeRoutes > colony.TradeRoutes.Count)
                         {
                             int tradeRouteDeficit = tradeRoutes - colony.TradeRoutes.Count;
                             for (int i = 0; i < tradeRouteDeficit; i++)
                                 colony.TradeRoutes.Add(new TradeRoute(colony));
                         }
-                            
-                        /*
-                         * If the colony has too many trade routes, we need to remove some.
-                         * To be generous, we sort them in order of credits generated so that
-                         * we remove the least valuable routes.
-                         */
+
+                                /*
+                                 * If the colony has too many trade routes, we need to remove some.
+                                 * To be generous, we sort them in order of credits generated so that
+                                 * we remove the least valuable routes.
+                                 */
                         else if (tradeRoutes < colony.TradeRoutes.Count)
                         {
                             var extraTradeRoutes = colony.TradeRoutes
@@ -2271,23 +2306,23 @@ namespace Supremacy.Game
                                 colony.TradeRoutes.Remove(extraTradeRoute);
                         }
 
-                        /*
-                         * Iterate through the remaining trade routes and deposit the credit
-                         * income into the civilization's treasury.
-                         */
+                                /*
+                                 * Iterate through the remaining trade routes and deposit the credit
+                                 * income into the civilization's treasury.
+                                 */
                         foreach (var route in colony.TradeRoutes)
                         {
                             colony.CreditsFromTrade.AdjustCurrent(route.Credits);
                             GameLog.Core.TradeRoutes.DebugFormat("trade route {0}, route is assigned ={1}", route.SourceColony.Owner, route.IsAssigned);
                             if (!route.IsAssigned) // && civManager.SitRepEntries.Any(s=>s.Categories.ToString() == "SpecialEvent"))
-                            {
+                                    {
                                 GameLog.Core.TradeRoutes.DebugFormat("trade route for {0}, credti {1}=0 should add sitRep", route.SourceColony.Owner, route.SourceColony.CreditsFromTrade.BaseValue);
                                 civManager.SitRepEntries.Add(new UnassignedTradeRoute(route));
                             }
                         }
-                        /*
-                         * Apply all "+% Trade Income" and "+% Credits" bonuses at this colony.
-                         */
+                                /*
+                                 * Apply all "+% Trade Income" and "+% Credits" bonuses at this colony.
+                                 */
                         var tradeBonuses = (int)colony.ActiveBuildings
                             .SelectMany(o => o.BuildingDesign.Bonuses)
                             .Where(o => ((o.BonusType == BonusType.PercentTradeIncome) || (o.BonusType == BonusType.PercentCredits)))
@@ -2297,22 +2332,22 @@ namespace Supremacy.Game
                         civManager.Credits.AdjustCurrent(colony.CreditsFromTrade.CurrentValue);
                         colony.ResetCreditsFromTrade();
                     }
-                        
-                    /* 
-                     * Apply all global "+% Total Credits" bonuses for the civilization.  At present, we have now
-                     * completed all adjustments to the civilization's treasury for this turn.  If that changes in
-                     * the future, we may need to move this operation.
-                     */
+
+                            /* 
+                             * Apply all global "+% Total Credits" bonuses for the civilization.  At present, we have now
+                             * completed all adjustments to the civilization's treasury for this turn.  If that changes in
+                             * the future, we may need to move this operation.
+                             */
                     var globalBonusAdjustment = (int)(0.01f * civManager.GlobalBonuses
                         .Where(o => o.BonusType == BonusType.PercentTotalCredits)
                         .Sum(o => o.Amount));
                     civManager.Credits.AdjustCurrent(globalBonusAdjustment);
 
-                    //theCatch:;
-                }
+                            //theCatch:;
+                        }
                 catch (Exception e)
                 {
-                   
+
                     GameLog.Core.Production.DebugFormat(string.Format("DoTrade failed for {0}",
                         civ.Name),
                         e);
@@ -2321,6 +2356,7 @@ namespace Supremacy.Game
                 {
                     GameContext.PopThreadContext();
                 }
+
             });
         }
         #endregion
