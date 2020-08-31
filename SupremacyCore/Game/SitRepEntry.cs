@@ -3647,6 +3647,7 @@ namespace Supremacy.Game
         [Serializable]
     public class ViolateTreatySitRepEntry : SitRepEntry
     {
+        private readonly int _ownerCivilizationID;
         private readonly int _victimCivilizationID;
         private readonly int _aggressorCivilizationID;
         private readonly CivString _detailText;
@@ -3666,22 +3667,20 @@ namespace Supremacy.Game
             get
             {
                 return string.Format(ResourceManager.GetString("SITREP_NONAGGRESSION_TREATY_VIOLATION"),
-                    Aggressor.LongName, Victim.LongName);
+                    Victim.LongName, Owner.LongName, Aggressor.LongName);
             }
         }
 
         public override bool HasDetails
         {
-            get { return ((Aggressor == Owner) || (Victim == Owner)); }
+            get { return true; } 
         }
 
         public override string DetailImage
         {
             get
             {
-                return (Owner == Aggressor)
-                    ? Victim.InsigniaPath
-                    : Aggressor.InsigniaPath;
+                return Aggressor.InsigniaPath;
             }
         }
 
@@ -3704,6 +3703,10 @@ namespace Supremacy.Game
         {
             get { return GameContext.Current.Civilizations[_aggressorCivilizationID]; }
         }
+        public Civilization Owner
+        {
+            get { return GameContext.Current.Civilizations[_ownerCivilizationID]; }
+        }
 
         public ViolateTreatySitRepEntry(Civilization owner, Civilization victim) : this(owner, owner, victim) { }
 
@@ -3714,7 +3717,7 @@ namespace Supremacy.Game
                 throw new ArgumentNullException("aggressor");
             if (victim == null)
                 throw new ArgumentNullException("victim");
-
+            _ownerCivilizationID = owner.CivID;
             _victimCivilizationID = victim.CivID;
             _aggressorCivilizationID = aggressor.CivID;
 
@@ -3727,10 +3730,6 @@ namespace Supremacy.Game
                         ? "MESSAGE_SITREP_DETAILS_NON_AGGRESSION_TREATY_US"
                         : "MESSAGE_SITREP_DETAILS_NON_AGGRESSION_TREATY_THEM");
             }
-            //if (owner.Key == "BORG" && owner == aggressor)
-            //{
-            //    _detailText = new CivString(owner, CivString.DiplomacyCategory,"MESSAGE_SITREP_RESISTANCE_IS_FUTILE");
-            //}
         }
     }
 }
