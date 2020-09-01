@@ -3667,13 +3667,13 @@ namespace Supremacy.Game
             get
             {
                 return string.Format(ResourceManager.GetString("SITREP_NONAGGRESSION_TREATY_VIOLATION"),
-                    Victim.LongName, Owner.LongName, Aggressor.LongName);
+                    Aggressor.LongName);
             }
         }
 
         public override bool HasDetails
         {
-            get { return true; } 
+            get { return ((Aggressor == Owner) || (Victim == Owner)); }
         }
 
         public override string DetailImage
@@ -3686,7 +3686,7 @@ namespace Supremacy.Game
 
         public override string DetailText
         {
-            get { return string.Format(_detailText.Value, Victim.LongName); }
+            get { return string.Format(_detailText.Value, Aggressor.LongName); }
         }
 
         public override bool IsPriority
