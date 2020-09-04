@@ -33,6 +33,7 @@ namespace Supremacy.Client.Views
         private string _stationName = "";
         private string _stationStatus = "";
         private BitmapImage _stationImage = null;
+        private bool _stationScrapVisibility;
 
         public Sector Sector
         {
@@ -72,19 +73,22 @@ namespace Supremacy.Client.Views
             get { return _stationImage; }
         }
 
+        public bool StationScrapVisibility
+        {
+            get 
+            {
+                if (Sector != null && Sector.Owner == PlayerCiv)
+                    _stationScrapVisibility = true;
+                else { _stationScrapVisibility = false; }
+                return _stationScrapVisibility;
+            }
+        }
+
+
         public StationPresentationModel([NotNull] IAppContext appContext)
          : base(appContext)
         {
-            //_empirePlayers = new EmpirePlayerStatusCollection();
 
-            //_empirePlayers.AddRange(
-            //    from civ in appContext.CurrentGame.Civilizations
-            //    where civ.IsEmpire
-            //    select new EmpirePlayerStatus(appContext, civ)
-            //    {
-            //        Player = appContext.Players.FirstOrDefault(o => o.EmpireID == civ.CivID)
-            //    }
-            //    );
         }
 
         private void Update()
@@ -252,11 +256,14 @@ namespace Supremacy.Client.Views
             set
             {
                 if (Equals(_selectedSector, value))
+                {
                     return;
+                }
                 _selectedSector = value;
                 OnSelectedSectorChanged();
-
+                
                 _selectedSectorStation.Sector = _selectedSector;
+               // _stationScrapVisibility = _selectedSectorStation.ScrapVisibility;
                 OnSelectedSectorStationChanged();
             }
         }
