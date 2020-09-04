@@ -479,80 +479,81 @@
                                     </Rectangle>
                                     <!--<Path Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="2" Grid.RowSpan="2" Height="42" Width="24" Stretch="Fill" Fill="{StaticResource LCARS_PurpleGradient_TopLeft_BottomRight}" Data="F1 M 9.4739e-015,0L 1.27157e-006,16C 1.27157e-006,16 1.27157e-006,30.7439 1.27157e-006,36.2667C 1.27157e-006,47.3123 8.95431,56 20,56L 32,56L 32,16L 24,16C 18.6667,16 13.3333,16 10.6667,13.3334C 8,10.6666 8,5.33337 8,0L 9.4739e-015,0 Z "/>-->
                                     <Button x:Name="RedeployButton"
-                          Grid.Column="2"
-                          Grid.Row="3"
-                          Margin="3,0,0,0"
-                          Height="28"
-                          FontSize="16"                  
-                          Style="{StaticResource LCARS_SimpleButtonStyle}"
-                          CommandParameter="{x:Static scc:GalaxyScreenInputMode.RedeployShips}"
-                          Command="{x:Static scc:GalaxyScreenCommands.SetInputMode}"
-                          Content="{s:StringResource Key=REDEPLOY_SHIPS, Case=Upper}" />
+                                              Grid.Column="2"
+                                              Grid.Row="3"
+                                              Margin="3,0,0,0"
+                                              Height="28"
+                                              FontSize="16"                  
+                                              Style="{StaticResource LCARS_SimpleButtonStyle}"
+                                              CommandParameter="{x:Static scc:GalaxyScreenInputMode.RedeployShips}"
+                                              Command="{x:Static scc:GalaxyScreenCommands.SetInputMode}"
+                                              Content="{s:StringResource Key=REDEPLOY_SHIPS, Case=Upper}" />
                                     <Rectangle Grid.Column="3"
-                             Grid.Row="3"
-                             Width="21"
-                             Height="28"
-                             VerticalAlignment="Top"
-                             Margin="3,0,0,0">
+                                             Grid.Row="3"
+                                             Width="21"
+                                             Height="28"
+                                             VerticalAlignment="Top"
+                                             Margin="3,0,0,0">
                                         <Rectangle.Fill>
                                             <DrawingBrush>
                                                 <DrawingBrush.Drawing>
                                                     <GeometryDrawing Brush="{StaticResource LCARS_PurpleGradient_TopLeft_BottomRight}"
-                                           Geometry="F1 M 9.33333,0C 20.379,0 28,7.62097 28,18.6666C 28,29.7123 20.379,37.3333 9.33333,37.3333L 8.74201e-007,37.3333L 8.74201e-007,0L 9.33333,0 Z " />
+                                                                     Geometry="F1 M 9.33333,0C 20.379,0 28,7.62097 28,18.6666C 28,29.7123 20.379,37.3333 9.33333,37.3333L 8.74201e-007,37.3333L 8.74201e-007,0L 9.33333,0 Z " />
                                                 </DrawingBrush.Drawing>
                                             </DrawingBrush>
                                         </Rectangle.Fill>
                                     </Rectangle>
                                     <Border Grid.Column="2"
-                          Grid.ColumnSpan="2"
-                          Grid.Row="0"
-                          Grid.RowSpan="3"
-                          Padding="0,0,14,14">
+                                              Grid.ColumnSpan="2"
+                                              Grid.Row="0"
+                                              Grid.RowSpan="3"
+                                              Padding="0,0,14,14">
                                         <DockPanel LastChildFill="True">
                                             <Border x:Name="StationPanel"
-                              DockPanel.Dock="Top"
-                              Margin="0,0,0,14"
-                              TextBlock.FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
-                              TextBlock.Foreground="{StaticResource DefaultTextBrush}"
-                              TextBlock.FontSize="14pt">
+                                                  DockPanel.Dock="Top"
+                                                  Margin="0,0,0,14"
+                                                  TextBlock.FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
+                                                  TextBlock.Foreground="{StaticResource DefaultTextBrush}"
+                                                  TextBlock.FontSize="14pt">
                                                 <DockPanel>
                                                     <Border DockPanel.Dock="Left"
-                                  Width="48"
-                                  Height="40"
-                                  Margin="0,0,7,0"
-                                  BorderBrush="White"
-                                  BorderThickness="2"
-                                  CornerRadius="4">
+                                                          Width="48"
+                                                          Height="40"
+                                                          Margin="0,0,7,0"
+                                                          BorderBrush="White"
+                                                          BorderThickness="2"
+                                                          CornerRadius="4">
                                                         <Border.Background>
                                                             <ImageBrush Stretch="UniformToFill"
-                                          ImageSource="{Binding Path=SelectedSectorStation.StationImage, Mode=OneWay}" />
+                                                                        ImageSource="{Binding Path=SelectedSectorStation.StationImage, Mode=OneWay}" />
                                                         </Border.Background>
                                                         <Image x:Name="ScrapIndicator"
-                                   Margin="3"
-                                   HorizontalAlignment="Right"
-                                   VerticalAlignment="Bottom"
-                                   Width="16"
-                                   Height="16"
-                                   Source="{DynamicResource Scrap_Indicator_Glyph}"
-                                   Visibility="Hidden"
-                                   IsHitTestVisible="False" />
+                                                               Margin="3"
+                                                               HorizontalAlignment="Right"
+                                                               VerticalAlignment="Bottom"
+                                                               Width="16"
+                                                               Height="16"
+                                                               Source="{DynamicResource Scrap_Indicator_Glyph}"
+                                                               Visibility="Hidden"
+                                                               IsHitTestVisible="False" />
                                                     </Border>
                                                     <TextBlock>
-                            <TextBlock Foreground="{StaticResource HeaderTextBrush}"
-                                       FontSize="14"                                       
-                                       Text="{Binding Path=SelectedSectorStation.StationName, Mode=OneWay, Converter={StaticResource StringResourceConverter}, ConverterParameter=UpperCase}" />
-                            <LineBreak />
-                            <TextBlock x:Name="StationStatusText"
-                                       Text="{Binding Path=SelectedSectorStation.StationStatus, Mode=OneWay, Converter={StaticResource StringResourceConverter}, ConverterParameter=UpperCase}" />
-                          </TextBlock>
+                                                    <TextBlock Foreground="{StaticResource HeaderTextBrush}"
+                                                               FontSize="14"                                       
+                                                               Text="{Binding Path=SelectedSectorStation.StationName, Mode=OneWay, Converter={StaticResource StringResourceConverter}, ConverterParameter=UpperCase}" />
+                                                    <LineBreak />
+                                                    <TextBlock x:Name="StationStatusText"
+                                                               Text="{Binding Path=SelectedSectorStation.StationStatus, Mode=OneWay, Converter={StaticResource StringResourceConverter}, ConverterParameter=UpperCase}" />
+                                                  </TextBlock>
                                                 </DockPanel>
                                                 <Border.ContextMenu>
                                                     <ContextMenu>
                                                         <MenuItem x:Name="ScrapStationMenuItem"
-                                      Header="{s:StringResource SCRAP}"
-                                      Command="{x:Static scc:GalaxyScreenCommands.Scrap}"
-                                      IsCheckable="True"
-                                      IsChecked="{Binding Path=(MenuItem.CommandParameter).(scc:CheckableCommandParameter.IsChecked), RelativeSource={RelativeSource Self}, Mode=TwoWay, FallbackValue=False}">
+                                                                    Header="{s:StringResource SCRAP}"
+                                                                    Command="{x:Static scc:GalaxyScreenCommands.Scrap}"
+                                                                    Visibility="{Binding Path=SelectedSectorStation.StationScrapVisibility, Converter={StaticResource BooleanToVisibilityConverter}}"
+                                                                    IsCheckable="True"
+                                                                    IsChecked="{Binding Path=(MenuItem.CommandParameter).(scc:CheckableCommandParameter.IsChecked), RelativeSource={RelativeSource Self}, Mode=TwoWay, FallbackValue=False}">
                                                             <MenuItem.CommandParameter>
                                                                 <scc:CheckableCommandParameter InnerParameter="{Binding Path=(scc:GalaxyScreenPresentationModel.SelectedSector).(s:Sector.Station), Mode=OneWay}"
                                                                IsChecked="{Binding Path=(scc:GalaxyScreenPresentationModel.SelectedSector).(s:Sector.Station).(s:TechObject.Scrap), Mode=OneWay}" />
@@ -562,7 +563,7 @@
                                                 </Border.ContextMenu>
                                             </Border>
                                             <ContentControl x:Name="TaskForceListRegion"
-                                      cal:RegionManager.RegionName="{x:Static scc:GalaxyScreenRegions.TaskForceList}" />
+                                                           cal:RegionManager.RegionName="{x:Static scc:GalaxyScreenRegions.TaskForceList}" />
                                         </DockPanel>
                                     </Border>
                                 </Grid>
@@ -977,19 +978,19 @@
                       Value="Hidden" />
                         </DataTrigger>
                         <DataTrigger Binding="{Binding Path=SelectedSector.Station}"
-                         Value="{x:Null}">
+                                       Value="{x:Null}">
                             <Setter TargetName="StationPanel"
-                      Property="Visibility"
-                      Value="Collapsed" />
+                                  Property="Visibility"
+                                  Value="Collapsed" />
                         </DataTrigger>
                         <DataTrigger Binding="{Binding Path=SelectedSector.Station.Scrap}"
                          Value="True">
                             <Setter TargetName="StationStatusText"
-                      Property="Text"
-                      Value="{s:StringResource Key=SCRAP, Case=Upper}" />
+                                  Property="Text"
+                                  Value="{s:StringResource Key=SCRAP, Case=Upper}" />
                             <Setter TargetName="ScrapIndicator"
-                      Property="Visibility"
-                      Value="Visible" />
+                                  Property="Visibility"
+                                  Value="Visible" />
                             <Setter TargetName="StationStatusText"
                       Property="Foreground"
                       Value="Crimson" />

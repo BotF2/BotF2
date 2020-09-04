@@ -623,25 +623,26 @@
                         <Border.ContextMenu>
                           <ContextMenu>
                             <MenuItem x:Name="ScrapStationMenuItem"
-                                      Header="{s:StringResource SCRAP}"
-                                      Command="{x:Static scc:GalaxyScreenCommands.Scrap}"
-                                      IsCheckable="True"
-                                      IsChecked="{Binding Path=(MenuItem.CommandParameter).(scc:CheckableCommandParameter.IsChecked), RelativeSource={RelativeSource Self}, Mode=TwoWay, FallbackValue=False}">
-                                                            <MenuItem.CommandParameter>
-                                                                <scc:CheckableCommandParameter InnerParameter="{Binding Path=(scc:GalaxyScreenPresentationModel.SelectedSector).(s:Sector.Station), Mode=OneWay}"
-                                                               IsChecked="{Binding Path=(scc:GalaxyScreenPresentationModel.SelectedSector).(s:Sector.Station).(s:TechObject.Scrap), Mode=OneWay}" />
-                                                            </MenuItem.CommandParameter>
-                                                        </MenuItem>
-                                                    </ContextMenu>
-                                                </Border.ContextMenu>
-                                            </Border>
-                                            <ContentControl x:Name="TaskForceListRegion"
-                                      cal:RegionManager.RegionName="{x:Static scc:GalaxyScreenRegions.TaskForceList}" />
-                                        </DockPanel>
-                                    </Border>
-                                </Grid>
-                            </DockPanel>
+                                        Header="{s:StringResource SCRAP}"
+                                        Command="{x:Static scc:GalaxyScreenCommands.Scrap}"
+                                        Visibility="{Binding Path=SelectedSectorStation.StationScrapVisibility, Converter={StaticResource BooleanToVisibilityConverter}}"
+                                        IsCheckable="True"
+                                        IsChecked="{Binding Path=(MenuItem.CommandParameter).(scc:CheckableCommandParameter.IsChecked), RelativeSource={RelativeSource Self}, Mode=TwoWay, FallbackValue=False}">
+                            <MenuItem.CommandParameter>
+                            <scc:CheckableCommandParameter InnerParameter="{Binding Path=(scc:GalaxyScreenPresentationModel.SelectedSector).(s:Sector.Station), Mode=OneWay}"
+                                IsChecked="{Binding Path=(scc:GalaxyScreenPresentationModel.SelectedSector).(s:Sector.Station).(s:TechObject.Scrap), Mode=OneWay}" />
+                            </MenuItem.CommandParameter>
+                            </MenuItem>
+                          </ContextMenu>
+                        </Border.ContextMenu>
+                      </Border>
+                        <ContentControl x:Name="TaskForceListRegion"
+                        cal:RegionManager.RegionName="{x:Static scc:GalaxyScreenRegions.TaskForceList}" />
+                        </DockPanel>
+                        </Border>
                         </Grid>
+                        </DockPanel>
+            </Grid>
 
                         <!-- BEGIN SYSTEM PANEL -->
             <Grid x:Name="BottomPanel"
