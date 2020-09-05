@@ -26,6 +26,7 @@ namespace Supremacy.Client.Views
 
     public class DiplomacyScreenViewModel : ViewModelBase<INewDiplomacyScreenView, DiplomacyScreenViewModel>
     {
+
         private bool _isMembershipButtonVisible;
         private bool _isFullAllianceButtonVisible;
        
@@ -118,6 +119,8 @@ namespace Supremacy.Client.Views
             _setSelectedGraphNodeCommand = new DelegateCommand<DiplomacyGraphNode>(ExecuteSetSelectedGraphNodeCommand);
             Refresh();
         }
+
+
 
         private bool CanExecuteSetSelectedGraphNodeCommand(DiplomacyGraphNode node)
         {
@@ -998,6 +1001,10 @@ namespace Supremacy.Client.Views
             }
         }
 
+        public void UpdateSelectedForeignPower()
+        {
+            OnSelectedForeignPowerChanged();
+        }
         protected virtual void OnSelectedForeignPowerChanged()
         {
             SelectedForeignPowerChanged.Raise(this);
@@ -1006,13 +1013,13 @@ namespace Supremacy.Client.Views
                 ExecuteMakeProposalCommand();
             OnAreOutgoingMessageCommandsVisibleChanged();
             OnAreIncomingMessageCommandsVisibleChanged();
-            if (AreNewMessageCommandsVisible){}
+            if (AreNewMessageCommandsVisible) { }
             OnAreNewMessageCommandsVisibleChanged();
-            if (IsMembershipButtonVisible){}
+            if (IsMembershipButtonVisible) { }
             OnMembershipButtonVisibleChanged();
-            if (IsFullAllianceButtonVisible) {}
+            if (IsFullAllianceButtonVisible) { }
             OnFullAllianceButtonVisibleChanged();
-            
+
         }
 
         #endregion

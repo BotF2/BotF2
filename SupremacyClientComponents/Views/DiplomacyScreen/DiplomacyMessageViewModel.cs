@@ -8,9 +8,11 @@ using System.Text;
 using System.Threading;
 using System.Windows.Data;
 using System.Windows.Input;
+using Microsoft.Practices.Composite.Regions;
 using Microsoft.Practices.ServiceLocation;
 
 using Supremacy.Annotations;
+using Supremacy.Client.Context;
 using Supremacy.Client.Dialogs;
 using Supremacy.Client.Input;
 using Supremacy.Collections;
@@ -1087,6 +1089,8 @@ namespace Supremacy.Client.Views
             //if (DiplomacyScreenViewModel.DesignInstance.SelectedForeignPower != null)
             //{
                 int turn = GameContext.Current.TurnNumber;
+                DiplomacyScreenViewModel something = new DiplomacyScreenViewModel(ServiceLocator.Current.GetInstance<IAppContext>(), ServiceLocator.Current.GetInstance<IRegionManager>());
+                something.UpdateSelectedForeignPower();
                 var selectedForeignPower = DiplomacyScreenViewModel.DesignInstance.SelectedForeignPower;
                 var senderCiv = selectedForeignPower.Counterparty; // sender of proposal treaty
                 var playerEmpire = DiplomacyScreenViewModel.DesignInstance.LocalPalyer; // local player reciever of proposal treaty
