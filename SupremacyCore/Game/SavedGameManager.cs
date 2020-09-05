@@ -339,8 +339,10 @@ namespace Supremacy.Game
 
             try
             {
-                string appDataFolder = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-                string SavedGameFolder = appDataFolder + "\\Star Trek Supremacy\\Saved Games\\" + Assembly.GetExecutingAssembly().GetName().Version.ToString() + "\\";
+                string SavedGameFolder = SavedGameDirectory + "\\";
+                //string appDataFolder = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+                //string SavedGameFolder = appDataFolder + "\\Star Trek Supremacy\\Saved Games\\" + Assembly.GetExecutingAssembly().GetName().Version.ToString() + "\\";
+
 
                 string file_autosav_current = SavedGameFolder + ".autosav";
                 string file_autosav_one_turn_ago = SavedGameFolder + ".autosav_one_turn_ago.sav";
