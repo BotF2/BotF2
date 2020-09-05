@@ -330,7 +330,7 @@ namespace Supremacy.Client
                 }
                 else
                 {
-                    GameLog.Client.General.DebugFormat("localplayer.Name={0} is NOT hosting...", localPlayer.Name);
+                    GameLog.Client.Multiplay.DebugFormat("localplayer.Name={0} is NOT hosting...", localPlayer.Name);
                     assignablePlayers.RemoveAll(o => !Equals(o, localPlayer) && !Equals(o, playerSlot.Player));
                     if (playerSlot.IsVacant)
                     {

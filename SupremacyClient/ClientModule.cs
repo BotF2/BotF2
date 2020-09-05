@@ -279,13 +279,15 @@ namespace Supremacy.Client
                     return;
                 }
 
-                ProcessStartInfo processStartInfo = new ProcessStartInfo();
-                processStartInfo.UseShellExecute = true;
-                processStartInfo.FileName = errorFile;
-                    
+                ProcessStartInfo processStartInfo = new ProcessStartInfo
+                {
+                    UseShellExecute = true,
+                    FileName = errorFile
+                };
+
                 try
                 {
-                    Process.Start(processStartInfo);
+                    _ = Process.Start(processStartInfo);
                 }
                 catch
                 {
