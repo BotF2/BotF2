@@ -661,6 +661,7 @@ namespace Supremacy.Game
         #region DoDiplomacy() Method
         private void DoDiplomacy()
         {
+            DiplomacyHelper.ClearAcceptRejectDictionary();
             var civManagers = GameContext.Current.CivilizationManagers;
 
             // FIRST: Pending Actions
