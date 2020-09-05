@@ -661,7 +661,7 @@ namespace Supremacy.Game
         #region DoDiplomacy() Method
         private void DoDiplomacy()
         {
-            DiplomacyHelper.ClearAcceptRejectDictionary();
+            //DiplomacyHelper.ClearAcceptRejectDictionary();
             var civManagers = GameContext.Current.CivilizationManagers;
 
             // FIRST: Pending Actions
@@ -944,7 +944,7 @@ namespace Supremacy.Game
                                         foreignPower.Counterparty.Key,
                                         foreignPower.Owner.Key);
 
-                                    DiplomacyHelper.SpecificCivAcceptingRejecting(foreignPower.StatementReceived.StatementType);
+                                    DiplomacyHelper.SpecificCivAcceptingRejecting(foreignPower.StatementReceived.StatementType); // act on statement to accept reject
                                     break;
                                 }
                             case StatementType.CommendWar:
@@ -2365,7 +2365,6 @@ namespace Supremacy.Game
         #region DoPostTurnOperations() Method
         private void DoPostTurnOperations(GameContext game)
         {
-            //DiplomacyHelper.SendAcceptRejectDictionary();
             //DiplomacyHelper.ClearAcceptRejectDictionary(); do this for older turns?
             //IntelHelper.ExecuteIntelOrders(); // now update results of spy operations on host computer, steal and sabotage, remove production facilities, just before we end the turn
 

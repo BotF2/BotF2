@@ -37,29 +37,30 @@ namespace Supremacy.Client.Views
         {
             get
             {
+
                 if (_designInstance != null)
                     return _designInstance;               
                 // ReSharper disable AssignNullToNotNullAttribute
                 _designInstance = new DiplomacyScreenViewModel(DesignTimeAppContext.Instance, null);
                 // ReSharper restore AssignNullToNotNullAttribute
-                //if (_designInstance.ForeignPowers != null && _designInstance.ForeignPowers.Count() > 0)
-                _designInstance.SelectedForeignPower = _designInstance.ForeignPowers.First();
+                if (_designInstance.ForeignPowers != null) // && _designInstance.ForeignPowers.Count() > 0)
+                    _designInstance.SelectedForeignPower = _designInstance.ForeignPowers.First();
                 _designInstance.DisplayMode = DiplomacyScreenDisplayMode.Outbox;
 
                 //_designInstance.MakeProposalCommand.Execute(null);
-                //if (_designInstance.SelectedForeignPower != null)
-                //{
+                if (_designInstance.SelectedForeignPower != null)
+                {
                     _designInstance.SelectedForeignPower.OutgoingMessage.AvailableElements.First(o => o.ActionCategory == DiplomacyMessageElementActionCategory.Propose).AddCommand.Execute(null);
                     _designInstance.SelectedForeignPower.OutgoingMessage.AvailableElements.First(o => o.ActionCategory == DiplomacyMessageElementActionCategory.Offer).AddCommand.Execute(null);
-                //}
+                }
                 return _designInstance;
             }
         }
 
         #endregion Design-Time Instance
 
-        public Civilization LocalPalyer => (Civilization)GameContext.Current.CivilizationManagers[AppContext.LocalPlayer.CivID].Civilization;
-        public bool localIsHost => AppContext.IsGameHost;
+        public Civilization LocalPalyer => (Civilization)GameContext.Current.CivilizationManagers[ServiceLocator.Current.GetInstance<IAppContext>().LocalPlayer.CivID].Civilization;
+        public bool localIsHost => ServiceLocator.Current.GetInstance<IAppContext>().IsGameHost;
 
         private readonly ObservableCollection<ForeignPowerViewModel> _foreignPowers;
         private readonly ReadOnlyObservableCollection<ForeignPowerViewModel> _foreignPowersView;
@@ -770,7 +771,7 @@ namespace Supremacy.Client.Views
 
         private void Refresh()
         {
-            PlayerCivilization = AppContext.LocalPlayer.Empire;
+            PlayerCivilization = ServiceLocator.Current.GetInstance<IAppContext>().LocalPlayer.Empire;
 
             RefreshForeignPowers();
             RefreshRelationshipGraph();
@@ -1223,7 +1224,7 @@ namespace Supremacy.Client.Views
 
             _foreignPowers.Clear();
 
-            var playerEmpireId = AppContext.LocalPlayer.EmpireID; // local player
+            var playerEmpireId = ServiceLocator.Current.GetInstance<IAppContext>().LocalPlayer.EmpireID; // local player
             var playerDiplomat = Diplomat.Get(playerEmpireId);
 
             foreach (var civ in GameContext.Current.Civilizations)
@@ -1251,7 +1252,7 @@ namespace Supremacy.Client.Views
         {
             var count = GameContext.Current.Civilizations.Count;
             var nodes = new List<DiplomacyGraphNode>(count);
-            var localPlayerEmpire = AppContext.LocalPlayer.Empire;
+            var localPlayerEmpire = ServiceLocator.Current.GetInstance<IAppContext>().LocalPlayer.Empire;
 
             DiplomacyGraphNode localPlayerNode = null;
 
