@@ -43,21 +43,24 @@ namespace Supremacy.Client.Views
             GameLog.Client.Diplomacy.DebugFormat("Checking for IncomingMessage...");
             if (_foreignPower.ResponseReceived == null && _foreignPower.ProposalReceived == null)
             {
-               // GameLog.Client.Diplomacy.DebugFormat("$$ _foreignPower Response and Proposal = null, no incoming message yet");
+                // GameLog.Client.Diplomacy.DebugFormat("$$ _foreignPower Response and Proposal = null, no incoming message yet");
                 return;
             }
             if (_foreignPower.ResponseReceived != null)
-            { 
-            IncomingMessage = DiplomacyMessageViewModel.FromReponse(_foreignPower.ResponseReceived);
-            GameLog.Client.Diplomacy.DebugFormat("$$ Incoming Response Owner {0} CounterParty {1} Message {2}", _foreignPower.Owner.Key, _foreignPower.Counterparty.Key, IncomingMessage.ToString());
+            {
+                IncomingMessage = DiplomacyMessageViewModel.FromReponse(_foreignPower.ResponseReceived);
+                GameLog.Client.Diplomacy.DebugFormat("$$ Incoming Response Owner {0} CounterParty {1} Message {2}", _foreignPower.Owner.Key, _foreignPower.Counterparty.Key, IncomingMessage.ToString());
             }
 
             else if (_foreignPower.ProposalReceived.IncludesTreaty() == true)
             {
                 IncomingMessage = DiplomacyMessageViewModel.FromProposal(_foreignPower.ProposalReceived);
                 GameLog.Client.Diplomacy.DebugFormat("$$ Incoming Proposal Owner {0} CounterParty {1} Message {2}", _foreignPower.Owner.Key, _foreignPower.Counterparty.Key, IncomingMessage.ToString());
+                DiplomacyHelper.DiploScreenSelectedForeignPower = GameContext.Current.CivilizationManagers[_foreignPower.Counterparty.CivID].Civilization;
             }
         }
+
+
 
         private void UpdateActiveAgreements()
         {

@@ -516,7 +516,7 @@ namespace Supremacy.Client.Views
         }
         #endregion
 
-        private void UpdateLeadInText()
+        public void UpdateLeadInText()
         {
             var treatyLeadInId = DiplomacyStringID.None;
             var offerLeadInId = DiplomacyStringID.None;
@@ -1088,17 +1088,13 @@ namespace Supremacy.Client.Views
         {
 
             int turn = GameContext.Current.TurnNumber;
-            var playerEmpire = DiplomacyScreenViewModel.DesignInstance.LocalPalyer; // local player reciever of proposal treaty
-            var diplomat = Diplomat.Get(playerEmpire);
-            //DiplomacyScreenViewModel diplomacyScreenViewModel = new DiplomacyScreenViewModel(ServiceLocator.Current.GetInstance<IAppContext>(), ServiceLocator.Current.GetInstance<IRegionManager>());
-            //var selectedForeignPower = diplomacyScreenViewModel.GetSelectedForeignPower();
-            DiplomacyScreenViewModel.DesignInstance.UpdateSelectedForeignPower();
-            var selectedForeignPower = DiplomacyScreenViewModel.DesignInstance.GetSelectedForeignPower();
-            var senderCiv = selectedForeignPower.Counterparty; // sender of proposal treaty
 
-            var otherDiplomat = Diplomat.Get(senderCiv);
-            var foreignPower = diplomat.GetForeignPower(senderCiv);
-            var otherForeignPower = otherDiplomat.GetForeignPower(playerEmpire);
+            var playerEmpire = DiplomacyScreenViewModel.DesignInstance.LocalPalyer; // local player reciever of proposal treaty
+            var diplomat = Diplomat.Get(playerEmpire);  
+
+            var senderCiv = DiplomacyHelper.DiploScreenSelectedForeignPower;  
+            var selectedForeignPower = diplomat.GetForeignPower(senderCiv);  
+
             bool localPlayerIsHosting = DiplomacyScreenViewModel.DesignInstance.localIsHost;
             string Accepted = "ACCEPTED";
             if (accepting == false)
@@ -1117,7 +1113,7 @@ namespace Supremacy.Client.Views
             else _acceptedRejected.Add(selectedID, Accepted);
 
             //GameLog.Client.Diplomacy.DebugFormat("Local player IS Host....");
-            DiplomacyHelper.AcceptRejectDictionary(foreignPower, accepting, turn); // creat entry for game host
+            DiplomacyHelper.AcceptRejectDictionary(selectedForeignPower, accepting, turn); // creat entry for game host
 
             // creat entry for none host human player that clicked the accept - reject radio button         
             StatementType _statementType = DiplomacyHelper.GetStatementType(accepting, senderCiv, playerEmpire); // first is bool, 2nd sender ID(now the local player), last new receipient, in Dictinary Key                       
@@ -1125,9 +1121,9 @@ namespace Supremacy.Client.Views
                 , Enum.GetName(typeof(StatementType), _statementType)
                 , accepting
                 , senderCiv.Key
-                , foreignPower.CounterpartyID
+                , selectedForeignPower.CounterpartyID
                 , playerEmpire.Key
-                , foreignPower.OwnerID
+                , selectedForeignPower.OwnerID
                 );
             if (_statementType != StatementType.NoStatement)
             {
@@ -1135,7 +1131,7 @@ namespace Supremacy.Client.Views
                 _sendOrder = new SendStatementOrder(statementToSend);
                 ServiceLocator.Current.GetInstance<IPlayerOrderService>().AddOrder(_sendOrder);
 
-                otherForeignPower.StatementSent = statementToSend; // load statement to send in foreignPower, statment type carries key for dictionary entery
+                selectedForeignPower.StatementSent = statementToSend; // load statement to send in foreignPower, statment type carries key for dictionary entery
 
                 GameLog.Client.Diplomacy.DebugFormat("!! foreignPower.StatementSent *other*ForeignPower Recipient ={0} to Sender ={1}"
                     , statementToSend.Recipient.Key
@@ -1210,13 +1206,16 @@ namespace Supremacy.Client.Views
 
             DiplomacyStringID leadInId;
              
-            switch ((object)proposal.Clauses) // not all cases used below, ToDo
+            switch ((object)proposal.Clauses[0].ClauseType) // not all cases used below, ToDo
             {
-                case ClauseType.TreatyOpenBorders:
+                case ClauseType.TreatyOpenBorders: 
                     leadInId = DiplomacyStringID.OpenBordersClause;
                     break;
                 case ClauseType.TreatyAffiliation:
                     leadInId = DiplomacyStringID.AffiliationClause;
+                    break;
+                case ClauseType.TreatyCeaseFire:
+                    leadInId = DiplomacyStringID.CeaseFireClause;
                     break;
                 case ClauseType.TreatyDefensiveAlliance:
                     leadInId = DiplomacyStringID.DefensiveAllianceClause;
@@ -1234,7 +1233,7 @@ namespace Supremacy.Client.Views
                     leadInId = DiplomacyStringID.WarPactClause;
                     break;
                 default:
-                    leadInId = DiplomacyStringID.OpenBordersClause;
+                    leadInId = DiplomacyStringID.None;
                     break;
             }
 
@@ -1245,7 +1244,7 @@ namespace Supremacy.Client.Views
 
             message._treatyLeadInTextScript.ScriptCode = QuoteString(LookupDiplomacyText(leadInId, message._tone, message._sender) ?? string.Empty);
             message.TreatyLeadInText = message._treatyLeadInTextScript.Evaluate<string>(message._leadInRuntimeParameters);
-            GameLog.Core.Diplomacy.DebugFormat("message ={0}", message);
+            GameLog.Core.Diplomacy.DebugFormat("message ={0}", message.TreatyLeadInText);
             return message;
         }
 

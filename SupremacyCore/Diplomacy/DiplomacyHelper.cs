@@ -1,4 +1,4 @@
-// DiplomacyHelper.cs
+// File:DiplomacyHelper.cs
 //
 // Copyright (c) 2007 Mike Strobel
 //
@@ -32,6 +32,40 @@ namespace Supremacy.Diplomacy
         private static readonly IList<Civilization> EmptyCivilizations = new Civilization[0];
         private static CollectionBase<RegardEvent> _regardEvents;
         private static Dictionary<string, bool> _acceptRejectDictionary = new Dictionary<string, bool> { {"98", false } };
+
+
+        //public  static void IncomingMessageLeadInText()
+        //{
+        //    DiplomacyMessageViewModel.UpdateLeadInText();
+        //}
+
+        //public static string _incomingMessageLeadInText;
+
+        //public static string IncomingMessageLeadInText
+        //{
+        //    get
+        //    {
+        //        return _incomingMessageLeadInText;
+        //    }
+        //    set
+        //    {
+        //        _incomingMessageLeadInText = value;
+        //    }
+        //}
+
+        public static Civilization _diploScreenSelectedForeignPower;
+
+        public static Civilization DiploScreenSelectedForeignPower
+        {
+            get
+            {
+                return _diploScreenSelectedForeignPower;
+            }
+            set
+            {
+                _diploScreenSelectedForeignPower = value;
+            }
+        }
 
         public static ForeignPowerStatus GetForeignPowerStatus([NotNull] ICivIdentity owner, [NotNull] ICivIdentity counterparty)
         {
