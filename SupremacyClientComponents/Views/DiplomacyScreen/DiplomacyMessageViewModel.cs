@@ -1090,9 +1090,10 @@ namespace Supremacy.Client.Views
             int turn = GameContext.Current.TurnNumber;
             var playerEmpire = DiplomacyScreenViewModel.DesignInstance.LocalPalyer; // local player reciever of proposal treaty
             var diplomat = Diplomat.Get(playerEmpire);
-            DiplomacyScreenViewModel diplomacyScreenViewModel = new DiplomacyScreenViewModel(ServiceLocator.Current.GetInstance<IAppContext>(), ServiceLocator.Current.GetInstance<IRegionManager>());
-            var selectedForeignPower = diplomacyScreenViewModel.GetSelectedForeignPower();
-            // = diplomacyScreenViewModel.SelectedForeignPower;
+            //DiplomacyScreenViewModel diplomacyScreenViewModel = new DiplomacyScreenViewModel(ServiceLocator.Current.GetInstance<IAppContext>(), ServiceLocator.Current.GetInstance<IRegionManager>());
+            //var selectedForeignPower = diplomacyScreenViewModel.GetSelectedForeignPower();
+            DiplomacyScreenViewModel.DesignInstance.UpdateSelectedForeignPower();
+            var selectedForeignPower = DiplomacyScreenViewModel.DesignInstance.GetSelectedForeignPower();
             var senderCiv = selectedForeignPower.Counterparty; // sender of proposal treaty
 
             var otherDiplomat = Diplomat.Get(senderCiv);
