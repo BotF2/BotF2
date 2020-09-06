@@ -1001,9 +1001,9 @@ namespace Supremacy.Client.Views
             }
         }
 
-        public void UpdateSelectedForeignPower()
+        public ForeignPowerViewModel GetSelectedForeignPower()
         {
-            OnSelectedForeignPowerChanged();
+            return _selectedForeignPower; ///OnSelectedForeignPowerChanged();
         }
         protected virtual void OnSelectedForeignPowerChanged()
         {
