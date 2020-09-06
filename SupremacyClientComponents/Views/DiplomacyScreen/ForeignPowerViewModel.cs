@@ -170,7 +170,7 @@ namespace Supremacy.Client.Views
             get
             {
                 if (_incomingMessage != null && _incomingMessage.Elements.Count() > 0)
-                    GameLog.Client.Diplomacy.DebugFormat("get IncomingMessage = {0}, Count = {1}", _incomingMessage, _incomingMessage.Elements.Count());
+                    GameLog.Client.Diplomacy.DebugFormat("get IncomingMessage = {0}, Count = {1}", _incomingMessage.TreatyLeadInText, _incomingMessage.Elements.Count());
 
                 return _incomingMessage;
             }
@@ -180,7 +180,7 @@ namespace Supremacy.Client.Views
                     return;
 
                 _incomingMessage = value;
-                GameLog.Client.Diplomacy.DebugFormat("set _incomingMessage = {0}", _incomingMessage);
+                GameLog.Client.Diplomacy.DebugFormat("set _incomingMessage = {0}", _incomingMessage.TreatyLeadInText);
 
                 OnIncomingMessageChanged();
             }

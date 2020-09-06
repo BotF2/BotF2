@@ -1086,66 +1086,59 @@ namespace Supremacy.Client.Views
 
         private void ProcessAcceptReject(bool accepting)
         {
-            //if (DiplomacyScreenViewModel.DesignInstance.SelectedForeignPower != null)
-            //{
-                int turn = GameContext.Current.TurnNumber;
-                DiplomacyScreenViewModel something = new DiplomacyScreenViewModel(ServiceLocator.Current.GetInstance<IAppContext>(), ServiceLocator.Current.GetInstance<IRegionManager>());
-                something.UpdateSelectedForeignPower();
-                var selectedForeignPower = DiplomacyScreenViewModel.DesignInstance.SelectedForeignPower;
-                var senderCiv = selectedForeignPower.Counterparty; // sender of proposal treaty
-                var playerEmpire = DiplomacyScreenViewModel.DesignInstance.LocalPalyer; // local player reciever of proposal treaty
-                var diplomat = Diplomat.Get(playerEmpire);
-                var otherDiplomat = Diplomat.Get(senderCiv);
-                var foreignPower = diplomat.GetForeignPower(senderCiv);
-                var otherForeignPower = otherDiplomat.GetForeignPower(playerEmpire);
-                bool localPlayerIsHosting = DiplomacyScreenViewModel.DesignInstance.localIsHost;
-                string Accepted = "ACCEPTED";
-                if (accepting == false)
-                    Accepted = "REJECTED";
-                Response = Accepted;
-                int selectedID = selectedForeignPower.Owner.CivID;
+            int turn = GameContext.Current.TurnNumber;
+            DiplomacyScreenViewModel diplomacyScreenViewModel = new DiplomacyScreenViewModel(ServiceLocator.Current.GetInstance<IAppContext>(), ServiceLocator.Current.GetInstance<IRegionManager>());
+            diplomacyScreenViewModel.UpdateSelectedForeignPower();
+            var selectedForeignPower = DiplomacyScreenViewModel.DesignInstance.SelectedForeignPower;
+            var senderCiv = selectedForeignPower.Counterparty; // sender of proposal treaty
+            var playerEmpire = DiplomacyScreenViewModel.DesignInstance.LocalPalyer; // local player reciever of proposal treaty
+            var diplomat = Diplomat.Get(playerEmpire);
+            var otherDiplomat = Diplomat.Get(senderCiv);
+            var foreignPower = diplomat.GetForeignPower(senderCiv);
+            var otherForeignPower = otherDiplomat.GetForeignPower(playerEmpire);
+            bool localPlayerIsHosting = DiplomacyScreenViewModel.DesignInstance.localIsHost;
+            string Accepted = "ACCEPTED";
+            if (accepting == false)
+                Accepted = "REJECTED";
+            Response = Accepted;
+            int selectedID = selectedForeignPower.Owner.CivID;
 
-                if (_acceptedRejected.ContainsKey(selectedID))
+            if (_acceptedRejected.ContainsKey(selectedID))
+            {
+                if (_acceptedRejected[selectedID] != Accepted)
                 {
-                    if (_acceptedRejected[selectedID] != Accepted)
-                    {
-                        _acceptedRejected.Remove(selectedID);
-                        _acceptedRejected.Add(selectedID, Accepted);
-                    }
+                    _acceptedRejected.Remove(selectedID);
+                    _acceptedRejected.Add(selectedID, Accepted);
                 }
-                else _acceptedRejected.Add(selectedID, Accepted);
+            }
+            else _acceptedRejected.Add(selectedID, Accepted);
 
-                //if (GameContext.Current.IsMultiplayerGame)//localPlayerIsHosting)
-                //{
-                    //GameLog.Client.Diplomacy.DebugFormat("Local player IS Host....");
-                    DiplomacyHelper.AcceptRejectDictionary(foreignPower, accepting, turn); // creat entry for game host
-                //}
-                //else
-                //{   // creat entry for none host human player that clicked the accept - reject radio button         
-                    StatementType _statementType = DiplomacyHelper.GetStatementType(accepting, senderCiv, playerEmpire); // first is bool, 2nd sender ID(now the local player), last new receipient, in Dictinary Key                       
-                    GameLog.Client.Diplomacy.DebugFormat("Local player IS NOT Host, statementType = {0} accepting = {1} sender ={2} counterpartyID {3} local = {4} OwnerID ={5}"
-                        , Enum.GetName(typeof(StatementType), _statementType)
-                        , accepting
-                        , senderCiv.Key
-                        , foreignPower.CounterpartyID
-                        , playerEmpire.Key
-                        , foreignPower.OwnerID
-                        );
-                    if (_statementType != StatementType.NoStatement)
-                    {
-                        Statement statementToSend = new Statement(playerEmpire, senderCiv, _statementType, Tone.Receptive, turn);
-                        _sendOrder = new SendStatementOrder(statementToSend);
-                        ServiceLocator.Current.GetInstance<IPlayerOrderService>().AddOrder(_sendOrder);
+            //GameLog.Client.Diplomacy.DebugFormat("Local player IS Host....");
+            DiplomacyHelper.AcceptRejectDictionary(foreignPower, accepting, turn); // creat entry for game host
 
-                        otherForeignPower.StatementSent = statementToSend; // load statement to send in foreignPower, statment type carries key for dictionary entery
+            // creat entry for none host human player that clicked the accept - reject radio button         
+            StatementType _statementType = DiplomacyHelper.GetStatementType(accepting, senderCiv, playerEmpire); // first is bool, 2nd sender ID(now the local player), last new receipient, in Dictinary Key                       
+            GameLog.Client.Diplomacy.DebugFormat("Local player IS NOT Host, statementType = {0} accepting = {1} sender ={2} counterpartyID {3} local = {4} OwnerID ={5}"
+                , Enum.GetName(typeof(StatementType), _statementType)
+                , accepting
+                , senderCiv.Key
+                , foreignPower.CounterpartyID
+                , playerEmpire.Key
+                , foreignPower.OwnerID
+                );
+            if (_statementType != StatementType.NoStatement)
+            {
+                Statement statementToSend = new Statement(playerEmpire, senderCiv, _statementType, Tone.Receptive, turn);
+                _sendOrder = new SendStatementOrder(statementToSend);
+                ServiceLocator.Current.GetInstance<IPlayerOrderService>().AddOrder(_sendOrder);
 
-                        GameLog.Client.Diplomacy.DebugFormat("!! foreignPower.StatementSent *other*ForeignPower Recipient ={0} to Sender ={1}"
-                            , statementToSend.Recipient.Key
-                            , statementToSend.Sender.Key
-                            );
-                    }
-                //}
-            //}
+                otherForeignPower.StatementSent = statementToSend; // load statement to send in foreignPower, statment type carries key for dictionary entery
+
+                GameLog.Client.Diplomacy.DebugFormat("!! foreignPower.StatementSent *other*ForeignPower Recipient ={0} to Sender ={1}"
+                    , statementToSend.Recipient.Key
+                    , statementToSend.Sender.Key
+                    );
+            }
         }
 
         private bool CanExecuteSetRejectButton(ICheckableCommandParameter p)
