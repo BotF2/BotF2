@@ -116,7 +116,6 @@ namespace Supremacy.Diplomacy
 
                 if (otherPower.CivID == diplomat.OwnerID)
                 {
-                    //var foreignPower = diplomat.GetForeignPower(civ);
                     //GameLog.Core.Diplomacy.DebugFormat(
                     //    "BEFORE: civ = {0}, otherPower = {1}, trustDelta = {2}, diplomat.Owner = {3}, foreignPower = {4}, CurrentTrust = {5}",
                     //    GameContext.Current.CivilizationManagers[civ.CivID].Civilization.ShortName,
@@ -177,12 +176,44 @@ namespace Supremacy.Diplomacy
 
                 if (foreignPower != null)
                 {
-                    foreignPower.DiplomacyData.Trust.AdjustCurrent(regardDelta);
-                    foreignPower.DiplomacyData.Trust.UpdateAndReset();
+                    foreignPower.DiplomacyData.Regard.AdjustCurrent(regardDelta);
+                    foreignPower.DiplomacyData.Regard.UpdateAndReset();
                     foreignPower.UpdateRegardAndTrustMeters();
                 }
             }
         }
+        //public static void ApplyNegativeRegardDecay(ForeignPower foreignPower)
+        //{
+
+            //for (var i = 0; i < _regardEvents.Count; i++)
+            //{
+                //var regardEvent = _regardEvents[i];
+
+                //// Regard events with a fixed duration do not decay.
+                //if (regardEvent.Duration > 0)
+                //    continue;
+
+                //var regard = regardEvent.Regard;
+                //if (regard == 0)
+                //{
+                //    _regardEvents.RemoveAt(i--);
+                //    continue;
+                //}
+
+                //if (!regardEvent.Type.GetCategories().HasFlag(category))
+                //    continue;
+
+                //if (regard > 0)
+                //    regard = Math.Max(0, (int)(regard * decay.Positive));
+                //else
+                //    regard = Math.Min(0, (int)(regard * decay.Negative));
+
+                //if (regard == 0)
+                //    _regardEvents.RemoveAt(i--);
+                //else
+                //    regardEvent.Regard = regard;
+            //}
+        //}
         public static void ApplyRegardDecay(RegardEventCategories category, RegardDecay decay)
         {
             for (var i = 0; i < _regardEvents.Count; i++)
@@ -316,7 +347,6 @@ namespace Supremacy.Diplomacy
                     foreignPower.CounterpartyForeignPower.LastProposalSent = null;
                     foreignPower.ResponseSent = null;
                 }
-
             }
         }     
         public static void AcceptingRejecting([NotNull] ICivIdentity civ) // writing dictionary for entry regarding this civ
@@ -761,7 +791,7 @@ namespace Supremacy.Diplomacy
                 , foreignPowerID
                 );
         }
-        public static void AcceptRejectDictionary(string civIDs, bool accepted, int turn)
+        public static void AcceptRejectDictionary(string civIDs, bool accepted, int turn) // creat ditionary entry
         {
             int turnNumber = turn; // in case we need this to time clearing of dictionary - Dictionary<string, Tuple<bool, int>>(); or ValueType is a Class with bool and int.
 
