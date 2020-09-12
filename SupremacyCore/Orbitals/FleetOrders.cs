@@ -435,15 +435,15 @@ namespace Supremacy.Orbitals
                 // send a medical ship to other civilization's colony and get trust
                 if (Fleet.Sector.System.Colony.Owner != Fleet.Owner && Fleet.Ships.Any(s => s.ShipType == ShipType.Medical))
                 {
-                    DiplomacyHelper.ApplyTrustChange(Fleet.Sector.System.Owner, Fleet.Owner, 20);
-                    Diplomat.Get(Fleet.Owner).GetForeignPower(Fleet.Sector.System.Owner).AddRegardEvent(new RegardEvent(10, RegardEventType.HealedPopulation, 200));
+                    DiplomacyHelper.ApplyTrustChange(Fleet.Sector.System.Owner, Fleet.Owner, 50);
+                    DiplomacyHelper.ApplyRegardChange(Fleet.Sector.System.Owner, Fleet.Owner, 55);
                     Diplomat.Get(Fleet.Owner).GetForeignPower(Fleet.Sector.System.Owner).UpdateRegardAndTrustMeters();
                 }
                 // Nonaggression treaty - you promissed not to go into the other empires space - go there and trust is lost, aggrement canceled
                 else if (GameContext.Current.AgreementMatrix.IsAgreementActive(Fleet.Owner, Fleet.Sector.System.Colony.Owner, ClauseType.TreatyNonAggression))
                 {
-                    DiplomacyHelper.ApplyTrustChange(Fleet.Sector.System.Owner, Fleet.Owner, -20);
-                  
+                    DiplomacyHelper.ApplyTrustChange(Fleet.Sector.System.Owner, Fleet.Owner, -55);
+                    DiplomacyHelper.ApplyRegardChange(Fleet.Sector.System.Owner, Fleet.Owner, -65);
                     Diplomat.Get(Fleet.Owner).GetForeignPower(Fleet.Sector.System.Owner).UpdateRegardAndTrustMeters();
                     foreignPower.CancelTreaty();
                     //firstManager.SitRepEntries.Add(new WarDeclaredSitRepEntry(secondCiv, firstCiv));
@@ -1045,7 +1045,8 @@ namespace Supremacy.Orbitals
             {
                 var diplomat = Diplomat.Get(Fleet.Sector.System.Owner);
                 var foreignPower = diplomat.GetForeignPower(Fleet.Owner);
-                foreignPower.AddRegardEvent(new RegardEvent(30, RegardEventType.DiplomaticShip, +50));
+                DiplomacyHelper.ApplyRegardChange(influencerCiv.Civilization, influencedCiv.Civilization, +55);
+                //foreignPower.AddRegardEvent(new RegardEvent(30, RegardEventType.DiplomaticShip, +50));
                 DiplomacyHelper.ApplyTrustChange(influencerCiv.Civilization, influencedCiv.Civilization, +50);
                 GameLog.Core.Diplomacy.DebugFormat("{0} is attempting to influence the {1} at {2} regard ={3} trust ={4}",
                        influencerCiv, influencedCiv, Fleet.Sector.System,
