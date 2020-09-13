@@ -102,118 +102,60 @@ namespace Supremacy.Diplomacy
         {
             if (civ == null)
                 throw new ArgumentNullException("civ");
+            if (otherPower == null)
+                throw new ArgumentNullException("otherPower");
+       
+            var diplomat = Diplomat.Get(otherPower);
+            var foreignPower = diplomat.GetForeignPower(civ);
+            //GameLog.Core.Diplomacy.DebugFormat("BEFORE: civ = {0}, otherPower.CivID = {1}, trustDelta = {2}, diplomat.Owner = {3}, foreignPower.OwnerID =n/v, CurrentTrust =n/v",
+            //civ, otherPower.CivID, trustDelta, diplomat.Owner);
 
-            var civId = civ.CivID;
+            //GameLog.Core.Diplomacy.DebugFormat(
+            //    "BEFORE: civ = {0}, otherPower = {1}, trustDelta = {2}, diplomat.Owner = {3}, foreignPower = {4}, CurrentTrust = {5}",
+            //    GameContext.Current.CivilizationManagers[civ.CivID].Civilization.ShortName,
+            //    GameContext.Current.CivilizationManagers[otherPower.CivID].Civilization.ShortName,
+            //    trustDelta, diplomat.Owner,
+            //    GameContext.Current.CivilizationManagers[foreignPower.OwnerID].Civilization.ShortName,
+            //    foreignPower.DiplomacyData.Trust.CurrentValue);
 
-            foreach (var diplomat in GameContext.Current.Diplomats)
+            if (foreignPower != null)
             {
-                //GameLog.Core.Diplomacy.DebugFormat("BEFORE: civ = {0}, otherPower.CivID = {1}, trustDelta = {2}, diplomat.Owner = {3}, foreignPower.OwnerID =n/v, CurrentTrust =n/v",
-                //civ, otherPower.CivID, trustDelta, diplomat.Owner);
-                if (diplomat.OwnerID == civId)
-                    continue;
-
-                var foreignPower = diplomat.GetForeignPower(civ);
-
-                if (otherPower.CivID == diplomat.OwnerID)
-                {
-                    //GameLog.Core.Diplomacy.DebugFormat(
-                    //    "BEFORE: civ = {0}, otherPower = {1}, trustDelta = {2}, diplomat.Owner = {3}, foreignPower = {4}, CurrentTrust = {5}",
-                    //    GameContext.Current.CivilizationManagers[civ.CivID].Civilization.ShortName,
-                    //    GameContext.Current.CivilizationManagers[otherPower.CivID].Civilization.ShortName,
-                    //    trustDelta, diplomat.Owner,
-                    //    GameContext.Current.CivilizationManagers[foreignPower.OwnerID].Civilization.ShortName,
-                    //    foreignPower.DiplomacyData.Trust.CurrentValue);
-
-                    if (foreignPower != null)
-                        foreignPower.DiplomacyData.Trust.AdjustCurrent(trustDelta);
-                    foreignPower.DiplomacyData.Trust.UpdateAndReset();
-
-                    //GameLog.Core.Diplomacy.DebugFormat(
-                    //    "AFTER : civ = {0}, otherPower = {1}, trustDelta = {2}, diplomat.Owner = {3}, foreignPower = {4}, CurrentTrust = {5}",
-                    //    GameContext.Current.CivilizationManagers[civ.CivID].Civilization.ShortName,
-                    //    GameContext.Current.CivilizationManagers[otherPower.CivID].Civilization.ShortName,
-                    //    trustDelta, diplomat.Owner,
-                    //    GameContext.Current.CivilizationManagers[foreignPower.OwnerID].Civilization.ShortName,
-                    //    foreignPower.DiplomacyData.Trust.CurrentValue);
-                }
-
-                if (foreignPower != null)
-                {
-                    //foreignPower.DiplomacyData.Trust.AdjustCurrent(trustDelta);
-                    //foreignPower.DiplomacyData.Trust.UpdateAndReset();
-                    foreignPower.UpdateRegardAndTrustMeters();
-                }
-                
+                foreignPower.DiplomacyData.Trust.AdjustCurrent(trustDelta);
+                foreignPower.DiplomacyData.Trust.UpdateAndReset();
+                foreignPower.UpdateRegardAndTrustMeters();
             }
-        }
-        //Regard makes crashes
 
+            //GameLog.Core.Diplomacy.DebugFormat(
+            //    "AFTER : civ = {0}, otherPower = {1}, trustDelta = {2}, diplomat.Owner = {3}, foreignPower = {4}, CurrentTrust = {5}",
+            //    GameContext.Current.CivilizationManagers[civ.CivID].Civilization.ShortName,
+            //    GameContext.Current.CivilizationManagers[otherPower.CivID].Civilization.ShortName,
+            //    trustDelta, diplomat.Owner,
+            //    GameContext.Current.CivilizationManagers[foreignPower.OwnerID].Civilization.ShortName,
+            //    foreignPower.DiplomacyData.Trust.CurrentValue);
+        }
         public static void ApplyRegardChange([NotNull] ICivIdentity civ, [NotNull] ICivIdentity otherPower, int regardDelta)
         {
             if (civ == null)
                 throw new ArgumentNullException("civ");
+            if (otherPower == null)
+                throw new ArgumentNullException("otherPower");
 
-            var civId = civ.CivID;
+            var diplomat = Diplomat.Get(otherPower);
+            var foreignPower = diplomat.GetForeignPower(civ);
 
-            foreach (var diplomat in GameContext.Current.Diplomats)
+            GameLog.Core.Diplomacy.DebugFormat("BEFORE: civ = {0}, otherPower.CivID = {1}, regardDelta = {2}, diplomat.Owner = {3}, foreignPower.OwnerID = {4}, CurrentTrust = {5}",
+            civ, otherPower.CivID, regardDelta, diplomat.Owner, foreignPower.OwnerID, foreignPower.DiplomacyData.Trust.CurrentValue);
+
+            if (foreignPower != null)
             {
-                if (diplomat.OwnerID == civId)
-                    continue;
+                foreignPower.DiplomacyData.Regard.AdjustCurrent(regardDelta);
+                foreignPower.DiplomacyData.Regard.UpdateAndReset();
+                foreignPower.UpdateRegardAndTrustMeters();
 
-                var foreignPower = diplomat.GetForeignPower(civ);
-                if (civId == otherPower.CivID)
-                {
-                    GameLog.Core.Diplomacy.DebugFormat("BEFORE: civ = {0}, otherPower.CivID = {1}, regardDelta = {2}, diplomat.Owner = {3}, foreignPower.OwnerID = {4}, CurrentTrust = {5}",
-                    civ, otherPower.CivID, regardDelta, diplomat.Owner, foreignPower.OwnerID, foreignPower.DiplomacyData.Trust.CurrentValue);
-
-                    if (foreignPower != null)
-                        foreignPower.DiplomacyData.Regard.AdjustCurrent(regardDelta);
-                    foreignPower.DiplomacyData.Regard.UpdateAndReset();
-
-                    GameLog.Core.Diplomacy.DebugFormat("AFTER : civ = {0}, otherPower.CivID = {1}, regardDelta = {2}, diplomat.Owner = {3}, foreignPower.OwnerID = {4}, CurrentTrust = {5}",
-                    civ, otherPower.CivID, regardDelta, diplomat.Owner, foreignPower.OwnerID, foreignPower.DiplomacyData.Trust.CurrentValue);
-                }
-
-                if (foreignPower != null)
-                {
-                    foreignPower.DiplomacyData.Regard.AdjustCurrent(regardDelta);
-                    foreignPower.DiplomacyData.Regard.UpdateAndReset();
-                    foreignPower.UpdateRegardAndTrustMeters();
-                }
             }
+            GameLog.Core.Diplomacy.DebugFormat("AFTER : civ = {0}, otherPower.CivID = {1}, regardDelta = {2}, diplomat.Owner = {3}, foreignPower.OwnerID = {4}, CurrentTrust = {5}",
+                civ, otherPower.CivID, regardDelta, diplomat.Owner, foreignPower.OwnerID, foreignPower.DiplomacyData.Trust.CurrentValue);
         }
-        //public static void ApplyNegativeRegardDecay(ForeignPower foreignPower)
-        //{
-
-            //for (var i = 0; i < _regardEvents.Count; i++)
-            //{
-                //var regardEvent = _regardEvents[i];
-
-                //// Regard events with a fixed duration do not decay.
-                //if (regardEvent.Duration > 0)
-                //    continue;
-
-                //var regard = regardEvent.Regard;
-                //if (regard == 0)
-                //{
-                //    _regardEvents.RemoveAt(i--);
-                //    continue;
-                //}
-
-                //if (!regardEvent.Type.GetCategories().HasFlag(category))
-                //    continue;
-
-                //if (regard > 0)
-                //    regard = Math.Max(0, (int)(regard * decay.Positive));
-                //else
-                //    regard = Math.Min(0, (int)(regard * decay.Negative));
-
-                //if (regard == 0)
-                //    _regardEvents.RemoveAt(i--);
-                //else
-                //    regardEvent.Regard = regard;
-            //}
-        //}
         public static void ApplyRegardDecay(RegardEventCategories category, RegardDecay decay)
         {
             for (var i = 0; i < _regardEvents.Count; i++)
