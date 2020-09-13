@@ -310,13 +310,13 @@ namespace Supremacy.Diplomacy
 
                 string powerID = foreignPower.CounterpartyID.ToString() + foreignPower.OwnerID.ToString();
 
-                GameLog.Client.Diplomacy.DebugFormat("Check Dictionar foreignPower.Owner = {0}, counterpary ={1} powerID ={2}"
-                    , foreignPower.OwnerID
-                    , foreignPower.CounterpartyID
-                    , powerID.ToString());
+                //GameLog.Client.Diplomacy.DebugFormat("Check Dictionar foreignPower.Owner = {0}, counterpary ={1} powerID ={2}"
+                    //, foreignPower.OwnerID
+                    //, foreignPower.CounterpartyID
+                    //, powerID.ToString());
                 if (_acceptRejectDictionary.ContainsKey(powerID)) // check dictionary with key for bool value
                 {
-                    GameLog.Client.Diplomacy.DebugFormat("Found it in Dictionary");
+                    //GameLog.Client.Diplomacy.DebugFormat("Found it in Dictionary");
                     accepting = _acceptRejectDictionary[powerID];
                     if (accepting)
                     {

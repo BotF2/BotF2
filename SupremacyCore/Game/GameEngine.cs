@@ -673,15 +673,16 @@ namespace Supremacy.Game
                 {                
                     if (civ1 == civ2)
                         continue;
-
+                    bool _itIsBorg = false;
                     if (civ1.CivID == 6 || civ1.Key == "BORG")
                     {
+                        _itIsBorg = true;
                         //GameLog.Core.Diplomacy.DebugFormat("civ1 = {0}, civ2 = {1}, foreignPower = {2}, foreignPowerStatus = {3}", civ1, civ2, foreignPower, foreignPowerStatus);
-                        continue; // Borg don't accept anything
                     }
                     if (civ2.CivID == 6 || civ2.Key == "BORG")
                     {
-                        continue; // Borg don't accept anything
+                        _itIsBorg = true;
+
                     }
                     var diplomat1 = Diplomat.Get(civ1);
 
@@ -695,7 +696,21 @@ namespace Supremacy.Game
 
                     var foreignPower = diplomat1.GetForeignPower(civ2);
                     var foreignPowerStatus = diplomat1.GetForeignPower(civ2).DiplomacyData.Status;
-
+                    if (_itIsBorg == true)
+                    {
+                        if (civ1.CivID == 6 || civ1.Key == "BORG")
+                        {
+                            //var aForeignPower = diplomat1.GetForeignPower(civ2);
+                            DiplomacyHelper.ApplyTrustChange(foreignPower.Counterparty, foreignPower.Owner, -1000);
+                            DiplomacyHelper.ApplyRegardChange(foreignPower.Counterparty, foreignPower.Owner, -1000);
+                        }
+                        if (civ2.CivID == 6 || civ2.Key == "BORG")
+                        {
+                            DiplomacyHelper.ApplyTrustChange(foreignPower.Counterparty, foreignPower.Owner, -1000);
+                            DiplomacyHelper.ApplyRegardChange(foreignPower.Counterparty, foreignPower.Owner, -1000);
+                        }
+                        continue;
+                    }
                     //GameLog.Core.Diplomacy.DebugFormat("---------------------------------------");
                     //GameLog.Core.Diplomacy.DebugFormat("foreignPowerStatus = {2} for {0} vs {1}", civ1, civ2, foreignPowerStatus.ToString());
 

@@ -91,7 +91,7 @@ namespace Supremacy.AI
 
                 if (true)//(!aCiv.IsHuman)
                 {
-                    GameLog.Client.Diplomacy.DebugFormat("## Beging DiplomacyAI for aCiv AI .......................");
+                    //GameLog.Client.Diplomacy.DebugFormat("## Beging DiplomacyAI for aCiv AI .......................");
                     #region First Impression
                     /*
                      First impression delta trust and regard by traits
@@ -133,7 +133,7 @@ namespace Supremacy.AI
 
                     // if no other changes some variation over time
                     DiplomacyHelper.ApplyTrustChange(foreignPower.Counterparty, foreignPower.Owner, GetRandomNumber(-3, 3));
-                    DiplomacyHelper.ApplyRegardChange(foreignPower.Counterparty, foreignPower.Owner, GetRandomNumber(-3, 3));
+                    DiplomacyHelper.ApplyRegardChange(foreignPower.Counterparty, foreignPower.Owner, GetRandomNumber(-3, 3));                    
 
                     if ((5 - foreignPower.DiplomacyData.LastColdWarAttack) < 0 || 4 - foreignPower.DiplomacyData.LastIncursion < 0 || 6 - foreignPower.DiplomacyData.LastTotalWarAttack < 0)
                     {
@@ -294,19 +294,17 @@ namespace Supremacy.AI
 
                 if (true) // for human and non human alike )
                 {
-                    GameLog.Client.Diplomacy.DebugFormat("## Begin Statements, Human and AI civs .............................");
+                    //GameLog.Client.Diplomacy.DebugFormat("## Begin Statements, Human and AI civs .............................");
                     // did proposals received (incoming) now Statements outgoing
-                    //var otherdiplomat = Diplomat.Get(otherCiv);
-                    //ForeignPower otherForeignPower = otherdiplomat.GetForeignPower(civ);
-                    GameLog.Client.Diplomacy.DebugFormat("## current ..................aCiv ={0} ...............otherCiv ={1}",
-                            aCiv.ShortName, otherCiv.ShortName);
-                    GameLog.Client.Diplomacy.DebugFormat("## otherForeignPower.Counterparty ={0} otherForeignPower.Owner ={1}",
-                        otherForeignPower.Counterparty.ShortName, otherForeignPower.Owner.ShortName);
-                    GameLog.Client.Diplomacy.DebugFormat("## .....foreignPower.Counterparty ={0} .....foreignPower.Owner ={1}", 
-                        foreignPower.Counterparty.ShortName, foreignPower.Owner.ShortName);
+
+                    //GameLog.Client.Diplomacy.DebugFormat("## current ..................aCiv ={0} ...............otherCiv ={1}",
+                    //        aCiv.ShortName, otherCiv.ShortName);
+                    //GameLog.Client.Diplomacy.DebugFormat("## otherForeignPower.Counterparty ={0} otherForeignPower.Owner ={1}",
+                    //    otherForeignPower.Counterparty.ShortName, otherForeignPower.Owner.ShortName);
+                    //GameLog.Client.Diplomacy.DebugFormat("## .....foreignPower.Counterparty ={0} .....foreignPower.Owner ={1}", 
+                    //    foreignPower.Counterparty.ShortName, foreignPower.Owner.ShortName);
 
                     // use foreignPower for Statement and Response of AI aCiv
-                    // use otherForeignPower for Statement and Response - reaction to AI 
                     #region Statments
                     // statements ToDo: where do we make statements?
                     if (foreignPower.StatementReceived != null)
