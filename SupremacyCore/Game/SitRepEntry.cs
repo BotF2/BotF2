@@ -753,7 +753,9 @@ namespace Supremacy.Game
                 text = string.Format("!!! MISSING TEXT: {0}.{1} !!!", typeof(DiplomacySitRepStringKey).Name, key);
                 return text;
             }
-            GameLog.Client.Diplomacy.DebugFormat("LocalizedText localString ={0}", localizedString.ToString());
+
+            //GameLog.Client.Diplomacy.DebugFormat("LocalizedText localString ={0}", localizedString.ToString());
+            
             var scriptParameters = new ScriptParameters(
                 new ScriptParameter("$sender", typeof(Civilization)),
                 new ScriptParameter("$recipient", typeof(Civilization)));

@@ -523,7 +523,7 @@ namespace Supremacy.Economy
                 if (timeEstimate == 1)
                 {
                     //SetFlag((BuildProjectFlags)((int)BuildProjectFlags.DeuteriumShortage << i));
-                    GameLog.Core.Test.DebugFormat("Estimated One Turn... checking for resources: resource = {0}, delta/needed for finish = {1} for {2}"
+                    GameLog.Core.Production.DebugFormat("Estimated One Turn... checking for resources: resource = {0}, delta/needed for finish = {1} for {2}"
                         , resource.ToString(), delta.ToString(), this.BuildDesign);
 
                     if (delta > 0 && resource == ResourceType.RawMaterials && delta > civManager.Resources.RawMaterials.CurrentValue)
