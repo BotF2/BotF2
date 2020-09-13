@@ -711,6 +711,12 @@ namespace Supremacy.Game
                         }
                         continue;
                     }
+                    if (foreignPowerStatus == ForeignPowerStatus.AtWar)
+                    {
+                        DiplomacyHelper.ApplyTrustChange(foreignPower.Counterparty, foreignPower.Owner, -1000);
+                        DiplomacyHelper.ApplyRegardChange(foreignPower.Counterparty, foreignPower.Owner, -1000);
+                    }
+
                     //GameLog.Core.Diplomacy.DebugFormat("---------------------------------------");
                     //GameLog.Core.Diplomacy.DebugFormat("foreignPowerStatus = {2} for {0} vs {1}", civ1, civ2, foreignPowerStatus.ToString());
 
@@ -1248,7 +1254,7 @@ namespace Supremacy.Game
              */
             foreach (var agreement in GameContext.Current.AgreementMatrix)
                 AgreementFulfillmentVisitor.Visit(agreement);
-         
+          
         }
 
         #endregion

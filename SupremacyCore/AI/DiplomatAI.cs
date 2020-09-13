@@ -319,14 +319,19 @@ namespace Supremacy.AI
                         // DOING: Process statements (apply regard/trust changes, etc.)
                         if (foreignPower.StatementReceived.StatementType == StatementType.WarDeclaration)
                         {
-                            DiplomacyHelper.ApplyRegardChange(foreignPower.Counterparty, foreignPower.Owner, -300);
-                            DiplomacyHelper.ApplyTrustChange(foreignPower.Counterparty, foreignPower.Owner, -310);
+                            DiplomacyHelper.ApplyRegardChange(foreignPower.Counterparty, foreignPower.Owner, -1000);
+                            DiplomacyHelper.ApplyTrustChange(foreignPower.Counterparty, foreignPower.Owner, -1000);
                             int impact = -175;
                             TrustAndRegardByTraits(foreignPower, impact, similarTraits);
                             int degree = 0;
                             TrustAndRegardForATrait(foreignPower, degree, foreignTraits, theCivTraits);
 
-
+                            //if (foreignPower != null)
+                            //{
+                            //    foreignPower.DiplomacyData.Trust.AdjustCurrent(trustDelta);
+                            //    foreignPower.DiplomacyData.Trust.UpdateAndReset();
+                            //    foreignPower.UpdateRegardAndTrustMeters();
+                            //}
                             GameLog.Client.Diplomacy.DebugFormat(
                                     "## WarDeclaration by counterparty = {0} to {1} Regard = {2} Trust = {3}",
                                     foreignPower.Counterparty.ShortName, foreignPower.Owner.ShortName,

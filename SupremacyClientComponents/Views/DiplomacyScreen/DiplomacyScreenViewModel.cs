@@ -29,7 +29,9 @@ namespace Supremacy.Client.Views
 
         private bool _isMembershipButtonVisible;
         private bool _isFullAllianceButtonVisible;
-       
+        private Dictionary<int, int> _cancelationRegardDictionary = new Dictionary<int, int> { {999, 0} };
+        private Dictionary<int, int> _cancelationTrustDictionary = new Dictionary<int, int> { { 999, 0 } };
+
         #region Design-Time Instance
 
         private static DiplomacyScreenViewModel _designInstance;
@@ -230,7 +232,7 @@ namespace Supremacy.Client.Views
         private void ExecuteDeclareWarCommand()
         {
             ForeignPowerViewModel foreignPower;
-
+            
             if (!CanExecuteDeclareWarCommandCore(out foreignPower))
                 return;
 
@@ -664,6 +666,37 @@ namespace Supremacy.Client.Views
 
             SelectedForeignPower.OutgoingMessage.Send();
             GameLog.Client.Diplomacy.DebugFormat("Diplo Message: SEND button pressed...");
+            if (SelectedForeignPower != null && SelectedForeignPower.OutgoingMessage != null)
+            {
+                int _selectedID = SelectedForeignPower.Counterparty.CivID;
+
+                foreach (var element in SelectedForeignPower.OutgoingMessage.StatementElements)
+                {
+                    //GameLog.Client.Diplomacy.DebugFormat("!@^% element = {0} ", element.Description);
+                    if (element.ElementType == DiplomacyMessageElementType.WarDeclaration)
+                    {
+                        Int32.TryParse(SelectedForeignPower.CounterpartyRegard.ToString(), out int regard);
+                        Int32.TryParse(SelectedForeignPower.CounterpartyTrust.ToString(), out int trust);
+                        if (_cancelationRegardDictionary.ContainsKey(_selectedID))
+                        {
+                            _cancelationRegardDictionary.Remove(_selectedID);
+                            _cancelationRegardDictionary.Add(_selectedID, regard);
+                        }
+                        else { _cancelationRegardDictionary.Add(_selectedID, regard); }
+                        if (_cancelationTrustDictionary.ContainsKey(_selectedID))
+                        {
+                            _cancelationTrustDictionary.Remove(_selectedID);
+                            _cancelationTrustDictionary.Add(_selectedID, trust);
+                        }
+                        else { _cancelationTrustDictionary.Add(_selectedID, trust); }
+
+                        DiplomacyHelper.ApplyTrustChange(SelectedForeignPower.Owner, SelectedForeignPower.Counterparty, (int)regard *-1);
+                        DiplomacyHelper.ApplyRegardChange(SelectedForeignPower.Owner, SelectedForeignPower.Counterparty, (int)trust *-1);
+                    }
+
+                }
+            }
+
             SelectedForeignPower.OnOutgoingMessageCategoryChanged();
 
             OnCommandVisibilityChanged();
@@ -673,6 +706,7 @@ namespace Supremacy.Client.Views
 
         private bool CanExecuteCancelMessageCommand()
         {
+
             return DisplayMode == DiplomacyScreenDisplayMode.Outbox &&
                    SelectedForeignPower != null &&
                    SelectedForeignPower.OutgoingMessage != null;
@@ -682,7 +716,22 @@ namespace Supremacy.Client.Views
         {
             if (!CanExecuteCancelMessageCommand())
                 return;
+            int _selectedID = SelectedForeignPower.Counterparty.CivID;
 
+            foreach (var element in SelectedForeignPower.OutgoingMessage.StatementElements)
+            {
+                //GameLog.Client.Diplomacy.DebugFormat("!@^% element = {0} ", element.Description);
+                if (element.ElementType == DiplomacyMessageElementType.WarDeclaration)
+                {
+                    int? regard = _cancelationRegardDictionary[_selectedID];
+                    int? trust = _cancelationTrustDictionary[_selectedID];
+                    if( regard != null)
+                        DiplomacyHelper.ApplyTrustChange(SelectedForeignPower.Owner, SelectedForeignPower.Counterparty, (int)regard);
+                    if(trust != null)
+                        DiplomacyHelper.ApplyRegardChange(SelectedForeignPower.Owner, SelectedForeignPower.Counterparty, (int)trust);
+                }
+            }
+            
             SelectedForeignPower.OutgoingMessage.Cancel();
             SelectedForeignPower.OutgoingMessage = null;
 

@@ -16,6 +16,8 @@ using Supremacy.Scripting;
 using Supremacy.Utility;
 
 using System.Linq;
+using System.Runtime.CompilerServices;
+using FMOD;
 
 namespace Supremacy.Client.Views
 {
@@ -66,9 +68,10 @@ namespace Supremacy.Client.Views
             }
 
             _scriptExpression = new ScriptExpression(returnObservableResult: false)
-                                {
-                                    Parameters = scriptParameters
-                                };
+            {
+                Parameters = scriptParameters
+            };
+
         }
 
         private void ExecuteEditParameterCommand(DataTemplate contentTemplate)
