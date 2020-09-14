@@ -72,22 +72,22 @@ namespace Supremacy.AI
                 /*
                  * look for human to human proposals
                  */
-                if (aCiv.IsHuman && otherCiv.IsHuman)
-                {
-                    GameLog.Client.Diplomacy.DebugFormat("$$ HUMAN counterparty {0} to HUMAN owner {1}...",
-                        foreignPower.Counterparty.Key, foreignPower.Owner.Key);
-                    if (foreignPower.ProposalReceived != null)
-                    {
-                        if (aCiv == foreignPower.ProposalReceived.Recipient)
-                        {
-                            foreach (var clause in foreignPower.ProposalReceived.Clauses)
-                            {
-                                GameLog.Client.Diplomacy.DebugFormat("$$ Clause {0} duration {1}",
-                                        clause.ClauseType.ToString(), clause.Duration);                                      
-                            }
-                        }
-                    }
-                }
+                //if (aCiv.IsHuman && otherCiv.IsHuman)
+                //{
+                //    GameLog.Client.Diplomacy.DebugFormat("$$ HUMAN counterparty {0} to HUMAN owner {1}...",
+                //        foreignPower.Counterparty.Key, foreignPower.Owner.Key);
+                //    if (foreignPower.ProposalReceived != null)
+                //    {
+                //        if (aCiv == foreignPower.ProposalReceived.Recipient)
+                //        {
+                //            foreach (var clause in foreignPower.ProposalReceived.Clauses)
+                //            {
+                //                GameLog.Client.Diplomacy.DebugFormat("$$ Clause {0} duration {1}",
+                //                        clause.ClauseType.ToString(), clause.Duration);                                      
+                //            }
+                //        }
+                //    }
+                //}
 
                 if (true)//(!aCiv.IsHuman)
                 {
@@ -100,8 +100,33 @@ namespace Supremacy.AI
                     {
                         foreignPower.DiplomacyData.FirstDiplomaticAction = true;
                         int impact = 75;
-                        if (foreignPower.Counterparty.CivID == 0)
-                            impact = 100;
+                        var coutnerParty = foreignPower.Counterparty.CivID;
+                        switch (coutnerParty)
+                        {
+                            case 0: //fed
+                                {
+                                    impact = 95;
+                                    break;
+                                }
+                            case 1: // terran
+                                {
+                                    impact = 60;
+                                    break;
+                                }
+                            case 4: // card
+                                {
+                                    impact = 65;
+                                    break;
+                                }
+                            case 5: // dom
+                                {
+                                    impact = 60;
+                                    break;
+                                }
+                            default:
+                                break;
+                        }
+                 
                         GameLog.Client.Diplomacy.DebugFormat("## To = {0} regard ={2} trust ={3} Before First Impression fropm {1}",
                             foreignPower.Counterparty.Key,
                               foreignPower.Owner.Key,
