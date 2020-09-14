@@ -100,6 +100,8 @@ namespace Supremacy.AI
                     {
                         foreignPower.DiplomacyData.FirstDiplomaticAction = true;
                         int impact = 75;
+                        if (foreignPower.Counterparty.CivID == 0)
+                            impact = 100;
                         GameLog.Client.Diplomacy.DebugFormat("## To = {0} regard ={2} trust ={3} Before First Impression fropm {1}",
                             foreignPower.Counterparty.Key,
                               foreignPower.Owner.Key,
@@ -467,14 +469,14 @@ namespace Supremacy.AI
             {
                 //foreignP.AddRegardEvent(new RegardEvent(5, RegardEventType.TraitsInCommon,
                 //      10 + impact));
-                DiplomacyHelper.ApplyTrustChange(foreignP.Counterparty, foreignP.Owner, 10 + impact);
-                DiplomacyHelper.ApplyRegardChange(foreignP.Counterparty, foreignP.Owner, 5 + impact);
+                DiplomacyHelper.ApplyTrustChange(foreignP.Counterparty, foreignP.Owner, -15 + impact);
+                DiplomacyHelper.ApplyRegardChange(foreignP.Counterparty, foreignP.Owner, -20 + impact);
             }
             else if (similarTraits == 0)
             {
             //    foreignP.AddRegardEvent(new RegardEvent(5, RegardEventType.TraitsInCommon,
             //        -90 + impact));
-                DiplomacyHelper.ApplyTrustChange(foreignP.Counterparty, foreignP.Owner, -85 + impact);
+                DiplomacyHelper.ApplyTrustChange(foreignP.Counterparty, foreignP.Owner, -95 + impact);
                 DiplomacyHelper.ApplyRegardChange(foreignP.Counterparty, foreignP.Owner, -90 + impact);
             }
         }

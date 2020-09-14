@@ -29,7 +29,7 @@ namespace Supremacy.Client.Views
     public class DiplomacyMessageViewModel : INotifyPropertyChanged
     {
         private readonly Civilization _sender;
-        private readonly Civilization _recipient;
+        private Civilization _recipient;
         private readonly ObservableCollection<DiplomacyMessageElement> _elements;
         private readonly ObservableCollection<DiplomacyMessageElement> _offerElements;
         private readonly ObservableCollection<DiplomacyMessageElement> _requestElements;
@@ -189,6 +189,7 @@ namespace Supremacy.Client.Views
         public Civilization Recipient
         {
             get { return _recipient; }
+            set { _recipient = value; }
         }
 
         public ReadOnlyObservableCollection<DiplomacyMessageElement> Elements
@@ -1242,9 +1243,11 @@ namespace Supremacy.Client.Views
                 Tone = proposal.Tone,
             };
 
-            message._treatyLeadInTextScript.ScriptCode = QuoteString(LookupDiplomacyText(leadInId, message._tone, message._sender) ?? string.Empty);
+            message._treatyLeadInTextScript.ScriptCode = QuoteString(LookupDiplomacyText(leadInId, message._tone, message._sender ) ?? string.Empty);
+            if (message.Recipient == null)
+                message.Recipient = proposal.Recipient;
             message.TreatyLeadInText = message._treatyLeadInTextScript.Evaluate<string>(message._leadInRuntimeParameters);
-            GameLog.Core.Diplomacy.DebugFormat("message ={0}", message.TreatyLeadInText);
+            //GameLog.Core.Diplomacy.DebugFormat("message ={0}", message.TreatyLeadInText);
             return message;
         }
 
