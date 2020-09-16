@@ -29,7 +29,7 @@ namespace Supremacy.Client.Views
     public class DiplomacyMessageViewModel : INotifyPropertyChanged
     {
         private readonly Civilization _sender;
-        private Civilization _recipient;
+        private readonly Civilization _recipient;
         private readonly ObservableCollection<DiplomacyMessageElement> _elements;
         private readonly ObservableCollection<DiplomacyMessageElement> _offerElements;
         private readonly ObservableCollection<DiplomacyMessageElement> _requestElements;
@@ -189,7 +189,6 @@ namespace Supremacy.Client.Views
         public Civilization Recipient
         {
             get { return _recipient; }
-            set { _recipient = value; }
         }
 
         public ReadOnlyObservableCollection<DiplomacyMessageElement> Elements
@@ -530,7 +529,7 @@ namespace Supremacy.Client.Views
                 treatyLeadInId = isWarPact ? DiplomacyStringID.WarPactLeadIn : DiplomacyStringID.ProposalLeadIn;
                 if (treatyLeadInId == DiplomacyStringID.ProposalLeadIn)
                     GameLog.Client.Diplomacy.DebugFormat("** Treaty Leadin text set, {0}", treatyLeadInId.ToString());
-
+                /* we do not currently use offer or demand with warpact */
                 if (_offerElements.Count != 0)
                     offerLeadInId = isWarPact ? DiplomacyStringID.WarPactOffersLeadIn : DiplomacyStringID.ProposalOffersLeadIn;
                 if (_requestElements.Count != 0)
@@ -1244,8 +1243,6 @@ namespace Supremacy.Client.Views
             };
 
             message._treatyLeadInTextScript.ScriptCode = QuoteString(LookupDiplomacyText(leadInId, message._tone, message._sender ) ?? string.Empty);
-            if (message.Recipient == null)
-                message.Recipient = proposal.Recipient;
             message.TreatyLeadInText = message._treatyLeadInTextScript.Evaluate<string>(message._leadInRuntimeParameters);
             //GameLog.Core.Diplomacy.DebugFormat("message ={0}", message.TreatyLeadInText);
             return message;
