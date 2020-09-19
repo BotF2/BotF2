@@ -39,7 +39,7 @@ namespace Supremacy.Client
             }
             else
             {
-                string errors = DateTime.Now + Environment.NewLine;
+                string errors = "";
                 lock (_syncLock)
                 {
                     var innerException = exception;
@@ -56,10 +56,11 @@ namespace Supremacy.Client
                     Console.Error.Flush();
                     MessageBox.Show(
                         "An unhandled exception has occurred.  Detailed error information is "
-                        + "available in the 'Error.txt' file.",
+                        + "available in the 'Log.txt' file.",
                         "Unhandled Exception",
                         MessageBoxButton.OK,
-                        MessageBoxImage.Error);
+                        MessageBoxImage.Error
+                        );
 
                     //if (ClientSettings.Current.ReportErrors)
                     //{
@@ -79,20 +80,38 @@ namespace Supremacy.Client
             using (var client = new WebClient())
             {
                 var values = new NameValueCollection();
+
                 values["Version"] = ClientApp.ClientVersion.ToString();
                 values["Title"] = stackTrace.Split('\n')[0];
                 values["StackTrace"] = stackTrace;
 
-                try
-                {
-                    var response = client.UploadValues(_reportErrorURL, "POST", values);
-                    var responseString = Encoding.UTF8.GetString(response, 0, response.Length);
-                }
-                catch (Exception e)
-                {
-                    GameLog.Core.General.ErrorFormat(" #### ERROR" +Environment.NewLine + "{0}", e);
-                    //Don't bother doing anything
-                }
+                string _text = Environment.NewLine + Environment.NewLine
+                    + DateTime.Now + " #### ERROR " /*+ Environment.NewLine*/
+                    + "GAME-VERSION:;" + ClientApp.ClientVersion.ToString() + Environment.NewLine
+                    + "ERROR TITLE:;" + stackTrace.Split('\n')[0] + Environment.NewLine
+                    + "StackTrace complete:;" + stackTrace;
+
+                GameLog.Core.General.ErrorFormat(_text);
+                Console.WriteLine(_text);
+
+                //try
+                //{
+                //    //var response = client.UploadValues(_reportErrorURL, "POST", values);
+                //    //var responseString = Encoding.UTF8.GetString(response, 0, response.Length);
+                //    foreach (var item in values)
+                //    {
+                //    GameLog.Core.General.ErrorFormat(" #### ERROR" + Environment.NewLine + "{0}", item.ToString());
+                //    }
+
+                //}
+                //catch (Exception e)
+                //{
+                //    foreach (var item in values)
+                //    {
+                //        GameLog.Core.General.ErrorFormat(" #### ERROR" + Environment.NewLine + "{0}", e);
+                //    }
+                //    //Don't bother doing anything
+                //}
 
             }
         }
