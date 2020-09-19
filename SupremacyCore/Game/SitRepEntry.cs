@@ -814,7 +814,7 @@ namespace Supremacy.Game
 
             if (proposal != null)
             {
-                if (proposal.HasTreaty())
+                if (proposal.HasTreaty()) // has clause of treaty type including WarPact
                 {
                     if (proposal.HasClause(ClauseType.TreatyCeaseFire))
                         return detailed ? default(DiplomacySitRepStringKey?) : DiplomacySitRepStringKey.CeaseFireProposedSummaryText;
