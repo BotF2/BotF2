@@ -4,12 +4,13 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Linq.Expressions;
-
+using System.Net;
 using Microsoft.Scripting;
 
 using Obtics.Values;
 
 using Supremacy.Annotations;
+using Supremacy.Diplomacy.Visitors;
 using Supremacy.Scripting.Runtime;
 using Supremacy.Utility;
 

@@ -968,6 +968,14 @@ namespace Supremacy.Game
                                     DiplomacyHelper.SpecificCivAcceptingRejecting(foreignPower.StatementReceived.StatementType); // act on statement to accept reject
                                     break;
                                 }
+                            case StatementType.WarPact:
+                                {
+                                    // use this to enter in dictionary and a statment in inbox for receipient ??
+                                    var target = (Civilization)foreignPower.StatementReceived.Parameter;
+                                    DiplomacyHelper.ActOnWarPact(civ2, civ1, target);
+                                    break;
+
+                                }
                             case StatementType.CommendWar:
                             case StatementType.DenounceWar:
                             case StatementType.WarDeclaration:

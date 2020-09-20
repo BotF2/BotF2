@@ -130,7 +130,8 @@ namespace Supremacy.Diplomacy
         F51,
         F52,
         F53,
-        F54
+        F54,
+        WarPact
 
     }
 

@@ -59,8 +59,9 @@ namespace Supremacy.Client.Views
                 new ScriptParameter("$sender", typeof(Civilization)),
                 new ScriptParameter("$recipient", typeof(Civilization)));
 
-            if (parameterType != null)
+            if (parameterType != null) // for target of war pact, who do we both sender and recipient declare war on
             {
+                // ToDo: Get this from _warPactDictionary ???
                 scriptParameters = scriptParameters.Merge(
                     new ScriptParameter(
                         "$parameter",

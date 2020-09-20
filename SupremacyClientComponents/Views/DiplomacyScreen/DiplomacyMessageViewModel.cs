@@ -524,7 +524,7 @@ namespace Supremacy.Client.Views
 
             if (_treatyElements.Count != 0)
             {
-                var isWarPact = _treatyElements[0].ElementType == DiplomacyMessageElementType.TreatyWarPact; // bool  
+                bool isWarPact = _treatyElements[0].ElementType == DiplomacyMessageElementType.TreatyWarPact;
 
                 treatyLeadInId = isWarPact ? DiplomacyStringID.WarPactLeadIn : DiplomacyStringID.ProposalLeadIn;
                 if (treatyLeadInId == DiplomacyStringID.ProposalLeadIn)
