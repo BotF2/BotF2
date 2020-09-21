@@ -235,7 +235,10 @@ namespace Supremacy.Diplomacy
             string senderName = sender.ShortName.ToString();
             string recipientName = recipient.ShortName.ToString();
             string targetName = target.ShortName.ToString();
-            // ToDo: build string for   
+            // ToDo: build string for  
+            
+            // look up in dictionary and do this if proposal is accepted ???
+
             // <LocalizedStringValue Language="en">The {$recipient.ShortName} join the {$sender.ShortName} in war against the [h]{$parameter != null ? $parameter.ShortName : "(choose target)"}[/].</LocalizedStringValue>
             string _warPactString = "The " + senderName + " join the " + recipientName + " in war against the " + targetName + ".";
             //if (accepting) // act on civ target in dictionary for sendID and recipientID key?
