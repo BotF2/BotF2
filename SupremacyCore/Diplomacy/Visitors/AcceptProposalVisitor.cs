@@ -142,6 +142,7 @@ namespace Supremacy.Diplomacy.Visitors
                 
                 return;
             }
+            // creat WarPactDitionary entry to call DiplomacyHelper.WarPactDitionaryEntry(senderID + recipientID int, target civilizatioin)
 
             var senderForeignPower = senderDiplomat.GetForeignPower(target);
             if (senderForeignPower.DiplomacyData.Status != ForeignPowerStatus.AtWar)

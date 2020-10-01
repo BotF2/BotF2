@@ -970,9 +970,11 @@ namespace Supremacy.Game
                                 }
                             case StatementType.WarPact:
                                 {
+                                    int civ1ID = civ1.CivID;
+                                    int civ2ID = civ2.CivID;
+                                    DiplomacyHelper.WarPactExecute(civ2ID, civ1ID, 999); //foreignPower.StatementReceived.Parameter);
                                     // use this to enter in dictionary and a statment in inbox for receipient ??
-                                    var target = (Civilization)foreignPower.StatementReceived.Parameter;
-                                    DiplomacyHelper.ActOnWarPact(civ2, civ1, target);
+                                    //var target = (Civilization)foreignPower.StatementReceived.Parameter;
                                     break;
 
                                 }

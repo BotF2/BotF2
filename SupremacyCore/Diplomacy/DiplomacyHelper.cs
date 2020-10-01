@@ -227,38 +227,6 @@ namespace Supremacy.Diplomacy
             foreignPower.CounterpartyForeignPower.StatementReceived = proposal;
                 GameLog.Client.Diplomacy.DebugFormat("************** Diplo: SendWarDeclaration turned to RECEIVED at ForeignPower...");
         }
-        public static void ActOnWarPact(Civilization sender, Civilization recipient, Civilization target) // read statment type, act on civID + civID key with civ target value ?? 
-        {
-            //var sendingCivManager = GameContext.Current.CivilizationManagers[sender];
-            //var recipietnCivManager = GameContext.Current.CivilizationManagers[recipient];
-            //var targetCivManager = GameContext.Current.CivilizationManagers[target];
-            string senderName = sender.ShortName.ToString();
-            string recipientName = recipient.ShortName.ToString();
-            string targetName = target.ShortName.ToString();
-            // ToDo: build string for  
-            
-            // look up in dictionary and do this if proposal is accepted ???
-
-            // <LocalizedStringValue Language="en">The {$recipient.ShortName} join the {$sender.ShortName} in war against the [h]{$parameter != null ? $parameter.ShortName : "(choose target)"}[/].</LocalizedStringValue>
-            string _warPactString = "The " + senderName + " join the " + recipientName + " in war against the " + targetName + ".";
-            //if (accepting) // act on civ target in dictionary for sendID and recipientID key?
-            //{
-            //    if (foreignPower.CounterpartyForeignPower.LastProposalSent != null) // aCiv is owner of the foreignpower looking for a ProposalRecieved
-            //    {
-            //        AcceptProposalVisitor.Visit(foreignPower.CounterpartyForeignPower.LastProposalSent);
-            //        var civManagers = GameContext.Current.CivilizationManagers;
-            //        var civ1 = foreignPower.CounterpartyForeignPower.Owner;
-            //        var civ2 = foreignPower.Owner;
-
-            //        civManagers[civ1].SitRepEntries.Add(new DiplomaticSitRepEntry(civ1, foreignPower.ResponseSent));
-
-            //        civManagers[civ2].SitRepEntries.Add(new DiplomaticSitRepEntry(civ2, foreignPower.ResponseSent));
-
-            //        foreignPower.CounterpartyForeignPower.LastProposalSent = null;
-            //        foreignPower.ResponseSent = null;
-            //    }
-            //}
-        }
 
         public static void SpecificCivAcceptingRejecting([NotNull] StatementType statementType) // read statment type to get civIDs and bool accpet reject
         {
@@ -313,7 +281,25 @@ namespace Supremacy.Diplomacy
                 }
             }
         }
-        public static void WarPackDictionary([NotNull] ICivIdentity civ) // frind entry in dictionary and send as foreignPower.StatementReceived.Parameter as Civilization
+        public static void WarPactExecute(int senderID, int recipientID, int target)
+        {
+            // ??? creat a statment from ditionary?
+
+            //var sendingCivManager = GameContext.Current.CivilizationManagers[sender];
+            //var recipietnCivManager = GameContext.Current.CivilizationManagers[recipient];
+            //var targetCivManager = GameContext.Current.CivilizationManagers[target];
+            //string senderName = sender.ShortName.ToString();
+            //string recipientName = recipient.ShortName.ToString();
+            Civilization _target = GameContext.Current.CivilizationManagers[target].Civilization;
+            string targetName = _target.ShortName;
+            // ToDo: build string for  
+
+            // look up in dictionary and do this if proposal is accepted ???
+
+            // <LocalizedStringValue Language="en">The {$recipient.ShortName} join the {$sender.ShortName} in war against the [h]{$parameter != null ? $parameter.ShortName : "(choose target)"}[/].</LocalizedStringValue>
+            //string _warPactString = "The " + senderName + " join the " + recipientName + " in war against the " + targetName + ".";
+        }
+        public static void WarPackDictionary([NotNull] ICivIdentity civ) // find entry in dictionary and send as foreignPower.StatementReceived.Parameter as Civilization
         {
             if (civ == null)
                 throw new ArgumentNullException("civ");
@@ -340,8 +326,25 @@ namespace Supremacy.Diplomacy
                 }
             }
         }
-    
-    public static void AcceptingRejecting([NotNull] ICivIdentity civ) // frind entry in dictionary and send as foreignPower.PendingAction = PendingDiplomacyAction.AcceptProposal; or Reject
+        public static void WarPactDictionaryEntry(int senderRecipientID, Civilization target)  // populate dictionary
+        {
+            //int turnNumber = turn; // in case we need this to time clearing of dictionary - Dictionary<string, Tuple<bool, int>>(); or ValueType is a Class with bool and int.
+            //string foreignPowerID = foreignPower.CounterpartyID.ToString() + foreignPower.OwnerID.ToString();
+
+            if (_warPactDictionary.ContainsKey(senderRecipientID))
+            {
+                _warPactDictionary.Remove(senderRecipientID);
+                _warPactDictionary.Add(senderRecipientID, target);
+            }
+            else { _warPactDictionary.Add(senderRecipientID, target); }
+
+            //GameLog.Client.Diplomacy.DebugFormat(" _Dicionary.Count = {1}, Pair(Counter/Owner) = {2}"
+            //    , GameContext.Current.TurnNumber
+            //    , _acceptRejectDictionary.Count
+            //    , foreignPowerID
+                //);
+        }
+        public static void AcceptingRejecting([NotNull] ICivIdentity civ) // frind entry in dictionary and send as foreignPower.PendingAction = PendingDiplomacyAction.AcceptProposal; or Reject
         {
             if (civ == null)
                 throw new ArgumentNullException("civ");
@@ -360,7 +363,9 @@ namespace Supremacy.Diplomacy
 
                 string powerID = foreignPower.CounterpartyID.ToString() + foreignPower.OwnerID.ToString();
                 int powerIntID = foreignPower.OwnerID;
-                Civilization targetCiv = (Civilization)foreignPower.StatementReceived.Parameter;
+                Civilization  targetCiv = null;
+                if (foreignPower != null && foreignPower.StatementReceived != null && foreignPower.StatementReceived.Parameter != null)
+                    targetCiv = (Civilization)foreignPower.StatementReceived.Parameter;
 
                 //GameLog.Client.Diplomacy.DebugFormat("Check Dictionar foreignPower.Owner = {0}, counterpary ={1} powerID ={2}"
                 //, foreignPower.OwnerID
