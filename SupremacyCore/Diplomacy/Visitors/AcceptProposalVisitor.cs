@@ -142,13 +142,7 @@ namespace Supremacy.Diplomacy.Visitors
                 
                 return;
             }
-            // creat WarPactDitionary entry to call DiplomacyHelper.WarPactDitionaryEntry(senderID + recipientID int, target civilizatioin)
-            //int[] _key = new[] { Proposal.Sender.CivID, Proposal.Recipient.CivID };
-            //string _civKeyString = "";
-            ////string _key = Proposal.Sender.CivID.ToString() + Proposal.Recipient.CivID.ToString();
-            ////int _civKey = int.Parse(_key);
-            //DiplomacyHelper.WarPactDictionaryEntry(_civKeyString, target);
-
+          
             var senderForeignPower = senderDiplomat.GetForeignPower(target);
             if (senderForeignPower.DiplomacyData.Status != ForeignPowerStatus.AtWar)
                 senderForeignPower.DeclareWar();

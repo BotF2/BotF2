@@ -969,19 +969,6 @@ namespace Supremacy.Game
                                     break;
                                 }
                             case StatementType.WarPact:
-                                {
-                                    //int[] _key = new[] { civ2.CivID, civ1.CivID };
-                                    //string _civKeyString = "";
-                                    //foreach (int number in _key)
-                                    //{
-                                    //    _civKeyString = _civKeyString + number;
-                                    //}
-                                    //var target = (Civilization)foreignPower.StatementReceived.Parameter;
-                                    //DiplomacyHelper.WarPactDictionaryEntry(_civKeyString, target); //foreignPower.StatementReceived.Parameter);
-
-                                    break;
-
-                                }
                             case StatementType.CommendWar:
                             case StatementType.DenounceWar:
                             case StatementType.WarDeclaration:
