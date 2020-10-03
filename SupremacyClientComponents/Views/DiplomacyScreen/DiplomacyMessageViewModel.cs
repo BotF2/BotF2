@@ -1246,8 +1246,8 @@ namespace Supremacy.Client.Views
             if (proposal.IsWarPact())
             {
                 string target = proposal.Clauses[0].Data.ToString();
+                message.TreatyLeadInText = String.Format(ResourceManager.GetString("WAR_PACT_LEADIN"), proposal.Recipient.ShortName, proposal.Sender.ShortName, target);
 
-                message.TreatyLeadInText = " The " + proposal.Recipient.ShortName + " joins the " + proposal.Sender.ShortName + " in war agenst the " + target;
             }
             else
             {
