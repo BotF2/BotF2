@@ -299,7 +299,7 @@ namespace Supremacy.Diplomacy
                 //throw new ArgumentNullException("_key");
             }
             Civilization targetCiv = _warPactDictionary[_key];
-            GameLog.Client.Diplomacy.DebugFormat("Found war pact dictionary entry {0} at key {1}", targetCiv.ShortName, _key);
+            GameLog.Client.Diplomacy.DebugFormat("#### Found war pact dictionary entry {0} at key {1}", targetCiv.ShortName, _key);
             return targetCiv;
             // now that we found an entry write the war pact statement 
         }

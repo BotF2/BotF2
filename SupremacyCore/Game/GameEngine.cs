@@ -970,7 +970,7 @@ namespace Supremacy.Game
                                 }
                             case StatementType.WarPact:
                                 {
-                                    int[] _key = new[] { civ1.CivID, civ2.CivID };
+                                    int[] _key = new[] { civ2.CivID, civ1.CivID };
                                     string _civKeyString = "";
                                     foreach (int number in _key)
                                     {

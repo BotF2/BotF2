@@ -52,7 +52,7 @@ namespace Supremacy.Client.Views
         private readonly ScriptExpression _requestLeadInTextScript;
 
         private readonly ScriptParameters _leadInParameters;
-        private readonly RuntimeScriptParameters _leadInRuntimeParameters;
+        private RuntimeScriptParameters _leadInRuntimeParameters;
         private readonly DelegateCommand<ICheckableCommandParameter> _setAcceptButton;
         private readonly DelegateCommand<ICheckableCommandParameter> _setRejectButton;
         private Dictionary<int, string> _acceptedRejected = new Dictionary<int, string> { { 999, "placeHolder" } };
@@ -1243,9 +1243,17 @@ namespace Supremacy.Client.Views
             {
                 Tone = proposal.Tone,
             };
+            if (proposal.IsWarPact())
+            {
+                string target = proposal.Clauses[0].Data.ToString();
 
-            message._treatyLeadInTextScript.ScriptCode = QuoteString(LookupDiplomacyText(leadInId, message._tone, message._sender ) ?? string.Empty);
-            message.TreatyLeadInText = message._treatyLeadInTextScript.Evaluate<string>(message._leadInRuntimeParameters);
+                message.TreatyLeadInText = " The " + proposal.Recipient.ShortName + " joins the " + proposal.Sender.ShortName + " in war agenst the " + target;
+            }
+            else
+            {
+                message._treatyLeadInTextScript.ScriptCode = QuoteString(LookupDiplomacyText(leadInId, message._tone, message._sender) ?? string.Empty);
+                message.TreatyLeadInText = message._treatyLeadInTextScript.Evaluate<string>(message._leadInRuntimeParameters);
+            }
             //GameLog.Core.Diplomacy.DebugFormat("message ={0}", message.TreatyLeadInText);
             return message;
         }
