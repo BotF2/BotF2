@@ -376,6 +376,68 @@ namespace Supremacy.Client
                     return;
                 }
 
+
+                //Error - txt - First Run.txt
+                string file = appDir + "\\" + "Error-txt - First Run.txt";
+                string fileResourceFolder = appDir + "\\Resources\\" + "Error-txt - First Run.txt";
+                
+                // File delivered by Dropbox is more up to date
+                if (File.Exists(fileResourceFolder))
+                {
+                    File.Copy(fileResourceFolder, file, true);
+                }
+                else
+                {
+                    if (!File.Exists(file))
+                    {
+                         //streamWriter;
+                        StreamWriter streamWriter = new StreamWriter(file);
+                        streamWriter.WriteLine("if the game crash after first start...");
+                        streamWriter.WriteLine("...make sure you have the requirements installed:");
+                        streamWriter.WriteLine(" ");
+                        streamWriter.WriteLine("a) XNA Framework 3.1 Redistributable (make sure 3.1 ..... 4.0 or higher doesn't work)");
+                        streamWriter.WriteLine("Microsoft XNA Framework 3.1 https://www.microsoft.com/en-us/download/details.aspx?id=15163");
+                        streamWriter.WriteLine(" ");
+                        streamWriter.WriteLine("b) is the program at a folder with write access ?");
+                        streamWriter.WriteLine("- not program folders");
+                        streamWriter.WriteLine("- maybe c:/User/YourUserName/RiseoftheUFP");
+                        streamWriter.WriteLine(" ");
+                        streamWriter.WriteLine("c) if still problems > see /Resources/_Trouble-Fix_for_Rise_Of_The_UFP.txt");
+                        streamWriter.WriteLine(" ");
+                        streamWriter.WriteLine("d) for more info see http://botf2.square7.ch/wiki/index.php?title=Manual#The_Game_Overview");
+                        streamWriter.WriteLine(" ");
+                        streamWriter.WriteLine(" ");
+
+                        streamWriter.Close();
+                    }
+                }
+
+                //if (!CheckXNAFramework31())   // ToDo - check for XNA Framework available ?
+                //{
+                //    MessageBox.Show(
+                //            "Rise of the UFP requires Microsoft XNA Framework 3.1 Redistributable"
+                //            + Environment.NewLine
+                //            + "(make sure 3.1..... 4.0 or higher doesn't work)"
+                //            + Environment.NewLine
+                //            + Environment.NewLine
+                //            + "It must be installed before running the game.",
+                //            "Rise of the UFP",
+                //            MessageBoxButton.OK,
+                //            MessageBoxImage.Hand);
+
+                //    if (File.Exists(file))  // "file" from before
+                //    {
+                //        ProcessStartInfo processStartInfo = new ProcessStartInfo
+                //        {
+                //            UseShellExecute = true,
+                //            FileName = file
+                //        };
+                //    }
+                //    return;
+                //}
+
+
+
                 try
                 {
                     ShowSplashScreen();
@@ -419,6 +481,32 @@ namespace Supremacy.Client
                 }
             }
 
+        }
+
+        private static bool CheckXNAFramework31()
+        {
+            //string output = "";
+
+            //RegRead HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\XNA\Framework\v3.1
+
+            string baseKeyName = @"SOFTWARE\Microsoft\XNA\Game Studio";
+            Microsoft.Win32.RegistryKey installedFrameworkVersions = Microsoft.Win32.Registry.LocalMachine.OpenSubKey(baseKeyName);
+
+            string[] versionNames = installedFrameworkVersions.GetSubKeyNames();
+
+            bool found = false;
+            foreach (string s in versionNames)
+            {
+                if (s == "v3.1")
+                {
+                    found = true;
+                    break;
+                }
+            }
+
+            found = true;
+
+            return found;
         }
 
         private static bool CheckNetFxVersion()

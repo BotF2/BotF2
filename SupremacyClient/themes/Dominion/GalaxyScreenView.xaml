@@ -650,10 +650,11 @@
                                                 <Border.ContextMenu>
                                                     <ContextMenu>
                                                         <MenuItem x:Name="ScrapStationMenuItem"
-                                      Header="{s:StringResource SCRAP}"
-                                      Command="{x:Static scc:GalaxyScreenCommands.Scrap}"
-                                      IsCheckable="True"
-                                      IsChecked="{Binding Path=(MenuItem.CommandParameter).(scc:CheckableCommandParameter.IsChecked), RelativeSource={RelativeSource Self}, Mode=TwoWay, FallbackValue=False}">
+                                                                    Header="{s:StringResource SCRAP}"
+                                                                    Command="{x:Static scc:GalaxyScreenCommands.Scrap}"
+                                                                    Visibility="{Binding Path=SelectedSectorStation.StationScrapVisibility, Converter={StaticResource BooleanToVisibilityConverter}}"
+                                                                    IsCheckable="True"
+                                                                    IsChecked="{Binding Path=(MenuItem.CommandParameter).(scc:CheckableCommandParameter.IsChecked), RelativeSource={RelativeSource Self}, Mode=TwoWay, FallbackValue=False}">
                                                             <MenuItem.CommandParameter>
                                                                 <scc:CheckableCommandParameter InnerParameter="{Binding Path=(scc:GalaxyScreenPresentationModel.SelectedSector).(s:Sector.Station), Mode=OneWay}"
                                                                IsChecked="{Binding Path=(scc:GalaxyScreenPresentationModel.SelectedSector).(s:Sector.Station).(s:TechObject.Scrap), Mode=OneWay}" />

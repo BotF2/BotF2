@@ -377,8 +377,8 @@ namespace Supremacy.Economy
             TechObject spawnedInstance;
             //if(BuildDesign == StationDes)
             GameLog.Core.Production.DebugFormat("Trying to finish BuildProject ##########  {0} by {1} at {2}", BuildDesign, Builder, Location);
-            if (civManager == null || !BuildDesign.TrySpawn(Location, Builder, out spawnedInstance))
-                return;
+            if (civManager == null || !BuildDesign.TrySpawn(Location, Builder, out spawnedInstance))  // what does the TrySpawn have to do with our OutOfRagneException in production? 
+                return; // If we do or do not spawn does that change a collection to give out of range?
 
             //Wtf is going on here?
             ItemBuiltSitRepEntry newEntry = null;
@@ -523,7 +523,7 @@ namespace Supremacy.Economy
                 if (timeEstimate == 1)
                 {
                     //SetFlag((BuildProjectFlags)((int)BuildProjectFlags.DeuteriumShortage << i));
-                    GameLog.Core.Test.DebugFormat("Estimated One Turn... checking for resources: resource = {0}, delta/needed for finish = {1} for {2}"
+                    GameLog.Core.Production.DebugFormat("Estimated One Turn... checking for resources: resource = {0}, delta/needed for finish = {1} for {2}"
                         , resource.ToString(), delta.ToString(), this.BuildDesign);
 
                     if (delta > 0 && resource == ResourceType.RawMaterials && delta > civManager.Resources.RawMaterials.CurrentValue)

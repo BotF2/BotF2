@@ -132,7 +132,7 @@ namespace Supremacy.Diplomacy.Visitors
             var senderDiplomat = Diplomat.Get(Proposal.Sender);
             var recipientDiplomat = Diplomat.Get(Proposal.Recipient);
 
-            var target = clause.Data as Civilization;
+            var target = clause.Data as Civilization; // target civilization of war pact
             if (target == null)
             {
                 GameLog.Client.Diplomacy.ErrorFormat(
@@ -142,7 +142,7 @@ namespace Supremacy.Diplomacy.Visitors
                 
                 return;
             }
-
+          
             var senderForeignPower = senderDiplomat.GetForeignPower(target);
             if (senderForeignPower.DiplomacyData.Status != ForeignPowerStatus.AtWar)
                 senderForeignPower.DeclareWar();

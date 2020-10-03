@@ -1,4 +1,4 @@
-// DiplomacyHelper.cs
+// File:DiplomacyHelper.cs
 //
 // Copyright (c) 2007 Mike Strobel
 //
@@ -23,6 +23,7 @@ using System.Linq;
 using System.Media;
 using System.Runtime.CompilerServices;
 using System.Web.Services.Description;
+using System.Windows;
 using System.Windows.Navigation;
 
 namespace Supremacy.Diplomacy
@@ -31,7 +32,21 @@ namespace Supremacy.Diplomacy
     {
         private static readonly IList<Civilization> EmptyCivilizations = new Civilization[0];
         private static CollectionBase<RegardEvent> _regardEvents;
-        private static Dictionary<string, bool> _acceptRejectDictionary = new Dictionary<string, bool> { {"98", false } };
+        private static Dictionary<string, bool> _acceptRejectDictionary = new Dictionary<string, bool> { { "98", false } };
+       //private static Dictionary<string, Civilization> _warPactDictionary = new Dictionary<string, Civilization> { { "987", GameContext.Current.CivilizationManagers[0].Civilization} };
+        public static Civilization _diploScreenSelectedForeignPower;
+
+        public static Civilization DiploScreenSelectedForeignPower
+        {
+            get
+            {
+                return _diploScreenSelectedForeignPower;
+            }
+            set
+            {
+                _diploScreenSelectedForeignPower = value;
+            }
+        }
 
         public static ForeignPowerStatus GetForeignPowerStatus([NotNull] ICivIdentity owner, [NotNull] ICivIdentity counterparty)
         {
@@ -68,86 +83,59 @@ namespace Supremacy.Diplomacy
         {
             if (civ == null)
                 throw new ArgumentNullException("civ");
+            if (otherPower == null)
+                throw new ArgumentNullException("otherPower");
+       
+            var diplomat = Diplomat.Get(otherPower);
+            var foreignPower = diplomat.GetForeignPower(civ);
+            //GameLog.Core.Diplomacy.DebugFormat("BEFORE: civ = {0}, otherPower.CivID = {1}, trustDelta = {2}, diplomat.Owner = {3}, foreignPower.OwnerID =n/v, CurrentTrust =n/v",
+            //civ, otherPower.CivID, trustDelta, diplomat.Owner);
 
-            var civId = civ.CivID;
+            //GameLog.Core.Diplomacy.DebugFormat(
+            //    "BEFORE: civ = {0}, otherPower = {1}, trustDelta = {2}, diplomat.Owner = {3}, foreignPower = {4}, CurrentTrust = {5}",
+            //    GameContext.Current.CivilizationManagers[civ.CivID].Civilization.ShortName,
+            //    GameContext.Current.CivilizationManagers[otherPower.CivID].Civilization.ShortName,
+            //    trustDelta, diplomat.Owner,
+            //    GameContext.Current.CivilizationManagers[foreignPower.OwnerID].Civilization.ShortName,
+            //    foreignPower.DiplomacyData.Trust.CurrentValue);
 
-            foreach (var diplomat in GameContext.Current.Diplomats)
+            if (foreignPower != null)
             {
-                //GameLog.Core.Diplomacy.DebugFormat("BEFORE: civ = {0}, otherPower.CivID = {1}, trustDelta = {2}, diplomat.Owner = {3}, foreignPower.OwnerID =n/v, CurrentTrust =n/v",
-                //civ, otherPower.CivID, trustDelta, diplomat.Owner);
-                if (diplomat.OwnerID == civId)
-                    continue;
-
-                var foreignPower = diplomat.GetForeignPower(civ);
-
-                if (otherPower.CivID == diplomat.OwnerID)
-                {
-                    //var foreignPower = diplomat.GetForeignPower(civ);
-                    //GameLog.Core.Diplomacy.DebugFormat(
-                    //    "BEFORE: civ = {0}, otherPower = {1}, trustDelta = {2}, diplomat.Owner = {3}, foreignPower = {4}, CurrentTrust = {5}",
-                    //    GameContext.Current.CivilizationManagers[civ.CivID].Civilization.ShortName,
-                    //    GameContext.Current.CivilizationManagers[otherPower.CivID].Civilization.ShortName,
-                    //    trustDelta, diplomat.Owner,
-                    //    GameContext.Current.CivilizationManagers[foreignPower.OwnerID].Civilization.ShortName,
-                    //    foreignPower.DiplomacyData.Trust.CurrentValue);
-
-                    if (foreignPower != null)
-                        foreignPower.DiplomacyData.Trust.AdjustCurrent(trustDelta);
-                    foreignPower.DiplomacyData.Trust.UpdateAndReset();
-
-                    //GameLog.Core.Diplomacy.DebugFormat(
-                    //    "AFTER : civ = {0}, otherPower = {1}, trustDelta = {2}, diplomat.Owner = {3}, foreignPower = {4}, CurrentTrust = {5}",
-                    //    GameContext.Current.CivilizationManagers[civ.CivID].Civilization.ShortName,
-                    //    GameContext.Current.CivilizationManagers[otherPower.CivID].Civilization.ShortName,
-                    //    trustDelta, diplomat.Owner,
-                    //    GameContext.Current.CivilizationManagers[foreignPower.OwnerID].Civilization.ShortName,
-                    //    foreignPower.DiplomacyData.Trust.CurrentValue);
-                }
-
-                if (foreignPower != null)
-                {
-                    //foreignPower.DiplomacyData.Trust.AdjustCurrent(trustDelta);
-                    //foreignPower.DiplomacyData.Trust.UpdateAndReset();
-                    foreignPower.UpdateRegardAndTrustMeters();
-                }
-                
+                foreignPower.DiplomacyData.Trust.AdjustCurrent(trustDelta);
+                foreignPower.DiplomacyData.Trust.UpdateAndReset();
+                foreignPower.UpdateRegardAndTrustMeters();
             }
-        }
-        //Regard makes crashes
 
+            //GameLog.Core.Diplomacy.DebugFormat(
+            //    "AFTER : civ = {0}, otherPower = {1}, trustDelta = {2}, diplomat.Owner = {3}, foreignPower = {4}, CurrentTrust = {5}",
+            //    GameContext.Current.CivilizationManagers[civ.CivID].Civilization.ShortName,
+            //    GameContext.Current.CivilizationManagers[otherPower.CivID].Civilization.ShortName,
+            //    trustDelta, diplomat.Owner,
+            //    GameContext.Current.CivilizationManagers[foreignPower.OwnerID].Civilization.ShortName,
+            //    foreignPower.DiplomacyData.Trust.CurrentValue);
+        }
         public static void ApplyRegardChange([NotNull] ICivIdentity civ, [NotNull] ICivIdentity otherPower, int regardDelta)
         {
             if (civ == null)
                 throw new ArgumentNullException("civ");
+            if (otherPower == null)
+                throw new ArgumentNullException("otherPower");
 
-            var civId = civ.CivID;
+            var diplomat = Diplomat.Get(otherPower);
+            var foreignPower = diplomat.GetForeignPower(civ);
 
-            foreach (var diplomat in GameContext.Current.Diplomats)
+            GameLog.Core.Diplomacy.DebugFormat("BEFORE: civ = {0}, otherPower.CivID = {1}, regardDelta = {2}, diplomat.Owner = {3}, foreignPower.OwnerID = {4}, CurrentTrust = {5}",
+            civ, otherPower.CivID, regardDelta, diplomat.Owner, foreignPower.OwnerID, foreignPower.DiplomacyData.Trust.CurrentValue);
+
+            if (foreignPower != null)
             {
-                if (diplomat.OwnerID == civId)
-                    continue;
+                foreignPower.DiplomacyData.Regard.AdjustCurrent(regardDelta);
+                foreignPower.DiplomacyData.Regard.UpdateAndReset();
+                foreignPower.UpdateRegardAndTrustMeters();
 
-                var foreignPower = diplomat.GetForeignPower(civ);
-                if (civId == otherPower.CivID)
-                {
-                    GameLog.Core.Diplomacy.DebugFormat("BEFORE: civ = {0}, otherPower.CivID = {1}, regardDelta = {2}, diplomat.Owner = {3}, foreignPower.OwnerID = {4}, CurrentTrust = {5}",
-                    civ, otherPower.CivID, regardDelta, diplomat.Owner, foreignPower.OwnerID, foreignPower.DiplomacyData.Trust.CurrentValue);
-
-                    if (foreignPower != null)
-                        foreignPower.DiplomacyData.Regard.AdjustCurrent(regardDelta);
-                    foreignPower.DiplomacyData.Regard.UpdateAndReset();
-
-                    GameLog.Core.Diplomacy.DebugFormat("AFTER : civ = {0}, otherPower.CivID = {1}, regardDelta = {2}, diplomat.Owner = {3}, foreignPower.OwnerID = {4}, CurrentTrust = {5}",
-                    civ, otherPower.CivID, regardDelta, diplomat.Owner, foreignPower.OwnerID, foreignPower.DiplomacyData.Trust.CurrentValue);
-                }
-
-                if (foreignPower != null)
-                {
-                    foreignPower.DiplomacyData.Trust.AdjustCurrent(regardDelta);
-                    foreignPower.DiplomacyData.Trust.UpdateAndReset();
-                    foreignPower.UpdateRegardAndTrustMeters();
-                }
             }
+            GameLog.Core.Diplomacy.DebugFormat("AFTER : civ = {0}, otherPower.CivID = {1}, regardDelta = {2}, diplomat.Owner = {3}, foreignPower.OwnerID = {4}, CurrentTrust = {5}",
+                civ, otherPower.CivID, regardDelta, diplomat.Owner, foreignPower.OwnerID, foreignPower.DiplomacyData.Trust.CurrentValue);
         }
         public static void ApplyRegardDecay(RegardEventCategories category, RegardDecay decay)
         {
@@ -231,7 +219,7 @@ namespace Supremacy.Diplomacy
                 GameLog.Client.Diplomacy.DebugFormat("************** Diplo: SendWarDeclaration turned to RECEIVED at ForeignPower...");
         }
 
-        public static void SpecificCivAcceptingRejecting([NotNull] StatementType statementType)
+        public static void SpecificCivAcceptingRejecting([NotNull] StatementType statementType) // read statment type to get civIDs and bool accpet reject
         {
             string statementAsString = GetEnumString(statementType);
             string otherCivID = statementAsString.Substring(1, 1);
@@ -282,10 +270,10 @@ namespace Supremacy.Diplomacy
                     foreignPower.CounterpartyForeignPower.LastProposalSent = null;
                     foreignPower.ResponseSent = null;
                 }
-
             }
-        }     
-        public static void AcceptingRejecting([NotNull] ICivIdentity civ) // writing dictionary for entry regarding this civ
+        }
+
+        public static void AcceptingRejecting([NotNull] ICivIdentity civ) // frind entry in dictionary and send as foreignPower.PendingAction = PendingDiplomacyAction.AcceptProposal; or Reject
         {
             if (civ == null)
                 throw new ArgumentNullException("civ");
@@ -304,20 +292,18 @@ namespace Supremacy.Diplomacy
 
                 string powerID = foreignPower.CounterpartyID.ToString() + foreignPower.OwnerID.ToString();
 
-                GameLog.Client.Diplomacy.DebugFormat("Check Dictionar foreignPower.Owner = {0}, counterpary ={1} powerID ={2}"
-                    , foreignPower.OwnerID
-                    , foreignPower.CounterpartyID
-                    , powerID.ToString());
-                if (_acceptRejectDictionary.ContainsKey(powerID)) // check dictionary with key for bool value
+                //GameLog.Client.Diplomacy.DebugFormat("Check Dictionar foreignPower.Owner = {0}, counterpary ={1} powerID ={2}"
+                //, foreignPower.OwnerID
+                //, foreignPower.CounterpartyID
+                //, powerID.ToString());
+                 
+                // AcceptRejectDictionary
+                if (_acceptRejectDictionary.ContainsKey(powerID)) // check dictionary with key for bool value to accept reject
                 {
-                    GameLog.Client.Diplomacy.DebugFormat("Found it in Dictionary");
+                    //GameLog.Client.Diplomacy.DebugFormat("Found it in Dictionary");
                     accepting = _acceptRejectDictionary[powerID];
                     if (accepting)
                     {
-                        if (foreignPower.ProposalReceived == null && foreignPower.OwnerID == 1)
-                            GameLog.Client.Diplomacy.DebugFormat("Hey!!! why is the damn ProposalReceived null for foreignPower.OwnerID 1");
-                        if (foreignPower.ProposalReceived == null && foreignPower.OwnerID == 4)
-                            GameLog.Client.Diplomacy.DebugFormat("Hey!!! why is the damn ProposalReceived null for foreignPower.OwnerID 4");
                         if (foreignPower.ProposalReceived != null) // aCiv is owner of the foreignpower looking for a ProposalRecieved
                         {
                             foreignPower.PendingAction = PendingDiplomacyAction.AcceptProposal;
@@ -731,7 +717,7 @@ namespace Supremacy.Diplomacy
                 , foreignPowerID
                 );
         }
-        public static void AcceptRejectDictionary(string civIDs, bool accepted, int turn)
+        public static void AcceptRejectDictionary(string civIDs, bool accepted, int turn) // creat ditionary entry
         {
             int turnNumber = turn; // in case we need this to time clearing of dictionary - Dictionary<string, Tuple<bool, int>>(); or ValueType is a Class with bool and int.
 

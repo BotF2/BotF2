@@ -15,6 +15,7 @@ using System.Text.RegularExpressions;
 using System.Linq;
 
 using Supremacy.Types;
+using Supremacy.Utility;
 
 namespace Supremacy.Resources
 {
@@ -56,6 +57,10 @@ namespace Supremacy.Resources
         {
             if (!File.Exists(fileName))
             {
+                string _text = "#### ....could not find " + fileName;
+                //GameLog.Client.General.ErrorFormat(_text);
+                Console.WriteLine(_text);
+
                 throw new FileNotFoundException(
                     "String table file could not be located: " 
                     + fileName);

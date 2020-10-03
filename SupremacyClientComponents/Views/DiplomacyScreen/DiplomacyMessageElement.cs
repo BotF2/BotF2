@@ -16,6 +16,8 @@ using Supremacy.Scripting;
 using Supremacy.Utility;
 
 using System.Linq;
+using System.Runtime.CompilerServices;
+using FMOD;
 
 namespace Supremacy.Client.Views
 {
@@ -44,7 +46,7 @@ namespace Supremacy.Client.Views
             _sender = sender;
             _recipient = recipient;
             _actionCategory = actionCategory;
-            _elementType = elementType;
+            _elementType = elementType; // includes TreatyWarPact
             _removeCommand = removeCommand;
 
             _editParameterCommand = new DelegateCommand<DataTemplate>(
@@ -56,8 +58,9 @@ namespace Supremacy.Client.Views
             var scriptParameters = new ScriptParameters(
                 new ScriptParameter("$sender", typeof(Civilization)),
                 new ScriptParameter("$recipient", typeof(Civilization)));
+                //new ScriptParameter("$target", typeof(Civilization)));
 
-            if (parameterType != null)
+            if (parameterType != null) // for target of war pact, who do both sender and recipient declare war on
             {
                 scriptParameters = scriptParameters.Merge(
                     new ScriptParameter(
@@ -66,9 +69,10 @@ namespace Supremacy.Client.Views
             }
 
             _scriptExpression = new ScriptExpression(returnObservableResult: false)
-                                {
-                                    Parameters = scriptParameters
-                                };
+            {
+                Parameters = scriptParameters
+            };
+
         }
 
         private void ExecuteEditParameterCommand(DataTemplate contentTemplate)

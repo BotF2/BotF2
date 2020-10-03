@@ -753,7 +753,9 @@ namespace Supremacy.Game
                 text = string.Format("!!! MISSING TEXT: {0}.{1} !!!", typeof(DiplomacySitRepStringKey).Name, key);
                 return text;
             }
-            GameLog.Client.Diplomacy.DebugFormat("LocalizedText localString ={0}", localizedString.ToString());
+
+            //GameLog.Client.Diplomacy.DebugFormat("LocalizedText localString ={0}", localizedString.ToString());
+            
             var scriptParameters = new ScriptParameters(
                 new ScriptParameter("$sender", typeof(Civilization)),
                 new ScriptParameter("$recipient", typeof(Civilization)));
@@ -812,7 +814,7 @@ namespace Supremacy.Game
 
             if (proposal != null)
             {
-                if (proposal.HasTreaty())
+                if (proposal.HasTreaty()) // has clause of treaty type including WarPact
                 {
                     if (proposal.HasClause(ClauseType.TreatyCeaseFire))
                         return detailed ? default(DiplomacySitRepStringKey?) : DiplomacySitRepStringKey.CeaseFireProposedSummaryText;
@@ -3641,6 +3643,94 @@ namespace Supremacy.Game
             if (owner.Key == "BORG" && owner == aggressor)
             {
                 _detailText = new CivString(owner, CivString.DiplomacyCategory,"MESSAGE_SITREP_RESISTANCE_IS_FUTILE");
+            }
+        }
+    }
+        [Serializable]
+    public class ViolateTreatySitRepEntry : SitRepEntry
+    {
+        private readonly int _ownerCivilizationID;
+        private readonly int _victimCivilizationID;
+        private readonly int _aggressorCivilizationID;
+        private readonly CivString _detailText;
+
+        public override SitRepCategory Categories
+        {
+            get { return SitRepCategory.Diplomacy | SitRepCategory.Military; }
+        }
+
+        public override SitRepAction Action
+        {
+            get { return SitRepAction.CenterOnSector; }
+        }
+
+        public override string SummaryText
+        {
+            get
+            {
+                return string.Format(ResourceManager.GetString("SITREP_NONAGGRESSION_TREATY_VIOLATION"),
+                    Aggressor.LongName);
+            }
+        }
+
+        public override bool HasDetails
+        {
+            get { return ((Aggressor == Owner) || (Victim == Owner)); }
+        }
+
+        public override string DetailImage
+        {
+            get
+            {
+                return Aggressor.InsigniaPath;
+            }
+        }
+
+        public override string DetailText
+        {
+            get { return string.Format(_detailText.Value, Aggressor.LongName); }
+        }
+
+        public override bool IsPriority
+        {
+            get { return true; }
+        }
+
+        public Civilization Victim
+        {
+            get { return GameContext.Current.Civilizations[_victimCivilizationID]; }
+        }
+
+        public Civilization Aggressor
+        {
+            get { return GameContext.Current.Civilizations[_aggressorCivilizationID]; }
+        }
+        public Civilization Owner
+        {
+            get { return GameContext.Current.Civilizations[_ownerCivilizationID]; }
+        }
+
+        public ViolateTreatySitRepEntry(Civilization owner, Civilization victim) : this(owner, owner, victim) { }
+
+        public ViolateTreatySitRepEntry(Civilization owner, Civilization aggressor, Civilization victim)
+            : base(owner, SitRepPriority.Red)
+        {
+            if (aggressor == null)
+                throw new ArgumentNullException("aggressor");
+            if (victim == null)
+                throw new ArgumentNullException("victim");
+            _ownerCivilizationID = owner.CivID;
+            _victimCivilizationID = victim.CivID;
+            _aggressorCivilizationID = aggressor.CivID;
+
+            if (aggressor == owner || victim == owner)
+            {
+                _detailText = new CivString(
+                    owner,
+                    CivString.DiplomacyCategory,
+                    owner == aggressor
+                        ? "MESSAGE_SITREP_DETAILS_NON_AGGRESSION_TREATY_US"
+                        : "MESSAGE_SITREP_DETAILS_NON_AGGRESSION_TREATY_THEM");
             }
         }
     }
