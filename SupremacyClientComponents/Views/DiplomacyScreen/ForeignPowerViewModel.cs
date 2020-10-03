@@ -49,13 +49,19 @@ namespace Supremacy.Client.Views
             if (_foreignPower.ResponseReceived != null)
             {
                 IncomingMessage = DiplomacyMessageViewModel.FromReponse(_foreignPower.ResponseReceived);
-                GameLog.Client.Diplomacy.DebugFormat("$$ Incoming Response Owner {0} CounterParty {1} Message {2}", _foreignPower.Owner.Key, _foreignPower.Counterparty.Key, IncomingMessage.ToString());
+                GameLog.Client.Diplomacy.DebugFormat("$$ Incoming Response Owner ={0} CounterParty ={1} Message Treaty Leadin text ={2}"
+                    , _foreignPower.Owner.Key
+                    , _foreignPower.Counterparty.Key
+                    , IncomingMessage.TreatyLeadInText);
             }
 
             else if (_foreignPower.ProposalReceived.IncludesTreaty() == true)
             {
                 IncomingMessage = DiplomacyMessageViewModel.FromProposal(_foreignPower.ProposalReceived);
-                GameLog.Client.Diplomacy.DebugFormat("$$ Incoming Proposal Owner {0} CounterParty {1} Message {2}", _foreignPower.Owner.Key, _foreignPower.Counterparty.Key, IncomingMessage.ToString());
+                GameLog.Client.Diplomacy.DebugFormat("$$ Incoming Proposal Owner ={0} CounterParty ={1} message Treaty Leadin text ={2}"
+                    , _foreignPower.Owner.Key
+                    , _foreignPower.Counterparty.Key
+                    , IncomingMessage.TreatyLeadInText);
                 DiplomacyHelper.DiploScreenSelectedForeignPower = GameContext.Current.CivilizationManagers[_foreignPower.Counterparty.CivID].Civilization;
             }
         }
@@ -321,8 +327,13 @@ namespace Supremacy.Client.Views
         {
             get
             {
-                if (_foreignPower.ProposalReceived != null || _foreignPower.ResponseReceived != null || _foreignPower.StatementReceived != null|| _foreignPower.ProposalReceived != null)
-                GameLog.Client.Diplomacy.DebugFormat("$$ Proposal received ? ={0}, Response received = {1}, Statement Received ={2}, Proposal Received ={3}", _foreignPower.ProposalReceived, _foreignPower.ResponseReceived, _foreignPower.StatementReceived, _foreignPower.ProposalReceived);
+                //if (_foreignPower.ProposalReceived != null || _foreignPower.ResponseReceived != null || _foreignPower.StatementReceived != null)
+
+                //GameLog.Client.Diplomacy.DebugFormat("$$ Proposal received ? ={0}, Response received = {1}, Statement Received ={2}, Proposal Received ={3}"
+                //    , _foreignPower.ProposalReceived.Clauses[0].ClauseType.ToString()
+                //    ,_foreignPower.ResponseReceived.ResponseType.ToString()
+                //    , _foreignPower.StatementReceived.StatementType.ToString()
+                //    , _foreignPower.ProposalReceived);
 
                 return ResolveMessageCategory(_foreignPower.ProposalReceived ?? (object)_foreignPower.ResponseReceived ?? _foreignPower.StatementReceived ?? (object)_foreignPower.ProposalReceived);
             }
@@ -330,7 +341,7 @@ namespace Supremacy.Client.Views
 
         protected virtual void OnIncomingMessageCategoryChanged()
         {
-            GameLog.Client.Diplomacy.DebugFormat("IncomingMessage category changed");
+            //GameLog.Client.Diplomacy.DebugFormat("IncomingMessage category changed");
             IncomingMessageCategoryChanged.Raise(this);
             OnPropertyChanged("IncomingMessageCategory");
         }

@@ -1152,7 +1152,13 @@ namespace Supremacy.Client.Views
 
         public static DiplomacyMessageViewModel FromReponse([NotNull] IResponse response)
         {
-            GameLog.Core.Diplomacy.DebugFormat("$$ at FromResponse() with turnSent ={0} tone ={1}", response.TurnSent, response.Tone);
+            GameLog.Core.Diplomacy.DebugFormat("$$ at FromResponse() proposal turnSent ={0} tone ={1} recipient ={2} sender ={3} responce type = {4} proposal clause type ={5}"
+                , response.Proposal.TurnSent
+                , response.Tone
+                , response.Recipient.ShortName
+                , response.Sender.ShortName
+                , response.ResponseType.ToString()
+                , response.Proposal.Clauses[0].ClauseType.ToString());
             if (response == null)
                 throw new ArgumentNullException("response");
 
