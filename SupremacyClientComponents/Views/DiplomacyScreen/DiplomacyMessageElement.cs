@@ -478,7 +478,24 @@ namespace Supremacy.Client.Views
                                  new RuntimeScriptParameter(_scriptExpression.Parameters[0], _sender),
                                  new RuntimeScriptParameter(_scriptExpression.Parameters[1], _recipient)
                              };
-
+            if (_elementType == DiplomacyMessageElementType.TreatyWarPact)
+            {
+                GameLog.Client.Diplomacy.DebugFormat("#### element type is {0}", _elementType.ToString());
+                if (_selectedParameter == null)
+                {
+                    int[] _key = new[] { _sender.CivID, _recipient.CivID };
+                    string _civKeyString = "";
+                    foreach (int number in _key)
+                    {
+                        _civKeyString = _civKeyString + number;
+                    }
+                    if (DiplomacyHelper.WarPackDictionary(_civKeyString) != null)
+                    {
+                        _selectedParameter = DiplomacyHelper.WarPackDictionary(_civKeyString);
+                        GameLog.Client.Diplomacy.DebugFormat("#### _selectedParameter is {0} target", DiplomacyHelper.WarPackDictionary(_civKeyString).ShortName);
+                    }
+                }
+            }
             if (_scriptExpression.Parameters.Count > 2)
                 parameters.Add(new RuntimeScriptParameter(_scriptExpression.Parameters[2], _selectedParameter));
 

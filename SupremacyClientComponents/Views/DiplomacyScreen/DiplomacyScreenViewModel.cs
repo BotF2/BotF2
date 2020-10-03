@@ -253,7 +253,6 @@ namespace Supremacy.Client.Views
 
             InvalidateCommands();
             OnCommandVisibilityChanged();
-            //Refresh();
         }
         #endregion DeclareWarCommandButton
 
@@ -579,7 +578,6 @@ namespace Supremacy.Client.Views
         }
         #endregion FullAllianceCommandButton
 
-
         #region MembershipCommandButton
         private bool CanExecuteMembershipCommand()
         {
@@ -698,7 +696,6 @@ namespace Supremacy.Client.Views
 
             OnCommandVisibilityChanged();
             OnIsMessageEditInProgressChanged();
-            //Refresh();
         }
 
         private bool CanExecuteCancelMessageCommand()

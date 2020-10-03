@@ -684,7 +684,11 @@ namespace Supremacy.Client.Views
                     break;
                 case DiplomacyMessageElementActionCategory.Propose:
                     _treatyElements.Add(element);
-                    GameLog.Client.Diplomacy.DebugFormat("### Proposal element added to _treatyElemetns, {0}", element.ToString());
+                    if (element != null && element.Description != null && element.SelectedParameter != null && element.ElementType != null)
+                    GameLog.Client.Diplomacy.DebugFormat("### Proposal element added to _treatyElemetns, {0}, {1}, {2}",
+                        element.Description.ToString(),
+                        element.SelectedParameter.ToString(),
+                        element.ElementType.ToString());
                     st = ResourceManager.GetString("PROPOSE_DIALOG_HINT"); // need to update the embassy screen with a new window to get the send button activated without delay.
                     //var result_Propose = MessageDialog.Show(st, MessageDialogButtons.Ok);
                     GameLog.Client.Diplomacy.DebugFormat("PROPOSE_DIALOG_HINT is outcommented");
@@ -787,6 +791,7 @@ namespace Supremacy.Client.Views
             {
                 GameLog.Core.Diplomacy.DebugFormat("((()))Create Proposal sender {0}, Recipient = {1}: Tone = {2} clause type = {3} data = {4} duration = {5}",
                     _sender.ShortName, _recipient.ShortName, _tone, clause.ClauseType.ToString(), clause.Data, clause.Duration);
+                // if ClauseType == TreatyWarPact then clause.Data = string shortname of target civilization
             }
             return new NewProposal(_sender, _recipient, clauses);
         }
