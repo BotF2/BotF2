@@ -435,7 +435,6 @@ namespace Supremacy.Client
                 this.Close();
             }
 
-
             GameLog.Client.Combat.DebugFormat("{0} button clicked by player", order);
 
             UpperButtonsPanel.IsEnabled = false;
@@ -452,13 +451,11 @@ namespace Supremacy.Client
             //_combatWindowVisible = false;
         }
 
-        private void OnEscapeButtonClicked(object sender, RoutedEventArgs e)
-        {
-            // useful if CLOSE-Button doesn't appear
-            DialogResult = true;
-            this.Close();
-            //_combatWindowVisible = false;
-        }
+        //private void OnEscapeButtonClicked(object sender, RoutedEventArgs e)
+        //{
+        //    DialogResult = true;
+        //    this.Close();
+        //}
 
     }
 }
