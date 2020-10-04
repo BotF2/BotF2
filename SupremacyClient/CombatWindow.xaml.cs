@@ -427,9 +427,14 @@ namespace Supremacy.Client
             if (sender == RushButton)
                 order = CombatOrder.Rush;
             if (sender == HailButton)
-            {
                 order = CombatOrder.Hail;
+            if (sender == EscapeButton)
+            {
+                order = CombatOrder.Retreat;
+                DialogResult = true;
+                this.Close();
             }
+
 
             GameLog.Client.Combat.DebugFormat("{0} button clicked by player", order);
 

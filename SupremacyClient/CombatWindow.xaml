@@ -956,11 +956,12 @@
                 Margin="0,106,0,0"                       
                 Grid.Column="0"
                 Grid.Row="0"
+                FontSize="12"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
-                Content="X"
+                Content="{s:StringResource COMBAT_CLOSE_COMBAT_WINDOW}"
                 Visibility="Visible"
-                Click="OnEscapeButtonClicked" />
+                Click="OnOrderButtonClicked" />
     </Grid>
 </scc:Dialog>
 <!--Main Combat Window -END-->
