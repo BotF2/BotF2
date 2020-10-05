@@ -52,7 +52,8 @@ namespace Supremacy.UI
             }
 
             UpdateDistressIndicator();
-            UpdateToolTip();
+            if (owners.Contains(playerCiv))
+                UpdateToolTip();
         }
 
         protected override HitTestResult HitTestCore(PointHitTestParameters hitTestParameters)
