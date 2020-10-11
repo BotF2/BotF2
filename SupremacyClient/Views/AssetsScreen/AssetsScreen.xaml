@@ -98,7 +98,7 @@
                         FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                         FontSize="12pt"/>
                     <TextBlock 
-                        Grid.Column="7" Text="{Binding Path=Colonies.Count}" 
+                        Grid.Column="7" Text="{Binding Path=Colonies.Count, Mode=OneWay}" 
                         Foreground="{DynamicResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"
                         FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                         FontSize="12pt"/>
@@ -110,7 +110,7 @@
                         FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                         FontSize="12pt"/>
                     <TextBlock 
-                        Grid.Column="11" Text="{Binding Path=TotalPopulation}" 
+                        Grid.Column="11" Text="{Binding Path=TotalPopulation, Mode=OneWay}" 
                         Foreground="LightGoldenrodYellow"
                         FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                         FontSize="12pt"/>
@@ -122,7 +122,7 @@
                         FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                         FontSize="12pt"/>
                     <TextBlock 
-                        Grid.Column="15" Text="{Binding Path=CreditsEmpire}" 
+                        Grid.Column="15" Text="{Binding Path=CreditsEmpire, Mode=OneWay}" 
                         Foreground="{DynamicResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"
                         FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                         FontSize="12pt"/>
@@ -133,7 +133,7 @@
                         FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                         FontSize="12pt"/>
                     <TextBlock 
-                        Grid.Column="19" Text="{Binding Path=TotalResearch}" 
+                        Grid.Column="19" Text="{Binding Path=TotalResearch, Mode=OneWay}" 
                         Foreground="SteelBlue"
                         FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                         FontSize="12pt"/>
@@ -144,7 +144,7 @@
                         FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                         FontSize="12pt"/>
                     <TextBlock 
-                        Grid.Column="23" Text="{Binding Path=TotalIntelligenceProduction}" 
+                        Grid.Column="23" Text="{Binding Path=TotalIntelligenceProduction, Mode=OneWay}" 
                         Foreground="Silver"
                         FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                         FontSize="12pt"/>
@@ -160,7 +160,7 @@
                         Source="vfs:///Resources/Images/ScreenIcons/dilithium.png"
                         />
                     <TextBlock 
-                        Grid.Column="29" Text="{Binding Path=TotalDilithium}" 
+                        Grid.Column="29" Text="{Binding Path=TotalDilithium, Mode=OneWay}" 
                         Foreground="LightBlue"
                         FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                         FontSize="12pt"/>
@@ -171,7 +171,7 @@
                         Source="vfs:///Resources/Images/ScreenIcons/deuterium.png"
                         />
                     <TextBlock 
-                        Grid.Column="33" Text="{Binding Path=TotalDeuterium}" 
+                        Grid.Column="33" Text="{Binding Path=TotalDeuterium, Mode=OneWay}" 
                         Foreground="Red"
                         FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                         FontSize="12pt"/>
@@ -182,7 +182,7 @@
                         Source="vfs:///Resources/Images/ScreenIcons/rawmaterials.png"
                         />
                     <TextBlock 
-                        Grid.Column="37" Text="{Binding Path=TotalRawMaterials}" 
+                        Grid.Column="37" Text="{Binding Path=TotalRawMaterials, Mode=OneWay}" 
                         Foreground="Silver"
                         FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                         FontSize="12pt"/>
@@ -199,7 +199,7 @@
                     HorizontalAlignment="left">
                     <StackPanel Height="Auto" Margin="5,0,0,0" Grid.Row="2">
 
-                        <v:ColonyList Grid.Row="2" DataContext="{Binding Path=Colonies}"  />
+                        <v:ColonyList Grid.Row="2" DataContext="{Binding Path=Colonies, Mode=TwoWay}"  />
                     </StackPanel>
                 </ScrollViewer>
             </Grid>
@@ -622,7 +622,7 @@
                                                     VerticalAlignment="Center"
                                                     Margin="14,0,2,0"
                                                     ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/industry.png"
-                                                    ToolTip="{s:StringResource Key=INDUSTRY_TOOL_TIP}" />
+                                                    ToolTip="{s:StringResource Key=INDUSTRY_TOOLTIP}" />
                                         <TextBlock
                                                 VerticalAlignment="Center"
                                                 HorizontalAlignment="Right"
@@ -659,7 +659,7 @@
                                                     VerticalAlignment="Center"
                                                     Margin="14,0,2,0"
                                                     ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/energy.png"
-                                                    ToolTip="{s:StringResource Key=ENERGY_TOOL_TIP}" />
+                                                    ToolTip="{s:StringResource Key=ENERGY_TOOLTIP}" />
                                         <TextBlock
                                                 VerticalAlignment="Center"
                                                 HorizontalAlignment="Right"
@@ -697,7 +697,7 @@
                                                VerticalAlignment="Center"
                                                Margin="14,0,2,0"
                                                ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/research.png"
-                                               ToolTip="{s:StringResource Key=RESEARCH_TOOL_TIP}" />
+                                               ToolTip="{s:StringResource Key=RESEARCH_TOOLTIP}" />
                                         <TextBlock
                                                 VerticalAlignment="Center"
                                                 HorizontalAlignment="Right"
@@ -1024,7 +1024,7 @@
                                                    VerticalAlignment="Center"
                                                    Margin="0,0,2,0"
                                                    ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/food.png"
-                                                   ToolTip="{s:StringResource Key=FOOD_TOOL_TIP}" />
+                                                   ToolTip="{s:StringResource Key=FOOD_TOOLTIP}" />
                                         <TextBlock
                                                 VerticalAlignment="Center"
                                                 HorizontalAlignment="Right"
@@ -1061,7 +1061,7 @@
                                                     VerticalAlignment="Center"
                                                     Margin="14,0,2,0"
                                                     ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/industry.png"
-                                                    ToolTip="{s:StringResource Key=INDUSTRY_TOOL_TIP}" />
+                                                    ToolTip="{s:StringResource Key=INDUSTRY_TOOLTIP}" />
                                         <TextBlock
                                                 VerticalAlignment="Center"
                                                 HorizontalAlignment="Right"
@@ -1098,7 +1098,7 @@
                                                     VerticalAlignment="Center"
                                                     Margin="14,0,2,0"
                                                     ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/energy.png"
-                                                    ToolTip="{s:StringResource Key=ENERGY_TOOL_TIP}" />
+                                                    ToolTip="{s:StringResource Key=ENERGY_TOOLTIP}" />
                                         <TextBlock
                                                 VerticalAlignment="Center"
                                                 HorizontalAlignment="Right"
@@ -1136,7 +1136,7 @@
                                                VerticalAlignment="Center"
                                                Margin="14,0,2,0"
                                                ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/research.png"
-                                               ToolTip="{s:StringResource Key=RESEARCH_TOOL_TIP}" />
+                                               ToolTip="{s:StringResource Key=RESEARCH_TOOLTIP}" />
                                         <TextBlock
                                                 VerticalAlignment="Center"
                                                 HorizontalAlignment="Right"
@@ -1470,7 +1470,7 @@
                                              VerticalAlignment="Center"
                                              Margin="0,0,2,0"
                                              ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/food.png"
-                                             ToolTip="{s:StringResource Key=FOOD_TOOL_TIP}" />
+                                             ToolTip="{s:StringResource Key=FOOD_TOOLTIP}" />
                                         <TextBlock
                                               VerticalAlignment="Center"
                                               HorizontalAlignment="Right"
@@ -1507,7 +1507,7 @@
                                               VerticalAlignment="Center"
                                               Margin="14,0,2,0"
                                               ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/industry.png"
-                                              ToolTip="{s:StringResource Key=INDUSTRY_TOOL_TIP}" />
+                                              ToolTip="{s:StringResource Key=INDUSTRY_TOOLTIP}" />
                                         <TextBlock
                                                 VerticalAlignment="Center"
                                                 HorizontalAlignment="Right"
@@ -1544,7 +1544,7 @@
                                               VerticalAlignment="Center"
                                               Margin="14,0,2,0"
                                               ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/energy.png"
-                                              ToolTip="{s:StringResource Key=ENERGY_TOOL_TIP}" />
+                                              ToolTip="{s:StringResource Key=ENERGY_TOOLTIP}" />
                                         <TextBlock
                                             VerticalAlignment="Center"
                                             HorizontalAlignment="Right"
@@ -1582,7 +1582,7 @@
                                                VerticalAlignment="Center"
                                                Margin="14,0,2,0"
                                                ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/research.png"
-                                               ToolTip="{s:StringResource Key=RESEARCH_TOOL_TIP}" />
+                                               ToolTip="{s:StringResource Key=RESEARCH_TOOLTIP}" />
                                         <TextBlock
                                               VerticalAlignment="Center"
                                               HorizontalAlignment="Right"
@@ -1915,7 +1915,7 @@
                                              VerticalAlignment="Center"
                                              Margin="0,0,2,0"
                                              ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/food.png"
-                                             ToolTip="{s:StringResource Key=FOOD_TOOL_TIP}" />
+                                             ToolTip="{s:StringResource Key=FOOD_TOOLTIP}" />
                                         <TextBlock
                                               VerticalAlignment="Center"
                                               HorizontalAlignment="Right"
@@ -1952,7 +1952,7 @@
                                               VerticalAlignment="Center"
                                               Margin="14,0,2,0"
                                               ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/industry.png"
-                                              ToolTip="{s:StringResource Key=INDUSTRY_TOOL_TIP}" />
+                                              ToolTip="{s:StringResource Key=INDUSTRY_TOOLTIP}" />
                                         <TextBlock
                                               VerticalAlignment="Center"
                                               HorizontalAlignment="Right"
@@ -1989,7 +1989,7 @@
                                               VerticalAlignment="Center"
                                               Margin="14,0,2,0"
                                               ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/energy.png"
-                                              ToolTip="{s:StringResource Key=ENERGY_TOOL_TIP}" />
+                                              ToolTip="{s:StringResource Key=ENERGY_TOOLTIP}" />
                                         <TextBlock
                                               VerticalAlignment="Center"
                                               HorizontalAlignment="Right"
@@ -2027,7 +2027,7 @@
                                                VerticalAlignment="Center"
                                                Margin="14,0,2,0"
                                                ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/research.png"
-                                               ToolTip="{s:StringResource Key=RESEARCH_TOOL_TIP}" />
+                                               ToolTip="{s:StringResource Key=RESEARCH_TOOLTIP}" />
                                         <TextBlock
                                                 VerticalAlignment="Center"
                                                 HorizontalAlignment="Right"
@@ -2360,7 +2360,7 @@
                                              VerticalAlignment="Center"
                                              Margin="0,0,2,0"
                                              ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/food.png"
-                                             ToolTip="{s:StringResource Key=FOOD_TOOL_TIP}" />
+                                             ToolTip="{s:StringResource Key=FOOD_TOOLTIP}" />
                                         <TextBlock
                                               VerticalAlignment="Center"
                                               HorizontalAlignment="Right"
@@ -2397,7 +2397,7 @@
                                               VerticalAlignment="Center"
                                               Margin="14,0,2,0"
                                               ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/industry.png"
-                                              ToolTip="{s:StringResource Key=INDUSTRY_TOOL_TIP}" />
+                                              ToolTip="{s:StringResource Key=INDUSTRY_TOOLTIP}" />
                                         <TextBlock
                                               VerticalAlignment="Center"
                                               HorizontalAlignment="Right"
@@ -2434,7 +2434,7 @@
                                               VerticalAlignment="Center"
                                               Margin="14,0,2,0"
                                               ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/energy.png"
-                                              ToolTip="{s:StringResource Key=ENERGY_TOOL_TIP}" />
+                                              ToolTip="{s:StringResource Key=ENERGY_TOOLTIP}" />
                                         <TextBlock
                                               VerticalAlignment="Center"
                                               HorizontalAlignment="Right"
@@ -2472,7 +2472,7 @@
                                                VerticalAlignment="Center"
                                                Margin="14,0,2,0"
                                                ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/research.png"
-                                               ToolTip="{s:StringResource Key=RESEARCH_TOOL_TIP}" />
+                                               ToolTip="{s:StringResource Key=RESEARCH_TOOLTIP}" />
                                         <TextBlock
                                               VerticalAlignment="Center"
                                               HorizontalAlignment="Right"
@@ -2805,7 +2805,7 @@
                                              VerticalAlignment="Center"
                                              Margin="0,0,2,0"
                                              ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/food.png"
-                                             ToolTip="{s:StringResource Key=FOOD_TOOL_TIP}" />
+                                             ToolTip="{s:StringResource Key=FOOD_TOOLTIP}" />
                                         <TextBlock
                                           VerticalAlignment="Center"
                                           HorizontalAlignment="Right"
@@ -2842,7 +2842,7 @@
                                               VerticalAlignment="Center"
                                               Margin="14,0,2,0"
                                               ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/industry.png"
-                                              ToolTip="{s:StringResource Key=INDUSTRY_TOOL_TIP}" />
+                                              ToolTip="{s:StringResource Key=INDUSTRY_TOOLTIP}" />
                                         <TextBlock
                                               VerticalAlignment="Center"
                                               HorizontalAlignment="Right"
@@ -2879,7 +2879,7 @@
                                               VerticalAlignment="Center"
                                               Margin="14,0,2,0"
                                               ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/energy.png"
-                                              ToolTip="{s:StringResource Key=ENERGY_TOOL_TIP}" />
+                                              ToolTip="{s:StringResource Key=ENERGY_TOOLTIP}" />
                                         <TextBlock
                                               VerticalAlignment="Center"
                                               HorizontalAlignment="Right"
@@ -2917,7 +2917,7 @@
                                                VerticalAlignment="Center"
                                                Margin="14,0,2,0"
                                                ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/research.png"
-                                               ToolTip="{s:StringResource Key=RESEARCH_TOOL_TIP}" />
+                                               ToolTip="{s:StringResource Key=RESEARCH_TOOLTIP}" />
                                         <TextBlock
                                               VerticalAlignment="Center"
                                               HorizontalAlignment="Right"
@@ -3250,7 +3250,7 @@
                                              VerticalAlignment="Center"
                                              Margin="0,0,2,0"
                                              ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/food.png"
-                                             ToolTip="{s:StringResource Key=FOOD_TOOL_TIP}" />
+                                             ToolTip="{s:StringResource Key=FOOD_TOOLTIP}" />
                                         <TextBlock
                                               VerticalAlignment="Center"
                                               HorizontalAlignment="Right"
@@ -3287,7 +3287,7 @@
                                               VerticalAlignment="Center"
                                               Margin="14,0,2,0"
                                               ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/industry.png"
-                                              ToolTip="{s:StringResource Key=INDUSTRY_TOOL_TIP}" />
+                                              ToolTip="{s:StringResource Key=INDUSTRY_TOOLTIP}" />
                                         <TextBlock
                                                   VerticalAlignment="Center"
                                                   HorizontalAlignment="Right"
@@ -3324,7 +3324,7 @@
                                               VerticalAlignment="Center"
                                               Margin="14,0,2,0"
                                               ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/energy.png"
-                                              ToolTip="{s:StringResource Key=ENERGY_TOOL_TIP}" />
+                                              ToolTip="{s:StringResource Key=ENERGY_TOOLTIP}" />
                                         <TextBlock
                                               VerticalAlignment="Center"
                                               HorizontalAlignment="Right"
@@ -3362,7 +3362,7 @@
                                                  VerticalAlignment="Center"
                                                  Margin="14,0,2,0"
                                                  ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/research.png"
-                                                 ToolTip="{s:StringResource Key=RESEARCH_TOOL_TIP}" />
+                                                 ToolTip="{s:StringResource Key=RESEARCH_TOOLTIP}" />
                                         <TextBlock
                                                   VerticalAlignment="Center"
                                                   HorizontalAlignment="Right"
