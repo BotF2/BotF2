@@ -1,4 +1,6 @@
-﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+﻿<!--File:GalaxyScreenView.xaml for BORG-->
+
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:s="http://schemas.startreksupremacy.com/xaml/core"
                     xmlns:scc="http://schemas.startreksupremacy.com/xaml/presentation"
@@ -589,13 +591,13 @@
                         IsExpanded="True"
                         Grid.IsSharedSizeScope="False"
                         cal:RegionManager.RegionName="{x:Static scc:GalaxyScreenRegions.EmpireOverview}" />
-                            <Expander x:Name="EmpireResourcesRegion"
+                            <!--<Expander x:Name="EmpireResourcesRegion"
                         Grid.Row="1"
                         Width="Auto"
                         Header="{s:StringResource REQUISITION_TEXT}"
                         Margin="0,4,0,0"
                         IsExpanded="True"
-                        cal:RegionManager.RegionName="{x:Static scc:GalaxyScreenRegions.EmpireResources}" />
+                        cal:RegionManager.RegionName="{x:Static scc:GalaxyScreenRegions.EmpireResources}" />-->
                             <GroupBox x:Name="TradeRouteListRegion"
                         Grid.Row="3"
                         Width="Auto"
@@ -1811,6 +1813,7 @@
                            Text="{Binding Path=SelectedSector.System.Colony.Inhabitants.PluralName, Mode=OneWay, Converter={StaticResource UpperCaseConverter}}"
                            FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
                            FontSize="18pt" />
+
               </Grid>
                             
               <Rectangle x:Name="TopRightCorner"
