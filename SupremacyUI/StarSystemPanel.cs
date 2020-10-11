@@ -403,6 +403,11 @@ namespace Supremacy.UI
                             health.Text = string.Format("{0}: {1:0.#}%",
                                 ResourceManager.GetString("SYSTEM_HEALTH"), populationHealth * 100);
 
+                            morale.ToolTip = ResourceManager.GetString("MORALE_TOOL_TIP");
+                            growth.ToolTip = ResourceManager.GetString("SYSTEM_GROWTH_RATE_TOOLTIP");
+                            health.ToolTip = ResourceManager.GetString("SYSTEM_HEALTH_TOOLTIP");
+                            orbitals.ToolTip = ResourceManager.GetString("SYSTEM_SHIELDS_TOOLTIP");
+
                             orbitals.SetBinding(
                                 TextBlock.TextProperty,
                                 new MultiBinding
