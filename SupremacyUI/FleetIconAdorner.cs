@@ -204,7 +204,7 @@ namespace Supremacy.UI
                         FontStretches.Normal);
 
                 int _countHolder = _fleets.Sum(o => o.Ships.Count);
-                string _countString ="";
+                string _countString = _countHolder.ToString();
                 IEnumerable<FleetView> fleetsCloaked = from fleet in _fleets
                     where fleet.IsPresenceKnown && fleet.Source.IsCloaked && fleet.Ships[0].Source.Owner != _playerCiv
                     select fleet;
@@ -216,6 +216,7 @@ namespace Supremacy.UI
                     {
                         _countString = _countHolder.ToString();
                     }
+                    else _countString = "";
 
                 }
                 //bool someCloakedShips = (_fleets.Select(o => o.Ships.Where(s => s.Source.IsCloaked == true)).Any()
