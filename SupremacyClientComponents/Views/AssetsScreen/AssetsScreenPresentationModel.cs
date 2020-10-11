@@ -227,13 +227,20 @@ namespace Supremacy.Client.Views
         #region Colonies Property
 
         [field: NonSerialized]
+        public event EventHandler ValuesFromTurnChanged;
         public event EventHandler ColoniesChanged;
         public event EventHandler TotalPopulationChanged;
+        public event EventHandler CreditsEmpireChanged;
+
         public event EventHandler TotalResearchChanged;
         public event EventHandler InstallingSpyNetworkChanged;
         public event EventHandler TotalIntelligenceProductionChanged;
         public event EventHandler TotalIntelligenceAttackingAccumulatedChanged;
         public event EventHandler TotalIntelligenceDefenseAccumulatedChanged;
+
+        public event EventHandler TotalDilithiumChanged;
+        public event EventHandler TotalDeuteriumChanged;
+        public event EventHandler TotalRawMaterialsChanged;
 
         public event EventHandler SpiedZeroColoniesChanged;
         public event EventHandler SpiedZeroTotalPopulationChanged;
@@ -390,6 +397,17 @@ namespace Supremacy.Client.Views
                 OnSpiedSixTotalPopulationChanged();
             }
         }
+        protected virtual void OnInstallingSpyNetworkChanged()
+        {
+            InstallingSpyNetworkChanged.Raise(this);
+            OnPropertyChanged("InstallingSpyNetwork");
+        }
+
+        protected virtual void OnValuesFromTurnChanged()
+        {
+            ValuesFromTurnChanged.Raise(this);
+            OnPropertyChanged("ValuesFromTurn");
+        }        
         protected virtual void OnColoniesChanged()
         {
             //GameLog.Client.Intel.DebugFormat("AssetsScreenPresenterModel OnColoniesChange at line 228");
@@ -406,16 +424,28 @@ namespace Supremacy.Client.Views
             TotalResearchChanged.Raise(this);
             OnPropertyChanged("TotalResearch");
         }
-        protected virtual void OnValuesFromTurnChanged()
+        protected virtual void OnCreditsEmpireChanged()
         {
-            TotalIntelligenceProductionChanged.Raise(this);
-            OnPropertyChanged("ValuesFromTurn");
+            CreditsEmpireChanged.Raise(this);
+            OnPropertyChanged("CreditsEmpire");
         }
-        protected virtual void OnInstallingSpyNetworkChanged()
+        protected virtual void OnTotalDilithiumChanged()
         {
-            InstallingSpyNetworkChanged.Raise(this);
-            OnPropertyChanged("InstallingSpyNetwork");
+            TotalDilithiumChanged.Raise(this);
+            OnPropertyChanged("TotalDilithium");
         }
+        protected virtual void OnTotalDeuteriumChanged()
+        {
+            TotalDeuteriumChanged.Raise(this);
+            OnPropertyChanged("TotalDeuterium");
+        }
+        protected virtual void OnTotalRawMaterialsChanged()
+        {
+            TotalRawMaterialsChanged.Raise(this);
+            OnPropertyChanged("TotalRawMaterials");
+        }
+
+
         protected virtual void OnTotalIntelligenceProductionChanged()
         {
             TotalIntelligenceProductionChanged.Raise(this);
