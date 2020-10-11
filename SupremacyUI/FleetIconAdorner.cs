@@ -204,7 +204,7 @@ namespace Supremacy.UI
                         FontStretches.Normal);
 
                 int _countHolder = _fleets.Sum(o => o.Ships.Count);
-                string _countString;
+                string _countString ="";
                 IEnumerable<FleetView> fleetsCloaked = from fleet in _fleets
                     where fleet.IsPresenceKnown && fleet.Source.IsCloaked && fleet.Ships[0].Source.Owner != _playerCiv
                     select fleet;
@@ -232,7 +232,7 @@ namespace Supremacy.UI
                     if (_playerCiv == _fleetCiv || DiplomacyHelper.IsContactMade(_playerCiv, _fleetCiv) && !DiplomacyHelper.IsScanBlocked(_playerCiv, _fleetView.Source.Sector))
                     {
                         FormattedText formattedText = new FormattedText(
-                             _countHolder.ToString(),
+                             _countString,
                              CultureInfo.CurrentCulture,
                              FlowDirection.LeftToRight,
                              s_textTypeface,
