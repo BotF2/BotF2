@@ -19,7 +19,7 @@
         <Style.Triggers>
             <!--<EventTrigger RoutedEvent="MenuItem.Click">
         <EventTrigger.Actions>
-          <SoundPlayerAction Source="vfs:///Resources/UI/Klingons/Sounds/GameContextMenuItem.wav" />
+          <SoundPlayerAction Source="vfs:///Resources/UI/Dominion/Sounds/GameContextMenuItem.wav" />
         </EventTrigger.Actions>
       </EventTrigger>-->
         </Style.Triggers>
@@ -35,40 +35,40 @@
         <Style.Resources>
             <BitmapImage x:Key="Image_Main1"
                              CacheOption="OnLoad"
-                             UriSource="vfs:///Resources/UI/Klingons/ContextMenu/main1.png" />
+                             UriSource="vfs:///Resources/UI/Dominion/ContextMenu/main1.png" />
             <BitmapImage x:Key="Image_Main2"
                              CacheOption="OnLoad"
-                             UriSource="vfs:///Resources/UI/Klingons/ContextMenu/main2.png" />
+                             UriSource="vfs:///Resources/UI/Dominion/ContextMenu/main2.png" />
             <BitmapImage x:Key="Image_Dip1"
                              CacheOption="OnLoad"
-                             UriSource="vfs:///Resources/UI/Klingons/ContextMenu/embassy1.png" />
+                             UriSource="vfs:///Resources/UI/Dominion/ContextMenu/embassy1.png" />
             <BitmapImage x:Key="Image_Dip2"
                              CacheOption="OnLoad"
-                             UriSource="vfs:///Resources/UI/Klingons/ContextMenu/embassy2.png" />
+                             UriSource="vfs:///Resources/UI/Dominion/ContextMenu/embassy2.png" />
             <BitmapImage x:Key="Image_Intel1"
                              CacheOption="OnLoad"
-                             UriSource="vfs:///Resources/UI/Klingons/ContextMenu/intel1.png" />
+                             UriSource="vfs:///Resources/UI/Dominion/ContextMenu/intel1.png" />
             <BitmapImage x:Key="Image_Intel2"
                              CacheOption="OnLoad"
-                             UriSource="vfs:///Resources/UI/Klingons/ContextMenu/intel2.png" />
+                             UriSource="vfs:///Resources/UI/Dominion/ContextMenu/intel2.png" />
             <BitmapImage x:Key="Image_Menu1"
                              CacheOption="OnLoad"
-                             UriSource="vfs:///Resources/UI/Klingons/ContextMenu/menu1.png" />
+                             UriSource="vfs:///Resources/UI/Dominion/ContextMenu/menu1.png" />
             <BitmapImage x:Key="Image_Menu2"
                              CacheOption="OnLoad"
-                             UriSource="vfs:///Resources/UI/Klingons/ContextMenu/menu2.png" />
+                             UriSource="vfs:///Resources/UI/Dominion/ContextMenu/menu2.png" />
             <BitmapImage x:Key="Image_Science1"
                              CacheOption="OnLoad"
-                             UriSource="vfs:///Resources/UI/Klingons/ContextMenu/science1.png" />
+                             UriSource="vfs:///Resources/UI/Dominion/ContextMenu/science1.png" />
             <BitmapImage x:Key="Image_Science2"
                              CacheOption="OnLoad"
-                             UriSource="vfs:///Resources/UI/Klingons/ContextMenu/science2.png" />
+                             UriSource="vfs:///Resources/UI/Dominion/ContextMenu/science2.png" />
             <BitmapImage x:Key="Image_Systems1"
                              CacheOption="OnLoad"
-                             UriSource="vfs:///Resources/UI/Klingons/ContextMenu/system1.png" />
+                             UriSource="vfs:///Resources/UI/Dominion/ContextMenu/system1.png" />
             <BitmapImage x:Key="Image_Systems2"
                              CacheOption="OnLoad"
-                             UriSource="vfs:///Resources/UI/Klingons/ContextMenu/system2.png" />
+                             UriSource="vfs:///Resources/UI/Dominion/ContextMenu/system2.png" />
         </Style.Resources>
         <Setter Property="LayoutTransform"
             Value="{Binding Path=MainWindow.LayoutTransform, Source={x:Static Application.Current}}" />
@@ -76,19 +76,28 @@
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type local:GameContextMenu}">
                     <Border Background="{TemplateBinding Background}"
-                  BorderBrush="{TemplateBinding BorderBrush}"
-                  BorderThickness="{TemplateBinding BorderThickness}">
-                        <Canvas Width="632"
-                                Height="659">
+                  BorderBrush="Pink"
+                  BorderThickness="2">
+                        <Canvas Width="777"
+                                Height="559">
+                            <!--Middle =
+                                          Width="380"
+                                          Height="280">
+                            
+                            --> 
+                            
+                            <!--Background = Popup-->
                             <Image>
                                 <Image.Source>
                                     <BitmapImage CacheOption="OnLoad"
-                               UriSource="vfs:///Resources/UI/Klingons/ContextMenu/popup.png" />
+                               UriSource="vfs:///Resources/UI/Dominion/ContextMenu/popup.png" />
                                 </Image.Source>
                             </Image>
+                            
+                            <!--Main = Map = F1 -->
                             <MenuItem x:Name="MenuItem_Main"
-                        Canvas.Left="0"
-                        Canvas.Top="250"
+                        Canvas.Left="240"
+                        Canvas.Top="80"
                         Command="{x:Static scc:NavigationCommands.ActivateScreen}"
                         CommandParameter="{x:Static scc:StandardGameScreens.GalaxyScreen}"
                         Style="{StaticResource MouseOverSoundStyle}">
@@ -113,9 +122,11 @@
                                     </ControlTemplate>
                                 </MenuItem.Template>
                             </MenuItem>
+                            
+                            <!--Systems = F2 -->
                             <MenuItem x:Name="MenuItem_Systems"
-                        Canvas.Left="234"
-                        Canvas.Top="0"
+                        Canvas.Left="524"
+                        Canvas.Top="330"
                         Command="{x:Static scc:NavigationCommands.ActivateScreen}"
                         CommandParameter="{x:Static scc:StandardGameScreens.ColonyScreen}"
                         Style="{StaticResource MouseOverSoundStyle}">
@@ -140,9 +151,11 @@
                                     </ControlTemplate>
                                 </MenuItem.Template>
                             </MenuItem>
+                            
+                            <!--Dip = Embassy = F3-->
                             <MenuItem x:Name="MenuItem_Dip"
-                        Canvas.Left="416"
-                        Canvas.Top="181"
+                        Canvas.Left="530"
+                        Canvas.Top="20"
                         Command="{x:Static scc:NavigationCommands.ActivateScreen}"
                         CommandParameter="{x:Static scc:StandardGameScreens.DiplomacyScreen}"
                         Style="{StaticResource MouseOverSoundStyle}">
@@ -167,9 +180,13 @@
                                     </ControlTemplate>
                                 </MenuItem.Template>
                             </MenuItem>
+                            
+                            <!--Science = F4 -->
                             <MenuItem x:Name="MenuItem_Science"
-                        Canvas.Left="100"
-                        Canvas.Top="351"
+
+                                                              Canvas.Left="20"
+                        Canvas.Top="50"
+
                         Command="{x:Static scc:NavigationCommands.ActivateScreen}"
                         CommandParameter="{x:Static scc:StandardGameScreens.ScienceScreen}"
                         Style="{StaticResource MouseOverSoundStyle}">
@@ -194,9 +211,11 @@
                                     </ControlTemplate>
                                 </MenuItem.Template>
                             </MenuItem>
+                            
+                            <!--Intel = Assets = F5-->
                             <MenuItem x:Name="MenuItem_Intel"
-                        Canvas.Left="317"
-                        Canvas.Top="535"
+                        Canvas.Left="100"
+                        Canvas.Top="341"
                         Command="{x:Static scc:NavigationCommands.ActivateScreen}"
                         CommandParameter="{x:Static scc:StandardGameScreens.IntelScreen}"
                         Style="{StaticResource MouseOverSoundStyle}">
@@ -221,9 +240,12 @@
                                     </ControlTemplate>
                                 </MenuItem.Template>
                             </MenuItem>
+                            
+                            <!--Menu = ESC -->
                             <MenuItem x:Name="MenuItem_Menu"
-                        Canvas.Left="332"
-                        Canvas.Top="354"
+                        Canvas.Left="396"
+                        Canvas.Top="200"
+
                         Command="{x:Static scc:NavigationCommands.ActivateScreen}"
                         CommandParameter="{x:Static scc:StandardGameScreens.MenuScreen}"
                         Style="{StaticResource MouseOverSoundStyle}">
@@ -253,10 +275,11 @@
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
+        <!--Sound-->
         <Style.Triggers>
             <EventTrigger RoutedEvent="ContextMenu.Opened">
                 <EventTrigger.Actions>
-                    <SoundPlayerAction Source="vfs:///Resources/UI/Klingons/Sounds/GameContextMenu.wav" />
+                    <SoundPlayerAction Source="vfs:///Resources/UI/Dominion/Sounds/GameContextMenu.wav" />
                 </EventTrigger.Actions>
             </EventTrigger>
         </Style.Triggers>
