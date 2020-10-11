@@ -202,18 +202,60 @@ namespace Supremacy.UI
                         FontStyles.Normal,
                         FontWeights.Normal,
                         FontStretches.Normal);
-                int _countHolder =_fleets.Sum(o => o.Ships.Count());
-  
-                FormattedText formattedText = new FormattedText(
-                        _countHolder.ToString(),
-                        CultureInfo.CurrentCulture,
-                        FlowDirection.LeftToRight,
-                        s_textTypeface,
-                        10.0,
-                        Brushes.PapayaWhip,                   
-                        VisualTreeHelper.GetDpi(this).PixelsPerDip);
-                Point gridPanelPoint = new Point(0,18); 
-                drawingContext.DrawText(formattedText, gridPanelPoint);
+
+                int _countHolder = _fleets.Sum(o => o.Ships.Count); //_fleets.Sum(o => o.Ships.Where(s => s.Source.IsCloaked != true).Count());
+                                                                    //string _cloaked = "";
+                                                                    //if (_countHolder.ToString() == "0" && _fleets.Select(o => o.Source.OwnerID == _playerCiv.CivID).Any())
+                                                                    //{
+                                                                    //    _cloaked = "cloaked";
+                                                                    //}
+                IEnumerable<FleetView> fleetsCloaked = from fleet in _fleets
+                where fleet.IsPresenceKnown && fleet.Source.IsCloaked && fleet.Ships[0].Source.Owner != _playerCiv
+                select fleet;
+
+                if (fleetsCloaked.Count() > 0)
+                {
+                    _countHolder = _countHolder - _fleets.Sum(o => o.Ships.Where(s => s.Source.IsCloaked == true).Count());
+                }
+                //bool someCloakedShips = (_fleets.Select(o => o.Ships.Where(s => s.Source.IsCloaked == true)).Any()
+                //    && _fleets.Select(o => o.Ships.Where(s => s.Source.IsCloaked == true)).Count() < _fleets.Count());
+                //if (someCloakedShips)
+                //{
+                //    _countHolder = _countHolder + "+";
+                //}
+                var _mapData = GameContext.Current.CivilizationManagers[_owners.First()].MapData;
+                var _fleetView = _fleets.First();
+                var _fleetCiv = _fleetView.Source.Owner;
+                if (_mapData.GetScanStrength(_location) > 0 || _playerCiv == _fleetCiv)
+                {
+                    if (_playerCiv == _fleetCiv || DiplomacyHelper.IsContactMade(_playerCiv, _fleetCiv) && !DiplomacyHelper.IsScanBlocked(_playerCiv, _fleetView.Source.Sector))
+                    {
+                        FormattedText formattedText = new FormattedText(
+                             _countHolder.ToString(),
+                             CultureInfo.CurrentCulture,
+                             FlowDirection.LeftToRight,
+                             s_textTypeface,
+                             10.0,
+                             Brushes.PapayaWhip,
+                             VisualTreeHelper.GetDpi(this).PixelsPerDip);
+                        Point gridPanelPoint = new Point(0, 18);
+                        drawingContext.DrawText(formattedText, gridPanelPoint);
+
+                    }
+                }
+                //if (_owners.First() == _playerCiv) // if it is your fleet
+                //{
+                //    FormattedText formattedText = new FormattedText(
+                //            _countHolder.ToString(),
+                //            CultureInfo.CurrentCulture,
+                //            FlowDirection.LeftToRight,
+                //            s_textTypeface,
+                //            10.0,
+                //            Brushes.PapayaWhip,
+                //            VisualTreeHelper.GetDpi(this).PixelsPerDip);
+                //    Point gridPanelPoint = new Point(0, 18);
+                //    drawingContext.DrawText(formattedText, gridPanelPoint);
+                //}
             }
 
 
