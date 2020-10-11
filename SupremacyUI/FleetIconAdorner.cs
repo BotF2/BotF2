@@ -203,19 +203,20 @@ namespace Supremacy.UI
                         FontWeights.Normal,
                         FontStretches.Normal);
 
-                int _countHolder = _fleets.Sum(o => o.Ships.Count); //_fleets.Sum(o => o.Ships.Where(s => s.Source.IsCloaked != true).Count());
-                                                                    //string _cloaked = "";
-                                                                    //if (_countHolder.ToString() == "0" && _fleets.Select(o => o.Source.OwnerID == _playerCiv.CivID).Any())
-                                                                    //{
-                                                                    //    _cloaked = "cloaked";
-                                                                    //}
+                int _countHolder = _fleets.Sum(o => o.Ships.Count);
+                string _countString;
                 IEnumerable<FleetView> fleetsCloaked = from fleet in _fleets
-                where fleet.IsPresenceKnown && fleet.Source.IsCloaked && fleet.Ships[0].Source.Owner != _playerCiv
-                select fleet;
+                    where fleet.IsPresenceKnown && fleet.Source.IsCloaked && fleet.Ships[0].Source.Owner != _playerCiv
+                    select fleet;
 
                 if (fleetsCloaked.Count() > 0)
                 {
                     _countHolder = _countHolder - _fleets.Sum(o => o.Ships.Where(s => s.Source.IsCloaked == true).Count());
+                    if (_countHolder != 0)
+                    {
+                        _countString = _countHolder.ToString();
+                    }
+
                 }
                 //bool someCloakedShips = (_fleets.Select(o => o.Ships.Where(s => s.Source.IsCloaked == true)).Any()
                 //    && _fleets.Select(o => o.Ships.Where(s => s.Source.IsCloaked == true)).Count() < _fleets.Count());
