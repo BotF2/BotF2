@@ -26,6 +26,8 @@ namespace Supremacy.Client.Views
 
     public interface IGalaxyScreenView : IGameScreenView<GalaxyScreenPresentationModel> { }
 
+    //public interface ISinglePlayerStartScreen : ISinglePlayerStartScreen<EncyclopediaScreenPresentationModel> { }
+
     public interface IColonyScreenView : IGameScreenView<ColonyScreenPresentationModel> { }
 
     public interface IAssetsScreenView : IGameScreenView<AssetsScreenPresentationModel> { }

@@ -71,6 +71,7 @@ namespace Supremacy.Client
         private readonly DelegateCommand<object> _logTxtCommand;
         private readonly DelegateCommand<object> _errorTxtCommand;
         private readonly DelegateCommand<object> _startSinglePlayerGameCommand;
+        private readonly DelegateCommand<object> _startSP1Command;
         private readonly DelegateCommand<object> _continueGameCommand;
         private readonly DelegateCommand<bool> _endGameCommand;
         private readonly DelegateCommand<SavedGameHeader> _loadGameCommand;
@@ -146,6 +147,9 @@ namespace Supremacy.Client
                 ExecuteErrorTxtCommand);
 
             _startSinglePlayerGameCommand = new DelegateCommand<object>(
+                ExecuteStartSinglePlayerGameCommand);
+
+            _startSP1Command = new DelegateCommand<object>(
                 ExecuteStartSinglePlayerGameCommand);
 
             _continueGameCommand = new DelegateCommand<object>(
@@ -433,6 +437,8 @@ namespace Supremacy.Client
             _container.RegisterType<AssetsScreenPresentationModel>(new ExternallyControlledLifetimeManager());
             _container.RegisterType<EncyclopediaScreenPresentationModel>(new ExternallyControlledLifetimeManager());
             _container.RegisterType<SystemAssaultScreenViewModel>(new ContainerControlledLifetimeManager());
+
+            //_container.RegisterType<ISinglePlayerScreen, SinglePlayerScreen>(new ExternallyControlledLifetimeManager());
 
             _container.RegisterType<IGalaxyScreenView, GalaxyScreenView>(new ExternallyControlledLifetimeManager());
             _container.RegisterType<IColonyScreenView, ColonyScreenView>(new ExternallyControlledLifetimeManager());
@@ -831,6 +837,7 @@ namespace Supremacy.Client
             ClientCommands.LogTxtCommand.RegisterCommand(_logTxtCommand);
             ClientCommands.ErrorTxtCommand.RegisterCommand(_errorTxtCommand);
             ClientCommands.StartSinglePlayerGame.RegisterCommand(_startSinglePlayerGameCommand);
+            ClientCommands.StartSP1Command.RegisterCommand(_startSP1Command);
             ClientCommands.ContinueGame.RegisterCommand(_continueGameCommand);
             ClientCommands.EndGame.RegisterCommand(_endGameCommand);
             ClientCommands.JoinMultiplayerGame.RegisterCommand(_joinMultiplayerGameCommand);

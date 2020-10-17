@@ -1,4 +1,5 @@
-﻿<scc:Dialog x:Class="Supremacy.Client.SinglePlayerStartScreen"
+﻿ <!--File:SinglePlayerStartScreen.xaml-->
+    <scc:Dialog x:Class="Supremacy.Client.SinglePlayerStartScreen"
             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
             xmlns:s="http://schemas.startreksupremacy.com/xaml/core"
