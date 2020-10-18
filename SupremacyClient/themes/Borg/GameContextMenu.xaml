@@ -79,18 +79,20 @@ All other rights reserved.-->
             BorderBrush="Green"
             BorderThickness="0">
                         <!--
-        # just for testing #
-        # original was...  #
-        <Border Background="{TemplateBinding Background}"
-            BorderBrush="{TemplateBinding BorderBrush}"
-            BorderThickness="{TemplateBinding BorderThickness}">
-        -->
+                        # just for testing #
+                        # original was...  #
+                        <Border Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}">-->
                         <Canvas Width="560"  
-            Height="490">
+                                Height="490">
+                            <Canvas.LayoutTransform>
+                                <ScaleTransform ScaleX="0.7" ScaleY="0.7"  />
+                            </Canvas.LayoutTransform>
                             <!--
-        old images were: Popup 280 x 245, Federation Popup 2 rows, 3 columns, each image 80 x 98    border 23, spacing 4
-        new:             Popup 560 x 490, Borg             2 rows, 2 columns, each image 180 x 150, border 10, no spacing                  
-        -->
+                            old images were: Popup 280 x 245, Federation Popup 2 rows, 3 columns, each image 80 x 98    border 23, spacing 4
+                            new:             Popup 560 x 490, Borg             2 rows, 2 columns, each image 180 x 150, border 10, no spacing                  
+                            -->
                             <Image>
                                 <Image.Source>
                                     <BitmapImage CacheOption="OnLoad"

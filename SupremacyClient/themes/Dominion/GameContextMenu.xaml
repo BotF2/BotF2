@@ -73,12 +73,15 @@ All other rights reserved.-->
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type local:GameContextMenu}">
-                    <Border Background="{TemplateBinding Background}"
+                    <!--<Border Background="{TemplateBinding Background}"
                             BorderBrush="Pink"
-                            BorderThickness="2">
+                            BorderThickness="2">-->
                         <Canvas Width="970"
                                 Height="510">
-                            <!--Background = Popup-->
+                            <Canvas.LayoutTransform>
+                                <ScaleTransform ScaleX="0.6" ScaleY="0.6"  />
+                            </Canvas.LayoutTransform>
+                        <!--Background = Popup-->
                             <Image>
                                 <Image.Source>
                                     <BitmapImage CacheOption="OnLoad"
@@ -87,25 +90,30 @@ All other rights reserved.-->
                             </Image>
 
                             <!--Main = Map = F1 -->
+                        <!--<Border Background="{TemplateBinding Background}"
+                            BorderBrush="Pink"
+                            BorderThickness="2"
+                                Width="303"
+                                Height="154">-->
                             <MenuItem x:Name="MenuItem_Main"
-                                        Canvas.Left="258"
-                                        Canvas.Top="74"
+                                        Canvas.Left="10"
+                                        Canvas.Top="15"
                                         Command="{x:Static scc:NavigationCommands.ActivateScreen}"
                                         CommandParameter="{x:Static scc:StandardGameScreens.GalaxyScreen}"
                                         Style="{StaticResource MouseOverSoundStyle}">
                                 <MenuItem.Template>
                                     <ControlTemplate TargetType="{x:Type MenuItem}">
                                         <Image x:Name="MenuItemContent_Main"
-                                                Source="{StaticResource Image_Main1}" />
+                                               Source="{StaticResource Image_Main1}" />
                                         <ControlTemplate.Triggers>
                                             <Trigger Property="IsMouseOver"
-                                                    Value="True">
+                                                     Value="True">
                                                 <Setter TargetName="MenuItemContent_Main"
                                                         Property="Source"
                                                         Value="{StaticResource Image_Main2}" />
                                             </Trigger>
                                             <Trigger Property="IsPressed"
-                                                    Value="True">
+                                                     Value="True">
                                                 <Setter TargetName="MenuItemContent_Main"
                                                         Property="Source"
                                                         Value="{StaticResource Image_Main1}" />
@@ -114,8 +122,9 @@ All other rights reserved.-->
                                     </ControlTemplate>
                                 </MenuItem.Template>
                             </MenuItem>
+                        <!--</Border>-->
 
-                            <!--Systems = F2 -->
+                        <!--Systems = F2 -->
                             <MenuItem x:Name="MenuItem_Systems"
                                     Canvas.Left="478"
                                     Canvas.Top="70"
@@ -260,7 +269,7 @@ All other rights reserved.-->
                                 </MenuItem.Template>
                             </MenuItem>
                         </Canvas>
-                    </Border>
+                    <!--</Border>-->
                 </ControlTemplate>
             </Setter.Value>
         </Setter>

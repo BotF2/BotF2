@@ -76,179 +76,184 @@
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type local:GameContextMenu}">
                     <Border Background="{TemplateBinding Background}"
-                  BorderBrush="{TemplateBinding BorderBrush}"
-                  BorderThickness="{TemplateBinding BorderThickness}">
-                        <Canvas Width="632"
+                              BorderBrush="{TemplateBinding BorderBrush}"
+                              BorderThickness="{TemplateBinding BorderThickness}">
+                        <Viewbox Stretch="Uniform">
+                            <Canvas Width="632"
                                 Height="659">
-                            <Image>
-                                <Image.Source>
-                                    <BitmapImage CacheOption="OnLoad"
-                               UriSource="vfs:///Resources/UI/Klingons/ContextMenu/popup.png" />
-                                </Image.Source>
-                            </Image>
-                            <MenuItem x:Name="MenuItem_Main"
-                        Canvas.Left="0"
-                        Canvas.Top="250"
-                        Command="{x:Static scc:NavigationCommands.ActivateScreen}"
-                        CommandParameter="{x:Static scc:StandardGameScreens.GalaxyScreen}"
-                        Style="{StaticResource MouseOverSoundStyle}">
-                                <MenuItem.Template>
-                                    <ControlTemplate TargetType="{x:Type MenuItem}">
-                                        <Image x:Name="MenuItemContent_Main"
+                                <Canvas.LayoutTransform>
+                                    <ScaleTransform ScaleX="0.7" ScaleY="0.7"  />
+                                </Canvas.LayoutTransform>
+                                <Image>
+                                    <Image.Source>
+                                        <BitmapImage CacheOption="OnLoad"
+                                                UriSource="vfs:///Resources/UI/Klingons/ContextMenu/popup.png" />
+                                    </Image.Source>
+                                </Image>
+                                <MenuItem x:Name="MenuItem_Main"
+                                    Canvas.Left="29"
+                                    Canvas.Top="250"
+                                    Command="{x:Static scc:NavigationCommands.ActivateScreen}"
+                                    CommandParameter="{x:Static scc:StandardGameScreens.GalaxyScreen}"
+                                    Style="{StaticResource MouseOverSoundStyle}">
+                                    <MenuItem.Template>
+                                        <ControlTemplate TargetType="{x:Type MenuItem}">
+                                            <Image x:Name="MenuItemContent_Main"
                            Source="{StaticResource Image_Main1}" />
-                                        <ControlTemplate.Triggers>
-                                            <Trigger Property="IsMouseOver"
+                                            <ControlTemplate.Triggers>
+                                                <Trigger Property="IsMouseOver"
                                Value="True">
-                                                <Setter TargetName="MenuItemContent_Main"
+                                                    <Setter TargetName="MenuItemContent_Main"
                                 Property="Source"
                                 Value="{StaticResource Image_Main2}" />
-                                            </Trigger>
-                                            <Trigger Property="IsPressed"
+                                                </Trigger>
+                                                <Trigger Property="IsPressed"
                                Value="True">
-                                                <Setter TargetName="MenuItemContent_Main"
+                                                    <Setter TargetName="MenuItemContent_Main"
                                 Property="Source"
                                 Value="{StaticResource Image_Main1}" />
-                                            </Trigger>
-                                        </ControlTemplate.Triggers>
-                                    </ControlTemplate>
-                                </MenuItem.Template>
-                            </MenuItem>
-                            <MenuItem x:Name="MenuItem_Systems"
-                        Canvas.Left="234"
-                        Canvas.Top="0"
-                        Command="{x:Static scc:NavigationCommands.ActivateScreen}"
-                        CommandParameter="{x:Static scc:StandardGameScreens.ColonyScreen}"
-                        Style="{StaticResource MouseOverSoundStyle}">
-                                <MenuItem.Template>
-                                    <ControlTemplate TargetType="{x:Type MenuItem}">
-                                        <Image x:Name="MenuItemContent_Systems"
+                                                </Trigger>
+                                            </ControlTemplate.Triggers>
+                                        </ControlTemplate>
+                                    </MenuItem.Template>
+                                </MenuItem>
+                                <MenuItem x:Name="MenuItem_Systems"
+                                            Canvas.Left="234"
+                                            Canvas.Top="0"
+                                            Command="{x:Static scc:NavigationCommands.ActivateScreen}"
+                                            CommandParameter="{x:Static scc:StandardGameScreens.ColonyScreen}"
+                                            Style="{StaticResource MouseOverSoundStyle}">
+                                    <MenuItem.Template>
+                                        <ControlTemplate TargetType="{x:Type MenuItem}">
+                                            <Image x:Name="MenuItemContent_Systems"
                            Source="{StaticResource Image_Systems1}" />
-                                        <ControlTemplate.Triggers>
-                                            <Trigger Property="IsMouseOver"
+                                            <ControlTemplate.Triggers>
+                                                <Trigger Property="IsMouseOver"
                                Value="True">
-                                                <Setter TargetName="MenuItemContent_Systems"
+                                                    <Setter TargetName="MenuItemContent_Systems"
                                 Property="Source"
                                 Value="{StaticResource Image_Systems2}" />
-                                            </Trigger>
-                                            <Trigger Property="IsPressed"
+                                                </Trigger>
+                                                <Trigger Property="IsPressed"
                                Value="True">
-                                                <Setter TargetName="MenuItemContent_Systems"
+                                                    <Setter TargetName="MenuItemContent_Systems"
                                 Property="Source"
                                 Value="{StaticResource Image_Systems1}" />
-                                            </Trigger>
-                                        </ControlTemplate.Triggers>
-                                    </ControlTemplate>
-                                </MenuItem.Template>
-                            </MenuItem>
-                            <MenuItem x:Name="MenuItem_Dip"
-                        Canvas.Left="416"
-                        Canvas.Top="181"
-                        Command="{x:Static scc:NavigationCommands.ActivateScreen}"
-                        CommandParameter="{x:Static scc:StandardGameScreens.DiplomacyScreen}"
-                        Style="{StaticResource MouseOverSoundStyle}">
-                                <MenuItem.Template>
-                                    <ControlTemplate TargetType="{x:Type MenuItem}">
-                                        <Image x:Name="MenuItemContent_Dip"
-                           Source="{StaticResource Image_Dip1}" />
-                                        <ControlTemplate.Triggers>
-                                            <Trigger Property="IsMouseOver"
-                               Value="True">
-                                                <Setter TargetName="MenuItemContent_Dip"
-                                Property="Source"
-                                Value="{StaticResource Image_Dip2}" />
-                                            </Trigger>
-                                            <Trigger Property="IsPressed"
-                               Value="True">
-                                                <Setter TargetName="MenuItemContent_Dip"
-                                Property="Source"
-                                Value="{StaticResource Image_Dip1}" />
-                                            </Trigger>
-                                        </ControlTemplate.Triggers>
-                                    </ControlTemplate>
-                                </MenuItem.Template>
-                            </MenuItem>
-                            <MenuItem x:Name="MenuItem_Science"
-                        Canvas.Left="100"
-                        Canvas.Top="351"
-                        Command="{x:Static scc:NavigationCommands.ActivateScreen}"
-                        CommandParameter="{x:Static scc:StandardGameScreens.ScienceScreen}"
-                        Style="{StaticResource MouseOverSoundStyle}">
-                                <MenuItem.Template>
-                                    <ControlTemplate TargetType="{x:Type MenuItem}">
-                                        <Image x:Name="MenuItemContent_Science"
-                           Source="{StaticResource Image_Science1}" />
-                                        <ControlTemplate.Triggers>
-                                            <Trigger Property="IsMouseOver"
-                               Value="True">
-                                                <Setter TargetName="MenuItemContent_Science"
-                                Property="Source"
-                                Value="{StaticResource Image_Science2}" />
-                                            </Trigger>
-                                            <Trigger Property="IsPressed"
-                               Value="True">
-                                                <Setter TargetName="MenuItemContent_Science"
-                                Property="Source"
-                                Value="{StaticResource Image_Science1}" />
-                                            </Trigger>
-                                        </ControlTemplate.Triggers>
-                                    </ControlTemplate>
-                                </MenuItem.Template>
-                            </MenuItem>
-                            <MenuItem x:Name="MenuItem_Intel"
-                        Canvas.Left="317"
-                        Canvas.Top="535"
-                        Command="{x:Static scc:NavigationCommands.ActivateScreen}"
-                        CommandParameter="{x:Static scc:StandardGameScreens.IntelScreen}"
-                        Style="{StaticResource MouseOverSoundStyle}">
-                                <MenuItem.Template>
-                                    <ControlTemplate TargetType="{x:Type MenuItem}">
-                                        <Image x:Name="MenuItemContent_Intel"
-                           Source="{StaticResource Image_Intel1}" />
-                                        <ControlTemplate.Triggers>
-                                            <Trigger Property="IsMouseOver"
-                               Value="True">
-                                                <Setter TargetName="MenuItemContent_Intel"
-                                Property="Source"
-                                Value="{StaticResource Image_Intel2}" />
-                                            </Trigger>
-                                            <Trigger Property="IsPressed"
-                               Value="True">
-                                                <Setter TargetName="MenuItemContent_Intel"
-                                Property="Source"
-                                Value="{StaticResource Image_Intel1}" />
-                                            </Trigger>
-                                        </ControlTemplate.Triggers>
-                                    </ControlTemplate>
-                                </MenuItem.Template>
-                            </MenuItem>
-                            <MenuItem x:Name="MenuItem_Menu"
-                        Canvas.Left="332"
-                        Canvas.Top="354"
-                        Command="{x:Static scc:NavigationCommands.ActivateScreen}"
-                        CommandParameter="{x:Static scc:StandardGameScreens.MenuScreen}"
-                        Style="{StaticResource MouseOverSoundStyle}">
-                                <MenuItem.Template>
-                                    <ControlTemplate TargetType="{x:Type MenuItem}">
-                                        <Image x:Name="MenuItemContent_Menu"
-                           Source="{StaticResource Image_Menu1}" />
-                                        <ControlTemplate.Triggers>
-                                            <Trigger Property="IsMouseOver"
-                               Value="True">
-                                                <Setter TargetName="MenuItemContent_Menu"
-                                Property="Source"
-                                Value="{StaticResource Image_Menu2}" />
-                                            </Trigger>
-                                            <Trigger Property="IsPressed"
-                               Value="True">
-                                                <Setter TargetName="MenuItemContent_Menu"
-                                Property="Source"
-                                Value="{StaticResource Image_Menu1}" />
-                                            </Trigger>
-                                        </ControlTemplate.Triggers>
-                                    </ControlTemplate>
-                                </MenuItem.Template>
-                            </MenuItem>
-                        </Canvas>
+                                                </Trigger>
+                                            </ControlTemplate.Triggers>
+                                        </ControlTemplate>
+                                    </MenuItem.Template>
+                                </MenuItem>
+                                <MenuItem x:Name="MenuItem_Dip"
+                                            Canvas.Left="400"
+                                            Canvas.Top="181"
+                                            Command="{x:Static scc:NavigationCommands.ActivateScreen}"
+                                            CommandParameter="{x:Static scc:StandardGameScreens.DiplomacyScreen}"
+                                            Style="{StaticResource MouseOverSoundStyle}">
+                                    <MenuItem.Template>
+                                        <ControlTemplate TargetType="{x:Type MenuItem}">
+                                            <Image x:Name="MenuItemContent_Dip"
+                                                    Source="{StaticResource Image_Dip1}" />
+                                            <ControlTemplate.Triggers>
+                                                <Trigger Property="IsMouseOver"
+                                                        Value="True">
+                                                    <Setter TargetName="MenuItemContent_Dip"
+                                                            Property="Source"
+                                                            Value="{StaticResource Image_Dip2}" />
+                                                </Trigger>
+                                                <Trigger Property="IsPressed"
+                                                            Value="True">
+                                                    <Setter TargetName="MenuItemContent_Dip"
+                                                            Property="Source"
+                                                            Value="{StaticResource Image_Dip1}" />
+                                                </Trigger>
+                                            </ControlTemplate.Triggers>
+                                        </ControlTemplate>
+                                    </MenuItem.Template>
+                                </MenuItem>
+                                <MenuItem x:Name="MenuItem_Science"
+                                            Canvas.Left="100"
+                                            Canvas.Top="351"
+                                            Command="{x:Static scc:NavigationCommands.ActivateScreen}"
+                                            CommandParameter="{x:Static scc:StandardGameScreens.ScienceScreen}"
+                                            Style="{StaticResource MouseOverSoundStyle}">
+                                    <MenuItem.Template>
+                                        <ControlTemplate TargetType="{x:Type MenuItem}">
+                                            <Image x:Name="MenuItemContent_Science"
+                                                    Source="{StaticResource Image_Science1}" />
+                                            <ControlTemplate.Triggers>
+                                                <Trigger Property="IsMouseOver"
+                                                        Value="True">
+                                                    <Setter TargetName="MenuItemContent_Science"
+                                                            Property="Source"
+                                                            Value="{StaticResource Image_Science2}" />
+                                                </Trigger>
+                                                <Trigger Property="IsPressed"
+                                                            Value="True">
+                                                    <Setter TargetName="MenuItemContent_Science"
+                                                            Property="Source"
+                                                            Value="{StaticResource Image_Science1}" />
+                                                </Trigger>
+                                            </ControlTemplate.Triggers>
+                                        </ControlTemplate>
+                                    </MenuItem.Template>
+                                </MenuItem>
+                                <MenuItem x:Name="MenuItem_Intel"
+                                            Canvas.Left="317"
+                                            Canvas.Top="535"
+                                            Command="{x:Static scc:NavigationCommands.ActivateScreen}"
+                                            CommandParameter="{x:Static scc:StandardGameScreens.IntelScreen}"
+                                            Style="{StaticResource MouseOverSoundStyle}">
+                                    <MenuItem.Template>
+                                        <ControlTemplate TargetType="{x:Type MenuItem}">
+                                            <Image x:Name="MenuItemContent_Intel"
+                                                    Source="{StaticResource Image_Intel1}" />
+                                            <ControlTemplate.Triggers>
+                                                <Trigger Property="IsMouseOver"
+                                                        Value="True">
+                                                    <Setter TargetName="MenuItemContent_Intel"
+                                                            Property="Source"
+                                                            Value="{StaticResource Image_Intel2}" />
+                                                </Trigger>
+                                                <Trigger Property="IsPressed"
+                                                        Value="True">
+                                                    <Setter TargetName="MenuItemContent_Intel"
+                                                            Property="Source"
+                                                            Value="{StaticResource Image_Intel1}" />
+                                                </Trigger>
+                                            </ControlTemplate.Triggers>
+                                        </ControlTemplate>
+                                    </MenuItem.Template>
+                                </MenuItem>
+                                <MenuItem x:Name="MenuItem_Menu"
+                                            Canvas.Left="332"
+                                            Canvas.Top="354"
+                                            Command="{x:Static scc:NavigationCommands.ActivateScreen}"
+                                            CommandParameter="{x:Static scc:StandardGameScreens.MenuScreen}"
+                                            Style="{StaticResource MouseOverSoundStyle}">
+                                    <MenuItem.Template>
+                                        <ControlTemplate TargetType="{x:Type MenuItem}">
+                                            <Image x:Name="MenuItemContent_Menu"
+                                                    Source="{StaticResource Image_Menu1}" />
+                                            <ControlTemplate.Triggers>
+                                                <Trigger Property="IsMouseOver"
+                                                         Value="True">
+                                                    <Setter TargetName="MenuItemContent_Menu"
+                                                            Property="Source"
+                                                            Value="{StaticResource Image_Menu2}" />
+                                                </Trigger>
+                                                <Trigger Property="IsPressed"
+                                                            Value="True">
+                                                    <Setter TargetName="MenuItemContent_Menu"
+                                                            Property="Source"
+                                                            Value="{StaticResource Image_Menu1}" />
+                                                </Trigger>
+                                            </ControlTemplate.Triggers>
+                                        </ControlTemplate>
+                                    </MenuItem.Template>
+                                </MenuItem>
+                            </Canvas>
+                        </Viewbox>
                     </Border>
                 </ControlTemplate>
             </Setter.Value>

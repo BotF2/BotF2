@@ -929,7 +929,7 @@ namespace Supremacy.Orbitals
     #region InfluenceOrder
 
     [Serializable]
-    // Diplomatic mission ... by sending an envoy like Spock, treaties finally are made in DiplomaticScreen
+    // Diplomatic mission ... by sending a diplomatic ship, treaties are easier to make in DiplomaticScreen
     // positive: ...increasing Regard + Trust
     // negative: ...exit membership from foreign empire
     // positive to your systems, colonies: increasing morale earth first

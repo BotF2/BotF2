@@ -81,6 +81,9 @@
                         <Canvas VerticalAlignment="Center"
                                  Width="580"
                                  Height="518">
+                            <Canvas.LayoutTransform>
+                                <ScaleTransform ScaleX="0.7" ScaleY="0.7"  />
+                            </Canvas.LayoutTransform>
                             <Image>
                                 <Image.Source>
                                     <BitmapImage CacheOption="OnLoad"
