@@ -12,6 +12,7 @@ using Supremacy.Diplomacy;
 using Supremacy.Economy;
 using Supremacy.Entities;
 using Supremacy.Game;
+using Supremacy.Intelligence;
 using Supremacy.Orbitals;
 using Supremacy.Pathfinding;
 using Supremacy.Universe;
@@ -127,8 +128,11 @@ namespace Supremacy.AI
                 if (fleet.IsBattleFleet)
                 {
                     GameLog.Core.AI.DebugFormat("## IsBattleFleet ##  fleet={0}, {1}, {2}, {3}, {4},", fleet.ObjectID, fleet.Name, fleet.Owner, fleet.Order, fleet.Location);
+                    Fleet defenseFleet = new Fleet();
+                    if (GameContext.Current.Universe.HomeColonyLookup[civ].Sector.GetOwnedFleets(civ).FirstOrDefault(o => o.UnitAIType == UnitAIType.SystemDefense) == null)                      
+                            defenseFleet = fleet;
 
-                    Fleet defenseFleet = GameContext.Current.Universe.HomeColonyLookup[civ].Sector.GetOwnedFleets(civ).FirstOrDefault(o => o.UnitAIType == UnitAIType.SystemDefense);
+                    defenseFleet = GameContext.Current.Universe.HomeColonyLookup[civ].Sector.GetOwnedFleets(civ).FirstOrDefault(o => o.UnitAIType == UnitAIType.SystemDefense);
                     if (fleet.Activity == UnitActivity.NoActivity && defenseFleet == null)
                     {
                         fleet.UnitAIType = UnitAIType.SystemDefense;
@@ -180,36 +184,42 @@ namespace Supremacy.AI
 
                 }
 
-                //TODO
-                if (fleet.IsSpy)
+                if (fleet.IsSpy) // install spy network
                 {
-                    //if (fleet.Activity == UnitActivity.NoActivity || fleet.Route.IsEmpty || fleet.Order.IsComplete)
-                    //{
-                    //    Colony bestSystemForSpying;
-                    //    if (GetBestColonyForSpying(fleet, out bestSystemForSpying))
-                    //    {
-                    //        if (bestSystemForSpying.Location == fleet.Location)
-                    //        {
-                    //            //Spy
-                    //            fleet.SetOrder(new SabotageOrder());
-                    //            fleet.UnitAIType = UnitAIType.Spy;
-                    //            fleet.Activity = UnitActivity.Mission;
-                    //            GameLog.Core.AI.DebugFormat("Ordering spy fleet {0} in {1} to sabotage the system", fleet.ObjectID, fleet.Location);
-                    //        }
-                    //        else
-                    //        {
-                    //            fleet.SetRoute(AStar.FindPath(fleet, PathOptions.SafeTerritory, null, new List<Sector> { bestSystemForSpying.Sector }));
-                    //            fleet.UnitAIType = UnitAIType.Medical;
-                    //            fleet.Activity = UnitActivity.Mission;
-                    //            GameLog.Core.AI.DebugFormat("Ordering spy fleet {0} to {1}", fleet.ObjectID, bestSystemForSpying);
-                    //        }
-                    //    }
-                    //    else
-                    //    {
-                    //        GameLog.Core.AI.DebugFormat("Nothing to do for spy fleet {0}", fleet.ObjectID);
-                    //    }
-                    //}
+                    if (fleet.Activity == UnitActivity.NoActivity || fleet.Route.IsEmpty || fleet.Order.IsComplete)
+                    {
+                        Colony bestSystemForSpying;
+                        if (GetBestColonyForSpying(fleet, out bestSystemForSpying))
+                        {
+                            if (bestSystemForSpying.OwnerID < 6)
+                            { 
+                                bool hasOurSpyNetwork = CheckForSpyNetwork(bestSystemForSpying.Owner, fleet.Owner);
+                                if (!hasOurSpyNetwork)
+                                {
+                                    if (bestSystemForSpying.Location == fleet.Location)
+                                    {
+                                        fleet.SetOrder(new SpyOnOrder()); // install spy network
+                                        fleet.UnitAIType = UnitAIType.Spy;
+                                        fleet.Activity = UnitActivity.Mission;
+                                        GameLog.Core.AI.DebugFormat("Ordering spy fleet {0} in {1} to install spy network", fleet.ObjectID, fleet.Location);
+                                    }
+                                    else
+                                    {
+                                        fleet.SetRoute(AStar.FindPath(fleet, PathOptions.SafeTerritory, null, new List<Sector> { bestSystemForSpying.Sector }));
+                                        fleet.UnitAIType = UnitAIType.Spy;
+                                        fleet.Activity = UnitActivity.Mission;
+                                        GameLog.Core.AI.DebugFormat("Ordering spy fleet {0} to {1}", fleet.ObjectID, bestSystemForSpying);
+                                    }
+                                }
+                            }
+                        }
+                        else
+                        {
+                            GameLog.Core.AI.DebugFormat("Nothing to do for spy fleet {0}", fleet.ObjectID);
+                        }
+                    }
                 }
+                
 
                 //TODO
                 if (fleet.IsScience)
@@ -366,7 +376,7 @@ namespace Supremacy.AI
                 value += InitiatesFirstContactValue;
             }
 
-            GameLog.Core.AI.DebugFormat("Explore priority for {0} is {1}", sector, value);
+            //GameLog.Core.AI.DebugFormat("Explore priority for {0} is {1}", sector, value);
             return value;
         }
 
@@ -537,7 +547,10 @@ namespace Supremacy.AI
                 //We need to know about it (no cheating)
                 .Where(s => mapData.IsScanned(s.Location) && mapData.IsExplored(s.Location))
                 //In fuel range
-                .Where(c => FleetHelper.IsSectorWithinFuelRange(c.Sector, fleet) && DiplomacyHelper.IsTravelAllowed(fleet.Owner, c.Sector) && GameContext.Current.Universe.FindAt<Orbital>(c.Location).Any(o => DiplomacyHelper.ArePotentialEnemies(fleet.Owner, o.Owner)) && !DiplomacyHelper.AreAtWar(c.Owner, fleet.Owner))
+                .Where(c => FleetHelper.IsSectorWithinFuelRange(c.Sector, fleet)
+                && DiplomacyHelper.IsTravelAllowed(fleet.Owner, c.Sector)
+                && GameContext.Current.Universe.FindAt<Orbital>(c.Location).Any(o => DiplomacyHelper.ArePotentialEnemies(fleet.Owner, o.Owner))
+                && !DiplomacyHelper.AreAtWar(c.Owner, fleet.Owner))
                 //Where we can enter the sector
                 //Where there aren't any hostiles
                 //Where they aren't at war
@@ -672,23 +685,29 @@ namespace Supremacy.AI
 
             List<Colony> possibleColonies = GameContext.Current.Universe.Find<Colony>()
                 //That isn't owned by us
-                .Where(c => c.Owner != fleet.Owner && mapData.IsScanned(c.Location) && mapData.IsExplored(c.Location) && FleetHelper.IsSectorWithinFuelRange(c.Sector, fleet) && !spyShips.Any(f => f.Location == c.Location) && !spyShips.Any(f => f.Route.Waypoints.LastOrDefault() == c.Location))
+                .Where(c => c.Owner != fleet.Owner && mapData.IsScanned(c.Location) && c.Owner.IsEmpire
+                && mapData.IsExplored(c.Location) && FleetHelper.IsSectorWithinFuelRange(c.Sector, fleet)
+                && CheckForSpyNetwork(c.Owner, fleet.Owner) == false)
+                //&& DiplomacyHelper.IsTravelAllowed(fleet.Owner, c.Sector)
+                //&& !spyShips.Any(f => f.Location == c.Location)
+                //&& !spyShips.Any(f => f.Route.Waypoints.LastOrDefault() == c.Location))
                 //We need to know about it (no cheating)
                 //In fuel range
                 //Where there isn't a spy ship already there or heading there
-
                 .ToList();
 
             if (possibleColonies.Count == 0)
             {
+                GameLog.Client.AI.DebugFormat("Damn, no Home System of Empire found, possible colonies = {0}", possibleColonies.Count());
                 result = null;
-                return false;
+                return false;                
             }
 
             possibleColonies.Sort((a, b) =>
                 (GetSpyingValue(a, fleet.Owner) * HomeSystemDistanceModifier(fleet, a.Sector))
                 .CompareTo(GetSpyingValue(b, fleet.Owner) * HomeSystemDistanceModifier(fleet, b.Sector)));
             result = possibleColonies[possibleColonies.Count - 1];
+            GameLog.Client.AI.DebugFormat("Yippy, Home System of Empire found!, possible colonies = {0}", possibleColonies.FirstOrDefault().Name);
             return true;
         }
 
@@ -713,6 +732,38 @@ namespace Supremacy.AI
 
             int distance = MapLocation.GetDistance(targetSector.Location, GameContext.Current.CivilizationManagers[fleet.Owner].HomeSystem.Location);
             return 1 / (distance + 1);
+        }
+        public static bool CheckForSpyNetwork(Civilization civSpied, Civilization civSpying)
+        {
+            List<Civilization> spiedCivs = new List<Civilization>();
+            switch (civSpied.CivID)            
+            {
+                case 0:
+                    spiedCivs = IntelHelper.SpyingCiv_0_List;
+                    break;
+                case 1:
+                    spiedCivs = IntelHelper.SpyingCiv_1_List;
+                    break;
+                case 2:
+                    spiedCivs = IntelHelper.SpyingCiv_2_List;
+                    break;
+                case 3:
+                    spiedCivs = IntelHelper.SpyingCiv_3_List;
+                    break;
+                case 4:
+                    spiedCivs = IntelHelper.SpyingCiv_4_List;
+                    break;
+                case 5:
+                    spiedCivs = IntelHelper.SpyingCiv_5_List;
+                    break;
+                //case 6:
+                //default:
+                //    return true;
+            }
+            if (spiedCivs != null && spiedCivs.Contains(civSpying))
+                return true;
+            return false;
+
         }
     }
 }

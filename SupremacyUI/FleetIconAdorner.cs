@@ -217,14 +217,7 @@ namespace Supremacy.UI
                         _countString = _countHolder.ToString();
                     }
                     else _countString = "";
-
                 }
-                //bool someCloakedShips = (_fleets.Select(o => o.Ships.Where(s => s.Source.IsCloaked == true)).Any()
-                //    && _fleets.Select(o => o.Ships.Where(s => s.Source.IsCloaked == true)).Count() < _fleets.Count());
-                //if (someCloakedShips)
-                //{
-                //    _countHolder = _countHolder + "+";
-                //}
                 var _mapData = GameContext.Current.CivilizationManagers[_owners.First()].MapData;
                 var _fleetView = _fleets.First();
                 var _fleetCiv = _fleetView.Source.Owner;

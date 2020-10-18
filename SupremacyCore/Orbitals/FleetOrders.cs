@@ -40,7 +40,7 @@ namespace Supremacy.Orbitals
         public static readonly SabotageOrder SabotageOrder;
 		public static readonly InfluenceOrder InfluenceOrder;
         public static readonly MedicalOrder MedicalOrder;
-        public static readonly SpyOnOrder SpyOnOrder;
+        public static readonly SpyOnOrder SpyOnOrder; // install spy network
         public static readonly TowOrder TowOrder;
         public static readonly WormholeOrder WormholeOrder;
         public static readonly CollectDeuteriumOrder CollectDeuteriumOrder;
@@ -78,7 +78,7 @@ namespace Supremacy.Orbitals
                           SabotageOrder,
                           InfluenceOrder,
                           MedicalOrder,
-                          SpyOnOrder,
+                          SpyOnOrder, // install spy network
                           //TowOrder,
                           WormholeOrder,
                           CollectDeuteriumOrder,
@@ -420,7 +420,7 @@ namespace Supremacy.Orbitals
             {
                 //do nothing
             }
-            else if(Fleet.Sector.System.Colony.Owner != null && Fleet.Sector.System.Owner != Fleet.Owner)
+            else if(Fleet.Sector.System.Owner != null && Fleet.Sector.System.Colony.Owner != null && Fleet.Sector.System.Owner != Fleet.Owner )
             {
 
                 var foreignPower = Diplomat.Get(Fleet.Sector.System.Owner).GetForeignPower(Fleet.Owner);

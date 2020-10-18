@@ -11,12 +11,14 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
-
+//using System.Linq;
+using Obtics.Collections;
 using Supremacy.Diplomacy;
 using Supremacy.Entities;
 using Supremacy.Game;
+using Supremacy.Intelligence;
 using Supremacy.Orbitals;
+
 using Supremacy.Universe;
 using Supremacy.Utility;
 
@@ -32,6 +34,77 @@ namespace Supremacy.AI
         #endregion
 
         #region Methods
+
+        #region DoTurn from GameEngine
+        public static void DoTurn(Civilization targetCiv)
+        {
+            if (targetCiv.IsEmpire && targetCiv.CivID != 6 && targetCiv.SpiedCivList != null)
+            {
+                List<Civilization> spyingCivs = (List<Civilization>)GameContext.Current.Civilizations.Where(o => o.IsEmpire && o.CivID != 6).ToList();
+
+                foreach (Civilization spyingCiv in spyingCivs)
+                {
+                    if (targetCiv.SpiedCivList.Contains(spyingCiv))
+                    {
+                        if (DiplomacyHelper.AreAtWar(spyingCiv, targetCiv))
+                        {
+                            DoSypSabotageMission(spyingCiv, targetCiv);                         
+                        }
+                        //else if (DiplomacyHelper.AreAllied(spyingCiv, targetCiv) || DiplomacyHelper.AreFriendly(spyingCiv, targetCiv))
+                        //{
+                        //    // do things
+                        //}
+                        else if (DiplomacyHelper.AreNeutral(spyingCiv, targetCiv))
+                        {
+                            if (spyingCiv.Traits.Contains(CivTraits.Hostile.ToString())
+                                || spyingCiv.Traits.Contains(CivTraits.Subversive.ToString())
+                                || spyingCiv.Traits.Contains(CivTraits.Warlike.ToString()))
+                            {
+                                if (RandomHelper.Random(3) == 0)
+                                    DoSypSabotageMission(spyingCiv, targetCiv);
+                                else IntelHelper.SabotageStealResearch(spyingCiv, targetCiv, "No one");
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        #endregion
+
+        public static void DoSypSabotageMission(Civilization spyingCiv, Civilization targetCiv)
+        {
+            int decide = RandomHelper.Random(5);
+            switch (decide)
+            {
+                case 0:
+                    {
+                        IntelHelper.SabotageEnergy(spyingCiv, targetCiv, "No one");
+                        break;
+                    }
+                case 1:
+                    {
+                        IntelHelper.SabotageFood(spyingCiv, targetCiv, "No one");
+                        break;
+                    }
+                case 2:
+                    {
+                        IntelHelper.SabotageIndustry(spyingCiv, targetCiv, "No one");
+                        break;
+                    }
+                case 3:
+                    {
+                        IntelHelper.SabotageStealCredits(spyingCiv, targetCiv, "No one");
+                        break;
+                    }
+                case 4:
+                    {
+                        IntelHelper.SabotageStealResearch(spyingCiv, targetCiv, "No one");
+                        break;
+                    }
+                default:
+                    break;
+            }
+        }
 
         public static ConvexHullSet CreateDesiredBorders(Civilization civ)
         {

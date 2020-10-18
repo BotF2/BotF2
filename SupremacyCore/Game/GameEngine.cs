@@ -2488,6 +2488,7 @@ namespace Supremacy.Game
                             {
                                 ColonyAI.DoTurn(civ);
                                 UnitAI.DoTurn(civ);
+                                PlayerAI.DoTurn(civ);
                             }
                         }
                         catch (Exception e)

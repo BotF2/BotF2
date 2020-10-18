@@ -47,6 +47,7 @@ namespace Supremacy.UI
         private readonly TextBlock _energyFacilityText;
         private readonly ImageBrush _energyImage;
         private readonly Border _energyImageBorder;
+        private readonly Border _energyImageBorder_TOOLTIP;
         private readonly TextBlock _energyOutputText;
         private readonly TextBlock _energyScrapText;
         private readonly UnitActivationBar _energySlider;
@@ -55,6 +56,7 @@ namespace Supremacy.UI
         private readonly TextBlock _foodFacilityText;
         private readonly ImageBrush _foodImage;
         private readonly Border _foodImageBorder;
+        private readonly Border _foodImageBorder_TOOLTIP;
         private readonly TextBlock _foodOutputText;
         private readonly TextBlock _foodScrapText;
         private readonly UnitActivationBar _foodSlider;
@@ -63,6 +65,7 @@ namespace Supremacy.UI
         private readonly TextBlock _industryFacilityText;
         private readonly ImageBrush _industryImage;
         private readonly Border _industryImageBorder;
+        private readonly Border _industryImageBorder_TOOLTIP;
         private readonly TextBlock _industryOutputText;
         private readonly TextBlock _industryScrapText;
         private readonly UnitActivationBar _industrySlider;
@@ -71,6 +74,7 @@ namespace Supremacy.UI
         private readonly TextBlock _researchFacilityText;
         private readonly ImageBrush _researchImage;
         private readonly Border _researchImageBorder;
+        private readonly Border _researchImageBorder_TOOLTIP;
         private readonly TextBlock _researchOutputText;
         private readonly TextBlock _researchScrapText;
         private readonly UnitActivationBar _researchSlider;
@@ -79,6 +83,7 @@ namespace Supremacy.UI
         private readonly TextBlock _intelligenceFacilityText;
         private readonly ImageBrush _intelligenceImage;
         private readonly Border _intelligenceImageBorder;
+        private readonly Border _intelligenceImageBorder_TOOLTIP;
         private readonly TextBlock _intelligenceOutputText;
         private readonly TextBlock _intelligenceScrapText;
         private readonly UnitActivationBar _intelligenceSlider;
@@ -324,6 +329,17 @@ namespace Supremacy.UI
                                         Margin = new Thickness(0, rowSpacing, 0, 0),
                                    Background = _foodImage
                                };
+            _foodImageBorder_TOOLTIP = new Border
+            {
+                BorderBrush = FindResource("DefaultTextBrush") as Brush ?? Foreground,
+                BorderThickness = new Thickness(0.0),
+                CornerRadius = new CornerRadius(0.0),
+                MinWidth = 8*imageWidth,
+                MinHeight = 8*imageHeight,
+                Margin = new Thickness(0, rowSpacing, 0, 0),
+                Background = _foodImage
+            };
+            _foodImageBorder.ToolTip = _foodImageBorder_TOOLTIP;
             _foodImageBorder.SetValue(Grid.ColumnProperty, 0);
             _foodImageBorder.SetValue(Grid.RowProperty, 0);
             _foodImageBorder.PreviewMouseDown += ImageBorder_PreviewMouseDown;
@@ -341,6 +357,17 @@ namespace Supremacy.UI
                                        Margin = new Thickness(0, rowSpacing, 0, 0),
                                        Background = _industryImage
                                    };
+            _industryImageBorder_TOOLTIP = new Border
+            {
+                BorderBrush = FindResource("DefaultTextBrush") as Brush ?? Foreground,
+                BorderThickness = new Thickness(0.0),
+                CornerRadius = new CornerRadius(0.0),
+                MinWidth = 8*imageWidth,
+                MinHeight = 8*imageHeight,
+                Margin = new Thickness(0, rowSpacing, 0, 0),
+                Background = _industryImage
+            };
+            _industryImageBorder.ToolTip = _industryImageBorder_TOOLTIP;
             _industryImageBorder.SetValue(Grid.ColumnProperty, 0);
             _industryImageBorder.SetValue(Grid.RowProperty, 1);
             _industryImageBorder.PreviewMouseDown += ImageBorder_PreviewMouseDown;
@@ -358,6 +385,17 @@ namespace Supremacy.UI
                                      Margin = new Thickness(0, rowSpacing, 0, 0),
                                      Background = _energyImage
                                  };
+            _energyImageBorder_TOOLTIP = new Border
+            {
+                BorderBrush = FindResource("DefaultTextBrush") as Brush ?? Foreground,
+                BorderThickness = new Thickness(0.0),
+                CornerRadius = new CornerRadius(0.0),
+                MinWidth = 8 * imageWidth,
+                MinHeight = 8 * imageHeight,
+                Margin = new Thickness(0, rowSpacing, 0, 0),
+                Background = _energyImage
+            };
+            _energyImageBorder.ToolTip = _energyImageBorder_TOOLTIP;
             _energyImageBorder.SetValue(Grid.ColumnProperty, 0);
             _energyImageBorder.SetValue(Grid.RowProperty, 2);
             _energyImageBorder.PreviewMouseDown += ImageBorder_PreviewMouseDown;
@@ -375,6 +413,17 @@ namespace Supremacy.UI
                                        Margin = new Thickness(0, rowSpacing, 0, 0),
                                        Background = _researchImage
                                    };
+            _researchImageBorder_TOOLTIP = new Border
+            {
+                BorderBrush = FindResource("DefaultTextBrush") as Brush ?? Foreground,
+                BorderThickness = new Thickness(0.0),
+                CornerRadius = new CornerRadius(0.0),
+                MinWidth = 8 * imageWidth,
+                MinHeight = 8 * imageHeight,
+                Margin = new Thickness(0, rowSpacing, 0, 0),
+                Background = _researchImage
+            };
+            _researchImageBorder.ToolTip = _researchImageBorder_TOOLTIP;
             _researchImageBorder.SetValue(Grid.ColumnProperty, 0);
             _researchImageBorder.SetValue(Grid.RowProperty, 3);
             _researchImageBorder.PreviewMouseDown += ImageBorder_PreviewMouseDown;
@@ -392,6 +441,17 @@ namespace Supremacy.UI
                                         Margin = new Thickness(0, rowSpacing, 0, 0),
                                         Background = _intelligenceImage
                                     };
+            _intelligenceImageBorder_TOOLTIP = new Border
+            {
+                BorderBrush = FindResource("DefaultTextBrush") as Brush ?? Foreground,
+                BorderThickness = new Thickness(0.0),
+                CornerRadius = new CornerRadius(0.0),
+                MinWidth = 8 * imageWidth,
+                MinHeight = 8 * imageHeight,
+                Margin = new Thickness(0, rowSpacing, 0, 0),
+                Background = _intelligenceImage
+            };
+            _intelligenceImageBorder.ToolTip = _intelligenceImageBorder_TOOLTIP;
             _intelligenceImageBorder.SetValue(Grid.ColumnProperty, 0);
             _intelligenceImageBorder.SetValue(Grid.RowProperty, 4);
             _intelligenceImageBorder.PreviewMouseDown += ImageBorder_PreviewMouseDown;
