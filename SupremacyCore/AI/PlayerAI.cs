@@ -48,7 +48,7 @@ namespace Supremacy.AI
                     {
                         if (DiplomacyHelper.AreAtWar(spyingCiv, targetCiv))
                         {
-                            DoSypSabotageMission(spyingCiv, targetCiv);                         
+                            DoSpySabotageMission(spyingCiv, targetCiv);                         
                         }
                         //else if (DiplomacyHelper.AreAllied(spyingCiv, targetCiv) || DiplomacyHelper.AreFriendly(spyingCiv, targetCiv))
                         //{
@@ -61,7 +61,7 @@ namespace Supremacy.AI
                                 || spyingCiv.Traits.Contains(CivTraits.Warlike.ToString()))
                             {
                                 if (RandomHelper.Random(3) == 0)
-                                    DoSypSabotageMission(spyingCiv, targetCiv);
+                                    DoSpySabotageMission(spyingCiv, targetCiv);
                                 else IntelHelper.SabotageStealResearch(spyingCiv, targetCiv, "No one");
                             }
                         }
@@ -71,7 +71,7 @@ namespace Supremacy.AI
         }
         #endregion
 
-        public static void DoSypSabotageMission(Civilization spyingCiv, Civilization targetCiv)
+        public static void DoSpySabotageMission(Civilization spyingCiv, Civilization targetCiv)
         {
             int decide = RandomHelper.Random(5);
             switch (decide)

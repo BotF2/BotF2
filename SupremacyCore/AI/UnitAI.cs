@@ -575,9 +575,9 @@ namespace Supremacy.AI
                 //That hasn't got a station already
                 //Where a ship isn't heading there already
                 //Where one isn't under construction
-
                 .ToList();
-
+            //List<Sector> possibleSectors = GameContext.Current.Universe.Find<Sector>()
+                //.Where(s => s.)
             if (possibleSectors.Count == 0)
             {
                 result = null;
