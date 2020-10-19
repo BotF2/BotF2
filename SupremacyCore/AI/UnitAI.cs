@@ -50,12 +50,12 @@ namespace Supremacy.AI
                 }
 
                 //Set scouts to permanently explore
-                if (fleet.IsScout && fleet.Activity == UnitActivity.NoActivity)
+                if ((fleet.IsScout || fleet.IsFastAttack) && fleet.Activity == UnitActivity.NoActivity)
                 {
                     fleet.SetOrder(new ExploreOrder());
                     fleet.UnitAIType = UnitAIType.Explorer;
                     fleet.Activity = UnitActivity.Mission;
-                    GameLog.Core.AI.DebugFormat("Ordering Scout fleet {0} to explore", fleet.ObjectID, fleet.Location);
+                    GameLog.Core.AI.DebugFormat("Ordering Scout & FastAttack {0} to explore from {1}", fleet.ClassName, fleet.Location);
                 }
 
                 if (fleet.IsColonizer)
@@ -92,7 +92,18 @@ namespace Supremacy.AI
 
                 if (fleet.IsConstructor)
                 {
-                    if (fleet.Activity == UnitActivity.NoActivity || fleet.Route.IsEmpty || fleet.Order.IsComplete)
+                    if (fleet.IsStranded) // stranded construction ship builds station
+                    {
+                        BuildStationOrder order = new BuildStationOrder();
+                        order.BuildProject = order.FindTargets(fleet).Cast<StationBuildProject>().LastOrDefault(o => o.StationDesign.IsCombatant);
+                        if (order.BuildProject != null && order.CanAssignOrder(fleet))
+                        {
+                            fleet.SetOrder(order);
+                            fleet.Activity = UnitActivity.Mission;
+                        }
+                        GameLog.Core.AI.DebugFormat("Stranded constructor fleet {0} order {1}", fleet.Name, fleet.Order.OrderName);
+                    }
+                    else if (fleet.Activity == UnitActivity.NoActivity || fleet.Route.IsEmpty || fleet.Order.IsComplete)
                     {
                         if (GetBestSectorForStation(fleet, out Sector bestSectorForStation))
                         {
@@ -287,7 +298,12 @@ namespace Supremacy.AI
             //Get a list of all systems that we can colonise
             List<StarSystem> systems = GameContext.Current.Universe.Find<StarSystem>()
                 //We need to know about it (no cheating)
-                .Where(s => mapData.IsScanned(s.Location) && mapData.IsExplored(s.Location) && (!s.IsOwned || s.Owner == fleet.Owner) && (!s.IsInhabited || !s.HasColony) && s.IsHabitable(fleet.Owner.Race) && FleetHelper.IsSectorWithinFuelRange(s.Sector, fleet) && GameContext.Current.Universe.FindAt<Orbital>(s.Location).Any(o => DiplomacyHelper.ArePotentialEnemies(fleet.Owner, o.Owner)) && colonizerFleets.Any(f => f.Route.Waypoints.LastOrDefault() == s.Location) && colonizerFleets.Any(f => (f.Location == s.Location) && f.Order is ColonizeOrder))
+                .Where(s => mapData.IsScanned(s.Location) && mapData.IsExplored(s.Location)
+                && (!s.IsOwned || s.Owner == fleet.Owner) && (!s.IsInhabited || !s.HasColony)
+                && s.IsHabitable(fleet.Owner.Race) && FleetHelper.IsSectorWithinFuelRange(s.Sector, fleet)
+                && GameContext.Current.Universe.FindAt<Orbital>(s.Location).Any(o => DiplomacyHelper.ArePotentialEnemies(fleet.Owner, o.Owner))
+                && colonizerFleets.Any(f => f.Route.Waypoints.LastOrDefault() == s.Location) && colonizerFleets.Any(f => (f.Location == s.Location)
+                && f.Order is ColonizeOrder))
                 //That isn't owned by another civilization
                 //That isn't currently inhabited or have a current colony
                 //That's actually inhabitable
@@ -295,7 +311,6 @@ namespace Supremacy.AI
                 //That doesn't have potential enemies in it
                 //Where a ship isn't heading there already
                 //Where a ship isn't there and colonizing
-
                 .ToList();
 
             if (systems.Count == 0)
@@ -308,6 +323,7 @@ namespace Supremacy.AI
                 (GetColonizeValue(a, fleet.Owner) * HomeSystemDistanceModifier(fleet, a.Sector))
                 .CompareTo(GetColonizeValue(b, fleet.Owner) * HomeSystemDistanceModifier(fleet, b.Sector)));
             result = systems[systems.Count - 1];
+            GameLog.Client.AI.DebugFormat("{0} found a system to colonize at {1} {2}", fleet.Owner.Key, result.Location, result.Name);
             return true;
         }
         
@@ -444,12 +460,14 @@ namespace Supremacy.AI
 
             List<StarSystem> starsToExplore = GameContext.Current.Universe.Find<StarSystem>()
                 //We need to know about it (no cheating)
-                .Where(s => mapData.IsScanned(s.Location) && (!s.IsOwned || (s.Owner != fleet.Owner)) && DiplomacyHelper.IsTravelAllowed(fleet.Owner, s.Sector) && FleetHelper.IsSectorWithinFuelRange(s.Sector, fleet) && !ownFleets.Any(f => f.Route.Waypoints.Any(wp => s.Location == wp)))
+                .Where(s => mapData.IsScanned(s.Location) && (!s.IsOwned || (s.Owner != fleet.Owner))
+                && DiplomacyHelper.IsTravelAllowed(fleet.Owner, s.Sector)
+                && FleetHelper.IsSectorWithinFuelRange(s.Sector, fleet)
+                && !ownFleets.Any(f => f.Route.Waypoints.Any(wp => s.Location == wp)))
                 //No point exploring our own space
                 //Where we can enter the sector
                 //Where is in fuel range of the ship
                 //Where no fleets are already heading there or through there
-
                 .ToList();
 
             if (starsToExplore.Count == 0)
@@ -490,6 +508,7 @@ namespace Supremacy.AI
 
             const int HomeSystemValue = 2000;
             const int SeatOfGovernmentValue = 2000;
+            const int StrandedShipSectorValue = 2000;
 
             int value = 0;
 
@@ -506,6 +525,14 @@ namespace Supremacy.AI
                 if (sector.System == civManager.SeatOfGovernment)
                 {
                     value += SeatOfGovernmentValue;
+                }
+            }
+            List<Sector> strandedShipSectors = FindStrandedShipSectors(civ);
+            if (strandedShipSectors.Count > 0)
+            {
+                if (strandedShipSectors.Contains(sector))
+                {
+                    value += StrandedShipSectorValue;
                 }
             }
 
@@ -964,6 +991,16 @@ namespace Supremacy.AI
                 return true;
             return false;
 
+        }
+        private static List<Sector> FindStrandedShipSectors(Civilization civ)
+        {
+            List<Fleet> strandedFleets = GameContext.Current.Universe.FindOwned<Fleet>(civ).Where(o => o.IsStranded).ToList();
+            List<Sector> sectorList = new List<Sector>();
+            foreach(Sector sector in sectorList)
+            {
+                sectorList.Add(sector);
+            }
+            return sectorList;
         }
     }
 }

@@ -435,6 +435,11 @@ namespace Supremacy.Orbitals
             get { return Ships.Count == 1 && Ships[0].ShipType == ShipType.Scout; }
         }
 
+        public bool IsFastAttack
+        {
+            get { return Ships.Count == 1 && Ships[0].ShipType == ShipType.FastAttack; }
+        }
+
         public bool IsColonizer
         {
             get { return Ships.Count == 1 && Ships[0].ShipType == ShipType.Colony; }
