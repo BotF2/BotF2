@@ -77,7 +77,7 @@ All other rights reserved.-->
                             BorderBrush="Pink"
                             BorderThickness="2">-->
                         <Canvas Width="970"
-                                Height="510">
+                                Height="520">
                             <Canvas.LayoutTransform>
                                 <ScaleTransform ScaleX="0.6" ScaleY="0.6"  />
                             </Canvas.LayoutTransform>
@@ -96,8 +96,8 @@ All other rights reserved.-->
                                 Width="303"
                                 Height="154">-->
                             <MenuItem x:Name="MenuItem_Main"
-                                        Canvas.Left="10"
-                                        Canvas.Top="15"
+                                        Canvas.Left="50"
+                                        Canvas.Top="63"
                                         Command="{x:Static scc:NavigationCommands.ActivateScreen}"
                                         CommandParameter="{x:Static scc:StandardGameScreens.GalaxyScreen}"
                                         Style="{StaticResource MouseOverSoundStyle}">
@@ -127,7 +127,7 @@ All other rights reserved.-->
                         <!--Systems = F2 -->
                             <MenuItem x:Name="MenuItem_Systems"
                                     Canvas.Left="478"
-                                    Canvas.Top="70"
+                                    Canvas.Top="95"
                                     Command="{x:Static scc:NavigationCommands.ActivateScreen}"
                                     CommandParameter="{x:Static scc:StandardGameScreens.ColonyScreen}"
                                     Style="{StaticResource MouseOverSoundStyle}">
@@ -156,7 +156,7 @@ All other rights reserved.-->
                             <!--Dip = Embassy = F3-->
                             <MenuItem x:Name="MenuItem_Dip"
                                     Canvas.Left="691"
-                                    Canvas.Top="71"
+                                    Canvas.Top="96"
                                     Command="{x:Static scc:NavigationCommands.ActivateScreen}"
                                     CommandParameter="{x:Static scc:StandardGameScreens.DiplomacyScreen}"
                                     Style="{StaticResource MouseOverSoundStyle}">
@@ -184,8 +184,8 @@ All other rights reserved.-->
 
                             <!--Science = F4 -->
                             <MenuItem x:Name="MenuItem_Science"
-                                        Canvas.Left="262"
-                                        Canvas.Top="295"
+                                        Canvas.Left="220"
+                                        Canvas.Top="290"
                                         Command="{x:Static scc:NavigationCommands.ActivateScreen}"
                                         CommandParameter="{x:Static scc:StandardGameScreens.ScienceScreen}"
                                         Style="{StaticResource MouseOverSoundStyle}">
@@ -214,7 +214,7 @@ All other rights reserved.-->
                             <!--Intel = Assets = F5-->
                             <MenuItem x:Name="MenuItem_Intel"
                                         Canvas.Left="445"
-                                        Canvas.Top="265"
+                                        Canvas.Top="300"
                                         Command="{x:Static scc:NavigationCommands.ActivateScreen}"
                                         CommandParameter="{x:Static scc:StandardGameScreens.IntelScreen}"
                                         Style="{StaticResource MouseOverSoundStyle}">
@@ -242,8 +242,8 @@ All other rights reserved.-->
 
                             <!--Menu = ESC -->
                             <MenuItem x:Name="MenuItem_Menu"
-                                    Canvas.Left="609"
-                                    Canvas.Top="265"
+                                    Canvas.Left="605"
+                                    Canvas.Top="293"
                                     Command="{x:Static scc:NavigationCommands.ActivateScreen}"
                                     CommandParameter="{x:Static scc:StandardGameScreens.MenuScreen}"
                                     Style="{StaticResource MouseOverSoundStyle}">
