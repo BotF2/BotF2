@@ -563,7 +563,33 @@ namespace Supremacy.AI
 
             CivilizationManager civManager = GameContext.Current.CivilizationManagers[fleet.Owner];
             CivilizationMapData mapData = civManager.MapData;
+            int mapHeight = GameContext.Current.Universe.Map.Height;
+            int mapWidth = GameContext.Current.Universe.Map.Height;
+            
+            if (fleet.Owner.Key == "BORG")
+            {
+                Sector borgHome = GameContext.Current.Universe.HomeColonyLookup[fleet.Owner].Sector;
 
+                int xDeltaToCenterAxis = fleet.Location.X - (mapHeight / 2);
+                int yDeltaToCenterAcis = (mapWidth / 2) - fleet.Location.Y;
+                int targetSectorX = borgHome.Location.X - xDeltaToCenterAxis;
+                int targetSectorY = borgHome.Location.Y + yDeltaToCenterAcis;
+                var movingOnCenterAxisSector = GameContext.Current.Universe.Find<StarSystem>()
+                    .Where(s => s.Location.X == targetSectorX && s.Location.Y == targetSectorX && s.ObjectType == UniverseObjectType.)
+                    
+                    .ToList(); //SectorMap[1,1];
+                        //}
+                    //.Where(s => mapData.IsScanned(s.Location) && mapData.IsExplored(s.Location)
+                    // && ((s.Owner == null) || (s.Owner == fleet.Owner)) && FleetHelper.IsSectorWithinFuelRange(s.Sector, fleet)
+                    // ).ToList();
+                //if (moveTowardCenterSectors.Count == 0)
+                //{
+                //    result = null;
+                //    return false;
+                //}
+
+                //GameLog.Client.AI.DebugFormat("!!!!!!!!!!!!!! borg home system location x {0}, Y {1}", fleet.Location.X, fleet.Location.Y);
+            }
             List<StarSystem> possibleSectors = GameContext.Current.Universe.Find<StarSystem>()
                 //We need to know about it (no cheating)
                 .Where(s => mapData.IsScanned(s.Location) && mapData.IsExplored(s.Location)
@@ -576,8 +602,7 @@ namespace Supremacy.AI
                 //Where a ship isn't heading there already
                 //Where one isn't under construction
                 .ToList();
-            //List<Sector> possibleSectors = GameContext.Current.Universe.Find<Sector>()
-                //.Where(s => s.)
+
             if (possibleSectors.Count == 0)
             {
                 result = null;
