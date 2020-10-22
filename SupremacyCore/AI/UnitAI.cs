@@ -140,8 +140,8 @@ namespace Supremacy.AI
                 {
                     GameLog.Core.AI.DebugFormat("## IsBattleFleet ##  fleet={0}, {1}, {2}, {3}, {4},", fleet.ObjectID, fleet.Name, fleet.Owner, fleet.Order, fleet.Location);
                     Fleet defenseFleet = new Fleet();
-                    if (GameContext.Current.Universe.HomeColonyLookup[civ].Sector.GetOwnedFleets(civ).FirstOrDefault(o => o.UnitAIType == UnitAIType.SystemDefense) == null)                      
-                            defenseFleet = fleet;
+                    if (GameContext.Current.Universe.HomeColonyLookup[civ].Sector.GetOwnedFleets(civ).FirstOrDefault(o => o.UnitAIType == UnitAIType.SystemDefense) == null)
+                        defenseFleet = fleet;
 
                     defenseFleet = GameContext.Current.Universe.HomeColonyLookup[civ].Sector.GetOwnedFleets(civ).FirstOrDefault(o => o.UnitAIType == UnitAIType.SystemDefense);
                     if (fleet.Activity == UnitActivity.NoActivity && defenseFleet == null)
@@ -204,20 +204,20 @@ namespace Supremacy.AI
                         {
                             if (bestSystemForDiplomacy.OwnerID < 6)
                             {
-                                    if (bestSystemForDiplomacy.Location == fleet.Location)
-                                    {
-                                        fleet.SetOrder(new InfluenceOrder()); 
-                                        fleet.UnitAIType = UnitAIType.Diplomatic;
-                                        fleet.Activity = UnitActivity.Mission;
-                                        GameLog.Core.AI.DebugFormat("Ordering diplomacy fleet {0} in {1} to influence", fleet.ObjectID, fleet.Location);
-                                    }
-                                    else
-                                    {
-                                        fleet.SetRoute(AStar.FindPath(fleet, PathOptions.SafeTerritory, null, new List<Sector> { bestSystemForDiplomacy.Sector }));
-                                        fleet.UnitAIType = UnitAIType.Diplomatic;
-                                        fleet.Activity = UnitActivity.Mission;
-                                        GameLog.Core.AI.DebugFormat("Ordering diplomacy fleet {0} to {1}", fleet.ObjectID, bestSystemForDiplomacy);
-                                    }
+                                if (bestSystemForDiplomacy.Location == fleet.Location)
+                                {
+                                    fleet.SetOrder(new InfluenceOrder());
+                                    fleet.UnitAIType = UnitAIType.Diplomatic;
+                                    fleet.Activity = UnitActivity.Mission;
+                                    GameLog.Core.AI.DebugFormat("Ordering diplomacy fleet {0} in {1} to influence", fleet.ObjectID, fleet.Location);
+                                }
+                                else
+                                {
+                                    fleet.SetRoute(AStar.FindPath(fleet, PathOptions.SafeTerritory, null, new List<Sector> { bestSystemForDiplomacy.Sector }));
+                                    fleet.UnitAIType = UnitAIType.Diplomatic;
+                                    fleet.Activity = UnitActivity.Mission;
+                                    GameLog.Core.AI.DebugFormat("Ordering diplomacy fleet {0} to {1}", fleet.ObjectID, bestSystemForDiplomacy);
+                                }
                             }
                         }
                         else
@@ -235,7 +235,7 @@ namespace Supremacy.AI
                         if (GetBestColonyForSpying(fleet, out bestSystemForSpying))
                         {
                             if (bestSystemForSpying.OwnerID < 6)
-                            { 
+                            {
                                 bool hasOurSpyNetwork = CheckForSpyNetwork(bestSystemForSpying.Owner, fleet.Owner);
                                 if (!hasOurSpyNetwork)
                                 {
@@ -262,7 +262,7 @@ namespace Supremacy.AI
                         }
                     }
                 }
-                
+
 
                 //TODO
                 if (fleet.IsScience)
@@ -326,7 +326,7 @@ namespace Supremacy.AI
             GameLog.Client.AI.DebugFormat("{0} found a system to colonize at {1} {2}", fleet.Owner.Key, result.Location, result.Name);
             return true;
         }
-        
+
         /// <summary>
         /// Determines how valuable colonizing a particular <see cref="StarSystem"/>
         /// will be for a <see cref="Civilization"/>
@@ -428,9 +428,9 @@ namespace Supremacy.AI
             return value;
         }
 
-          /*
-         * Explor best sector
-         */
+        /*
+       * Explor best sector
+       */
 
         /// <summary>
         /// Gets the best <see cref="Sector"/> to explore for the given <see cref="Fleet"/>
@@ -448,11 +448,11 @@ namespace Supremacy.AI
             {
                 ownFleets = GameContext.Current.Universe.FindOwned<Fleet>(fleet.Owner).Where(f => f.CanMove && f != fleet && !f.Route.IsEmpty).ToList();
             }
-    
+
             catch (Exception e)
             {
                 //GameLog.Client.General.Error(e);
-                GameLog.Client.General.ErrorFormat("fleet.ObjectId ={0} {1} {2} error ={3}",fleet.ObjectID, fleet.Name, fleet.ClassName, e );
+                GameLog.Client.General.ErrorFormat("fleet.ObjectId ={0} {1} {2} error ={3}", fleet.ObjectID, fleet.Name, fleet.ClassName, e);
             }
 
             CivilizationManager civManager = GameContext.Current.CivilizationManagers[fleet.Owner];
@@ -483,9 +483,9 @@ namespace Supremacy.AI
             return true;
         }
 
-         /*
-         * Station value
-         */
+        /*
+        * Station value
+        */
 
         /// <summary>
         /// Determines how valuable a <see cref="Station"/> would be
@@ -508,9 +508,18 @@ namespace Supremacy.AI
 
             CivilizationManager civManager = GameContext.Current.CivilizationManagers[civ];
 
-            if ((sector.System != null) && sector.System.StarType != StarType.XRayPulsar)
+            if ((sector.System != null)
+                && (sector.System.OwnerID > 6 || sector.System.Owner == null)
+                && sector.System.StarType != StarType.XRayPulsar)
             {
                 value += SystemSectorValue;
+                if (sector.System.StarType == StarType.Blue
+                    || sector.System.StarType == StarType.Orange
+                    || sector.System.StarType == StarType.Red
+                    || sector.System.StarType == StarType.White
+                    || sector.System.StarType == StarType.Yellow
+                    || sector.System.StarType == StarType.Wormhole)
+                    value += SystemSectorValue;
             }
             List<Sector> strandedShipSectors = FindStrandedShipSectors(civ);
             if (strandedShipSectors.Count > 0)
@@ -564,7 +573,7 @@ namespace Supremacy.AI
                             && s.Sector.Station == null
                             && s.Location.X <= (targetSectorX + 1)
                             && s.Location.Y <= (targetSectorY + 6))
-                            // find a list of objects in some sector around the axis from Borg home world through galactic center
+                            // find a list of objects in some sector around or below the axis from Borg home world through galactic center
                             .ToList();
                         if (objectsAlongCenterAxis.Count == 0)
                         {
@@ -580,17 +589,17 @@ namespace Supremacy.AI
 
                 case "DOMINION":
                     {
-                        Sector borgHome = GameContext.Current.Universe.HomeColonyLookup[fleet.Owner].Sector;
+                        Sector domHome = GameContext.Current.Universe.HomeColonyLookup[fleet.Owner].Sector;
 
-                        int xDeltaToCenter = borgHome.Location.X - (mapHeight / 2);
-                        int yDeltaToCenter = (mapWidth / 2) - borgHome.Location.Y;
-                        int targetSectorX = borgHome.Location.X - xDeltaToCenter;
-                        int targetSectorY = borgHome.Location.Y + yDeltaToCenter;
+                        int xDeltaToCenter = (mapHeight / 2) - domHome.Location.X;
+                        int yDeltaToCenter = domHome.Location.Y - (mapWidth / 2);
+                        int targetSectorX = domHome.Location.X + xDeltaToCenter;
+                        int targetSectorY = domHome.Location.Y - yDeltaToCenter;
                         var objectsAlongCenterAxis = GameContext.Current.Universe.Objects.Where(s => s.Location != null
                             && s.Sector.Station == null
                             && s.Location.X <= (targetSectorX + 1)
-                            && s.Location.Y <= (targetSectorY + 6))
-                            // find a list of objects in some sector around the axis from Borg home world through galactic center
+                            && s.Location.Y <= (targetSectorY - 6))
+                            // find a list of objects in some sector around or below the axis from Borg home world through galactic center
                             .ToList();
                         if (objectsAlongCenterAxis.Count == 0)
                         {
@@ -602,6 +611,11 @@ namespace Supremacy.AI
                             .CompareTo(GetStationValue(b.Sector, fleet.Owner)));
                         result = objectsAlongCenterAxis[objectsAlongCenterAxis.Count - 1].Sector;
                         return true;   
+                    }
+                case "KLINGON":
+                    {
+                        result = null;
+                        return true;
                     }
                 default:
                     result = null;
