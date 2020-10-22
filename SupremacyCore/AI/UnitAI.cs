@@ -501,31 +501,16 @@ namespace Supremacy.AI
                 throw new ArgumentNullException(nameof(sector));
             }
 
-            if (civ == null)
-            {
-                throw new ArgumentNullException(nameof(civ));
-            }
-
-            const int HomeSystemValue = 2000;
-            const int SeatOfGovernmentValue = 2000;
+            const int SystemSectorValue = 1500;
             const int StrandedShipSectorValue = 2000;
 
             int value = 0;
 
             CivilizationManager civManager = GameContext.Current.CivilizationManagers[civ];
 
-            if ((sector.System?.HasColony == true))
+            if ((sector.System != null) && sector.System.StarType != StarType.XRayPulsar)
             {
-                value += sector.System.Colony.ColonyValue();
-                if (sector.System == civManager.HomeSystem)
-                {
-                    value += HomeSystemValue;
-                }
-
-                if (sector.System == civManager.SeatOfGovernment)
-                {
-                    value += SeatOfGovernmentValue;
-                }
+                value += SystemSectorValue;
             }
             List<Sector> strandedShipSectors = FindStrandedShipSectors(civ);
             if (strandedShipSectors.Count > 0)
@@ -565,55 +550,63 @@ namespace Supremacy.AI
             CivilizationMapData mapData = civManager.MapData;
             int mapHeight = GameContext.Current.Universe.Map.Height;
             int mapWidth = GameContext.Current.Universe.Map.Height;
-            
-            if (fleet.Owner.Key == "BORG")
+            switch (fleet.Owner.Key)
             {
-                Sector borgHome = GameContext.Current.Universe.HomeColonyLookup[fleet.Owner].Sector;
+                case "BORG":
+                    {
+                        Sector borgHome = GameContext.Current.Universe.HomeColonyLookup[fleet.Owner].Sector;
 
-                int xDeltaToCenterAxis = fleet.Location.X - (mapHeight / 2);
-                int yDeltaToCenterAcis = (mapWidth / 2) - fleet.Location.Y;
-                int targetSectorX = borgHome.Location.X - xDeltaToCenterAxis;
-                int targetSectorY = borgHome.Location.Y + yDeltaToCenterAcis;
-                var movingOnCenterAxisSector = GameContext.Current.Universe.Find<StarSystem>()
-                    .Where(s => s.Location.X == targetSectorX && s.Location.Y == targetSectorX && s.ObjectType == UniverseObjectType.)
-                    
-                    .ToList(); //SectorMap[1,1];
-                        //}
-                    //.Where(s => mapData.IsScanned(s.Location) && mapData.IsExplored(s.Location)
-                    // && ((s.Owner == null) || (s.Owner == fleet.Owner)) && FleetHelper.IsSectorWithinFuelRange(s.Sector, fleet)
-                    // ).ToList();
-                //if (moveTowardCenterSectors.Count == 0)
-                //{
-                //    result = null;
-                //    return false;
-                //}
+                        int xDeltaToCenter = borgHome.Location.X - (mapHeight / 2);
+                        int yDeltaToCenter = (mapWidth / 2) - borgHome.Location.Y;
+                        int targetSectorX = borgHome.Location.X - xDeltaToCenter;
+                        int targetSectorY = borgHome.Location.Y + yDeltaToCenter;
+                        var objectsAlongCenterAxis = GameContext.Current.Universe.Objects.Where(s => s.Location != null
+                            && s.Sector.Station == null
+                            && s.Location.X <= (targetSectorX + 1)
+                            && s.Location.Y <= (targetSectorY + 6))
+                            // find a list of objects in some sector around the axis from Borg home world through galactic center
+                            .ToList();
+                        if (objectsAlongCenterAxis.Count == 0)
+                        {
+                            result = null;
+                            return false;
+                        }
+                        objectsAlongCenterAxis.Sort((a, b) =>
+                            GetStationValue(a.Sector, fleet.Owner)
+                            .CompareTo(GetStationValue(b.Sector, fleet.Owner)));
+                        result = objectsAlongCenterAxis[objectsAlongCenterAxis.Count - 1].Sector;
+                        return true;
+                    }
 
-                //GameLog.Client.AI.DebugFormat("!!!!!!!!!!!!!! borg home system location x {0}, Y {1}", fleet.Location.X, fleet.Location.Y);
-            }
-            List<StarSystem> possibleSectors = GameContext.Current.Universe.Find<StarSystem>()
-                //We need to know about it (no cheating)
-                .Where(s => mapData.IsScanned(s.Location) && mapData.IsExplored(s.Location)
-                && ((s.Owner == null) || (s.Owner == fleet.Owner)) && FleetHelper.IsSectorWithinFuelRange(s.Sector, fleet)
-                && s.Sector.Station == null && constructorFleets.Any(f => f.Route.Waypoints.LastOrDefault() == s.Location)
-                && !constructorFleets.Where(f => f.Location == s.Location).Any(f => f.Order is BuildStationOrder))
-                //That isn't owned by an opposition
-                //That's within fuel range of the ship
-                //That hasn't got a station already
-                //Where a ship isn't heading there already
-                //Where one isn't under construction
-                .ToList();
+                case "DOMINION":
+                    {
+                        Sector borgHome = GameContext.Current.Universe.HomeColonyLookup[fleet.Owner].Sector;
 
-            if (possibleSectors.Count == 0)
-            {
-                result = null;
-                return false;
-            }
-
-            possibleSectors.Sort((a, b) =>
-                GetStationValue(a.Sector, fleet.Owner)
-                .CompareTo(GetStationValue(b.Sector, fleet.Owner)));
-            result = possibleSectors[possibleSectors.Count - 1].Sector;
-            return true;
+                        int xDeltaToCenter = borgHome.Location.X - (mapHeight / 2);
+                        int yDeltaToCenter = (mapWidth / 2) - borgHome.Location.Y;
+                        int targetSectorX = borgHome.Location.X - xDeltaToCenter;
+                        int targetSectorY = borgHome.Location.Y + yDeltaToCenter;
+                        var objectsAlongCenterAxis = GameContext.Current.Universe.Objects.Where(s => s.Location != null
+                            && s.Sector.Station == null
+                            && s.Location.X <= (targetSectorX + 1)
+                            && s.Location.Y <= (targetSectorY + 6))
+                            // find a list of objects in some sector around the axis from Borg home world through galactic center
+                            .ToList();
+                        if (objectsAlongCenterAxis.Count == 0)
+                        {
+                            result = null;
+                            return false;
+                        }
+                        objectsAlongCenterAxis.Sort((a, b) =>
+                            GetStationValue(a.Sector, fleet.Owner)
+                            .CompareTo(GetStationValue(b.Sector, fleet.Owner)));
+                        result = objectsAlongCenterAxis[objectsAlongCenterAxis.Count - 1].Sector;
+                        return true;   
+                    }
+                default:
+                    result = null;
+                    return true;
+            }  
         }
 
         /*
