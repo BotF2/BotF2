@@ -72,12 +72,12 @@ All other rights reserved.-->
                 Value="{Binding Path=MainWindow.LayoutTransform, Source={x:Static Application.Current}}" />
         <Setter Property="Template">
             <Setter.Value>
-                <ControlTemplate TargetType="{x:Type local:GameContextMenu}">
+                <ControlTemplate TargetType="{x:Type local:GameContextMenu}"> 
                     <!--<Border Background="{TemplateBinding Background}"
                             BorderBrush="Pink"
                             BorderThickness="2">-->
                         <Canvas Width="970"
-                                Height="520">
+                                Height="510">
                             <Canvas.LayoutTransform>
                                 <ScaleTransform ScaleX="0.6" ScaleY="0.6"  />
                             </Canvas.LayoutTransform>
