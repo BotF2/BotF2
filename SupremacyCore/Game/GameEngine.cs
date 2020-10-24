@@ -1867,13 +1867,19 @@ namespace Supremacy.Game
              * from both the colonies and the global reserves, so this is the
              * sensible way to do it.
              */
-            ParallelForEach(GameContext.Current.Civilizations, civ =>
+            int _civsToDo = 0; // for Debug
+            _civsToDo = GameContext.Current.Civilizations.Count;
+
+            foreach (var civ in GameContext.Current.Civilizations)
             {
                 GameContext.PushThreadContext(game);
 
                 //GameLog.Core.Production.DebugFormat("#####################################################");
                 //string _gameTurnNumber = GameContext.Current.TurnNumber.ToString();
-                GameLog.Core.Production.DebugFormat("Turn {0}: ######################################### DoProduction for Civilization {1}", _gameTurnNumber, civ.Name);
+                GameLog.Core.Production.DebugFormat("Turn {0}: ######################################### DoProduction for Civs ({2} to do): > {1}"
+                    , GameContext.Current.TurnNumber, civ.Name, _civsToDo);
+
+                _civsToDo -= 1;
 
                 try
                 {
@@ -1929,12 +1935,24 @@ namespace Supremacy.Game
                      */
                     colonies.RandomizeInPlace();
 
+                    int _coloniesToDo = 0;
+                    _coloniesToDo = colonies.Count;
+
                     /* Iterate through each colony */
                     foreach (Colony colony in colonies)
                     {
                         GameLog.Core.Production.DebugFormat("--------------------------------------------------------------");
-                        GameLog.Core.Production.DebugFormat("Turn {3}: DoProduction for Colony {0} ({1}, Credits = {2})"
-                            , colony.Name, civ.Name, civManager.Credits, GameContext.Current.TurnNumber);
+                        GameLog.Core.Production.DebugFormat("Turn {0}: {1} undone colonies = {4}, Credits = {2} - DoProduction for Colony {3}"
+                            , GameContext.Current.TurnNumber
+                            , civ.Key 
+                            , civManager.Credits
+                            , colony.Name
+                            , _coloniesToDo
+                            ); // last = 4
+
+                        _coloniesToDo -= -1;
+
+                        string prevProject = "";
 
                         //See if there is actually anything to build for this colony
                         if (!colony.BuildSlots[0].HasProject && colony.BuildQueue.IsEmpty())
@@ -1950,14 +1968,25 @@ namespace Supremacy.Game
                         /* We want to capture the industry output available at the colony. */
                         int industry = colony.NetIndustry;
 
+                        string currProject = "";
+
+                        int _colonyBuildProject_SameTurn = 0;
+
                         //Start going through the queue
                         while ((industry > 0) && ((!colony.BuildQueue.IsEmpty()) || colony.BuildSlots[0].HasProject))
                         {
+                            _colonyBuildProject_SameTurn += 1;
                             //Move the top of the queue in to the build slot
                             if (!colony.BuildSlots[0].HasProject)
                             {
                                 colony.ProcessQueue();
                             }
+
+                            currProject = colony.Name + ": " + colony.BuildSlots[0].Project.BuildDesign.Name;
+                            if (currProject == prevProject)
+                                /*//breakpoint*/
+                                ;
+
 
                             //Check to see if the colony has reached the limit for this building
                             if (TechTreeHelper.IsBuildLimitReached(colony, colony.BuildSlots[0].Project.BuildDesign))
@@ -1970,7 +1999,7 @@ namespace Supremacy.Game
                             if (colony.BuildSlots[0].Project.IsPaused) { }
                                 //TODO: Not sure how to handle this
 
-                            GameLog.Core.Production.DebugFormat("Deuterium={5}, Dilithium={6}, RawMaterials={7} available for {0} before construction of {1} on {2} - Income Tax = {3}, Income TradeRoute = {4}: ",
+                            GameLog.Core.Production.DebugFormat(Environment.NewLine + "       Turn {8}: Income TradeRoute = {4}, Income Tax = {3}, Deuterium={5}, Dilithium={6}, RawMaterials={7} available for {0} before construction of {1} on {2}",
                                 civ.Name,
                                 colony.BuildSlots[0].Project.BuildDesign.Name,
                                 colony.Name,
@@ -1978,8 +2007,13 @@ namespace Supremacy.Game
                                 colony.CreditsFromTrade,
                                 totalResourcesAvailable[ResourceType.Deuterium],
                                 totalResourcesAvailable[ResourceType.Dilithium],
-                                totalResourcesAvailable[ResourceType.RawMaterials]);
+                                totalResourcesAvailable[ResourceType.RawMaterials]
+                                , GameContext.Current.TurnNumber
+                                );
 
+                            //if (colony.BuildSlots[0].Project.BuildDesign.Name == "SUBSPACE_JAMMER" && colony.OwnerID == 0)
+                            //    /*Breakpoint*/
+                            //    ;
                             //Try to finish the projects
                             if (colony.BuildSlots[0].Project.IsRushed)
                             {
@@ -1996,7 +2030,7 @@ namespace Supremacy.Game
                                     colony.BuildSlots[0].Project.BuildDesign.Name,
                                     colony.Name,
                                     civ.Name,
-                                    _gameTurnNumber
+                                    GameContext.Current.TurnNumber
                                     );
                             }
                             else
@@ -2009,8 +2043,8 @@ namespace Supremacy.Game
                                 int dilithiumUsed = totalResourcesBefore[ResourceType.Dilithium] - totalResourcesAvailable[ResourceType.Dilithium];
                                 int rawMaterialsUsed = totalResourcesBefore[ResourceType.RawMaterials] - totalResourcesAvailable[ResourceType.RawMaterials];
 
-                                GameLog.Core.ShipProduction.DebugFormat("Turn {5}: {0} deuterium, {1} dilithium, {2} raw materials applied to {3} on {4}",
-                                    deuteriumUsed, dilithiumUsed, rawMaterialsUsed, colony.BuildSlots[0].Project, colony, _gameTurnNumber);
+                                GameLog.Core.ShipProduction.DebugFormat("Turn {5}: {0} deuterium, {1} dilithium, {2} raw materials applied to project {5} = {3} on {4} ",
+                                    deuteriumUsed, dilithiumUsed, rawMaterialsUsed, colony.BuildSlots[0].Project, colony, GameContext.Current.TurnNumber, _colonyBuildProject_SameTurn);
 
                                 civManager.Resources.Deuterium.AdjustCurrent(-1 * deuteriumUsed);
                                 civManager.Resources.Dilithium.AdjustCurrent(-1 * dilithiumUsed);
@@ -2019,16 +2053,32 @@ namespace Supremacy.Game
 
                             if (colony.BuildSlots[0].Project.IsCompleted)
                             {
-                                GameLog.Core.Production.DebugFormat("Turn {3}: Construction of {0} finished on {1} ({2})", colony.BuildSlots[0].Project.BuildDesign.Name, colony.Name, civ.Name, _gameTurnNumber);
+                                GameLog.Core.Production.DebugFormat("Turn {3}: Construction of {0} finished on {1} ({2})"
+                                    , colony.BuildSlots[0].Project.BuildDesign.Name, colony.Name, civ.Name, GameContext.Current.TurnNumber);
                                 colony.BuildSlots[0].Project.Finish();
                                 colony.BuildSlots[0].Project = null;
                                 continue;
                             }
+                            //GameLog.Core.Production.DebugFormat(string.Format("Turn {0}: DoProduction DONE for {1} ({2})" + Environment.NewLine + "-----",
+                            //    GameContext.Current.TurnNumber, colony.Name, civ.Name));
+                            //// continue as well if not finish
+                            //break;
                         }
 
                         if (!colony.BuildSlots[0].HasProject && colony.BuildQueue.IsEmpty())
+                        {
                             civManager.SitRepEntries.Add(new BuildQueueEmptySitRepEntry(civ, colony, false));
                     }
+                        else
+                            //go on 
+                            ;
+                        // above SitRep added if colony is finished and empty
+
+                        GameLog.Core.Production.DebugFormat(string.Format("Turn {0}: DoProduction DONE for {1} ({2})" + Environment.NewLine + "-----",
+                            GameContext.Current.TurnNumber, colony.Name, civ.Name));
+                        // continue as well if not finish
+                        break;
+                    }// end for each civ
                 }
                 catch (Exception e)
                 {
@@ -2038,7 +2088,8 @@ namespace Supremacy.Game
                 {
                     GameContext.PopThreadContext();
                 }
-            });
+            }
+            
         }
         #endregion
 
@@ -2117,16 +2168,18 @@ namespace Supremacy.Game
                                 civManager.Resources.Dilithium.AdjustCurrent(-1 * dilithiumUsed);
                                 civManager.Resources.RawMaterials.AdjustCurrent(-1 * rawMaterialsUsed);
 
-                                GameLog.Core.ShipProduction.DebugFormat("{0} deuterium, {1} dilithium, {2} raw materials applied to {3} on {4}",
-                                    deuteriumUsed, dilithiumUsed, rawMaterialsUsed, slot.Project, colony);
+                                GameLog.Core.Production.DebugFormat("Turn {5}: {0} deuterium, {1} dilithium, {2} raw materials applied to {3} on {4}",
+                                    deuteriumUsed, dilithiumUsed, rawMaterialsUsed, slot.Project, colony, _gameTurnNumber);
 
                                 if (slot.Project.IsCompleted)
                                 {
-                                    GameLog.Core.ShipProduction.DebugFormat("{0} in Shipyard Slot {1} on {2} ({3}) is finished",
+                                    GameLog.Core.ShipProduction.DebugFormat("Turn {5}: {0} in Shipyard Slot {1} on {2} ({3}) is finished",
                                         slot.Project.BuildDesign,
                                         slot.SlotID,
                                         colony.Name,
-                                        civ.Name);
+                                        civ.Name
+                                        , _gameTurnNumber
+                                        );
                                     slot.Project.Finish();
                                     slot.Project = null;
                                 }
