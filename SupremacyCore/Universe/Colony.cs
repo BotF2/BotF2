@@ -1726,7 +1726,13 @@ namespace Supremacy.Universe
 
         public int EnergyCostEachOrbitalBattery
         {
-            get { try { return OrbitalBatteryDesign.UnitEnergyCost; } catch { return 0; } }
+            get { try 
+                { 
+                    if (OrbitalBatteryDesign != null)
+                    return OrbitalBatteryDesign.UnitEnergyCost;
+
+                    return 0;
+                } catch { return 0; } }
         }
         /// <summary>
         /// //////////
