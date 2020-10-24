@@ -121,7 +121,7 @@ namespace Supremacy.AI
                             }
                             else
                             {
-                                //Head to the system
+                                //go to the sector location
                                 fleet.SetRoute(AStar.FindPath(fleet, PathOptions.SafeTerritory, null, new List<Sector> { bestSectorForStation }));
                                 fleet.UnitAIType = UnitAIType.Constructor;
                                 fleet.Activity = UnitActivity.Mission;
@@ -189,7 +189,6 @@ namespace Supremacy.AI
                     }
                 }
 
-                //TODO
                 if (fleet.IsDiplomatic)
                 {
                     // Send diplomatic ship and influence order, but what do we do with race traits and diplomacy?
@@ -494,49 +493,78 @@ namespace Supremacy.AI
         /// <param name="sector"></param>
         /// <param name="fleet"></param>
         /// <returns></returns>
-        public static int GetStationValue(Sector sector, Civilization civ)
+        public static int GetStationValue(Sector sector, Fleet fleet, List<UniverseObject> universeObjects)
+        //{
+        //    return RandomHelper.Random(10);
+        //}
         {
             if (sector == null)
             {
                 throw new ArgumentNullException(nameof(sector));
             }
-
-            const int SystemSectorValue = 1500;
-            const int StrandedShipSectorValue = 2000;
-
+            //if (fleet == null)
+            //{
+            //    throw new ArgumentNullException(nameof(fleet));
+            //}
+            //if (universeObjects == null)
+            //{
+            //    throw new ArgumentNullException(nameof(universeObjects));
+            //}
             int value = 0;
-
-            CivilizationManager civManager = GameContext.Current.CivilizationManagers[civ];
-
-            if ((sector.System != null)
-                && (sector.System.OwnerID > 6 || sector.System.Owner == null)
-                && sector.System.StarType != StarType.XRayPulsar)
+            var something = universeObjects.Where(o => o.Sector == sector);
+            if (something != null)
             {
-                value += SystemSectorValue;
-                if (sector.System.StarType == StarType.Blue
-                    || sector.System.StarType == StarType.Orange
-                    || sector.System.StarType == StarType.Red
-                    || sector.System.StarType == StarType.White
-                    || sector.System.StarType == StarType.Yellow
-                    || sector.System.StarType == StarType.Wormhole)
-                    value += SystemSectorValue;
-            }
-            List<Sector> strandedShipSectors = FindStrandedShipSectors(civ);
-            if (strandedShipSectors.Count > 0)
-            {
-                if (strandedShipSectors.Contains(sector))
+                const int SystemSectorValue = 1500;
+                const int StrandedShipSectorValue = 2000;
+                const int PastFuelRange = 2000;
+                const int GreatestDistance = 3000;
+
+                if (!FleetHelper.IsSectorWithinFuelRange(sector, fleet))
                 {
-                    value += StrandedShipSectorValue;
+                    value += PastFuelRange;
                 }
+                if ((sector.System != null)
+                    && (sector.System.Owner == null || sector.System.OwnerID > 6))
+                {
+                    value += SystemSectorValue;
+                    if (sector.System.StarType == StarType.Blue
+                        || sector.System.StarType == StarType.Orange
+                        || sector.System.StarType == StarType.Red
+                        || sector.System.StarType == StarType.White
+                        || sector.System.StarType == StarType.Yellow
+                        || sector.System.StarType == StarType.Wormhole)
+                    {
+                        value += SystemSectorValue;
+                    }
+                    //if (sector.System.StarType == StarType.BlackHole
+                    //    || sector.System.StarType == StarType.NeutronStar
+                    //    || GameContext.Current.Universe.FindAt<UniverseObject>(sector.Location).Where(o => o.ObjectType == UniverseObjectType.Station).Any())
+                    //{
+                    //    value = 0;
+                    //}
+                }
+                Sector whoeverHome = GameContext.Current.Universe.HomeColonyLookup[fleet.Owner].Sector;
+                var furthestObject = GameContext.Current.Universe.FindFurthestObject<UniverseObject>(whoeverHome.Location, fleet.Owner, universeObjects);
+                if (furthestObject.Sector == sector)
+                {
+                    value += GreatestDistance;
+                }
+                //List<Sector> strandedShipSectors = FindStrandedShipSectors(fleet.Owner);
+                //if (strandedShipSectors.Count > 0)
+                //{
+                //    if (strandedShipSectors.Contains(sector))
+                //    {
+                //        value += StrandedShipSectorValue;
+                //    }
+                //}
             }
-
-            GameLog.Core.AI.DebugFormat("Station value for {0} is {1}", sector, value);
-            return value;
+            //GameLog.Core.AI.DebugFormat("Station value for {0} is {1}", sector, value);
+            return value + RandomHelper.Random(100);
         }
 
-         /*
-         * Station best sector
-         */
+        /*
+        * Station best sector
+        */
 
         /// <summary>
         /// Returns the best possible <see cref="Sector"/> for a given <see cref="Fleet"/>
@@ -559,17 +587,20 @@ namespace Supremacy.AI
             CivilizationMapData mapData = civManager.MapData;
             int mapHeight = GameContext.Current.Universe.Map.Height;
             int mapWidth = GameContext.Current.Universe.Map.Height;
+           // var stationLocation = _station.Where(oGameContext.Current.Universe.Objects.(UniverseObjectType.Station).
             switch (fleet.Owner.Key)
             {
                 case "BORG":
                     {
                         Sector borgHome = GameContext.Current.Universe.HomeColonyLookup[fleet.Owner].Sector;
-
+                        // ToDo: keep it past existing their existing station(s) - shot for furthest and get stranded to build station at limit
                         int xDeltaToCenter = borgHome.Location.X - (mapHeight / 2);
                         int yDeltaToCenter = (mapWidth / 2) - borgHome.Location.Y;
                         int targetSectorX = borgHome.Location.X - xDeltaToCenter;
                         int targetSectorY = borgHome.Location.Y + yDeltaToCenter;
-                        var objectsAlongCenterAxis = GameContext.Current.Universe.Objects.Where(s => s.Location != null
+                        var objectsAlongCenterAxis = GameContext.Current.Universe.Objects
+                            .Where(c => !FleetHelper.IsSectorWithinFuelRange(c.Sector, fleet))
+                            .Where(s => s.Location != null
                             && s.Sector.Station == null
                             && s.Location.X <= (targetSectorX + 1)
                             && s.Location.Y <= (targetSectorY + 6))
@@ -580,9 +611,18 @@ namespace Supremacy.AI
                             result = null;
                             return false;
                         }
+                        //List<int> stationValue = new List<int>() { 0 };
+                        //int theMax = 0;
+                        //foreach (var item in objectsAlongCenterAxis)
+                        //{
+                        //    stationValue.Add(GetStationValue(item.Sector, fleet, objectsAlongCenterAxis));
+                        //    theMax = stationValue.Max();
+                        //}
+                        //stationValue.FindIndex(theMax);
                         objectsAlongCenterAxis.Sort((a, b) =>
-                            GetStationValue(a.Sector, fleet.Owner)
-                            .CompareTo(GetStationValue(b.Sector, fleet.Owner)));
+                            GetStationValue(a.Sector, fleet, objectsAlongCenterAxis)
+                            .CompareTo(GetStationValue(b.Sector, fleet, objectsAlongCenterAxis)));
+                        //List<UniverseObject> sortedObjects = objectsAlongCenterAxis.OrderBy(GetStationValue(o => o.Sector, fleet, objectsAlongCenterAxis))
                         result = objectsAlongCenterAxis[objectsAlongCenterAxis.Count - 1].Sector;
                         return true;
                     }
@@ -595,7 +635,9 @@ namespace Supremacy.AI
                         int yDeltaToCenter = domHome.Location.Y - (mapWidth / 2);
                         int targetSectorX = domHome.Location.X + xDeltaToCenter;
                         int targetSectorY = domHome.Location.Y - yDeltaToCenter;
-                        var objectsAlongCenterAxis = GameContext.Current.Universe.Objects.Where(s => s.Location != null
+                        var objectsAlongCenterAxis = GameContext.Current.Universe.Objects
+                            .Where(c => !FleetHelper.IsSectorWithinFuelRange(c.Sector, fleet))
+                            .Where(s => s.Location != null
                             && s.Sector.Station == null
                             && s.Location.X <= (targetSectorX + 1)
                             && s.Location.Y <= (targetSectorY - 6))
@@ -607,19 +649,40 @@ namespace Supremacy.AI
                             return false;
                         }
                         objectsAlongCenterAxis.Sort((a, b) =>
-                            GetStationValue(a.Sector, fleet.Owner)
-                            .CompareTo(GetStationValue(b.Sector, fleet.Owner)));
+                            GetStationValue(a.Sector, fleet, objectsAlongCenterAxis)
+                            .CompareTo(GetStationValue(b.Sector, fleet, objectsAlongCenterAxis)));
                         result = objectsAlongCenterAxis[objectsAlongCenterAxis.Count - 1].Sector;
                         return true;   
                     }
                 case "KLINGON":
-                    {
-                        result = null;
+                case "TERRANEMPIRE":
+                case "FEDERATION":
+                case "ROMULANS":
+                case "CARDASSIANS":
+                {
+                        //Sector whoeverHome = GameContext.Current.Universe.HomeColonyLookup[fleet.Owner].Sector;
+                        //var furthestObject = GameContext.Current.Universe.FindFurthestObject<UniverseObject>(whoeverHome.Location, fleet.Owner);
+                        Sector whoeverHome = GameContext.Current.Universe.HomeColonyLookup[fleet.Owner].Sector;
+
+                        var objectsAroundHome = GameContext.Current.Universe.Objects
+                            .Where(s => s.Location != null
+                            && s.Owner != fleet.Owner
+                            //&& s.Sector != GameContext.Current.Universe.Objects.Any(UniverseObjectType.Station)
+                            //&& s.Sector.System.StarType != StarType.XRayPulsar
+                            && ((s.Location.X <= whoeverHome.Location.X + (mapWidth / 2)) || (s.Location.X >= whoeverHome.Location.X - (mapWidth / 2))))
+                            .ToList();
+
+                        objectsAroundHome.Sort((a, b) =>
+                                      GetStationValue(a.Sector, fleet, objectsAroundHome)
+                                      .CompareTo(GetStationValue(b.Sector, fleet, objectsAroundHome)));
+
+                        result = objectsAroundHome[objectsAroundHome.Count - 1].Sector;
+                        //result = furthestObject.Sector;
                         return true;
                     }
                 default:
                     result = null;
-                    return true;
+                    return false; // could not find sector for station
             }  
         }
 

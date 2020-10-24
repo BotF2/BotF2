@@ -77,10 +77,14 @@ All other rights reserved.-->
                             BorderBrush="Pink"
                             BorderThickness="2">-->
                         <Canvas Width="970"
-                                Height="510">
-                            <Canvas.LayoutTransform>
+                                Height="550"
+                                >
+                        <!--<Canvas.Background>
+                            <SolidColorBrush Color="Gray" Opacity="40"/>
+                        </Canvas.Background>-->
+                            <!--<Canvas.LayoutTransform>
                                 <ScaleTransform ScaleX="0.6" ScaleY="0.6"  />
-                            </Canvas.LayoutTransform>
+                            </Canvas.LayoutTransform>-->
                         <!--Background = Popup-->
                             <Image>
                                 <Image.Source>
@@ -185,7 +189,7 @@ All other rights reserved.-->
                             <!--Science = F4 -->
                             <MenuItem x:Name="MenuItem_Science"
                                         Canvas.Left="220"
-                                        Canvas.Top="290"
+                                        Canvas.Top="285"
                                         Command="{x:Static scc:NavigationCommands.ActivateScreen}"
                                         CommandParameter="{x:Static scc:StandardGameScreens.ScienceScreen}"
                                         Style="{StaticResource MouseOverSoundStyle}">
@@ -214,7 +218,7 @@ All other rights reserved.-->
                             <!--Intel = Assets = F5-->
                             <MenuItem x:Name="MenuItem_Intel"
                                         Canvas.Left="445"
-                                        Canvas.Top="300"
+                                        Canvas.Top="295"
                                         Command="{x:Static scc:NavigationCommands.ActivateScreen}"
                                         CommandParameter="{x:Static scc:StandardGameScreens.IntelScreen}"
                                         Style="{StaticResource MouseOverSoundStyle}">
@@ -242,8 +246,8 @@ All other rights reserved.-->
 
                             <!--Menu = ESC -->
                             <MenuItem x:Name="MenuItem_Menu"
-                                    Canvas.Left="605"
-                                    Canvas.Top="293"
+                                    Canvas.Left="606"
+                                    Canvas.Top="280"
                                     Command="{x:Static scc:NavigationCommands.ActivateScreen}"
                                     CommandParameter="{x:Static scc:StandardGameScreens.MenuScreen}"
                                     Style="{StaticResource MouseOverSoundStyle}">

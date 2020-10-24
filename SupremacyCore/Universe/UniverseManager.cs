@@ -242,6 +242,17 @@ namespace Supremacy.Universe
             return FindNearestOwned(source, owner, (Expression<Func<T, bool>>)(o => true), includeSource);
         }
 
+        public T FindFurthestObject<T>(MapLocation source, Civilization owner, List<T> _objects)
+            where T : UniverseObject
+        {
+            var ownerId = (owner != null) ? owner.CivID : Civilization.InvalidID;
+            return _objects
+                .Where(o => o.OwnerID != ownerId)
+                .OfType<T>()
+                .Where(o => o.Location != source)
+                .MaxElement(o => MapLocation.GetDistance(source, o.Location));
+        }
+
         public T FindNearestOwned<T>(MapLocation source, Civilization owner)
             where T : UniverseObject
         {
