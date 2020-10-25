@@ -401,12 +401,12 @@
                             Style="{StaticResource SummaryButtonStyle}"
                             Content="Turn Summary   "
                             FontSize="14pt"
+                            Background="{StaticResource {x:Static scc:ClientResources.HighlightBrushKey}}"
                             FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
                             Foreground="Black"
-                            Background="LightSteelBlue"
                             Margin="0,0,0,0"
                             Command="{x:Static scc:ClientCommands.ShowEndOfTurnSummary}"></Button>
-
+                    <!--Background="LightSteelBlue"-->
                 </StackPanel>
                 <!-- Upper Left Side -->
                 <Grid x:Name="UpperLeftSide"
