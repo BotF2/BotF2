@@ -833,37 +833,45 @@
                     <StackPanel x:Name="MapButtonsPanel"
                               Orientation="Horizontal"
                               Margin="0,0,0,0">
-                                        <Button x:Name="EconomyButton"
-                            Style="{StaticResource LCARS_BorderButtonStyle}"
-                            Content="{s:StringResource Key=ECONOMY_BUTTON_TEXT, Case=Upper}"
-                            Margin="3,0,0,0"
-                            Command="{x:Static scc:GalaxyScreenCommands.SetOverviewMode}"
-                            CommandParameter="{x:Static scc:GalaxyScreenOverviewMode.Economic}" />
                                         <Button x:Name="MilitaryButton"
                             Style="{StaticResource LCARS_BorderButtonStyle}"
                             Content="{s:StringResource Key=MILITARY_BUTTON_TEXT, Case=Upper}"
+                            ToolTip="{s:StringResource Key=MILITARY_BUTTON_TOOLTIP}"
                             Margin="3,0,0,0"
                             Command="{x:Static scc:GalaxyScreenCommands.SetOverviewMode}"
                             CommandParameter="{x:Static scc:GalaxyScreenOverviewMode.Military}" />
+                                        <Button x:Name="EconomyButton"
+                            Style="{StaticResource LCARS_BorderButtonStyle}"
+                            Content="{s:StringResource Key=ECONOMY_BUTTON_TEXT, Case=Upper}"
+                            ToolTip="{s:StringResource Key=ECONOMY_BUTTON_TOOLTIP}"
+                            Margin="3,0,0,0"
+                            Command="{x:Static scc:GalaxyScreenCommands.SetOverviewMode}"
+                            CommandParameter="{x:Static scc:GalaxyScreenOverviewMode.Economic}" />
+
                                         <Button x:Name="ZoomInButton"
                             Style="{StaticResource LCARS_BorderButtonStyle}"
                             Content="{s:StringResource Key=ZOOM_IN_BUTTON_TEXT, Case=Upper}"
+                            ToolTip="{s:StringResource Key=ZOOM_IN_BUTTON_TOOLTIP}"
+                            MinWidth="30"
                             Margin="3,0,0,0"
                             Command="{x:Static scc:GalaxyScreenCommands.MapZoomIn}" />
                                         <Button x:Name="ZoomOutButton"
                             Style="{StaticResource LCARS_BorderButtonStyle}"
                             Content="{s:StringResource Key=ZOOM_OUT_BUTTON_TEXT, Case=Upper}"
+                            ToolTip="{s:StringResource Key=ZOOM_OUT_BUTTON_TOOLTIP}"                    
+                            MinWidth="30"
                             Margin="3,0,3,0"
                             Command="{x:Static scc:GalaxyScreenCommands.MapZoomOut}" />
                                     </StackPanel>
                                     <ToggleButton x:Name="ChatButton"
-                                Focusable="False"
-                                Style="{StaticResource LCARS_BorderToggleButtonStyle}"
-                                Content="{s:StringResource Key=CHAT_BUTTON_TEXT, Case=Upper}"
-                                Margin="0,0,3,0">
+                            Focusable="False"
+                            Style="{StaticResource LCARS_BorderToggleButtonStyle}"
+                            Content="{s:StringResource Key=CHAT_BUTTON_TEXT, Case=Upper}"
+                            ToolTip="{s:StringResource Key=CHAT_BUTTON_TOOLTIP}" 
+                            Margin="0,0,3,0">
                                         <ToggleButton.Foreground>
                                             <SolidColorBrush x:Name="ChatButtonForeground"
-                                       Color="Black" />
+                                                Color="Black" />
                                         </ToggleButton.Foreground>
                                     </ToggleButton>
                                 </StackPanel>
