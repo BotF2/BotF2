@@ -679,7 +679,16 @@ namespace Supremacy.Client.Views
             if (project == null)
                 return false;
 
-            if (project.IsCancelled || project.IsCompleted || project.IsRushed)
+            if (project.IsCancelled)
+            {
+                //project.IsCancelled = false;
+                //project.SetFlag(BuildProjectFlags.Cancelled);
+                //
+                // real  - var result = MessageDialog.Show("Unavailable for purchase - project has flag: IsCancelled", MessageDialogButtons.Ok);
+                var result = MessageDialog.Show("Unavailable for purchase - sorry", MessageDialogButtons.Ok);
+            }
+
+            if (/*project.IsCancelled || */project.IsCompleted || project.IsRushed)
                 return false;
             
             if (Model.SelectedColony == null)
