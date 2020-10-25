@@ -238,7 +238,7 @@ namespace Supremacy.Client.Views
                 return;
 
             var localPlayerEmpire = _appContext.LocalPlayerEmpire;
-            GameLog.Client.UI.DebugFormat("AssetsScreen local player ={0}", localPlayerEmpire.Civilization.Key);
+            //works  GameLog.Client.UI.DebugFormat("AssetsScreen local player ={0}", localPlayerEmpire.Civilization.Key);
             if (localPlayerEmpire == null)
                 return;
         }
@@ -540,7 +540,7 @@ namespace Supremacy.Client.Views
                 }
             }
         }
-        // do we need this in the AssetsScreen???
+        // do we need this in the AssetsScreen???  we should keep it, if we bring back suns and planets
         protected void ResumeAnimations()
         {
             foreach (var animationsHost in this.FindVisualDescendantsByType<DependencyObject>().OfType<IAnimationsHost>())
