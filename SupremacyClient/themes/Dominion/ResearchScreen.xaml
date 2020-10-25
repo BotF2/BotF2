@@ -443,7 +443,7 @@
                           Grid.RowSpan="2"
                           Width="70"
                           Height="56"
-                          Fill="{StaticResource LCARS_Dom5TanGradient_TopLeft_BottomRight}"
+                          Fill="{StaticResource LCARS_Dom5Gradient_TopLeft_BottomRight}"
                           Data="F1 M 0,0L 0,28C 9.33333,28 18.6667,28 23.3333,32.6667C 28,37.3333 28,46.6667 28,56L 42,56C 42,46.6667 42,37.3333 46.6667,32.6667C 51.3333,28 60.6667,28 70,28L 70,0L 0,0 Z "/>
                     <!-- Bottom-Center Intersection -->
                     <Path Grid.Column="2"
@@ -452,7 +452,7 @@
                           Grid.RowSpan="2"
                           Width="70"
                           Height="56"
-                          Fill="{StaticResource LCARS_Dom5TanGradient_TopLeft_BottomRight}"
+                          Fill="{StaticResource LCARS_Dom5Gradient_TopLeft_BottomRight}"
                           Data="F1 M 70,56L 70,28C 60.6667,28 51.3333,28 46.6667,23.3333C 42,18.6667 42,9.33334 42,0L 28,0C 28,9.33334 28,18.6667 23.3333,23.3333C 18.6667,28 9.33333,28 3.78956e-014,28L 3.78956e-014,56L 70,56 Z "/>
                     <!-- Upper-Right Edge -->
                     <DockPanel Grid.Column="5"

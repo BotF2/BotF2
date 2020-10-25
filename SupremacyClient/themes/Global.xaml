@@ -2171,57 +2171,57 @@
                   Offset="0" />
     </LinearGradientBrush>
 
-    <!--Dom5TanGradient-->
-    <LinearGradientBrush x:Key="LCARS_Dom5TanGradient_TopLeft_BottomRight"
+    <!--Dom5Gradient-->
+    <LinearGradientBrush x:Key="LCARS_Dom5Gradient_TopLeft_BottomRight"
                        PresentationOptions:Freeze="True"
                        StartPoint="0,0"
                        EndPoint="1,1">
         <GradientStop Color="Tan"
                   Offset="0" />
-        <GradientStop Color="Tan"
+        <GradientStop Color="SandyBrown"
                   Offset="1" />
     </LinearGradientBrush>
-    <LinearGradientBrush x:Key="LCARS_Dom5TanGradient_BottomLeft_TopRight"
+    <LinearGradientBrush x:Key="LCARS_Dom5Gradient_BottomLeft_TopRight"
                        PresentationOptions:Freeze="True"
                        StartPoint="1,1"
                        EndPoint="0,0">
-        <GradientStop Color="Tan"
+        <GradientStop Color="SandyBrown"
                   Offset="0" />
         <GradientStop Color="Tan"
                   Offset="1" />
     </LinearGradientBrush>
-    <LinearGradientBrush x:Key="LCARS_Dom5TanGradient_Top_Bottom"
+    <LinearGradientBrush x:Key="LCARS_Dom5Gradient_Top_Bottom"
                        PresentationOptions:Freeze="True"
                        StartPoint="0,0"
                        EndPoint="0,1">
         <GradientStop Color="Tan"
                   Offset="0" />
-        <GradientStop Color="Tan"
+        <GradientStop Color="SandyBrown"
                   Offset="1" />
     </LinearGradientBrush>
-    <LinearGradientBrush x:Key="LCARS_Dom5TanGradient_Bottom_Top"
+    <LinearGradientBrush x:Key="LCARS_Dom5Gradient_Bottom_Top"
                        PresentationOptions:Freeze="True"
                        StartPoint="0,1"
                        EndPoint="0,0">
-        <GradientStop Color="Tan"
+        <GradientStop Color="SandyBrown"
                   Offset="0" />
         <GradientStop Color="Tan"
                   Offset="1" />
     </LinearGradientBrush>
-    <LinearGradientBrush x:Key="LCARS_Dom5TanGradient_Left_Right"
+    <LinearGradientBrush x:Key="LCARS_Dom5Gradient_Left_Right"
                        PresentationOptions:Freeze="True"
                        StartPoint="0,0"
                        EndPoint="1,0">
         <GradientStop Color="Tan"
                   Offset="0" />
-        <GradientStop Color="Tan"
+        <GradientStop Color="SandyBrown"
                   Offset="1" />
     </LinearGradientBrush>
-    <LinearGradientBrush x:Key="LCARS_Dom5TanGradient_Right_Left"
+    <LinearGradientBrush x:Key="LCARS_Dom5Gradient_Right_Left"
                        PresentationOptions:Freeze="True"
                        StartPoint="0,0"
                        EndPoint="1,0">
-        <GradientStop Color="Tan"
+        <GradientStop Color="SandyBrown"
                   Offset="1" />
         <GradientStop Color="Tan"
                   Offset="0" />
@@ -3984,7 +3984,7 @@
                          Height="8"
                          Margin="3,0,3,0"
                          VerticalAlignment="Top"
-                         Fill="{StaticResource LCARS_Dom4Gradient_Top_Bottom}" />
+                         Fill="Tan" />
 
                             <Rectangle x:Name="RightTopEdge"
                          Grid.Column="3"
@@ -4000,7 +4000,7 @@
                          Width="8"
                          Margin="0,3,0,3"
                          HorizontalAlignment="Left"
-                         Fill="Tan" />
+                         Fill="{StaticResource LCARS_Dom4Gradient_Top_Bottom}" />
 
                             <Rectangle x:Name="RightEdge"
                          Grid.Column="4"
@@ -4008,7 +4008,7 @@
                          Width="8"
                          Margin="0,3,0,3"
                          HorizontalAlignment="Right"
-                         Fill="Tan" />
+                         Fill="{StaticResource LCARS_Dom4Gradient_Top_Bottom}" />
 
                             <Rectangle x:Name="LeftBottomEdge"
                          Grid.Column="1"
@@ -4024,7 +4024,7 @@
                          Height="8"
                          Margin="3,0,3,0"
                          VerticalAlignment="Bottom"
-                         Fill="{StaticResource LCARS_Dom4Gradient_Top_Bottom}" />
+                         Fill="Tan" />
 
                             <Rectangle x:Name="RightBottomEdge"
                          Grid.Column="3"

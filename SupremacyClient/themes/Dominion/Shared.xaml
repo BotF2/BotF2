@@ -16,7 +16,6 @@
     <!--Usage: {StaticResource HeaderTextBrush}-->
     <SolidColorBrush x:Key="BorderBrush"
             Color="Tan" />
-    
     <SolidColorBrush x:Key="HeaderTextBrush"
             Color="#CF88DF"/>
     <SolidColorBrush x:Key="LCARS_HeaderBrush"
@@ -70,7 +69,134 @@
     - LCARS_SimpleToggleButtonStyle
     
     
+    Default = IsEnable = Current Selection = GREEN = LCARS_Dom3Gradient_Bottom_Top
+    MouseOver = PINK GRADIENT = LCARS_Dom2Gradient_Bottom_Top
+    IsPressed = PINK = LCARS_Dom1Gradient_Bottom_Top
+    
     -->
+
+    <Style x:Key="LCARS_ThinBorderStyle"
+         TargetType="{x:Type ContentControl}"
+         BasedOn="{StaticResource BaseStyle}">
+        <Setter Property="Background"
+            Value="Transparent" />
+        <Setter Property="Focusable"
+            Value="False" />
+        <Setter Property="FocusVisualStyle"
+            Value="{x:Null}" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ContentControl}">
+                    <Border Background="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Background}"
+                  CornerRadius="14">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="0.25*" />
+                                <ColumnDefinition Width="0.5*" />
+                                <ColumnDefinition Width="0.25*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <Path Grid.Column="0"
+                  Grid.Row="0"
+                  SnapsToDevicePixels="True"
+                  Data="{StaticResource LCARS_Corner_TopLeft_Small}"
+                  Fill="{StaticResource LCARS_PurpleGradient_TopLeft_BottomRight}" />
+                            <Path Grid.Column="4"
+                    Grid.Row="0"
+                    SnapsToDevicePixels="True"
+                    Data="{StaticResource LCARS_Corner_TopRight_Small}"
+                    Fill="{StaticResource LCARS_PurpleGradient_TopLeft_BottomRight}" />
+                            <Path Grid.Column="0"
+                    Grid.Row="2"
+                    SnapsToDevicePixels="True"
+                    Data="{StaticResource LCARS_Corner_BottomLeft_Small}"
+                    Fill="{StaticResource LCARS_PurpleGradient_TopLeft_BottomRight}" />
+                            <Path Grid.Column="4"
+                    Grid.Row="2"
+                    SnapsToDevicePixels="True"
+                    Data="{StaticResource LCARS_Corner_BottomRight_Small}"
+                    Fill="{StaticResource LCARS_PurpleGradient_TopLeft_BottomRight}" />
+
+                            <Rectangle x:Name="LeftTopEdge"
+                         Grid.Column="1"
+                         Grid.Row="0"
+                         Height="8"
+                         Margin="3,0,0,0"
+                         VerticalAlignment="Top"
+                         Fill="{StaticResource LCARS_OrangeGradient_Top_Bottom}" />
+
+                            <Rectangle x:Name="LeftCenterTopEdge"
+                         Grid.Column="2"
+                         Grid.Row="0"
+                         Height="8"
+                         Margin="3,0,3,0"
+                         VerticalAlignment="Top"
+                         Fill="{StaticResource LCARS_Dom3Gradient_Bottom_Top}" />
+
+                            <Rectangle x:Name="RightTopEdge"
+                         Grid.Column="3"
+                         Grid.Row="0"
+                         Height="8"
+                         Margin="0,0,3,0"
+                         VerticalAlignment="Top"
+                         Fill="{StaticResource LCARS_OrangeGradient_Top_Bottom}" />
+
+                            <Rectangle x:Name="LeftEdge"
+                         Grid.Column="0"
+                         Grid.Row="1"
+                         Width="8"
+                         Margin="0,3,0,3"
+                         HorizontalAlignment="Left"
+                         Fill="{StaticResource LCARS_OrangeGradient_Left_Right}" />
+
+                            <Rectangle x:Name="RightEdge"
+                         Grid.Column="4"
+                         Grid.Row="1"
+                         Width="8"
+                         Margin="0,3,0,3"
+                         HorizontalAlignment="Right"
+                         Fill="{StaticResource LCARS_OrangeGradient_Left_Right}" />
+
+                            <Rectangle x:Name="LeftBottomEdge"
+                         Grid.Column="1"
+                         Grid.Row="2"
+                         Height="8"
+                         Margin="3,0,0,0"
+                         VerticalAlignment="Bottom"
+                         Fill="{StaticResource LCARS_OrangeGradient_Top_Bottom}" />
+
+                            <Rectangle x:Name="CenterBottomEdge"
+                         Grid.Column="2"
+                         Grid.Row="2"
+                         Height="8"
+                         Margin="3,0,3,0"
+                         VerticalAlignment="Bottom"
+                         Fill="{StaticResource LCARS_BlueGradient_Top_Bottom}" />
+
+                            <Rectangle x:Name="RightBottomEdge"
+                         Grid.Column="3"
+                         Grid.Row="2"
+                         Height="8"
+                         Margin="0,0,3,0"
+                         VerticalAlignment="Bottom"
+                         Fill="{StaticResource LCARS_OrangeGradient_Top_Bottom}" />
+                            <ContentPresenter Grid.Column="1"
+                                Grid.ColumnSpan="3"
+                                Grid.Row="1"
+                                Margin="8,0,8,0"
+                                ClipToBounds="True" />
+                        </Grid>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
 
     <Style x:Key="LCARS_SimpleButtonStyle"
          TargetType="{x:Type Button}"
@@ -96,7 +222,7 @@
                     Grid.Column="0"
                     Margin="0"
                     Padding="{TemplateBinding Padding}"
-                    Background="{StaticResource LCARS_Dom5TanGradient_Bottom_Top}">
+                    Background="{StaticResource LCARS_Dom2Gradient_Bottom_Top}">
                             <ContentPresenter HorizontalAlignment="Center"
                                 VerticalAlignment="Center"
                                 RecognizesAccessKey="True" />
@@ -113,13 +239,13 @@
                      Value="True">
                             <Setter TargetName="ContentBorder"
                       Property="Background"
-                      Value="{StaticResource LCARS_HoverBlueGradient_Left_Right}" />
+                      Value="{StaticResource LCARS_Dom3Gradient_Bottom_Top}" />
                         </Trigger>
                         <Trigger Property="IsPressed"
                      Value="True">
                             <Setter TargetName="ContentBorder"
                       Property="Background"
-                      Value="{StaticResource LCARS_BlueGradient_Right_Left}" />
+                      Value="{StaticResource LCARS_Dom1Gradient_Bottom_Top}" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
@@ -157,7 +283,7 @@
                     Grid.Column="0"
                     Margin="0"
                     Padding="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Padding}"
-                    Background="{StaticResource LCARS_BlueGradient_Left_Right}">
+                    Background="{StaticResource LCARS_Dom3Gradient_Bottom_Top}">
                             <ContentPresenter Content="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Content}"
                                 HorizontalAlignment="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=HorizontalContentAlignment}"
                                 VerticalAlignment="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=VerticalContentAlignment}"
@@ -253,7 +379,7 @@
         <Setter Property="Focusable"
             Value="False" />
         <Setter Property="Background"
-            Value="{StaticResource LCARS_BlueGradient_Top_Bottom}" />
+            Value="{StaticResource LCARS_Dom3Gradient_Bottom_Top}" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type Button}">
@@ -272,24 +398,32 @@
                                 RecognizesAccessKey="True" />
                         </Border>
                     </Grid>
+                    <!--IsEnabled-->
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsEnabled"
                      Value="False">
                             <Setter TargetName="ContentBorder"
                       Property="Opacity"
-                      Value="0.33" />
+                      Value="0.33"  />
+                            <Setter TargetName="ContentBorder"
+                            Property="Background"
+                      Value="{StaticResource LCARS_Dom1Gradient_Bottom_Top}" />
                         </Trigger>
+                        
+                        <!--IsMouseOver-->
                         <Trigger Property="IsMouseOver"
                      Value="True">
                             <Setter TargetName="ContentBorder"
                       Property="Background"
-                      Value="{StaticResource LCARS_HoverBlueGradient_Top_Bottom}" />
+                      Value="{StaticResource LCARS_Dom3Gradient_Bottom_Top}" />
                         </Trigger>
+                        
+                        <!--IsPressed-->
                         <Trigger Property="IsPressed"
                      Value="True">
                             <Setter TargetName="ContentBorder"
                       Property="Background"
-                      Value="{StaticResource LCARS_BlueGradient_Bottom_Top}" />
+                      Value="{StaticResource LCARS_Dom1Gradient_Bottom_Top}" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
@@ -314,7 +448,7 @@
         <Setter Property="Focusable"
             Value="False" />
         <Setter Property="Background"
-            Value="{StaticResource LCARS_BlueGradient_Top_Bottom}" />
+            Value="{StaticResource LCARS_Dom2Gradient_Bottom_Top}" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type ToggleButton}">
@@ -344,19 +478,19 @@
                      Value="True">
                             <Setter TargetName="ContentBorder"
                       Property="Background"
-                      Value="{StaticResource LCARS_HoverBlueGradient_Top_Bottom}" />
+                      Value="{StaticResource LCARS_Dom2Gradient_Bottom_Top}" />
                         </Trigger>
                         <Trigger Property="IsPressed"
                      Value="True">
                             <Setter TargetName="ContentBorder"
                       Property="Background"
-                      Value="{StaticResource LCARS_BlueGradient_Bottom_Top}" />
+                      Value="{StaticResource LCARS_Dom1Gradient_Bottom_Top}" />
                         </Trigger>
                         <Trigger Property="IsChecked"
                      Value="True">
                             <Setter TargetName="ContentBorder"
                       Property="Background"
-                      Value="{StaticResource LCARS_BlueGradient_Bottom_Top}" />
+                      Value="{StaticResource LCARS_Dom3Gradient_Bottom_Top}" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
@@ -390,8 +524,10 @@
                             <ColumnDefinition Width="Auto" />
                             <!--<ColumnDefinition Width="Auto" />-->
                         </Grid.ColumnDefinitions>
+                        
+                        <!--Turned off = Transparent, but "Border" is needed-->
                         <Border Grid.Column="0"
-                    Background="{StaticResource LCARS_PurpleGradient_TopLeft_BottomRight}"
+                    Background="Transparent"
                     CornerRadius="14,0,0,14"
                     Width="21" />
                         <Path Grid.Column="0"
@@ -399,32 +535,43 @@
                     Width="14"
                     Stretch="Fill" 
                     Fill="{StaticResource LCARS_PurpleGradient_TopLeft_BottomRight}"
-                    Data="F1 M 16,32C 7.16345,32 3.8147e-006,24.8366 3.8147e-006,16C 3.8147e-006,7.16344 7.16345,5.72205e-006 16,5.72205e-006L 16,16L 16,32 Z"/>
+                    Data="F1 M 16,32C 7.16345,28 3.8147e-006,24.8366 3.8147e-006,16C 3.8147e-006,7.16344 7.16345,5.72205e-006 16,5.72205e-006L 16,16L 16,28 Z"/>
                         <Border x:Name="ContentBorder"
                     Grid.Column="1"
                     Margin="3,0,3,0"
                     Padding="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Padding}"
-                    Background="{StaticResource LCARS_BlueGradient_Left_Right}">
+                    Background="{StaticResource LCARS_Dom2Gradient_Bottom_Top}">
                             <ContentPresenter Content="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Content}"
                                 HorizontalAlignment="Center"
                                 VerticalAlignment="Center"
                                 RecognizesAccessKey="True" />
                         </Border>
-                        <Rectangle Grid.Column="2"
+                        
+                        <!--Button Left Side-->
+                        <Path 
+                      Grid.Column="0"
+                      Width="21"
+                      Height="28"
+                      Stretch="Fill"
+                      Fill="{StaticResource LCARS_Dom2Gradient_Right_Left}"                    
+                      Data="F1 M 28,0 L 8,0 0,7 0,19 0,28 8,37 28,37 28,0 Z  " />
+                        <!--<Rectangle Grid.Column="2"
                        Stretch="Fill"
                        Fill="{StaticResource LCARS_OrangeGradient_Left_Right}"
                        Margin="0,0,3,0"
-                       Width="14" />
-                        <Border Grid.Column="3"
+                       Width="14" />-->
+                        <!--<Border Grid.Column="3"
                     Background="{StaticResource LCARS_PurpleGradient_TopLeft_BottomRight}"
                     CornerRadius="0,14,14,0"
-                    Width="21" />
+                    Width="21" />-->
+
+                        <!--Button Right Side-->
                         <Path Grid.Column="3"
                     Height="28"
-                    Width="14" 
+                    Width="21" 
                     Stretch="Fill"
-                    Fill="{StaticResource LCARS_PurpleGradient_TopLeft_BottomRight}" 
-                    Data="F1 M 9.79717e-016,5.72205e-006C 8.83655,5.72205e-006 16,7.16344 16,16C 16,24.8366 8.83655,32 9.79717e-016,32L 0,16L 9.79717e-016,5.72205e-006 Z"/>
+                    Fill="{StaticResource LCARS_Dom2Gradient_Left_Right}" 
+                    Data="F1 M 0,0 L 14,0 21,8 21,20 14,28 0,28 Z  " />
                     </Grid>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsEnabled"
@@ -433,17 +580,19 @@
                       Property="Opacity"
                       Value="0.33" />
                         </Trigger>
+                        <!--IsMouseOver-->
                         <Trigger Property="IsMouseOver"
                      Value="True">
                             <Setter TargetName="ContentBorder"
                       Property="Background"
-                      Value="{StaticResource LCARS_HoverBlueGradient_Left_Right}" />
+                      Value="{StaticResource LCARS_Dom3Gradient_Bottom_Top}" />
                         </Trigger>
+                        <!--IsPressed-->
                         <Trigger Property="IsPressed"
                      Value="True">
                             <Setter TargetName="ContentBorder"
                       Property="Background"
-                      Value="{StaticResource LCARS_BlueGradient_Right_Left}" />
+                      Value="{StaticResource LCARS_Dom1Gradient_Bottom_Top}" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
@@ -512,14 +661,14 @@
                        Width="8"
                        Margin="0,3,0,3"
                        HorizontalAlignment="Left"
-                       Fill="{StaticResource LCARS_Dom5TanGradient_Left_Right}" />
+                       Fill="{StaticResource LCARS_Dom4Gradient_Top_Bottom}" />
                         <Rectangle x:Name="RightEdge"
                        Grid.Column="2"
                        Grid.Row="1"
                        Width="8"
                        Margin="0,3,0,3"
                        HorizontalAlignment="Right"
-                       Fill="{StaticResource LCARS_Dom5TanGradient_Left_Right}" />
+                       Fill="{StaticResource LCARS_Dom4Gradient_Top_Bottom}" />
                         <Rectangle x:Name="BottomEdge"
                        Grid.Column="1"
                        Grid.Row="2"
@@ -595,7 +744,7 @@
                                      Margin="3,0,0,0"
                                      Padding="7,0,7,0"
                                      SnapsToDevicePixels="True"
-                                     Background="{StaticResource LCARS_Dom1Gradient_Right_Left}">
+                                     Background="{StaticResource LCARS_Dom2Gradient_Bottom_Top}">
                             <ContentPresenter ContentSource="Header"
                                 VerticalAlignment="Center"
                                 SnapsToDevicePixels="True" />
@@ -607,6 +756,7 @@
                        SnapsToDevicePixels="True"
                        Fill="{StaticResource LCARS_BlueGradient_Bottom_Top}" />
               -->
+
                     </Grid>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver"
@@ -614,7 +764,7 @@
                             <Setter TargetName="Border"
                       Property="Background"
 
-                      Value="{StaticResource LCARS_Dom5TanGradient_Left_Right}" />
+                      Value="{StaticResource LCARS_Dom3Gradient_Bottom_Top}" />
                         </Trigger>
                         <Trigger Property="IsSelected"
                      Value="True">
@@ -973,7 +1123,7 @@
                         </MultiTrigger.Conditions>
                         <Setter TargetName="LeftButton"
                             Property="Background"
-                            Value="{StaticResource LCARS_PinkGradient_TopLeft_BottomRight}" />
+                            Value="{StaticResource LCARS_Dom1Gradient_Bottom_Top}" />
                     </MultiTrigger>
                 </ControlTemplate.Triggers>
             </ControlTemplate>
@@ -1010,7 +1160,7 @@
                 </MultiTrigger.Conditions>
                 <Setter TargetName="RightButton"
                         Property="Background"
-                        Value="{StaticResource LCARS_PinkGradient_TopLeft_BottomRight}" />
+                        Value="{StaticResource LCARS_Dom1Gradient_Bottom_Top}" />
               </MultiTrigger>
             </ControlTemplate.Triggers>
           </ControlTemplate>
@@ -1146,13 +1296,13 @@
                      Value="True">
               <Setter TargetName="BackgroundBorder"
                       Property="Background"
-                      Value="{StaticResource LCARS_HoverBlueGradient_Top_Bottom}" />
+                      Value="{StaticResource LCARS_Dom3Gradient_Bottom_Top}" />
             </Trigger>
             <Trigger Property="IsPressed"
                      Value="True">
               <Setter TargetName="BackgroundBorder"
                       Property="Background"
-                      Value="{StaticResource LCARS_BlueGradient_Bottom_Top}" />
+                      Value="{StaticResource LCARS_Dom1Gradient_Bottom_Top}" />
             </Trigger>
           </ControlTemplate.Triggers>
         </ControlTemplate>
@@ -1727,6 +1877,47 @@
         </Setter>
     </Style>
 
+    <ControlTemplate x:Key="{x:Static scc:GameButton.MinimalTemplateKey}"
+                   TargetType="{x:Type scc:GameButton}">
+        <Border x:Name="ContentBorder"
+            Padding="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Padding}"
+            Background="{StaticResource LCARS_Dom2Gradient_Bottom_Top}">
+            <ContentPresenter RecognizesAccessKey="True">
+                <ContentPresenter.Content>
+                    <AccessText Text="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Label}"
+                      HorizontalAlignment="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=HorizontalContentAlignment}"
+                      VerticalAlignment="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=VerticalContentAlignment}" />
+                </ContentPresenter.Content>
+            </ContentPresenter>
+        </Border>
+        <ControlTemplate.Triggers>
+            <Trigger Property="IsEnabled"
+               Value="False">
+                <Setter TargetName="ContentBorder"
+                Property="Opacity"
+                Value="0.33" />
+            </Trigger>
+            <Trigger Property="IsMouseOver"
+               Value="True">
+                <Setter TargetName="ContentBorder"
+                Property="Background"
+                Value="{StaticResource LCARS_Dom3Gradient_Bottom_Top}" />
+            </Trigger>
+            <Trigger Property="IsChecked"
+               Value="True">
+                <Setter TargetName="ContentBorder"
+                Property="Background"
+                Value="{StaticResource LCARS_Dom2Gradient_Bottom_Top}" />
+            </Trigger>
+            <Trigger Property="IsPressed"
+               Value="True">
+                <Setter TargetName="ContentBorder"
+                Property="Background"
+                Value="{StaticResource LCARS_Dom1Gradient_Bottom_Top}" />
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+
     <ControlTemplate x:Key="LCARS_ComboBoxToggleButton"
                    TargetType="{x:Type ToggleButton}">
         <Grid>
@@ -1758,7 +1949,7 @@
                Value="False">
                 <Setter TargetName="Border"
                 Property="Background"
-                Value="{StaticResource LCARS_GrayGradient_Top_Bottom}" />
+                Value="{StaticResource LCARS_Dom3Gradient_Bottom_Top}" />
             </Trigger>
         </ControlTemplate.Triggers>
     </ControlTemplate>
@@ -1875,7 +2066,7 @@
                                     <Border Grid.Column="2"
                           Grid.Row="0"
                           CornerRadius="0,14,0,0"
-                          Background="{StaticResource LCARS_PurpleGradient_TopLeft_BottomRight}" />
+                          Background="{StaticResource LCARS_Dom3Gradient_Bottom_Top}" />
                                     <Border Grid.Column="2"
                           Grid.Row="2"
                           CornerRadius="0,0,14,0"
@@ -1962,11 +2153,11 @@
                     Width="14"
                     Visibility="Collapsed"
                     Margin="0,0,3,0"
-                    Background="{StaticResource LCARS_OrangeGradient_Left_Right}"
+                    Background="{StaticResource LCARS_Dom3Gradient_Bottom_Top}"
                     SnapsToDevicePixels="True" />
                         <Border x:Name="Border"
                     Grid.Column="1"
-                    Background="{StaticResource LCARS_BlueGradient_Left_Right}"
+                    Background="{StaticResource LCARS_Dom3Gradient_Bottom_Top}"
                     Padding="2"
                     SnapsToDevicePixels="True">
                             <ContentPresenter Margin="7,0,7,0" />
@@ -1977,7 +2168,7 @@
                      Value="true">
                             <Setter TargetName="Border"
                       Property="Background"
-                      Value="{StaticResource LCARS_HoverBlueGradient_Left_Right}" />
+                      Value="{StaticResource LCARS_Dom3Gradient_Bottom_Top}" />
                         </Trigger>
                         <Trigger Property="IsEnabled"
                      Value="false">
@@ -2108,7 +2299,7 @@
                             <!--<Path Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Grid.RowSpan="1" Width="24" Height="12" Stretch="Fill" Fill="{StaticResource LCARS_PurpleGradient_Left_Right}" Margin="0,0,0,0" Data="F1 M 0,16L 1.27157e-006,0L 32,0L 24,0C 18.6667,0 13.3333,0 10.6667,2.66663C 8,5.33337 8,10.6666 8,16L 0,16 Z "/>-->
                             <Rectangle Grid.Column="0"
                          Grid.Row="1"
-                         Fill="{StaticResource LCARS_Dom5TanGradient_Left_Right}"
+                         Fill="{StaticResource LCARS_Dom5Gradient_Left_Right}"
                          Width="7"
                          Margin="0,3,0,3"
                          Stretch="Fill" />
