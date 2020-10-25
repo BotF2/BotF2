@@ -21,7 +21,12 @@ namespace Supremacy.Client.Dialogs
             _sitRepEntry = sitRepEntry;
             if (sitRepEntry == null)
                 throw new ArgumentNullException("sitRepEntry");
-            GameLog.Core.SitReps.DebugFormat("Sitrep for {0} (sound = {2}): {1} ", sitRepEntry.Owner, sitRepEntry.HeaderText, sitRepEntry.HasSoundEffect);
+            GameLog.Core.SitReps.DebugFormat("Turn {3};Sitrep for;{0};(sound=;{2};: {1} "
+                , sitRepEntry.Owner
+                , sitRepEntry.HeaderText
+                , sitRepEntry.HasSoundEffect
+                , GameContext.Current.TurnNumber
+                );
             
             DataContext = sitRepEntry;
             InitializeComponent();

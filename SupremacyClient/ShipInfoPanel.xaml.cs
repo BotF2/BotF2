@@ -1,4 +1,4 @@
-// ShipInfoPanel.xaml.cs
+// File:ShipInfoPanel.xaml.cs
 //
 // Copyright (c) 2007 Mike Strobel
 //
