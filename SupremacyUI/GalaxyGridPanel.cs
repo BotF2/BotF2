@@ -2229,8 +2229,8 @@ namespace Supremacy.UI
 
                                 int tradeRouteUnused = sector.System.Colony.TradeRoutesPossible;
 
-                                GameLog.Core.TradeRoutes.DebugFormat("TradeRoutes for Sector {0}: Available: {1}, Possible: {2}, Used: {3}", 
-                                    sector.Location, tradeRouteUnused, sector.TradeRouteIndicator, sector.System.Colony.TradeRoutesAssigned);
+                                GameLog.Core.TradeRoutes.DebugFormat("Turn {4};TradeRoutes;Available=;{1};Possible=;{2};Used=;{3};for Sector {0}", 
+                                    sector.Location, tradeRouteUnused, sector.TradeRouteIndicator, sector.System.Colony.TradeRoutesAssigned, GameContext.Current.TurnNumber);
 
                                 Pen tPen;
 
