@@ -598,27 +598,25 @@ namespace Supremacy.AI
 
             CivilizationManager civManager = GameContext.Current.CivilizationManagers[fleet.Owner];
             CivilizationMapData mapData = civManager.MapData;
-            int mapHeight = GameContext.Current.Universe.Map.Height;
-            int mapWidth = GameContext.Current.Universe.Map.Height;
-           // var stationLocation = _station.Where(oGameContext.Current.Universe.Objects.(UniverseObjectType.Station).
+            
+            int halfMapWidthX = GameContext.Current.Universe.Map.Width / 2;
+            int halfMapHeightY = GameContext.Current.Universe.Map.Height / 2;
+            int thirdMapWidthX = GameContext.Current.Universe.Map.Width / 3;
+            int thirdMapHeightY = GameContext.Current.Universe.Map.Height / 3;
+
+            // var stationLocation = _station.Where(oGameContext.Current.Universe.Objects.(UniverseObjectType.Station).
             switch (fleet.Owner.Key)
             {
                 case "BORG":
                     {
-                        Sector borgHome = GameContext.Current.Universe.HomeColonyLookup[fleet.Owner].Sector;
-                        // ToDo: keep it past existing their existing station(s) - shot for furthest and get stranded to build station at limit
-                        int xDeltaToCenter = Math.Abs(borgHome.Location.X - (mapHeight / 2));
-                        int yDeltaToCenter = Math.Abs((mapWidth / 2) - borgHome.Location.Y);
-                        int targetSectorX =Math.Abs(borgHome.Location.X - xDeltaToCenter);
-                        int targetSectorY = borgHome.Location.Y + yDeltaToCenter;
                         var objectsAlongCenterAxis = GameContext.Current.Universe.Objects
                            // .Where(c => !FleetHelper.IsSectorWithinFuelRange(c.Sector, fleet))
                             .Where(s => s.Location != null
                             && s.Sector.Station == null
                             && !s.CanMove 
-                            && (s.Location.X <= targetSectorX + 3 && s.Location.X >= Math.Abs(targetSectorX - 3))
-                            && (s.Location.Y >= Math.Abs(targetSectorY - 3) && s.Location.Y <= targetSectorY + 3))
-                            // find a list of objects in some sector around or below the axis from Borg home world through galactic center
+                            && (s.Location.X <= halfMapWidthX + 4 && s.Location.X >= Math.Abs(halfMapWidthX - 2))
+                            && (s.Location.Y >= Math.Abs(halfMapHeightY - 2) && s.Location.Y <= halfMapHeightY + 4))
+                            // find a list of objects around galactic center
                             .ToList();
                         if (objectsAlongCenterAxis.Count == 0)
                         {
@@ -637,20 +635,14 @@ namespace Supremacy.AI
 
                 case "DOMINION":
                     {
-                        Sector domHome = GameContext.Current.Universe.HomeColonyLookup[fleet.Owner].Sector;
-
-                        int xDeltaToCenter = Math.Abs((mapHeight / 2) - domHome.Location.X);
-                        int yDeltaToCenter = Math.Abs((mapWidth / 2) - domHome.Location.Y);
-                        int targetSectorX = domHome.Location.X + xDeltaToCenter;
-                        int targetSectorY = Math.Abs(domHome.Location.Y + yDeltaToCenter);
                         var objectsAlongCenterAxis = GameContext.Current.Universe.Objects
                             .Where(c => !FleetHelper.IsSectorWithinFuelRange(c.Sector, fleet))
                             .Where(s => s.Location != null
                             && s.Sector.Station == null
                             && !s.CanMove
-                            && (s.Location.X <= targetSectorX && s.Location.X >= Math.Abs(targetSectorX - 4))
-                            && (s.Location.Y >= targetSectorY && s.Location.Y <= targetSectorY + 4))
-                            // find a list of objects in some sector around or below the axis from Borg home world through galactic center
+                            && (s.Location.X <= halfMapWidthX&& s.Location.X >= Math.Abs(halfMapWidthX- 5))
+                            && (s.Location.Y >= halfMapHeightY && s.Location.Y <= halfMapHeightY + 5))
+                            // find a list of objects in some sector around but below the axis from Dom home world through galactic center
                             .ToList();
                         if (objectsAlongCenterAxis.Count == 0)
                         {
@@ -672,23 +664,19 @@ namespace Supremacy.AI
                 case "ROMULANS":
                 case "CARDASSIANS":
                 {
-                        //Sector whoeverHome = GameContext.Current.Universe.HomeColonyLookup[fleet.Owner].Sector;
                         //var furthestObject = GameContext.Current.Universe.FindFurthestObject<UniverseObject>(whoeverHome.Location, fleet.Owner);
                         Sector whoeverHome = GameContext.Current.Universe.HomeColonyLookup[fleet.Owner].Sector;
-                        int mapWidthHalf = mapWidth / 2;
-                        int mapWidthQuarter = mapWidth / 3;
-                        int mapHeightHalf = mapHeight / 2;
-                        int mapHeighQuarter = mapHeight / 3;
+
                         var objectsAroundHome = GameContext.Current.Universe.Objects
                             .Where(s => s.Location != null
                             && s.Sector.Station == null
                             && !s.CanMove
-                            && (((s.Location.X <= whoeverHome.Location.X + mapWidthHalf && s.Location.X >= whoeverHome.Location.X + mapWidthQuarter)
-                            || (s.Location.X >= Math.Abs(whoeverHome.Location.X - mapWidthHalf) && s.Location.X <= Math.Abs(whoeverHome.Location.X - mapWidthQuarter))
-                            && (s.Location.Y >= Math.Abs(whoeverHome.Location.Y - mapHeightHalf) && s.Location.Y <= whoeverHome.Location.X + mapHeighQuarter))                           
-                            || ((s.Location.Y <= whoeverHome.Location.Y + mapWidthHalf && s.Location.Y >= whoeverHome.Location.Y + mapWidthQuarter)
-                            || (s.Location.Y >= Math.Abs(whoeverHome.Location.Y - mapWidthHalf) && s.Location.Y <= Math.Abs(whoeverHome.Location.Y - mapWidthQuarter))
-                            && (s.Location.X >= Math.Abs(whoeverHome.Location.X - mapHeightHalf) && s.Location.X <= whoeverHome.Location.X + mapHeighQuarter))))
+                            && (((s.Location.X <= whoeverHome.Location.X + halfMapWidthX && s.Location.X >= whoeverHome.Location.X + thirdMapWidthX)
+                            || (s.Location.X >= Math.Abs(whoeverHome.Location.X - halfMapWidthX) && s.Location.X <= Math.Abs(whoeverHome.Location.X - thirdMapWidthX))
+                            && (s.Location.Y >= Math.Abs(whoeverHome.Location.Y - halfMapHeightY) && s.Location.Y <= whoeverHome.Location.Y + halfMapHeightY))                           
+                            || ((s.Location.Y <= whoeverHome.Location.Y + halfMapHeightY && s.Location.Y >= whoeverHome.Location.Y + thirdMapHeightY)
+                            || (s.Location.Y >= Math.Abs(whoeverHome.Location.Y - halfMapHeightY) && s.Location.Y <= Math.Abs(whoeverHome.Location.Y - thirdMapHeightY))
+                            && (s.Location.X >= Math.Abs(whoeverHome.Location.X - halfMapWidthX) && s.Location.X <= whoeverHome.Location.X + halfMapWidthX))))
                             .ToList();
                         if (objectsAroundHome.Count == 0)
                         {
