@@ -108,10 +108,13 @@ namespace Supremacy.AI
                     }
                     else if (fleet.Activity == UnitActivity.NoActivity || fleet.Route.IsEmpty || fleet.Order.IsComplete)
                     {
-                        if (GetBestSectorForStation(fleet, out Sector bestSectorForStation))
+                        Sector homeSector = GameContext.Current.Universe.HomeColonyLookup[fleet.Owner].Sector;
+                        int extraStationCount = GameContext.Current.Universe.FindOwned<Station>(fleet.Owner).Where(s => s.Sector != homeSector).Count();
+                        // ToDo: better construction ship AI - Now just one station built outside of home system.
+                        if (extraStationCount == 0 && GetBestSectorForStation(fleet, out Sector bestSectorForStation))
                         {
                             if (fleet.Sector == bestSectorForStation)
-                            {
+                            {  
                                 //Build the station
                                 BuildStationOrder order = new BuildStationOrder();
                                 order.BuildProject = order.FindTargets(fleet).Cast<StationBuildProject>().LastOrDefault(o => o.StationDesign.IsCombatant);
@@ -550,8 +553,8 @@ namespace Supremacy.AI
                         value = 0;
                     }
                 }
-                Sector whoeverHome = GameContext.Current.Universe.HomeColonyLookup[fleet.Owner].Sector;
-                var furthestObject = GameContext.Current.Universe.FindFurthestObject<UniverseObject>(whoeverHome.Location, fleet.Owner, universeObjects);
+                Sector homeSector = GameContext.Current.Universe.HomeColonyLookup[fleet.Owner].Sector;
+                var furthestObject = GameContext.Current.Universe.FindFurthestObject<UniverseObject>(homeSector.Location, fleet.Owner, universeObjects);
                 if (furthestObject.Sector == sector)
                 {
                     value += GreatestDistance;
@@ -609,7 +612,7 @@ namespace Supremacy.AI
             {
                 case "BORG":
                     {
-                        var objectsAlongCenterAxis = GameContext.Current.Universe.Objects
+                        var objectsAlongCenterAxis = GameContext.Current.Universe.Objects  
                            // .Where(c => !FleetHelper.IsSectorWithinFuelRange(c.Sector, fleet))
                             .Where(s => s.Location != null
                             && s.Sector.Station == null
@@ -664,19 +667,19 @@ namespace Supremacy.AI
                 case "ROMULANS":
                 case "CARDASSIANS":
                 {
-                        //var furthestObject = GameContext.Current.Universe.FindFurthestObject<UniverseObject>(whoeverHome.Location, fleet.Owner);
-                        Sector whoeverHome = GameContext.Current.Universe.HomeColonyLookup[fleet.Owner].Sector;
+                        //var furthestObject = GameContext.Current.Universe.FindFurthestObject<UniverseObject>(homeSector.Location, fleet.Owner);
+                        Sector homeSector = GameContext.Current.Universe.HomeColonyLookup[fleet.Owner].Sector;
 
                         var objectsAroundHome = GameContext.Current.Universe.Objects
                             .Where(s => s.Location != null
                             && s.Sector.Station == null
                             && !s.CanMove
-                            && (((s.Location.X <= whoeverHome.Location.X + halfMapWidthX && s.Location.X >= whoeverHome.Location.X + thirdMapWidthX)
-                            || (s.Location.X >= Math.Abs(whoeverHome.Location.X - halfMapWidthX) && s.Location.X <= Math.Abs(whoeverHome.Location.X - thirdMapWidthX))
-                            && (s.Location.Y >= Math.Abs(whoeverHome.Location.Y - halfMapHeightY) && s.Location.Y <= whoeverHome.Location.Y + halfMapHeightY))                           
-                            || ((s.Location.Y <= whoeverHome.Location.Y + halfMapHeightY && s.Location.Y >= whoeverHome.Location.Y + thirdMapHeightY)
-                            || (s.Location.Y >= Math.Abs(whoeverHome.Location.Y - halfMapHeightY) && s.Location.Y <= Math.Abs(whoeverHome.Location.Y - thirdMapHeightY))
-                            && (s.Location.X >= Math.Abs(whoeverHome.Location.X - halfMapWidthX) && s.Location.X <= whoeverHome.Location.X + halfMapWidthX))))
+                            && (((s.Location.X <= homeSector.Location.X + halfMapWidthX && s.Location.X >= homeSector.Location.X + thirdMapWidthX)
+                            || (s.Location.X >= Math.Abs(homeSector.Location.X - halfMapWidthX) && s.Location.X <= Math.Abs(homeSector.Location.X - thirdMapWidthX))
+                            && (s.Location.Y >= Math.Abs(homeSector.Location.Y - halfMapHeightY) && s.Location.Y <= homeSector.Location.Y + halfMapHeightY))                           
+                            || ((s.Location.Y <= homeSector.Location.Y + halfMapHeightY && s.Location.Y >= homeSector.Location.Y + thirdMapHeightY)
+                            || (s.Location.Y >= Math.Abs(homeSector.Location.Y - halfMapHeightY) && s.Location.Y <= Math.Abs(homeSector.Location.Y - thirdMapHeightY))
+                            && (s.Location.X >= Math.Abs(homeSector.Location.X - halfMapWidthX) && s.Location.X <= homeSector.Location.X + halfMapWidthX))))
                             .ToList();
                         if (objectsAroundHome.Count == 0)
                         {
