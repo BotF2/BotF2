@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Windows.Documents;
 using Supremacy.Annotations;
 using Supremacy.Diplomacy;
 using Supremacy.Entities;
@@ -346,19 +348,35 @@ namespace Supremacy.AI
                         // DOING: Process statements (apply regard/trust changes, etc.)
                         if (foreignPower.StatementReceived.StatementType == StatementType.WarDeclaration)
                         {
-                            DiplomacyHelper.ApplyRegardChange(foreignPower.Counterparty, foreignPower.Owner, -1000);
+                            DiplomacyHelper.ApplyRegardChange(foreignPower.Counterparty, foreignPower.Owner, -1000); //foreignPower.Counterparty is civ that gets a degraded regard and foreignPower.Owner is civilization where degraded regard is owned (happens for)
                             DiplomacyHelper.ApplyTrustChange(foreignPower.Counterparty, foreignPower.Owner, -1000);
+                            List<Civilization> otherReactors = DiplomacyHelper.FindOtherContactedCivsForDeltaRegardTrust(foreignPower.Counterparty, foreignPower.Owner);
+                            if (otherReactors != null)
+                            {
+                                foreach (Civilization anotherCiv in otherReactors)
+                                {
+                                    if (DiplomacyHelper.IsAlliedWithWorstEnemy(foreignPower.Counterparty, anotherCiv))
+                                    {
+                                        DiplomacyHelper.ApplyRegardChange(foreignPower.Counterparty, anotherCiv, -1000); //foreignPower.Counterparty is civ that gets a degraded regard and foreignPower.Owner is civilization where degraded regard is owned (happens for)
+                                        DiplomacyHelper.ApplyTrustChange(foreignPower.Counterparty, anotherCiv, -1000);
+                                    }
+                                    if (DiplomacyHelper.AreFriendly(foreignPower.Counterparty, anotherCiv))
+                                    {
+                                        DiplomacyHelper.ApplyRegardChange(foreignPower.Counterparty, anotherCiv, -100); //foreignPower.Counterparty is civ that gets a degraded regard and foreignPower.Owner is civilization where degraded regard is owned (happens for)
+                                        DiplomacyHelper.ApplyTrustChange(foreignPower.Counterparty, anotherCiv, -100);
+                                    }
+                                    else
+                                    {
+                                        DiplomacyHelper.ApplyRegardChange(foreignPower.Counterparty, anotherCiv, -250); //foreignPower.Counterparty is civ that gets a degraded regard and foreignPower.Owner is civilization where degraded regard is owned (happens for)
+                                        DiplomacyHelper.ApplyTrustChange(foreignPower.Counterparty, anotherCiv, -250);
+                                    }
+                                }
+                            }
                             int impact = -175;
                             TrustAndRegardByTraits(foreignPower, impact, similarTraits);
                             int degree = 0;
                             TrustAndRegardForATrait(foreignPower, degree, foreignTraits, theCivTraits);
 
-                            //if (foreignPower != null)
-                            //{
-                            //    foreignPower.DiplomacyData.Trust.AdjustCurrent(trustDelta);
-                            //    foreignPower.DiplomacyData.Trust.UpdateAndReset();
-                            //    foreignPower.UpdateRegardAndTrustMeters();
-                            //}
                             GameLog.Client.Diplomacy.DebugFormat(
                                     "## WarDeclaration by counterparty = {0} to {1} Regard = {2} Trust = {3}",
                                     foreignPower.Counterparty.ShortName, foreignPower.Owner.ShortName,

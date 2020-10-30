@@ -96,7 +96,7 @@ namespace Supremacy.AI
                     
                     if (fleet.IsStranded ) // stranded construction ship builds station
                     {
-                        BuildStationOrder order = new BuildStationOrder();            
+                        BuildStationOrder order = new BuildStationOrder();             
                         order.BuildProject = order.FindTargets(fleet).Cast<StationBuildProject>().LastOrDefault(o => o.StationDesign.IsCombatant);
                         if (order.BuildProject != null && order.CanAssignOrder(fleet))
                         {

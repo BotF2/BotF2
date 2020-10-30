@@ -1251,5 +1251,33 @@ namespace Supremacy.Diplomacy
             maxConcurrentMemories = 0;
             return 0;
         }
+
+        public static List<Civilization> FindOtherContactedCivsForDeltaRegardTrust(Civilization civDeclaring, Civilization civForDelta)
+        {
+            List<ForeignPower> foreignPowers = new List<ForeignPower>() {Diplomat.Get(civDeclaring).GetForeignPower(civForDelta)};
+            List<CivilizationManager> civilizationManagers = GameContext.Current.CivilizationManagers
+                .Where(o => o.Civilization.IsEmpire == true
+                && o.Civilization != civForDelta).ToList();
+            List<Civilization> civList = new List<Civilization>() { civDeclaring };
+            foreach (var aCivManager in civilizationManagers)
+            {
+                if (IsContactMade(civDeclaring, aCivManager.Civilization))
+                {
+                    civList.Add(aCivManager.Civilization);
+                }
+            }
+            civList.Remove(civDeclaring);
+            //if (civList != null)
+            //{        
+            //    foreach (var thisCiv in civList)
+            //    {
+            //        Diplomat diplomat = Diplomat.Get(thisCiv);
+            //        ForeignPower foreignPower = diplomat.GetForeignPower(civDeclaring);
+            //        foreignPowers.Add(foreignPower);
+            //    }
+            //}
+            //foreignPowers.Remove(Diplomat.Get(civDeclaring).GetForeignPower(civForDelta));
+            return civList; // can be null
+        }
     }
 }
