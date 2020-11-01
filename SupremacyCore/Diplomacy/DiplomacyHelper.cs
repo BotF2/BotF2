@@ -25,6 +25,7 @@ using System.Runtime.CompilerServices;
 using System.Web.Services.Description;
 using System.Windows;
 using System.Windows.Navigation;
+using System.Xaml.Schema;
 
 namespace Supremacy.Diplomacy
 {
@@ -1137,19 +1138,25 @@ namespace Supremacy.Diplomacy
                 //GameLog.Core.Diplomacy.DebugFormat("secondManager.Civilization.Key = {0}, first = {1}, TrustDelta {2}", secondManager.Civilization.Key, firstManager.Civilization.Key, trustDelta);
             }
 
-            if (!secondManager.Civilization.IsHuman || !firstManager.Civilization.IsHuman)
+            if (!firstManager.Civilization.IsHuman && ShouldTheyGoToWar(firstCiv, secondCiv))
             {
-                if (secondManager.Civilization.Traits.Contains("Warlike") && firstManager.Civilization.Traits.Contains("Warlike"))
-                {
-                    foreignPower.DeclareWar();
-                    firstManager.SitRepEntries.Add(new WarDeclaredSitRepEntry(secondCiv, firstCiv));
-                    secondManager.SitRepEntries.Add(new WarDeclaredSitRepEntry(secondCiv, firstCiv));
-                    //var soundPlayer = new SoundPlayer("Resources/SoundFX/GroundCombat/Bombardment_SM.ogg"); ToDo - not working yet
+                foreignPower.DeclareWar();
+                firstManager.SitRepEntries.Add(new WarDeclaredSitRepEntry(secondCiv, firstCiv));
+                secondManager.SitRepEntries.Add(new WarDeclaredSitRepEntry(secondCiv, firstCiv));
 
-                    ApplyTrustChange(firstCiv, secondCiv, foreignPower.DiplomacyData.Trust.CurrentValue * -1);
-                    ApplyRegardChange(secondCiv, firstCiv, ownPower.DiplomacyData.Regard.CurrentValue * -1);
-                }
+                ApplyTrustChange(firstCiv, secondCiv, foreignPower.DiplomacyData.Trust.CurrentValue * -1);
+                ApplyRegardChange(secondCiv, firstCiv, ownPower.DiplomacyData.Regard.CurrentValue * -1);
             }
+            else if (!secondManager.Civilization.IsHuman && ShouldTheyGoToWar(secondCiv, firstCiv))
+            {
+                foreignPower.CounterpartyForeignPower.DeclareWar();
+                firstManager.SitRepEntries.Add(new WarDeclaredSitRepEntry(secondCiv, firstCiv));
+                secondManager.SitRepEntries.Add(new WarDeclaredSitRepEntry(secondCiv, firstCiv));
+
+                ApplyTrustChange(firstCiv, secondCiv, foreignPower.DiplomacyData.Trust.CurrentValue * -1);
+                ApplyRegardChange(secondCiv, firstCiv, ownPower.DiplomacyData.Regard.CurrentValue * -1);
+            }
+
         }
 
         internal static void PerformFirstContacts(Civilization civilization, MapLocation location)
@@ -1177,6 +1184,20 @@ namespace Supremacy.Diplomacy
 
             foreach (var otherCiv in otherCivs)
                 EnsureContact(civilization, GameContext.Current.Civilizations[otherCiv], location);
+        }
+
+        public static bool ShouldTheyGoToWar(Civilization oneCiv, Civilization twoCiv)
+        {
+            bool goodDayToDie = false;
+            if (!oneCiv.IsHuman)
+            {
+                if (GameContext.Current.CivilizationManagers[oneCiv].MaintenanceCostLastTurn > GameContext.Current.CivilizationManagers[twoCiv].MaintenanceCostLastTurn)
+                {
+                    if (oneCiv.Traits.Contains("Warlike") && (AreNotFriendly(oneCiv, twoCiv) || (AreNeutral(oneCiv, twoCiv) && RandomHelper.Random(2)==1)))
+                        goodDayToDie = true;
+                }
+            }
+            return goodDayToDie;
         }
 
         public static bool IsContactMade(Civilization source, Civilization target)

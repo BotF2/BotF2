@@ -193,6 +193,24 @@ namespace Supremacy.AI
                           foreignPower.CounterpartyDiplomacyData.Trust.CurrentValue);
                     // GameLog.Client.Diplomacy.DebugFormat("## foreignPower .......Owner ={0} regard ={1} trust ={2} After Ongoing Impression change", foreignPower.Owner.Key, foreignPower.DiplomacyData.Regard.CurrentValue, foreignPower.DiplomacyData.Trust.CurrentValue);
                     //foreignPower.UpdateStatus();
+
+                    #endregion
+
+                    #region War is possible from hostility
+
+                    if (foreignPower.DiplomacyData.Status == ForeignPowerStatus.Hostile && DiplomacyHelper.ShouldTheyGoToWar(foreignPower.Owner, foreignPower.Counterparty)) //foreignPower.DiplomacyData.Status == ForeignPowerStatus.Hostile &&
+                    {
+                        var firstCiv = foreignPower.Owner;
+                        var secondCiv = foreignPower.Counterparty;
+                        var firstManager = GameContext.Current.CivilizationManagers[firstCiv];
+                        var secondManager = GameContext.Current.CivilizationManagers[secondCiv];
+                        foreignPower.DeclareWar();
+                        firstManager.SitRepEntries.Add(new WarDeclaredSitRepEntry(firstCiv, secondCiv));
+                        secondManager.SitRepEntries.Add(new WarDeclaredSitRepEntry(firstCiv, secondCiv));
+
+                        DiplomacyHelper.ApplyTrustChange(firstCiv, secondCiv, foreignPower.DiplomacyData.Trust.CurrentValue * -1);
+                        DiplomacyHelper.ApplyRegardChange(secondCiv, firstCiv, foreignPower.CounterpartyForeignPower.DiplomacyData.Regard.CurrentValue * -1);
+                    }
                     #endregion
 
                     #region Proposal Treaty to AI aCiv
