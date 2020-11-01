@@ -50,20 +50,24 @@ namespace Supremacy.Resources
         #region Constructors
         static CivString()
         {
-            
+
         }
 
         public CivString(string category, string key) : this(null, category, key) { }
 
-        public CivString([CanBeNull] Civilization civilization, [NotNull] string category, [NotNull] string key) : this(civilization, category, key, null) { }
+        public CivString([CanBeNull] Civilization civilization, [CanBeNull] Civilization civilization2, [NotNull] string category, [NotNull] string key) :this(civilization, civilization2, category, key, null) {}
 
-        public CivString([CanBeNull] Civilization civilization, [NotNull] string category, [NotNull] string key, Tone? demeanor)
+        public CivString([CanBeNull] Civilization civilization, [NotNull] string category, [NotNull] string key) : this(civilization, null, category, key, null) { }
+
+        public CivString([CanBeNull] Civilization civilization, [CanBeNull] Civilization civilization2, [NotNull] string category, [NotNull] string key, Tone? demeanor)
         {
             if (String.IsNullOrEmpty(category))
                 throw new ArgumentException("category must be a non-null, non-empty string.", "category");
             if (String.IsNullOrEmpty(key))
                 throw new ArgumentException("key must be a non-null, non-empty string.", "key");
             if (civilization != null)
+                _civKey = civilization.Key;
+            if (civilization2 != null)
                 _civKey = civilization.Key;
             _category = category;
             _stringKey = key;

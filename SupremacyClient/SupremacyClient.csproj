@@ -1325,6 +1325,10 @@
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>
-    </PostBuildEvent>
+    xcopy "$(SolutionDir)Common\*.dll" "$(TargetDir)lib\" /y /i /s /d
+	xcopy "$(SolutionDir)Common\*.xml" "$(TargetDir)lib\" /y /i /s /d
+	if $(ConfigurationName) == Debug (
+	xcopy "$(SolutionDir)Common\*.pdb" "$(TargetDir)lib\" /y /i /s /d)
+	</PostBuildEvent> 
   </PropertyGroup>
 </Project>

@@ -231,6 +231,41 @@ namespace Supremacy.Diplomacy
             }
         }
 
+        public void DenounceWar(Civilization victim)
+        {
+            var owner = Owner;
+            var counterparty = Counterparty;
+            foreach (var civ in GameContext.Current.Civilizations)
+            {
+                if (civ.IsHuman && (civ == counterparty ||
+                    DiplomacyHelper.IsContactMade(civ, owner) && DiplomacyHelper.IsContactMade(civ, counterparty) && DiplomacyHelper.IsContactMade(civ, victim)))
+                {
+                    GameContext.Current.CivilizationManagers[counterparty].SitRepEntries.Add(
+                        new DenounceWarSitRepEntry(
+                            owner,
+                            counterparty,
+                            victim));
+                }
+            }
+        }
+        public void CommendWar(Civilization victim)
+        {
+            var owner = Owner;
+            var counterparty = Counterparty;
+            foreach (var civ in GameContext.Current.Civilizations)
+            {
+                if (civ.IsHuman && (civ == counterparty ||
+                    DiplomacyHelper.IsContactMade(civ, owner) && DiplomacyHelper.IsContactMade(civ, counterparty) && DiplomacyHelper.IsContactMade(civ, victim)))
+                {
+                    GameContext.Current.CivilizationManagers[counterparty].SitRepEntries.Add(
+                        new CommendWarSitRepEntry(
+                            owner,
+                            counterparty,
+                            victim));
+                }
+            }
+        }
+
         public void ViolateNonAggression(Civilization aggressor)
         {
             if (DiplomacyData.Status == ForeignPowerStatus.AtWar)

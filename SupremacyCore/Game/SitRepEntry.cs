@@ -3558,6 +3558,168 @@ namespace Supremacy.Game
     }
 
     [Serializable]
+    public class DenounceWarSitRepEntry : SitRepEntry
+    {
+        private readonly int _victimCivilizationID;
+        private readonly int _ownerCivilizationID;
+        private readonly int _denouncerCivilizationID;
+        private readonly CivString _detailText;
+
+        public override SitRepCategory Categories
+        {
+            get { return SitRepCategory.Diplomacy | SitRepCategory.Military; }
+        }
+
+        public override SitRepAction Action
+        {
+            get { return SitRepAction.CenterOnSector; }
+        }
+
+        public override string SummaryText
+        {
+            get
+            {
+                return string.Format(ResourceManager.GetString("SITREP_DENOUNCE_WAR"),
+                    Denouncer.LongName, Owner.LongName, Victim.LongName);
+            }
+        }
+
+        public override string DetailImage
+        {
+            get
+            {
+                return Denouncer.InsigniaPath;
+            }
+        }
+
+        public override string DetailText
+        {
+            get { return string.Format(_detailText.Value, Owner.LongName, Victim.LongName); }
+        }
+
+        public override bool IsPriority
+        {
+            get { return true; }
+        }
+
+        public Civilization Victim
+        {
+            get { return GameContext.Current.Civilizations[_victimCivilizationID]; }
+        }
+
+       public Civilization Owner
+        {
+            get { return GameContext.Current.Civilizations[_ownerCivilizationID]; }
+        }
+
+        public Civilization Denouncer
+        {
+            get { return GameContext.Current.Civilizations[_denouncerCivilizationID]; }
+        }
+
+        public DenounceWarSitRepEntry(Civilization denouncer, Civilization owner, Civilization victim)
+            : base(owner, SitRepPriority.Red)
+        {
+            if (owner == null)
+                throw new ArgumentNullException("owmer");
+            if (victim == null)
+                throw new ArgumentNullException("victim");
+            if (denouncer == null)
+                throw new ArgumentNullException("denouncer");
+
+            _denouncerCivilizationID = denouncer.CivID;
+            _ownerCivilizationID = owner.CivID;
+            _victimCivilizationID = victim.CivID;
+            _detailText = new CivString(
+                    owner,
+                    victim,
+                    CivString.DiplomacyCategory,
+                    "MESSAGE_SITREP_DETAILS_DENOUNCE_WAR_THEM");
+        }
+    }
+
+    [Serializable]
+    public class CommendWarSitRepEntry : SitRepEntry
+    {
+        private readonly int _victimCivilizationID;
+        private readonly int _ownerCivilizationID;
+        private readonly int _commenderCivilizationID;
+        private readonly CivString _detailText;
+
+        public override SitRepCategory Categories
+        {
+            get { return SitRepCategory.Diplomacy | SitRepCategory.Military; }
+        }
+
+        public override SitRepAction Action
+        {
+            get { return SitRepAction.CenterOnSector; }
+        }
+
+        public override string SummaryText
+        {
+            get
+            {
+                return string.Format(ResourceManager.GetString("SITREP_COMMEND_WAR"),
+                    Commender.LongName, Owner.LongName, Victim.LongName);
+            }
+        }
+
+        public override string DetailImage
+        {
+            get
+            {
+                return Commender.InsigniaPath;
+            }
+        }
+
+        public override string DetailText
+        {
+            get { return string.Format(_detailText.Value, Owner.LongName, Victim.LongName); }
+        }
+
+        public override bool IsPriority
+        {
+            get { return true; }
+        }
+
+        public Civilization Victim
+        {
+            get { return GameContext.Current.Civilizations[_victimCivilizationID]; }
+        }
+
+        public Civilization Owner
+        {
+            get { return GameContext.Current.Civilizations[_ownerCivilizationID]; }
+        }
+
+        public Civilization Commender
+        {
+            get { return GameContext.Current.Civilizations[_commenderCivilizationID]; }
+        }
+
+        public CommendWarSitRepEntry(Civilization commender, Civilization owner, Civilization victim)
+            : base(owner, SitRepPriority.Red)
+        {
+            if (owner == null)
+                throw new ArgumentNullException("owmer");
+            if (victim == null)
+                throw new ArgumentNullException("victim");
+            if (commender == null)
+                throw new ArgumentNullException("commender");
+
+            _commenderCivilizationID = commender.CivID;
+            _ownerCivilizationID = owner.CivID;
+            _victimCivilizationID = victim.CivID;
+            _detailText = new CivString(
+                    owner,
+                    victim,
+                    CivString.DiplomacyCategory,
+                    "MESSAGE_SITREP_DETAILS_COMMEND_WAR_THEM");
+        }
+    }
+
+    [Serializable]
     public class WarDeclaredSitRepEntry : SitRepEntry
     {
         private readonly int _victimCivilizationID;

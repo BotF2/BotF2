@@ -897,6 +897,25 @@ namespace Supremacy.Diplomacy
         }
 
         /// <summary>
+        /// Whether two <see cref="Civilization"/>s are on friendly terms
+        /// </summary>
+        /// <param name="who"></param>
+        /// <param name="whoElse"></param>
+        /// <returns></returns>
+        public static bool AreNotFriendly(Civilization who, Civilization whoElse)
+        {
+            if (who == null)
+                throw new ArgumentNullException("who");
+            if (whoElse == null)
+                throw new ArgumentNullException("whoElse");
+
+            var diplomacyData = GameContext.Current.DiplomacyData[who, whoElse];
+
+            return diplomacyData != null &&
+                   diplomacyData.Status <= ForeignPowerStatus.Cold;
+        }
+
+        /// <summary>
         /// Determines whether two particular <see cref="Civilization"/>s are at war
         /// </summary>
         public static bool AreAtWar(Civilization who, Civilization whoElse)

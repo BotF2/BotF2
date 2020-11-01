@@ -234,17 +234,17 @@ namespace Supremacy.Game
         {
             get
             {
-                foreach (var rep in _sitRepEntries)
-                {
-                    //var playerID = Player.GameHostID;
-                    //if (GameContext.Current.IsMultiplayerGame == false)
-                    //playerID = GameContext.Current.CivilizationManagers[LocalPlayer.EmpireID];/*Player.;*/
-                    //CivilizationManager.
+                //foreach (var rep in _sitRepEntries)
+                //{
+                //    //var playerID = Player.GameHostID;
+                //    //if (GameContext.Current.IsMultiplayerGame == false)
+                //    //playerID = GameContext.Current.CivilizationManagers[LocalPlayer.EmpireID];/*Player.;*/
+                //    //CivilizationManager.
 
-                    if (rep.Owner.CivID == 4 || rep.Owner.CivID == 1)  // outcomment to see Sitrep of all races, atm Card + Terrans
-                        GameLog.Core.SitReps.DebugFormat("SitRep Turn {4} Cat={2} Action {3} for {1}:" + Environment.NewLine + // splitted in 2 lines for better reading
-                            "                    SitRep: {0}" + Environment.NewLine, rep.SummaryText, rep.Owner, rep.Categories, rep.Action, GameContext.Current.TurnNumber);
-                }
+                //    if (rep.Owner.CivID == 4 || rep.Owner.CivID == 1)  // outcomment to see Sitrep of all races, atm Card + Terrans
+                //        GameLog.Core.SitReps.DebugFormat("SitRep Turn {4} Cat={2} Action {3} for {1}:" + Environment.NewLine + // splitted in 2 lines for better reading
+                //            "                    SitRep: {0}" + Environment.NewLine, rep.SummaryText, rep.Owner, rep.Categories, rep.Action, GameContext.Current.TurnNumber);
+                //}
                 return _sitRepEntries;
             } 
         }
