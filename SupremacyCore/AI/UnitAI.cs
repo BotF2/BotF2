@@ -300,7 +300,8 @@ namespace Supremacy.AI
                 throw new ArgumentNullException(nameof(fleet));
             }
 
-            IEnumerable<Fleet> colonizerFleets = GameContext.Current.Universe.FindOwned<Fleet>(fleet.Owner).Where(o => o.IsColonizer);
+            IEnumerable<Fleet> colonizerFleets = GameContext.Current.Universe.FindOwned<Fleet>(fleet.Owner)
+                .Where(o => o.IsColonizer);
 
             CivilizationManager civManager = GameContext.Current.CivilizationManagers[fleet.Owner];
             CivilizationMapData mapData = civManager.MapData;
@@ -523,9 +524,9 @@ namespace Supremacy.AI
             if (something != null)
             {
                 const int SystemSectorValue = 1500;
-                const int StrandedShipSectorValue = 2000;
+                const int StrandedShipSectorValue = 2500;
                 const int PastFuelRange = 2000;
-                const int GreatestDistance = 3000;
+                const int GreatestDistance = 2000;
 
                 if (!FleetHelper.IsSectorWithinFuelRange(sector, fleet))
                 {
