@@ -305,7 +305,7 @@ namespace Supremacy.AI
 
             CivilizationManager civManager = GameContext.Current.CivilizationManagers[fleet.Owner];
             CivilizationMapData mapData = civManager.MapData;
-
+            
             //Get a list of all systems that we can colonise
             List<StarSystem> systems = GameContext.Current.Universe.Find<StarSystem>()
                 //We need to know about it (no cheating)
@@ -323,6 +323,12 @@ namespace Supremacy.AI
                 //Where a ship isn't heading there already
                 //Where a ship isn't there and colonizing
                 .ToList();
+            GameLog.Client.AI.DebugFormat("Best System for station list count ={0}", systems.Count());
+            foreach (var item in systems)
+            {
+                GameLog.Client.AI.DebugFormat("Best System Colonizer Name ={0} Location ={1} Has Colony? {2} Is Habitalbe by Race {3} Race ={4}"
+                    , item.Name, item.Location, item.HasColony, item.IsHabitable(fleet.Owner.Race), fleet.Owner.Race.ToString());
+            }
 
             if (systems.Count == 0)
             {
@@ -627,7 +633,7 @@ namespace Supremacy.AI
                             result = null;
                             return false;
                         }
-                        GameLog.Core.AI.DebugFormat("{0} Universe Objects for {1} station search", objectsAlongCenterAxis.Count(), fleet.Owner.Key);
+                       // GameLog.Core.AI.DebugFormat("{0} Universe Objects for {1} station search", objectsAlongCenterAxis.Count(), fleet.Owner.Key);
    
                         objectsAlongCenterAxis.Sort((a, b) =>
                             GetStationValue(a.Sector, fleet, objectsAlongCenterAxis)
@@ -659,7 +665,7 @@ namespace Supremacy.AI
                             GetStationValue(a.Sector, fleet, objectsAlongCenterAxis)
                             .CompareTo(GetStationValue(b.Sector, fleet, objectsAlongCenterAxis)));
                         result = objectsAlongCenterAxis[objectsAlongCenterAxis.Count - 1].Sector;
-                        GameLog.Core.AI.DebugFormat("Dominion station selected sector = {0} {1}", result.Location, result.Name);
+                        //GameLog.Core.AI.DebugFormat("Dominion station selected sector = {0} {1}", result.Location, result.Name);
                         return true;   
                     }
                 case "KLINGON":
@@ -688,13 +694,13 @@ namespace Supremacy.AI
                             return false;
                         }
              
-                        GameLog.Core.AI.DebugFormat("{0} Universe Objects for {1} station search", objectsAroundHome.Count(), fleet.Owner.Key);
+                       // GameLog.Core.AI.DebugFormat("{0} Universe Objects for {1} station search", objectsAroundHome.Count(), fleet.Owner.Key);
                         objectsAroundHome.Sort((a, b) =>
                                       GetStationValue(a.Sector, fleet, objectsAroundHome)
                                       .CompareTo(GetStationValue(b.Sector, fleet, objectsAroundHome)));
 
                         result = objectsAroundHome[objectsAroundHome.Count - 1].Sector;
-                        GameLog.Core.AI.DebugFormat("{0} station selected sector = {1} {2}", fleet.Owner.Key ,result.Location, result.Name);
+                       // GameLog.Core.AI.DebugFormat("{0} station selected sector = {1} {2}", fleet.Owner.Key ,result.Location, result.Name);
                         return true;
                     }
                 default:
