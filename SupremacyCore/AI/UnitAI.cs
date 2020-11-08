@@ -1120,24 +1120,30 @@ namespace Supremacy.AI
                 if (DiplomacyHelper.AreAtWar(system.Owner, civ) )
                     return 0;
             }
-
-            const int StarTypeOther = 10;
+            const int StarTypeNebula = 5;
+            const int StarTypeColor = 10;
+            const int StarTypeMoreFun = 15;
             const int StarTypeBlackHoleQuasar = 20;
             const int StarTypeWormhole = 30;
-
             int value = 0;
 
-            if (system.StarType == StarType.Blue ||
-                system.StarType == StarType.Nebula ||
-                system.StarType == StarType.NeutronStar ||
+            if (system.StarType == StarType.Nebula)
+            {
+                value += StarTypeNebula;
+            }
+            else if (system.StarType == StarType.Blue ||
                 system.StarType == StarType.Orange ||
-                system.StarType == StarType.RadioPulsar ||
                 system.StarType == StarType.Red ||
                 system.StarType == StarType.White ||
-                system.StarType == StarType.XRayPulsar ||
                 system.StarType == StarType.Yellow )
             {
-                value += StarTypeOther;
+                value += StarTypeColor;
+            }
+            else if (system.StarType == StarType.XRayPulsar ||
+                system.StarType == StarType.RadioPulsar ||
+                system.StarType == StarType.NeutronStar)
+            {
+                value += StarTypeMoreFun;
             }
             else if (system.StarType == StarType.Quasar || system.StarType == StarType.BlackHole)
             {
@@ -1150,7 +1156,6 @@ namespace Supremacy.AI
 
             GameLog.Core.AI.DebugFormat("Spying value for {0} is {1}", system, value);
             return value;
-
         }
 
         /*
@@ -1182,8 +1187,8 @@ namespace Supremacy.AI
                 && mapData.IsExplored(c.Location) && FleetHelper.IsSectorWithinFuelRange(c.Sector, fleet)
                 && CheckForSpyNetwork(c.Owner, fleet.Owner) == false
                 && DiplomacyHelper.IsTravelAllowed(fleet.Owner, c.Sector))
-                //&& !scienceShips.Any(f => f.Location == c.Location)
-                //&& !scienceShips.Any(f => f.Route.Waypoints.LastOrDefault() == c.Location))
+                //&& !spyShips.Any(f => f.Location == c.Location)
+                //&& !spyShips.Any(f => f.Route.Waypoints.LastOrDefault() == c.Location))
                 //We need to know about it (no cheating)
                 //In fuel range
                 //Where there isn't a spy ship already there or heading there
@@ -1233,8 +1238,8 @@ namespace Supremacy.AI
                 .Where(c => c.Sector != null && mapData.IsScanned(c.Location)
                 && mapData.IsExplored(c.Location) && FleetHelper.IsSectorWithinFuelRange(c.Sector, fleet)
                 && DiplomacyHelper.IsTravelAllowed(fleet.Owner, c.Sector))
-                //&& !spyShips.Any(f => f.Location == c.Location)
-                //&& !spyShips.Any(f => f.Route.Waypoints.LastOrDefault() == c.Location))
+                //&& !scienceShips.Any(f => f.Location == c.Location)
+                //&& !scienceShips.Any(f => f.Route.Waypoints.LastOrDefault() == c.Location))
                 //We need to know about it (no cheating)
                 //In fuel range
                 //Where there isn't a science ship already there or heading there

@@ -1334,16 +1334,20 @@ namespace Supremacy.Game
 
                     switch (starType)
                     {
+                        case StarType.Nebula:
+                            researchGained = researchGained * 5;
+                            break;
                         case StarType.Blue:
                         case StarType.Orange:
                         case StarType.Red:
                         case StarType.White:
                         case StarType.Yellow:
+                            researchGained = researchGained * 10;
+                            break;
                         case StarType.XRayPulsar:
                         case StarType.RadioPulsar:
                         case StarType.NeutronStar:
-                        case StarType.Nebula:
-                            researchGained = researchGained * 10;
+                            researchGained = researchGained * 15;
                             break;
                         case StarType.BlackHole:
                         case StarType.Quasar:
