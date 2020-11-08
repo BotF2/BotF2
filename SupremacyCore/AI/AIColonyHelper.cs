@@ -24,7 +24,7 @@ namespace Supremacy.AI
                 throw new ArgumentNullException(nameof(colony));
             }
 
-            return PlayerAI.GetSectorDanger(colony.Owner, colony.Sector, 2, false) > 0;
+            return PlayerAI.GetSectorDanger(colony.Owner, colony.Sector, 2) > 0;
         }
 
         public static BuildProject GetBuildProject(Colony colony)

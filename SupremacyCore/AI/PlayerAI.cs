@@ -200,12 +200,12 @@ namespace Supremacy.AI
             return 100 * value;
         }
 
-        public static int GetFleetDanger(Fleet fleet, int range, bool testMoves, bool anyDanger)
+        public static int GetFleetDanger(Fleet fleet, int range,  bool anyDanger) // bool testMoves,
         {
-            return GetSectorDanger(fleet.Owner, fleet.Sector, range, testMoves);
+            return GetSectorDanger(fleet.Owner, fleet.Sector, range); //, testMoves);
         }
 
-        public static int GetSectorDanger(Civilization who, Sector sector, int range, bool testMoves)
+        public static int GetSectorDanger(Civilization who, Sector sector, int range) //, bool testMoves)
         {
             if (who == null)
             {
@@ -224,7 +224,7 @@ namespace Supremacy.AI
 
             if (range < 0)
             {
-                range = DangerRange;
+                range = DangerRange; 
             }
 
             for (int dX = -range; dX < range; dX++)
@@ -232,11 +232,10 @@ namespace Supremacy.AI
                 for (int dY = -range; dY < range; dY++)
                 {
                     Sector loopSector = map[sector.Location.X + dX, sector.Location.Y + dY];
-                    if (loopSector == null)
+                    if (loopSector == null || loopSector.Owner == null)
                     {
                         continue;
                     }
-
                     var distance = MapLocation.GetDistance(sector.Location, loopSector.Location);
 
                     if (DiplomacyHelper.AreAtWar(who, loopSector.Owner) && distance <= 2)
@@ -262,7 +261,7 @@ namespace Supremacy.AI
                             continue;
                         }
 
-                        if (DiplomacyHelper.IsTravelAllowed(fleet.Owner, sector) && (!testMoves || (fleet.Speed >= distance)))
+                        if (DiplomacyHelper.IsTravelAllowed(fleet.Owner, sector) && ( fleet.Speed >= distance)) // || !testMoves ||
                         {
                             ++count;
                         }
@@ -270,11 +269,12 @@ namespace Supremacy.AI
                 }
             }
 
-            if (IsHuman(who))
+            if (!IsHuman(who))
             {
                 count += borderDanger;
             }
-
+            GameLog.Client.AI.DebugFormat("* Sector Danger ={0}",count);
+           // count = 20;
             return count;
         }
 
