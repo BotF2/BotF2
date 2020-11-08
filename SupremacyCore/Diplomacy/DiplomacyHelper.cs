@@ -844,9 +844,13 @@ namespace Supremacy.Diplomacy
         /// <returns></returns>
         public static bool IsTravelAllowed(Civilization traveller, Sector sector)
         {
+            
             bool travel = true;
             if (traveller == null)
+            {
+                //GameLog.Client.AI.DebugFormat("Null civ for sector ={0} {1}", sector.Name, sector.Location);
                 throw new ArgumentNullException("traveller");
+            }
             if (sector == null)
                 throw new ArgumentNullException("sector");
 

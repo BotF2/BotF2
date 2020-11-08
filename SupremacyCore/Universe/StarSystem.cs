@@ -7,6 +7,7 @@
 
 using Supremacy.Collections;
 using Supremacy.Entities;
+using Supremacy.Game;
 using Supremacy.IO.Serialization;
 using Supremacy.Types;
 using System;
