@@ -183,7 +183,8 @@ namespace Supremacy.Combat
             {
                 object civ = _civList.FirstOrDefault();
                 _ = _civList.Remove(civ);
-                return civ.ToString();
+                Civilization aCiv =(Civilization)civ;
+                return aCiv.Key;
             }
             return "BlackInsignia";
         }

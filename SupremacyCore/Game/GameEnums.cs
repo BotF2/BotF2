@@ -118,6 +118,7 @@ namespace Supremacy.Game
         Attack,
         Defense,
         Spy,
+        Science,
         Escort,
         Raider,
         Diplomatic,

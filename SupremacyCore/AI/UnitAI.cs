@@ -153,7 +153,7 @@ namespace Supremacy.AI
                     }
                 }
 
-                //TODO: Refactor battle fleet
+                //TODO: Refactor battle fleet - home system defence fleet
                 if (fleet.IsBattleFleet)
                 {
                     GameLog.Core.AI.DebugFormat("## IsBattleFleet ##  fleet={0}, {1}, {2}, {3}, {4},", fleet.ObjectID, fleet.Name, fleet.Owner, fleet.Order, fleet.Location);
@@ -184,7 +184,7 @@ namespace Supremacy.AI
                     {
                         if (GetBestColonyForMedical(fleet, out Colony bestSystemForMedical))
                         {
-                            if (bestSystemForMedical.Location == fleet.Location)
+                            if (bestSystemForMedical != null && bestSystemForMedical.Location == fleet.Location)
                             {
                                 //Colony medical treatment
                                 fleet.SetOrder(new MedicalOrder());
@@ -192,7 +192,7 @@ namespace Supremacy.AI
                                 fleet.Activity = UnitActivity.Mission;
                                 GameLog.Core.AI.DebugFormat("Ordering medical fleet {0} in {1} to treat the population", fleet.ObjectID, fleet.Location);
                             }
-                            else
+                            else if (bestSystemForMedical != null)
                             {
                                 fleet.SetRoute(AStar.FindPath(fleet, PathOptions.SafeTerritory, null, new List<Sector> { bestSystemForMedical.Sector }));
                                 fleet.UnitAIType = UnitAIType.Medical;
@@ -251,7 +251,7 @@ namespace Supremacy.AI
                         Colony bestSystemForSpying;
                         if (GetBestColonyForSpying(fleet, out bestSystemForSpying))
                         {
-                            if (bestSystemForSpying.OwnerID < 6)
+                            if (bestSystemForSpying != null && bestSystemForSpying.OwnerID < 6)
                             {
                                 bool hasOurSpyNetwork = CheckForSpyNetwork(bestSystemForSpying.Owner, fleet.Owner);
                                 if (!hasOurSpyNetwork)
@@ -284,7 +284,38 @@ namespace Supremacy.AI
                 //TODO
                 if (fleet.IsScience)
                 {
-
+                    if (fleet.Activity == UnitActivity.NoActivity || fleet.Route.IsEmpty || fleet.Order.IsComplete)
+                    {
+                        StarSystem bestSystemForScience;
+                        if (GetBestSystemForScience(fleet, out bestSystemForScience))
+                        {
+                            if (bestSystemForScience != null)
+                            {
+                                bool hasOurSpyNetwork = CheckForSpyNetwork(bestSystemForScience.Owner, fleet.Owner);
+                                if (!hasOurSpyNetwork)
+                                {
+                                    if (bestSystemForScience.Location == fleet.Location)
+                                    {
+                                        fleet.SetOrder(new AvoidOrder()); 
+                                        fleet.UnitAIType = UnitAIType.Science;
+                                        fleet.Activity = UnitActivity.Mission;
+                                        GameLog.Core.AI.DebugFormat("Science fleet {0} at Research location {1}", fleet.ObjectID, fleet.Location);
+                                    }
+                                    else
+                                    {
+                                        fleet.SetRoute(AStar.FindPath(fleet, PathOptions.SafeTerritory, null, new List<Sector> { bestSystemForScience.Sector }));
+                                        fleet.UnitAIType = UnitAIType.Science;
+                                        fleet.Activity = UnitActivity.Mission;
+                                        GameLog.Core.AI.DebugFormat("Ordering science fleet {0} to {1}", fleet.ObjectID, bestSystemForScience);
+                                    }
+                                }
+                            }
+                        }
+                        else
+                        {
+                            GameLog.Core.AI.DebugFormat("Nothing to do for science fleet {0}", fleet.ObjectID);
+                        }
+                    }
                 }
             }
         }
@@ -1062,6 +1093,67 @@ namespace Supremacy.AI
         }
 
         /*
+        * Science value
+        */
+
+        /// <summary>
+        /// Determines the value of spying on a <see cref="Colony"/>
+        /// to a given <see cref="Civilization"/>
+        /// </summary>
+        /// <param name="colony"></param>
+        /// <param name="civ"></param>
+        /// <returns></returns>
+        public static int GetScienceValue(StarSystem system, Civilization civ) // civ is fleet.Owner
+        {
+            if (system == null)
+            {
+                throw new ArgumentNullException(nameof(system));
+            }
+
+            if (civ == null)
+            {
+                throw new ArgumentNullException(nameof(civ));
+            }
+            if (system.Owner != null && system.Owner != civ)
+            {
+                Civilization otherCiv = system.Owner;
+                if (DiplomacyHelper.AreAtWar(system.Owner, civ) )
+                    return 0;
+            }
+
+            const int StarTypeOther = 10;
+            const int StarTypeBlackHoleQuasar = 20;
+            const int StarTypeWormhole = 30;
+
+            int value = 0;
+
+            if (system.StarType == StarType.Blue ||
+                system.StarType == StarType.Nebula ||
+                system.StarType == StarType.NeutronStar ||
+                system.StarType == StarType.Orange ||
+                system.StarType == StarType.RadioPulsar ||
+                system.StarType == StarType.Red ||
+                system.StarType == StarType.White ||
+                system.StarType == StarType.XRayPulsar ||
+                system.StarType == StarType.Yellow )
+            {
+                value += StarTypeOther;
+            }
+            else if (system.StarType == StarType.Quasar || system.StarType == StarType.BlackHole)
+            {
+                value += StarTypeBlackHoleQuasar;
+            }
+            else if (system.StarType == StarType.Wormhole)
+            {
+                value += StarTypeWormhole;
+            }
+
+            GameLog.Core.AI.DebugFormat("Spying value for {0} is {1}", system, value);
+            return value;
+
+        }
+
+        /*
         / Spy best colony
         */
 
@@ -1090,8 +1182,8 @@ namespace Supremacy.AI
                 && mapData.IsExplored(c.Location) && FleetHelper.IsSectorWithinFuelRange(c.Sector, fleet)
                 && CheckForSpyNetwork(c.Owner, fleet.Owner) == false
                 && DiplomacyHelper.IsTravelAllowed(fleet.Owner, c.Sector))
-                //&& !spyShips.Any(f => f.Location == c.Location)
-                //&& !spyShips.Any(f => f.Route.Waypoints.LastOrDefault() == c.Location))
+                //&& !scienceShips.Any(f => f.Location == c.Location)
+                //&& !scienceShips.Any(f => f.Route.Waypoints.LastOrDefault() == c.Location))
                 //We need to know about it (no cheating)
                 //In fuel range
                 //Where there isn't a spy ship already there or heading there
@@ -1110,6 +1202,60 @@ namespace Supremacy.AI
                 .CompareTo(GetSpyingValue(b, fleet.Owner) * HomeSystemDistanceModifier(fleet, b.Sector)));
             result = possibleColonies[possibleColonies.Count - 1];
             GameLog.Client.AI.DebugFormat("Yippy, Home System of Empire found!, possible colonies = {0}", possibleColonies.FirstOrDefault().Name);
+            return true;
+        }
+
+        /*
+        / Science best system
+        */
+
+        /// <summary>
+        /// Gets the best <see cref="StarSystem"/> for a <see cref="Fleet"/> to spy on
+        /// </summary>
+        /// <param name="fleet"></param>
+        /// <param name="result"></param>
+        /// <returns></returns>
+        public static bool GetBestSystemForScience(Fleet fleet, out StarSystem result)
+        {
+            if (fleet == null)
+            {
+                throw new ArgumentNullException(nameof(fleet));
+            }
+
+            CivilizationManager civManager = GameContext.Current.CivilizationManagers[fleet.Owner];
+            CivilizationMapData mapData = civManager.MapData;
+            IEnumerable<Fleet> scienceShips = GameContext.Current.Universe.FindOwned<Fleet>(fleet.Owner).Where(s => s.IsScience);
+            List<StarSystem> possibleSystems = new List<StarSystem>();
+            if (fleet.Owner != null)
+            {
+                possibleSystems = GameContext.Current.Universe.Find<StarSystem>()
+                //That isn't owned by us
+                .Where(c => c.Sector != null && mapData.IsScanned(c.Location)
+                && mapData.IsExplored(c.Location) && FleetHelper.IsSectorWithinFuelRange(c.Sector, fleet)
+                && DiplomacyHelper.IsTravelAllowed(fleet.Owner, c.Sector))
+                //&& !spyShips.Any(f => f.Location == c.Location)
+                //&& !spyShips.Any(f => f.Route.Waypoints.LastOrDefault() == c.Location))
+                //We need to know about it (no cheating)
+                //In fuel range
+                //Where there isn't a science ship already there or heading there
+                .ToList();
+            }
+            if (possibleSystems.Contains(civManager.HomeSystem))
+            {
+                possibleSystems.Remove(civManager.HomeSystem);
+            }
+            if (possibleSystems.Count == 0)
+            {
+                GameLog.Client.AI.DebugFormat("Damn, no Science System of Empire found, possible colonies = {0}", possibleSystems.Count());
+                result = null;
+                return false;
+            }
+
+            possibleSystems.Sort((a, b) =>
+                (GetScienceValue(a, fleet.Owner) * HomeSystemDistanceModifier(fleet, a.Sector))
+                .CompareTo(GetScienceValue(b, fleet.Owner) * HomeSystemDistanceModifier(fleet, b.Sector)));
+            result = possibleSystems[possibleSystems.Count - 1];
+            GameLog.Client.AI.DebugFormat("Yippy, Science System of Empire found!, possible colonies = {0}", possibleSystems.FirstOrDefault().Name);
             return true;
         }
 
@@ -1137,6 +1283,10 @@ namespace Supremacy.AI
         }
         public static bool CheckForSpyNetwork(Civilization civSpied, Civilization civSpying)
         {
+            if (civSpied == null)
+            {
+                return false;
+            }
             List<Civilization> spiedCivs = new List<Civilization>();
             switch (civSpied.CivID)            
             {

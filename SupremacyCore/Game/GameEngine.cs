@@ -1339,29 +1339,19 @@ namespace Supremacy.Game
                         case StarType.Red:
                         case StarType.White:
                         case StarType.Yellow:
-                            researchGained = researchGained * 10;
-                            break;
-                        case StarType.BlackHole:
-                            researchGained = researchGained * 20;
-                            break;
+                        case StarType.XRayPulsar:
+                        case StarType.RadioPulsar:
+                        case StarType.NeutronStar:
                         case StarType.Nebula:
                             researchGained = researchGained * 10;
                             break;
-                        case StarType.NeutronStar:
-                            researchGained = researchGained * 10;
-                            break;
+                        case StarType.BlackHole:
                         case StarType.Quasar:
-                            researchGained = researchGained * 10;
-                            break;
-                        case StarType.RadioPulsar:
-                            researchGained = researchGained * 10;
+                            researchGained = researchGained * 20;
                             break;
                         case StarType.Wormhole:
                             researchGained = researchGained * 30;
-                            break;
-                        case StarType.XRayPulsar:
-                            researchGained = researchGained * 10;
-                            break;
+                            break; 
                         default:
                             researchGained = 1;
                             break;
