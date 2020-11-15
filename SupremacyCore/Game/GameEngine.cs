@@ -2409,6 +2409,8 @@ namespace Supremacy.Game
                                 ColonyAI.DoTurn(civ);
                                 UnitAI.DoTurn(civ);
                                 PlayerAI.DoTurn(civ);
+                                UnitAI.SetForTotalWarNextTurn();
+                                UnitAI.RangesByCiv.Clear(); 
                             }
                         }
                         catch (Exception e)

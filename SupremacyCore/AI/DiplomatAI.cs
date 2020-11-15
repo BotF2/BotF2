@@ -339,15 +339,12 @@ namespace Supremacy.AI
 
                         #endregion Proposals
                     }
-                   // foreignPower.UpdateRegardAndTrustMeters();
-                   //foreignPower.UpdateStatus();// this is done in AcceptProposalVisitor.Visit
                 }
 
                 if (true) // for human and non human alike )
                 {
                     //GameLog.Client.Diplomacy.DebugFormat("## Begin Statements, Human and AI civs .............................");
                     // did proposals received (incoming) now Statements outgoing
-
                     //GameLog.Client.Diplomacy.DebugFormat("## current ..................aCiv ={0} ...............otherCiv ={1}",
                     //        aCiv.ShortName, otherCiv.ShortName);
                     //GameLog.Client.Diplomacy.DebugFormat("## otherForeignPower.Counterparty ={0} otherForeignPower.Owner ={1}",

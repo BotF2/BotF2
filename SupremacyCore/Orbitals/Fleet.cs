@@ -413,7 +413,7 @@ namespace Supremacy.Orbitals
         {
             get
             {
-                return !IsScout && Ships.All(
+                return !IsScout && !IsFastAttack && Ships.All(
                     o => o.IsCombatant &&
                          o.ShipType != ShipType.Colony &&
                          o.ShipType != ShipType.Construction &&
@@ -438,6 +438,11 @@ namespace Supremacy.Orbitals
         public bool IsFastAttack
         {
             get { return Ships.Count == 1 && Ships[0].ShipType == ShipType.FastAttack; }
+        }
+
+        public bool IsTransport
+        {
+            get { return Ships.Count == 1 && Ships[0].ShipType == ShipType.Transport; }
         }
 
         public bool IsColonizer

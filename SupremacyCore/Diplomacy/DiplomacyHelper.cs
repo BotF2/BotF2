@@ -937,6 +937,24 @@ namespace Supremacy.Diplomacy
             return diplomacyData.Status == ForeignPowerStatus.AtWar;
         }
 
+
+        /// <summary>
+        /// Determines whether two particular <see cref="Civilization"/>s are in Totalwar
+        /// </summary>
+        //public static bool AreTotalWar(Civilization who, Civilization whoElse)
+        //{
+        //    if (who == null)
+        //        throw new ArgumentNullException("who");
+        //    if (whoElse == null)
+        //        throw new ArgumentNullException("whoElse");
+        //    if (who == whoElse) // && !IsContactMade(who, whoElse))
+        //        return false;
+
+        //    var diplomacyData = GameContext.Current.DiplomacyData[who, whoElse];
+
+        //    return diplomacyData.Status == ForeignPowerStatus.TotalWar;
+        //}
+
         /// <summary>
         /// Determines whether the given <see cref="Civilization"/> is at war with anybody
         /// </summary>

@@ -68,6 +68,31 @@ namespace Supremacy.AI
                     }
                 }
             }
+            if (targetCiv.IsEmpire && !targetCiv.IsHuman && GameContext.Current.TurnNumber > 5)
+            {
+                var possibleTotalWarCivs = GameContext.Current.Civilizations.Where(o => o.IsEmpire).ToList();
+                foreach (Civilization possibleTotalWarCiv in possibleTotalWarCivs)
+                {
+                    var diplomat = Diplomat.Get(targetCiv);
+                    ForeignPower foreignPower = diplomat.GetForeignPower(possibleTotalWarCiv);
+                    if (DiplomacyHelper.AreAtWar(possibleTotalWarCiv, targetCiv))
+                    {
+                        var maintenaceValue = GameContext.Current.CivilizationManagers[possibleTotalWarCiv].MaintenanceCostLastTurn;
+                        if (maintenaceValue < GameContext.Current.CivilizationManagers[targetCiv].MaintenanceCostLastTurn * 1.2 && possibleTotalWarCiv.TotalWarCivilization == null)
+                        {
+                            //foreignPower.BeginTotalWar(); // if there already is total war by the target civ a new one will not be created over in ForeignPower.cs
+                            possibleTotalWarCiv.TotalWarCivilization = targetCiv;
+                            GameLog.Client.AI.DebugFormat("{0} set as TOTALWAR!!! by {1} ", targetCiv.Name, possibleTotalWarCiv.Name);
+                        }
+                        else
+                        {
+                        possibleTotalWarCiv.TotalWarCivilization = null;
+                            //foreignPower.EndTotalWar();
+                        }
+                    }
+                    else possibleTotalWarCiv.TotalWarCivilization = null; // if civs are no longer at war then total war ends.
+                }
+            }
         }
         #endregion
 
@@ -273,7 +298,7 @@ namespace Supremacy.AI
             {
                 count += borderDanger;
             }
-            GameLog.Client.AI.DebugFormat("* Sector Danger ={0}",count);
+           // GameLog.Client.AI.DebugFormat("* Sector Danger ={0}",count);
            // count = 20;
             return count;
         }

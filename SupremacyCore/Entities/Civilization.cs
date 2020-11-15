@@ -107,8 +107,8 @@ namespace Supremacy.Entities
         private int _baseMoraleLevel = 100;
         private int _moraleDriftRate = 1;
         private List<Civilization> _spiedCivList;
-        //private List<IntelHelper.NewIntelOrders> _intelOrdersGoingToHost;
-        //private List<IntelHelper.NewIntelOrders> _intelOrdersIncomingToHost;
+        private Civilization _totalWarCivilization;
+
         #endregion
 
         #region Constructors
@@ -149,7 +149,6 @@ namespace Supremacy.Entities
             get { return _spiedCivList; }
             set
             {
-                // code here to .Add civs to list as spy ships install spy network
                 _spiedCivList = value;
             }
         }
@@ -200,9 +199,8 @@ namespace Supremacy.Entities
 
             _traits = (string)element.Element(ns + "Traits");
             _traits = _traits.Trim();
-            _spiedCivList = SpiedCivList; // 
-            //_intelOrdersGoingToHost = IntelOrdersGoingToHost;
-            //_intelOrdersIncomingToHost = IntelOrdersIncomingToHost;
+            _spiedCivList = SpiedCivList;
+            _totalWarCivilization = TotalWarCivilization;
 
             // When starting a game, options is null
             //TODO: This should be in with the code to start the game
@@ -483,7 +481,17 @@ namespace Supremacy.Entities
         public string Traits
         {
             get { return _traits; }
-            //set { _traits = value; }
+        }
+
+        /// <summary>
+        /// Gets the <see cref="Civilization"/> this <see cref="Civilization"/>
+        /// is at in Total War with
+        /// </summary>
+        /// <value>The tech curve.</value>
+        public Civilization TotalWarCivilization
+        {
+            get { return _totalWarCivilization; }
+            set { if (_totalWarCivilization == null) { _totalWarCivilization = value; } }
         }
 
         /// <summary>
@@ -800,6 +808,14 @@ namespace Supremacy.Entities
 
             return parentElement;
         }
+        //public void SetTotalWarCivilization(Civilization attackerCiv, Civilization targetCiv)
+        //{
+        //    if (this == attackerCiv)
+        //    {
+        //        _totalWarCivilization = targetCiv;
+        //    }
+        //}
+
         #endregion
 
         #region Operators

@@ -20,6 +20,7 @@ using System.Linq;
 
 using Supremacy.Universe;
 using Supremacy.Utility;
+using System.Collections.Generic;
 
 namespace Supremacy.Diplomacy
 {
@@ -52,6 +53,7 @@ namespace Supremacy.Diplomacy
         public IResponse LastResponseSent { get; set; }
         public IResponse LastResponseReceived { get; set; }
         public PendingDiplomacyAction PendingAction { get; set; }
+        //     public bool IsTotalWarInPlace { get; set; }
 
         public ForeignPower(ICivIdentity owner, ICivIdentity counterparty)
         {
@@ -188,6 +190,28 @@ namespace Supremacy.Diplomacy
         //public void EndEmbargo()
         //{
         //    IsEmbargoInPlace = false;
+        //}
+
+        //public void BeginTotalWar()
+        //{
+        //    List<Civilization> possibleTotalWarCivs = (List<Civilization>)GameContext.Current.Civilizations.Where(o => o.IsEmpire).ToList();
+        //    bool foundAlreadyTotalWar = false;
+        //    foreach (Civilization civ in possibleTotalWarCivs)
+        //    {
+        //        var diplomat = Diplomat.Get(civ);
+        //        ForeignPower foreignPower = diplomat.GetForeignPower(this.Owner);
+        //        if (foreignPower.IsTotalWarInPlace)
+        //        {
+        //            foundAlreadyTotalWar = true;
+        //        }
+        //    }
+        //    if (foundAlreadyTotalWar == false)
+        //    IsTotalWarInPlace = true;
+        //}
+
+        //public void EndTotalWar()
+        //{
+        //    IsTotalWarInPlace = false;
         //}
 
         public void DeclareWar()
@@ -582,6 +606,7 @@ namespace Supremacy.Diplomacy
             LastResponseSent = reader.Read<Response>();
             LastResponseReceived = reader.Read<Response>();
             PendingAction = (PendingDiplomacyAction)reader.ReadOptimizedInt32();
+            //IsTotalWarInPlace = reader.ReadBoolean();
         }
 
         void IOwnedDataSerializable.SerializeOwnedData(SerializationWriter writer, object context)
@@ -606,6 +631,7 @@ namespace Supremacy.Diplomacy
             writer.WriteObject(LastResponseSent);
             writer.WriteObject(LastResponseReceived);
             writer.WriteOptimized((int)PendingAction);
+            //writer.Write(IsTotalWarInPlace);
         }
     }
 }
