@@ -519,7 +519,7 @@ namespace Supremacy.AI
             //Get a list of all systems that we can colonise
             List<StarSystem> systems = GameContext.Current.Universe.Find<StarSystem>()
             //We need to know about it (no cheating)
-            .Where(s => mapData.IsScanned(s.Location) && mapData.IsExplored(s.Location))
+            .Where(r => mapData.IsScanned(r.Location) && mapData.IsExplored(r.Location))
             .Where(s => !s.IsOwned || s.Owner == fleet.Owner)
             .Where(t => !t.IsInhabited && !t.HasColony)
             .Where(u => u.IsHabitable(fleet.Owner.Race))
@@ -568,7 +568,7 @@ namespace Supremacy.AI
                 return false;
             }
 
-          var sortResults = from system in systems
+            var sortResults = from system in systems
                             orderby GetColonizeValue(system, fleet.Owner)
                             select system;
 
