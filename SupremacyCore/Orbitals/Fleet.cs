@@ -152,48 +152,6 @@ namespace Supremacy.Orbitals
             }
         }
 
-        /// <summary>
-        /// Gets or sets the ClassLevel of this <see cref="Fleet"/>.
-        /// </summary>
-        /// <value>The name.</value>
-        //public string ClassLevel    
-        //{
-        //    get
-        //    {
-        //        if (_ships.Count == 0)
-        //            return String.Format(ResourceManager.GetString("UNKNOWN"));
-
-        //        if (_ships.Count == 1)
-        //            return _ships[0].ClassLevel;
-
-        //        ShipDesign design = null;
-
-        //        foreach (var ship in _ships)
-        //        {
-        //            if (design == null)
-        //                design = ship.ShipDesign;
-
-        //            if (design != ship.ShipDesign)
-        //            {
-        //                return string.Format(
-        //                    ResourceManager.GetString("MULTI_SHIP_FLEET_FORMAT"),
-        //                    _ships.Count);
-        //            }
-        //        }
-
-        //        if (design == null || design.Name == null)
-        //        {
-        //            return String.Format(
-        //                ResourceManager.GetString("MULTI_SHIP_FLEET_FORMAT"),
-        //                _ships.Count);
-        //        }
-
-        //        return String.Format(
-        //            "{0}x {1}",
-        //            _ships.Count,
-        //            ResourceManager.GetString(design.ClassLevel));
-        //    }
-        //}
 
         /// <summary>
         /// Gets or sets a value indicating whether this <see cref="Fleet"/> is in tow.

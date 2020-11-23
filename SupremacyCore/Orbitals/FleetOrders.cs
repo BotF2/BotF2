@@ -82,7 +82,7 @@ namespace Supremacy.Orbitals
                           //TowOrder,
                           WormholeOrder,
                           CollectDeuteriumOrder,
-                          //EscortOrder,
+                         // EscortOrder,
                           BuildStationOrder,
                           //ExploreOrder,
                           AssaultSystemOrder,
@@ -1862,6 +1862,71 @@ namespace Supremacy.Orbitals
             }
         }
     }
+
+    #endregion
+
+    #region Escort Order
+
+    //[Serializable]
+    //public sealed class EscortOrder : FleetOrder
+    //{
+    //    //private Sector _goToSector;
+    //    //public Sector GoToSector
+    //    //{
+    //    //    get { return _goToSector; }
+    //    //}
+    //    public override string OrderName
+    //    {
+    //        get { return ResourceManager.GetString("FLEET_ORDER_ESCORT"); }
+    //    }
+
+    //    public override string Status
+    //    {
+    //        get { return ResourceManager.GetString("FLEET_ORDER_STATUS_ESCORT"); }
+    //    }
+
+    //    public override bool WillEngageHostiles
+    //    {
+    //        get { return true; }
+    //    }
+
+    //    public override bool IsCancelledOnRouteChange
+    //    {
+    //        get { return true; }
+    //    }
+    //    //public EscortOrder(Sector goToSecotor)
+    //    //{
+    //    //    _goToSector = goToSecotor;
+    //    //}
+
+    //    public EscortOrder()
+    //    {
+    //    }
+
+    //    public override FleetOrder Create()
+    //    {
+    //        return new EscortOrder();
+    //    }
+    //    //public override FleetOrder Create(Sector sectorGoTo)
+    //    //{
+    //    //    return new EscortOrder(sectorGoTo);
+    //    //}
+
+    //    protected internal override void OnTurnBeginning()
+    //    {
+    //        base.OnTurnBeginning();
+    //        if (!IsAssigned)
+    //            return;
+    //        if (Fleet.Route.IsEmpty)
+    //        {
+    //            Sector bestSector;
+    //            var escortSector = UnitAI.GetFleetEsorteSector(Fleet, out bestSector);
+    //            {
+    //                Fleet.SetRouteInternal(AStar.FindPath(Fleet, PathOptions.SafeTerritory, null, new List<Sector> { bestSector }));
+    //            }
+    //        }
+    //    }
+    //}
 
     #endregion
 
