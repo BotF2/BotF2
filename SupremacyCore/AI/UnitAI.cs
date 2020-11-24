@@ -166,7 +166,7 @@ namespace Supremacy.AI
                                 fleet.SetOrder(new ColonizeOrder());
                                 fleet.UnitAIType = UnitAIType.Colonizer;
                                 fleet.Activity = UnitActivity.Hold;
-                                GameLog.Core.AI.DebugFormat("Ordering colonizer fleet {0} at {1} to colonize", fleet.Sector.Name, fleet.Location);
+                               // GameLog.Core.AI.DebugFormat("Ordering colonizer fleet {0} at {1} to colonize", fleet.Sector.Name, fleet.Location);
                             }
                             else if (bestSystemToColonize != null)
                             {
@@ -197,7 +197,7 @@ namespace Supremacy.AI
                             fleet.SetOrder(order);
                             fleet.UnitAIType = UnitAIType.Constructor;
                             fleet.Activity = UnitActivity.Mission;
-                            GameLog.Core.AI.DebugFormat("Stranded constructor fleet {0} order {1}", fleet.Name, fleet.Order.OrderName);
+                           // GameLog.Core.AI.DebugFormat("Stranded constructor fleet {0} order {1}", fleet.Name, fleet.Order.OrderName);
                         }
                     }
                     else
@@ -404,9 +404,6 @@ namespace Supremacy.AI
                                 bool hasOurSpyNetwork = CheckForSpyNetwork(bestSystemForSpying.Owner, fleet.Owner);
                                 if (!hasOurSpyNetwork)
                                 {
-                                    //List<int> _listValue;     // only one spy ship per empire                              
-                                    //if (_civsWithSpyShip.TryGetValue(fleet.OwnerID, out _listValue) && !_listValue.Contains(bestSystemForSpying.OwnerID))
-                                    //{
                                     if (bestSystemForSpying.Location == fleet.Location)
                                     {
                                         fleet.SetOrder(new SpyOnOrder()); // install spy network
@@ -421,13 +418,6 @@ namespace Supremacy.AI
                                         fleet.Activity = UnitActivity.Mission;
                                         // GameLog.Core.AI.DebugFormat("Ordering spy fleet {0} to {1}", fleet.ObjectID, bestSystemForSpying);
                                     }
-                                        //List<int> _list;
-                                        //if (_civsWithSpyShip.TryGetValue(fleet.OwnerID, out _list))
-                                        //{
-                                        //    _list.Add(bestSystemForSpying.OwnerID);
-                                        //    _civsWithSpyShip.Add(fleet.OwnerID, _list); // only one spy ship per empire
-                                        //}
-                                    //}
                                 }
                             }
                         }
@@ -547,8 +537,6 @@ namespace Supremacy.AI
             //Where a ship isn't there and colonizing
             .ToList();
 
-
-
             if (systems.Count == 0)
             {
                 result = null;
@@ -567,11 +555,11 @@ namespace Supremacy.AI
             {
                 systems.Remove(removeSystem);
             }
-            foreach (var system in systems)
-            {
-                GameLog.Client.AI.DebugFormat("System ={0}, {1} Colony? ={2} owner ={3}, Habitable? ={4} starType {5} for {6}"
-                    , system.Name, system.Location, system.HasColony, system.Owner, system.IsHabitable(fleet.Owner.Race), system.StarType, fleet.Owner);
-            }
+            //foreach (var system in systems)
+            //{
+            //    GameLog.Client.AI.DebugFormat("System ={0}, {1} Colony? ={2} owner ={3}, Habitable? ={4} starType {5} for {6}"
+            //        , system.Name, system.Location, system.HasColony, system.Owner, system.IsHabitable(fleet.Owner.Race), system.StarType, fleet.Owner);
+            //}
             if (systems.Count == 0)
             {
                 result = null;
@@ -583,7 +571,7 @@ namespace Supremacy.AI
                               select system;
 
             result = sortResults.Last();
-            GameLog.Client.AI.DebugFormat("Best System for {0}, star ={1}, {2} {3}, value ={4}", fleet.Owner, result.Name, result.StarType, result.Location, GetColonizeValue(result, fleet.Owner));
+            //GameLog.Client.AI.DebugFormat("Best System for {0}, star ={1}, {2} {3}, value ={4}", fleet.Owner, result.Name, result.StarType, result.Location, GetColonizeValue(result, fleet.Owner));
             return true;
         }
 
@@ -623,7 +611,7 @@ namespace Supremacy.AI
             }
 
             value += system.GetMaxPopulation(civ.Race) * system.GetGrowthRate(civ.Race);
-            GameLog.Core.AI.DebugFormat("Colonize value for {0} is {1} for {2}", system, value, civ.Name);
+            //GameLog.Core.AI.DebugFormat("Colonize value for {0} is {1} for {2}", system, value, civ.Name);
             return value;
         }
 
@@ -1318,7 +1306,7 @@ namespace Supremacy.AI
                 value += EnemyColonyPriority;
             }
 
-            GameLog.Core.AI.DebugFormat("Spying value for {0} is {1}", colony, value);
+           // GameLog.Core.AI.DebugFormat("Spying value for {0} is {1}", colony, value);
             return value;
 
         }
@@ -1328,10 +1316,10 @@ namespace Supremacy.AI
         */
 
         /// <summary>
-        /// Determines the value of spying on a <see cref="Colony"/>
+        /// Determines the value of science on a <see cref="StarSystem"/>
         /// to a given <see cref="Civilization"/>
         /// </summary>
-        /// <param name="colony"></param>
+        /// <param name="system"></param>
         /// <param name="civ"></param>
         /// <returns></returns>
         public static int GetScienceValue(StarSystem system, Civilization civ) // civ is fleet.Owner
@@ -1399,6 +1387,7 @@ namespace Supremacy.AI
         /// <param name="fleet"></param>
         /// <param name="result"></param>
         /// <returns></returns>
+        /// 
         public static bool GetBestColonyForSpying(Fleet fleet, out Colony result)
         {
             if (fleet == null)
