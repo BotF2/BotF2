@@ -165,7 +165,7 @@ namespace Supremacy.AI
                                 fleet.Route.Clear();
                                 fleet.SetOrder(new ColonizeOrder());
                                 fleet.UnitAIType = UnitAIType.Colonizer;
-                                fleet.Activity = UnitActivity.Hold;
+                                fleet.Activity = UnitActivity.Hold;                               
                                // GameLog.Core.AI.DebugFormat("Ordering colonizer fleet {0} at {1} to colonize", fleet.Sector.Name, fleet.Location);
                             }
                             else if (bestSystemToColonize != null)
@@ -174,7 +174,16 @@ namespace Supremacy.AI
                                 fleet.SetRoute(AStar.FindPath(fleet, PathOptions.SafeTerritory, null, new List<Sector> { bestSystemToColonize.Sector }));
                                 fleet.UnitAIType = UnitAIType.Colonizer;
                                 fleet.Activity = UnitActivity.Mission;
-                                GetFleetEscort(fleet, bestSystemToColonize.Sector);
+                                List<MapLocation> waypoints = new List<MapLocation>();
+                                if (fleet.Route != null && fleet.Route.Steps.Count > 0)
+                                {
+                                    foreach (var step in fleet.Route.Steps)
+                                    {
+                                        waypoints.Add(step);
+                                    }                                    
+                                }
+                                TravelRoute followRoute = new TravelRoute(waypoints);
+                                GetFleetEscort(fleet, bestSystemToColonize.Sector, followRoute) ;
                                 // GameLog.Core.AI.DebugFormat("Ordering {0} colonizer {1} to go to {2} {3}", fleet.Owner, fleet.Name, bestSystemToColonize.Name, bestSystemToColonize.Location);
                             }
                         }
@@ -222,9 +231,18 @@ namespace Supremacy.AI
                                         fleet.SetOrder(order);
                                         fleet.UnitAIType = UnitAIType.Constructor;
                                         fleet.Activity = UnitActivity.Mission;
+                                        List<MapLocation> waypoints = new List<MapLocation>();
+                                        if (fleet.Route != null && fleet.Route.Steps.Count > 0)
+                                        {
+                                            foreach (var step in fleet.Route.Steps)
+                                            {
+                                                waypoints.Add(step);
+                                            }
+                                        }
+                                        TravelRoute followRoute = new TravelRoute(waypoints);
                                         if (!bestSectorForStation.GetOwnedFleets(fleet.Owner).Where(o => o.IsBattleFleet || o.IsFastAttack).Any())
                                         {
-                                            GetFleetEscort(fleet, bestSectorForStation);
+                                            GetFleetEscort(fleet, bestSectorForStation, followRoute);
                                         }
                                     }
                                     else
@@ -241,7 +259,16 @@ namespace Supremacy.AI
                                     fleet.UnitAIType = UnitAIType.Constructor;
                                     fleet.Activity = UnitActivity.Mission;
                                     GameLog.Core.AI.DebugFormat("Ordering constructor fleet {0} to {1}, {2}", fleet.ObjectID, bestSectorForStation.Location, bestSectorForStation.Name);
-                                    GetFleetEscort(fleet, bestSectorForStation);
+                                    List<MapLocation> waypoints = new List<MapLocation>();
+                                    if (fleet.Route != null && fleet.Route.Steps.Count > 0)
+                                    {
+                                        foreach (var step in fleet.Route.Steps)
+                                        {
+                                            waypoints.Add(step);
+                                        }
+                                    }
+                                    TravelRoute followRoute = new TravelRoute(waypoints);
+                                    GetFleetEscort(fleet, bestSectorForStation, followRoute);
                                 }
                             }
                             else
@@ -249,7 +276,6 @@ namespace Supremacy.AI
                                 GameLog.Core.AI.DebugFormat("Nothing to do for constructor fleet {0}", fleet.ObjectID);
                             }
                         }
-                        //}
                     }
                 }
 
@@ -621,7 +647,7 @@ namespace Supremacy.AI
         /// <param name="colonyFleet"></param>
         /// <param name="colonySector"></param>
         /// <returns></returns>
-        public static void GetFleetEscort(Fleet fleetToFollow, Sector finalSector) // not working
+        public static void GetFleetEscort(Fleet fleetToFollow, Sector finalSector, TravelRoute route) 
         {
             if (GameContext.Current.TurnNumber < 2 || finalSector == null)
             {
@@ -646,29 +672,44 @@ namespace Supremacy.AI
                     && fleet.CanMove && fleet.ClassName != "UNKNOWN"
                     && fleet.Ships[0].ObjectID > 1)
                 {
-                    Ship firstShip = fleet.Ships[0];
-                    int count = fleet.Ships.Count();
-                    if (count > 1)
+                   // fleet.Ships.Reverse();
+                    int extraShips = fleet.Ships.Count() -1;
+                    if (extraShips > 0)
+                    for (int i = 0; i < extraShips; i++)
                     {
-                        for (int i = 0; i < count; i++)
-                        {
-                            Ship ship = fleet.Ships[i];
-                            if (ship != null & firstShip != ship)
-                            {
-                                fleet.RemoveShip(ship);
-                            }
-                        }
+                        Ship ship = fleet.Ships[0];
+                        fleet.RemoveShip(ship);
                     }
-                    fleet.SetRouteInternal(AStar.FindPath(fleetToFollow, PathOptions.SafeTerritory, null, new List<Sector> { finalSector }));
+
+                    if (route != null)
+                    {
+                        fleet.Route = route;
+                        if (fleet.Route == fleetToFollow.Route)
+                        {
+                            GameLog.Client.AI.DebugFormat("Yes, escort route == the fleet route escort.Name ={0} fleet.Name ={1} ", fleet.Name, fleetToFollow.Name);
+                        }
+                        else
+                            GameLog.Client.AI.DebugFormat("No, escort route != the fleet route escort.Name ={0} fleet.Name ={1} ", fleet.Name, fleetToFollow.Name);
+                    }
+                    else
+                    {
+                        fleet.SetRouteInternal(AStar.FindPath(fleetToFollow, PathOptions.SafeTerritory, null, new List<Sector> { finalSector }));
+                    }
                     fleet.UnitAIType = UnitAIType.Escort;
                     fleet.Activity = UnitActivity.Mission;
 
-                    GameLog.Core.AI.DebugFormat("ESCORT ={0} {1} unitAIType {2} activity {3} sector ={4} for COLONYSHIP ={5} {6} step count ={7}"
+                    GameLog.Core.AI.DebugFormat("ESCORT ={0} {1} unitAIType {2} activity {3} sector ={4} for ship ={5} {6} step count ={7}"
                     , fleet.Owner, fleet.ClassName, fleet.UnitAIType, fleet.Activity, finalSector.Name, fleetToFollow.Owner, fleetToFollow.Name, fleetToFollow.Route.Steps.Count);
                     return;
                     
                 }
             }
+        }
+
+        private static void RemoveOneShip(Fleet fleet)
+        {
+            Ship ship = fleet.Ships[0];
+            fleet.RemoveShip(ship);
         }
 
         /*
@@ -1230,7 +1271,9 @@ namespace Supremacy.AI
             {
                 possibleColonies = GameContext.Current.Universe.Find<Colony>()
                 //We need to know about it (no cheating)
-                .Where(s => mapData.IsScanned(s.Location) && mapData.IsExplored(s.Location))
+                .Where(s => mapData.IsScanned(s.Location)
+                && mapData.IsExplored(s.Location)
+                && s.Owner != fleet.Owner)
                 //In fuel range
                 .Where(c => FleetHelper.IsSectorWithinFuelRange(c.Sector, fleet)
                 && DiplomacyHelper.IsTravelAllowed(fleet.Owner, c.Sector)
