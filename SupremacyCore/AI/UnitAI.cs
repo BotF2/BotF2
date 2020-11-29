@@ -31,8 +31,7 @@ namespace Supremacy.AI
         private static Dictionary<int, List<bool>> _rangesByCiv = new Dictionary<int, List<bool>> { { 999, _fleetOutOfRange } };
         private static Dictionary<int, bool> TotalWarNextTurn = new Dictionary<int, bool> { { 0, false }, { 1, false }, { 2, false }, { 3, false }, { 4, false }, { 5, false }, { 6, false } };
         private static bool _totalWar = false;
-        //private static List<int> _civIDList = new List<int> { 9, 8 };
-        //private static Dictionary<int, List<int>> _civsWithSpyShip = new Dictionary<int, List<int>> { { 999, _civIDList } };
+        //private static int useOnlyOnce = 0;
 
         public static Dictionary<int, List<bool>> RangesByCiv // check here for all ships in range for distance of total-war-target-civ home-world from your home-world
         {
@@ -150,40 +149,43 @@ namespace Supremacy.AI
                     }
                 }
 
-                if (fleet.IsColonizer)
+                if (fleet.IsColonizer || fleet.UnitAIType == UnitAIType.Colonizer)
                 {
-                    if ((fleet.Activity == UnitActivity.NoActivity || fleet.Route.IsEmpty || fleet.Order.IsComplete)) // && fleet.Location == homeSystem.Location)
+                    if ((fleet.Activity == UnitActivity.NoActivity || fleet.Activity == UnitActivity.Mission || fleet.Route.IsEmpty || fleet.Order.IsComplete))
                     {
-                        //Can we find a system to colonize?
-                        if (GetBestSystemToColonize(fleet, out StarSystem bestSystemToColonize))
+                        // only left over escort without colonyship
+                        if (fleet.Ships.Count() == 1 && fleet.Ships[0].ShipType >= ShipType.FastAttack && fleet.UnitAIType == UnitAIType.Colonizer)
                         {
-
+                            fleet.UnitAIType = UnitAIType.Reserve;
+                            fleet.Activity = UnitActivity.NoActivity;
+                            fleet.SetRoute(AStar.FindPath(fleet, PathOptions.SafeTerritory, null, new List<Sector> { homeSystem.Sector }));
+                        }
+                        //Can we find a system to colonize?
+                        else if (GetBestSystemToColonize(fleet, out StarSystem bestSystemToColonize))
+                        {
                             //Are we there yet?
                             if (fleet.Sector == bestSystemToColonize.Sector)
-                            {
+                            {             
                                 // We are there
                                 fleet.Route.Clear();
                                 fleet.SetOrder(new ColonizeOrder());
                                 fleet.UnitAIType = UnitAIType.Colonizer;
-                                fleet.Activity = UnitActivity.Hold;                               
-                               // GameLog.Core.AI.DebugFormat("Ordering colonizer fleet {0} at {1} to colonize", fleet.Sector.Name, fleet.Location);
+                                fleet.Activity = UnitActivity.Hold;
+                                if (fleet.Ships.Count() > 1)
+                                    RemoveEscortShips(fleet, ShipType.Colony);
+                                // GameLog.Core.AI.DebugFormat("Ordering colonizer fleet {0} at {1} to colonize", fleet.Sector.Name, fleet.Location);
                             }
                             else if (bestSystemToColonize != null)
                             {
-                                //Head to the system                                
-                                fleet.SetRoute(AStar.FindPath(fleet, PathOptions.SafeTerritory, null, new List<Sector> { bestSystemToColonize.Sector }));
-                                fleet.UnitAIType = UnitAIType.Colonizer;
-                                fleet.Activity = UnitActivity.Mission;
-                                List<MapLocation> waypoints = new List<MapLocation>();
-                                if (fleet.Route != null && fleet.Route.Steps.Count > 0)
+                                if (fleet.Route == null || fleet.Route.IsEmpty)
                                 {
-                                    foreach (var step in fleet.Route.Steps)
-                                    {
-                                        waypoints.Add(step);
-                                    }                                    
+                                    //Head to the system                                
+                                    fleet.SetRoute(AStar.FindPath(fleet, PathOptions.SafeTerritory, null, new List<Sector> { bestSystemToColonize.Sector }));
+                                    fleet.UnitAIType = UnitAIType.Colonizer;
+                                    fleet.Activity = UnitActivity.Mission;
+                                    if (!fleet.Ships.Where(s => s.ShipType >= ShipType.FastAttack).Any())
+                                        GetFleetEscort(fleet, bestSystemToColonize.Sector);
                                 }
-                                TravelRoute followRoute = new TravelRoute(waypoints);
-                                GetFleetEscort(fleet, bestSystemToColonize.Sector, followRoute) ;
                                 // GameLog.Core.AI.DebugFormat("Ordering {0} colonizer {1} to go to {2} {3}", fleet.Owner, fleet.Name, bestSystemToColonize.Name, bestSystemToColonize.Location);
                             }
                         }
@@ -194,89 +196,78 @@ namespace Supremacy.AI
                     }
                 }
 
-                if (fleet.IsConstructor)
+                if (fleet.IsConstructor || fleet.UnitAIType == UnitAIType.Constructor)
                 {
-                    if (fleet.IsStranded) // stranded construction ship builds station
+                    if (fleet.UnitAIType == UnitAIType.Constructor
+                        && !fleet.Ships.Any(x => x.ShipType == ShipType.Construction)
+                        && !fleet.Sector.GetOwnedFleets(fleet.Owner).Where(o => o.IsConstructor).Any()) // constructor fleet with no constructor left                  
                     {
-                        BuildStationOrder order = new BuildStationOrder();
-                        order.BuildProject = order.FindTargets(fleet).Cast<StationBuildProject>().LastOrDefault(o => o.StationDesign.IsCombatant);
-                        if (order.BuildProject != null && order.CanAssignOrder(fleet))
-                        {
-                            fleet.Route.Clear();
-                            fleet.SetOrder(order);
-                            fleet.UnitAIType = UnitAIType.Constructor;
-                            fleet.Activity = UnitActivity.Mission;
-                           // GameLog.Core.AI.DebugFormat("Stranded constructor fleet {0} order {1}", fleet.Name, fleet.Order.OrderName);
-                        }
+                        fleet.UnitAIType = UnitAIType.Reserve;
+                        fleet.Activity = UnitActivity.NoActivity;
+                        fleet.SetRoute(AStar.FindPath(fleet, PathOptions.SafeTerritory, null, new List<Sector> { homeSystem.Sector }));
                     }
-                    else
+                    else if (fleet.IsStranded && fleet.Activity != UnitActivity.BuildStation) // stranded construction ship builds station
                     {
-                        Sector homeSector = GameContext.Current.Universe.HomeColonyLookup[fleet.Owner].Sector;
-
-                        if (fleet.Activity == UnitActivity.NoActivity || fleet.Route.IsEmpty || fleet.Order.IsComplete)
+                        BuidStation(fleet);
+                    }
+                    else if (fleet.Activity == UnitActivity.NoActivity || (fleet.Route.IsEmpty && fleet.Activity != UnitActivity.BuildStation)
+                        || fleet.Order.IsComplete) 
+                    {
+                        if (fleet.Route.IsEmpty && fleet.Activity == UnitActivity.Mission)
                         {
-                            int extraStationCount = GameContext.Current.Universe.FindOwned<Station>(fleet.Owner).Where(s => s.Sector != homeSector).Count();
-                            // ToDo: better construction ship AI - Now just two station built outside of home system.
-                            if (extraStationCount <= 1 && GetBestSectorForStation(fleet, out Sector bestSectorForStation))
+                            BuidStation(fleet);
+                            //BuildStationOrder order = new BuildStationOrder();
+                            //order.BuildProject = order.FindTargets(fleet).Cast<StationBuildProject>().LastOrDefault(o => o.StationDesign.IsCombatant);
+                            //if (order.BuildProject != null && order.CanAssignOrder(fleet) && fleet.Sector.Station == null)
+                            //{
+                            //    fleet.SetOrder(order);
+                            //    fleet.UnitAIType = UnitAIType.Constructor;
+                            //    fleet.Activity = UnitActivity.BuildStation;
+                            //    if (!fleet.Sector.GetOwnedFleets(fleet.Owner).Where(o => o.IsBattleFleet || o.IsFastAttack).Any()
+                            //        && !fleet.Ships.Where(s => s.ShipType >= ShipType.FastAttack).Any())
+                            //    {
+                            //        GetFleetEscort(fleet, fleet.Sector);
+                            //    }
+                            //}
+                        }
+                        else if (GetBestSectorForStation(fleet, out Sector bestSectorForStation)
+                            && fleet.Activity != UnitActivity.BuildStation
+                            && fleet.Activity != UnitActivity.Mission)
+                        {  
+                            if (fleet.Sector == bestSectorForStation )
                             {
-                                if (fleet.Sector == bestSectorForStation)
-                                {
-                                    //Build the station
-                                    BuildStationOrder order = new BuildStationOrder();
-                                    order.BuildProject = order.FindTargets(fleet).Cast<StationBuildProject>().LastOrDefault(o => o.StationDesign.IsCombatant);
-                                    if (order.BuildProject != null && order.CanAssignOrder(fleet) && fleet.Sector.Station == null)
-                                    {
-                                        // check here to see if we get the unprotected constructor
-                                        fleet.Route.Clear();
-                                        fleet.SetOrder(order);
-                                        fleet.UnitAIType = UnitAIType.Constructor;
-                                        fleet.Activity = UnitActivity.Mission;
-                                        List<MapLocation> waypoints = new List<MapLocation>();
-                                        if (fleet.Route != null && fleet.Route.Steps.Count > 0)
-                                        {
-                                            foreach (var step in fleet.Route.Steps)
-                                            {
-                                                waypoints.Add(step);
-                                            }
-                                        }
-                                        TravelRoute followRoute = new TravelRoute(waypoints);
-                                        if (!bestSectorForStation.GetOwnedFleets(fleet.Owner).Where(o => o.IsBattleFleet || o.IsFastAttack).Any())
-                                        {
-                                            GetFleetEscort(fleet, bestSectorForStation, followRoute);
-                                        }
-                                    }
-                                    else
-                                    {
-                                        fleet.Activity = UnitActivity.NoActivity;
-                                        fleet.UnitAIType = UnitAIType.NoUnitAI;
-                                    }
-                                    GameLog.Core.AI.DebugFormat("Ordering constructor fleet {0} to build station at {1}, {2}", fleet.ObjectID, fleet.Location, fleet.Sector.Name);
-                                }
-                                else
-                                {
-                                    //go to the sector location
-                                    fleet.SetRoute(AStar.FindPath(fleet, PathOptions.SafeTerritory, null, new List<Sector> { bestSectorForStation }));
-                                    fleet.UnitAIType = UnitAIType.Constructor;
-                                    fleet.Activity = UnitActivity.Mission;
-                                    GameLog.Core.AI.DebugFormat("Ordering constructor fleet {0} to {1}, {2}", fleet.ObjectID, bestSectorForStation.Location, bestSectorForStation.Name);
-                                    List<MapLocation> waypoints = new List<MapLocation>();
-                                    if (fleet.Route != null && fleet.Route.Steps.Count > 0)
-                                    {
-                                        foreach (var step in fleet.Route.Steps)
-                                        {
-                                            waypoints.Add(step);
-                                        }
-                                    }
-                                    TravelRoute followRoute = new TravelRoute(waypoints);
-                                    GetFleetEscort(fleet, bestSectorForStation, followRoute);
-                                }
+                                BuidStation(fleet);
+                                //BuildStationOrder order = new BuildStationOrder();
+                                //order.BuildProject = order.FindTargets(fleet).Cast<StationBuildProject>().LastOrDefault(o => o.StationDesign.IsCombatant);
+                                //if (order.BuildProject != null && order.CanAssignOrder(fleet) && fleet.Sector.Station == null)
+                                //{
+                                //    fleet.SetOrder(order);
+                                //    fleet.UnitAIType = UnitAIType.Constructor;
+                                //    fleet.Activity = UnitActivity.BuildStation;
+                                //    if (!bestSectorForStation.GetOwnedFleets(fleet.Owner).Where(o => o.IsBattleFleet || o.IsFastAttack).Any()
+                                //        && !fleet.Ships.Where(s => s.ShipType >= ShipType.FastAttack).Any())
+                                //    {
+                                //        GetFleetEscort(fleet, bestSectorForStation);
+                                //    }
+                                //}
+                                //GameLog.Core.AI.DebugFormat("Ordering constructor fleet {0} to build station at {1}, {2}", fleet.ObjectID, fleet.Location, fleet.Sector.Name);
                             }
-                            else
-                            {
-                                GameLog.Core.AI.DebugFormat("Nothing to do for constructor fleet {0}", fleet.ObjectID);
+                            else if (fleet.Route == null || fleet.Route.IsEmpty)
+                            {                                   
+                                //go to the sector location
+                                fleet.SetRoute(AStar.FindPath(fleet, PathOptions.SafeTerritory, null, new List<Sector> { bestSectorForStation }));
+                                fleet.UnitAIType = UnitAIType.Constructor;
+                                fleet.Activity = UnitActivity.Mission;
+                                GameLog.Core.AI.DebugFormat("Ordering constructor fleet {0} to {1}, {2}", fleet.ObjectID, bestSectorForStation.Location, bestSectorForStation.Name);
+                                if (!fleet.Ships.Where(s => s.ShipType >= ShipType.FastAttack).Any())
+                                    GetFleetEscort(fleet, bestSectorForStation);
                             }
                         }
-                    }
+                        //else
+                        //{
+                        //    GameLog.Core.AI.DebugFormat("Nothing to do for constructor fleet {0}", fleet.ObjectID);
+                        //}
+                    }                  
                 }
 
                 if (fleet.IsBattleFleet || (fleet.IsFastAttack)) // && fleet.Activity == UnitActivity.NoActivity))
@@ -535,8 +526,8 @@ namespace Supremacy.AI
                 throw new ArgumentNullException(nameof(fleet));
             }
 
-            IEnumerable<Fleet> colonizerFleets = GameContext.Current.Universe.FindOwned<Fleet>(fleet.Owner)
-                .Where(o => o.IsColonizer);
+            List<Fleet> colonizerFleets = GameContext.Current.Universe.FindOwned<Fleet>(fleet.Owner)
+                .Where(o => o.IsColonizer || o.multiFleetHasAColonizer).ToList();
             var otherFleets = colonizerFleets.Where(o => o != fleet).ToList(); // other colony ships
 
             CivilizationManager civManager = GameContext.Current.CivilizationManagers[fleet.Owner];
@@ -647,9 +638,9 @@ namespace Supremacy.AI
         /// <param name="colonyFleet"></param>
         /// <param name="colonySector"></param>
         /// <returns></returns>
-        public static void GetFleetEscort(Fleet fleetToFollow, Sector finalSector, TravelRoute route) 
+        public static void GetFleetEscort(Fleet fleetToFollow, Sector finalSector) 
         {
-            if (GameContext.Current.TurnNumber < 2 || finalSector == null)
+            if ( finalSector == null)
             {
                 return;
             }
@@ -661,55 +652,55 @@ namespace Supremacy.AI
                 .Where(o => o.UnitAIType == UnitAIType.Reserve).ToList();
             if (loanEscorts.Count > 0)
             {
-                escortFleets.Reverse();
                 escortFleets.AddRange(loanEscorts);
-                escortFleets.Reverse();
             }
+            
             foreach (var fleet in escortFleets)
             {
-                if ((fleet.Ships[0].ShipType == ShipType.FastAttack || fleet.Ships[0].ShipType >= ShipType.Cruiser)
+                if (fleet.Ships[0].ShipType >= ShipType.FastAttack
                     && fleet.Owner == fleetToFollow.Owner
                     && fleet.CanMove && fleet.ClassName != "UNKNOWN"
-                    && fleet.Ships[0].ObjectID > 1)
+                    && fleet.Ships[0].ObjectID > 1
+                    && !fleet.Ships.Where(o => o.ShipType < ShipType.FastAttack).Any())
                 {
-                   // fleet.Ships.Reverse();
+                    fleet.Ships.Sort((x, y) => y.ShipType.CompareTo(x.ShipType));
+                    
                     int extraShips = fleet.Ships.Count() -1;
-                    if (extraShips > 0)
+                    if (extraShips > 0)   
                     for (int i = 0; i < extraShips; i++)
                     {
-                        Ship ship = fleet.Ships[0];
+                        Ship ship = fleet.Ships.Last();
                         fleet.RemoveShip(ship);
                     }
+                    Ship lastShip = fleet.Ships[0];
+                    if (lastShip.ObjectID != -1)
+                        fleetToFollow.AddShip(lastShip);
+                //fleet.SetRouteInternal(AStar.FindPath(fleetToFollow, PathOptions.SafeTerritory, null, new List<Sector> { finalSector }));                   
 
-                    if (route != null)
-                    {
-                        fleet.Route = route;
-                        if (fleet.Route == fleetToFollow.Route)
-                        {
-                            GameLog.Client.AI.DebugFormat("Yes, escort route == the fleet route escort.Name ={0} fleet.Name ={1} ", fleet.Name, fleetToFollow.Name);
-                        }
-                        else
-                            GameLog.Client.AI.DebugFormat("No, escort route != the fleet route escort.Name ={0} fleet.Name ={1} ", fleet.Name, fleetToFollow.Name);
-                    }
-                    else
-                    {
-                        fleet.SetRouteInternal(AStar.FindPath(fleetToFollow, PathOptions.SafeTerritory, null, new List<Sector> { finalSector }));
-                    }
-                    fleet.UnitAIType = UnitAIType.Escort;
-                    fleet.Activity = UnitActivity.Mission;
-
-                    GameLog.Core.AI.DebugFormat("ESCORT ={0} {1} unitAIType {2} activity {3} sector ={4} for ship ={5} {6} step count ={7}"
-                    , fleet.Owner, fleet.ClassName, fleet.UnitAIType, fleet.Activity, finalSector.Name, fleetToFollow.Owner, fleetToFollow.Name, fleetToFollow.Route.Steps.Count);
-                    return;
-                    
+                GameLog.Core.AI.DebugFormat("ESCORT ={0} {1} unitAIType {2} activity {3} sector ={4} for ship ={5} {6} step count ={7}"
+                    ,fleet.Owner, fleet.ClassName, fleet.UnitAIType, fleet.Activity, finalSector.Name, fleetToFollow.Owner, fleetToFollow.Name, fleetToFollow.Route.Steps.Count);
+                return;                   
                 }
             }
         }
 
-        private static void RemoveOneShip(Fleet fleet)
+        private static void RemoveEscortShips(Fleet fleet, ShipType type)
         {
-            Ship ship = fleet.Ships[0];
-            fleet.RemoveShip(ship);
+            int shipCount = fleet.Ships.Count();
+            for (int i = 0; i < shipCount; i++)
+            {
+                Ship ship = fleet.Ships[i];
+                if (ship.ShipType != type)
+                {
+                    Fleet newFleet = new Fleet();
+                    fleet.RemoveShip(ship);
+                    newFleet.AddShip(ship);
+                    //newFleet.Route.Clear();
+                    newFleet.UnitAIType = UnitAIType.Reserve;
+                    newFleet.Activity = UnitActivity.NoActivity;
+                    
+                }
+            }            
         }
 
         /*
@@ -844,26 +835,49 @@ namespace Supremacy.AI
         /// <returns></returns>
         public static int GetStationValue(Sector sector, Fleet fleet, List<UniverseObject> universeObjects)
         {
+
             if (sector == null)
             {
                 throw new ArgumentNullException(nameof(sector));
             }
-            //if (fleet == null)
+            //if (fleet.Owner.Key == "BORG")
             //{
-            //    throw new ArgumentNullException(nameof(fleet));
+            //    var borgHomeSector = GameContext.Current.Universe.HomeColonyLookup[fleet.Owner].Sector;
+            //    if (sector == borgHomeSector && sector.Station == null)
+            //    {
+            //        if(useOnlyOnce == 0)
+            //        {
+            //            useOnlyOnce = 1;
+            //            return 5000;
+            //        }
+            //    }
             //}
-            //if (universeObjects == null)
-            //{
-            //    throw new ArgumentNullException(nameof(universeObjects));
-            //}
+            if (sector.Station != null
+                || sector.GetFleets().Where(o => o.UnitAIType == UnitAIType.Constructor).Any()
+                || (sector.System != null && (sector.System.StarType == StarType.BlackHole
+                || sector.System.StarType == StarType.NeutronStar))
+                || (sector.Owner != null && (sector.Owner.CivID <= 6 || sector.GetNeighbors().Where(o => o.Owner.CivID <= 6).Any())))
+            {
+                return -4000;
+            }
+            //IEnumerable<Fleet> constructorFleets = GameContext.Current.Universe.FindOwned<Fleet>(fleet.Owner)
+            //    .Where(f => f.IsConstructor);
+
+            //var otherFleets = constructorFleets.Where(o => o != fleet).ToList();
+
+            ////Get a list of all sectors to build
+            //List<UniverseObject> okObject = GameContext.Current.Universe.Find<UniverseObject>()
+            //    .Where(x => !otherFleets.Any(f => f.Route.Waypoints.LastOrDefault() == x.Location || x.Location == f.Location && f.Order is BuildStationOrder))
+            //    .ToList();
+
             int value = 1;
             var something = universeObjects.Where(o => o.Sector == sector);
             if (something != null)
             {
                 const int SystemSectorValue = 1500;
                 const int StrandedShipSectorValue = 2500;
-                const int PastFuelRange = 2000;
-                const int GreatestDistance = 2000;
+                const int PastFuelRange = 1000;
+                const int GreatestDistance = -1500;
 
                 if (!FleetHelper.IsSectorWithinFuelRange(sector, fleet))
                 {
@@ -883,24 +897,18 @@ namespace Supremacy.AI
                     {
                         value += SystemSectorValue;
                     }
-                    if (sector.System.StarType == StarType.BlackHole
-                        || sector.System.StarType == StarType.NeutronStar)
-                    //|| sector.Station != null)
-                    //|| GameContext.Current.Universe.FindAt<UniverseObject>(sector.Location).Where(o => o.ObjectType == UniverseObjectType.Station).Any())
-                    {
-                        value = 1;
-                    }
                 }
                 Sector homeSector = GameContext.Current.Universe.HomeColonyLookup[fleet.Owner].Sector;
-                var furthestObject = GameContext.Current.Universe.FindFurthestObject<UniverseObject>(homeSector.Location, fleet.Owner, universeObjects);
-                if (furthestObject.Sector == sector)
-                {
-                    value += GreatestDistance;
+
+                try
+                { var furthestObject = GameContext.Current.Universe.FindFurthestObject<UniverseObject>(homeSector.Location, fleet.Owner, universeObjects);
+                    if (furthestObject.Sector == sector)
+                    {
+                        value += GreatestDistance;
+                    }
                 }
-                //if (sector.Station != null) // already check for this in list
-                //{
-                //    value = 0;
-                //}
+                catch { GameLog.Client.AI.DebugFormat("unable to get furthest object form home world for station value"); }
+
                 List<Sector> strandedShipSectors = FindStrandedShipSectors(fleet.Owner);
                 if (strandedShipSectors.Count > 0)
                 {
@@ -910,11 +918,29 @@ namespace Supremacy.AI
                     }
                 }
             }
-            int randomInt = RandomHelper.Random(10);
+            //int randomInt = RandomHelper.Random(10);
             //GameLog.Core.AI.DebugFormat("Station at {0} has value {1}", sector.Location, (value + randomInt));
 
-            return value + randomInt;
+            return value; // + randomInt;
 
+        }
+
+        public static void BuidStation(Fleet fleet)
+        {
+            BuildStationOrder order = new BuildStationOrder();
+            order.BuildProject = order.FindTargets(fleet).Cast<StationBuildProject>().LastOrDefault(o => o.StationDesign.IsCombatant);
+            if (order.BuildProject != null && order.CanAssignOrder(fleet))
+            {
+                fleet.SetOrder(order);
+                fleet.UnitAIType = UnitAIType.Constructor;
+                fleet.Activity = UnitActivity.BuildStation;
+                if (!fleet.Sector.GetOwnedFleets(fleet.Owner).Where(o => o.IsBattleFleet || o.IsFastAttack).Any()
+                    && !fleet.Ships.Where(s => s.ShipType >= ShipType.FastAttack).Any())
+                {
+                    GetFleetEscort(fleet, fleet.Sector);
+                }
+                // GameLog.Core.AI.DebugFormat("Stranded constructor fleet {0} order {1}", fleet.Name, fleet.Order.OrderName);
+            }
         }
 
         /*
@@ -934,12 +960,18 @@ namespace Supremacy.AI
             {
                 throw new ArgumentNullException(nameof(fleet));
             }
+            List<Fleet> constructorFleets = GameContext.Current.Universe.FindOwned<Fleet>(fleet.Owner)
+                .Where(f => f.IsConstructor || f.multiFleetHasAConstructor).ToList();
 
-            IEnumerable<Fleet> constructorFleets = GameContext.Current.Universe.FindOwned<Fleet>(fleet.Owner)
-                .Where(f => f.IsConstructor);
-
-            //CivilizationManager civManager = GameContext.Current.CivilizationManagers[fleet.Owner];
-            //CivilizationMapData mapData = civManager.MapData;
+            List<Fleet> otherFleets = constructorFleets.Where(o => o != fleet).ToList();
+            List<UniverseObject> objectsWhereOthersAreGoing = new List<UniverseObject>();
+            //Get a list object (sectors) where other consttuctors are going
+            if (otherFleets.Count > 0)
+            {
+                objectsWhereOthersAreGoing = GameContext.Current.Universe.Find<UniverseObject>()
+                    .Where(x => otherFleets.Any(f => f.Route.Waypoints.LastOrDefault() == x.Location || x.Location == f.Location && f.Order is BuildStationOrder))
+                    .ToList();
+            }
 
             int halfMapWidthX = GameContext.Current.Universe.Map.Width / 2;
             int halfMapHeightY = GameContext.Current.Universe.Map.Height / 2;
@@ -956,13 +988,25 @@ namespace Supremacy.AI
                         int borgY = GameContext.Current.Universe.HomeColonyLookup[fleet.Owner].Location.Y;
                         int borgYDelta = Math.Abs(halfMapHeightY - GameContext.Current.Universe.HomeColonyLookup[fleet.Owner].Location.Y)/4;
 
+                        var borgHomeLocation = GameContext.Current.Universe.HomeColonyLookup[fleet.Owner].Location;
                         var objectsAlongCenterAxis = GameContext.Current.Universe.Objects
                             .Where(s => s.Location != null
                             && s.Sector.Station == null
                             && (s.Location.X >= halfMapWidthX + borgXDelta && s.Location.X <= borgX )
                             && (s.Location.Y <= Math.Abs(halfMapHeightY - borgYDelta) && s.Location.Y >= borgY + borgYDelta))
-                            // find a list of objects around borg side of galactic center
+                            //&& s.Location == borgHomeLocation)                         
                             .ToList();
+                        if (objectsWhereOthersAreGoing != null && objectsWhereOthersAreGoing.Count() > 0)
+                        {
+                            foreach (UniverseObject universeObject in objectsWhereOthersAreGoing)
+                            {
+                                if (objectsAlongCenterAxis.Contains(universeObject))
+                                {
+                                    objectsAlongCenterAxis.Remove(universeObject);
+                                }
+                            }
+                        }
+                       // objectsAlongCenterAxis.RemoveRange(objectWhereOthersAreGoing);
                         if (objectsAlongCenterAxis.Count == 0)
                         {
                             result = null;
@@ -993,6 +1037,17 @@ namespace Supremacy.AI
                             && (s.Location.Y <= halfMapHeightY - domYDelta && s.Location.Y > domY))
                             // find a list of objects in some sector around Dom side of galactic center
                             .ToList();
+                        if (objectsWhereOthersAreGoing != null && objectsWhereOthersAreGoing.Count() > 0)
+                        {
+                            foreach (UniverseObject universeObject in objectsWhereOthersAreGoing)
+                            {
+                                if (objectsAlongCenterAxis.Contains(universeObject))
+                                {
+                                    objectsAlongCenterAxis.Remove(universeObject);
+                                }
+                            }
+                        }
+
                         if (objectsAlongCenterAxis.Count == 0)
                         {
                             result = null;
@@ -1031,6 +1086,16 @@ namespace Supremacy.AI
                         {
                             result = null;
                             return false;
+                        }
+                        if (objectsWhereOthersAreGoing != null && objectsWhereOthersAreGoing.Count() > 0)
+                        {
+                            foreach (UniverseObject universeObject in objectsWhereOthersAreGoing)
+                            {
+                                if (objectsAroundHome.Contains(universeObject))
+                                {
+                                    objectsAroundHome.Remove(universeObject);
+                                }
+                            }
                         }
 
                         // GameLog.Core.AI.DebugFormat("{0} Universe Objects for {1} station search", objectsAroundHome.Count(), fleet.Owner.Key);
@@ -1323,8 +1388,8 @@ namespace Supremacy.AI
                 throw new ArgumentNullException(nameof(civ));
             }
             Civilization otherCiv = colony.Owner;
-            if (colony.System.Name != otherCiv.HomeSystemName)
-                return 0;
+            if (colony.System.Name == otherCiv.HomeSystemName)
+                return 1000;
             if (otherCiv.CivID == civ.CivID)
                 return 0;
             if (!DiplomacyHelper.IsContactMade(civ.CivID, otherCiv.CivID))

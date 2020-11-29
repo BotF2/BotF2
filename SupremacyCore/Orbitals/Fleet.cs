@@ -407,9 +407,18 @@ namespace Supremacy.Orbitals
         {
             get { return Ships.Count == 1 && Ships[0].ShipType == ShipType.Colony; }
         }
+        public bool multiFleetHasAColonizer
+        {
+            get { return Ships.Count > 1 && Ships.Any(s => s.ShipType == ShipType.Colony); }
+        }
+
         public bool IsConstructor
         {
             get { return Ships.Count == 1 && Ships[0].ShipType == ShipType.Construction; }
+        }
+        public bool multiFleetHasAConstructor
+        {
+            get { return Ships.Count > 1 && Ships.Any(s =>s.ShipType == ShipType.Construction); }
         }
 
         public bool IsDiplomatic

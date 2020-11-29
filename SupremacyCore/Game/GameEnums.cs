@@ -142,7 +142,8 @@ namespace Supremacy.Game
         Repair,
         Patrol,
         Intercept,
-        Mission
+        Mission,
+        BuildStation
     }
 
     /// <summary>
