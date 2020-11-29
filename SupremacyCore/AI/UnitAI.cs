@@ -216,19 +216,6 @@ namespace Supremacy.AI
                         if (fleet.Route.IsEmpty && fleet.Activity == UnitActivity.Mission)
                         {
                             BuidStation(fleet);
-                            //BuildStationOrder order = new BuildStationOrder();
-                            //order.BuildProject = order.FindTargets(fleet).Cast<StationBuildProject>().LastOrDefault(o => o.StationDesign.IsCombatant);
-                            //if (order.BuildProject != null && order.CanAssignOrder(fleet) && fleet.Sector.Station == null)
-                            //{
-                            //    fleet.SetOrder(order);
-                            //    fleet.UnitAIType = UnitAIType.Constructor;
-                            //    fleet.Activity = UnitActivity.BuildStation;
-                            //    if (!fleet.Sector.GetOwnedFleets(fleet.Owner).Where(o => o.IsBattleFleet || o.IsFastAttack).Any()
-                            //        && !fleet.Ships.Where(s => s.ShipType >= ShipType.FastAttack).Any())
-                            //    {
-                            //        GetFleetEscort(fleet, fleet.Sector);
-                            //    }
-                            //}
                         }
                         else if (GetBestSectorForStation(fleet, out Sector bestSectorForStation)
                             && fleet.Activity != UnitActivity.BuildStation
@@ -237,19 +224,6 @@ namespace Supremacy.AI
                             if (fleet.Sector == bestSectorForStation )
                             {
                                 BuidStation(fleet);
-                                //BuildStationOrder order = new BuildStationOrder();
-                                //order.BuildProject = order.FindTargets(fleet).Cast<StationBuildProject>().LastOrDefault(o => o.StationDesign.IsCombatant);
-                                //if (order.BuildProject != null && order.CanAssignOrder(fleet) && fleet.Sector.Station == null)
-                                //{
-                                //    fleet.SetOrder(order);
-                                //    fleet.UnitAIType = UnitAIType.Constructor;
-                                //    fleet.Activity = UnitActivity.BuildStation;
-                                //    if (!bestSectorForStation.GetOwnedFleets(fleet.Owner).Where(o => o.IsBattleFleet || o.IsFastAttack).Any()
-                                //        && !fleet.Ships.Where(s => s.ShipType >= ShipType.FastAttack).Any())
-                                //    {
-                                //        GetFleetEscort(fleet, bestSectorForStation);
-                                //    }
-                                //}
                                 //GameLog.Core.AI.DebugFormat("Ordering constructor fleet {0} to build station at {1}, {2}", fleet.ObjectID, fleet.Location, fleet.Sector.Name);
                             }
                             else if (fleet.Route == null || fleet.Route.IsEmpty)
@@ -1080,7 +1054,7 @@ namespace Supremacy.AI
                             && (s.Location.Y >= Math.Abs(homeSector.Location.Y - halfMapHeightY) && s.Location.Y <= homeSector.Location.Y + halfMapHeightY))
                             || ((s.Location.Y <= homeSector.Location.Y + halfMapHeightY && s.Location.Y >= homeSector.Location.Y + thirdMapHeightY)
                             || (s.Location.Y >= Math.Abs(homeSector.Location.Y - halfMapHeightY) && s.Location.Y <= Math.Abs(homeSector.Location.Y - thirdMapHeightY))
-                            && (s.Location.X >= Math.Abs(homeSector.Location.X - halfMapWidthX) && s.Location.X <= homeSector.Location.X + halfMapWidthX))))
+                            && (s.Location.X >= Math.Abs(homeSector.Location.X - halfMapWidthX) && s.Location.X <= homeSector.Location.X + thirdMapWidthX))))
                             .ToList();
                         if (objectsAroundHome.Count == 0)
                         {
