@@ -631,11 +631,11 @@ namespace Supremacy.AI
             
             foreach (var fleet in escortFleets)
             {
-                if (fleet.Ships[0].ShipType >= ShipType.FastAttack
+                if (fleet.Ships.Where(o => o.ShipType == ShipType.FastAttack || o.ShipType == ShipType.Cruiser || o.ShipType == ShipType.HeavyCruiser
                     && fleet.Owner == fleetToFollow.Owner
                     && fleet.CanMove && fleet.ClassName != "UNKNOWN"
-                    && fleet.Ships[0].ObjectID > 1
-                    && !fleet.Ships.Where(o => o.ShipType < ShipType.FastAttack).Any())
+                    && fleet.Ships[0].ObjectID > 1).Any())
+                    //&& !fleet.Ships.Where(o => o.ShipType < ShipType.FastAttack).Any())
                 {
                     fleet.Ships.Sort((x, y) => y.ShipType.CompareTo(x.ShipType));
                     

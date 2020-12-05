@@ -124,7 +124,7 @@ namespace Supremacy.Client
             {
                 _playerAssets = update.FriendlyAssets[0];
             }
-            if (_otherAssets == null)
+            if (_otherAssets == null) // && update != null && update.HostileAssets.Count() >0)
             {
                 _otherAssets = update.HostileAssets[0];
             }

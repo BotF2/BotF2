@@ -47,10 +47,18 @@ namespace Supremacy.Combat
             {
                 throw new ArgumentNullException(nameof(owner));
             }
-
+            bool yesStandoff;
+            if (hostileAssets.Count == 0)
+            {
+                var changeSides = friendlyAssets.Last();
+                friendlyAssets.Remove(changeSides);
+                hostileAssets.Add(changeSides);
+                yesStandoff = true;
+            }
+            else yesStandoff = standoff;
             CombatID = combatId;
             RoundNumber = roundNumber;
-            IsStandoff = standoff;
+            IsStandoff = yesStandoff;
             OwnerID = owner.CivID;
             Location = location;
             FriendlyAssets = friendlyAssets ?? throw new ArgumentNullException(nameof(friendlyAssets));
