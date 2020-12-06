@@ -808,13 +808,6 @@ namespace Supremacy.Entities
 
             return parentElement;
         }
-        //public void SetTotalWarCivilization(Civilization attackerCiv, Civilization targetCiv)
-        //{
-        //    if (this == attackerCiv)
-        //    {
-        //        _totalWarCivilization = targetCiv;
-        //    }
-        //}
 
         #endregion
 
