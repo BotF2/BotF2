@@ -833,10 +833,10 @@ namespace Supremacy.AI
             //    }
             //}
             if (sector.Station != null
-                || sector.GetFleets().Where(o => o.UnitAIType == UnitAIType.Constructor).Any()
-                || (sector.System != null && (sector.System.StarType == StarType.BlackHole
-                || sector.System.StarType == StarType.NeutronStar))
-                || (sector.Owner != null && (sector.Owner.CivID <= 6 || sector.GetNeighbors().Where(o => o.Owner.CivID <= 6).Any())))
+                || sector.GetFleets().Where(o => o.UnitAIType == UnitAIType.Constructor) != null && sector.GetFleets().Where(o => o.UnitAIType == UnitAIType.Constructor).Any()
+                || sector.System != null && (sector.System.StarType == StarType.BlackHole || sector.System.StarType == StarType.NeutronStar)
+                || (sector.Owner != null && sector.Owner.CivID <= 6)
+                || sector.GetNeighbors().Where(o => o.Owner != null && o.Owner.CivID <= 6).Any()) //(sector.GetNeighbors().Where(o => o.Owner != null).Any() &&
             {
                 return -4000;
             }

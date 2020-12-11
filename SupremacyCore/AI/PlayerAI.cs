@@ -36,7 +36,7 @@ namespace Supremacy.AI
         #region Methods
 
         #region DoTurn from GameEngine
-        public static void DoTurn(Civilization targetCiv)
+        public static void DoTurn(Civilization targetCiv)  
         {
             if (targetCiv.IsEmpire && targetCiv.CivID != 6 && targetCiv.SpiedCivList != null)
             {
