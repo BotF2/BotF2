@@ -278,37 +278,6 @@ namespace Supremacy.AI
                             fleet.Activity = UnitActivity.NoActivity;
                         }
                     }
-                    //else if (_totalWar)
-                    //{
-
-                    //    //GameLog.Core.AI.DebugFormat("## IS TOTAL WAR,  fleet ={0}, {1}, {2}, {3}, {4}, {5}", fleet.Name, fleet.Owner, fleet.Order, fleet.UnitAIType, fleet.Activity, fleet.Location);
-                    //    Fleet attackFleet = new Fleet();
-                    //    if (GameContext.Current.Universe.HomeColonyLookup[civ].Sector.GetOwnedFleets(civ).FirstOrDefault(o => o.UnitAIType == UnitAIType.Attack) == null)
-                    //    {
-                    //        attackFleet = fleet;
-                    //        if (fleet.Activity == UnitActivity.NoActivity || fleet.Activity == UnitActivity.Hold)
-                    //        {
-                    //            fleet.UnitAIType = UnitAIType.SystemDefense;
-                    //            fleet.Activity = UnitActivity.Hold;
-                    //            // GameLog.Core.AI.DebugFormat("## first Attack fleet ={0}, {1}, {2}, {3}, {4}, {5}", fleet.Name, fleet.Owner, fleet.Order, fleet.UnitAIType, fleet.Activity, fleet.Location);
-                    //        }
-                    //    }
-                    //    else
-                    //    {
-                    //        attackFleet = GameContext.Current.Universe.HomeColonyLookup[civ].Sector.GetOwnedFleets(civ).FirstOrDefault(o => o.UnitAIType == UnitAIType.Attack);
-
-                    //        if (fleet.Activity == UnitActivity.NoActivity && fleet.Sector == attackFleet.Sector)
-                    //        {
-                    //            for (int i = 0; i < fleet.Ships.Count; i++)
-                    //            {
-                    //                Ship ship = fleet.Ships[0];
-                    //                // GameLog.Core.AI.DebugFormat("## Ship added to attack fleet ={0}, {1}, {2}, {3}, {4}, {5}", fleet.Name, fleet.Owner, fleet.Order, fleet.UnitAIType, fleet.Activity, fleet.Location);
-                    //                fleet.RemoveShip(ship);
-                    //                attackFleet.AddShip(ship);
-                    //            }
-                    //        }
-                    //    }
-                    //}
                 }
 
                 if (fleet.IsMedical)
@@ -836,7 +805,7 @@ namespace Supremacy.AI
                 || sector.GetFleets().Where(o => o.UnitAIType == UnitAIType.Constructor) != null && sector.GetFleets().Where(o => o.UnitAIType == UnitAIType.Constructor).Any()
                 || sector.System != null && (sector.System.StarType == StarType.BlackHole || sector.System.StarType == StarType.NeutronStar)
                 || (sector.Owner != null && sector.Owner.CivID <= 6)
-                || sector.GetNeighbors().Where(o => o.Owner != null && o.Owner.CivID <= 6).Any()) //(sector.GetNeighbors().Where(o => o.Owner != null).Any() &&
+                || sector.GetNeighbors().Where(o => o.Owner != null && o.Owner.CivID <= 6).Any())   
             {
                 return -4000;
             }

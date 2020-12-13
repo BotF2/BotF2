@@ -172,11 +172,12 @@
                           Grid.RowSpan="2"
                           cal:RegionManager.RegionName="{x:Static scc:ColonyScreenRegions.PlanetaryBuildQueue}"
                           Margin="0,4,0,0"
-                          Header="> BUILD QUEUE"
+                          Header="{Binding Source={s:StringResource BUILD_QUEUE}, Mode=OneTime, Converter={StaticResource UpperCaseConverter}}"
                           IsExpanded="True">
                 </Expander>
                 <!-- END BUILD QUEUE AREA -->
-              </Grid>
+
+                </Grid>
               <!-- END SYSTEM INFO BAR -->
 
               <!-- BEGIN PRIMARY CONTENT AREA -->
@@ -248,7 +249,8 @@
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
                         <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
                                         
@@ -258,11 +260,21 @@
                            Text="Hello" 
                                  
                                  />-->
-                                        
-                      <ItemsControl ItemsSource="{Binding Path=SelectedColony.Shipyard.BuildSlots, Mode=OneWay}"
-                                  Grid.Column="0"
-                                  Grid.Row="1"
-                                  Style="{StaticResource {x:Static scc:ClientResources.ScrollableItemsControlStyleKey}}">
+                    <!-- BEGIN SHIPYARD BUILD QUEUE AREA -->
+                    <Expander Grid.Row="0"
+                            Grid.RowSpan="2"
+                            Grid.Column="0"
+                            cal:RegionManager.RegionName="{x:Static scc:ColonyScreenRegions.ShipyardBuildQueue}"
+                            Margin="0,4,0,0"
+                            Header="{Binding Source={s:StringResource SHIPYARD_QUEUE}, Mode=OneTime, Converter={StaticResource UpperCaseConverter}}"
+                            IsExpanded="True">
+                    </Expander>
+                    <!-- END SHIPYARD BUILD QUEUE AREA -->
+
+                    <ItemsControl ItemsSource="{Binding Path=SelectedColony.Shipyard.BuildSlots, Mode=OneWay}"
+                                    Grid.Column="1"
+                                    Grid.Row="1"
+                                    Style="{StaticResource {x:Static scc:ClientResources.ScrollableItemsControlStyleKey}}">
                       <ItemsControl.ItemsPanel>
                           <ItemsPanelTemplate>
                               <WrapPanel Orientation="Horizontal" IsItemsHost="True" />

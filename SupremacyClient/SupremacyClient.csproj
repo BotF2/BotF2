@@ -1329,6 +1329,6 @@
 	xcopy "$(SolutionDir)Common\*.xml" "$(TargetDir)lib\" /y /i /s /d
 	if $(ConfigurationName) == Debug (
 	xcopy "$(SolutionDir)Common\*.pdb" "$(TargetDir)lib\" /y /i /s /d)
-	</PostBuildEvent> 
+	</PostBuildEvent>
   </PropertyGroup>
 </Project>
