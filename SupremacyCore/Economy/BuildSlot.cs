@@ -8,10 +8,13 @@
 // All other rights reserved.
 
 using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics.Contracts;
-
+using System.Linq;
 using Supremacy.Annotations;
+using Supremacy.Collections;
 using Supremacy.IO.Serialization;
 
 namespace Supremacy.Economy
@@ -34,6 +37,16 @@ namespace Supremacy.Economy
     {
         private BuildProject _project;
         private BuildPriority _priority;
+        private ObservableCollection<BuildQueueItem> _buildQueue;
+
+        public IList<BuildQueueItem> BuildQueue
+        {
+            get { return _buildQueue; }
+        }
+        public IIndexedEnumerable<BuildSlot> BuildSlotQueue
+        {
+            get { return IndexedEnumerable.Single(this); }
+        }
 
         /// <summary>
         /// Gets or sets the project under construction in this <see cref="BuildSlot"/>.
@@ -92,7 +105,33 @@ namespace Supremacy.Economy
         {
             _project = null;
             _priority = BuildPriority.Normal;
+            _buildQueue = new ObservableCollection<BuildQueueItem>();
         }
+        //public void ProcessQueue()
+        //{
+        //    //foreach (var slot in BuildSlotQueue)
+        //    //{
+        //        if (this.HasProject && this.Project.IsCancelled)
+        //            this.Project = null;
+
+        //    if (this.Project != null)
+        //    {
+        //        var queueItem = BuildSlotQueue.FirstOrDefault();
+        //        if (queueItem == null)
+        //        {
+        //            if (BuildSlotQueue.Count() > 1)
+        //            {
+        //                this.Project = queueItem.Project.CloneEquivalent();
+        //                BuildSlotQueue.DecrementCount();
+        //            }
+        //        }
+        //        else
+        //        {
+        //            this.Project = queueItem.Project;
+        //            BuildQueue.Remove(queueItem);
+        //        }
+        //    //}
+        //}
 
         #region INotifyPropertyChanged Members
         /// <summary>

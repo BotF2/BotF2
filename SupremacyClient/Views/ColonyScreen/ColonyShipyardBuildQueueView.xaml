@@ -3,15 +3,15 @@
                        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                        xmlns:s="http://schemas.startreksupremacy.com/xaml/core"
                        xmlns:scc="http://schemas.startreksupremacy.com/xaml/presentation">
-    <UserControl.Resources>
-        <DataTemplate x:Key="ShipyardBuildSlotTemplate"
+  <UserControl.Resources>
+    <DataTemplate x:Key="ShipyardBuildSlotTemplate"
               DataType="{x:Type s:BuildSlot}">
       <Border>
         <Grid TextBlock.Foreground="{StaticResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"
               TextBlock.FontSize="14pt"
               Margin="0,7,0,7">
           <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="Auto" />   
             <ColumnDefinition Width="Auto" />
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="Auto" />

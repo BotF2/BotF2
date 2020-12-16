@@ -249,26 +249,26 @@
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="auto" />
+                        <ColumnDefinition Width="*" />
+                        <!--<ColumnDefinition Width="1" />-->
                     </Grid.ColumnDefinitions>
                                         
                       <!--<TextBlock Grid.Row="0" Grid.Column="0" VerticalAlignment="Center"
                            Foreground="LightGoldenrodYellow"
                            FontSize="16"
-                           Text="Hello" 
-                                 
+                           Text="Hello"                                  
                                  />-->
                     <!-- BEGIN SHIPYARD BUILD QUEUE AREA -->
-                    <Expander Grid.Row="0"
-                            Grid.RowSpan="2"
-                            Grid.Column="0"
-                            cal:RegionManager.RegionName="{x:Static scc:ColonyScreenRegions.ShipyardBuildQueue}"
-                            Margin="0,4,0,0"
-                            Header="{Binding Source={s:StringResource SHIPYARD_QUEUE}, Mode=OneTime, Converter={StaticResource UpperCaseConverter}}"
-                            IsExpanded="True">
-                    </Expander>
+                      <!-- this "Queue" is just a list of what is already seen in ths shipyard bays, ColonyShipyardBuildQueueView, -->
+                        <!--<Expander Grid.Row="0"
+                                Grid.RowSpan="2"
+                                Grid.Column="0"
+                                cal:RegionManager.RegionName="{x:Static scc:ColonyScreenRegions.ShipyardBuildQueue}"
+                                Margin="0,4,0,0"
+                                Header="{Binding Source={s:StringResource SHIPYARD_QUEUE}, Mode=OneTime, Converter={StaticResource UpperCaseConverter}}"
+                                IsExpanded="True">
+                        </Expander>-->
                     <!-- END SHIPYARD BUILD QUEUE AREA -->
 
                     <ItemsControl ItemsSource="{Binding Path=SelectedColony.Shipyard.BuildSlots, Mode=OneWay}"
@@ -282,8 +282,9 @@
                       </ItemsControl.ItemsPanel>
                       <ItemsControl.ItemTemplate>
                         <DataTemplate DataType="{x:Type s:ShipyardBuildSlot}">
-                          <scc:ShipyardDockView BuildSlot="{Binding}" Margin="16" HorizontalAlignment="Left" />
+                          <scc:ShipyardDockView BuildSlot="{Binding}" Margin="16" HorizontalAlignment="Left" />           
                         </DataTemplate>
+                          
                       </ItemsControl.ItemTemplate>
                       <!--<ItemsControl.ItemTemplate> // Do we need to put in an scc:NewShipSelectionView? - think not, Think it is viewed from ColonyScreenPresenter and NewShipSelectionView.xaml
                         <DataTemplate DataType="{x:Type s:ShipyardBuildSlot}">
