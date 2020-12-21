@@ -148,6 +148,58 @@ namespace Supremacy.Client.Views
         }
         #endregion
 
+        #region SelectedShipyardBuildSlotQueueProject Property
+        private BuildProject _selectedShipyardBuildSlotQueueProject;
+
+        public event EventHandler SelectedShipyardBuildSlotQueueProjectChanged;
+
+        private void OnSelectedShipyardBuildSlotQueueProjectChanged()
+        {
+            var handler = SelectedShipyardBuildProjectChanged;
+            if (handler != null)
+                handler(this, EventArgs.Empty);
+            OnPropertyChanged("SelectedShipyardBuildSlotQueueProject");
+        }
+
+        public BuildProject SelectedShipyardBuildSlotQueueProject
+        {
+            get { return _selectedShipyardBuildSlotQueueProject; }
+            set
+            {
+                if (Equals(_selectedShipyardBuildSlotQueueProject, value))
+                    return;
+                _selectedShipyardBuildSlotQueueProject = value;
+                OnSelectedShipyardBuildSlotQueueProjectChanged();
+            }
+        }
+        #endregion
+
+        #region SelectedShipyardBuildSlot Property
+        private ShipyardBuildSlot _selectedShipyardBuildSlot;
+
+        public event EventHandler SelectedShipyardBuildSlotChanged;
+
+        private void OnSelectedShipyardBuildSlotChanged()
+        {
+            var handler = SelectedShipyardBuildSlotChanged;
+            if (handler != null)
+                handler(this, EventArgs.Empty);
+            OnPropertyChanged("SelectedShipyardBuildSlot");
+        }
+
+        public ShipyardBuildSlot SelectedShipyardBuildSlot
+        {
+            get { return _selectedShipyardBuildSlot; }
+            set
+            {
+                if (Equals(_selectedShipyardBuildSlot, value))
+                    return;
+                _selectedShipyardBuildSlot = value;
+                OnSelectedShipyardBuildSlotChanged();
+            }
+        }
+        #endregion
+
         #region PlanetaryBuildProjects Property
         private IEnumerable<BuildProject> _planetaryBuildProjects;
 
@@ -196,6 +248,32 @@ namespace Supremacy.Client.Views
                     return;
                 _shipyardBuildProjects = value;
                 OnShipyardBuildProjectsChanged();
+            }
+        }
+        #endregion
+
+        #region ShipyardBuildSlotQueueProjects Property
+        private IEnumerable<BuildProject> _shipyardBuildSlotQueueProjects;
+
+        public event EventHandler ShipyardBuildSlotQueueProjectsChanged;
+
+        private void OnShipyardBuildSlotQueueProjectsChanged()
+        {
+            var handler = ShipyardBuildSlotQueueProjectsChanged;
+            if (handler != null)
+                handler(this, EventArgs.Empty);
+            OnPropertyChanged("ShipyardBuildSlotQueueProjects");
+        }
+
+        public IEnumerable<BuildProject> ShipyardBuildSlotQueueProjects
+        {
+            get { return _shipyardBuildSlotQueueProjects; }
+            set
+            {
+                if (Equals(_shipyardBuildSlotQueueProjects, value))
+                    return;
+                _shipyardBuildSlotQueueProjects = value;
+                OnShipyardBuildSlotQueueProjectsChanged();
             }
         }
         #endregion
@@ -278,6 +356,33 @@ namespace Supremacy.Client.Views
         }
         #endregion
 
+
+        #region AddToShipyardBuildSlotQueue Command
+        public event EventHandler AddToShipyardBuildSlotQueueCommandChanged;
+
+        private ICommand _addToShipyardBuildSlotQueueCommand;
+
+        private void OnAddToShipyardBuildSlotQueueCommandChanged()
+        {
+            var handler = AddToShipyardBuildSlotQueueCommandChanged;
+            if (handler != null)
+                handler(this, EventArgs.Empty);
+            OnPropertyChanged("AddToShipyardBuildSlotQueueCommand");
+        }
+
+        public ICommand AddToShipyardBuildSlotQueueCommand
+        {
+            get { return _addToShipyardBuildSlotQueueCommand; }
+            set
+            {
+                if (Equals(_addToShipyardBuildSlotQueueCommand, value))
+                    return;
+                _addToShipyardBuildSlotQueueCommand = value;
+                OnAddToShipyardBuildSlotQueueCommandChanged();
+            }
+        }
+        #endregion
+
         #region RemoveFromShipyardBuildQueue Command
         public event EventHandler RemoveFromShipyardBuildQueueCommandChanged;
 
@@ -300,6 +405,33 @@ namespace Supremacy.Client.Views
                     return;
                 _removeFromShipyardBuildQueueCommand = value;
                 OnRemoveFromShipyardBuildQueueCommandChanged();
+            }
+        }
+        #endregion
+
+
+        #region RemoveFromShipyardBuildSlotQueue Command
+        public event EventHandler RemoveFromShipyardBuildSlotQueueCommandChanged;
+
+        private ICommand _removeFromShipyardBuildSlotQueueCommand;
+
+        private void OnRemoveFromShipyardBuildSlotQueueCommandChanged()
+        {
+            var handler = RemoveFromShipyardBuildSlotQueueCommandChanged;
+            if (handler != null)
+                handler(this, EventArgs.Empty);
+            OnPropertyChanged("RemoveFromShipyardBuildSlotQueueCommand");
+        }
+
+        public ICommand RemoveFromShipyardBuildSlotQueueCommand
+        {
+            get { return _removeFromShipyardBuildSlotQueueCommand; }
+            set
+            {
+                if (Equals(_removeFromShipyardBuildSlotQueueCommand, value))
+                    return;
+                _removeFromShipyardBuildSlotQueueCommand = value;
+                OnRemoveFromShipyardBuildSlotQueueCommandChanged();
             }
         }
         #endregion
@@ -555,6 +687,32 @@ namespace Supremacy.Client.Views
                 if (Equals(_selectShipBuildProjectCommand, value))
                     return;
                 _selectShipBuildProjectCommand = value;
+                OnSelectShipBuildProjectCommandChanged();
+            }
+        }
+        #endregion
+
+        #region SelectShipyardBuildSlotQueueProjectCommand Command
+        private ICommand _selectShipyardBuildSlotQueueProjectCommand;
+
+        public event EventHandler SelectShipyardBuildSlotQueueProjectCommandChanged;
+
+        private void OnSelectShipyardBuildSlotQueueProjectCommandChanged()
+        {
+            var handler = SelectShipyardBuildSlotQueueProjectCommandChanged;
+            if (handler != null)
+                handler(this, EventArgs.Empty);
+            OnPropertyChanged("SelectShipyardBuildSlotQueueProjectCommand");
+        }
+
+        public ICommand SelectShipyardBuildSlotQueueProjectCommand
+        {
+            get { return _selectShipyardBuildSlotQueueProjectCommand; }
+            set
+            {
+                if (Equals(_selectShipyardBuildSlotQueueProjectCommand, value))
+                    return;
+                _selectShipyardBuildSlotQueueProjectCommand = value;
                 OnSelectShipBuildProjectCommandChanged();
             }
         }

@@ -17,6 +17,14 @@ namespace Supremacy.Client.Views
 
     public partial class NewShipSelectionView
     {
+        private bool _buildOverEnqueue;
+
+        public  bool BuildOverEnqueue
+        {
+            get { return _buildOverEnqueue; }
+            set { _buildOverEnqueue = value; }
+        }
+
         public NewShipSelectionView(ShipyardBuildSlot buildSlot)
         {
             InitializeComponent();
@@ -38,6 +46,31 @@ namespace Supremacy.Client.Views
 
             if (BuildProjectList.Items.Count > 0)  
                 BuildProjectList.SelectedIndex = 0;  // to display SHIP_INFO_TEXT just at screen opening
+            _buildOverEnqueue = true;
+        }
+
+        public NewShipSelectionView(ShipyardBuildSlot buildSlot, BuildProject buildQueueProject)
+        {
+            InitializeComponent();
+
+            BuildProject[] shipList = TechTreeHelper.GetShipyardBuildProjects(buildSlot.Shipyard)
+                                        .OrderBy(s => s.BuildDesign.Key)
+                                        .ToArray();
+
+            BuildProjectList.ItemsSource = shipList;
+
+            SetBinding(
+                SelectedBuildSlotQueueProjectProperty,
+                new Binding
+                {
+                    Source = BuildProjectList,
+                    Path = new PropertyPath(Selector.SelectedItemProperty),
+                    Mode = BindingMode.OneWay
+                });
+
+            if (BuildProjectList.Items.Count > 0)
+                BuildProjectList.SelectedIndex = 0;  // to display SHIP_INFO_TEXT just at screen opening
+            _buildOverEnqueue = false;
         }
 
         #region SelectedBuildProject Property
@@ -70,6 +103,36 @@ namespace Supremacy.Client.Views
         }
         #endregion
 
+        #region SelectedBuildSlotQueueProject Property
+        public static readonly DependencyProperty SelectedBuildSlotQueueProjectProperty = DependencyProperty.Register(
+            "SelectedBuildSlotQueueProject",
+            typeof(ShipBuildProject),
+            typeof(NewShipSelectionView),
+            new PropertyMetadata());
+
+        public ShipBuildProject SelectedBuildSlotQueueProject
+        {
+            get { return (ShipBuildProject)GetValue(SelectedBuildSlotQueueProjectProperty); }
+            set { SetValue(SelectedBuildSlotQueueProjectProperty, value); }
+        }
+        #endregion
+
+        #region AdditionalQueueContent Property
+        public static readonly DependencyProperty AdditionalQueueContentProperty = DependencyProperty.Register(
+            "AdditionalQueueContent",
+            typeof(object),
+            typeof(NewShipSelectionView),
+            new FrameworkPropertyMetadata(
+                null,
+                FrameworkPropertyMetadataOptions.None));
+
+        public object AdditionalQueueContent
+        {
+            get { return GetValue(AdditionalQueueContentProperty); }
+            set { SetValue(AdditionalQueueContentProperty, value); }
+        }
+        #endregion
+
         public string ShipFunctionPath 
         {
             get
@@ -77,6 +140,11 @@ namespace Supremacy.Client.Views
                 return "vfs:///Resources/UI/" + Context.DesignTimeAppContext.Instance.LocalPlayerEmpire.Civilization.Key + "/ColonyScreen/Ship_Functions.png";
             }
         }
+
+        //public  ShipBuildVsShipQueue
+        //{
+
+        //}
 
         private void CanExecuteAcceptCommand(object sender, CanExecuteRoutedEventArgs e)
         {
@@ -102,5 +170,19 @@ namespace Supremacy.Client.Views
 
             DialogResult = true;
         }
+
+        private void OnBuildSlotQueueProjectListMouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            var source = e.OriginalSource as DependencyObject;
+            if (source == null)
+                return;
+
+            var contanier = source.FindVisualAncestorByType<ListBoxItem>();
+            if (contanier == null)
+                return;
+
+            DialogResult = true;
+        }
+
     }
 }

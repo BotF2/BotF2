@@ -7,7 +7,7 @@
                     xmlns:local="clr-namespace:Supremacy.Client"
                     xmlns:Views="clr-namespace:Supremacy.Client.Views"
                     mc:Ignorable="d">
-
+<!-- ShipyardDockView.cs is in ClientComponent\Views\ColonyScreen\-->
   <local:StringFormatConverter x:Key="StringFormatConverter" />
   <SolidColorBrush x:Key="GreenLightStroke" Color="#FF006400" />
 
@@ -131,7 +131,106 @@
     </Setter>
   </Style>
 
-  <Style x:Key="ToggleConstructionBayButton"
+    <Style x:Key="RemoveShipButton"
+           TargetType="{x:Type Button}">
+        <Setter Property="Focusable" Value="False"/>
+        <Setter Property="IsTabStop" Value="False"/>
+        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+        <Setter Property="UseLayoutRounding" Value="True" />
+        <Setter Property="Cursor" Value="Hand" />
+        <Setter Property="ToolTip" Value="Remove a Ship" />
+        <Setter Property="Width" Value="25" />
+        <Setter Property="Height" Value="25" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <DockPanel>
+                        <Border CornerRadius="3" BorderThickness="3" DockPanel.Dock="Left" Width="50" Height="50" VerticalAlignment="Top" HorizontalAlignment="Left">
+                            <Border.Background>
+                                <RadialGradientBrush GradientOrigin="0.5,0.333333" RadiusY="0.666667" RadiusX="1" Opacity="0.6">
+                                    <GradientStop Color="#FFC8C8C8" Offset="0"/>
+                                    <GradientStop Color="Black" Offset="1"/>
+                                </RadialGradientBrush>
+                            </Border.Background>
+                            <!--<Border.BorderBrush>
+                                <RadialGradientBrush GradientOrigin="0.5,0.333333" RadiusY="0.666667" RadiusX="1" Opacity="0.8">
+                                    <GradientStop Color="DarkRed" Offset="0" />
+                                    <GradientStop Color="Red" Offset="1" />
+                                </RadialGradientBrush>
+                            </Border.BorderBrush>-->
+                            <Image x:Name="ImageContent" Opacity="1" Source="vfs:///Resources/Images/ScreenIcons/Minus.png" Stretch="None" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                        </Border>
+                    </DockPanel>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="ImageContent" Property="Effect">
+                                <Setter.Value>
+                                    <DropShadowEffect Color="RosyBrown" BlurRadius="20" ShadowDepth="0" RenderingBias="Quality" Direction="270" />
+                                </Setter.Value>
+                            </Setter>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="ImageContent" Property="Margin" Value="0" />
+                            <Setter TargetName="ImageContent" Property="Width" Value="25" />
+                            <Setter TargetName="ImageContent" Property="Height" Value="25" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="AddShipButton"
+           TargetType="{x:Type Button}">
+        <Setter Property="Focusable" Value="False"/>
+        <Setter Property="IsTabStop" Value="False"/>
+        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+        <Setter Property="UseLayoutRounding" Value="True" />
+        <Setter Property="Cursor" Value="Hand" />
+        <Setter Property="ToolTip" Value="Add Ship to Queue" />
+        <Setter Property="IsEnabled" Value="True" />
+        <Setter Property="Width" Value="25" />
+        <Setter Property="MaxHeight" Value="25" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <DockPanel>
+                        <Border CornerRadius="3" BorderThickness="3" DockPanel.Dock="Left" Width="50" Height="50" VerticalAlignment="Top" HorizontalAlignment="Left">
+                            <Border.Background>
+                                <RadialGradientBrush GradientOrigin="0.5,0.333333" RadiusY="0.666667" RadiusX="1" Opacity="0.6">
+                                    <GradientStop Color="#FFC8C8C8" Offset="0"/>
+                                    <GradientStop Color="Black" Offset="1"/>
+                                </RadialGradientBrush>
+                            </Border.Background>
+                            <!--<Border.BorderBrush>
+                                <RadialGradientBrush GradientOrigin="0.5,0.333333" RadiusY="0.666667" RadiusX="1" Opacity="0.8">
+                                    <GradientStop Color="DarkGreen" Offset="0" />
+                                    <GradientStop Color="LightGreen" Offset="1" />
+                                </RadialGradientBrush>
+                            </Border.BorderBrush>-->
+                            <Image x:Name="ImageContent" Opacity="1" Source="vfs:///Resources/Images/ScreenIcons/Pluse.png" Stretch="None"  HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                        </Border>
+                    </DockPanel>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="ImageContent" Property="Effect">
+                                <Setter.Value>
+                                    <DropShadowEffect Color="Lime" BlurRadius="20" ShadowDepth="0" RenderingBias="Quality" Direction="270" />
+                                </Setter.Value>
+                            </Setter>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="ImageContent" Property="Margin" Value="0" />
+                            <Setter TargetName="ImageContent" Property="Width" Value="25" />
+                            <Setter TargetName="ImageContent" Property="Height" Value="25" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="ToggleConstructionBayButton"
            TargetType="{x:Type Button}">
     <Setter Property="Focusable" Value="False"/>
     <Setter Property="IsTabStop" Value="False"/>
@@ -279,8 +378,11 @@
                     <Button x:Name="BuildShipButton" Style="{StaticResource BuildShipButton}" Width="50" Height="50" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="0,3,0,0" Visibility="Hidden" ToolTip="{xs:LocalizedString Group={x:Static s:LocalizedTextGroups.ColonyScreen}, Entry=BUILT_NEW_SHIP_TOOLTIP}" Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Views:ColonyScreenView}, Path=DataContext.(Views:ColonyScreenPresentationModel.SelectShipBuildProjectCommand)}" CommandParameter="{Binding}" />
                 </Grid>
                 <StackPanel Orientation="Horizontal">
-                    <Border x:Name="ImageBorder"
+                    <Button x:Name="AddShipButton" Style="{StaticResource AddShipButton}" Width="25" Height="25" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="0,0,0,1" Visibility="Visible" Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Views:ColonyScreenView}, Path=DataContext.(Views:ColonyScreenPresentationModel.SelectShipyardBuildSlotQueueProjectCommand)}" CommandParameter="{Binding}" />
+                    <Button x:Name="RemoveShipButton" Style="{StaticResource RemoveShipButton}" Width="25" Height="25" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,1,0,0" Visibility="Hidden" Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Views:ColonyScreenView}, Path=DataContext.(Views:ColonyScreenPresentationModel.RemoveFromShipyardBuildSlotQueueCommand)}" CommandParameter="{Binding Path=(s:ShipyardBuildSlot.BuildSlotQueueProject)}" />
+                  <Border x:Name="ImageBorder"
                             Grid.Column="0"
+                            VerticalAlignment="Top"
                             HorizontalAlignment="Left"
                             BorderBrush="White"
                             BorderThickness="2"
@@ -289,14 +391,14 @@
                             Height="24">
                         <Border.Background>
                             <ImageBrush Stretch="UniformToFill"
-                                        ImageSource="{Binding Path=Project.BuildDesign.Image, Converter={StaticResource TechObjectImageConverter}}" />
+                                ImageSource="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:ShipyardDockView}}, Path=(local:ShipyardDockView.ShipyardBuildSlot).(s:ShipyardBuildSlot.BuildSlotQueueProject).(s:ShipBuildProject.BuildDesign).(s:TechObjectDesign.ShipUnderConstructionImage), Mode=OneWay}" />
                         </Border.Background>
-                    </Border>
-                    <TextBlock>
-                        <TextBlock.Text>
-                            <Binding RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType={x:Type local:ShipyardDockView}}" Path="(local:ShipyardDockView.BuildSlot).(s:BuildSlot.Project).(s:BuildProject.BuildDesign).(s:ShipDesign.ClassName)" Mode="OneWay" />
-                        </TextBlock.Text>
-                    </TextBlock>
+                  </Border>
+                  <TextBlock>
+                    <TextBlock.Text>
+                       <Binding RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType={x:Type local:ShipyardDockView}}" Path="(local:ShipyardDockView.BuildSlot).(s:BuildSlot.Project).(s:BuildProject.BuildDesign).(s:ShipDesign.ClassName)" Mode="OneWay" />
+                    </TextBlock.Text>
+                  </TextBlock>
                 </StackPanel>
             </StackPanel>
         </DockPanel>
@@ -313,11 +415,25 @@
                 <Condition Binding="{Binding Path=(s:BuildSlot.HasProject), Mode=OneWay}" Value="False" />
                 <Condition Binding="{Binding Path=(s:ShipyardBuildSlot.IsActive), Mode=OneWay}" Value="True" />
               </MultiDataTrigger.Conditions>
-              <Setter TargetName="BuildShipButton" Property="Visibility" Value="Visible" />
+                <Setter TargetName="BuildShipButton" Property="Visibility" Value="Visible" />
+            </MultiDataTrigger>
+
+            <DataTrigger Binding="{Binding RelativeSource={RelativeSource Self}, Path=(local:ShipyardDockView.ShipyardBuildSlot).(s:ShipyardBuildSlot.HasBuildSlotQueueProject), Mode=OneWay}"
+                        Value="false">
+                <Setter TargetName="AddShipButton" Property="Visibility" Value="Visible" />
+                <Setter TargetName="ResourcesSite" Property="Visibility" Value="Visible" />
+            </DataTrigger>
+
+            <MultiDataTrigger>
+                <MultiDataTrigger.Conditions>
+                    <Condition Binding="{Binding Path=(s:ShipyardBuildSlot.HasBuildSlotQueueProject), Mode=OneWay}" Value="False" />
+                    <Condition Binding="{Binding Path=(s:ShipyardBuildSlot.IsActive), Mode=OneWay}" Value="True" />
+                </MultiDataTrigger.Conditions>
+                <Setter TargetName="RemoveShipButton" Property="Visibility" Value="Visible" />
             </MultiDataTrigger>
 
             <DataTrigger Binding="{Binding Path=(s:ShipyardBuildSlot.IsActive), Mode=OneWay}"
-                         Value="True">
+                Value="True">
               <Setter TargetName="PowerButton" Property="ToolTip">
                 <Setter.Value>
                   <MultiBinding Converter="{x:Static local:StringFormatConverter.Instance}" ConverterParameter="{xs:LocalizedString Group={x:Static s:LocalizedTextGroups.ColonyScreen}, Entry=TOGGLE_CONSTRUCTION_BAY_BUTTON_TOOLTIP_ONLINE}">

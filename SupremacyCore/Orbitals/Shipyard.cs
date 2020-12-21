@@ -27,6 +27,7 @@ namespace Supremacy.Orbitals
     public class Shipyard : TechObject, IProductionCenter
     {
         private ArrayWrapper<ShipyardBuildSlot> _buildSlots;
+        private ArrayWrapper<BuildProject> _buildSlotQueues;
         private ObservableCollection<BuildQueueItem> _buildQueue;
 
         /// <summary>
@@ -62,6 +63,7 @@ namespace Supremacy.Orbitals
             : base(design)
         {
             _buildSlots = new ArrayWrapper<ShipyardBuildSlot>(new ShipyardBuildSlot[design.BuildSlots]);
+            _buildSlotQueues = new ArrayWrapper<BuildProject>(new BuildProject[design.BuildSlotQueues]);
             
             for (var i = 0; i < _buildSlots.Count; i++)
                 _buildSlots[i] = new ShipyardBuildSlot { Shipyard = this, SlotID = i};
@@ -72,6 +74,11 @@ namespace Supremacy.Orbitals
         public IIndexedEnumerable<ShipyardBuildSlot> BuildSlots
         {
             get { return _buildSlots; }
+        }
+
+        public IIndexedEnumerable<BuildProject> BuildSlotQueues
+        {
+            get { return _buildSlotQueues; }
         }
 
         #region IProductionCenter Members

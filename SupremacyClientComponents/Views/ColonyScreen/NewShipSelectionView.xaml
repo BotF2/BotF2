@@ -19,18 +19,19 @@
              FontSize="16"
              UseLayoutRounding="True">
 
-  <Dialogs:Dialog.Resources>
-    <ResourceDictionary>
-      <ResourceDictionary.MergedDictionaries>
-        <ResourceDictionary Source="/SupremacyClient;Component/Themes/Federation/TechObjectInfo.xaml" />
-      </ResourceDictionary.MergedDictionaries>
-    </ResourceDictionary>
-  </Dialogs:Dialog.Resources>
+    <Dialogs:Dialog.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/SupremacyClient;Component/Themes/Federation/TechObjectInfo.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+            <BooleanToVisibilityConverter x:Key="Converter" />
+        </ResourceDictionary>
+    </Dialogs:Dialog.Resources>   
   
   <Dialogs:Dialog.CommandBindings>
     <CommandBinding Command="{x:Static Commands:DialogCommands.AcceptCommand}" CanExecute="CanExecuteAcceptCommand" Executed="ExecuteAcceptCommand" />
   </Dialogs:Dialog.CommandBindings>
-  
+
     <!--       MAIN CONTENT     -->
   <Grid Background="Black">
 
@@ -61,6 +62,7 @@
 
     <ListBox x:Name="BuildProjectList"
              Grid.Row="1"
+             Visibility="{Binding Path=BuildOverQueue, Converter={StaticResource Converter}}"
              Margin="0,6,0,0"
              PreviewMouseDoubleClick="OnBuildProjectListMouseDoubleClick"
              SelectedItem="{Binding ElementName=_self, Path=SelectedBuildProject, Mode=OneWayToSource}"
@@ -80,26 +82,49 @@
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
     </ListBox>
+      
+    <ListBox x:Name="BuildSlotQueueProjectList"
+                Grid.Row="1"
+                Visibility="{Binding Path=BuildOverQueue, Converter={StaticResource Converter}}"
+                Margin="0,6,0,0"
+                PreviewMouseDoubleClick="OnBuildSlotQueueProjectListMouseDoubleClick"
+                SelectedItem="{Binding ElementName=_self, Path=SelectedBuildSlotQueueProjectProperty, Mode=OneWayToSource}"
+                Background="Black">
+        <ItemsControl.ItemTemplate>
+            <DataTemplate DataType="{x:Type s:BuildProject}">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="3*"/>
+                        <ColumnDefinition Width="1*" />
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Text="{Binding Path=BuildDesign.Name}" />
+                    <!--<TextBlock Grid.Column="2"
+                    Text="{Binding Path=TurnsRemaining, StringFormat={local:StringResource Key=BUILD_QUEUE_TURNS_REMAINING_FORMAT}}"
+                    TextAlignment="Right" />-->
+                </Grid>
+            </DataTemplate>
+        </ItemsControl.ItemTemplate>
+    </ListBox>
 
     <DockPanel 
-            Grid.Column="1"
-            Grid.RowSpan="2"
-            LastChildFill="True"
-            Width="360"
-            Margin="10,0,0,0"
-            Background="Black">
-        <Image DockPanel.Dock="Top"
-                MaxWidth="360"
-                MaxHeight="250"
-                Stretch="Uniform"
-                StretchDirection="DownOnly"
-                Source="{Binding ElementName=BuildProjectList, Path=SelectedItem.BuildDesign.Image}"/>
+        Grid.Column="1"
+        Grid.RowSpan="2"
+        LastChildFill="True"
+        Width="360"
+        Margin="10,0,0,0"
+        Background="Black">
+    <Image DockPanel.Dock="Top"
+            MaxWidth="360"
+            MaxHeight="250"
+            Stretch="Uniform"
+            StretchDirection="DownOnly"
+            Source="{Binding ElementName=BuildProjectList, Path=SelectedItem.BuildDesign.Image}"/>
 
-        <ScrollViewer Margin="0,15,0,0"
-                VerticalScrollBarVisibility="Auto">
-            <ContentControl Style="{DynamicResource TechObjectInfoPanelStyle}"
-                    Content="{Binding ElementName=_self, Path=AdditionalContent}" />
-        </ScrollViewer>
+    <ScrollViewer Margin="0,15,0,0"
+            VerticalScrollBarVisibility="Auto">
+        <ContentControl Style="{DynamicResource TechObjectInfoPanelStyle}"
+                Content="{Binding ElementName=_self, Path=AdditionalContent}" />
+    </ScrollViewer>
     </DockPanel>
 
         <DockPanel 
