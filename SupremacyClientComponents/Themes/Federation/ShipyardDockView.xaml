@@ -378,9 +378,22 @@
                     <Button x:Name="BuildShipButton" Style="{StaticResource BuildShipButton}" Width="50" Height="50" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="0,3,0,0" Visibility="Hidden" ToolTip="{xs:LocalizedString Group={x:Static s:LocalizedTextGroups.ColonyScreen}, Entry=BUILT_NEW_SHIP_TOOLTIP}" Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Views:ColonyScreenView}, Path=DataContext.(Views:ColonyScreenPresentationModel.SelectShipBuildProjectCommand)}" CommandParameter="{Binding}" />
                 </Grid>
                 <StackPanel Orientation="Horizontal">
-                    <Button x:Name="AddShipButton" Style="{StaticResource AddShipButton}" Width="25" Height="25" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="0,0,0,1" Visibility="Visible" Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Views:ColonyScreenView}, Path=DataContext.(Views:ColonyScreenPresentationModel.SelectShipyardBuildSlotQueueProjectCommand)}" CommandParameter="{Binding}" />
-                    <Button x:Name="RemoveShipButton" Style="{StaticResource RemoveShipButton}" Width="25" Height="25" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,1,0,0" Visibility="Hidden" Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Views:ColonyScreenView}, Path=DataContext.(Views:ColonyScreenPresentationModel.RemoveFromShipyardBuildSlotQueueCommand)}" CommandParameter="{Binding Path=(s:ShipyardBuildSlot.BuildSlotQueueProject)}" />
-                  <Border x:Name="ImageBorder"
+                    <Button x:Name="AddShipButton" Style="{StaticResource AddShipButton}" Width="25" Height="25" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="0,0,0,1" Visibility="Visible" Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Views:ColonyScreenView}, Path=DataContext.(Views:ColonyScreenPresentationModel.SelectBuildSlotQueueProjectCommand)}" CommandParameter="{Binding}" />
+                    <!--<Button x:Name="RemoveShipButton" Style="{StaticResource RemoveShipButton}" Width="25" Height="25" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,1,0,0" Visibility="Hidden" Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Views:ColonyScreenView}, Path=DataContext.(Views:ColonyScreenPresentationModel.ClearBuildSlotQueueCommand)}" CommandParameter="{Binding Path=(s:BuildProject.Project)}" />-->
+                    <!--<ItemsControl ItemsSource="{Binding Path=SelectedColony.Shipyard.BuildSlotQueues, Mode=OneWay}"
+                                  Style="{StaticResource {x:Static scc:ClientResources.ScrollableItemsControlStyleKey}}">>-->
+                    <!--<ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel Orientation="Horizontal" IsItemsHost="True" />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate DataType="{x:Type s:BuildSlotQueue}">
+                            <scc:ShipyardDockView BuildSlotQueue="{Binding}" Margin="1" HorizontalAlignment="Left" />
+                        </DataTemplate>
+                      </ItemsControl.ItemTemplate>
+                    </ItemsControl>-->
+                    <Border x:Name="ImageBorder"
                             Grid.Column="0"
                             VerticalAlignment="Top"
                             HorizontalAlignment="Left"
@@ -389,14 +402,14 @@
                             CornerRadius="4"
                             Width="29"
                             Height="24">
-                        <Border.Background>
+                        <!--<Border.Background>
                             <ImageBrush Stretch="UniformToFill"
-                                ImageSource="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:ShipyardDockView}}, Path=(local:ShipyardDockView.ShipyardBuildSlot).(s:ShipyardBuildSlot.BuildSlotQueueProject).(s:ShipBuildProject.BuildDesign).(s:TechObjectDesign.ShipUnderConstructionImage), Mode=OneWay}" />
-                        </Border.Background>
+                                ImageSource="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:ShipyardDockView}}, Path=(local:ShipyardDockView.BuildSlotQueueProject).(s:BuildProject.BuildDesign).(s:TechObjectDesign.ShipUnderConstructionImage), Mode=OneWay}" />
+                        </Border.Background>-->
                   </Border>
                   <TextBlock>
                     <TextBlock.Text>
-                       <Binding RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType={x:Type local:ShipyardDockView}}" Path="(local:ShipyardDockView.BuildSlot).(s:BuildSlot.Project).(s:BuildProject.BuildDesign).(s:ShipDesign.ClassName)" Mode="OneWay" />
+                        <Binding RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType={x:Type local:ShipyardDockView}}" Path="(local:ShipyardDockView.ShipyardBuildSlot).(s:ShipyardBuildSlot.BuildSlotQueue).(s:BuildProject.BuildDesign).(s:ShipDesign.ClassName)" Mode="OneWay" />
                     </TextBlock.Text>
                   </TextBlock>
                 </StackPanel>
@@ -421,16 +434,16 @@
             <DataTrigger Binding="{Binding RelativeSource={RelativeSource Self}, Path=(local:ShipyardDockView.ShipyardBuildSlot).(s:ShipyardBuildSlot.HasBuildSlotQueueProject), Mode=OneWay}"
                         Value="false">
                 <Setter TargetName="AddShipButton" Property="Visibility" Value="Visible" />
-                <Setter TargetName="ResourcesSite" Property="Visibility" Value="Visible" />
+                <!--<Setter TargetName="RemoveShipButton" Property="Visibility" Value="Visible" />-->
             </DataTrigger>
 
-            <MultiDataTrigger>
+            <!--<MultiDataTrigger>
                 <MultiDataTrigger.Conditions>
                     <Condition Binding="{Binding Path=(s:ShipyardBuildSlot.HasBuildSlotQueueProject), Mode=OneWay}" Value="False" />
                     <Condition Binding="{Binding Path=(s:ShipyardBuildSlot.IsActive), Mode=OneWay}" Value="True" />
                 </MultiDataTrigger.Conditions>
                 <Setter TargetName="RemoveShipButton" Property="Visibility" Value="Visible" />
-            </MultiDataTrigger>
+            </MultiDataTrigger>-->
 
             <DataTrigger Binding="{Binding Path=(s:ShipyardBuildSlot.IsActive), Mode=OneWay}"
                 Value="True">

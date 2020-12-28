@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.Collections.Generic;
+using System.Windows;
 using System.Windows.Controls;
 
 using Supremacy.Economy;
@@ -47,6 +48,20 @@ namespace Supremacy.Client
         {
             get { return (ShipyardBuildSlot)GetValue(ShipyardBuildSlotProperty); }
             set { SetValue(ShipyardBuildSlotProperty, value); }
+        }
+        #endregion
+
+        #region BuildSlotQueueProject Property
+        public static readonly DependencyProperty BuildSlotQueueProjectProperty = DependencyProperty.Register(
+            "BuildSlotQueueProject",
+            typeof(ShipyardBuildSlot),
+            typeof(ShipyardDockView),
+            new PropertyMetadata());
+
+        public ShipyardBuildSlot BuildSlotQueueProject
+        {
+            get { return (ShipyardBuildSlot)GetValue(BuildSlotQueueProjectProperty); }
+            set { SetValue(BuildSlotQueueProjectProperty, value); }
         }
         #endregion
     }

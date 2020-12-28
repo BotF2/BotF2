@@ -361,6 +361,9 @@
     <Compile Include="Views\ColonyScreen\ColonyScreenRegions.cs" />
     <Compile Include="Views\ColonyScreen\ColonyScreenView.cs" />
     <Compile Include="Views\ColonyScreen\IColonyScreenPresenter.cs" />
+    <Compile Include="Views\ColonyScreen\NewShipyQueueSelectionView.xaml.cs">
+      <DependentUpon>NewShipyQueueSelectionView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\ColonyScreen\NewShipSelectionView.xaml.cs">
       <DependentUpon>NewShipSelectionView.xaml</DependentUpon>
     </Compile>
@@ -482,6 +485,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Themes\TerranEmpire\ShipyardDockView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\ColonyScreen\NewShipyQueueSelectionView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

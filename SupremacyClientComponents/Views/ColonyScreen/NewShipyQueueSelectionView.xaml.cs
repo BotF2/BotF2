@@ -15,9 +15,9 @@ namespace Supremacy.Client.Views
 {
 
 
-    public partial class NewShipSelectionView
+    public partial class NewShipQueueSelectionView
     {
-        public NewShipSelectionView(ShipyardBuildSlot buildSlot)
+        public NewShipQueueSelectionView(ShipyardBuildSlot buildSlot)
         {
             InitializeComponent();
 
@@ -25,52 +25,52 @@ namespace Supremacy.Client.Views
                                         .OrderBy(s => s.BuildDesign.Key)
                                         .ToArray();
 
-            BuildProjectList.ItemsSource = shipList;
+            BuildSlotQueueProjectList.ItemsSource = shipList;
 
             SetBinding(
-                SelectedBuildProjectProperty,
+                SelectedBuildSlotQueueProjectProperty,
                 new Binding
                 {
-                    Source = BuildProjectList,
+                    Source = BuildSlotQueueProjectList,
                     Path = new PropertyPath(Selector.SelectedItemProperty),
                     Mode = BindingMode.OneWay
                 });
 
-            if (BuildProjectList.Items.Count > 0)
-                BuildProjectList.SelectedIndex = 0;  // to display SHIP_INFO_TEXT just at screen opening
+            if (BuildSlotQueueProjectList.Items.Count > 0)
+                BuildSlotQueueProjectList.SelectedIndex = 0;  // to display SHIP_INFO_TEXT just at screen opening
         }
 
         #region SelectedBuildProject Property
-        public static readonly DependencyProperty SelectedBuildProjectProperty = DependencyProperty.Register(
-            "SelectedBuildProject",
+        public static readonly DependencyProperty SelectedBuildSlotQueueProjectProperty = DependencyProperty.Register(
+            "SelectedBuildSlotQueueProject",
             typeof(ShipBuildProject),
-            typeof(NewShipSelectionView),
+            typeof(NewShipQueueSelectionView),
             new PropertyMetadata());
 
-        public ShipBuildProject SelectedBuildProject
+        public ShipBuildProject SelectedBuildSlotQueueProject
         {
-            get { return (ShipBuildProject)GetValue(SelectedBuildProjectProperty); }
-            set { SetValue(SelectedBuildProjectProperty, value); }
+            get { return (ShipBuildProject)GetValue(SelectedBuildSlotQueueProjectProperty); }
+            set { SetValue(SelectedBuildSlotQueueProjectProperty, value); }
         }
         #endregion
 
-        #region AdditionalContent Property
-        public static readonly DependencyProperty AdditionalContentProperty = DependencyProperty.Register(
-            "AdditionalContent",
+        #region AdditionalQueueContent Property
+        public static readonly DependencyProperty AdditionalQueueContentProperty = DependencyProperty.Register(
+            "AdditionalQueueContent",
             typeof(object),
-            typeof(NewShipSelectionView),
+            typeof(NewShipQueueSelectionView),
             new FrameworkPropertyMetadata(
                 null,
                 FrameworkPropertyMetadataOptions.None));
 
-        public object AdditionalContent
+        public object AdditionalQueueContent
         {
-            get { return GetValue(AdditionalContentProperty); }
-            set { SetValue(AdditionalContentProperty, value); }
+            get { return GetValue(AdditionalQueueContentProperty); }
+            set { SetValue(AdditionalQueueContentProperty, value); }
         }
         #endregion
 
-        public string ShipFunctionPath
+        public string ShipQueueFunctionPath
         {
             get
             {
@@ -80,12 +80,12 @@ namespace Supremacy.Client.Views
 
         private void CanExecuteAcceptCommand(object sender, CanExecuteRoutedEventArgs e)
         {
-            e.CanExecute = (SelectedBuildProject != null);
+            e.CanExecute = (SelectedBuildSlotQueueProject != null);
         }
 
         private void ExecuteAcceptCommand(object sender, ExecutedRoutedEventArgs e)
         {
-            if (SelectedBuildProject == null)
+            if (SelectedBuildSlotQueueProject == null)
                 return;
             DialogResult = true;
         }

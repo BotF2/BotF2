@@ -2013,9 +2013,10 @@ namespace Supremacy.Game
                             {
                                 if (!slot.HasProject)
                                 {
+                                    //slot.ProcessQueue();
                                     shipyard.ProcessQueue();
                                 }
-                                if (!slot.HasProject && shipyard.BuildQueue.IsEmpty())
+                                if (!slot.HasProject && shipyard.BuildQueue.IsEmpty()) // shipyard.BuildQueue.IsEmpty())
                                 {
                                     GameLog.Core.ShipProduction.DebugFormat("Nothing to do for Shipyard Slot {0} on {1} ({2})",
                                         slot.SlotID,

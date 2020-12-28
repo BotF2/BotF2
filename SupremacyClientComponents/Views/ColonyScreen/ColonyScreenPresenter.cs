@@ -13,11 +13,12 @@ using Supremacy.Tech;
 using Supremacy.Universe;
 using Supremacy.Utility;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Data;
-
+using System.Windows.Input;
 using CompositeRegionManager = Microsoft.Practices.Composite.Presentation.Regions.RegionManager;
 
 namespace Supremacy.Client.Views
@@ -27,11 +28,10 @@ namespace Supremacy.Client.Views
     {
         private readonly DelegateCommand<BuildProject> _addToPlanetaryBuildQueueCommand;
         private readonly DelegateCommand<BuildProject> _addToShipyardBuildQueueCommand;
-        private readonly DelegateCommand<BuildProject> _addToShipyardBuildSlotQueueCommand;
-       //private readonly DelegateCommand<BuildQueueItem> _addToBuildSlotQueueCommand;
+        private readonly DelegateCommand<BuildProject> _addToBuildSlotQueueCommand;
         private readonly DelegateCommand<BuildQueueItem> _removeFromPlanetaryBuildQueueCommand;
         private readonly DelegateCommand<BuildQueueItem> _removeFromShipyardBuildQueueCommand;
-        private readonly DelegateCommand<BuildProject> _removeFromShipyardBuildSlotQueueCommand;
+        private readonly DelegateCommand<BuildProject> _clearBuildSlotQueueCommand;
         private readonly DelegateCommand<BuildProject> _cancelBuildProjectCommand;
         private readonly DelegateCommand<BuildProject> _buyBuildProjectCommand;
         private readonly DelegateCommand<ProductionCategory> _activateFacilityCommand;
@@ -42,7 +42,7 @@ namespace Supremacy.Client.Views
         private readonly DelegateCommand<Building> _toggleBuildingIsActiveCommand;
         private readonly DelegateCommand<ShipyardBuildSlot> _toggleShipyardBuildSlotCommand;
         private readonly DelegateCommand<ShipyardBuildSlot> _selectShipBuildProjectCommand;
-        private readonly DelegateCommand<ShipyardBuildSlot> _selectShipyardBuildSlotQueueProjectCommand;
+        private readonly DelegateCommand<ShipyardBuildSlot> _selectBuildSlotQueueProjectCommand;
         private readonly DelegateCommand<Sector> _selectSectorCommand;
         private readonly DelegateCommand<object> _previousColonyCommand;
         private readonly DelegateCommand<object> _nextColonyCommand;
@@ -63,9 +63,9 @@ namespace Supremacy.Client.Views
                 ExecuteAddToShipyardBuildQueueCommand,
                 CanExecuteAddToShipyardBuildQueueCommand);
 
-            _addToShipyardBuildSlotQueueCommand = new DelegateCommand<BuildProject>(
-                ExecuteAddToShipyardBuildSlotQueueCommand,
-                CanExecuteAddToShipyardBuildSlotQueueCommand);
+            _addToBuildSlotQueueCommand = new DelegateCommand<BuildProject>(
+                ExecuteAddToBuildSlotQueueCommand,
+                CanExecuteAddToBuildSlotQueueCommand);
 
             _removeFromPlanetaryBuildQueueCommand = new DelegateCommand<BuildQueueItem>(
                 ExecuteRemoveFromPlanetaryBuildQueueCommand,
@@ -75,9 +75,9 @@ namespace Supremacy.Client.Views
                 ExecuteRemoveFromShipyardBuildQueueCommand,
                 CanExecuteRemoveFromShipyardBuildQueueCommand);
 
-            _removeFromShipyardBuildSlotQueueCommand = new DelegateCommand<BuildProject>(
-                ExecuteRemoveFromShipyardBuildSlotQueueCommand,
-                CanExecuteRemoveFromShipyardBuildSlotQueueCommand);
+            _clearBuildSlotQueueCommand = new DelegateCommand<BuildProject>(
+                ExecuteClearBuildSlotQueueCommand,
+                CanExecuteClearBuildSlotQueueCommand);
 
             _cancelBuildProjectCommand = new DelegateCommand<BuildProject>(
                 ExecuteCancelBuildProjectCommand,
@@ -119,9 +119,9 @@ namespace Supremacy.Client.Views
                 ExecuteSelectShipBuildProjectCommand,
                 CanExecuteSelectShipBuildProjectCommand);
 
-            _selectShipyardBuildSlotQueueProjectCommand = new DelegateCommand<ShipyardBuildSlot>(
-                ExecuteSelectShipBuildSlotQueueProjectCommand,
-                CanExecuteSelectShipBuildSlotQueueProjectCommand);
+            _selectBuildSlotQueueProjectCommand = new DelegateCommand<ShipyardBuildSlot>(
+                ExecuteSelectBuildSlotQueueProjectCommand,
+                CanExecuteSelectBuildSlotQueueProjectCommand); // we do not build here, we just have it in queue
 
             _selectSectorCommand = new DelegateCommand<Sector>(
                 sector =>
@@ -242,7 +242,7 @@ namespace Supremacy.Client.Views
 
             return buildSlot.IsActive && !buildSlot.HasProject;
         }
-        private bool CanExecuteSelectShipBuildSlotQueueProjectCommand(ShipyardBuildSlot buildSlot)
+        private bool CanExecuteSelectBuildSlotQueueProjectCommand(ShipyardBuildSlot buildSlot)
         {
             // a count of queue to stop at 4?
             if (buildSlot == null)
@@ -299,7 +299,7 @@ namespace Supremacy.Client.Views
             PlayerOrderService.AddOrder(new UpdateProductionOrder(buildSlot.Shipyard));
         }
 
-        private void ExecuteSelectShipBuildSlotQueueProjectCommand(ShipyardBuildSlot buildSlot)
+        private void ExecuteSelectBuildSlotQueueProjectCommand(ShipyardBuildSlot buildSlot)
         {
             if (buildSlot == null)
                 return;
@@ -308,12 +308,10 @@ namespace Supremacy.Client.Views
             if (colony == null || colony.Shipyard != buildSlot.Shipyard)
                 return;
 
-            if (!buildSlot.IsActive)
-                return;
+            //if (!buildSlot.IsActive)
+            //    return;
 
-            var queueBuildProject = buildSlot.BuildSlotQueueProject;
-
-            var view = new NewShipSelectionView(buildSlot, queueBuildProject);
+            var view = new NewShipQueueSelectionView(buildSlot);
             var statsViewModel = new TechObjectDesignViewModel();
 
             BindingOperations.SetBinding(
@@ -322,7 +320,7 @@ namespace Supremacy.Client.Views
                 new Binding
                 {
                     Source = view,
-                    Path = new PropertyPath("SelectedBuildSlotQueueProjectProperty.BuildDesign")
+                    Path = new PropertyPath("SelectedBuildSlotQueueProject.BuildDesign")
                 });
 
             view.AdditionalQueueContent = statsViewModel;
@@ -336,10 +334,20 @@ namespace Supremacy.Client.Views
             if (project == null)
                 return;
 
-            queueBuildProject = project;
+            //if (buildSlot.BuildSlotQueue == null)
+            //{
+            //    Queue <BuildSlotQueueProject> constructQueue = new Queue<BuildSlotQueueProject>();
+            //    constructQueue.Enqueue((BuildSlotQueueProject)project);
+            //    buildSlot.BuildSlotQueue = constructQueue;
+            //}
+            //else buildSlot.BuildSlotQueue.Enqueue(project);
+            //foreach (var item in buildSlot.BuildSlotQueue)
+            //{
+            //    GameLog.Client.ShipProduction.DebugFormat("BuildSlotQueue item = {0}", item.Description);
+            //}
 
             //PlayerOrderService.AddOrder(new UpdateProductionOrder(buildSlot.Shipyard));
-            buildSlot.BuildSlotQueue.Enqueue(project);
+            //buildSlot.BuildSlotQueue.Enqueue(buildSlot.BuildSlotQueueProject);// Enqueue use to happen in the AddProjectToBuildSlotQueue()
         }
 
         private bool CanExecuteToggleBuildingScrapCommand(object parameter)
@@ -478,7 +486,7 @@ namespace Supremacy.Client.Views
             Model.SelectedColony = null;
             Model.SelectedPlanetaryBuildProject = null;
             Model.SelectShipBuildProjectCommand = null;
-            Model.SelectShipyardBuildSlotQueueProjectCommand = null;
+            Model.SelectBuildSlotQueueProjectCommand = null;
         }
 
         private void OnSelectedColonyPropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -646,10 +654,10 @@ namespace Supremacy.Client.Views
 
             _addToPlanetaryBuildQueueCommand.RaiseCanExecuteChanged();
             _addToShipyardBuildQueueCommand.RaiseCanExecuteChanged();
-            _addToShipyardBuildSlotQueueCommand.RaiseCanExecuteChanged();
+            _addToBuildSlotQueueCommand.RaiseCanExecuteChanged();
             _removeFromPlanetaryBuildQueueCommand.RaiseCanExecuteChanged();
             _removeFromShipyardBuildQueueCommand.RaiseCanExecuteChanged();
-            _removeFromShipyardBuildSlotQueueCommand.RaiseCanExecuteChanged();
+            _clearBuildSlotQueueCommand.RaiseCanExecuteChanged();
             _cancelBuildProjectCommand.RaiseCanExecuteChanged();
             _buyBuildProjectCommand.RaiseCanExecuteChanged();
             _activateFacilityCommand.RaiseCanExecuteChanged();
@@ -660,6 +668,8 @@ namespace Supremacy.Client.Views
             _toggleBuildingIsActiveCommand.RaiseCanExecuteChanged();
             _toggleShipyardBuildSlotCommand.RaiseCanExecuteChanged();
             _selectShipBuildProjectCommand.RaiseCanExecuteChanged();
+            _selectBuildSlotQueueProjectCommand.RaiseCanExecuteChanged();
+            
         }
 
         protected override void RegisterCommandAndEventHandlers()
@@ -668,10 +678,10 @@ namespace Supremacy.Client.Views
 
             Model.AddToPlanetaryBuildQueueCommand = _addToPlanetaryBuildQueueCommand;
             Model.AddToShipyardBuildQueueCommand = _addToShipyardBuildQueueCommand;
-            Model.AddToShipyardBuildSlotQueueCommand = _addToShipyardBuildSlotQueueCommand;
+            Model.AddToBuildSlotQueueCommand = _addToBuildSlotQueueCommand;
             Model.RemoveFromPlanetaryBuildQueueCommand = _removeFromPlanetaryBuildQueueCommand;
             Model.RemoveFromShipyardBuildQueueCommand = _removeFromShipyardBuildQueueCommand;
-            Model.RemoveFromShipyardBuildSlotQueueCommand = _removeFromShipyardBuildSlotQueueCommand;
+            Model.ClearBuildSlotQueueCommand = _clearBuildSlotQueueCommand;
             Model.CancelBuildProjectCommand = _cancelBuildProjectCommand;
             Model.BuyBuildProjectCommand = _buyBuildProjectCommand;
             Model.ScrapFacilityCommand = _scrapFacilityCommand;
@@ -682,7 +692,7 @@ namespace Supremacy.Client.Views
             Model.ToggleBuildingScrapCommand = _toggleBuildingScrapCommand;
             Model.ToggleShipyardBuildSlotCommand = _toggleShipyardBuildSlotCommand;
             Model.SelectShipBuildProjectCommand = _selectShipBuildProjectCommand;
-            Model.SelectShipyardBuildSlotQueueProjectCommand = _selectShipyardBuildSlotQueueProjectCommand;
+            Model.SelectBuildSlotQueueProjectCommand = _selectBuildSlotQueueProjectCommand;
 
             Model.SelectedColonyChanged += OnSelectedColonyChanged;
             Model.ActiveOrbitalBatteriesChanged += OnActiveOrbitalBatteriesChanged;
@@ -828,7 +838,7 @@ namespace Supremacy.Client.Views
             return ((Model.SelectedColony != null) && (Model.SelectedColony.Shipyard != null));
         }
 
-        private bool CanExecuteRemoveFromShipyardBuildSlotQueueCommand(BuildProject item)
+        private bool CanExecuteClearBuildSlotQueueCommand(BuildProject item)
         {
             return ((Model.SelectedColony != null) && (Model.SelectedColony.Shipyard != null));
         }
@@ -854,15 +864,13 @@ namespace Supremacy.Client.Views
             RemoveItemFromBuildQueue(item, colony.Shipyard);
         }
 
-        private void ExecuteRemoveFromShipyardBuildSlotQueueCommand(BuildProject project)
+        private void ExecuteClearBuildSlotQueueCommand(BuildProject project)
         {
             var shipyardBuildSlot = Model.SelectedShipyardBuildSlot;
             if (project == null)
                 return;
-            //if (buildQueueItem == null)
-            //    return;
 
-            RemoveItemFromShipyardBuildSlotQueue(project, shipyardBuildSlot);
+            ClearShipyardBuildSlotQueue(project, shipyardBuildSlot);
         }
 
         private bool CanExecuteAddToShipyardBuildQueueCommand(BuildProject project)
@@ -870,7 +878,7 @@ namespace Supremacy.Client.Views
             return ((Model.SelectedColony != null) && (Model.SelectedColony.Shipyard != null));
         }
 
-        private bool CanExecuteAddToShipyardBuildSlotQueueCommand(BuildProject project)
+        private bool CanExecuteAddToBuildSlotQueueCommand(BuildProject project)
         {
             return ((Model.SelectedColony != null) && (Model.SelectedColony.Shipyard != null));
         }
@@ -887,7 +895,7 @@ namespace Supremacy.Client.Views
             AddProjectToBuildQueue(project, colony.Shipyard);
         }
 
-        private void ExecuteAddToShipyardBuildSlotQueueCommand(BuildProject project)
+        private void ExecuteAddToBuildSlotQueueCommand(BuildProject project)
         {
             var colony = Model.SelectedColony;
             if (colony == null)
@@ -895,13 +903,13 @@ namespace Supremacy.Client.Views
 
             if (colony.Shipyard == null)
                 return;
-            if (colony.Shipyard.BuildQueue.Count > 4)
+            var buildSlotQueueProject = Model.SelectedBuildSlotQueueProject;
+            if (buildSlotQueueProject == null)
                 return;
-            var queueList = colony.Shipyard.BuildSlots.FirstOrDefault().BuildSlotQueue;
-            var buildSlot = colony.Shipyard.BuildSlots.FirstOrDefault();
 
-            var findABuildSlotQueue = colony.Shipyard.BuildSlots.FirstOrDefault();
-            AddProjectToShipyardBuildSlotQueue(project, buildSlot);
+            var buildSlot = Model.SelectedShipyardBuildSlot;
+
+            AddProjectToBuildSlotQueue(project, buildSlot);
         }
 
         protected void RemoveItemFromBuildQueue([NotNull] BuildQueueItem item, [NotNull] IProductionCenter productionCenter)
@@ -919,16 +927,16 @@ namespace Supremacy.Client.Views
             UpdateBuildLists();
         }
 
-        protected void RemoveItemFromShipyardBuildSlotQueue([NotNull] BuildProject project, [NotNull] ShipyardBuildSlot buildSlot)
+        protected void ClearShipyardBuildSlotQueue([NotNull] BuildProject project, [NotNull] ShipyardBuildSlot buildSlot)
         {
             //var colony = Model.SelectedShipyardBuildSlotQueueProject;
             if (project == null)
-                throw new ArgumentNullException("item");
-            //if (shipyardBuildSlot == null)
-            //    throw new ArgumentNullException("ShipyardBuildSlot");
+                throw new ArgumentNullException("BuildProject");
+            if (buildSlot == null)
+                throw new ArgumentNullException("ShipyardBuildSlot");
 
             //if (shipyardBuildSlot.BuildSlotQueue.Count  > 0)
-             buildSlot.BuildSlotQueue.Dequeue();
+             buildSlot.BuildSlotQueue.Clear();
 
             //PlayerOrderService.AddOrder(new UpdateProductionOrder(buildSlot));
 
@@ -966,27 +974,27 @@ namespace Supremacy.Client.Views
 
             UpdateBuildLists();
         }
-        protected void AddProjectToShipyardBuildSlotQueue([NotNull] BuildProject project, [NotNull] ShipyardBuildSlot buildSlot)
+        protected void AddProjectToBuildSlotQueue([NotNull] BuildProject project, [NotNull] ShipyardBuildSlot buildSlot)
         {
             if (project == null)
                 throw new ArgumentNullException("project");
             if (buildSlot == null)
-                throw new ArgumentNullException("buildSlot");
+                throw new ArgumentNullException("shipyardBuildSlot");
 
             var newItemAdded = true;
             var buildSlotQueue = buildSlot.BuildSlotQueue;
-            var lastItem = buildSlotQueue.LastOrDefault();
+            //var lastItem = buildSlotQueue.LastOrDefault();
             int queueCount = buildSlotQueue.Count();
 
-            if ((buildSlotQueue != null) && queueCount >= 4) // project.IsEquivalent(lastItem))
+            if ((buildSlotQueue != null) && queueCount > 3) // project.IsEquivalent(lastItem))
             {
                     newItemAdded = false;
             }
 
             if (newItemAdded)
             {
-                buildSlotQueue.Enqueue(project);
-                buildSlot.ProcessQueue();
+               // buildSlotQueue.Enqueue((BuildSlotQueueProject)project);
+               // buildSlot.ProcessQueue();
             }
 
             // What am I missiong here??? - PlayerOrderService.AddOrder(new UpdateProductionOrder(buildSlot));
@@ -1004,11 +1012,11 @@ namespace Supremacy.Client.Views
 
             Model.AddToPlanetaryBuildQueueCommand = null;
             Model.AddToShipyardBuildQueueCommand = null;
-            Model.AddToShipyardBuildSlotQueueCommand = null;
+            Model.AddToBuildSlotQueueCommand = null;
            
             Model.RemoveFromPlanetaryBuildQueueCommand = null;
             Model.RemoveFromShipyardBuildQueueCommand = null;
-            Model.RemoveFromShipyardBuildSlotQueueCommand = null;
+            Model.ClearBuildSlotQueueCommand = null;
             Model.CancelBuildProjectCommand = null;
             Model.BuyBuildProjectCommand = null;
             Model.ScrapFacilityCommand = null;
