@@ -1,4 +1,4 @@
-// ResearchScreen.cs
+// File:ResearchScreen.cs
 //
 // Copyright (c) 2007 Mike Strobel
 //
@@ -719,15 +719,44 @@ namespace Supremacy.Client
         {
             get
             {
-                var result = new StringBuilder(ResourceManager.GetString(_application.Name));
+                var result = new StringBuilder(_application.Level + " > " + ResourceManager.GetString(_application.Name));
+                if (IsResearching)
+                {
+                    result.AppendFormat(
+                        " ( {0:0%} )",
+                        _pool.GetCurrentProject(_application.Field).Progress.PercentFilled);
+
+                    // now in SitRep
+                    //GameLog.Client.Research.DebugFormat("Turn {2}: {1} done to Research {0}", _application.Field.TechCategory.ToString()
+                    //    , _pool.GetCurrentProject(_application.Field).Progress.PercentFilled, GameContext.Current.TurnNumber);
+                    //civManager.SitRepEntries.Add(new ResearchStatusSitRepEntry(Owner, finishedApp, newDesigns))
+                }
+                return result.ToString();
+            }
+        }
+
+        public string DisplayTooltip        
+        {
+            get
+            {
+                var result = new StringBuilder(
+                    _application.Field.TechCategory
+                    + " " + ResourceManager.GetString("LEVEL")
+                    + " " + _application.Level
+                    + " > " + _application.ResearchCost + " " + ResourceManager.GetString("POINTS")
+                    + " " + ResourceManager.GetString("FOR")
+                    + "  " + ResourceManager.GetString(_application.Name));
+
+
                 if (IsResearching)
                 {
                     result.AppendFormat(
                         " ({0:0%})",
                         _pool.GetCurrentProject(_application.Field).Progress.PercentFilled);
 
-                    GameLog.Client.Research.DebugFormat("Turn {2}: {1} done to Research {0}", _application.Field.TechCategory.ToString()
-                        , _pool.GetCurrentProject(_application.Field).Progress.PercentFilled, GameContext.Current.TurnNumber);
+                    // now in SitRep
+                    //GameLog.Client.Research.DebugFormat("Turn {2}: {1} done to Research {0}", _application.Field.TechCategory.ToString()
+                    //    , _pool.GetCurrentProject(_application.Field).Progress.PercentFilled, GameContext.Current.TurnNumber);
                     //civManager.SitRepEntries.Add(new ResearchStatusSitRepEntry(Owner, finishedApp, newDesigns))
                 }
                 return result.ToString();
