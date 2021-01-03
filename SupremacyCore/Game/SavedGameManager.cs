@@ -132,8 +132,8 @@ namespace Supremacy.Game
                 SavedGameHeader header;
                 using (var fileStream = File.Open(fullPath, FileMode.Open, FileAccess.Read, FileShare.Read))
                 {
-                    GameLog.Client.SaveLoad.DebugFormat(Environment.NewLine + "   reading HEADER of {0}"
-                        , fileStream.Name
+                    GameLog.Client.SaveLoad.DebugFormat(/*Environment.NewLine + "                       */"reading HEADER of {0}"/* + Environment.NewLine*/
+                        , fileName
                         );
 
                     header = SavedGameHeader.Read(fileStream);

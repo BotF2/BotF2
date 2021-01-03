@@ -1,4 +1,4 @@
-// CombatWindow.xaml.cs
+// File:CombatWindow.xaml.cs
 //
 // Copyright (c) 2007 Mike Strobel
 //

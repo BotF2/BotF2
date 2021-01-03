@@ -1,4 +1,5 @@
-﻿<UserControl x:Class="Supremacy.Client.OptionsPages.AllOptionsPage"
+﻿ <!--File:AllOptionsPage.xaml-->
+ <UserControl x:Class="Supremacy.Client.OptionsPages.AllOptionsPage"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:s="http://schemas.startreksupremacy.com/xaml/core"

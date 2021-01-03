@@ -726,8 +726,12 @@ namespace Supremacy.Client
                         " ({0:0%})",
                         _pool.GetCurrentProject(_application.Field).Progress.PercentFilled);
 
-                    GameLog.Client.Research.DebugFormat("Turn {2}: {1} done to Research {0}", _application.Field.TechCategory.ToString()
-                        , _pool.GetCurrentProject(_application.Field).Progress.PercentFilled, GameContext.Current.TurnNumber);
+                    // now included into SitRep
+                    //GameLog.Client.Research.DebugFormat("Turn {0}: {1} done to Research {2}"
+                    //    , GameContext.Current.TurnNumber
+                    //    , _pool.GetCurrentProject(_application.Field).Progress.PercentFilled
+                    //    , _application.Field.TechCategory.ToString()                        
+                    //    );
                     //civManager.SitRepEntries.Add(new ResearchStatusSitRepEntry(Owner, finishedApp, newDesigns))
                 }
                 return result.ToString();

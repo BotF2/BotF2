@@ -213,8 +213,9 @@ namespace Supremacy.Game
             }
 
             string _text = "   "
-                /*+ Environment.NewLine*/ + ";Turn;" + header.TurnNumber
                 /*+ Environment.NewLine*/ + ";GameVersion;" + header.GameVersion
+                /*+ Environment.NewLine*/ + ";Turn;" + header.TurnNumber
+
                 /*+ Environment.NewLine + ";FileName   ;" + reader.   --- no filename available here*/
                 ;
             GameLog.Client.SaveLoad.DebugFormat(_text);
