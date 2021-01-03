@@ -67,7 +67,7 @@ namespace Supremacy.Universe
             {
                 var starType = value as StarType?;
                 if (starType.HasValue)
-                    return ResourceManager.GetResourceUri(string.Format("Resources/Images/Stars/Map/{0}.png", starType.Value));
+                    return ResourceManager.GetResourceUri(string.Format("Resources/Images/UI/Stars/Map/{0}.png", starType.Value));
             }
             return base.ConvertTo(context, culture, value, destinationType);
         }

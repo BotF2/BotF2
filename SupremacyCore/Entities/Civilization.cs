@@ -149,6 +149,7 @@ namespace Supremacy.Entities
             get { return _spiedCivList; }
             set
             {
+                // code here to .Add civs to list as spy ships install spy network
                 _spiedCivList = value;
             }
         }
@@ -201,6 +202,7 @@ namespace Supremacy.Entities
             _traits = _traits.Trim();
             _spiedCivList = SpiedCivList;
             _totalWarCivilization = TotalWarCivilization;
+            //_intelOrdersIncomingToHost = IntelOrdersIncomingToHost;
 
             // When starting a game, options is null
             //TODO: This should be in with the code to start the game
@@ -481,6 +483,7 @@ namespace Supremacy.Entities
         public string Traits
         {
             get { return _traits; }
+            //set { _traits = value; }
         }
 
         /// <summary>
@@ -493,7 +496,6 @@ namespace Supremacy.Entities
             get { return _totalWarCivilization; }
             set { if (_totalWarCivilization == null) { _totalWarCivilization = value; } }
         }
-
         /// <summary>
         /// Gets a value indicating whether this <see cref="Civilization"/> is an empire.
         /// </summary>
@@ -808,7 +810,6 @@ namespace Supremacy.Entities
 
             return parentElement;
         }
-
         #endregion
 
         #region Operators
