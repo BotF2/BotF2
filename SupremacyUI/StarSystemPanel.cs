@@ -82,7 +82,7 @@ namespace Supremacy.UI
             NebulaImage = new CachedBitmap(
                 new BitmapImage(
                     new Uri(
-                        "Resources/Images/Stars/Nebula.png",
+                        "Resources/Images/UI/Stars/Nebula.png",
                         UriKind.Relative)),
                 BitmapCreateOptions.None,
                 BitmapCacheOption.OnLoad);
@@ -91,7 +91,7 @@ namespace Supremacy.UI
             FoodBonusImage = new CachedBitmap(
                 new BitmapImage(
                     new Uri(
-                        "Resources/Images/ScreenIcons/food.png",
+                        "Resources/Images/UI/ScreenIcons/food.png",
                         UriKind.Relative)),
                 BitmapCreateOptions.None,
                 BitmapCacheOption.OnLoad);
@@ -100,7 +100,7 @@ namespace Supremacy.UI
             EnergyBonusImage = new CachedBitmap(
                 new BitmapImage(
                     new Uri(
-                        "Resources/Images/ScreenIcons/energy_bonus.png",
+                        "Resources/Images/UI/ScreenIcons/energy_bonus.png",
                         UriKind.Relative)),
                 BitmapCreateOptions.None,
                 BitmapCacheOption.OnLoad);
@@ -109,7 +109,7 @@ namespace Supremacy.UI
             DilithiumBonusImage = new CachedBitmap(
                 new BitmapImage(
                     new Uri(
-                        "Resources/Images/ScreenIcons/dilithium.png",
+                        "Resources/Images/UI/ScreenIcons/dilithium.png",
                         UriKind.Relative)),
                 BitmapCreateOptions.None,
                 BitmapCacheOption.OnLoad);
@@ -118,7 +118,7 @@ namespace Supremacy.UI
             RawMaterialsBonusImage = new CachedBitmap(
                 new BitmapImage(
                     new Uri(
-                        "Resources/Images/ScreenIcons/rawmaterials.png",
+                        "Resources/Images/UI/ScreenIcons/rawmaterials.png",
                         UriKind.Relative)),
                 BitmapCreateOptions.None,
                 BitmapCacheOption.OnLoad);

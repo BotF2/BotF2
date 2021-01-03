@@ -85,7 +85,7 @@ namespace Supremacy.UI
             for (int i = 0; i < Frames.Length; i++)
             {
                 CachedBitmap frame = new CachedBitmap(
-                    new BitmapImage(ResourceManager.GetResourceUri("Resources/Images/Stars/Star" + (i + 1) + ".png")),
+                    new BitmapImage(ResourceManager.GetResourceUri("Resources/Images/UI/Stars/Star" + (i + 1) + ".png")),
                     BitmapCreateOptions.None,
                     BitmapCacheOption.OnLoad);
                 frame.Freeze();
