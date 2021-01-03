@@ -23,7 +23,13 @@ namespace Supremacy.Client.Views
         private readonly INavigationCommandsProxy _navigationCommands;
         private readonly DelegateCommand<object> _revealMapCommand;
         private readonly DelegateCommand<object> _cheatMenuCommand;
-        private readonly DelegateCommand<object> _gameInfoScreenCommand;
+        private readonly DelegateCommand<object> _f12_ScreenCommand;
+        private readonly DelegateCommand<object> _f11_ScreenCommand;
+        private readonly DelegateCommand<object> _f10_ScreenCommand;
+        private readonly DelegateCommand<object> _f09_ScreenCommand;
+        private readonly DelegateCommand<object> _f08_ScreenCommand;
+        private readonly DelegateCommand<object> _f07_ScreenCommand;
+        private readonly DelegateCommand<object> _f06_ScreenCommand;
 
         #region Constructors and Finalizers
         public GalaxyGridView([NotNull] IUnityContainer container)
@@ -51,11 +57,23 @@ namespace Supremacy.Client.Views
             
             _revealMapCommand = new DelegateCommand<object>(ExecuteRevealMapCommand);
             _cheatMenuCommand = new DelegateCommand<object>(ExecuteCheatMenuCommand);
-            _gameInfoScreenCommand = new DelegateCommand<object>(ExecuteGameInfoScreenCommand);
+            _f12_ScreenCommand = new DelegateCommand<object>(Execute_f12_ScreenCommand);
+            _f11_ScreenCommand = new DelegateCommand<object>(Execute_f11_ScreenCommand);
+            _f10_ScreenCommand = new DelegateCommand<object>(Execute_f10_ScreenCommand);
+            _f09_ScreenCommand = new DelegateCommand<object>(Execute_f09_ScreenCommand);
+            _f08_ScreenCommand = new DelegateCommand<object>(Execute_f08_ScreenCommand);
+            _f07_ScreenCommand = new DelegateCommand<object>(Execute_f07_ScreenCommand);
+            _f06_ScreenCommand = new DelegateCommand<object>(Execute_f06_ScreenCommand);
 
             DebugCommands.RevealMap.RegisterCommand(_revealMapCommand);
             DebugCommands.CheatMenu.RegisterCommand(_cheatMenuCommand);
-            DebugCommands.GameInfoScreen.RegisterCommand(_gameInfoScreenCommand);
+            DebugCommands.F12_Screen.RegisterCommand(_f12_ScreenCommand);
+            DebugCommands.F11_Screen.RegisterCommand(_f11_ScreenCommand);
+            DebugCommands.F10_Screen.RegisterCommand(_f10_ScreenCommand);
+            DebugCommands.F09_Screen.RegisterCommand(_f09_ScreenCommand);
+            DebugCommands.F08_Screen.RegisterCommand(_f08_ScreenCommand);
+            DebugCommands.F07_Screen.RegisterCommand(_f07_ScreenCommand);
+            DebugCommands.F06_Screen.RegisterCommand(_f06_ScreenCommand);
         }
 
         private void OnUnloaded(object sender, RoutedEventArgs args)
@@ -65,7 +83,13 @@ namespace Supremacy.Client.Views
             GalaxyGrid = null;
             DebugCommands.RevealMap.UnregisterCommand(_revealMapCommand);
             DebugCommands.CheatMenu.UnregisterCommand(_cheatMenuCommand);
-            DebugCommands.GameInfoScreen.UnregisterCommand(_gameInfoScreenCommand);
+            DebugCommands.F12_Screen.UnregisterCommand(_f12_ScreenCommand);
+            DebugCommands.F11_Screen.UnregisterCommand(_f11_ScreenCommand);
+            DebugCommands.F10_Screen.UnregisterCommand(_f10_ScreenCommand);
+            DebugCommands.F09_Screen.UnregisterCommand(_f09_ScreenCommand);
+            DebugCommands.F08_Screen.UnregisterCommand(_f08_ScreenCommand);
+            DebugCommands.F07_Screen.UnregisterCommand(_f07_ScreenCommand);
+            DebugCommands.F06_Screen.UnregisterCommand(_f06_ScreenCommand);
         }
 
         private void OnLocalPlayerEmpireChanged()
@@ -137,22 +161,67 @@ namespace Supremacy.Client.Views
             cheatMenu.ShowDialog();
         }
 
-        private void ExecuteGameInfoScreenCommand(object t)
+        private void Execute_f12_ScreenCommand(object t)
         {
             //if (!_appContext.IsSinglePlayerGame)
             //    return;
 
-            var gameInfoScreen = new GameInfoScreen(_appContext);
-            gameInfoScreen.ShowDialog();
+            var _f12_Screen = new GameInfoScreen(_appContext);
+            _f12_Screen.ShowDialog();
+        }
+        private void Execute_f11_ScreenCommand(object t)
+        {
+            //if (!_appContext.IsSinglePlayerGame)
+            //    return;
+
+            var _f11_Screen = new GameInfoScreen(_appContext);
+            _f11_Screen.ShowDialog();
+        }
+        private void Execute_f10_ScreenCommand(object t)
+        {
+            //if (!_appContext.IsSinglePlayerGame)
+            //    return;
+
+            var _f10_Screen = new GameInfoScreen(_appContext);
+            _f10_Screen.ShowDialog();
         }
 
-        private void ExecuteColonyInfoScreenCommand(object t)
+        private void Execute_f09_ScreenCommand(object t)
         {
             //if (!_appContext.IsSinglePlayerGame)
             //    return;
 
-            var colonyInfoScreen = new ColonyInfoScreen(_appContext);
-            colonyInfoScreen.ShowDialog();
+            //var _f09_Screen = new GameInfoScreen(_appContext);
+            //_f09_Screen.ShowDialog();
+            var GameInfoScreen = new GameInfoScreen(_appContext);
+            GameInfoScreen.ShowDialog();
+        }
+
+        private void Execute_f08_ScreenCommand(object t)
+        {
+            //if (!_appContext.IsSinglePlayerGame)
+            //    return;
+
+            var _f08_Screen = new ColonyInfoScreen(_appContext);
+            _f08_Screen.ShowDialog();
+        }
+
+        private void Execute_f07_ScreenCommand(object t)
+        {
+            //if (!_appContext.IsSinglePlayerGame)
+            //    return;
+
+            var _f07_Screen = new GameInfoScreen(_appContext);
+            _f07_Screen.ShowDialog();
+        }
+
+        private void Execute_f06_ScreenCommand(object t)
+        {
+            //if (!_appContext.IsSinglePlayerGame)
+            //    return;
+
+            var _f06_Screen = new ColorInfoScreen(_appContext);
+            _f06_Screen.ShowDialog();
         }
         #endregion
 
