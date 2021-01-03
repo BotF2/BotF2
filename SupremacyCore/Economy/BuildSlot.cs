@@ -59,6 +59,11 @@ namespace Supremacy.Economy
             get { return (_project != null); }
         }
 
+        public bool AllShipsToQueue
+        {
+            get { return true; }
+        }
+
         [ContractInvariantMethod, UsedImplicitly]
         private void Invariants()
         {

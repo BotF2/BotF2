@@ -259,19 +259,28 @@
                            FontSize="16"
                            Text="Hello"                                  
                                  />-->
-                    <!-- BEGIN SHIPYARD BUILD QUEUE AREA -->
-                      <!-- this "Queue" is just a list of what is already seen in ths shipyard bays, ColonyShipyardBuildQueueView, -->
-                        <!--<Expander Grid.Row="0"
+                     <!--BEGIN SHIPYARD BUILD QUEUE AREA --> 
+                      
+                        <Expander Grid.Row="0"
                                 Grid.RowSpan="2"
                                 Grid.Column="0"
                                 cal:RegionManager.RegionName="{x:Static scc:ColonyScreenRegions.ShipyardBuildQueue}"
                                 Margin="0,4,0,0"
                                 Header="{Binding Source={s:StringResource SHIPYARD_QUEUE}, Mode=OneTime, Converter={StaticResource UpperCaseConverter}}"
                                 IsExpanded="True">
-                        </Expander>-->
-               
-
-                    <ItemsControl ItemsSource="{Binding Path=SelectedColony.Shipyard.BuildSlots, Mode=OneWay}"
+                        </Expander>
+    
+                                        <!--<Button x:Name="BuildAShipButton" Grid.Row="0" Grid.Column="1"
+                                                Style="{StaticResource BuildShipButton}" Width="50" Height="50" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="0,3,0,0" Visibility="Visible"
+                                                 Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Views:ColonyScreenView}, Path=DataContext.(Views:ColonyScreenPresentationModel.SelectShipBuildProjectCommand)}" 
+                                                CommandParameter="{Binding}" >
+                                        </Button>-->    
+                                            <!--ToolTip="{xs:LocalizedString Group={x:Static s:LocalizedTextGroups.ColonyScreen}, Entry=BUILT_NEW_SHIP_TOOLTIP}" 
+                                                Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Views:ColonyScreenView}, Path=DataContext.(Views:ColonyScreenPresentationModel.SelectShipBuildProjectCommand)}" 
+                                                CommandParameter="{Binding}" >-->
+                                      
+                        <!--BEGIN SHIPYARD BAY AREAs -->
+                        <ItemsControl ItemsSource="{Binding Path=SelectedColony.Shipyard.BuildSlots, Mode=OneWay}"
                                     Grid.Column="1"
                                     Grid.Row="1"
                                     Style="{StaticResource {x:Static scc:ClientResources.ScrollableItemsControlStyleKey}}">

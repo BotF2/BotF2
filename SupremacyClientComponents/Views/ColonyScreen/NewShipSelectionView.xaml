@@ -60,11 +60,11 @@
                Text="{local:StringResource Key=SELECT_A_SHIP_TO_CONSTRUCT}" />
 
         <ListBox x:Name="BuildProjectList"
-             Grid.Row="1"
-             Margin="0,6,0,0"
-             PreviewMouseDoubleClick="OnBuildProjectListMouseDoubleClick"
-             SelectedItem="{Binding ElementName=_self, Path=SelectedBuildProject, Mode=OneWayToSource}"
-             Background="Black">
+                 Grid.Row="1"
+                 Margin="0,6,0,0"
+                 PreviewMouseDoubleClick="OnBuildProjectListMouseDoubleClick"
+                 SelectedItem="{Binding ElementName=_self, Path=SelectedBuildProject, Mode=OneWayToSource}"
+                 Background="Black">
             <ItemsControl.ItemTemplate>
                 <DataTemplate DataType="{x:Type s:BuildProject}">
                     <Grid>
@@ -74,8 +74,8 @@
                         </Grid.ColumnDefinitions>
                         <TextBlock Text="{Binding Path=BuildDesign.Name}" />
                         <TextBlock Grid.Column="2"
-                       Text="{Binding Path=TurnsRemaining, StringFormat={local:StringResource Key=BUILD_QUEUE_TURNS_REMAINING_FORMAT}}"
-                       TextAlignment="Right" />
+                                   Text="{Binding Path=TurnsRemaining, StringFormat={local:StringResource Key=BUILD_QUEUE_TURNS_REMAINING_FORMAT}}"
+                                   TextAlignment="Right" />
                     </Grid>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
