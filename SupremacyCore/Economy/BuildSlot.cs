@@ -118,7 +118,6 @@ namespace Supremacy.Economy
             if (PropertyChanged != null)
                 PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
         }
-
         #endregion
 
         public virtual void SerializeOwnedData(SerializationWriter writer, object context)

@@ -82,13 +82,13 @@
         <TextBox x:Name="duraniumAmount" Grid.Row="7" Grid.Column="3" Text="99999"/>
         <Button Grid.Row="7" Grid.Column="5" Content="Grant" Click="OnGrantDuraniumButtonClicked"/>
 
-        <!--
+ <!--
         <TextBlock Grid.Row="9" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Background="sienna">Federation</TextBlock>
         <TextBlock Grid.Row="9" Grid.Column="3" HorizontalAlignment="Center" VerticalAlignment="Center" Background="#FFdff3fc">dff3fc</TextBlock>
         <TextBlock Grid.Row="9" Grid.Column="5" HorizontalAlignment="Center" VerticalAlignment="Center" Background="#FF7face3">7face3</TextBlock>
 
         <TextBlock Grid.Row="11" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Background="sienna">Federation2</TextBlock>
-        <TextBlock Grid.Row="11" Grid.Column="3" HorizontalAlignment="Center" VerticalAlignment="Center" Background="#FFffffff">ffffff</TextBlock>
+        <TextBlock Grid.Row="11" Grid.Column="3" HorizontalAlignment="Center" VerticalAlignment="Center" Background="White">ffffff</TextBlock>
         <TextBlock Grid.Row="11" Grid.Column="5" HorizontalAlignment="Center" VerticalAlignment="Center" Background="#FF98C5FB">98C5FB</TextBlock>
 
         <TextBlock Grid.Row="13" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Background="sienna">Romulans</TextBlock>

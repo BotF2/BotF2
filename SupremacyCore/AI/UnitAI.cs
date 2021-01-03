@@ -52,13 +52,17 @@ namespace Supremacy.AI
                 throw new ArgumentNullException(nameof(civ));
             }
 
+            string _turnNumberText = GameContext.Current.TurnNumber.ToString();
             foreach (Fleet fleet in GameContext.Current.Universe.FindOwned<Fleet>(civ))
             {
                 StarSystem homeSystem = GameContext.Current.CivilizationManagers[fleet.Owner].HomeSystem;
+                GameLog.Core.AI.DebugFormat("Turn {0}: Processing Fleet in {4}: {1} {2} {3}..."
+                    , _turnNumberText, fleet.ObjectID, fleet.Name, fleet.ClassName, fleet.Location); 
                 //Make sure all fleets are cloaked
                 foreach (Ship ship in fleet.Ships.Where(ship => ship.CanCloak && !ship.IsCloaked))
                 {
-                    //GameLog.Core.AI.DebugFormat("Cloaking {0} {1}", ship.Name, ship.ObjectID);
+                    GameLog.Core.AI.DebugFormat("Turn {0}: Cloaking {1} {2} {3}"
+                        , _turnNumberText, ship.ObjectID, ship.Name, ship.ClassName);
                     ship.IsCloaked = true;
                 }
 
@@ -71,6 +75,14 @@ namespace Supremacy.AI
                     _totalWar = !RangesByCiv[fleet.OwnerID].Contains(false); // set local total war (send attacking fleet) condition from last turn for the civ of this current fleet.
 
                 // GameLog.Core.AI.DebugFormat("Turn {2}: Processing Fleet {0} in {1}...", fleet.ObjectID, fleet.Location, GameContext.Current.TurnNumber);
+                // if ((fleet.IsScout || fleet.IsFastAttack) && fleet.Activity == UnitActivity.NoActivity)
+                // {
+                //     fleet.SetOrder(new ExploreOrder());
+                //     fleet.UnitAIType = UnitAIType.Explorer;
+                //    fleet.Activity = UnitActivity.Mission;
+                //     GameLog.Core.AI.DebugFormat("Turn {0}: Ordering Scout & FastAttack {1} {2} to explore from {3}"
+                //         , _turnNumberText, fleet.Name, fleet.ClassName, fleet.Location);
+                // }
 
                 if (_totalWar && fleet.UnitAIType != UnitAIType.Attack)
                 {
