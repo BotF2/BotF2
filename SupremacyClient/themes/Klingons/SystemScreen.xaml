@@ -187,8 +187,8 @@
                 <TabItem x:Name="ShipbuildingTab" Header="SHIPBUILDING">
                   <Grid x:Name="ShipbuildingTabContent">
                     <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
                         <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="450" />
                     </Grid.ColumnDefinitions>
                     <ItemsControl ItemsSource="{Binding Path=SelectedColony.Shipyard.BuildSlots, Mode=OneWay}"
                                   Grid.Column="0"

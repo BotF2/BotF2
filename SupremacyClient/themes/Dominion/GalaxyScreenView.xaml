@@ -750,7 +750,7 @@
                                                 <GeometryDrawing Brush="{StaticResource LCARS_Dom1Gradient_Top_Bottom}" Geometry="M51,14L60,14 60,18 55,18 51,14z"  />
                                                 <GeometryDrawing Brush="{StaticResource LCARS_Dom1Gradient_Top_Bottom}" Geometry="M71,14L80,14 80,18 75,18 71,14z"  />
 
-                                                <GeometryDrawing Brush="WhiteSmoke" Geometry="M 11,11 100,11 105,7 180,7 180,11 345,11 345,13 175,13 170,10 155,10 150,18, 130,18 125,10 105,10 100,13 11,13 Z" />
+                                                <GeometryDrawing Brush="#ffFFFFFFSmoke" Geometry="M 11,11 100,11 105,7 180,7 180,11 345,11 345,13 175,13 170,10 155,10 150,18, 130,18 125,10 105,10 100,13 11,13 Z" />
 
                                                 <GeometryDrawing Brush="{StaticResource LCARS_Dom1Gradient_Top_Bottom}" Geometry="M211,10L 220,10 220,6 215,6 211,10z"  />
                                                 <GeometryDrawing Brush="{StaticResource LCARS_Dom1Gradient_Top_Bottom}" Geometry="M211,14L220,14 220,18 215,18 211,14z"  />
@@ -797,45 +797,92 @@
                                         <Button x:Name="MilitaryButton"
                             Style="{StaticResource LCARS_BorderButtonStyle}"
                             Content="{s:StringResource Key=MILITARY_BUTTON_TEXT, Case=Upper}"
-                            ToolTip="{s:StringResource Key=MILITARY_BUTTON_TOOLTIP}"
+
                             Margin="3,0,0,0"
                             Command="{x:Static scc:GalaxyScreenCommands.SetOverviewMode}"
-                            CommandParameter="{x:Static scc:GalaxyScreenOverviewMode.Military}" />                      
+                            CommandParameter="{x:Static scc:GalaxyScreenOverviewMode.Military}" 
+                                                >
+                                            <Button.ToolTip>
+                                                <ToolTip>
+                                                    <TextBlock FontFamily="{DynamicResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
+                                                        Text="{s:StringResource MILITARY_BUTTON_TOOLTIP}"
+                                                        FontSize="20"/>
+                                                </ToolTip>
+                                            </Button.ToolTip>
+                                        </Button>
+
+
                                         <Button x:Name="EconomyButton"
                             Style="{StaticResource LCARS_BorderButtonStyle}"
                             Content="{s:StringResource Key=ECONOMY_BUTTON_TEXT, Case=Upper}"
-                            ToolTip="{s:StringResource Key=ECONOMY_BUTTON_TOOLTIP}"
                             Margin="3,0,0,0"
                             Command="{x:Static scc:GalaxyScreenCommands.SetOverviewMode}"
-                            CommandParameter="{x:Static scc:GalaxyScreenOverviewMode.Economic}" />
+                            CommandParameter="{x:Static scc:GalaxyScreenOverviewMode.Economic}" 
+                                                                                                >
+                                            <Button.ToolTip>
+                                                <ToolTip>
+                                                    <TextBlock FontFamily="{DynamicResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
+                                                        Text="{s:StringResource ECONOMY_BUTTON_TOOLTIP}"
+                                                        FontSize="20"/>
+                                                </ToolTip>
+                                            </Button.ToolTip>
+                                        </Button>
+
+
 
                                         <Button x:Name="ZoomInButton"
                             Style="{StaticResource LCARS_BorderButtonStyle}"
                             Content="{s:StringResource Key=ZOOM_IN_BUTTON_TEXT, Case=Upper}"
-                            ToolTip="{s:StringResource Key=ZOOM_IN_BUTTON_TOOLTIP}"
                             MinWidth="30"
                             Margin="3,0,0,0"
-                            Command="{x:Static scc:GalaxyScreenCommands.MapZoomIn}" />
+                            Command="{x:Static scc:GalaxyScreenCommands.MapZoomIn}" 
+                                                                                                >
+                                            <Button.ToolTip>
+                                                <ToolTip>
+                                                    <TextBlock FontFamily="{DynamicResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
+                                                        Text="{s:StringResource ZOOM_IN_BUTTON_TOOLTIP}"
+                                                        FontSize="20"/>
+                                                </ToolTip>
+                                            </Button.ToolTip>
+                                        </Button>
+
+
                                         <Button x:Name="ZoomOutButton"
                             Style="{StaticResource LCARS_BorderButtonStyle}"
                             Content="{s:StringResource Key=ZOOM_OUT_BUTTON_TEXT, Case=Upper}"
-                            ToolTip="{s:StringResource Key=ZOOM_OUT_BUTTON_TOOLTIP}"                    
                             MinWidth="30"
                             Margin="3,0,3,0"
-                            Command="{x:Static scc:GalaxyScreenCommands.MapZoomOut}" />
+                            Command="{x:Static scc:GalaxyScreenCommands.MapZoomOut}" 
+                                                                                                >
+                                            <Button.ToolTip>
+                                                <ToolTip>
+                                                    <TextBlock FontFamily="{DynamicResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
+                                                        Text="{s:StringResource ZOOM_OUT_BUTTON_TOOLTIP}"
+                                                        FontSize="20"/>
+                                                </ToolTip>
+                                            </Button.ToolTip>
+                                        </Button>
+
+
                                     </StackPanel>
+
+
                                     <ToggleButton x:Name="ChatButton"
                             Focusable="False"
                             Style="{StaticResource LCARS_BorderToggleButtonStyle}"
                             Content="{s:StringResource Key=CHAT_BUTTON_TEXT, Case=Upper}"
-                            ToolTip="{s:StringResource Key=CHAT_BUTTON_TOOLTIP}" 
                             Margin="0,0,3,0">
-                                        <ToggleButton.Foreground>
-                                            <SolidColorBrush x:Name="ChatButtonForeground"
-                                                Color="Black" />
-                                        </ToggleButton.Foreground>
+                                        <ToggleButton.ToolTip>
+                                            <ToolTip>
+                                                <TextBlock FontFamily="{DynamicResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
+                                                        Text="{s:StringResource CHAT_BUTTON_TOOLTIP}"
+                                                        FontSize="20"/>
+                                            </ToolTip>
+                                        </ToggleButton.ToolTip>
                                     </ToggleButton>
                                 </StackPanel>
+                  
+                  
                 <Rectangle x:Name="RightCenterTopEdge"
                            Grid.Column="2"
                            Margin="0,0,0,0"
@@ -877,7 +924,7 @@
                                                     <GeometryDrawing Brush="{StaticResource LCARS_Dom1Gradient_Top_Bottom}" Geometry="M51,14L60,14 60,18 55,18 51,14z"  />
                                                     <GeometryDrawing Brush="{StaticResource LCARS_Dom1Gradient_Top_Bottom}" Geometry="M71,14L80,14 80,18 75,18 71,14z"  />
 
-                                                    <GeometryDrawing Brush="WhiteSmoke" Geometry="M 11,11 100,11 105,7 180,7 180,11 345,11 345,13 175,13 170,10 155,10 150,18, 130,18 125,10 105,10 100,13 11,13 Z" />
+                                                    <GeometryDrawing Brush="#ffFFFFFFSmoke" Geometry="M 11,11 100,11 105,7 180,7 180,11 345,11 345,13 175,13 170,10 155,10 150,18, 130,18 125,10 105,10 100,13 11,13 Z" />
 
                                                     <GeometryDrawing Brush="{StaticResource LCARS_Dom1Gradient_Top_Bottom}" Geometry="M211,10L 220,10 220,6 215,6 211,10z"  />
                                                     <GeometryDrawing Brush="{StaticResource LCARS_Dom1Gradient_Top_Bottom}" Geometry="M211,14L220,14 220,18 215,18 211,14z"  />
@@ -977,7 +1024,7 @@
                          Height="7"
                          Margin="3,0,3,0"
                          VerticalAlignment="Bottom"
-                         Fill="Tan"/>
+                         Fill="{StaticResource LCARS_Dom4Gradient_Top_Bottom}"/>
               <Rectangle x:Name="RightBottomEdge"
                          Grid.Column="3"
                          Grid.Row="2"
@@ -1186,7 +1233,7 @@
                       Value="Visible" />
                             <Setter TargetName="StationStatusText"
                       Property="Foreground"
-                      Value="Crimson" />
+                      Value="#FFB90E0A" />
                         </DataTrigger>
                         <DataTrigger Binding="{Binding Path=SelectedSectorInhabitants}"
                          Value="{x:Null}">
