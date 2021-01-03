@@ -1136,7 +1136,7 @@ namespace Supremacy.Game
             get { return GameContext.Current.Civilizations[_victimCivilizationID]; }
         }
 
-        public Civilization Owner
+        public Civilization OwnerCiv
         {
             get { return GameContext.Current.Civilizations[_ownerCivilizationID]; }
         }
@@ -1147,10 +1147,10 @@ namespace Supremacy.Game
         }
         public override string SitRepComment { get; set; }
 
-        public DenounceWarSitRepEntry(Civilization denouncer, Civilization owner, Civilization victim)
-            : base(owner, SitRepPriority.Red)
+        public DenounceWarSitRepEntry(Civilization denouncer, Civilization ownerCiv, Civilization victim)
+            : base(ownerCiv, SitRepPriority.Red)
         {
-            if (owner == null)
+            if (ownerCiv == null)
                 throw new ArgumentNullException("owmer");
             if (victim == null)
                 throw new ArgumentNullException("victim");
@@ -1158,10 +1158,10 @@ namespace Supremacy.Game
                 throw new ArgumentNullException("denouncer");
 
             _denouncerCivilizationID = denouncer.CivID;
-            _ownerCivilizationID = owner.CivID;
+            _ownerCivilizationID = ownerCiv.CivID;
             _victimCivilizationID = victim.CivID;
             _detailText = new CivString(
-                    owner,
+                    ownerCiv,
                     victim,
                     CivString.DiplomacyCategory,
                     "MESSAGE_SITREP_DETAILS_DENOUNCE_WAR_THEM");
@@ -1218,7 +1218,7 @@ namespace Supremacy.Game
             get { return GameContext.Current.Civilizations[_victimCivilizationID]; }
         }
 
-        public Civilization Owner
+        public Civilization OwnerCiv
         {
             get { return GameContext.Current.Civilizations[_ownerCivilizationID]; }
         }
@@ -1228,10 +1228,10 @@ namespace Supremacy.Game
             get { return GameContext.Current.Civilizations[_commenderCivilizationID]; }
         }
 
-        public CommendWarSitRepEntry(Civilization commender, Civilization owner, Civilization victim)
-            : base(owner, SitRepPriority.Red)
+        public CommendWarSitRepEntry(Civilization commender, Civilization ownerCiv, Civilization victim)
+            : base(ownerCiv, SitRepPriority.Red)
         {
-            if (owner == null)
+            if (ownerCiv == null)
                 throw new ArgumentNullException("owmer");
             if (victim == null)
                 throw new ArgumentNullException("victim");
@@ -1239,10 +1239,10 @@ namespace Supremacy.Game
                 throw new ArgumentNullException("commender");
 
             _commenderCivilizationID = commender.CivID;
-            _ownerCivilizationID = owner.CivID;
+            _ownerCivilizationID = ownerCiv.CivID;
             _victimCivilizationID = victim.CivID;
             _detailText = new CivString(
-                    owner,
+                    ownerCiv,
                     victim,
                     CivString.DiplomacyCategory,
                     "MESSAGE_SITREP_DETAILS_COMMEND_WAR_THEM");
