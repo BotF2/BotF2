@@ -14,15 +14,14 @@ using Supremacy.Entities;
 using Supremacy.Tech;
 using Supremacy.Types;
 using Supremacy.Universe;
-using Supremacy.Game;
+using Supremacy.Utility;
+
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using Supremacy.Orbitals;
-using Supremacy.Utility;
-using Supremacy.Intelligence;
-using static Supremacy.Intelligence.IntelHelper;
+
+
 
 namespace Supremacy.Game
 {
@@ -46,6 +45,7 @@ namespace Supremacy.Game
         private int _maintenanceCostLastTurn;
         private readonly UniverseObjectList<Colony> _colonies;
         private List<Civilization> _spiedCivList;
+        public List<CivHistory> _civHist_List = new List<CivHistory>();
 
         private int _homeColonyId;
         private List<int> _IntelIDs;
@@ -58,6 +58,81 @@ namespace Supremacy.Game
 
 
         #region Constructors
+        [Serializable]
+        public class CivHistory
+        {
+            public string CivIDHistAndTurn;
+            public int CivIDHist;
+            public string CivKeyHist;
+            public int CreditsHist;
+            public int ColoniesHist;
+            public int PopulationHist;
+            public int MaintenanceHist;
+            public int ResearchHist;
+            public CivHistory
+                (
+                string civIDHistAndTurn  // Index of civID and Turn
+                , int civIDHist   // just civID
+                , string civKeyHist
+                , int creditsHist
+                , int coloniesHist
+                , int populationHist
+                , int maintenanceHist
+                , int researchHist
+                )
+                    {
+                        CivIDHistAndTurn = civIDHistAndTurn;
+                        CivIDHist = civIDHist;
+                CivKeyHist = civKeyHist;
+                CreditsHist = creditsHist;
+                ColoniesHist = coloniesHist;
+                PopulationHist = populationHist;
+                MaintenanceHist = maintenanceHist;
+                ResearchHist = researchHist;
+            }
+        }
+
+        public void AddCivHist(int civIDHist, string civKeyHist, int creditsHist, int coloniesHist, int populationHist, int maintenanceHist, int researchHist)
+        {
+            string _tn = "";
+            _tn = GameContext.Current.TurnNumber.ToString();
+            string civIDHistAndTurn = civIDHist + "-" + _tn;
+            CivHistory civHist_New = new CivHistory(
+                civIDHistAndTurn
+
+                , civIDHist
+                , civKeyHist
+                , creditsHist
+                , coloniesHist
+                , populationHist
+                , maintenanceHist
+                , researchHist
+                //, blank, blank, blank, blank, blank, blank, blank  // 11
+                );
+
+            if (_civHist_List != null)
+            {
+                _civHist_List.Add(civHist_New);
+                foreach (var item in _civHist_List)
+                {
+                    GameLog.Core.CivsAndRaces.DebugFormat("Turn;{0};CivID+Turn;{1};{2};{3};Research;{8};Col;{5};Pop;{6};Credits;{4};Maint;{7}"
+                        , _tn
+
+                        , item.CivIDHistAndTurn
+                        , item.CivIDHist
+                        , item.CivKeyHist
+
+                        , item.CreditsHist
+                        , item.ColoniesHist
+                        , item.PopulationHist
+                        , item.MaintenanceHist
+
+                        , item.ResearchHist
+                        );
+                }
+            }
+
+        }
         /// <summary>
         /// Initializes a new instance of the <see cref="CivilizationManager"/> class.
         /// </summary>
@@ -86,6 +161,7 @@ namespace Supremacy.Game
 
             _sitRepEntries = new List<SitRepEntry>();
             _spiedCivList = new List<Civilization>();
+            _civHist_List = new List<CivHistory>();
 
             _resources.Deuterium.BaseValue = 100;
             _resources.Deuterium.Reset();
@@ -234,17 +310,17 @@ namespace Supremacy.Game
         {
             get
             {
-                //foreach (var rep in _sitRepEntries)
-                //{
-                //    //var playerID = Player.GameHostID;
-                //    //if (GameContext.Current.IsMultiplayerGame == false)
-                //    //playerID = GameContext.Current.CivilizationManagers[LocalPlayer.EmpireID];/*Player.;*/
-                //    //CivilizationManager.
+                foreach (var rep in _sitRepEntries)
+                {
+                    //var playerID = Player.GameHostID;
+                    //if (GameContext.Current.IsMultiplayerGame == false)
+                    //playerID = GameContext.Current.CivilizationManagers[LocalPlayer.EmpireID];/*Player.;*/
+                    //CivilizationManager.
 
-                //    if (rep.Owner.CivID == 4 || rep.Owner.CivID == 1)  // outcomment to see Sitrep of all races, atm Card + Terrans
-                //        GameLog.Core.SitReps.DebugFormat("SitRep Turn {4} Cat={2} Action {3} for {1}:" + Environment.NewLine + // splitted in 2 lines for better reading
-                //            "                    SitRep: {0}" + Environment.NewLine, rep.SummaryText, rep.Owner, rep.Categories, rep.Action, GameContext.Current.TurnNumber);
-                //}
+                    if (rep.Owner.CivID == 4 || rep.Owner.CivID == 1)  // outcomment to see Sitrep of all races, atm Card + Terrans
+                        GameLog.Core.SitReps.DebugFormat("SitRep Turn {4} Cat={2} Action {3} for {1}:" + Environment.NewLine + // splitted in 2 lines for better reading
+                            "                    SitRep: {0}" + Environment.NewLine, rep.SummaryText, rep.Owner, rep.Categories, rep.Action, GameContext.Current.TurnNumber);
+                }
                 return _sitRepEntries;
             } 
         }
@@ -282,7 +358,7 @@ namespace Supremacy.Game
                 {
                     baseIntel *= bonus.Amount;
                 }
-                GameLog.Client.Intel.DebugFormat("TotalIntelProduction = {0}", baseIntel);
+                //works   GameLog.Client.Intel.DebugFormat("TotalIntelProduction = {0}", baseIntel);
                 return baseIntel;
             }
         }
@@ -296,7 +372,7 @@ namespace Supremacy.Game
                 {
                     updateMeter.CurrentValue = TotalIntelligenceProduction;
                 }
-                GameLog.Client.Intel.DebugFormat("TotalIntelAttackingAccumulated = {0}", updateMeter.CurrentValue);
+                //works   GameLog.Client.Intel.DebugFormat("TotalIntelAttackingAccumulated = {0}", updateMeter.CurrentValue);
                 return updateMeter;
             }
         }
@@ -306,7 +382,7 @@ namespace Supremacy.Game
             get
             {
                 var updateMeter = _totalIntelligenceDefenseAccumulated;
-                GameLog.Client.Intel.DebugFormat("TotalIntelDefenseAccumulated = {0}", updateMeter.CurrentValue);
+                //works   GameLog.Client.Intel.DebugFormat("TotalIntelDefenseAccumulated = {0}", updateMeter.CurrentValue);
                 if (_totalIntelligenceDefenseAccumulated.CurrentValue == 0)
                 {
                     updateMeter.CurrentValue = TotalIntelligenceProduction;
