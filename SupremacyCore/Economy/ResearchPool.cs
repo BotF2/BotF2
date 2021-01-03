@@ -325,7 +325,11 @@ namespace Supremacy.Economy
 
             _distributions.TotalValue = researchPoints;
 
-            
+            string researchSummary = "";
+            string distributionSummary = "";
+            var civManager = GameContext.Current.CivilizationManagers[_ownerId];
+            researchSummary += "Progress: ";// + "Gained P. = " + researchPoints + " Progress: "; 
+            distributionSummary += "Research Distrib. ";
 
             foreach (ResearchField field in GameContext.Current.ResearchMatrix.Fields)
             {
@@ -338,14 +342,23 @@ namespace Supremacy.Economy
                 fieldPoints += (int)(_bonuses[field.TechCategory] * fieldPoints);
                 _cumulativePoints.AdjustCurrent(fieldPoints);
 
+
+
                 for (int i = 0; i < _queue[field.FieldID].Count; i++)
                 {
+
+                    researchSummary += " - " + field.TechCategory + "-" + _queue[field.FieldID][i].Application.Level + ": " + _queue[field.FieldID][i].Progress.PercentFilled;
+
+                    //civManager.SitRepEntries.Add(new ScienceSummarySitRepEntry(Owner, researchSummary));
+
+                    
                     if (_queue[field.FieldID][i].IsFinished)
                     {
                         FinishProject(field.FieldID, i--);
                         continue;
                     }
                     fieldPoints -= _queue[field.FieldID][i].Progress.AdjustCurrent(fieldPoints);
+
                     if (_queue[field.FieldID][i].IsFinished)
                     {
                         FinishProject(field.FieldID, i--);
@@ -354,6 +367,23 @@ namespace Supremacy.Economy
                     if (fieldPoints <= 0)
                         break;
                 }
+
+            }
+
+            distributionSummary += " - Bio " + _distributions[0].Value.ToString()/* + ", "*/
+                    + " - Comp. " + _distributions[1].Value.ToString()/* + ", "*/
+                    + " - Constr. " + _distributions[2].Value.ToString()/* + ", "*/
+                    + " - Energy " + _distributions[3].Value.ToString()/* + ", "*/
+                    + " - Prop. " + _distributions[4].Value.ToString()/* + ", "*/
+                    + " - Weapon " + _distributions[5].Value.ToString()/* + ", "*/
+                    ;
+            //distributionSummary += "- Gained = " + researchPoints;
+
+            if (researchPoints > 100)  // don't do it for Science Ships gaining 20,40 
+            {
+                civManager.SitRepEntries.Add(new ScienceSummarySitRepEntry(Owner, distributionSummary));  // Percentage each field
+                civManager.SitRepEntries.Add(new ScienceSummarySitRepEntry(Owner, researchSummary));  // Points each field
+
             }
 
             _cumulativePoints.UpdateAndReset();
