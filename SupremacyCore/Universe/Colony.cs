@@ -54,6 +54,8 @@ namespace Supremacy.Universe
         }
         #endregion
 
+
+
         #region System Trade Routes Dynamic Property
         //public static readonly DynamicProperty<int> TotalTradeRoutesProperty = DynamicProperty<int>.Register(
         //    "ColonyTradeRoutes",
@@ -127,7 +129,7 @@ namespace Supremacy.Universe
         private BuildSlot _buildSlot;
         private Meter _creditsFromTrade;
         private int _tradeRoutesPossible = -1;
-        private int _tradeRoutesAssigned = -1;
+        //private int _tradeRoutesAssigned = -1;
         private int[] _facilityTypes;
         private int _orbitalBatteryDesign;
         private Meter _foodReserves;
@@ -140,6 +142,7 @@ namespace Supremacy.Universe
         private Meter _shieldStrength;
 
         private int _shipyardId;
+        private string shipyard_slot_1_order = "";
         private int _systemId = -1;
         private CollectionBase<TradeRoute> _tradeRoutes;
 
@@ -1207,12 +1210,85 @@ namespace Supremacy.Universe
             int activeUnits = GetActiveFacilities(category);
             var modifier = GetProductionModifier(category);
             int baseOutput = unitOutput * activeUnits;
+
+            int tempProd = (int)(baseOutput + (baseOutput * modifier.Efficiency)) + modifier.Bonus;
+            /*int _population = */   
+            Int32.TryParse(Population.ToString(), out int _population);
+            int labor = _population / 10;
+            int laborAvailable = 0;
+
+            int _laborpool_unused = AvailableLabor;
+            int _foodActive = GetActiveFacilities(ProductionCategory.Food);
+            int _foodPF_unused = TotalFoodFacilities - _foodActive;
+            int _industryActive = GetActiveFacilities(ProductionCategory.Industry);
+            int _industryPF_unused = TotalIndustryFacilities - _industryActive;
+            int _energyActive = GetActiveFacilities(ProductionCategory.Energy);
+            int _energyPF_unused = TotalEnergyFacilities - _energyActive;
+            int _researchActive = GetActiveFacilities(ProductionCategory.Research);
+            int _researchPF_unused = TotalEnergyFacilities - _researchActive;
+            int _intelActive = GetActiveFacilities(ProductionCategory.Intelligence);
+            int _intelPF_unused = TotalIntelligenceFacilities - _intelActive;
+            int _optimizedPF = 0;
+            int _diff = 0;
+            //while (GetAvailableLabor() > 0)
+            laborAvailable = GetAvailableLabor() / 10
+                    + GetActiveFacilities(ProductionCategory.Research) 
+                    + GetActiveFacilities(ProductionCategory.Intelligence); 
+
+            //while (laborAvailable > 0)
+            //{ laborAvailable += GetAvailableLabor; }
+
+
+
+            if (category == ProductionCategory.Food)
+                {
+                int _foodDeficit = Math.Min(FoodReserves.CurrentValue - Population.CurrentValue + baseOutput, 0);
+
+                GameLog.Core.Production.DebugFormat("Turn {0}: Food {1} of {2}, unused {3}, laborAv= {6}, Pop= {4} for Colony {5}"
+                    , GameContext.Current.TurnNumber
+                    , _foodActive
+                    , TotalFoodFacilities
+                    , _foodPF_unused
+
+                    , Population
+                    , this.Name
+                    , laborAvailable
+                    , _foodDeficit
+                    );
+                
+                _optimizedPF = (_population / unitOutput);
+                _diff =  _optimizedPF - _foodActive;
+
+                //colony.FoodReserves.AdjustCurrent(GetProductionOutput(ProductionCategory.Food));
+                //int _foodDeficit = Math.Min(FoodReserves.CurrentValue - Population.CurrentValue + baseOutput, 0);
+                //FoodReserves.AdjustCurrent(-1 * Population.CurrentValue);
+                //FoodReserves.UpdateAndReset();
+
+                if (Name == "Borg" && category == ProductionCategory.Food)
+                    ; // just for Breakpoint
+
+                while (laborAvailable > 0 && _foodPF_unused > 0)
+                {
+                    if (_foodDeficit > 0)
+                    {
+                        if (Name == "Borg" && category == ProductionCategory.Food)
+                            ; // just for Breakpoint
+                        continue;
+                    }
+                    //FoodReserves - _population + 
+                    //if (_)
+                    laborAvailable -= 1;
+                    _foodPF_unused -= 1;
+                    baseOutput += unitOutput;
+
+                }
+                if (baseOutput < 10) { baseOutput = 10; }
+                }
+
+
+
             switch (category)
-            {
-                case ProductionCategory.Food:
-                    if (baseOutput < 10)
-                        baseOutput = 10;
-                    break;
+            { 
                 case ProductionCategory.Intelligence:
                     if (baseOutput < 10)
                         baseOutput = 10;
@@ -1578,6 +1654,113 @@ namespace Supremacy.Universe
         }
 
         /// <summary>
+        /// sends more population to unused energy facilities <see cref="Colony"/>.
+        /// </summary>
+        public void HandlePF()
+        {
+            int _laborpool_unused = this.AvailableLabor;
+            int _foodPF_unused = TotalFoodFacilities - GetActiveFacilities(ProductionCategory.Food);
+            int _industryPF_unused = TotalIndustryFacilities - GetActiveFacilities(ProductionCategory.Industry);
+            // already comes in ... 
+            int _energyPF_unused = TotalEnergyFacilities - GetActiveFacilities(ProductionCategory.Energy);
+            int _researchPF_unused = TotalEnergyFacilities - GetActiveFacilities(ProductionCategory.Research);
+            int _intelPF_unused = TotalIntelligenceFacilities - GetActiveFacilities(ProductionCategory.Intelligence);
+
+
+    //        var energyBuildings = Buildings.
+    //            .Where(o => o.BuildingDesign.Bonuses.Where(b => b.BonusType == BonusType.Energy).ToList());
+    //        var energyBuildingAvailable = Buildings
+    //.           Where(o => !o.IsActive && !o.BuildingDesign.AlwaysOnline && 
+    //                o.BuildingDesign.Bonuses.Where(b => b.BonusType == BonusType.Energy).ToList()); // || b.BonusType == BonusType.PercentEnergy));
+
+            //if (this.)
+
+
+            var shutDown = 0;
+            var shipyard = Shipyard;
+
+            while (true)
+            {
+                var netEnergy = NetEnergy;
+                if (netEnergy >= 0)  // no energy shortage !
+                    break;
+
+                /*
+                 * First try to shut down any unutilized shipyard build slots.  Those can be considered
+                 * less critical than active buildings.
+                 */
+                if (shipyard != null)
+                {
+                    var deactivatedBuildSlot = shipyard.BuildSlots
+                        .Where(o => o.IsActive && !o.HasProject)
+                        .Where(DeactivateShipyardBuildSlot)
+                        .FirstOrDefault();
+
+                    if (deactivatedBuildSlot != null)
+                    {
+                        ++shutDown;
+                        goto Next;
+                    }
+                }
+
+                /*
+                 * Next, try to shut down some buildings.  First check to see if we can get away with shutting
+                 * down just one building.  If not, start with the most expensive active building in hopes of
+                 * minimizing the number we have to shut down.
+                 */
+                var mostCostlyBuilding = Buildings
+                    .Where(o => o.IsActive && !o.BuildingDesign.AlwaysOnline)
+                    .OrderBy(o => o.BuildingDesign.EnergyCost)
+                    .FirstOrDefault(o => o.BuildingDesign.EnergyCost >= -netEnergy);
+
+                if (mostCostlyBuilding == null)
+                {
+                    mostCostlyBuilding = Buildings
+                        .Where(o => o.IsActive && !o.BuildingDesign.AlwaysOnline)
+                        .OrderByDescending(o => o.BuildingDesign.EnergyCost)
+                        .FirstOrDefault();
+                }
+
+                if (mostCostlyBuilding != null &&
+                    DeactivateBuilding(mostCostlyBuilding))
+                {
+                    shutDown++;
+                    goto Next;
+                }
+
+                foreach (var building in Buildings.Where(o => o.IsActive && !o.BuildingDesign.AlwaysOnline).OrderByDescending(o => o.BuildingDesign.EnergyCost))
+                {
+                    if (DeactivateBuilding(building))
+                    {
+                        shutDown++;
+                        goto Next;
+                    }
+                }
+
+                /*
+                 * Lastly, try to shut down some shipyard build slots.  To be fair to the player, we'll favor
+                 * shutting down build slots with the least build progress.
+                 */
+                if (shipyard != null)
+                {
+                    var deactivatedBuildSlot = shipyard.BuildSlots
+                        .Where(o => o.IsActive && !o.HasProject)
+                        .Where(DeactivateShipyardBuildSlot)
+                        .FirstOrDefault();
+
+                    if (deactivatedBuildSlot != null)
+                    {
+                        ++shutDown;
+                        goto Next;
+                    }
+                }
+                break;
+            Next:
+                continue;
+            }
+        }
+
+        /// <summary>
         /// Ensures that enough energy is available for all active buildings.  If insufficient
         /// energy is available, then buildings will be shut down systematically until the
         /// situation is resolved.
@@ -1591,7 +1774,7 @@ namespace Supremacy.Universe
             while (true)
             {
                 var netEnergy = NetEnergy;
-                if (netEnergy >= 0)
+                if (netEnergy >= 0)  // no energy shortage !
                     break;
 
                 /*
@@ -1899,6 +2082,17 @@ namespace Supremacy.Universe
         /// <param name="building">The building to deactivate.</param>
         public bool DeactivateBuilding(Building building)
         {
+            CivilizationManager civManager = GameContext.Current.CivilizationManagers[building.OwnerID];
+            civManager.SitRepEntries.Add(new EnergyShutdownBuildingSitRepEntry(civManager.Civilization, building.Sector.System.Colony));
+
+            GameLog.Core.Energy.DebugFormat("Turn {0};Shutdown due to missing energy for;{1} {2};at;{3} ({4});{5}"
+                , GameContext.Current.TurnNumber
+                , building.ObjectID
+                , building.Name
+                , building.Sector.Name
+                , building.Sector.Location
+                , building.Sector.Owner
+                );
             return SetBuildingActive(building, false);
         }
 
