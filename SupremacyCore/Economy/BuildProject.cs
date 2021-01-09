@@ -164,7 +164,7 @@ namespace Supremacy.Economy
                 //      );
 
                 if (_industryInvested == 0)
-                    ; // just or breakpoint
+                    GameLog.Core.Production.DebugFormat("indInvested=0"); // just or breakpoint
 
                 return _industryInvested; 
             }
