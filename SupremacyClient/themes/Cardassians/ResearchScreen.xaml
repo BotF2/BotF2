@@ -1,15 +1,11 @@
-<!--
-  
-   ResearchScreen.xaml
+<!-- File:ResearchScreen.xaml for Cardassians
   
    Copyright (c) 2007 Mike Strobel
   
    This source code is subject to the terms of the Microsoft Reciprocal License (Ms-RL).
    For details, see <http://www.opensource.org/licenses/ms-rl.html>.
   
-   All other rights reserved.
-  
-  -->
+   All other rights reserved.-->
 <ResourceDictionary xmlns="http://schemas.microsoft.com/netfx/2007/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:local="clr-namespace:Supremacy.Client"
@@ -130,7 +126,13 @@
                         IsTabStop="False"
                         Margin="0,0,0,0"
                         Style="{DynamicResource LockToggleButtonStyle}"
-                        IsChecked="{Binding Path=Distribution.IsLocked, Mode=TwoWay}"/>
+                        IsChecked="{Binding Path=Distribution.IsLocked, Mode=TwoWay}"
+                        >
+                        <ToggleButton.ToolTip>
+                            <TextBlock Text="{s:StringResource Key=RESEARCH_DISTRIBUTION_LOCKED_TOOLTIP, Case=Upper}"
+                                       FontSize="20"/>
+                        </ToggleButton.ToolTip>
+                    </ToggleButton>
           <TextBlock DockPanel.Dock="Right"
                      Margin="0,0,7,0"
                      FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
@@ -145,20 +147,31 @@
     </DockPanel>
   </DataTemplate>
 
-  <DataTemplate DataType="{x:Type local:ResearchApplicationData}">
+    <!--
+                    ***************************
+                    * BEGIN RESEARCH LIST     *
+                    ***************************
+                  -->
+
+    <DataTemplate DataType="{x:Type local:ResearchApplicationData}">
     <Border x:Name="OuterBorder"
             BorderThickness="1,1,0,0"
             BorderBrush="White"
             Padding="4"
             SnapsToDevicePixels="True"
             TextBlock.FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
-            TextBlock.FontSize="14pt">
+            TextBlock.FontSize="12pt">
       <Border x:Name="InnerBorder">
-        <TextBlock x:Name="ApplicationName"
+                <TextBlock x:Name="ApplicationName"
                    Foreground="{DynamicResource DisabledTextBrush}"
                    Text="{Binding Path=DisplayText, Converter={StaticResource UpperCaseConverter}}"
                    TextWrapping="Wrap"
-                   TextTrimming="CharacterEllipsis"/>
+                   TextTrimming="CharacterEllipsis">
+
+                    <TextBlock.ToolTip>
+                        <TextBlock Text="{Binding Path=DisplayTooltip}"/>
+                    </TextBlock.ToolTip> 
+                    </TextBlock>
       </Border>
     </Border>
     <DataTemplate.Triggers>
@@ -200,7 +213,13 @@
     </Border>
   </DataTemplate>
 
-  <DataTemplate DataType="{x:Type local:ResearchApplicationDetails}">
+    <!--
+                    ***************************
+                    * RESEARCH SCREEN BOTTOM  *
+                    ***************************
+                  -->
+
+    <DataTemplate DataType="{x:Type local:ResearchApplicationDetails}">
     <ScrollViewer CanContentScroll="False"
                   MaxHeight="320">
       <Grid>
@@ -213,12 +232,21 @@
                     TextBlock.FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                     TextBlock.FontSize="12pt"
                     TextBlock.Foreground="{DynamicResource DefaultTextBrush}">
-          <TextBlock FontSize="16pt"
-                     Foreground="{DynamicResource HeaderTextBrush}"
-                     TextWrapping="Wrap"
-                     Text="{Binding Path=Application.Name, Converter={StaticResource StringResourceConverter}}"
-                     Margin="0,0,0,7"/>
-          <TextBlock TextWrapping="Wrap"
+                    <StackPanel Orientation="Horizontal" >
+                        <TextBlock FontSize="18pt" Text="{Binding Path=Application.Name, Converter={StaticResource StringResourceConverter}}"
+                            Foreground="{DynamicResource HeaderTextBrush}" TextWrapping="Wrap" Margin="0,0,0,0" VerticalAlignment="Center"></TextBlock>
+                        <TextBlock FontSize="16pt" VerticalAlignment="Center" Text="  -  "/>
+                        <TextBlock FontSize="14pt" VerticalAlignment="Center" Text="{Binding Path=Application.Field.TechCategory }"/>
+                        <TextBlock FontSize="14pt" VerticalAlignment="Center" Text=" "/>
+                        <TextBlock FontSize="14pt" VerticalAlignment="Center" Text="{s:StringResource Key=LEVEL, Case=Upper}"/>
+                        <TextBlock FontSize="14pt" VerticalAlignment="Center" Text=" "/>
+                        <TextBlock FontSize="14pt" VerticalAlignment="Center" Text="{Binding Path=Application.Level}"/>
+                        <TextBlock FontSize="14pt" VerticalAlignment="Center" Text=" > "/>
+                        <TextBlock FontSize="14pt" VerticalAlignment="Center" Text="{Binding Path=Application.ResearchCost}"/>
+                        <TextBlock FontSize="14pt" VerticalAlignment="Center" Text=" "/>
+                        <TextBlock FontSize="14pt" VerticalAlignment="Center" Text="{s:StringResource Key=POINTS, Case=Upper}"/>
+                    </StackPanel>
+                    <TextBlock TextWrapping="Wrap"
                      Text="{Binding Path=Application.Description, Converter={StaticResource StringResourceConverter}}"/>
         </StackPanel>
         <StackPanel Grid.Column="1"
@@ -271,7 +299,13 @@
     </DataTemplate.Triggers>
   </DataTemplate>
 
-  <Style TargetType="{x:Type local:ResearchScreen}">
+
+    <!--
+                    ****************************
+                    * BEGIN EXPANDER TECH INFO *
+                    ****************************
+                  -->
+    <Style TargetType="{x:Type local:ResearchScreen}">
     <Setter Property="Template">
       <Setter.Value>
         <ControlTemplate TargetType="{x:Type local:ResearchScreen}">

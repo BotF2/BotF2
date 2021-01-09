@@ -1,4 +1,5 @@
-﻿using Supremacy.Client.Commands;
+﻿// File:SitRepDialog.xaml.cs  
+using Supremacy.Client.Commands;
 using Supremacy.Client.Controls;
 using Supremacy.Game;
 using Supremacy.Orbitals;
@@ -22,6 +23,9 @@ namespace Supremacy.Client.Dialogs
     {
         private SitRepCategory _visibleCategories;
         private IEnumerable<SitRepEntry> _sitRepEntries;
+        private string _previousSitRepCommentText;
+        private static Dictionary<int, string> _SitRepComments = new Dictionary<int, string>(); // { { "98", false } };
+
 
         public SitRepDialog()
         {
@@ -53,12 +57,66 @@ namespace Supremacy.Client.Dialogs
                 menuItem.Checked += OnFilterItemIsCheckedChanged;
                 menuItem.Unchecked += OnFilterItemIsCheckedChanged;
 
+                // deactivated - normally not used by Players   
                 FilterMenu.Items.Add(menuItem);
             }
 
             _visibleCategories = visibleCategories;
 
             Loaded += OnLoaded;
+        }
+
+
+        public override void OnApplyTemplate()
+        {
+            base.OnApplyTemplate();
+
+
+            var sitRepCommentText = GetTemplateChild("SitRepComment") as System.Windows.Controls.TextBox;
+
+            if (sitRepCommentText == null)
+                return;
+            sitRepCommentText.LostFocus += SitRepCommentText_OnLostFocus;
+            sitRepCommentText.GotFocus += SitRepCommentText_OnGotFocus;
+            sitRepCommentText.TextChanged += SitRepCommentText_OnTextChanged;
+
+        }
+
+        private static void SitRepCommentText_OnTextChanged(object sender, TextChangedEventArgs e)
+        {
+            var sitRepCommentText = e.Source as System.Windows.Controls.TextBox;
+            if (sitRepCommentText == null)
+                return;
+            var bindingExpression = sitRepCommentText.GetBindingExpression(System.Windows.Controls.TextBox.TextProperty);
+            if (bindingExpression == null)
+                return;
+            if (!String.IsNullOrEmpty(sitRepCommentText.Text))
+                bindingExpression.UpdateSource();
+        }
+
+
+        private void SitRepCommentText_OnGotFocus(object sender, RoutedEventArgs e)
+        {
+            var sitRepCommentText = e.Source as System.Windows.Controls.TextBox;
+            if (sitRepCommentText == null)
+                return;
+            _previousSitRepCommentText = sitRepCommentText.Text;
+        }
+        private void SitRepCommentText_OnLostFocus(object sender, RoutedEventArgs e)
+        {
+            var sitRepCommentText = e.Source as System.Windows.Controls.TextBox;
+            var previousText = _previousSitRepCommentText;
+            _previousSitRepCommentText = null;
+            if ((sitRepCommentText == null) || String.Equals(sitRepCommentText.Text, previousText))
+                return;
+            var entry = DataContext as SitRepEntry;
+            if (entry == null)
+                return;
+            if (String.IsNullOrEmpty(sitRepCommentText.Text.Trim()))
+                entry.SitRepComment = null;
+            else
+                entry.SitRepComment = sitRepCommentText.Text;
+            //ServiceLocator.Current.GetInstance<IPlayerOrderService>().AddOrder(new SetObjectNameOrder(entry, entry.ClassName));
         }
 
         public void ShowIfAnyVisibleEntries()
@@ -71,6 +129,7 @@ namespace Supremacy.Client.Dialogs
         private void OnLoaded(object @object, RoutedEventArgs routedEventArgs)
         {
             Loaded -= OnLoaded;
+            // deactivated - normally not used by Players   
             UpdateCategoryFilter();
         }
 
@@ -90,6 +149,7 @@ namespace Supremacy.Client.Dialogs
             if (SitRepEntries == null)
                 return;
 
+            // deactivated - normally not used by Players   
             var visibleCategories = FilterMenu.Items
                 .OfType<System.Windows.Controls.MenuItem>()
                 .Where(menuItem => menuItem.IsChecked)
@@ -99,21 +159,37 @@ namespace Supremacy.Client.Dialogs
 
             if (GreenCheck.IsChecked.HasValue && GreenCheck.IsChecked.Value)
                 visiblePriorities.Add(SitRepPriority.Green);
-            if (YellowCheck.IsChecked.HasValue && YellowCheck.IsChecked.Value)
-                visiblePriorities.Add(SitRepPriority.Yellow);
+            if (OrangeCheck.IsChecked.HasValue && OrangeCheck.IsChecked.Value)
+                visiblePriorities.Add(SitRepPriority.Orange);
             if (RedCheck.IsChecked.HasValue && RedCheck.IsChecked.Value)
                 visiblePriorities.Add(SitRepPriority.Red);
             if (BlueCheck.IsChecked.HasValue && BlueCheck.IsChecked.Value)
-                visiblePriorities.Add(SitRepPriority.Special);
+                visiblePriorities.Add(SitRepPriority.Blue);
+            if (GrayCheck.IsChecked.HasValue && PinkCheck.IsChecked.Value)
+                visiblePriorities.Add(SitRepPriority.Gray);
+            if (PurpleCheck.IsChecked.HasValue && PurpleCheck.IsChecked.Value)
+                visiblePriorities.Add(SitRepPriority.Purple);
+            if (PinkCheck.IsChecked.HasValue && PinkCheck.IsChecked.Value)
+                visiblePriorities.Add(SitRepPriority.Pink);
 
-            ItemsView.Items.Filter = o => (((SitRepEntry)o).Categories & visibleCategories) != 0 &&
+            ItemsView.Items.Filter = o => (((SitRepEntry)o).Categories/* & visibleCategories*/) != 0 &&
                                                visiblePriorities.Contains(((SitRepEntry)o).Priority);
             ItemsView.Items.Refresh();
         }
 
         public IEnumerable<SitRepEntry> SitRepEntries
         {
-            get { return _sitRepEntries; }
+            get 
+            {
+                //_sitRepEntries.OrderBy(_sitRepEntries, SitRepPriority);
+
+                _sitRepEntries = _sitRepEntries.OrderByDescending(x => x.Priority).ToList();
+                //foreach (var item in _sitRepEntries)
+                //{
+                //    item.
+                //}
+                return _sitRepEntries; 
+            }
             set
             {
                 _sitRepEntries = value;
@@ -126,11 +202,14 @@ namespace Supremacy.Client.Dialogs
         {
             if (!IsLoaded)
                 return;
+            // deactivated - normally not used by Players   
             UpdateCategoryFilter();
         }
 
+        // deactivated - normally not used by Players   
         private void UpdateCategoryFilter()
         {
+            // deactivated - normally not used by Players   
             var visibleCategories = FilterMenu.Items
                 .OfType<System.Windows.Controls.MenuItem>()
                 .Where(menuItem => menuItem.IsChecked)
@@ -194,6 +273,7 @@ namespace Supremacy.Client.Dialogs
             }
         }
 
+        // deactivated - normally not used by Players   
         private void OnFilterButtonClick(object sender, ExecuteRoutedEventArgs e)
         {
             FilterMenu.IsOpen = !FilterMenu.IsOpen;

@@ -1,4 +1,4 @@
-// KeyedCollectionBase.cs
+// File:ObservableKeyedCollection.cs
 //
 // Copyright (c) 2007 Mike Strobel
 //
@@ -7,13 +7,12 @@
 //
 // All other rights reserved.
 
+using Supremacy.IO.Serialization;
+using Supremacy.Utility;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-
-using Supremacy.IO.Serialization;
-using Supremacy.Utility;
 
 namespace Supremacy.Collections
 {

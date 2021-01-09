@@ -193,6 +193,23 @@ namespace Supremacy.Orbitals
             base.SerializeOwnedData(writer, context);
             writer.Write(_buildQueue.Cast<object>().ToArray());
             writer.WriteOptimized(_buildSlots.ToArray());
+            
+            if (context != null) 
+                GameLog.Core.SaveLoad.DebugFormat(context.ToString());
+            try
+            {
+                foreach (var slot in _buildSlots)
+                {
+                    GameLog.Core.SaveLoad.DebugFormat(
+                        "ID = " + slot.SlotID
+                        //+ " at " + slot.Shipyard.Name
+                        //+ " (" + slot.Shipyard.Location
+                        //+ " ) doing " + slot.Project.BuildDesign
+                        //+ " " + slot.Project.PercentComplete
+                        //+ " percent done " + slot.Project.BuildDesign
+                        );
+                }
+            } catch { };
         }
 
         public override void DeserializeOwnedData(SerializationReader reader, object context)

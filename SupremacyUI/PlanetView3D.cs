@@ -307,13 +307,13 @@ namespace Supremacy.UI
                                     let imageSource = new CachedBitmap(
                                         new BitmapImage(
                                             ResourceManager.GetResourceUri(
-                                                "Resources/Images/Planets/" + (string)customPlanet.Attribute("Texture"))),
+                                                "Resources/Images/UI/Planets/" + (string)customPlanet.Attribute("Texture"))),
                                         BitmapCreateOptions.None,
                                         BitmapCacheOption.OnLoad)
                                     let atmosphereSource = new CachedBitmap(
                                         new BitmapImage(
                                             ResourceManager.GetResourceUri(
-                                                "Resources/Images/Atmospheres/" + (string)customPlanet.Attribute("Atmosphere"))),
+                                                "Resources/Images/UI/Atmospheres/" + (string)customPlanet.Attribute("Atmosphere"))),
                                         BitmapCreateOptions.None,
                                         BitmapCacheOption.OnLoad)
                                     select new { Name = name, ImageSource = imageSource, AtmosphereSource = atmosphereSource };
@@ -357,7 +357,7 @@ namespace Supremacy.UI
                         new BitmapImage(
                             ResourceManager.GetResourceUri(
                                 string.Format(
-                                    "Resources/Images/Planets/{0}{1:00}.png",
+                                    "Resources/Images/UI/Planets/{0}{1:00}.png",
                                     type,
                                     i + 1))),
                         BitmapCreateOptions.None,
@@ -371,7 +371,7 @@ namespace Supremacy.UI
                         new BitmapImage(
                             ResourceManager.GetResourceUri(
                                 string.Format(
-                                    "Resources/Images/Atmospheres/{0}{1:00}.png",
+                                    "Resources/Images/UI/Atmospheres/{0}{1:00}.png",
                                     type,
                                     i + 1))),
                         BitmapCreateOptions.None,
@@ -388,7 +388,7 @@ namespace Supremacy.UI
                 _moonImages[shape] = new CachedBitmap(
                     new BitmapImage(
                         ResourceManager.GetResourceUri(
-                            string.Format("Resources/Images/Planets/Moons/{0}.png", shape))),
+                            string.Format("Resources/Images/UI/Planets/Moons/{0}.png", shape))),
                     BitmapCreateOptions.None,
                     BitmapCacheOption.OnLoad);
 

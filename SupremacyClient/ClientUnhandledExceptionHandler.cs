@@ -1,3 +1,4 @@
+// File:ClientUnhandledExceptionHandler.cs
 // Copyright (c) 2009 Mike Strobel
 //
 // This source code is subject to the terms of the Microsoft Reciprocal License (Ms-RL).
@@ -11,7 +12,6 @@ using Supremacy.Utility;
 using System;
 using System.Collections.Specialized;
 using System.Net;
-using System.Text;
 using System.Windows;
 
 namespace Supremacy.Client
@@ -19,7 +19,7 @@ namespace Supremacy.Client
     internal sealed class ClientUnhandledExceptionHandler : IUnhandledExceptionHandler
     {
         private readonly IGameErrorService _errorService;
-        private const string _reportErrorURL = "https://www.exultantmonkey.co.uk/BotF2/report-error.php";
+        //private const string _reportErrorURL = "https://www.exultantmonkey.co.uk/BotF2/report-error.php";
 
         #region Fields
         private readonly object _syncLock = new object();
@@ -64,7 +64,7 @@ namespace Supremacy.Client
 
                     //if (ClientSettings.Current.ReportErrors)
                     //{
-                        ReportError(errors);
+                    ReportError(errors);
                     //}
 
                     Environment.Exit(Environment.ExitCode);
@@ -93,6 +93,32 @@ namespace Supremacy.Client
 
                 GameLog.Core.General.ErrorFormat(_text);
                 Console.WriteLine(_text);
+
+
+                try
+                {
+                    //var to = new MailAddress;
+                    //MailMessage message = new MailMessage(
+                    //   "fromemail@contoso.com",
+                    //   "85244@gmx.de",
+                    //   "Subject goes here",
+                    //   "Body goes here");
+
+                    //MailMessage reply = new MailMessage(new MailAddress(imapUser, "Sender"), source.From);
+                    //MailAddressApp
+                    //    mailAddressApp.
+                    //System.Diagnostics.Process.Start.message.
+
+                    string mt = "reportError.bat Fehler " + _text;
+                    mt = ".\\lib\\reportError.bat";
+                    //"mailto:85244@gmx.de?subject=[An_Error_occured]";
+                    //GameLog.Client.General.InfoFormat("Try to run " + mt);
+                    System.Diagnostics.Process.Start(mt);  //> batch doesn't work yet
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
 
                 //try
                 //{

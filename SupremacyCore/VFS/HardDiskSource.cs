@@ -289,6 +289,8 @@ namespace Supremacy.VFS
             {
                 string message = "File is NOT available > " + resolvedName;
                 MessageBox.Show(message, "WARNING", MessageBoxButton.OK);
+                Console.WriteLine(message);
+                GameLog.Client.General.ErrorFormat(message);
                 return File.Open("vfs:///Resources/Images/__image_missing.png", FileMode.Open, access, share);
             }
         }

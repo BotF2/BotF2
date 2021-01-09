@@ -1,5 +1,6 @@
 ﻿using Supremacy.Collections;
 using Supremacy.Economy;
+using Supremacy.Game;
 using Supremacy.Utility;
 using System.Linq;
 
@@ -27,10 +28,13 @@ namespace Supremacy.Universe
              * Include the value of the shipyard, but not the ships under construction within (see below).
              */
             var shipyard = colony.Shipyard;
+            int shipyardBuildSlotsCount = 0;
+
             if (shipyard != null)
             {
                 total += shipyard.Design.BuildCost;
                 total += EnumHelper.GetValues<ResourceType>().Sum(r => EconomyHelper.ComputeResourceValue(r, shipyard.Design.BuildResourceCosts[r]));
+                shipyardBuildSlotsCount = shipyard.BuildSlots.Count;
             }
 
             var buildSlots = colony.BuildSlots.Concat(shipyard != null ? shipyard.BuildSlots : IndexedEnumerable.Empty<BuildSlot>());
@@ -64,6 +68,18 @@ namespace Supremacy.Universe
                 ).Sum();
 
             total += colony.Population.CurrentValue * 100;
+
+
+            GameLog.Core.Production.DebugFormat("Turn {0};{1};{2} ({3});Value=;{4};Pop=;{5};ShipYardSlots=;{6};Buildings={7};"
+                , GameContext.Current.TurnNumber
+                , colony.Owner
+                , colony.Name
+                , colony.Location
+                , colony.Population.CurrentValue
+                , shipyardBuildSlotsCount
+                , colony.Buildings.Count
+                , total 
+                );
 
             // ReSharper restore AccessToModifiedClosure
 

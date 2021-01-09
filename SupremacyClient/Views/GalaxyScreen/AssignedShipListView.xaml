@@ -193,7 +193,7 @@
                       <Setter.Value>
                         <ImageBrush Stretch="Uniform">
                           <ImageBrush.ImageSource>
-                            <BitmapImage UriSource="vfs:///Resources/Images/TechObjects/__unknown.png" />
+                            <BitmapImage UriSource="vfs:///Resources/Images/__unknown.png" />
                           </ImageBrush.ImageSource>
                         </ImageBrush>
                       </Setter.Value>

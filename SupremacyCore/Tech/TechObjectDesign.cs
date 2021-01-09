@@ -411,7 +411,7 @@ namespace Supremacy.Tech
 
                 var localPath = ResourceManager.GetResourcePath(
                     string.Format(
-                        "vfs:///Resources/Images/TechObjects/{0}{1}.png",
+                        "vfs:///Resources/Images/{0}{1}.png",
                         DefaultImageSubFolder,
                         _key.ToLowerInvariant()));
 
@@ -420,7 +420,7 @@ namespace Supremacy.Tech
 
                 localPath = ResourceManager.GetResourcePath(
                     string.Format(
-                        "vfs:///Resources/Images/TechObjects/{0}{1}.jpg",
+                        "vfs:///Resources/Images/{0}{1}.jpg",
                         DefaultImageSubFolder,
                         _key.ToLowerInvariant()));
 
@@ -464,7 +464,7 @@ namespace Supremacy.Tech
 
                 var localPath = ResourceManager.GetResourcePath(
                     string.Format(
-                        "vfs:///Resources/Images/TechObjects/{0}{1}_uc.png",
+                        "vfs:///Resources/Images/{0}{1}_uc.png",
                         DefaultShipsUnderConstructionSubFolder,
                         _key.ToLowerInvariant()));
 
@@ -473,7 +473,7 @@ namespace Supremacy.Tech
 
                 localPath = ResourceManager.GetResourcePath(
                     string.Format(
-                        "vfs:///Resources/Images/TechObjects/{0}{1}_uc.jpg",
+                        "vfs:///Resources/Images/{0}{1}_uc.jpg",
                         DefaultShipsUnderConstructionSubFolder,
                         _key.ToLowerInvariant()));
 
@@ -483,7 +483,7 @@ namespace Supremacy.Tech
                 // if not ShipsUnderConstruction-Image avaiable then try to get regular ship image - each .png or .jpg
                 localPath = ResourceManager.GetResourcePath(
                     string.Format(
-                        "vfs:///Resources/Images/TechObjects/{0}{1}.png",
+                        "vfs:///Resources/Images/{0}{1}.png",
                         DefaultImageSubFolder,
                         _key.ToLowerInvariant()));
 
@@ -492,7 +492,7 @@ namespace Supremacy.Tech
 
                 localPath = ResourceManager.GetResourcePath(
                     string.Format(
-                        "vfs:///Resources/Images/TechObjects/{0}{1}.jpg",
+                        "vfs:///Resources/Images/{0}{1}.jpg",
                         DefaultImageSubFolder,
                         _key.ToLowerInvariant()));
 

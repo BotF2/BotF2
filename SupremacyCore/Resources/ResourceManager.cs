@@ -215,6 +215,8 @@ namespace Supremacy.Resources
 
             path = EvaluateRelativePath(Environment.CurrentDirectory, path);
 
+            // works   GameLog.Client.General.DebugFormat("File Path = {0}", path);
+
             return path;
         }
 

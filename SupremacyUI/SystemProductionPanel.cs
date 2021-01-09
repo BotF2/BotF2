@@ -505,6 +505,7 @@ namespace Supremacy.UI
             _laborBar.Height = 28;
             _laborBar.IsReadOnly = true;
             _laborBar.IsEnabled = true;
+            _laborBar.Foreground = Brushes.Red;
 
             _laborPoolText = new TextBlock();
             _laborPoolText.SetValue(Grid.ColumnProperty, 1);
@@ -524,6 +525,7 @@ namespace Supremacy.UI
             _ = _children.Add(_grid);
 
             _sliderGroup.PoolBar = _laborBar;
+            //_laborBar.Foreground = "";
             _sliderGroup.FreePoolSizeChanged += SliderGroup_FreePoolSizeChanged;
             _sliderGroup.PoolSizeChanged += SliderGroup_PoolSizeChanged;
 
@@ -660,7 +662,7 @@ namespace Supremacy.UI
 
         private void Slider_ActiveUnitsChanged(object sender, DependencyPropertyChangedEventArgs<int> e)
         {
-            GameLog.Client.General.DebugFormat("slider_ActiveUnitsChanged...");
+            //GameLog.Client.UI.DebugFormat("slider_ActiveUnitsChanged...");
             Colony colony = Colony;
             if (colony == null)
             {
@@ -860,7 +862,7 @@ namespace Supremacy.UI
 
                 int LaborPool = colony.GetAvailableLabor() / 10;
 
-                GameLog.Client.Production.DebugFormat("Turn {7}: Pop={0},Food={1},Ind={2},Energy={3},Research={4},Intel={5},FreePoolSize={6} for {8}",
+                GameLog.Client.Production.DebugFormat("for {8}" + Environment.NewLine + "   Turn {7}: Pop={0},Food={1},Ind={2},Energy={3},Research={4},Intel={5},FreePoolSize={6} for {8} ({9})",
                     colony.Population.CurrentValue,
                     colony.GetActiveFacilities(ProductionCategory.Food),
                     colony.GetActiveFacilities(ProductionCategory.Industry),
@@ -869,7 +871,10 @@ namespace Supremacy.UI
                     colony.GetActiveFacilities(ProductionCategory.Intelligence),
                     LaborPool,
                     GameContext.Current.TurnNumber,
-                    this.Name);
+                    this.Name,
+                    colony.Name,
+                    colony.Location
+                    );
                 /*_laborBar.ActiveUnits doesn't work */
 
                 _foodSlider.ActiveUnits = colony.GetActiveFacilities(ProductionCategory.Food);

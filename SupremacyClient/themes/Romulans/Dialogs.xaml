@@ -1,12 +1,14 @@
-﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+﻿<!--File:Dialogs.xaml for Romulans -->
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:scc="http://schemas.startreksupremacy.com/xaml/presentation">
 
-  <!--<Style x:Key="{x:Static scc:ClientResources.DialogContainerStyleKey}"
+  <Style x:Key="{x:Static scc:ClientResources.DialogContainerStyleKey}"
          TargetType="{x:Type ContentControl}"
          BasedOn="{StaticResource LCARS_RomThinBorderStyle}" />
 
   <Style x:Key="{x:Static scc:ClientResources.MessageDialogButtonStyleKey}"
          TargetType="{x:Type Button}"
-         BasedOn="{StaticResource LCARS_StandardButtonStyle}" />-->
+         BasedOn="{StaticResource LCARS_StandardButtonStyle}" />
 
 </ResourceDictionary>

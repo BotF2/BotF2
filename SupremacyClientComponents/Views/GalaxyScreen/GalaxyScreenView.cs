@@ -7,13 +7,11 @@
 //
 // All other rights reserved.
 
-using System.Windows;
-using System.Windows.Input;
-
 using Microsoft.Practices.Unity;
-
 using Supremacy.Annotations;
 using Supremacy.Client.Commands;
+using System.Windows;
+using System.Windows.Input;
 
 namespace Supremacy.Client.Views
 {
@@ -29,79 +27,26 @@ namespace Supremacy.Client.Views
         public GalaxyScreenView([NotNull] IUnityContainer container)
             : base(container)
         {
-            InputBindings.Add(
-                new KeyBinding(
-                    ClientCommands.EndTurn,
-                    Key.Enter,
-                    ModifierKeys.Control));
 
-            InputBindings.Add(
-                new KeyBinding(
-                    ClientCommands.EscapeCommand,
-                    Key.Escape,
-                    ModifierKeys.None));
+            // ModifierKeys:  None is not available, whyever
 
-            InputBindings.Add(
-                new KeyBinding(
-                    GalaxyScreenCommands.MapZoomIn,
-                    Key.OemPlus,
-                    ModifierKeys.Control));
+            InputBindings.Add(new KeyBinding(ClientCommands.EscapeCommand, Key.Escape, ModifierKeys.Control));
+            InputBindings.Add(new KeyBinding(ClientCommands.EndTurn, Key.Enter, ModifierKeys.Control));
 
-            InputBindings.Add(
-                new KeyBinding(
-                    GalaxyScreenCommands.MapZoomOut,
-                    Key.OemMinus,
-                    ModifierKeys.Control));
+            InputBindings.Add(new KeyBinding(DebugCommands.RevealMap, Key.F, ModifierKeys.Control)); // lift Fog of War
+            InputBindings.Add(new KeyBinding(DebugCommands.CheatMenu, Key.C, ModifierKeys.Control));
 
-            InputBindings.Add(
-                new KeyBinding(
-                    GalaxyScreenCommands.MapZoomIn,
-                    Key.Add,
-                    ModifierKeys.Control));
+            InputBindings.Add(new KeyBinding(GalaxyScreenCommands.SetOverviewMode, Key.M, ModifierKeys.Control)); // Military view
+            InputBindings.Add(new KeyBinding(GalaxyScreenCommands.SetOverviewMode, Key.T, ModifierKeys.Control)); // Trade view = Economy
 
-            InputBindings.Add(
-                new KeyBinding(
-                    GalaxyScreenCommands.MapZoomOut,
-                    Key.Subtract,
-                    ModifierKeys.Control));
 
-            InputBindings.Add(
-                new KeyBinding(
-                    DebugCommands.RevealMap,
-                    Key.F12,
-                    ModifierKeys.None));
-
-            InputBindings.Add(
-                new KeyBinding(
-                    DebugCommands.CheatMenu,
-                    Key.F11,
-                    ModifierKeys.None));
-
-            InputBindings.Add(
-                new KeyBinding(
-                    DebugCommands.GameInfoScreen,
-                    Key.F9,
-                    ModifierKeys.None));
-
-            //this.InputBindings.Add(
-            //    new KeyBinding(
-            //                            DebugCommands.GameInfoScreen,
-            //        //DebugCommands.ShowEconomyView,
-            //        Key.E,
-            //        ModifierKeys.None));
-
-            //this.InputBindings.Add(
-            //    new KeyBinding(
-            //                            DebugCommands.GameInfoScreen,
-            //        //DebugCommands.ShowMilitaryView,
-            //        Key.M,
-            //        ModifierKeys.None));
-
-            CommandBindings.Add(
-                new CommandBinding(
-                    ClientCommands.EscapeCommand,
-                    ExecuteEscapeCommand,
-                    CanExecuteEscapeCommand));
+            InputBindings.Add(new KeyBinding(GalaxyScreenCommands.MapZoomIn, Key.Add, ModifierKeys.Control));
+            InputBindings.Add(new KeyBinding(GalaxyScreenCommands.MapZoomIn, Key.OemPlus, ModifierKeys.Control));
+            InputBindings.Add(new KeyBinding(GalaxyScreenCommands.MapZoomOut, Key.Subtract, ModifierKeys.Control));
+            InputBindings.Add(new KeyBinding(GalaxyScreenCommands.MapZoomOut, Key.OemMinus, ModifierKeys.Control));
+             
+                    
+            CommandBindings.Add(new CommandBinding(ClientCommands.EscapeCommand,ExecuteEscapeCommand,CanExecuteEscapeCommand));
         }
 
         private void CanExecuteEscapeCommand(object sender, CanExecuteRoutedEventArgs args)

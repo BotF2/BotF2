@@ -182,7 +182,7 @@ namespace Supremacy.Client.Views
 
         private DiplomaticMessageCategory ResolveCategory()
         {
-            GameLog.Client.Diplomacy.DebugFormat("Proposal ={0}", _agreement.Proposal);
+            //GameLog.Client.Diplomacy.DebugFormat("Proposal ={0}", _agreement.Proposal.Clauses[0].Le);
             return ForeignPowerViewModel.ResolveMessageCategory(_agreement.Proposal);
         }
 

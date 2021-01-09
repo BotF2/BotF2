@@ -1,4 +1,4 @@
-// IClientOptionsPage.cs
+// File:IClientOptionsPage.cs
 //
 // Copyright (c) 2009 Mike Strobel
 //

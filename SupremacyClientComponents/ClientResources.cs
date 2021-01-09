@@ -211,6 +211,21 @@ namespace Supremacy.Client
 
         #endregion
 
+        //#region ButtonBackgroundBrush Resource Key   // doesn't work
+
+        //private static ComponentResourceKey _buttonBackgroundBrush;
+
+        //public static ComponentResourceKey ButtonBackgroundBrush
+        //{
+        //    get
+        //    {
+        //        EnsureResource("ButtonBackgroundBrush", ref _buttonBackgroundBrush);
+        //        return _buttonBackgroundBrush;
+        //    }
+        //}
+
+        //#endregion ButtonBackgroundBrush Resource Key
+
         #region AlertTextForegroundBrush Resource Key
 
         private static ComponentResourceKey _alertTextForegroundBrushKey;
@@ -224,7 +239,7 @@ namespace Supremacy.Client
             }
         }
 
-        #endregion
+        #endregion AlertTextForegroundBrush Resource Key
 
         #region HighlightBrush Resource Key
 

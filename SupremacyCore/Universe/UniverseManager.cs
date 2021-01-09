@@ -1,3 +1,4 @@
+// File:UniverseManager.cs
 // Copyright (c) 2007 Mike Strobel
 //
 // This source code is subject to the terms of the Microsoft Reciprocal License (Ms-RL).
@@ -263,13 +264,13 @@ namespace Supremacy.Universe
             where T : UniverseObject
         {
             var ownerId = (owner != null) ? owner.CivID : Civilization.InvalidID;
-            //GameLog.Core.AI.DebugFormat("Find Nearist Location {0}, Owner {1}", source, owner);
+            GameLog.Core.AI.DebugFormat("Find Nearist Location {0}, Owner {1}", source, owner);
             var result = _objects
                 .Where(o => o.OwnerID == ownerId)
                 .OfType<T>()
                 .Where(o => includeSource || o.Location != source)
                 .MinElement(o => MapLocation.GetDistance(source, o.Location));
-            //GameLog.Core.AI.DebugFormat("Find Nearist Location {0}, Owner {1} objects {2}", source, owner, result);
+            GameLog.Core.AI.DebugFormat("Find Nearist Location {0}, Owner {1} objects {2}", source, owner, result);
             return _objects
                 .Where(o => o.OwnerID == ownerId)
                 .OfType<T>()

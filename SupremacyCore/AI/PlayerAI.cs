@@ -1,5 +1,4 @@
-// 
-// PlayerAI.cs
+// File:PlayerAI.cs
 // 
 // Copyright (c) 2011-2013 Mike Strobel
 // 
@@ -261,6 +260,7 @@ namespace Supremacy.AI
                     {
                         continue;
                     }
+
                     var distance = MapLocation.GetDistance(sector.Location, loopSector.Location);
 
                     if (DiplomacyHelper.AreAtWar(who, loopSector.Owner) && distance <= 2)

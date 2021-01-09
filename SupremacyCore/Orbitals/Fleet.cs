@@ -1,4 +1,4 @@
-// Fleet.cs
+// File:Fleet.cs
 //
 // Copyright (c) 2007 Mike Strobel
 //
@@ -151,6 +151,48 @@ namespace Supremacy.Orbitals
                     ResourceManager.GetString(design.ClassName));
             }
         }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
         /// <summary>
@@ -402,7 +444,6 @@ namespace Supremacy.Orbitals
         {
             get { return Ships.Count == 1 && Ships[0].ShipType == ShipType.Transport; }
         }
-
         public bool IsColonizer
         {
             get { return Ships.Count == 1 && Ships[0].ShipType == ShipType.Colony; }
@@ -411,7 +452,6 @@ namespace Supremacy.Orbitals
         {
             get { return Ships.Count > 1 && Ships.Any(s => s.ShipType == ShipType.Colony); }
         }
-
         public bool IsConstructor
         {
             get { return Ships.Count == 1 && Ships[0].ShipType == ShipType.Construction; }

@@ -47,10 +47,10 @@ namespace Supremacy.Xna
             _graphicsDevice = graphicsDevice;
 
             // Load the effects
-            _blurEffect = contentManager.Load<Effect>(@"Resources\Effects\pp_Blur");
-            _thresholdEffect = contentManager.Load<Effect>(@"Resources\Effects\pp_Threshold");
-            _scalingEffect = contentManager.Load<Effect>(@"Resources\Effects\pp_Scale");
-            _hdrEffect = contentManager.Load<Effect>(@"Resources\Effects\pp_HDR");
+            _blurEffect = contentManager.Load<Effect>(@"Resources\Images\UI\Shell\Effects\pp_Blur");
+            _thresholdEffect = contentManager.Load<Effect>(@"Resources\Images\UI\Shell\Effects\pp_Threshold");
+            _scalingEffect = contentManager.Load<Effect>(@"Resources\Images\UI\Shell\Effects\pp_Scale");
+            _hdrEffect = contentManager.Load<Effect>(@"Resources\Images\UI\Shell\Effects\pp_HDR");
 
             // Initialize our buffers
             float width = (float)graphicsDevice.PresentationParameters.BackBufferWidth;

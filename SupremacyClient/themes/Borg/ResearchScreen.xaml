@@ -1,15 +1,11 @@
-<!--
-  
-   ResearchScreen.xaml
+<!-- File:ResearchScreen.xaml for Borg
   
    Copyright (c) 2007 Mike Strobel
   
    This source code is subject to the terms of the Microsoft Reciprocal License (Ms-RL).
    For details, see <http://www.opensource.org/licenses/ms-rl.html>.
   
-   All other rights reserved.
-  
-  -->
+   All other rights reserved.-->
 <ResourceDictionary xmlns="http://schemas.microsoft.com/netfx/2007/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:local="clr-namespace:Supremacy.Client"
@@ -131,7 +127,13 @@
                         IsTabStop="False"
                         Margin="0,0,0,0"
                         Style="{DynamicResource LockToggleButtonStyle}"
-                        IsChecked="{Binding Path=Distribution.IsLocked, Mode=TwoWay}"/>
+                        IsChecked="{Binding Path=Distribution.IsLocked, Mode=TwoWay}"
+                                  >
+                        <ToggleButton.ToolTip>
+                            <TextBlock Text="{s:StringResource Key=RESEARCH_DISTRIBUTION_LOCKED_TOOLTIP, Case=Upper}"
+                                       FontSize="20"/>
+                        </ToggleButton.ToolTip>
+                    </ToggleButton>
           <TextBlock DockPanel.Dock="Right"
                      Margin="0,0,7,0"
                      FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
