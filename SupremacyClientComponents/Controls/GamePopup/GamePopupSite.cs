@@ -63,7 +63,7 @@ namespace Supremacy.Client.Controls
                 case NotifyCollectionChangedAction.Add:
                     foreach (var item in e.NewItems)
                     {
-                        var gamePopup = item as GamePopup;
+                        GamePopup gamePopup = item as GamePopup;
                         if (gamePopup != null)
                             UpdateRegisteredPopupSite(gamePopup, true);
                     }
@@ -77,7 +77,7 @@ namespace Supremacy.Client.Controls
                 case NotifyCollectionChangedAction.Remove:
                     foreach (var item in e.OldItems)
                     {
-                        var gamePopup = item as GamePopup;
+                        GamePopup gamePopup = item as GamePopup;
                         if (gamePopup == null)
                             continue;
                         if (gamePopup.IsOpen)
@@ -130,7 +130,7 @@ namespace Supremacy.Client.Controls
 
         internal void AddCanvasChild(UIElement element)
         {
-            var popupRoot = element as GamePopupRoot;
+            GamePopupRoot popupRoot = element as GamePopupRoot;
             if (popupRoot == null)
                 return;
 
@@ -141,7 +141,7 @@ namespace Supremacy.Client.Controls
 
         internal void RemoveCanvasChild(UIElement element)
         {
-            var popupRoot = element as GamePopupRoot;
+            GamePopupRoot popupRoot = element as GamePopupRoot;
             if (popupRoot == null)
                 return;
 

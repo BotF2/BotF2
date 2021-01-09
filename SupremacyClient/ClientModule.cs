@@ -325,9 +325,11 @@ namespace Supremacy.Client
 
             if (!string.IsNullOrEmpty(logFile) && File.Exists(logFile))
             {
-                ProcessStartInfo processStartInfo = new ProcessStartInfo();
-                processStartInfo.UseShellExecute = true;
-                processStartInfo.FileName = logFile;
+                ProcessStartInfo processStartInfo = new ProcessStartInfo
+                {
+                    UseShellExecute = true,
+                    FileName = logFile
+                };
 
                 try
                 {

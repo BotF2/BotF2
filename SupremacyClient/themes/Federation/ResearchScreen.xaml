@@ -125,13 +125,19 @@
             <TextBlock Text="Level"/>
             <TextBlock Text="{Binding Path=TechLevel}"/>
           </TextBlock>
-          <ToggleButton DockPanel.Dock="Right"
+                    <ToggleButton DockPanel.Dock="Right"
                         Focusable="False"
                         IsTabStop="False"
                         Margin="0,0,0,0"
                         Style="{DynamicResource LockToggleButtonStyle}"
-                        IsChecked="{Binding Path=Distribution.IsLocked, Mode=TwoWay}"/>
-          <TextBlock DockPanel.Dock="Right"
+                        IsChecked="{Binding Path=Distribution.IsLocked, Mode=TwoWay}"
+                                  >
+                        <ToggleButton.ToolTip>
+                            <TextBlock Text="{s:StringResource Key=RESEARCH_DISTRIBUTION_LOCKED_TOOLTIP, Case=Upper}"
+                                       FontSize="20"/>
+                        </ToggleButton.ToolTip>
+                    </ToggleButton>
+                    <TextBlock DockPanel.Dock="Right"
                      Margin="0,0,7,0"
                      FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                      FontSize="12pt"

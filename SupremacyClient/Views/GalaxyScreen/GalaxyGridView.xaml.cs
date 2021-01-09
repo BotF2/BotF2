@@ -227,12 +227,12 @@ namespace Supremacy.Client.Views
 
         public bool ReceiveWeakEvent(Type managerType, object sender, EventArgs e)
         {
-            var appContext = sender as IAppContext;
+            IAppContext appContext = sender as IAppContext;
             
             if (appContext == null)
                 return false;
 
-            var propertyChangedEventArgs = e as PropertyChangedEventArgs;
+            PropertyChangedEventArgs propertyChangedEventArgs = e as PropertyChangedEventArgs;
             if (propertyChangedEventArgs == null)
                 return false;
 

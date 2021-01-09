@@ -733,11 +733,13 @@ namespace Supremacy.AI
             {
                 ownFleets = GameContext.Current.Universe.FindOwned<Fleet>(fleet.Owner).Where(f => f.CanMove && f != fleet && !f.Route.IsEmpty).ToList();
             }
-
             catch (Exception e)
             {
-                //GameLog.Client.General.Error(e);
-                //  GameLog.Client.General.ErrorFormat("fleet.ObjectId ={0} {1} {2} error ={3}", fleet.ObjectID, fleet.Name, fleet.ClassName, e);
+                if (fleet != null)
+                {
+                    GameLog.Client.General.ErrorFormat("fleet.ObjectId ={0} {1} {2} error ={3}", fleet.ObjectID, fleet.Name, fleet.ClassName, e);
+                }
+                else { GameLog.Client.General.Error(e); }
             }
 
             CivilizationManager civManager = GameContext.Current.CivilizationManagers[fleet.Owner];

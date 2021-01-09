@@ -191,7 +191,7 @@ namespace Supremacy.Game
 
         private static void SitRepComment_OnTextChanged(object sender, TextChangedEventArgs e)
         {
-            var SitRepCommentText = e.Source as TextBox;
+            TextBox SitRepCommentText = e.Source as TextBox;
             if (SitRepCommentText == null)
                 return;
             var bindingExpression = SitRepCommentText.GetBindingExpression(TextBox.TextProperty);
@@ -616,7 +616,7 @@ namespace Supremacy.Game
             Civilization sender;
             Civilization recipient;
 
-            var response = _exchange as IResponse;
+            IResponse response = _exchange as IResponse;
             if (response != null)
             {
                 switch (response.ResponseType)
@@ -743,7 +743,7 @@ namespace Supremacy.Game
                 }
             }
 
-            var statement = _exchange as Statement;
+            Statement statement = _exchange as Statement;
             if (statement != null)
             {
                 if (statement.StatementType == StatementType.WarDeclaration)
@@ -778,7 +778,7 @@ namespace Supremacy.Game
                 Civilization sender;
                 Civilization recipient;
 
-                var response = _exchange as IResponse;
+                IResponse response = _exchange as IResponse;
                 if (response != null)
                 {
                     switch (response.ResponseType)
