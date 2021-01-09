@@ -18,7 +18,8 @@
           
           
           <!--this is used-->
-                <TextBox x:Name="PlayerComment"
+                <!--doesn't work fine atm-->
+                <!--<TextBox x:Name="PlayerComment"
                     DockPanel.Dock="Left"
                     TextAlignment="Right"  
                     MinWidth="40"
@@ -31,7 +32,8 @@
                         <TextBlock Text="{scc:StringResource Key=SITREP_DIALOG_YOUR_TEXT_TOOLTIP}"
                                    FontSize="20"/>
                     </TextBox.ToolTip>
-                </TextBox>
+                </TextBox>-->
+          
                 <Image x:Name="PriorityIcon"
                DockPanel.Dock="Left"
                Source="vfs:///Resources/Images/UI/ScreenIcons/hand_green.png"
@@ -49,6 +51,7 @@
                VerticalAlignment="Center"
                HorizontalAlignment="Left" />-->
 
+          
                 <TextBlock VerticalAlignment="Center"
                    Text="{Binding Path=SummaryText, Mode=OneWay}" />
       </DockPanel>
