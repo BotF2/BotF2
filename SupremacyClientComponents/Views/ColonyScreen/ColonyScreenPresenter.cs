@@ -209,7 +209,9 @@ namespace Supremacy.Client.Views
                 return;
 
             if (buildSlot.IsActive)
+            {
                 colony.DeactivateShipyardBuildSlot(buildSlot);
+            }
             else
                 colony.ActivateShipyardBuildSlot(buildSlot);
 

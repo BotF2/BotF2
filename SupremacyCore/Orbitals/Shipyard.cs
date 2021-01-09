@@ -160,7 +160,7 @@ namespace Supremacy.Orbitals
                 var queueItem = BuildQueue.FirstOrDefault();
                 if (queueItem == null)
                     continue;
-                if (slot.Project != null)
+                if (slot.Project != null || slot.IsActive == false)
                     continue;
                 if (queueItem.Count > 1)
                 {
