@@ -53,18 +53,21 @@
             HorizontalAlignment="Right"
             Text="{Binding Path=TotalPopulation.CurrentValue, Mode=OneWay}" 
                    />
-            <TextBlock Foreground="{Binding Path=AverageMorale, Mode=OneWay, Converter={StaticResource MoraleBrushConverter}}"
-               Text=" / " 
-               />
-            <TextBlock Foreground="{Binding Path=AverageMorale, Mode=OneWay, Converter={StaticResource MoraleBrushConverter}}"
+            <!--<TextBlock Foreground="{Binding Path=AverageMorale, Mode=OneWay, Converter={StaticResource MoraleBrushConverter}}"
+                                      Text=" / M: " 
+               />-->
+               <!--Text="{Binding Source={s:StringResource EMPIRE_MORALE_SHORT}, Mode=OneTime, Converter={StaticResource UpperCaseConverter}}" 
+               />-->
+            <!--<TextBlock Foreground="{Binding Path=AverageMorale, Mode=OneWay, Converter={StaticResource MoraleBrushConverter}}"
                Text="{Binding Path=AverageMorale, Mode=OneWay}" 
-               />
+               />-->
             <!--<TextBlock Foreground="{Binding Path=AverageMorale, Mode=OneWay, Converter={StaticResource MoraleBrushConverter}}"
                Text=")" 
                />-->
         </StackPanel>
-      
-        <TextBlock Foreground="{StaticResource HeaderTextBrush}"
+
+        <!--EMPIRE_MORALE-->
+            <TextBlock Foreground="{StaticResource HeaderTextBrush}"
                HorizontalAlignment="Left"
                Text="{Binding Source={s:StringResource EMPIRE_MORALE}, Mode=OneTime, Converter={StaticResource UpperCaseConverter}}" 
                >
@@ -74,12 +77,26 @@
             </TextBlock.ToolTip>
         </TextBlock>
 
+
+        <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">      
             <TextBlock Foreground="{Binding Path=AverageMorale, Mode=OneWay, Converter={StaticResource MoraleBrushConverter}}"
                HorizontalAlignment="Right"
                Text="{Binding Path=AverageMorale, Mode=OneWay, Converter={StaticResource MoraleConverter}, ConverterParameter=UpperCase}" 
                />
-
-
+            <TextBlock Foreground="{Binding Path=AverageMorale, Mode=OneWay, Converter={StaticResource MoraleBrushConverter}}"
+                                      Text="  " 
+               />
+            <!--Text="{Binding Source={s:StringResource EMPIRE_MORALE_SHORT}, Mode=OneTime, Converter={StaticResource UpperCaseConverter}}" 
+               />-->
+            <TextBlock Foreground="{Binding Path=AverageMorale, Mode=OneWay, Converter={StaticResource MoraleBrushConverter}}"
+               Text="{Binding Path=AverageMorale, Mode=OneWay}" 
+               />
+            <!--<TextBlock Foreground="{Binding Path=AverageMorale, Mode=OneWay, Converter={StaticResource MoraleBrushConverter}}"
+                                      Text=" )" 
+               />-->
+        </StackPanel>
+      
+      
         <!--<TextBlock Foreground="{Binding Path=AverageMorale, Mode=OneWay, Converter={StaticResource MoraleBrushConverter}}"
                HorizontalAlignment="Right"
                Text="{Binding Path=AverageMorale, Mode=OneWay, Converter={StaticResource MoraleConverter}, ConverterParameter=UpperCase}" 
