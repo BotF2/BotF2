@@ -26,6 +26,7 @@
   <Style x:Key="BuildShipButton"
            TargetType="{x:Type Button}">
     <Setter Property="Focusable" Value="False"/>
+    <Setter Property="IsEnabled" Value="True" />
     <Setter Property="IsTabStop" Value="False"/>
     <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
     <Setter Property="UseLayoutRounding" Value="True" />
@@ -237,8 +238,8 @@
                 <RowDefinition Height="40" />
                 <RowDefinition Height="40" />
               </Grid.RowDefinitions>
-              <Image Grid.Row="0" Source="vfs:///Resources/Images/Resources/RawMaterials.png" Width="24" ToolTip="{xs:EnumString {x:Static s:ResourceType.RawMaterials}}" />
-              <Image Grid.Row="1" Source="vfs:///Resources/Images/Resources/Dilithium.png" Width="24" ToolTip="{xs:EnumString {x:Static s:ResourceType.Dilithium}}" />
+              <Image Grid.Row="0" Source="vfs:///Resources/Images/UI/ScreenIcons/RawMaterials.png" Width="24" ToolTip="{xs:EnumString {x:Static s:ResourceType.RawMaterials}}" />
+              <Image Grid.Row="1" Source="vfs:///Resources/Images/UI/ScreenIcons/Dilithium.png" Width="24" ToolTip="{xs:EnumString {x:Static s:ResourceType.Dilithium}}" />
               <Image Grid.Row="2" Source="{StaticResource StopwatchImage}" Width="17" ToolTip="{xs:LocalizedString Group={x:Static s:LocalizedTextGroups.ColonyScreen}, Entry=SHIP_CONSTRUCTION_TIME_TOOLTIP}" />
 
               <!-- Invisible text to avoid shifting layouts -->
@@ -277,7 +278,7 @@
               </TextBlock>
             </Grid>
             <Grid x:Name="ImageSite" Width="235" Height="145" Opacity="0.33">
-              <Image Source="vfs:///Resources/UI/Cardassian/ColonyScreen/shipyard_dock.png" HorizontalAlignment="Center" VerticalAlignment="Top" />
+              <Image Source="vfs:///Resources/UI/Cardassians/ColonyScreen/shipyard_dock.png" HorizontalAlignment="Center" VerticalAlignment="Top" />
                 <!--CancelButton: 150 to 125 is too big--> 
               <Button x:Name="CancelButton" Style="{StaticResource CancelShipConstructionButton}" Width="144" Height="120" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="8,0,0,0" Visibility="Hidden" Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Views:ColonyScreenView}, Path=DataContext.(Views:ColonyScreenPresentationModel.CancelBuildProjectCommand)}" CommandParameter="{Binding Path=(s:BuildSlot.Project)}" />
               <Button x:Name="BuildShipButton" Style="{StaticResource BuildShipButton}" Width="50" Height="50" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="0,3,0,0" Visibility="Hidden" ToolTip="{xs:LocalizedString Group={x:Static s:LocalizedTextGroups.ColonyScreen}, Entry=BUILT_NEW_SHIP_TOOLTIP}" Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Views:ColonyScreenView}, Path=DataContext.(Views:ColonyScreenPresentationModel.SelectShipBuildProjectCommand)}" CommandParameter="{Binding}" />
