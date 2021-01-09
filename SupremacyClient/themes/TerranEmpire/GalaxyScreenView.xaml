@@ -473,7 +473,7 @@
                   <!--<Path Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Grid.RowSpan="1" Width="24" Height="12" Stretch="Fill" Fill="{StaticResource LCARS_PurpleGradient_Left_Right}" Margin="0,0,0,0" Data="F1 M 0,16L 1.27157e-006,0L 32,0L 24,0C 18.6667,0 13.3333,0 10.6667,2.66663C 8,5.33337 8,10.6666 8,16L 0,16 Z "/>-->
                   <Rectangle Grid.Column="0"
                              Grid.Row="1"
-                             Fill="{StaticResource LCARS_Terran1Gradient_TopLeft_BottomRight}"
+                             Fill="{StaticResource LCARS_Terran1Gradient_Right_Left}"
                              Width="7"
                              Margin="0,3,0,3"
                              Stretch="Fill" />
@@ -487,7 +487,7 @@
                                             <DrawingBrush>
                                                     <DrawingBrush.Drawing>
                                                         <GeometryDrawing 
-                                       Brush="{StaticResource LCARS_Terran1Gradient_TopLeft_BottomRight}"
+                                       Brush="{StaticResource LCARS_Terran1Gradient_Right_Left}"
                                        Geometry="F1 M 0,0 L 0,56 26,56 26,18 18,18 10,0 0,0 Z " />
                                                     </DrawingBrush.Drawing>
                                                 </DrawingBrush>
