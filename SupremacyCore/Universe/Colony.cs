@@ -1305,14 +1305,14 @@ namespace Supremacy.Universe
                 //FoodReserves.UpdateAndReset();
 
                 if (Name == "Borg" && category == ProductionCategory.Food)
-                    ; // just for Breakpoint
-
+                    GameLog.Core.Production.DebugFormat("Borg and Food"); // just for Breakpoint
+                
                 while (laborAvailable > 0 && _foodPF_unused > 0)
                 {
                     if (_foodDeficit > 0)
                     {
                         if (Name == "Borg" && category == ProductionCategory.Food)
-                            ; // just for Breakpoint
+                            GameLog.Core.Production.DebugFormat("Borg and _foodDeficit"); // just for Breakpoint
                         continue;
                     }
                     //FoodReserves - _population + 
