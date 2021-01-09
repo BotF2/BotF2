@@ -210,11 +210,12 @@ namespace Supremacy.Client
             ResourceDictionary themeDictionary = null;
             try
             {
+                GameLog.Client.UI.DebugFormat("trying to load {0}", themeUri.OriginalString);
                 themeDictionary = LoadComponent(themeUri) as ResourceDictionary;
             }
             catch
             {
-                GameLog.Client.General.Debug("themeDictionary = LoadComponent(themeUri) as ResourceDictionary;");
+                GameLog.Client.General.DebugFormat("themeDictionary = LoadComponent(themeUri) as ResourceDictionary;");
             }
 
             if (themeDictionary == null)
