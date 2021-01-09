@@ -200,13 +200,20 @@ namespace Supremacy.Orbitals
             {
                 foreach (var slot in _buildSlots)
                 {
+                    string _design = "nothing";
+                    string _percent = "0 %";
+                    if (slot.Project != null)
+                    {
+                         _design = slot.Project.BuildDesign.ToString();
+                         _percent = slot.Project.PercentComplete.ToString();
+                    }
                     GameLog.Core.SaveLoad.DebugFormat(
-                        "ID = " + slot.SlotID
-                        //+ " at " + slot.Shipyard.Name
-                        //+ " (" + slot.Shipyard.Location
-                        //+ " ) doing " + slot.Project.BuildDesign
-                        //+ " " + slot.Project.PercentComplete
-                        //+ " percent done " + slot.Project.BuildDesign
+                        "ShipyardSlotID = " + slot.SlotID
+                        + " at " + slot.Shipyard.Name
+                        + " (" + slot.Shipyard.Location
+                        + " ) doing " + _design
+                        + " " + _percent
+                        + " percent done " //+ slot.Project.BuildDesign
                         );
                 }
             } catch { };
