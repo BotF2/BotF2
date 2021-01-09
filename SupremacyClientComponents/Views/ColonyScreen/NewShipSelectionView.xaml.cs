@@ -47,7 +47,7 @@ namespace Supremacy.Client.Views
             typeof(NewShipSelectionView),
             new PropertyMetadata());
 
-        public ShipBuildProject SelectedBuildProject
+        public ShipBuildProject SelectedBuildProject // Change in this is seen at ColonyScreenPresenter inside of ExecuteSelectShipBuildProjectCommand(ShipyardBuildSlot buildSlot)
         {
             get { return (ShipBuildProject)GetValue(SelectedBuildProjectProperty); }
             set { SetValue(SelectedBuildProjectProperty, value); }

@@ -126,6 +126,7 @@ namespace Supremacy.Universe
 
         private UniverseObjectList<OrbitalBattery> _orbitalBatteries;
         private ObservableCollection<BuildQueueItem> _buildQueue;
+       // private ObservableCollection<BuildQueueItem> _buildSlotQueue;
         private BuildSlot _buildSlot;
         private Meter _creditsFromTrade;
         private int _tradeRoutesPossible = -1;
@@ -846,6 +847,15 @@ namespace Supremacy.Universe
         }
 
         /// <summary>
+        /// Gets the buildslot queue at this <see cref="Colony"/>.
+        /// </summary>
+        /// <value>The build queue.</value>
+        //public IList<BuildQueueItem> BuildSlotQueue
+        //{
+        //    get { return _buildSlotQueue; }
+        //}
+
+        /// <summary>
         /// Gets the build slots at this <see cref="Colony"/>.
         /// </summary>
         /// <value>The build slots.</value>
@@ -871,6 +881,12 @@ namespace Supremacy.Universe
         /// </summary>
         public void ProcessQueue()
         {
+            int count = 0;
+            foreach (var buildQueueItem in BuildQueue)
+            {
+                GameLog.Client.ShipProduction.DebugFormat("Colony BuildQueueItem = {0}, index {1}", buildQueueItem.Description, count);
+                count++;
+            }
             foreach (var slot in BuildSlots)
             {
                 if (slot.HasProject && slot.Project.IsCancelled)
@@ -879,21 +895,44 @@ namespace Supremacy.Universe
                 if (slot.Project != null)
                     continue;
 
-                var queueItem = BuildQueue.FirstOrDefault();
+                var queueItem = BuildQueue.FirstOrDefault(); // queue of colony non-ship build projects to construct
                 if (queueItem == null)
                     continue;
 
                 if (queueItem.Count > 1)
                 {
-                    slot.Project = queueItem.Project.CloneEquivalent();
+                    slot.Project = queueItem.Project.CloneEquivalent(); 
                     queueItem.DecrementCount();
                 }
                 else
                 {
                     slot.Project = queueItem.Project;
                     BuildQueue.Remove(queueItem);
-                }
+                }                
             }
+        }
+        public void ProcessBuildSlotQueue()
+        {
+            //int count = 0;
+            //foreach (var _buildSlotQueueItem in BuildSlotQueue)
+            //{
+            //    GameLog.Client.ShipProduction.DebugFormat("Colony BuildSlotQueueItem = {0}, index {1}", _buildSlotQueueItem.Description, count);
+            //    count++;
+            //}
+            //var buildSlotQueueItem = BuildSlotQueue.FirstOrDefault();
+            ////if (buildSlotQueueItem == null)
+            ////    return;
+
+            //if (buildSlotQueueItem != null && buildSlotQueueItem.Count > 1)
+            //{
+            //    BuildSlots[0].Project = buildSlotQueueItem.Project.CloneEquivalent();
+            //    buildSlotQueueItem.DecrementCount();
+            //}
+            //else
+            //{
+            //    BuildSlots[0].Project = buildSlotQueueItem.Project;
+            //    BuildSlotQueue.Remove(buildSlotQueueItem);
+            //}
         }
         #endregion
 
@@ -983,6 +1022,7 @@ namespace Supremacy.Universe
             _creditsFromTrade = new Meter();
             _buildSlot = new BuildSlot();
             _buildQueue = new ObservableCollection<BuildQueueItem>();
+            //_buildSlotQueue = new ObservableCollection<BuildQueueItem>();
 
             _baseRawMaterials = 0;
             _baseDeuteriumGeneration = 0;
@@ -2306,6 +2346,8 @@ namespace Supremacy.Universe
         {
             return BuildSlots.Any(t => t.Project != null && t.Project.BuildDesign == design) ||
                    BuildQueue.Any(item => item.Project.BuildDesign == design);
+                   //||
+                   //BuildSlotQueue.Any(item => item.Project.BuildDesign == design);
         }
 
         /// <summary>
@@ -2340,6 +2382,7 @@ namespace Supremacy.Universe
             _creditsFromTrade.SerializeOwnedData(writer, context);
             _buildSlot.SerializeOwnedData(writer, context);
             writer.WriteOptimized(_buildQueue.ToArray());
+            //writer.WriteOptimized(_buildSlotQueue.ToArray());
 
             writer.Write(_orbitalBatteryDesign);
             writer.Write((byte)_activeOrbitalBatteries.Value);
@@ -2454,6 +2497,7 @@ namespace Supremacy.Universe
             _creditsFromTrade.DeserializeOwnedData(reader, context);
             _buildSlot.DeserializeOwnedData(reader, context);
             _buildQueue.AddRange((BuildQueueItem[])reader.ReadOptimizedObjectArray(typeof(BuildQueueItem)));
+            //_buildSlotQueue.AddRange((BuildQueueItem[])reader.ReadOptimizedObjectArray(typeof(BuildQueueItem)));
             _orbitalBatteryDesign = reader.ReadInt32();
             _activeOrbitalBatteries.Value = reader.ReadByte();
             _totalOrbitalBatteries.Value = reader.ReadByte();
@@ -2518,6 +2562,9 @@ namespace Supremacy.Universe
 
             _buildQueue = typedSource._buildQueue; // TODO: clone build queue
             OnPropertyChanged("BuildQueue");
+
+            //_buildSlotQueue = typedSource._buildSlotQueue; // TODO: clone build queue
+            //OnPropertyChanged("BuildSlotQueue");
 
             _baseRawMaterials = typedSource._baseRawMaterials;
             _baseDeuteriumGeneration = typedSource._baseDeuteriumGeneration;

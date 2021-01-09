@@ -177,7 +177,7 @@
                 </Expander>
                 <!-- END BUILD QUEUE AREA -->
 
-                </Grid>
+              </Grid>
               <!-- END SYSTEM INFO BAR -->
 
               <!-- BEGIN PRIMARY CONTENT AREA -->
@@ -253,25 +253,20 @@
                         <ColumnDefinition Width="*" />
                         <!--<ColumnDefinition Width="1" />-->
                     </Grid.ColumnDefinitions>
-                                        
-                      <!--<TextBlock Grid.Row="0" Grid.Column="0" VerticalAlignment="Center"
-                           Foreground="LightGoldenrodYellow"
-                           FontSize="16"
-                           Text="Hello"                                  
-                                 />-->
-                    <!-- BEGIN SHIPYARD BUILD QUEUE AREA -->
-                      <!-- this "Queue" is just a list of what is already seen in ths shipyard bays, ColonyShipyardBuildQueueView, -->
-                        <!--<Expander Grid.Row="0"
+
+                     <!--BEGIN SHIPYARD BUILD QUEUE AREA --> 
+                      
+                        <Expander Grid.Row="0"
                                 Grid.RowSpan="2"
                                 Grid.Column="0"
                                 cal:RegionManager.RegionName="{x:Static scc:ColonyScreenRegions.ShipyardBuildQueue}"
                                 Margin="0,4,0,0"
                                 Header="{Binding Source={s:StringResource SHIPYARD_QUEUE}, Mode=OneTime, Converter={StaticResource UpperCaseConverter}}"
                                 IsExpanded="True">
-                        </Expander>-->
-               
-
-                    <ItemsControl ItemsSource="{Binding Path=SelectedColony.Shipyard.BuildSlots, Mode=OneWay}"
+                        </Expander>
+                                      
+                        <!--BEGIN SHIPYARD BAY AREAs -->
+                        <ItemsControl ItemsSource="{Binding Path=SelectedColony.Shipyard.BuildSlots, Mode=OneWay}"
                                     Grid.Column="1"
                                     Grid.Row="1"
                                     Style="{StaticResource {x:Static scc:ClientResources.ScrollableItemsControlStyleKey}}">
@@ -285,27 +280,6 @@
                             <scc:ShipyardDockView BuildSlot="{Binding}" Margin="16" HorizontalAlignment="Left" />
                         </DataTemplate>
                       </ItemsControl.ItemTemplate>
-                    <!--<ItemsControl ItemsSource="{Binding Path=SelectedColony.Shipyard.BuildSlotQueues, Mode=OneWay}"
-                                    Grid.Column="1"
-                                    Grid.Row="1"
-                                    Style="{StaticResource {x:Static scc:ClientResources.ScrollableItemsControlStyleKey}}">>
-                    <ItemsControl.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <WrapPanel Orientation="Horizontal" IsItemsHost="True" />
-                        </ItemsPanelTemplate>
-                    </ItemsControl.ItemsPanel>
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate DataType="{x:Type s:ShipyardBuildSlot}">
-                            <scc:ShipyardDockView BuildSlot="{Binding}" Margin="16" HorizontalAlignment="Left" />
-                        </DataTemplate>
-                      </ItemsControl.ItemTemplate>
-                    </ItemsControl>-->
-
-                                            <!--<ItemsControl.ItemTemplate> // Do we need to put in an scc:NewShipSelectionView? - think not, Think it is viewed from ColonyScreenPresenter and NewShipSelectionView.xaml
-                        <DataTemplate DataType="{x:Type s:ShipyardBuildSlot}">
-                            <scc:ShipyardDockView BuildSlot="{Binding}" Margin="16" HorizontalAlignment="Left" />
-                        </DataTemplate>
-                       </ItemsControl.ItemTemplate>-->
                     </ItemsControl>
                 </Grid>
                 </TabItem>
