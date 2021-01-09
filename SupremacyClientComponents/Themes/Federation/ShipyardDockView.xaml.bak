@@ -25,7 +25,7 @@
     </RadialGradientBrush>
 
     <Style x:Key="BuildShipButton"
-           TargetType="{x:Type Button}" >
+           TargetType="{x:Type Button}">
     <Setter Property="Focusable" Value="False"/>
     <Setter Property="IsTabStop" Value="False"/>
     <Setter Property="FocusVisualStyle" Value="{x:Null}"/>

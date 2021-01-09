@@ -103,7 +103,7 @@
     </LinearGradientBrush>
 
 
-    <SolidColorBrush x:Key="HeaderTextBrush"
+    <!--<SolidColorBrush x:Key="HeaderTextBrush"
                    PresentationOptions:Freeze="True"
                    Color="#ffdfdfff" />
     <SolidColorBrush x:Key="DefaultTextBrush"
@@ -117,7 +117,7 @@
                    Color="#ffe7d490" />
     <SolidColorBrush x:Key="LCARS_WarningBrush"
                    PresentationOptions:Freeze="True"
-                   Color="#FFB90E0A" />
+                   Color="#FFB90E0A" />-->
 
     <SolidColorBrush x:Key="LCARS_BeigeTextBrush"
                    PresentationOptions:Freeze="True"

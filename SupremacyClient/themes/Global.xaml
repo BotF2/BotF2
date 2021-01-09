@@ -2398,6 +2398,23 @@
                   Offset="0" />
     </LinearGradientBrush>
 
+    <LinearGradientBrush x:Key="TERRAN_GreenGradient_Top_Bottom"
+                    StartPoint="0,0" EndPoint="0,1">
+        <GradientStop Color="#FF09935f" Offset="0" />
+        <GradientStop Color="#FF075e2b" Offset="1" />
+    </LinearGradientBrush>
+
+    <LinearGradientBrush x:Key="TERRAN_GreenGradient_Bottom_Top"
+                        StartPoint="0,0" EndPoint="0,1">
+        <GradientStop Color="#FF075e2b" Offset="0" />
+        <GradientStop Color="#FF09935f"  Offset="1" />
+    </LinearGradientBrush>
+
+    <LinearGradientBrush x:Key="TERRAN_HoverGreenGradient_Top_Bottom"
+                        StartPoint="0,0" EndPoint="0,1">
+        <GradientStop Color="#FF37D680" Offset="0" />
+        <GradientStop Color="#FF019245"  Offset="1" />
+    </LinearGradientBrush>
 
     <!--End of Gradients-->
 
