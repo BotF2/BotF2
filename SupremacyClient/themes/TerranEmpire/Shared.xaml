@@ -1780,7 +1780,7 @@
                                     <DrawingBrush>
                                         <DrawingBrush.Drawing>
                                             <GeometryDrawing PresentationOptions:Freeze="True"
-                                       Brush="{StaticResource LCARS_PurpleGradient_TopLeft_BottomRight}"
+                                       Brush="{StaticResource LCARS_Terran1Gradient_TopLeft_BottomRight}"
                                        Geometry="F1 M -7.62939e-006,56L 3.8147e-006,18.6666C 2.96699e-006,12.4445 2.11928e-006,6.22229 3.11111,3.11121C 6.22222,0 12.4444,0 18.6667,0L 28,0L 28,37.3333L 18.6667,37.3333C 15.5556,37.3333 12.4444,37.3333 10.8889,40.4445C 9.33334,43.5556 9.33334,49.7778 9.33334,56L -7.62939e-006,56 Z " />
                                         </DrawingBrush.Drawing>
                                     </DrawingBrush>
@@ -1865,7 +1865,7 @@
                             <!--<Path Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="2" Grid.RowSpan="2" Height="42" Width="24" Stretch="Fill" Fill="{StaticResource LCARS_PurpleGradient_TopLeft_BottomRight}" Data="F1 M 9.4739e-015,0L 1.27157e-006,16C 1.27157e-006,16 1.27157e-006,30.7439 1.27157e-006,36.2667C 1.27157e-006,47.3123 8.95431,56 20,56L 32,56L 32,16L 24,16C 18.6667,16 13.3333,16 10.6667,13.3334C 8,10.6666 8,5.33337 8,0L 9.4739e-015,0 Z "/>-->
                             <Rectangle Grid.Column="2"
                          Grid.Row="3"
-                         Fill="{StaticResource LCARS_AzureGradient_Left_Right}"
+                         Fill="{StaticResource LCARS_Terran3Gradient_Top_Bottom}"
                          Margin="3,0,0,0"
                          Height="28"
                          Stretch="Fill" />
