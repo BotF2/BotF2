@@ -578,6 +578,7 @@ namespace Supremacy.Client
             _regionViewRegistry.RegisterViewWithRegion(ColonyScreenRegions.ProductionManagement, ColonyScreenRegions.ProductionManagement, typeof(SystemProductionPanel));
             _regionViewRegistry.RegisterViewWithRegion(ColonyScreenRegions.PlanetaryBuildQueue, ColonyScreenRegions.PlanetaryBuildQueue, typeof(ColonyPlanetaryBuildQueueView));
             _regionViewRegistry.RegisterViewWithRegion(ColonyScreenRegions.PlanetaryBuildList, ColonyScreenRegions.PlanetaryBuildList, typeof(ColonyPlanetaryBuildListView));
+            _regionViewRegistry.RegisterViewWithRegion(ColonyScreenRegions.ShipyardBuildList, ColonyScreenRegions.ShipyardBuildList, typeof(ColonyShipyardBuildListView));
             _regionViewRegistry.RegisterViewWithRegion(ColonyScreenRegions.SelectedPlanetaryBuildProjectInfo, ColonyScreenRegions.SelectedPlanetaryBuildProjectInfo, typeof(ColonyBuildProjectInfoView));
             _regionViewRegistry.RegisterViewWithRegion(ColonyScreenRegions.ShipyardBuildQueue, ColonyScreenRegions.ShipyardBuildQueue, typeof(ColonyShipyardBuildQueueView));
             _regionViewRegistry.RegisterViewWithRegion(ColonyScreenRegions.ShipyardBuildList, ColonyScreenRegions.ShipyardBuildList, typeof(ColonyShipyardBuildListView));
