@@ -545,6 +545,7 @@ namespace Supremacy.Client
                 {
                     GameLog.Client.General.Info("for XNA 3.1: trying to copy into XNA31_ok.info from C:\\Program Files (x86)\\Microsoft XNA\\XNA Game Studio\\v3.1\\Redist\\DX Redist\\DXSETUP.exe");
                     Process.Start(xna_copy);
+                    Thread.Sleep(1000);
                 }
             }
 
