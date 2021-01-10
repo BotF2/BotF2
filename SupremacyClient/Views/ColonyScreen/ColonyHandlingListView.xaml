@@ -43,7 +43,7 @@
       </Grid.ColumnDefinitions>
       <Border Grid.Column="0"
               VerticalAlignment="Center"
-              BorderBrush="{StaticResource BorderBrush}"
+              BorderBrush="{StaticResource {x:Static scc:ClientResources.ImageBorderBrushKey}}"
               BorderThickness="2"
               CornerRadius="4"
               Width="48"
@@ -207,7 +207,7 @@
                             Value="Offline" />
                     <Setter TargetName="StatusText"
                             Property="Foreground"
-                            Value="Crimson" />
+                            Value="#FFB90E0A" />
                   </DataTrigger>
                   <DataTrigger Binding="{Binding Path=Age}"
                                Value="1">
@@ -316,7 +316,7 @@
                   <TextBlock Foreground="{StaticResource HeaderTextBrush}"
                              Text="{Binding Path=(s:TechObject.Design).Name, Converter={StaticResource StringResourceConverter}}" />
                   <TextBlock x:Name="ScrapText"
-                             Foreground="Crimson"
+                             Foreground="#FFB90E0A"
                              Text="(SCRAP)"
                              Opacity="0.0" />
                 </TextBlock>
