@@ -529,8 +529,8 @@ namespace Supremacy.Client
             //}
             //_workingDirectory = PathHelper.GetWorkingDirectory();
 
-            var xna_check = PathHelper.GetWorkingDirectory() + "\\XNA31_ok.info";
-            var xna_copy = PathHelper.GetWorkingDirectory() + "\\XNA31_check.bat";
+            var xna_check = PathHelper.GetWorkingDirectory() + "\\Resources\\XNA31_ok.info";
+            var xna_copy = PathHelper.GetWorkingDirectory() + "\\Resources\\XNA31_check.bat";
 
             if (File.Exists(xna_check))
             {
