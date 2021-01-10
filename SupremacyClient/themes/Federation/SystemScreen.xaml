@@ -172,10 +172,11 @@
                           Grid.RowSpan="2"
                           cal:RegionManager.RegionName="{x:Static scc:ColonyScreenRegions.PlanetaryBuildQueue}"
                           Margin="0,4,0,0"
-                          Header="> BUILD QUEUE"
+                          Header="{Binding Source={s:StringResource BUILD_QUEUE}, Mode=OneTime, Converter={StaticResource UpperCaseConverter}}"
                           IsExpanded="True">
                 </Expander>
                 <!-- END BUILD QUEUE AREA -->
+
               </Grid>
               <!-- END SYSTEM INFO BAR -->
 
@@ -194,7 +195,7 @@
                   </e:DataTrigger>
                 </i:Interaction.Triggers>
 
-                <TabItem x:Name="HandlingTab" Header="COLONY HANDLING">
+                <TabItem x:Name="HandlingTab" Header="COLONY MANAGEMENT">
                     <ContentControl cal:RegionManager.RegionName="{x:Static scc:ColonyScreenRegions.HandlingList}" />
                 </TabItem>
 
@@ -248,21 +249,27 @@
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto" />
                         <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="Auto" />
+                        <!--<ColumnDefinition Width="1" />-->
                     </Grid.ColumnDefinitions>
-                                        
-                      <!--<TextBlock Grid.Row="0" Grid.Column="0" VerticalAlignment="Center"
-                           Foreground="LightGoldenrodYellow"
-                           FontSize="16"
-                           Text="Hello" 
-                                 
-                                 />-->
-                                        
-                      <ItemsControl ItemsSource="{Binding Path=SelectedColony.Shipyard.BuildSlots, Mode=OneWay}"
-                                  Grid.Column="0"
-                                  Grid.Row="1"
-                                  Style="{StaticResource {x:Static scc:ClientResources.ScrollableItemsControlStyleKey}}">
+
+                     <!--BEGIN SHIPYARD BUILD QUEUE AREA --> 
+                      
+                        <Expander Grid.Row="0"
+                                Grid.RowSpan="2"
+                                Grid.Column="0"
+                                cal:RegionManager.RegionName="{x:Static scc:ColonyScreenRegions.ShipyardBuildQueue}"
+                                Margin="0,4,0,0"
+                                Header="{Binding Source={s:StringResource SHIPYARD_QUEUE}, Mode=OneTime, Converter={StaticResource UpperCaseConverter}}"
+                                IsExpanded="True">
+                        </Expander>
+                                      
+                        <!--BEGIN SHIPYARD BAY AREAs -->
+                        <ItemsControl ItemsSource="{Binding Path=SelectedColony.Shipyard.BuildSlots, Mode=OneWay}"
+                                    Grid.Column="1"
+                                    Grid.Row="1"
+                                    Style="{StaticResource {x:Static scc:ClientResources.ScrollableItemsControlStyleKey}}">
                       <ItemsControl.ItemsPanel>
                           <ItemsPanelTemplate>
                               <WrapPanel Orientation="Horizontal" IsItemsHost="True" />
@@ -270,18 +277,13 @@
                       </ItemsControl.ItemsPanel>
                       <ItemsControl.ItemTemplate>
                         <DataTemplate DataType="{x:Type s:ShipyardBuildSlot}">
-                          <scc:ShipyardDockView BuildSlot="{Binding}" Margin="16" HorizontalAlignment="Left" />
-                        </DataTemplate>
-                      </ItemsControl.ItemTemplate>
-                      <!--<ItemsControl.ItemTemplate> // Do we need to put in an scc:NewShipSelectionView? - think not, Think it is viewed from ColonyScreenPresenter and NewShipSelectionView.xaml
-                        <DataTemplate DataType="{x:Type s:ShipyardBuildSlot}">
                             <scc:ShipyardDockView BuildSlot="{Binding}" Margin="16" HorizontalAlignment="Left" />
                         </DataTemplate>
-                       </ItemsControl.ItemTemplate>-->
+                      </ItemsControl.ItemTemplate>
                     </ItemsControl>
                 </Grid>
                 </TabItem>
-
+                <!-- END SHIPYARD BUILD QUEUE AREA -->
                 <!--old StructuresTab, modified-->
 
                 <!--<TabItem x:Name="StructuresTab" Header="STRUCTURES">

@@ -36,7 +36,7 @@ namespace Supremacy.Client.Views
                     Mode = BindingMode.OneWay
                 });
 
-            if (BuildProjectList.Items.Count > 0)  
+            if (BuildProjectList.Items.Count > 0)
                 BuildProjectList.SelectedIndex = 0;  // to display SHIP_INFO_TEXT just at screen opening
         }
 
@@ -47,7 +47,7 @@ namespace Supremacy.Client.Views
             typeof(NewShipSelectionView),
             new PropertyMetadata());
 
-        public ShipBuildProject SelectedBuildProject
+        public ShipBuildProject SelectedBuildProject // Change in this is seen at ColonyScreenPresenter inside of ExecuteSelectShipBuildProjectCommand(ShipyardBuildSlot buildSlot)
         {
             get { return (ShipBuildProject)GetValue(SelectedBuildProjectProperty); }
             set { SetValue(SelectedBuildProjectProperty, value); }
@@ -70,7 +70,7 @@ namespace Supremacy.Client.Views
         }
         #endregion
 
-        public string ShipFunctionPath 
+        public string ShipFunctionPath
         {
             get
             {

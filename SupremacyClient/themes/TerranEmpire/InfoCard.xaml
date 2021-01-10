@@ -19,7 +19,7 @@
                   <LinearGradientBrush.GradientStops>
                     <GradientStop Color="#FFC0C0C0"
                                   Offset="0.0" />
-                    <GradientStop Color="#FFFFFFFF"
+                    <GradientStop Color="White"
                                   Offset="0.5" />
                     <GradientStop Color="#FFC0C0C0"
                                   Offset="1.0" />
@@ -50,7 +50,7 @@
                 <LinearGradientBrush StartPoint="0.0,0.5"
                                      EndPoint="1.0,0.5">
                   <LinearGradientBrush.GradientStops>
-                    <GradientStop Color="#FFFFFFFF"
+                    <GradientStop Color="White"
                                   Offset="0" />
                     <GradientStop Color="#FFC0C0C0"
                                   Offset="1" />
@@ -93,7 +93,7 @@
                 <LinearGradientBrush StartPoint="0.0,0.0"
                                      EndPoint="1.0,1.0">
                   <LinearGradientBrush.GradientStops>
-                    <GradientStop Color="#FFFFFFFF"
+                    <GradientStop Color="White"
                                   Offset="0" />
                     <GradientStop Color="#FFC0C0C0"
                                   Offset="1" />
@@ -124,7 +124,7 @@
                 <LinearGradientBrush StartPoint="0.0,0.0"
                                      EndPoint="1.0,1.0">
                   <LinearGradientBrush.GradientStops>
-                    <GradientStop Color="#FFFFFFFF"
+                    <GradientStop Color="White"
                                   Offset="0" />
                     <GradientStop Color="#FFC0C0C0"
                                   Offset="1" />
@@ -155,7 +155,7 @@
                 <LinearGradientBrush StartPoint="0.0,0.0"
                                      EndPoint="1.0,1.0">
                   <LinearGradientBrush.GradientStops>
-                    <GradientStop Color="#FFFFFFFF"
+                    <GradientStop Color="White"
                                   Offset="0" />
                     <GradientStop Color="#FFC0C0C0"
                                   Offset="1" />

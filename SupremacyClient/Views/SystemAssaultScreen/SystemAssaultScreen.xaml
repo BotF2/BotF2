@@ -31,7 +31,7 @@
   <Control.Background>
     <ImageBrush Stretch="UniformToFill">
       <ImageBrush.ImageSource>
-        <BitmapImage UriSource="vfs:///Resources/Images/Backgrounds/Default.png" />
+        <BitmapImage UriSource="vfs:///Resources/Images/UI/Backgrounds/Default.png" />
       </ImageBrush.ImageSource>
     </ImageBrush>
   </Control.Background>
@@ -322,7 +322,7 @@
             <TextBlock Foreground="{DynamicResource HeaderTextBrush}"
                        Text="{Binding Path=Name, Converter={StaticResource StringResourceConverter}}" />
             <TextBlock x:Name="DestroyedText"
-                       Foreground="Crimson"
+                       Foreground="#FFB90E0A"
                        Margin="5,0,0,0"
                        Visibility="Collapsed"
                        Text="{s:StringResource Key=COMBAT_DESTROYED}" />
@@ -938,7 +938,7 @@
                     Width="24"
                     Height="24"
                     Margin="0,4,0,2">
-                <Image Source="vfs:///Resources/Images/ScreenIcons/shield.png"
+                <Image Source="vfs:///Resources/Images/UI/ScreenIcons/shield.png"
                     RenderOptions.BitmapScalingMode="HighQuality" />
                 </Border>
                 <Border DockPanel.Dock="Bottom"
@@ -986,7 +986,7 @@
                           Width="24"
                           Height="24"
                           Margin="0,0,0,2">
-                    <Image Source="vfs:///Resources/Images/ScreenIcons/combat_strength.png"
+                    <Image Source="vfs:///Resources/Images/UI/ScreenIcons/combat_strength.png"
                            RenderOptions.BitmapScalingMode="HighQuality" />
                   </Border>                      
                   <TextBlock DockPanel.Dock="Bottom"
@@ -1025,7 +1025,7 @@
                           Width="24"
                           Height="24"
                           Margin="0,0,0,2">
-                    <Image Source="vfs:///Resources/Images/ScreenIcons/population.png"
+                    <Image Source="vfs:///Resources/Images/UI/ScreenIcons/population.png"
                            RenderOptions.BitmapScalingMode="HighQuality" />
                   </Border>
                   <TextBlock DockPanel.Dock="Bottom"

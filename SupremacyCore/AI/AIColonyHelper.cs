@@ -1,3 +1,4 @@
+// File:AIColonyHelper.cs
 // Copyright (c) 2007 Mike Strobel
 //
 // This source code is subject to the terms of the Microsoft Reciprocal License (Ms-RL).
@@ -24,7 +25,7 @@ namespace Supremacy.AI
                 throw new ArgumentNullException(nameof(colony));
             }
 
-            return PlayerAI.GetSectorDanger(colony.Owner, colony.Sector, 2, false) > 0;
+            return PlayerAI.GetSectorDanger(colony.Owner, colony.Sector, 2) > 0;
         }
 
         public static BuildProject GetBuildProject(Colony colony)

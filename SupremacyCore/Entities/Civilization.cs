@@ -107,8 +107,8 @@ namespace Supremacy.Entities
         private int _baseMoraleLevel = 100;
         private int _moraleDriftRate = 1;
         private List<Civilization> _spiedCivList;
-        //private List<IntelHelper.NewIntelOrders> _intelOrdersGoingToHost;
-        //private List<IntelHelper.NewIntelOrders> _intelOrdersIncomingToHost;
+        private Civilization _totalWarCivilization;
+
         #endregion
 
         #region Constructors
@@ -200,8 +200,8 @@ namespace Supremacy.Entities
 
             _traits = (string)element.Element(ns + "Traits");
             _traits = _traits.Trim();
-            _spiedCivList = SpiedCivList; // 
-            //_intelOrdersGoingToHost = IntelOrdersGoingToHost;
+            _spiedCivList = SpiedCivList;
+            _totalWarCivilization = TotalWarCivilization;
             //_intelOrdersIncomingToHost = IntelOrdersIncomingToHost;
 
             // When starting a game, options is null
@@ -486,6 +486,16 @@ namespace Supremacy.Entities
             //set { _traits = value; }
         }
 
+        /// <summary>
+        /// Gets the <see cref="Civilization"/> this <see cref="Civilization"/>
+        /// is at in Total War with
+        /// </summary>
+        /// <value>The tech curve.</value>
+        public Civilization TotalWarCivilization
+        {
+            get { return _totalWarCivilization; }
+            set { if (_totalWarCivilization == null) { _totalWarCivilization = value; } }
+        }
         /// <summary>
         /// Gets a value indicating whether this <see cref="Civilization"/> is an empire.
         /// </summary>

@@ -1,15 +1,11 @@
-<!--
-  
-   Global.xaml
+<!-- File:Global.xaml for all UI = all empires
   
    Copyright (c) 2007 Mike Strobel
   
    This source code is subject to the terms of the Microsoft Reciprocal License (Ms-RL).
    For details, see <http://www.opensource.org/licenses/ms-rl.html>.
   
-   All other rights reserved.
-  
-  -->
+   All other rights reserved.  -->
 <ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:PresentationOptions="http://schemas.microsoft.com/winfx/2006/xaml/presentation/options"
                     xmlns:av="http://schemas.codeplex.com/wpfcontrib/xaml/presentation"
@@ -20,9 +16,7 @@
                     xmlns:ui="clr-namespace:Supremacy.UI;assembly=SupremacyUI"
                     xmlns:game="clr-namespace:Supremacy.Game;assembly=SupremacyCore">
 
-
     <!--
-    
     ###### BUTTONS ######
     
     - GameButton   // e.g. Economy
@@ -37,8 +31,7 @@
 
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="Converters.xaml" />
-        <!-- <ResourceDictionary Source="pack://siteoforigin:,,,/Resources/Images/ScreenIcons/Icons.xaml" /> -->
-
+         <!--<ResourceDictionary Source="pack://siteoforigin:,,,/Resources/Images/UI/ScreenIcons/Icons.xaml" />--> 
     </ResourceDictionary.MergedDictionaries>
   
   <ObjectDataProvider x:Key="Settings"
@@ -64,24 +57,24 @@
     </Setter>
   </Style>
 
-  <Cursor x:Key="DefaultCursor">vfs:///Resources/Cursors/cursor.cur</Cursor>
+  <Cursor x:Key="DefaultCursor">vfs:///Resources/Images/UI/Shell/cursor.cur</Cursor>
 
   <!-- FONTS -->
-    <sys:Double x:Key="{x:Static scc:ClientResources.HeaderFontSizeKey}">18</sys:Double>
-  <sys:Double x:Key="{x:Static scc:ClientResources.DefaultFontSizeKey}">14</sys:Double>
-  <sys:Double x:Key="{x:Static scc:ClientResources.InfoPaneFontSizeKey}">16</sys:Double>
+<sys:Double x:Key="{x:Static scc:ClientResources.HeaderFontSizeKey}">18</sys:Double>
+<sys:Double x:Key="{x:Static scc:ClientResources.DefaultFontSizeKey}">14</sys:Double>
+<sys:Double x:Key="{x:Static scc:ClientResources.InfoPaneFontSizeKey}">16</sys:Double>
 
-    <FontWeight x:Key="{x:Static scc:ClientResources.HeaderFontWeightKey}">Normal</FontWeight>
-  <FontWeight x:Key="{x:Static scc:ClientResources.DefaultFontWeightKey}">Normal</FontWeight>
-  <FontWeight x:Key="{x:Static scc:ClientResources.InfoPaneFontWeightKey}">Bold</FontWeight>
+<FontWeight x:Key="{x:Static scc:ClientResources.HeaderFontWeightKey}">Normal</FontWeight>
+<FontWeight x:Key="{x:Static scc:ClientResources.DefaultFontWeightKey}">Normal</FontWeight>
+<FontWeight x:Key="{x:Static scc:ClientResources.InfoPaneFontWeightKey}">Bold</FontWeight>
 
 <!--
-  <FontFamily x:Key="{x:Static scc:ClientResources.HeaderFontFamilyKey}">Helvetica LT Std Ultra Compressed</FontFamily>
-  <FontFamily x:Key="{x:Static scc:ClientResources.DefaultFontFamilyKey}">Square721 Cn BT</FontFamily>
+<FontFamily x:Key="{x:Static scc:ClientResources.HeaderFontFamilyKey}">Helvetica LT Std Ultra Compressed</FontFamily>
+<FontFamily x:Key="{x:Static scc:ClientResources.DefaultFontFamilyKey}">Square721 Cn BT</FontFamily>
 -->
-  <FontFamily x:Key="{x:Static scc:ClientResources.HeaderFontFamilyKey}">pack://application:,,,/Resources/Fonts/#Federation Standard Text</FontFamily>
-  <FontFamily x:Key="{x:Static scc:ClientResources.DefaultFontFamilyKey}">pack://application:,,,/Resources/Fonts/#Federation Standard Text</FontFamily>
-  <FontFamily x:Key="{x:Static scc:ClientResources.InfoPaneFontFamilyKey}">pack://application:,,,/Resources/Fonts/#Federation Standard Text</FontFamily>
+<FontFamily x:Key="{x:Static scc:ClientResources.HeaderFontFamilyKey}">pack://application:,,,/Resources/Fonts/#Federation Standard Text</FontFamily>
+<FontFamily x:Key="{x:Static scc:ClientResources.DefaultFontFamilyKey}">pack://application:,,,/Resources/Fonts/#Federation Standard Text</FontFamily>
+<FontFamily x:Key="{x:Static scc:ClientResources.InfoPaneFontFamilyKey}">pack://application:,,,/Resources/Fonts/#Federation Standard Text</FontFamily>
   
   <!-- GEOMETRY -->
   <Geometry x:Key="LCARS_Corner_TopLeft_Tall" PresentationOptions:Freeze="True">F1 M 2.16166e-005,16.0001L 2.16166e-005,16.0002C 2.16166e-005,7.16357 7.16344,0.000183105 16,0.000183105L 22,6.10352e-005L 22,28.0002L 22,28.0002C 14.268,28.0002 8.00001,32.2681 8.00001,40.0002L 1.14441e-005,40.0002L 2.16166e-005,16.0001 Z</Geometry>
@@ -94,11 +87,10 @@
   <Geometry x:Key="LCARS_Corner_BottomLeft_Small" PresentationOptions:Freeze="True">F1 M 18,14L 22,14L 22,22L 16,22C 7.16345,22 -5.56311e-007,14.8366 -5.56311e-007,6L 9.61621e-006,0L 8.00001,0L 7.99999,4C 7.99999,9.52289 12.4771,14 18,14 Z</Geometry>
   <Geometry x:Key="LCARS_Corner_TopLeft_Wide" PresentationOptions:Freeze="True">F1 M148.999992370605,8.99999809265136C142.372575759888,8.99999809265136,136.999994277954,14.3725833892822,136.999994277954,21C136.999994277954,21,136.999994277954,32.9999980926514,136.999994277954,32.9999980926514C136.999994277954,32.9999980926514,32.9999980926514,32.9999980926514,32.9999980926514,32.9999980926514C32.9999980926514,32.9999980926514,16.9999942779541,32.9999980926514,16.9999942779541,32.9999980926514C16.9999942779541,32.9999980926514,1,32.9999980926514,1,32.9999980926514C1,32.9999980926514,1,17,1,17C1,8.16344451904298,8.16343879699707,1,16.9999942779541,1C16.9999942779541,1,160.999990463257,1,160.999990463257,1C160.999990463257,1,160.999990463257,8.99999809265136,160.999990463257,8.99999809265136C160.999990463257,8.99999809265136,148.999992370605,8.99999809265136,148.999992370605,8.99999809265136z</Geometry>
   <Geometry x:Key="LCARS_Corner_BottomLeft_Wide" PresentationOptions:Freeze="True">F1 M148.999992370605,25C142.372575759888,25,136.999994277954,19.6274147033692,136.999994277954,12.9999980926514C136.999994277954,12.9999980926514,136.999994277954,1,136.999994277954,1C136.999994277954,1,32.9999980926514,1,32.9999980926514,1C32.9999980926514,1,16.9999942779541,1,16.9999942779541,1C16.9999942779541,1,1,1,1,1C1,1,1,16.9999980926514,1,16.9999980926514C1,25.8365535736084,8.16343879699707,32.9999980926514,16.9999942779541,32.9999980926514C16.9999942779541,32.9999980926514,160.999990463257,32.9999980926514,160.999990463257,32.9999980926514C160.999990463257,32.9999980926514,160.999990463257,25,160.999990463257,25C160.999990463257,25,148.999992370605,25,148.999992370605,25 Z</Geometry>
-  
-  <!-- COLORS AND BRUSHES -->
+
+    <!-- COLORS AND BRUSHES -->
     <!--Usage: {StaticResource HeaderTextBrush}-->
-    <SolidColorBrush x:Key="BorderBrush"
-                   Color="White" />
+    <SolidColorBrush x:Key="BorderBrush" Color="White" />
 
     <SolidColorBrush x:Key="{x:Static scc:ClientResources.ControlTextForegroundBrushKey}"
                    PresentationOptions:Freeze="True"
@@ -1648,7 +1640,7 @@
     
         <!--Klingon Hover Red Gradient-->
     
-    <LinearGradientBrush x:Key="LCARS_Kling_HoverRedGradient_Top_Bottom"
+    <LinearGradientBrush x:Key="LCARS_KlingHoverRedGradient_Top_Bottom"
                        PresentationOptions:Freeze="True"
                        StartPoint="0,0"
                        EndPoint="0,1">
@@ -2173,57 +2165,57 @@
                   Offset="0" />
     </LinearGradientBrush>
 
-    <!--Dom5TanGradient-->
-    <LinearGradientBrush x:Key="LCARS_Dom5TanGradient_TopLeft_BottomRight"
+    <!--Dom5Gradient-->
+    <LinearGradientBrush x:Key="LCARS_Dom5Gradient_TopLeft_BottomRight"
                        PresentationOptions:Freeze="True"
                        StartPoint="0,0"
                        EndPoint="1,1">
         <GradientStop Color="Tan"
                   Offset="0" />
-        <GradientStop Color="Tan"
+        <GradientStop Color="SandyBrown"
                   Offset="1" />
     </LinearGradientBrush>
-    <LinearGradientBrush x:Key="LCARS_Dom5TanGradient_BottomLeft_TopRight"
+    <LinearGradientBrush x:Key="LCARS_Dom5Gradient_BottomLeft_TopRight"
                        PresentationOptions:Freeze="True"
                        StartPoint="1,1"
                        EndPoint="0,0">
-        <GradientStop Color="Tan"
+        <GradientStop Color="SandyBrown"
                   Offset="0" />
         <GradientStop Color="Tan"
                   Offset="1" />
     </LinearGradientBrush>
-    <LinearGradientBrush x:Key="LCARS_Dom5TanGradient_Top_Bottom"
+    <LinearGradientBrush x:Key="LCARS_Dom5Gradient_Top_Bottom"
                        PresentationOptions:Freeze="True"
                        StartPoint="0,0"
                        EndPoint="0,1">
         <GradientStop Color="Tan"
                   Offset="0" />
-        <GradientStop Color="Tan"
+        <GradientStop Color="SandyBrown"
                   Offset="1" />
     </LinearGradientBrush>
-    <LinearGradientBrush x:Key="LCARS_Dom5TanGradient_Bottom_Top"
+    <LinearGradientBrush x:Key="LCARS_Dom5Gradient_Bottom_Top"
                        PresentationOptions:Freeze="True"
                        StartPoint="0,1"
                        EndPoint="0,0">
-        <GradientStop Color="Tan"
+        <GradientStop Color="SandyBrown"
                   Offset="0" />
         <GradientStop Color="Tan"
                   Offset="1" />
     </LinearGradientBrush>
-    <LinearGradientBrush x:Key="LCARS_Dom5TanGradient_Left_Right"
+    <LinearGradientBrush x:Key="LCARS_Dom5Gradient_Left_Right"
                        PresentationOptions:Freeze="True"
                        StartPoint="0,0"
                        EndPoint="1,0">
         <GradientStop Color="Tan"
                   Offset="0" />
-        <GradientStop Color="Tan"
+        <GradientStop Color="SandyBrown"
                   Offset="1" />
     </LinearGradientBrush>
-    <LinearGradientBrush x:Key="LCARS_Dom5TanGradient_Right_Left"
+    <LinearGradientBrush x:Key="LCARS_Dom5Gradient_Right_Left"
                        PresentationOptions:Freeze="True"
                        StartPoint="0,0"
                        EndPoint="1,0">
-        <GradientStop Color="Tan"
+        <GradientStop Color="SandyBrown"
                   Offset="1" />
         <GradientStop Color="Tan"
                   Offset="0" />
@@ -2400,6 +2392,22 @@
                   Offset="0" />
     </LinearGradientBrush>
 
+    <LinearGradientBrush x:Key="TERRAN_GreenGradient_Top_Bottom" StartPoint="0,0" EndPoint="0,1">
+        <GradientStop Color="#FF09935f" Offset="0" />
+        <GradientStop Color="#FF075e2b" Offset="1" />
+    </LinearGradientBrush>
+
+
+    <LinearGradientBrush x:Key="TERRAN_GreenGradient_Bottom_Top" StartPoint="0,0" EndPoint="0,1">
+        <GradientStop Color="#FF075e2b" Offset="0" />
+        <GradientStop Color="#FF09935f"  Offset="1" />
+    </LinearGradientBrush>
+
+
+    <LinearGradientBrush x:Key="TERRAN_HoverGreenGradient_Top_Bottom" StartPoint="0,0" EndPoint="0,1">
+        <GradientStop Color="#FF37D680" Offset="0" />
+        <GradientStop Color="#FF019245"  Offset="1" />
+    </LinearGradientBrush>
 
     <!--End of Gradients-->
 
@@ -3986,7 +3994,7 @@
                          Height="8"
                          Margin="3,0,3,0"
                          VerticalAlignment="Top"
-                         Fill="{StaticResource LCARS_Dom4Gradient_Top_Bottom}" />
+                         Fill="Tan" />
 
                             <Rectangle x:Name="RightTopEdge"
                          Grid.Column="3"
@@ -4002,7 +4010,7 @@
                          Width="8"
                          Margin="0,3,0,3"
                          HorizontalAlignment="Left"
-                         Fill="Tan" />
+                         Fill="{StaticResource LCARS_Dom4Gradient_Top_Bottom}" />
 
                             <Rectangle x:Name="RightEdge"
                          Grid.Column="4"
@@ -4010,7 +4018,7 @@
                          Width="8"
                          Margin="0,3,0,3"
                          HorizontalAlignment="Right"
-                         Fill="Tan" />
+                         Fill="{StaticResource LCARS_Dom4Gradient_Top_Bottom}" />
 
                             <Rectangle x:Name="LeftBottomEdge"
                          Grid.Column="1"
@@ -4026,7 +4034,7 @@
                          Height="8"
                          Margin="3,0,3,0"
                          VerticalAlignment="Bottom"
-                         Fill="{StaticResource LCARS_Dom4Gradient_Top_Bottom}" />
+                         Fill="Tan" />
 
                             <Rectangle x:Name="RightBottomEdge"
                          Grid.Column="3"

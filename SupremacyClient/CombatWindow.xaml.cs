@@ -1,4 +1,4 @@
-// CombatWindow.xaml.cs
+// File:CombatWindow.xaml.cs
 //
 // Copyright (c) 2007 Mike Strobel
 //
@@ -124,7 +124,7 @@ namespace Supremacy.Client
             {
                 _playerAssets = update.FriendlyAssets[0];
             }
-            if (_otherAssets == null)
+            if (_otherAssets == null) // && update != null && update.HostileAssets.Count() >0)
             {
                 _otherAssets = update.HostileAssets[0];
             }
@@ -427,8 +427,12 @@ namespace Supremacy.Client
             if (sender == RushButton)
                 order = CombatOrder.Rush;
             if (sender == HailButton)
-            {
                 order = CombatOrder.Hail;
+            if (sender == EscapeButton)
+            {
+                order = CombatOrder.Retreat;
+                DialogResult = true;
+                this.Close();
             }
 
             GameLog.Client.Combat.DebugFormat("{0} button clicked by player", order);
@@ -447,13 +451,11 @@ namespace Supremacy.Client
             //_combatWindowVisible = false;
         }
 
-        private void OnEscapeButtonClicked(object sender, RoutedEventArgs e)
-        {
-            // useful if CLOSE-Button doesn't appear
-            DialogResult = true;
-            this.Close();
-            //_combatWindowVisible = false;
-        }
+        //private void OnEscapeButtonClicked(object sender, RoutedEventArgs e)
+        //{
+        //    DialogResult = true;
+        //    this.Close();
+        //}
 
     }
 }

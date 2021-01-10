@@ -13,11 +13,12 @@ using Supremacy.Tech;
 using Supremacy.Universe;
 using Supremacy.Utility;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Data;
-
+using System.Windows.Input;
 using CompositeRegionManager = Microsoft.Practices.Composite.Presentation.Regions.RegionManager;
 
 namespace Supremacy.Client.Views
@@ -208,7 +209,9 @@ namespace Supremacy.Client.Views
                 return;
 
             if (buildSlot.IsActive)
+            {
                 colony.DeactivateShipyardBuildSlot(buildSlot);
+            }
             else
                 colony.ActivateShipyardBuildSlot(buildSlot);
 
@@ -224,7 +227,7 @@ namespace Supremacy.Client.Views
             if (colony == null || colony.Shipyard != buildSlot.Shipyard)
                 return false;
 
-            return buildSlot.IsActive && !buildSlot.HasProject;
+            return true; //buildSlot.IsActive; // && !buildSlot.HasProject;
         }
 
         private void ExecuteSelectShipBuildProjectCommand(ShipyardBuildSlot buildSlot)
@@ -236,8 +239,8 @@ namespace Supremacy.Client.Views
             if (colony == null || colony.Shipyard != buildSlot.Shipyard)
                 return;
 
-            if (!buildSlot.IsActive || buildSlot.HasProject)
-                return;
+            //if (!buildSlot.IsActive || buildSlot.HasProject)
+            //    return;
 
             var view = new NewShipSelectionView(buildSlot);
             var statsViewModel = new TechObjectDesignViewModel();
@@ -261,8 +264,12 @@ namespace Supremacy.Client.Views
             var project = view.SelectedBuildProject;
             if (project == null)
                 return;
-
-            buildSlot.Project = project;
+            //var _buildQueueItem = new BuildQueueItem(project);
+            AddProjectToBuildSlotQueue(project, colony.Shipyard);
+            //AddProjectToBuildQueue(project, colony);
+            //buildSlot.Shipyard.BuildQueue.Add(_buildQueueItem);
+            //buildSlot.Shipyard.ProcessQueue();
+            //buildSlot.Project = project;
             
             PlayerOrderService.AddOrder(new UpdateProductionOrder(buildSlot.Shipyard));
         }
@@ -403,7 +410,6 @@ namespace Supremacy.Client.Views
             Model.SelectedColony = null;
             Model.SelectedPlanetaryBuildProject = null;
             Model.SelectShipBuildProjectCommand = null;
-            //this.Model.SelectBuildIntelProjectCommand = null;
         }
 
         private void OnSelectedColonyPropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -583,6 +589,7 @@ namespace Supremacy.Client.Views
             _toggleBuildingIsActiveCommand.RaiseCanExecuteChanged();
             _toggleShipyardBuildSlotCommand.RaiseCanExecuteChanged();
             _selectShipBuildProjectCommand.RaiseCanExecuteChanged();
+            
         }
 
         protected override void RegisterCommandAndEventHandlers()
@@ -679,7 +686,16 @@ namespace Supremacy.Client.Views
             if (project == null)
                 return false;
 
-            if (project.IsCancelled || project.IsCompleted || project.IsRushed)
+            if (project.IsCancelled)
+            {
+                //project.IsCancelled = false;
+                //project.SetFlag(BuildProjectFlags.Cancelled);
+                //
+                // real  - var result = MessageDialog.Show("Unavailable for purchase - project has flag: IsCancelled", MessageDialogButtons.Ok);
+                var result = MessageDialog.Show("Unavailable for purchase - sorry", MessageDialogButtons.Ok);
+            }
+
+            if (/*project.IsCancelled || */project.IsCompleted || project.IsRushed)
                 return false;
             
             if (Model.SelectedColony == null)
@@ -729,9 +745,28 @@ namespace Supremacy.Client.Views
             PlayerOrderService.AddOrder(new RushProductionOrder(productionCenter));
         }
 
+        private bool CanExecuteRemoveFromPlanetaryBuildQueueCommand(BuildQueueItem item)
+        {
+            return (Model.SelectedColony != null);
+        }
+
         private bool CanExecuteRemoveFromShipyardBuildQueueCommand(BuildQueueItem item)
         {
             return ((Model.SelectedColony != null) && (Model.SelectedColony.Shipyard != null));
+        }
+
+        private bool CanExecuteClearBuildSlotQueueCommand(BuildProject item)
+        {
+            return ((Model.SelectedColony != null) && (Model.SelectedColony.Shipyard != null));
+        }
+
+        private void ExecuteRemoveFromPlanetaryBuildQueueCommand(BuildQueueItem item)
+        {
+            var colony = Model.SelectedColony;
+            if (colony == null)
+                return;
+
+            RemoveItemFromBuildQueue(item, colony);
         }
 
         private void ExecuteRemoveFromShipyardBuildQueueCommand(BuildQueueItem item)
@@ -746,21 +781,12 @@ namespace Supremacy.Client.Views
             RemoveItemFromBuildQueue(item, colony.Shipyard);
         }
 
-        private bool CanExecuteRemoveFromPlanetaryBuildQueueCommand(BuildQueueItem item)
-        {
-            return (Model.SelectedColony != null);
-        }
-
-        private void ExecuteRemoveFromPlanetaryBuildQueueCommand(BuildQueueItem item)
-        {
-            var colony = Model.SelectedColony;
-            if (colony == null)
-                return;
-
-            RemoveItemFromBuildQueue(item, colony);
-        }
-
         private bool CanExecuteAddToShipyardBuildQueueCommand(BuildProject project)
+        {
+            return ((Model.SelectedColony != null) && (Model.SelectedColony.Shipyard != null));
+        }
+
+        private bool CanExecuteAddToBuildSlotQueueCommand(BuildProject project)
         {
             return ((Model.SelectedColony != null) && (Model.SelectedColony.Shipyard != null));
         }
@@ -823,13 +849,44 @@ namespace Supremacy.Client.Views
 
             UpdateBuildLists();
         }
+        protected void AddProjectToBuildSlotQueue([NotNull] BuildProject project, [NotNull] Shipyard shipyard)
+        {
+            if (project == null)
+                throw new ArgumentNullException("project");
+            if (shipyard == null)
+                throw new ArgumentNullException("buildSlot");
 
+            var newItemAdded = true;
+            var lastItemInQueue = shipyard.BuildQueue.LastOrDefault();
+
+            if ((lastItemInQueue != null) && project.IsEquivalent(lastItemInQueue.Project))
+            {
+                if (lastItemInQueue.IncrementCount())
+                    newItemAdded = false;
+            }
+
+            if (newItemAdded)
+            {
+                shipyard.BuildQueue.Add(new BuildQueueItem(project));
+                shipyard.ProcessQueue();
+            }
+
+            PlayerOrderService.AddOrder(new UpdateProductionOrder(shipyard));
+
+            //if (productionCenter is Colony)
+            //    Model.SelectedPlanetaryBuildProject = null;
+            //else if (productionCenter is Shipyard)
+            Model.SelectedShipyardBuildProject = null;
+
+            UpdateBuildLists();
+        }
         protected override void UnregisterCommandAndEventHandlers()
         {
             base.UnregisterCommandAndEventHandlers();
 
             Model.AddToPlanetaryBuildQueueCommand = null;
             Model.AddToShipyardBuildQueueCommand = null;
+           
             Model.RemoveFromPlanetaryBuildQueueCommand = null;
             Model.RemoveFromShipyardBuildQueueCommand = null;
             Model.CancelBuildProjectCommand = null;

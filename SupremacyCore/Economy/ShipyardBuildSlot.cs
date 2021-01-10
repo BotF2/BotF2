@@ -1,7 +1,15 @@
 ﻿using System;
-
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Diagnostics.Contracts;
+using System.Linq;
+using System.Runtime.Serialization;
+using Supremacy.Annotations;
+using Supremacy.Collections;
 using Supremacy.IO.Serialization;
 using Supremacy.Orbitals;
+using Supremacy.Tech;
 
 namespace Supremacy.Economy
 {
@@ -12,7 +20,6 @@ namespace Supremacy.Economy
         private Shipyard _shipyard;
         [NonSerialized]
         private int _slotId;
-
         private bool _isActive;
 
         public Shipyard Shipyard
@@ -50,7 +57,7 @@ namespace Supremacy.Economy
         public override void DeserializeOwnedData(SerializationReader reader, object context)
         {
             base.DeserializeOwnedData(reader, context);
-            
+
             _isActive = reader.ReadBoolean();
         }
 

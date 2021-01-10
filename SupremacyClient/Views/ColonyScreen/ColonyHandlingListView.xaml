@@ -43,7 +43,7 @@
       </Grid.ColumnDefinitions>
       <Border Grid.Column="0"
               VerticalAlignment="Center"
-              BorderBrush="{StaticResource BorderBrush}"
+              BorderBrush="{StaticResource {x:Static scc:ClientResources.ImageBorderBrushKey}}"
               BorderThickness="2"
               CornerRadius="4"
               Width="48"
@@ -51,8 +51,22 @@
         <Border.Background>
           <ImageBrush ImageSource="{Binding Path=SelectedColony.OrbitalBatteryDesign.Image, Converter={StaticResource TechObjectImageConverter}}" />
         </Border.Background>
-      </Border>
-      <StackPanel Grid.Column="1"
+
+            <Border.ToolTip>
+                <Border Grid.Column="0"
+                          VerticalAlignment="Center"
+                          BorderBrush="{StaticResource BorderBrush}"
+                          BorderThickness="2"
+                          CornerRadius="4"
+                            Width="525"
+                            Height="420">
+                    <Border.Background>
+                        <ImageBrush ImageSource="{Binding Path=SelectedColony.OrbitalBatteryDesign.Image, Converter={StaticResource TechObjectImageConverter}}" />
+                    </Border.Background>
+                </Border>
+            </Border.ToolTip>
+            </Border>
+            <StackPanel Grid.Column="1"
                   Orientation="Vertical"
                   VerticalAlignment="Center"
                   HorizontalAlignment="Stretch"
@@ -193,7 +207,7 @@
                             Value="Offline" />
                     <Setter TargetName="StatusText"
                             Property="Foreground"
-                            Value="Crimson" />
+                            Value="#FFB90E0A" />
                   </DataTrigger>
                   <DataTrigger Binding="{Binding Path=Age}"
                                Value="1">
@@ -277,6 +291,20 @@
                   <Border.Background>
                     <ImageBrush ImageSource="{Binding Path=(s:TechObject.Design).Image, Converter={StaticResource TechObjectImageConverter}}" />
                   </Border.Background>
+                <Border.ToolTip>
+                  <Border x:Name="ImageToolTipBorder"
+                            Grid.Column="0"
+                            VerticalAlignment="Center"
+                            BorderBrush="{StaticResource HeaderTextBrush}"
+                            BorderThickness="2"
+                            CornerRadius="4"
+                            Width="525"
+                            Height="420">
+                        <Border.Background>
+                            <ImageBrush ImageSource="{Binding Path=(s:TechObject.Design).Image, Converter={StaticResource TechObjectImageConverter}}" />
+                        </Border.Background>
+                    </Border>
+                </Border.ToolTip>
                 </Border>
                 <StackPanel Grid.Column="1"
                             Orientation="Horizontal"
@@ -288,7 +316,7 @@
                   <TextBlock Foreground="{StaticResource HeaderTextBrush}"
                              Text="{Binding Path=(s:TechObject.Design).Name, Converter={StaticResource StringResourceConverter}}" />
                   <TextBlock x:Name="ScrapText"
-                             Foreground="Crimson"
+                             Foreground="#FFB90E0A"
                              Text="(SCRAP)"
                              Opacity="0.0" />
                 </TextBlock>

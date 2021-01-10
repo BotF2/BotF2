@@ -295,7 +295,7 @@ namespace Supremacy.UI
             foreach (StarType type in EnumUtilities.GetValues<StarType>())
             {
                 s_starImages[type] = new BitmapImage(
-                    ResourceManager.GetResourceUri(string.Format("Resources/Images/Stars/Map/{0}.png", type)));
+                    ResourceManager.GetResourceUri(string.Format("Resources/Images/UI/Stars/Map/{0}.png", type)));
                 
                    
             }
@@ -2228,9 +2228,18 @@ namespace Supremacy.UI
                                 //}
 
                                 int tradeRouteUnused = sector.System.Colony.TradeRoutesPossible;
+                                string tradeRouteUnused_Text = tradeRouteUnused.ToString();
+                                if (tradeRouteUnused_Text == "0") tradeRouteUnused_Text = " ";
 
-                                GameLog.Core.TradeRoutes.DebugFormat("TradeRoutes for Sector {0}: Available: {1}, Possible: {2}, Used: {3}", 
-                                    sector.Location, tradeRouteUnused, sector.TradeRouteIndicator, sector.System.Colony.TradeRoutesAssigned);
+                                GameLog.Core.TradeRoutes.DebugFormat("Turn {0};TradeRoutes Not used/Possible/Used; {1} ;{2};{3};for Sector {4} {5} ({6})"
+                                    , GameContext.Current.TurnNumber
+                                    , tradeRouteUnused_Text
+                                    , sector.TradeRouteIndicator
+                                    , sector.System.Colony.TradeRoutesAssigned
+                                    , sector.Location
+                                    , sector.Name
+                                    , sector.Owner
+                                    );
 
                                 Pen tPen;
 

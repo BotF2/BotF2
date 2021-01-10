@@ -118,6 +118,7 @@ namespace Supremacy.Game
         Attack,
         Defense,
         Spy,
+        Science,
         Escort,
         Raider,
         Diplomatic,
@@ -141,7 +142,8 @@ namespace Supremacy.Game
         Repair,
         Patrol,
         Intercept,
-        Mission
+        Mission,
+        BuildStation
     }
 
     /// <summary>

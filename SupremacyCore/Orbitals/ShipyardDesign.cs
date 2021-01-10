@@ -35,6 +35,7 @@ namespace Supremacy.Orbitals
         public const int NoMaxBuildTechLevel = 255;
 
         private byte _buildSlots;
+        private byte _buildSlotQueues;
         private byte _maxBuildTechLevel;
         private ushort _buildSlotEnergyCost;
         private ushort _buildSlotOutput;
@@ -49,6 +50,12 @@ namespace Supremacy.Orbitals
         {
             get { return _buildSlots; }
             set { _buildSlots = (byte)value; }
+        }
+
+        public int BuildSlotQueues
+        {
+            get { return _buildSlotQueues; }
+            set { _buildSlotQueues = (byte)value; }
         }
 
         public int BuildSlotEnergyCost
@@ -133,6 +140,9 @@ namespace Supremacy.Orbitals
             if (element["BuildSlots"] != null)
                 _buildSlots = Number.ParseByte(element["BuildSlots"].InnerText.Trim());
 
+            if (element["BuildSlotQueue"] != null)
+                _buildSlotQueues = Number.ParseByte(element["BuildSlotQueue"].InnerText.Trim());
+
             if (element["BuildSlotOutput"] != null)
             {
                 _buildSlotOutput = Number.ParseUInt16(element["BuildSlotOutput"].InnerText.Trim());
@@ -180,6 +190,10 @@ namespace Supremacy.Orbitals
 
             newElement = doc.CreateElement("BuildSlots");
             newElement.InnerText = _buildSlots.ToString();
+            baseElement.AppendChild(newElement);
+
+            newElement = doc.CreateElement("BuildSlotQueues");
+            newElement.InnerText = _buildSlotQueues.ToString();
             baseElement.AppendChild(newElement);
 
             newElement = doc.CreateElement("BuildSlotOutput");

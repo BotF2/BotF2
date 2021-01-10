@@ -33,7 +33,7 @@
         <Border x:Name="GameScreensRegionBorder">
           <Border.Background>
             <ImageBrush Stretch="UniformToFill"
-                        ImageSource="vfs:///Resources/Images/Backgrounds/Default.png">
+                        ImageSource="vfs:///Resources/Images/UI/Backgrounds/Default.png">
             </ImageBrush>
           </Border.Background>
           <Grid>

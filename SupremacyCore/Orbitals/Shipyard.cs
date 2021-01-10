@@ -12,6 +12,7 @@ using Supremacy.Economy;
 using Supremacy.IO.Serialization;
 using Supremacy.Tech;
 using Supremacy.Universe;
+using Supremacy.Utility;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -27,6 +28,7 @@ namespace Supremacy.Orbitals
     public class Shipyard : TechObject, IProductionCenter
     {
         private ArrayWrapper<ShipyardBuildSlot> _buildSlots;
+       // private ArrayWrapper<BuildProject> _buildSlotQueues;
         private ObservableCollection<BuildQueueItem> _buildQueue;
 
         /// <summary>
@@ -62,6 +64,7 @@ namespace Supremacy.Orbitals
             : base(design)
         {
             _buildSlots = new ArrayWrapper<ShipyardBuildSlot>(new ShipyardBuildSlot[design.BuildSlots]);
+           // _buildSlotQueues = new ArrayWrapper<BuildProject>(new BuildProject[design.BuildSlotQueues]);
             
             for (var i = 0; i < _buildSlots.Count; i++)
                 _buildSlots[i] = new ShipyardBuildSlot { Shipyard = this, SlotID = i};
@@ -73,6 +76,11 @@ namespace Supremacy.Orbitals
         {
             get { return _buildSlots; }
         }
+
+        //public IIndexedEnumerable<BuildProject> BuildSlotQueues
+        //{
+        //    get { return _buildSlotQueues; }
+        //}
 
         #region IProductionCenter Members
         /// <summary>
@@ -135,18 +143,25 @@ namespace Supremacy.Orbitals
         /// </summary>
         public void ProcessQueue()
         {
+           int count = 0;
+            foreach (var buildQueueItem in BuildQueue)
+            {
+                GameLog.Client.ShipProduction.DebugFormat("Shipyard before BuildQueueItem = {0}, index {1}", buildQueueItem.Description, count);
+                count++;
+            }
+            int bays = BuildSlots.Count();
+            int baysWithProjects = 0;
             foreach (var slot in BuildSlots)
             {
                 if (slot.HasProject && slot.Project.IsCancelled)
                     slot.Project = null;
-
-                if (slot.Project != null)
-                    continue;
-
+                if (slot.HasProject)
+                    baysWithProjects++;
                 var queueItem = BuildQueue.FirstOrDefault();
                 if (queueItem == null)
                     continue;
-
+                if (slot.Project != null || slot.IsActive == false)
+                    continue;
                 if (queueItem.Count > 1)
                 {
                     slot.Project = queueItem.Project.CloneEquivalent();
@@ -157,6 +172,12 @@ namespace Supremacy.Orbitals
                     slot.Project = queueItem.Project;
                     BuildQueue.Remove(queueItem);
                 }
+            }
+            int afterCount = 0;
+            foreach (var buildQueueItem in BuildQueue)
+            {
+                GameLog.Client.ShipProduction.DebugFormat("Shipyard After BuildQueueItem = {0}, index {1}", buildQueueItem.Description, afterCount);
+                afterCount++;
             }
         }
         #endregion
@@ -172,6 +193,28 @@ namespace Supremacy.Orbitals
             base.SerializeOwnedData(writer, context);
             writer.Write(_buildQueue.Cast<object>().ToArray());
             writer.WriteOptimized(_buildSlots.ToArray());
+            
+            try
+            {
+                foreach (var slot in _buildSlots)
+                {
+                    string _design = "nothing";
+                    string _percent = "0 %";
+                    if (slot.Project != null)
+                    {
+                         _design = slot.Project.BuildDesign.ToString();
+                         _percent = slot.Project.PercentComplete.ToString();
+                    }
+                    GameLog.Core.SaveLoad.DebugFormat(
+                        "ShipyardSlotID = " + slot.SlotID
+                        + " at " + slot.Shipyard.Name
+                        + " (" + slot.Shipyard.Location
+                        + " ) doing " + _design
+                        + " " + _percent
+                        + " percent done " //+ slot.Project.BuildDesign
+                        );
+                }
+            } catch { };
         }
 
         public override void DeserializeOwnedData(SerializationReader reader, object context)

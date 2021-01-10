@@ -15,50 +15,191 @@
     </wpfcontrib:AutoGrid.ColumnDefinitions>
     <TextBlock Foreground="{StaticResource HeaderTextBrush}"
                HorizontalAlignment="Left"
-               Text="{Binding Source={s:StringResource CREDITS}, Mode=OneTime, Converter={StaticResource UpperCaseConverter}}" />
+               Text="{Binding Source={s:StringResource CREDITS}, Mode=OneTime, Converter={StaticResource UpperCaseConverter}}" 
+               />
     <TextBlock Foreground="{Binding Path=Credits.CurrentValue, Converter={StaticResource NetValueBrushConverter}, ConverterParameter={StaticResource DefaultTextBrush}}"
                HorizontalAlignment="Right"
-               Text="{Binding Path=Credits.CurrentValue, Mode=OneWay}" />
+               Text="{Binding Path=Credits.CurrentValue, Mode=OneWay}" 
+               />
     <TextBlock Foreground="{StaticResource HeaderTextBrush}"
                HorizontalAlignment="Left"
-               Text="{Binding Source={s:StringResource CREDITS_PER_TURN}, Mode=OneTime, Converter={StaticResource UpperCaseConverter}}" />
+               Text="{Binding Source={s:StringResource CREDITS_PER_TURN}, Mode=OneTime, Converter={StaticResource UpperCaseConverter}}" 
+               />
     <TextBlock Foreground="{Binding Path=Credits.LastChange, Converter={StaticResource NetValueBrushConverter}, ConverterParameter={StaticResource DefaultTextBrush}}"
                HorizontalAlignment="Right"
-               Text="{Binding Path=Credits.LastChange, Mode=OneWay}" />
+               Text="{Binding Path=Credits.LastChange, Mode=OneWay}" 
+               />
      <TextBlock Foreground="{StaticResource HeaderTextBrush}"
                HorizontalAlignment="Left"
-               Text="{Binding Source={s:StringResource MAINTENANCE_COST_LAST_TURN}, Mode=OneTime, Converter={StaticResource UpperCaseConverter}}" />
-    <TextBlock Foreground="{Binding Path=Credits.LastChange, Converter={StaticResource NetValueBrushConverter}, ConverterParameter={StaticResource DefaultTextBrush}}"
-               HorizontalAlignment="Right"
-               Text="{Binding Path=MaintenanceCostLastTurn, Mode=OneWay}" />
+               Text="{Binding Source={s:StringResource MAINTENANCE_COST_LAST_TURN}, Mode=OneTime, Converter={StaticResource UpperCaseConverter}}" 
+               >
+            <TextBlock.ToolTip>
+                <TextBlock Text="{Binding Source={s:StringResource MAINTENANCE_COST_LAST_TURN_TOOLTIP}, Mode=OneTime, Converter={StaticResource UpperCaseConverter}}"
+                            FontSize="20"/>
+            </TextBlock.ToolTip>
+        </TextBlock>
 
-    <TextBlock Foreground="{StaticResource HeaderTextBrush}"
+        <TextBlock Foreground="{Binding Path=Credits.LastChange, Converter={StaticResource NetValueBrushConverter}, ConverterParameter={StaticResource DefaultTextBrush}}"
+               HorizontalAlignment="Right"
+               Text="{Binding Path=MaintenanceCostLastTurn, Mode=OneWay}" 
+               />
+
+    <TextBlock Foreground="Goldenrod"
             HorizontalAlignment="Left"
-            Text="{Binding Source={s:StringResource TOTAL_EMPIRE_POPULATION}, Mode=OneTime, Converter={StaticResource UpperCaseConverter}}" />
-        <TextBlock Foreground="{StaticResource DefaultTextBrush}"
+            Text="{Binding Source={s:StringResource TOTAL_EMPIRE_POPULATION}, Mode=OneTime, Converter={StaticResource UpperCaseConverter}}" 
+               />
+        <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">      
+        <TextBlock Foreground="Goldenrod"
             HorizontalAlignment="Right"
-            Text="{Binding Path=TotalPopulation.CurrentValue, Mode=OneWay}" />
+            Text="{Binding Path=TotalPopulation.CurrentValue, Mode=OneWay}" 
+                   />
+            <!--<TextBlock Foreground="{Binding Path=AverageMorale, Mode=OneWay, Converter={StaticResource MoraleBrushConverter}}"
+                                      Text=" / M: " 
+               />-->
+               <!--Text="{Binding Source={s:StringResource EMPIRE_MORALE_SHORT}, Mode=OneTime, Converter={StaticResource UpperCaseConverter}}" 
+               />-->
+            <!--<TextBlock Foreground="{Binding Path=AverageMorale, Mode=OneWay, Converter={StaticResource MoraleBrushConverter}}"
+               Text="{Binding Path=AverageMorale, Mode=OneWay}" 
+               />-->
+            <!--<TextBlock Foreground="{Binding Path=AverageMorale, Mode=OneWay, Converter={StaticResource MoraleBrushConverter}}"
+               Text=")" 
+               />-->
+        </StackPanel>
 
-      
-    <TextBlock Foreground="{StaticResource HeaderTextBrush}"
+        <!--EMPIRE_MORALE-->
+            <TextBlock Foreground="{StaticResource HeaderTextBrush}"
                HorizontalAlignment="Left"
-               Text="{Binding Source={s:StringResource EMPIRE_MORALE}, Mode=OneTime, Converter={StaticResource UpperCaseConverter}}" />
-    <TextBlock Foreground="{Binding Path=AverageMorale, Mode=OneWay, Converter={StaticResource MoraleBrushConverter}}"
+               Text="{Binding Source={s:StringResource EMPIRE_MORALE}, Mode=OneTime, Converter={StaticResource UpperCaseConverter}}" 
+               >
+            <TextBlock.ToolTip>
+                <TextBlock Text="{Binding Source={s:StringResource MORALE_TOOLTIP}, Mode=OneTime, Converter={StaticResource UpperCaseConverter}}"
+                            FontSize="20"/>
+            </TextBlock.ToolTip>
+        </TextBlock>
+
+
+        <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">      
+            <TextBlock Foreground="{Binding Path=AverageMorale, Mode=OneWay, Converter={StaticResource MoraleBrushConverter}}"
                HorizontalAlignment="Right"
-               Text="{Binding Path=AverageMorale, Mode=OneWay, Converter={StaticResource MoraleConverter}, ConverterParameter=UpperCase}" />
-    <TextBlock Foreground="{StaticResource HeaderTextBrush}"
+               Text="{Binding Path=AverageMorale, Mode=OneWay, Converter={StaticResource MoraleConverter}, ConverterParameter=UpperCase}" 
+               />
+            <TextBlock Foreground="{Binding Path=AverageMorale, Mode=OneWay, Converter={StaticResource MoraleBrushConverter}}"
+                                      Text="  " 
+               />
+            <!--Text="{Binding Source={s:StringResource EMPIRE_MORALE_SHORT}, Mode=OneTime, Converter={StaticResource UpperCaseConverter}}" 
+               />-->
+            <TextBlock Foreground="{Binding Path=AverageMorale, Mode=OneWay, Converter={StaticResource MoraleBrushConverter}}"
+               Text="{Binding Path=AverageMorale, Mode=OneWay}" 
+               />
+            <!--<TextBlock Foreground="{Binding Path=AverageMorale, Mode=OneWay, Converter={StaticResource MoraleBrushConverter}}"
+                                      Text=" )" 
+               />-->
+        </StackPanel>
+      
+      
+        <!--<TextBlock Foreground="{Binding Path=AverageMorale, Mode=OneWay, Converter={StaticResource MoraleBrushConverter}}"
+               HorizontalAlignment="Right"
+               Text="{Binding Path=AverageMorale, Mode=OneWay, Converter={StaticResource MoraleConverter}, ConverterParameter=UpperCase}" 
+               />-->
+      
+      
+    <TextBlock Foreground="LightBlue"
                HorizontalAlignment="Left"
-               Text="{Binding Source={s:StringResource RESEARCH}, Mode=OneTime, Converter={StaticResource UpperCaseConverter}}" />
-    <TextBlock Foreground="{StaticResource DefaultTextBrush}"
+               Text="{Binding Source={s:StringResource RESEARCH}, Mode=OneTime, Converter={StaticResource UpperCaseConverter}}" 
+               >
+            <TextBlock.ToolTip>
+                <TextBlock Text="{Binding Source={s:StringResource RESEARCH_TOOLTIP}, Mode=OneTime, Converter={StaticResource UpperCaseConverter}}"
+                            FontSize="20"/>
+            </TextBlock.ToolTip>
+        </TextBlock>
+
+        <TextBlock Foreground="Lightblue"
                HorizontalAlignment="Right">
-      <TextBlock Text="{Binding Path=Research.CumulativePoints.LastChange, Mode=OneWay}" />
+      <TextBlock Text="{Binding Path=Research.CumulativePoints.LastChange, Mode=OneWay}" 
+                 />
     </TextBlock>
-    <TextBlock Foreground="{StaticResource HeaderTextBrush}"
+    <TextBlock Foreground="Silver"
                HorizontalAlignment="Left"
-               Text="{Binding Source={s:StringResource INTELLIGENCE}, Mode=OneTime, Converter={StaticResource UpperCaseConverter}}" />
-    <TextBlock Foreground="{StaticResource DefaultTextBrush}"
+               Text="{Binding Source={s:StringResource INTELLIGENCE}, Mode=OneTime, Converter={StaticResource UpperCaseConverter}}" 
+               >
+            <TextBlock.ToolTip>
+                <TextBlock Text="{Binding Source={s:StringResource INTELLIGENCE_TOOLTIP}, Mode=OneTime, Converter={StaticResource UpperCaseConverter}}"
+                            FontSize="20"/>
+            </TextBlock.ToolTip>
+        </TextBlock>
+
+        <TextBlock Foreground="Silver"
                HorizontalAlignment="Right">
-      <TextBlock Text="{Binding Path=TotalIntelligenceProduction, Mode=OneWay}" />
+      <TextBlock Text="{Binding Path=TotalIntelligenceProduction, Mode=OneWay}" 
+                 />
     </TextBlock>
-  </wpfcontrib:AutoGrid>
+
+        <TextBlock Foreground="Aqua"
+               HorizontalAlignment="Left"
+               Text="{Binding Source={s:StringResource DILITHIUM}, Mode=OneTime, Converter={StaticResource UpperCaseConverter}}" 
+               >
+            <TextBlock.ToolTip>
+                <TextBlock Text="{Binding Source={s:StringResource DILITHIUM_TOOLTIP}, Mode=OneTime, Converter={StaticResource UpperCaseConverter}}"
+                            FontSize="20"/>
+            </TextBlock.ToolTip>
+        </TextBlock>
+
+        <TextBlock Foreground="Aqua"
+               HorizontalAlignment="Right">
+      <TextBlock Text="{Binding Path=Resources.Dilithium.CurrentValue, Mode=OneWay}" />
+      <TextBlock Text="/" />
+      <TextBlock Foreground="{Binding Path=Resources.Dilithium.LastChange, Converter={StaticResource NetValueBrushConverter}, ConverterParameter={StaticResource DefaultTextBrush}}"
+                 Text="{Binding Path=Resources.Dilithium.LastChange, Mode=OneWay}" >
+                <TextBlock.ToolTip>
+                    <TextBlock Text="{Binding Source={s:StringResource LAST_TURN}, Mode=OneTime, Converter={StaticResource UpperCaseConverter}}"
+                            FontSize="20"/>
+                </TextBlock.ToolTip>
+      </TextBlock>
+    </TextBlock>
+        <TextBlock Foreground="Red"
+               HorizontalAlignment="Left"
+               Text="{Binding Source={s:StringResource DEUTERIUM}, Mode=OneTime, Converter={StaticResource UpperCaseConverter}}" 
+               >
+            <TextBlock.ToolTip>
+                <TextBlock Text="{Binding Source={s:StringResource DEUTERIUM_TOOLTIP}, Mode=OneTime, Converter={StaticResource UpperCaseConverter}}"
+                            FontSize="20"/>
+            </TextBlock.ToolTip>
+        </TextBlock>
+
+    <TextBlock Foreground="Red" HorizontalAlignment="Right">
+      <TextBlock Text="{Binding Path=Resources.Deuterium.CurrentValue, Mode=OneWay}" />
+      <TextBlock Text="/" />
+      <TextBlock Foreground="{Binding Path=Resources.Deuterium.LastChange, Converter={StaticResource NetValueBrushConverter}, ConverterParameter={StaticResource DefaultTextBrush}}"
+                   Text="{Binding Path=Resources.Deuterium.LastChange, Mode=OneWay}" >
+                <TextBlock.ToolTip>
+                    <TextBlock Text="{Binding Source={s:StringResource LAST_TURN}, Mode=OneTime, Converter={StaticResource UpperCaseConverter}}"
+                            FontSize="20"/>
+                </TextBlock.ToolTip>
+      </TextBlock>
+    </TextBlock>
+        <TextBlock Foreground="Gray"
+               HorizontalAlignment="Left"
+               Text="{Binding Source={s:StringResource RAW_MATERIALS}, Mode=OneTime, Converter={StaticResource UpperCaseConverter}}" 
+               >
+            <TextBlock.ToolTip>
+                <TextBlock Text="{Binding Source={s:StringResource RAW_MATERIALS_TOOLTIP}, Mode=OneTime, Converter={StaticResource UpperCaseConverter}}"
+                            FontSize="20"/>
+            </TextBlock.ToolTip>
+        </TextBlock>
+
+        <TextBlock Foreground="Gray"
+               HorizontalAlignment="Right">
+      <TextBlock Text="{Binding Path=Resources.RawMaterials.CurrentValue, Mode=OneWay}" 
+                 />
+      <TextBlock Text="/" />
+      <TextBlock Foreground="{Binding Path=Resources.RawMaterials.LastChange, Converter={StaticResource NetValueBrushConverter}, ConverterParameter={StaticResource DefaultTextBrush}}"
+                 Text="{Binding Path=Resources.RawMaterials.LastChange, Mode=OneWay}" 
+                 >
+                <TextBlock.ToolTip>
+                    <TextBlock Text="{Binding Source={s:StringResource LAST_TURN}, Mode=OneTime, Converter={StaticResource UpperCaseConverter}}"
+                            FontSize="20"/>
+                </TextBlock.ToolTip>
+      </TextBlock>
+    </TextBlock>
+    </wpfcontrib:AutoGrid>
 </scc:ThemedUserControl>

@@ -77,7 +77,7 @@ namespace Supremacy.Xna
 
             _buffer = Plane(XCount, YCount);
 
-            _effect = contentManager.Load<Effect>(@"Resources\Effects\sun");
+            _effect = contentManager.Load<Effect>(@"Resources\Images\UI\Shell\Effects\sun");
 
             _worldParam = _effect.Parameters["world"];
             _worldViewProjectionParam = _effect.Parameters["worldViewProjection"];
@@ -101,11 +101,11 @@ namespace Supremacy.Xna
             StarType starType = _starType;
             Texture2D[] starMaps = new Texture2D[NumFrames];
 
-            starMaps[0] = _contentManager.Load<Texture2D>(@"Resources\Textures\" + starType + "1");
-            starMaps[1] = _contentManager.Load<Texture2D>(@"Resources\Textures\" + starType + "2");
-            starMaps[2] = _contentManager.Load<Texture2D>(@"Resources\Textures\" + starType + "3");
-            starMaps[3] = _contentManager.Load<Texture2D>(@"Resources\Textures\" + starType + "4");
-            starMaps[4] = _contentManager.Load<Texture2D>(@"Resources\Textures\" + starType + "5");
+            starMaps[0] = _contentManager.Load<Texture2D>(@"Resources\Images\UI\Shell\Textures\" + starType + "1");
+            starMaps[1] = _contentManager.Load<Texture2D>(@"Resources\Images\UI\Shell\Textures\" + starType + "2");
+            starMaps[2] = _contentManager.Load<Texture2D>(@"Resources\Images\UI\Shell\Textures\" + starType + "3");
+            starMaps[3] = _contentManager.Load<Texture2D>(@"Resources\Images\UI\Shell\Textures\" + starType + "4");
+            starMaps[4] = _contentManager.Load<Texture2D>(@"Resources\Images\UI\Shell\Textures\" + starType + "5");
 
             _starMaps = starMaps;
         }

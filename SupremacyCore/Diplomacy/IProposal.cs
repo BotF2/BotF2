@@ -225,10 +225,11 @@ namespace Supremacy.Diplomacy
             if (visitor == null)
                 throw new ArgumentNullException("visitor");
 
-            GameLog.Core.Diplomacy.DebugFormat("proposal clause type = {0} Recipient ={1} Sender ={2}"
+            GameLog.Core.Diplomacy.DebugFormat("Turn {3}: Sender ={2}, proposal clause type = {0}, Recipient ={1} "
                 , proposal.Clauses[0].ClauseType.ToString()
                 , proposal.Recipient.ShortName
-                , proposal.Sender.ShortName);
+                , proposal.Sender.ShortName
+                , GameContext.Current.TurnNumber);
 
             if (proposal.IsGift())
             {

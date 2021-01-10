@@ -1,3 +1,4 @@
+//File: AssetsScreenPresentationModel.cs
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -137,7 +138,7 @@ namespace Supremacy.Client.Views
             {
                 FillUpDefense();          
                 _totalIntelligenceDefenseAccumulated = MyLocalCivManager.TotalIntelligenceDefenseAccumulated.CurrentValue;
-                GameLog.Client.Intel.DebugFormat("Get TotalIntelDefenseAccumulated ={0}", _totalIntelligenceDefenseAccumulated);
+                //works   GameLog.Client.Intel.DebugFormat("Get TotalIntelDefenseAccumulated ={0}", _totalIntelligenceDefenseAccumulated);
                 return _totalIntelligenceDefenseAccumulated;
             }
             set
@@ -146,7 +147,7 @@ namespace Supremacy.Client.Views
                //_totalIntelligenceDefenseAccumulated = IntelHelper.DefenseAccumulatedInteInt;
                 _totalIntelligenceDefenseAccumulated = MyLocalCivManager.TotalIntelligenceDefenseAccumulated.CurrentValue;
                 _totalIntelligenceDefenseAccumulated = value;
-                GameLog.Client.Intel.DebugFormat("Set TotalIntelDefenseAccumulated ={0}", _totalIntelligenceDefenseAccumulated);
+                //works   GameLog.Client.Intel.DebugFormat("Set TotalIntelDefenseAccumulated ={0}", _totalIntelligenceDefenseAccumulated);
                 NotifyPropertyChanged("TotalIntelligenceDefenseAccumulated");
             }
         }
@@ -157,7 +158,7 @@ namespace Supremacy.Client.Views
             {
                 FillUpDefense();
                 _totalIntelligenceAttackingAccumulated = MyLocalCivManager.TotalIntelligenceAttackingAccumulated.CurrentValue;
-                GameLog.Client.Intel.DebugFormat("Get TotalIntelDefenseAccumulated ={0}", _totalIntelligenceAttackingAccumulated);
+                //works   GameLog.Client.Intel.DebugFormat("Get TotalIntelDefenseAccumulated ={0}", _totalIntelligenceAttackingAccumulated);
                 return _totalIntelligenceAttackingAccumulated;
             }
             set
@@ -166,18 +167,18 @@ namespace Supremacy.Client.Views
                // _totalIntelligenceAttackingAccumulated = IntelHelper.AttackingAccumulatedInteInt;
                 _totalIntelligenceAttackingAccumulated = MyLocalCivManager.TotalIntelligenceAttackingAccumulated.CurrentValue;
                 _totalIntelligenceAttackingAccumulated = value;
-                GameLog.Client.Intel.DebugFormat("Set TotalIntelDefenseAccumulated ={0}", _totalIntelligenceAttackingAccumulated);
+                //works   GameLog.Client.Intel.DebugFormat("Set TotalIntelDefenseAccumulated ={0}", _totalIntelligenceAttackingAccumulated);
                 NotifyPropertyChanged("TotalIntelligenceAttackingAccumulated");
             }
         }
         public Meter UpdateAttackingAccumulated(Civilization attackingCiv)
         {
             Meter attackMeter = GameContext.Current.CivilizationManagers[attackingCiv].TotalIntelligenceAttackingAccumulated;
-            GameLog.Client.Intel.DebugFormat("Before update attackMeter ={0} for attakcing civ ={1}", attackMeter, attackingCiv);
+            //works   GameLog.Client.Intel.DebugFormat("Before update attackMeter ={0} for attakcing civ ={1}", attackMeter, attackingCiv);
             int newAttackIntelligence = 0;
             Int32.TryParse(attackMeter.CurrentValue.ToString(), out newAttackIntelligence);
             _totalIntelligenceAttackingAccumulated = newAttackIntelligence;
-            GameLog.Client.Intel.DebugFormat(" After update attackMeter ={0} for attacking civ ={1}", attackMeter, attackingCiv);
+            //works   GameLog.Client.Intel.DebugFormat(" After update attackMeter ={0} for attacking civ ={1}", attackMeter, attackingCiv);
             return attackMeter;
         }
         protected virtual void FillUpDefense()
@@ -218,6 +219,8 @@ namespace Supremacy.Client.Views
             _totalIntelligenceDefenseAccumulated = GameContext.Current.CivilizationManagers[MyLocalCivManager.Civilization].TotalIntelligenceDefenseAccumulated.CurrentValue;
             _valuesFromTurn = GameContext.Current.TurnNumber;
 
+
+
             OnPropertyChanged("InstallingSpyNetwork");
             OnPropertyChanged("TotalIntelligenceAttackingAccumulated");
             OnPropertyChanged("TotalIntelligenceDefenseAccumulated");
@@ -227,13 +230,20 @@ namespace Supremacy.Client.Views
         #region Colonies Property
 
         [field: NonSerialized]
+        public event EventHandler ValuesFromTurnChanged;
         public event EventHandler ColoniesChanged;
         public event EventHandler TotalPopulationChanged;
+        public event EventHandler CreditsEmpireChanged;
+
         public event EventHandler TotalResearchChanged;
         public event EventHandler InstallingSpyNetworkChanged;
         public event EventHandler TotalIntelligenceProductionChanged;
         public event EventHandler TotalIntelligenceAttackingAccumulatedChanged;
         public event EventHandler TotalIntelligenceDefenseAccumulatedChanged;
+
+        public event EventHandler TotalDilithiumChanged;
+        public event EventHandler TotalDeuteriumChanged;
+        public event EventHandler TotalRawMaterialsChanged;
 
         public event EventHandler SpiedZeroColoniesChanged;
         public event EventHandler SpiedZeroTotalPopulationChanged;
@@ -274,7 +284,12 @@ namespace Supremacy.Client.Views
 
         public IEnumerable<Colony> Colonies
         {
-            get { return _colonies; }
+            get 
+            {  // would be nice to be sorted ...HomeSystem first, than A - Z
+                //if (_colonies != null)
+                //    OnColoniesChanged();
+                return _colonies; 
+            }
             set
             {
                 if (Equals(value, _colonies))
@@ -390,6 +405,17 @@ namespace Supremacy.Client.Views
                 OnSpiedSixTotalPopulationChanged();
             }
         }
+        protected virtual void OnInstallingSpyNetworkChanged()
+        {
+            InstallingSpyNetworkChanged.Raise(this);
+            OnPropertyChanged("InstallingSpyNetwork");
+        }
+
+        protected virtual void OnValuesFromTurnChanged()
+        {
+            ValuesFromTurnChanged.Raise(this);
+            OnPropertyChanged("ValuesFromTurn");
+        }        
         protected virtual void OnColoniesChanged()
         {
             //GameLog.Client.Intel.DebugFormat("AssetsScreenPresenterModel OnColoniesChange at line 228");
@@ -406,16 +432,28 @@ namespace Supremacy.Client.Views
             TotalResearchChanged.Raise(this);
             OnPropertyChanged("TotalResearch");
         }
-        protected virtual void OnValuesFromTurnChanged()
+        protected virtual void OnCreditsEmpireChanged()
         {
-            TotalIntelligenceProductionChanged.Raise(this);
-            OnPropertyChanged("ValuesFromTurn");
+            CreditsEmpireChanged.Raise(this);
+            OnPropertyChanged("CreditsEmpire");
         }
-        protected virtual void OnInstallingSpyNetworkChanged()
+        protected virtual void OnTotalDilithiumChanged()
         {
-            InstallingSpyNetworkChanged.Raise(this);
-            OnPropertyChanged("InstallingSpyNetwork");
+            TotalDilithiumChanged.Raise(this);
+            OnPropertyChanged("TotalDilithium");
         }
+        protected virtual void OnTotalDeuteriumChanged()
+        {
+            TotalDeuteriumChanged.Raise(this);
+            OnPropertyChanged("TotalDeuterium");
+        }
+        protected virtual void OnTotalRawMaterialsChanged()
+        {
+            TotalRawMaterialsChanged.Raise(this);
+            OnPropertyChanged("TotalRawMaterials");
+        }
+
+
         protected virtual void OnTotalIntelligenceProductionChanged()
         {
             TotalIntelligenceProductionChanged.Raise(this);
@@ -613,6 +651,7 @@ namespace Supremacy.Client.Views
                 }
             }
         }
+
 
         public string LocalCivName
         {
@@ -968,7 +1007,6 @@ namespace Supremacy.Client.Views
             }
         }
 
-  
         #endregion Credits Empire
 
         #region Implementation of NotifyPropertyChanged
@@ -1020,170 +1058,6 @@ namespace Supremacy.Client.Views
         }
 
         #endregion
-
-        //protected void Reset() // do we need this??
-        //{
-        //    TotalIntelligenceAttackingAccumulated = 1;
-        //    TotalIntelligenceDefenseAccumulated = 1;
-        //}
-
-
-        //public static /*DiplomaticMessageCategory*/ SpyOrderCategory ResolveSpyOrderCategory(object message) // DiplomaticMessageCategory is enum of 1 to 9 message types
-        //{
-        //    //GameLog.Client.Diplomacy.DebugFormat("ResolveMessageCategory beginning...");
-
-        //    var viewModel = message as DiplomacyMessageViewModel;
-
-        //    //var proposal = message as IProposal;
-
-        //    //if (viewModel != null)
-        //    //{
-        //    //    // worksGameLog.Client.Diplomacy.DebugFormat("Message: Sender ={1} *vs* Recipient = {0}", viewModel.Recipient, viewModel.Sender);
-        //    //    //GameLog.Client.Diplomacy.DebugFormat("Message: Sender ={1} *vs* Recipient = {0} - Category {2}", viewModel.Recipient, viewModel.Sender, proposal.ToString());
-        //    //    message = viewModel.CreateMessage(); // create statment vs create proposal
-        //    //}
-
-        //    //var proposal = message as IProposal;
-
-        //    //GameLog.Client.Diplomacy.DebugFormat("proposal ={0}", proposal);
-        //    //if (proposal != null)
-        //    //{
-        //    //    //GameLog.Client.Diplomacy.DebugFormat("Proposal: Sender ={1} *vs* Recipient = {0} ", proposal.Recipient, proposal.Sender);
-        //    //    //GameLog.Client.Diplomacy.DebugFormat("Proposal: Sender ={1} *vs* Recipient = {0} - Category {2}", proposal.Recipient, proposal.Sender, proposal.ToString());
-        //    //    if (proposal.IsDemand())
-        //    //    {
-        //    //        GameLog.Client.Diplomacy.DebugFormat("Message Category Demand");
-        //    //        return DiplomaticMessageCategory.Demand;
-        //    //    }
-        //    //    if (proposal.IsGift())
-        //    //    {
-        //    //        GameLog.Client.Diplomacy.DebugFormat("Message Category Gift");
-        //    //        return DiplomaticMessageCategory.Gift;
-        //    //    }
-        //    //    foreach (var clause in proposal.Clauses)
-        //    //    {
-        //    //        if (!clause.ClauseType.IsTreatyClause())
-        //    //            continue;
-        //    //        if (clause.ClauseType == ClauseType.TreatyWarPact)
-        //    //        {
-        //    //            GameLog.Client.Diplomacy.DebugFormat("Message Category 1 War Pact");
-        //    //            return DiplomaticMessageCategory.WarPact;
-        //    //        }
-        //    //        GameLog.Client.Diplomacy.DebugFormat("Message Category 2 Treaty");
-        //    //        return DiplomaticMessageCategory.Treaty;
-        //    //    }
-        //    //    GameLog.Client.Diplomacy.DebugFormat("Message Exchange");
-        //    //    return DiplomaticMessageCategory.Exchange;
-        //    //}
-
-        //    //var response = message as IResponse;
-
-        //    //if (response != null)
-        //    //{
-        //    //    GameLog.Client.Diplomacy.DebugFormat("Response Recipient ={0} Sender ={1}", response.Recipient, response.Sender);
-        //    //    return DiplomaticMessageCategory.Response;
-        //    //}
-
-        //    //var statement = message as Statement;
-
-        //    //if (statement != null)
-        //    //{
-        //    //    GameLog.Client.Diplomacy.DebugFormat("Statement Recipient ={0} Sender ={1}", statement.Recipient, statement.Sender);
-        //    //    switch (statement.StatementType)
-        //    //    {
-        //    //        case StatementType.CommendRelationship:
-        //    //        case StatementType.CommendAssault:
-        //    //        case StatementType.CommendInvasion:
-        //    //        case StatementType.CommendSabotage:
-        //    //        case StatementType.DenounceWar:
-        //    //        case StatementType.DenounceRelationship:
-        //    //        case StatementType.DenounceAssault:
-        //    //        case StatementType.DenounceInvasion:
-        //    //        case StatementType.DenounceSabotage:    // listing was changed
-        //    //            GameLog.Client.Diplomacy.DebugFormat("Message Statement");
-        //    //            return DiplomaticMessageCategory.Statement;
-
-        //    //        case StatementType.ThreatenDestroyColony:
-        //    //        case StatementType.ThreatenTradeEmbargo:
-        //    //        case StatementType.ThreatenDeclareWar:
-        //    //            GameLog.Client.Diplomacy.DebugFormat("Message Threat");
-        //    //            return DiplomaticMessageCategory.Threat;
-        //    //    }
-        //    //}
-        //    // a lot of times hitted without giving an info ... GameLog.Client.Diplomacy.DebugFormat("Message Category None");
-        //    return SpyOrderCategory.None;
-        //}
-
-
-        //#region OutgoingSpyOrder Property
-
-        //[field: NonSerialized]
-        //public event EventHandler OutgoingSpyOrderChanged;
-
-        //private /*DiplomacyMessageViewModel*/ NewSpyOrder _outgoingSpyOrder;
-
-        //public /*DiplomacyMessageViewModel*/ NewSpyOrder OutgoingSpyOrder
-        //{
-        //    get
-        //    {
-        //        // Gamelog for GET _outgoingSpyOrder mostly not needed
-        //        //if (_outgoingSpyOrder != null && _outgoingSpyOrder.Elements.Count() > 0)
-        //        GameLog.Client.Diplomacy.DebugFormat("OutgoingSpyOrder GET = {0} >> {1}",
-        //                _outgoingSpyOrder.Sender.Name, _outgoingSpyOrder.Recipient.Name);
-        //                    //, _outgoingSpyOrder.Elements.Count().ToString());
-        //        return _outgoingSpyOrder;
-        //    }
-        //    set
-        //    {
-        //        if (Equals(value, _outgoingSpyOrder))
-        //            return;
-
-        //        _outgoingSpyOrder = value;
-
-        //        OnOutgoingSpyOrderChanged();
-
-        //        //if (_outgoingSpyOrder != null && _outgoingSpyOrder.Elements.Count() > 0)
-        //        GameLog.Client.Diplomacy.DebugFormat("OutgoingSpyOrder SET = {0} >> {1}",
-        //            _outgoingSpyOrder.Sender.Name, _outgoingSpyOrder.Recipient.Name);
-        //           //, _outgoingSpyOrder.Elements.Count().ToString());
-        //    }
-        //}
-
-        //protected virtual void OnOutgoingSpyOrderChanged()
-        //{
-        //    //GameLog.Client.Diplomacy.DebugFormat("Now at OnOutgoingSpyOrderChanged() - call OnPropertyChanged");
-        //    OutgoingSpyOrderChanged.Raise(this);
-        //    OnPropertyChanged("OutgoingSpyOrder");
-        //    OnOutgoingSpyOrderCategoryChanged();
-        //}
-
-        //#endregion OutgoingSpyOrder Property
-
-        //#region OutgoingSpyOrderCategory Property
-
-        //[field: NonSerialized]
-        //public event EventHandler OutgoingSpyOrderCategoryChanged;
-
-        //public /*DiplomaticMessageCategory*/ SpyOrderCategory OutgoingSpyOrderCategory
-        //{
-        //    get
-        //    {
-        //        if (ResolveSpyOrderCategory(OutgoingSpyOrder).ToString() != "None")
-        //            GameLog.Client.Diplomacy.DebugFormat("OutgoingSpyOrderCategory = {0}", ResolveSpyOrderCategory(OutgoingSpyOrder));
-        //        return ResolveSpyOrderCategory(OutgoingSpyOrder);
-        //    }
-        //}
-
-        //protected internal virtual void OnOutgoingSpyOrderCategoryChanged()
-        //{
-        //    GameLog.Client.Diplomacy.DebugFormat("SpyOrder Category Changed");
-        //    OutgoingSpyOrderCategoryChanged.Raise(this);
-        //    OnPropertyChanged("OutgoingSpyOrderCategory");
-        //}
-
-
-        //#endregion OutgoingSpyOrderCategory Property
-
 
     }
 }

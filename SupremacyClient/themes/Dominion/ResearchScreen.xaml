@@ -1,15 +1,11 @@
-<!--
-  
-   ResearchScreen.xaml
+<!-- File:ResearchScreen.xaml for Dominion
   
    Copyright (c) 2007 Mike Strobel
   
    This source code is subject to the terms of the Microsoft Reciprocal License (Ms-RL).
    For details, see <http://www.opensource.org/licenses/ms-rl.html>.
   
-   All other rights reserved.
-  
-  -->
+   All other rights reserved.-->
 <ResourceDictionary xmlns="http://schemas.microsoft.com/netfx/2007/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:local="clr-namespace:Supremacy.Client"
@@ -53,7 +49,7 @@
                         Width="14"
                         Height="21"
                         CornerRadius="10.5,0,0,10.5"
-                        Background="{DynamicResource LCARS_PurpleGradient_Left_Right}"/>
+                        Background="{DynamicResource LCARS_Dom3Gradient_Top_Bottom}"/>
                 <ControlTemplate.Triggers>
                   <Trigger Property="IsMouseOver"
                            Value="True">
@@ -88,7 +84,7 @@
                         Width="14"
                         Height="21"
                         CornerRadius="0,10.5,10.5,0"
-                        Background="{DynamicResource LCARS_PurpleGradient_Left_Right}"/>
+                        Background="{DynamicResource LCARS_Dom3Gradient_Top_Bottom}"/>
                 <ControlTemplate.Triggers>
                   <Trigger Property="IsMouseOver"
                            Value="True">
@@ -113,6 +109,7 @@
                        DockPanel.Dock="Top"
                        BlockCount="20"
                        BlockMargin="2"
+                       Background="{DynamicResource LCARS_PurpleGradient_Left_Right}"
                        Value="{Binding Path=Distribution.Value, Mode=TwoWay}"/>
         </DockPanel>
         <DockPanel DockPanel.Dock="Bottom"
@@ -130,7 +127,13 @@
                         IsTabStop="False"
                         Margin="0,0,0,0"
                         Style="{DynamicResource LockToggleButtonStyle}"
-                        IsChecked="{Binding Path=Distribution.IsLocked, Mode=TwoWay}"/>
+                        IsChecked="{Binding Path=Distribution.IsLocked, Mode=TwoWay}"
+                                                          >
+                        <ToggleButton.ToolTip>
+                            <TextBlock Text="{s:StringResource Key=RESEARCH_DISTRIBUTION_LOCKED_TOOLTIP, Case=Upper}"
+                                       FontSize="20"/>
+                        </ToggleButton.ToolTip>
+                    </ToggleButton>
           <TextBlock DockPanel.Dock="Right"
                      Margin="0,0,7,0"
                      FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
@@ -443,7 +446,7 @@
                           Grid.RowSpan="2"
                           Width="70"
                           Height="56"
-                          Fill="{StaticResource LCARS_Dom5TanGradient_TopLeft_BottomRight}"
+                          Fill="{StaticResource LCARS_Dom2Gradient_TopLeft_BottomRight}"
                           Data="F1 M 0,0L 0,28C 9.33333,28 18.6667,28 23.3333,32.6667C 28,37.3333 28,46.6667 28,56L 42,56C 42,46.6667 42,37.3333 46.6667,32.6667C 51.3333,28 60.6667,28 70,28L 70,0L 0,0 Z "/>
                     <!-- Bottom-Center Intersection -->
                     <Path Grid.Column="2"
@@ -452,7 +455,7 @@
                           Grid.RowSpan="2"
                           Width="70"
                           Height="56"
-                          Fill="{StaticResource LCARS_Dom5TanGradient_TopLeft_BottomRight}"
+                          Fill="{StaticResource LCARS_Dom2Gradient_TopLeft_BottomRight}"
                           Data="F1 M 70,56L 70,28C 60.6667,28 51.3333,28 46.6667,23.3333C 42,18.6667 42,9.33334 42,0L 28,0C 28,9.33334 28,18.6667 23.3333,23.3333C 18.6667,28 9.33333,28 3.78956e-014,28L 3.78956e-014,56L 70,56 Z "/>
                     <!-- Upper-Right Edge -->
                     <DockPanel Grid.Column="5"
@@ -494,6 +497,7 @@
                                  VerticalAlignment="Center"
                                  Text="SEARCH"/>
                       <TextBox x:Name="PART_SearchText"
+                               Background="{StaticResource LCARS_Dom2Gradient_Left_Right}"
                                Grid.Column="1"/>
                     </Grid>
 

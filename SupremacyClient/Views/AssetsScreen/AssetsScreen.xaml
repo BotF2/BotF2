@@ -1,4 +1,5 @@
-﻿<scc:ThemedUserControl x:Class="Supremacy.Client.Views.AssetsScreen"
+﻿    <!--File:AssetsScreen.xaml-->
+<scc:ThemedUserControl x:Class="Supremacy.Client.Views.AssetsScreen"
                        x:Name="AssetsScreen1"
                        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -16,6 +17,7 @@
                        Background="#66000000"
                        UseLayoutRounding="True"
                        Margin="0,6,0,6">
+
 
     <UserControl.Resources>
         <Style x:Key="changeColorOnExpanded" TargetType="Expander">
@@ -98,7 +100,7 @@
                         FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                         FontSize="12pt"/>
                     <TextBlock 
-                        Grid.Column="7" Text="{Binding Path=Colonies.Count}" 
+                        Grid.Column="7" Text="{Binding Path=Colonies.Count, Mode=OneWay}" 
                         Foreground="{DynamicResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"
                         FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                         FontSize="12pt"/>
@@ -110,7 +112,7 @@
                         FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                         FontSize="12pt"/>
                     <TextBlock 
-                        Grid.Column="11" Text="{Binding Path=TotalPopulation}" 
+                        Grid.Column="11" Text="{Binding Path=TotalPopulation, Mode=OneWay}" 
                         Foreground="LightGoldenrodYellow"
                         FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                         FontSize="12pt"/>
@@ -122,7 +124,7 @@
                         FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                         FontSize="12pt"/>
                     <TextBlock 
-                        Grid.Column="15" Text="{Binding Path=CreditsEmpire}" 
+                        Grid.Column="15" Text="{Binding Path=CreditsEmpire, Mode=OneWay}" 
                         Foreground="{DynamicResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"
                         FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                         FontSize="12pt"/>
@@ -133,7 +135,7 @@
                         FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                         FontSize="12pt"/>
                     <TextBlock 
-                        Grid.Column="19" Text="{Binding Path=TotalResearch}" 
+                        Grid.Column="19" Text="{Binding Path=TotalResearch, Mode=OneWay}" 
                         Foreground="SteelBlue"
                         FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                         FontSize="12pt"/>
@@ -144,7 +146,7 @@
                         FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                         FontSize="12pt"/>
                     <TextBlock 
-                        Grid.Column="23" Text="{Binding Path=TotalIntelligenceProduction}" 
+                        Grid.Column="23" Text="{Binding Path=TotalIntelligenceProduction, Mode=OneWay}" 
                         Foreground="Silver"
                         FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                         FontSize="12pt"/>
@@ -157,10 +159,10 @@
                         VerticalAlignment="Top"
                         Width="20"
                         Height="20"
-                        Source="vfs:///Resources/Images/ScreenIcons/dilithium.png"
+                        Source="vfs:///Resources/Images/UI/ScreenIcons/dilithium.png"
                         />
                     <TextBlock 
-                        Grid.Column="29" Text="{Binding Path=TotalDilithium}" 
+                        Grid.Column="29" Text="{Binding Path=TotalDilithium, Mode=OneWay}" 
                         Foreground="LightBlue"
                         FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                         FontSize="12pt"/>
@@ -168,10 +170,10 @@
                         VerticalAlignment="Top"
                         Width="20"
                         Height="20"
-                        Source="vfs:///Resources/Images/ScreenIcons/deuterium.png"
+                        Source="vfs:///Resources/Images/UI/ScreenIcons/deuterium.png"
                         />
                     <TextBlock 
-                        Grid.Column="33" Text="{Binding Path=TotalDeuterium}" 
+                        Grid.Column="33" Text="{Binding Path=TotalDeuterium, Mode=OneWay}" 
                         Foreground="Red"
                         FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                         FontSize="12pt"/>
@@ -179,10 +181,10 @@
                         VerticalAlignment="Top"
                         Width="20"
                         Height="20"
-                        Source="vfs:///Resources/Images/ScreenIcons/rawmaterials.png"
+                        Source="vfs:///Resources/Images/UI/ScreenIcons/rawmaterials.png"
                         />
                     <TextBlock 
-                        Grid.Column="37" Text="{Binding Path=TotalRawMaterials}" 
+                        Grid.Column="37" Text="{Binding Path=TotalRawMaterials, Mode=OneWay}" 
                         Foreground="Silver"
                         FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                         FontSize="12pt"/>
@@ -199,7 +201,7 @@
                     HorizontalAlignment="left">
                     <StackPanel Height="Auto" Margin="5,0,0,0" Grid.Row="2">
 
-                        <v:ColonyList Grid.Row="2" DataContext="{Binding Path=Colonies}"  />
+                        <v:ColonyList Grid.Row="2" DataContext="{Binding Path=Colonies, Mode=TwoWay}"  />
                     </StackPanel>
                 </ScrollViewer>
             </Grid>
@@ -584,7 +586,7 @@
                                         <scc:GameLabel
                                                    VerticalAlignment="Center"
                                                    Margin="0,0,2,0"
-                                                   ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/food.png"
+                                                   ImageSourceSmall="vfs:///Resources/Images/UI/ScreenIcons/food.png"
                                                    ToolTip="{s:StringResource Key=FOOD_TOOL_TIP}" />
                                         <TextBlock
                                                 VerticalAlignment="Center"
@@ -598,7 +600,7 @@
                                                 <RowDefinition Height="24" />
                                                 <RowDefinition Height="*" />
                                             </Grid.RowDefinitions>
-                                            <Image Source="vfs:///Resources/Images/ScreenIcons/NotAllowed.png"
+                                            <Image Source="vfs:///Resources/Images/UI/ScreenIcons/NotAllowed.png"
                                                    Grid.Row="1"
                                                    Margin="0,4,0,4"
                                                    VerticalAlignment="Center"
@@ -621,8 +623,8 @@
                                         <scc:GameLabel
                                                     VerticalAlignment="Center"
                                                     Margin="14,0,2,0"
-                                                    ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/industry.png"
-                                                    ToolTip="{s:StringResource Key=INDUSTRY_TOOL_TIP}" />
+                                                    ImageSourceSmall="vfs:///Resources/Images/UI/ScreenIcons/industry.png"
+                                                    ToolTip="{s:StringResource Key=INDUSTRY_TOOLTIP}" />
                                         <TextBlock
                                                 VerticalAlignment="Center"
                                                 HorizontalAlignment="Right"
@@ -635,7 +637,7 @@
                                                 <RowDefinition Height="24" />
                                                 <RowDefinition Height="*" />
                                             </Grid.RowDefinitions>
-                                            <Image Source="vfs:///Resources/Images/ScreenIcons/NotAllowed.png"
+                                            <Image Source="vfs:///Resources/Images/UI/ScreenIcons/NotAllowed.png"
                                              Grid.Row="1"
                                              Margin="0,4,0,4"
                                              VerticalAlignment="Center"
@@ -658,8 +660,8 @@
                                         <scc:GameLabel
                                                     VerticalAlignment="Center"
                                                     Margin="14,0,2,0"
-                                                    ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/energy.png"
-                                                    ToolTip="{s:StringResource Key=ENERGY_TOOL_TIP}" />
+                                                    ImageSourceSmall="vfs:///Resources/Images/UI/ScreenIcons/energy.png"
+                                                    ToolTip="{s:StringResource Key=ENERGY_TOOLTIP}" />
                                         <TextBlock
                                                 VerticalAlignment="Center"
                                                 HorizontalAlignment="Right"
@@ -672,7 +674,7 @@
                                                 <RowDefinition Height="24" />
                                                 <RowDefinition Height="*" />
                                             </Grid.RowDefinitions>
-                                            <Image Source="vfs:///Resources/Images/ScreenIcons/NotAllowed.png"
+                                            <Image Source="vfs:///Resources/Images/UI/ScreenIcons/NotAllowed.png"
                                                    Grid.Row="1"
                                                    Margin="0,4,0,4"
                                                    VerticalAlignment="Center"
@@ -696,8 +698,8 @@
                                         <scc:GameLabel
                                                VerticalAlignment="Center"
                                                Margin="14,0,2,0"
-                                               ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/research.png"
-                                               ToolTip="{s:StringResource Key=RESEARCH_TOOL_TIP}" />
+                                               ImageSourceSmall="vfs:///Resources/Images/UI/ScreenIcons/research.png"
+                                               ToolTip="{s:StringResource Key=RESEARCH_TOOLTIP}" />
                                         <TextBlock
                                                 VerticalAlignment="Center"
                                                 HorizontalAlignment="Right"
@@ -710,7 +712,7 @@
                                                 <RowDefinition Height="24" />
                                                 <RowDefinition Height="*" />
                                             </Grid.RowDefinitions>
-                                            <Image Source="vfs:///Resources/Images/ScreenIcons/NotAllowed.png"
+                                            <Image Source="vfs:///Resources/Images/UI/ScreenIcons/NotAllowed.png"
                                                    Grid.Row="1"
                                                    Margin="0,4,0,4"
                                                    VerticalAlignment="Center"
@@ -734,7 +736,7 @@
                                         <scc:GameLabel
                                                   VerticalAlignment="Center"
                                                   Margin="14,0,2,0"
-                                                  ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/credit.png" />
+                                                  ImageSourceSmall="vfs:///Resources/Images/UI/ScreenIcons/credit.png" />
                                         <TextBlock
                                             VerticalAlignment="Center"
                                             HorizontalAlignment="Right"
@@ -747,7 +749,7 @@
                                                 <RowDefinition Height="24" />
                                                 <RowDefinition Height="*" />
                                             </Grid.RowDefinitions>
-                                            <Image Source="vfs:///Resources/Images/ScreenIcons/NotAllowed.png"
+                                            <Image Source="vfs:///Resources/Images/UI/ScreenIcons/NotAllowed.png"
                                                      Grid.Row="1"
                                                      Margin="0,4,0,4"
                                                      VerticalAlignment="Center"
@@ -1023,8 +1025,8 @@
                                         <scc:GameLabel
                                                    VerticalAlignment="Center"
                                                    Margin="0,0,2,0"
-                                                   ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/food.png"
-                                                   ToolTip="{s:StringResource Key=FOOD_TOOL_TIP}" />
+                                                   ImageSourceSmall="vfs:///Resources/Images/UI/ScreenIcons/food.png"
+                                                   ToolTip="{s:StringResource Key=FOOD_TOOLTIP}" />
                                         <TextBlock
                                                 VerticalAlignment="Center"
                                                 HorizontalAlignment="Right"
@@ -1037,7 +1039,7 @@
                                                 <RowDefinition Height="24" />
                                                 <RowDefinition Height="*" />
                                             </Grid.RowDefinitions>
-                                            <Image Source="vfs:///Resources/Images/ScreenIcons/NotAllowed.png"
+                                            <Image Source="vfs:///Resources/Images/UI/ScreenIcons/NotAllowed.png"
                                                    Grid.Row="1"
                                                    Margin="0,4,0,4"
                                                    VerticalAlignment="Center"
@@ -1060,8 +1062,8 @@
                                         <scc:GameLabel
                                                     VerticalAlignment="Center"
                                                     Margin="14,0,2,0"
-                                                    ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/industry.png"
-                                                    ToolTip="{s:StringResource Key=INDUSTRY_TOOL_TIP}" />
+                                                    ImageSourceSmall="vfs:///Resources/Images/UI/ScreenIcons/industry.png"
+                                                    ToolTip="{s:StringResource Key=INDUSTRY_TOOLTIP}" />
                                         <TextBlock
                                                 VerticalAlignment="Center"
                                                 HorizontalAlignment="Right"
@@ -1074,7 +1076,7 @@
                                                 <RowDefinition Height="24" />
                                                 <RowDefinition Height="*" />
                                             </Grid.RowDefinitions>
-                                            <Image Source="vfs:///Resources/Images/ScreenIcons/NotAllowed.png"
+                                            <Image Source="vfs:///Resources/Images/UI/ScreenIcons/NotAllowed.png"
                                              Grid.Row="1"
                                              Margin="0,4,0,4"
                                              VerticalAlignment="Center"
@@ -1097,8 +1099,8 @@
                                         <scc:GameLabel
                                                     VerticalAlignment="Center"
                                                     Margin="14,0,2,0"
-                                                    ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/energy.png"
-                                                    ToolTip="{s:StringResource Key=ENERGY_TOOL_TIP}" />
+                                                    ImageSourceSmall="vfs:///Resources/Images/UI/ScreenIcons/energy.png"
+                                                    ToolTip="{s:StringResource Key=ENERGY_TOOLTIP}" />
                                         <TextBlock
                                                 VerticalAlignment="Center"
                                                 HorizontalAlignment="Right"
@@ -1111,7 +1113,7 @@
                                                 <RowDefinition Height="24" />
                                                 <RowDefinition Height="*" />
                                             </Grid.RowDefinitions>
-                                            <Image Source="vfs:///Resources/Images/ScreenIcons/NotAllowed.png"
+                                            <Image Source="vfs:///Resources/Images/UI/ScreenIcons/NotAllowed.png"
                                                    Grid.Row="1"
                                                    Margin="0,4,0,4"
                                                    VerticalAlignment="Center"
@@ -1135,8 +1137,8 @@
                                         <scc:GameLabel
                                                VerticalAlignment="Center"
                                                Margin="14,0,2,0"
-                                               ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/research.png"
-                                               ToolTip="{s:StringResource Key=RESEARCH_TOOL_TIP}" />
+                                               ImageSourceSmall="vfs:///Resources/Images/UI/ScreenIcons/research.png"
+                                               ToolTip="{s:StringResource Key=RESEARCH_TOOLTIP}" />
                                         <TextBlock
                                                 VerticalAlignment="Center"
                                                 HorizontalAlignment="Right"
@@ -1149,7 +1151,7 @@
                                                 <RowDefinition Height="24" />
                                                 <RowDefinition Height="*" />
                                             </Grid.RowDefinitions>
-                                            <Image Source="vfs:///Resources/Images/ScreenIcons/NotAllowed.png"
+                                            <Image Source="vfs:///Resources/Images/UI/ScreenIcons/NotAllowed.png"
                                                    Grid.Row="1"
                                                    Margin="0,4,0,4"
                                                    VerticalAlignment="Center"
@@ -1173,7 +1175,7 @@
                                         <scc:GameLabel
                                                   VerticalAlignment="Center"
                                                   Margin="14,0,2,0"
-                                                  ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/credit.png" />
+                                                  ImageSourceSmall="vfs:///Resources/Images/UI/ScreenIcons/credit.png" />
                                         <TextBlock
                                             VerticalAlignment="Center"
                                             HorizontalAlignment="Right"
@@ -1186,7 +1188,7 @@
                                                 <RowDefinition Height="24" />
                                                 <RowDefinition Height="*" />
                                             </Grid.RowDefinitions>
-                                            <Image Source="vfs:///Resources/Images/ScreenIcons/NotAllowed.png"
+                                            <Image Source="vfs:///Resources/Images/UI/ScreenIcons/NotAllowed.png"
                                                      Grid.Row="1"
                                                      Margin="0,4,0,4"
                                                      VerticalAlignment="Center"
@@ -1469,8 +1471,8 @@
                                         <scc:GameLabel
                                              VerticalAlignment="Center"
                                              Margin="0,0,2,0"
-                                             ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/food.png"
-                                             ToolTip="{s:StringResource Key=FOOD_TOOL_TIP}" />
+                                             ImageSourceSmall="vfs:///Resources/Images/UI/ScreenIcons/food.png"
+                                             ToolTip="{s:StringResource Key=FOOD_TOOLTIP}" />
                                         <TextBlock
                                               VerticalAlignment="Center"
                                               HorizontalAlignment="Right"
@@ -1483,7 +1485,7 @@
                                                 <RowDefinition Height="24" />
                                                 <RowDefinition Height="*" />
                                             </Grid.RowDefinitions>
-                                            <Image Source="vfs:///Resources/Images/ScreenIcons/NotAllowed.png"
+                                            <Image Source="vfs:///Resources/Images/UI/ScreenIcons/NotAllowed.png"
                                                    Grid.Row="1"
                                                    Margin="0,4,0,4"
                                                    VerticalAlignment="Center"
@@ -1506,8 +1508,8 @@
                                         <scc:GameLabel
                                               VerticalAlignment="Center"
                                               Margin="14,0,2,0"
-                                              ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/industry.png"
-                                              ToolTip="{s:StringResource Key=INDUSTRY_TOOL_TIP}" />
+                                              ImageSourceSmall="vfs:///Resources/Images/UI/ScreenIcons/industry.png"
+                                              ToolTip="{s:StringResource Key=INDUSTRY_TOOLTIP}" />
                                         <TextBlock
                                                 VerticalAlignment="Center"
                                                 HorizontalAlignment="Right"
@@ -1520,7 +1522,7 @@
                                                 <RowDefinition Height="24" />
                                                 <RowDefinition Height="*" />
                                             </Grid.RowDefinitions>
-                                            <Image Source="vfs:///Resources/Images/ScreenIcons/NotAllowed.png"
+                                            <Image Source="vfs:///Resources/Images/UI/ScreenIcons/NotAllowed.png"
                                                    Grid.Row="1"
                                                    Margin="0,4,0,4"
                                                    VerticalAlignment="Center"
@@ -1543,8 +1545,8 @@
                                         <scc:GameLabel
                                               VerticalAlignment="Center"
                                               Margin="14,0,2,0"
-                                              ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/energy.png"
-                                              ToolTip="{s:StringResource Key=ENERGY_TOOL_TIP}" />
+                                              ImageSourceSmall="vfs:///Resources/Images/UI/ScreenIcons/energy.png"
+                                              ToolTip="{s:StringResource Key=ENERGY_TOOLTIP}" />
                                         <TextBlock
                                             VerticalAlignment="Center"
                                             HorizontalAlignment="Right"
@@ -1557,7 +1559,7 @@
                                                 <RowDefinition Height="24" />
                                                 <RowDefinition Height="*" />
                                             </Grid.RowDefinitions>
-                                            <Image Source="vfs:///Resources/Images/ScreenIcons/NotAllowed.png"
+                                            <Image Source="vfs:///Resources/Images/UI/ScreenIcons/NotAllowed.png"
                                                    Grid.Row="1"
                                                    Margin="0,4,0,4"
                                                    VerticalAlignment="Center"
@@ -1581,8 +1583,8 @@
                                         <scc:GameLabel
                                                VerticalAlignment="Center"
                                                Margin="14,0,2,0"
-                                               ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/research.png"
-                                               ToolTip="{s:StringResource Key=RESEARCH_TOOL_TIP}" />
+                                               ImageSourceSmall="vfs:///Resources/Images/UI/ScreenIcons/research.png"
+                                               ToolTip="{s:StringResource Key=RESEARCH_TOOLTIP}" />
                                         <TextBlock
                                               VerticalAlignment="Center"
                                               HorizontalAlignment="Right"
@@ -1595,7 +1597,7 @@
                                                 <RowDefinition Height="24" />
                                                 <RowDefinition Height="*" />
                                             </Grid.RowDefinitions>
-                                            <Image Source="vfs:///Resources/Images/ScreenIcons/NotAllowed.png"
+                                            <Image Source="vfs:///Resources/Images/UI/ScreenIcons/NotAllowed.png"
                                                    Grid.Row="1"
                                                    Margin="0,4,0,4"
                                                    VerticalAlignment="Center"
@@ -1619,7 +1621,7 @@
                                         <scc:GameLabel
                                             VerticalAlignment="Center"
                                             Margin="14,0,2,0"
-                                            ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/credit.png" />
+                                            ImageSourceSmall="vfs:///Resources/Images/UI/ScreenIcons/credit.png" />
                                         <TextBlock
                                                 VerticalAlignment="Center"
                                                 HorizontalAlignment="Right"
@@ -1632,7 +1634,7 @@
                                                 <RowDefinition Height="24" />
                                                 <RowDefinition Height="*" />
                                             </Grid.RowDefinitions>
-                                            <Image Source="vfs:///Resources/Images/ScreenIcons/NotAllowed.png"
+                                            <Image Source="vfs:///Resources/Images/UI/ScreenIcons/NotAllowed.png"
                                                    Grid.Row="1"
                                                    Margin="0,4,0,4"
                                                    VerticalAlignment="Center"
@@ -1914,8 +1916,8 @@
                                         <scc:GameLabel
                                              VerticalAlignment="Center"
                                              Margin="0,0,2,0"
-                                             ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/food.png"
-                                             ToolTip="{s:StringResource Key=FOOD_TOOL_TIP}" />
+                                             ImageSourceSmall="vfs:///Resources/Images/UI/ScreenIcons/food.png"
+                                             ToolTip="{s:StringResource Key=FOOD_TOOLTIP}" />
                                         <TextBlock
                                               VerticalAlignment="Center"
                                               HorizontalAlignment="Right"
@@ -1928,7 +1930,7 @@
                                                 <RowDefinition Height="24" />
                                                 <RowDefinition Height="*" />
                                             </Grid.RowDefinitions>
-                                            <Image Source="vfs:///Resources/Images/ScreenIcons/NotAllowed.png"
+                                            <Image Source="vfs:///Resources/Images/UI/ScreenIcons/NotAllowed.png"
                                                    Grid.Row="1"
                                                    Margin="0,4,0,4"
                                                    VerticalAlignment="Center"
@@ -1951,8 +1953,8 @@
                                         <scc:GameLabel
                                               VerticalAlignment="Center"
                                               Margin="14,0,2,0"
-                                              ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/industry.png"
-                                              ToolTip="{s:StringResource Key=INDUSTRY_TOOL_TIP}" />
+                                              ImageSourceSmall="vfs:///Resources/Images/UI/ScreenIcons/industry.png"
+                                              ToolTip="{s:StringResource Key=INDUSTRY_TOOLTIP}" />
                                         <TextBlock
                                               VerticalAlignment="Center"
                                               HorizontalAlignment="Right"
@@ -1965,7 +1967,7 @@
                                                 <RowDefinition Height="24" />
                                                 <RowDefinition Height="*" />
                                             </Grid.RowDefinitions>
-                                            <Image Source="vfs:///Resources/Images/ScreenIcons/NotAllowed.png"
+                                            <Image Source="vfs:///Resources/Images/UI/ScreenIcons/NotAllowed.png"
                                                    Grid.Row="1"
                                                    Margin="0,4,0,4"
                                                    VerticalAlignment="Center"
@@ -1988,8 +1990,8 @@
                                         <scc:GameLabel
                                               VerticalAlignment="Center"
                                               Margin="14,0,2,0"
-                                              ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/energy.png"
-                                              ToolTip="{s:StringResource Key=ENERGY_TOOL_TIP}" />
+                                              ImageSourceSmall="vfs:///Resources/Images/UI/ScreenIcons/energy.png"
+                                              ToolTip="{s:StringResource Key=ENERGY_TOOLTIP}" />
                                         <TextBlock
                                               VerticalAlignment="Center"
                                               HorizontalAlignment="Right"
@@ -2002,7 +2004,7 @@
                                                 <RowDefinition Height="24" />
                                                 <RowDefinition Height="*" />
                                             </Grid.RowDefinitions>
-                                            <Image Source="vfs:///Resources/Images/ScreenIcons/NotAllowed.png"
+                                            <Image Source="vfs:///Resources/Images/UI/ScreenIcons/NotAllowed.png"
                                                    Grid.Row="1"
                                                    Margin="0,4,0,4"
                                                    VerticalAlignment="Center"
@@ -2026,8 +2028,8 @@
                                         <scc:GameLabel
                                                VerticalAlignment="Center"
                                                Margin="14,0,2,0"
-                                               ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/research.png"
-                                               ToolTip="{s:StringResource Key=RESEARCH_TOOL_TIP}" />
+                                               ImageSourceSmall="vfs:///Resources/Images/UI/ScreenIcons/research.png"
+                                               ToolTip="{s:StringResource Key=RESEARCH_TOOLTIP}" />
                                         <TextBlock
                                                 VerticalAlignment="Center"
                                                 HorizontalAlignment="Right"
@@ -2040,7 +2042,7 @@
                                                 <RowDefinition Height="24" />
                                                 <RowDefinition Height="*" />
                                             </Grid.RowDefinitions>
-                                            <Image Source="vfs:///Resources/Images/ScreenIcons/NotAllowed.png"
+                                            <Image Source="vfs:///Resources/Images/UI/ScreenIcons/NotAllowed.png"
                                                    Grid.Row="1"
                                                    Margin="0,4,0,4"
                                                    VerticalAlignment="Center"
@@ -2064,7 +2066,7 @@
                                         <scc:GameLabel
                                             VerticalAlignment="Center"
                                             Margin="14,0,2,0"
-                                            ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/credit.png" />
+                                            ImageSourceSmall="vfs:///Resources/Images/UI/ScreenIcons/credit.png" />
                                         <TextBlock
                                             VerticalAlignment="Center"
                                             HorizontalAlignment="Right"
@@ -2077,7 +2079,7 @@
                                                 <RowDefinition Height="24" />
                                                 <RowDefinition Height="*" />
                                             </Grid.RowDefinitions>
-                                            <Image Source="vfs:///Resources/Images/ScreenIcons/NotAllowed.png"
+                                            <Image Source="vfs:///Resources/Images/UI/ScreenIcons/NotAllowed.png"
                                                    Grid.Row="1"
                                                    Margin="0,4,0,4"
                                                    VerticalAlignment="Center"
@@ -2359,8 +2361,8 @@
                                         <scc:GameLabel
                                              VerticalAlignment="Center"
                                              Margin="0,0,2,0"
-                                             ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/food.png"
-                                             ToolTip="{s:StringResource Key=FOOD_TOOL_TIP}" />
+                                             ImageSourceSmall="vfs:///Resources/Images/UI/ScreenIcons/food.png"
+                                             ToolTip="{s:StringResource Key=FOOD_TOOLTIP}" />
                                         <TextBlock
                                               VerticalAlignment="Center"
                                               HorizontalAlignment="Right"
@@ -2373,7 +2375,7 @@
                                                 <RowDefinition Height="24" />
                                                 <RowDefinition Height="*" />
                                             </Grid.RowDefinitions>
-                                            <Image Source="vfs:///Resources/Images/ScreenIcons/NotAllowed.png"
+                                            <Image Source="vfs:///Resources/Images/UI/ScreenIcons/NotAllowed.png"
                                                    Grid.Row="1"
                                                    Margin="0,4,0,4"
                                                    VerticalAlignment="Center"
@@ -2396,8 +2398,8 @@
                                         <scc:GameLabel
                                               VerticalAlignment="Center"
                                               Margin="14,0,2,0"
-                                              ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/industry.png"
-                                              ToolTip="{s:StringResource Key=INDUSTRY_TOOL_TIP}" />
+                                              ImageSourceSmall="vfs:///Resources/Images/UI/ScreenIcons/industry.png"
+                                              ToolTip="{s:StringResource Key=INDUSTRY_TOOLTIP}" />
                                         <TextBlock
                                               VerticalAlignment="Center"
                                               HorizontalAlignment="Right"
@@ -2410,7 +2412,7 @@
                                                 <RowDefinition Height="24" />
                                                 <RowDefinition Height="*" />
                                             </Grid.RowDefinitions>
-                                            <Image Source="vfs:///Resources/Images/ScreenIcons/NotAllowed.png"
+                                            <Image Source="vfs:///Resources/Images/UI/ScreenIcons/NotAllowed.png"
                                                    Grid.Row="1"
                                                    Margin="0,4,0,4"
                                                    VerticalAlignment="Center"
@@ -2433,8 +2435,8 @@
                                         <scc:GameLabel
                                               VerticalAlignment="Center"
                                               Margin="14,0,2,0"
-                                              ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/energy.png"
-                                              ToolTip="{s:StringResource Key=ENERGY_TOOL_TIP}" />
+                                              ImageSourceSmall="vfs:///Resources/Images/UI/ScreenIcons/energy.png"
+                                              ToolTip="{s:StringResource Key=ENERGY_TOOLTIP}" />
                                         <TextBlock
                                               VerticalAlignment="Center"
                                               HorizontalAlignment="Right"
@@ -2447,7 +2449,7 @@
                                                 <RowDefinition Height="24" />
                                                 <RowDefinition Height="*" />
                                             </Grid.RowDefinitions>
-                                            <Image Source="vfs:///Resources/Images/ScreenIcons/NotAllowed.png"
+                                            <Image Source="vfs:///Resources/Images/UI/ScreenIcons/NotAllowed.png"
                                                    Grid.Row="1"
                                                    Margin="0,4,0,4"
                                                    VerticalAlignment="Center"
@@ -2471,8 +2473,8 @@
                                         <scc:GameLabel
                                                VerticalAlignment="Center"
                                                Margin="14,0,2,0"
-                                               ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/research.png"
-                                               ToolTip="{s:StringResource Key=RESEARCH_TOOL_TIP}" />
+                                               ImageSourceSmall="vfs:///Resources/Images/UI/ScreenIcons/research.png"
+                                               ToolTip="{s:StringResource Key=RESEARCH_TOOLTIP}" />
                                         <TextBlock
                                               VerticalAlignment="Center"
                                               HorizontalAlignment="Right"
@@ -2485,7 +2487,7 @@
                                                 <RowDefinition Height="24" />
                                                 <RowDefinition Height="*" />
                                             </Grid.RowDefinitions>
-                                            <Image Source="vfs:///Resources/Images/ScreenIcons/NotAllowed.png"
+                                            <Image Source="vfs:///Resources/Images/UI/ScreenIcons/NotAllowed.png"
                                                    Grid.Row="1"
                                                    Margin="0,4,0,4"
                                                    VerticalAlignment="Center"
@@ -2509,7 +2511,7 @@
                                         <scc:GameLabel
                                             VerticalAlignment="Center"
                                             Margin="14,0,2,0"
-                                            ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/credit.png" />
+                                            ImageSourceSmall="vfs:///Resources/Images/UI/ScreenIcons/credit.png" />
                                         <TextBlock
                                             VerticalAlignment="Center"
                                             HorizontalAlignment="Right"
@@ -2522,7 +2524,7 @@
                                                 <RowDefinition Height="24" />
                                                 <RowDefinition Height="*" />
                                             </Grid.RowDefinitions>
-                                            <Image Source="vfs:///Resources/Images/ScreenIcons/NotAllowed.png"
+                                            <Image Source="vfs:///Resources/Images/UI/ScreenIcons/NotAllowed.png"
                                                    Grid.Row="1"
                                                    Margin="0,4,0,4"
                                                    VerticalAlignment="Center"
@@ -2804,8 +2806,8 @@
                                         <scc:GameLabel
                                              VerticalAlignment="Center"
                                              Margin="0,0,2,0"
-                                             ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/food.png"
-                                             ToolTip="{s:StringResource Key=FOOD_TOOL_TIP}" />
+                                             ImageSourceSmall="vfs:///Resources/Images/UI/ScreenIcons/food.png"
+                                             ToolTip="{s:StringResource Key=FOOD_TOOLTIP}" />
                                         <TextBlock
                                           VerticalAlignment="Center"
                                           HorizontalAlignment="Right"
@@ -2818,7 +2820,7 @@
                                                 <RowDefinition Height="24" />
                                                 <RowDefinition Height="*" />
                                             </Grid.RowDefinitions>
-                                            <Image Source="vfs:///Resources/Images/ScreenIcons/NotAllowed.png"
+                                            <Image Source="vfs:///Resources/Images/UI/ScreenIcons/NotAllowed.png"
                                        Grid.Row="1"
                                        Margin="0,4,0,4"
                                        VerticalAlignment="Center"
@@ -2841,8 +2843,8 @@
                                         <scc:GameLabel
                                               VerticalAlignment="Center"
                                               Margin="14,0,2,0"
-                                              ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/industry.png"
-                                              ToolTip="{s:StringResource Key=INDUSTRY_TOOL_TIP}" />
+                                              ImageSourceSmall="vfs:///Resources/Images/UI/ScreenIcons/industry.png"
+                                              ToolTip="{s:StringResource Key=INDUSTRY_TOOLTIP}" />
                                         <TextBlock
                                               VerticalAlignment="Center"
                                               HorizontalAlignment="Right"
@@ -2855,7 +2857,7 @@
                                                 <RowDefinition Height="24" />
                                                 <RowDefinition Height="*" />
                                             </Grid.RowDefinitions>
-                                            <Image Source="vfs:///Resources/Images/ScreenIcons/NotAllowed.png"
+                                            <Image Source="vfs:///Resources/Images/UI/ScreenIcons/NotAllowed.png"
                                                    Grid.Row="1"
                                                    Margin="0,4,0,4"
                                                    VerticalAlignment="Center"
@@ -2878,8 +2880,8 @@
                                         <scc:GameLabel
                                               VerticalAlignment="Center"
                                               Margin="14,0,2,0"
-                                              ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/energy.png"
-                                              ToolTip="{s:StringResource Key=ENERGY_TOOL_TIP}" />
+                                              ImageSourceSmall="vfs:///Resources/Images/UI/ScreenIcons/energy.png"
+                                              ToolTip="{s:StringResource Key=ENERGY_TOOLTIP}" />
                                         <TextBlock
                                               VerticalAlignment="Center"
                                               HorizontalAlignment="Right"
@@ -2892,7 +2894,7 @@
                                                 <RowDefinition Height="24" />
                                                 <RowDefinition Height="*" />
                                             </Grid.RowDefinitions>
-                                            <Image Source="vfs:///Resources/Images/ScreenIcons/NotAllowed.png"
+                                            <Image Source="vfs:///Resources/Images/UI/ScreenIcons/NotAllowed.png"
                                                    Grid.Row="1"
                                                    Margin="0,4,0,4"
                                                    VerticalAlignment="Center"
@@ -2916,8 +2918,8 @@
                                         <scc:GameLabel
                                                VerticalAlignment="Center"
                                                Margin="14,0,2,0"
-                                               ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/research.png"
-                                               ToolTip="{s:StringResource Key=RESEARCH_TOOL_TIP}" />
+                                               ImageSourceSmall="vfs:///Resources/Images/UI/ScreenIcons/research.png"
+                                               ToolTip="{s:StringResource Key=RESEARCH_TOOLTIP}" />
                                         <TextBlock
                                               VerticalAlignment="Center"
                                               HorizontalAlignment="Right"
@@ -2930,7 +2932,7 @@
                                                 <RowDefinition Height="24" />
                                                 <RowDefinition Height="*" />
                                             </Grid.RowDefinitions>
-                                            <Image Source="vfs:///Resources/Images/ScreenIcons/NotAllowed.png"
+                                            <Image Source="vfs:///Resources/Images/UI/ScreenIcons/NotAllowed.png"
                                                    Grid.Row="1"
                                                    Margin="0,4,0,4"
                                                    VerticalAlignment="Center"
@@ -2954,7 +2956,7 @@
                                         <scc:GameLabel
                                             VerticalAlignment="Center"
                                             Margin="14,0,2,0"
-                                            ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/credit.png" />
+                                            ImageSourceSmall="vfs:///Resources/Images/UI/ScreenIcons/credit.png" />
                                         <TextBlock
                                             VerticalAlignment="Center"
                                             HorizontalAlignment="Right"
@@ -2967,7 +2969,7 @@
                                                 <RowDefinition Height="24" />
                                                 <RowDefinition Height="*" />
                                             </Grid.RowDefinitions>
-                                            <Image Source="vfs:///Resources/Images/ScreenIcons/NotAllowed.png"
+                                            <Image Source="vfs:///Resources/Images/UI/ScreenIcons/NotAllowed.png"
                                                    Grid.Row="1"
                                                    Margin="0,4,0,4"
                                                    VerticalAlignment="Center"
@@ -3249,8 +3251,8 @@
                                         <scc:GameLabel
                                              VerticalAlignment="Center"
                                              Margin="0,0,2,0"
-                                             ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/food.png"
-                                             ToolTip="{s:StringResource Key=FOOD_TOOL_TIP}" />
+                                             ImageSourceSmall="vfs:///Resources/Images/UI/ScreenIcons/food.png"
+                                             ToolTip="{s:StringResource Key=FOOD_TOOLTIP}" />
                                         <TextBlock
                                               VerticalAlignment="Center"
                                               HorizontalAlignment="Right"
@@ -3263,7 +3265,7 @@
                                                 <RowDefinition Height="24" />
                                                 <RowDefinition Height="*" />
                                             </Grid.RowDefinitions>
-                                            <Image Source="vfs:///Resources/Images/ScreenIcons/NotAllowed.png"
+                                            <Image Source="vfs:///Resources/Images/UI/ScreenIcons/NotAllowed.png"
                                                    Grid.Row="1"
                                                    Margin="0,4,0,4"
                                                    VerticalAlignment="Center"
@@ -3286,8 +3288,8 @@
                                         <scc:GameLabel
                                               VerticalAlignment="Center"
                                               Margin="14,0,2,0"
-                                              ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/industry.png"
-                                              ToolTip="{s:StringResource Key=INDUSTRY_TOOL_TIP}" />
+                                              ImageSourceSmall="vfs:///Resources/Images/UI/ScreenIcons/industry.png"
+                                              ToolTip="{s:StringResource Key=INDUSTRY_TOOLTIP}" />
                                         <TextBlock
                                                   VerticalAlignment="Center"
                                                   HorizontalAlignment="Right"
@@ -3300,7 +3302,7 @@
                                                 <RowDefinition Height="24" />
                                                 <RowDefinition Height="*" />
                                             </Grid.RowDefinitions>
-                                            <Image Source="vfs:///Resources/Images/ScreenIcons/NotAllowed.png"
+                                            <Image Source="vfs:///Resources/Images/UI/ScreenIcons/NotAllowed.png"
                                                    Grid.Row="1"
                                                    Margin="0,4,0,4"
                                                    VerticalAlignment="Center"
@@ -3323,8 +3325,8 @@
                                         <scc:GameLabel
                                               VerticalAlignment="Center"
                                               Margin="14,0,2,0"
-                                              ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/energy.png"
-                                              ToolTip="{s:StringResource Key=ENERGY_TOOL_TIP}" />
+                                              ImageSourceSmall="vfs:///Resources/Images/UI/ScreenIcons/energy.png"
+                                              ToolTip="{s:StringResource Key=ENERGY_TOOLTIP}" />
                                         <TextBlock
                                               VerticalAlignment="Center"
                                               HorizontalAlignment="Right"
@@ -3337,7 +3339,7 @@
                                                 <RowDefinition Height="24" />
                                                 <RowDefinition Height="*" />
                                             </Grid.RowDefinitions>
-                                            <Image Source="vfs:///Resources/Images/ScreenIcons/NotAllowed.png"
+                                            <Image Source="vfs:///Resources/Images/UI/ScreenIcons/NotAllowed.png"
                                                Grid.Row="1"
                                                Margin="0,4,0,4"
                                                VerticalAlignment="Center"
@@ -3361,8 +3363,8 @@
                                         <scc:GameLabel
                                                  VerticalAlignment="Center"
                                                  Margin="14,0,2,0"
-                                                 ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/research.png"
-                                                 ToolTip="{s:StringResource Key=RESEARCH_TOOL_TIP}" />
+                                                 ImageSourceSmall="vfs:///Resources/Images/UI/ScreenIcons/research.png"
+                                                 ToolTip="{s:StringResource Key=RESEARCH_TOOLTIP}" />
                                         <TextBlock
                                                   VerticalAlignment="Center"
                                                   HorizontalAlignment="Right"
@@ -3375,7 +3377,7 @@
                                                 <RowDefinition Height="24" />
                                                 <RowDefinition Height="*" />
                                             </Grid.RowDefinitions>
-                                            <Image Source="vfs:///Resources/Images/ScreenIcons/NotAllowed.png"
+                                            <Image Source="vfs:///Resources/Images/UI/ScreenIcons/NotAllowed.png"
                                                    Grid.Row="1"
                                                    Margin="0,4,0,4"
                                                    VerticalAlignment="Center"
@@ -3399,7 +3401,7 @@
                                         <scc:GameLabel
                                             VerticalAlignment="Center"
                                             Margin="14,0,2,0"
-                                            ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/credit.png" />
+                                            ImageSourceSmall="vfs:///Resources/Images/UI/ScreenIcons/credit.png" />
                                         <TextBlock
                                               VerticalAlignment="Center"
                                               HorizontalAlignment="Right"
@@ -3412,7 +3414,7 @@
                                                 <RowDefinition Height="24" />
                                                 <RowDefinition Height="*" />
                                             </Grid.RowDefinitions>
-                                            <Image Source="vfs:///Resources/Images/ScreenIcons/NotAllowed.png"
+                                            <Image Source="vfs:///Resources/Images/UI/ScreenIcons/NotAllowed.png"
                                                    Grid.Row="1"
                                                    Margin="0,4,0,4"
                                                    VerticalAlignment="Center"

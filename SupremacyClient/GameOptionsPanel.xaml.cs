@@ -134,7 +134,7 @@ namespace Supremacy.Client
             {
                 var imageSource = new BitmapImage(
                     new Uri(
-                        "vfs:///Resources/Images/Galaxies/" + lstGalaxyShape.SelectedItem + ".png",
+                        "vfs:///Resources/Images/UI/Galaxies/" + lstGalaxyShape.SelectedItem + ".png",
                         UriKind.Absolute));
                 GalaxyImage.Source = imageSource;
             }

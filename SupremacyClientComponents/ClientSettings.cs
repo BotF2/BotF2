@@ -11,17 +11,16 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
+using System.Linq;
 using System.Windows;
 using System.Xaml;
 using XamlReader = System.Windows.Markup.XamlReader;
 using XamlWriter = System.Windows.Markup.XamlWriter;
 
 using Supremacy.Collections;
-
-using System.Linq;
-using Supremacy.Utility;
 using Supremacy.Resources;
-using System.ServiceModel.Channels;
+using Supremacy.Utility;
+
 
 namespace Supremacy.Client
 {
@@ -30,6 +29,8 @@ namespace Supremacy.Client
         private const string ClientSettingsFileName = "SupremacyClient..Settings.xaml";
 
         bool _tracingClientSettings = false;
+        public bool _XML2CSVOutput = false;
+
 
         private static ClientSettings _current;
 
@@ -434,7 +435,7 @@ namespace Supremacy.Client
             {
                 SetValue(Traces_SetAll_without_DetailsProperty, value);
 
-                GameLog.Client.General.InfoFormat("#### Log.Txt: Traces set ALL to DEBUG (press ingame CTRL + O)");  // in Log.Txt only DEBUG = yes get a line
+                GameLog.Client.General.InfoFormat("#### Log.Txt: Traces (** SET ALL **) to DEBUG (press ingame CTRL + Z)");  // in Log.Txt only DEBUG = yes get a line
 
                 if (value == true)
                 {
@@ -506,7 +507,7 @@ namespace Supremacy.Client
             {
                 SetValue(Traces_SetAll_and_DetailsProperty, value);
 
-                GameLog.Client.General.InfoFormat("#### Log.Txt: Traces set ALL to DEBUG (press ingame CTRL + O)");  // in Log.Txt only DEBUG = yes get a line
+                GameLog.Client.General.InfoFormat("#### Log.Txt: Traces (** Set All and DETAILS OME **) to DEBUG (press ingame CTRL + Z)");  // in Log.Txt only DEBUG = yes get a line
 
                 if (value == true)
                 {
@@ -515,7 +516,7 @@ namespace Supremacy.Client
                     // Audio changes shall be done directly = OnTracesAudioChanged
 
                     SetValue(TracesAIProperty, value); /*OnTracesAIChanged(false, true);*/ GameLog.SetRepositoryToDebug("AI");
-                    SetValue(TracesAudioProperty, value); OnTracesAudioChanged(false, true); GameLog.SetRepositoryToDebug("Audio");
+                    //SetValue(TracesAudioProperty, value); OnTracesAudioChanged(false, true); GameLog.SetRepositoryToDebug("Audio");
                     SetValue(TracesCivsAndRacesProperty, value); /*OnTracesCivsAndRacesChanged(false, true);*/ GameLog.SetRepositoryToDebug("CivsAndRaces");
                     SetValue(TracesColoniesProperty, value); /*OnTracesColoniesChanged(false, true);*/ GameLog.SetRepositoryToDebug("Colonies");
                     SetValue(TracesCombatProperty, value); /*OnTracesCombatChanged(false, true);*/ GameLog.SetRepositoryToDebug("Combat");
@@ -583,7 +584,7 @@ namespace Supremacy.Client
                 //    //SetValue(Traces_SetSomeProperty, false);
                 //}
 
-                GameLog.Client.General.InfoFormat("#### Log.Txt: Traces mostly set to ERROR only (press ingame CTRL + O)");  // in Log.Txt only DEBUG = yes get a line
+                GameLog.Client.General.InfoFormat("#### Log.Txt: Traces mostly set to ERROR only (press ingame CTRL + Z)");  // in Log.Txt only DEBUG = yes get a line
 
                 if (value == true)
                 {
@@ -628,7 +629,7 @@ namespace Supremacy.Client
                     SetValue(TracesTradeRoutesProperty, value); /*OnTracesTradeRoutesChanged(false, true);*/ GameLog.SetRepositoryToErrorOnly("TradeRoutes");
                     SetValue(TracesUIProperty, value); /*OnTracesUIChanged(false, true);*/ GameLog.SetRepositoryToErrorOnly("UI");
                     SetValue(TracesXMLCheckProperty, value); /*OnTracesXMLCheckChanged(false, true);*/ GameLog.SetRepositoryToErrorOnly("XMLCheck");
-                    SetValue(TracesXML2CSVOutputProperty, value); /*OnTracesXML2CSVOutputChanged(false, true);*/ GameLog.SetRepositoryToErrorOnly("XML2CSVOutput");
+                    SetValue(TracesXML2CSVOutputProperty, value); OnTracesXML2CSVOutputChanged(false, true); GameLog.SetRepositoryToErrorOnly("XML2CSVOutput");
 
                     // "General" shows the Log.txt-lines for all the others => do this at the end
                     GameLog.Client.General.DebugFormat("At last turning of GENERAL");
@@ -667,7 +668,7 @@ namespace Supremacy.Client
                 //    //SetValue(Traces_SetSomeProperty, false);
                 //}
 
-                GameLog.Client.General.InfoFormat("#### Log.Txt: Traces mostly set to ERROR only (press ingame CTRL + O)");  // in Log.Txt only DEBUG = yes get a line
+                GameLog.Client.General.InfoFormat("#### Log.Txt: Traces mostly set to ERROR only (press ingame CTRL + Z)");  // in Log.Txt only DEBUG = yes get a line
 
                 if (value == true)
                 {
@@ -740,14 +741,14 @@ namespace Supremacy.Client
                 FrameworkPropertyMetadataOptions.None));
 
 
-        public bool Traces_SetSome
+        public bool Traces_SetSome  // some making most sense
         {
             get { return (bool)GetValue(Traces_SetSomeProperty); }
             set
             {
                 SetValue(Traces_SetSomeProperty, value);
 
-                GameLog.Client.General.InfoFormat("#### Log.Txt: Traces (** SOME **) set to DEBUG (press ingame CTRL + O)");  // in Log.Txt only DEBUG = yes get a line
+                GameLog.Client.General.InfoFormat("#### Log.Txt: Traces (** SOME **) set to DEBUG (press ingame CTRL + Z)");  // in Log.Txt only DEBUG = yes get a line
 
                 if (value == true)
                 {
@@ -755,44 +756,44 @@ namespace Supremacy.Client
 
                     // Audio changes shall be done directly = OnTracesAudioChanged
 
-                    //SetValue(TracesAIProperty, value); /*OnTracesAIChanged(false, true);*/ GameLog.SetRepositoryToDebug("AI");
-                    //SetValue(TracesAudioProperty, value); OnTracesAudioChanged(false, true); GameLog.SetRepositoryToDebug("Audio");
-                    //SetValue(TracesCivsAndRacesProperty, value); /*OnTracesCivsAndRacesChanged(false, true);*/ GameLog.SetRepositoryToDebug("CivsAndRaces");
-                    //SetValue(TracesColoniesProperty, value); /*OnTracesColoniesChanged(false, true);*/ GameLog.SetRepositoryToDebug("Colonies");
+                    SetValue(TracesAIProperty, value); /*OnTracesAIChanged(false, true);*/ GameLog.SetRepositoryToDebug("AI");
+                    SetValue(TracesAudioProperty, false); OnTracesAudioChanged(false, true); GameLog.SetRepositoryToDebug("Audio");
+                    SetValue(TracesCivsAndRacesProperty, value); /*OnTracesCivsAndRacesChanged(false, true);*/ GameLog.SetRepositoryToDebug("CivsAndRaces");
+                    SetValue(TracesColoniesProperty, false); /*OnTracesColoniesChanged(false, true);*/ GameLog.SetRepositoryToDebug("Colonies");
                     SetValue(TracesCombatProperty, value); /*OnTracesCombatChanged(false, true);*/ GameLog.SetRepositoryToDebug("Combat");
-                    //SetValue(TracesCombatDetailsProperty, value); /*OnTracesCombatDetailsChanged(false, true);*/ GameLog.SetRepositoryToDebug("CombatDetails");
-                    //SetValue(TracesCreditsProperty, value); /*OnTracesCreditsChanged(false, true);*/ GameLog.SetRepositoryToDebug("Credits");
-                    //SetValue(TracesDeuteriumProperty, value); /*OnTracesDeuteriumChanged(false, true);*/ GameLog.SetRepositoryToDebug("Deuterium");
-                    //SetValue(TracesDilithiumProperty, value); /*OnTracesDilithiumChanged(false, true);*/ GameLog.SetRepositoryToDebug("Dilithium");
-                    //SetValue(TracesDiplomacyProperty, value); /*OnTracesDiplomacyChanged(false, true);*/ GameLog.SetRepositoryToDebug("Diplomacy");
-                    //SetValue(TracesEnergyProperty, value); /*OnTracesEnergyChanged(false, true);*/ GameLog.SetRepositoryToDebug("Energy");
-                    //SetValue(TracesEventsProperty, value); /*OnTracesEventsChanged(false, true);*/ GameLog.SetRepositoryToDebug("Events");
-                    //SetValue(TracesGalaxyGeneratorProperty, value); /*OnTracesGalaxyGeneratorChanged(false, true);*/ GameLog.SetRepositoryToDebug("GalaxyGenerator");
-                    //SetValue(TracesGameDataProperty, value); /*OnTracesGameDataChanged(false, true);*/ GameLog.SetRepositoryToDebug("GameData");
-                    //SetValue(TracesGameInitDataProperty, value); /*OnTracesGameInitDataChanged(false, true);*/ GameLog.SetRepositoryToDebug("GameInitData");
-                    
+                    SetValue(TracesCombatDetailsProperty, false); /*OnTracesCombatDetailsChanged(false, true);*/ GameLog.SetRepositoryToDebug("CombatDetails");
+                    SetValue(TracesCreditsProperty, false); /*OnTracesCreditsChanged(false, true);*/ GameLog.SetRepositoryToDebug("Credits");
+                    SetValue(TracesDeuteriumProperty, false); /*OnTracesDeuteriumChanged(false, true);*/ GameLog.SetRepositoryToDebug("Deuterium");
+                    SetValue(TracesDilithiumProperty, false); /*OnTracesDilithiumChanged(false, true);*/ GameLog.SetRepositoryToDebug("Dilithium");
+                    SetValue(TracesDiplomacyProperty, value); /*OnTracesDiplomacyChanged(false, true);*/ GameLog.SetRepositoryToDebug("Diplomacy");
+                    SetValue(TracesEnergyProperty, false); /*OnTracesEnergyChanged(false, true);*/ GameLog.SetRepositoryToDebug("Energy");
+                    SetValue(TracesEventsProperty, value); /*OnTracesEventsChanged(false, true);*/ GameLog.SetRepositoryToDebug("Events");
+                    SetValue(TracesGalaxyGeneratorProperty, false); /*OnTracesGalaxyGeneratorChanged(false, true);*/ GameLog.SetRepositoryToDebug("GalaxyGenerator");
+                    SetValue(TracesGameDataProperty, false); /*OnTracesGameDataChanged(false, true);*/ GameLog.SetRepositoryToDebug("GameData");
+                    SetValue(TracesGameInitDataProperty, false); /*OnTracesGameInitDataChanged(false, true);*/ GameLog.SetRepositoryToDebug("GameInitData");
+
                     // done at first
                     //SetValue(TracesGeneralProperty, value); /*OnTracesGeneralChanged(false, true);*/ GameLog.SetRepositoryToDebug("General");
-                    
-                    //SetValue(TracesIntelProperty, value); /*OnTracesIntelChanged(false, true);*/ GameLog.SetRepositoryToDebug("Intel");
-                    //SetValue(TracesMapDataProperty, value); /*OnTracesMapDataChanged(false, true);*/ GameLog.SetRepositoryToDebug("MapData");
-                    //SetValue(TracesMultiPlayProperty, value); /*OnTracesMultiPlayChanged(false, true);*/ GameLog.SetRepositoryToDebug("MultiPlay");
-                    //SetValue(TracesProductionProperty, value); /*OnTracesProductionChanged(false, true);*/ GameLog.SetRepositoryToDebug("Production");
+
+                    SetValue(TracesIntelProperty, false); /*OnTracesIntelChanged(false, true);*/ GameLog.SetRepositoryToDebug("Intel");
+                    SetValue(TracesMapDataProperty, false); /*OnTracesMapDataChanged(false, true);*/ GameLog.SetRepositoryToDebug("MapData");
+                    SetValue(TracesMultiPlayProperty, false); /*OnTracesMultiPlayChanged(false, true);*/ GameLog.SetRepositoryToDebug("MultiPlay");
+                    SetValue(TracesProductionProperty, value); /*OnTracesProductionChanged(false, true);*/ GameLog.SetRepositoryToDebug("Production");
                     ////////SetValue(TracesReportErrorsProperty, value); /*OnTracesReportErrorsChanged(false, true);*/ GameLog.SetRepositoryToDebug("ReportErrors");
-                    //SetValue(TracesResearchProperty, value); /*OnTracesResearchChanged(false, true);*/ GameLog.SetRepositoryToDebug("Research");
-                    //SetValue(TracesSitRepsProperty, value); /*OnTracesSitRepsChanged(false, true);*/ GameLog.SetRepositoryToDebug("SitReps");
-                    //SetValue(TracesSaveLoadProperty, value); /*OnTracesSaveLoadChanged(false, true);*/ GameLog.SetRepositoryToDebug("SaveLoad");
-                    //SetValue(TracesShipsProperty, value); /*OnTracesShipsChanged(false, true);*/ GameLog.SetRepositoryToDebug("Ships");
-                    //SetValue(TracesShipProductionProperty, value); /*OnTracesShipProductionChanged(false, true);*/ GameLog.SetRepositoryToDebug("ShipProduction");
-                    //SetValue(TracesStationsProperty, value); /*OnTracesStationsChanged(false, true);*/ GameLog.SetRepositoryToDebug("Stations");
-                    //SetValue(TracesStructuresProperty, value); /*OnTracesStructuresChanged(false, true);*/ GameLog.SetRepositoryToDebug("Structures");
-                    //SetValue(TracesSystemAssaultProperty, value); /*OnTracesSystemAssaultChanged(false, true);*/ GameLog.SetRepositoryToDebug("SystemAssault");
-                    //SetValue(TracesSystemAssaultDetailsProperty, value); /*OnTracesSystemAssaultDetailsChanged(false, true);*/ GameLog.SetRepositoryToDebug("SystemAssaultDetails");
-                    //SetValue(TracesTestProperty, value); /*OnTracesTestChanged(false, true);*/ GameLog.SetRepositoryToDebug("Test");
-                    //SetValue(TracesTradeRoutesProperty, value); /*OnTracesTradeRoutesChanged(false, true);*/ GameLog.SetRepositoryToDebug("TradeRoutes");
-                    //SetValue(TracesUIProperty, value); /*OnTracesUIChanged(false, true);*/ GameLog.SetRepositoryToDebug("UI");
-                    //SetValue(TracesXMLCheckProperty, value); /*OnTracesXMLCheckChanged(false, true);*/ GameLog.SetRepositoryToDebug("XMLCheck");
-                    //SetValue(TracesXML2CSVOutputProperty, value); /*OnTracesXML2CSVOutputChanged(false, true);*/ GameLog.SetRepositoryToDebug("XML2CSVOutput");
+                    SetValue(TracesResearchProperty, value); /*OnTracesResearchChanged(false, true);*/ GameLog.SetRepositoryToDebug("Research");
+                    SetValue(TracesSitRepsProperty, value); /*OnTracesSitRepsChanged(false, true);*/ GameLog.SetRepositoryToDebug("SitReps");
+                    SetValue(TracesSaveLoadProperty, false); /*OnTracesSaveLoadChanged(false, true);*/ GameLog.SetRepositoryToDebug("SaveLoad");
+                    SetValue(TracesShipsProperty, false); /*OnTracesShipsChanged(false, true);*/ GameLog.SetRepositoryToDebug("Ships");
+                    SetValue(TracesShipProductionProperty, false); /*OnTracesShipProductionChanged(false, true);*/ GameLog.SetRepositoryToDebug("ShipProduction");
+                    SetValue(TracesStationsProperty, false); /*OnTracesStationsChanged(false, true);*/ GameLog.SetRepositoryToDebug("Stations");
+                    SetValue(TracesStructuresProperty, false); /*OnTracesStructuresChanged(false, true);*/ GameLog.SetRepositoryToDebug("Structures");
+                    SetValue(TracesSystemAssaultProperty, value); /*OnTracesSystemAssaultChanged(false, true);*/ GameLog.SetRepositoryToDebug("SystemAssault");
+                    SetValue(TracesSystemAssaultDetailsProperty, false); /*OnTracesSystemAssaultDetailsChanged(false, true);*/ GameLog.SetRepositoryToDebug("SystemAssaultDetails");
+                    SetValue(TracesTestProperty, false); /*OnTracesTestChanged(false, true);*/ GameLog.SetRepositoryToDebug("Test");
+                    SetValue(TracesTradeRoutesProperty, value); /*OnTracesTradeRoutesChanged(false, true);*/ GameLog.SetRepositoryToDebug("TradeRoutes");
+                    SetValue(TracesUIProperty, false); /*OnTracesUIChanged(false, true);*/ GameLog.SetRepositoryToDebug("UI");
+                    SetValue(TracesXMLCheckProperty, false); /*OnTracesXMLCheckChanged(false, true);*/ GameLog.SetRepositoryToDebug("XMLCheck");
+                    SetValue(TracesXML2CSVOutputProperty, false); /*OnTracesXML2CSVOutputChanged(false, true);*/ GameLog.SetRepositoryToDebug("XML2CSVOutput");
 
                     //SendKeys.SendWait("{ENTER}");  // doesn't work - close OptionsDialog ...(and reload)
                     //Thread.Sleep(1000);
@@ -821,7 +822,7 @@ namespace Supremacy.Client
                 SetValue(Traces_SetSelection2Property, value);
 
 
-                GameLog.Client.General.InfoFormat("#### Log.Txt: Traces (** Selection 2 **) set to DEBUG (press ingame CTRL + O)");  // in Log.Txt only DEBUG = yes get a line
+                GameLog.Client.General.InfoFormat("#### Log.Txt: Traces (** Selection 2 **) set to DEBUG (press ingame CTRL + Z)");  // in Log.Txt only DEBUG = yes get a line
 
                 if (value == true)
                 {
@@ -829,44 +830,44 @@ namespace Supremacy.Client
 
                     // Audio changes shall be done directly = OnTracesAudioChanged
 
-                    //SetValue(TracesAIProperty, value); /*OnTracesAIChanged(false, true);*/ GameLog.SetRepositoryToDebug("AI");
-                    //SetValue(TracesAudioProperty, value); OnTracesAudioChanged(false, true); GameLog.SetRepositoryToDebug("Audio");
-                    //SetValue(TracesCivsAndRacesProperty, value); /*OnTracesCivsAndRacesChanged(false, true);*/ GameLog.SetRepositoryToDebug("CivsAndRaces");
-                    //SetValue(TracesColoniesProperty, value); /*OnTracesColoniesChanged(false, true);*/ GameLog.SetRepositoryToDebug("Colonies");
+                    SetValue(TracesAIProperty, false); /*OnTracesAIChanged(false, true);*/ GameLog.SetRepositoryToDebug("AI");
+                    SetValue(TracesAudioProperty, false); OnTracesAudioChanged(false, true); GameLog.SetRepositoryToDebug("Audio");
+                    SetValue(TracesCivsAndRacesProperty, false); /*OnTracesCivsAndRacesChanged(false, true);*/ GameLog.SetRepositoryToDebug("CivsAndRaces");
+                    SetValue(TracesColoniesProperty, false); /*OnTracesColoniesChanged(false, true);*/ GameLog.SetRepositoryToDebug("Colonies");
                     SetValue(TracesCombatProperty, value); /*OnTracesCombatChanged(false, true);*/ GameLog.SetRepositoryToDebug("Combat");
-                    //SetValue(TracesCombatDetailsProperty, value); /*OnTracesCombatDetailsChanged(false, true);*/ GameLog.SetRepositoryToDebug("CombatDetails");
-                    //SetValue(TracesCreditsProperty, value); /*OnTracesCreditsChanged(false, true);*/ GameLog.SetRepositoryToDebug("Credits");
-                    //SetValue(TracesDeuteriumProperty, value); /*OnTracesDeuteriumChanged(false, true);*/ GameLog.SetRepositoryToDebug("Deuterium");
-                    //SetValue(TracesDilithiumProperty, value); /*OnTracesDilithiumChanged(false, true);*/ GameLog.SetRepositoryToDebug("Dilithium");
-                    //SetValue(TracesDiplomacyProperty, value); /*OnTracesDiplomacyChanged(false, true);*/ GameLog.SetRepositoryToDebug("Diplomacy");
-                    //SetValue(TracesEnergyProperty, value); /*OnTracesEnergyChanged(false, true);*/ GameLog.SetRepositoryToDebug("Energy");
-                    //SetValue(TracesEventsProperty, value); /*OnTracesEventsChanged(false, true);*/ GameLog.SetRepositoryToDebug("Events");
-                    //SetValue(TracesGalaxyGeneratorProperty, value); /*OnTracesGalaxyGeneratorChanged(false, true);*/ GameLog.SetRepositoryToDebug("GalaxyGenerator");
-                    //SetValue(TracesGameDataProperty, value); /*OnTracesGameDataChanged(false, true);*/ GameLog.SetRepositoryToDebug("GameData");
-                    //SetValue(TracesGameInitDataProperty, value); /*OnTracesGameInitDataChanged(false, true);*/ GameLog.SetRepositoryToDebug("GameInitData");
+                    SetValue(TracesCombatDetailsProperty, value); /*OnTracesCombatDetailsChanged(false, true);*/ GameLog.SetRepositoryToDebug("CombatDetails");
+                    SetValue(TracesCreditsProperty, false); /*OnTracesCreditsChanged(false, true);*/ GameLog.SetRepositoryToDebug("Credits");
+                    SetValue(TracesDeuteriumProperty, false); /*OnTracesDeuteriumChanged(false, true);*/ GameLog.SetRepositoryToDebug("Deuterium");
+                    SetValue(TracesDilithiumProperty, false); /*OnTracesDilithiumChanged(false, true);*/ GameLog.SetRepositoryToDebug("Dilithium");
+                    SetValue(TracesDiplomacyProperty, false); /*OnTracesDiplomacyChanged(false, true);*/ GameLog.SetRepositoryToDebug("Diplomacy");
+                    SetValue(TracesEnergyProperty, false); /*OnTracesEnergyChanged(false, true);*/ GameLog.SetRepositoryToDebug("Energy");
+                    SetValue(TracesEventsProperty, false); /*OnTracesEventsChanged(false, true);*/ GameLog.SetRepositoryToDebug("Events");
+                    SetValue(TracesGalaxyGeneratorProperty, false); /*OnTracesGalaxyGeneratorChanged(false, true);*/ GameLog.SetRepositoryToDebug("GalaxyGenerator");
+                    SetValue(TracesGameDataProperty, false); /*OnTracesGameDataChanged(false, true);*/ GameLog.SetRepositoryToDebug("GameData");
+                    SetValue(TracesGameInitDataProperty, false); /*OnTracesGameInitDataChanged(false, true);*/ GameLog.SetRepositoryToDebug("GameInitData");
 
                     // done at first
                     //SetValue(TracesGeneralProperty, value); /*OnTracesGeneralChanged(false, true);*/ GameLog.SetRepositoryToDebug("General");
 
-                    //SetValue(TracesIntelProperty, value); /*OnTracesIntelChanged(false, true);*/ GameLog.SetRepositoryToDebug("Intel");
-                    //SetValue(TracesMapDataProperty, value); /*OnTracesMapDataChanged(false, true);*/ GameLog.SetRepositoryToDebug("MapData");
-                    //SetValue(TracesMultiPlayProperty, value); /*OnTracesMultiPlayChanged(false, true);*/ GameLog.SetRepositoryToDebug("MultiPlay");
-                    //SetValue(TracesProductionProperty, value); /*OnTracesProductionChanged(false, true);*/ GameLog.SetRepositoryToDebug("Production");
-                    ////////SetValue(TracesReportErrorsProperty, value); /*OnTracesReportErrorsChanged(false, true);*/ GameLog.SetRepositoryToDebug("ReportErrors");
-                    //SetValue(TracesResearchProperty, value); /*OnTracesResearchChanged(false, true);*/ GameLog.SetRepositoryToDebug("Research");
-                    //SetValue(TracesSitRepsProperty, value); /*OnTracesSitRepsChanged(false, true);*/ GameLog.SetRepositoryToDebug("SitReps");
-                    //SetValue(TracesSaveLoadProperty, value); /*OnTracesSaveLoadChanged(false, true);*/ GameLog.SetRepositoryToDebug("SaveLoad");
-                    //SetValue(TracesShipsProperty, value); /*OnTracesShipsChanged(false, true);*/ GameLog.SetRepositoryToDebug("Ships");
-                    //SetValue(TracesShipProductionProperty, value); /*OnTracesShipProductionChanged(false, true);*/ GameLog.SetRepositoryToDebug("ShipProduction");
-                    //SetValue(TracesStationsProperty, value); /*OnTracesStationsChanged(false, true);*/ GameLog.SetRepositoryToDebug("Stations");
-                    //SetValue(TracesStructuresProperty, value); /*OnTracesStructuresChanged(false, true);*/ GameLog.SetRepositoryToDebug("Structures");
-                    //SetValue(TracesSystemAssaultProperty, value); /*OnTracesSystemAssaultChanged(false, true);*/ GameLog.SetRepositoryToDebug("SystemAssault");
-                    //SetValue(TracesSystemAssaultDetailsProperty, value); /*OnTracesSystemAssaultDetailsChanged(false, true);*/ GameLog.SetRepositoryToDebug("SystemAssaultDetails");
-                    //SetValue(TracesTestProperty, value); /*OnTracesTestChanged(false, true);*/ GameLog.SetRepositoryToDebug("Test");
-                    //SetValue(TracesTradeRoutesProperty, value); /*OnTracesTradeRoutesChanged(false, true);*/ GameLog.SetRepositoryToDebug("TradeRoutes");
-                    //SetValue(TracesUIProperty, value); /*OnTracesUIChanged(false, true);*/ GameLog.SetRepositoryToDebug("UI");
-                    //SetValue(TracesXMLCheckProperty, value); /*OnTracesXMLCheckChanged(false, true);*/ GameLog.SetRepositoryToDebug("XMLCheck");
-                    //SetValue(TracesXML2CSVOutputProperty, value); /*OnTracesXML2CSVOutputChanged(false, true);*/ GameLog.SetRepositoryToDebug("XML2CSVOutput");
+                    SetValue(TracesIntelProperty, false); /*OnTracesIntelChanged(false, true);*/ GameLog.SetRepositoryToDebug("Intel");
+                    SetValue(TracesMapDataProperty, false); /*OnTracesMapDataChanged(false, true);*/ GameLog.SetRepositoryToDebug("MapData");
+                    SetValue(TracesMultiPlayProperty, false); /*OnTracesMultiPlayChanged(false, true);*/ GameLog.SetRepositoryToDebug("MultiPlay");
+                    SetValue(TracesProductionProperty, false); /*OnTracesProductionChanged(false, true);*/ GameLog.SetRepositoryToDebug("Production");
+                    //////SetValue(TracesReportErrorsProperty, false); /*OnTracesReportErrorsChanged(false, true);*/ GameLog.SetRepositoryToDebug("ReportErrors");
+                    SetValue(TracesResearchProperty, false); /*OnTracesResearchChanged(false, true);*/ GameLog.SetRepositoryToDebug("Research");
+                    SetValue(TracesSitRepsProperty, value); /*OnTracesSitRepsChanged(false, true);*/ GameLog.SetRepositoryToDebug("SitReps");
+                    SetValue(TracesSaveLoadProperty, false); /*OnTracesSaveLoadChanged(false, true);*/ GameLog.SetRepositoryToDebug("SaveLoad");
+                    SetValue(TracesShipsProperty, false); /*OnTracesShipsChanged(false, true);*/ GameLog.SetRepositoryToDebug("Ships");
+                    SetValue(TracesShipProductionProperty, false); /*OnTracesShipProductionChanged(false, true);*/ GameLog.SetRepositoryToDebug("ShipProduction");
+                    SetValue(TracesStationsProperty, false); /*OnTracesStationsChanged(false, true);*/ GameLog.SetRepositoryToDebug("Stations");
+                    SetValue(TracesStructuresProperty, false); /*OnTracesStructuresChanged(false, true);*/ GameLog.SetRepositoryToDebug("Structures");
+                    SetValue(TracesSystemAssaultProperty, false); /*OnTracesSystemAssaultChanged(false, true);*/ GameLog.SetRepositoryToDebug("SystemAssault");
+                    SetValue(TracesSystemAssaultDetailsProperty, false); /*OnTracesSystemAssaultDetailsChanged(false, true);*/ GameLog.SetRepositoryToDebug("SystemAssaultDetails");
+                    SetValue(TracesTestProperty, false); /*OnTracesTestChanged(false, true);*/ GameLog.SetRepositoryToDebug("Test");
+                    SetValue(TracesTradeRoutesProperty, false); /*OnTracesTradeRoutesChanged(false, true);*/ GameLog.SetRepositoryToDebug("TradeRoutes");
+                    SetValue(TracesUIProperty, false); /*OnTracesUIChanged(false, true);*/ GameLog.SetRepositoryToDebug("UI");
+                    SetValue(TracesXMLCheckProperty, false); /*OnTracesXMLCheckChanged(false, true);*/ GameLog.SetRepositoryToDebug("XMLCheck");
+                    SetValue(TracesXML2CSVOutputProperty, false); /*OnTracesXML2CSVOutputChanged(false, true);*/ GameLog.SetRepositoryToDebug("XML2CSVOutput");
 
                     //SendKeys.SendWait("{ENTER}");  // doesn't work - close OptionsDialog ...(and reload)
                     //Thread.Sleep(1000);
@@ -1721,6 +1722,10 @@ namespace Supremacy.Client
                 false,
                 FrameworkPropertyMetadataOptions.None));
 
+        public event EventHandler<PropertyChangedRoutedEventArgs<bool>> TracesXML2CSVOutputChanged;
+
+        private void OnTracesXML2CSVOutputChanged(bool oldValue, bool newValue) => TracesXML2CSVOutputChanged?.Invoke(this, new PropertyChangedRoutedEventArgs<bool>(oldValue, newValue));
+
         public bool TracesXML2CSVOutput
         {
             get { return (bool)GetValue(TracesXML2CSVOutputProperty); }
@@ -1729,7 +1734,9 @@ namespace Supremacy.Client
                 SetValue(TracesXML2CSVOutputProperty, value);
                 //GameLog.Client.General.InfoFormat("TracesXML2CSVOutput = {0}", value);
                 if (value == true)
+                { 
                     GameLog.SetRepositoryToDebug("XML2CSVOutput");
+                }
                 else
                     GameLog.SetRepositoryToErrorOnly("XML2CSVOutput");
             }

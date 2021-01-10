@@ -20,6 +20,7 @@ using System.Linq;
 
 using Supremacy.Universe;
 using Supremacy.Utility;
+using System.Collections.Generic;
 
 namespace Supremacy.Diplomacy
 {
@@ -52,6 +53,7 @@ namespace Supremacy.Diplomacy
         public IResponse LastResponseSent { get; set; }
         public IResponse LastResponseReceived { get; set; }
         public PendingDiplomacyAction PendingAction { get; set; }
+        //     public bool IsTotalWarInPlace { get; set; }
 
         public ForeignPower(ICivIdentity owner, ICivIdentity counterparty)
         {
@@ -190,6 +192,28 @@ namespace Supremacy.Diplomacy
         //    IsEmbargoInPlace = false;
         //}
 
+        //public void BeginTotalWar()
+        //{
+        //    List<Civilization> possibleTotalWarCivs = (List<Civilization>)GameContext.Current.Civilizations.Where(o => o.IsEmpire).ToList();
+        //    bool foundAlreadyTotalWar = false;
+        //    foreach (Civilization civ in possibleTotalWarCivs)
+        //    {
+        //        var diplomat = Diplomat.Get(civ);
+        //        ForeignPower foreignPower = diplomat.GetForeignPower(this.Owner);
+        //        if (foreignPower.IsTotalWarInPlace)
+        //        {
+        //            foundAlreadyTotalWar = true;
+        //        }
+        //    }
+        //    if (foundAlreadyTotalWar == false)
+        //    IsTotalWarInPlace = true;
+        //}
+
+        //public void EndTotalWar()
+        //{
+        //    IsTotalWarInPlace = false;
+        //}
+
         public void DeclareWar()
         {
             if (DiplomacyData.Status == ForeignPowerStatus.AtWar)
@@ -227,6 +251,41 @@ namespace Supremacy.Diplomacy
                             civ,
                             owner,
                             counterparty));    
+                }
+            }
+        }
+
+        public void DenounceWar(Civilization victim)
+        {
+            var owner = Owner;
+            var counterparty = Counterparty;
+            foreach (var civ in GameContext.Current.Civilizations)
+            {
+                if (civ.IsHuman && (civ == counterparty ||
+                    DiplomacyHelper.IsContactMade(civ, owner) && DiplomacyHelper.IsContactMade(civ, counterparty) && DiplomacyHelper.IsContactMade(civ, victim)))
+                {
+                    GameContext.Current.CivilizationManagers[counterparty].SitRepEntries.Add(
+                        new DenounceWarSitRepEntry(
+                            owner,
+                            counterparty,
+                            victim));
+                }
+            }
+        }
+        public void CommendWar(Civilization victim)
+        {
+            var owner = Owner;
+            var counterparty = Counterparty;
+            foreach (var civ in GameContext.Current.Civilizations)
+            {
+                if (civ.IsHuman && (civ == counterparty ||
+                    DiplomacyHelper.IsContactMade(civ, owner) && DiplomacyHelper.IsContactMade(civ, counterparty) && DiplomacyHelper.IsContactMade(civ, victim)))
+                {
+                    GameContext.Current.CivilizationManagers[counterparty].SitRepEntries.Add(
+                        new CommendWarSitRepEntry(
+                            owner,
+                            counterparty,
+                            victim));
                 }
             }
         }
@@ -547,6 +606,7 @@ namespace Supremacy.Diplomacy
             LastResponseSent = reader.Read<Response>();
             LastResponseReceived = reader.Read<Response>();
             PendingAction = (PendingDiplomacyAction)reader.ReadOptimizedInt32();
+            //IsTotalWarInPlace = reader.ReadBoolean();
         }
 
         void IOwnedDataSerializable.SerializeOwnedData(SerializationWriter writer, object context)
@@ -571,6 +631,7 @@ namespace Supremacy.Diplomacy
             writer.WriteObject(LastResponseSent);
             writer.WriteObject(LastResponseReceived);
             writer.WriteOptimized((int)PendingAction);
+            //writer.Write(IsTotalWarInPlace);
         }
     }
 }

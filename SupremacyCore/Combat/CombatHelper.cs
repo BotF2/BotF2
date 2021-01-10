@@ -89,8 +89,9 @@ namespace Supremacy.Combat
                     }
                     if (sector.System != null && ship.Owner != sector.Owner && sector.Owner != null && sector.System.Colony != null && GameContext.Current.Universe.HomeColonyLookup[sector.Owner] == sector.System.Colony && !DiplomacyHelper.AreAtWar(ship.Owner, sector.Owner))
                     {
-                        GameLog.Core.Combat.DebugFormat("Home Colony = {0}, Not at war ={1}",
-                            GameContext.Current.Universe.HomeColonyLookup[sector.Owner] == sector.System.Colony, !DiplomacyHelper.AreAtWar(ship.Owner, sector.Owner));
+                        //GameLog.Core.Combat.DebugFormat("Home Colony = {0}, Not at war ={1}",
+                            //GameContext.Current.Universe.HomeColonyLookup[sector.Owner] == sector.System.Colony, !DiplomacyHelper.AreAtWar(ship.Owner, sector.Owner));
+                        
                         continue; // for home worlds you need to declare war to get combat
                     }
                     if (!assets.ContainsKey(ship.Owner))

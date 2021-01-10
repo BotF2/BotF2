@@ -7,20 +7,16 @@
 //
 // All other rights reserved.
 
-using System;
-using System.Collections;
-using System.Collections.Generic;
-
 using Microsoft.Practices.Composite.Presentation.Commands;
-
 using Supremacy.Annotations;
 using Supremacy.Collections;
 using Supremacy.Orbitals;
-
-using System.Linq;
-
 using Supremacy.Tech;
 using Supremacy.Utility;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Supremacy.Client.Commands
 {

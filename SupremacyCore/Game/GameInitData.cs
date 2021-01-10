@@ -120,6 +120,7 @@ namespace Supremacy.Game
             if (savedGameHeader == null)
                 throw new ArgumentNullException("savedGameHeader");
 
+            DateTime _time = DateTime.Now;
             GameLog.Core.General.DebugFormat("CreateFromSavedGame: {0}", savedGameHeader.FileName);  // GameLog always ... Core.General
 
             GameLog.Core.General.InfoFormat("Deserialized: savedGameHeader;FileName;{0}", savedGameHeader.FileName);
@@ -141,13 +142,13 @@ namespace Supremacy.Game
             GameLog.Core.General.InfoFormat("Deserialized: savedGameHeader;Options - StartingTechLevel (once);{0}", savedGameHeader.Options.StartingTechLevel);
             GameLog.Core.General.InfoFormat("Deserialized: savedGameHeader;Options - MinorRaceFrequency;{0}", savedGameHeader.Options.MinorRaceFrequency);
 
-            GameLog.Core.General.InfoFormat("Deserialized: savedGameHeader;Options - FederationPlayable;{0}", savedGameHeader.Options.FederationPlayable);
-            GameLog.Core.General.InfoFormat("Deserialized: savedGameHeader;Options - RomulanPlayable;{0}", savedGameHeader.Options.RomulanPlayable);
-            GameLog.Core.General.InfoFormat("Deserialized: savedGameHeader;Options - KlingonPlayable;{0}", savedGameHeader.Options.KlingonPlayable);
-            GameLog.Core.General.InfoFormat("Deserialized: savedGameHeader;Options - CardassianPlayable;{0}", savedGameHeader.Options.CardassianPlayable);
-            GameLog.Core.General.InfoFormat("Deserialized: savedGameHeader;Options - DominionPlayable;{0}", savedGameHeader.Options.DominionPlayable);
-            GameLog.Core.General.InfoFormat("Deserialized: savedGameHeader;Options - BorgPlayable;{0}", savedGameHeader.Options.BorgPlayable);
-            GameLog.Core.General.InfoFormat("Deserialized: savedGameHeader;Options - TerranEmpirePlayable;{0}", savedGameHeader.Options.TerranEmpirePlayable);
+            GameLog.Core.General.InfoFormat("Deserialized: savedGameHeader;Options - {0};FederationPlayable;", savedGameHeader.Options.FederationPlayable);
+            GameLog.Core.General.InfoFormat("Deserialized: savedGameHeader;Options - {0};RomulanPlayable", savedGameHeader.Options.RomulanPlayable);
+            GameLog.Core.General.InfoFormat("Deserialized: savedGameHeader;Options - {0};KlingonPlayable", savedGameHeader.Options.KlingonPlayable);
+            GameLog.Core.General.InfoFormat("Deserialized: savedGameHeader;Options - {0};CardassianPlayable", savedGameHeader.Options.CardassianPlayable);
+            GameLog.Core.General.InfoFormat("Deserialized: savedGameHeader;Options - {0};DominionPlayable", savedGameHeader.Options.DominionPlayable);
+            GameLog.Core.General.InfoFormat("Deserialized: savedGameHeader;Options - {0};BorgPlayable", savedGameHeader.Options.BorgPlayable);
+            GameLog.Core.General.InfoFormat("Deserialized: savedGameHeader;Options - {0};TerranEmpirePlayable", savedGameHeader.Options.TerranEmpirePlayable);
 
             GameLog.Core.General.InfoFormat("Options: FederationModifier = {0}", savedGameHeader.Options.FederationModifier);
             GameLog.Core.General.InfoFormat("Options: RomulanModifier = {0}", savedGameHeader.Options.RomulanModifier);
@@ -166,7 +167,7 @@ namespace Supremacy.Game
             GameLog.Core.General.InfoFormat("Deserialized: savedGameHeader;Options - CombatTimer;{0}", savedGameHeader.Options.CombatTimer);
             GameLog.Core.General.InfoFormat("Deserialized: savedGameHeader;Options - AIMode    ;{0}", savedGameHeader.Options.AIMode);
             GameLog.Core.General.InfoFormat("Deserialized: savedGameHeader;Options - AITakeover;{0}", savedGameHeader.Options.AITakeover);
-            GameLog.Core.General.InfoFormat("Deserialized: savedGameHeader;Options - ModID     ;{0}", savedGameHeader.Options.ModID);
+            // not useful GameLog.Core.General.InfoFormat("Deserialized: savedGameHeader;Options - ModID     ;{0}", savedGameHeader.Options.ModID);
 
             foreach (var slotClaim in savedGameHeader.SlotClaims)
             {
@@ -179,6 +180,8 @@ namespace Supremacy.Game
 
             GameLog.Core.General.InfoFormat("Deserialized: savedGameHeader;Single or MultiplayerGame;{0}", savedGameHeader.IsMultiplayerGame ? GameType.MultiplayerLoad : GameType.SinglePlayerLoad  );
                 
+            GameLog.Client.SaveLoad.DebugFormat("Loading Time = {0}", DateTime.Now - _time);
+            Console.WriteLine("Loading Time = {0}", DateTime.Now - _time);
 
             return new GameInitData
                    {
@@ -192,6 +195,7 @@ namespace Supremacy.Game
                        SlotStatus = savedGameHeader.SlotStatus,
                        GameType = savedGameHeader.IsMultiplayerGame ? GameType.MultiplayerLoad : GameType.SinglePlayerLoad
                    };
+
         }
 
         #region Properties and Indexers

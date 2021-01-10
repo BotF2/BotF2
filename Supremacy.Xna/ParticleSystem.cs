@@ -176,7 +176,7 @@ namespace Supremacy.Xna
         /// </summary>
         private void LoadParticleEffect()
         {
-            Effect effect = _content.Load<Effect>(@"Resources\Effects\ParticleEffect");
+            Effect effect = _content.Load<Effect>(@"Resources\Images\UI\Shell\Effects\ParticleEffect");
 
             // If we have several particle systems, the content manager will return
             // a single shared effect instance to them all. But we want to preconfigure

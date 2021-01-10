@@ -117,9 +117,15 @@ namespace Supremacy.IO
                     }
                     catch (Exception e)
                     {
+                        string _text = "IsolatedStorageFile is just missing at first start - simply CONTINUE !!!";
+                        GameLog.Core.General.ErrorFormat(_text);
+                        Console.WriteLine(_text);
+
                         GameLog.Core.General.Error(e);
                     }
                 }
+
+
 
                 return (TValue)settings[key];
             }

@@ -7,6 +7,7 @@
                     xmlns:local="clr-namespace:Supremacy.Client"
                     xmlns:Views="clr-namespace:Supremacy.Client.Views"
                     mc:Ignorable="d">
+<!-- ShipyardDockView.cs is in ClientComponent\Views\ColonyScreen\-->
 
   <local:StringFormatConverter x:Key="StringFormatConverter" />
   <SolidColorBrush x:Key="GreenLightStroke" Color="#FF006400" />
@@ -26,7 +27,7 @@
   <Style x:Key="BuildShipButton"
            TargetType="{x:Type Button}">
     <Setter Property="Focusable" Value="False"/>
-    <Setter Property="IsEnabled" Value="True" />
+
     <Setter Property="IsTabStop" Value="False"/>
     <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
     <Setter Property="UseLayoutRounding" Value="True" />
@@ -220,15 +221,50 @@
     <Setter Property="Template">
       <Setter.Value>
         <ControlTemplate TargetType="{x:Type local:ShipyardDockView}">
-          <DockPanel>
-            <Button x:Name="PowerButton" Style="{StaticResource ToggleConstructionBayButton}" DockPanel.Dock="Left" Width="24" VerticalAlignment="Top" Margin="0,3,0,0" Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Views:ColonyScreenView}, Path=DataContext.(Views:ColonyScreenPresentationModel.ToggleShipyardBuildSlotCommand)}" CommandParameter="{Binding}">
+          <Grid x:Name="WholeDockView">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                            
+            </Grid.ColumnDefinitions>
+            <Button x:Name="BuildShipButton" 
+                    Grid.Column="0"
+                    Style="{StaticResource BuildShipButton}" 
+                    Width="50" Height="50" 
+                    VerticalAlignment="Top" 
+                    HorizontalAlignment="Left" 
+                    Margin="0,3,0,0" 
+                    Visibility="Visible"                      
+                    ToolTip="{xs:LocalizedString Group={x:Static s:LocalizedTextGroups.ColonyScreen}, Entry=BUILT_NEW_SHIP_TOOLTIP}" 
+                    Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Views:ColonyScreenView}, Path=DataContext.(Views:ColonyScreenPresentationModel.SelectShipBuildProjectCommand)}" 
+                    CommandParameter="{Binding}" />
+            <Button x:Name="PowerButton" Style="{StaticResource ToggleConstructionBayButton}" Grid.Column="1" Width="24" VerticalAlignment="Top" Margin="0,3,0,0" Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Views:ColonyScreenView}, Path=DataContext.(Views:ColonyScreenPresentationModel.ToggleShipyardBuildSlotCommand)}" CommandParameter="{Binding}">
               <Button.ToolTip>
                 <MultiBinding Converter="{x:Static local:StringFormatConverter.Instance}" ConverterParameter="{xs:LocalizedString Group={x:Static s:LocalizedTextGroups.ColonyScreen}, Entry=TOGGLE_CONSTRUCTION_BAY_BUTTON_TOOLTIP_OFFLINE}">
                   <Binding Path="(s:ShipyardBuildSlot.Shipyard).(s:Shipyard.ShipyardDesign).(s:ShipyardDesign.BuildSlotEnergyCost)" Mode="OneWay" />
                 </MultiBinding>
               </Button.ToolTip>
             </Button>
-            <Grid x:Name="ResourcesSite" DockPanel.Dock="Right" Margin="0,0,0,0" Opacity="0.33" Visibility="Hidden">
+
+            <Grid x:Name="ImageSite" Grid.Column="2" Width="235" Height="145" Opacity="0.33">
+                <!-- Background image of Bay -->
+               <Image Source="vfs:///Resources/UI/Borg/ColonyScreen/shipyard_dock.png" HorizontalAlignment="Center" VerticalAlignment="Top" />
+               <!--CancelButton: 150 to 125 is too big-->
+               <Button x:Name="CancelButton" 
+                    Style="{StaticResource CancelShipConstructionButton}" 
+                    Width="144" Height="120" 
+                    HorizontalAlignment="Center" 
+                    VerticalAlignment="Bottom" 
+                    Margin="8,0,0,0" 
+                    Visibility="Hidden"
+                    Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Views:ColonyScreenView}, Path=DataContext.(Views:ColonyScreenPresentationModel.CancelBuildProjectCommand)}" 
+                    CommandParameter="{Binding Path=(s:BuildSlot.Project)}" />
+            </Grid>
+
+            <StackPanel Grid.Column="3" Width="100">
+                <Grid x:Name="ResourcesSite" Margin="0,0,0,0" Opacity="0.33" Visibility="Visible">
               <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
@@ -238,8 +274,8 @@
                 <RowDefinition Height="40" />
                 <RowDefinition Height="40" />
               </Grid.RowDefinitions>
-              <Image Grid.Row="0" Source="vfs:///Resources/Images/ScreenIcons/RawMaterials.png" Width="24" ToolTip="{xs:EnumString {x:Static s:ResourceType.RawMaterials}}" />
-              <Image Grid.Row="1" Source="vfs:///Resources/Images/ScreenIcons/Dilithium.png" Width="24" ToolTip="{xs:EnumString {x:Static s:ResourceType.Dilithium}}" />
+              <Image Grid.Row="0" Source="vfs:///Resources/Images/UI/ScreenIcons/RawMaterials.png" Width="24" ToolTip="{xs:EnumString {x:Static s:ResourceType.RawMaterials}}" />
+              <Image Grid.Row="1" Source="vfs:///Resources/Images/UI/ScreenIcons/Dilithium.png" Width="24" ToolTip="{xs:EnumString {x:Static s:ResourceType.Dilithium}}" />
               <Image Grid.Row="2" Source="{StaticResource StopwatchImage}" Width="17" ToolTip="{xs:LocalizedString Group={x:Static s:LocalizedTextGroups.ColonyScreen}, Entry=SHIP_CONSTRUCTION_TIME_TOOLTIP}" />
 
               <!-- Invisible text to avoid shifting layouts -->
@@ -277,29 +313,22 @@
                 </TextBlock.Text>
               </TextBlock>
             </Grid>
-            <Grid x:Name="ImageSite" Width="235" Height="145" Opacity="0.33">
-              <Image Source="vfs:///Resources/UI/Borg/ColonyScreen/shipyard_dock.png" HorizontalAlignment="Center" VerticalAlignment="Top" />
-                <!--CancelButton: 150 to 125 is too big--> 
-              <Button x:Name="CancelButton" Style="{StaticResource CancelShipConstructionButton}" Width="144" Height="120" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="8,0,0,0" Visibility="Hidden" Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Views:ColonyScreenView}, Path=DataContext.(Views:ColonyScreenPresentationModel.CancelBuildProjectCommand)}" CommandParameter="{Binding Path=(s:BuildSlot.Project)}" />
-              <Button x:Name="BuildShipButton" Style="{StaticResource BuildShipButton}" Width="50" Height="50" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="0,3,0,0" Visibility="Hidden" ToolTip="{xs:LocalizedString Group={x:Static s:LocalizedTextGroups.ColonyScreen}, Entry=BUILT_NEW_SHIP_TOOLTIP}" Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Views:ColonyScreenView}, Path=DataContext.(Views:ColonyScreenPresentationModel.SelectShipBuildProjectCommand)}" CommandParameter="{Binding}" />
+            </StackPanel>
             </Grid>
-          </DockPanel>
+
 
           <ControlTemplate.Triggers>
 
             <DataTrigger Binding="{Binding RelativeSource={RelativeSource Self}, Path=(local:ShipyardDockView.BuildSlot).(s:BuildSlot.HasProject), Mode=OneWay}"
                          Value="True">
               <Setter TargetName="CancelButton" Property="Visibility" Value="Visible" />
-              <Setter TargetName="ResourcesSite" Property="Visibility" Value="Visible" />
+           
             </DataTrigger>
+                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource Self}, Path=(local:ShipyardDockView.BuildSlot).(s:BuildSlot.AllShipsToQueue), Mode=OneWay}"
+                        Value="True">
 
-            <MultiDataTrigger>
-              <MultiDataTrigger.Conditions>
-                <Condition Binding="{Binding Path=(s:BuildSlot.HasProject), Mode=OneWay}" Value="False" />
-                <Condition Binding="{Binding Path=(s:ShipyardBuildSlot.IsActive), Mode=OneWay}" Value="True" />
-              </MultiDataTrigger.Conditions>
-              <Setter TargetName="BuildShipButton" Property="Visibility" Value="Visible" />
-            </MultiDataTrigger>
+                <Setter TargetName="BuildShipButton" Property="IsEnabled" Value="True" />
+            </DataTrigger>
 
             <DataTrigger Binding="{Binding Path=(s:ShipyardBuildSlot.IsActive), Mode=OneWay}"
                          Value="True">

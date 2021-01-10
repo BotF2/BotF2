@@ -40,7 +40,7 @@ namespace Supremacy.Orbitals
         public static readonly SabotageOrder SabotageOrder;
 		public static readonly InfluenceOrder InfluenceOrder;
         public static readonly MedicalOrder MedicalOrder;
-        public static readonly SpyOnOrder SpyOnOrder;
+        public static readonly SpyOnOrder SpyOnOrder; // install spy network
         public static readonly TowOrder TowOrder;
         public static readonly WormholeOrder WormholeOrder;
         public static readonly CollectDeuteriumOrder CollectDeuteriumOrder;
@@ -78,11 +78,11 @@ namespace Supremacy.Orbitals
                           SabotageOrder,
                           InfluenceOrder,
                           MedicalOrder,
-                          SpyOnOrder,
+                          SpyOnOrder, // install spy network
                           //TowOrder,
                           WormholeOrder,
                           CollectDeuteriumOrder,
-                          //EscortOrder,
+                         // EscortOrder,
                           BuildStationOrder,
                           //ExploreOrder,
                           AssaultSystemOrder,
@@ -420,7 +420,7 @@ namespace Supremacy.Orbitals
             {
                 //do nothing
             }
-            else if(Fleet.Sector.System.Colony.Owner != null && Fleet.Sector.System.Owner != Fleet.Owner)
+            else if(Fleet.Sector.System.Owner != null && Fleet.Sector.System.Colony.Owner != null && Fleet.Sector.System.Owner != Fleet.Owner )
             {
 
                 var foreignPower = Diplomat.Get(Fleet.Sector.System.Owner).GetForeignPower(Fleet.Owner);
@@ -929,7 +929,7 @@ namespace Supremacy.Orbitals
     #region InfluenceOrder
 
     [Serializable]
-    // Diplomatic mission ... by sending an envoy like Spock, treaties finally are made in DiplomaticScreen
+    // Diplomatic mission ... by sending a diplomatic ship, treaties are easier to make in DiplomaticScreen
     // positive: ...increasing Regard + Trust
     // negative: ...exit membership from foreign empire
     // positive to your systems, colonies: increasing morale earth first
@@ -1862,6 +1862,71 @@ namespace Supremacy.Orbitals
             }
         }
     }
+
+    #endregion
+
+    #region Escort Order
+
+    //[Serializable]
+    //public sealed class EscortOrder : FleetOrder
+    //{
+    //    //private Sector _goToSector;
+    //    //public Sector GoToSector
+    //    //{
+    //    //    get { return _goToSector; }
+    //    //}
+    //    public override string OrderName
+    //    {
+    //        get { return ResourceManager.GetString("FLEET_ORDER_ESCORT"); }
+    //    }
+
+    //    public override string Status
+    //    {
+    //        get { return ResourceManager.GetString("FLEET_ORDER_STATUS_ESCORT"); }
+    //    }
+
+    //    public override bool WillEngageHostiles
+    //    {
+    //        get { return true; }
+    //    }
+
+    //    public override bool IsCancelledOnRouteChange
+    //    {
+    //        get { return true; }
+    //    }
+    //    //public EscortOrder(Sector goToSecotor)
+    //    //{
+    //    //    _goToSector = goToSecotor;
+    //    //}
+
+    //    public EscortOrder()
+    //    {
+    //    }
+
+    //    public override FleetOrder Create()
+    //    {
+    //        return new EscortOrder();
+    //    }
+    //    //public override FleetOrder Create(Sector sectorGoTo)
+    //    //{
+    //    //    return new EscortOrder(sectorGoTo);
+    //    //}
+
+    //    protected internal override void OnTurnBeginning()
+    //    {
+    //        base.OnTurnBeginning();
+    //        if (!IsAssigned)
+    //            return;
+    //        if (Fleet.Route.IsEmpty)
+    //        {
+    //            Sector bestSector;
+    //            var escortSector = UnitAI.GetFleetEsorteSector(Fleet, out bestSector);
+    //            {
+    //                Fleet.SetRouteInternal(AStar.FindPath(Fleet, PathOptions.SafeTerritory, null, new List<Sector> { bestSector }));
+    //            }
+    //        }
+    //    }
+    //}
 
     #endregion
 

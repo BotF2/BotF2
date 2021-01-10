@@ -1,3 +1,4 @@
+// File:UniverseManager.cs
 // Copyright (c) 2007 Mike Strobel
 //
 // This source code is subject to the terms of the Microsoft Reciprocal License (Ms-RL).
@@ -240,6 +241,17 @@ namespace Supremacy.Universe
             where T : UniverseObject
         {
             return FindNearestOwned(source, owner, (Expression<Func<T, bool>>)(o => true), includeSource);
+        }
+
+        public T FindFurthestObject<T>(MapLocation source, Civilization owner, List<T> _objects)
+            where T : UniverseObject
+        {
+            var ownerId = (owner != null) ? owner.CivID : Civilization.InvalidID;
+            return _objects
+                .Where(o => o.OwnerID != ownerId)
+                .OfType<T>()
+                .Where(o => o.Location != source)
+                .MaxElement(o => MapLocation.GetDistance(source, o.Location));
         }
 
         public T FindNearestOwned<T>(MapLocation source, Civilization owner)

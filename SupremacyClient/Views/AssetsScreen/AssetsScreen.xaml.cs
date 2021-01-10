@@ -1,28 +1,23 @@
-﻿using Avalon.Windows.Annotations;
-using Microsoft.Practices.Composite.Events;
-using Microsoft.Practices.Composite.Presentation.Events;
+﻿//File: AssetsScreen.xaml.cs
+using Avalon.Windows.Annotations;
 using Microsoft.Practices.Unity;
+
 using Supremacy.Client.Context;
-using Supremacy.Client.Events;
-using Supremacy.Combat;
 using Supremacy.Diplomacy;
-using Supremacy.Economy;
 using Supremacy.Entities;
 using Supremacy.Game;
 using Supremacy.Intelligence;
-using Supremacy.Resources;
 using Supremacy.Types;
-using Supremacy.Universe;
 using Supremacy.Utility;
+
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Drawing;
 using System.Linq;
 using System.Windows;
 using System.Windows.Automation.Peers;
 using System.Windows.Controls;
-using System.Windows.Media.Imaging;
+
 
 namespace Supremacy.Client.Views
 {
@@ -66,6 +61,7 @@ namespace Supremacy.Client.Views
         protected int _totalIntelligenceDefenseAccumulated;
         protected int _totalIntelligenceAttackingAccumulated;
 
+
         #region Properties for AssestsScreen
 
         public Meter UpdateAttackingAccumulated(Civilization attackingCiv)
@@ -91,6 +87,8 @@ namespace Supremacy.Client.Views
         #endregion 
         public AssetsScreen([NotNull] IUnityContainer container)
         {
+            GameLog.Client.UI.DebugFormat("AssetsScreen - InitializeComponent();");
+
             if (container == null)
                 throw new ArgumentNullException("container");
 
@@ -100,10 +98,15 @@ namespace Supremacy.Client.Views
             InitializeComponent();
             PropertyChangedEventManager.AddListener(_appContext, this, "LocalPlayerEmpire");
             IntelHelper.GetLocalCiv(_localCivManager);
-           // ClientEvents.IntelUpdateReceived.Subscribe(OnIntelUpdateReceived, ThreadOption.UIThread);
-           // DataTemplate itemTemplate = TryFindResource("AssetsTreeItemTemplate") as DataTemplate;
+            // ClientEvents.IntelUpdateReceived.Subscribe(OnIntelUpdateReceived, ThreadOption.UIThread);
+            // DataTemplate itemTemplate = TryFindResource("AssetsTreeItemTemplate") as DataTemplate;
 
-            GameLog.Client.UI.DebugFormat("AssetsScreen - InitializeComponent();");
+            //for (int i = 0; i < this.; i++)
+            //{
+
+            //}
+
+
             IsVisibleChanged += OnIsVisibleChanged;
 
             _radioButtonZero = new RadioButton[] { BlameNoOne0, Terrorists0, Federation0, TerranEmpire0, Romulans0, Klingons0, Cardassians0, Dominion0, Borg0 };
@@ -238,7 +241,7 @@ namespace Supremacy.Client.Views
                 return;
 
             var localPlayerEmpire = _appContext.LocalPlayerEmpire;
-            GameLog.Client.UI.DebugFormat("AssetsScreen local player ={0}", localPlayerEmpire.Civilization.Key);
+            //works  GameLog.Client.UI.DebugFormat("AssetsScreen local player ={0}", localPlayerEmpire.Civilization.Key);
             if (localPlayerEmpire == null)
                 return;
         }
@@ -249,123 +252,80 @@ namespace Supremacy.Client.Views
 
             if (IsVisible)
             {
-                ResumeAnimations();
+                //ResumeAnimations();
                 GameLog.Client.UI.DebugFormat("*********** begin of checking visible ***********");
 
                 // GameLog.Client.UI.DebugFormat("SpiedZeroCiv checking visible .... _spiedOneCiv = {0}, _civLocalPlayer = {1}", _spiedZeroCiv, _civLocalPlayer);
                 if (AssetsHelper.IsSpiedZero(_civLocalPlayer) || IntelHelper.ShowNetwork_0)
                 {
-                    //var ForeignPower = diplomat1.GetForeignPower(GameContext.Current.CivilizationManagers[0]);
-                    //_checkedVisibleForSabotagePending = CheckingVisibityForSabotagePending(diplomat1, ForeignPower);
-
-                    //if (_checkedVisibleForSabotagePending)
-                    //{
-                        EmpireExpanderZero.Visibility = Visibility.Visible;
-                        SabotageEnergyZero.Visibility = Visibility.Visible;
-                        SabotageFoodZero.Visibility = Visibility.Visible;
-                        SabotageIndustryZero.Visibility = Visibility.Visible;
-                        StealResearchZero.Visibility = Visibility.Visible;
-                        StealCreditsZero.Visibility = Visibility.Visible;
-                    //}
+                    EmpireExpanderZero.Visibility = Visibility.Visible;
+                    SabotageEnergyZero.Visibility = Visibility.Visible;
+                    SabotageFoodZero.Visibility = Visibility.Visible;
+                    SabotageIndustryZero.Visibility = Visibility.Visible;
+                    StealResearchZero.Visibility = Visibility.Visible;
+                    StealCreditsZero.Visibility = Visibility.Visible;
                 }
                 //GameLog.Client.UI.DebugFormat("SpiedOneCiv checking visible .... _spiedOneCiv = {0}, _civLocalPlayer = {1}", _spiedOneCiv, _civLocalPlayer);
                 if (AssetsHelper.IsSpiedOne(_civLocalPlayer) || IntelHelper.ShowNetwork_1)
                 {
-                    //var ForeignPower = diplomat1.GetForeignPower(GameContext.Current.CivilizationManagers[1]);
-                    //_checkedVisibleForSabotagePending = CheckingVisibityForSabotagePending(diplomat1, ForeignPower);
-
-                    //if (_checkedVisibleForSabotagePending)
-                    //{
-                        EmpireExpanderOne.Visibility = Visibility.Visible;
-                        SabotageEnergyOne.Visibility = Visibility.Visible;
-                        SabotageFoodOne.Visibility = Visibility.Visible;
-                        SabotageIndustryOne.Visibility = Visibility.Visible;
-                        StealResearchOne.Visibility = Visibility.Visible;
-                        StealCreditsOne.Visibility = Visibility.Visible;
-                    //}
+                    EmpireExpanderOne.Visibility = Visibility.Visible;
+                    SabotageEnergyOne.Visibility = Visibility.Visible;
+                    SabotageFoodOne.Visibility = Visibility.Visible;
+                    SabotageIndustryOne.Visibility = Visibility.Visible;
+                    StealResearchOne.Visibility = Visibility.Visible;
+                    StealCreditsOne.Visibility = Visibility.Visible;
                 }
                 // GameLog.Client.UI.DebugFormat("SpiedTwoCiv checking visible .... _spiedTwoCiv = {0}, _civLocalPlayer = {1}", _spiedTwoCiv, _civLocalPlayer);
                 if (AssetsHelper.IsSpiedTwo(_civLocalPlayer) || IntelHelper.ShowNetwork_2)
                 {
-                    //var ForeignPower = diplomat1.GetForeignPower(GameContext.Current.CivilizationManagers[2]);
-                    //_checkedVisibleForSabotagePending = CheckingVisibityForSabotagePending(diplomat1, ForeignPower);
-
-                    //if (_checkedVisibleForSabotagePending)
-                    //{
-                        EmpireExpanderTwo.Visibility = Visibility.Visible;
-                        SabotageEnergyTwo.Visibility = Visibility.Visible;
-                        SabotageFoodTwo.Visibility = Visibility.Visible;
-                        SabotageIndustryTwo.Visibility = Visibility.Visible;
-                        StealResearchTwo.Visibility = Visibility.Visible;
-                        StealCreditsTwo.Visibility = Visibility.Visible;
-                    //}
+                    EmpireExpanderTwo.Visibility = Visibility.Visible;
+                    SabotageEnergyTwo.Visibility = Visibility.Visible;
+                    SabotageFoodTwo.Visibility = Visibility.Visible;
+                    SabotageIndustryTwo.Visibility = Visibility.Visible;
+                    StealResearchTwo.Visibility = Visibility.Visible;
+                    StealCreditsTwo.Visibility = Visibility.Visible;
                 }
                 //GameLog.Client.UI.DebugFormat("SpiedThreeCiv checking visible .... _spiedThreeCiv = {0}, _civLocalPlayer = {1}", _spiedThreeCiv, _civLocalPlayer);
                 if (AssetsHelper.IsSpiedThree(_civLocalPlayer) || IntelHelper.ShowNetwork_3)
                 {
-                    //var ForeignPower = diplomat1.GetForeignPower(GameContext.Current.CivilizationManagers[3]);
-                    //_checkedVisibleForSabotagePending = CheckingVisibityForSabotagePending(diplomat1, ForeignPower);
-
-                    //if (_checkedVisibleForSabotagePending)
-                    //{
-                        EmpireExpanderThree.Visibility = Visibility.Visible;
-                        SabotageEnergyThree.Visibility = Visibility.Visible;
-                        SabotageFoodThree.Visibility = Visibility.Visible;
-                        SabotageIndustryThree.Visibility = Visibility.Visible;
-                        StealResearchThree.Visibility = Visibility.Visible;
-                        StealCreditsThree.Visibility = Visibility.Visible;
-                    //}
+                    EmpireExpanderThree.Visibility = Visibility.Visible;
+                    SabotageEnergyThree.Visibility = Visibility.Visible;
+                    SabotageFoodThree.Visibility = Visibility.Visible;
+                    SabotageIndustryThree.Visibility = Visibility.Visible;
+                    StealResearchThree.Visibility = Visibility.Visible;
+                    StealCreditsThree.Visibility = Visibility.Visible;
                 }
                 //GameLog.Client.UI.DebugFormat("SpiedCiv cFourhecking visible .... _spiedFourCiv = {0}, _civLocalPlayer = {1}", _spiedFourCiv, _civLocalPlayer);
                 if (AssetsHelper.IsSpiedFour(_civLocalPlayer) || IntelHelper.ShowNetwork_4)
                 {
-                    //var ForeignPower = diplomat1.GetForeignPower(GameContext.Current.CivilizationManagers[4]);
-                    //_checkedVisibleForSabotagePending = CheckingVisibityForSabotagePending(diplomat1, ForeignPower);
-
-                    //if (_checkedVisibleForSabotagePending)
-                    //{
-                        EmpireExpanderFour.Visibility = Visibility.Visible;
-                        SabotageEnergyFour.Visibility = Visibility.Visible;
-                        SabotageFoodFour.Visibility = Visibility.Visible;
-                        SabotageIndustryFour.Visibility = Visibility.Visible;
-                        StealResearchFour.Visibility = Visibility.Visible;
-                        StealCreditsFour.Visibility = Visibility.Visible;
-                    //}
+                    EmpireExpanderFour.Visibility = Visibility.Visible;
+                    SabotageEnergyFour.Visibility = Visibility.Visible;
+                    SabotageFoodFour.Visibility = Visibility.Visible;
+                    SabotageIndustryFour.Visibility = Visibility.Visible;
+                    StealResearchFour.Visibility = Visibility.Visible;
+                    StealCreditsFour.Visibility = Visibility.Visible;
                 }
                 //GameLog.Client.UI.DebugFormat("SpiedFiveCiv checking visible .... _spiedFiveCiv = {0}, _civLocalPlayer = {1}", _spiedFiveCiv, _civLocalPlayer);
                 if (AssetsHelper.IsSpiedFive(_civLocalPlayer) || IntelHelper.ShowNetwork_5)
                 {
-                    //var ForeignPower = diplomat1.GetForeignPower(GameContext.Current.CivilizationManagers[5]);
-                    //_checkedVisibleForSabotagePending = CheckingVisibityForSabotagePending(diplomat1, ForeignPower);
-
-                    //if (_checkedVisibleForSabotagePending)
-                    //{
-                        EmpireExpanderFive.Visibility = Visibility.Visible;
-                        SabotageEnergyFive.Visibility = Visibility.Visible;
-                        SabotageFoodFive.Visibility = Visibility.Visible;
-                        SabotageIndustryFive.Visibility = Visibility.Visible;
-                        StealResearchFive.Visibility = Visibility.Visible;
-                        StealCreditsFive.Visibility = Visibility.Visible;
-                    //}
+                    EmpireExpanderFive.Visibility = Visibility.Visible;
+                    SabotageEnergyFive.Visibility = Visibility.Visible;
+                    SabotageFoodFive.Visibility = Visibility.Visible;
+                    SabotageIndustryFive.Visibility = Visibility.Visible;
+                    StealResearchFive.Visibility = Visibility.Visible;
+                    StealCreditsFive.Visibility = Visibility.Visible;
                 }
                 //GameLog.Client.UI.DebugFormat("SpiedSixCiv checking visible .... _spiedSixCiv = {0}, _civLocalPlayer = {1}", _spiedSixCiv, _civLocalPlayer);
                 if (AssetsHelper.IsSpiedSix(_civLocalPlayer) || IntelHelper.ShowNetwork_6)
                 {
-                    //var ForeignPower = diplomat1.GetForeignPower(GameContext.Current.CivilizationManagers[1]);
-                    //_checkedVisibleForSabotagePending = CheckingVisibityForSabotagePending(diplomat1, ForeignPower);
-
-                    //if (_checkedVisibleForSabotagePending)
-                    //{
-                        EmpireExpanderSix.Visibility = Visibility.Visible;
-                        SabotageEnergySix.Visibility = Visibility.Visible;
-                        SabotageFoodSix.Visibility = Visibility.Visible;
-                        SabotageIndustrySix.Visibility = Visibility.Visible;
-                        StealResearchSix.Visibility = Visibility.Visible;
-                        StealCreditsSix.Visibility = Visibility.Visible;
-                    //}
+                    EmpireExpanderSix.Visibility = Visibility.Visible;
+                    SabotageEnergySix.Visibility = Visibility.Visible;
+                    SabotageFoodSix.Visibility = Visibility.Visible;
+                    SabotageIndustrySix.Visibility = Visibility.Visible;
+                    StealResearchSix.Visibility = Visibility.Visible;
+                    StealCreditsSix.Visibility = Visibility.Visible;
                 }
                 //GameLog.Client.UI.DebugFormat("end  of checking visible");
-
 
                 // GameLog.Client.UI.DebugFormat("_civLocalPlayer = {0}", _civLocalPlayer.Key);
 
@@ -386,10 +346,6 @@ namespace Supremacy.Client.Views
                         continue;
 
                     var ForeignPower = diplomat1.GetForeignPower(GameContext.Current.CivilizationManagers[empireID]);
-
-                    //if (diplomat1.GetLastStatementSent(ForeignPower) != null)
-                    //{
-
                     bool _checkedVisibleForSabotagePending = true;
 
                     //_checkedVisibleForSabotagePending = CheckingVisibityForSabotagePending(diplomat1, ForeignPower);
@@ -421,7 +377,6 @@ namespace Supremacy.Client.Views
                                     break;
                             }
                     }
-
                     //_checkedVisibleForSabotagePending = _visibleForSabotagePending;
 
                     // just for testing      _checkedVisibleForSabotagePending = true;
@@ -588,7 +543,7 @@ namespace Supremacy.Client.Views
                 }
             }
         }
-        // do we need this in the AssetsScreen???
+        // do we need this in the AssetsScreen???  we should keep it, if we bring back suns and planets
         protected void ResumeAnimations()
         {
             foreach (var animationsHost in this.FindVisualDescendantsByType<DependencyObject>().OfType<IAnimationsHost>())

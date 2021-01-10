@@ -17,21 +17,31 @@
             xmlns:cal="http://www.codeplex.com/CompositeWPF"
             Width="580"
             Height="550"
-            Header="Traces Settings"
             Background="Transparent"
             SnapsToDevicePixels="True">
   <DockPanel LastChildFill="True">
-    <StackPanel DockPanel.Dock="Bottom"
-                Margin="0,12,0,0"
+    <StackPanel DockPanel.Dock="Top"
+                Margin="0,0,0,5"
                 Orientation="Horizontal"
-                HorizontalAlignment="Center">
-      <Button x:Name="AcceptButton"
+                HorizontalAlignment="Center"
+                >
+            <TextBlock Text="Traces Settings    -           " Grid.Row="0" Grid.Column="0"
+                           Foreground="{DynamicResource HeaderTextBrush}"
+                           FontSize="24"
+                           HorizontalAlignment="Left"
+                           >
+
+            </TextBlock>
+            <Button x:Name="AcceptButton"
               Command="{x:Static local:GenericCommands.AcceptCommand}"
               Style="{DynamicResource LCARS_StandardButtonStyle}"
+                    HorizontalAlignment="Right"
               IsCancel="True"
               Margin="0,0,6,0">
         <AccessText Text="{s:StringResource SETTINGS_ACCEPT}" />
       </Button>
+    </StackPanel>        
+        
       <!-- CANCEL makes trouble while running out of Visual Studio ....
         <Button x:Name="CancelButton"
               Command="{x:Static local:GenericCommands.CancelCommand}"
@@ -40,7 +50,7 @@
               Margin="0,0,0,0">
         <AccessText Text="{s:StringResource SETTINGS_CANCEL}" />
       </Button>-->
-    </StackPanel>
+
       
     <TabControl x:Name="OptionsRegion"
                 cal:RegionManager.RegionName="{x:Static scc:ClientRegions.TracesPages}">
@@ -52,6 +62,18 @@
         </Style>
       </TabControl.ItemContainerStyle>
     </TabControl>
+
+
+        <!--<TabControl x:Name="OptionsRegion2"
+                cal:RegionManager.RegionName="{x:Static scc:ClientRegions.TracesPages}">
+            <TabControl.ItemContainerStyle>
+                <Style TargetType="{x:Type TabItem}" BasedOn="{StaticResource {x:Type TabItem}}">
+                    <Setter Property="Header"
+                  Value="Traces Settings2" />
+                    --><!--Value="{Binding Path=(scc:IClientOptionsPage.Header)}" />--><!--
+                </Style>
+            </TabControl.ItemContainerStyle>
+        </TabControl>-->
       
-  </DockPanel>
+    </DockPanel>
 </scc:Dialog>

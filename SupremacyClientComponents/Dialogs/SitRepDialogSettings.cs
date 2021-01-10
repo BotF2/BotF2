@@ -30,7 +30,7 @@ namespace Supremacy.Client.Dialogs
             source.SetValue(ShowGreenItemsProperty, value);
         }
 
-        #endregion
+        #endregion ShowGreenItems Attached Property
 
         #region ShowOrangeItems Attached Property
 
@@ -56,7 +56,7 @@ namespace Supremacy.Client.Dialogs
             source.SetValue(ShowOrangeItemsProperty, value);
         }
 
-        #endregion
+        #endregion ShowOrangeItems Attached Property
 
         #region ShowRedItems Attached Property
 
@@ -108,7 +108,87 @@ namespace Supremacy.Client.Dialogs
             source.SetValue(ShowBlueItemsProperty, value);
         }
 
-        #endregion
+        #endregion ShowBlueItems Attached Property
+
+        #region ShowGrayItems Attached Property
+
+        public static readonly DependencyProperty ShowGrayItemsProperty = DependencyProperty.RegisterAttached(
+            "ShowGrayItems",
+            typeof(bool),
+            typeof(SitRepDialogSettings),
+            new FrameworkPropertyMetadata(
+                true,
+                FrameworkPropertyMetadataOptions.None));
+
+        public static bool GetShowGrayItems(DependencyObject source)
+        {
+            if (source == null)
+                throw new ArgumentNullException("source");
+            return (bool)source.GetValue(ShowGrayItemsProperty);
+        }
+
+        public static void SetShowGrayItems(DependencyObject source, bool value)
+        {
+            if (source == null)
+                throw new ArgumentNullException("source");
+            source.SetValue(ShowGrayItemsProperty, value);
+        }
+
+        #endregion ShowGrayItems Attached Property
+
+
+        #region ShowPurpleItems Attached Property
+
+        public static readonly DependencyProperty ShowPurpleItemsProperty = DependencyProperty.RegisterAttached(
+            "ShowPurpleItems",
+            typeof(bool),
+            typeof(SitRepDialogSettings),
+            new FrameworkPropertyMetadata(
+                true,
+                FrameworkPropertyMetadataOptions.None));
+
+        public static bool GetShowPurpleItems(DependencyObject source)
+        {
+            if (source == null)
+                throw new ArgumentNullException("source");
+            return (bool)source.GetValue(ShowPurpleItemsProperty);
+        }
+
+        public static void SetShowPurpleItems(DependencyObject source, bool value)
+        {
+            if (source == null)
+                throw new ArgumentNullException("source");
+            source.SetValue(ShowPurpleItemsProperty, value);
+        }
+
+        #endregion ShowPurpleItems Attached Property
+
+
+        #region ShowPinkItems Attached Property
+
+        public static readonly DependencyProperty ShowPinkItemsProperty = DependencyProperty.RegisterAttached(
+            "ShowPinkItems",
+            typeof(bool),
+            typeof(SitRepDialogSettings),
+            new FrameworkPropertyMetadata(
+                true,
+                FrameworkPropertyMetadataOptions.None));
+
+        public static bool GetShowPinkItems(DependencyObject source)
+        {
+            if (source == null)
+                throw new ArgumentNullException("source");
+            return (bool)source.GetValue(ShowPinkItemsProperty);
+        }
+
+        public static void SetShowPinkItems(DependencyObject source, bool value)
+        {
+            if (source == null)
+                throw new ArgumentNullException("source");
+            source.SetValue(ShowPinkItemsProperty, value);
+        }
+
+        #endregion ShowPinkItems Attached Property
 
         #region VisibleCategories Attached Property
 
@@ -124,6 +204,7 @@ namespace Supremacy.Client.Dialogs
                 SitRepCategory.FirstContact |
                 SitRepCategory.General |
                 SitRepCategory.Intelligence |
+                SitRepCategory.NewInfiltrate |
                 SitRepCategory.Military |
                 SitRepCategory.Research |
                 SitRepCategory.Resources |

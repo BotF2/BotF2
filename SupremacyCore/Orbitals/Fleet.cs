@@ -1,4 +1,4 @@
-// Fleet.cs
+// File:Fleet.cs
 //
 // Copyright (c) 2007 Mike Strobel
 //
@@ -152,48 +152,48 @@ namespace Supremacy.Orbitals
             }
         }
 
-        /// <summary>
-        /// Gets or sets the ClassLevel of this <see cref="Fleet"/>.
-        /// </summary>
-        /// <value>The name.</value>
-        //public string ClassLevel    
-        //{
-        //    get
-        //    {
-        //        if (_ships.Count == 0)
-        //            return String.Format(ResourceManager.GetString("UNKNOWN"));
 
-        //        if (_ships.Count == 1)
-        //            return _ships[0].ClassLevel;
 
-        //        ShipDesign design = null;
 
-        //        foreach (var ship in _ships)
-        //        {
-        //            if (design == null)
-        //                design = ship.ShipDesign;
 
-        //            if (design != ship.ShipDesign)
-        //            {
-        //                return string.Format(
-        //                    ResourceManager.GetString("MULTI_SHIP_FLEET_FORMAT"),
-        //                    _ships.Count);
-        //            }
-        //        }
 
-        //        if (design == null || design.Name == null)
-        //        {
-        //            return String.Format(
-        //                ResourceManager.GetString("MULTI_SHIP_FLEET_FORMAT"),
-        //                _ships.Count);
-        //        }
 
-        //        return String.Format(
-        //            "{0}x {1}",
-        //            _ships.Count,
-        //            ResourceManager.GetString(design.ClassLevel));
-        //    }
-        //}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         /// <summary>
         /// Gets or sets a value indicating whether this <see cref="Fleet"/> is in tow.
@@ -413,7 +413,7 @@ namespace Supremacy.Orbitals
         {
             get
             {
-                return !IsScout && Ships.All(
+                return !IsScout && !IsFastAttack && Ships.All(
                     o => o.IsCombatant &&
                          o.ShipType != ShipType.Colony &&
                          o.ShipType != ShipType.Construction &&
@@ -435,13 +435,30 @@ namespace Supremacy.Orbitals
             get { return Ships.Count == 1 && Ships[0].ShipType == ShipType.Scout; }
         }
 
+        public bool IsFastAttack
+        {
+            get { return Ships.Count == 1 && Ships[0].ShipType == ShipType.FastAttack; }
+        }
+
+        public bool IsTransport
+        {
+            get { return Ships.Count == 1 && Ships[0].ShipType == ShipType.Transport; }
+        }
         public bool IsColonizer
         {
             get { return Ships.Count == 1 && Ships[0].ShipType == ShipType.Colony; }
         }
+        public bool multiFleetHasAColonizer
+        {
+            get { return Ships.Count > 1 && Ships.Any(s => s.ShipType == ShipType.Colony); }
+        }
         public bool IsConstructor
         {
             get { return Ships.Count == 1 && Ships[0].ShipType == ShipType.Construction; }
+        }
+        public bool multiFleetHasAConstructor
+        {
+            get { return Ships.Count > 1 && Ships.Any(s =>s.ShipType == ShipType.Construction); }
         }
 
         public bool IsDiplomatic

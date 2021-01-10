@@ -104,10 +104,8 @@ namespace Supremacy.Client
             _waitCursorLock = new object();
             _settingsChangeScope = new StateScope();
 
-            _defaultCursor = new Cursor(
-                Path.Combine(
-                    Environment.CurrentDirectory,
-                    @"Resources\Cursors\cursor.cur"));
+            _defaultCursor = new Cursor(Path.Combine(Environment.CurrentDirectory,@"Resources\Images\UI\Shell\cursor.cur"));
+                
 
             InitializeComponent();
 
@@ -146,69 +144,46 @@ namespace Supremacy.Client
 
             ApplyAntiAliasingSettings();
 
-            InputBindings.Add(
-                new KeyBinding(
-                    CollectGarbageCommand,
-                    new KeyGesture(Key.G, ModifierKeys.Control | ModifierKeys.Shift)));
+            InputBindings.Add(new KeyBinding(CollectGarbageCommand,new KeyGesture(Key.G, ModifierKeys.Control)));
+            InputBindings.Add(new KeyBinding(ToggleFullScreenModeCommand, Key.Enter, ModifierKeys.Alt));
 
-            InputBindings.Add(
-                new KeyBinding(
-                    ClientCommands.EscapeCommand,
-                    new KeyGesture(Key.Escape, ModifierKeys.None)));
 
-            InputBindings.Add(
-                new KeyBinding(
-                    _navigationCommands.ActivateScreen,
-                    new KeyGesture(Key.F1, ModifierKeys.None))
-                {
-                    CommandParameter = StandardGameScreens.GalaxyScreen
-                });
+            InputBindings.Add(new KeyBinding(ClientCommands.EscapeCommand, new KeyGesture(Key.Escape, ModifierKeys.None))); // Escape
 
-            InputBindings.Add(
-                new KeyBinding(
-                    _navigationCommands.ActivateScreen,
-                    new KeyGesture(Key.F2, ModifierKeys.None))
-                {
-                    CommandParameter = StandardGameScreens.ColonyScreen
-                });
 
-            InputBindings.Add(
-                new KeyBinding(
-                    _navigationCommands.ActivateScreen,
-                    new KeyGesture(Key.F3, ModifierKeys.None))
-                {
-                    CommandParameter = StandardGameScreens.DiplomacyScreen
-                });
+            InputBindings.Add(new KeyBinding(_navigationCommands.ActivateScreen, new KeyGesture(Key.F1, ModifierKeys.None))
+                { CommandParameter = StandardGameScreens.GalaxyScreen });
+            InputBindings.Add(new KeyBinding(_navigationCommands.ActivateScreen, new KeyGesture(Key.F2, ModifierKeys.None))
+                { CommandParameter = StandardGameScreens.ColonyScreen });
+            InputBindings.Add(new KeyBinding(_navigationCommands.ActivateScreen, new KeyGesture(Key.F3, ModifierKeys.None))
+                { CommandParameter = StandardGameScreens.DiplomacyScreen });
+            InputBindings.Add(new KeyBinding(_navigationCommands.ActivateScreen, new KeyGesture(Key.F4, ModifierKeys.None))
+                { CommandParameter = StandardGameScreens.ScienceScreen });
+            InputBindings.Add(new KeyBinding(_navigationCommands.ActivateScreen,new KeyGesture(Key.F5, ModifierKeys.None))
+                { CommandParameter = StandardGameScreens.IntelScreen});
+                
+            InputBindings.Add(new KeyBinding(ClientCommands.F06_Command, Key.F6, ModifierKeys.None));
+            InputBindings.Add(new KeyBinding(ClientCommands.F07_Command, Key.F7, ModifierKeys.None));
+            InputBindings.Add(new KeyBinding(ClientCommands.F08_Command, Key.F8, ModifierKeys.None));
+            InputBindings.Add(new KeyBinding(ClientCommands.F09_Command, Key.F9, ModifierKeys.None));
+            InputBindings.Add(new KeyBinding(ClientCommands.F10_Command, Key.F10, ModifierKeys.None));
+            InputBindings.Add(new KeyBinding(ClientCommands.F11_Command, Key.F11, ModifierKeys.None));
+            InputBindings.Add(new KeyBinding(ClientCommands.F12_Command, Key.F12, ModifierKeys.None));// new for lift Fog of War  = ALT + F
 
-            InputBindings.Add(
-                new KeyBinding(
-                    _navigationCommands.ActivateScreen,
-                    new KeyGesture(Key.F4, ModifierKeys.None))
-                {
-                    CommandParameter = StandardGameScreens.ScienceScreen
-                });
+            InputBindings.Add(new KeyBinding(ClientCommands.AutoTurnCommand, Key.A, ModifierKeys.Alt));
+            InputBindings.Add(new KeyBinding(ClientCommands.ErrorTxtCommand, Key.E, ModifierKeys.Control));
+            InputBindings.Add(new KeyBinding(ClientCommands.ShowEndOfTurnSummary, Key.I, ModifierKeys.Control));
+            InputBindings.Add(new KeyBinding(ClientCommands.LogTxtCommand, Key.L, ModifierKeys.Control));
+            InputBindings.Add(new KeyBinding(ClientCommands.OptionsCommand, Key.O, ModifierKeys.Control));
+            InputBindings.Add(new KeyBinding(ClientCommands.SaveGame, Key.S, ModifierKeys.Control)); // CRTL+S makes saved file "_manual_save"
+            //InputBindings.Add(new KeyBinding(ClientCommands.ShowSaveGameDialog, Key.S, ModifierKeys.Alt));// ALT+S shows SaveGameDialog    // does not work yet
+            InputBindings.Add(new KeyBinding(ClientCommands.EndTurn, Key.T, ModifierKeys.Control));
+            InputBindings.Add(new KeyBinding(ClientCommands.TracesCommand, Key.Z, ModifierKeys.Control));
 
-            InputBindings.Add(
-                new KeyBinding(
-                    _navigationCommands.ActivateScreen,
-                    new KeyGesture(Key.F5, ModifierKeys.None))
-                {
-                    CommandParameter = StandardGameScreens.IntelScreen
-                });
+            InputBindings.Add(new KeyBinding(ClientCommands.FakeCommand, Key.F11, ModifierKeys.Control));
 
-            InputBindings.Add(
-                new KeyBinding(
-                    _navigationCommands.ActivateScreen,
-                    new KeyGesture(Key.F7, ModifierKeys.None))
-                {
-                    CommandParameter = StandardGameScreens.EncyclopediaScreen
-                });
 
-            InputBindings.Add(
-                new KeyBinding(
-                    ToggleFullScreenModeCommand,
-                    Key.Enter,
-                    ModifierKeys.Alt));
+            //CommandBindings
 
             CommandBindings.Add(
                 new CommandBinding(
@@ -229,13 +204,31 @@ namespace Supremacy.Client
                         var workingSet = process.WorkingSet64;
                         var heapSize = GC.GetTotalMemory(false);
 
-                        GameLog.Client.General.Info("Forcing garbage collection...");
+                        String _text = ("Forcing garbage collection...");
+                        Console.WriteLine(_text); GameLog.Client.General.Info(_text);
 
                         GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced);
                         GC.WaitForPendingFinalizers();
 
                         process.Refresh();
 
+                        _text = "Process= " + process.ProcessName
+                            + ", ProcessID= " + process.Id
+                            + ", Threads= " + process.Threads.Count.ToString()
+                            + ", Memory= " + process.PagedMemorySize64
+                            //+ ", Memory= " + process.PagedSystemMemorySize64
+                            //+ ", Memory= " + process.PrivateMemorySize64
+                            //+ ", Memory= " + process.VirtualMemorySize64
+                            //+ ", TIMEtotal= " + process.TotalProcessorTime
+                            //+ ", Memory= " + process.VirtualMemorySize64
+
+                            ;
+
+                        
+                        //works  MessageBox.Show(_text, process.ProcessName + " ID: " + process.Id);
+                        Console.WriteLine(_text); GameLog.Client.General.Info(_text);
+
+                        // old code
                         GameLog.Client.General.InfoFormat(
                             "[working set [{0:#,#,} K -> {1:#,#,} K], managed heap [{2:#,#,} K -> {3:#,#,} K]]",
                             workingSet,
@@ -250,79 +243,6 @@ namespace Supremacy.Client
                             heapSize,
                             GC.GetTotalMemory(false));
                     }));
-
-            InputBindings.Add(
-                new KeyBinding(
-                    ClientCommands.AutoTurnCommand,
-                    Key.A,
-                    ModifierKeys.Alt));
-
-            InputBindings.Add(
-                new KeyBinding(
-                    ClientCommands.ColonyInfoScreen,
-                    Key.F8,
-                    ModifierKeys.None));
-
-            InputBindings.Add(
-                new KeyBinding(
-                    ClientCommands.ColorInfoScreen,
-                    Key.F6,
-                    ModifierKeys.Alt));
-
-            InputBindings.Add(
-                new KeyBinding(
-                    ClientCommands.ErrorTxtCommand,
-                    Key.E,
-                    ModifierKeys.Control));
-
-            InputBindings.Add(
-                new KeyBinding(
-                    ClientCommands.ShowEndOfTurnSummary,
-                    new KeyGesture(Key.I, ModifierKeys.Control)));
-
-            InputBindings.Add(
-                new KeyBinding(
-                    ClientCommands.LogTxtCommand,
-                    Key.L,
-                    ModifierKeys.Control));
-
-            InputBindings.Add(
-                new KeyBinding(
-                    ClientCommands.OptionsCommand,
-                    Key.O,
-                    ModifierKeys.Control));
-
-            InputBindings.Add(
-                new KeyBinding(
-                    ClientCommands.TracesCommand,
-                    Key.Z,
-                    ModifierKeys.Control));
-
-            InputBindings.Add(
-                new KeyBinding(
-                    ClientCommands.FakeCommand,
-                    Key.F11,
-                    ModifierKeys.Control));
-
-            // CRTL+S makes saved file "_manual_save"
-            InputBindings.Add(
-                new KeyBinding(
-                    ClientCommands.SaveGame,
-                    Key.S,
-                    ModifierKeys.Control));
-
-            //// ALT+S shows SaveGameDialog    // does not work yet
-            //        InputBindings.Add(
-            //        new KeyBinding(
-            //        //ClientCommands.ShowSaveGameDialog,
-            //            Key.S,
-            //            ModifierKeys.Alt));
-
-            InputBindings.Add(
-                new KeyBinding(
-                    ClientCommands.EndTurn,
-                    Key.T,
-                    ModifierKeys.Control));
 
             CommandBindings.Add(
                 new CommandBinding(
@@ -523,7 +443,7 @@ namespace Supremacy.Client
                 _scaleFactor = (sizeInfo.NewSize.Width / MaxUnscaledScreenWidth);
 
                 ClientProperties.SetScaleFactor(this, _scaleFactor);
-                
+
                 LayoutTransform = ContentPanel.LayoutTransform = new ScaleTransform(_scaleFactor, _scaleFactor, 0.5, 0.5);
             }
             else
@@ -550,12 +470,12 @@ namespace Supremacy.Client
             else if (enableShaders)
             {
                 GameScreensRegionBorder.Effect = new ColorToneEffect
-                                                      {
-                                                          DarkColor = Color.FromScRgb(1.0f, 0.1f, 0.075f, 0.125f),
-                                                          LightColor = Color.FromScRgb(1.0f, 0.4f, 0.3f, 0.5f),
-                                                          Desaturation = .8,
-                                                          ToneAmount = 0
-                                                      };
+                {
+                    DarkColor = Color.FromScRgb(1.0f, 0.1f, 0.075f, 0.125f),
+                    LightColor = Color.FromScRgb(1.0f, 0.4f, 0.3f, 0.5f),
+                    Desaturation = .8,
+                    ToneAmount = 0
+                };
             }
             else
             {

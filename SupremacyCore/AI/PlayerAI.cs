@@ -1,5 +1,4 @@
-// 
-// PlayerAI.cs
+// File:PlayerAI.cs
 // 
 // Copyright (c) 2011-2013 Mike Strobel
 // 
@@ -11,12 +10,14 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
-
+//using System.Linq;
+using Obtics.Collections;
 using Supremacy.Diplomacy;
 using Supremacy.Entities;
 using Supremacy.Game;
+using Supremacy.Intelligence;
 using Supremacy.Orbitals;
+
 using Supremacy.Universe;
 using Supremacy.Utility;
 
@@ -32,6 +33,102 @@ namespace Supremacy.AI
         #endregion
 
         #region Methods
+
+        #region DoTurn from GameEngine
+        public static void DoTurn(Civilization targetCiv)  
+        {
+            if (targetCiv.IsEmpire && targetCiv.CivID != 6 && targetCiv.SpiedCivList != null)
+            {
+                List<Civilization> spyingCivs = (List<Civilization>)GameContext.Current.Civilizations.Where(o => o.IsEmpire && o.CivID != 6).ToList();
+
+                foreach (Civilization spyingCiv in spyingCivs)
+                {
+                    if (targetCiv.SpiedCivList.Contains(spyingCiv))
+                    {
+                        if (DiplomacyHelper.AreAtWar(spyingCiv, targetCiv))
+                        {
+                            DoSpySabotageMission(spyingCiv, targetCiv);                         
+                        }
+                        //else if (DiplomacyHelper.AreAllied(spyingCiv, targetCiv) || DiplomacyHelper.AreFriendly(spyingCiv, targetCiv))
+                        //{
+                        //    // do things
+                        //}
+                        else if (DiplomacyHelper.AreNeutral(spyingCiv, targetCiv))
+                        {
+                            if (spyingCiv.Traits.Contains(CivTraits.Hostile.ToString())
+                                || spyingCiv.Traits.Contains(CivTraits.Subversive.ToString())
+                                || spyingCiv.Traits.Contains(CivTraits.Warlike.ToString()))
+                            {
+                                if (RandomHelper.Random(3) == 0)
+                                    DoSpySabotageMission(spyingCiv, targetCiv);
+                                else IntelHelper.SabotageStealResearch(spyingCiv, targetCiv, "No one");
+                            }
+                        }
+                    }
+                }
+            }
+            if (targetCiv.IsEmpire && !targetCiv.IsHuman && GameContext.Current.TurnNumber > 5)
+            {
+                var possibleTotalWarCivs = GameContext.Current.Civilizations.Where(o => o.IsEmpire).ToList();
+                foreach (Civilization possibleTotalWarCiv in possibleTotalWarCivs)
+                {
+                    var diplomat = Diplomat.Get(targetCiv);
+                    ForeignPower foreignPower = diplomat.GetForeignPower(possibleTotalWarCiv);
+                    if (DiplomacyHelper.AreAtWar(possibleTotalWarCiv, targetCiv))
+                    {
+                        var maintenaceValue = GameContext.Current.CivilizationManagers[possibleTotalWarCiv].MaintenanceCostLastTurn;
+                        if (maintenaceValue < GameContext.Current.CivilizationManagers[targetCiv].MaintenanceCostLastTurn * 1.2 && possibleTotalWarCiv.TotalWarCivilization == null)
+                        {
+                            //foreignPower.BeginTotalWar(); // if there already is total war by the target civ a new one will not be created over in ForeignPower.cs
+                            possibleTotalWarCiv.TotalWarCivilization = targetCiv;
+                            GameLog.Client.AI.DebugFormat("{0} set as TOTALWAR!!! by {1} ", targetCiv.Name, possibleTotalWarCiv.Name);
+                        }
+                        else
+                        {
+                        possibleTotalWarCiv.TotalWarCivilization = null;
+                            //foreignPower.EndTotalWar();
+                        }
+                    }
+                    else possibleTotalWarCiv.TotalWarCivilization = null; // if civs are no longer at war then total war ends.
+                }
+            }
+        }
+        #endregion
+
+        public static void DoSpySabotageMission(Civilization spyingCiv, Civilization targetCiv)
+        {
+            int decide = RandomHelper.Random(5);
+            switch (decide)
+            {
+                case 0:
+                    {
+                        IntelHelper.SabotageEnergy(spyingCiv, targetCiv, "No one");
+                        break;
+                    }
+                case 1:
+                    {
+                        IntelHelper.SabotageFood(spyingCiv, targetCiv, "No one");
+                        break;
+                    }
+                case 2:
+                    {
+                        IntelHelper.SabotageIndustry(spyingCiv, targetCiv, "No one");
+                        break;
+                    }
+                case 3:
+                    {
+                        IntelHelper.SabotageStealCredits(spyingCiv, targetCiv, "No one");
+                        break;
+                    }
+                case 4:
+                    {
+                        IntelHelper.SabotageStealResearch(spyingCiv, targetCiv, "No one");
+                        break;
+                    }
+                default:
+                    break;
+            }
+        }
 
         public static ConvexHullSet CreateDesiredBorders(Civilization civ)
         {
@@ -127,12 +224,12 @@ namespace Supremacy.AI
             return 100 * value;
         }
 
-        public static int GetFleetDanger(Fleet fleet, int range, bool testMoves, bool anyDanger)
+        public static int GetFleetDanger(Fleet fleet, int range,  bool anyDanger) // bool testMoves,
         {
-            return GetSectorDanger(fleet.Owner, fleet.Sector, range, testMoves);
+            return GetSectorDanger(fleet.Owner, fleet.Sector, range); //, testMoves);
         }
 
-        public static int GetSectorDanger(Civilization who, Sector sector, int range, bool testMoves)
+        public static int GetSectorDanger(Civilization who, Sector sector, int range) //, bool testMoves)
         {
             if (who == null)
             {
@@ -151,7 +248,7 @@ namespace Supremacy.AI
 
             if (range < 0)
             {
-                range = DangerRange;
+                range = DangerRange; 
             }
 
             for (int dX = -range; dX < range; dX++)
@@ -159,7 +256,7 @@ namespace Supremacy.AI
                 for (int dY = -range; dY < range; dY++)
                 {
                     Sector loopSector = map[sector.Location.X + dX, sector.Location.Y + dY];
-                    if (loopSector == null)
+                    if (loopSector == null || loopSector.Owner == null)
                     {
                         continue;
                     }
@@ -189,7 +286,7 @@ namespace Supremacy.AI
                             continue;
                         }
 
-                        if (DiplomacyHelper.IsTravelAllowed(fleet.Owner, sector) && (!testMoves || (fleet.Speed >= distance)))
+                        if (DiplomacyHelper.IsTravelAllowed(fleet.Owner, sector) && ( fleet.Speed >= distance)) // || !testMoves ||
                         {
                             ++count;
                         }
@@ -197,11 +294,12 @@ namespace Supremacy.AI
                 }
             }
 
-            if (IsHuman(who))
+            if (!IsHuman(who))
             {
                 count += borderDanger;
             }
-
+           // GameLog.Client.AI.DebugFormat("* Sector Danger ={0}",count);
+           // count = 20;
             return count;
         }
 

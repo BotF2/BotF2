@@ -8,11 +8,15 @@
 // All other rights reserved.
 
 using System;
+//using System.Collections.Generic;
+//using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics.Contracts;
-
+//using System.Linq;
 using Supremacy.Annotations;
+//using Supremacy.Collections;
 using Supremacy.IO.Serialization;
+//using Supremacy.Tech;
 
 namespace Supremacy.Economy
 {
@@ -55,6 +59,11 @@ namespace Supremacy.Economy
             get { return (_project != null); }
         }
 
+        public bool AllShipsToQueue
+        {
+            get { return true; }
+        }
+
         [ContractInvariantMethod, UsedImplicitly]
         private void Invariants()
         {
@@ -89,6 +98,10 @@ namespace Supremacy.Economy
         /// Initializes a new instance of the <see cref="BuildSlot"/> class.
         /// </summary>
         public BuildSlot()
+        {
+            Initialize();
+        }
+        private void Initialize()
         {
             _project = null;
             _priority = BuildPriority.Normal;

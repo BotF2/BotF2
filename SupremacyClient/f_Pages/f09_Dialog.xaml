@@ -1,0 +1,191 @@
+﻿<!-- File:f09_Dialog.xaml
+    
+   Copyright (c) 2007 Mike Strobel
+  
+   This source code is subject to the terms of the Microsoft Reciprocal License (Ms-RL).
+   For details, see <http://www.opensource.org/licenses/ms-rl.html>.
+  
+   All other rights reserved. -->
+<scc:Dialog x:Class="Supremacy.Client.F09_Dialog"
+            xmlns="http://schemas.microsoft.com/netfx/2007/xaml/presentation"
+            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+            xmlns:local="clr-namespace:Supremacy.Client"
+            xmlns:s="clr-namespace:Supremacy.Client;assembly=SupremacyWPF"
+            xmlns:scc="http://schemas.startreksupremacy.com/xaml/presentation"
+            xmlns:cal="http://www.codeplex.com/CompositeWPF"
+            Width="980"
+            Height="750"
+            Background="Black"
+            SnapsToDevicePixels="True">
+
+
+    <Grid Margin="0,4,0,4"
+          Background="Black"
+          ScrollViewer.CanContentScroll="True"
+          ScrollViewer.HorizontalScrollBarVisibility="Visible"
+          ScrollViewer.VerticalScrollBarVisibility="Visible">
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="5" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="350" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        
+        <TextBlock Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="3" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" 
+                   Text="{s:StringResource DIALOG_F9_HEADER}"> </TextBlock>
+        
+        <Button x:Name="AcceptButton" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Left" Margin="0,0,6,0" MinWidth="150" IsCancel="True"
+              Command="{x:Static local:GenericCommands.AcceptCommand}"
+              Style="{DynamicResource LCARS_StandardButtonStyle}"
+              >
+            <AccessText Text="{s:StringResource SETTINGS_ACCEPT}" />
+        </Button>
+
+        <!-- Column 1 -->
+        <StackPanel Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="3" Orientation="Vertical">
+
+        <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center" Text=" " ></TextBlock>
+        <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center" Text="{s:StringResource DIALOG_F9_COLUMN_1_ROW_2}" ></TextBlock>
+        <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center" Text="{s:StringResource DIALOG_F9_COLUMN_1_ROW_3}" ></TextBlock>
+        <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center" Text="{s:StringResource DIALOG_F9_COLUMN_1_ROW_5}" ></TextBlock>
+        <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center" Text="{s:StringResource DIALOG_F9_COLUMN_1_ROW_7}" ></TextBlock>
+        <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center" Text="{s:StringResource DIALOG_F9_COLUMN_1_ROW_9}" ></TextBlock>
+        <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center" Text="{s:StringResource DIALOG_F9_COLUMN_1_ROW_11}" ></TextBlock>
+        <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center" Text="{s:StringResource DIALOG_F9_COLUMN_1_ROW_13}" ></TextBlock>
+        <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center" Text="{s:StringResource DIALOG_F9_COLUMN_1_ROW_15}" ></TextBlock>
+        <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center" Text="{s:StringResource DIALOG_F9_COLUMN_1_ROW_17}" ></TextBlock>
+        <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center" Text="{s:StringResource DIALOG_F9_COLUMN_1_ROW_19}" ></TextBlock>
+        <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center" Text="{s:StringResource DIALOG_F9_COLUMN_1_ROW_21}" ></TextBlock>
+        <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center" Text="{s:StringResource DIALOG_F9_COLUMN_1_ROW_23}" ></TextBlock>
+        <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center" Text="{s:StringResource DIALOG_F9_COLUMN_1_ROW_25}" ></TextBlock>
+        <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center" Text="{s:StringResource DIALOG_F9_COLUMN_1_ROW_27}" ></TextBlock>
+        <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center" Text="{s:StringResource DIALOG_F9_COLUMN_1_ROW_29}" ></TextBlock>
+        <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center" Text="{s:StringResource DIALOG_F9_COLUMN_1_ROW_31}" ></TextBlock>
+        <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center" Text="{s:StringResource DIALOG_F9_COLUMN_1_ROW_33}" ></TextBlock>
+        <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center" Text="{s:StringResource DIALOG_F9_COLUMN_1_ROW_35}" ></TextBlock>
+        <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center" Text="{s:StringResource DIALOG_F9_COLUMN_1_ROW_37}" ></TextBlock>
+        <TextBlock Grid.ColumnSpan="3"  HorizontalAlignment="Left" VerticalAlignment="Center" Text="{s:StringResource DIALOG_F9_COLUMN_1_ROW_39}" ></TextBlock>
+        <TextBox Grid.ColumnSpan="3" BorderThickness="0" Foreground="Aqua" HorizontalAlignment="Left" VerticalAlignment="Center" Text="{s:StringResource DIALOG_F9_COLUMN_1_ROW_41}" ></TextBox>
+        <TextBox Grid.ColumnSpan="3" BorderThickness="0" Foreground="Aqua" HorizontalAlignment="Left" VerticalAlignment="Center" Text="{s:StringResource DIALOG_F9_COLUMN_1_ROW_43}" ></TextBox>
+        </StackPanel>
+
+        <!-- Column 3 -->
+
+        <StackPanel Grid.Row="2" Grid.Column="3" Grid.ColumnSpan="3" Orientation="Vertical">
+            <!--<TextBlock Grid.Row="0" Grid.Column="3" HorizontalAlignment="Left" VerticalAlignment="Center" Text="{s:StringResource DIALOG_F9_COLUMN_3_ROW_0}" ></TextBlock>-->
+            <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center" Text="{s:StringResource DIALOG_F9_COLUMN_3_ROW_1}" ></TextBlock>
+            <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center" Text="{s:StringResource DIALOG_F9_COLUMN_3_ROW_2}" ></TextBlock>
+            <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center" Text="{s:StringResource DIALOG_F9_COLUMN_3_ROW_3}" ></TextBlock>
+            <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center" Text="{s:StringResource DIALOG_F9_COLUMN_3_ROW_5}" ></TextBlock>
+            <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center" Text="{s:StringResource DIALOG_F9_COLUMN_3_ROW_7}" ></TextBlock>
+            <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center" Text="{s:StringResource DIALOG_F9_COLUMN_3_ROW_9}" ></TextBlock>
+            <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center" Text="{s:StringResource DIALOG_F9_COLUMN_3_ROW_11}" ></TextBlock>
+            <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center" Text="{s:StringResource DIALOG_F9_COLUMN_3_ROW_13}" ></TextBlock>
+            <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center" Text="{s:StringResource DIALOG_F9_COLUMN_3_ROW_15}" ></TextBlock>
+            <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center" Text="{s:StringResource DIALOG_F9_COLUMN_3_ROW_17}" ></TextBlock>
+            <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center" Text="{s:StringResource DIALOG_F9_COLUMN_3_ROW_19}" ></TextBlock>
+            <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center" Text="{s:StringResource DIALOG_F9_COLUMN_3_ROW_21}" ></TextBlock>
+            <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center" Text="{s:StringResource DIALOG_F9_COLUMN_3_ROW_23}" ></TextBlock>
+            <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center" Text="{s:StringResource DIALOG_F9_COLUMN_3_ROW_25}" ></TextBlock>
+            <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center" Text="{s:StringResource DIALOG_F9_COLUMN_3_ROW_27}" ></TextBlock>
+
+        </StackPanel>
+
+
+        <!--
+        <TextBlock Grid.Row="9" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" Background="sienna">Federation</TextBlock>
+        <TextBlock Grid.Row="9" Grid.Column="3" HorizontalAlignment="Left" VerticalAlignment="Center" Background="#FFdff3fc">dff3fc</TextBlock>
+        <TextBlock Grid.Row="9" Grid.Column="5" HorizontalAlignment="Left" VerticalAlignment="Center" Background="#FF7face3">7face3</TextBlock>
+
+        <TextBlock Grid.Row="11" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" Background="sienna">Federation2</TextBlock>
+        <TextBlock Grid.Row="11" Grid.Column="3" HorizontalAlignment="Left" VerticalAlignment="Center" Background="White">ffffff</TextBlock>
+        <TextBlock Grid.Row="11" Grid.Column="5" HorizontalAlignment="Left" VerticalAlignment="Center" Background="#FF98C5FB">98C5FB</TextBlock>
+
+        <TextBlock Grid.Row="13" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" Background="sienna">Romulans</TextBlock>
+        <TextBlock Grid.Row="13" Grid.Column="3" HorizontalAlignment="Left" VerticalAlignment="Center" Background="#FF228B22">228B22</TextBlock>
+        <TextBlock Grid.Row="13" Grid.Column="5" HorizontalAlignment="Left" VerticalAlignment="Center" Background="#FF0ABA16">0ABA16</TextBlock>
+
+        <TextBlock Grid.Row="15" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" Background="sienna">Rom YellGreen</TextBlock>
+        <TextBlock Grid.Row="15" Grid.Column="3" HorizontalAlignment="Left" VerticalAlignment="Center" Background="#FF228B22">228B22</TextBlock>
+        <TextBlock Grid.Row="15" Grid.Column="5" HorizontalAlignment="Left" VerticalAlignment="Center" Background="#FFFFCC33">FFCC33</TextBlock>
+
+        <TextBlock Grid.Row="17" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" Background="#FF492725">Klingons</TextBlock>
+        <TextBlock Grid.Row="17" Grid.Column="3" HorizontalAlignment="Left" VerticalAlignment="Center" Background="#FFF00D0D">F00D0D</TextBlock>
+        <TextBlock Grid.Row="17" Grid.Column="5" HorizontalAlignment="Left" VerticalAlignment="Center" Background="#FFF2300D">F2300D</TextBlock>
+
+        <TextBlock Grid.Row="19" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" Background="#FFE50527">KlingRed 2</TextBlock>
+        <TextBlock Grid.Row="19" Grid.Column="3" HorizontalAlignment="Left" VerticalAlignment="Center" Background="#FFF92933">F92933</TextBlock>
+        <TextBlock Grid.Row="19" Grid.Column="5" HorizontalAlignment="Left" VerticalAlignment="Center" Background="#FF360E01">360E01</TextBlock>
+
+        <TextBlock Grid.Row="21" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" Background="sienna">Cardassians</TextBlock>
+        <TextBlock Grid.Row="21" Grid.Column="3" HorizontalAlignment="Left" VerticalAlignment="Center" Background="#ffffc125">Goldenrod1</TextBlock>
+        <TextBlock Grid.Row="21" Grid.Column="5" HorizontalAlignment="Left" VerticalAlignment="Center" Background="LightGoldenrodYellow">LightGoldenrodYellow</TextBlock>
+
+        <TextBlock Grid.Row="23" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" Background="sienna">Cardassians</TextBlock>
+        <TextBlock Grid.Row="23" Grid.Column="3" HorizontalAlignment="Left" VerticalAlignment="Center" Background="#FFB8860B">FFB8860B</TextBlock>
+        <TextBlock Grid.Row="23" Grid.Column="5" HorizontalAlignment="Left" VerticalAlignment="Center" Background="#FFEEE8AA">FFEEE8AA</TextBlock>
+
+        <TextBlock Grid.Row="25" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" Background="#FF4f0485">Dominion</TextBlock>
+        <TextBlock Grid.Row="25" Grid.Column="3" HorizontalAlignment="Left" VerticalAlignment="Center" Background="#FF9b00ae">#FF9b00ae</TextBlock>
+        <TextBlock Grid.Row="25" Grid.Column="5" HorizontalAlignment="Left" VerticalAlignment="Center" Background="#ff7c00a7">#ff7c00a7</TextBlock>
+
+        <TextBlock Grid.Row="27" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" Background="sienna">Dominion2</TextBlock>
+        <TextBlock Grid.Row="27" Grid.Column="3" HorizontalAlignment="Left" VerticalAlignment="Center" Background="sienna">Dominion</TextBlock>
+        <TextBlock Grid.Row="27" Grid.Column="5" HorizontalAlignment="Left" VerticalAlignment="Center" Background="sienna">Second Colour and</TextBlock>
+
+        <TextBlock Grid.Row="29" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" Background="sienna">Borg</TextBlock>
+        <TextBlock Grid.Row="29" Grid.Column="3" HorizontalAlignment="Left" VerticalAlignment="Center" Background="#FF008b45">FF008b45</TextBlock>
+        <TextBlock Grid.Row="29" Grid.Column="5" HorizontalAlignment="Left" VerticalAlignment="Center" Background="#FF00ff7f">FF00ff7f</TextBlock>
+
+        <TextBlock Grid.Row="31" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" Background="sienna">OrangeGrad</TextBlock>
+        <TextBlock Grid.Row="31" Grid.Column="3" HorizontalAlignment="Left" VerticalAlignment="Center" Background="#FFdc961b">dc961b</TextBlock>
+        <TextBlock Grid.Row="31" Grid.Column="5" HorizontalAlignment="Left" VerticalAlignment="Center" Background="#FFe7d490">e7d490</TextBlock>
+
+        <TextBlock Grid.Row="33" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" Background="sienna">PurpleGrad</TextBlock>
+        <TextBlock Grid.Row="33" Grid.Column="3" HorizontalAlignment="Left" VerticalAlignment="Center" Background="#FFF1F23E">TerranEmpire</TextBlock>
+        <TextBlock Grid.Row="33" Grid.Column="5" HorizontalAlignment="Left" VerticalAlignment="Center" Background="#FF767107">Second Colour and</TextBlock>
+
+        <TextBlock Grid.Row="35" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" Background="sienna">RomPurpGreen</TextBlock>
+        <TextBlock Grid.Row="35" Grid.Column="3" HorizontalAlignment="Left" VerticalAlignment="Center" Background="#FF6666CC">FF6666CC</TextBlock>
+        <TextBlock Grid.Row="35" Grid.Column="5" HorizontalAlignment="Left" VerticalAlignment="Center" Background="#FFCC33FF">FFCC33FF</TextBlock>
+
+        <TextBlock Grid.Row="37" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" Background="sienna">AzureGradient</TextBlock>
+        <TextBlock Grid.Row="37" Grid.Column="3" HorizontalAlignment="Left" VerticalAlignment="Center" Background="#FFc1cdcd">FFc1cdcd</TextBlock>
+        <TextBlock Grid.Row="37" Grid.Column="5" HorizontalAlignment="Left" VerticalAlignment="Center" Background="#FF6E7474">FF6E7474</TextBlock>
+
+
+        <TextBlock Grid.Row="39" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" Background="sienna">Red Gradient</TextBlock>
+        <TextBlock Grid.Row="39" Grid.Column="3" HorizontalAlignment="Left" VerticalAlignment="Center" Background="#FFCC33FF">CC33FF</TextBlock>
+        <TextBlock Grid.Row="39" Grid.Column="5" HorizontalAlignment="Left" VerticalAlignment="Center" Background="#FF6666CC ">6666CC</TextBlock>
+        -->
+
+    </Grid>
+</scc:Dialog>

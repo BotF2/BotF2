@@ -20,14 +20,32 @@ namespace Supremacy.Client.Commands
         public static readonly CompositeCommand ContinueGame = new CompositeCommand(true);
         public static readonly CompositeCommand OptionsCommand = new CompositeCommand(true);
         public static readonly CompositeCommand TracesCommand = new CompositeCommand(true);
+
+        public static readonly CompositeCommand F06_Command = new CompositeCommand(true);  // F6
+        public static readonly CompositeCommand F07_Command = new CompositeCommand(true);  // F7
+        public static readonly CompositeCommand F08_Command = new CompositeCommand(true);  // F8 
+        public static readonly CompositeCommand F09_Command = new CompositeCommand(true);  // F9
+        public static readonly CompositeCommand F10_Command = new CompositeCommand(true); // 
+        public static readonly CompositeCommand F11_Command = new CompositeCommand(true);
+        public static readonly CompositeCommand F12_Command = new CompositeCommand(true);
+
+
+
+
+
+
         public static readonly CompositeCommand FakeCommand = new CompositeCommand(true);
         public static readonly CompositeCommand LogTxtCommand = new CompositeCommand(true);
         public static readonly CompositeCommand ErrorTxtCommand = new CompositeCommand(true);
         public static readonly CompositeCommand ShowCreditsDialog = new CompositeCommand(true);
         public static readonly CompositeCommand ShowMultiplayerConnectDialog = new CompositeCommand(true);
-        public static readonly CompositeCommand GameInfoScreen = new CompositeCommand(true);
-        public static readonly CompositeCommand ColonyInfoScreen = new CompositeCommand(true);
-        public static readonly CompositeCommand ColorInfoScreen = new CompositeCommand(true);
+        //public static readonly CompositeCommand F12_Screen = new CompositeCommand(true);
+        //public static readonly CompositeCommand F11_Screen = new CompositeCommand(true);
+        //public static readonly CompositeCommand F10_Screen = new CompositeCommand(true); // 
+        //public static readonly CompositeCommand F09_Screen = new CompositeCommand(true);  // F9
+        //public static readonly CompositeCommand F08_Screen = new CompositeCommand(true);  // F8 
+        //public static readonly CompositeCommand F07_Screen = new CompositeCommand(true);  // F7
+        //public static readonly CompositeCommand F06_Screen = new CompositeCommand(true);  // F6
         public static readonly CompositeCommand HostMultiplayerGame = new CompositeCommand(true);
         public static readonly CompositeCommand JoinMultiplayerGame = new CompositeCommand(true);
         public static readonly CompositeCommand AssignPlayerSlot = new CompositeCommand(true);
@@ -49,7 +67,9 @@ namespace Supremacy.Client.Commands
         public static readonly CompositeCommand SendIntelOrders = new CompositeCommand(true);
         public static readonly CompositeCommand SendInvasionOrders = new CompositeCommand(true);
         public static readonly CompositeCommand EndInvasion = new CompositeCommand(true);
-        
+
+        public static readonly CompositeCommand StartSP1Command = new CompositeCommand(true);
+
         public static readonly RoutedCommand EscapeCommand = new RoutedCommand("Escape", typeof(ClientCommands));
         public static readonly RoutedCommand AutoTurnCommand = new RoutedCommand("AutoTurn", typeof(ClientCommands));
     }

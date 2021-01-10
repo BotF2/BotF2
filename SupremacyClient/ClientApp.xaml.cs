@@ -53,6 +53,7 @@ using Scheduler = System.Concurrency.Scheduler;
 
 namespace Supremacy.Client
 {
+    
     /// <summary>
     /// Interaction logic for MyApp.xaml
     /// </summary>
@@ -66,6 +67,10 @@ namespace Supremacy.Client
         private static Mutex _singleInstanceMutex;
         
         private bool _isShuttingDown;
+        public static string newline = Environment.NewLine;
+        public static DateTime starttime = DateTime.Now;
+
+        //public string newline = Environment.NewLine;
         #endregion
 
         #region Constructors
@@ -85,6 +90,8 @@ namespace Supremacy.Client
             get
             {
                 GameLog.Client.General.InfoFormat("Current Version = {0}", Current.Version);
+                GameLog.Client.General.InfoFormat("Time running = {0}", DateTime.Now - starttime);
+                Console.WriteLine("Time running = {0}", DateTime.Now - starttime);
                 return Current.Version;
             }
         }
@@ -92,6 +99,11 @@ namespace Supremacy.Client
         public Version Version
         {
             get { return Assembly.GetEntryAssembly().GetName().Version; }
+        }
+
+        public string ClientHint
+        {
+            get { return ClientVersion + newline + ResourceManager.GetString("HINT_FOR_RUNNING"); }
         }
 
         public bool IsShuttingDown
@@ -157,6 +169,7 @@ namespace Supremacy.Client
             if (Current.IsShuttingDown)
                 return false;
 
+            GameLog.Client.UI.DebugFormat("LoadDefaultResources...");
             ResourceDictionary themeDictionary = null;
             try
             {
@@ -164,6 +177,7 @@ namespace Supremacy.Client
                     "/SupremacyClient;Component/themes/Generic/Theme.xaml",
                     UriKind.RelativeOrAbsolute);
                 themeDictionary = LoadComponent(themeUri) as ResourceDictionary;
+                GameLog.Client.UI.DebugFormat("Load...", themeDictionary.ToString());
             }
             catch
             {
@@ -196,11 +210,12 @@ namespace Supremacy.Client
             ResourceDictionary themeDictionary = null;
             try
             {
+                GameLog.Client.UI.DebugFormat("trying to load {0}", themeUri.OriginalString);
                 themeDictionary = LoadComponent(themeUri) as ResourceDictionary;
             }
             catch
             {
-                GameLog.Client.General.Debug("themeDictionary = LoadComponent(themeUri) as ResourceDictionary;");
+                GameLog.Client.General.DebugFormat("themeDictionary = LoadComponent(themeUri) as ResourceDictionary;");
             }
 
             if (themeDictionary == null)
@@ -355,6 +370,7 @@ namespace Supremacy.Client
         [UsedImplicitly]
         private static class EntryPoint
         {
+            
             [STAThread, UsedImplicitly]
             private static void Main(string[] args)
             {
@@ -368,6 +384,19 @@ namespace Supremacy.Client
                 {
                     MessageBox.Show(
                             "Rise of the UFP requires Microsoft .NET Framework 4.6.2 or greater"
+                            + newline
+                            + "It must be installed before running the game.",
+                            "Rise of the UFP",
+                            MessageBoxButton.OK,
+                            MessageBoxImage.Hand);
+                    return;
+                }
+
+
+                if (!CheckXNAFramework31())
+                {
+                    MessageBox.Show(
+                            "Rise of the UFP requires Microsoft XNA Framework V3.1 "
                             + Environment.NewLine
                             + "It must be installed before running the game.",
                             "Rise of the UFP",
@@ -485,26 +514,56 @@ namespace Supremacy.Client
 
         private static bool CheckXNAFramework31()
         {
-            //string output = "";
+            string _text = "";
 
             //RegRead HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\XNA\Framework\v3.1
 
-            string baseKeyName = @"SOFTWARE\Microsoft\XNA\Game Studio";
-            Microsoft.Win32.RegistryKey installedFrameworkVersions = Microsoft.Win32.Registry.LocalMachine.OpenSubKey(baseKeyName);
-
-            string[] versionNames = installedFrameworkVersions.GetSubKeyNames();
-
             bool found = false;
-            foreach (string s in versionNames)
+
+            //string dxsetup = "%programfiles(x86)%\\Microsoft XNA\\XNA Game Studio\\v3.1\\Redist\\DX Redist\\DXSETUP.exe";
+            //string dxsetup = "_check_XNA31.bat";
+            //if (File.Exists("_check_XNA31.bat"))
+            //{
+            //    GameLog.Client.General.Info("for XNA 3.1: trying to copy into XNA31_ok.info from C:\\Program Files (x86)\\Microsoft XNA\\XNA Game Studio\\v3.1\\Redist\\DX Redist\\DXSETUP.exe");
+            //    Process.Start(dxsetup);
+            //}
+            //_workingDirectory = PathHelper.GetWorkingDirectory();
+
+            var xna_check = PathHelper.GetWorkingDirectory() + "\\Resources\\XNA31_ok.info";
+            var xna_copy = PathHelper.GetWorkingDirectory() + "\\Resources\\XNA31_check.bat";
+
+            if (File.Exists(xna_check))
             {
-                if (s == "v3.1")
+                _text = "XNA31_ok.info found, so Microsoft XNA Framework V3.1 seems to be installed. ";
+                GameLog.Client.General.Info(_text);
+                //MessageBox.Show(_text, "WARNING", MessageBoxButton.OK);
+                //string msg = "XNA31_ok.info found, so Microsoft XNA Framework V3.1 seems to be installed. ";
+            }
+            else
+            {
+                if (File.Exists(xna_copy))
                 {
-                    found = true;
-                    break;
+                    GameLog.Client.General.Info("for XNA 3.1: trying to copy into XNA31_ok.info from C:\\Program Files (x86)\\Microsoft XNA\\XNA Game Studio\\v3.1\\Redist\\DX Redist\\DXSETUP.exe");
+                    Process.Start(xna_copy);
+                    Thread.Sleep(1000);
                 }
             }
 
-            found = true;
+            // Second check after xna_copy was done
+            if (!File.Exists(xna_check))
+            {
+                _text = "Sorry, Microsoft XNA Framework V3.1 might not be installed - but it is necessary. "
+                    + newline + newline
+                    + "Version 3.1 is ABSOLUTELY needed, any newer Version can be installed, but additional !"
+                    + newline + newline
+                    + "Download it at www.microsoft.com/download/details.aspx?id=15163"
+                    + newline + newline
+                    + "Press OK for going on, but don't wonder if the game crashes ..or maybe not...."
+                    ;
+                GameLog.Client.General.Info(_text);
+                MessageBox.Show(_text, "CHECK", MessageBoxButton.OK);
+            }
+            else { found = true; }
 
             return found;
         }
@@ -581,8 +640,18 @@ namespace Supremacy.Client
 
             try
             {
+                Console.WriteLine("opening Error.txt");
+                //var file = "Error.txt";
+                //StreamWriter errorFile = new StreamWriter(file);
+
                 var errorFile = File.Open("Error.txt", FileMode.Create, FileAccess.Write, FileShare.ReadWrite);
                 Console.SetError(new StreamWriter(errorFile));
+                //Console.SetError(errorFile);
+
+                //Console.SetError
+                //errorFile.WriteLine("Hello");
+                //errorFile.WriteLine(DateTime.Now.ToString());
+                Console.WriteLine(DateTime.Now);
                 //just starts an empty file 
                 // System.Diagnostics.Process.Start("Error.txt");
             }
@@ -596,52 +665,55 @@ namespace Supremacy.Client
                     MessageBoxImage.Warning);
             }
 
-            try
-            {
-                // Diary like the old game had curves of Federation growing 
-                var errorFile = File.Open("./lib/_diary.txt", FileMode.Create, FileAccess.Write, FileShare.ReadWrite);
-                Console.SetError(new StreamWriter(errorFile));
-                //just starts an empty file 
-                // System.Diagnostics.Process.Start("./lib/_diary.txt");
-            }
-            catch
-            {
-                MessageBox.Show(
-                    "./lib/_diary.txt could not be created.  You may still run the game,\n"
-                    + "but diary details cannot be logged.",
-                    "Warning",
-                    MessageBoxButton.OK,
-                    MessageBoxImage.Warning);
-            }
+            //try
+            //{
+            //    // Diary like the old game had curves of Federation growing 
+            //    var errorFile = File.Open("./lib/_diary.txt", FileMode.Create, FileAccess.Write, FileShare.ReadWrite);
+            //    Console.SetError(new StreamWriter(errorFile));
+            //    //just starts an empty file 
+            //    // System.Diagnostics.Process.Start("./lib/_diary.txt");
+            //}
+            //catch
+            //{
+            //    MessageBox.Show(
+            //        "./lib/_diary.txt could not be created.  You may still run the game,\n"
+            //        + "but diary details cannot be logged.",
+            //        "Warning",
+            //        MessageBoxButton.OK,
+            //        MessageBoxImage.Warning);
+            //}
 
-            try
-            {
-                var errorFile = File.Open("./lib/_last_options.txt", FileMode.Create, FileAccess.Write, FileShare.ReadWrite);
-                Console.SetError(new StreamWriter(errorFile));
-                //just starts an empty file 
-                // System.Diagnostics.Process.Start("Error.txt");
-            }
-            catch
-            {
-                MessageBox.Show(
-                    "./lib/_last_options.txt could not be created.  You may still run the game,\n"
-                    + "but _last_options.txt cannot be logged.",
-                    "Warning",
-                    MessageBoxButton.OK,
-                    MessageBoxImage.Warning);
-            }
+            //try
+            //{
+            //    var errorFile = File.Open("./lib/_last_options.txt", FileMode.Create, FileAccess.Write, FileShare.ReadWrite);
+            //    Console.SetError(new StreamWriter(errorFile));
+            //    //just starts an empty file 
+            //    // System.Diagnostics.Process.Start("Error.txt");
+            //}
+            //catch
+            //{
+            //    MessageBox.Show(
+            //        "./lib/_last_options.txt could not be created.  You may still run the game,\n"
+            //        + "but _last_options.txt cannot be logged.",
+            //        "Warning",
+            //        MessageBoxButton.OK,
+            //        MessageBoxImage.Warning);
+            //}
 
             VfsWebRequestFactory.EnsureRegistered();
+
+            Console.WriteLine(DateTime.Now.ToString());
 
             var app = new ClientApp();
             app.DispatcherUnhandledException += Current_DispatcherUnhandledException;
             app.InitializeComponent();
             _ = app.Run();
+            Console.Error.WriteLine(DateTime.Now.ToString());
         }
 
         private static void ShowSplashScreen()
         {
-            _splashScreen = new SplashScreen("resources/images/backgrounds/splash.png");
+            _splashScreen = new SplashScreen("resources/images/backgrounds/splash.png");  // hardcoded, file out of Code
             _splashScreen.Show(false);
         }
       

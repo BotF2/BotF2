@@ -125,6 +125,31 @@ namespace Supremacy.Intelligence
             get { return _showNetwork_6; }
         }
 
+        public static List<Civilization> SpyingCiv_0_List
+        {
+            get { return _spyingCiv_0_List; }
+        }
+        public static List<Civilization> SpyingCiv_1_List
+        {
+            get { return _spyingCiv_1_List; }
+        }
+        public static List<Civilization> SpyingCiv_2_List
+        {
+            get { return _spyingCiv_2_List; }
+        }
+        public static List<Civilization> SpyingCiv_3_List
+        {
+            get { return _spyingCiv_3_List; }
+        }
+        public static List<Civilization> SpyingCiv_4_List
+        {
+            get { return _spyingCiv_4_List; }
+        }
+        public static List<Civilization> SpyingCiv_5_List
+        {
+            get { return _spyingCiv_5_List; }
+        }
+
         /// <summary>
         /// Using the civ manager as a param from AssetsScreen. Hope this is the local machine local player
         /// </summary>

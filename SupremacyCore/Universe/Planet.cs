@@ -284,8 +284,22 @@ namespace Supremacy.Universe
         public int GetMaxPopulation(PlanetType homePlanetType)
         {
             var table = GameContext.Current.Tables.UniverseTables["PlanetMaxPop"];
+
+            // OK to return null here! Do not need to fix
+            //int maxPop = 0;
+            //try
+            //{
+            //    if (PlanetSize == PlanetSize.NoWorld)
+            //    maxPop = Number.ParseInt32(table[PlanetSize.ToString()]
+            //        [GetEnvironment(homePlanetType).ToString()]);
+            //}
+            //catch(Exception ex)
+            //{
+            //    GameLog.Client.GalaxyGenerator.DebugFormat("Message = {0}, stack trace = [1]", ex.Message, ex.StackTrace);
+            //}
+            //return maxPop;
             return Number.ParseInt32(table[PlanetSize.ToString()]
-                [GetEnvironment(homePlanetType).ToString()]);
+                   [GetEnvironment(homePlanetType).ToString()]);
         }
 
         /// <summary>

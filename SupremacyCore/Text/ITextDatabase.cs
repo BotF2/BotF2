@@ -101,6 +101,8 @@ namespace Supremacy.Text
 
             try // avoid hang up if this file is opened by another program 
             {
+                //if (_XML2CSVOutput == false)
+                //    continue;
 
                 file = pathOutputfile + "_FromTextDatabase_(autoCreated).csv";
                 Console.WriteLine("writing {0}", file);

@@ -163,7 +163,7 @@
         <TextBlock Grid.Row="1" Grid.Column="3" Text=" = " HorizontalAlignment="Center" VerticalAlignment="Center" />
         <scc:GameLabel Grid.Row="1" Grid.Column="4" VerticalAlignment="Center"
                    Grid.ColumnSpan="2"                        
-                   ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/population.png"
+                   ImageSourceSmall="vfs:///Resources/Images/UI/ScreenIcons/population.png"
                    ToolTip="{s:StringResource Key=POPULATION_TOOL_TIP}">
             <scc:GameLabel.Label>
                 <MultiBinding StringFormat="{}{0} / {1} (# {2:0.# %} ) / Health: {3}">
@@ -181,7 +181,7 @@
         <TextBlock Grid.Row="2" Grid.Column="3" Text=" = " HorizontalAlignment="Center" VerticalAlignment="Center" />
         <scc:GameLabel Grid.Row="2" Grid.Column="4" VerticalAlignment="Center"
                        Grid.ColumnSpan="2"
-                   ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/morale.png"
+                   ImageSourceSmall="vfs:///Resources/Images/UI/ScreenIcons/morale.png"
                    Foreground="{Binding Path=Morale.CurrentValue, Converter={x:Static s:MoraleBrushConverter.Instance}}"
                    ToolTip="{s:StringResource Key=MORALE_TOOL_TIP}" >
             <scc:GameLabel.Label>
@@ -211,7 +211,7 @@
         <TextBlock Grid.Row="1" Grid.Column="8" Text=" = " HorizontalAlignment="Center" VerticalAlignment="Center" />
         <scc:GameLabel Grid.Row="1" Grid.Column="9" VerticalAlignment="Center"
                           
-                   ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/food.png"
+                   ImageSourceSmall="vfs:///Resources/Images/UI/ScreenIcons/food.png"
                    ToolTip="{s:StringResource Key=FOOD_TOOL_TIP}" >
             <MultiBinding StringFormat="{}{0}    (# {1} ) ">
                 <Binding Path="FoodReserves" />
@@ -233,7 +233,7 @@
         </scc:GameLabel>
         <TextBlock Grid.Row="2" Grid.Column="8" Text=" = " HorizontalAlignment="Center" VerticalAlignment="Center" />
         <scc:GameLabel Grid.Row="2" Grid.Column="9" VerticalAlignment="Center"
-                   ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/industry.png"
+                   ImageSourceSmall="vfs:///Resources/Images/UI/ScreenIcons/industry.png"
                    ToolTip="{s:StringResource Key=INDUSTRY_TOOL_TIP}" >
             <scc:GameLabel.Label>
                     <MultiBinding StringFormat="{}{0}  ( LP: {1} )">
@@ -256,7 +256,7 @@
         </scc:GameLabel>
         <TextBlock Grid.Row="3" Grid.Column="8" Text=" = " HorizontalAlignment="Center" VerticalAlignment="Center" />
         <scc:GameLabel Grid.Row="3" Grid.Column="9" VerticalAlignment="Center"
-                   ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/energy.png"
+                   ImageSourceSmall="vfs:///Resources/Images/UI/ScreenIcons/energy.png"
                    ToolTip="{s:StringResource Key=ENERGY_TOOL_TIP}" >
             <!--old: Label="{Binding Path=NetEnergy}"-->
             <scc:GameLabel.Label>
@@ -269,14 +269,14 @@
             </scc:GameLabel.Label>
         </scc:GameLabel>
 
-
+        <!--BorderBrush="{DynamicResource {x:Static scc:ClientResources.DisabledTextForegroundBrushKey}}"-->
         <!--Buy-Button-->
         <scc:GameButton Grid.Row="3" Grid.Column="2" VerticalAlignment="Center"
                     DisplayMode="Tiny"
-                    Label="Buy"
+                    Label="{s:StringResource Key=BUY, Case=Upper}"
                     Foreground="Black"
-                    Background="Transparent"
-                    BorderBrush="{DynamicResource {x:Static scc:ClientResources.DisabledTextForegroundBrushKey}}"
+                    Background="Aqua"
+
                     BorderThickness="2"
                     Command="{x:Static scc:NavigationCommands.RushColonyProduction}"
                     CommandParameter="{Binding FallbackValue={x:Null}}" />
@@ -303,7 +303,7 @@
         </scc:GameLabel>
         <TextBlock Grid.Row="1" Grid.Column="13" Text=" = " HorizontalAlignment="Center" VerticalAlignment="Center" />
         <scc:GameLabel Grid.Row="1"  Grid.Column="14" VerticalAlignment="Center"
-                   ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/research.png"
+                   ImageSourceSmall="vfs:///Resources/Images/UI/ScreenIcons/research.png"
                    
                    ToolTip="{s:StringResource Key=RESEARCH_TOOL_TIP}" >
             <!--old: Label="{Binding Path=NetResearch}"-->
@@ -331,7 +331,7 @@
         <scc:GameLabel 
                    Grid.Row="2" Grid.Column="14"
                    VerticalAlignment="Center"
-                   ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/intelligence.png"
+                   ImageSourceSmall="vfs:///Resources/Images/UI/ScreenIcons/intelligence.png"
                    Label="{Binding Path=NetIntelligence}"
                    ToolTip="{s:StringResource Key=INTELLIGENCE_TOOL_TIP}" />
 
@@ -349,7 +349,7 @@
         <TextBlock Grid.Row="3" Grid.Column="13" Text=" = " HorizontalAlignment="Center" VerticalAlignment="Center" />
         <scc:GameLabel Grid.Row="3" Grid.Column="14" VerticalAlignment="Center"
                    Grid.ColumnSpan="2"             
-                   ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/orbital_battery.png"
+                   ImageSourceSmall="vfs:///Resources/Images/UI/ScreenIcons/orbital_battery.png"
                    ToolTip="{s:StringResource Key=ORBITAL_BATTERIES_TOOL_TIP}">
             <scc:GameLabel.Label>
                 <MultiBinding StringFormat="{}each {0} Energy">
@@ -369,7 +369,7 @@
         <scc:GameLabel 
                    Grid.Row="1" Grid.Column="18" 
                    VerticalAlignment="Center"
-                   ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/shield.png"
+                   ImageSourceSmall="vfs:///Resources/Images/UI/ScreenIcons/shield.png"
                    ToolTip="{s:StringResource Key=SHIELDS_TOOL_TIP}">
             <scc:GameLabel.Label>
                 <MultiBinding StringFormat="{}{0}">
@@ -387,7 +387,7 @@
         <scc:GameLabel 
                    Grid.Row="2" Grid.Column="18"
                    VerticalAlignment="Center"
-                   ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/ship.png"
+                   ImageSourceSmall="vfs:///Resources/Images/UI/ScreenIcons/ship.png"
                    ToolTip="{s:StringResource Key=SHIPBUILDING_TOOL_TIP}"
                    Visibility="{Binding Path=Shipyard, Converter={StaticResource NullValueVisibilityConverter}}">
             <scc:GameLabel.Label>
@@ -404,7 +404,7 @@
         <TextBlock Grid.Row="3" Grid.Column="17" Text=" = " HorizontalAlignment="Center" VerticalAlignment="Center" />
         <scc:GameLabel 
                    Grid.Row="3" Grid.Column="18" Grid.ColumnSpan="2" VerticalAlignment="Center" 
-                   ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/traderoute.png"
+                   ImageSourceSmall="vfs:///Resources/Images/UI/ScreenIcons/traderoute.png"
                    ToolTip="{s:StringResource Key=TRADE_ROUTES_TOOL_TIP}">
             <scc:GameLabel.Label>
                 <MultiBinding StringFormat="{}{0} / {1}">
@@ -424,7 +424,7 @@
                    Grid.Row="1" Grid.Column="21" HorizontalAlignment="Right" VerticalAlignment="Center" Foreground="SteelBlue"/>
         <TextBlock Grid.Row="1" Grid.Column="22" Text=" = " HorizontalAlignment="Center" VerticalAlignment="Center" />
         <scc:GameLabel Grid.Row="1"  Grid.Column="23" VerticalAlignment="Center"
-                   ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/dilithium.png"
+                   ImageSourceSmall="vfs:///Resources/Images/UI/ScreenIcons/dilithium.png"
                    Label="{Binding Path=NetDilithium}"
                    ToolTip="{s:StringResource Key=DILITHIUM_TOOL_TIP}" />
 
@@ -433,7 +433,7 @@
                    Grid.Row="2" Grid.Column="21" HorizontalAlignment="Right" VerticalAlignment="Center" Foreground="OrangeRed"/>
         <TextBlock Grid.Row="2" Grid.Column="22" Text=" = " HorizontalAlignment="Center" VerticalAlignment="Center" />
         <scc:GameLabel Grid.Row="2" Grid.Column="23" VerticalAlignment="Center"
-                   ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/deuterium.png"
+                   ImageSourceSmall="vfs:///Resources/Images/UI/ScreenIcons/deuterium.png"
                    ToolTip="{s:StringResource Key=DEUTERIUM_TOOL_TIP}" >
             <!--old: Label="{Binding Path=NetDeuterium}"-->
             <scc:GameLabel.Label>
@@ -450,7 +450,7 @@
                    Grid.Row="3" Grid.Column="21" HorizontalAlignment="Right" VerticalAlignment="Center" Foreground="Gray"/>
         <TextBlock Grid.Row="3" Grid.Column="22" Text=" = " HorizontalAlignment="Center" VerticalAlignment="Center" />
         <scc:GameLabel Grid.Row="3" Grid.Column="23" VerticalAlignment="Center"
-                   ImageSourceSmall="vfs:///Resources/Images/ScreenIcons/rawmaterials.png"
+                   ImageSourceSmall="vfs:///Resources/Images/UI/ScreenIcons/rawmaterials.png"
                    Label="{Binding Path=NetRawMaterials}"
                    ToolTip="{s:StringResource Key=DURANIUM_TOOL_TIP}" />
 

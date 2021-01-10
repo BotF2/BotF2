@@ -494,13 +494,17 @@ namespace Supremacy.Client.Views
                         fleetView.InsigniaImage = GetInsigniaImage(playerCiv.InsigniaPath);
                         playerList.Add(fleetView);
                     }
-                    else if (SelectedSector.Station != null && DiplomacyHelper.IsScanBlocked(playerCiv, fleetView.View.Source.Sector))
+                    else if (SelectedSector.Station != null                        
+                        && DiplomacyHelper.IsScanBlocked(playerCiv, fleetView.View.Source.Sector))
                     {
                         //works
                         //GameLog.Client.Intel.DebugFormat("local playerCiv = {0},. fleet Owner = {1}, counter = {2}, scanblock = {3}",
-                            //playerCiv, fleetView.View.Source.Owner, count, DiplomacyHelper.IsScanBlocked(playerCiv, fleetView.View.Source.Sector));
 
-                        if (!DiplomacyHelper.AreAtWar(playerCiv, SelectedSector.Owner) && !CombatHelper.WillFightAlongside(playerCiv, SelectedSector.Owner))
+                        MapLocation location = SelectedSector.Station.Location;
+
+                        if ((!DiplomacyHelper.AreAtWar(playerCiv, SelectedSector.Owner)
+                            && !CombatHelper.WillFightAlongside(playerCiv, SelectedSector.Owner))
+                            || (DiplomacyHelper.AreAtWar(playerCiv, SelectedSector.Owner) && fleetView.View.Source.Sector == SelectedSector.Station.Sector))
                         {
                             fleetView.IsUnScannable = true;
                             fleetView.InsigniaImage = GetInsigniaImage("Resources/Images/Insignias/_ScanBlock.png");
@@ -563,6 +567,7 @@ namespace Supremacy.Client.Views
         #endregion
 
         #region Private Methods
+
         private void OnAvailableShipsChanged()
         {
             var handler = AvailableShipsChanged;

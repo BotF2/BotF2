@@ -1,4 +1,4 @@
-// TradeRoute.cs
+// File:TradeRoute.cs
 //
 // Copyright (c) 2007 Mike Strobel
 //
@@ -10,10 +10,7 @@
 using System;
 using System.ComponentModel;
 using System.Linq;
-
 using Microsoft.Practices.ServiceLocation;
-
-using Supremacy.Client;
 using Supremacy.Diplomacy;
 using Supremacy.Economy;
 using Supremacy.Entities;
@@ -147,13 +144,14 @@ namespace Supremacy.Universe
                 //var clientContext = ServiceLocator.Current.GetInstance<IClientContext>();
                 try
                 {
-                    var clientContext = ServiceLocator.Current.GetInstance<IClientContext>();
+                    var clientContext = ServiceLocator.Current.GetInstance<IPlayer>();
+                    //var clientContext = Game.IPlayer.
                     if (clientContext == null)
                     {
                         GameLog.Core.General.DebugFormat("clientContext is null, TurnNumber={0}, Credits by TradeRoute={1}", GameContext.Current.TurnNumber, Credits);
                         return Credits;
                     }
-                    var empire = clientContext.LocalPlayer.Empire;
+                    var empire = clientContext.Empire;//.LocalPlayer.Empire;
                     if (empire == null)
                     {
                         GameLog.Core.General.DebugFormat("empire is null, TurnNumber={0}, Credits by TradeRoute={1}", GameContext.Current.TurnNumber, Credits);
@@ -181,12 +179,12 @@ namespace Supremacy.Universe
                                       .Where(o => o.BonusType == BonusType.PercentTradeIncome)
                                       .Sum(o => 0.01 * o.Amount);
 
-                    GameLog.Core.General.DebugFormat("Credits from TradeRoute (incl. Bonuses): TurnNumber={0}, Credits by TradeRoute={1}", GameContext.Current.TurnNumber, Credits);
+                    GameLog.Core.General.DebugFormat("Turn {0}, Credits from TradeRoute (incl. Bonuses): Credits by TradeRoute={1}", GameContext.Current.TurnNumber, Credits);
                     return (int)((1.0 + bonus) * Credits);
                 }
                 catch (Exception e)
                 {
-                    GameLog.Core.General.ErrorFormat(string.Format("#### problem with ServiceLocator.Current.GetInstance<IClientContext>(), returning {0} credits",
+                    GameLog.Core.General.ErrorFormat(string.Format(Environment.NewLine + "   #### problem with TradeRoute - ServiceLocator.Current.GetInstance<IClientContext>(), returning {0} credits",
                         Credits),
                         e);
                     return Credits;

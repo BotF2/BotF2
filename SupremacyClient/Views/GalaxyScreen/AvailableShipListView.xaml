@@ -102,7 +102,7 @@
                           ToolTip="{Binding Path=Name, Converter={StaticResource StringResourceConverter}}">
                     <Border.Background>
                       <ImageBrush Stretch="UniformToFill"
-                                  ImageSource="vfs:///Resources/Images/ScreenIcons/ship_backdrop.png" />
+                                  ImageSource="vfs:///Resources/Images/UI/ScreenIcons/ship_backdrop.png" />
                     </Border.Background>
                     <Border BorderThickness="2" CornerRadius="4" BorderBrush="Transparent">
                       <Border.Background>

@@ -104,19 +104,18 @@
                     Command="{x:Static local:GenericCommands.TracesSetNoneCommand}"
                      />-->
 
-
         <RadioButton Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Grid.RowSpan="1" VerticalAlignment="Center"
-        IsChecked="{Binding Source={x:Static scc:ClientSettings.Current}, Path=(scc:ClientSettings.Traces_SetAll_without_Details), Mode=TwoWay}"
-        GroupName="Traces_Group"
-                  Content="{s:StringResource SETTINGS_TRACES_SET_ALL}"
-        ToolTip="{s:StringResource SETTINGS_TRACES_SET_ALL_TOOLTIP}" 
-        />
-
-        <RadioButton Grid.Row="1" Grid.Column="4" Grid.ColumnSpan="2" Grid.RowSpan="1" VerticalAlignment="Center"
         IsChecked="{Binding Source={x:Static scc:ClientSettings.Current}, Path=(scc:ClientSettings.Traces_SetSome), Mode=TwoWay}"
         GroupName="Traces_Group"
                   Content="{s:StringResource SETTINGS_TRACES_SET_SOME}"
         ToolTip="{s:StringResource SETTINGS_TRACES_SET_SOME_TOOLTIP}" 
+        />        
+        
+        <RadioButton Grid.Row="1" Grid.Column="4" Grid.ColumnSpan="2" Grid.RowSpan="1" VerticalAlignment="Center"
+        IsChecked="{Binding Source={x:Static scc:ClientSettings.Current}, Path=(scc:ClientSettings.Traces_SetAll_without_Details), Mode=TwoWay}"
+        GroupName="Traces_Group"
+                  Content="{s:StringResource SETTINGS_TRACES_SET_ALL}"
+        ToolTip="{s:StringResource SETTINGS_TRACES_SET_ALL_TOOLTIP}" 
         />
 
         <RadioButton Grid.Row="1" Grid.Column="8" Grid.ColumnSpan="2" Grid.RowSpan="1" VerticalAlignment="Center"
@@ -128,17 +127,17 @@
 
         <!--row 2--> 
         <RadioButton Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" Grid.RowSpan="1" VerticalAlignment="Center"
-        IsChecked="{Binding Source={x:Static scc:ClientSettings.Current}, Path=(scc:ClientSettings.Traces_SetAll_and_Details), Mode=TwoWay}"
-        GroupName="Traces_Group"
-                  Content="{s:StringResource SETTINGS_TRACES_SET_ALL_AND_DETAILS}"
-        ToolTip="{s:StringResource SETTINGS_TRACES_SET_ALL_AND_DETAILS_TOOLTIP}" 
-        />
-
-        <RadioButton Grid.Row="2" Grid.Column="4" Grid.ColumnSpan="2" Grid.RowSpan="1" VerticalAlignment="Center"
         IsChecked="{Binding Source={x:Static scc:ClientSettings.Current}, Path=(scc:ClientSettings.Traces_SetSome), Mode=TwoWay}"
         GroupName="Traces_Group"
                   Content="{s:StringResource SETTINGS_TRACES_SET_SELECTION_2}"
         ToolTip="{s:StringResource SETTINGS_TRACES_SET_SELECTION_2_TOOLTIP}" 
+        />        
+        
+        <RadioButton Grid.Row="2" Grid.Column="4" Grid.ColumnSpan="2" Grid.RowSpan="1" VerticalAlignment="Center"
+        IsChecked="{Binding Source={x:Static scc:ClientSettings.Current}, Path=(scc:ClientSettings.Traces_SetAll_and_Details), Mode=TwoWay}"
+        GroupName="Traces_Group"
+                  Content="{s:StringResource SETTINGS_TRACES_SET_ALL_AND_DETAILS}"
+        ToolTip="{s:StringResource SETTINGS_TRACES_SET_ALL_AND_DETAILS_TOOLTIP}" 
         />
 
         <RadioButton Grid.Row="2" Grid.Column="8" Grid.ColumnSpan="2" Grid.RowSpan="1" VerticalAlignment="Center"

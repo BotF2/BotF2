@@ -10,6 +10,7 @@
 using System;
 using Supremacy.Annotations;
 using Supremacy.Client.Context;
+using Supremacy.Game;
 
 namespace Supremacy.Client.Views
 {
@@ -33,6 +34,11 @@ namespace Supremacy.Client.Views
         public IAppContext AppContext
         {
             get { return _appContext; }
+        }
+
+        public string TurnNumberText
+        {
+            get { return "Turn " + GameContext.Current.TurnNumber; }
         }
 
         public void NotifyLoaded()

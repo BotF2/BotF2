@@ -209,30 +209,30 @@ _TopLeft_BottomRight
         <!--Row="5" -->
         <TextBlock Grid.Row="5" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center"  MinWidth="96" TextAlignment="Center" 
                    Foreground="{StaticResource LCARS_PinkTextBrush}" >
-LCARS_Dom5TanGradient
+LCARS_Dom5Gradient
         </TextBlock>
         <TextBlock Grid.Row="5" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center"  MinWidth="96" TextAlignment="Center" 
-                   Background="{StaticResource LCARS_Dom5TanGradient_Left_Right}" >
+                   Background="{StaticResource LCARS_Dom5Gradient_Left_Right}" >
 _Left_Right
         </TextBlock>
         <TextBlock Grid.Row="5" Grid.Column="3" HorizontalAlignment="Center" VerticalAlignment="Center"  MinWidth="96" TextAlignment="Center" 
-                   Background="{StaticResource LCARS_Dom5TanGradient_Right_Left}" >
+                   Background="{StaticResource LCARS_Dom5Gradient_Right_Left}" >
 _Right_Left
         </TextBlock>
         <TextBlock Grid.Row="5" Grid.Column="4" HorizontalAlignment="Center" VerticalAlignment="Center"  MinWidth="96" TextAlignment="Center" 
-                   Background="{StaticResource LCARS_Dom5TanGradient_Top_Bottom}" >
+                   Background="{StaticResource LCARS_Dom5Gradient_Top_Bottom}" >
 _Top_Bottom
         </TextBlock>
         <TextBlock Grid.Row="5" Grid.Column="5" HorizontalAlignment="Center" VerticalAlignment="Center"  MinWidth="96" TextAlignment="Center" 
-                   Background="{StaticResource LCARS_Dom5TanGradient_Bottom_Top}" >
+                   Background="{StaticResource LCARS_Dom5Gradient_Bottom_Top}" >
 _Bottom_Top
         </TextBlock>
         <TextBlock Grid.Row="5" Grid.Column="6" HorizontalAlignment="Center" VerticalAlignment="Center"  MinWidth="96" TextAlignment="Center" 
-                   Background="{StaticResource LCARS_Dom5TanGradient_BottomLeft_TopRight}" >
+                   Background="{StaticResource LCARS_Dom5Gradient_BottomLeft_TopRight}" >
 _BottomLeft_TopRight
         </TextBlock>
         <TextBlock Grid.Row="5" Grid.Column="7" HorizontalAlignment="Center" VerticalAlignment="Center"  MinWidth="96" TextAlignment="Center" 
-                   Background="{StaticResource LCARS_Dom5TanGradient_TopLeft_BottomRight}" >
+                   Background="{StaticResource LCARS_Dom5Gradient_TopLeft_BottomRight}" >
 _TopLeft_BottomRight
         </TextBlock>
 

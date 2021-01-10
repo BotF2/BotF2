@@ -1,0 +1,453 @@
+<!--
+  
+   SystemScreen.xaml
+  
+   Copyright (c) 2007 Mike Strobel
+  
+   This source code is subject to the terms of the Microsoft Reciprocal License (Ms-RL).
+   For details, see <http://www.opensource.org/licenses/ms-rl.html>.
+  
+   All other rights reserved.
+  
+  -->
+<ResourceDictionary xmlns="http://schemas.microsoft.com/netfx/2007/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:scc="http://schemas.startreksupremacy.com/xaml/presentation"
+                    xmlns:cal="http://www.codeplex.com/CompositeWPF"
+                    xmlns:s="http://schemas.startreksupremacy.com/xaml/core"
+                    xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+                    xmlns:e="http://schemas.microsoft.com/expression/2010/interactions">
+
+  <!--
+    **************************
+    * SYSTEM SCREEN TEMPLATE *
+    **************************
+  -->
+  <Style TargetType="{x:Type scc:ColonyScreenView}">
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="{x:Type scc:ColonyScreenView}">
+          <Border Background="#66000000"
+                  Padding="6">
+            <Grid>
+              <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+              </Grid.RowDefinitions>
+              <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="240"
+                                  SharedSizeGroup="LeftColumnGroup" />
+                <ColumnDefinition Width="0.67*" />
+              </Grid.ColumnDefinitions>
+
+              <!-- SUMMARY BUTTON -->
+              <Button Grid.Column="0"
+                      Style="{StaticResource LCARS_StandardButtonStyle}"
+                      Content="{s:StringResource Key=SUMMARY_BUTTON_TEXT, Case=Upper}"
+                      Command="{x:Static scc:ClientCommands.ShowEndOfTurnSummary}" />
+
+              <!-- BEGIN SYSTEM SELECTION BAR -->
+              <Grid Grid.Column="1"
+                    Grid.Row="0"
+                    Grid.IsSharedSizeScope="False">
+                <Grid.ColumnDefinitions>
+                  <ColumnDefinition Width="Auto" />
+                  <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                  <ColumnDefinition Width="*" />
+                  <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                    
+                  
+                  <Border Grid.Column="0"
+                        Grid.Row="0"
+                        Background="{StaticResource LCARS_PurpleGradient_TopLeft_BottomRight}"
+                        CornerRadius="14,0,0,14"
+                        Width="21"
+                        Margin="5,0,0,0" />    
+                  
+                  <Rectangle Grid.Column="1"
+                             Margin="4,0,0,0" 
+                       Width="14"
+                       SnapsToDevicePixels="True"
+                       Fill="{StaticResource LCARS_Borg3Gradient_Top_Bottom}" />
+                
+                  <Button Grid.Column="2"
+                        Margin="3,0,0,0" 
+                      Style="{StaticResource LCARS_BorderButtonStyle}"
+                      Content="{s:StringResource Key=PREVIOUS_TEXT, Case=lower}"
+                      Command="{x:Static scc:ColonyScreenCommands.PreviousColonyCommand}" />
+                                   
+                  <Rectangle Grid.Column="3"
+                         Margin="3,0,0,0"
+                         Height="28"
+                         Width="28">
+                                    <Rectangle.Fill>
+                                        <DrawingBrush>
+                                            <DrawingBrush.Drawing>
+                                                <DrawingGroup>
+                                                    <GeometryDrawing Brush="LightGreen"
+                                       Geometry="F1 M 0,5 14,0 28,5 14,10 Z" />
+                                                    <GeometryDrawing Brush="Green"
+                                       Geometry="F1 M 0,7 13,12 13,28 0,21 Z" />
+                                                    <GeometryDrawing Brush="DarkGreen"
+                                       Geometry="F1 M 28,7 15,12 15,28 28,21 Z" />
+
+                                                </DrawingGroup>
+                                            </DrawingBrush.Drawing>
+                                        </DrawingBrush>
+                                    </Rectangle.Fill>
+                     </Rectangle>
+                     <ComboBox Grid.Column="4"
+                          Grid.Row="0"
+                          Margin="3,0,0,0"
+                          IsEditable="False"
+                          IsReadOnly="True"
+                          MinWidth="200"
+                          ItemsSource="{Binding Path=Colonies, Mode=OneWay}"
+                          SelectedItem="{Binding Path=SelectedColony, Mode=TwoWay}">
+                  <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                      <TextBlock Text="{Binding Path=Name, Mode=OneWay, Converter={StaticResource UpperCaseConverter}}" />
+                    </DataTemplate>
+                  </ComboBox.ItemTemplate>
+                </ComboBox>
+                        <!--<TextBlock 
+                           Grid.Column="2"
+                           Grid.Row="0"
+                           Margin="3,0,0,0"
+                           Text="{Binding Path=Credits, Mode=OneWay, Converter={StaticResource UpperCaseConverter}}"
+                           TextBlock.FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+                           TextBlock.Foreground="{StaticResource LCARS_BeigeTextBrush}"
+                           Background="{StaticResource LCARS_AzureGradient_Top_Bottom}"
+                                   
+                           />-->
+                        <!--<Border Grid.Column="2"
+                        Grid.Row="0"
+                        Background="Transparent"
+                        BorderBrush="Darkgreen"
+                                BorderThickness="2"
+                        />-->
+                  
+                  <!--toDo: bring in useful information on top bar with transparant filling-->
+                        <!--<TextBlock 
+                        Grid.Column="2"
+                        Grid.Row="0"
+                        Margin="3,0,0,0"
+                        TextAlignment="Center"
+                                
+                        Background="Transparent"
+                        Foreground="{StaticResource HeaderTextBrush}"
+                        Text="{Binding Source={s:StringResource CREDITS}, Mode=OneTime, Converter={StaticResource UpperCaseConverter}}" 
+                            />
+                  
+                        <TextBlock 
+                            Grid.Column="2"
+                            Grid.Row="0"
+                            Margin="3,0,0,0"
+                            TextAlignment="Center"
+                            Foreground="{Binding Path=Credits.CurrentValue, Converter={StaticResource NetValueBrushConverter}, ConverterParameter={StaticResource LCARS_GreenTextBrush}}"
+                            Background="Transparent"
+                            Text="(not function yet)" 
+                            />-->
+                  <Button Grid.Column="6"
+                        Margin="3,0,0,0" 
+                      Style="{StaticResource LCARS_BorderButtonStyle}"
+                      Content="{s:StringResource Key=NEXT_TEXT, Case=Lower}"
+                      Command="{x:Static scc:ColonyScreenCommands.PreviousColonyCommand}" />
+                  <Rectangle Grid.Column="7"
+                             Margin="3,0,0,0" 
+                       Width="14"
+                       SnapsToDevicePixels="True"
+                       Fill="{StaticResource LCARS_OrangeGradient_Top_Bottom}" />
+                           
+
+                      <!--<Rectangle Grid.Column="8"
+                           Grid.Row="0"
+                           Margin="3,0,0,0"
+                           Fill="{StaticResource LCARS_AzureGradient_Top_Bottom}"
+                           />-->
+                <!--<Border Grid.Column="3"
+                        Grid.Row="0"
+                        Background="{StaticResource LCARS_PurpleGradient_TopLeft_BottomRight}"
+                        CornerRadius="0,14,14,0"
+                        Width="21"
+                        Margin="3,0,0,0" />-->
+                                <Ellipse  
+                                    Grid.Column="3"
+                                    Grid.Row="0"
+
+                                         VerticalAlignment="Center"
+                                         HorizontalAlignment="Center"
+                                         Height="28"
+                                         Width="28"
+                                         Fill="Green"
+                                         Opacity="0.3"
+                                         StrokeThickness="4"
+                                         Stroke="#1ffe36"/>
+
+                                <Ellipse  
+                                         Grid.Column="3" 
+                                         Grid.Row="0"
+                                         Canvas.Top="15"
+                                         Canvas.Left="5"
+                                         Height="9"
+                                         Width="9"
+                                         Fill="#cce259"
+                                        Opacity="0.6"
+                                        StrokeThickness="2"
+                                         Stroke="#1fe336"/>
+                                <Ellipse  
+                                         Grid.Column="3" 
+                                         Grid.Row="0"
+                                         VerticalAlignment="Center"
+                                         HorizontalAlignment="Center"
+                                         Height="6"
+                                         Width="6"
+                                         Fill="Azure"
+                                         Opacity="0.6"
+                                         StrokeThickness="2"
+                                         Stroke="Goldenrod"/>
+                                <Path 
+                                         Grid.Column="3" 
+                                         Grid.Row="0"                                
+                                  Stroke="SpringGreen" 
+                                  StrokeThickness="2" 
+                                  Opacity="0.5" >
+                                    <Path.Data>
+                                        <PathGeometry>
+                                            <PathGeometry.Figures>
+                                                <PathFigure StartPoint="0,1">
+                                                    <PathFigure.Segments>
+                                                        <BezierSegment Point1="5,5"
+                                                            Point2="6,10"
+                                                            Point3="10,12"/>
+                                                        <LineSegment Point="14,14" />
+                                                        <BezierSegment Point1="14,18"
+                                                            Point2="26,20"
+                                                            Point3="28,25"/>
+                                                    </PathFigure.Segments>
+                                                </PathFigure>
+                                            </PathGeometry.Figures>
+                                        </PathGeometry>
+                                    </Path.Data>
+                                </Path>
+                                <Path 
+                                         Grid.Column="3" 
+                                         Grid.Row="0"
+                                  Stroke="GreenYellow" 
+                                  StrokeThickness="1" 
+                                  Opacity="0.4" >
+                                    <Path.Data>
+                                        <PathGeometry>
+                                            <PathGeometry.Figures>
+                                                <PathFigure StartPoint="0,28">
+                                                    <PathFigure.Segments>
+                                                        <BezierSegment Point1="5,25"
+                                                            Point2="9,20"
+                                                            Point3="13,18"/>
+                                                        <LineSegment Point="14,14" />
+                                                        <BezierSegment Point1="20,10"
+                                                            Point2="22,5"
+                                                            Point3="26,3"/>
+                                                    </PathFigure.Segments>
+                                                </PathFigure>
+                                            </PathGeometry.Figures>
+                                        </PathGeometry>
+                                    </Path.Data>
+                                </Path>
+                                <Path 
+                                         Grid.Column="3" 
+                                         Grid.Row="0"
+                                  Stroke="GreenYellow" 
+                                  StrokeThickness="1" 
+                                  Opacity="0.3">
+                                    <Path.Data>
+                                        <PathGeometry>
+                                            <PathGeometry.Figures>
+                                                <PathFigure StartPoint="13,0">
+                                                    <PathFigure.Segments>
+                                                        <BezierSegment Point1="16,8"
+                                                            Point2="11,11"
+                                                            Point3="14,14"/>
+                                                        <LineSegment Point="19,17" />
+                                                        <BezierSegment Point1="13,21"
+                                                            Point2="15,24"
+                                                            Point3="15,28"/>
+                                                    </PathFigure.Segments>
+                                                </PathFigure>
+                                            </PathGeometry.Figures>
+                                        </PathGeometry>
+                                    </Path.Data>
+                                </Path>
+                            </Grid>
+              <!-- END SYSTEM SELETION BAR -->
+
+              <!-- BEGIN SYSTEM INFO BAR -->
+              <Grid Grid.Column="0"
+                    Grid.Row="1"
+                    Grid.RowSpan="2"
+                    Margin="0,4,0,0"
+                    TextBlock.FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+                    TextBlock.Foreground="{StaticResource LCARS_HeaderBrush}">
+                <Grid.RowDefinitions>
+                  <RowDefinition Height="Auto" />
+                  <RowDefinition Height="*" />
+                  <RowDefinition Height="2*" />
+                </Grid.RowDefinitions>
+                <Expander Grid.Row="0"
+                          cal:RegionManager.RegionName="{x:Static scc:ColonyScreenRegions.ColonyInfo}"
+                          VerticalAlignment="Top"
+                          FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
+                          Header="{Binding Source={s:StringResource SYSTEM_INFO}, Mode=OneTime, Converter={StaticResource UpperCaseConverter}}"
+                          FontSize="14pt"
+                          IsExpanded="True">
+                </Expander>
+                <!-- BEGIN BUILD QUEUE AREA -->
+                <Expander Grid.Row="1"
+                          Grid.RowSpan="2"
+                          cal:RegionManager.RegionName="{x:Static scc:ColonyScreenRegions.PlanetaryBuildQueue}"
+                          Margin="0,4,0,0"
+                          Header="> BUILD QUEUE"
+                          IsExpanded="True">
+                </Expander>
+                <!-- END BUILD QUEUE AREA -->
+              </Grid>
+              <!-- END SYSTEM INFO BAR -->
+
+              <!-- BEGIN PRIMARY CONTENT AREA -->
+                <TabControl x:Name="SystemTabs"
+                          Grid.Column="1"
+                          Grid.Row="1"
+                          Margin="4,4,0,4"
+                          FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+                          FontSize="11pt">
+                    <i:Interaction.Triggers>
+                        <e:DataTrigger Binding="{Binding ElementName=SystemTabs, Path=IsVisible}"
+                     Comparison="Equal"
+                     Value="True">
+                            <e:ChangePropertyAction TargetObject="{x:Reference SystemTabs}"
+                                PropertyName="SelectedIndex"
+                                Value="0" />
+                        </e:DataTrigger>
+                    </i:Interaction.Triggers>
+
+                    <TabItem x:Name="HandlingTab" Header="COLONY MANAGEMENT">
+                        <ContentControl cal:RegionManager.RegionName="{x:Static scc:ColonyScreenRegions.HandlingList}" />
+                    </TabItem>
+
+                                <!--<TabItem x:Name="ProductionTab" Header="PRODUCTION"
+                         cal:RegionManager.RegionName="{x:Static scc:ColonyScreenRegions.ProductionManagement}" >
+                </TabItem>-->
+                    <TabItem x:Name="BuildListTab" Header="BUILD LIST">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+                            <ContentControl Grid.Column="0"
+                                    Grid.Row="0"
+                                    Grid.RowSpan="2"
+                                    cal:RegionManager.RegionName="{x:Static scc:ColonyScreenRegions.PlanetaryBuildList}" />
+                            <ContentControl Style="{StaticResource LCARS_BorgThinBorderStyle}"
+                                            VerticalAlignment="Top"
+                                            Grid.Column="1"
+                                            Grid.Row="0"
+                                            Margin="14,0,0,0">
+                                <Image Stretch="Uniform"
+                                         Width="270"
+                                         Height="225">
+                                    <Image.Source>
+                                        <Binding Path="SelectedPlanetaryBuildProject.BuildDesign"
+                                               Mode="OneWay"
+                                               Converter="{StaticResource TechObjectImageConverter}">
+                                        </Binding>
+                                    </Image.Source>
+                                </Image>
+                            </ContentControl>
+                            <ContentControl cal:RegionManager.RegionName="{x:Static scc:ColonyScreenRegions.SelectedPlanetaryBuildProjectInfo}"
+                                            Grid.Column="1"
+                                            Grid.Row="1"
+                                            DataContext="{Binding Path=SelectedPlanetaryBuildProject, Mode=OneWay}"
+                                            Margin="14,4,0,0" />
+                        </Grid>
+                    </TabItem>
+                    <TabItem x:Name="ShipbuildingTab" Header="SHIPBUILDING">
+                        <Grid x:Name="ShipbuildingTabContent">
+                            <ItemsControl ItemsSource="{Binding Path=SelectedColony.Shipyard.BuildSlots, Mode=OneWay}"
+                      Style="{StaticResource {x:Static scc:ClientResources.ScrollableItemsControlStyleKey}}">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <WrapPanel Orientation="Horizontal" IsItemsHost="True" />
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate DataType="{x:Type s:ShipyardBuildSlot}">
+                                        <scc:ShipyardDockView BuildSlot="{Binding}" Margin="16" HorizontalAlignment="Left" />
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </Grid>
+                    </TabItem>
+
+                                <!--old StructuresTab, modified-->
+
+                                <!--<TabItem x:Name="StructuresTab" Header="STRUCTURES">
+                    <ContentControl cal:RegionManager.RegionName="{x:Static scc:ColonyScreenRegions.StructureList}" />
+                </TabItem>-->
+
+                </TabControl>
+                <!-- END PRIMARY CONTENT AREA -->
+
+
+              <!-- BEGIN SYSTEM VIEW -->
+              <ContentControl Style="{StaticResource LCARS_BorgThinBorderStyle}"
+                              Grid.Column="1"
+                              Grid.Row="2"
+                              Margin="4,0,0,0">
+                <ContentControl cal:RegionManager.RegionName="{x:Static scc:CommonGameScreenRegions.PlanetsView}"
+                                DataContext="{Binding Path=SelectedColony.Sector}"
+                                Height="128" />
+              </ContentControl>
+              <!-- END SYSTEM VIEW -->
+            </Grid>
+          </Border>
+          <ControlTemplate.Triggers>
+            <MultiDataTrigger>
+              <MultiDataTrigger.Conditions>
+                <Condition Binding="{Binding Path=SelectedColony.Shipyard, Mode=OneWay}"
+                           Value="{x:Null}" />
+              </MultiDataTrigger.Conditions>
+              <Setter TargetName="ShipbuildingTab"
+                      Property="IsEnabled"
+                      Value="False" />
+              <Setter TargetName="ShipbuildingTab"
+                      Property="IsSelected"
+                      Value="False" />
+              <Setter TargetName="ShipbuildingTabContent"
+                      Property="Visibility"
+                      Value="Hidden" />
+            </MultiDataTrigger>
+            <DataTrigger Binding="{Binding Path=AppContext.IsTurnFinished, RelativeSource={RelativeSource TemplatedParent}}"
+                         Value="True">
+              <Setter Property="IsEnabled"
+                      Value="False" />
+            </DataTrigger>
+          </ControlTemplate.Triggers>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+  </Style>
+
+</ResourceDictionary>
