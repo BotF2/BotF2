@@ -194,8 +194,6 @@ namespace Supremacy.Orbitals
             writer.Write(_buildQueue.Cast<object>().ToArray());
             writer.WriteOptimized(_buildSlots.ToArray());
             
-            if (context != null) 
-                GameLog.Core.SaveLoad.DebugFormat(context.ToString());
             try
             {
                 foreach (var slot in _buildSlots)
