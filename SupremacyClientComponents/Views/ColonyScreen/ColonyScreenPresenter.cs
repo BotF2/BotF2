@@ -752,13 +752,13 @@ namespace Supremacy.Client.Views
 
         private bool CanExecuteRemoveFromShipyardBuildQueueCommand(BuildQueueItem item)
         {
-            return ((Model.SelectedColony != null) && (Model.SelectedColony.Shipyard != null));
+            return (Model.SelectedColony != null); // && (Model.SelectedColony.Shipyard != null));
         }
 
-        private bool CanExecuteClearBuildSlotQueueCommand(BuildProject item)
-        {
-            return ((Model.SelectedColony != null) && (Model.SelectedColony.Shipyard != null));
-        }
+        //private bool CanExecuteClearBuildSlotQueueCommand(BuildProject item)
+        //{
+        //    return ((Model.SelectedColony != null) && (Model.SelectedColony.Shipyard != null));
+        //}
 
         private void ExecuteRemoveFromPlanetaryBuildQueueCommand(BuildQueueItem item)
         {
@@ -775,10 +775,10 @@ namespace Supremacy.Client.Views
             if (colony == null)
                 return;
 
-            if (colony.Shipyard == null)
-                return;
+            //if (colony.Shipyard == null)
+            //    return;
 
-            RemoveItemFromBuildQueue(item, colony.Shipyard);
+            RemoveItemFromShipyardBuildQueue(item, colony.Shipyard);
         }
 
         private bool CanExecuteAddToShipyardBuildQueueCommand(BuildProject project)
@@ -786,10 +786,10 @@ namespace Supremacy.Client.Views
             return ((Model.SelectedColony != null) && (Model.SelectedColony.Shipyard != null));
         }
 
-        private bool CanExecuteAddToBuildSlotQueueCommand(BuildProject project)
-        {
-            return ((Model.SelectedColony != null) && (Model.SelectedColony.Shipyard != null));
-        }
+        //private bool CanExecuteAddToBuildSlotQueueCommand(BuildProject project)
+        //{
+        //    return ((Model.SelectedColony != null) && (Model.SelectedColony.Shipyard != null));
+        //}
 
         private void ExecuteAddToShipyardBuildQueueCommand(BuildProject project)
         {
@@ -804,6 +804,21 @@ namespace Supremacy.Client.Views
         }
 
         protected void RemoveItemFromBuildQueue([NotNull] BuildQueueItem item, [NotNull] IProductionCenter productionCenter)
+        {
+            if (item == null)
+                throw new ArgumentNullException("item");
+            if (productionCenter == null)
+                throw new ArgumentNullException("productionCenter");
+
+            if ((item.Count <= 1) || !item.DecrementCount())
+                productionCenter.BuildQueue.Remove(item);
+
+            PlayerOrderService.AddOrder(new UpdateProductionOrder(productionCenter));
+
+            UpdateBuildLists();
+        }
+
+        protected void RemoveItemFromShipyardBuildQueue([NotNull] BuildQueueItem item, [NotNull] IProductionCenter productionCenter)
         {
             if (item == null)
                 throw new ArgumentNullException("item");
