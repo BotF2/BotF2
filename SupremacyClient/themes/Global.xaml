@@ -5898,7 +5898,7 @@
                     VerticalScrollBarVisibility="Auto">
         <TextBlock FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                    FontSize="12pt"
-                   Foreground="{StaticResource DefaultTextBrush}"
+                   Foreground="{StaticResource {x:Static scc:ClientResources.ControlTextForegroundBrushKey}}"
                    TextWrapping="Wrap"
                    TextTrimming="CharacterEllipsis"
                    av:BindingHelpers.Inlines="{Binding Path=DetailText, Converter={StaticResource FormattedTextConverter}}"/>
@@ -6828,6 +6828,7 @@
       <ContentPresenter RecognizesAccessKey="True">
         <ContentPresenter.Content>
           <AccessText Text="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Label}"
+                      Foreground="{StaticResource {x:Static scc:ClientResources.ControlTextForegroundBrushKey}}"
                       HorizontalAlignment="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=HorizontalContentAlignment}"
                       VerticalAlignment="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=VerticalContentAlignment}" />
         </ContentPresenter.Content>

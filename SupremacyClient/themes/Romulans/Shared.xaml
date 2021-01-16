@@ -28,6 +28,29 @@
   <SolidColorBrush x:Key="SelectionBrush"
                    Color="#7f87DB7A" />
 
+    <!--<SolidColorBrush x:Key="HeaderTextBrush"
+                   PresentationOptions:Freeze="True"
+                   Color="#ffdfdfff" />
+    <SolidColorBrush x:Key="DefaultTextBrush"
+                   PresentationOptions:Freeze="True"
+                   Color="#ffe7d490" />
+    <SolidColorBrush x:Key="LCARS_HeaderBrush"
+                   PresentationOptions:Freeze="True"
+                   Color="#ffdfdfff" />
+    <SolidColorBrush x:Key="LCARS_ParagraphBrush"
+                   PresentationOptions:Freeze="True"
+                   Color="#ffe7d490" />
+    <SolidColorBrush x:Key="LCARS_WarningBrush"
+                   PresentationOptions:Freeze="True"
+                   Color="#FFB90E0A" />
+
+    <SolidColorBrush x:Key="LCARS_BeigeTextBrush"
+                   PresentationOptions:Freeze="True"
+                   Color="#ffe7d490" />
+    <SolidColorBrush x:Key="LCARS_DisabledTextBrush"
+                   PresentationOptions:Freeze="True"
+                   Color="#ff999999" />-->
+
     <FontFamily x:Key="{x:Static scc:ClientResources.HeaderFontFamilyKey}">pack://application:,,,/Resources/Fonts/#Federation Standard Text</FontFamily>
     <FontFamily x:Key="{x:Static scc:ClientResources.DefaultFontFamilyKey}">pack://application:,,,/Resources/Fonts/#Federation Standard Text</FontFamily>
     <FontFamily x:Key="{x:Static scc:ClientResources.InfoPaneFontFamilyKey}">pack://application:,,,/Resources/Fonts/#Federation Standard Text</FontFamily>
@@ -91,28 +114,7 @@
     </LinearGradientBrush>
 
 
-    <SolidColorBrush x:Key="HeaderTextBrush"
-                   PresentationOptions:Freeze="True"
-                   Color="#ffdfdfff" />
-    <SolidColorBrush x:Key="DefaultTextBrush"
-                   PresentationOptions:Freeze="True"
-                   Color="#ffe7d490" />
-    <SolidColorBrush x:Key="LCARS_HeaderBrush"
-                   PresentationOptions:Freeze="True"
-                   Color="#ffdfdfff" />
-    <SolidColorBrush x:Key="LCARS_ParagraphBrush"
-                   PresentationOptions:Freeze="True"
-                   Color="#ffe7d490" />
-    <SolidColorBrush x:Key="LCARS_WarningBrush"
-                   PresentationOptions:Freeze="True"
-                   Color="#FFB90E0A" />
 
-    <SolidColorBrush x:Key="LCARS_BeigeTextBrush"
-                   PresentationOptions:Freeze="True"
-                   Color="#ffe7d490" />
-    <SolidColorBrush x:Key="LCARS_DisabledTextBrush"
-                   PresentationOptions:Freeze="True"
-                   Color="#ff999999" />
 
     <!--
     

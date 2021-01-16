@@ -1651,14 +1651,14 @@
                                     ContentTemplateSelector="{TemplateBinding ContentTemplateSelector}"
                                     Margin="0,0,0,1"
                                     TextBlock.FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
-                                    TextBlock.Foreground="{StaticResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"
+                                    TextBlock.Foreground="{StaticResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}"
                                     TextBlock.FontSize="18pt"
                                     RecognizesAccessKey="True"
                                     VerticalAlignment="Stretch"
                                     HorizontalAlignment="Stretch" />
                 </Border>
                 <Border x:Name="BackgroundBorder"
-                        Background="{StaticResource {x:Static scc:ClientResources.HighlightBrushKey}}"
+                        Background="{StaticResource {x:Static scc:ClientResources.ImageBorderBrushKey}}"
                         MinWidth="14"
                         HorizontalAlignment="Stretch" />
               </DockPanel>
@@ -1742,7 +1742,7 @@
                 <xcdg:FixedCellPanel x:Name="PART_CellsHost"
                                      DockPanel.Dock="Left"
                                      Margin="{TemplateBinding BorderThickness}" />
-                <Rectangle Fill="{StaticResource LCARS_Dom1Gradient_Left_Right}" />
+                                <Rectangle Fill="{StaticResource {x:Static scc:ClientResources.ImageBorderBrushKey}}" />
               </DockPanel>
             </Decorator>
           </Grid>
