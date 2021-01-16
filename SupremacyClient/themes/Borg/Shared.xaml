@@ -15,19 +15,43 @@
                     xmlns:system="clr-namespace:System;assembly=mscorlib"> 
 
         <!--Usage: {StaticResource HeaderTextBrush}-->
-    <SolidColorBrush x:Key="BorderBrush"
-                   Color="YellowGreen" />
+    <SolidColorBrush Color="YellowGreen" x:Key="BorderBrush" />
+    <SolidColorBrush Color="#ff00ff7f" x:Key="HeaderTextBrush"/>
+    <SolidColorBrush Color="#ff00ff7f" x:Key="LCARS_HeaderBrush"/>
+    <SolidColorBrush Color="#ff9bd811" x:Key="DefaultTextBrush"/>
+    <SolidColorBrush Color="#FF85B20E" x:Key="DisabledTextBrush"/>
+    <SolidColorBrush Color="#7f87DB7A" x:Key="SelectionBrush"/>
+    
+    <SolidColorBrush Color="#ff000000" x:Key="{x:Static scc:ClientResources.ControlTextForegroundBrushKey}"/>   <!--Black-->
+    <SolidColorBrush Color="#ff77DC60" x:Key="{x:Static scc:ClientResources.HeaderTextForegroundBrushKey}"/>   <!--LightGreen-->
+    <SolidColorBrush Color="#ff36E50E" x:Key="{x:Static scc:ClientResources.DefaultTextForegroundBrushKey}"/>  <!--Green-->
 
-    <SolidColorBrush x:Key="HeaderTextBrush"
-                   Color="#ff00ff7f"/>
-    <SolidColorBrush x:Key="LCARS_HeaderBrush"
-                   Color="#ff00ff7f"/>
-    <SolidColorBrush x:Key="DefaultTextBrush"
-                   Color="#ff9bd811"/>
-    <SolidColorBrush x:Key="DisabledTextBrush"
-                   Color="#FF85B20E"/>
-    <SolidColorBrush x:Key="SelectionBrush"
-                   Color="#7f87DB7A" />
+    <!--<SolidColorBrush Color="#ffadff2f" x:Key="{x:Static scc:ClientResources.ImageBorderBrushKey}"/>    --><!--GreenYellow-->
+    <SolidColorBrush Color="#ff41A52A" x:Key="{x:Static scc:ClientResources.ImageBorderBrushKey}"/> <!--GreenYellow-->
+    <SolidColorBrush Color="#ff41A52A" x:Key="{x:Static scc:ClientResources.DisabledTextForegroundBrushKey}"/>   <!--DarkGreen-->
+    <SolidColorBrush Color="#7f87DB7A" x:Key="{x:Static scc:ClientResources.HighlightBrushKey}"/>  <!--Transparent-->
+    <SolidColorBrush Color="#7f666666" x:Key="{x:Static scc:ClientResources.InactiveHighlightBrushKey}"/>   <!--Transparent-->
+    <SolidColorBrush Color="#FFB90E0A" x:Key="{x:Static scc:ClientResources.AlertTextForegroundBrushKey}"/>
+    <SolidColorBrush Color="#7f87DB7A" x:Key="{x:Static SystemColors.HighlightBrushKey}" />  <!--Transparent-->
+
+    <SolidColorBrush Color="#ffe7d490" x:Key="LCARS_BeigeTextBrush"/>
+    <SolidColorBrush Color="#ff999999" x:Key="LCARS_DisabledTextBrush"/>
+
+    <!--LinearGradientBrush-->
+    <LinearGradientBrush x:Key="{x:Static scc:ClientResources.HorizontalSeparatorBackgroundBrushKey}" PresentationOptions:Freeze="True" StartPoint="0,0" EndPoint="0,1">
+        <GradientStop Color="#ffCF88DF" Offset="0" />
+        <GradientStop Color="#ffD335F6" Offset="1" />
+    </LinearGradientBrush>
+
+    <LinearGradientBrush x:Key="{x:Static scc:ClientResources.VerticalSeparatorBackgroundBrushKey}" PresentationOptions:Freeze="True" StartPoint="0,0" EndPoint="1,0">
+        <GradientStop Color="#ffD335F6" Offset="1" />
+        <GradientStop Color="#ffCF88DF" Offset="0" />
+    </LinearGradientBrush>
+
+    <LinearGradientBrush x:Key="{x:Static scc:ClientResources.ControlDisabledBorderBrushKey}" PresentationOptions:Freeze="True" StartPoint="0,0" EndPoint="0,1">
+        <GradientStop Color="#afcccccc" Offset="0" />
+        <GradientStop Color="#af666666" Offset="1" />
+    </LinearGradientBrush>
 
 
     <!--HeaderFont-->
@@ -50,64 +74,8 @@
     <system:Double x:Key="{x:Static scc:ClientResources.SmallFontSizeKey}">10</system:Double>
     <FontWeight x:Key="{x:Static scc:ClientResources.DefaultFontWeightKey}">Normal</FontWeight>-->
 
-    <SolidColorBrush x:Key="{x:Static scc:ClientResources.ControlTextForegroundBrushKey}"
-                    Color="#ff000000" />   <!--Black-->
-    <!--<SolidColorBrush x:Key="{x:Static scc:ClientResources.ControlTextForegroundBrushKey}"
-                    Color="#ff77DC60" />  --><!--LightGreen-->
-    <SolidColorBrush x:Key="{x:Static scc:ClientResources.HeaderTextForegroundBrushKey}"
-                    Color="#ff77DC60" />   <!--LightGreen-->
-    <SolidColorBrush x:Key="{x:Static scc:ClientResources.DefaultTextForegroundBrushKey}"
-                    Color="#ff36E50E" />  <!--Green-->
-    <SolidColorBrush x:Key="{x:Static scc:ClientResources.ImageBorderBrushKey}"
-                    Color="GreenYellow" /> <!--GreenYellow-->
-    <SolidColorBrush x:Key="{x:Static scc:ClientResources.DisabledTextForegroundBrushKey}"
-                    Color="#ff41A52A" />   <!--DarkGreen-->
-    <SolidColorBrush x:Key="{x:Static scc:ClientResources.HighlightBrushKey}"
-                    Color="#7f87DB7A" />  <!--Transparent-->
-    <SolidColorBrush x:Key="{x:Static scc:ClientResources.InactiveHighlightBrushKey}"
-                    Color="#7f666666" />   <!--Transparent-->
-    <SolidColorBrush x:Key="{x:Static scc:ClientResources.AlertTextForegroundBrushKey}"
-                    Color="#FFB90E0A" />
-    <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}"
-                    Color="#7f87DB7A" />  <!--Transparent-->
 
-    <!--LinearGradientBrush-->
-    <LinearGradientBrush x:Key="{x:Static scc:ClientResources.HorizontalSeparatorBackgroundBrushKey}"
-                       PresentationOptions:Freeze="True"
-                       StartPoint="0,0"
-                       EndPoint="0,1">
-        <GradientStop Color="#ffCF88DF"
-                  Offset="0" />
-        <GradientStop Color="#ffD335F6"
-                  Offset="1" />
-    </LinearGradientBrush>
 
-    <LinearGradientBrush x:Key="{x:Static scc:ClientResources.VerticalSeparatorBackgroundBrushKey}"
-                       PresentationOptions:Freeze="True"
-                       StartPoint="0,0"
-                       EndPoint="1,0">
-        <GradientStop Color="#ffD335F6"
-                  Offset="1" />
-        <GradientStop Color="#ffCF88DF"
-                  Offset="0" />
-    </LinearGradientBrush>
-
-    <LinearGradientBrush x:Key="{x:Static scc:ClientResources.ControlDisabledBorderBrushKey}"
-                     PresentationOptions:Freeze="True"
-                     StartPoint="0,0"
-                     EndPoint="0,1">
-        <GradientStop Color="#afcccccc"
-                  Offset="0" />
-        <GradientStop Color="#af666666"
-                  Offset="1" />
-    </LinearGradientBrush>
-
-    <SolidColorBrush x:Key="LCARS_BeigeTextBrush"
-                   PresentationOptions:Freeze="True"
-                   Color="#ffe7d490" />
-    <SolidColorBrush x:Key="LCARS_DisabledTextBrush"
-                   PresentationOptions:Freeze="True"
-                   Color="#ff999999" />
 
     <!--
     
@@ -451,35 +419,37 @@
                     Grid.Column="0"
                     Margin="0"
                     Padding="7,2,7,2"
-                    Background="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Background}">
-                            <ContentPresenter Content="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Content}"
-                                HorizontalAlignment="Center"
-                                VerticalAlignment="Center"
-                                RecognizesAccessKey="True" />
+                                Background="LawnGreen">
+                            <!--Background="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Background}">-->
+                            
+                    <ContentPresenter Content="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Content}"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        RecognizesAccessKey="True" />
                         </Border>
                     </Grid>
                     <ControlTemplate.Triggers>
-
-                            <Trigger Property="IsEnabled"
+                        <!--IsEnabled-->
+                        <Trigger Property="IsEnabled"
                      Value="False">
                                 <Setter TargetName="ContentBorder"
                       Property="Opacity"
                       Value="0.33" />
-
                             </Trigger>
                             <Trigger Property="IsEnabled"
                      Value="True">
-
                             <Setter TargetName="ContentBorder"
                       Property="Background"
-                      Value="Transparent" />
+                      Value="DarkGreen" />
                         </Trigger>
+                        <!--IsMouseOver-->
                             <Trigger Property="IsMouseOver"
                      Value="True">
                                 <Setter TargetName="ContentBorder"
                       Property="Background"
                       Value="{StaticResource LCARS_BorgHoverGreenGradient_Top_Bottom}" />
                             </Trigger>
+                        <!--IsPressed-->
                             <Trigger Property="IsPressed"
                      Value="True">
                                 <Setter TargetName="ContentBorder"
@@ -2219,6 +2189,7 @@
         </Setter>
     </Style>
 
+    <!--Start of ComboText at all-->
     <!--<ControlTemplate x:Key="LCARS_ComboBoxToggleButton"
                    TargetType="{x:Type ToggleButton}">
         <Grid>
@@ -2481,6 +2452,7 @@
             </Setter.Value>
         </Setter>
     </Style>-->
+    <!--End of ComboText at all-->
 
 
 </ResourceDictionary>

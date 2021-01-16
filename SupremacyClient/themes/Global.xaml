@@ -7110,7 +7110,12 @@
                 Value="16" />
         <Setter Property="MinHeight"
                 Value="16" />
-        <Setter Property="Template"
+          <!--this was just a test-->
+                <!--<Setter Property="Foreground"
+                Value="Black" />
+                <Setter Property="Background"
+                Value="{StaticResource {x:Static scc:ClientResources.HighlightBrushKey}}" />-->
+                <Setter Property="Template"
                 Value="{StaticResource {x:Static scc:GameButton.TinyTemplateKey}}" />
       </Trigger>
     </Style.Triggers>
