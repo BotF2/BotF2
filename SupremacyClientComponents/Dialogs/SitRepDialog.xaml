@@ -183,8 +183,11 @@
         <controls:GameButton x:Name="FilterButton" Click="OnFilterButtonClick"
                     Visibility="Visible" Height="20"  Grid.Row="0" Grid.RowSpan="1" Grid.Column="7" Margin="0,0,0,0" 
                     Label="{scc:StringResource Key=SITREP_DIALOG_FILTER_BUTTON_TEXT, Case=Upper}"
+        
                     VerticalAlignment="Center" HorizontalAlignment="Center" DisplayMode="Tiny"
                     >
+                    <!--Foreground="{DynamicResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"
+                    Background="{DynamicResource {x:Static scc:ClientResources.HighlightBrushKey}}"-->             
             <controls:GameButton.ToolTip>
                 <TextBlock Text="{scc:StringResource Key=SITREP_DIALOG_FILTER_BUTTON_TOOLTIP}" 
                                FontSize="18"/>

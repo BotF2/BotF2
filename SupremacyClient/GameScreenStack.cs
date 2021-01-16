@@ -24,6 +24,7 @@ using Supremacy.Annotations;
 using Supremacy.Client.Events;
 
 using TransitionEffects;
+using Supremacy.Utility;
 
 namespace Supremacy.Client
 {
@@ -258,7 +259,7 @@ namespace Supremacy.Client
         public void AddScreen(Control screen)
         {
             // works
-            //GameLog.Client.GameData.DebugFormat("GameScreenStack.cs: screen={0}", screen);
+            GameLog.Client.UI.DebugFormat("GameScreenStack.cs: screen={0}", screen);
             if (screen == null)
                 throw new ArgumentNullException("screen");
             lock (_screens)
