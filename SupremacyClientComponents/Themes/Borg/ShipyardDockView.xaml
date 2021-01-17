@@ -33,15 +33,16 @@
     <Setter Property="UseLayoutRounding" Value="True" />
     <Setter Property="Cursor" Value="Hand" />
     <Setter Property="ToolTip" Value="Build a Ship" />
-    <Setter Property="Width" Value="45" />
-    <Setter Property="MaxHeight" Value="50" />
+   
+    <Setter Property="Width" Value="50" />
+    <Setter Property="MaxHeight" Value="70" />
     <Setter Property="Template">
       <Setter.Value>
         <ControlTemplate TargetType="{x:Type Button}">
           <DockPanel>
-            <Border CornerRadius="3" BorderThickness="3" DockPanel.Dock="Left" Width="50" Height="50" VerticalAlignment="Top" HorizontalAlignment="Left">
+            <Border CornerRadius="3" BorderThickness="1" DockPanel.Dock="Left" Width="50" Height="70" VerticalAlignment="Top" HorizontalAlignment="Left">
               <Border.Background>
-                <RadialGradientBrush GradientOrigin="0.5,0.333333" RadiusY="0.666667" RadiusX="1" Opacity="0.6">
+                <RadialGradientBrush GradientOrigin="0.5,0.333333" RadiusY="0.666667" RadiusX="1" Opacity="0.2">
                   <GradientStop Color="#FFC8C8C8" Offset="0"/>
                   <GradientStop Color="Black" Offset="1"/>
                 </RadialGradientBrush>
@@ -52,8 +53,21 @@
                   <GradientStop Color="LightGreen" Offset="1" />
                 </RadialGradientBrush>
               </Border.BorderBrush>
-            <Image x:Name="ImageContent" Opacity="1" Source="vfs:///Resources/UI/Federation/ColonyScreen/build_ship.png" Stretch="Fill" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-
+              <StackPanel>
+                <Image x:Name="ImageContent"
+                       Margin="-1,3,0,0"
+                       Opacity="1"
+                       Width="50"
+                       Height="50"
+                       Source="vfs:///Resources/UI/Borg/ColonyScreen/build_ship.png" Stretch="UniformToFill"
+                       HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                <TextBlock x:Name="Build"
+                           Text="{xs:LocalizedString Group={x:Static s:LocalizedTextGroups.ColonyScreen}, Entry=BUILT_TOOLTIP}" 
+                           Foreground="LightGreen"
+                           FontWeight="SemiBold"
+                           Margin="3,0,3,3"
+                           HorizontalAlignment="Center" FontSize="12" />
+              </StackPanel>
           </Border>
           </DockPanel>
           <ControlTemplate.Triggers>
@@ -148,21 +162,27 @@
     <Setter Property="Template">
       <Setter.Value>
         <ControlTemplate TargetType="{x:Type Button}">
-          <Border x:Name="OuterBorder" CornerRadius="3" BorderThickness="1">
+          <Border x:Name="OuterBorder" CornerRadius="3" BorderThickness="1" >
             <Border.Background>
-              <RadialGradientBrush GradientOrigin="0.5,0.333333" RadiusY="0.666667" RadiusX="1">
+              <RadialGradientBrush GradientOrigin="0.5,0.333333" RadiusY="0.666667" RadiusX="1" Opacity="0.2">
                 <GradientStop Color="#FFC8C8C8" Offset="0" />
                 <GradientStop Color="#FF646464" Offset="1" />
               </RadialGradientBrush>
             </Border.Background>
             <Border.BorderBrush>
               <RadialGradientBrush GradientOrigin="0.5,0.333333" RadiusY="0.666667" RadiusX="1">
-                <GradientStop Color="#FF969696" Offset="0" />
-                <GradientStop Color="#FF323232" Offset="1" />
+                                <GradientStop Color="#bfdc1e" Offset="0" />
+                                <GradientStop Color="#f9f63e" Offset="1" />
               </RadialGradientBrush>
             </Border.BorderBrush>
             <StackPanel>
-              <Ellipse x:Name="PowerIndicator" Width="12" Height="12" Margin="0,6,0,0" Stroke="{StaticResource RedLightStroke}" StrokeThickness="1" Fill="{StaticResource RedLightFill}" />
+              <TextBlock x:Name="PowerText"
+                         Text="{xs:LocalizedString Group={x:Static s:LocalizedTextGroups.ColonyScreen}, Entry=OFF_TOOLTIP}"
+                         Foreground="Red"
+                         FontWeight="Bold"
+                         Margin="0,0,0,0"
+                         HorizontalAlignment="Center"/>
+              <Ellipse x:Name="PowerIndicator" Width="18" Height="18" Margin="0,3,0,0" Stroke="{StaticResource RedLightStroke}" StrokeThickness="1" Fill="{StaticResource RedLightFill}" />
               <Path Width="15" Height="21" Margin="0,3,0,0" Stretch="Uniform" Fill="#FFFFFF00" Data="F1 M 20,0L 2,16L 8,16L 0,28L 18,12L 12,12L 20,0 Z "/>
               <TextBlock FontSize="12" Text="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:ShipyardDockView}}, Path=(local:ShipyardDockView.BuildSlot).(s:ShipyardBuildSlot.Shipyard).(s:Shipyard.ShipyardDesign).(s:ShipyardDesign.BuildSlotEnergyCost)}" HorizontalAlignment="Center" Margin="0,0,0,3" />
             </StackPanel>
@@ -173,6 +193,8 @@
             </Trigger>
             <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:ShipyardDockView}}, Path=(local:ShipyardDockView.BuildSlot).(s:ShipyardBuildSlot.IsActive), Mode=OneWay}"
                          Value="True">
+              <Setter TargetName="PowerText" Property="TextBlock.Foreground" Value="GreenYellow" />
+              <Setter TargetName="PowerText" Property="TextBlock.Text" Value="{xs:LocalizedString Group={x:Static s:LocalizedTextGroups.ColonyScreen}, Entry=ON_TOOLTIP}" />
               <Setter TargetName="PowerIndicator" Property="Stroke" Value="{StaticResource GreenLightStroke}" />
               <Setter TargetName="PowerIndicator" Property="Fill" Value="{StaticResource GreenLightFill}" />
             </DataTrigger>
@@ -224,33 +246,50 @@
           <Grid x:Name="WholeDockView">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="235"/>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="Auto"/>
-                            
             </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+               <Button x:Name="PowerButton"
+                    Grid.Column="0"
+                    Grid.ColumnSpan="1"
+                    Grid.Row="0"
+                    Style="{StaticResource ToggleConstructionBayButton}"
+                    Width="52"
+                            
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Margin="0,0,0,10"
+                    Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Views:ColonyScreenView}, Path=DataContext.(Views:ColonyScreenPresentationModel.ToggleShipyardBuildSlotCommand)}"
+                    CommandParameter="{Binding}">
+                 <Button.ToolTip>
+                    <MultiBinding Converter="{x:Static local:StringFormatConverter.Instance}"
+                    ConverterParameter="{xs:LocalizedString Group={x:Static s:LocalizedTextGroups.ColonyScreen}, Entry=TOGGLE_CONSTRUCTION_BAY_BUTTON_TOOLTIP_OFFLINE}">
+                        <Binding Path="(s:ShipyardBuildSlot.Shipyard).(s:Shipyard.ShipyardDesign).(s:ShipyardDesign.BuildSlotEnergyCost)" Mode="OneWay" />
+                    </MultiBinding>
+                 </Button.ToolTip>
+               </Button>
             <Button x:Name="BuildShipButton" 
                     Grid.Column="0"
+                    Grid.ColumnSpan="2"
+                    Grid.Row="0"
                     Style="{StaticResource BuildShipButton}" 
-                    Width="50" Height="50" 
+                    Width="50" Height="70" 
                     VerticalAlignment="Top" 
                     HorizontalAlignment="Left" 
-                    Margin="0,3,0,0" 
+                    Margin="1,85,0,0" 
                     Visibility="Visible"                      
                     ToolTip="{xs:LocalizedString Group={x:Static s:LocalizedTextGroups.ColonyScreen}, Entry=BUILT_NEW_SHIP_TOOLTIP}" 
                     Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Views:ColonyScreenView}, Path=DataContext.(Views:ColonyScreenPresentationModel.SelectShipBuildProjectCommand)}" 
                     CommandParameter="{Binding}" />
-            <Button x:Name="PowerButton" Style="{StaticResource ToggleConstructionBayButton}" Grid.Column="1" Width="24" VerticalAlignment="Top" Margin="0,3,0,0" Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Views:ColonyScreenView}, Path=DataContext.(Views:ColonyScreenPresentationModel.ToggleShipyardBuildSlotCommand)}" CommandParameter="{Binding}">
-              <Button.ToolTip>
-                <MultiBinding Converter="{x:Static local:StringFormatConverter.Instance}" ConverterParameter="{xs:LocalizedString Group={x:Static s:LocalizedTextGroups.ColonyScreen}, Entry=TOGGLE_CONSTRUCTION_BAY_BUTTON_TOOLTIP_OFFLINE}">
-                  <Binding Path="(s:ShipyardBuildSlot.Shipyard).(s:Shipyard.ShipyardDesign).(s:ShipyardDesign.BuildSlotEnergyCost)" Mode="OneWay" />
-                </MultiBinding>
-              </Button.ToolTip>
-            </Button>
 
-            <Grid x:Name="ImageSite" Grid.Column="2" Width="235" Height="145" Opacity="0.33">
+            <Grid x:Name="ImageSite" Grid.Column="1" Grid.ColumnSpan="1" Grid.Row="0" Width="235" Height="145" Opacity="0.33">
                 <!-- Background image of Bay -->
-               <Image Source="vfs:///Resources/UI/Borg/ColonyScreen/shipyard_dock.png" HorizontalAlignment="Center" VerticalAlignment="Top" />
+               <Image Source="vfs:///Resources/UI/Borg/ColonyScreen/shipyard_dock.png" Margin="5,0,0,0" HorizontalAlignment="Center" VerticalAlignment="Top" />
                <!--CancelButton: 150 to 125 is too big-->
                <Button x:Name="CancelButton" 
                     Style="{StaticResource CancelShipConstructionButton}" 
@@ -263,7 +302,7 @@
                     CommandParameter="{Binding Path=(s:BuildSlot.Project)}" />
             </Grid>
 
-            <StackPanel Grid.Column="3" Width="100">
+            <StackPanel Grid.Column="3" Grid.Row="0" Width="100">
                 <Grid x:Name="ResourcesSite" Margin="0,0,0,0" Opacity="0.33" Visibility="Visible">
               <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
