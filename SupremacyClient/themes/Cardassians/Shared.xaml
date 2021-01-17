@@ -11,91 +11,95 @@
                     xmlns:s="http://schemas.startreksupremacy.com/xaml/core"
                     xmlns:scc="http://schemas.startreksupremacy.com/xaml/presentation"
                     xmlns:xcdg="http://schemas.xceed.com/wpf/xaml/datagrid"
+                    xmlns:ui="clr-namespace:Supremacy.UI;assembly=SupremacyUI"
                     xmlns:system="clr-namespace:System;assembly=mscorlib">
 
+    <!--somewhere here inside....-->
+    <!--Buttons: Main: <Style TargetType="{x:Type scc:GameButton}">
+                 more: LCARS_BorderButtonStyle / LCARS_SimpleButtonStyle / LCARS_BorderToggleButtonStyle / LCARS_StandardButtonStyle
+    Foreground:  {StaticResource HeaderTextBrush}
+    IsEnabled:   {StaticResource LCARS_Card_Goldenrod1Gradient_Top_Bottom}
+    IsMouseOver: {StaticResource LCARS_Card_HoverGradient_Top_Bottom}
+    IsPressed:   {StaticResource LCARS_Card_Tan2Gradient_Top_Bottom}
+    IsChecked:   LCARS_Card_Tan2Gradient_Top_Bottom    
+    
+    GameButton - Templates: // e.g. Economy
+    <Trigger Property="Context" Value="HorizontalGroupItem">
+    <Trigger Property="DisplayMode" Value="GroupedHorizontally">
+    <Trigger Property="DisplayMode" Value="GroupedVertically">
+    <Trigger Property="Context" Value="VerticalGroupItem">
+    <Trigger Property="DisplayMode" Value="CheckBox">
+    <Trigger Property="DisplayMode" Value="Hyperlink">
+    <Trigger Property="DisplayMode" Value="Minimal">
+    <Trigger Property="DisplayMode" Value="Tiny">
+    -->
+
+    <!-- COLORS AND BRUSHES -->
+    
     <!--Usage: {StaticResource HeaderTextBrush}-->
-    <SolidColorBrush x:Key="BorderBrush"
-                   Color="Goldenrod" />
+    <SolidColorBrush Color="#ffffc138" x:Key="LCARS_HeaderBrush"/>
 
-    <SolidColorBrush x:Key="HeaderTextBrush"
-                   Color="#ffffc125"/>
-    <SolidColorBrush x:Key="LCARS_HeaderBrush"
-                   Color="#ffffc125"/>
-    <SolidColorBrush x:Key="DefaultTextBrush"
-                   Color="#ffDCB960"/> 
-  <SolidColorBrush x:Key="DisabledTextBrush"
-                   Color="#ffCD9B1D"/>
-  <SolidColorBrush x:Key="SelectionBrush"
-                   Color="#7f87DB7A" />
+    <SolidColorBrush Color="#ffffc125" x:Key="HeaderTextBrush"/>
+    <SolidColorBrush Color="#ffffc125" x:Key="{x:Static scc:ClientResources.HeaderTextForegroundBrushKey}"/>
+    <SolidColorBrush Color="#ffDCB960" x:Key="DefaultTextBrush"/>
+    <SolidColorBrush Color="#ffDCB960" x:Key="{x:Static scc:ClientResources.DefaultTextForegroundBrushKey}"/>
+    <SolidColorBrush Color="#ffCD9B1D" x:Key="DisabledTextBrush"/>
+    <SolidColorBrush Color="#ffCD9B1D" x:Key="{x:Static scc:ClientResources.DisabledTextForegroundBrushKey}"/>
+    <SolidColorBrush Color="#7f87DB7A" x:Key="SelectionBrush"/>
 
-    <FontFamily x:Key="{x:Static scc:ClientResources.HeaderFontFamilyKey}">pack://application:,,,/Resources/Fonts/#Federation Standard Text</FontFamily>
-  <FontFamily x:Key="{x:Static scc:ClientResources.DefaultFontFamilyKey}">pack://application:,,,/Resources/Fonts/#Federation Standard Text</FontFamily>
-    <FontFamily x:Key="{x:Static scc:ClientResources.InfoPaneFontFamilyKey}">pack://application:,,,/Resources/Fonts/#Federation Standard Text</FontFamily>
+    <SolidColorBrush Color="#7f666666" x:Key="{x:Static scc:ClientResources.InactiveHighlightBrushKey}"/>
+    <SolidColorBrush Color="#FFB90E0A" x:Key="{x:Static scc:ClientResources.AlertTextForegroundBrushKey}"/>
 
-  <system:Double x:Key="{x:Static scc:ClientResources.HeaderFontSizeKey}">18</system:Double>
-  <system:Double x:Key="{x:Static scc:ClientResources.DefaultFontSizeKey}">14</system:Double>
-  <system:Double x:Key="{x:Static scc:ClientResources.InfoPaneFontSizeKey}">16</system:Double>
+    <SolidColorBrush Color="#ff000000" x:Key="{x:Static scc:ClientResources.ControlTextForegroundBrushKey}"/>
+    <SolidColorBrush Color="#ffDCB960" x:Key="{x:Static scc:ClientResources.HighlightBrushKey}"/>
+    <SolidColorBrush Color="#ffDCB960" x:Key="{x:Static SystemColors.HighlightBrushKey}" />
 
-    <FontWeight x:Key="{x:Static scc:ClientResources.HeaderFontWeightKey}">Normal</FontWeight>
-  <FontWeight x:Key="{x:Static scc:ClientResources.DefaultFontWeightKey}">Normal</FontWeight>
-    <FontWeight x:Key="{x:Static scc:ClientResources.InfoPaneFontWeightKey}">Normal</FontWeight>
+    <SolidColorBrush Color="#ffDCB960" x:Key="BorderBrush" />
+    <SolidColorBrush Color="#ffDCB960" x:Key="{x:Static scc:ClientResources.ImageBorderBrushKey}"/>
 
-  <SolidColorBrush x:Key="{x:Static scc:ClientResources.ControlTextForegroundBrushKey}"
-                   Color="#ff000000" />
-  <SolidColorBrush x:Key="{x:Static scc:ClientResources.HeaderTextForegroundBrushKey}"
-                   Color="#ff77DC60" />
-  <SolidColorBrush x:Key="{x:Static scc:ClientResources.DefaultTextForegroundBrushKey}"
-                   Color="#ff36E50E" />
-  <SolidColorBrush x:Key="{x:Static scc:ClientResources.ImageBorderBrushKey}"
-                   Color="Goldenrod" />
-  <SolidColorBrush x:Key="{x:Static scc:ClientResources.DisabledTextForegroundBrushKey}"
-                   Color="#ff41A52A" />
-  <SolidColorBrush x:Key="{x:Static scc:ClientResources.HighlightBrushKey}"
-                   Color="#7f87DB7A" />
-  <SolidColorBrush x:Key="{x:Static scc:ClientResources.InactiveHighlightBrushKey}"
-                   Color="#7f666666" />
-  <SolidColorBrush x:Key="{x:Static scc:ClientResources.AlertTextForegroundBrushKey}"
-                   Color="#FFB90E0A" />
-  <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}"
-                   Color="#7f87DB7A" />
+    <SolidColorBrush Color="#ffDCB960" x:Key="LCARS_ParagraphBrush" />
+    <SolidColorBrush Color="#FFFB6B1F" x:Key="LCARS_WarningBrush" />
+    <SolidColorBrush Color="#ffDCB960" x:Key="LCARS_BeigeTextBrush" />
+
 
     <!--LinearGradientBrush-->
-    <LinearGradientBrush x:Key="{x:Static scc:ClientResources.HorizontalSeparatorBackgroundBrushKey}"
-                       PresentationOptions:Freeze="True"
-                       StartPoint="0,0"
-                       EndPoint="0,1">
-        <GradientStop Color="#ffCF88DF"
-                  Offset="0" />
-        <GradientStop Color="#ffD335F6"
-                  Offset="1" />
+    <LinearGradientBrush x:Key="SeparatorBackgroundBrush" StartPoint="0,0" EndPoint="0,1">
+        <GradientStop Color="#FF8B6624" Offset="0" />
+        <GradientStop Color="#FFED5600" Offset="1" />
     </LinearGradientBrush>
 
-    <LinearGradientBrush x:Key="{x:Static scc:ClientResources.VerticalSeparatorBackgroundBrushKey}"
-                       PresentationOptions:Freeze="True"
-                       StartPoint="0,0"
-                       EndPoint="1,0">
-        <GradientStop Color="#ffD335F6"
-                  Offset="1" />
-        <GradientStop Color="#ffCF88DF"
-                  Offset="0" />
+    <LinearGradientBrush x:Key="{x:Static scc:ClientResources.VerticalSeparatorBackgroundBrushKey}" StartPoint="0,0" EndPoint="0,1">
+        <GradientStop Color="#ffed9300" Offset="1" />
+        <GradientStop Color="#ffe7d490" Offset="0" />
     </LinearGradientBrush>
 
-    <LinearGradientBrush x:Key="{x:Static scc:ClientResources.ControlDisabledBorderBrushKey}"
-                     PresentationOptions:Freeze="True"
-                     StartPoint="0,0"
-                     EndPoint="0,1">
-        <GradientStop Color="#afcccccc"
-                  Offset="0" />
-        <GradientStop Color="#af666666"
-                  Offset="1" />
+    <LinearGradientBrush x:Key="{x:Static scc:ClientResources.HorizontalSeparatorBackgroundBrushKey}" StartPoint="0,0" EndPoint="1,0">
+        <GradientStop Color="#ffd6bd6b" Offset="0" />
+        <GradientStop Color="#ffed9300" Offset="1" />
     </LinearGradientBrush>
 
-    <SolidColorBrush x:Key="LCARS_BeigeTextBrush"
-                   PresentationOptions:Freeze="True"
-                   Color="#ffe7d490" />
-    <SolidColorBrush x:Key="LCARS_DisabledTextBrush"
-                   PresentationOptions:Freeze="True"
-                   Color="#ff999999" />
+    <LinearGradientBrush x:Key="{x:Static scc:ClientResources.ControlDisabledBorderBrushKey}" StartPoint="0,0" EndPoint="0,1">
+        <GradientStop Color="#afcccccc" Offset="0" />
+        <GradientStop Color="#af666666" Offset="1" />
+    </LinearGradientBrush>
+
+    
+    
+
+<FontFamily x:Key="{x:Static scc:ClientResources.HeaderFontFamilyKey}">pack://application:,,,/Resources/Fonts/#Federation Standard Text</FontFamily>
+<FontFamily x:Key="{x:Static scc:ClientResources.DefaultFontFamilyKey}">pack://application:,,,/Resources/Fonts/#Federation Standard Text</FontFamily>
+<FontFamily x:Key="{x:Static scc:ClientResources.InfoPaneFontFamilyKey}">pack://application:,,,/Resources/Fonts/#Federation Standard Text</FontFamily>
+
+<system:Double x:Key="{x:Static scc:ClientResources.HeaderFontSizeKey}">18</system:Double>
+<system:Double x:Key="{x:Static scc:ClientResources.DefaultFontSizeKey}">14</system:Double>
+<system:Double x:Key="{x:Static scc:ClientResources.InfoPaneFontSizeKey}">16</system:Double>
+
+<FontWeight x:Key="{x:Static scc:ClientResources.HeaderFontWeightKey}">Normal</FontWeight>
+<FontWeight x:Key="{x:Static scc:ClientResources.DefaultFontWeightKey}">Normal</FontWeight>
+<FontWeight x:Key="{x:Static scc:ClientResources.InfoPaneFontWeightKey}">Normal</FontWeight>
+
+
+
 
     <!--Production and more - complete Tab-->
     <Style TargetType="{x:Type TabControl}"
@@ -127,22 +131,22 @@
                   Grid.Row="0"
                   SnapsToDevicePixels="True"
                   Data="{StaticResource LCARS_Corner_TopLeft_Tall}"
-                  Fill="{StaticResource LCARS_Card_TanGradient_Top_Bottom}" />
+                  Fill="{StaticResource LCARS_Card_Tan1Gradient_Top_Bottom}" />
                         <Path Grid.Column="2"
                   Grid.Row="0"
                   SnapsToDevicePixels="True"
                   Data="{StaticResource LCARS_Corner_TopRight_Tall}"
-                  Fill="{StaticResource LCARS_Card_TanGradient_Top_Bottom}" />
+                  Fill="{StaticResource LCARS_Card_Tan1Gradient_Top_Bottom}" />
                         <Path Grid.Column="0"
                   Grid.Row="2"
                   SnapsToDevicePixels="True"
                   Data="{StaticResource LCARS_Corner_BottomLeft_Tall}"
-                  Fill="{StaticResource LCARS_Card_TanGradient_Top_Bottom}" />
+                  Fill="{StaticResource LCARS_Card_Tan1Gradient_Top_Bottom}" />
                         <Path Grid.Column="2"
                   Grid.Row="2"
                   SnapsToDevicePixels="True"
                   Data="{StaticResource LCARS_Corner_BottomRight_Tall}"
-                  Fill="{StaticResource LCARS_Card_TanGradient_Top_Bottom}" />
+                  Fill="{StaticResource LCARS_Card_Tan1Gradient_Top_Bottom}" />
                         <Rectangle x:Name="LeftEdge"
                        Grid.Column="0"
                        Grid.Row="1"
@@ -226,13 +230,13 @@
                         <Rectangle Grid.Column="0"
                        Width="14"
                        SnapsToDevicePixels="True"
-                       Fill="{StaticResource LCARS_Card_ObsidianGradient_Top_Bottom}" />
+                       Fill="{StaticResource LCARS_Card_ObsidianGradient_Right_Left}" />
                         <scc:PixelSnappingBorder x:Name="Border"
                                      Grid.Column="1"
                                      Margin="3,0,0,0"
                                      Padding="7,0,7,0"
                                      SnapsToDevicePixels="True"
-                                     Background="{StaticResource LCARS_Card_ObsidianGradient_Right_Left}">
+                                     Background="{StaticResource LCARS_AzureGradient_Right_Left}">
                             <ContentPresenter ContentSource="Header"
                                 VerticalAlignment="Center"
                                 SnapsToDevicePixels="True" />
@@ -259,7 +263,7 @@
                       Value="100" />-->
                             <Setter TargetName="Border"
                       Property="Background"
-                      Value="{StaticResource LCARS_CardGoldenrodGradient_Left_Right}" />
+                      Value="{StaticResource LCARS_Card_Goldenrod1Gradient_Left_Right}" />
                         </Trigger>
                         <!--<Trigger Property="IsMouseDown"
                      Value="True">
@@ -280,24 +284,6 @@
     </Style>
     <!--End of TabStyle-->
 
-
-    <LinearGradientBrush x:Key="LCARS_HoverCardGoldenrod2_Top_Bottom"
-                       StartPoint="0,0"
-                       EndPoint="0,1">
-        <GradientStop Color="#FFF4E8C9"
-                  Offset="0" />
-        <GradientStop Color="#FFDAA520"
-                  Offset="1" />
-    </LinearGradientBrush>
-
-    <LinearGradientBrush x:Key="Card_HoverGreenGradient_Top_Bottom"
-                       StartPoint="0,0"
-                       EndPoint="0,1">
-    <GradientStop Color="#FFF4E8C9"
-                  Offset="0" />
-    <GradientStop Color="#FFEA6AAD"
-                  Offset="1" />
-  </LinearGradientBrush>
 
 
     <!--Cardassian GameButton-->
@@ -398,26 +384,28 @@
            </Border>
             <Path x:Name="LeftEdge"
                   Grid.Column="0"
-                  Fill="{StaticResource LCARS_Card_TanGradient_Top_Bottom}"
+                  Fill="{StaticResource LCARS_Card_Tan1Gradient_Top_Bottom}"
                   Data="M 0,25 L 10,10 18,4 26,0 28,0 28,28 26,28 24,26 20,21 12,21 Z"
                   VerticalAlignment="Center"
                   Height="{Binding ElementName=ContentBorder, Path=ActualHeight, Mode=OneWay}"
                   Stretch="Fill" />
             <Path x:Name="RightEdge"
                   Grid.Column="2"
-                  Fill="{StaticResource LCARS_Card_TanGradient_Top_Bottom}"
+                  Fill="{StaticResource LCARS_Card_Tan1Gradient_Top_Bottom}"
                   Data="M 28,3 L 18,18 10,24 2,28 0,28 0,0 2,0 4,2 8,7 16,7 28,3 Z"
                   VerticalAlignment="Center"
                   Height="{Binding ElementName=ContentBorder, Path=ActualHeight, Mode=OneWay}"
                   Stretch="Fill" />
            </Grid>
            <ControlTemplate.Triggers>
+                        <!--IsEnabled-->
                         <Trigger Property="IsEnabled"
                      Value="False">
                             <Setter TargetName="ContentBorder"
                       Property="Opacity"
                       Value="0.33" />
                         </Trigger>
+                        <!--IsMouseOver-->
                         <Trigger Property="IsMouseOver"
                      Value="True">
                             <Setter TargetName="ContentBorder"
@@ -425,22 +413,156 @@
                       Value="{StaticResource LCARS_Card_Tan2Gradient_Top_Bottom}" />
                             <Setter TargetName="LeftEdge"
                       Property="Fill"
-                      Value="{StaticResource LCARS_CardGoldenrodGradient_Top_Bottom}" />
+                      Value="{StaticResource LCARS_Card_Goldenrod1Gradient_Top_Bottom}" />
                             <Setter TargetName="RightEdge"
                       Property="Fill"
                       Value="{StaticResource LCARS_Card_Tan2Gradient_Top_Bottom}" />
                         </Trigger>
+                        <!--IsPressed-->
                         <Trigger Property="IsPressed"
                      Value="True">
                             <Setter TargetName="ContentBorder"
                       Property="Background"
-                      Value="{StaticResource LCARS_CardGoldenrodGradient_Top_Bottom}" />
+                      Value="{StaticResource LCARS_Card_Goldenrod1Gradient_Top_Bottom}" />
                             <Setter TargetName="LeftEdge"
                       Property="Fill"
-                      Value="{StaticResource LCARS_Card_Tan2Gradient_Top_Bottom }" />
+                      Value="{StaticResource LCARS_Card_Tan2Gradient_Top_Bottom}" />
                             <Setter TargetName="RightEdge"
                       Property="Fill"
-                      Value="{StaticResource LCARS_CardGoldenrodGradient_Top_Bottom}" />
+                      Value="{StaticResource LCARS_Card_Goldenrod1Gradient_Top_Bottom}" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="LCARS_BorderButtonStyle"
+         TargetType="{x:Type Button}"
+         BasedOn="{StaticResource LCARS_BaseButtonStyle}">
+        <Setter Property="FontFamily"
+            Value="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}" />
+        <Setter Property="FontSize"
+            Value="16pt" />
+        <Setter Property="ClipToBounds"
+            Value="False" />
+        <Setter Property="Focusable"
+            Value="False" />
+        <Setter Property="Background"
+            Value="{StaticResource LCARS_AzureGradient_Top_Bottom}" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Border x:Name="ContentBorder"
+                    Grid.Column="0"
+                    Margin="0"
+                    Padding="7,2,7,2"
+                    Background="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Background}">
+                            <ContentPresenter Content="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Content}"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                RecognizesAccessKey="True" />
+                        </Border>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <!--IsEnabled-->
+                        <Trigger Property="IsEnabled"
+                     Value="False">
+                            <Setter TargetName="ContentBorder"
+                      Property="Opacity"
+                      Value="0.33" />
+                        </Trigger>
+                        <!--IsMouseOver-->
+                        <Trigger Property="IsMouseOver"
+                     Value="True">
+                            <Setter TargetName="ContentBorder"
+                      Property="Background"
+                      Value="{StaticResource LCARS_Card_HoverGradient_Top_Bottom}" />
+                        </Trigger>
+                        <!--IsPressed-->
+                        <Trigger Property="IsPressed"
+                     Value="True">
+                            <Setter TargetName="ContentBorder"
+                      Property="Background"
+                      Value="{StaticResource LCARS_Card_Goldenrod1Gradient_Top_Bottom}" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!--e.g. CHAT Button in GalaxyMapView-->
+    <Style x:Key="LCARS_BorderToggleButtonStyle"
+         TargetType="{x:Type ToggleButton}"
+         BasedOn="{StaticResource BaseStyle}">
+        <Setter Property="FontFamily"
+            Value="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}" />
+        <Setter Property="FontSize"
+            Value="{StaticResource {x:Static scc:ClientResources.HeaderFontSizeKey}}" />
+        <Setter Property="FontWeight"
+            Value="{StaticResource {x:Static scc:ClientResources.HeaderFontWeightKey}}" />
+        <Setter Property="FontSize"
+            Value="16pt" />
+        <Setter Property="ClipToBounds"
+            Value="False" />
+        <Setter Property="Focusable"
+            Value="False" />
+        <Setter Property="Background"
+            Value="{StaticResource LCARS_AzureGradient_Top_Bottom}" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ToggleButton}">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Border x:Name="ContentBorder"
+                    Grid.Column="0"
+                    Margin="0"
+                    Padding="7,2,7,2"
+                    Background="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Background}">
+                            <ContentPresenter Content="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Content}"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                RecognizesAccessKey="True" />
+                        </Border>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <!--IsEnabled-->
+                        <Trigger Property="IsEnabled"
+                     Value="False">
+                            <Setter TargetName="ContentBorder"
+                      Property="Background"
+                      Value="{StaticResource LCARS_AzureGradient_Top_Bottom}" />
+                            <Setter TargetName="ContentBorder"
+                      Property="Opacity"
+                      Value="0.33" />
+                        </Trigger>
+                        <!--IsMouseOver-->
+                        <Trigger Property="IsMouseOver"
+                     Value="True">
+                            <Setter TargetName="ContentBorder"
+                      Property="Background"
+                      Value="{StaticResource LCARS_Card_Goldenrod2Gradient_Top_Bottom}" />
+                        </Trigger>
+                        <!--IsPressed-->
+                        <Trigger Property="IsPressed"
+                     Value="True">
+                            <Setter TargetName="ContentBorder"
+                      Property="Background"
+                      Value="{StaticResource LCARS_Card_Tan1Gradient_Top_Bottom}" />
+                        </Trigger>
+                        <!--IsChecked-->
+                        <Trigger Property="IsChecked"
+                     Value="True">
+                            <Setter TargetName="ContentBorder"
+                      Property="Background"
+                      Value="{StaticResource LCARS_Card_Tan2Gradient_Top_Bottom}" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
@@ -456,8 +578,9 @@
         <Setter Property="FontSize" Value="16pt" />
         <Setter Property="ClipToBounds" Value="False" />
         <Setter Property="Focusable" Value="False" />
-        <Setter Property="Foreground" Value="{StaticResource LCARS_BorgTextBrush}" />
-        <Setter Property="BorderBrush" Value="YellowGreen" />
+        <Setter Property="Foreground" Value="{StaticResource {x:Static scc:ClientResources.ControlTextForegroundBrushKey}}" />
+        <Setter Property="Background" Value="{StaticResource LCARS_AzureGradient_Top_Bottom}" />
+        <Setter Property="BorderBrush" Value="Goldenrod" />
         <Setter Property="BorderThickness" Value="2" />
         <Setter Property="Padding" Value="16,2,16,2" />
         <Setter Property="Template">
@@ -467,19 +590,22 @@
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
-                        <Border x:Name="ContentBorder" Grid.Column="0" Margin="0" Padding="{TemplateBinding Padding}" Background="Transparent">
+                        <Border x:Name="ContentBorder" Grid.Column="0" Margin="0" Padding="{TemplateBinding Padding}" Background="{StaticResource LCARS_AzureGradient_Top_Bottom}">
                             <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" RecognizesAccessKey="True" />
                         </Border>
                     </Grid>
                     <ControlTemplate.Triggers>
+                        <!--IsEnabled-->
                         <Trigger Property="IsEnabled" Value="False">
-                            <Setter TargetName="ContentBorder" Property="Opacity" Value="0.33" />
+                            <Setter TargetName="ContentBorder" Property="Background" Value="{StaticResource LCARS_AzureGradient_Top_Bottom}" />
                         </Trigger>
+                        <!--IsMouseOver-->
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="ContentBorder" Property="Background" Value="{StaticResource LCARS_Borg1Gradient_Top_Bottom}" />
+                            <Setter TargetName="ContentBorder" Property="Background" Value="{StaticResource LCARS_Card_Goldenrod2Gradient_Top_Bottom}" />
                         </Trigger>
+                        <!--IsPressed-->
                         <Trigger Property="IsPressed" Value="True">
-                            <Setter TargetName="ContentBorder" Property="Background" Value="{StaticResource BORG_GreenGradient_Bottom_Top}" />
+                            <Setter TargetName="ContentBorder" Property="Background" Value="{StaticResource LCARS_Card_Tan2Gradient_Top_Bottom}" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
@@ -493,14 +619,7 @@
   <Style TargetType="{x:Type Button}"
          BasedOn="{StaticResource LCARS_StandardButtonStyle}" />
 
-  <LinearGradientBrush x:Key="SeparatorBackgroundBrush"
-                       StartPoint="0,0"
-                       EndPoint="0,1">
-    <GradientStop Color="#FF8B6624"
-                  Offset="0" />
-    <GradientStop Color="#FFED5600"
-                  Offset="1" />
-  </LinearGradientBrush>
+
 
     <ImageBrush x:Key="FleetSelectionBorderBrush"
               ImageSource="vfs:///Resources/UI/Cardassians/GalaxyScreen/FleetSelectionBorder.png" />
@@ -587,7 +706,7 @@
           </ControlTemplate>
         </Style.Resources>
     <Setter Property="UnitBrush"
-            Value="{StaticResource LCARS_CardGoldenrodGradient_Bottom_Top}" />
+            Value="{StaticResource LCARS_Card_Goldenrod1Gradient_Bottom_Top}" />
     <Setter Property="Template">
       <Setter.Value>
         <ControlTemplate TargetType="{x:Type s:UnitActivationBar}">
@@ -688,7 +807,7 @@
                                     HorizontalAlignment="Stretch" />
                 </Border>
                 <Border x:Name="BackgroundBorder"
-                        Background="{StaticResource LCARS_CardGoldenrod2_Top_Bottom}"
+                        Background="{StaticResource LCARS_Card_Goldenrod2Gradient_Top_Bottom}"
                         MinWidth="14"
                         HorizontalAlignment="Stretch" />
               </DockPanel>
@@ -717,7 +836,7 @@
                      Value="True">
               <Setter TargetName="BackgroundBorder"
                       Property="Background"
-                      Value="{StaticResource LCARS_HoverCardGoldenrod2_Top_Bottom}" />
+                      Value="{StaticResource LCARS_HoverCard_Goldenrod2Gradient_Top_Bottom}" />
             </Trigger>
             <Trigger Property="IsPressed"
                      Value="True">
@@ -772,7 +891,7 @@
                 <xcdg:FixedCellPanel x:Name="PART_CellsHost"
                                      DockPanel.Dock="Left"
                                      Margin="{TemplateBinding BorderThickness}" />
-                <Rectangle Fill="{StaticResource LCARS_CardGoldenrod2_Top_Bottom}" />
+                <Rectangle Fill="{StaticResource LCARS_Card_Goldenrod2Gradient_Top_Bottom}" />
               </DockPanel>
             </Decorator>
           </Grid>
@@ -1062,7 +1181,7 @@
                                         <DrawingBrush>
                                             <DrawingBrush.Drawing>
                                                 <GeometryDrawing PresentationOptions:Freeze="True"
-                                         Brush="{StaticResource LCARS_Card_TanGradient_TopLeft_BottomRight}"
+                                         Brush="{StaticResource LCARS_Card_Tan1Gradient_TopLeft_BottomRight}"
                                          Geometry="F1 M 0,56L 0,20L 10,0 L26,0 L26,38  L18,38 L10,56 Z " />
                                             </DrawingBrush.Drawing>
                                         </DrawingBrush>
@@ -1088,7 +1207,7 @@
                            Grid.Row="0"
                                            Height="28"
                            VerticalAlignment="Top"
-                           Fill="{StaticResource LCARS_CardGoldenrodGradient_Top_Bottom}"
+                           Fill="{StaticResource LCARS_Card_Goldenrod1Gradient_Top_Bottom}"
                            Margin="7,0,0,0" />
                                 <Rectangle Grid.Column="3"
                            Grid.Row="0"
@@ -1147,7 +1266,7 @@
                                     <DrawingBrush>
                                         <DrawingBrush.Drawing>
                                             <GeometryDrawing PresentationOptions:Freeze="True"
-                                       Brush="{StaticResource LCARS_Card_TanGradient_TopLeft_BottomRight}"
+                                       Brush="{StaticResource LCARS_Card_Tan1Gradient_TopLeft_BottomRight}"
                                        Geometry="F1 M0,0L0,36 10,56 26,56 26,18 18,18 10,0 0,0 Z  " />
                                         </DrawingBrush.Drawing>
                                     </DrawingBrush>
@@ -1465,6 +1584,706 @@
             </Setter.Value>
         </Setter>
     </Style>
+
+    <!-- LCARS Side Panel GroupBox Style e.g. Trade Routes, but also used in Combat Window-->
+    <Style TargetType="{x:Type GroupBox}"
+         BasedOn="{StaticResource BaseStyle}">
+        <Setter Property="Background"
+            Value="Transparent" />
+        <Setter Property="KeyboardNavigation.IsTabStop"
+            Value="False" />
+        <Setter Property="Focusable"
+            Value="False" />
+        <Setter Property="FocusVisualStyle"
+            Value="{x:Null}" />
+        <Setter Property="Foreground"
+            Value="{StaticResource LCARS_BlueTextBrush}" />
+        <Setter Property="FontFamily"
+            Value="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}" />
+        <Setter Property="FontSize"
+            Value="18pt" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type GroupBox}">
+                    <DockPanel>
+                        <Grid x:Name="HeaderSite"
+                  Grid.IsSharedSizeScope="False"
+                  DockPanel.Dock="Top">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="28" />
+                                <RowDefinition MaxHeight="14" />
+                            </Grid.RowDefinitions>
+                            <Rectangle x:Name="TopLeftExpanded"
+                         Grid.Column="0"
+                         Grid.Row="0"
+                         Grid.RowSpan="2"
+                         Width="21"
+                         Height="42">
+                                <Rectangle.Fill>
+                                    <DrawingBrush>
+                                        <DrawingBrush.Drawing>
+                                            <GeometryDrawing PresentationOptions:Freeze="True"
+                                       Brush="{StaticResource LCARS_PurpleGradient_TopLeft_BottomRight}"
+                                       Geometry="F1 M -7.62939e-006,56L 3.8147e-006,18.6666C 2.96699e-006,12.4445 2.11928e-006,6.22229 3.11111,3.11121C 6.22222,0 12.4444,0 18.6667,0L 28,0L 28,37.3333L 18.6667,37.3333C 15.5556,37.3333 12.4444,37.3333 10.8889,40.4445C 9.33334,43.5556 9.33334,49.7778 9.33334,56L -7.62939e-006,56 Z " />
+                                        </DrawingBrush.Drawing>
+                                    </DrawingBrush>
+                                </Rectangle.Fill>
+                            </Rectangle>
+                            <ContentControl Grid.Column="1"
+                              Grid.Row="0"
+                              VerticalAlignment="Top"
+                              Margin="7,0,0,0"
+                              Foreground="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Foreground}"
+                              FontSize="18pt">
+                                <ContentPresenter Content="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Header}" />
+                            </ContentControl>
+                            <Rectangle Grid.Column="2"
+                         Grid.Row="0"
+                         Height="28"
+                         VerticalAlignment="Top"
+                         Fill="{StaticResource LCARS_BlueGradient_Left_Right}"
+                         Margin="7,0,0,0" />
+                            <Rectangle Grid.Column="3"
+                         Grid.Row="0"
+                         Width="14"
+                         Height="28"
+                         VerticalAlignment="Top"
+                         Fill="{StaticResource LCARS_OrangeGradient_Left_Right}"
+                         Margin="3,0,0,0" />
+                            <Rectangle Grid.Column="4"
+                         Grid.Row="0"
+                         Width="21"
+                         Height="28"
+                         VerticalAlignment="Top"
+                         Margin="3,0,0,0">
+                                <Rectangle.Fill>
+                                    <DrawingBrush>
+                                        <DrawingBrush.Drawing>
+                                            <GeometryDrawing PresentationOptions:Freeze="True"
+                                       Brush="{StaticResource LCARS_PurpleGradient_TopLeft_BottomRight}"
+                                       Geometry="F1 M 9.33333,0C 20.379,0 28,7.62097 28,18.6666C 28,29.7123 20.379,37.3333 9.33333,37.3333L 8.74201e-007,37.3333L 8.74201e-007,0L 9.33333,0 Z " />
+                                        </DrawingBrush.Drawing>
+                                    </DrawingBrush>
+                                </Rectangle.Fill>
+                            </Rectangle>
+                        </Grid>
+                        <Grid x:Name="ContentSite"
+                  DockPanel.Dock="Bottom">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="7" />
+                                <ColumnDefinition Width="14" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto"
+                               MaxHeight="28" />
+                            </Grid.RowDefinitions>
+                            <!--<Path Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Grid.RowSpan="1" Width="24" Height="12" Stretch="Fill" Fill="{StaticResource LCARS_PurpleGradient_Left_Right}" Margin="0,0,0,0" Data="F1 M 0,16L 1.27157e-006,0L 32,0L 24,0C 18.6667,0 13.3333,0 10.6667,2.66663C 8,5.33337 8,10.6666 8,16L 0,16 Z "/>-->
+                            <Rectangle Grid.Column="0"
+                         Grid.Row="1"
+                         Fill="{StaticResource LCARS_OrangeGradient_Left_Right}"
+                         Width="7"
+                         Margin="0,3,0,3"
+                         Stretch="Fill" />
+                            <Rectangle Grid.Column="0"
+                         Grid.ColumnSpan="2"
+                         Grid.Row="2"
+                         Grid.RowSpan="2"
+                         Width="21"
+                         Height="42">
+                                <Rectangle.Fill>
+                                    <DrawingBrush>
+                                        <DrawingBrush.Drawing>
+                                            <GeometryDrawing PresentationOptions:Freeze="True"
+                                       Brush="{StaticResource LCARS_PurpleGradient_TopLeft_BottomRight}"
+                                       Geometry="F1 M 4.76837e-007,0L 1.19209e-005,28C 1.10732e-005,37.3333 1.02255e-005,46.6667 4.66668,51.3333C 9.33334,56 18.6667,56 28,56L 28,18.6666L 18.6667,18.6666C 15.5556,18.6666 12.4445,18.6666 10.8889,15.5555C 9.33334,12.4445 9.33334,6.22229 9.33334,0L 4.76837e-007,0 Z " />
+                                        </DrawingBrush.Drawing>
+                                    </DrawingBrush>
+                                </Rectangle.Fill>
+                            </Rectangle>
+                            <!--<Path Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="2" Grid.RowSpan="2" Height="42" Width="24" Stretch="Fill" Fill="{StaticResource LCARS_PurpleGradient_TopLeft_BottomRight}" Data="F1 M 9.4739e-015,0L 1.27157e-006,16C 1.27157e-006,16 1.27157e-006,30.7439 1.27157e-006,36.2667C 1.27157e-006,47.3123 8.95431,56 20,56L 32,56L 32,16L 24,16C 18.6667,16 13.3333,16 10.6667,13.3334C 8,10.6666 8,5.33337 8,0L 9.4739e-015,0 Z "/>-->
+                            <Rectangle Grid.Column="2"
+                         Grid.Row="3"
+                         Fill="{StaticResource LCARS_BlueGradient_Left_Right}"
+                         Margin="3,0,0,0"
+                         Height="28"
+                         Stretch="Fill" />
+                            <Rectangle Grid.Column="3"
+                         Grid.Row="3"
+                         Width="21"
+                         Height="28"
+                         VerticalAlignment="Top"
+                         Margin="3,0,0,0">
+                                <Rectangle.Fill>
+                                    <DrawingBrush>
+                                        <DrawingBrush.Drawing>
+                                            <GeometryDrawing PresentationOptions:Freeze="True"
+                                       Brush="{StaticResource LCARS_PurpleGradient_TopLeft_BottomRight}"
+                                       Geometry="F1 M 9.33333,0C 20.379,0 28,7.62097 28,18.6666C 28,29.7123 20.379,37.3333 9.33333,37.3333L 8.74201e-007,37.3333L 8.74201e-007,0L 9.33333,0 Z " />
+                                        </DrawingBrush.Drawing>
+                                    </DrawingBrush>
+                                </Rectangle.Fill>
+                            </Rectangle>
+                            <Border Grid.Column="2"
+                      Grid.ColumnSpan="2"
+                      Grid.Row="0"
+                      Grid.RowSpan="3"
+                      Padding="0,0,14,14">
+                                <ContentPresenter Content="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Content}" />
+                            </Border>
+                        </Grid>
+                    </DockPanel>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!--used for game inside, upper left (Turn/Empire Info/)-->
+    <ControlTemplate x:Key="{x:Static scc:GameButton.GroupedHorizontallyTemplateKey}"
+                   TargetType="{x:Type scc:GameButton}">
+        <DockPanel LastChildFill="True">
+            <Rectangle DockPanel.Dock="Left"
+                 Fill="{StaticResource LCARS_OrangeGradient_Left_Right}"
+                 Width="12"
+                 Margin="0,0,2,0" />
+
+            <ui:ButtonChrome x:Name="ButtonChrome"
+                       Background="{StaticResource LCARS_BlueGradient_Left_Right}"
+                       DisabledBackground="{StaticResource LCARS_BlueGradient_Left_Right}"
+                       HoverBackground="{StaticResource LCARS_HoverBlueGradient_Left_Right}"
+                       PressedBackground="{StaticResource LCARS_BlueGradient_Right_Left}"
+                       RenderMouseOver="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=IsMouseOver}"
+                       RenderPressed="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=IsPressed}">
+                <DockPanel LastChildFill="True">
+                    <Border x:Name="Decorations"
+                  DockPanel.Dock="Right"
+                  Margin="4"
+                  Padding="2"
+                  Background="Black"
+                  HorizontalAlignment="Right"
+                  VerticalAlignment="Center"
+                  Visibility="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(scc:GameControlBase.HasImage), Converter={StaticResource BooleanToVisibilityConverter}}">
+                        <Image Width="16"
+                   Height="16"
+                   Stretch="Uniform"
+                   StretchDirection="DownOnly"
+                   VerticalAlignment="Center">
+                            <Image.Source>
+                                <MultiBinding Converter="{scc:CoalesceConverter}">
+                                    <Binding RelativeSource="{RelativeSource TemplatedParent}"
+                           Path="ImageSourceSmall" />
+                                    <Binding RelativeSource="{RelativeSource TemplatedParent}"
+                           Path="ImageSourceLarge" />
+                                </MultiBinding>
+                            </Image.Source>
+                        </Image>
+                    </Border>
+                    <Border x:Name="ContentBorder"
+                  Background="{Binding ElementName=ButtonChrome, Path=RenderBackground}"
+                  Padding="{TemplateBinding Padding}">
+                        <ContentPresenter RecognizesAccessKey="True">
+                            <ContentPresenter.Content>
+                                <AccessText Text="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Label}"
+                            HorizontalAlignment="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=HorizontalContentAlignment}"
+                            VerticalAlignment="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=VerticalContentAlignment}" />
+                            </ContentPresenter.Content>
+                        </ContentPresenter>
+                    </Border>
+                </DockPanel>
+            </ui:ButtonChrome>
+        </DockPanel>
+        <ControlTemplate.Triggers>
+            <Trigger Property="DisplayMode"
+               Value="Minimal">
+                <Setter TargetName="Decorations"
+                Property="Visibility"
+                Value="Collapsed" />
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+
+    <ControlTemplate x:Key="{x:Static scc:GameButton.HyperlinkTemplateKey}"
+                   TargetType="{x:Type scc:GameButton}">
+        <Border>
+            <TextBlock x:Name="LinkText"
+                 Text="{TemplateBinding Label}"
+                 TextTrimming="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=LabelTextTrimming, Mode=OneWay}"
+                 TextWrapping="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=LabelTextWrapping, Mode=OneWay}" />
+        </Border>
+        <ControlTemplate.Triggers>
+            <Trigger Property="IsMouseOver"
+               Value="True">
+                <Setter TargetName="LinkText"
+                Property="TextDecorations"
+                Value="Underline" />
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+
+    <!--<Style TargetType="{x:Type scc:GameButton}">
+        <Setter Property="SnapsToDevicePixels"
+            Value="True" />
+        <Setter Property="FocusVisualStyle"
+            Value="{x:Null}" />
+        <Setter Property="FontFamily"
+            Value="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}" />
+        <Setter Property="FontSize"
+            Value="{StaticResource {x:Static scc:ClientResources.HeaderFontSizeKey}}" />
+        --><!--<Setter Property="FontWeight"
+            Value="{StaticResource {x:Static scc:ClientResources.HeaderFontWeightKey}}" />--><!--
+        <Setter Property="Foreground"
+            Value="{StaticResource {x:Static scc:ClientResources.ControlTextForegroundBrushKey}}" />
+        <Setter Property="Focusable"
+            Value="False" />
+        <Setter Property="HorizontalContentAlignment"
+            Value="Center" />
+        <Setter Property="VerticalContentAlignment"
+            Value="Center" />
+        <Setter Property="Padding"
+            Value="16,2" />
+        <Setter Property="MinHeight"
+            Value="28" />
+        <Setter Property="Template"
+            Value="{StaticResource {x:Static scc:GameButton.NormalTemplateKey}}" />
+        <Style.Triggers>
+            <Trigger Property="Context"
+               Value="HorizontalGroupItem">
+                <Setter Property="Template"
+                Value="{StaticResource {x:Static scc:GameButton.GroupedHorizontallyTemplateKey}}" />
+            </Trigger>
+            <Trigger Property="DisplayMode"
+               Value="GroupedHorizontally">
+                <Setter Property="Template"
+                Value="{StaticResource {x:Static scc:GameButton.GroupedHorizontallyTemplateKey}}" />
+            </Trigger>
+            <Trigger Property="DisplayMode"
+               Value="GroupedVertically">
+                <Setter Property="Template"
+                Value="{StaticResource {x:Static scc:GameButton.GroupedVerticallyTemplateKey}}" />
+            </Trigger>
+            <Trigger Property="Context"
+               Value="VerticalGroupItem">
+                <Setter Property="Template"
+                Value="{StaticResource {x:Static scc:GameButton.GroupedVerticallyTemplateKey}}" />
+            </Trigger>
+            <Trigger Property="DisplayMode"
+               Value="CheckBox">
+                <Setter Property="FontFamily"
+                Value="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}" />
+                <Setter Property="Foreground"
+                Value="{StaticResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}" />
+                <Setter Property="FontSize"
+                Value="{StaticResource {x:Static scc:ClientResources.DefaultFontSizeKey}}" />
+                --><!--<Setter Property="FontWeight"
+                Value="{StaticResource {x:Static scc:ClientResources.DefaultFontWeightKey}}" />--><!--
+                <Setter Property="Padding"
+                Value="0" />
+                <Setter Property="Template"
+                Value="{StaticResource {x:Static scc:GameButton.CheckboxTemplateKey}}" />
+            </Trigger>
+            <Trigger Property="DisplayMode"
+               Value="Hyperlink">
+                <Setter Property="FontFamily"
+                Value="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}" />
+                <Setter Property="Foreground"
+                Value="{StaticResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}" />
+                <Setter Property="FontSize"
+                Value="{StaticResource {x:Static scc:ClientResources.DefaultFontSizeKey}}" />
+                <Setter Property="MinHeight"
+                Value="0" />
+                <Setter Property="Padding"
+                Value="0" />
+                <Setter Property="Template"
+                Value="{StaticResource {x:Static scc:GameButton.HyperlinkTemplateKey}}" />
+            </Trigger>
+
+            <Trigger Property="DisplayMode"
+               Value="Minimal">
+                <Setter Property="Template"
+                Value="{StaticResource {x:Static scc:GameButton.MinimalTemplateKey}}" />
+            </Trigger>
+            <Trigger Property="DisplayMode"
+               Value="Tiny">
+                <Setter Property="FontFamily"
+                Value="/Resources/Fonts/#Calibri, Calibri" />
+                <Setter Property="FontSize"
+                Value="9pt" />
+                <Setter Property="Padding"
+                Value="8,1" />
+                <Setter Property="MinWidth"
+                Value="16" />
+                <Setter Property="MinHeight"
+                Value="16" />
+                --><!--this was just a test-->
+                <!--<Setter Property="Foreground"
+                Value="Black" />
+                <Setter Property="Background"
+                Value="{StaticResource {x:Static scc:ClientResources.HighlightBrushKey}}" />--><!--
+                <Setter Property="Template"
+                Value="{StaticResource {x:Static scc:GameButton.TinyTemplateKey}}" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>-->
+
+    <!--<Style TargetType="{x:Type scc:GameGlyphButton}">
+        <Setter Property="SnapsToDevicePixels"
+            Value="True" />
+        <Setter Property="FocusVisualStyle"
+            Value="{x:Null}" />
+        <Setter Property="scc:ThemeProperties.BackgroundNormal"
+            Value="{StaticResource LCARS_BlueGradient_Top_Bottom}" />
+        <Setter Property="scc:ThemeProperties.BackgroundHover"
+            Value="{StaticResource LCARS_HoverBlueGradient_Top_Bottom}" />
+        <Setter Property="scc:ThemeProperties.BackgroundPressed"
+            Value="{StaticResource LCARS_HoverBlueGradient_Top_Bottom}" />
+        <Setter Property="HorizontalAlignment"
+            Value="Stretch" />
+        <Setter Property="VerticalAlignment"
+            Value="Stretch" />
+        <Setter Property="Cursor"
+            Value="{x:Static Cursors.Hand}" />
+        <Setter Property="Focusable"
+            Value="False" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type scc:GameGlyphButton}">
+                    <Border Background="Transparent">
+                        <FrameworkElement.Width>
+                            <Binding RelativeSource="{RelativeSource TemplatedParent}"
+                       Path="VariantSize"
+                       FallbackValue="16">
+                                <Binding.Converter>
+                                    <scc:MapConverter>
+                                        <scc:Mapping From="Collapsed" To="0" />
+                                        <scc:Mapping From="Small" To="16" />
+                                        <scc:Mapping From="Medium" To="24" />
+                                        <scc:Mapping From="Large" To="48" />
+                                    </scc:MapConverter>
+                                </Binding.Converter>
+                            </Binding>
+                        </FrameworkElement.Width>
+                        <FrameworkElement.Height>
+                            <Binding RelativeSource="{RelativeSource TemplatedParent}"
+                       Path="VariantSize">
+                                <Binding.Converter>
+                                    <scc:MapConverter>
+                                        <scc:Mapping From="Collapsed" To="0" />
+                                        <scc:Mapping From="Small" To="16" />
+                                        <scc:Mapping From="Medium" To="24" />
+                                        <scc:Mapping From="Large" To="48" />
+                                    </scc:MapConverter>
+                                </Binding.Converter>
+                            </Binding>
+                        </FrameworkElement.Height>
+                        <Path x:Name="Glyph"
+                  Data="{TemplateBinding Glyph}"
+                  Fill="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(scc:ThemeProperties.BackgroundNormal)}"
+                  SnapsToDevicePixels="True"
+                  Stretch="Uniform" />
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="VariantSize"
+                     Value="Collapsed">
+                            <Setter Property="Visibility"
+                      Value="Collapsed" />
+                        </Trigger>
+                        <Trigger Property="IsEnabled"
+                     Value="False">
+                            <Setter TargetName="Glyph"
+                      Property="Opacity"
+                      Value="0.33" />
+                        </Trigger>
+                        <Trigger Property="IsMouseOver"
+                     Value="True">
+                            <Setter TargetName="Glyph"
+                      Property="Fill"
+                      Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(scc:ThemeProperties.BackgroundHover)}" />
+                        </Trigger>
+                        <Trigger Property="IsPressed"
+                     Value="True">
+                            <Setter TargetName="Glyph"
+                      Property="Fill"
+                      Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(scc:ThemeProperties.BackgroundPressed)}" />
+                            <Setter TargetName="Glyph"
+                      Property="Margin"
+                      Value="1,1,-1,-1" />
+                        </Trigger>
+
+                    </ControlTemplate.Triggers>
+
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>-->
+
+    <!--<Style TargetType="{x:Type scc:GamePopupButton}">
+        <Setter Property="SnapsToDevicePixels"
+            Value="True" />
+        <Setter Property="FocusVisualStyle"
+            Value="{x:Null}" />
+        <Setter Property="FontFamily"
+            Value="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}" />
+        <Setter Property="FontSize"
+            Value="{StaticResource {x:Static scc:ClientResources.HeaderFontSizeKey}}" />
+        --><!--<Setter Property="FontWeight"
+            Value="{StaticResource {x:Static scc:ClientResources.HeaderFontWeightKey}}" />--><!--
+        <Setter Property="Foreground"
+            Value="{StaticResource {x:Static scc:ClientResources.ControlTextForegroundBrushKey}}" />
+        <Setter Property="Focusable"
+            Value="False" />
+        <Setter Property="HorizontalContentAlignment"
+            Value="Center" />
+        <Setter Property="VerticalContentAlignment"
+            Value="Center" />
+        <Setter Property="Padding"
+            Value="16,2,16,2" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type scc:GamePopupButton}">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <scc:GamePopup Name="PART_Popup"
+                   Grid.RowSpan="2"
+                   MinWidth="16"
+                   MinHeight="16"
+                   StaysOpen="True"
+                   IsOpen="{Binding Path=IsPopupOpen, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"
+                   HorizontalOffset="{TemplateBinding PopupHorizontalOffset}"
+                   Placement="{TemplateBinding PopupPlacement}"
+                   PlacementRectangle="{TemplateBinding PopupPlacementRectangle}"
+                   PlacementTarget="{TemplateBinding PopupPlacementTarget}"
+                   VerticalOffset="{TemplateBinding PopupVerticalOffset}">
+                            <AdornerDecorator SnapsToDevicePixels="True">
+                                <scc:DropShadowChrome Name="DropShadow"
+                                         Color="Transparent">
+                                    <Border x:Name="PopupOuterBorder"
+                          BorderBrush="{StaticResource LCARS_BlueGradient_Top_Bottom}"
+                          BorderThickness="1"
+                          Background="#cc000000"
+                          SnapsToDevicePixels="True">
+                                        <Grid>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="*" />
+                                                <RowDefinition Height="Auto" />
+                                            </Grid.RowDefinitions>
+
+                                            --><!-- Style="{DynamicResource {ComponentResourceKey TypeInTargetAssembly={x:Type ribbon:Ribbon},ResourceId=MenuScrollViewer}}" -->
+                                            <!--
+                      <scc:GamePopupScrollViewer CanContentScroll="True">
+                      </scc:GamePopupScrollViewer>
+--><!--
+                                            <scc:GamePopupContentPresenter Content="{TemplateBinding PopupContent}"
+                                                     ContentTemplate="{TemplateBinding PopupContentTemplate}"
+                                                     ContentTemplateSelector="{TemplateBinding PopupContentTemplateSelector}" />
+
+                                            --><!--
+                        <Border Name="ResizeGripContainer"
+                                Grid.Row="1"
+                                BorderThickness="0,1,0,0"
+                                CornerRadius="0,0,2,2"
+                                Visibility="Collapsed"
+                                BorderBrush="{DynamicResource {x:Static ribbonThemes:RibbonCommonDictionary.PopupGalleryResizeGripSeparatorBrushKey}}"
+                                SnapsToDevicePixels="True"
+                                Background="{DynamicResource {x:Static ribbonThemes:RibbonCommonDictionary.PopupGalleryResizeGripBackgroundBrushKey}}">
+                          <Thumb x:Name="PART_ResizeGrip"
+                                 Style="{StaticResource BothResizeGripperStyle}" />
+                        </Border>
+--><!--
+                                        </Grid>
+                                    </Border>
+                                </scc:DropShadowChrome>
+                            </AdornerDecorator>
+                        </scc:GamePopup>
+                        <Border Grid.Column="0"
+                    Background="{StaticResource LCARS_PurpleGradient_TopLeft_BottomRight}"
+                    CornerRadius="14,0,0,14"
+                    Width="21" />
+                        <DockPanel Grid.Column="1"
+                       LastChildFill="True">
+                            <Image DockPanel.Dock="Left"
+                     MinWidth="16"
+                     MinHeight="16"
+                     MaxWidth="24"
+                     MaxHeight="24"
+                     Margin="3,0,0,0"
+                     Stretch="Uniform"
+                     StretchDirection="DownOnly"
+                     VerticalAlignment="Center"
+                     Visibility="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(scc:GameControlBase.HasImage), Converter={StaticResource BooleanToVisibilityConverter}}">
+                                <Image.Source>
+                                    <MultiBinding Converter="{scc:CoalesceConverter}">
+                                        <Binding RelativeSource="{RelativeSource TemplatedParent}"
+                             Path="ImageSourceLarge" />
+                                        <Binding RelativeSource="{RelativeSource TemplatedParent}"
+                             Path="ImageSourceSmall" />
+                                    </MultiBinding>
+                                </Image.Source>
+                            </Image>
+                            <Border x:Name="ContentBorder"
+                      Margin="3,0,3,0"
+                      Padding="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Padding}"
+                      Background="{StaticResource LCARS_BlueGradient_Left_Right}">
+                                <ContentPresenter RecognizesAccessKey="True">
+                                    <ContentPresenter.Content>
+                                        <AccessText Text="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Label}"
+                                HorizontalAlignment="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=HorizontalContentAlignment}"
+                                VerticalAlignment="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=VerticalContentAlignment}" />
+                                    </ContentPresenter.Content>
+                                </ContentPresenter>
+                            </Border>
+                        </DockPanel>
+                        <Rectangle Grid.Column="2"
+                       Stretch="Fill"
+                       Fill="{StaticResource LCARS_OrangeGradient_Left_Right}"
+                       Margin="0,0,3,0"
+                       Width="14" />
+                        <Border Grid.Column="3"
+                    Background="{StaticResource LCARS_PurpleGradient_TopLeft_BottomRight}"
+                    CornerRadius="0,14,14,0"
+                    Width="21" />
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsEnabled"
+                     Value="False">
+                            <Setter TargetName="ContentBorder"
+                      Property="Opacity"
+                      Value="0.33" />
+                        </Trigger>
+                        <Trigger Property="IsMouseOver"
+                     Value="True">
+                            <Setter TargetName="ContentBorder"
+                      Property="Background"
+                      Value="{StaticResource LCARS_HoverBlueGradient_Left_Right}" />
+                        </Trigger>
+                        <Trigger Property="IsPressed"
+                     Value="True">
+                            <Setter TargetName="ContentBorder"
+                      Property="Background"
+                      Value="{StaticResource LCARS_BlueGradient_Right_Left}" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>-->
+
+    <!--<Style x:Key="{x:Static scc:ClientResources.ScrollableItemsControlStyleKey}"
+         TargetType="{x:Type ItemsControl}">
+        <Setter Property="VirtualizingStackPanel.IsVirtualizing"
+            Value="True" />
+        <Setter Property="VirtualizingStackPanel.VirtualizationMode"
+            Value="Recycling" />
+        <Setter Property="ScrollViewer.VerticalScrollBarVisibility"
+            Value="Auto" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ItemsControl}">
+                    <ScrollViewer CanContentScroll="{TemplateBinding ScrollViewer.CanContentScroll}"
+                        HorizontalScrollBarVisibility="{TemplateBinding ScrollViewer.HorizontalScrollBarVisibility}"
+                        VerticalScrollBarVisibility="{TemplateBinding ScrollViewer.VerticalScrollBarVisibility}">
+                        <ItemsPresenter />
+                    </ScrollViewer>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <Trigger Property="VirtualizingStackPanel.IsVirtualizing"
+               Value="True">
+                <Setter Property="ItemsPanel">
+                    <Setter.Value>
+                        <ItemsPanelTemplate>
+                            <VirtualizingStackPanel IsItemsHost="True" />
+                        </ItemsPanelTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Trigger>
+        </Style.Triggers>
+    </Style>-->
+
+    <!--<Style x:Key="{x:Type scc:CheckedListBox}"
+         TargetType="{x:Type scc:CheckedListBox}"
+         BasedOn="{StaticResource BaseStyle}">
+        <Setter Property="SnapsToDevicePixels"
+            Value="True" />
+        <Setter Property="OverridesDefaultStyle"
+            Value="True" />
+        <Setter Property="Background"
+            Value="Transparent" />
+        <Setter Property="Foreground"
+            Value="{StaticResource DefaultTextBrush}" />
+        <Setter Property="BorderBrush"
+            Value="{StaticResource LCARS_BlueGradient_Top_Bottom}" />
+        <Setter Property="BorderThickness"
+            Value="2" />
+        <Setter Property="ScrollViewer.HorizontalScrollBarVisibility"
+            Value="Auto" />
+        <Setter Property="ScrollViewer.VerticalScrollBarVisibility"
+            Value="Auto" />
+        <Setter Property="ScrollViewer.CanContentScroll"
+            Value="True" />
+        <Setter Property="MinWidth"
+            Value="4" />
+        <Setter Property="MinHeight"
+            Value="4" />
+        <Setter Property="Margin"
+            Value="0" />
+        <Setter Property="Padding"
+            Value="0" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type scc:CheckedListBox}">
+                    <Border x:Name="Border"
+                  Background="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Background}"
+                  BorderBrush="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=BorderBrush}"
+                  BorderThickness="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=BorderThickness}">
+                        <ScrollViewer Margin="{TemplateBinding Padding}"
+                          Focusable="False">
+                            <ItemsPresenter />
+                        </ScrollViewer>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsGrouping"
+                     Value="True">
+                            <Setter Property="ScrollViewer.CanContentScroll"
+                      Value="False" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>-->
+
+    <!--<Style TargetType="{x:Type scc:CheckedListBoxItem}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type scc:CheckedListBoxItem}">
+                    <CheckBox IsChecked="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(scc:CheckedListBoxItem.IsSelected), Mode=TwoWay}"
+                    Content="{TemplateBinding Content}"
+                    ContentTemplate="{TemplateBinding ContentTemplate}"
+                    ContentTemplateSelector="{TemplateBinding ContentTemplateSelector}"
+                    ContentStringFormat="{TemplateBinding ContentStringFormat}"
+                    HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                    VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}" />
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>-->
 
 
 </ResourceDictionary>
