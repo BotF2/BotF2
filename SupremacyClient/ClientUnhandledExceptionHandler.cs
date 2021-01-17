@@ -94,32 +94,16 @@ namespace Supremacy.Client
                 GameLog.Core.General.ErrorFormat(_text);
                 Console.WriteLine(_text);
 
-
-                try
+                try 
                 {
-                    //var to = new MailAddress;
-                    //MailMessage message = new MailMessage(
-                    //   "fromemail@contoso.com",
-                    //   "85244@gmx.de",
-                    //   "Subject goes here",
-                    //   "Body goes here");
-
-                    //MailMessage reply = new MailMessage(new MailAddress(imapUser, "Sender"), source.From);
-                    //MailAddressApp
-                    //    mailAddressApp.
-                    //System.Diagnostics.Process.Start.message.
-
-                    string mt = "reportError.bat Fehler " + _text;
-                    mt = ".\\lib\\reportError.bat";
-                    //"mailto:85244@gmx.de?subject=[An_Error_occured]";
-                    //GameLog.Client.General.InfoFormat("Try to run " + mt);
-                    System.Diagnostics.Process.Start(mt);  //> batch doesn't work yet
+                    System.Diagnostics.Process.Start(".\\Resources\\reportError.bat");  
+                    // batch opens a web site with email function, 
+                    // but just if batch file is activated = rem is removed before web adress
+                    // opens Win10 mail function which might be connected to Google Mail account or any other
                 }
-                catch (Exception ex)
-                {
-                    throw ex;
-                }
+                catch (Exception ex) { throw ex;}
 
+                // old code
                 //try
                 //{
                 //    //var response = client.UploadValues(_reportErrorURL, "POST", values);
@@ -138,7 +122,6 @@ namespace Supremacy.Client
                 //    }
                 //    //Don't bother doing anything
                 //}
-
             }
         }
         #endregion
