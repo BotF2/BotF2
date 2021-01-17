@@ -66,7 +66,7 @@
                 </Grid.ColumnDefinitions>
                 <Border Grid.Column="0"
                         Grid.Row="0"
-                        Background="{StaticResource LCARS_CardGoldenrodGradient_TopLeft_BottomRight}"
+                        Background="{StaticResource LCARS_Card_Goldenrod1Gradient_TopLeft_BottomRight}"
                         CornerRadius="14,0,0,14"
                         Width="21"
                         Margin="5,0,0,0" />    
@@ -75,7 +75,7 @@
                              Margin="4,0,0,0" 
                        Width="14"
                        SnapsToDevicePixels="True"
-                       Fill="{StaticResource LCARS_CardGoldenrodGradient_Top_Bottom}" />
+                       Fill="{StaticResource LCARS_Card_Goldenrod1Gradient_Top_Bottom}" />
                 
                   <Button Grid.Column="2"
                         Margin="3,0,0,0" 
@@ -87,7 +87,7 @@
                              Margin="3,0,0,0" 
                        Width="14"
                        SnapsToDevicePixels="True"
-                       Fill="{StaticResource LCARS_CardGoldenrodGradient_Top_Bottom}" />
+                       Fill="{StaticResource LCARS_Card_Goldenrod1Gradient_Top_Bottom}" />
                                 
                   <ComboBox Grid.Column="4"
                           Grid.Row="0"
@@ -122,7 +122,7 @@
                              Margin="3,0,0,0" 
                        Width="14"
                        SnapsToDevicePixels="True"
-                       Fill="{StaticResource LCARS_CardGoldenrodGradient_Top_Bottom}" />
+                       Fill="{StaticResource LCARS_Card_Goldenrod1Gradient_Top_Bottom}" />
                                 
                               
                   <!--<Border Grid.Column="8"
@@ -136,10 +136,10 @@
                   <Rectangle Grid.Column="9"
                            Grid.Row="0"
                            Margin="3,0,0,0"
-                           Fill="{StaticResource LCARS_CardGoldenrod2_Top_Bottom}" />
+                           Fill="{StaticResource LCARS_Card_Goldenrod2Gradient_Top_Bottom}" />
                 <Border Grid.Column="10"
                         Grid.Row="0"
-                        Background="{StaticResource LCARS_CardGoldenrodGradient_TopLeft_BottomRight}"
+                        Background="{StaticResource LCARS_Card_Goldenrod1Gradient_TopLeft_BottomRight}"
                         CornerRadius="0,14,14,0"
                         Width="21"
                         Margin="3,0,0,0" />

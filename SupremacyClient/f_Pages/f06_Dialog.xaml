@@ -517,26 +517,30 @@
 
         <!--  4 = Cardassians-->
         <StackPanel Orientation="Vertical" Grid.Row="11" Grid.Column="5" Grid.ColumnSpan="1" HorizontalAlignment="Left" Margin="3,0,0,0">
-            <TextBlock Text="LCARS_CardGoldenrodGradient"  
+            <TextBlock Text="LCARS_Card_Goldenrod1Gradient"  
                            Foreground="Black" VerticalAlignment="Center"
-                    Background="{DynamicResource LCARS_CardGoldenrodGradient_Left_Right}" />
+                    Background="{DynamicResource LCARS_Card_Goldenrod1Gradient_Left_Right}" />
 
-            <TextBlock Text="LCARS_CardGoldenrod2"  
+                    <TextBlock Text="LCARS_Card_Goldenrod2Gradient"  
                            Foreground="Black" VerticalAlignment="Center"
-                    Background="{DynamicResource LCARS_CardGoldenrod2_Left_Right}" />
+                    Background="{DynamicResource LCARS_Card_Goldenrod2Gradient_Left_Right}" />
 
-            <TextBlock Text="xxxx"  
+                    <TextBlock Text="LCARS_Card_Tan1Gradient"  
                            Foreground="Black" VerticalAlignment="Center"
-                    Background="{DynamicResource LCARS_Dom3Gradient_Left_Right}" />
+                    Background="{DynamicResource LCARS_Card_Tan1Gradient_Left_Right}" />
 
-            <TextBlock Text="xxxx"  
+                    <TextBlock Text="LCARS_Card_Tan2Gradient"  
                            Foreground="Black" VerticalAlignment="Center"
-                    Background="{DynamicResource LCARS_Dom4Gradient_Left_Right}" />
+                    Background="{DynamicResource LCARS_Card_Tan2Gradient_Left_Right}" />
 
-            <TextBlock Text="xxxx"  
+                    <TextBlock Text="LCARS_Card_HoverGradient"  
                            Foreground="Black" VerticalAlignment="Center"
-                    Background="{DynamicResource LCARS_Dom5Gradient_Left_Right}" />
-        </StackPanel>
+                    Background="{DynamicResource LCARS_Card_HoverGradient_Left_Right}" />
+
+                    <TextBlock Text="LCARS_Card_ObsidianGradient"  
+                           Foreground="Black" VerticalAlignment="Center"
+                    Background="{DynamicResource LCARS_Card_ObsidianGradient_Left_Right}" />
+                </StackPanel>
 
         <!--  5 = Dominion-->
         <StackPanel Orientation="Vertical" Grid.Row="11" Grid.Column="6" Grid.ColumnSpan="1" HorizontalAlignment="Left" Margin="3,0,0,0">
