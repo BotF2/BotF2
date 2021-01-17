@@ -584,7 +584,13 @@ namespace Supremacy.Client
                 version = (int)ndpKey.GetValue("Release");
             }
 
-            if (version >= 461808) {
+            //if (version >= 461808) { 
+            //{
+            //    GameLog.Client.General.Info(".NET Framework 4.7.2 or later found");
+            //} else if
+            if (version >= 528040) { 
+                GameLog.Client.General.Info(".NET Framework 4.8 or later found");
+            } else if (version >= 461808) {
                 GameLog.Client.General.Info(".NET Framework 4.7.2 or later found");
             } else if (version >= 461308) {
                 GameLog.Client.General.Info(".NET Framework 4.7.1 found");
@@ -593,19 +599,19 @@ namespace Supremacy.Client
             } else if (version >= 394802) {
                 GameLog.Client.General.Info(".NET Framework 4.6.2 found");
             } else if (version >= 394254) {
-                GameLog.Client.General.Info(".NET Framework 4.6.1 found");
-            } else if (version >= 393295) {
-                GameLog.Client.General.Info(".NET Framework 4.6 found");
-            } else if (version >= 379893) {
-                GameLog.Client.General.Info(".NET Framework 4.5.2 found");
-            } else if (version >= 378675) {
-                GameLog.Client.General.Info(".NET Framework 4.5.1 found");
-            } else if (version >= 378389) {
-                GameLog.Client.General.Info(".NET Framework 4.5 found");
+                GameLog.Client.General.Info(".NET Framework 4.6.1 found"); // no need to check older ones
+            //} else if (version >= 393295) {
+            //    GameLog.Client.General.Info(".NET Framework 4.6 found"); 
+            //} else if (version >= 379893) {
+            //    GameLog.Client.General.Info(".NET Framework 4.5.2 found");
+            //} else if (version >= 378675) {
+            //    GameLog.Client.General.Info(".NET Framework 4.5.1 found");
+            //} else if (version >= 378389) {
+            //    GameLog.Client.General.Info(".NET Framework 4.5 found");
             }
             else
             {
-                GameLog.Client.General.Info(".NET Framework is less than 4.5");
+                GameLog.Client.General.Info(".NET Framework is less than 4.6.1");
             }
 
             return version >= 394802;
