@@ -257,7 +257,6 @@
                     Grid.Row="0"
                     Style="{StaticResource ToggleConstructionBayButton}"
                     Width="52"
-
                     HorizontalAlignment="Left"
                     VerticalAlignment="Top"
                     Margin="0,0,0,10"

@@ -169,8 +169,8 @@
             </Border.Background>
             <Border.BorderBrush>
               <RadialGradientBrush GradientOrigin="0.5,0.333333" RadiusY="0.666667" RadiusX="1">
-                <GradientStop Color="#f5c080" Offset="0" />
-                <GradientStop Color="#dc861e" Offset="1" />
+                                <GradientStop Color="#0a6d03" Offset="0" />
+                                <GradientStop Color="#036d23" Offset="1" />
               </RadialGradientBrush>
             </Border.BorderBrush>
             <StackPanel>
