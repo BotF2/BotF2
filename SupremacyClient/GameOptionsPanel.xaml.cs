@@ -50,17 +50,17 @@ namespace Supremacy.Client
             lstBorgPlayable.ItemsSource = EnumHelper.GetValues<EmpirePlayable>();
             lstTerranEmpirePlayable.ItemsSource = EnumHelper.GetValues<EmpirePlayable>();
 
-            lstModifierRecurringBalancing.ItemsSource = EnumHelper.GetValues<EmpireModifierRecurringBalancing>();
-            lstGamePace.ItemsSource = EnumHelper.GetValues<GamePace>();
-            lstTurnTimer.ItemsSource = EnumHelper.GetValues<TurnTimerEnum>();
+            //lstModifierRecurringBalancing.ItemsSource = EnumHelper.GetValues<EmpireModifierRecurringBalancing>();
+            //lstGamePace.ItemsSource = EnumHelper.GetValues<GamePace>();
+            //lstTurnTimer.ItemsSource = EnumHelper.GetValues<TurnTimerEnum>();
 
-            lstFederationModifier.ItemsSource = EnumHelper.GetValues<EmpireModifier>();
-            lstRomulanModifier.ItemsSource = EnumHelper.GetValues<EmpireModifier>();
-            lstKlingonModifier.ItemsSource = EnumHelper.GetValues<EmpireModifier>();
-            lstCardassianModifier.ItemsSource = EnumHelper.GetValues<EmpireModifier>();
-            lstDominionModifier.ItemsSource = EnumHelper.GetValues<EmpireModifier>();
-            lstBorgModifier.ItemsSource = EnumHelper.GetValues<EmpireModifier>();
-            lstTerranEmpireModifier.ItemsSource = EnumHelper.GetValues<EmpireModifier>();
+            //lstFederationModifier.ItemsSource = EnumHelper.GetValues<EmpireModifier>();
+            //lstRomulanModifier.ItemsSource = EnumHelper.GetValues<EmpireModifier>();
+            //lstKlingonModifier.ItemsSource = EnumHelper.GetValues<EmpireModifier>();
+            //lstCardassianModifier.ItemsSource = EnumHelper.GetValues<EmpireModifier>();
+            //lstDominionModifier.ItemsSource = EnumHelper.GetValues<EmpireModifier>();
+            //lstBorgModifier.ItemsSource = EnumHelper.GetValues<EmpireModifier>();
+            //lstTerranEmpireModifier.ItemsSource = EnumHelper.GetValues<EmpireModifier>();
 
             //PlayerNameSPInput.SelectionChanged += (sender, args) => { OnOptionsChanged(); TrySetLastPlayerName(); };
             lstGalaxySize.SelectionChanged += (sender, args) => OnOptionsChanged();
@@ -78,17 +78,17 @@ namespace Supremacy.Client
             lstBorgPlayable.SelectionChanged += (sender, args) => { OnOptionsChanged(); };
             lstTerranEmpirePlayable.SelectionChanged += (sender, args) => { OnOptionsChanged(); };
 
-            lstModifierRecurringBalancing.SelectionChanged += (sender, args) => { OnOptionsChanged(); };
-            lstGamePace.SelectionChanged += (sender, args) => { OnOptionsChanged(); };
-            lstTurnTimer.SelectionChanged += (sender, args) => { OnOptionsChanged(); };
+            //lstModifierRecurringBalancing.SelectionChanged += (sender, args) => { OnOptionsChanged(); };
+            //lstGamePace.SelectionChanged += (sender, args) => { OnOptionsChanged(); };
+            //lstTurnTimer.SelectionChanged += (sender, args) => { OnOptionsChanged(); };
 
-            lstFederationModifier.SelectionChanged += (sender, args) => { OnOptionsChanged(); };
-            lstRomulanModifier.SelectionChanged += (sender, args) => { OnOptionsChanged(); };
-            lstKlingonModifier.SelectionChanged += (sender, args) => { OnOptionsChanged(); };
-            lstCardassianModifier.SelectionChanged += (sender, args) => { OnOptionsChanged(); };
-            lstDominionModifier.SelectionChanged += (sender, args) => { OnOptionsChanged(); };
-            lstBorgModifier.SelectionChanged += (sender, args) => { OnOptionsChanged(); };
-            lstTerranEmpireModifier.SelectionChanged += (sender, args) => { OnOptionsChanged(); };
+            //lstFederationModifier.SelectionChanged += (sender, args) => { OnOptionsChanged(); };
+            //lstRomulanModifier.SelectionChanged += (sender, args) => { OnOptionsChanged(); };
+            //lstKlingonModifier.SelectionChanged += (sender, args) => { OnOptionsChanged(); };
+            //lstCardassianModifier.SelectionChanged += (sender, args) => { OnOptionsChanged(); };
+            //lstDominionModifier.SelectionChanged += (sender, args) => { OnOptionsChanged(); };
+            //lstBorgModifier.SelectionChanged += (sender, args) => { OnOptionsChanged(); };
+            //lstTerranEmpireModifier.SelectionChanged += (sender, args) => { OnOptionsChanged(); };
 
             //try
             //{

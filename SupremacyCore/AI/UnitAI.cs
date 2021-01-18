@@ -170,6 +170,7 @@ namespace Supremacy.AI
                 // find transport for invasion of minor races
                 if ((fleet.IsTransport || fleet.UnitAIType == UnitAIType.Transport))
                 {
+                    GameLog.Client.AI.DebugFormat("Found a transport {0}", fleet.Name);
                     if (fleet.Owner.InvasionMinorCiv != null)
                     {
 

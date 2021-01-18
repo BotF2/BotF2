@@ -492,7 +492,7 @@
               IsReadOnly="True"
               VerticalAlignment="Center" />
 
-        <TextBlock Grid.Column="3"
+        <!--<TextBlock Grid.Column="3"
             Grid.Row="1"
             Margin="7,0,0,6"
             Text="{s:StringResource MODIFIER_HEADER}"
@@ -503,7 +503,7 @@
             Width="122"
             HorizontalAlignment="Left"
             VerticalAlignment="Center" />
-        <!--ComboBoxes-->
+        --><!--ComboBoxes--><!--
         <ComboBox x:Name="lstFederationModifier"
               Grid.Column="2"
               Grid.Row="2"
@@ -559,9 +559,9 @@
               Margin="7,2,0,0"
               IsEditable="False"
               IsReadOnly="True"
-              VerticalAlignment="Center" />
+              VerticalAlignment="Center" />-->
 
-        <TextBlock Grid.Column="2"
+        <!--<TextBlock Grid.Column="2"
             Grid.Row="10"
             Margin="5,7,0,0"
             Foreground="{StaticResource LCARS_ParagraphBrush}"
@@ -625,7 +625,7 @@
             Margin="7,2,0,0"
             IsEditable="False"
             IsReadOnly="True"
-            VerticalAlignment="Center" />
+            VerticalAlignment="Center" />-->
 
         <!--<Label x:Name="PlayerNameSP"
             Grid.Column="1"

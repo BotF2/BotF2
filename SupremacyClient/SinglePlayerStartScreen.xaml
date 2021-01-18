@@ -216,7 +216,7 @@
         <Grid Width="1200"
           Height="720">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="390" />
+                <ColumnDefinition Width="260" />
                 <!--Game Option column-->
                 <ColumnDefinition Width="18" />
                 <!--empty space column, previously 28 -->
