@@ -127,7 +127,8 @@ namespace Supremacy.Game
         SystemAttack,
         SystemDefense,
         SystemCounter,
-        Special         // special-purpose, never overridden
+        Special,         // special-purpose, never overridden
+        Transport
     }
 
     /// <summary>

@@ -28,8 +28,12 @@ namespace Supremacy.AI
     public static class UnitAI
     {
         private static List<bool> _inRange = new List<bool> { true }; // fleets of civ out of range of target homeworld
+        private static List<bool> _inRangeMinors = new List<bool> { true };
         private static Dictionary<int, List<bool>> _rangesByCiv = new Dictionary<int, List<bool>> { { 0, _inRange }, { 1, _inRange }, { 2, _inRange }, { 3, _inRange }, { 4, _inRange }, { 5, _inRange }, { 6, _inRange } };
+        private static Dictionary<int, List<bool>> _rangesByMinors = new Dictionary<int, List<bool>> { { 999, _inRange } };
         private static Dictionary<int, bool> TotalWarNextTurn = new Dictionary<int, bool> { { 0, false }, { 1, false }, { 2, false }, { 3, false }, { 4, false }, { 5, false }, { 6, false } };
+        private static Dictionary<int, bool> InvadeMinorNextTurn = new Dictionary<int, bool> { { 0, false } };
+        private static bool _invadeMinor = false;
         private static bool _totalWar = false;
         private static int _currentTurn = 0;
 
@@ -38,6 +42,13 @@ namespace Supremacy.AI
             get { return _rangesByCiv; }
             set { _rangesByCiv = value; }
         }
+
+        public static Dictionary<int, List<bool>> RangesByMinors
+        {
+            get { return _rangesByMinors; }
+            set { _rangesByMinors = value; }
+        }
+
         //public static Dictionary<int, int> OnlyOnceATurn { get { return _onlyOnceATurn; } set { _onlyOnceATurn = value; } }
         public static void DoTurn([NotNull] Civilization civ)
         {
@@ -46,6 +57,8 @@ namespace Supremacy.AI
                 _currentTurn = GameContext.Current.TurnNumber;
                 List<bool> _inRange = new List<bool> { true };
                 RangesByCiv = new Dictionary<int, List<bool>> { { 0, _inRange }, { 1, _inRange }, { 2, _inRange }, { 3, _inRange }, { 4, _inRange }, { 5, _inRange }, { 6, _inRange } };
+                List<bool> _inRangeMinor = new List<bool> { true };
+                RangesByMinors = new Dictionary<int, List<bool>> { { 999, _inRangeMinors } };
             }
             if (civ == null)
             {
@@ -134,7 +147,7 @@ namespace Supremacy.AI
 
                 if ((fleet.IsScout) && fleet.Activity == UnitActivity.NoActivity)
                 {
-                    if (!_totalWar)
+                    if (!_totalWar && !_invadeMinor)
                     {
                         fleet.SetOrder(new ExploreOrder());
                         fleet.UnitAIType = UnitAIType.Explorer;
@@ -142,7 +155,7 @@ namespace Supremacy.AI
                         // GameLog.Core.AI.DebugFormat("Ordering Scout & FastAttack {0} to explore from {1}", fleet.ClassName, fleet.Location);
                     }
 
-                    else if (_totalWar)
+                    else if (_totalWar || _invadeMinor)
                     {
                         // StarSystem homeSystem = GameContext.Current.CivilizationManagers[fleet.Owner].HomeSystem;
                         fleet.SetOrder(new AvoidOrder());
@@ -152,6 +165,14 @@ namespace Supremacy.AI
                         {
                             fleet.SetRoute(AStar.FindPath(fleet, PathOptions.SafeTerritory, null, new List<Sector> { homeSystem.Sector }));
                         }
+                    }
+                }
+                // find transport for invasion of minor races
+                if ((fleet.IsTransport || fleet.UnitAIType == UnitAIType.Transport))
+                {
+                    if (fleet.Owner.InvasionMinorCiv != null)
+                    {
+
                     }
                 }
 
@@ -252,7 +273,7 @@ namespace Supremacy.AI
 
                 if (fleet.IsBattleFleet || (fleet.IsFastAttack)) // && fleet.Activity == UnitActivity.NoActivity))
                 {
-                    if (!_totalWar)
+                    if (!_totalWar && !_invadeMinor)
                     {
                         // GameLog.Core.AI.DebugFormat("## NOT Total War, fleet ={0}, {1}, {2}, {3}, {4}, {5}", fleet.Name, fleet.Owner, fleet.Order, fleet.UnitAIType, fleet.Activity, fleet.Location);
                         Fleet defenseFleet = new Fleet();

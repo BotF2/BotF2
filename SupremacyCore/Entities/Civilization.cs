@@ -108,6 +108,7 @@ namespace Supremacy.Entities
         private int _moraleDriftRate = 1;
         private List<Civilization> _spiedCivList;
         private Civilization _totalWarCivilization;
+        private Civilization _invasionMionrCiv;
 
         #endregion
 
@@ -202,6 +203,7 @@ namespace Supremacy.Entities
             _traits = _traits.Trim();
             _spiedCivList = SpiedCivList;
             _totalWarCivilization = TotalWarCivilization;
+            _invasionMionrCiv = InvasionMinorCiv;
             //_intelOrdersIncomingToHost = IntelOrdersIncomingToHost;
 
             // When starting a game, options is null
@@ -496,6 +498,18 @@ namespace Supremacy.Entities
             get { return _totalWarCivilization; }
             set { if (_totalWarCivilization == null) { _totalWarCivilization = value; } }
         }
+
+        /// <summary>
+        /// Gets the <see cref="Civilization"/> this <see cref="Civilization"/>
+        /// is target of invasion 
+        /// </summary>
+        /// <value>The tech curve.</value>
+        public Civilization InvasionMinorCiv
+        {
+            get { return _invasionMionrCiv; }
+            set { if (_invasionMionrCiv == null) { _invasionMionrCiv = value; } }
+        }
+
         /// <summary>
         /// Gets a value indicating whether this <see cref="Civilization"/> is an empire.
         /// </summary>

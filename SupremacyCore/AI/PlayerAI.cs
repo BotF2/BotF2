@@ -92,6 +92,33 @@ namespace Supremacy.AI
                     else possibleTotalWarCiv.TotalWarCivilization = null; // if civs are no longer at war then total war ends.
                 }
             }
+            
+            if (targetCiv.IsEmpire && targetCiv.Traits.Contains("Warlike") && GameContext.Current.TurnNumber > 2)
+            {
+                var possibleInvadeMinorCivs = GameContext.Current.Civilizations.Where(o => o.IsEmpire == false).ToList();
+                if (possibleInvadeMinorCivs != null && possibleInvadeMinorCivs.Count > 0)
+                {
+                    foreach (Civilization possibleInvadeMinorCiv in possibleInvadeMinorCivs)
+                    {
+                        var diplomat = Diplomat.Get(targetCiv);
+                        ForeignPower foreignPower = diplomat.GetForeignPower(possibleInvadeMinorCiv);
+
+                        var maintenaceValue = GameContext.Current.CivilizationManagers[possibleInvadeMinorCiv].MaintenanceCostLastTurn;
+                        if (maintenaceValue < GameContext.Current.CivilizationManagers[targetCiv].MaintenanceCostLastTurn * 1.2 && possibleInvadeMinorCiv.InvasionMinorCiv == null)
+                        {
+                        //foreignPower.BeginTotalWar(); // if there already is total war by the target civ a new one will not be created over in ForeignPower.cs
+                        targetCiv.InvasionMinorCiv = possibleInvadeMinorCiv;
+                        foreignPower.DeclareWar();
+                            GameLog.Client.AI.DebugFormat("{0} set as invasion target by {1} ", possibleInvadeMinorCiv.Name, targetCiv.Name );
+                        }
+                        else
+                        {
+                            targetCiv.InvasionMinorCiv = null;
+                            //foreignPower.EndTotalWar();
+                        }
+                    }
+                }
+            }
         }
         #endregion
 
