@@ -922,7 +922,7 @@ namespace Supremacy.Client
             }
 
             var initData = GameInitData.CreateSinglePlayerGame(startScreen.Options, _id);
-            localEmpire = GetLocalEmpireShortage(startScreen.EmpireID, out string localempire);
+            localEmpire = GetLocalEmpireShortage(_id, out string localempire);
             startTechLvl = GetStartTechLvl(startScreen.Options.StartingTechLevel.ToString());
 
             RunGameController(gameController => gameController.RunLocal(initData), false);
