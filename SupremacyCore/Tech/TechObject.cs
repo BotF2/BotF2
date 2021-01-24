@@ -68,11 +68,21 @@ namespace Supremacy.Tech
             get {
                 try
                     {
+
                     //GameLog.Core.General.DebugFormat("working on design ID {0}"
                     //    , _designId
                     //    );
-                    return GameContext.Current.TechDatabase[_designId];
-
+                    if (GameContext.Current != null && GameContext.Current.TechDatabase != null)
+                        return GameContext.Current.TechDatabase[_designId];
+                    else
+                    {
+                        //GameLog.Core.General.ErrorFormat("### Problem on Design name {0} design ID {1}"
+                        //    , Design.Name                     
+                        //    , _designId
+                        //    );
+                        return null;
+                    }
+                        
                     }
                 catch (Exception e)
                     {
