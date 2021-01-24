@@ -82,11 +82,19 @@ namespace Supremacy.Client
         private readonly DelegateCommand<object> _f10_Command;
         private readonly DelegateCommand<object> _f11_Command;
         private readonly DelegateCommand<object> _f12_Command;
+
+        private readonly DelegateCommand<object> _s0_Command;   // start Single Player Empire 0
+        private readonly DelegateCommand<object> _s1_Command;
+        private readonly DelegateCommand<object> _s2_Command;
+        private readonly DelegateCommand<object> _s3_Command;
+        private readonly DelegateCommand<object> _s4_Command;
+        private readonly DelegateCommand<object> _s5_Command;
+        private readonly DelegateCommand<object> _s6_Command;
+
         private readonly DelegateCommand<object> _fakeCommand;
         private readonly DelegateCommand<object> _logTxtCommand;
         private readonly DelegateCommand<object> _errorTxtCommand;
         private readonly DelegateCommand<object> _startSinglePlayerGameCommand;
-        private readonly DelegateCommand<object> _startSP1Command;
         private readonly DelegateCommand<object> _continueGameCommand;
         private readonly DelegateCommand<bool> _endGameCommand;
         private readonly DelegateCommand<SavedGameHeader> _loadGameCommand;
@@ -179,42 +187,28 @@ namespace Supremacy.Client
             _f12_Command = new DelegateCommand<object>(
                 Execute_f12_Command);
 
+            _s0_Command = new DelegateCommand<object>(Execute_s0_Command); // start Single Player Empire 0
+            _s1_Command = new DelegateCommand<object>(Execute_s1_Command);
+            _s2_Command = new DelegateCommand<object>(Execute_s2_Command);
+            _s3_Command = new DelegateCommand<object>(Execute_s3_Command);
+            _s4_Command = new DelegateCommand<object>(Execute_s4_Command);
+            _s5_Command = new DelegateCommand<object>(Execute_s5_Command);
+            _s6_Command = new DelegateCommand<object>(Execute_s6_Command);
+
             _fakeDialog = new FakeDialog();
-            _fakeCommand = new DelegateCommand<object>(
-                ExecuteFakeCommand);
+            _fakeCommand = new DelegateCommand<object>(ExecuteFakeCommand);
 
-            _logTxtCommand = new DelegateCommand<object>(
-                ExecuteLogTxtCommand);
+            _logTxtCommand = new DelegateCommand<object>(ExecuteLogTxtCommand);
+            _errorTxtCommand = new DelegateCommand<object>(ExecuteErrorTxtCommand);
 
-            _errorTxtCommand = new DelegateCommand<object>(
-                ExecuteErrorTxtCommand);
-
-            _startSinglePlayerGameCommand = new DelegateCommand<object>(
-                ExecuteStartSinglePlayerGameCommand);
-
-            _startSP1Command = new DelegateCommand<object>(
-                ExecuteStartSinglePlayerGameCommand);
-
-            _continueGameCommand = new DelegateCommand<object>(
-                ExecuteContinueGameCommand);
-
-            _endGameCommand = new DelegateCommand<bool>(
-                ExecuteEndGameCommand);
-
-            _exitCommand = new DelegateCommand<bool>(
-                ExecuteExitCommand);
-
-            _loadGameCommand = new DelegateCommand<SavedGameHeader>(
-                ExecuteLoadGameCommand);
-
-            _showCreditsDialogCommand = new DelegateCommand<object>(
-                ExecuteShowCreditsDialogCommand);
-
-            _joinMultiplayerGameCommand = new DelegateCommand<MultiplayerConnectParameters>(
-                ExecuteJoinMultiplayerGameCommand);
-
-            _hostMultiplayerGameCommand = new DelegateCommand<string>(
-                ExecuteHostMultiplayerGameCommand);
+            _startSinglePlayerGameCommand = new DelegateCommand<object>(ExecuteStartSinglePlayerGameCommand);
+            _continueGameCommand = new DelegateCommand<object>(ExecuteContinueGameCommand);
+            _endGameCommand = new DelegateCommand<bool>(ExecuteEndGameCommand);
+            _exitCommand = new DelegateCommand<bool>(ExecuteExitCommand);
+            _loadGameCommand = new DelegateCommand<SavedGameHeader>(ExecuteLoadGameCommand);
+            _showCreditsDialogCommand = new DelegateCommand<object>(ExecuteShowCreditsDialogCommand);
+            _joinMultiplayerGameCommand = new DelegateCommand<MultiplayerConnectParameters>(ExecuteJoinMultiplayerGameCommand);
+            _hostMultiplayerGameCommand = new DelegateCommand<string>(ExecuteHostMultiplayerGameCommand);
         }
         #endregion
 
@@ -267,56 +261,26 @@ namespace Supremacy.Client
             localEmpire = GetLocalEmpireShortage(initData.LocalPlayerEmpireID, out string localempire);
         }
 
-        private void ExecuteOptionsCommand(object obj)
-        {
-            _optionsDialog.ShowDialog();
-        }
+        private void ExecuteOptionsCommand(object obj) { _optionsDialog.ShowDialog();}
+        private void ExecuteTracesCommand(object obj) { _tracesDialog.ShowDialog();}
 
-        private void ExecuteTracesCommand(object obj)
-        {
-            _tracesDialog.ShowDialog();
-        }
+        private void Execute_f06_Command(object obj) { _f06_Dialog.ShowDialog(); }
+        private void Execute_f07_Command(object obj) { _f07_Dialog.ShowDialog(); }
+        private void Execute_f08_Command(object obj) { _f08_Dialog.ShowDialog();}
+        private void Execute_f09_Command(object obj) { _f09_Dialog.ShowDialog();}
+        private void Execute_f10_Command(object obj) { _f10_Dialog.ShowDialog();}
+        private void Execute_f11_Command(object obj) { _f11_Dialog.ShowDialog();}
+        private void Execute_f12_Command(object obj) { _f12_Dialog.ShowDialog();}
 
-        private void Execute_f06_Command(object obj)
-        {
-            _f06_Dialog.ShowDialog();
-        }
+        private void Execute_s0_Command(object obj) { ExecuteSP_DirectlyGameCommand(0);}
+        private void Execute_s1_Command(object obj) { ExecuteSP_DirectlyGameCommand(1);}
+        private void Execute_s2_Command(object obj) { ExecuteSP_DirectlyGameCommand(2);}
+        private void Execute_s3_Command(object obj) { ExecuteSP_DirectlyGameCommand(3);}
+        private void Execute_s4_Command(object obj) { ExecuteSP_DirectlyGameCommand(4);}
+        private void Execute_s5_Command(object obj) { ExecuteSP_DirectlyGameCommand(5);}
+        private void Execute_s6_Command(object obj) { ExecuteSP_DirectlyGameCommand(6); }
 
-        private void Execute_f07_Command(object obj)
-        {
-            _f07_Dialog.ShowDialog();
-        }
-
-        private void Execute_f08_Command(object obj)
-        {
-            _f08_Dialog.ShowDialog();
-        }
-
-        private void Execute_f09_Command(object obj)
-        {
-            _f09_Dialog.ShowDialog();
-        }
-
-        private void Execute_f10_Command(object obj)
-        {
-            _f10_Dialog.ShowDialog();
-        }
-
-        private void Execute_f11_Command(object obj)
-        {
-            _f11_Dialog.ShowDialog();
-        }
-
-        private void Execute_f12_Command(object obj)
-        {
-            _f12_Dialog.ShowDialog();
-        }
-
-        private void ExecuteFakeCommand(object obj)
-        {
-            _fakeDialog.ShowDialog();
-        }
-
+        private void ExecuteFakeCommand(object obj) { _fakeDialog.ShowDialog(); }
         private void ExecuteLogTxtCommand(object obj)
         {
             var logFile = Path.Combine(
@@ -344,39 +308,18 @@ namespace Supremacy.Client
 
         private void ExecuteErrorTxtCommand(object obj)
         {
-            var errorFile = Path.Combine(
-                ResourceManager.GetResourcePath(""),
-                "Error.txt");
+            var errorFile = Path.Combine(ResourceManager.GetResourcePath(""),"Error.txt");
 
             if (!string.IsNullOrEmpty(errorFile) && File.Exists(errorFile))
             {
                 double fileSize = new FileInfo(errorFile).Length;
-                if (fileSize == 0)
-                {
-                    MessageBox.Show("Error.txt is empty - nothing to load");
-                    return;
-                }
+                if (fileSize == 0) { MessageBox.Show("Error.txt is empty - nothing to load"); return;}
+                if (fileSize < 0) { MessageBox.Show("Could not load Error.txt");return;}
 
-                if (fileSize < 0)
-                {
-                    MessageBox.Show("Could not load Error.txt");
-                    return;
-                }
+                ProcessStartInfo processStartInfo = new ProcessStartInfo { UseShellExecute = true, FileName = errorFile };
 
-                ProcessStartInfo processStartInfo = new ProcessStartInfo
-                {
-                    UseShellExecute = true,
-                    FileName = errorFile
-                };
-
-                try
-                {
-                    _ = Process.Start(processStartInfo);
-                }
-                catch
-                {
-                    MessageBox.Show("Could not load Error.txt");
-                }
+                try { _ = Process.Start(processStartInfo);}
+                catch { MessageBox.Show("Could not load Error.txt");}
             }
         }
 
@@ -761,6 +704,13 @@ namespace Supremacy.Client
             _f10_Command.IsActive = true;
             _f11_Command.IsActive = true;
             _f12_Command.IsActive = true;
+            _s0_Command.IsActive = true;
+            _s1_Command.IsActive = true;
+            _s2_Command.IsActive = true;
+            _s3_Command.IsActive = true;
+            _s4_Command.IsActive = true;
+            _s5_Command.IsActive = true;
+            _s6_Command.IsActive = true;
             _fakeCommand.IsActive = true;
             _logTxtCommand.IsActive = true;
             _errorTxtCommand.IsActive = true;
@@ -930,11 +880,19 @@ namespace Supremacy.Client
             ClientCommands.F10_Command.RegisterCommand(_f10_Command);
             ClientCommands.F11_Command.RegisterCommand(_f11_Command);
             ClientCommands.F12_Command.RegisterCommand(_f12_Command);
+
+            ClientCommands.S0_Command.RegisterCommand(_s0_Command);
+            ClientCommands.S1_Command.RegisterCommand(_s1_Command);
+            ClientCommands.S2_Command.RegisterCommand(_s2_Command);
+            ClientCommands.S3_Command.RegisterCommand(_s3_Command);
+            ClientCommands.S4_Command.RegisterCommand(_s4_Command);
+            ClientCommands.S5_Command.RegisterCommand(_s5_Command);
+            ClientCommands.S6_Command.RegisterCommand(_s6_Command);
+
             ClientCommands.FakeCommand.RegisterCommand(_fakeCommand);
             ClientCommands.LogTxtCommand.RegisterCommand(_logTxtCommand);
             ClientCommands.ErrorTxtCommand.RegisterCommand(_errorTxtCommand);
             ClientCommands.StartSinglePlayerGame.RegisterCommand(_startSinglePlayerGameCommand);
-            ClientCommands.StartSP1Command.RegisterCommand(_startSP1Command);
             ClientCommands.ContinueGame.RegisterCommand(_continueGameCommand);
             ClientCommands.EndGame.RegisterCommand(_endGameCommand);
             ClientCommands.JoinMultiplayerGame.RegisterCommand(_joinMultiplayerGameCommand);
@@ -942,6 +900,32 @@ namespace Supremacy.Client
             ClientCommands.LoadGame.RegisterCommand(_loadGameCommand);
             ClientCommands.ShowCreditsDialog.RegisterCommand(_showCreditsDialogCommand);
             ClientCommands.Exit.RegisterCommand(_exitCommand);
+        }
+        private void ExecuteSP_DirectlyGameCommand(int _id)
+        {
+            if (_appContext.IsGameInPlay) return;
+
+            var startScreen = new SinglePlayerStartScreen(_soundPlayer);
+            var options = startScreen.Options;
+
+            switch (_id)
+            {
+                case 0: options.FederationPlayable = EmpirePlayable.Yes; break;
+                case 1: options.TerranEmpirePlayable = EmpirePlayable.Yes; break;
+                case 2: options.RomulanPlayable = EmpirePlayable.Yes; break;
+                case 3: options.KlingonPlayable = EmpirePlayable.Yes; break;
+                case 4: options.CardassianPlayable = EmpirePlayable.Yes; break;
+                case 5: options.DominionPlayable = EmpirePlayable.Yes; break;
+                case 6: options.BorgPlayable = EmpirePlayable.Yes; break;
+                default:
+                    break;
+            }
+
+            var initData = GameInitData.CreateSinglePlayerGame(startScreen.Options, _id);
+            localEmpire = GetLocalEmpireShortage(startScreen.EmpireID, out string localempire);
+            startTechLvl = GetStartTechLvl(startScreen.Options.StartingTechLevel.ToString());
+
+            RunGameController(gameController => gameController.RunLocal(initData), false);
         }
 
         private void ExecuteStartSinglePlayerGameCommand(object parameter)
@@ -952,72 +936,16 @@ namespace Supremacy.Client
             LoadDefaultTheme();
 
             var startScreen = new SinglePlayerStartScreen(_soundPlayer);
+            var options = startScreen.Options;
 
-            // deactivate following completely for switching to using MP-Screen as well for SP
             var dialogResult = startScreen.ShowDialog();
-
             if (!dialogResult.HasValue || !dialogResult.Value)
                 return;
 
-            var initData = GameInitData.CreateSinglePlayerGame(startScreen.Options, startScreen.EmpireID);
+            var initData = GameInitData.CreateSinglePlayerGame(options, startScreen.EmpireID);
 
             localEmpire = GetLocalEmpireShortage(startScreen.EmpireID, out string localempire);
-            //localEmpireID = startScreen.EmpireID;
-            //switch (startScreen.EmpireID)
-            //{
-            //    case 0:
-            //        localEmpire = "FED";
-            //        break;
-            //    case 1:
-            //        localEmpire = "TER";
-            //        break;
-            //    case 2:
-            //        localEmpire = "ROM";
-            //        break;
-            //    case 3:
-            //        localEmpire = "KLI";
-            //        break;
-            //    case 4:
-            //        localEmpire = "CAR";
-            //        break;
-            //    case 5:
-            //        localEmpire = "DOM";
-            //        break;
-            //    case 6:
-            //        localEmpire = "FED";
-            //        break;
-            //    default:
-            //        localEmpire = "BOR";
-            //        break;
-            //}
             startTechLvl = GetStartTechLvl(startScreen.Options.StartingTechLevel.ToString());
-            //string startTechLvlText = startScreen.Options.StartingTechLevel.ToString();
-            //switch (startTechLvlText)
-            //{
-            //    case "Early":
-            //        startTechLvl = 1;
-            //        break;
-            //    case "Developed":
-            //        startTechLvl = 2;
-            //        break;
-            //    case "Sophisticated":
-            //        startTechLvl = 3;
-            //        break;
-            //    case "Advanced":
-            //        startTechLvl = 4;
-            //        break;
-            //    case "Supreme":
-            //        startTechLvl = 5;
-            //        break;
-            //    default:
-            //        startTechLvl = 1;
-            //        break;
-            //}
-
-
-
-            //if (startScreen.EmpireID = 5)
-            //    var initData = GameInitData.CreateSinglePlayerGame(startScreen.Options, themeID);
 
             RunGameController(gameController => gameController.RunLocal(initData), false);
 
@@ -1030,21 +958,11 @@ namespace Supremacy.Client
         {
             switch (startTechLvlText)
             {
-                case "Early":
-                    startTechLvl = 1;
-                    break;
-                case "Developed":
-                    startTechLvl = 2;
-                    break;
-                case "Sophisticated":
-                    startTechLvl = 3;
-                    break;
-                case "Advanced":
-                    startTechLvl = 4;
-                    break;
-                case "Supreme":
-                    startTechLvl = 5;
-                    break;
+                case "Early": startTechLvl = 1; break;
+                case "Developed": startTechLvl = 2; break;
+                case "Sophisticated": startTechLvl = 3; break;
+                case "Advanced": startTechLvl = 4; break;
+                case "Supreme": startTechLvl = 5; break;
                 default:
                     startTechLvl = 1;
                     break;
@@ -1056,29 +974,15 @@ namespace Supremacy.Client
         {
             switch (empireID)
             {
-                case 0:
-                    localEmpire = "FED";
-                    break;
-                case 1:
-                    localEmpire = "TER";
-                    break;
-                case 2:
-                    localEmpire = "ROM";
-                    break;
-                case 3:
-                    localEmpire = "KLI";
-                    break;
-                case 4:
-                    localEmpire = "CAR";
-                    break;
-                case 5:
-                    localEmpire = "DOM";
-                    break;
-                case 6:
-                    localEmpire = "FED";
-                    break;
+                case 0: localEmpire = "FED"; break;
+                case 1: localEmpire = "TER"; break;
+                case 2: localEmpire = "ROM"; break;
+                case 3: localEmpire = "KLI"; break;
+                case 4: localEmpire = "CAR"; break;
+                case 5: localEmpire = "DOM"; break;
+                case 6: localEmpire = "BOR"; break;
                 default:
-                    localEmpire = "BOR";
+                    localEmpire = "FED";
                     break;
             }
             return localEmpire;
