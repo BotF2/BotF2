@@ -495,18 +495,18 @@
                 HorizontalAlignment="Left"
                 VerticalAlignment="Center"
                 FontWeight="DemiBold"  
-                       Foreground="Silver"
+                Foreground="Silver"
                 Text="{s:StringResource Key=SHIPYARD_SLOT_2}" />
             <TextBlock Grid.Column="4"
                 Grid.Row="0"
                 VerticalAlignment="Center"
-               FontWeight="DemiBold"  
-                       Foreground="Silver"
+                FontWeight="DemiBold"  
+                Foreground="Silver"
                 Text="{s:StringResource Key=SHIPYARD_SLOT_3}" />
             <TextBlock Grid.Column="6"
                 Grid.Row="0"
                 VerticalAlignment="Center"
-               FontWeight="DemiBold"  
+                FontWeight="DemiBold"  
                 Foreground="Silver"
                 Text="{s:StringResource Key=SHIPYARD_SLOT_4}" />
             <!--<TextBlock Grid.Column="4"

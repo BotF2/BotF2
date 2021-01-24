@@ -111,7 +111,7 @@ namespace Supremacy.Scripting
         public object Evaluate(RuntimeScriptParameters parameters)
         {
             CompileScript();
-            return _delegate.DynamicInvoke(ResolveParameterValues(parameters).ToArray());
+            return _delegate.DynamicInvoke(ResolveParameterValues(parameters).ToArray());  // on break check parameters
         }
 
         public bool CompileScript([CanBeNull] ErrorSink errorSink = null)

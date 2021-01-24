@@ -1,4 +1,4 @@
-<!-- File:MenuScreen.xaml
+<!-- File:MenuScreen.xaml > Code in MenuScreen.cs
   
    Copyright (c) 2007 Mike Strobel
   
@@ -23,15 +23,34 @@
                             <RowDefinition Height="1"/>
                             <!--<RowDefinition Height="Auto" />-->
                         </Grid.RowDefinitions>
-                        <Image Source="vfs:///Resources/Images/UI/Backgrounds/Title.png" Stretch="Uniform"/>
-                        <StackPanel Orientation="Vertical" HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="200" Margin="0,0,16,16">
+                        <Image Source="vfs:///Resources/Images/UI/Backgrounds/Title.png" Stretch="Uniform" HorizontalAlignment="Left"/>
+                        <StackPanel Orientation="Vertical" HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="220" Margin="0,0,16,16">
                             <Border CornerRadius="16,16,0,0" Height="16"
                                     Background="{DynamicResource LCARS_PurpleGradient_TopLeft_BottomRight}" />
                             <scc:GameItemsControl Context="VerticalGroupItem">
                                 <scc:GameButton Command="{x:Static scc:ClientCommands.ContinueGame}" Margin="0,2,0,0"
-                                        Label="{s:StringResource MAIN_MENU_CONTINUE}" />
+                                        Label="{s:StringResource MAIN_MENU_CONTINUE}" /> 
                                 <scc:GameButton Command="{x:Static scc:ClientCommands.StartSinglePlayerGame}" Margin="0,2,0,0"
-                                        Label="{s:StringResource MAIN_MENU_SINGLE_PLAYER}" />
+                                        Label="{s:StringResource MAIN_MENU_SINGLE_PLAYER}" /> 
+                                <scc:GameButton Command="{x:Static scc:ClientCommands.S0_Command}" Margin="0,2,0,0"
+                                        Label="{s:StringResource MAIN_MENU_START_FED}" IsEnabled="True"/>
+                                <scc:GameButton Command="{x:Static scc:ClientCommands.S1_Command}" Margin="0,2,0,0"
+                                        Label="{s:StringResource MAIN_MENU_START_TERR}" IsEnabled="True"/>
+                                <scc:GameButton Command="{x:Static scc:ClientCommands.S2_Command}" Margin="0,2,0,0"
+                                        Label="{s:StringResource MAIN_MENU_START_ROM}" IsEnabled="True"/>
+                                <scc:GameButton Command="{x:Static scc:ClientCommands.S3_Command}" Margin="0,2,0,0"
+                                        Label="{s:StringResource MAIN_MENU_START_KLING}" IsEnabled="True"/>
+                                <scc:GameButton Command="{x:Static scc:ClientCommands.S4_Command}" Margin="0,2,0,0"
+                                        Label="{s:StringResource MAIN_MENU_START_CARD}" IsEnabled="True"/>
+                                <scc:GameButton Command="{x:Static scc:ClientCommands.S5_Command}" Margin="0,2,0,0"
+                                        Label="{s:StringResource MAIN_MENU_START_DOM}" IsEnabled="True"/>
+                                <scc:GameButton Command="{x:Static scc:ClientCommands.S6_Command}" Margin="0,2,0,0"
+                                        Label="{s:StringResource MAIN_MENU_START_Borg}" IsEnabled="True"/>
+
+                                <!--<scc:GameButton.CommandParameter>
+                                    <sys:Boolean>True</sys:Boolean>
+                                </scc:GameButton.CommandParameter>-->
+
                                 <scc:GameButton Command="{x:Static local:MenuScreen.MultiplayerCommand}" Margin="0,2,0,0"
                                         Label="{s:StringResource MAIN_MENU_MULTIPLAYER}" />
                                 <scc:GameButton Command="{x:Static local:MenuScreen.LoadGameCommand}" Margin="0,2,0,0"
@@ -62,10 +81,11 @@
                                     Background="{DynamicResource LCARS_PurpleGradient_TopLeft_BottomRight}" />
                         </StackPanel>
 
+                        <!--ClientVersion-->
                         <TextBlock Foreground="{StaticResource LCARS_ParagraphBrush}"
                             FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                             FontSize="14"
-                            Margin="16,0,240,20"
+                            Margin="16,0,240,45"
                             HorizontalAlignment="Right"
                             VerticalAlignment="Bottom"
                             SnapsToDevicePixels="True">
@@ -73,16 +93,17 @@
                                 <Binding Source="{x:Static local:ClientApp.ClientVersion}" StringFormat="                                                                                              Version {0}" />
                             </TextBlock.Text>
                         </TextBlock>
+                        <!--HINT_FOR_RUNNING-->
                         <TextBlock Foreground="Aqua"
                             FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                             FontSize="14"
-                            Margin="16,-18,240,0"
+                            Margin="16,-47,240,0"
                             HorizontalAlignment="Right"
                             VerticalAlignment="Top"
-Grid.Row="1"
+                            Grid.Row="1"
                             SnapsToDevicePixels="True"
-                                  Text="{s:StringResource HINT_FOR_RUNNING}"
-                                   >
+                            Text="{s:StringResource HINT_FOR_RUNNING}"
+                            >
                         </TextBlock>
                     </Grid>
                 </ControlTemplate>

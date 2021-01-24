@@ -204,15 +204,15 @@ namespace Supremacy.Client
                         var workingSet = process.WorkingSet64;
                         var heapSize = GC.GetTotalMemory(false);
 
-                        String _text = ("Forcing garbage collection...");
-                        Console.WriteLine(_text); GameLog.Client.General.Info(_text);
+                        string _text = ("Forcing garbage collection...");
+                        //Console.WriteLine(_text); GameLog.Client.General.Info(_text);
 
                         GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced);
                         GC.WaitForPendingFinalizers();
 
                         process.Refresh();
 
-                        _text = "Process= " + process.ProcessName
+                        _text = "Garbage Collection: Process= " + process.ProcessName
                             + ", ProcessID= " + process.Id
                             + ", Threads= " + process.Threads.Count.ToString()
                             + ", Memory= " + process.PagedMemorySize64
@@ -223,8 +223,6 @@ namespace Supremacy.Client
                             //+ ", Memory= " + process.VirtualMemorySize64
 
                             ;
-
-                        
                         //works  MessageBox.Show(_text, process.ProcessName + " ID: " + process.Id);
                         Console.WriteLine(_text); GameLog.Client.General.Info(_text);
 

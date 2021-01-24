@@ -90,11 +90,13 @@ namespace Supremacy.Collections
             {
                 if (key == null)
                 {
+                    GameLog.Client.General.ErrorFormat("Searching Key was null");
                     throw new ArgumentNullException(nameof(key));
                 }
 
                 if ((_keyValueMap != null) && _keyValueMap.TryGetValue(key, out TValue value))
                 {
+                    // works - but a lot of output    GameLog.Client.General.ErrorFormat("Searching Key = {0}", key.ToString());
                     return value;
                 }
 
