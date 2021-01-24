@@ -157,6 +157,27 @@ namespace Supremacy.Client
                                         "/SupremacyClient;Component/themes/Default.xaml",
                                         UriKind.RelativeOrAbsolute))
                                 as ResourceDictionary;
+
+
+                    //int _dicCount = MergedDictionaries.Count;
+                string _allText = Environment.NewLine + "a;b;c;d;e;(Headline for Excel);g;" + Environment.NewLine;
+                int _allValue = 0;
+                string _text0 = Current.Resources.MergedDictionaries[0].Source.ToString();
+
+                foreach (var item in Current.Resources.MergedDictionaries)
+                {
+                    string _text1 = item.Source.ToString(); Console.WriteLine(_text1);
+                    _allValue += 1000;  // 1.000 step each file
+
+                    foreach (var key in item.Keys)
+                    {
+                        string _text2 = key.ToString(); Console.WriteLine(_text1 + "-" + _text2);
+                        _allValue += +1;
+                        _allText += _text0 + ";" + _text1 + ";" + _allValue + ";" + _text2 + Environment.NewLine;
+
+                    }
+                }
+                GameLog.Client.UI.DebugFormat(_allText);
             }
             catch
             {

@@ -29,7 +29,7 @@ namespace Supremacy.Client.Markup
                 _sourceUri = value;
 
                 //works 
-                //GameLog.Client.UI.DebugFormat("SharedResourceDictionary.cs: _sourceUri={0}", value);
+                GameLog.Client.UI.DebugFormat("SharedResourceDictionary.cs: _sourceUri={0}", value);
 
                 ResourceDictionary sharedDictionary;
 
@@ -37,6 +37,29 @@ namespace Supremacy.Client.Markup
                 {
                     // If the dictionary is already loaded, get it from the cache
                     MergedDictionaries.Add(sharedDictionary);
+
+                    if (MergedDictionaries != null)
+                    {
+                        int _dicCount = MergedDictionaries.Count;
+                        string _allText = Environment.NewLine + "a;b;c;d;e;(Headline for Excel);g;" + Environment.NewLine; 
+                        int _allValue = 0;
+                        string _text0 = MergedDictionaries[0].Source.ToString();
+
+                        foreach (var item in MergedDictionaries[0].MergedDictionaries)
+                        {
+                            string _text1 = item.Source.ToString(); Console.WriteLine(_text1);
+                            _allValue += 10000;  // 10.000 step each file
+
+                            foreach (var key in item.Keys)
+                            {
+                                string _text2 = key.ToString(); Console.WriteLine(_text1 + "-" +_text2);
+                                _allValue += +1;
+                                _allText += _text0 + ";" + _text1 + ";" + _allValue + ";" + _text2 + Environment.NewLine;
+
+                            }
+                        }
+                        GameLog.Client.UI.DebugFormat(_allText);
+                    }
                 }
                 else
                 {

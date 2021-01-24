@@ -29,6 +29,10 @@ namespace Supremacy.Client.Themes
                 $"/SupremacyClient;Component/themes/{theme}/Theme.xaml",
                 UriKind.RelativeOrAbsolute);
 
+            string _text = "including" + themeUri.ToString();
+            GameLog.Client.UI.DebugFormat(_text);
+            Console.WriteLine(_text);
+
             try
             {
                 var sharedResources = new SharedResourceDictionary();
