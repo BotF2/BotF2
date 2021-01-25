@@ -2634,9 +2634,11 @@ namespace Supremacy.Game
                             if (DiplomacyHelper.IsIndependent(civ))
                             {
                                 ColonyAI.DoTurn(civ);
-                                UnitAI.DoTurn(civ);
+
                                 PlayerAI.DoTurn(civ);
-                                UnitAI.SetForTotalWarNextTurn();
+                                UnitAI.DoTurn(civ);
+                                //UnitAI.SetForTotalWarNextTurn();
+                                //UnitAI.SetForInvadeMinorNextTurn();
                                 //List<bool> _inRange = new List<bool> { true };
                                 //UnitAI.RangesByCiv = new Dictionary<int, List<bool>> { { 0, _inRange }, { 1, _inRange }, { 2, _inRange }, { 3, _inRange }, { 4, _inRange }, { 5, _inRange }, { 6, _inRange } };
                                 //UnitAI.OnlyOnce = new Dictionary<int, int> { { 0, 0 }, { 1, 0 }, { 2, 0 }, { 3, 0 }, { 4, 0 }, { 5, 0 }, { 6, 0 } }; ;

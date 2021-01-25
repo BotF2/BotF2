@@ -27,55 +27,104 @@ namespace Supremacy.AI
 
     public static class UnitAI
     {
-        private static List<bool> _inRange = new List<bool> { true }; // fleets of civ out of range of target homeworld
-        private static List<bool> _inRangeMinors = new List<bool> { true };
-        private static Dictionary<int, List<bool>> _rangesByCiv = new Dictionary<int, List<bool>> { { 0, _inRange }, { 1, _inRange }, { 2, _inRange }, { 3, _inRange }, { 4, _inRange }, { 5, _inRange }, { 6, _inRange } };
-        private static Dictionary<int, List<bool>> _rangesByMinors = new Dictionary<int, List<bool>> { { 999, _inRange } };
-        private static Dictionary<int, bool> TotalWarNextTurn = new Dictionary<int, bool> { { 0, false }, { 1, false }, { 2, false }, { 3, false }, { 4, false }, { 5, false }, { 6, false } };
-        private static Dictionary<int, bool> InvadeMinorNextTurn = new Dictionary<int, bool> { { 0, false } };
-        private static bool _invadeMinor = false;
-        private static bool _totalWar = false;
+        //private static List<bool> _inRange = new List<bool> { true }; // fleets of Empire in/out of range of target Empire homeworld, start true and find a false in fleet loop
+        //private static List<bool> _inRangeMinors = new List<bool> { true }; // fleets of Empire in/out of range of target minor race homeworld
+        //private static Dictionary<int, List<bool>> _rangesByCiv = new Dictionary<int, List<bool>> { { 0, _inRange }, { 1, _inRange }, { 2, _inRange }, { 3, _inRange }, { 4, _inRange }, { 5, _inRange }, { 6, _inRange } };
+        //private static Dictionary<int, List<bool>> _rangesByMinors = new Dictionary<int, List<bool>> { { 999, _inRangeMinors } };
+        //private static Dictionary<int, bool> TotalWarNextTurn = new Dictionary<int, bool> { { 0, false }, { 1, false }, { 2, false }, { 3, false }, { 4, false }, { 5, false }, { 6, false } };
+        //private static Dictionary<int, bool> InvadeMinorNextTurn = new Dictionary<int, bool> { { 0, false } };
+        //private static bool _inRangeToInvadeMinor = false;
+        //private static bool _inRangeForTotalWar = false;
         private static int _currentTurn = 0;
+        //private static List<int> _minorRaceCivIds = new List<int>() { 999 };
 
-        public static Dictionary<int, List<bool>> RangesByCiv // check here for all ships in range for distance of total-war-target-civ home-world from your home-world
-        {
-            get { return _rangesByCiv; }
-            set { _rangesByCiv = value; }
-        }
+        //public static Dictionary<int, List<bool>> RangesByCiv // check here for all ships in range for distance of total-war-target-Empire home-world from a target home-world
+        //{
+        //    get { return _rangesByCiv; }
+        //    set { _rangesByCiv = value; }
+        //}
 
-        public static Dictionary<int, List<bool>> RangesByMinors
-        {
-            get { return _rangesByMinors; }
-            set { _rangesByMinors = value; }
-        }
+        //public static Dictionary<int, List<bool>> RangesByMinors
+        //{
+        //    get { return _rangesByMinors; }
+        //    set { _rangesByMinors = value; }
+        //}
+
+        //public UnitAI
+        //{
+
+        //    _rangesByCiv = RangesByCiv; // new Dictionary<int, List<bool>> { { 0, _inRange }, { 1, _inRange }, { 2, _inRange }, { 3, _inRange }, { 4, _inRange }, { 5, _inRange }, { 6, _inRange } };
+        //}
 
         //public static Dictionary<int, int> OnlyOnceATurn { get { return _onlyOnceATurn; } set { _onlyOnceATurn = value; } }
         public static void DoTurn([NotNull] Civilization civ)
         {
-            if (_currentTurn != GameContext.Current.TurnNumber)
+            StarSystem homeSystem = GameContext.Current.CivilizationManagers[civ].HomeSystem;
+            StarSystem othersHomeSystem = null;
+            bool attackingShipsGotHome = false;
+            if (civ.TotalWarCivilization != null)
+                othersHomeSystem = GameContext.Current.CivilizationManagers[civ.TotalWarCivilization].HomeSystem;
+            else if (civ.InvasionMinorCiv != null)
+                othersHomeSystem = GameContext.Current.CivilizationManagers[civ.InvasionMinorCiv].HomeSystem;
+            IEnumerable<Fleet> attackWarShips = GameContext.Current.Universe.FindOwned<Fleet>(civ).Where(s => s.IsBattleFleet
+                || s.IsFastAttack || s.IsScout).ToList();
+            Fleet attackFleet = new Fleet();
+            if (civ.TotalWarCivilization != null || civ.InvasionMinorCiv != null)
+            {
+                IEnumerable<Fleet> homeWarShips = attackWarShips.Where(s => s.Location == homeSystem.Location).ToList();
+                if (homeWarShips.Count() + 1 >= attackWarShips.Count()) // are ship home?
+                {
+                    attackingShipsGotHome = true;
+                }
+            }
+                // bool _inRangeForTotalWar = false;
+                // bool _inRangeToInvadeMinor = false;
+
+                // if (civ.TotalWarCivilization != null)  // did we already set a total-war civ for this civ? // && RangesByCiv.ContainsKey(fleet.OwnerID))
+                //_inRangeForTotalWar = true;  // Are our ships in range was check in PlayerAI // !RangesByCiv[civ.CivID].Contains(false);
+                //if (civ.IsEmpire)
+                //{
+                //    if (civ.InvasionMinorCiv != null && RangesByMinors.ContainsKey(civ.CivID))
+                //    {
+                //        _inRangeToInvadeMinor = !RangesByMinors[civ.CivID].Contains(false);
+                //        GameLog.Client.AI.DebugFormat("The {0} found Minor to Invade {1} ", civ.Name, civ.InvasionMinorCiv.Name);
+                //    }
+                //}
+                if (_currentTurn != GameContext.Current.TurnNumber) // if it is a new turn rest turn number and rest list of minor civ ids
             {
                 _currentTurn = GameContext.Current.TurnNumber;
-                List<bool> _inRange = new List<bool> { true };
-                RangesByCiv = new Dictionary<int, List<bool>> { { 0, _inRange }, { 1, _inRange }, { 2, _inRange }, { 3, _inRange }, { 4, _inRange }, { 5, _inRange }, { 6, _inRange } };
-                List<bool> _inRangeMinor = new List<bool> { true };
-                RangesByMinors = new Dictionary<int, List<bool>> { { 999, _inRangeMinors } };
+
+                //List<CivilizationManager> minorRaceCivManagers = GameContext.Current.CivilizationManagers.Where(o => o.CivilizationID > 6).ToList();
+                //foreach (var civManager in minorRaceCivManagers)
+                //{
+                //    //if (!_rangesByMinors.ContainsKey(civManager.CivilizationID))
+                //    //    _rangesByMinors.Add(civManager.CivilizationID, _inRangeMinors);
+                //    //else
+                //    //{
+                //    //    _rangesByMinors.Remove(civManager.CivilizationID);
+                //    //    _rangesByMinors.Add(civManager.CivilizationID, _inRangeMinors);
+                //    //}
+                //    if (!_minorRaceCivIds.Contains(civManager.CivilizationID))
+                //        _minorRaceCivIds.Add(civManager.CivilizationID);
+                //}               
             }
             if (civ == null)
             {
                 throw new ArgumentNullException(nameof(civ));
             }
 
-            string _turnNumberText = GameContext.Current.TurnNumber.ToString();
-            foreach (Fleet fleet in GameContext.Current.Universe.FindOwned<Fleet>(civ))
+            //string _turnNumberText = GameContext.Current.TurnNumber.ToString();
+            foreach (Fleet fleet in GameContext.Current.Universe.FindOwned<Fleet>(civ)) // each fleet of the current civ
             {
-                StarSystem homeSystem = GameContext.Current.CivilizationManagers[fleet.Owner].HomeSystem;
-                GameLog.Core.AI.DebugFormat("Turn {0}: Processing Fleet in {4}: {1} {2} {3}..."
-                    , _turnNumberText, fleet.ObjectID, fleet.Name, fleet.ClassName, fleet.Location); 
+                //string _turnNumberText = GameContext.Current.TurnNumber.ToString();
+                //StarSystem homeSystem = GameContext.Current.CivilizationManagers[fleet.Owner].HomeSystem;
+                GameLog.Core.AI.DebugFormat("Turn {0}: Processing Fleet in turn {4}: {1} {2} at {3}..."
+                    , GameContext.Current.TurnNumber.ToString(), fleet.ObjectID, fleet.Name, fleet.ClassName, fleet.Location); 
                 //Make sure all fleets are cloaked
                 foreach (Ship ship in fleet.Ships.Where(ship => ship.CanCloak && !ship.IsCloaked))
                 {
                     GameLog.Core.AI.DebugFormat("Turn {0}: Cloaking {1} {2} {3}"
-                        , _turnNumberText, ship.ObjectID, ship.Name, ship.ClassName);
+                        , GameContext.Current.TurnNumber.ToString(), ship.ObjectID, ship.Name, ship.ClassName);
                     ship.IsCloaked = true;
                 }
 
@@ -84,8 +133,16 @@ namespace Supremacy.AI
                 {
                     continue;
                 }
-                if (civ.TotalWarCivilization != null && RangesByCiv.ContainsKey(fleet.OwnerID))
-                    _totalWar = !RangesByCiv[fleet.OwnerID].Contains(false); // set local total war (send attacking fleet) condition from last turn for the civ of this current fleet.
+                //if (civ.TotalWarCivilization != null) // && RangesByCiv.ContainsKey(fleet.OwnerID)) // did we already set a total-war civ for this civ?
+                //    _inRangeForTotalWar = !RangesByCiv[fleet.OwnerID].Contains(false); // set total war field (OK send attacking fleet) condition for this current fleet.
+                //else if (civ.IsEmpire)
+                //{
+                //    if (civ.InvasionMinorCiv != null && RangesByMinors.ContainsKey(fleet.OwnerID))
+                //    {
+                //        _inRangeToInvadeMinor = !RangesByMinors[fleet.OwnerID].Contains(false);
+                //        GameLog.Client.AI.DebugFormat("The {0} found Minor to Invade {1} ", civ.Name, civ.InvasionMinorCiv.Name);
+                //    }
+                //}
 
                 // GameLog.Core.AI.DebugFormat("Turn {2}: Processing Fleet {0} in {1}...", fleet.ObjectID, fleet.Location, GameContext.Current.TurnNumber);
                 // if ((fleet.IsScout || fleet.IsFastAttack) && fleet.Activity == UnitActivity.NoActivity)
@@ -96,58 +153,92 @@ namespace Supremacy.AI
                 //     GameLog.Core.AI.DebugFormat("Turn {0}: Ordering Scout & FastAttack {1} {2} to explore from {3}"
                 //         , _turnNumberText, fleet.Name, fleet.ClassName, fleet.Location);
                 // }
-
-                if (_totalWar && fleet.UnitAIType != UnitAIType.Attack)
+                if (attackWarShips != null && (civ.TotalWarCivilization != null && civ.InvasionMinorCiv != null))
                 {
-                    StarSystem othersHomeSystem = GameContext.Current.CivilizationManagers[civ.TotalWarCivilization].HomeSystem;
+                    //foreach (Fleet testRangeFleet in attackWarShips)
+                    //{
+                    //    if (!FleetHelper.IsSectorWithinFuelRange(othersHomeSystem.Sector, testRangeFleet))
+                    //    {
+                    //        //List<bool> listOfOne = new List<bool> { false }; // found a ship that cannot get there
+                    //        //_rangesByCiv[fleet.OwnerID].AddRange(listOfOne);
+                    //    }
+                    //}
 
-                    IEnumerable<Fleet> attackWarShips = GameContext.Current.Universe.FindOwned<Fleet>(fleet.Owner).Where(s => s.IsBattleFleet
-                        || s.IsFastAttack || s.IsScout).ToList();
-                    if (attackWarShips != null)
+
+                    //if (fleet.Ships.Count() == 1)
+                    //    attackFleet = fleet;
+                    if (fleet.Ships.Count() != 0
+                        && fleet.UnitAIType != UnitAIType.Colonizer
+                        && fleet.UnitAIType != UnitAIType.Constructor
+                        && fleet.UnitAIType != UnitAIType.Diplomatic
+                        && fleet.UnitAIType != UnitAIType.Medical
+                        && fleet.UnitAIType != UnitAIType.Science
+                        && fleet.UnitAIType != UnitAIType.Spy)
                     {
-                        Fleet attackFleet = new Fleet();
-                        foreach (Fleet testRangeFleet in attackWarShips)
+                        //for (int i = 0; i < fleet.Ships.Count; i++)
+                        //{
+                        // put next fleet into attack fleet and, if needed, send home
+                        //Ship ship = fleet.Ships[0];
+                        // GameLog.Core.AI.DebugFormat("## Attackfleet - Ship added ##  fleet={0}, {1}, {2}, {3}, {4},", fleet.ObjectID, fleet.Name, fleet.Owner, fleet.Order, fleet.Location);
+                        //fleet.RemoveShip(ship);
+                        //attackFleet.AddShip(ship);
+                        if (fleet.Location != homeSystem.Location) // && othersHomeSystem != null)
                         {
-                            if (!FleetHelper.IsSectorWithinFuelRange(othersHomeSystem.Sector, testRangeFleet))
-                            {
-                                List<bool> listOfOne = new List<bool> { false }; // found a ship that cannot get there
-                                _rangesByCiv[fleet.OwnerID].AddRange(listOfOne);
-                            }
+                            fleet.UnitAIType = UnitAIType.Attack;
+                            fleet.Activity = UnitActivity.Mission;
+                            fleet.SetRoute(AStar.FindPath(attackFleet, PathOptions.SafeTerritory, null, new List<Sector> { homeSystem.Sector }));
                         }
 
-                        if (!_rangesByCiv[fleet.ObjectID].Contains(false))
+                        if (attackingShipsGotHome)
                         {
-                            if (fleet.Ships.Count() == 1)
-                                    attackFleet = fleet;
-                            else if (fleet.Ships.Count() != 0)
+                            for (int i = 0; i < fleet.Ships.Count; i++)
                             {
-                                for (int i = 0; i < fleet.Ships.Count; i++)
-                                {
-                                    // put next fleet into attack fleet
-                                    Ship ship = fleet.Ships[0];
-                                    // GameLog.Core.AI.DebugFormat("## Attackfleet - Ship added ##  fleet={0}, {1}, {2}, {3}, {4},", fleet.ObjectID, fleet.Name, fleet.Owner, fleet.Order, fleet.Location);
-                                    fleet.RemoveShip(ship);
-                                    attackFleet.AddShip(ship);
-                                }
+                                // put next fleet into attack fleet and, if needed, send home
+                                Ship ship = fleet.Ships[0];
+                                GameLog.Core.AI.DebugFormat("## Attackfleet - Ship added ##  fleet={0}, {1}, {2}, {3}, {4},", fleet.ObjectID, fleet.Name, fleet.Owner, fleet.Order, fleet.Location);
+                                fleet.RemoveShip(ship);
+                                attackFleet.AddShip(ship);
+                                attackFleet.SetOrder(new EngageOrder());
                             }
+                            //attackFleet.UnitAIType = UnitAIType.Attack;
+                            //attackFleet.Activity = UnitActivity.Mission;
+                            //attackFleet.SetRoute(AStar.FindPath(attackFleet, PathOptions.SafeTerritory, null, new List<Sector> { othersHomeSystem.Sector }));                            
                         }
-                        IEnumerable<Fleet> homeWarShips = attackWarShips.Where(s => s.Location == homeSystem.Location).ToList();
 
-                        if (homeWarShips.Count() + 1 >= attackWarShips.Count())
+
+                        if (civ.InvasionMinorCiv != null) // && fleet.UnitAIType != UnitAIType.Attack) //_inRangeToInvadeMinor
                         {
-                            attackFleet.SetOrder(new EngageOrder());
-                            attackFleet.UnitAIType = UnitAIType.Attack;
-                            attackFleet.Activity = UnitActivity.Mission;
-                            attackFleet.SetRoute(AStar.FindPath(attackFleet, PathOptions.SafeTerritory, null, new List<Sector> { othersHomeSystem.Sector }));
+                            var diplomat = Diplomat.Get(civ);
+                            ForeignPower foreignPower = diplomat.GetForeignPower(civ.InvasionMinorCiv);
+                            foreignPower.DeclareWar();
+                            //Fleet invadeMinorFleet = attackFleet;
+
+                            //IEnumerable<Fleet> homeWarShips = attackWarShips.Where(s => s.Location == homeSystem.Location).ToList();
+
+                            //if (homeWarShips.Count() + 1 >= attackWarShips.Count())
+                            //{
+
+                            //    invadeMinorFleet.SetOrder(new EngageOrder());
+                            //    invadeMinorFleet.UnitAIType = UnitAIType.Attack;
+                            //    invadeMinorFleet.Activity = UnitActivity.Mission;
+                            //    if (othersHomeSystem != null && invadeMinorFleet.Location == othersHomeSystem.Location)
+                            //    {
+                            //        invadeMinorFleet.SetOrder(new AssaultSystemOrder());
+
+                            //    }
+                            //    else if (othersHomeSystem != null)
+                            //    {
+                            //        invadeMinorFleet.SetRoute(AStar.FindPath(invadeMinorFleet, PathOptions.SafeTerritory, null, new List<Sector> { othersHomeSystem.Sector }));
+                            //    }
+                            //}
                         }
                     }
                 }
-
                 //Set scouts to permanently explore
 
                 if ((fleet.IsScout) && fleet.Activity == UnitActivity.NoActivity)
                 {
-                    if (!_totalWar && !_invadeMinor)
+                    if (civ.TotalWarCivilization == null && civ.InvasionMinorCiv == null)
                     {
                         fleet.SetOrder(new ExploreOrder());
                         fleet.UnitAIType = UnitAIType.Explorer;
@@ -155,7 +246,7 @@ namespace Supremacy.AI
                         // GameLog.Core.AI.DebugFormat("Ordering Scout & FastAttack {0} to explore from {1}", fleet.ClassName, fleet.Location);
                     }
 
-                    else if (_totalWar || _invadeMinor)
+                    else if (civ.TotalWarCivilization != null || civ.InvasionMinorCiv != null)
                     {
                         // StarSystem homeSystem = GameContext.Current.CivilizationManagers[fleet.Owner].HomeSystem;
                         fleet.SetOrder(new AvoidOrder());
@@ -167,6 +258,7 @@ namespace Supremacy.AI
                         }
                     }
                 }
+
                 // find transport for invasion of minor races
                 if ((fleet.IsTransport || fleet.UnitAIType == UnitAIType.Transport))
                 {
@@ -274,7 +366,7 @@ namespace Supremacy.AI
 
                 if (fleet.IsBattleFleet || (fleet.IsFastAttack)) // && fleet.Activity == UnitActivity.NoActivity))
                 {
-                    if (!_totalWar && !_invadeMinor)
+                    if (civ.TotalWarCivilization == null && civ.InvasionMinorCiv == null)
                     {
                         // GameLog.Core.AI.DebugFormat("## NOT Total War, fleet ={0}, {1}, {2}, {3}, {4}, {5}", fleet.Name, fleet.Owner, fleet.Order, fleet.UnitAIType, fleet.Activity, fleet.Location);
                         Fleet defenseFleet = new Fleet();
@@ -452,33 +544,92 @@ namespace Supremacy.AI
                     }
                 }
             }
+            if (attackingShipsGotHome) // send the fleet that gathered at homeworld
+            {
+                attackFleet.UnitAIType = UnitAIType.Attack;
+                attackFleet.Activity = UnitActivity.Mission;
+                if (attackFleet.Location != othersHomeSystem.Location)
+                    attackFleet.SetRoute(AStar.FindPath(attackFleet, PathOptions.SafeTerritory, null, new List<Sector> { othersHomeSystem.Sector }));
+            }
+            if (othersHomeSystem != null && attackFleet.Location == othersHomeSystem.Location)
+            {
+                attackFleet.SetOrder(new AssaultSystemOrder());
+
+            }
         }
 
         /// <summary>
-        /// Check IsTotalWar Dictionary for  
+        /// Check TotalWarNextTurn Dictionary for  
         ///  a fleet that cannot get to target home world
         /// </summary>
         /// <returns></returns>
-        public static void SetForTotalWarNextTurn()
+        //public static void SetForTotalWarNextTurn()
+        //{
+        //    List<bool> listBools;
+        //    for (int i = 0; i < 7; i++)
+        //    {
+        //        if (_rangesByCiv.TryGetValue(i, out listBools))
+        //        {
+        //            if (!listBools.Contains(false))
+        //            {
+        //                TotalWarNextTurn.Remove(i);
+        //                TotalWarNextTurn.Add(i, true);
+        //            }
+        //            else if (listBools.Contains(false))
+        //            {
+        //                TotalWarNextTurn.Remove(i);
+        //                TotalWarNextTurn.Add(i, false);
+        //            }
+        //        }
+        //    }
+        //}
+
+        /// <summary>
+        /// Check IsInvadeMinor Dictionary for  
+        ///  a fleet that cannot get to target home world
+        /// </summary>
+        /// <returns></returns>
+        //public static void SetForInvadeMinorNextTurn()
+        //{
+        //    List<bool> listBools;
+        //    foreach (int minorCivID in _minorRaceCivIds)
+        //    {
+        //        if (_rangesByMinors.TryGetValue(minorCivID, out listBools))
+        //        {
+        //            if (!listBools.Contains(false))
+        //            {
+        //                InvadeMinorNextTurn.Remove(minorCivID);
+        //                InvadeMinorNextTurn.Add(minorCivID, true);
+        //            }
+        //            else if (listBools.Contains(false))
+        //            {
+        //                InvadeMinorNextTurn.Remove(minorCivID);
+        //                InvadeMinorNextTurn.Add(minorCivID, false);
+        //            }
+        //        }
+        //    }
+        //}
+
+        public static bool CanAllShipsGetThere(Civilization attacker, Civilization attacked)
         {
-            List<bool> listBools;
-            for (int i = 0; i < 7; i++)
+            IEnumerable<Fleet> attackWarShips = GameContext.Current.Universe.FindOwned<Fleet>(attacker).Where(s => s.IsBattleFleet
+                    || s.IsFastAttack || s.IsScout).ToList();
+            StarSystem othersHomeSystem = GameContext.Current.CivilizationManagers[attacked].HomeSystem;
             {
-                if (_rangesByCiv.TryGetValue(i, out listBools))
+                foreach (Fleet testRangeFleet in attackWarShips)
                 {
-                    if (!listBools.Contains(false))
-                    {
-                        TotalWarNextTurn.Remove(i);
-                        TotalWarNextTurn.Add(i, true);
-                    }
-                    else if (listBools.Contains(false))
-                    {
-                        TotalWarNextTurn.Remove(i);
-                        TotalWarNextTurn.Add(i, false);
+                    if (!FleetHelper.IsSectorWithinFuelRange(othersHomeSystem.Sector, testRangeFleet))
+                    { 
+                        return false;
                     }
                 }
             }
+            if (!attacked.IsEmpire)
+                GameLog.Client.AI.DebugFormat("The {0} found the {1} to Invade", attacker.Name, attacked.Name);
+            else GameLog.Client.AI.DebugFormat("The {0} found the {1} for Total War", attacker.Name, attacked.Name);
+            return true;
         }
+
         /*
          * Colonization
          */

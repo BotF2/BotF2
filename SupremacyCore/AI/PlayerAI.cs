@@ -35,86 +35,131 @@ namespace Supremacy.AI
         #region Methods
 
         #region DoTurn from GameEngine
-        public static void DoTurn(Civilization targetCiv)  
+        public static void DoTurn(Civilization Civ)  
         {
-            if (targetCiv.IsEmpire && targetCiv.CivID != 6 && targetCiv.SpiedCivList != null)
+            if (Civ.IsEmpire && Civ.CivID != 6 && Civ.SpiedCivList != null)  // Spy
             {
                 List<Civilization> spyingCivs = (List<Civilization>)GameContext.Current.Civilizations.Where(o => o.IsEmpire && o.CivID != 6).ToList();
 
                 foreach (Civilization spyingCiv in spyingCivs)
                 {
-                    if (targetCiv.SpiedCivList.Contains(spyingCiv))
+                    if (Civ.SpiedCivList.Contains(spyingCiv))
                     {
-                        if (DiplomacyHelper.AreAtWar(spyingCiv, targetCiv))
+                        if (DiplomacyHelper.AreAtWar(spyingCiv, Civ))
                         {
-                            DoSpySabotageMission(spyingCiv, targetCiv);                         
+                            DoSpySabotageMission(spyingCiv, Civ);                         
                         }
-                        //else if (DiplomacyHelper.AreAllied(spyingCiv, targetCiv) || DiplomacyHelper.AreFriendly(spyingCiv, targetCiv))
+                        //else if (DiplomacyHelper.AreAllied(spyingCiv, Civ) || DiplomacyHelper.AreFriendly(spyingCiv, Civ))
                         //{
                         //    // do things
                         //}
-                        else if (DiplomacyHelper.AreNeutral(spyingCiv, targetCiv))
+                        else if (DiplomacyHelper.AreNeutral(spyingCiv, Civ))
                         {
                             if (spyingCiv.Traits.Contains(CivTraits.Hostile.ToString())
                                 || spyingCiv.Traits.Contains(CivTraits.Subversive.ToString())
                                 || spyingCiv.Traits.Contains(CivTraits.Warlike.ToString()))
                             {
                                 if (RandomHelper.Random(3) == 0)
-                                    DoSpySabotageMission(spyingCiv, targetCiv);
-                                else IntelHelper.SabotageStealResearch(spyingCiv, targetCiv, "No one");
+                                    DoSpySabotageMission(spyingCiv, Civ);
+                                else IntelHelper.SabotageStealResearch(spyingCiv, Civ, "No one");
                             }
                         }
                     }
                 }
             }
-            if (targetCiv.IsEmpire && !targetCiv.IsHuman && GameContext.Current.TurnNumber > 5)
+            if (Civ.TotalWarCivilization != null)
+            {
+                Civ.InvasionMinorCiv = null;
+                if (GameContext.Current.CivilizationManagers[Civ.TotalWarCivilization].MaintenanceCostLastTurn == 0
+                    || !GameContext.Current.CivilizationManagers[Civ.TotalWarCivilization].ControlsHomeSystem
+                    || GameContext.Current.CivilizationManagers[Civ.TotalWarCivilization].IsHomeColonyDestroyed
+                    || GameContext.Current.CivilizationManagers[Civ.TotalWarCivilization].TotalPopulation.IsMinimized)
+                {
+                    Civ.TotalWarCivilization = null;
+                }
+            }
+            if (Civ.InvasionMinorCiv != null)
+            {
+                if (GameContext.Current.CivilizationManagers[Civ.InvasionMinorCiv].MaintenanceCostLastTurn == 0
+                    || !GameContext.Current.CivilizationManagers[Civ.InvasionMinorCiv].ControlsHomeSystem
+                    || GameContext.Current.CivilizationManagers[Civ.InvasionMinorCiv].IsHomeColonyDestroyed
+                    || GameContext.Current.CivilizationManagers[Civ.InvasionMinorCiv].TotalPopulation.IsMinimized)
+                {
+                    Civ.InvasionMinorCiv = null;
+                }
+            }
+            if (Civ.IsEmpire && Civ.TotalWarCivilization == null && Civ.InvasionMinorCiv == null
+                && !Civ.IsHuman && GameContext.Current.TurnNumber > 5) //AI empire so look for total war conditions
             {
                 var possibleTotalWarCivs = GameContext.Current.Civilizations.Where(o => o.IsEmpire).ToList();
                 foreach (Civilization possibleTotalWarCiv in possibleTotalWarCivs)
                 {
-                    var diplomat = Diplomat.Get(targetCiv);
-                    ForeignPower foreignPower = diplomat.GetForeignPower(possibleTotalWarCiv);
-                    if (DiplomacyHelper.AreAtWar(possibleTotalWarCiv, targetCiv))
+                    Double lastRange = 999;
+                    
+                    if (DiplomacyHelper.AreAtWar(possibleTotalWarCiv, Civ)
+                        && !GameContext.Current.CivilizationManagers[possibleTotalWarCiv].IsHomeColonyDestroyed)
                     {
+                        MapLocation empire = GameContext.Current.CivilizationManagers[possibleTotalWarCiv].HomeSystem.Location;
+                        MapLocation ai = GameContext.Current.CivilizationManagers[Civ].HomeSystem.Location;
+                        Double curretRange = Math.Sqrt(Math.Pow((empire.X - ai.X), 2) + Math.Pow((empire.Y - ai.Y), 2));
                         var maintenaceValue = GameContext.Current.CivilizationManagers[possibleTotalWarCiv].MaintenanceCostLastTurn;
-                        if (maintenaceValue < GameContext.Current.CivilizationManagers[targetCiv].MaintenanceCostLastTurn * 1.2 && possibleTotalWarCiv.TotalWarCivilization == null)
+                        if (maintenaceValue * 1.2 < GameContext.Current.CivilizationManagers[Civ].MaintenanceCostLastTurn
+                            && possibleTotalWarCiv.TotalWarCivilization == null
+                            && possibleTotalWarCiv.InvasionMinorCiv == null)
                         {
-                            //foreignPower.BeginTotalWar(); // if there already is total war by the target civ a new one will not be created over in ForeignPower.cs
-                            possibleTotalWarCiv.TotalWarCivilization = targetCiv;
-                            GameLog.Client.AI.DebugFormat("{0} set as TOTALWAR!!! by {1} ", targetCiv.Name, possibleTotalWarCiv.Name);
+                            if (curretRange < lastRange)
+                            {
+                                if (UnitAI.CanAllShipsGetThere(Civ, possibleTotalWarCiv))
+                                {
+                                    Civ.TotalWarCivilization = possibleTotalWarCiv;
+                                    lastRange = curretRange;
+                                    GameLog.Client.AI.DebugFormat("{0} set as TOTALWAR!!! by {1} ", Civ.Name, possibleTotalWarCiv.Name);
+                                }
+                            }
                         }
-                        else
-                        {
-                        possibleTotalWarCiv.TotalWarCivilization = null;
-                            //foreignPower.EndTotalWar();
-                        }
+                        else  Civ.TotalWarCivilization = null;
                     }
-                    else possibleTotalWarCiv.TotalWarCivilization = null; // if civs are no longer at war then total war ends.
                 }
             }
             
-            if (targetCiv.IsEmpire && targetCiv.Traits.Contains("Warlike") && GameContext.Current.TurnNumber > 2)
+            if (Civ.IsEmpire && !Civ.IsHuman && Civ.Traits.Contains("Warlike")
+                && Civ.TotalWarCivilization == null
+                && Civ.InvasionMinorCiv == null
+                && GameContext.Current.TurnNumber > 2) // AI empire is warlike so look for minors
             {
                 var possibleInvadeMinorCivs = GameContext.Current.Civilizations.Where(o => o.IsEmpire == false).ToList();
                 if (possibleInvadeMinorCivs != null && possibleInvadeMinorCivs.Count > 0)
                 {
+                    Double lastRange= 999;
                     foreach (Civilization possibleInvadeMinorCiv in possibleInvadeMinorCivs)
-                    {
-                        var diplomat = Diplomat.Get(targetCiv);
-                        ForeignPower foreignPower = diplomat.GetForeignPower(possibleInvadeMinorCiv);
-
-                        var maintenaceValue = GameContext.Current.CivilizationManagers[possibleInvadeMinorCiv].MaintenanceCostLastTurn;
-                        if (maintenaceValue < GameContext.Current.CivilizationManagers[targetCiv].MaintenanceCostLastTurn * 1.2 && possibleInvadeMinorCiv.InvasionMinorCiv == null)
+                    {  
+                        if (DiplomacyHelper.IsContactMade(Civ, possibleInvadeMinorCiv)
+                            && GameContext.Current.CivilizationManagers[possibleInvadeMinorCiv].HomeSystem.Owner != Civ
+                            && !DiplomacyHelper.AreAllied(possibleInvadeMinorCiv, Civ))
                         {
-                        //foreignPower.BeginTotalWar(); // if there already is total war by the target civ a new one will not be created over in ForeignPower.cs
-                        targetCiv.InvasionMinorCiv = possibleInvadeMinorCiv;
-                        foreignPower.DeclareWar();
-                            GameLog.Client.AI.DebugFormat("{0} set as invasion target by {1} ", possibleInvadeMinorCiv.Name, targetCiv.Name );
-                        }
-                        else
-                        {
-                            targetCiv.InvasionMinorCiv = null;
-                            //foreignPower.EndTotalWar();
+                            MapLocation minor = GameContext.Current.CivilizationManagers[possibleInvadeMinorCiv].HomeSystem.Location;
+                            MapLocation ai = GameContext.Current.CivilizationManagers[Civ].HomeSystem.Location;
+                            Double curretRange = Math.Sqrt(Math.Pow((minor.X - ai.X), 2) + Math.Pow((minor.Y - ai.Y), 2));
+                            var maintenaceValue = GameContext.Current.CivilizationManagers[possibleInvadeMinorCiv].MaintenanceCostLastTurn;
+                            if (maintenaceValue * 1.2 < GameContext.Current.CivilizationManagers[Civ].MaintenanceCostLastTurn && possibleInvadeMinorCiv.InvasionMinorCiv == null)
+                            {
+                                if (curretRange < lastRange)
+                                {
+                                    if (UnitAI.CanAllShipsGetThere(Civ, possibleInvadeMinorCiv))
+                                    {
+                                        if (GameContext.Current.CivilizationManagers[possibleInvadeMinorCiv].HomeSystem.Owner != Civ)
+                                        {
+                                            Civ.InvasionMinorCiv = possibleInvadeMinorCiv;
+                                            lastRange = curretRange;
+                                            GameLog.Client.AI.DebugFormat("{0} set as new INVASION target by {1} ", possibleInvadeMinorCiv.Name, Civ.Name);
+                                        }
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                Civ.InvasionMinorCiv = null;
+                            }
                         }
                     }
                 }
@@ -122,34 +167,34 @@ namespace Supremacy.AI
         }
         #endregion
 
-        public static void DoSpySabotageMission(Civilization spyingCiv, Civilization targetCiv)
+        public static void DoSpySabotageMission(Civilization spyingCiv, Civilization Civ)
         {
             int decide = RandomHelper.Random(5);
             switch (decide)
             {
                 case 0:
                     {
-                        IntelHelper.SabotageEnergy(spyingCiv, targetCiv, "No one");
+                        IntelHelper.SabotageEnergy(spyingCiv, Civ, "No one");
                         break;
                     }
                 case 1:
                     {
-                        IntelHelper.SabotageFood(spyingCiv, targetCiv, "No one");
+                        IntelHelper.SabotageFood(spyingCiv, Civ, "No one");
                         break;
                     }
                 case 2:
                     {
-                        IntelHelper.SabotageIndustry(spyingCiv, targetCiv, "No one");
+                        IntelHelper.SabotageIndustry(spyingCiv, Civ, "No one");
                         break;
                     }
                 case 3:
                     {
-                        IntelHelper.SabotageStealCredits(spyingCiv, targetCiv, "No one");
+                        IntelHelper.SabotageStealCredits(spyingCiv, Civ, "No one");
                         break;
                     }
                 case 4:
                     {
-                        IntelHelper.SabotageStealResearch(spyingCiv, targetCiv, "No one");
+                        IntelHelper.SabotageStealResearch(spyingCiv, Civ, "No one");
                         break;
                     }
                 default:
