@@ -200,7 +200,7 @@ namespace Supremacy.Orbitals
                 {
                     string _design = "nothing";
                     string _percent = "0 %";
-                    if (slot.Project != null)
+                    if (slot.Project != null && slot.Project.BuildDesign != null)
                     {
                          _design = slot.Project.BuildDesign.ToString();
                          _percent = slot.Project.PercentComplete.ToString();

@@ -137,7 +137,19 @@ namespace Supremacy.Economy
         /// <value>The construction design.</value>
         public TechObjectDesign BuildDesign
         {
-            get { return GameContext.Current.TechDatabase[_buildTypeId]; }
+            get 
+            {
+                if (GameContext.Current != null && GameContext.Current.TechDatabase != null)
+                    return GameContext.Current.TechDatabase[_buildTypeId];
+                else
+                {
+                    string _text = "#### Error on BuildDesign - not available or found ... returning a null or maybe cancelling a build project";
+                    Console.WriteLine(_text);
+                    GameLog.Client.General.ErrorFormat(_text);
+                    return null;
+                }
+
+            }
         }
 
         /// <summary>
