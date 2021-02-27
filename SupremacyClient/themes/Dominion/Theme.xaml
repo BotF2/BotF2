@@ -27,10 +27,10 @@
   </ResourceDictionary.MergedDictionaries>
  
   <Style TargetType="{x:Type local:CombatWindow}"
-         BasedOn="{StaticResource LCARS_DomThinBorderStyle}"/>
+         BasedOn="{StaticResource DomThinBorderStyle}"/>
 
   <Style x:Key="DialogBorderStyle"
          TargetType="{x:Type ContentControl}"
-         BasedOn="{StaticResource LCARS_DomThinBorderStyle}" />
+         BasedOn="{StaticResource DomThinBorderStyle}" />
 
 </ResourceDictionary>
