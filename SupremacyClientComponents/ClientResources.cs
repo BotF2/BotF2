@@ -286,6 +286,21 @@ namespace Supremacy.Client
 
         #endregion
 
+        #region HorizontalRightLeftSeparatorBackgroundBrush Resource Key
+
+        private static ComponentResourceKey _horizontalRightLeftSeparatorBackgroundBrushKey;
+
+        public static ComponentResourceKey HorizontalRightLeftSeparatorBackgroundBrushKey
+        {
+            get
+            {
+                EnsureResource("HorizontalRightLeftSeparatorBackgroundBrush", ref _horizontalRightLeftSeparatorBackgroundBrushKey);
+                return _horizontalRightLeftSeparatorBackgroundBrushKey;
+            }
+        }
+
+        #endregion
+
         #region VerticalSeparatorBackgroundBrush Resource Key
 
         private static ComponentResourceKey _verticalSeparatorBackgroundBrushKey;
@@ -296,6 +311,21 @@ namespace Supremacy.Client
             {
                 EnsureResource("VerticalSeparatorBackgroundBrush", ref _verticalSeparatorBackgroundBrushKey);
                 return _verticalSeparatorBackgroundBrushKey;
+            }
+        }
+
+        #endregion
+
+        #region VerticalBottomUpSeparatorBackgroundBrush Resource Key
+
+        private static ComponentResourceKey _verticalBottomUpSeparatorBackgroundBrushKey;
+
+        public static ComponentResourceKey VerticalBottomUpSeparatorBackgroundBrushKey
+        {
+            get
+            {
+                EnsureResource("VerticalBottomUpSeparatorBackgroundBrush", ref _verticalBottomUpSeparatorBackgroundBrushKey);
+                return _verticalBottomUpSeparatorBackgroundBrushKey;
             }
         }
 
