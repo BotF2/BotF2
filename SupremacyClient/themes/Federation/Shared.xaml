@@ -9,31 +9,32 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:s="http://schemas.startreksupremacy.com/xaml/core"
                     xmlns:scc="http://schemas.startreksupremacy.com/xaml/presentation"
+                    xmlns:ui="clr-namespace:Supremacy.UI;assembly=SupremacyUI"
                     xmlns:xcdg="http://schemas.xceed.com/wpf/xaml/datagrid">
 
-    <SolidColorBrush Color="#ffeee384" x:Key="LCARS_HeaderBrush"/>
-
-    <SolidColorBrush Color="#ffdfdfff" x:Key="HeaderTextBrush"/>
+    <SolidColorBrush Color="#ffeee384" x:Key="HeaderTextBrush"/>
     <SolidColorBrush Color="#ffdfdfff" x:Key="{x:Static scc:ClientResources.HeaderTextForegroundBrushKey}"/>
     <SolidColorBrush Color="#ffe7d490" x:Key="DefaultTextBrush"/>
     <SolidColorBrush Color="#ffe7d490" x:Key="{x:Static scc:ClientResources.DefaultTextForegroundBrushKey}"/>
     <SolidColorBrush Color="#ff999999" x:Key="DisabledTextBrush"/>
     <SolidColorBrush Color="#ff999999" x:Key="{x:Static scc:ClientResources.DisabledTextForegroundBrushKey}"/>
     <SolidColorBrush Color="#7f146bdc" x:Key="SelectionBrush"/>
+    <SolidColorBrush Color="#ffdfdfff" x:Key="WhiteHeaderBrush"/>
+    <!--<SolidColorBrush Color="#ffdc961b" x:Key="WhiteHeaderBrush" />-->
 
     <SolidColorBrush Color="#7f666666" x:Key="{x:Static scc:ClientResources.InactiveHighlightBrushKey}"/>
     <SolidColorBrush Color="#FFB90E0A" x:Key="{x:Static scc:ClientResources.AlertTextForegroundBrushKey}"/>
 
     <SolidColorBrush Color="#ff000000" x:Key="{x:Static scc:ClientResources.ControlTextForegroundBrushKey}"/>
-    <SolidColorBrush Color="#ffb8d2f4" x:Key="{x:Static scc:ClientResources.HighlightBrushKey}"/>
-    <SolidColorBrush Color="#ffb8d2f4" x:Key="{x:Static SystemColors.HighlightBrushKey}" />
+    <SolidColorBrush Color="#ff70A3D0" x:Key="{x:Static scc:ClientResources.HighlightBrushKey}"/>
+    <SolidColorBrush Color="#ff70A3D0" x:Key="{x:Static SystemColors.HighlightBrushKey}" />
 
     <SolidColorBrush Color="#ffb8d2f4" x:Key="BorderBrush" />
     <SolidColorBrush Color="#ffb8d2f4" x:Key="{x:Static scc:ClientResources.ImageBorderBrushKey}"/>
 
-    <SolidColorBrush Color="#ffe7d490" x:Key="LCARS_ParagraphBrush" />
-    <SolidColorBrush Color="#FFFB6B1F" x:Key="LCARS_WarningBrush" />
-    <SolidColorBrush Color="#ffe7d490" x:Key="LCARS_BeigeTextBrush" />
+    <SolidColorBrush Color="#ffe7d490" x:Key="ParagraphBrush" />
+    <SolidColorBrush Color="#FFFB6B1F" x:Key="WarningBrush" />
+    <SolidColorBrush Color="#ffe7d490" x:Key="BeigeTextBrush" />
 
     <!--LinearGradientBrush-->
     <LinearGradientBrush x:Key="SeparatorBackgroundBrush" StartPoint="0,0" EndPoint="0,1">
@@ -75,7 +76,62 @@
   <ImageBrush x:Key="RightRepeatButton2"
               ImageSource="vfs:///Resources/UI/Federation/Shared/RightRepeatButton2.png" />-->
 
-  <Style x:Key="LockToggleButtonStyle"
+    <!-- TabItem -->
+    <Style TargetType="{x:Type TabItem}" BasedOn="{StaticResource BaseStyle}">
+        <Setter Property="Height" Value="28" />
+        <Setter Property="Margin" Value="2,0,0,0" />
+        <Setter Property="FontFamily" Value="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}" />
+        <Setter Property="FontSize" Value="{StaticResource {x:Static scc:ClientResources.HeaderFontSizeKey}}" />
+        <Setter Property="FontWeight" Value="{StaticResource {x:Static scc:ClientResources.HeaderFontWeightKey}}" />
+        <Setter Property="KeyboardNavigation.IsTabStop" Value="False" />
+        <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type TabItem}">
+                    <Grid x:Name="TabItemContainer" Margin="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Margin}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="14" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <Rectangle Grid.Column="0"
+                       Width="14"
+                       SnapsToDevicePixels="True"
+                       Fill="{StaticResource {x:Static scc:ClientResources.VerticalSeparatorBackgroundBrushKey}}" />
+                        <scc:PixelSnappingBorder x:Name="Border" Grid.Column="1" Margin="3,0,0,0" Padding="7,0,7,0" SnapsToDevicePixels="True"
+                                     Background="{StaticResource {x:Static scc:ClientResources.ImageBorderBrushKey}}">
+                            <ContentPresenter ContentSource="Header" VerticalAlignment="Center" SnapsToDevicePixels="True" />
+                        </scc:PixelSnappingBorder>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <!--IsMouseOver-->
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="Border" Property="Background" 
+                                    Value="{StaticResource {x:Static scc:ClientResources.HighlightBrushKey}}" />
+                        </Trigger>
+                        <!--IsSelected-->
+                        <Trigger Property="IsSelected" Value="True">
+                            <!--<Setter Property="Panel.ZIndex" Value="100" />-->
+                            <Setter TargetName="Border" Property="Background" Value="{StaticResource PinkGradient_Left_Right}" />
+                        </Trigger>
+                        <!--IsMouseDown-->
+                        <!--<Trigger Property="IsMouseDown" Value="True">
+              <Setter TargetName="Border" Property="Background" Value="{StaticResource BlueGradient_Right_Left}"/>
+            </Trigger>-->
+                        <!--IsEnabled-->
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter TargetName="Border" Property="Background" Value="{StaticResource BlueGradient_Left_Right}" />
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter TargetName="Border" Property="Background" Value="{StaticResource BlueGradient_Left_Right}" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="LockToggleButtonStyle"
          TargetType="{x:Type ToggleButton}">
     <Setter Property="IsTabStop"
             Value="False"/>
@@ -117,7 +173,7 @@
             <ControlTemplate x:Key="LeftRepeatButtonTemplate"   
                            TargetType="{x:Type RepeatButton}">
                 <Border x:Name="LeftButton"
-                     Background="{StaticResource LCARS_OrangeGradient_TopLeft_BottomRight}"
+                     Background="{StaticResource OrangeGradient_TopLeft_BottomRight}"
                      CornerRadius="14,0,0,14" />
                 <ControlTemplate.Triggers>
                     <MultiTrigger>
@@ -129,7 +185,7 @@
                         </MultiTrigger.Conditions>
                             <Setter TargetName="LeftButton"
                             Property="Background"
-                            Value="{StaticResource LCARS_PinkGradient_TopLeft_BottomRight}" />
+                            Value="{StaticResource PinkGradient_TopLeft_BottomRight}" />
                     </MultiTrigger>
                 </ControlTemplate.Triggers>
             </ControlTemplate>
@@ -154,7 +210,7 @@
             <ControlTemplate x:Key="RightRepeatButtonTemplate"
                            TargetType="{x:Type RepeatButton}">
             <Border x:Name="RightButton"
-                    Background="{StaticResource LCARS_OrangeGradient_TopLeft_BottomRight}"
+                    Background="{StaticResource OrangeGradient_TopLeft_BottomRight}"
                     CornerRadius="0,14,14,0" />
             <ControlTemplate.Triggers>
               <MultiTrigger>
@@ -166,13 +222,13 @@
                 </MultiTrigger.Conditions>
                 <Setter TargetName="RightButton"
                         Property="Background"
-                        Value="{StaticResource LCARS_PinkGradient_TopLeft_BottomRight}" />
+                        Value="{StaticResource PinkGradient_TopLeft_BottomRight}" />
               </MultiTrigger>
             </ControlTemplate.Triggers>
           </ControlTemplate>
         </Style.Resources>
     <Setter Property="UnitBrush"
-            Value="{StaticResource LCARS_OrangeGradient_Top_Bottom}" />
+            Value="{StaticResource OrangeGradient_Top_Bottom}" />
     <Setter Property="Template">
       <Setter.Value>
         <ControlTemplate TargetType="{x:Type s:UnitActivationBar}">
@@ -273,7 +329,7 @@
                                     HorizontalAlignment="Stretch" />
                 </Border>
                 <Border x:Name="BackgroundBorder"
-                        Background="{StaticResource LCARS_BlueGradient_Top_Bottom}"
+                        Background="{StaticResource BlueGradient_Top_Bottom}"
                         MinWidth="14"
                         HorizontalAlignment="Stretch" />
               </DockPanel>
@@ -302,13 +358,13 @@
                      Value="True">
               <Setter TargetName="BackgroundBorder"
                       Property="Background"
-                      Value="{StaticResource LCARS_HoverBlueGradient_Top_Bottom}" />
+                      Value="{StaticResource BlueHoverGradient_Top_Bottom}" />
             </Trigger>
             <Trigger Property="IsPressed"
                      Value="True">
               <Setter TargetName="BackgroundBorder"
                       Property="Background"
-                      Value="{StaticResource LCARS_BlueGradient_Bottom_Top}" />
+                      Value="{StaticResource BlueGradient_Bottom_Top}" />
             </Trigger>
           </ControlTemplate.Triggers>
         </ControlTemplate>
@@ -357,7 +413,7 @@
                 <xcdg:FixedCellPanel x:Name="PART_CellsHost"
                                      DockPanel.Dock="Left"
                                      Margin="{TemplateBinding BorderThickness}" />
-                <Rectangle Fill="{StaticResource LCARS_BlueGradient_Top_Bottom}" />
+                <Rectangle Fill="{StaticResource BlueGradient_Top_Bottom}" />
               </DockPanel>
             </Decorator>
           </Grid>
