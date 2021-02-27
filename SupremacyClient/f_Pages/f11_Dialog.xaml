@@ -107,8 +107,8 @@
 
                 </TextBlock>
 
-                <TextBlock Text="2 LCARS_HeaderBrush" Grid.Row="2" Grid.Column="0"
-                           Foreground="{DynamicResource LCARS_HeaderBrush}"
+                <TextBlock Text="2 WhiteHeaderBrush" Grid.Row="2" Grid.Column="0"
+                           Foreground="{DynamicResource WhiteHeaderBrush}"
                            
                            >
 
@@ -156,25 +156,25 @@
 
                 </TextBlock>
 
-                <TextBlock Text="LCARS_Dom1Gradient"  Grid.Row="1" Grid.Column="1"
+                <TextBlock Text="Dom1Gradient"  Grid.Row="1" Grid.Column="1"
                            Foreground="Black" VerticalAlignment="Center"
-                    Background="{DynamicResource LCARS_Dom1Gradient_TopLeft_BottomRight}" />
+                    Background="{DynamicResource Dom1Gradient_TopLeft_BottomRight}" />
 
-                <TextBlock Text="LCARS_Dom2Gradient"  Grid.Row="2" Grid.Column="1"
+                <TextBlock Text="Dom2Gradient"  Grid.Row="2" Grid.Column="1"
                            Foreground="Black" VerticalAlignment="Center"
-                    Background="{DynamicResource LCARS_Dom2Gradient_TopLeft_BottomRight}" />
+                    Background="{DynamicResource Dom2Gradient_TopLeft_BottomRight}" />
 
-                <TextBlock Text="LCARS_Dom3Gradient"  Grid.Row="3" Grid.Column="1"
+                <TextBlock Text="Dom3Gradient"  Grid.Row="3" Grid.Column="1"
                            Foreground="Black" VerticalAlignment="Center"
-                    Background="{DynamicResource LCARS_Dom3Gradient_TopLeft_BottomRight}" />
+                    Background="{DynamicResource Dom3Gradient_TopLeft_BottomRight}" />
 
-                <TextBlock Text="LCARS_Dom4Gradient"  Grid.Row="4" Grid.Column="1"
+                <TextBlock Text="Dom4Gradient"  Grid.Row="4" Grid.Column="1"
                            Foreground="Black" VerticalAlignment="Center"
-                    Background="{DynamicResource LCARS_Dom4Gradient_TopLeft_BottomRight}" />
+                    Background="{DynamicResource Dom4Gradient_TopLeft_BottomRight}" />
 
-                <TextBlock Text="LCARS_Dom5Gradient"  Grid.Row="5" Grid.Column="1"
+                <TextBlock Text="Dom5Gradient"  Grid.Row="5" Grid.Column="1"
                            Foreground="Black" VerticalAlignment="Center"
-                    Background="{DynamicResource LCARS_Dom5Gradient_TopLeft_BottomRight}" />-->
+                    Background="{DynamicResource Dom5Gradient_TopLeft_BottomRight}" />-->
 
 
 

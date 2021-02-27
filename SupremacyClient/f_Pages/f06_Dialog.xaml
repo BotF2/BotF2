@@ -230,12 +230,12 @@
                     <!--<TextBox Text=" "  Foreground="{DynamicResource HeaderTextBrush}" />-->
                           
                     <TextBox Foreground="{DynamicResource HeaderTextBrush}" Text="* next: ALL *"  />
-                    <TextBox Foreground="{DynamicResource LCARS_BlueTextBrush}" Text="LCARS_BlueTextBrush" />
-                    <TextBox Foreground="{DynamicResource LCARS_GreenTextBrush}" Text="LCARS_GreenTextBrush" />
-                    <TextBox Foreground="{DynamicResource LCARS_RedTextBrush}" Text="LCARS_RedTextBrush" />
-                    <TextBox Foreground="{DynamicResource LCARS_PinkTextBrush}" Text="LCARS_PinkTextBrush" />
-                    <TextBox Foreground="{DynamicResource LCARS_GoldenrodTextBrush}" Text="LCARS_GoldenrodTextBrush" />
-                    <TextBox Foreground="{DynamicResource LCARS_BorgTextBrush}" Text="LCARS_BorgTextBrush" />
+                    <TextBox Foreground="{DynamicResource BlueTextBrush}" Text="BlueTextBrush" />
+                    <TextBox Foreground="{DynamicResource GreenTextBrush}" Text="GreenTextBrush" />
+                    <TextBox Foreground="{DynamicResource RedTextBrush}" Text="RedTextBrush" />
+                    <TextBox Foreground="{DynamicResource PinkTextBrush}" Text="PinkTextBrush" />
+                    <TextBox Foreground="{DynamicResource GoldenrodTextBrush}" Text="GoldenrodTextBrush" />
+                    <TextBox Foreground="{DynamicResource GreenDarkTextBrush}" Text="GreenDarkTextBrush" />
                     <TextBox BorderThickness="0" Foreground="{DynamicResource HeaderTextBrush}" Text="HighlightBrushKey" />
                     <!--<TextBox Foreground="{DynamicResource HeaderTextBrush}" Text=" "  />
                     <TextBox BorderThickness="0" Foreground="{DynamicResource SelectionBrush}" Text=" "  />-->
@@ -247,8 +247,8 @@
                 <StackPanel Orientation="Vertical" Grid.Column="4" Grid.ColumnSpan="3" HorizontalAlignment="Left" Margin="3,0,0,0">
                     <TextBlock Foreground="{DynamicResource DefaultTextBrush}" Text=" " />
                     <TextBlock Foreground="{DynamicResource DefaultTextBrush}" Text=" * Empire's Shared.xaml *" />
-                    <TextBox Foreground="{DynamicResource LCARS_HeaderBrush}" Text="LCARS_HeaderBrush" />                    
-                    <TextBox Foreground="{DynamicResource DefaultTextBrush}" Text="HeaderTextBrush" />                    
+                    <TextBox Foreground="{DynamicResource WhiteHeaderBrush}" Text="WhiteHeaderBrush" />
+                    <TextBox Foreground="{DynamicResource HeaderTextBrush}" Text="HeaderTextBrush" />                    
                     <TextBox Foreground="{DynamicResource DefaultTextBrush}" Text="DefaultTextBrush" />
 
 
@@ -261,37 +261,34 @@
                     <TextBox Foreground="{DynamicResource HeaderTextBrush}" Text=""  />
                     <TextBox Foreground="{DynamicResource HeaderTextBrush}" Text="next: common Gradients "  />
 
-                    <TextBlock Text="LCARS_RomGreenGradient" 
+                    <TextBlock Text="RomGreenGradient" 
                            Foreground="Black" VerticalAlignment="Center"
-                    Background="{DynamicResource LCARS_RomGreenGradient_Left_Right}" />
+                    Background="{DynamicResource RomGreenGradient_Left_Right}" />
 
-                    <TextBlock Text="LCARS_HoverBlueGradient"  
+                    <TextBlock Text="BlueHoverGradient"  
                            Foreground="Black" VerticalAlignment="Center"
-                    Background="{DynamicResource LCARS_HoverBlueGradient_Left_Right}" />
+                    Background="{DynamicResource BlueHoverGradient_Left_Right}" />
 
-                    <TextBlock Text="LCARS_AzureGradient"  
+                    <TextBlock Text="AzureGradient"  
                            Foreground="Black" VerticalAlignment="Center"
-                    Background="{DynamicResource LCARS_AzureGradient_Left_Right}" />
+                    Background="{DynamicResource AzureGradient_Left_Right}" />
 
-                    <TextBlock Text="LCARS_OrangeGradient"  
+                    <TextBlock Text="OrangeGradient"  
                            Foreground="Black" VerticalAlignment="Center"
-                    Background="{DynamicResource LCARS_OrangeGradient_Left_Right}" />
+                    Background="{DynamicResource OrangeGradient_Left_Right}" />
 
-                    <TextBlock Text="LCARS_YellowGradient" 
-                           Foreground="Black" VerticalAlignment="Center"
-                    Background="{DynamicResource LCARS_YellowGradient_Left_Right}" />
 
-                    <TextBlock Text="LCARS_PinkGradient"  
+                    <TextBlock Text="PinkGradient"  
                            Foreground="Black" VerticalAlignment="Center"
-                    Background="{DynamicResource LCARS_PinkGradient_Left_Right}" />
+                    Background="{DynamicResource PinkGradient_Left_Right}" />
 
-                    <TextBlock Text="LCARS_PurpleGradient" 
+                    <TextBlock Text="PurpleGradient" 
                            Foreground="Black" VerticalAlignment="Center"
-                    Background="{DynamicResource LCARS_PurpleGradient_Left_Right}" />
+                    Background="{DynamicResource PurpleGradient_Left_Right}" />
 
-                    <TextBlock Text="LCARS_RedGradient" 
+                    <TextBlock Text="PurpleDarkGradient" 
                            Foreground="Black" VerticalAlignment="Center"
-                    Background="{DynamicResource LCARS_RedGradient_Left_Right}" />
+                    Background="{DynamicResource PurpleDarkGradient_Left_Right}" />
                     <!--<TextBlock Foreground="{DynamicResource HeaderTextBrush}" Text="10 "  />
                     <TextBlock Foreground="{DynamicResource HeaderTextBrush}" Text="11 "  />
                     <TextBlock Foreground="{DynamicResource HeaderTextBrush}" Text="12 "  />
@@ -340,7 +337,7 @@
                         Style="{DynamicResource LCARS_SimpleButtonStyle}"
                         IsCancel="True"
                         Margin="0,0,6,0">
-                        <AccessText Text="CLose (original REDEPLOY)" />
+                        <AccessText Text="Close (original REDEPLOY)" />
                     </Button>
                     <TextBlock Foreground="{DynamicResource HeaderTextBrush}" Text=" "  />
 
@@ -390,91 +387,89 @@
                 <!--  0 = Federation -->
         <StackPanel Orientation="Vertical" Grid.Row="11" Grid.Column="1" Grid.ColumnSpan="1" HorizontalAlignment="Left" Margin="3,0,0,0">
 
-            <TextBlock Text="LCARS_BlueGradient_Bottom_Top"  
+            <TextBlock Text="BlueGradient_Bottom_Top"  
                            Foreground="Black" VerticalAlignment="Center"
-                    Background="{DynamicResource LCARS_BlueGradient_Bottom_Top}" />
+                    Background="{DynamicResource BlueGradient_Bottom_Top}" />
 
-            <TextBlock Text="LCARS_PinkGradient" 
+            <TextBlock Text="PinkGradient" 
                            Foreground="Black" VerticalAlignment="Center"
-                    Background="{DynamicResource LCARS_PinkGradient_Left_Right}" />
+                    Background="{DynamicResource PinkGradient_Left_Right}" />
 
-            <TextBlock Text="LCARS_OrangeGradient" 
+            <TextBlock Text="OrangeGradient" 
                            Foreground="Black" VerticalAlignment="Center"
-                    Background="{DynamicResource LCARS_OrangeGradient_Left_Right}" />
+                    Background="{DynamicResource OrangeGradient_Left_Right}" />
 
             <!--<TextBlock Text="xxxxx"  Grid.Row="24"  
                            Foreground="Black" VerticalAlignment="Center"
-                    Background="{DynamicResource LCARS_Dom4Gradient_Left_Right}" />
+                    Background="{DynamicResource Dom4Gradient_Left_Right}" />
 
                     <TextBlock Text="xxxxx"  Grid.Row="25"  
                            Foreground="Black" VerticalAlignment="Center"
-                    Background="{DynamicResource LCARS_Dom5Gradient_Left_Right}" />-->
+                    Background="{DynamicResource Dom5Gradient_Left_Right}" />-->
 
-            <TextBlock Text="LCARS_HoverBlueGradient_Bottom_Top"  
+            <TextBlock Text="BlueHoverGradient_Bottom_Top"  
                            Foreground="Black" VerticalAlignment="Center"
-                    Background="{DynamicResource LCARS_HoverBlueGradient_Bottom_Top}" />
+                    Background="{DynamicResource BlueHoverGradient_Bottom_Top}" />
         </StackPanel>
 
         <!--  1 = Terrans -->
         <StackPanel Orientation="Vertical" Grid.Row="11" Grid.Column="2" Grid.ColumnSpan="1" HorizontalAlignment="Left" Margin="3,0,0,0">
-            <TextBlock Text="LCARS_Terran1Gradient"  
+      
+            <TextBlock Text="Ter1Gradient"  
                            Foreground="Black" VerticalAlignment="Center"
-                    Background="{DynamicResource LCARS_Terran1Gradient_Left_Right}" />
+                    Background="{DynamicResource Ter1Gradient_Left_Right}" />
 
-            <TextBlock Text="LCARS_Terran2Gradient_Right_Left" 
+            <TextBlock Text="Ter2Gradient"  
                            Foreground="Black" VerticalAlignment="Center"
-                    Background="{DynamicResource LCARS_Terran2Gradient_Right_Left}" />
+                    Background="{DynamicResource Ter2Gradient_Left_Right}" />            
+            
+            <TextBlock Text="Ter3Gradient"  
+                           Foreground="Black" VerticalAlignment="Center"
+                    Background="{DynamicResource Ter3Gradient_Left_Right}" />
 
-            <TextBlock Text="LCARS_Terran3Gradient"  
+            <TextBlock Text="Ter4Gradient" 
                            Foreground="Black" VerticalAlignment="Center"
-                    Background="{DynamicResource LCARS_Terran3Gradient_Left_Right}" />
+                    Background="{DynamicResource Ter4Gradient_Right_Left}" />
 
-                    <TextBlock Text="TERRAN_HoverGreenGradient_Top_Bottom" 
+            <TextBlock Text="Ter5Gradient"  
                            Foreground="Black" VerticalAlignment="Center"
-                    Background="{DynamicResource TERRAN_HoverGreenGradient_Top_Bottom}" />
+                    Background="{DynamicResource Ter5Gradient_Left_Right}" />
 
-            <TextBlock Text="TERRAN_GreenGradient_Bottom_Top"  
+            <TextBlock Text="TerHoverGradient" 
                            Foreground="Black" VerticalAlignment="Center"
-                    Background="{DynamicResource TERRAN_GreenGradient_Bottom_Top}" />
+                    Background="{DynamicResource TerHoverGradient_Top_Bottom}" />
 
-                    <TextBlock Text="TERRAN_HoverGreenGradient_Top_Bottom"  
+            <TextBlock Text="Ter6Gradient"  
                            Foreground="Black" VerticalAlignment="Center"
-                    Background="{DynamicResource TERRAN_HoverGreenGradient_Top_Bottom}" />
+                    Background="{DynamicResource Ter6Gradient_Bottom_Top}" />
 
-            <TextBlock Text="LCARS_Ter1Gradient"  
-                           Foreground="Black" VerticalAlignment="Center"
-                    Background="{DynamicResource LCARS_Ter1Gradient_Left_Right}" />
-
-            <TextBlock Text="LCARS_Ter2Gradient"  
-                           Foreground="Black" VerticalAlignment="Center"
-                    Background="{DynamicResource LCARS_Ter2Gradient_Left_Right}" />
         </StackPanel>
 
         <!--  2 = Romulans -->
         <StackPanel Orientation="Vertical" Grid.Row="11" Grid.Column="3" Grid.ColumnSpan="1" HorizontalAlignment="Left" Margin="3,0,0,0">
-            <TextBlock Text="LCARS_Rom1Gradient"  
+            <TextBlock Text="Rom1Gradient"  
                            Foreground="Black" VerticalAlignment="Center"
-                    Background="{DynamicResource LCARS_Rom1Gradient_Left_Right}" />
+                    Background="{DynamicResource Rom1Gradient_Left_Right}" />
 
-            <TextBlock Text="LCARS_Rom2Gradient"  
+            <TextBlock Text="Rom2Gradient"  
                            Foreground="Black" VerticalAlignment="Center"
-                    Background="{DynamicResource LCARS_Rom2Gradient_Left_Right}" />
+                    Background="{DynamicResource Rom2Gradient_Left_Right}" />
 
-            <TextBlock Text="LCARS_Rom3Gradient"  Grid.Row="23" Grid.Column="2"
+            <TextBlock Text="RomGreenGradient"  Grid.Row="23" Grid.Column="2"
                            Foreground="Black" VerticalAlignment="Center"
-                    Background="{DynamicResource LCARS_Rom3Gradient_Left_Right}" />
+                    Background="{DynamicResource RomGreenGradient_Left_Right}" />
 
-            <TextBlock Text="LCARS_Rom4Gradient"  Grid.Row="24" Grid.Column="2"
+            <TextBlock Text="Rom4Gradient"  Grid.Row="24" Grid.Column="2"
                            Foreground="Black" VerticalAlignment="Center"
-                    Background="{DynamicResource LCARS_Rom4Gradient_Left_Right}" />
+                    Background="{DynamicResource Rom4Gradient_Top_Bottom}" />
 
-            <TextBlock Text="LCARS_RomPurpleBlueGradient"  
+            <TextBlock Text="RomPurpleBlueGradient"  
                            Foreground="Black" VerticalAlignment="Center"
-                    Background="{DynamicResource LCARS_RomPurpleBlueGradient_Left_Right}" />
+                    Background="{DynamicResource RomPurpleBlueGradient_Left_Right}" />
 
-            <TextBlock Text="xxx"  
+                    <TextBlock Text="RomHoverGradient"  
                            Foreground="Black" VerticalAlignment="Center"
-                    Background="{DynamicResource LCARS_RomPurpleBlueGradient_Left_Right}" />
+                    Background="{DynamicResource RomHoverGradient_Top_Bottom}" />
 
             <TextBlock Text="ROM_PurpleGradient"  
                            Foreground="Black" VerticalAlignment="Center"
@@ -484,31 +479,30 @@
         <!--  3 = Klingons-->
         <StackPanel Orientation="Vertical" Grid.Row="11" Grid.Column="4" Grid.ColumnSpan="1" HorizontalAlignment="Left" Margin="3,0,0,0">
 
+            <TextBlock Text="Kling1Gradient"  Foreground="Black" VerticalAlignment="Center" 
+                    Background="{DynamicResource Kling1Gradient_Left_Right}" />
+            
+            <TextBlock Text="Kling2Gradient"  Foreground="Black" VerticalAlignment="Center" 
+                    Background="{DynamicResource Kling2Gradient_Left_Right}" />
+            
+            <TextBlock Text="Kling3Gradient"  Foreground="Black" VerticalAlignment="Center" 
+                    Background="{DynamicResource Kling3Gradient_Top_Bottom}" />
+
+            <TextBlock Text="Kling4Gradient" Foreground="Black" VerticalAlignment="Center"  
+                    Background="{DynamicResource Kling4Gradient_Left_Right}" />
+            
+            <TextBlock Text="KlingHoverGradient_Top_Bottom" Foreground="Black" VerticalAlignment="Center"  
+                    Background="{DynamicResource KlingHoverGradient_Top_Bottom}" />
+
+            <TextBlock Text="KlingYellow1Gradient" Foreground="Black" VerticalAlignment="Center"  
+                    Background="{DynamicResource KlingYellow1Gradient_Left_Right}" />
+
+            <TextBlock Text="KlingYellow2Gradient" Foreground="Black" VerticalAlignment="Center"  
+                    Background="{DynamicResource KlingYellow2Gradient_Left_Right}" />
 
 
-            <TextBlock Text="LCARS_KlingRed1Gradient"  
-                           Foreground="Black" VerticalAlignment="Center"
-                    Background="{DynamicResource LCARS_KlingRed1Gradient_Left_Right}" />
-
-            <TextBlock Text="LCARS_KlingRed2Gradient"  
-                           Foreground="Black" VerticalAlignment="Center"
-                    Background="{DynamicResource LCARS_KlingRed2Gradient_Left_Right}" />
-
-            <TextBlock Text="LCARS_KlingRed3Gradient"  
-                           Foreground="Black" VerticalAlignment="Center"
-                    Background="{DynamicResource LCARS_KlingRed3Gradient_Top_Bottom}" />
-
-            <TextBlock Text="LCARS_KlingYellowGradientOne" Foreground="Black" VerticalAlignment="Center"  
-                    Background="{DynamicResource LCARS_KlingYellowGradientOne_Left_Right}" />
-
-                    <TextBlock Text="LCARS_KlingRedGradient" Foreground="Black" VerticalAlignment="Center"  
-                    Background="{DynamicResource LCARS_KlingRedGradient_Left_Right}" />
-
-                    <TextBlock Text="LCARS_KlingHoverRedGradient_Top_Bottom" Foreground="Black" VerticalAlignment="Center"  
-                    Background="{DynamicResource LCARS_KlingHoverRedGradient_Top_Bottom}" />
-
-                    <!--<Border Background="{DynamicResource LCARS_KlingYellowGradientOne_Left_Right}" >-->
-                        <!--<TextBlock Text="LCARS_KlingRedGradient" Foreground="Black" VerticalAlignment="Center" BorderThickness="1" BorderBrush="Transparent">
+                    <!--<Border Background="{DynamicResource KlingYellow1Gradient_Left_Right}" >-->
+                        <!--<TextBlock Text="Kling4Gradient" Foreground="Black" VerticalAlignment="Center" BorderThickness="1" BorderBrush="Transparent">
                         </TextBlock>-->
                     <!--</Border>-->
 
@@ -517,76 +511,89 @@
 
         <!--  4 = Cardassians-->
         <StackPanel Orientation="Vertical" Grid.Row="11" Grid.Column="5" Grid.ColumnSpan="1" HorizontalAlignment="Left" Margin="3,0,0,0">
-            <TextBlock Text="LCARS_Card_Goldenrod1Gradient"  
+            <TextBlock Text="Card1Gradient"  
                            Foreground="Black" VerticalAlignment="Center"
-                    Background="{DynamicResource LCARS_Card_Goldenrod1Gradient_Left_Right}" />
+                    Background="{DynamicResource Card1Gradient_Left_Right}" />
 
-                    <TextBlock Text="LCARS_Card_Goldenrod2Gradient"  
+                    <TextBlock Text="Card2Gradient"  
                            Foreground="Black" VerticalAlignment="Center"
-                    Background="{DynamicResource LCARS_Card_Goldenrod2Gradient_Left_Right}" />
+                    Background="{DynamicResource Card2Gradient_Left_Right}" />
 
-                    <TextBlock Text="LCARS_Card_Tan1Gradient"  
+                    <TextBlock Text="Card3Gradient"  
                            Foreground="Black" VerticalAlignment="Center"
-                    Background="{DynamicResource LCARS_Card_Tan1Gradient_Left_Right}" />
+                    Background="{DynamicResource Card3Gradient_Left_Right}" />
+            
+                    <TextBlock Text="Card4Gradient"  
+                           Foreground="Black" VerticalAlignment="Center"
+                    Background="{DynamicResource Card4Gradient_Left_Right}" />
 
-                    <TextBlock Text="LCARS_Card_Tan2Gradient"  
+                    <TextBlock Text="Card5Gradient"  
                            Foreground="Black" VerticalAlignment="Center"
-                    Background="{DynamicResource LCARS_Card_Tan2Gradient_Left_Right}" />
-
-                    <TextBlock Text="LCARS_Card_HoverGradient"  
+                    Background="{DynamicResource Card5Gradient_Right_Left}" />
+            
+                    <TextBlock Text="CardHoverGradient"  
                            Foreground="Black" VerticalAlignment="Center"
-                    Background="{DynamicResource LCARS_Card_HoverGradient_Left_Right}" />
-
-                    <TextBlock Text="LCARS_Card_ObsidianGradient"  
-                           Foreground="Black" VerticalAlignment="Center"
-                    Background="{DynamicResource LCARS_Card_ObsidianGradient_Left_Right}" />
+                    Background="{DynamicResource CardHoverGradient_Left_Right}" />     
+            
                 </StackPanel>
 
         <!--  5 = Dominion-->
         <StackPanel Orientation="Vertical" Grid.Row="11" Grid.Column="6" Grid.ColumnSpan="1" HorizontalAlignment="Left" Margin="3,0,0,0">
-            <TextBlock Text="LCARS_Dom1Gradient"  
+            <TextBlock Text="Dom1Gradient"  
                            Foreground="Black" VerticalAlignment="Center"
-                    Background="{DynamicResource LCARS_Dom1Gradient_Left_Right}" />
+                    Background="{DynamicResource Dom1Gradient_Left_Right}" />
 
-            <TextBlock Text="LCARS_Dom2Gradient"  
+            <TextBlock Text="Dom2Gradient"  
                            Foreground="Black" VerticalAlignment="Center"
-                    Background="{DynamicResource LCARS_Dom2Gradient_Left_Right}" />
+                    Background="{DynamicResource Dom2Gradient_Left_Right}" />
 
-            <TextBlock Text="LCARS_Dom3Gradient"  
+            <TextBlock Text="Dom3Gradient"  
                            Foreground="Black" VerticalAlignment="Center"
-                    Background="{DynamicResource LCARS_Dom3Gradient_Left_Right}" />
+                    Background="{DynamicResource Dom3Gradient_Left_Right}" />
 
-            <TextBlock Text="LCARS_Dom4Gradient"  
+            <TextBlock Text="Dom4Gradient"  
                            Foreground="Black" VerticalAlignment="Center"
-                    Background="{DynamicResource LCARS_Dom4Gradient_Left_Right}" />
+                    Background="{DynamicResource Dom4Gradient_Left_Right}" />
 
-            <TextBlock Text="LCARS_Dom5Gradient"  
+            <TextBlock Text="Dom5Gradient"  
                            Foreground="Black" VerticalAlignment="Center"
-                    Background="{DynamicResource LCARS_Dom5Gradient_Left_Right}" />
-        </StackPanel>
+                    Background="{DynamicResource Dom5Gradient_Left_Right}" />
+
+            <TextBlock Text="DomHoverGradient"  
+                    Foreground="Black" VerticalAlignment="Center"
+            Background="{DynamicResource DomHoverGradient_Right_Left}" />
+
+
+                </StackPanel>
 
         <!--  6 = Borg-->
         <StackPanel Orientation="Vertical" Grid.Row="11" Grid.Column="7" Grid.ColumnSpan="1" HorizontalAlignment="Left" Margin="3,0,0,0">
-            <TextBlock Text="LCARS_Borg1Gradient"  
+            <TextBlock Text="Borg1Gradient"  
                            Foreground="Black" VerticalAlignment="Center"
-                    Background="{DynamicResource LCARS_Borg1Gradient_Left_Right}" />
+                    Background="{DynamicResource Borg1Gradient_Left_Right}" />
 
-            <TextBlock Text="LCARS_Borg2Gradient"  
+            <TextBlock Text="Borg2Gradient"  
                            Foreground="Black" VerticalAlignment="Center"
-                    Background="{DynamicResource LCARS_Borg2Gradient_Left_Right}" />
+                    Background="{DynamicResource Borg2Gradient_Left_Right}" />
 
-            <TextBlock Text="LCARS_Borg3Gradient"  
+            <TextBlock Text="Borg3Gradient"  
                            Foreground="Black" VerticalAlignment="Center"
-                    Background="{DynamicResource LCARS_Borg3Gradient_Left_Right}" />
+                    Background="{DynamicResource Borg3Gradient_Left_Right}" />
 
-            <TextBlock Text="LCARS_Borg4Gradient" 
+            <TextBlock Text="Borg4Gradient" 
                            Foreground="Black" VerticalAlignment="Center"
-                    Background="{DynamicResource LCARS_Borg4Gradient_Left_Right}" />
+                    Background="{DynamicResource Borg4Gradient_Left_Right}" />
 
-            <TextBlock Text="LCARS_Borg5Gradient"  
+            <!--<TextBlock Text="Borg5Gradient"  
                            Foreground="Black" VerticalAlignment="Center"
-                    Background="{DynamicResource LCARS_Borg5Gradient_Left_Right}" />
-        </StackPanel>
+                    Background="{DynamicResource Borg5Gradient_Left_Right}" />-->
+
+                    <TextBlock Text="BorgHoverGradient"  
+                           Foreground="Black" VerticalAlignment="Center"
+                    Background="{DynamicResource BorgHoverGradient_Left_Right}" />
+
+
+                </StackPanel>
 
         <!--  7 = all -->
 
