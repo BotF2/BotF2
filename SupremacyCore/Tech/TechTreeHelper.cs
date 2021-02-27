@@ -832,12 +832,33 @@ namespace Supremacy.Tech
             if (IsBuildLimitReached(colony, design, includeConstruction: true))
                 return false;
 
+            switch (design.Key)
+            {
+                case "FED_MARTIAL_LAW":
+                case "TERRAN_LAW":
+                case "ROM_NIGHT_PATROL":
+                case "KLING_EXECUTION_DAY":
+                case "CARD_STATE_TRIBUNAL":
+                case "DOM_DEATH_SQUAD":
+                    //case "FED_MARTIAL_LAW": Borg always have a 100
+                    if (colony.Morale.CurrentValue < 45)
+                        return true; break;
+                default:
+                    break;
+            }
+
             var buildCondition = design.BuildCondition;
             if (buildCondition != null)
             {
+                //if (colony.Morale.CurrentValue < 45)
+                //{
+
+                //    }
+                //}
+
                 // used e.g. for MARTIAL LAW which is just appearing at low morale level
 
-               var result = buildCondition.Evaluate<bool>(
+                var result = buildCondition.Evaluate<bool>(
                    new RuntimeScriptParameters
                    {
                         new RuntimeScriptParameter(buildCondition.Parameters[0], colony),
@@ -847,6 +868,7 @@ namespace Supremacy.Tech
                 if (!result)
                     return false;
             }
+            //end of buildCondition
 
             var system = colony.System;
 
