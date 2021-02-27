@@ -49,37 +49,37 @@
 
 <!--Row 0 = Headline-->
         <TextBlock Grid.Row="0" Grid.Column="1" MinWidth="96" TextAlignment="Center"  HorizontalAlignment="Center" VerticalAlignment="Center"
-                   Background="{StaticResource LCARS_Rom1Gradient_TopLeft_BottomRight}" >
+                   Background="{StaticResource Rom1Gradient_TopLeft_BottomRight}" >
 ROM_ColorInfoScreen
         </TextBlock>
 
         <TextBlock Grid.Row="0" Grid.Column="2" MinWidth="96" TextAlignment="Center"  HorizontalAlignment="Center" VerticalAlignment="Center" 
-                   Foreground="{StaticResource LCARS_GreenTextBrush}" >
+                   Foreground="{StaticResource GreenTextBrush}" >
 _Left_Right
         </TextBlock>
 
         <TextBlock Grid.Row="0" Grid.Column="3" MinWidth="96" TextAlignment="Center"  HorizontalAlignment="Center" VerticalAlignment="Center" 
-                   Foreground="{StaticResource LCARS_GreenTextBrush}" >
+                   Foreground="{StaticResource GreenTextBrush}" >
 _Right_Left
         </TextBlock>
 
         <TextBlock Grid.Row="0" Grid.Column="4" MinWidth="96" TextAlignment="Center"  HorizontalAlignment="Center" VerticalAlignment="Center" 
-                   Foreground="{StaticResource LCARS_GreenTextBrush}" >
+                   Foreground="{StaticResource GreenTextBrush}" >
 _Top_Bottom
         </TextBlock>
 
         <TextBlock Grid.Row="0" Grid.Column="5" MinWidth="96" TextAlignment="Center"  HorizontalAlignment="Center" VerticalAlignment="Center" 
-                   Foreground="{StaticResource LCARS_GreenTextBrush}" >
+                   Foreground="{StaticResource GreenTextBrush}" >
 _Bottom_Top
         </TextBlock>
 
         <TextBlock Grid.Row="0" Grid.Column="6" MinWidth="96" TextAlignment="Center"  HorizontalAlignment="Center" VerticalAlignment="Center" 
-                   Foreground="{StaticResource LCARS_GreenTextBrush}" >
+                   Foreground="{StaticResource GreenTextBrush}" >
 _BottomLeft_TopRight
         </TextBlock>
 
         <TextBlock Grid.Row="0" Grid.Column="7" MinWidth="96" TextAlignment="Center"  HorizontalAlignment="Center" VerticalAlignment="Center" 
-                   Foreground="{StaticResource LCARS_GreenTextBrush}" >
+                   Foreground="{StaticResource GreenTextBrush}" >
 _TopLeft_BottomRight
         </TextBlock>
 
@@ -88,127 +88,127 @@ _TopLeft_BottomRight
 
         <!--Row="1" -->
         <TextBlock Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center"  MinWidth="96" TextAlignment="Center" 
-                   Foreground="{StaticResource LCARS_GreenTextBrush}" >
-LCARS_Rom1Gradient
+                   Foreground="{StaticResource GreenTextBrush}" >
+Rom1Gradient
         </TextBlock>
         <TextBlock Grid.Row="1" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center"  MinWidth="96" TextAlignment="Center" 
-                   Background="{StaticResource LCARS_Rom1Gradient_Left_Right}" >
+                   Background="{StaticResource Rom1Gradient_Left_Right}" >
 _Left_Right
         </TextBlock>
         <TextBlock Grid.Row="1" Grid.Column="3" HorizontalAlignment="Center" VerticalAlignment="Center"  MinWidth="96" TextAlignment="Center" 
-                   Background="{StaticResource LCARS_Rom1Gradient_Right_Left}" >
+                   Background="{StaticResource Rom1Gradient_Right_Left}" >
 _Right_Left
         </TextBlock>
         <TextBlock Grid.Row="1" Grid.Column="4" HorizontalAlignment="Center" VerticalAlignment="Center"  MinWidth="96" TextAlignment="Center" 
-                   Background="{StaticResource LCARS_Rom1Gradient_Top_Bottom}" >
+                   Background="{StaticResource Rom1Gradient_Top_Bottom}" >
 _Top_Bottom
         </TextBlock>
         <TextBlock Grid.Row="1" Grid.Column="5" HorizontalAlignment="Center" VerticalAlignment="Center"  MinWidth="96" TextAlignment="Center" 
-                   Background="{StaticResource LCARS_Rom1Gradient_Bottom_Top}" >
+                   Background="{StaticResource Rom1Gradient_Bottom_Top}" >
 _Bottom_Top
         </TextBlock>
         <TextBlock Grid.Row="1" Grid.Column="6" HorizontalAlignment="Center" VerticalAlignment="Center"  MinWidth="96" TextAlignment="Center" 
-                   Background="{StaticResource LCARS_Rom1Gradient_BottomLeft_TopRight}" >
+                   Background="{StaticResource Rom1Gradient_BottomLeft_TopRight}" >
 _BottomLeft_TopRight
         </TextBlock>
         <TextBlock Grid.Row="1" Grid.Column="7" HorizontalAlignment="Center" VerticalAlignment="Center"  MinWidth="96" TextAlignment="Center" 
-                   Background="{StaticResource LCARS_Rom1Gradient_TopLeft_BottomRight}" >
+                   Background="{StaticResource Rom1Gradient_TopLeft_BottomRight}" >
 _TopLeft_BottomRight
         </TextBlock>
 
         <!--Row="2" -->
         <TextBlock Grid.Row="2" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center"  MinWidth="96" TextAlignment="Center" 
-                   Foreground="{StaticResource LCARS_GreenTextBrush}" >
-LCARS_Rom2Gradient
+                   Foreground="{StaticResource GreenTextBrush}" >
+Rom2Gradient
         </TextBlock>
         <TextBlock Grid.Row="2" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center"  MinWidth="96" TextAlignment="Center" 
-                   Background="{StaticResource LCARS_Rom2Gradient_Left_Right}" >
+                   Background="{StaticResource Rom2Gradient_Left_Right}" >
 _Left_Right
         </TextBlock>
         <TextBlock Grid.Row="2" Grid.Column="3" HorizontalAlignment="Center" VerticalAlignment="Center"  MinWidth="96" TextAlignment="Center" 
-                   Background="{StaticResource LCARS_Rom2Gradient_Right_Left}" >
+                   Background="{StaticResource Rom2Gradient_Right_Left}" >
 _Right_Left
         </TextBlock>
         <TextBlock Grid.Row="2" Grid.Column="4" HorizontalAlignment="Center" VerticalAlignment="Center"  MinWidth="96" TextAlignment="Center" 
-                   Background="{StaticResource LCARS_Rom2Gradient_Top_Bottom}" >
+                   Background="{StaticResource Rom2Gradient_Top_Bottom}" >
 _Top_Bottom
         </TextBlock>
         <TextBlock Grid.Row="2" Grid.Column="5" HorizontalAlignment="Center" VerticalAlignment="Center"  MinWidth="96" TextAlignment="Center" 
-                   Background="{StaticResource LCARS_Rom2Gradient_Bottom_Top}" >
+                   Background="{StaticResource Rom2Gradient_Bottom_Top}" >
 _Bottom_Top
         </TextBlock>
         <TextBlock Grid.Row="2" Grid.Column="6" HorizontalAlignment="Center" VerticalAlignment="Center"  MinWidth="96" TextAlignment="Center" 
-                   Background="{StaticResource LCARS_Rom2Gradient_BottomLeft_TopRight}" >
+                   Background="{StaticResource Rom2Gradient_BottomLeft_TopRight}" >
 _BottomLeft_TopRight
         </TextBlock>
         <TextBlock Grid.Row="2" Grid.Column="7" HorizontalAlignment="Center" VerticalAlignment="Center"  MinWidth="96" TextAlignment="Center" 
-                   Background="{StaticResource LCARS_Rom2Gradient_TopLeft_BottomRight}" >
+                   Background="{StaticResource Rom2Gradient_TopLeft_BottomRight}" >
 _TopLeft_BottomRight
         </TextBlock>
 
         <!--Row="3" -->
         <TextBlock Grid.Row="3" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center"  MinWidth="96" TextAlignment="Center" 
-                   Foreground="{StaticResource LCARS_GreenTextBrush}" >
-LCARS_Rom3Gradient
+                   Foreground="{StaticResource GreenTextBrush}" >
+Rom3Gradient
         </TextBlock>
         <TextBlock Grid.Row="3" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center"  MinWidth="96" TextAlignment="Center" 
-                   Background="{StaticResource LCARS_Rom3Gradient_Left_Right}" >
+                   Background="{StaticResource Rom3Gradient_Left_Right}" >
 _Left_Right
         </TextBlock>
         <TextBlock Grid.Row="3" Grid.Column="3" HorizontalAlignment="Center" VerticalAlignment="Center"  MinWidth="96" TextAlignment="Center" 
-                   Background="{StaticResource LCARS_Rom3Gradient_Right_Left}" >
+                   Background="{StaticResource Rom3Gradient_Right_Left}" >
 _Right_Left
         </TextBlock>
         <TextBlock Grid.Row="3" Grid.Column="4" HorizontalAlignment="Center" VerticalAlignment="Center"  MinWidth="96" TextAlignment="Center" 
-                   Background="{StaticResource LCARS_Rom3Gradient_Top_Bottom}" >
+                   Background="{StaticResource Rom3Gradient_Top_Bottom}" >
 _Top_Bottom
         </TextBlock>
         <TextBlock Grid.Row="3" Grid.Column="5" HorizontalAlignment="Center" VerticalAlignment="Center"  MinWidth="96" TextAlignment="Center" 
-                   Background="{StaticResource LCARS_Rom3Gradient_Bottom_Top}" >
+                   Background="{StaticResource Rom3Gradient_Bottom_Top}" >
 _Bottom_Top
         </TextBlock>
         <TextBlock Grid.Row="3" Grid.Column="6" HorizontalAlignment="Center" VerticalAlignment="Center"  MinWidth="96" TextAlignment="Center" 
-                   Background="{StaticResource LCARS_Rom3Gradient_BottomLeft_TopRight}" >
+                   Background="{StaticResource Rom3Gradient_BottomLeft_TopRight}" >
 _BottomLeft_TopRight
         </TextBlock>
         <TextBlock Grid.Row="3" Grid.Column="7" HorizontalAlignment="Center" VerticalAlignment="Center"  MinWidth="96" TextAlignment="Center" 
-                   Background="{StaticResource LCARS_Rom3Gradient_TopLeft_BottomRight}" >
+                   Background="{StaticResource Rom3Gradient_TopLeft_BottomRight}" >
 _TopLeft_BottomRight
         </TextBlock>
 
         <!--Row="4" -->
         <TextBlock Grid.Row="4" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center"  MinWidth="96" TextAlignment="Center" 
-                   Foreground="{StaticResource LCARS_GreenTextBrush}" >
-LCARS_Rom4Gradient
+                   Foreground="{StaticResource GreenTextBrush}" >
+Rom4Gradient
         </TextBlock>
         <TextBlock Grid.Row="4" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center"  MinWidth="96" TextAlignment="Center" 
-                   Background="{StaticResource LCARS_Rom4Gradient_Left_Right}" >
+                   Background="{StaticResource Rom4Gradient_Left_Right}" >
 _Left_Right
         </TextBlock>
         <TextBlock Grid.Row="4" Grid.Column="3" HorizontalAlignment="Center" VerticalAlignment="Center"  MinWidth="96" TextAlignment="Center" 
-                   Background="{StaticResource LCARS_Rom4Gradient_Right_Left}" >
+                   Background="{StaticResource Rom4Gradient_Right_Left}" >
 _Right_Left
         </TextBlock>
         <TextBlock Grid.Row="4" Grid.Column="4" HorizontalAlignment="Center" VerticalAlignment="Center"  MinWidth="96" TextAlignment="Center" 
-                   Background="{StaticResource LCARS_Rom4Gradient_Top_Bottom}" >
+                   Background="{StaticResource Rom4Gradient_Top_Bottom}" >
 _Top_Bottom
         </TextBlock>
         <TextBlock Grid.Row="4" Grid.Column="5" HorizontalAlignment="Center" VerticalAlignment="Center"  MinWidth="96" TextAlignment="Center" 
-                   Background="{StaticResource LCARS_Rom4Gradient_Bottom_Top}" >
+                   Background="{StaticResource Rom4Gradient_Top_Bottom}" >
 _Bottom_Top
         </TextBlock>
         <TextBlock Grid.Row="4" Grid.Column="6" HorizontalAlignment="Center" VerticalAlignment="Center"  MinWidth="96" TextAlignment="Center" 
-                   Background="{StaticResource LCARS_Rom4Gradient_BottomLeft_TopRight}" >
+                   Background="{StaticResource Rom4Gradient_BottomLeft_TopRight}" >
 _BottomLeft_TopRight
         </TextBlock>
         <TextBlock Grid.Row="4" Grid.Column="7" HorizontalAlignment="Center" VerticalAlignment="Center"  MinWidth="96" TextAlignment="Center" 
-                   Background="{StaticResource LCARS_Rom4Gradient_TopLeft_BottomRight}" >
+                   Background="{StaticResource Rom4Gradient_TopLeft_BottomRight}" >
 _TopLeft_BottomRight
         </TextBlock>
 
         <!--Row="5" -->
         <TextBlock Grid.Row="5" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center"  MinWidth="96" TextAlignment="Center" 
-                   Foreground="{StaticResource LCARS_GreenTextBrush}" >
+                   Foreground="{StaticResource GreenTextBrush}" >
 ROM_PurpleGradient
         </TextBlock>
         <TextBlock Grid.Row="5" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center"  MinWidth="96" TextAlignment="Center" 
@@ -239,13 +239,13 @@ _TopLeft_BottomRight
         <!--Row="6" -->
         <TextBlock Grid.Row="6" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center"  MinWidth="96" TextAlignment="Center" 
                    Grid.ColumnSpan="4"
-                   Foreground="{StaticResource LCARS_GreenTextBrush}" >
+                   Foreground="{StaticResource GreenTextBrush}" >
 Gradients defined in GLOBAL.XAML to have it available all the time
         </TextBlock>
         
         <!--Row="7" -->
         <TextBlock Grid.Row="7" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center"  MinWidth="96" TextAlignment="Center" 
-                   Foreground="{StaticResource LCARS_GreenTextBrush}" >
+                   Foreground="{StaticResource GreenTextBrush}" >
 ROM_PurpleBlueGradient
         </TextBlock>
         <TextBlock Grid.Row="7" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center"  MinWidth="96" TextAlignment="Center" 
@@ -275,37 +275,37 @@ _TopLeft_BottomRight
 
         <!--Row="8" -->
         <TextBlock Grid.Row="8" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center"  MinWidth="96" TextAlignment="Center" 
-                   Foreground="{StaticResource LCARS_GreenTextBrush}" >
-LCARS_RomGreenGradient
+                   Foreground="{StaticResource GreenTextBrush}" >
+RomGreenGradient
         </TextBlock>
         <TextBlock Grid.Row="8" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center"  MinWidth="96" TextAlignment="Center" 
-                   Background="{StaticResource LCARS_RomGreenGradient_Left_Right}" >
+                   Background="{StaticResource RomGreenGradient_Left_Right}" >
 _Left_Right
         </TextBlock>
         <TextBlock Grid.Row="8" Grid.Column="3" HorizontalAlignment="Center" VerticalAlignment="Center"  MinWidth="96" TextAlignment="Center" 
-                   Background="{StaticResource LCARS_RomGreenGradient_Right_Left}" >
+                   Background="{StaticResource RomGreenGradient_Right_Left}" >
 _Right_Left
         </TextBlock>
         <TextBlock Grid.Row="8" Grid.Column="4" HorizontalAlignment="Center" VerticalAlignment="Center"  MinWidth="96" TextAlignment="Center" 
-                   Background="{StaticResource LCARS_RomGreenGradient_Top_Bottom}" >
+                   Background="{StaticResource RomGreenGradient_Top_Bottom}" >
 _Top_Bottom
         </TextBlock>
         <TextBlock Grid.Row="8" Grid.Column="5" HorizontalAlignment="Center" VerticalAlignment="Center"  MinWidth="96" TextAlignment="Center" 
-                   Background="{StaticResource LCARS_RomGreenGradient_Bottom_Top}" >
+                   Background="{StaticResource RomGreenGradient_Bottom_Top}" >
 _Bottom_Top
         </TextBlock>
         <TextBlock Grid.Row="8" Grid.Column="6" HorizontalAlignment="Center" VerticalAlignment="Center"  MinWidth="96" TextAlignment="Center" 
-                   Background="{StaticResource LCARS_RomGreenGradient_BottomLeft_TopRight}" >
+                   Background="{StaticResource RomGreenGradient_BottomLeft_TopRight}" >
 _BottomLeft_TopRight
         </TextBlock>
         <TextBlock Grid.Row="8" Grid.Column="7" HorizontalAlignment="Center" VerticalAlignment="Center"  MinWidth="96" TextAlignment="Center" 
-                   Background="{StaticResource LCARS_RomGreenGradient_TopLeft_BottomRight}" >
+                   Background="{StaticResource RomGreenGradient_TopLeft_BottomRight}" >
 _TopLeft_BottomRight
         </TextBlock>
 
         <!--Row="9" -->
         <TextBlock Grid.Row="9" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center"  MinWidth="96" TextAlignment="Center" 
-                   Foreground="{StaticResource LCARS_GreenTextBrush}" >
+                   Foreground="{StaticResource GreenTextBrush}" >
 Text+Border (Shared.xaml)
         </TextBlock>
         <TextBlock Grid.Row="9" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center"  MinWidth="96" TextAlignment="Center" 
@@ -329,13 +329,13 @@ SelectionBrush
 BorderBrush
         </TextBlock>
         <TextBlock Grid.Row="9" Grid.Column="7" HorizontalAlignment="Center" VerticalAlignment="Center"  MinWidth="96" TextAlignment="Center" 
-                   Foreground="{StaticResource LCARS_HeaderBrush}" >
-LCARS_HeaderBrush
+                   Foreground="{StaticResource WhiteHeaderBrush}" >
+WhiteHeaderBrush
         </TextBlock>
 
         <!--Row="10" -->
         <TextBlock Grid.Row="10" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center"  MinWidth="96" TextAlignment="Center" 
-                   Foreground="{StaticResource LCARS_GreenTextBrush}" >
+                   Foreground="{StaticResource GreenTextBrush}" >
 SolidColorBrush
         </TextBlock>
         <TextBlock Grid.Row="10" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center"  MinWidth="96" TextAlignment="Center" 
