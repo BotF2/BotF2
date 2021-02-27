@@ -24,13 +24,23 @@
     <ResourceDictionary Source="GalaxyScreenView.xaml" />
     <ResourceDictionary Source="AffairsScreen.xaml"/>
     <ResourceDictionary Source="Dialogs.xaml" />
+      
+    <!--<ResourceDictionary Source="ROM-Shared.xaml"/>
+    <ResourceDictionary Source="ROM-GameContextMenu.xaml"/>
+    <ResourceDictionary Source="ROM-TechObjectInfo.xaml"/>
+    <ResourceDictionary Source="ROM-InfoCard.xaml" />
+    <ResourceDictionary Source="ROM-ResearchScreen.xaml"/>
+    <ResourceDictionary Source="ROM-SystemScreen.xaml"/>
+    <ResourceDictionary Source="ROM-GalaxyScreenView.xaml" />
+    <ResourceDictionary Source="ROM-AffairsScreen.xaml"/>
+    <ResourceDictionary Source="ROM-Dialogs.xaml" />-->
   </ResourceDictionary.MergedDictionaries>
  
   <Style TargetType="{x:Type local:CombatWindow}"
-         BasedOn="{StaticResource LCARS_RomThinBorderStyle}"/>
+         BasedOn="{StaticResource RomThinBorderStyle}"/>
 
   <Style x:Key="DialogBorderStyle"
          TargetType="{x:Type ContentControl}"
-         BasedOn="{StaticResource LCARS_RomThinBorderStyle}" />
+         BasedOn="{StaticResource RomThinBorderStyle}" />
 
 </ResourceDictionary>

@@ -70,7 +70,7 @@
                 </Grid.ColumnDefinitions>
                 <Border Grid.Column="0"
                         Grid.Row="0"
-                        Background="{StaticResource LCARS_Rom2Gradient_TopLeft_BottomRight}"
+                        Background="{StaticResource Rom2Gradient_TopLeft_BottomRight}"
                         CornerRadius="14,0,0,14"
                         Width="21"
                         Margin="5,0,0,0" />    
@@ -79,7 +79,7 @@
                              Margin="4,0,0,0" 
                        Width="14"
                        SnapsToDevicePixels="True"
-                       Fill="{StaticResource LCARS_OrangeGradient_Top_Bottom}" />
+                       Fill="{StaticResource Rom4Gradient_Top_Bottom}" />
                 
                   <Button Grid.Column="2"
                         Margin="3,0,0,0" 
@@ -91,7 +91,7 @@
                              Margin="3,0,0,0" 
                        Width="14"
                        SnapsToDevicePixels="True"
-                       Fill="{StaticResource LCARS_OrangeGradient_Top_Bottom}" />
+                       Fill="{StaticResource Rom4Gradient_Top_Bottom}" />
                                 
                   <ComboBox Grid.Column="4"
                           Grid.Row="0"
@@ -110,7 +110,7 @@
 
                     <!--<Border Grid.Column="5"
                            Grid.Row="0"
-                        Background="{StaticResource LCARS_PurpleGradient_TopLeft_BottomRight}"
+                        Background="{StaticResource PurpleGradient_TopLeft_BottomRight}"
                         CornerRadius="14,0,0,14"
                         Width="21"
                         Margin="5,0,0,0" />-->
@@ -126,12 +126,12 @@
                              Margin="3,0,0,0" 
                        Width="14"
                        SnapsToDevicePixels="True"
-                       Fill="{StaticResource LCARS_OrangeGradient_Top_Bottom}" />
+                       Fill="{StaticResource Rom4Gradient_Top_Bottom}" />
                                 
                               
                   <!--<Border Grid.Column="8"
                         Grid.Row="0"
-                        Background="{StaticResource LCARS_PurpleGradient_TopLeft_BottomRight}"
+                        Background="{StaticResource PurpleGradient_TopLeft_BottomRight}"
                         CornerRadius="0,14,14,0"
                         Width="21"
                         Margin="3,0,0,0" />-->
@@ -140,10 +140,10 @@
                   <Rectangle Grid.Column="9"
                            Grid.Row="0"
                            Margin="3,0,0,0"
-                           Fill="{StaticResource LCARS_Rom1Gradient_Top_Bottom}" />
+                           Fill="{StaticResource Rom1Gradient_Top_Bottom}" />
                 <Border Grid.Column="10"
                         Grid.Row="0"
-                        Background="{StaticResource LCARS_Rom2Gradient_TopLeft_BottomRight}"
+                        Background="{StaticResource Rom2Gradient_TopLeft_BottomRight}"
                         CornerRadius="0,14,14,0"
                         Width="21"
                         Margin="3,0,0,0" />
@@ -156,7 +156,7 @@
                     Grid.RowSpan="2"
                     Margin="0,4,0,0"
                     TextBlock.FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
-                    TextBlock.Foreground="{StaticResource LCARS_BeigeTextBrush}">
+                    TextBlock.Foreground="{StaticResource BeigeTextBrush}">
                 <Grid.RowDefinitions>
                   <RowDefinition Height="Auto" />
                   <RowDefinition Height="*" />
@@ -216,7 +216,7 @@
                                     Grid.Row="0"
                                     Grid.RowSpan="2"
                                     cal:RegionManager.RegionName="{x:Static scc:ColonyScreenRegions.PlanetaryBuildList}" />
-                                        <ContentControl Style="{StaticResource LCARS_RomThinBorderStyle}"
+                                        <ContentControl Style="{StaticResource RomThinBorderStyle}"
                                     VerticalAlignment="Top"
                                     Grid.Column="1"
                                     Grid.Row="0"
@@ -295,7 +295,7 @@
 
 
               <!-- BEGIN SYSTEM VIEW -->
-                            <ContentControl Style="{StaticResource LCARS_RomThinBorderStyle}"
+                            <ContentControl Style="{StaticResource RomThinBorderStyle}"
                               Grid.Column="1"
                               Grid.Row="2"
                               Margin="4,0,0,0">
