@@ -91,7 +91,7 @@ namespace Supremacy.Client
                     + "ERROR TITLE:;" + stackTrace.Split('\n')[0] + Environment.NewLine
                     + "StackTrace complete:;" + stackTrace;
 
-                GameLog.Core.General.ErrorFormat(_text);
+                GameLog.Core.General.ErrorFormat(_text, ""); // "" for avoiding message "argument missing" for log4net
                 Console.WriteLine(_text);
 
                 try 

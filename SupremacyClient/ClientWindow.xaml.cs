@@ -171,14 +171,17 @@ namespace Supremacy.Client
             InputBindings.Add(new KeyBinding(ClientCommands.F12_Command, Key.F12, ModifierKeys.None));// new for lift Fog of War  = ALT + F
 
             InputBindings.Add(new KeyBinding(ClientCommands.AutoTurnCommand, Key.A, ModifierKeys.Alt));
+
+            InputBindings.Add(new KeyBinding(ClientCommands.TracesCommand, Key.C, ModifierKeys.Control));
             InputBindings.Add(new KeyBinding(ClientCommands.ErrorTxtCommand, Key.E, ModifierKeys.Control));
+            //InputBindings.Add(new KeyBinding(CollectGarbageCommand, new KeyGesture(Key.G, ModifierKeys.Control))); - see above - from Mike
             InputBindings.Add(new KeyBinding(ClientCommands.ShowEndOfTurnSummary, Key.I, ModifierKeys.Control));
             InputBindings.Add(new KeyBinding(ClientCommands.LogTxtCommand, Key.L, ModifierKeys.Control));
             InputBindings.Add(new KeyBinding(ClientCommands.OptionsCommand, Key.O, ModifierKeys.Control));
             InputBindings.Add(new KeyBinding(ClientCommands.SaveGame, Key.S, ModifierKeys.Control)); // CRTL+S makes saved file "_manual_save"
             //InputBindings.Add(new KeyBinding(ClientCommands.ShowSaveGameDialog, Key.S, ModifierKeys.Alt));// ALT+S shows SaveGameDialog    // does not work yet
             InputBindings.Add(new KeyBinding(ClientCommands.EndTurn, Key.T, ModifierKeys.Control));
-            InputBindings.Add(new KeyBinding(ClientCommands.TracesCommand, Key.Z, ModifierKeys.Control));
+
 
             InputBindings.Add(new KeyBinding(ClientCommands.FakeCommand, Key.F11, ModifierKeys.Control));
 

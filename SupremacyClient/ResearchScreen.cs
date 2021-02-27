@@ -363,7 +363,7 @@ namespace Supremacy.Client
         {
             if (entry == null)
                 return new FlowDocument();
-
+            
             var design = entry as TechObjectDesign;
             var doc = new FlowDocument();
             var imageConverter = new EncyclopediaImageConverter();
@@ -675,7 +675,7 @@ namespace Supremacy.Client
     public class ResearchFieldData
     {
         private readonly ResearchField _field;
-        private readonly ResearchPool _pool;
+        private readonly ResearchPool _pool; 
 
         public ResearchField Field
         {
@@ -735,7 +735,7 @@ namespace Supremacy.Client
             }
         }
 
-        public string DisplayTooltip        
+        public string DisplayTextTooltip        
         {
             get
             {

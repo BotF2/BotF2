@@ -111,7 +111,7 @@ namespace Supremacy.Scripting
         public object Evaluate(RuntimeScriptParameters parameters)
         {
             CompileScript();
-            return _delegate.DynamicInvoke(ResolveParameterValues(parameters).ToArray());  // on break check parameters
+            return _delegate.DynamicInvoke(ResolveParameterValues(parameters).ToArray());  // on break check parameters - mostly for Martial Law checking Morale value condition
         }
 
         public bool CompileScript([CanBeNull] ErrorSink errorSink = null)
