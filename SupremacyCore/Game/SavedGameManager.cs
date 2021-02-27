@@ -32,11 +32,12 @@ namespace Supremacy.Game
         {
             get 
             { 
-                //string _text = Path.Combine(ResourceManager.GetResourcePath(""), "SavedGames", Assembly.GetExecutingAssembly().GetName().Version.ToString());
+                string _text = Path.Combine(ResourceManager.GetResourcePath(""), "SavedGames_V", Assembly.GetExecutingAssembly().GetName().Version.ToString());
+                _text = _text.Replace("V\\", "V");
                 //GameLog.Client.SaveLoad.DebugFormat("SavedGameDirectory = {0}", _text);
                 //Console.WriteLine(_text);
 
-                return Path.Combine("SavedGames", Assembly.GetExecutingAssembly().GetName().Version.ToString()); 
+                return _text;
             }
         }
 
