@@ -300,7 +300,7 @@ namespace Supremacy.Game
         private readonly int _shipsDestroyed;
         private readonly int _shipsDamaged;
         public BlackHoleEncounterSitRepEntry(Civilization owner, MapLocation location, int shipsDamaged, int shipsDestroyed)
-            : base(owner, SitRepPriority.Pink)
+            : base(owner, SitRepPriority.Gray)
         {
             _location = location;
             _shipsDamaged = shipsDamaged;
@@ -843,7 +843,7 @@ namespace Supremacy.Game
         private readonly int _civilizationID;
         private readonly MapLocation _location;
         public FirstContactSitRepEntry(Civilization owner, Civilization civilization, MapLocation location)
-            : base(owner, SitRepPriority.Pink)
+            : base(owner, SitRepPriority.Blue)
         {
             if (civilization == null)
                 throw new ArgumentNullException("civilization");
@@ -913,25 +913,31 @@ namespace Supremacy.Game
     [Serializable]
     public class GrowthByHealthSitRepEntry : SitRepEntry
     {
-        private readonly int _systemId;
+        private readonly int _colonyID;
         //private readonly int _shipID;
-        private readonly string _researchNote;
+        //private readonly string _researchNote;
 
-        public GrowthByHealthSitRepEntry(Civilization owner, Colony target)
-                : base(owner, SitRepPriority.Blue)
+        public GrowthByHealthSitRepEntry(Civilization owner, Colony colony)
+                : base(owner, SitRepPriority.Orange)
         {
-            if (target == null)
+            if (colony == null)
                 throw new ArgumentNullException("colony");
-            _systemId = target.System.ObjectID;
+            _colonyID = colony.ObjectID;
         }
 
-        public StarSystem System { get { return GameContext.Current.Universe.Get<StarSystem>(_systemId); } }
-        public string ResearchNote { get { return _researchNote; } }
+        public Colony Colony { get { return GameContext.Current.Universe.Get<Colony>(_colonyID); } }
+        //public string ResearchNote { get { return _researchNote; } }
         public override SitRepCategory Categories { get { return SitRepCategory.Research; } } // not used atm
         public override SitRepAction Action { get { return SitRepAction.ViewColony; } }
-        public override object ActionTarget { get { return System.Sector; } }
+        public override object ActionTarget { get { return Colony; } }
         public override string SitRepComment { get; set; }
-        public override string SummaryText { get { return _researchNote; } }
+        public override string SummaryText { get {
+                string _text = string.Format(ResourceManager.GetString("SITREP_GROWTH_BY_HEALTH_UNKNOWN_COLONY_TEXT"));
+                if (Colony != null) 
+                    _text = string.Format(ResourceManager.GetString("SITREP_GROWTH_BY_HEALTH_TEXT"), Colony.Name, Colony.Location);
+
+                return _text; } 
+        }
         public override bool IsPriority { get { return true; } }
     }
     // End of GrowthByHealthSitRepEntry
@@ -1681,7 +1687,7 @@ namespace Supremacy.Game
         private readonly string _shipType;
 
         public OrbitalDestroyedSitRepEntry(Orbital orbital)
-            : base(orbital.Owner, SitRepPriority.Red)
+            : base(orbital.Owner, SitRepPriority.Purple)
         {
             if (orbital == null)
                 throw new ArgumentNullException("orbital");
