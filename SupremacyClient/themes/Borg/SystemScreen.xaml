@@ -64,20 +64,26 @@
                   <ColumnDefinition Width="*" />
                   <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
-                    
-                  
-                  <Border Grid.Column="0"
-                        Grid.Row="0"
-                        Background="{StaticResource LCARS_PurpleGradient_TopLeft_BottomRight}"
-                        CornerRadius="14,0,0,14"
-                        Width="21"
-                        Margin="5,0,0,0" />    
-                  
+
+
+                    <Rectangle Grid.Column="0" Grid.Row="0" Width="24" Height="28" VerticalAlignment="Top" Margin="3,0,0,0">
+                        <Rectangle.Fill>
+                            <DrawingBrush>
+                                <DrawingBrush.Drawing>
+                                    <GeometryDrawing 
+                                Brush="{StaticResource Borg2Gradient_TopLeft_BottomRight}"
+                                Geometry="F1  M 0,8 28,0 28,28 0,23 Z  " />
+                                </DrawingBrush.Drawing>
+                            </DrawingBrush>
+                        </Rectangle.Fill>
+                    </Rectangle>
+
+                                
                   <Rectangle Grid.Column="1"
-                             Margin="4,0,0,0" 
+                             Margin="3,0,0,0" 
                        Width="14"
                        SnapsToDevicePixels="True"
-                       Fill="{StaticResource LCARS_Borg3Gradient_Top_Bottom}" />
+                       Fill="{StaticResource Borg3Gradient_Top_Bottom}" />
                 
                   <Button Grid.Column="2"
                         Margin="3,0,0,0" 
@@ -125,8 +131,8 @@
                            Margin="3,0,0,0"
                            Text="{Binding Path=Credits, Mode=OneWay, Converter={StaticResource UpperCaseConverter}}"
                            TextBlock.FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
-                           TextBlock.Foreground="{StaticResource LCARS_BeigeTextBrush}"
-                           Background="{StaticResource LCARS_AzureGradient_Top_Bottom}"
+                           TextBlock.Foreground="{StaticResource BeigeTextBrush}"
+                           Background="{StaticResource AzureGradient_Top_Bottom}"
                                    
                            />-->
                         <!--<Border Grid.Column="5"
@@ -153,7 +159,7 @@
                             Grid.Row="0"
                             Margin="3,0,0,0"
                             TextAlignment="Center"
-                            Foreground="{Binding Path=Credits.CurrentValue, Converter={StaticResource NetValueBrushConverter}, ConverterParameter={StaticResource LCARS_GreenTextBrush}}"
+                            Foreground="{Binding Path=Credits.CurrentValue, Converter={StaticResource NetValueBrushConverter}, ConverterParameter={StaticResource GreenTextBrush}}"
                             Background="Transparent"
                             Text="(not function yet)" 
                             />-->
@@ -163,26 +169,27 @@
                       Content="{s:StringResource Key=NEXT_TEXT, Case=Lower}"
                       Command="{x:Static scc:ColonyScreenCommands.PreviousColonyCommand}" />
                   <Rectangle Grid.Column="7"
-                             Margin="3,0,0,0" 
+                             Margin="3,0,3,0" 
                        Width="14"
                        SnapsToDevicePixels="True"
-                       Fill="{StaticResource LCARS_Borg3Gradient_Top_Bottom}" />
+                       Fill="{StaticResource Borg3Gradient_Top_Bottom}" />
                            
 
                       <!--<Rectangle Grid.Column="8"
                            Grid.Row="0"
                            Margin="3,0,0,0"
-                           Fill="{StaticResource LCARS_AzureGradient_Top_Bottom}"
+                           Fill="{StaticResource AzureGradient_Top_Bottom}"
                            />-->
                 <!--<Border Grid.Column="3"
                         Grid.Row="0"
-                        Background="{StaticResource LCARS_PurpleGradient_TopLeft_BottomRight}"
+                        Background="{StaticResource PurpleGradient_TopLeft_BottomRight}"
                         CornerRadius="0,14,14,0"
                         Width="21"
                         Margin="3,0,0,0" />-->
                                 <Ellipse  
                                     Grid.Column="9"
                                     Grid.Row="0"
+
 
                                          VerticalAlignment="Center"
                                          HorizontalAlignment="Center"
@@ -204,9 +211,10 @@
                                         Opacity="0.6"
                                         StrokeThickness="2"
                                          Stroke="#1fe336"/>
+                                <Rectangle Grid.Column="9"  Grid.Row="0" Fill="{StaticResource Borg3Gradient_Top_Bottom}" Opacity="0.5"></Rectangle>
                                 <Ellipse  
                                          Grid.Column="9" 
-                                         Grid.Row="0"
+                                        
                                          VerticalAlignment="Center"
                                          HorizontalAlignment="Center"
                                          Height="6"
@@ -296,7 +304,7 @@
                     Grid.RowSpan="2"
                     Margin="0,4,0,0"
                     TextBlock.FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
-                    TextBlock.Foreground="{StaticResource LCARS_HeaderBrush}">
+                    TextBlock.Foreground="{StaticResource WhiteHeaderBrush}">
                 <Grid.RowDefinitions>
                   <RowDefinition Height="Auto" />
                   <RowDefinition Height="*" />

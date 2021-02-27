@@ -1,15 +1,11 @@
-<!--
-  
-   Theme.xaml
+<!-- File:Theme.xaml for Borg
   
    Copyright (c) 2007 Mike Strobel
   
    This source code is subject to the terms of the Microsoft Reciprocal License (Ms-RL).
    For details, see <http://www.opensource.org/licenses/ms-rl.html>.
   
-   All other rights reserved.
-  
-  -->
+   All other rights reserved.-->
 <ResourceDictionary xmlns="http://schemas.microsoft.com/netfx/2007/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:local="clr-namespace:Supremacy.Client">
@@ -24,6 +20,18 @@
     <ResourceDictionary Source="GalaxyScreenView.xaml" />
     <ResourceDictionary Source="AffairsScreen.xaml"/>
     <ResourceDictionary Source="Dialogs.xaml" />
+      
+      
+      
+    <!--<ResourceDictionary Source="BORG-Shared.xaml"/>
+    <ResourceDictionary Source="BORG-GameContextMenu.xaml"/>
+    <ResourceDictionary Source="BORG-TechObjectInfo.xaml"/>
+    <ResourceDictionary Source="BORG-InfoCard.xaml" />
+    <ResourceDictionary Source="BORG-ResearchScreen.xaml"/>
+    <ResourceDictionary Source="BORG-SystemScreen.xaml"/>
+    <ResourceDictionary Source="BORG-GalaxyScreenView.xaml" />
+    <ResourceDictionary Source="BORG-AffairsScreen.xaml"/>
+    <ResourceDictionary Source="BORG-Dialogs.xaml" />-->
   </ResourceDictionary.MergedDictionaries>
  
   <Style TargetType="{x:Type local:CombatWindow}"

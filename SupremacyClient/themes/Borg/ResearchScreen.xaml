@@ -49,19 +49,19 @@
                         Width="14"
                         Height="21"
                         CornerRadius="10.5,0,0,10.5"
-                        Background="{DynamicResource LCARS_Borg3Gradient_Left_Right}"/>
+                        Background="{DynamicResource Borg3Gradient_Left_Right}"/>
                 <ControlTemplate.Triggers>
                   <Trigger Property="IsMouseOver"
                            Value="True">
                     <Setter TargetName="Border"
                             Property="Background"
-                            Value="{DynamicResource LCARS_Borg2Gradient_Left_Right}"/>
+                            Value="{DynamicResource Borg2Gradient_Left_Right}"/>
                   </Trigger>
                   <Trigger Property="IsPressed"
                            Value="True">
                     <Setter TargetName="Border"
                             Property="Background"
-                            Value="{DynamicResource LCARS_Borg1Gradient_Left_Right}"/>
+                            Value="{DynamicResource Borg1Gradient_Left_Right}"/>
                     <Trigger.EnterActions>
                                             <SoundPlayerAction Source="vfs:///Resources/UI/Romulans/Sounds/ButtonClick.wav"/>
                     </Trigger.EnterActions>
@@ -84,19 +84,19 @@
                         Width="14"
                         Height="21"
                         CornerRadius="0,10.5,10.5,0"
-                        Background="{DynamicResource LCARS_Borg3Gradient_Left_Right}"/>
+                        Background="{DynamicResource Borg3Gradient_Left_Right}"/>
                 <ControlTemplate.Triggers>
                   <Trigger Property="IsMouseOver"
                            Value="True">
                     <Setter TargetName="Border"
                             Property="Background"
-                            Value="{DynamicResource LCARS_Borg2Gradient_Left_Right}"/>
+                            Value="{DynamicResource Borg2Gradient_Left_Right}"/>
                   </Trigger>
                   <Trigger Property="IsPressed"
                            Value="True">
                     <Setter TargetName="Border"
                             Property="Background"
-                            Value="{DynamicResource LCARS_Borg1Gradient_Left_Right}"/>
+                            Value="{DynamicResource Borg1Gradient_Left_Right}"/>
                     <Trigger.EnterActions>
                                             <SoundPlayerAction Source="vfs:///Resources/UI/Romulans/Sounds/ButtonClick.wav"/>
                     </Trigger.EnterActions>
@@ -116,7 +116,7 @@
           <TextBlock DockPanel.Dock="Left"
                      FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                      FontSize="12pt"
-                     Foreground="{StaticResource LCARS_GreenTextBrush}"
+                     Foreground="{StaticResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}"
                      VerticalAlignment="Center">
             <TextBlock Text="Level"/>
             <TextBlock Text="{Binding Path=TechLevel}"/>
@@ -138,7 +138,7 @@
                      Margin="0,0,7,0"
                      FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                      FontSize="12pt"
-                     Foreground="{StaticResource LCARS_GreenTextBrush}"
+                     Foreground="{StaticResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}"
                      VerticalAlignment="Center"
                      HorizontalAlignment="Right"
                      TextAlignment="Right"
@@ -300,7 +300,7 @@
                              FontSize="18pt"/>
                   <DockPanel Margin="14,0,0,0">
                     <TextBlock DockPanel.Dock="Left"
-                               Foreground="{DynamicResource HeaderTextBrush}"
+                               Foreground="{DynamicResource DefaultTextBrush}"
                                Text="{s:StringResource Key=RESEARCH_LAST_TURN, Case=Upper}"/>
                     <TextBlock DockPanel.Dock="Right"
                                HorizontalAlignment="Right"
@@ -308,7 +308,7 @@
                   </DockPanel>
                   <DockPanel Margin="14,0,0,0">
                     <TextBlock DockPanel.Dock="Left"
-                               Foreground="{DynamicResource HeaderTextBrush}"
+                               Foreground="{DynamicResource DefaultTextBrush}"
                                Text="{s:StringResource Key=TOTAL_RESEARCH, Case=Upper}"/>
                     <TextBlock DockPanel.Dock="Right"
                                HorizontalAlignment="Right"
@@ -317,43 +317,41 @@
                     
                     <!--Beginn of PROGRESS-->
 
-                    <TextBlock Foreground="{DynamicResource HeaderTextBrush}"
-                             Text="PROGRESS"
-                             FontSize="18pt"/>
-                        
+                    <TextBlock FontSize="18pt" Text="{s:StringResource Key=PROGRESS, Case=Upper}" 
+                              Foreground="{DynamicResource HeaderTextBrush}"/>
+
+                   
+                    
                     <DockPanel Margin="14,0,0,0">
-                        <TextBlock DockPanel.Dock="Left"
-                                    Foreground="{DynamicResource HeaderTextBrush}"
-                                    Text="BIOTECH"/>
-                    <TextBlock DockPanel.Dock="Right"
-                                    HorizontalAlignment="Right"
-                                    Text="{Binding Path=IsResearching[BioTech].CurrentValue}"
-                               />
-                    </DockPanel>
+                        <TextBlock DockPanel.Dock="Left"  Text="{s:StringResource Key=BIOTECH, Case=Upper}"
+                                   Foreground="{DynamicResource DefaultTextBrush}"/>
+                        <TextBlock DockPanel.Dock="Right" Text="{Binding Path=Values[Biotech]}"
+                                   Foreground="{DynamicResource DefaultTextBrush}" HorizontalAlignment="Right"
+                    /></DockPanel>
 
                     <DockPanel Margin="14,0,0,0">
-                        <TextBlock DockPanel.Dock="Left"
-                            Foreground="{DynamicResource HeaderTextBrush}"
-                            Text="COMPUTERS"/>
+                        <TextBlock Foreground="{DynamicResource DefaultTextBrush}" DockPanel.Dock="Left" Text="COMPUTERS"/>
+                           
+                           
                         <TextBlock DockPanel.Dock="Right"
                             HorizontalAlignment="Right"
-                            Text="{Binding Path=DisplayText[Computers]}"
+                            Text="{Binding Path=Distributions[Computers]}"
                         />
                     </DockPanel>
 
                     <DockPanel Margin="14,0,0,0">
                         <TextBlock DockPanel.Dock="Left"
-                            Foreground="{DynamicResource HeaderTextBrush}"
+                            Foreground="{DynamicResource DefaultTextBrush}"
                             Text="CONSTRUCTION"/>
                         <TextBlock DockPanel.Dock="Right"
                             HorizontalAlignment="Right"
-                            Text="{Binding Path=DisplayText[Construction]}"
+                            Text="{Binding Path=CumulativePoints[Construction]}"
                         />
                     </DockPanel>
 
                     <DockPanel Margin="14,0,0,0">
                         <TextBlock DockPanel.Dock="Left"
-                            Foreground="{DynamicResource HeaderTextBrush}"
+                            Foreground="{DynamicResource DefaultTextBrush}"
                             Text="ENERGY"/>
                         <TextBlock DockPanel.Dock="Right"
                             HorizontalAlignment="Right"
@@ -363,7 +361,7 @@
 
                     <DockPanel Margin="14,0,0,0">
                         <TextBlock DockPanel.Dock="Left"
-                            Foreground="{DynamicResource HeaderTextBrush}"
+                            Foreground="{DynamicResource DefaultTextBrush}"
                             Text="PROPULSION"/>
                         <TextBlock DockPanel.Dock="Right"
                             HorizontalAlignment="Right"
@@ -373,7 +371,7 @@
 
                     <DockPanel Margin="14,0,0,0">
                         <TextBlock DockPanel.Dock="Left"
-                            Foreground="{DynamicResource HeaderTextBrush}"
+                            Foreground="{DynamicResource DefaultTextBrush}"
                             Text="WEAPONS"/>
                         <TextBlock DockPanel.Dock="Right"
                             HorizontalAlignment="Right"
@@ -387,7 +385,7 @@
                              FontSize="18pt"/>
                   <DockPanel Margin="14,0,0,0">
                     <TextBlock DockPanel.Dock="Left"
-                               Foreground="{DynamicResource HeaderTextBrush}"
+                               Foreground="{DynamicResource DefaultTextBrush}"
                                Text="{Binding Source=TechCategory.BioTech, Converter={StaticResource EnumStringConverter}, ConverterParameter=UpperCase}"/>
                     <TextBlock DockPanel.Dock="Right"
                                HorizontalAlignment="Right"
@@ -395,7 +393,7 @@
                   </DockPanel>
                   <DockPanel Margin="14,0,0,0">
                     <TextBlock DockPanel.Dock="Left"
-                               Foreground="{DynamicResource HeaderTextBrush}"
+                               Foreground="{DynamicResource DefaultTextBrush}"
                                Text="{Binding Source=TechCategory.Computers, Converter={StaticResource EnumStringConverter}, ConverterParameter=UpperCase}"/>
                     <TextBlock DockPanel.Dock="Right"
                                HorizontalAlignment="Right"
@@ -403,7 +401,7 @@
                   </DockPanel>
                   <DockPanel Margin="14,0,0,0">
                     <TextBlock DockPanel.Dock="Left"
-                               Foreground="{DynamicResource HeaderTextBrush}"
+                               Foreground="{DynamicResource DefaultTextBrush}"
                                Text="{Binding Source=TechCategory.Construction, Converter={StaticResource EnumStringConverter}, ConverterParameter=UpperCase}"/>
                     <TextBlock DockPanel.Dock="Right"
                                HorizontalAlignment="Right"
@@ -411,7 +409,7 @@
                   </DockPanel>
                   <DockPanel Margin="14,0,0,0">
                     <TextBlock DockPanel.Dock="Left"
-                               Foreground="{DynamicResource HeaderTextBrush}"
+                               Foreground="{DynamicResource DefaultTextBrush}"
                                Text="{Binding Source=TechCategory.Energy, Converter={StaticResource EnumStringConverter}, ConverterParameter=UpperCase}"/>
                     <TextBlock DockPanel.Dock="Right"
                                HorizontalAlignment="Right"
@@ -419,7 +417,7 @@
                   </DockPanel>
                   <DockPanel Margin="14,0,0,0">
                     <TextBlock DockPanel.Dock="Left"
-                               Foreground="{DynamicResource HeaderTextBrush}"
+                               Foreground="{DynamicResource DefaultTextBrush}"
                                Text="{Binding Source=TechCategory.Propulsion, Converter={StaticResource EnumStringConverter}, ConverterParameter=UpperCase}"/>
                     <TextBlock DockPanel.Dock="Right"
                                HorizontalAlignment="Right"
@@ -427,7 +425,7 @@
                   </DockPanel>
                   <DockPanel Margin="14,0,0,0">
                     <TextBlock DockPanel.Dock="Left"
-                               Foreground="{DynamicResource HeaderTextBrush}"
+                               Foreground="{DynamicResource DefaultTextBrush}"
                                Text="{Binding Source=TechCategory.Weapons, Converter={StaticResource EnumStringConverter}, ConverterParameter=UpperCase}"/>
                     <TextBlock DockPanel.Dock="Right"
                                HorizontalAlignment="Right"
@@ -497,24 +495,24 @@
                     <!--<Border Grid.Column="0"
                             Grid.Row="0"
                             CornerRadius="14,0,0,14"
-                            Background="{StaticResource LCARS_Borg3Gradient_TopLeft_BottomRight}"/>-->
+                            Background="{StaticResource Borg3Gradient_TopLeft_BottomRight}"/>-->
                     <!-- Bottom Left Rounded Corner -->
                     <!--<Border Grid.Column="0"
                             Grid.Row="4"
                             CornerRadius="14,0,0,14"
-                            Background="{StaticResource LCARS_Borg3Gradient_TopLeft_BottomRight}"/>-->
+                            Background="{StaticResource Borg3Gradient_TopLeft_BottomRight}"/>-->
                     <!-- Top Right Rounded Corner -->
                     <!--<Border Grid.Column="6"
                             Grid.Row="0"
                             CornerRadius="0,14,14,0"
-                            Background="{StaticResource LCARS_Borg3Gradient_TopLeft_BottomRight}"/>-->
+                            Background="{StaticResource Borg3Gradient_TopLeft_BottomRight}"/>-->
 
 
                                         <!-- Bottom Right Rounded Corner -->
                                         <!--<Border Grid.Column="6"
                             Grid.Row="4"-->
                             <!--CornerRadius="0,14,14,0"
-                            Background="{StaticResource LCARS_Borg3Gradient_TopLeft_BottomRight}"-->
+                            Background="{StaticResource Borg3Gradient_TopLeft_BottomRight}"-->
 
 
                     <!--Begin of Drawing-->
@@ -620,7 +618,7 @@
                           Height="56"
                           Stroke="GreenYellow"
                           StrokeThickness="2"
-                          Fill="{StaticResource LCARS_Borg1Gradient_Top_Bottom}"
+                          Fill="{StaticResource Borg1Gradient_Top_Bottom}"
                           Data="F1 M 0,0L 0,28C 9.33333,28 18.6667,28 23.3333,32.6667C 28,37.3333 28,46.6667 28,56L 42,56C 42,46.6667 42,37.3333 46.6667,32.6667C 51.3333,28 60.6667,28 70,28L 70,0L 0,0 Z "/>
                     <!-- Bottom-Center Intersection -->
                     <Path Grid.Column="2"
@@ -631,7 +629,7 @@
                           Height="56"
                           Stroke="GreenYellow"
                           StrokeThickness="2"
-                          Fill="{StaticResource LCARS_Borg1Gradient_Top_Bottom}"
+                          Fill="{StaticResource Borg1Gradient_Top_Bottom}"
                           Data="F1 M 70,56L 70,28C 60.6667,28 51.3333,28 46.6667,23.3333C 42,18.6667 42,9.33334 42,0L 28,0C 28,9.33334 28,18.6667 23.3333,23.3333C 18.6667,28 9.33333,28 3.78956e-014,28L 3.78956e-014,56L 70,56 Z "/>
                     <!-- Upper-Right Edge -->
                     <DockPanel Grid.Column="5"
@@ -648,17 +646,17 @@
                                  Text="COLLECTIVE KNOWLEDGE"/>
                                             <!--Part left side in front of COLLECTIVE KNOWLEDGE-->
                                             <Border 
-                                                BorderBrush="{StaticResource LCARS_Borg3Gradient_Left_Right}"
+                                                BorderBrush="{StaticResource Borg3Gradient_Left_Right}"
                                                 BorderThickness="2"
                                                 Background="Transparent"/>
-                                            <!--<Border Background="{StaticResource LCARS_BlueGradient_Top_Bottom}"/>-->
+                                            <!--<Border Background="{StaticResource BlueGradient_Top_Bottom}"/>-->
                         
                     </DockPanel>
                     <!-- Lower-Right Edge -->
                     <!--<Border Grid.Column="5"
                             Grid.Row="4"
                             Margin="3,0,3,0"
-                            Background="{StaticResource LCARS_BlueGradient_Top_Bottom}"/>-->
+                            Background="{StaticResource BlueGradient_Top_Bottom}"/>-->
 
                               <TextBlock 
                                  Grid.Column="5"
@@ -1002,7 +1000,7 @@
                                         <!--<Border Grid.Column="1"
                             Grid.Row="4"
                             Margin="3,0,3,0"
-                            Background="{StaticResource LCARS_BlueGradient_Top_Bottom}"/>-->
+                            Background="{StaticResource BlueGradient_Top_Bottom}"/>-->
 
                                         <!-- Begin of Drawing -->
                                         <Canvas 
