@@ -126,7 +126,7 @@ namespace Supremacy.UI
 
             DataContextChanged += OnDataContextChanged;
 
-            Brush headerBrush = FindResource("LCARS_HeaderBrush") as Brush ?? Foreground;
+            Brush headerBrush = FindResource("HeaderTextBrush") as Brush ?? Foreground;
             Brush paragraphBrush = FindResource("DefaultTextBrush") as Brush ?? Foreground;
 
             SetResourceReference(

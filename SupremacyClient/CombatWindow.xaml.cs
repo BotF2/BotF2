@@ -28,11 +28,7 @@ using Supremacy.Utility;
 using System.Linq;
 using System.Collections.Generic;
 using Supremacy.Entities;
-using Supremacy.Universe;
-using System.ComponentModel;
-using System.Threading;
-using Supremacy.Game;
-using System.Collections.ObjectModel;
+
 
 namespace Supremacy.Client
 {
@@ -88,7 +84,8 @@ namespace Supremacy.Client
             OtherCivilizationsSummaryItem1.DataContext = _otherCivs; // ListBox data context set to OtherCivs
             
             _onlyFireIfFiredAppone = new Civilization(); // The click of "Only Return Fire" radio button by human player
-            _onlyFireIfFiredAppone.ShortName = "Only Return Fire";
+            //_onlyFireIfFiredAppone.ShortName = "Only Return Fire";
+            _onlyFireIfFiredAppone.ShortName = ResourceManager.GetString("ONLY_RETURN_FIRE");
             _onlyFireIfFiredAppone.CivID = 888;
             _onlyFireIfFiredAppone.Key = "Only Return Fire";
            // _theTargeted1Civ = new Civilization();

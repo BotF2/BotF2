@@ -1,3 +1,4 @@
+// File:Planet.cs
 // Copyright (c) 2007 Mike Strobel
 //
 // This source code is subject to the terms of the Microsoft Reciprocal License (Ms-RL).
@@ -286,20 +287,28 @@ namespace Supremacy.Universe
             var table = GameContext.Current.Tables.UniverseTables["PlanetMaxPop"];
 
             // OK to return null here! Do not need to fix
-            //int maxPop = 0;
-            //try
-            //{
-            //    if (PlanetSize == PlanetSize.NoWorld)
-            //    maxPop = Number.ParseInt32(table[PlanetSize.ToString()]
-            //        [GetEnvironment(homePlanetType).ToString()]);
-            //}
-            //catch(Exception ex)
-            //{
-            //    GameLog.Client.GalaxyGenerator.DebugFormat("Message = {0}, stack trace = [1]", ex.Message, ex.StackTrace);
-            //}
-            //return maxPop;
-            return Number.ParseInt32(table[PlanetSize.ToString()]
-                   [GetEnvironment(homePlanetType).ToString()]);
+            // 2021-02-21 reg: well, making trouble time by time - we should keep this coding
+            int maxPop = 99;
+            try
+            {
+                if (PlanetSize == PlanetSize.NoWorld)
+                    maxPop = Number.ParseInt32(table[PlanetSize.ToString()]
+                        [GetEnvironment(homePlanetType).ToString()]);
+                else
+                {
+                    maxPop = Number.ParseInt32(table[PlanetSize.ToString()]
+                    [GetEnvironment(homePlanetType).ToString()]);
+                }
+            }
+            catch (Exception ex)
+            {
+                GameLog.Client.GalaxyGenerator.DebugFormat("Generated at HomeSystem with 99 Population due to avoid crash > GetMaxPopulation");
+                GameLog.Client.GalaxyGenerator.DebugFormat("Message = {0}, stack trace = [1]", ex.Message, ex.StackTrace);
+            }
+            return maxPop;
+            //return Number.ParseInt32(table[PlanetSize.ToString()]
+            //       [GetEnvironment(homePlanetType).ToString()]);
+            // Botha are maybe outcommented in HomeSystem.xml - so the game crashes for missing Planet Size
         }
 
         /// <summary>

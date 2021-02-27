@@ -291,6 +291,7 @@
     <Compile Include="f_Pages\f10_Tab_3.xaml.cs">
       <DependentUpon>f10_Tab_3.xaml</DependentUpon>
     </Compile>
+    <Compile Include="f_Pages\_allFleets.cs" />
     <Compile Include="OptionsPages\TracesOptionsPage.xaml.cs">
       <DependentUpon>TracesOptionsPage.xaml</DependentUpon>
     </Compile>
