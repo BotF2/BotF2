@@ -85,6 +85,8 @@ namespace Supremacy.Economy
         private readonly DistributionGroup<int> _distributions;
         private readonly ResearchPoolValueCollection _values;
         private readonly ResearchBonusCollection _bonuses;
+        private readonly ResearchPointsCollection _points;
+
         private readonly List<ResearchProject>[] _queue;
         private readonly Meter _cumulativePoints;
 
@@ -131,6 +133,15 @@ namespace Supremacy.Economy
         public ResearchBonusCollection Bonuses
         {
             get { return _bonuses; }
+        }
+
+        /// <summary>
+        /// Gets the current bonuses available for each research category.
+        /// </summary>
+        /// <value>The bonuses for each category.</value>
+        public ResearchPointsCollection Points
+        {
+            get { return _points; }
         }
 
         /// <summary>
@@ -568,6 +579,81 @@ namespace Supremacy.Economy
             if (owner == null)
                 throw new ArgumentNullException("owner");
             // works    GameLog.Print("ResearchBonusCollection Owner = {0} = {1}", owner.CivID, owner.Name);
+            _ownerId = owner.CivID;
+        }
+    }
+
+    /// <summary>
+    /// A collection of research points indexed by <see cref="TechCategory"/>
+    /// and research field ID.
+    /// </summary>
+    [Serializable]
+    public class ResearchPointsCollection
+    {
+        private readonly int _ownerId;
+
+        /// <summary>
+        /// Gets or sets the percentage-based bonus for the specified field.
+        /// </summary>
+        /// <value>The bonus.</value>
+        public int this[TechCategory field]
+        {
+            get
+            {
+                var civManager = GameContext.Current.CivilizationManagers[_ownerId];
+                switch (field)
+                {
+                    case TechCategory.BioTech:
+                        return 1; 
+                            //civManager.Research;
+                            //.Where(o => ((o.BonusType == BonusType.PercentBioTechResearch) || (o.BonusType == BonusType.PercentResearchEmpireWide)))
+                            //.Sum(o => 0.01f * o.Amount);
+                    //case TechCategory.Computers:
+                    //    return civManager.GlobalBonuses
+                    //        .Where(o => ((o.BonusType == BonusType.PercentComputerResearch) || (o.BonusType == BonusType.PercentResearchEmpireWide)))
+                    //        .Sum(o => 0.01f * o.Amount);
+                    //case TechCategory.Construction:
+                    //    return civManager.GlobalBonuses
+                    //        .Where(o => ((o.BonusType == BonusType.PercentConstructionResearch) || (o.BonusType == BonusType.PercentResearchEmpireWide)))
+                    //        .Sum(o => 0.01f * o.Amount);
+                    //case TechCategory.Energy:
+                    //    return civManager.GlobalBonuses
+                    //        .Where(o => ((o.BonusType == BonusType.PercentEnergyResearch) || (o.BonusType == BonusType.PercentResearchEmpireWide)))
+                    //        .Sum(o => 0.01f * o.Amount);
+                    //case TechCategory.Propulsion:
+                    //    return civManager.GlobalBonuses
+                    //        .Where(o => ((o.BonusType == BonusType.PercentPropulsionResearch) || (o.BonusType == BonusType.PercentResearchEmpireWide)))
+                    //        .Sum(o => 0.01f * o.Amount);
+                    //case TechCategory.Weapons:
+                    //    return civManager.GlobalBonuses
+                    //        .Where(o => ((o.BonusType == BonusType.PercentWeaponsResearch) || (o.BonusType == BonusType.PercentResearchEmpireWide)))
+                    //        .Sum(o => 0.01f * o.Amount);
+                }
+                return 0;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the percentage-based bonus for the specified field ID.
+        /// </summary>
+        /// <value>The bonus.</value>
+        public int this[int fieldId]
+        {
+            get
+            {
+                GameLog.Core.Research.DebugFormat("ResearchPointsCollection for {0}", this[GameContext.Current.ResearchMatrix.Fields[fieldId].TechCategory]);
+                return this[GameContext.Current.ResearchMatrix.Fields[fieldId].TechCategory];
+            }
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ResearchPointsCollection"/> class.
+        /// </summary>
+        public ResearchPointsCollection([NotNull] Civilization owner)
+        {
+            if (owner == null)
+                throw new ArgumentNullException("owner");
+            // works    GameLog.Print("ResearchPointsCollection Owner = {0} = {1}", owner.CivID, owner.Name);
             _ownerId = owner.CivID;
         }
     }
