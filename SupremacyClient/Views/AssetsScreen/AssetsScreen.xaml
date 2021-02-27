@@ -237,48 +237,48 @@
                         FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                         FontSize="16pt"/>
                     <!--TotalIntelligenceProduction-->
-                    <TextBlock 
+                    <TextBlock  Text="{s:StringResource Key=INTELLIGENCE_POINTS_PER_TURN}"
                         Grid.Column="1" 
-                        Text="{s:StringResource Key=INTELLIGENCE_POINTS_PER_TURN}"
-                        HorizontalAlignment="Right"
-                        Foreground="LightGoldenrodYellow"
+                       
+                        HorizontalAlignment="Right" VerticalAlignment="Center"
+                        Foreground="{DynamicResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"
                         FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                         FontSize="14pt"/>
                     <TextBlock 
                         Grid.Column="2"
                         Text="{Binding Path=TotalIntelligenceProduction, Mode=OneWay}"
-                        HorizontalAlignment="Left"
-                        Foreground="OrangeRed"
+                        HorizontalAlignment="Left" VerticalAlignment="Center"
+                        Foreground="{DynamicResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}"
                         FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                         FontSize="14pt"/>
                     <!--TotalIntelligenceAttackingAccumulated-->
                     <TextBlock 
                         Grid.Column="3"
                         Text="{s:StringResource Key=INTELLIGENCE_POINTS_ATTACK_ACCUMATED}"
-                        HorizontalAlignment="Right"
-                        Foreground="LightGoldenrodYellow"
+                        HorizontalAlignment="Right" VerticalAlignment="Center"
+                        Foreground="{DynamicResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"
                         FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                         FontSize="14pt"/>
                     <TextBlock 
                         Grid.Column="4"
                         Text="{Binding Path=TotalIntelligenceAttackingAccumulated, Mode=OneWay}"
-                        HorizontalAlignment="Left"
-                        Foreground="OrangeRed"
+                        HorizontalAlignment="Left" VerticalAlignment="Center"
+                        Foreground="{DynamicResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}"
                         FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                         FontSize="14pt"/>
                     <!--TotalIntelligenceDefenseAccumulated-->
                     <TextBlock 
                         Grid.Column="5"
                         Text="{s:StringResource Key=INTELLIGENCE_POINTS_DEFENSE_ACCUMATED}"
-                        HorizontalAlignment="Right"
-                        Foreground="LightGoldenrodYellow"
+                        HorizontalAlignment="Right" VerticalAlignment="Center"
+                        Foreground="{DynamicResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"
                         FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                         FontSize="14pt"/>
                     <TextBlock 
                         Grid.Column="6"
                         Text="{Binding Path=TotalIntelligenceDefenseAccumulated, Mode=OneWay}" 
-                        HorizontalAlignment="Left"
-                        Foreground="OrangeRed"
+                        HorizontalAlignment="Left" VerticalAlignment="Center"
+                        Foreground="{DynamicResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}"
                         FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                         FontSize="14pt"/>
                     <StackPanel Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="9">
@@ -295,20 +295,17 @@
                                 <ColumnDefinition Width="Auto"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
-                            <TextBlock 
+                            <TextBlock  Text="{s:StringResource Key=SPY_A_MAJOR_BELOW}"
                                 Grid.Row="0" 
                                 Grid.Column="0"
                                 VerticalAlignment="Center"
-                                Text="{s:StringResource Key=SPY_A_MAJOR_BELOW}"
-                                Foreground="{DynamicResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"
+                               
+                                Foreground="{DynamicResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}"
                                 FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                                 FontSize="12pt"/>
-                            <TextBlock 
-                                Grid.Row="0"
-                                Grid.Column="2"
-                                VerticalAlignment="Center"
-                                Text="{s:StringResource Key=INSTALL_SPY_NETWORK_INSTRUCTIONS}"                     
-                                Foreground="LightGray"
+                            <TextBlock Text="{s:StringResource Key=INSTALL_SPY_NETWORK_INSTRUCTIONS}"     
+                                Grid.Row="0" Grid.Column="2" VerticalAlignment="Center" Margin="10,0,30,0"
+                                Foreground="{DynamicResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"
                                 FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                                 FontSize="12pt"/>
                             <!-- Summary Button -->
@@ -322,7 +319,7 @@
                                   Style="{StaticResource LCARS_StandardButtonStyle}"
                                   Content="Click for Turn Summary"
                                   FontSize="14pt"
-                                  Foreground="Orange"
+                                  Foreground="{DynamicResource {x:Static scc:ClientResources.ControlTextForegroundBrushKey}}"
                                   FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"                                  
                                   Margin="5,5,0,5"
                                   Command="{x:Static scc:ClientCommands.ShowEndOfTurnSummary}">
@@ -551,7 +548,7 @@
                                                       VerticalAlignment="Top"
                                                       Margin="0,10,0,0"
                                                       GroupName="BlameRadio0"
-                                                      Foreground="YellowGreen"
+                                                      Foreground="#FF9acd32"
                                                       Content="Borg"
                                                       Tag="8"
                                                       Checked="OnBlameButtonsZeroClick"/>
@@ -990,7 +987,7 @@
                                                       VerticalAlignment="Top"
                                                       Margin="0,10,0,0"
                                                       GroupName="BlameRadio1"
-                                                      Foreground="YellowGreen"
+                                                      Foreground="#FF9acd32"
                                                       Content="Borg"
                                                       Tag="8"
                                                       Checked="OnBlameButtonsOneClick"/>
@@ -1435,7 +1432,7 @@
                                                       VerticalAlignment="Top"
                                                       Margin="0,10,0,0"
                                                       GroupName="BlameRadio2"
-                                                      Foreground="YellowGreen"
+                                                      Foreground="#FF9acd32"
                                                       Content="Borg"
                                                       Tag="8"
                                                       Checked="OnBlameButtonsTwoClick"/>
@@ -1881,7 +1878,7 @@
                                                     VerticalAlignment="Top"
                                                     Margin="0,10,0,0"
                                                     GroupName="BlameRadio3"
-                                                    Foreground="YellowGreen"
+                                                    Foreground="#FF9acd32"
                                                     Content="Borg"
                                                     Tag="8"
                                                     Checked="OnBlameButtonsThreeClick"/>
@@ -2109,7 +2106,7 @@
                         <TextBlock Height="5"/>
                         <!-- Four Expander -->
                         <Expander x:Name="EmpireExpanderFour" Visibility="Collapsed" Background="Transparent" FlowDirection="LeftToRight" Style="{StaticResource changeColorOnExpanded}"
-                               IsExpanded="True" Header="{Binding Path=SpiedCardName}" FontSize="20" BorderThickness="3" BorderBrush="Tan" Foreground="LightYellow"
+                               IsExpanded="True" Header="{Binding Path=SpiedCardName}" FontSize="20" BorderThickness="3" BorderBrush="#FFd2b48c" Foreground="LightYellow"
                                 VerticalAlignment="Top" HorizontalAlignment="Left" Grid.ColumnSpan="4" Grid.Row="3">
                             <Grid x:Name="EmpireGridFour" FlowDirection="LeftToRight" Margin="1,1,5,5" HorizontalAlignment="Left">
                                 <Grid FlowDirection="LeftToRight">
@@ -2326,7 +2323,7 @@
                                                     VerticalAlignment="Top"
                                                     Margin="0,10,0,0"
                                                     GroupName="BlameRadio4"
-                                                    Foreground="YellowGreen"
+                                                    Foreground="#FF9acd32"
                                                     Content="Borg"
                                                     Tag="8"
                                                     Checked="OnBlameButtonsFourClick"/>
@@ -2771,7 +2768,7 @@
                                                     VerticalAlignment="Top"
                                                     Margin="0,10,0,0"
                                                     GroupName="BlameRadio5"
-                                                    Foreground="YellowGreen"
+                                                    Foreground="#FF9acd32"
                                                     Content="Borg"
                                                     Tag="8"
                                                     Checked="OnBlameButtonsFiveClick"/>
@@ -2999,7 +2996,7 @@
                         <TextBlock Height="5"/>
                         <!-- Six Expander -->
                         <Expander x:Name="EmpireExpanderSix" Visibility="Collapsed" Background="Transparent" FlowDirection="LeftToRight" Style="{StaticResource changeColorOnExpanded}"
-                               IsExpanded="True" Header="{Binding Path=SpiedBorgName}" FontSize="20" BorderThickness="3" BorderBrush="YellowGreen" Foreground="LightYellow"
+                               IsExpanded="True" Header="{Binding Path=SpiedBorgName}" FontSize="20" BorderThickness="3" BorderBrush="#FF9acd32" Foreground="LightYellow"
                                 VerticalAlignment="Top" HorizontalAlignment="Left" Grid.ColumnSpan="4" Grid.Row="3">
                             <Grid x:Name="EmpireGridSix" FlowDirection="LeftToRight" Margin="1,1,5,5" HorizontalAlignment="Left">
                                 <Grid FlowDirection="LeftToRight">
@@ -3216,7 +3213,7 @@
                                                       VerticalAlignment="Top"
                                                       Margin="0,10,0,0"
                                                       GroupName="BlameRadio6"
-                                                      Foreground="YellowGreen"
+                                                      Foreground="#FF9acd32"
                                                       Content="Borg"
                                                       Tag="8"
                                                       Checked="OnBlameButtonsSixClick"/>

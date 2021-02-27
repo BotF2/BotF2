@@ -73,7 +73,7 @@
                   Margin="7,0,14,0"
                   TextBlock.FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}">
         <TextBlock FontSize="14pt"
-                   Foreground="{StaticResource LCARS_HeaderBrush}"
+                   Foreground="{StaticResource HeaderTextBrush}"
                    Text="{Binding Path=SelectedColony.OrbitalBatteryDesign.Name, Converter={StaticResource StringResourceConverter}, FallbackValue='Orbital Battery'}"/>
                 <TextBlock Foreground="{StaticResource DefaultTextBrush}"
                    FontSize="11pt"

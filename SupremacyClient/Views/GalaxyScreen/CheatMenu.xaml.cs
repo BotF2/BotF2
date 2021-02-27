@@ -20,6 +20,11 @@ namespace Supremacy.Client.Views.GalaxyScreen
             _appContext = appContext;
         }
 
+        private string CheatText
+            {
+            get { return "hello";}
+            }
+
         private void OnGrantCreditsButtonClicked(object sender, RoutedEventArgs e)
         {
             if (int.TryParse(creditsAmount.Text, out int amount))

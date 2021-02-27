@@ -21,29 +21,26 @@
 
             <DockPanel LastChildFill="True"
                  TextBlock.FontSize="14"
-                 TextBlock.Foreground="{StaticResource LCARS_ParagraphBrush}"
+                 TextBlock.Foreground="{StaticResource ParagraphBrush}"
                  TextBlock.FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}">
                 <Border DockPanel.Dock="Top"
                 VerticalAlignment="Top"
-                Margin="140,0,0,0"
+                Margin="140,-30,0,0"
                 BorderBrush="White"
                 BorderThickness="2"
                 Width="160">
                     <Image Source="{Binding Converter={StaticResource CivImageConverter}}" />
 
                 </Border>
-                <ScrollViewer CanContentScroll="False"
+                <ScrollViewer CanContentScroll="True"
                       VerticalScrollBarVisibility="Auto">
                     <StackPanel Orientation="Vertical">
                         <TextBlock Text="{Binding Path=LongName, Converter={StaticResource UpperCaseConverter}}"
-                       FontSize="22"
-                       Foreground="{StaticResource LCARS_HeaderBrush}"
+                       FontSize="22" Margin="0,0,0,0"
+                       Foreground="{StaticResource HeaderTextBrush}"
                        FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}" />
-                        <ScrollViewer Margin="0,12,0,0"
-                          VerticalScrollBarVisibility="Auto">
-                            <TextBlock FontSize="{DynamicResource {x:Static scc:ClientResources.DefaultFontSizeKey}}"
-                         Text="{Binding Path=DiplomacyReport}"
-                         TextWrapping="Wrap" />
+                        <ScrollViewer Margin="0,0,0,0" VerticalScrollBarVisibility="Auto">
+                            <TextBlock Text="{Binding Path=DiplomacyReport}" TextWrapping="WrapWithOverflow" FontSize="{DynamicResource {x:Static scc:ClientResources.HeaderFontSizeKey}}"/>
                         </ScrollViewer>
                     </StackPanel>
                 </ScrollViewer>
@@ -84,13 +81,13 @@
                             <Rectangle x:Name="SelectionHiglight"
                          DockPanel.Dock="Left"
                          Opacity="0.25"
-                         Fill="{StaticResource LCARS_OrangeGradient_TopLeft_BottomRight}"
+                         Fill="{StaticResource OrangeGradient_TopLeft_BottomRight}"
                          Width="12" />
 
                             <Rectangle x:Name="GrayedOut"
                          DockPanel.Dock="Left"
                          Opacity="0.25"
-                         Fill="{StaticResource LCARS_AzureGradient_TopLeft_BottomRight}"
+                         Fill="{StaticResource AzureGradient_TopLeft_BottomRight}"
                          Width="12" />
 
                             <Image DockPanel.Dock="Left"
@@ -159,14 +156,14 @@
               <TextBlock DockPanel.Dock="Top"
                          FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
                          FontSize="16pt"
-                         Foreground="{StaticResource LCARS_HeaderBrush}"
+                         Foreground="{StaticResource HeaderTextBrush}"
                          Text="{Binding Path=LongName, Converter={StaticResource UpperCaseConverter}}"
                          HorizontalAlignment="Center"
                          Margin="6,12,6,0" />
               <TextBlock DockPanel.Dock="Top"
                          FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                          FontSize="14"
-                         Foreground="{StaticResource LCARS_ParagraphBrush}"
+                         Foreground="{StaticResource ParagraphBrush}"
                          Text="{Binding Path=DiplomacyText}"
                          TextTrimming="WordEllipsis"
                          TextWrapping="Wrap"
@@ -241,13 +238,13 @@
             Grid.Row="0"
             Width="418"
             Height="40"
-            Fill="{StaticResource LCARS_PurpleGradient_Right_Left}"
+            Fill="{StaticResource PurpleGradient_Right_Left}"
             Data="F1 M 0,40L 0,24C 0,17.6348 2.52857,11.5303 7.02944,7.02944C 11.5303,2.52857 17.6348,0 24,0L 418,0L 418,13L 268,13C 263,13 260,16.5554 260,21L 260,40L 0,40 Z" />
 
             <DockPanel Grid.Row="1"
                 Grid.Column="0"
                 Margin="0,2,0,0"
-                Background="{StaticResource LCARS_BlueGradient_Right_Left}"
+                Background="{StaticResource BlueGradient_Right_Left}"
                 LastChildFill="True">
 
                 <!--<Rectangle 
@@ -257,7 +254,7 @@
                 Grid.RowSpan="16"
                   Width="Auto"
                   Height="Auto"
-                   Fill="{StaticResource LCARS_GrayGradient_Right_Left}"/>-->
+                   Fill="{StaticResource GrayGradient_Right_Left}"/>-->
 
                 <DockPanel DockPanel.Dock="Top"
                    MaxWidth="390">
@@ -282,7 +279,7 @@
                     <StackPanel DockPanel.Dock="Bottom"
                       Orientation="Horizontal"
                       Margin="14,14,0,0"
-                      Background="{StaticResource LCARS_OrangeGradient_Top_Bottom}"
+                      Background="{StaticResource OrangeGradient_Top_Bottom}"
                       HorizontalAlignment="Right"
                       VerticalAlignment="Bottom">
 
@@ -314,19 +311,15 @@
                  Margin="0,1,0,0"
                  LastChildFill="True">
                 <Border DockPanel.Dock="Top"
-                        MinHeight="28">
-                    <!--
-                    Background="{StaticResource LCARS_OrangeGradient_TopLeft_BottomRight}"
-                    MinHeight="48"
-                    -->
+                        MinHeight="2">
 
-                    <TextBlock FontSize="14pt"
+                    <TextBlock Text="{s:StringResource SINGLE_PLAYER_SETUP_SELECT_EMPIRE}"  HorizontalAlignment="Left" FontSize="18pt" VerticalAlignment="Bottom" Margin="0,30,0,6" />
                      
-                     VerticalAlignment="Bottom"
-                     HorizontalAlignment="Left"
+                    
+                    
                      
-                     Text="{s:StringResource SINGLE_PLAYER_SETUP_SELECT_EMPIRE}"
-                     Margin="0,0,0,0" />
+                    
+                    
                     <!--<TextBlock FontSize="14pt"
                      Foreground="Black"
                      VerticalAlignment="Bottom"
@@ -352,7 +345,7 @@
 
                 <!--blue vertikal bar ... before... between civs and GameOptions right side-->
                 <!--<Rectangle DockPanel.Dock="Right"
-                   Fill="{StaticResource LCARS_BlueGradient_Left_Right}"
+                   Fill="{StaticResource BlueGradient_Left_Right}"
                    Width="8"
                    Margin="16,0,16,0" />-->
 
@@ -360,12 +353,12 @@
                 <!--Vertical Orange Bars-->
                 <!--<Grid x:Name="UpperLeftSide"
                     Margin="0,0,0,0">
-                    <Border Background="{StaticResource LCARS_OrangeGradient_TopLeft_BottomRight}"
+                    <Border Background="{StaticResource OrangeGradient_TopLeft_BottomRight}"
                   BorderThickness="0"
                   Width="69"
                   Height="Auto"
                   HorizontalAlignment="Left" />
-                    <Border Background="{StaticResource LCARS_OrangeGradient_TopLeft_BottomRight}"
+                    <Border Background="{StaticResource OrangeGradient_TopLeft_BottomRight}"
                   BorderThickness="0"
                   Width="69"
                   Height="Auto"
@@ -431,7 +424,7 @@
             Grid.Row="2"
             Width="418"
             Height="40"
-            Fill="{StaticResource LCARS_PurpleGradient_Right_Left}"
+            Fill="{StaticResource PurpleGradient_Right_Left}"
             Margin="0,2,0,0"
             Data="F1 M 0,0L 0,16C 0,22.3652 2.52857,28.4697 7.02944,32.9706C 11.5303,37.4714 17.6348,40 24,40L 418,40L 418,27.0263L 268,27.0263C 263.582,27.0263 260,23.4446 260,19.0263L 260,0L 0,0 Z" />
 
@@ -441,21 +434,21 @@
                  Grid.Row="0"
                  Margin="2,0,2,0"
                  Height="13"
-                 Fill="{StaticResource LCARS_BlueGradient_Top_Bottom}"
+                 Fill="{StaticResource BlueGradient_Top_Bottom}"
                  VerticalAlignment="Top" />
             <Rectangle Grid.Column="2"
                        Grid.ColumnSpan="2"
                  Grid.Row="2"
                  Margin="2,0,2,0"
                  Height="13"
-                 Fill="{StaticResource LCARS_BlueGradient_Top_Bottom}"
+                 Fill="{StaticResource BlueGradient_Top_Bottom}"
                  VerticalAlignment="Bottom" />
 
             <Path x:Name="UpperRightCorner"
             Grid.Column="4"
             Grid.Row="0"
             Margin="0,0,0,2"
-            Fill="{StaticResource LCARS_PurpleGradient_TopLeft_BottomRight}"
+            Fill="{StaticResource PurpleGradient_TopLeft_BottomRight}"
             Data="F1 M -2.86102e-006,0L 3.8147e-006,9.33337C 3.8147e-006,15.5555 3.8147e-006,21.7777 3.11111,24.8888C 6.22223,28 12.4444,28 18.6667,28L 28,28L 28,18.6666L 18.6667,18.6666C 15.5556,18.6666 12.4444,18.6666 10.8889,17.1112C 9.33334,15.5555 9.33334,12.4445 9.33334,9.33337L 9.33334,0L -2.86102e-006,0 Z ">
                 <Path.LayoutTransform>
                     <ScaleTransform ScaleX="-1.25"
@@ -469,12 +462,12 @@
                  Grid.Row="1"
                  Width="12"
                  HorizontalAlignment="Right"
-                 Fill="{StaticResource LCARS_BlueGradient_Left_Right}" />
+                 Fill="{StaticResource BlueGradient_Left_Right}" />
 
             <Path x:Name="LowerRightCorner"
             Grid.Column="4"
             Grid.Row="2"
-            Fill="{StaticResource LCARS_PurpleGradient_TopLeft_BottomRight}"
+            Fill="{StaticResource PurpleGradient_TopLeft_BottomRight}"
             Margin="0,2,0,0"
             Data="F1 M -2.86102e-006,0L 3.8147e-006,9.33337C 3.8147e-006,15.5555 3.8147e-006,21.7777 3.11111,24.8888C 6.22223,28 12.4444,28 18.6667,28L 28,28L 28,18.6666L 18.6667,18.6666C 15.5556,18.6666 12.4444,18.6666 10.8889,17.1112C 9.33334,15.5555 9.33334,12.4445 9.33334,9.33337L 9.33334,0L -2.86102e-006,0 Z ">
                 <Path.LayoutTransform>

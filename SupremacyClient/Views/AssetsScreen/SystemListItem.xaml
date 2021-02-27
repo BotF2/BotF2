@@ -337,7 +337,7 @@
 
         <!--ORBITAL BATTERIES-->
         <TextBlock Text="{s:StringResource Key=ORBITAL_BATTERIES, Case=Upper}" 
-                   Grid.Row="3" Grid.Column="11" HorizontalAlignment="Right" VerticalAlignment="Center" Foreground="SandyBrown"/>
+                   Grid.Row="3" Grid.Column="11" HorizontalAlignment="Right" VerticalAlignment="Center" Foreground="#FFf4a460"/>
         <scc:GameLabel Grid.Row="3" Grid.Column="12" HorizontalAlignment="Center" VerticalAlignment="Center">
             <scc:GameLabel.Label>
                 <MultiBinding StringFormat="{}  {0} / {1}">

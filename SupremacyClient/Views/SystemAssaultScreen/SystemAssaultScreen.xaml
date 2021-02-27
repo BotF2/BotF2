@@ -291,7 +291,7 @@
                 VerticalAlignment="Top"
                 Width="54"
                 Height="45"
-                BorderBrush="White"
+                BorderBrush="{StaticResource {x:Static scc:ClientResources.ImageBorderBrushKey}}"
                 BorderThickness="2"
                 CornerRadius="8">
           <Border.Background>
@@ -412,13 +412,13 @@
           <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
         <scc:Chevron Grid.Column="0"
-                     Background="{StaticResource LCARS_PurpleGradient_Top_Bottom}"
+                     Background="{StaticResource {x:Static scc:ClientResources.HorizontalRightLeftSeparatorBackgroundBrushKey}}"
                      Height="28"
                      Width="50"
                      IsInsetOnLeft="False" />
         <Grid Grid.Column="1"
               Opacity="{Binding Path=RoundNumber, Converter={StaticResource RoundNumberOpacityConverter}, ConverterParameter=1}">
-          <scc:Chevron Background="{StaticResource LCARS_AzureGradient_Top_Bottom}"
+          <scc:Chevron Background="{StaticResource AzureGradient_Top_Bottom}"
                        Height="28"
                        Margin="-11,0,0,0" />
           <Grid Margin="-11,-1,0,0"
@@ -438,7 +438,7 @@
         </Grid>
         <Grid Grid.Column="2"
               Opacity="{Binding Path=RoundNumber, Converter={StaticResource RoundNumberOpacityConverter}, ConverterParameter=2}">
-          <scc:Chevron Background="{StaticResource LCARS_AzureGradient_Top_Bottom}"
+          <scc:Chevron Background="{StaticResource AzureGradient_Top_Bottom}"
                        Height="28"
                        Margin="-11,0,0,0" />
           <Grid Margin="-11,-1,0,0"
@@ -458,7 +458,7 @@
         </Grid>
         <Grid Grid.Column="3"
               Opacity="{Binding Path=RoundNumber, Converter={StaticResource RoundNumberOpacityConverter}, ConverterParameter=3}">
-          <scc:Chevron Background="{StaticResource LCARS_AzureGradient_Top_Bottom}"
+          <scc:Chevron Background="{StaticResource AzureGradient_Top_Bottom}"
                        Height="28"
                        Margin="-11,0,0,0" />
           <Grid Margin="-11,-1,0,0"
@@ -479,7 +479,7 @@
         </Grid>
         <Grid Grid.Column="4"
               Opacity="{Binding Path=RoundNumber, Converter={StaticResource RoundNumberOpacityConverter}, ConverterParameter=4}">
-          <scc:Chevron Background="{StaticResource LCARS_AzureGradient_Top_Bottom}"
+          <scc:Chevron Background="{StaticResource AzureGradient_Top_Bottom}"
                        Height="28"
                        Margin="-11,0,0,0" />
           <Grid Margin="-11,-1,0,0"
@@ -500,7 +500,7 @@
         </Grid>
         <Grid Grid.Column="5"
               Opacity="{Binding Path=RoundNumber, Converter={StaticResource RoundNumberOpacityConverter}, ConverterParameter=5}">
-          <scc:Chevron Background="{StaticResource LCARS_AzureGradient_Top_Bottom}"
+          <scc:Chevron Background="{StaticResource AzureGradient_Top_Bottom}"
                        Height="28"
                        Margin="-11,0,0,0" />
           <Grid Margin="-11,-1,0,0"
@@ -519,7 +519,7 @@
           </Grid>
         </Grid>
         <scc:Chevron Grid.Column="6"
-                     Background="{StaticResource LCARS_PurpleGradient_Top_Bottom}"
+                     Background="{StaticResource {x:Static scc:ClientResources.HorizontalSeparatorBackgroundBrushKey}}"
                      Height="28"
                      Width="50"
                      Margin="-11,0,0,0"
@@ -622,18 +622,18 @@
               Visibility="{Binding Path=InvasionStatus, Converter={scc:ComparisonConverter ComparisonType=Equal, TrueValue={x:Static Visibility.Visible}, FalseValue={x:Static Visibility.Hidden}}, ConverterParameter={x:Static s:InvasionStatus.Stalemate}}">
                     <scc:Chevron Height="28"
                        Margin="-11,0,0,0"
-                       Background="{StaticResource LCARS_AzureGradient_Top_Bottom}" />
+                       Background="{StaticResource AzureGradient_Top_Bottom}" />
                     <Grid Margin="-11,0,0,0"
                 UseLayoutRounding="False">
                         <TextBlock Margin="1,1,-1,-1"
                        HorizontalAlignment="Center"
-                       Text="{s:StringResource SYSTEM_ASSAULT_COMBAT_STANDOFF}"
+                       Text="{s:StringResource SYSTEM_ASSAULT_COMBAT_STANDOFF, Case=Upper}"
                        FontSize="12pt"
                        Foreground="Black"
                        FontFamily="{StaticResource Eurostyle}" />
                         <TextBlock HorizontalAlignment="Center"
                        VerticalAlignment="Center"
-                       Text="{s:StringResource SYSTEM_ASSAULT_COMBAT_STANDOFF}"
+                       Text="{s:StringResource SYSTEM_ASSAULT_COMBAT_STANDOFF, Case=Upper}"
                        FontSize="12pt"
                        Foreground="White"
                        FontFamily="{StaticResource Eurostyle}" />
@@ -672,12 +672,10 @@
                Source="{Binding Path=Defender, Converter={StaticResource CivInsigniaConverter}}" />
       </Grid>
 
-      <Path Grid.Column="0"
-            Grid.Row="2"
+      <Path Grid.Row="2" Grid.Column="0" Width="21" Height="42" 
             Data="M 0,42 L 0,14 C 0,5 5,0 14,0 L 21,0 21,28 14,28 C 9,28 7,30 7,35 L 7,42"
-            Fill="{StaticResource LCARS_PurpleGradient_TopLeft_BottomRight}"
-            Height="42"
-            Width="21" />
+            Fill="{StaticResource {x:Static scc:ClientResources.HorizontalRightLeftSeparatorBackgroundBrushKey}}"
+           />
 
       <DockPanel Grid.Column="1"
                  Grid.Row="2"
@@ -689,7 +687,7 @@
                    Foreground="{StaticResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}"
                    Text="{Binding Path=Invader.ShortName, Converter={scc:StringFormatConverter CharacterCasing=Upper}, ConverterParameter='{}{0} ASSETS'}" />
 
-        <Rectangle Fill="{StaticResource LCARS_BlueGradient_Top_Bottom}"
+                <Rectangle Fill="{StaticResource {x:Static scc:ClientResources.VerticalBottomUpSeparatorBackgroundBrushKey}}"
                    Height="28"
                    VerticalAlignment="Top"
                    Margin="0,0,3,0" />
@@ -706,7 +704,7 @@
                            Foreground="{StaticResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}"
                            Text="{s:StringResource SYSTEM_ASSAULT_LAND_TROOPS_HINT}" />
 
-                <!--<Rectangle Fill="{StaticResource LCARS_BlueGradient_Top_Bottom}"
+                <!--<Rectangle Fill="{StaticResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}"
                    Height="28"
                    VerticalAlignment="Top"
                    Margin="0,0,3,0" />-->
@@ -715,7 +713,7 @@
             <Path Grid.Column="2"
             Grid.Row="2"
             Data="M20.999999,28.000004 C16.333452,28.000004 14.000179,30.333336 14.000179,35.000004 L14.000179,42 14.000069,4.3455385E-11 14.058225,4.3455385E-11 C14.695606,-1.2557665E-09 16.47917,2.7216365E-08 20.999887,4.3455385E-11 M-1.3897516E-07,1.4603573E-06 C7.2915679,2.7194976E-06 11.734868,1.1099437E-06 13.329899,4.3455385E-11 13.521302,2.6496082E-07 13.671691,1.8674044E-07 13.741591,4.3455385E-11 13.740024,1.1212922E-08 13.740879,1.2239716E-08 13.743727,4.3455385E-11 L13.753981,4.3455385E-11 13.757826,4.3455385E-11 13.781065,4.3455385E-11 13.78346,4.3455385E-11 C13.79642,4.1336955E-09 13.812654,3.4367688E-09 13.832592,4.3455385E-11 L13.846264,4.3455385E-11 13.876766,4.3455385E-11 13.90394,4.3455385E-11 13.91804,4.3455385E-11 13.945126,4.3455385E-11 13.950082,4.3455385E-11 C13.959908,3.4297211E-08 13.968738,3.4851843E-08 13.976143,4.3455385E-11 L13.98614,4.3455385E-11 13.99366,4.3455385E-11 13.999812,4.3455385E-11 13.999924,42 7.0000178,42 7.0000168,35.000008 C7.0000168,30.333336 4.6667145,28.000004 0.0001118595,28.000004"
-            Fill="{StaticResource LCARS_PurpleGradient_TopLeft_BottomRight}"
+            Fill="{StaticResource {x:Static scc:ClientResources.ImageBorderBrushKey}}"
             Height="42"
             Stretch="None"
             Width="21" />
@@ -730,7 +728,7 @@
                    Foreground="{StaticResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}"
                    Text="{Binding Path=Defender.ShortName, Converter={scc:StringFormatConverter CharacterCasing=Upper}, ConverterParameter='{}{0} ASSETS'}" />
 
-        <Rectangle Fill="{StaticResource LCARS_BlueGradient_Top_Bottom}"
+                <Rectangle Fill="{StaticResource {x:Static scc:ClientResources.VerticalBottomUpSeparatorBackgroundBrushKey}}"
                    Height="28"
                    VerticalAlignment="Top"
                    Margin="0,0,3,0" />
@@ -743,18 +741,18 @@
                    HorizontalAlignment="Left"
                    Width="7"
                    Columns="1">
-        <Rectangle Fill="{StaticResource LCARS_AzureGradient_Left_Right}"
-                   Margin="0,3,0,0" />
-        <Rectangle Fill="{StaticResource LCARS_RedGradient_Left_Right}"
+                <Rectangle Margin="0,3,0,0" Fill="{StaticResource {x:Static scc:ClientResources.HorizontalSeparatorBackgroundBrushKey}}"/>
+                  
+                <Rectangle Fill="{StaticResource {x:Static scc:ClientResources.ImageBorderBrushKey}}"
                    Margin="0,3,0,3" />
-        <Rectangle Fill="{StaticResource LCARS_AzureGradient_Left_Right}"
+                <Rectangle Fill="{StaticResource {x:Static scc:ClientResources.HorizontalRightLeftSeparatorBackgroundBrushKey}}"
                    Margin="0,0,0,3" />
       </UniformGrid>
 
       <Path Grid.Column="0"
             Grid.Row="6"
             Data="M 0,0 L 0,28 C 0,37 5,42 14,42 L 21,42 21,14 14,14 C 9,14 7,12 7,7 L 7,0"
-            Fill="{StaticResource LCARS_PurpleGradient_TopLeft_BottomRight}"
+            Fill="{StaticResource {x:Static scc:ClientResources.HorizontalSeparatorBackgroundBrushKey}}"
             Height="42"
             Width="21" />
         
@@ -762,7 +760,7 @@
 
       <Rectangle Grid.Column="1"
                  Grid.Row="6"
-                 Fill="{StaticResource LCARS_BlueGradient_Top_Bottom}"
+                 Fill="{StaticResource {x:Static scc:ClientResources.HorizontalRightLeftSeparatorBackgroundBrushKey}}"
                  Height="28"
                  VerticalAlignment="Bottom"
                  Margin="3,0,3,0" />
@@ -770,7 +768,7 @@
       <Path Grid.Column="2"
             Grid.Row="6"
             Data="M20.999999,28.000004 C16.333452,28.000004 14.000179,30.333336 14.000179,35.000004 L14.000179,42 14.000069,4.3455385E-11 14.058225,4.3455385E-11 C14.695606,-1.2557665E-09 16.47917,2.7216365E-08 20.999887,4.3455385E-11 M-1.3897516E-07,1.4603573E-06 C7.2915679,2.7194976E-06 11.734868,1.1099437E-06 13.329899,4.3455385E-11 13.521302,2.6496082E-07 13.671691,1.8674044E-07 13.741591,4.3455385E-11 13.740024,1.1212922E-08 13.740879,1.2239716E-08 13.743727,4.3455385E-11 L13.753981,4.3455385E-11 13.757826,4.3455385E-11 13.781065,4.3455385E-11 13.78346,4.3455385E-11 C13.79642,4.1336955E-09 13.812654,3.4367688E-09 13.832592,4.3455385E-11 L13.846264,4.3455385E-11 13.876766,4.3455385E-11 13.90394,4.3455385E-11 13.91804,4.3455385E-11 13.945126,4.3455385E-11 13.950082,4.3455385E-11 C13.959908,3.4297211E-08 13.968738,3.4851843E-08 13.976143,4.3455385E-11 L13.98614,4.3455385E-11 13.99366,4.3455385E-11 13.999812,4.3455385E-11 13.999924,42 7.0000178,42 7.0000168,35.000008 C7.0000168,30.333336 4.6667145,28.000004 0.0001118595,28.000004"
-            Fill="{StaticResource LCARS_PurpleGradient_BottomLeft_TopRight}"
+            Fill="{StaticResource {x:Static scc:ClientResources.ImageBorderBrushKey}}"
             Height="42"
             Stretch="None"
             Width="21">
@@ -781,7 +779,7 @@
 
       <Rectangle Grid.Column="3"
                  Grid.Row="6"
-                 Fill="{StaticResource LCARS_BlueGradient_Top_Bottom}"
+                 Fill="{StaticResource {x:Static scc:ClientResources.HorizontalSeparatorBackgroundBrushKey}}"
                  Height="28"
                  VerticalAlignment="Bottom"
                  Margin="3,0,3,0" />
@@ -790,7 +788,7 @@
       <Path Grid.Column="4"
             Grid.Row="6"
             Data="M20.999999,28.000004 C16.333452,28.000004 14.000179,30.333336 14.000179,35.000004 L14.000179,42 14.000069,4.3455385E-11 14.058225,4.3455385E-11 C14.695606,-1.2557665E-09 16.47917,2.7216365E-08 20.999887,4.3455385E-11 M-1.3897516E-07,1.4603573E-06 C7.2915679,2.7194976E-06 11.734868,1.1099437E-06 13.329899,4.3455385E-11 13.521302,2.6496082E-07 13.671691,1.8674044E-07 13.741591,4.3455385E-11 13.740024,1.1212922E-08 13.740879,1.2239716E-08 13.743727,4.3455385E-11 L13.753981,4.3455385E-11 13.757826,4.3455385E-11 13.781065,4.3455385E-11 13.78346,4.3455385E-11 C13.79642,4.1336955E-09 13.812654,3.4367688E-09 13.832592,4.3455385E-11 L13.846264,4.3455385E-11 13.876766,4.3455385E-11 13.90394,4.3455385E-11 13.91804,4.3455385E-11 13.945126,4.3455385E-11 13.950082,4.3455385E-11 C13.959908,3.4297211E-08 13.968738,3.4851843E-08 13.976143,4.3455385E-11 L13.98614,4.3455385E-11 13.99366,4.3455385E-11 13.999812,4.3455385E-11 13.999924,42 7.0000178,42 7.0000168,35.000008 C7.0000168,30.333336 4.6667145,28.000004 0.0001118595,28.000004"
-            Fill="{StaticResource LCARS_PurpleGradient_BottomLeft_TopRight}"
+            Fill="{StaticResource {x:Static scc:ClientResources.ImageBorderBrushKey}}"
             Height="42"
             Stretch="None"
             Width="21">
@@ -809,7 +807,7 @@
                  FontSize="18pt"
                  Foreground="{StaticResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}"
                  Text="{s:StringResource Key='FRIENDLY ASSETS'}" />
-      <Rectangle Fill="{StaticResource LCARS_BlueGradient_Top_Bottom}"
+      <Rectangle Fill="{StaticResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}"
                  Height="28"
                  VerticalAlignment="Top"
                  Margin="0,0,3,0" />
@@ -821,18 +819,18 @@
                    HorizontalAlignment="Center"
                    Width="7"
                    Columns="1">
-        <Rectangle Fill="{StaticResource LCARS_AzureGradient_Left_Right}"
+                <Rectangle Fill="{StaticResource {x:Static scc:ClientResources.VerticalBottomUpSeparatorBackgroundBrushKey}}"
                    Margin="0,3,0,0" />
-        <Rectangle Fill="{StaticResource LCARS_RedGradient_Left_Right}"
+                <Rectangle Fill="{StaticResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}"
                    Margin="0,3,0,3" />
-        <Rectangle Fill="{StaticResource LCARS_AzureGradient_Left_Right}"
+                <Rectangle Fill="{StaticResource {x:Static scc:ClientResources.VerticalSeparatorBackgroundBrushKey}}"
                    Margin="0,0,0,3" />
       </UniformGrid>
 
       <Path Grid.Column="4"
             Grid.Row="2"
             Data="M20.999999,28.000004 C16.333452,28.000004 14.000179,30.333336 14.000179,35.000004 L14.000179,42 14.000069,4.3455385E-11 14.058225,4.3455385E-11 C14.695606,-1.2557665E-09 16.47917,2.7216365E-08 20.999887,4.3455385E-11 M-1.3897516E-07,1.4603573E-06 C7.2915679,2.7194976E-06 11.734868,1.1099437E-06 13.329899,4.3455385E-11 13.521302,2.6496082E-07 13.671691,1.8674044E-07 13.741591,4.3455385E-11 13.740024,1.1212922E-08 13.740879,1.2239716E-08 13.743727,4.3455385E-11 L13.753981,4.3455385E-11 13.757826,4.3455385E-11 13.781065,4.3455385E-11 13.78346,4.3455385E-11 C13.79642,4.1336955E-09 13.812654,3.4367688E-09 13.832592,4.3455385E-11 L13.846264,4.3455385E-11 13.876766,4.3455385E-11 13.90394,4.3455385E-11 13.91804,4.3455385E-11 13.945126,4.3455385E-11 13.950082,4.3455385E-11 C13.959908,3.4297211E-08 13.968738,3.4851843E-08 13.976143,4.3455385E-11 L13.98614,4.3455385E-11 13.99366,4.3455385E-11 13.999812,4.3455385E-11 13.999924,42 7.0000178,42 7.0000168,35.000008 C7.0000168,30.333336 4.6667145,28.000004 0.0001118595,28.000004"
-            Fill="{StaticResource LCARS_PurpleGradient_TopLeft_BottomRight}"
+            Fill="{StaticResource {x:Static scc:ClientResources.ImageBorderBrushKey}}"
             Height="42"
             Stretch="None"
             Width="21" />
@@ -843,11 +841,11 @@
                    HorizontalAlignment="Center"
                    Width="7"
                    Columns="1">
-        <Rectangle Fill="{StaticResource LCARS_AzureGradient_Left_Right}"
+        <Rectangle Fill="{StaticResource AzureGradient_Left_Right}"
                    Margin="0,3,0,0" />
-        <Rectangle Fill="{StaticResource LCARS_RedGradient_Left_Right}"
+                <Rectangle Fill="{StaticResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}"
                    Margin="0,3,0,3" />
-        <Rectangle Fill="{StaticResource LCARS_AzureGradient_Left_Right}"
+        <Rectangle Fill="{StaticResource AzureGradient_Left_Right}"
                    Margin="0,0,0,3" />
       </UniformGrid>
 
@@ -860,7 +858,7 @@
                    FontSize="18pt"
                    Foreground="{StaticResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}"
                    Text="{s:StringResource SYSTEM_ASSAULT_ORDERS_HEADLINE}" />
-        <Rectangle Fill="{StaticResource LCARS_BlueGradient_Top_Bottom}"
+                <Rectangle Fill="{StaticResource {x:Static scc:ClientResources.VerticalBottomUpSeparatorBackgroundBrushKey}}"
                    Height="28"
                    VerticalAlignment="Top"
                    Margin="0,0,3,0" />
@@ -1088,15 +1086,24 @@
               <Border DockPanel.Dock="Left"
                       Width="16"
                       CornerRadius="16,0,0,16"
-                      Background="{StaticResource LCARS_HeaderBrush}" />
+                      Background="{StaticResource BorderBrush}" />
               <Border DockPanel.Dock="Right"
                       Width="16"
                       CornerRadius="0,16,16,0"
-                      Background="{StaticResource LCARS_HeaderBrush}" />
+                      Background="{StaticResource BorderBrush}" />
+                
               <StackPanel Orientation="Vertical"
                           scc:GameControlService.Context="VerticalGroupItem"
                           Margin="2,0">
-                <scc:GameButton Label="{s:StringResource ATTACK_ORBITAL_DEFENSES}"
+
+                                
+                  <Border Background="{StaticResource {x:Static scc:ClientResources.HorizontalSeparatorBackgroundBrushKey}}">
+                   <TextBlock DockPanel.Dock="Top" Text="{s:StringResource SYSTEM_ASSAULT_CHOOSE_ORDER}" Margin="0,0,0,0" FontSize="18pt" HorizontalAlignment="Center"
+                         FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
+                         Foreground="{StaticResource {x:Static scc:ClientResources.ControlTextForegroundBrushKey}}" />
+                   </Border>  
+                  
+                  <scc:GameButton Label="{s:StringResource ATTACK_ORBITAL_DEFENSES}"
                                 Command="{Binding Path=SetActionCommand}"
                                 IsChecked="{Binding RelativeSource={RelativeSource Self}, Path=CommandParameter.(scc:CheckableCommandParameter.IsChecked), Mode=TwoWay}">
                   <scc:GameButton.CommandParameter>
@@ -1237,7 +1244,7 @@
                 <Border CornerRadius="14,0,0,0"
                         Width="21"
                         Margin="0,0,2,0"
-                        Background="{StaticResource LCARS_PurpleGradient_TopLeft_BottomRight}" />
+                        Background="{StaticResource PurpleGradient_TopLeft_BottomRight}" />
                   <!--TO DO: STRING IS HARDCODED ATM-->
                 <scc:GameButton Label="SELECT ALL"
                                 Padding="16,1,16,2"
@@ -1254,7 +1261,7 @@
                 <Border CornerRadius="0,14,0,0"
                         Margin="2,0,0,0"
                         Width="21"
-                        Background="{StaticResource LCARS_PurpleGradient_TopLeft_BottomRight}" />
+                        Background="{StaticResource PurpleGradient_TopLeft_BottomRight}" />
               </scc:AutoGrid>
               <scc:AutoGrid DockPanel.Dock="Bottom"
                             Margin="0,2,0,0"
@@ -1271,7 +1278,7 @@
                 <Border CornerRadius="0,0,0,14"
                         Width="21"
                         Margin="0,0,4,0"
-                        Background="{StaticResource LCARS_PurpleGradient_TopLeft_BottomRight}" />
+                        Background="{StaticResource PurpleGradient_TopLeft_BottomRight}" />
                 <!--<TextBlock Foreground="{StaticResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}"
                            Text="{s:StringResource SYSTEM_ASSAULT_LAND_TROOPS_STRENGTH}"
                            VerticalAlignment="Center" />-->
@@ -1296,7 +1303,7 @@
                 <Border CornerRadius="0,0,14,0"
                         Width="21"
                         Margin="4,0,0,0"
-                        Background="{StaticResource LCARS_PurpleGradient_TopLeft_BottomRight}" />
+                        Background="{StaticResource PurpleGradient_TopLeft_BottomRight}" />
               </scc:AutoGrid>
               <scc:CheckedListBox x:Name="_transportCheckList"
                                   x:FieldModifier="private"
@@ -1404,15 +1411,13 @@
               </MultiBinding>
             </scc:GameButton.IsEnabled>
           </scc:GameButton>
-          <scc:GameButton Grid.Column="2"
-                          Label="COMMIT"
-                          Margin="2,0,0,0"
-                          Padding="16,1,16,2"
-                          DisplayMode="GroupedHorizontally"
-                          Command="{Binding Path=CommitOrdersCommand}" />
+            
+        <scc:GameButton Label="{s:StringResource SYSTEM_ASSAULT_COMMIT_ORDER, Case=Upper}" 
+                        Grid.Column="2" Margin="2,0,0,0" Padding="16,1,16,2"
+                        DisplayMode="GroupedHorizontally" Command="{Binding Path=CommitOrdersCommand}" />
         </UniformGrid>
-          <!--TO DO: STRING IS HARDCODED ATM-->
-        <scc:GameButton Label="DONE"
+
+                <scc:GameButton Label="{s:StringResource SYSTEM_ASSAULT_ORDER_DONE, Case=Upper}"
                         Height="28"
                         VerticalAlignment="Bottom"
                         Margin="2,0,0,0"

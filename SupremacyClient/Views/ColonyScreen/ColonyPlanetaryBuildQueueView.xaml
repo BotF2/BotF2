@@ -29,7 +29,7 @@
           </Grid.ToolTip>
           <Border x:Name="ImageBorder"
                   Grid.Column="0"
-                  BorderBrush="White"
+                  BorderBrush="{StaticResource {x:Static scc:ClientResources.ImageBorderBrushKey}}"
                   BorderThickness="1"
                   CornerRadius="4"
                   Width="40"
@@ -113,7 +113,7 @@
               </Grid.ColumnDefinitions>
               <Border x:Name="ImageBorder"
                       Grid.Column="0"
-                      BorderBrush="White"
+                      BorderBrush="{StaticResource {x:Static scc:ClientResources.ImageBorderBrushKey}}"
                       BorderThickness="1"
                       CornerRadius="4"
                       Width="40"
