@@ -213,7 +213,7 @@ namespace Supremacy.Game
 
                 header = null;
                 game = null;
-                timestamp = default(DateTime);
+                timestamp = default;
 
                 return false;
             }

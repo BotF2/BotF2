@@ -191,8 +191,7 @@ namespace Supremacy.Game
 
         private static void SitRepComment_OnTextChanged(object sender, TextChangedEventArgs e)
         {
-            TextBox SitRepCommentText = e.Source as TextBox;
-            if (SitRepCommentText == null)
+            if (!(e.Source is TextBox SitRepCommentText))
                 return;
             var bindingExpression = SitRepCommentText.GetBindingExpression(TextBox.TextProperty);
             if (bindingExpression == null)
@@ -573,10 +572,7 @@ namespace Supremacy.Game
         public DiplomaticSitRepEntry(Civilization owner, IDiplomaticExchange exchange)
             : base(owner, SitRepPriority.Blue)
         {
-            if (exchange == null)
-                throw new ArgumentNullException("exchange");
-
-            _exchange = exchange;
+            _exchange = exchange ?? throw new ArgumentNullException("exchange");
         }
 
         private string EnsureText(ref string text, ref bool resolved, bool detailed)
@@ -616,8 +612,7 @@ namespace Supremacy.Game
             Civilization sender;
             Civilization recipient;
 
-            IResponse response = _exchange as IResponse;
-            if (response != null)
+            if (_exchange is IResponse response)
             {
                 switch (response.ResponseType)
                 {
@@ -743,8 +738,7 @@ namespace Supremacy.Game
                 }
             }
 
-            Statement statement = _exchange as Statement;
-            if (statement != null)
+            if (_exchange is Statement statement)
             {
                 if (statement.StatementType == StatementType.WarDeclaration)
                     return detailed ? DiplomacySitRepStringKey.WarDeclaredDetailText : DiplomacySitRepStringKey.WarDeclaredSummaryText;
@@ -778,8 +772,7 @@ namespace Supremacy.Game
                 Civilization sender;
                 Civilization recipient;
 
-                IResponse response = _exchange as IResponse;
-                if (response != null)
+                if (_exchange is IResponse response)
                 {
                     switch (response.ResponseType)
                     {
@@ -2069,6 +2062,7 @@ namespace Supremacy.Game
         
         public string ResearchNote { get { return _researchNote; }}
         public override SitRepCategory Categories { get { return SitRepCategory.Research; } }
+        public override SitRepAction Action { get { return SitRepAction.ShowScienceScreen; } }
         public override bool IsPriority { get { return true; } }
         public override string SitRepComment { get; set; }
         public override string SummaryText { get { return _researchNote; } }
@@ -2107,7 +2101,7 @@ namespace Supremacy.Game
         {
             get
             {
-                string StarTypeFullText = "";
+                string StarTypeFullText = ".";
                 if (ScienceShip != null) // science ship destroyed < null ref 
                 {
                     switch (ScienceShip.Sector.System.StarType)

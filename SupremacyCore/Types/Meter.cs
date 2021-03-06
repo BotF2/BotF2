@@ -416,14 +416,12 @@ namespace Supremacy.Types
 
         protected void OnCurrentValueChanged()
         {
-            if (CurrentValueChanged != null)
-                CurrentValueChanged(this, new MeterChangedEventArgs(this));
+            CurrentValueChanged?.Invoke(this, new MeterChangedEventArgs(this));
         }
 
         protected void OnPropertyChanged(string propertyName)
         {
-            if (PropertyChanged != null)
-                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
         #endregion
 

@@ -43,9 +43,7 @@ namespace Supremacy.Scripting
 
         protected void OnScriptCodeChanged()
         {
-            var handler = ScriptCodeChanged;
-            if (handler != null)
-                handler(this, EventArgs.Empty);
+            ScriptCodeChanged?.Invoke(this, EventArgs.Empty);
         }
         #endregion
 
@@ -175,9 +173,7 @@ namespace Supremacy.Scripting
 
         protected void OnPropertyChanged(string propertyName)
         {
-            var handler = PropertyChanged;
-            if (handler != null)
-                handler(this, new PropertyChangedEventArgs(propertyName));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
         #endregion
 

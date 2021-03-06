@@ -29,11 +29,9 @@ namespace Supremacy.Client.Commands
 
         public TargetSelectionArgs([CanBeNull] string title, [CanBeNull] string displayMember, [NotNull] IEnumerable targetList)
         {
-            if (targetList == null)
-                throw new ArgumentNullException("targetList");
             Prompt = title;
             TargetDisplayMember = displayMember;
-            TargetList = targetList;
+            TargetList = targetList ?? throw new ArgumentNullException("targetList");
         }
     }
 
@@ -82,9 +80,7 @@ namespace Supremacy.Client.Commands
 
         public RedeployShipCommandArgs([NotNull] Ship ship, [CanBeNull] Fleet targetFleet)
         {
-            if (ship == null)
-                throw new ArgumentNullException("ship");
-            _ship = ship;
+            _ship = ship ?? throw new ArgumentNullException("ship");
             _targetFleet = targetFleet;
         }
     }

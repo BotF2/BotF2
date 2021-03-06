@@ -229,9 +229,8 @@ namespace Supremacy.Tech
 
                     results.Add(baseDesign);
 
-                    var facilityBuildProject = colony.BuildSlots[0].Project as ProductionFacilityBuildProject;
 
-                    if (facilityBuildProject != null &&
+                    if (colony.BuildSlots[0].Project is ProductionFacilityBuildProject facilityBuildProject &&
                         facilityBuildProject.FacilityDesign.Category == productionCategory)
                     {
                         if (facilityBuildProject.FacilityDesign != baseDesign.FacilityDesign)
@@ -307,8 +306,7 @@ namespace Supremacy.Tech
 
                 results.Add(baseDesign);
 
-                var batteryBuildProject = colony.BuildSlots[0].Project as OrbitalBatteryBuildProject;
-                if (batteryBuildProject != null)
+                if (colony.BuildSlots[0].Project is OrbitalBatteryBuildProject batteryBuildProject)
                 {
                     if (batteryBuildProject.OrbitalBatteryDesign != baseDesign.OrbitalBatteryDesign)
                         results.Remove(baseDesign);

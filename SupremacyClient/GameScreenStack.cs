@@ -102,8 +102,7 @@ namespace Supremacy.Client
                         if (_hostControl.Screens.Contains(childItem))
                             continue;
                         _hostControl.AddScreen(childItem);
-                        var activeAware = childItem as IActiveAware;
-                        if ((_hostControl.CurrentScreen == null) && (activeAware != null) && activeAware.IsActive)
+                        if ((_hostControl.CurrentScreen == null) && (childItem is IActiveAware activeAware) && activeAware.IsActive)
                         {
                             Region.Activate(childItem);
                         }
@@ -327,8 +326,7 @@ namespace Supremacy.Client
                         if (lastScreen.Effect is TransitionEffect)
                             lastScreen.ClearValue(EffectProperty);
                         lastScreen.Visibility = Visibility.Hidden;
-                        var activeAwareScreen = lastScreen as IActiveAware;
-                        if (activeAwareScreen != null)
+                        if (lastScreen is IActiveAware activeAwareScreen)
                             activeAwareScreen.IsActive = false;
                     }
                     _currentScreen = value;
@@ -337,12 +335,10 @@ namespace Supremacy.Client
                         _currentScreen.Visibility = Visibility.Visible;
                         _currentScreen.Focus();
 
-                        var activeAwareScreen = _currentScreen as IActiveAware;
-                        if (activeAwareScreen != null)
+                        if (_currentScreen is IActiveAware activeAwareScreen)
                             activeAwareScreen.IsActive = true;
                     }
-                    if (CurrentScreenChanged != null)
-                        CurrentScreenChanged(this, new EventArgs());
+                    CurrentScreenChanged?.Invoke(this, new EventArgs());
                 }
             }
         }
