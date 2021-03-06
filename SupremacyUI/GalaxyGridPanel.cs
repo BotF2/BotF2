@@ -656,7 +656,7 @@ namespace Supremacy.UI
 
         protected override int VisualChildrenCount => _children.Count;
 
-        private bool IsScrolling => _scrollData != null ? _scrollData.ScrollOwner != null : false;
+        private bool IsScrolling => _scrollData != null && _scrollData.ScrollOwner != null;
 
         private GalaxyGridInputMode InputMode { get; set; }
 
@@ -979,7 +979,7 @@ namespace Supremacy.UI
         private static bool IsSectorInRange(Fleet fleet, MapLocation location)
         {
             CivilizationManager playerEmpire = AppContext.LocalPlayerEmpire;
-            return playerEmpire == null ? false : playerEmpire.MapData.GetFuelRange(location) <= fleet.Range;
+            return playerEmpire != null && playerEmpire.MapData.GetFuelRange(location) <= fleet.Range;
         }
 
         private static bool IsStarNameVisible(StarSystem starSystem)
@@ -991,7 +991,7 @@ namespace Supremacy.UI
 
         private static bool IsValidTradeEndpoint(TradeRoute route, Colony colony)
         {
-            return colony == null ? false : route.IsValidTargetColony(colony);
+            return colony != null && route.IsValidTargetColony(colony);
         }
 
         private static void OptionsChangedCallback(DependencyObject source,
@@ -2861,9 +2861,9 @@ namespace Supremacy.UI
             if ((e.NewValue != null) && !e.NewValue.IsStranded)
             {
                 SetInputMode(GalaxyGridInputMode.FleetMovement);
-                if (!Focus() && (Parent is Control))
+                if (!Focus() && (Parent is Control control))
                 {
-                    _ = ((Control)Parent).Focus();
+                    _ = control.Focus();
                 }
             }
             else if (InputMode == GalaxyGridInputMode.FleetMovement)
@@ -2940,9 +2940,9 @@ namespace Supremacy.UI
             if (e.NewValue != null)
             {
                 SetInputMode(GalaxyGridInputMode.TradeRoute);
-                if (!Focus() && (Parent is Control))
+                if (!Focus() && (Parent is Control control))
                 {
-                    _ = ((Control)Parent).Focus();
+                    _ = control.Focus();
                 }
             }
             else if (InputMode == GalaxyGridInputMode.TradeRoute)
@@ -2968,7 +2968,7 @@ namespace Supremacy.UI
         #region IScrollInfo Members
         public bool CanHorizontallyScroll
         {
-            get => _scrollData == null ? false : _scrollData.AllowHorizontal;
+            get => _scrollData != null && _scrollData.AllowHorizontal;
             set
             {
                 EnsureScrollData();
@@ -2982,7 +2982,7 @@ namespace Supremacy.UI
 
         public bool CanVerticallyScroll
         {
-            get => _scrollData == null ? false : _scrollData.AllowVertical;
+            get => _scrollData != null && _scrollData.AllowVertical;
             set
             {
                 EnsureScrollData();

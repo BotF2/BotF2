@@ -49,7 +49,7 @@ namespace Supremacy.Universe
             MoonShapeSections = new BitVector32.Section[MaxMoonsPerPlanet];
             MoonSizeSections = new BitVector32.Section[MaxMoonsPerPlanet];
 
-            PlanetSizeSection = BitVector32.CreateSection((short)(sizes[sizes.Count - 1] - 1), default(BitVector32.Section));
+            PlanetSizeSection = BitVector32.CreateSection((short)(sizes[sizes.Count - 1] - 1), default);
             PlanetTypeSection = BitVector32.CreateSection((short)(types[types.Count - 1] - 1), PlanetSizeSection);
             VariationSection = BitVector32.CreateSection(3, PlanetTypeSection);
             MoonCountSection = BitVector32.CreateSection(MaxMoonsPerPlanet, VariationSection);

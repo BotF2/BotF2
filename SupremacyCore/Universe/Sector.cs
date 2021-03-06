@@ -297,7 +297,7 @@ namespace Supremacy.Universe
         
         public virtual bool Equals(Sector sector)
         {
-            if (ReferenceEquals(sector, null))
+            if (sector is null)
                 return false;
 
             return (sector._location == _location); //&& sector._station == _station && sector._system == _system);
@@ -325,7 +325,7 @@ namespace Supremacy.Universe
         {
             if (ReferenceEquals(a, b))
                 return true;
-            if (ReferenceEquals(a, null) || ReferenceEquals(b, null))
+            if (a is null || b is null)
                 return false;
             return (a._location == b._location);
         }
@@ -340,7 +340,7 @@ namespace Supremacy.Universe
         {
             if (ReferenceEquals(a, b))
                 return false;
-            if (((object)a == null) || ((object)b == null))
+            if ((a is null) || (b is null))
                 return true;
             return (a._location != b._location);
         }
@@ -376,9 +376,7 @@ namespace Supremacy.Universe
 
         protected void OnPropertyChanged(string propertyName)
         {
-            var handler = PropertyChanged;
-            if (handler != null)
-                handler(this, new PropertyChangedEventArgs(propertyName));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
         #endregion
     }

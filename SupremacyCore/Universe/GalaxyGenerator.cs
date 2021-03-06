@@ -214,7 +214,7 @@ namespace Supremacy.Universe
 
             if (GameContext.Current.Options.GalaxyShape == GalaxyShape.Elliptical || GameContext.Current.Options.GalaxyShape == GalaxyShape.Cluster)
             {
-                minDistance = minDistance - 1;
+                minDistance--;
                 if (minDistance < 1) minDistance = 1;
             }
             GameLog.Core.GalaxyGenerator.DebugFormat("GalaxySize = {0}, EmpireCount = {1}, MinDistanceBetweenHomeworlds = {2}", size, empireCount, minDistance);
@@ -249,9 +249,8 @@ namespace Supremacy.Universe
 
                     starNames.RandomizeInPlace();
 
-                    CollectionBase<MapLocation> homeLocations;
 
-                    if (!PlaceHomeworlds(starPositions, starNames, out homeLocations))
+                    if (!PlaceHomeworlds(starPositions, starNames, out CollectionBase<MapLocation> homeLocations))
                         continue;
 
                     GenerateSystems(starPositions, starNames, homeLocations);
@@ -260,9 +259,8 @@ namespace Supremacy.Universe
                     LinkWormholes();
 
                     //Find somewhere to place the Bajoran end of the wormhole
-                    StarSystem bajoranSystem;
                     MapLocation? bajoranWormholeLocation = null;
-                    if (GameContext.Current.Universe.Find<StarSystem>().TryFindFirstItem(s => s.Name == "Bajor", out bajoranSystem))
+                    if (GameContext.Current.Universe.Find<StarSystem>().TryFindFirstItem(s => s.Name == "Bajor", out StarSystem bajoranSystem))
                     {
                         foreach (var sector in bajoranSystem.Sector.GetNeighbors())
                         {
@@ -377,9 +375,8 @@ namespace Supremacy.Universe
                     break;
             }
 
-            ICollection<MapLocation> positions;
 
-            layout.GetStarPositions(out positions, number, width, height);
+            layout.GetStarPositions(out ICollection<MapLocation> positions, number, width, height);
 
             var result = new CollectionBase<MapLocation>(positions.Count);
 
@@ -390,13 +387,15 @@ namespace Supremacy.Universe
 
         public static StarSystemDescriptor GenerateHomeSystem(Civilization civ)
         {
-            var system = new StarSystemDescriptor();
-            system.StarType = GetStarType(true);
-            system.Name = civ.HomeSystemName;
-            system.Inhabitants = civ.Race.Key;
-            system.Bonuses = (civ.CivilizationType == CivilizationType.MinorPower)
+            var system = new StarSystemDescriptor
+            {
+                StarType = GetStarType(true),
+                Name = civ.HomeSystemName,
+                Inhabitants = civ.Race.Key,
+                Bonuses = (civ.CivilizationType == CivilizationType.MinorPower)
                                  ? SystemBonus.RawMaterials
-                                 : SystemBonus.Dilithium | SystemBonus.RawMaterials;
+                                 : SystemBonus.Dilithium | SystemBonus.RawMaterials
+            };
 
             GeneratePlanetsWithHomeworld(system, civ);
             GameLog.Client.GameData.DebugFormat("No HomeSystem defined - HomeSystemsGeneration will be done for {0}", civ.Name);
