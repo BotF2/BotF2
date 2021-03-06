@@ -48,6 +48,7 @@ namespace Supremacy.Client.Commands
         public static readonly CompositeCommand RemoveShipFromTaskForce = new CompositeCommand();
         public static readonly CompositeCommand SelectSector = new CompositeCommand();
         public static readonly CompositeCommand CenterOnSector = new CompositeCommand();
+        public static readonly CompositeCommand CenterOnHomeSector = new CompositeCommand();
         public static readonly CompositeCommand ToggleTaskForceCloak = new CompositeCommand();
         public static readonly CompositeCommand ToggleTaskForceCamouflage = new CompositeCommand();
         public static readonly CompositeCommand IssueTaskForceOrder = new CompositeCommand();

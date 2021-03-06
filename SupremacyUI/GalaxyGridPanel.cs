@@ -130,6 +130,7 @@ namespace Supremacy.UI
         private Point _scrollStartPoint;
         private List<Clock> _animationClocks;
         private readonly DelegateCommand<Sector> _centerOnSectorCommand;
+        private readonly DelegateCommand<Sector> _centerOnHomeSectorCommand;
         private readonly DelegateCommand<Sector> _selectSectorCommand;
         private readonly DelegateCommand<object> _zoomInCommand;
         private readonly DelegateCommand<object> _zoomOutCommand;
@@ -405,11 +406,13 @@ namespace Supremacy.UI
             _centerOnSectorCommand = new DelegateCommand<Sector>(ExecuteCenterOnSectorCommand);
             _zoomInCommand = new DelegateCommand<object>(ExecuteZoomInCommand);
             _zoomOutCommand = new DelegateCommand<object>(ExecuteZoomOutCommand);
+            _centerOnHomeSectorCommand = new DelegateCommand<Sector>(ExecuteCenterOnHomeSectorCommand);
             _selectSectorCommand = new DelegateCommand<Sector>(ExecuteSelectSectorCommand);
 
             GalaxyScreenCommands.CenterOnSector.RegisterCommand(_centerOnSectorCommand);
             GalaxyScreenCommands.MapZoomIn.RegisterCommand(_zoomInCommand);
             GalaxyScreenCommands.MapZoomOut.RegisterCommand(_zoomOutCommand);
+            GalaxyScreenCommands.CenterOnHomeSector.RegisterCommand(_centerOnHomeSectorCommand);
             GalaxyScreenCommands.SelectSector.RegisterCommand(_selectSectorCommand);
 
             _ = ClientEvents.ScreenRefreshRequired.Subscribe(OnScreenRefreshRequired, ThreadOption.UIThread);
@@ -1153,9 +1156,20 @@ namespace Supremacy.UI
             AutoScrollToSector(sector);
         }
 
+        private void ExecuteCenterOnHomeSectorCommand(Sector sector)
+        {
+            //SelectedSector = GameContext.Current.CivilizationManagers[PlayerCivilization.CivID].SeatOfGovernment.Sector;
+            AutoScrollToSector(GameContext.Current.CivilizationManagers[PlayerCivilization.CivID].SeatOfGovernment.Sector);
+        }
+
         public void CenterOnSelectedSector()
         {
             ExecuteCenterOnSectorCommand(SelectedSector);
+        }
+
+        public void CenterOnHomeSector()
+        {
+            ExecuteCenterOnHomeSectorCommand(SelectedSector);
         }
 
         public void SetHorizontalOffset(double offset, bool snapToGrid)
