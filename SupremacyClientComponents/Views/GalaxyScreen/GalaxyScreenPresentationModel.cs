@@ -114,8 +114,7 @@ namespace Supremacy.Client.Views
             if (string.IsNullOrEmpty(imagePath))
                 imagePath = "Resources/Images/Insignias/__unknown.png";
 
-            Uri uri;
-            if (!Uri.TryCreate(imagePath, UriKind.Absolute, out uri))
+            if (!Uri.TryCreate(imagePath, UriKind.Absolute, out Uri uri))
             {
                 string tmpPath = ResourceManager.GetResourcePath(imagePath);
                 if (!File.Exists(tmpPath))
@@ -133,7 +132,7 @@ namespace Supremacy.Client.Views
         private BitmapImage GetImage(string insigniaPath)
         {
             Uri imageUri;
-            var imagePath = insigniaPath.ToLowerInvariant();
+            //var imagePath = insigniaPath.ToLowerInvariant();
 
             if (File.Exists(ResourceManager.GetResourcePath(insigniaPath)))
                 imageUri = ResourceManager.GetResourceUri(insigniaPath);
@@ -543,7 +542,7 @@ namespace Supremacy.Client.Views
         public BitmapImage GetInsigniaImage(string insigniaPath)
         {
             Uri imageUri;
-            var imagePath =   insigniaPath.ToLowerInvariant();
+            //var imagePath =   insigniaPath.ToLowerInvariant();
 
             if (File.Exists(ResourceManager.GetResourcePath(insigniaPath)))
                 imageUri = ResourceManager.GetResourceUri(insigniaPath);
@@ -570,128 +569,92 @@ namespace Supremacy.Client.Views
 
         private void OnAvailableShipsChanged()
         {
-            var handler = AvailableShipsChanged;
-            if (handler != null)
-                handler(this, EventArgs.Empty);
+            AvailableShipsChanged?.Invoke(this, EventArgs.Empty);
         }
         
         private void OnInputModeChanged()
         {
-            var handler = InputModeChanged;
-            if (handler != null)
-                handler(this, EventArgs.Empty);
+            InputModeChanged?.Invoke(this, EventArgs.Empty);
         }
 
         private void OnOverviewModeChanged()
         {
-            var handler = OverviewModeChanged;
-            if (handler != null)
-                handler(this, EventArgs.Empty);
+            OverviewModeChanged?.Invoke(this, EventArgs.Empty);
         }
 
         private void OnSelectedSectorAllegianceChanged()
         {
-            var handler = SelectedSectorAllegianceChanged;
-            if (handler != null)
-                handler(this, EventArgs.Empty);
+            SelectedSectorAllegianceChanged?.Invoke(this, EventArgs.Empty);
         }
 
         private void OnSelectedSectorChanged()
         {
-            var handler = SelectedSectorChanged;
-            if (handler != null)
-                handler(this, EventArgs.Empty);
+            SelectedSectorChanged?.Invoke(this, EventArgs.Empty);
         }
 
         private void OnHoveredSectorChanged()
         {
-            var handler = HoveredSectorChanged;
-            if (handler != null)
-                handler(this, EventArgs.Empty);
+            HoveredSectorChanged?.Invoke(this, EventArgs.Empty);
         }
 
         private void OnSelectedSectorInhabitantsChanged()
         {
-            var handler = SelectedSectorInhabitantsChanged;
-            if (handler != null)
-                handler(this, EventArgs.Empty);
+            SelectedSectorInhabitantsChanged?.Invoke(this, EventArgs.Empty);
         }
 
         private void OnSelectedSectorStationChanged()
         {
-            var handler = SelectedSectorStationChanged;
-            if (handler != null)
-                handler(this, EventArgs.Empty);
+            SelectedSectorStationChanged?.Invoke(this, EventArgs.Empty);
         }
 
         private void OnSelectedShipChanged()
         {
-            var handler = SelectedShipChanged;
-            if (handler != null)
-                handler(this, EventArgs.Empty);
+            SelectedShipChanged?.Invoke(this, EventArgs.Empty);
         }
         
         private void OnSelectedShipInTaskForceChanged()
         {
-            var handler = SelectedShipInTaskForceChanged;
-            if (handler != null)
-                handler(this, EventArgs.Empty);
+            SelectedShipInTaskForceChanged?.Invoke(this, EventArgs.Empty);
         }
 
         private void OnSelectedShipsInTaskForceChanged()
         {
-            var handler = SelectedShipsInTaskForceChanged;
-            if (handler != null)
-                handler(this, EventArgs.Empty);
+            SelectedShipsInTaskForceChanged?.Invoke(this, EventArgs.Empty);
         }
 
         private void OnSelectedTaskForceChanged()
         {
-            var handler = SelectedTaskForceChanged;
-            if (handler != null)
-                handler(this, EventArgs.Empty);
+            SelectedTaskForceChanged?.Invoke(this, EventArgs.Empty);
         }
 
         private void OnSelectedTradeRouteChanged()
         {
-            var handler = SelectedTradeRouteChanged;
-            if (handler != null)
-                handler(this, EventArgs.Empty);
+            SelectedTradeRouteChanged?.Invoke(this, EventArgs.Empty);
         }
 
         private void OnTaskForcesChanged()
         {
-            var handler = TaskForcesChanged;
-            if (handler != null)
-                handler(this, EventArgs.Empty);
+            TaskForcesChanged?.Invoke(this, EventArgs.Empty);
         }
 
         private void OnLocalPlayerTaskForcesChanged()
         {
-            var handler = LocalPlayerTaskForcesChanged;
-            if (handler != null)
-                handler(this, EventArgs.Empty);
+            LocalPlayerTaskForcesChanged?.Invoke(this, EventArgs.Empty);
         }
 
         private void OnVisibleTaskForcesChanged()
         {
-            var handler = VisibleTaskForcesChanged;
-            if (handler != null)
-                handler(this, EventArgs.Empty);
+            VisibleTaskForcesChanged?.Invoke(this, EventArgs.Empty);
         }
 
         private void OnISpyTaskForcesChanged()
         {
-            var handler = VisibleTaskForcesChanged;
-            if (handler != null)
-                handler(this, EventArgs.Empty);
+            VisibleTaskForcesChanged?.Invoke(this, EventArgs.Empty);
         }
 
         private void OnTradeRoutesChanged()
         {
-            var handler = TradeRoutesChanged;
-            if (handler != null)
-                handler(this, EventArgs.Empty);
+            TradeRoutesChanged?.Invoke(this, EventArgs.Empty);
         }
         #endregion
     }

@@ -64,11 +64,6 @@ namespace Supremacy.Client.Views
                 throw new ArgumentNullException("model");
             if (view == null)
                 throw new ArgumentNullException("view");
-            if (navigationService == null)
-                throw new ArgumentNullException("navigationService");
-            if (soundPlayer == null)
-                throw new ArgumentNullException("soundPlayer");
-
             _channelSubscriptions = new List<IDisposable>();
 
             _setInputModeCommand = new DelegateCommand<GalaxyScreenInputMode>(mode => Model.InputMode = mode);
@@ -100,9 +95,9 @@ namespace Supremacy.Client.Views
                 ExecuteScrapCommand,
                 CanExecuteScrapCommand);
 
-            _navigationService = navigationService;
+            _navigationService = navigationService ?? throw new ArgumentNullException("navigationService");
 
-            _soundPlayer = soundPlayer;
+            _soundPlayer = soundPlayer ?? throw new ArgumentNullException("soundPlayer");
         }
         #endregion
 
@@ -288,16 +283,14 @@ namespace Supremacy.Client.Views
             if (args == null)
                 return false;
 
-            var scrapCommandArgs = args as ScrapCommandArgs;
-            if (scrapCommandArgs != null)
+            if (args is ScrapCommandArgs scrapCommandArgs)
                 return scrapCommandArgs.Objects.Any();
 
             var techObject = args.InnerParameter as TechObject;
             if (techObject != null)
                 return true;
 
-            var techObjects = args.InnerParameter as IEnumerable<TechObject>;
-            if (techObjects != null)
+            if (args.InnerParameter is IEnumerable<TechObject> techObjects)
                 return techObjects.Any();
 
             return false;
@@ -313,8 +306,7 @@ namespace Supremacy.Client.Views
             var techObjects = args.InnerParameter as IEnumerable<TechObject>;
             if (techObjects == null)
             {
-                var scrapCommandArgs = args as ScrapCommandArgs;
-                if (scrapCommandArgs != null)
+                if (args is ScrapCommandArgs scrapCommandArgs)
                 {
                     techObjects = scrapCommandArgs.Objects;
                 }
@@ -607,7 +599,8 @@ namespace Supremacy.Client.Views
             if (selectedTaskForce == null)
             {
                 availableShips = Enumerable.Empty<Ship>();
-                GameLog.Client.Intel.DebugFormat("SelectedTaskForce is null. availableShips is Empty ={0}", availableShips);
+                // doesn't help much
+                // GameLog.Client.Intel.DebugFormat("SelectedTaskForce is null. availableShips is Empty ={0}", availableShips);
             }
 
             else if (Model.OverviewMode == GalaxyScreenOverviewMode.Economic)
@@ -679,9 +672,7 @@ namespace Supremacy.Client.Views
         {
             var taskForces = Model.TaskForces;
             var selectedTaskForce = Model.SelectedTaskForce;
-            Model.SelectedTaskForce = (taskForces == null)
-                                           ? null
-                                           : taskForces.FirstOrDefault(o => Equals(o, selectedTaskForce));
+            Model.SelectedTaskForce = taskForces?.FirstOrDefault(o => Equals(o, selectedTaskForce));
 
             Model.GeneratePlayerTaskForces(AppContext.LocalPlayerEmpire.Civilization);
         }
@@ -695,9 +686,7 @@ namespace Supremacy.Client.Views
         {
             var tradeRoutes = Model.TradeRoutes;
             var selectedTradeRoute = Model.SelectedTradeRoute;
-            Model.SelectedTradeRoute = (tradeRoutes == null)
-                                            ? null
-                                            : tradeRoutes.FirstOrDefault(o => Equals(o, selectedTradeRoute));
+            Model.SelectedTradeRoute = tradeRoutes?.FirstOrDefault(o => Equals(o, selectedTradeRoute));
         }
 
         private void OnTurnStarted()

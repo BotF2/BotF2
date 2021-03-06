@@ -276,8 +276,7 @@ namespace Supremacy.Client.Views
 
         private bool CanExecuteToggleBuildingScrapCommand(object parameter)
         {
-            var checkableParameter = parameter as ICheckableCommandParameter;
-            if (checkableParameter != null)
+            if (parameter is ICheckableCommandParameter checkableParameter)
             {
                 var building = checkableParameter.InnerParameter as Building;
                 if (building == null)
@@ -304,10 +303,9 @@ namespace Supremacy.Client.Views
             }
             else
             {
-                var checkableParameter = parameter as ICheckableCommandParameter;
-                if (checkableParameter == null)
+                if (!(parameter is ICheckableCommandParameter checkableParameter))
                     return;
-                
+
                 building = checkableParameter.InnerParameter as Building;
                 if (building == null)
                     return;
@@ -692,7 +690,7 @@ namespace Supremacy.Client.Views
                 //project.SetFlag(BuildProjectFlags.Cancelled);
                 //
                 // real  - var result = MessageDialog.Show("Unavailable for purchase - project has flag: IsCancelled", MessageDialogButtons.Ok);
-                var result = MessageDialog.Show("Unavailable for purchase - sorry", MessageDialogButtons.Ok);
+                _ = MessageDialog.Show("Unavailable for purchase - sorry", MessageDialogButtons.Ok);
             }
 
             if (/*project.IsCancelled || */project.IsCompleted || project.IsRushed)
@@ -707,7 +705,7 @@ namespace Supremacy.Client.Views
             {
                 int missingCredits = project.GetCurrentIndustryCost() - civMan.Credits.CurrentValue;
                 string message = string.Format(ResourceManager.GetString("RUSH_BUILDING_INSUFFICIENT_CREDITS_MESSAGE"), missingCredits);
-                var result = MessageDialog.Show(ResourceManager.GetString("RUSH_BUILDING_INSUFFICIENT_CREDITS_HEADER"), message, MessageDialogButtons.Ok);
+                _ = MessageDialog.Show(ResourceManager.GetString("RUSH_BUILDING_INSUFFICIENT_CREDITS_HEADER"), message, MessageDialogButtons.Ok);
                 return false;
             }
 
