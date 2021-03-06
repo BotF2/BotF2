@@ -229,59 +229,57 @@
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
+                    
                     <!-- Header -->
-                    <TextBlock 
-                        Grid.Column="0" 
-                        Text="{s:StringResource Key=INTELLIGENCE_RESOURCES}"
+                    <!--<StackPanel Orientation="Horizontal">-->
+                    <TextBlock Grid.Column="0" Text="{s:StringResource Key=INTELLIGENCE_RESOURCES}"
                         Foreground="{DynamicResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"
                         FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                         FontSize="16pt"/>
+            
                     <!--TotalIntelligenceProduction-->
-                    <TextBlock  Text="{s:StringResource Key=INTELLIGENCE_POINTS_PER_TURN}"
-                        Grid.Column="1" 
-                       
-                        HorizontalAlignment="Right" VerticalAlignment="Center"
-                        Foreground="{DynamicResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"
-                        FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
-                        FontSize="14pt"/>
-                    <TextBlock 
-                        Grid.Column="2"
-                        Text="{Binding Path=TotalIntelligenceProduction, Mode=OneWay}"
-                        HorizontalAlignment="Left" VerticalAlignment="Center"
+                    <TextBlock Grid.Column="1" Text="{s:StringResource Key=INTELLIGENCE_POINTS_PER_TURN}"
                         Foreground="{DynamicResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}"
+                        HorizontalAlignment="Right" VerticalAlignment="Center"
                         FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                         FontSize="14pt"/>
+             
+                    <TextBlock Grid.Column="2" Margin="3,0,0,0" Text="{Binding Path=TotalIntelligenceProduction, Mode=OneWay}"
+                        Foreground="#ff66CC00"                        
+                        HorizontalAlignment="Left" VerticalAlignment="Center"
+                        FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+                        FontSize="14pt"/>
+                    
                     <!--TotalIntelligenceAttackingAccumulated-->
-                    <TextBlock 
+                    <TextBlock  Text="{s:StringResource Key=INTELLIGENCE_POINTS_ATTACK_ACCUMATED}"
                         Grid.Column="3"
-                        Text="{s:StringResource Key=INTELLIGENCE_POINTS_ATTACK_ACCUMATED}"
                         HorizontalAlignment="Right" VerticalAlignment="Center"
                         Foreground="{DynamicResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"
                         FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                         FontSize="14pt"/>
-                    <TextBlock 
-                        Grid.Column="4"
-                        Text="{Binding Path=TotalIntelligenceAttackingAccumulated, Mode=OneWay}"
+
+                    <TextBlock  Grid.Column="4" Margin="3,0,0,0" Text="{Binding Path=TotalIntelligenceAttackingAccumulated, Mode=OneWay}"
                         HorizontalAlignment="Left" VerticalAlignment="Center"
-                        Foreground="{DynamicResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}"
+                        Foreground="Red"
                         FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                         FontSize="14pt"/>
+                    
                     <!--TotalIntelligenceDefenseAccumulated-->
-                    <TextBlock 
-                        Grid.Column="5"
-                        Text="{s:StringResource Key=INTELLIGENCE_POINTS_DEFENSE_ACCUMATED}"
+                    <TextBlock Grid.Column="5" Text="{s:StringResource Key=INTELLIGENCE_POINTS_DEFENSE_ACCUMATED}"
                         HorizontalAlignment="Right" VerticalAlignment="Center"
                         Foreground="{DynamicResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"
                         FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                         FontSize="14pt"/>
-                    <TextBlock 
-                        Grid.Column="6"
-                        Text="{Binding Path=TotalIntelligenceDefenseAccumulated, Mode=OneWay}" 
+                        <TextBlock Text=" "/>
+                    
+                    <TextBlock Grid.Column="6" Margin="3,0,0,0" Text="{Binding Path=TotalIntelligenceDefenseAccumulated, Mode=OneWay}" 
                         HorizontalAlignment="Left" VerticalAlignment="Center"
                         Foreground="{DynamicResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}"
                         FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                         FontSize="14pt"/>
-                    <StackPanel Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="9">
+            <!--</StackPanel>-->
+
+            <StackPanel Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="9">
                         <Grid>
                             <!-- Row two Grid for explanation statment and summary buttons -->
                             <Grid.RowDefinitions>
@@ -295,12 +293,8 @@
                                 <ColumnDefinition Width="Auto"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
-                            <TextBlock  Text="{s:StringResource Key=SPY_A_MAJOR_BELOW}"
-                                Grid.Row="0" 
-                                Grid.Column="0"
-                                VerticalAlignment="Center"
-                               
-                                Foreground="{DynamicResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}"
+                            <TextBlock Grid.Row="0" Grid.Column="0" Text="{s:StringResource Key=SPY_A_MAJOR_BELOW}"
+                                  VerticalAlignment="Center" Foreground="Red"
                                 FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                                 FontSize="12pt"/>
                             <TextBlock Text="{s:StringResource Key=INSTALL_SPY_NETWORK_INSTRUCTIONS}"     
@@ -308,6 +302,7 @@
                                 Foreground="{DynamicResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"
                                 FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                                 FontSize="12pt"/>
+                            
                             <!-- Summary Button -->
                             <Button x:Name="SummaryButton"
                                   Grid.Row="0"

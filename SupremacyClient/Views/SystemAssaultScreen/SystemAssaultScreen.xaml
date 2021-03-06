@@ -412,7 +412,7 @@
           <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
         <scc:Chevron Grid.Column="0"
-                     Background="{StaticResource {x:Static scc:ClientResources.HorizontalRightLeftSeparatorBackgroundBrushKey}}"
+                     Background="{StaticResource {x:Static scc:ClientResources.Horizontal_Right_Left_Brush}}"
                      Height="28"
                      Width="50"
                      IsInsetOnLeft="False" />
@@ -519,7 +519,7 @@
           </Grid>
         </Grid>
         <scc:Chevron Grid.Column="6"
-                     Background="{StaticResource {x:Static scc:ClientResources.HorizontalSeparatorBackgroundBrushKey}}"
+                     Background="{StaticResource {x:Static scc:ClientResources.Horizontal_Left_Right_Brush}}"
                      Height="28"
                      Width="50"
                      Margin="-11,0,0,0"
@@ -663,7 +663,7 @@
                  StretchDirection="DownOnly">
           <TextBlock TextAlignment="Center"
                      Text="{Binding Path=StarSystem.Name, Converter={scc:StringFormatConverter CharacterCasing=Upper}, ConverterParameter={sx:LocalizedString Group={x:Static s:LocalizedTextGroups.InvasionScreen}, Entry=TitleFormat, CharacterCasing=Upper}}"
-                     Foreground="{StaticResource DefaultTextBrush}"
+                     Foreground="{StaticResource {x:Static scc:ClientResources.AlertTextForegroundBrushKey}}"
                      FontFamily="{StaticResource Eurostyle}" />
         </Viewbox>
         <Image Grid.Column="2"
@@ -672,9 +672,10 @@
                Source="{Binding Path=Defender, Converter={StaticResource CivInsigniaConverter}}" />
       </Grid>
 
+        <!--Top Left Corner-->
       <Path Grid.Row="2" Grid.Column="0" Width="21" Height="42" 
             Data="M 0,42 L 0,14 C 0,5 5,0 14,0 L 21,0 21,28 14,28 C 9,28 7,30 7,35 L 7,42"
-            Fill="{StaticResource {x:Static scc:ClientResources.HorizontalRightLeftSeparatorBackgroundBrushKey}}"
+            Fill="{StaticResource RedGradient_Left_Right}"
            />
 
       <DockPanel Grid.Column="1"
@@ -687,7 +688,7 @@
                    Foreground="{StaticResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}"
                    Text="{Binding Path=Invader.ShortName, Converter={scc:StringFormatConverter CharacterCasing=Upper}, ConverterParameter='{}{0} ASSETS'}" />
 
-                <Rectangle Fill="{StaticResource {x:Static scc:ClientResources.VerticalBottomUpSeparatorBackgroundBrushKey}}"
+                <Rectangle Fill="{StaticResource RedGradient_Left_Right}"
                    Height="28"
                    VerticalAlignment="Top"
                    Margin="0,0,3,0" />
@@ -728,7 +729,7 @@
                    Foreground="{StaticResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}"
                    Text="{Binding Path=Defender.ShortName, Converter={scc:StringFormatConverter CharacterCasing=Upper}, ConverterParameter='{}{0} ASSETS'}" />
 
-                <Rectangle Fill="{StaticResource {x:Static scc:ClientResources.VerticalBottomUpSeparatorBackgroundBrushKey}}"
+                <Rectangle Fill="{StaticResource {x:Static scc:ClientResources.Vertical_Bottom_Top_Brush}}"
                    Height="28"
                    VerticalAlignment="Top"
                    Margin="0,0,3,0" />
@@ -741,57 +742,45 @@
                    HorizontalAlignment="Left"
                    Width="7"
                    Columns="1">
-                <Rectangle Margin="0,3,0,0" Fill="{StaticResource {x:Static scc:ClientResources.HorizontalSeparatorBackgroundBrushKey}}"/>
+                <Rectangle Margin="0,3,0,0" Fill="{StaticResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}"/>
                   
-                <Rectangle Fill="{StaticResource {x:Static scc:ClientResources.ImageBorderBrushKey}}"
+                <Rectangle Fill="{StaticResource {x:Static scc:ClientResources.AlertTextForegroundBrushKey}}"
                    Margin="0,3,0,3" />
-                <Rectangle Fill="{StaticResource {x:Static scc:ClientResources.HorizontalRightLeftSeparatorBackgroundBrushKey}}"
+                <Rectangle Fill="{StaticResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}"
                    Margin="0,0,0,3" />
       </UniformGrid>
 
       <Path Grid.Column="0"
             Grid.Row="6"
             Data="M 0,0 L 0,28 C 0,37 5,42 14,42 L 21,42 21,14 14,14 C 9,14 7,12 7,7 L 7,0"
-            Fill="{StaticResource {x:Static scc:ClientResources.HorizontalSeparatorBackgroundBrushKey}}"
+            Fill="{StaticResource RedGradient_Left_Right}"
             Height="42"
             Width="21" />
         
         
 
-      <Rectangle Grid.Column="1"
-                 Grid.Row="6"
-                 Fill="{StaticResource {x:Static scc:ClientResources.HorizontalRightLeftSeparatorBackgroundBrushKey}}"
-                 Height="28"
-                 VerticalAlignment="Bottom"
-                 Margin="3,0,3,0" />
+      <Rectangle Grid.Row="6" Grid.Column="1" Height="28" Margin="3,0,3,0" VerticalAlignment="Bottom"
+                 Fill="{StaticResource {x:Static scc:ClientResources.Horizontal_Right_Left_Brush}}"
+                 />
 
-      <Path Grid.Column="2"
-            Grid.Row="6"
+      <Path Grid.Row="6" Grid.Column="2" Width="21" Height="42" Stretch="None"
             Data="M20.999999,28.000004 C16.333452,28.000004 14.000179,30.333336 14.000179,35.000004 L14.000179,42 14.000069,4.3455385E-11 14.058225,4.3455385E-11 C14.695606,-1.2557665E-09 16.47917,2.7216365E-08 20.999887,4.3455385E-11 M-1.3897516E-07,1.4603573E-06 C7.2915679,2.7194976E-06 11.734868,1.1099437E-06 13.329899,4.3455385E-11 13.521302,2.6496082E-07 13.671691,1.8674044E-07 13.741591,4.3455385E-11 13.740024,1.1212922E-08 13.740879,1.2239716E-08 13.743727,4.3455385E-11 L13.753981,4.3455385E-11 13.757826,4.3455385E-11 13.781065,4.3455385E-11 13.78346,4.3455385E-11 C13.79642,4.1336955E-09 13.812654,3.4367688E-09 13.832592,4.3455385E-11 L13.846264,4.3455385E-11 13.876766,4.3455385E-11 13.90394,4.3455385E-11 13.91804,4.3455385E-11 13.945126,4.3455385E-11 13.950082,4.3455385E-11 C13.959908,3.4297211E-08 13.968738,3.4851843E-08 13.976143,4.3455385E-11 L13.98614,4.3455385E-11 13.99366,4.3455385E-11 13.999812,4.3455385E-11 13.999924,42 7.0000178,42 7.0000168,35.000008 C7.0000168,30.333336 4.6667145,28.000004 0.0001118595,28.000004"
             Fill="{StaticResource {x:Static scc:ClientResources.ImageBorderBrushKey}}"
-            Height="42"
-            Stretch="None"
-            Width="21">
+           >
         <Path.LayoutTransform>
           <RotateTransform Angle="180" />
         </Path.LayoutTransform>
       </Path>
 
-      <Rectangle Grid.Column="3"
-                 Grid.Row="6"
-                 Fill="{StaticResource {x:Static scc:ClientResources.HorizontalSeparatorBackgroundBrushKey}}"
-                 Height="28"
-                 VerticalAlignment="Bottom"
-                 Margin="3,0,3,0" />
+      <Rectangle Grid.Row="6" Grid.Column="3" Height="28" Margin="3,0,3,0" VerticalAlignment="Bottom"
+                 Fill="{StaticResource {x:Static scc:ClientResources.Horizontal_Left_Right_Brush}}"
+                 />
 
 
-      <Path Grid.Column="4"
-            Grid.Row="6"
+      <Path Grid.Row="6" Grid.Column="4" Width="21" Height="42" Stretch="None"
             Data="M20.999999,28.000004 C16.333452,28.000004 14.000179,30.333336 14.000179,35.000004 L14.000179,42 14.000069,4.3455385E-11 14.058225,4.3455385E-11 C14.695606,-1.2557665E-09 16.47917,2.7216365E-08 20.999887,4.3455385E-11 M-1.3897516E-07,1.4603573E-06 C7.2915679,2.7194976E-06 11.734868,1.1099437E-06 13.329899,4.3455385E-11 13.521302,2.6496082E-07 13.671691,1.8674044E-07 13.741591,4.3455385E-11 13.740024,1.1212922E-08 13.740879,1.2239716E-08 13.743727,4.3455385E-11 L13.753981,4.3455385E-11 13.757826,4.3455385E-11 13.781065,4.3455385E-11 13.78346,4.3455385E-11 C13.79642,4.1336955E-09 13.812654,3.4367688E-09 13.832592,4.3455385E-11 L13.846264,4.3455385E-11 13.876766,4.3455385E-11 13.90394,4.3455385E-11 13.91804,4.3455385E-11 13.945126,4.3455385E-11 13.950082,4.3455385E-11 C13.959908,3.4297211E-08 13.968738,3.4851843E-08 13.976143,4.3455385E-11 L13.98614,4.3455385E-11 13.99366,4.3455385E-11 13.999812,4.3455385E-11 13.999924,42 7.0000178,42 7.0000168,35.000008 C7.0000168,30.333336 4.6667145,28.000004 0.0001118595,28.000004"
-            Fill="{StaticResource {x:Static scc:ClientResources.ImageBorderBrushKey}}"
-            Height="42"
-            Stretch="None"
-            Width="21">
+            Fill="{StaticResource RedGradient_Top_Bottom}"
+            >
         <Path.LayoutTransform>
           <RotateTransform Angle="180" />
         </Path.LayoutTransform>
@@ -819,18 +808,18 @@
                    HorizontalAlignment="Center"
                    Width="7"
                    Columns="1">
-                <Rectangle Fill="{StaticResource {x:Static scc:ClientResources.VerticalBottomUpSeparatorBackgroundBrushKey}}"
+                <Rectangle Fill="{StaticResource {x:Static scc:ClientResources.AlertTextForegroundBrushKey}}"
                    Margin="0,3,0,0" />
                 <Rectangle Fill="{StaticResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}"
                    Margin="0,3,0,3" />
-                <Rectangle Fill="{StaticResource {x:Static scc:ClientResources.VerticalSeparatorBackgroundBrushKey}}"
+                <Rectangle Fill="{StaticResource {x:Static scc:ClientResources.AlertTextForegroundBrushKey}}"
                    Margin="0,0,0,3" />
       </UniformGrid>
 
       <Path Grid.Column="4"
             Grid.Row="2"
             Data="M20.999999,28.000004 C16.333452,28.000004 14.000179,30.333336 14.000179,35.000004 L14.000179,42 14.000069,4.3455385E-11 14.058225,4.3455385E-11 C14.695606,-1.2557665E-09 16.47917,2.7216365E-08 20.999887,4.3455385E-11 M-1.3897516E-07,1.4603573E-06 C7.2915679,2.7194976E-06 11.734868,1.1099437E-06 13.329899,4.3455385E-11 13.521302,2.6496082E-07 13.671691,1.8674044E-07 13.741591,4.3455385E-11 13.740024,1.1212922E-08 13.740879,1.2239716E-08 13.743727,4.3455385E-11 L13.753981,4.3455385E-11 13.757826,4.3455385E-11 13.781065,4.3455385E-11 13.78346,4.3455385E-11 C13.79642,4.1336955E-09 13.812654,3.4367688E-09 13.832592,4.3455385E-11 L13.846264,4.3455385E-11 13.876766,4.3455385E-11 13.90394,4.3455385E-11 13.91804,4.3455385E-11 13.945126,4.3455385E-11 13.950082,4.3455385E-11 C13.959908,3.4297211E-08 13.968738,3.4851843E-08 13.976143,4.3455385E-11 L13.98614,4.3455385E-11 13.99366,4.3455385E-11 13.999812,4.3455385E-11 13.999924,42 7.0000178,42 7.0000168,35.000008 C7.0000168,30.333336 4.6667145,28.000004 0.0001118595,28.000004"
-            Fill="{StaticResource {x:Static scc:ClientResources.ImageBorderBrushKey}}"
+            Fill="{StaticResource RedGradient_Bottom_Top}"
             Height="42"
             Stretch="None"
             Width="21" />
@@ -843,7 +832,7 @@
                    Columns="1">
         <Rectangle Fill="{StaticResource AzureGradient_Left_Right}"
                    Margin="0,3,0,0" />
-                <Rectangle Fill="{StaticResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}"
+                <Rectangle Fill="{StaticResource {x:Static scc:ClientResources.AlertTextForegroundBrushKey}}"
                    Margin="0,3,0,3" />
         <Rectangle Fill="{StaticResource AzureGradient_Left_Right}"
                    Margin="0,0,0,3" />
@@ -858,7 +847,7 @@
                    FontSize="18pt"
                    Foreground="{StaticResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}"
                    Text="{s:StringResource SYSTEM_ASSAULT_ORDERS_HEADLINE}" />
-                <Rectangle Fill="{StaticResource {x:Static scc:ClientResources.VerticalBottomUpSeparatorBackgroundBrushKey}}"
+                <Rectangle Fill="{StaticResource RedGradient_Right_Left}"
                    Height="28"
                    VerticalAlignment="Top"
                    Margin="0,0,3,0" />
@@ -1086,19 +1075,19 @@
               <Border DockPanel.Dock="Left"
                       Width="16"
                       CornerRadius="16,0,0,16"
-                      Background="{StaticResource BorderBrush}" />
+                      Background="{StaticResource RedGradient_Left_Right}" />
               <Border DockPanel.Dock="Right"
                       Width="16"
                       CornerRadius="0,16,16,0"
-                      Background="{StaticResource BorderBrush}" />
+                      Background="{StaticResource RedGradient_Right_Left}" />
                 
               <StackPanel Orientation="Vertical"
                           scc:GameControlService.Context="VerticalGroupItem"
                           Margin="2,0">
 
-                                
-                  <Border Background="{StaticResource {x:Static scc:ClientResources.HorizontalSeparatorBackgroundBrushKey}}">
-                   <TextBlock DockPanel.Dock="Top" Text="{s:StringResource SYSTEM_ASSAULT_CHOOSE_ORDER}" Margin="0,0,0,0" FontSize="18pt" HorizontalAlignment="Center"
+
+                                <Border Background="{StaticResource RedGradient_Bottom_Top}">
+                   <TextBlock DockPanel.Dock="Top" Text="{s:StringResource SYSTEM_ASSAULT_CHOOSE_ORDER}" Margin="0,0,0,0" FontSize="14pt" HorizontalAlignment="Center"
                          FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
                          Foreground="{StaticResource {x:Static scc:ClientResources.ControlTextForegroundBrushKey}}" />
                    </Border>  
