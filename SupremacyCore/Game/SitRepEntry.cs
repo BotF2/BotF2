@@ -1996,7 +1996,7 @@ namespace Supremacy.Game
         public ResearchCompleteSitRepEntry(
             Civilization owner,
             ResearchApplication application,
-            ICollection<TechObjectDesign> newDesigns) : base(owner, SitRepPriority.Orange)
+            ICollection<TechObjectDesign> newDesigns) : base(owner, SitRepPriority.Green)
         {
             if (application == null)
                 throw new ArgumentNullException("application");
@@ -2017,10 +2017,7 @@ namespace Supremacy.Game
             get { return GameContext.Current.ResearchMatrix.GetApplication(_applicationId); }
         }
         public override SitRepCategory Categories { get { return SitRepCategory.Research; } }
-        public override SitRepAction Action
-        {
-            get { return SitRepAction.ShowScienceScreen; }
-        }
+        public override SitRepAction Action { get { return SitRepAction.ShowScienceScreen; } }
         public override bool IsPriority { get { return true; } }
         public override string SitRepComment { get; set; }
         public override string SummaryText { get { return string.Format(ResourceManager.GetString("SITREP_RESEARCH_COMPLETED"), ResourceManager.GetString(Application.Name), Application.Level); } }
@@ -2067,13 +2064,10 @@ namespace Supremacy.Game
         private readonly string _researchNote;
 
         public ScienceSummarySitRepEntry(Civilization owner, string researchNote)
-                : base(owner, SitRepPriority.Blue)
-        {
-            _researchNote = researchNote;
-        }
-
+                : base(owner, SitRepPriority.Gray)
+        {_researchNote = researchNote;}
+        
         public string ResearchNote { get { return _researchNote; }}
-
         public override SitRepCategory Categories { get { return SitRepCategory.Research; } }
         public override bool IsPriority { get { return true; } }
         public override string SitRepComment { get; set; }
@@ -2143,7 +2137,7 @@ namespace Supremacy.Game
     public class ShipDestroyedInWormholeSitRepEntry : SitRepEntry
     {
         private readonly MapLocation _wormholeLocation;
-        public ShipDestroyedInWormholeSitRepEntry(Civilization owner, MapLocation wormholeLocation) : base(owner, SitRepPriority.Orange)
+        public ShipDestroyedInWormholeSitRepEntry(Civilization owner, MapLocation wormholeLocation) : base(owner, SitRepPriority.Purple)
         {
             _wormholeLocation = wormholeLocation;
         }
@@ -2164,7 +2158,7 @@ namespace Supremacy.Game
     {
         private readonly int _colonyID;
         public SupernovaSitRepEntry(Civilization owner, Colony colony)
-            : base(owner, SitRepPriority.Pink)
+            : base(owner, SitRepPriority.Purple)
         {
             if (colony == null)
                 throw new ArgumentNullException("colony missing for Supernova");
@@ -2210,7 +2204,7 @@ namespace Supremacy.Game
     {
         private readonly int _colonyID;
         public TerroristBombingOfShipProductionSitRepEntry(Civilization owner, Colony colony)
-            : base(owner, SitRepPriority.Pink)
+            : base(owner, SitRepPriority.Purple)
         {
             if (colony == null)
                 throw new ArgumentNullException("colony");
@@ -2235,7 +2229,7 @@ namespace Supremacy.Game
     {
         private readonly int _colonyID;
         public TerroristsCapturedSitRepEntry(Civilization owner, Colony colony)
-            : base(owner, SitRepPriority.Pink)
+            : base(owner, SitRepPriority.Purple)
         {
             if (colony == null)
                 throw new ArgumentNullException("colony");
@@ -2261,7 +2255,7 @@ namespace Supremacy.Game
     {
         private readonly int _colonyID;
         public TradeGuildStrikesSitRepEntry(Civilization owner, Colony colony)
-            : base(owner, SitRepPriority.Pink)
+            : base(owner, SitRepPriority.Purple)
         {
             if (colony == null)
                 throw new ArgumentNullException("colony");
@@ -2382,23 +2376,6 @@ namespace Supremacy.Game
         private readonly int _victimCivilizationID;
         private readonly int _aggressorCivilizationID;
         private readonly CivString _detailText;
-        public override SitRepCategory Categories { get { return SitRepCategory.Diplomacy | SitRepCategory.Military; } }
-        public override SitRepAction Action { get { return SitRepAction.CenterOnSector; } }
-        public override bool IsPriority { get { return true; } }
-        public override string SitRepComment { get; set; }
-        public override string SummaryText { get { return string.Format(ResourceManager.GetString("SITREP_WAR_DECLARED"), Aggressor.LongName, Victim.LongName); } }
-        public override bool HasDetails { get { return ((Aggressor == Owner) || (Victim == Owner)); ; } } // turn on/off for extra Dialog window
-
-        public override string DetailImage { get { return (Owner == Aggressor) ? Victim.InsigniaPath : Aggressor.InsigniaPath; } }
-
-        public override string DetailText { get { return string.Format(_detailText.Value, Victim.LongName); } }
-
-        public Civilization Victim { get { return GameContext.Current.Civilizations[_victimCivilizationID]; } }
-
-        public Civilization Aggressor { get { return GameContext.Current.Civilizations[_aggressorCivilizationID]; } }
-
-        public WarDeclaredSitRepEntry(Civilization owner, Civilization victim) : this(owner, owner, victim) { }
-
         public WarDeclaredSitRepEntry(Civilization owner, Civilization aggressor, Civilization victim)
             : base(owner, SitRepPriority.Red)
         {
@@ -2424,7 +2401,25 @@ namespace Supremacy.Game
                 _detailText = new CivString(owner, CivString.DiplomacyCategory, "MESSAGE_SITREP_RESISTANCE_IS_FUTILE");
             }
         }
+        public override SitRepCategory Categories { get { return SitRepCategory.Diplomacy | SitRepCategory.Military; } }
+        public override SitRepAction Action { get { return SitRepAction.CenterOnSector; } }
+        public override object ActionTarget { get { return GameContext.Current.CivilizationManagers[Victim.CivID].HomeSystem.Sector; } }
+        public override bool IsPriority { get { return true; } }
+        public override string SitRepComment { get; set; }
+        public override string SummaryText { get { return string.Format(ResourceManager.GetString("SITREP_WAR_DECLARED"), Aggressor.LongName, Victim.LongName); } }
+        public override bool HasDetails { get { return ((Aggressor == Owner) || (Victim == Owner)); ; } } // turn on/off for extra Dialog window
+
+        public override string DetailImage { get { return (Owner == Aggressor) ? Victim.InsigniaPath : Aggressor.InsigniaPath; } }
+
+        public override string DetailText { get { return string.Format(_detailText.Value, Victim.LongName); } }
+
+        public Civilization Victim { get { return GameContext.Current.Civilizations[_victimCivilizationID]; } }
+
+        public Civilization Aggressor { get { return GameContext.Current.Civilizations[_aggressorCivilizationID]; } }
+
+        public WarDeclaredSitRepEntry(Civilization owner, Civilization victim) : this(owner, owner, victim) { }
     }
+
     [Serializable]
     public class ViolateTreatySitRepEntry : SitRepEntry
     {
