@@ -91,23 +91,20 @@
                                 <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
-              <Button x:Name="PART_TurnButton"
-                      Grid.Column="0"
-                      Grid.Row="0"
+              <Button Grid.Row="0" Grid.Column="0" x:Name="PART_TurnButton"
                       Command="{x:Static scc:ClientCommands.EndTurn}">
                                 <Button.Content>
                                     <TextBlock Text="{Binding Path=(scc:GameScreenViewBase.AppContext).CurrentGame.TurnNumber, StringFormat={s:StringResource Key=TURN_BUTTON_TEXT, Case=Upper}, RelativeSource={RelativeSource TemplatedParent}}" />
                                 </Button.Content>
                                 <Button.Style>
-                                    <Style TargetType="{x:Type Button}"
-                         BasedOn="{StaticResource LCARS_StandardButtonStyle}">
-                                        <Style.Triggers>
-                                            <!--<EventTrigger RoutedEvent="Button.Click">
-                        <EventTrigger.Actions>
-                          <SoundPlayerAction Source="Resources/UI/Dominion/Sounds/Turn.wav" />
-                        </EventTrigger.Actions>
-                      </EventTrigger>-->
-                                        </Style.Triggers>
+                                    <Style TargetType="{x:Type Button}" BasedOn="{StaticResource LCARS_StandardButtonStyle}">
+                                        <!--<Style.Triggers>
+                                            <EventTrigger RoutedEvent="Button.Click">
+                                            <EventTrigger.Actions>
+                                              <SoundPlayerAction Source="Resources/UI/Dominion/Sounds/Turn.wav" />
+                                            </EventTrigger.Actions>
+                                          </EventTrigger>
+                                        </Style.Triggers>-->
                                     </Style>
                                 </Button.Style>
                             </Button>
@@ -690,44 +687,35 @@
                                 <ColumnDefinition Width="0.45*" />
                                 <ColumnDefinition Width="13" />
                             </Grid.ColumnDefinitions>
-              <Rectangle x:Name="TopLeftCorner"
-                         Grid.Column="0"
-                         Grid.Row="0"
-                         Height="42"
-                         Width="21">
+                            
+                            <Rectangle Grid.Row="0" Grid.Column="0" Width="21" Height="42" x:Name="TopLeftCorner">
                                 <Rectangle.Fill>
                                     <DrawingBrush>
                                         <DrawingBrush.Drawing>
                                             <DrawingGroup>
-                                                <GeometryDrawing 
-                                                Brush="{StaticResource Dom3Gradient_Top_Bottom}"
+                                                <GeometryDrawing Brush="{StaticResource Dom3Gradient_Top_Bottom}" 
                                                 Geometry="F1 M 0,0 10,0 15,4 21,4 21,6 8,6 7,10 7,38 8,39 15,39 16,38 16, 26 21,26 21,28 18,28 17,42 0,42 Z" />
+                                                <GeometryDrawing 
+                                                    Brush="{StaticResource Dom1Gradient_Top_Bottom}"
+                                                    Geometry="F1 M 14,8 L 20,8 20,24  14,24 z" />
                                             </DrawingGroup>
                                         </DrawingBrush.Drawing>
                                     </DrawingBrush>
                                 </Rectangle.Fill>
                             </Rectangle>
-                            <Grid Grid.Column="1"
-                    Grid.Row="0"
-                    Height="28"
-                    Margin="0,0,0,0"
-                    VerticalAlignment="Top">
+                            
+                            <Grid Grid.Row="0" Grid.Column="1" Height="28" Margin="0,0,0,0" VerticalAlignment="Top">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*" />
                                     <ColumnDefinition Width="Auto" />
                                 </Grid.ColumnDefinitions>
-                                <Rectangle x:Name="TopEdge"
-                           Grid.Column="0"
-                           Margin="3,0,0,0"
-                           Fill="{StaticResource Dom3Gradient_Top_Bottom}" />
+                                <Rectangle Grid.Column="0" Margin="3,0,0,0" x:Name="TopEdge"
+                                            Fill="{StaticResource Dom3Gradient_Top_Bottom}" />
 
-                                <TextBlock FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
-                           FontSize="13pt"
-                           Foreground="Black"
-                           Margin="8,0,0,0"
-                           VerticalAlignment="Center"
-                           HorizontalAlignment="Left"
-                           Text="{s:StringResource INFO_SHORTCUTS}" />
+                                <TextBlock Text="{s:StringResource INFO_SHORTCUTS}" 
+                                    FontSize="13pt" VerticalAlignment="Center"  HorizontalAlignment="Center" Foreground="Black"      
+                                    FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
+                                   />
 
                             </Grid>
                             <!--<Rectangle x:Name="LeftTopEdge"
@@ -859,6 +847,19 @@
                                                     <TextBlock FontFamily="{DynamicResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
                                                         Text="{s:StringResource ZOOM_OUT_BUTTON_TOOLTIP}"
                                                         FontSize="20"/>
+                                                </ToolTip>
+                                            </Button.ToolTip>
+                                        </Button>
+
+                                        <Button  Margin="0,0,3,0" MinWidth="30" x:Name="CenterHomeButton"
+                            Command="{x:Static scc:GalaxyScreenCommands.CenterOnHomeSector}"                                                 
+                            Style="{StaticResource LCARS_BorderButtonStyle}"
+                            Content="{s:StringResource Key=CENTER_HOME_BUTTON_TEXT, Case=Upper}"
+                                            >
+                                            <Button.ToolTip>
+                                                <ToolTip>
+                                                    <TextBlock FontSize="20" Text="{s:StringResource CENTER_HOME_BUTTON_TOOLTIP}"
+                                                        FontFamily="{DynamicResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"/>
                                                 </ToolTip>
                                             </Button.ToolTip>
                                         </Button>

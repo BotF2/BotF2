@@ -625,11 +625,8 @@
                            Text="{s:StringResource INFO_SHORTCUTS}" />
                              
                             </Grid>
-                            <Grid Grid.Column="2"
-                    Grid.Row="0"
-                    Height="28"
-                    Margin="3,0,3,0"
-                    VerticalAlignment="Top">
+                            
+                            <Grid Grid.Row="0" Grid.Column="2" Height="28" Margin="0,0,3,0" VerticalAlignment="Top">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*" />
                                     <ColumnDefinition Width="Auto" />
@@ -714,8 +711,21 @@
                                                 </ToolTip>
                                             </Button.ToolTip>
                                         </Button>
-                                        
-                                        
+
+                                        <Button  Margin="0,0,3,0" MinWidth="30" x:Name="CenterHomeButton"
+                            Command="{x:Static scc:GalaxyScreenCommands.CenterOnHomeSector}"                                                 
+                            Style="{StaticResource LCARS_BorderButtonStyle}"
+                            Content="{s:StringResource Key=CENTER_HOME_BUTTON_TEXT, Case=Upper}"
+                                            >
+                                            <Button.ToolTip>
+                                                <ToolTip>
+                                                    <TextBlock FontSize="20" Text="{s:StringResource CENTER_HOME_BUTTON_TOOLTIP}"
+                                                        FontFamily="{DynamicResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"/>
+                                                </ToolTip>
+                                            </Button.ToolTip>
+                                        </Button>
+
+
                                     </StackPanel>
                                     
                                     
