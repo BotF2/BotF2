@@ -477,7 +477,7 @@
                       scc:VisibilityGroupScopeBehavior.VisibilityGroup="DiplomacyScreenVisibilityScopes.Default"
                       Width="28"
                       Height="42"
-                      Fill="{StaticResource Card5Gradient_TopLeft_BottomRight}"
+                      Fill="{StaticResource {x:Static scc:ClientResources.ImageBorderBrushKey}}"
                       Margin="0,0,0,13"
                       VerticalAlignment="Bottom"
                       Data="F1 M 0,0L 0,27.9954C 1.85621,27.9954 3.6364,28.7328 4.94894,30.0454C 6.26148,31.3579 6.99886,33.1381 6.99886,34.9943L 6.99886,41.9932L 20.9966,41.9932L 20.9966,34.9943C 20.9966,33.1381 21.734,31.3579 23.0465,30.0454C 24.359,28.7328 26.1392,27.9954 27.9954,27.9954L 27.9954,0L 0,0 Z" />

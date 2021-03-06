@@ -1075,11 +1075,11 @@
               <Border DockPanel.Dock="Left"
                       Width="16"
                       CornerRadius="16,0,0,16"
-                      Background="{StaticResource RedGradient_Left_Right}" />
+                      Background="{StaticResource Ter1Gradient_Right_Left}" />
               <Border DockPanel.Dock="Right"
                       Width="16"
                       CornerRadius="0,16,16,0"
-                      Background="{StaticResource RedGradient_Right_Left}" />
+                      Background="{StaticResource Ter1Gradient_Left_Right}" />
                 
               <StackPanel Orientation="Vertical"
                           scc:GameControlService.Context="VerticalGroupItem"

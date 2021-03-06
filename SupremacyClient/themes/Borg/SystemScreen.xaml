@@ -186,31 +186,14 @@
                         CornerRadius="0,14,14,0"
                         Width="21"
                         Margin="3,0,0,0" />-->
-                                <Ellipse  
-                                    Grid.Column="9"
-                                    Grid.Row="0"
-
-
-                                         VerticalAlignment="Center"
-                                         HorizontalAlignment="Center"
-                                         Height="28"
-                                         Width="28"
-                                         Fill="Green"
-                                         Opacity="0.3"
-                                         StrokeThickness="4"
-                                         Stroke="#1ffe36"/>
-
-                                <Ellipse  
-                                         Grid.Column="9" 
-                                         Grid.Row="0"
-                                         Canvas.Top="15"
-                                         Canvas.Left="5"
-                                         Height="9"
-                                         Width="9"
-                                         Fill="#cce259"
-                                        Opacity="0.6"
-                                        StrokeThickness="2"
-                                         Stroke="#1fe336"/>
+                                <Ellipse Grid.Row="0" Grid.Column="9" Height="28" Width="28" VerticalAlignment="Center" HorizontalAlignment="Center"
+                                         Fill="Green" Opacity="0.3" StrokeThickness="4" Stroke="#1ffe36"/>
+                                <Ellipse Grid.Row="0" Grid.Column="9" Height="9" Width="9" VerticalAlignment="Center" HorizontalAlignment="Center" 
+                                         Canvas.Top="15" Canvas.Left="5"
+                                         Fill="#cce259" Opacity="0.6" StrokeThickness="2" Stroke="#1fe336"/>
+                                       
+                                       
+                                        
                                 <Rectangle Grid.Column="9"  Grid.Row="0" Fill="{StaticResource Borg3Gradient_Top_Bottom}" Opacity="0.5"></Rectangle>
                                 <Ellipse  
                                          Grid.Column="9" 

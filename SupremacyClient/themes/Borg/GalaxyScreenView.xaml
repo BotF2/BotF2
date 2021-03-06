@@ -932,7 +932,7 @@
                                          Stroke="Goldenrod"/>
 
 
-                                <Path Stroke="WhiteSmoke" StrokeThickness="2" Opacity="0.7">
+                                <Path Stroke="#ffe8e8e8" StrokeThickness="2" Opacity="0.7">
                                     <Path.Data>
                                         <PathGeometry>
                                             <PathGeometry.Figures>
@@ -1073,7 +1073,7 @@
                                         </PathGeometry>
                                     </Path.Data>
                                 </Path>
-                                <Path Stroke="WhiteSmoke" StrokeThickness="4" Opacity="0.3"  >
+                                <Path Stroke="#ffe8e8e8" StrokeThickness="4" Opacity="0.3"  >
                                     <Path.Data>
                                         <PathGeometry>
                                             <PathGeometry.Figures>
@@ -1360,7 +1360,7 @@
                                          Stroke="Goldenrod"/>
 
 
-                                    <Path Stroke="WhiteSmoke" StrokeThickness="2" Opacity="0.7">
+                                    <Path Stroke="#ffe8e8e8" StrokeThickness="2" Opacity="0.7">
                                         <Path.Data>
                                             <PathGeometry>
                                                 <PathGeometry.Figures>
@@ -1501,7 +1501,7 @@
                                             </PathGeometry>
                                         </Path.Data>
                                     </Path>
-                                    <Path Stroke="WhiteSmoke" StrokeThickness="4" Opacity="0.3"  >
+                                    <Path Stroke="#ffe8e8e8" StrokeThickness="4" Opacity="0.3"  >
                                         <Path.Data>
                                             <PathGeometry>
                                                 <PathGeometry.Figures>
@@ -1777,7 +1777,7 @@
                                             </PathGeometry>
                                         </Path.Data>
                                     </Path>
-                                    <Path Stroke="WhiteSmoke" StrokeThickness="4" Opacity="0.3"  >
+                                    <Path Stroke="#ffe8e8e8" StrokeThickness="4" Opacity="0.3"  >
                                         <Path.Data>
                                             <PathGeometry>
                                                 <PathGeometry.Figures>

@@ -567,6 +567,7 @@
                     Grid.Row="1"
                     Grid.ColumnSpan="2"
                     Width="Auto"            
+                  ScrollViewer.VerticalScrollBarVisibility="Auto"
                     Margin="2">            
                 <TreeView x:Name="OtherCivsView" 
                           ItemsSource="{Binding OtherCivs}"

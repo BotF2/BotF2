@@ -274,6 +274,8 @@
     </DataTemplate.Triggers>
   </DataTemplate>
 
+    
+    
   <Style TargetType="{x:Type local:ResearchScreen}">
     <Setter Property="Template">
       <Setter.Value>
@@ -282,7 +284,26 @@
                   Padding="6">
             <DockPanel LastChildFill="True"
                        DataContext="{Binding Path=AppContext.LocalPlayerEmpire.Research, RelativeSource={RelativeSource TemplatedParent}}">
-              <Expander DockPanel.Dock="Left"
+
+                            <Button Grid.Row="0" Grid.Column="0" x:Name="PART_TurnButtonTop"
+                      Command="{x:Static scc:ClientCommands.EndTurn}">
+                                <Button.Content>
+                                    <TextBlock Text="{Binding Path=(scc:GameScreenViewBase.AppContext).CurrentGame.TurnNumber, StringFormat={s:StringResource Key=TURN_BUTTON_TEXT, Case=Upper}, RelativeSource={RelativeSource TemplatedParent}}" />
+                                </Button.Content>
+                                <!--<Button.Style>
+                                    <Style TargetType="{x:Type Button}" BasedOn="{StaticResource LCARS_StandardButtonStyle}">
+                                        --><!--<Style.Triggers>
+                                            <EventTrigger RoutedEvent="Button.Click">
+                                            <EventTrigger.Actions>
+                                              <SoundPlayerAction Source="Resources/UI/Dominion/Sounds/Turn.wav" />
+                                            </EventTrigger.Actions>
+                                          </EventTrigger>
+                                        </Style.Triggers>--><!--
+                                    </Style>
+                                </Button.Style>-->
+                            </Button>
+
+                            <Expander DockPanel.Dock="Left"
                         Header="{s:StringResource Key=EMPIRE_TECH_INFO, Case=Upper}"
                         Width="240"
                         IsExpanded="True"
@@ -291,8 +312,26 @@
                         TextBlock.Foreground="{DynamicResource DefaultTextBrush}"
                         VerticalAlignment="Top">
                 <StackPanel>
-                    
-                  <TextBlock Foreground="{DynamicResource HeaderTextBrush}"
+
+                                    <Button Grid.Row="0" Grid.Column="0" x:Name="PART_TurnButton"
+                      Command="{x:Static scc:ClientCommands.EndTurn}">
+                                        <Button.Content>
+                                            <TextBlock Text="{Binding Path=(scc:GameScreenViewBase.AppContext).CurrentGame.TurnNumber, StringFormat={s:StringResource Key=TURN_BUTTON_TEXT, Case=Upper}, RelativeSource={RelativeSource TemplatedParent}}" />
+                                        </Button.Content>
+                                        <!--<Button.Style>
+                                            <Style TargetType="{x:Type Button}" BasedOn="{StaticResource LCARS_StandardButtonStyle}">
+                                                --><!--<Style.Triggers>
+                                            <EventTrigger RoutedEvent="Button.Click">
+                                            <EventTrigger.Actions>
+                                              <SoundPlayerAction Source="Resources/UI/Dominion/Sounds/Turn.wav" />
+                                            </EventTrigger.Actions>
+                                          </EventTrigger>
+                                        </Style.Triggers>--><!--
+                                            </Style>
+                                        </Button.Style>-->
+                                    </Button>
+
+                                    <TextBlock Foreground="{DynamicResource HeaderTextBrush}"
                              Text="{s:StringResource Key=RESEARCH, Case=Upper}"
                              FontSize="18pt"/>
                   <DockPanel Margin="14,0,0,0">
@@ -422,7 +461,25 @@
                                HorizontalAlignment="Right"
                                Text="{Binding Path=Bonuses[Weapons]}"/>
                   </DockPanel>
-                </StackPanel>
+
+                                    <Button Grid.Row="0" Grid.Column="0" x:Name="PART_TurnButtonBottom"
+                      Command="{x:Static scc:ClientCommands.EndTurn}">
+                                        <Button.Content>
+                                            <TextBlock Text="{Binding Path=(scc:GameScreenViewBase.AppContext).CurrentGame.TurnNumber, StringFormat={s:StringResource Key=TURN_BUTTON_TEXT, Case=Upper}, RelativeSource={RelativeSource TemplatedParent}}" />
+                                        </Button.Content>
+                                        <!--<Button.Style>
+                                            <Style TargetType="{x:Type Button}" BasedOn="{StaticResource LCARS_StandardButtonStyle}">
+                                                --><!--<Style.Triggers>
+                                            <EventTrigger RoutedEvent="Button.Click">
+                                            <EventTrigger.Actions>
+                                              <SoundPlayerAction Source="Resources/UI/Dominion/Sounds/Turn.wav" />
+                                            </EventTrigger.Actions>
+                                          </EventTrigger>
+                                        </Style.Triggers>--><!--
+                                            </Style>
+                                        </Button.Style>-->
+                                    </Button>
+                                </StackPanel>
               </Expander>
               <TabControl Margin="4,0,0,0">
                 <TabItem Header="{s:StringResource Key=RESEARCH_MATRIX, Case=Upper}">

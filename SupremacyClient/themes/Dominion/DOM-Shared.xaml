@@ -172,255 +172,61 @@
     </Style>-->
 
 
-    <!--<Style x:Key="LCARS_ThinBorderStyle"
-         TargetType="{x:Type ContentControl}"
-         BasedOn="{StaticResource BaseStyle}">
-        <Setter Property="Background"
-            Value="Transparent" />
-        <Setter Property="Focusable"
-            Value="False" />
-        <Setter Property="FocusVisualStyle"
-            Value="{x:Null}" />
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="{x:Type ContentControl}">
-                    <Border Background="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Background}"
-                  CornerRadius="14" ScrollViewer.VerticalScrollBarVisibility="Auto">
-                        <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="*" />
-                                <RowDefinition Height="Auto" />
-                            </Grid.RowDefinitions>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition Width="0.25*" />
-                                <ColumnDefinition Width="0.5*" />
-                                <ColumnDefinition Width="0.25*" />
-                                <ColumnDefinition Width="Auto" />
-                            </Grid.ColumnDefinitions>
-                            <Path Grid.Column="0"
-                                    Grid.Row="0"
-                                    SnapsToDevicePixels="True"
-                                    Data="{StaticResource LCARS_Corner_TopLeft_Small}"
-                                    Fill="{StaticResource PurpleGradient_TopLeft_BottomRight}" />
-                            <Path Grid.Column="4"
-                                    Grid.Row="0"
-                                    SnapsToDevicePixels="True"
-                                    Data="{StaticResource LCARS_Corner_TopRight_Small}"
-                                    Fill="{StaticResource PurpleGradient_TopLeft_BottomRight}" />
-                            <Path Grid.Column="0"
-                                    Grid.Row="2"
-                                    SnapsToDevicePixels="True"
-                                    Data="{StaticResource LCARS_Corner_BottomLeft_Small}"
-                                    Fill="{StaticResource PurpleGradient_TopLeft_BottomRight}" />
-                            <Path Grid.Column="4"
-                                    Grid.Row="2"
-                                    SnapsToDevicePixels="True"
-                                    Data="{StaticResource LCARS_Corner_BottomRight_Small}"
-                                    Fill="{StaticResource PurpleGradient_TopLeft_BottomRight}" />
-
-                            <Rectangle x:Name="LeftTopEdge"
-                                 Grid.Column="1"
-                                 Grid.Row="0"
-                                 Height="8"
-                                 Margin="3,0,0,0"
-                                 VerticalAlignment="Top"
-                                 Fill="{StaticResource Dom3Gradient_Top_Bottom}" />
-
-                            <Rectangle x:Name="LeftCenterTopEdge"
-                                 Grid.Column="2"
-                                 Grid.Row="0"
-                                 Height="8"
-                                 Margin="3,0,3,0"
-                                 VerticalAlignment="Top"
-                                 Fill="{StaticResource BlueGradient_Top_Bottom}" />
-
-                            <Rectangle x:Name="RightTopEdge"
-                                     Grid.Column="3"
-                                     Grid.Row="0"
-                                     Height="8"
-                                     Margin="0,0,3,0"
-                                     VerticalAlignment="Top"
-                                     Fill="{StaticResource OrangeGradient_Top_Bottom}" />
-
-                            <Rectangle x:Name="LeftEdge"
-                                         Grid.Column="0"
-                                         Grid.Row="1"
-                                         Width="8"
-                                         Margin="0,3,0,3"
-                                         HorizontalAlignment="Left"
-                                         Fill="{StaticResource OrangeGradient_Left_Right}" />
-
-                            <Rectangle x:Name="RightEdge"
-                                         Grid.Column="4"
-                                         Grid.Row="1"
-                                         Width="8"
-                                         Margin="0,3,0,3"
-                                         HorizontalAlignment="Right"
-                                         Fill="{StaticResource OrangeGradient_Left_Right}" />
-
-                            <Rectangle x:Name="LeftBottomEdge"
-                                         Grid.Column="1"
-                                         Grid.Row="2"
-                                         Height="8"
-                                         Margin="3,0,0,0"
-                                         VerticalAlignment="Bottom"
-                                         Fill="{StaticResource OrangeGradient_Top_Bottom}" />
-
-                            <Rectangle x:Name="CenterBottomEdge"
-                                         Grid.Column="2"
-                                         Grid.Row="2"
-                                         Height="8"
-                                         Margin="3,0,3,0"
-                                         VerticalAlignment="Bottom"
-                                         Fill="{StaticResource BlueGradient_Top_Bottom}" />
-
-                            <Rectangle x:Name="RightBottomEdge"
-                                         Grid.Column="3"
-                                         Grid.Row="2"
-                                         Height="8"
-                                         Margin="0,0,3,0"
-                                         VerticalAlignment="Bottom"
-                                         Fill="{StaticResource OrangeGradient_Top_Bottom}" />
-                            <ContentPresenter Grid.Column="1"
-                                Grid.ColumnSpan="3"
-                                Grid.Row="1"
-                                Margin="8,0,8,0"
-                                ClipToBounds="True" />
-                        </Grid>
+    <!--used for game inside, upper left (CombatScreen>"COMMIT"-->
+    <ControlTemplate x:Key="{x:Static scc:GameButton.GroupedHorizontallyTemplateKey}"
+                   TargetType="{x:Type scc:GameButton}">
+        <DockPanel LastChildFill="True">
+            <Rectangle DockPanel.Dock="Left" Width="12" Margin="0,0,2,0"
+                 Fill="{StaticResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"/>
+            <ui:ButtonChrome x:Name="ButtonChrome"
+                       Background="{StaticResource {x:Static scc:ClientResources.ImageBorderBrushKey}}"
+                       DisabledBackground="{StaticResource GrayGradient_Left_Right}"
+                       HoverBackground="{StaticResource {x:Static scc:ClientResources.AlertTextForegroundBrushKey}}"
+                       PressedBackground="{StaticResource {x:Static scc:ClientResources.AlertTextForegroundBrushKey}}"
+                       RenderMouseOver="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=IsMouseOver}"
+                       RenderPressed="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=IsPressed}">
+                <DockPanel LastChildFill="True">
+                    <Border x:Name="Decorations" DockPanel.Dock="Right" Margin="4" Padding="2"
+                  Background="Black" HorizontalAlignment="Right" VerticalAlignment="Center"
+                  Visibility="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(scc:GameControlBase.HasImage), Converter={StaticResource BooleanToVisibilityConverter}}">
+                        <Image Width="16" Height="16" Stretch="Uniform" StretchDirection="DownOnly" VerticalAlignment="Center">
+                            <Image.Source>
+                                <MultiBinding Converter="{scc:CoalesceConverter}">
+                                    <Binding RelativeSource="{RelativeSource TemplatedParent}" Path="ImageSourceSmall" />
+                                    <Binding RelativeSource="{RelativeSource TemplatedParent}" Path="ImageSourceLarge" />
+                                </MultiBinding>
+                            </Image.Source>
+                        </Image>
                     </Border>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>-->
-
-
-
-
-
-    <!--<Style x:Key="DomThinBorderStyle"
-         TargetType="{x:Type ContentControl}"
-         BasedOn="{StaticResource BaseStyle}">
-        <Setter Property="Background"
-            Value="Transparent" />
-        <Setter Property="Focusable"
-            Value="False" />
-        <Setter Property="FocusVisualStyle"
-            Value="{x:Null}" />
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="{x:Type ContentControl}">
-                    <Border Background="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Background}"
-                  CornerRadius="14">
-                        <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="*" />
-                                <RowDefinition Height="Auto" />
-                            </Grid.RowDefinitions>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition Width="0.25*" />
-                                <ColumnDefinition Width="0.5*" />
-                                <ColumnDefinition Width="0.25*" />
-                                <ColumnDefinition Width="Auto" />
-                            </Grid.ColumnDefinitions>
-                            <Path Grid.Column="0"
-                  Grid.Row="0"
-                  SnapsToDevicePixels="True"
-                  Data="{StaticResource LCARS_Corner_TopLeft_Small}"
-                  Fill="{StaticResource Dom3Gradient_Top_Bottom}" />
-                            <Path Grid.Column="4"
-                    Grid.Row="0"
-                    SnapsToDevicePixels="True"
-                    Data="{StaticResource LCARS_Corner_TopRight_Small}"
-                    Fill="{StaticResource Dom3Gradient_Top_Bottom}" />
-                            <Path Grid.Column="0"
-                    Grid.Row="2"
-                    SnapsToDevicePixels="True"
-                    Data="{StaticResource LCARS_Corner_BottomLeft_Small}"
-                    Fill="{StaticResource Dom1Gradient_Top_Bottom}" />
-                            <Path Grid.Column="4"
-                    Grid.Row="2"
-                    SnapsToDevicePixels="True"
-                    Data="{StaticResource LCARS_Corner_BottomRight_Small}"
-                    Fill="{StaticResource Dom1Gradient_Top_Bottom}" />
-
-                            <Rectangle x:Name="LeftTopEdge"
-                         Grid.Column="1"
-                         Grid.Row="0"
-                         Height="8"
-                         Margin="3,0,0,0"
-                         VerticalAlignment="Top"
-                         Fill="{StaticResource Dom1Gradient_Top_Bottom}" />
-
-                            <Rectangle x:Name="LeftCenterTopEdge"
-                         Grid.Column="2"
-                         Grid.Row="0"
-                         Height="8"
-                         Margin="3,0,3,0"
-                         VerticalAlignment="Top"
-                         Fill="{StaticResource Dom3Gradient_Bottom_Top}" />
-
-                            <Rectangle x:Name="RightTopEdge"
-                         Grid.Column="3"
-                         Grid.Row="0"
-                         Height="8"
-                         Margin="0,0,3,0"
-                         VerticalAlignment="Top"
-                         Fill="{StaticResource Dom1Gradient_Top_Bottom}" />
-
-                            <Rectangle x:Name="LeftEdge"
-                         Grid.Column="0"
-                         Grid.Row="1"
-                         Width="8"
-                         Margin="0,3,0,3"
-                         HorizontalAlignment="Left"
-                         Fill="{StaticResource Dom4Gradient_Top_Bottom}" />
-
-                            <Rectangle x:Name="RightEdge"
-                         Grid.Column="4"
-                         Grid.Row="1"
-                         Width="8"
-                         Margin="0,3,0,3"
-                         HorizontalAlignment="Right"
-                         Fill="{StaticResource Dom4Gradient_Top_Bottom}" />
-
-                            <Rectangle x:Name="LeftBottomEdge"
-                         Grid.Column="1"
-                         Grid.Row="2"
-                         Height="8"
-                         Margin="3,0,0,0"
-                         VerticalAlignment="Bottom"
-                         Fill="{StaticResource Dom3Gradient_Top_Bottom}" />
-
-                            <Rectangle x:Name="CenterBottomEdge"
-                         Grid.Column="2"
-                         Grid.Row="2"
-                         Height="8"
-                         Margin="3,0,3,0"
-                         VerticalAlignment="Bottom"
-                         Fill="{StaticResource Dom4Gradient_Top_Bottom}" />
-
-                            <Rectangle x:Name="RightBottomEdge"
-                         Grid.Column="3"
-                         Grid.Row="2"
-                         Height="8"
-                         Margin="0,0,3,0"
-                         VerticalAlignment="Bottom"
-                         Fill="{StaticResource Dom3Gradient_Top_Bottom}" />
-                            <ContentPresenter Grid.Column="1"
-                                Grid.ColumnSpan="3"
-                                Grid.Row="1"
-                                Margin="8,0,8,0"
-                                ClipToBounds="True" />
-                        </Grid>
+                    <Border x:Name="ContentBorder"
+                  Background="{Binding ElementName=ButtonChrome, Path=RenderBackground}"
+                  Padding="{TemplateBinding Padding}">
+                        <ContentPresenter RecognizesAccessKey="True">
+                            <ContentPresenter.Content>
+                                <AccessText Text="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Label}"
+                            Foreground="{StaticResource {x:Static scc:ClientResources.ControlTextForegroundBrushKey}}"
+                            HorizontalAlignment="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=HorizontalContentAlignment}"
+                            VerticalAlignment="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=VerticalContentAlignment}" />
+                            </ContentPresenter.Content>
+                        </ContentPresenter>
                     </Border>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>-->
+                </DockPanel>
+            </ui:ButtonChrome>
+        </DockPanel>
+        <ControlTemplate.Triggers>
+            <Trigger Property="DisplayMode" Value="Minimal">
+                <Setter TargetName="Decorations" Property="Visibility" Value="Collapsed" />
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="True">
+                <Setter TargetName="Decorations" Property="Background" Value="{StaticResource {x:Static scc:ClientResources.HighlightBrushKey}}" />
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+    <!--End of GroupedHorizontallyTemplateKey-->
+
+
+
+
 
     <Style x:Key="LCARS_SimpleButtonStyle"
          TargetType="{x:Type Button}"

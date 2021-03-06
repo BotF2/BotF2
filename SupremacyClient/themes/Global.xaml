@@ -72,23 +72,24 @@
         <GradientStop Color="#ffed9300" Offset="1" />
     </LinearGradientBrush>
 
-    <LinearGradientBrush x:Key="{x:Static scc:ClientResources.VerticalSeparatorBackgroundBrushKey}" StartPoint="0,0" EndPoint="0,1">
+    <LinearGradientBrush x:Key="{x:Static scc:ClientResources.Vertical_Top_Bottom_Brush}" StartPoint="0,0" EndPoint="0,1">
         <GradientStop Color="#ff6666CC" Offset="1" />
         <GradientStop Color="#ff666666" Offset="0" />
-    </LinearGradientBrush>
-
-        <!--<LinearGradientBrush x:Key="{x:Static scc:ClientResources.HorizontalRightLeftSeparatorBackgroundBrushKey}" StartPoint="0,0" EndPoint="1,1">-->
-    <LinearGradientBrush x:Key="{x:Static scc:ClientResources.VerticalBottomUpSeparatorBackgroundBrushKey}" StartPoint="0,0" EndPoint="0,1">
-        <GradientStop Color="#ff666666" Offset="0" />
-        <GradientStop Color="#ff6666CC" Offset="1" />
     </LinearGradientBrush>
     
-    <LinearGradientBrush x:Key="{x:Static scc:ClientResources.HorizontalSeparatorBackgroundBrushKey}" StartPoint="0,0" EndPoint="1,1">
+    <LinearGradientBrush x:Key="{x:Static scc:ClientResources.Vertical_Bottom_Top_Brush}" StartPoint="0,0" EndPoint="0,1">
+        <GradientStop Color="#ff666666" Offset="0" />
+        <GradientStop Color="#ff6666CC" Offset="1" />
+    </LinearGradientBrush> 
+
+    
+    <LinearGradientBrush x:Key="{x:Static scc:ClientResources.Horizontal_Left_Right_Brush}" StartPoint="0,0" EndPoint="1,1">
         <GradientStop Color="#ffcccccc" Offset="1" />
         <GradientStop Color="#ff666666" Offset="0" />
     </LinearGradientBrush>
+   
     
-    <LinearGradientBrush x:Key="{x:Static scc:ClientResources.HorizontalRightLeftSeparatorBackgroundBrushKey}" StartPoint="0,0" EndPoint="1,1">
+    <LinearGradientBrush x:Key="{x:Static scc:ClientResources.Horizontal_Right_Left_Brush}" StartPoint="0,0" EndPoint="1,1">
         <GradientStop Color="#ff666666" Offset="0" />
         <GradientStop Color="#ffcccccc" Offset="1" />
     </LinearGradientBrush>
@@ -177,7 +178,314 @@
     <!--7 BorgGradientBrushes-->
 
 
+    <!--Gradients -Content: -->
 
+
+
+    <!-- AzureGradient -->
+    <!--all races-->
+    <LinearGradientBrush x:Key="AzureGradient_TopLeft_BottomRight" StartPoint="0,0" EndPoint="1,1">
+        <GradientStop Color="#FFd3d3d3" Offset="0" />
+        <GradientStop Color="#FF808080" Offset="1" />
+    </LinearGradientBrush>
+
+    <LinearGradientBrush x:Key="AzureGradient_BottomLeft_TopRight" StartPoint="1,1" EndPoint="0,0">
+        <GradientStop Color="#FFd3d3d3" Offset="0" />
+        <GradientStop Color="#FF808080" Offset="1" />
+    </LinearGradientBrush>
+
+    <LinearGradientBrush x:Key="AzureGradient_Top_Bottom" StartPoint="0,0" EndPoint="0,1">
+        <GradientStop Color="#FFd3d3d3" Offset="0" />
+        <GradientStop Color="#FF808080" Offset="1" />
+    </LinearGradientBrush>
+
+    <LinearGradientBrush x:Key="AzureGradient_Bottom_Top" StartPoint="0,1" EndPoint="0,0">
+        <GradientStop Color="#FFd3d3d3" Offset="0" />
+        <GradientStop Color="#FF808080" Offset="1" />
+    </LinearGradientBrush>
+
+    <LinearGradientBrush x:Key="AzureGradient_Left_Right" StartPoint="0,0" EndPoint="1,0">
+        <GradientStop Color="#FFd3d3d3" Offset="0" />
+        <GradientStop Color="#FF808080" Offset="1" />
+    </LinearGradientBrush>
+
+    <LinearGradientBrush x:Key="AzureGradient_Right_Left" StartPoint="0,0" EndPoint="1,0">
+        <GradientStop Color="#FFd3d3d3" Offset="1" />
+        <GradientStop Color="#FF808080" Offset="0" />
+    </LinearGradientBrush>
+    <!--End of Gradient-->
+
+    <!-- BlueGradient all races-->
+    <!--used for Federation and also for Dialogs and also for more-->
+    <LinearGradientBrush x:Key="BlueGradient_TopLeft_BottomRight" StartPoint="0,0" EndPoint="1,1">
+        <GradientStop Color="#ffdff3fc" Offset="0" />
+        <GradientStop Color="#ff7face3" Offset="1" />
+    </LinearGradientBrush>
+
+    <LinearGradientBrush x:Key="BlueGradient_BottomLeft_TopRight" StartPoint="1,1" EndPoint="0,0">
+        <GradientStop Color="#ffdff3fc" Offset="0" />
+        <GradientStop Color="#ff7face3" Offset="1" />
+    </LinearGradientBrush>
+
+    <LinearGradientBrush x:Key="BlueGradient_Top_Bottom" StartPoint="0,0" EndPoint="0,1">
+        <GradientStop Color="#ffdff3fc" Offset="0" />
+        <GradientStop Color="#ff7face3" Offset="1" />
+    </LinearGradientBrush>
+
+    <LinearGradientBrush x:Key="BlueGradient_Bottom_Top" StartPoint="0,1" EndPoint="0,0">
+        <GradientStop Color="#ffdff3fc" Offset="0" />
+        <GradientStop Color="#ff7face3" Offset="1" />
+    </LinearGradientBrush>
+
+    <LinearGradientBrush x:Key="BlueGradient_Left_Right" StartPoint="0,0" EndPoint="1,0">
+        <GradientStop Color="#ffdff3fc" Offset="0" />
+        <GradientStop Color="#ff7face3" Offset="1" />
+    </LinearGradientBrush>
+
+    <LinearGradientBrush x:Key="BlueGradient_Right_Left" StartPoint="0,0" EndPoint="1,0">
+        <GradientStop Color="#ffdff3fc" Offset="1" />
+        <GradientStop Color="#ff7face3" Offset="0" />
+    </LinearGradientBrush>
+    <!--End of Gradient-->
+
+    <!-- BlueHoverGradient all races-->
+    <!--used for Federation and also for Dialogs and also for more-->
+    <LinearGradientBrush x:Key="BlueHoverGradient_TopLeft_BottomRight" StartPoint="0,0" EndPoint="1,1">
+        <GradientStop Color="#ffffffff" Offset="0" />
+        <GradientStop Color="#FF98C5FB" Offset="1" />
+    </LinearGradientBrush>
+
+    <LinearGradientBrush x:Key="BlueHoverGradient_BottomLeft_TopRight" StartPoint="1,1" EndPoint="0,0">
+        <GradientStop Color="#ffffffff" Offset="0" />
+        <GradientStop Color="#FF98C5FB" Offset="1" />
+    </LinearGradientBrush>
+
+    <LinearGradientBrush x:Key="BlueHoverGradient_Top_Bottom" StartPoint="0,0" EndPoint="0,1">
+        <GradientStop Color="#ffffffff" Offset="0" />
+        <GradientStop Color="#FF98C5FB" Offset="1" />
+    </LinearGradientBrush>
+
+    <LinearGradientBrush x:Key="BlueHoverGradient_Bottom_Top" StartPoint="0,1" EndPoint="0,0">
+        <GradientStop Color="#ffffffff" Offset="0" />
+        <GradientStop Color="#FF98C5FB" Offset="1" />
+    </LinearGradientBrush>
+
+    <LinearGradientBrush x:Key="BlueHoverGradient_Left_Right" StartPoint="0,0" EndPoint="1,0">
+        <GradientStop Color="#ffffffff" Offset="0" />
+        <GradientStop Color="#FF98C5FB" Offset="1" />
+    </LinearGradientBrush>
+
+    <LinearGradientBrush x:Key="BlueHoverGradient_Right_Left" StartPoint="0,0" EndPoint="1,0">
+        <GradientStop Color="#ffffffff" Offset="1" />
+        <GradientStop Color="#FF98C5FB" Offset="0" />
+    </LinearGradientBrush>
+    <!--End of Gradient-->
+
+    <!-- GrayGradient -->
+    <LinearGradientBrush x:Key="GrayGradient_TopLeft_BottomRight" StartPoint="0,0" EndPoint="1,1">
+        <GradientStop Color="#afcccccc" Offset="0" />
+        <GradientStop Color="#af666666" Offset="1" />
+    </LinearGradientBrush>
+
+    <LinearGradientBrush x:Key="GrayGradient_BottomLeft_TopRight" StartPoint="1,1" EndPoint="0,0">
+        <GradientStop Color="#afcccccc" Offset="0" />
+        <GradientStop Color="#af666666" Offset="1" />
+    </LinearGradientBrush>
+
+    <LinearGradientBrush x:Key="GrayGradient_Top_Bottom" StartPoint="0,0" EndPoint="0,1">
+        <GradientStop Color="#afcccccc" Offset="0" />
+        <GradientStop Color="#af666666" Offset="1" />
+    </LinearGradientBrush>
+
+    <LinearGradientBrush x:Key="GrayGradient_Bottom_Top" StartPoint="0,1" EndPoint="0,0">
+        <GradientStop Color="#afcccccc" Offset="0" />
+        <GradientStop Color="#af666666" Offset="1" />
+    </LinearGradientBrush>
+
+    <LinearGradientBrush x:Key="GrayGradient_Left_Right" StartPoint="0,0" EndPoint="1,0">
+        <GradientStop Color="#afcccccc" Offset="0" />
+        <GradientStop Color="#af666666" Offset="1" />
+    </LinearGradientBrush>
+
+    <LinearGradientBrush x:Key="GrayGradient_Right_Left" StartPoint="0,0" EndPoint="1,0">
+        <GradientStop Color="#afcccccc" Offset="1" />
+        <GradientStop Color="#af666666" Offset="0" />
+    </LinearGradientBrush>
+    <!--End of Gradient-->
+
+    <!-- OrangeGradient -->
+    <LinearGradientBrush x:Key="OrangeGradient_TopLeft_BottomRight" StartPoint="0,0" EndPoint="1,1">
+        <GradientStop Color="#ffdc961b" Offset="0" />
+        <GradientStop Color="#ffe7d490" Offset="1" />
+    </LinearGradientBrush>
+
+    <LinearGradientBrush x:Key="OrangeGradient_BottomLeft_TopRight" StartPoint="1,1" EndPoint="0,0">
+        <GradientStop Color="#ffdc961b" Offset="0" />
+        <GradientStop Color="#ffe7d490" Offset="1" />
+    </LinearGradientBrush>
+
+    <LinearGradientBrush x:Key="OrangeGradient_Top_Bottom" StartPoint="0,0" EndPoint="0,1">
+        <GradientStop Color="#ffdc961b" Offset="0" />
+        <GradientStop Color="#ffe7d490" Offset="1" />
+    </LinearGradientBrush>
+
+    <LinearGradientBrush x:Key="OrangeGradient_Bottom_Top" StartPoint="0,1" EndPoint="0,0">
+        <GradientStop Color="#ffdc961b" Offset="0" />
+        <GradientStop Color="#ffe7d490" Offset="1" />
+    </LinearGradientBrush>
+
+    <LinearGradientBrush x:Key="OrangeGradient_Left_Right" StartPoint="0,0" EndPoint="1,0">
+        <GradientStop Color="#ffdc961b" Offset="0" />
+        <GradientStop Color="#ffe7d490" Offset="1" />
+    </LinearGradientBrush>
+
+    <LinearGradientBrush x:Key="OrangeGradient_Right_Left" StartPoint="0,0" EndPoint="1,0">
+        <GradientStop Color="#ffdc961b" Offset="1" />
+        <GradientStop Color="#ffe7d490" Offset="0" />
+    </LinearGradientBrush>
+    <!--End of Gradient-->
+
+    <!--YellowGradient  // just used by Klingons - but they have their own Yellow1 and Yellow2-->
+    <!--<LinearGradientBrush x:Key="YellowGradient_Left_Right"
+                       PresentationOptions:Freeze="True"
+                       StartPoint="0,0"
+                       EndPoint="1,0">
+        <GradientStop Color="#ffffbd50"
+                  Offset="1" />
+        <GradientStop Color="#fffffca9"
+                  Offset="0" />
+    </LinearGradientBrush>-->
+
+    <!--RedGradient-->
+    <LinearGradientBrush x:Key="RedGradient_TopLeft_BottomRight" StartPoint="0,0" EndPoint="1,1">
+        <GradientStop Color="#ffcc0000" Offset="0" />
+        <GradientStop Color="#ffff4c4c" Offset="1" />
+    </LinearGradientBrush>
+
+    <LinearGradientBrush x:Key="RedGradient_BottomLeft_TopRight" StartPoint="1,1" EndPoint="0,0">
+        <GradientStop Color="#ffcc0000" Offset="0" />
+        <GradientStop Color="#ffff4c4c" Offset="1" />
+    </LinearGradientBrush>
+
+    <LinearGradientBrush x:Key="RedGradient_Top_Bottom" StartPoint="0,0" EndPoint="0,1">
+        <GradientStop Color="#ffcc0000" Offset="0" />
+        <GradientStop Color="#ffff4c4c" Offset="1" />
+    </LinearGradientBrush>
+
+    <LinearGradientBrush x:Key="RedGradient_Bottom_Top" StartPoint="0,1" EndPoint="0,0">
+        <GradientStop Color="#ffcc0000" Offset="0" />
+        <GradientStop Color="#ffff4c4c" Offset="1" />
+    </LinearGradientBrush>
+
+    <LinearGradientBrush x:Key="RedGradient_Left_Right" StartPoint="0,0" EndPoint="1,0">
+        <GradientStop Color="#ffcc0000" Offset="0" />
+        <GradientStop Color="#ffff4c4c" Offset="1" />
+    </LinearGradientBrush>
+
+    <LinearGradientBrush x:Key="RedGradient_Right_Left" StartPoint="0,0" EndPoint="1,0">
+        <GradientStop Color="#ffcc0000" Offset="1" />
+        <GradientStop Color="#ffff4c4c" Offset="0" />
+    </LinearGradientBrush>
+    <!--End of Gradient-->
+
+    <!--PinkGradient-->
+    <LinearGradientBrush x:Key="PinkGradient_TopLeft_BottomRight" StartPoint="0,0" EndPoint="1,1">
+        <GradientStop Color="#fff4d9e2" Offset="0" />
+        <GradientStop Color="#ffe38ea1" Offset="1" />
+    </LinearGradientBrush>
+
+    <LinearGradientBrush x:Key="PinkGradient_BottomLeft_TopRight" StartPoint="1,1" EndPoint="0,0">
+        <GradientStop Color="#fff4d9e2" Offset="0" />
+        <GradientStop Color="#ffe38ea1" Offset="1" />
+    </LinearGradientBrush>
+
+    <LinearGradientBrush x:Key="PinkGradient_Top_Bottom" StartPoint="0,0" EndPoint="0,1">
+        <GradientStop Color="#fff4d9e2" Offset="0" />
+        <GradientStop Color="#ffe38ea1" Offset="1" />
+    </LinearGradientBrush>
+
+    <LinearGradientBrush x:Key="PinkGradient_Bottom_Top" StartPoint="0,1" EndPoint="0,0">
+        <GradientStop Color="#fff4d9e2" Offset="0" />
+        <GradientStop Color="#ffe38ea1" Offset="1" />
+    </LinearGradientBrush>
+
+    <LinearGradientBrush x:Key="PinkGradient_Left_Right" StartPoint="0,0" EndPoint="1,0">
+        <GradientStop Color="#fff4d9e2" Offset="0" />
+        <GradientStop Color="#ffe38ea1" Offset="1" />
+    </LinearGradientBrush>
+
+    <LinearGradientBrush x:Key="PinkGradient_Right_Left" StartPoint="0,0" EndPoint="1,0">
+        <GradientStop Color="#fff4d9e2" Offset="1" />
+        <GradientStop Color="#ffe38ea1" Offset="0" />
+    </LinearGradientBrush>
+    <!--End of Gradient-->
+
+    <!--PurpleGradient-->
+    <LinearGradientBrush x:Key="PurpleGradient_TopLeft_BottomRight" StartPoint="0,0" EndPoint="1,1">
+        <GradientStop Color="#ffcacbe0" Offset="0" />
+        <GradientStop Color="#ff7e7cab" Offset="1" />
+    </LinearGradientBrush>
+
+    <LinearGradientBrush x:Key="PurpleGradient_BottomLeft_TopRight" StartPoint="1,1" EndPoint="0,0">
+        <GradientStop Color="#ffcacbe0" Offset="0" />
+        <GradientStop Color="#ff7e7cab" Offset="1" />
+    </LinearGradientBrush>
+
+    <LinearGradientBrush x:Key="PurpleGradient_Top_Bottom" StartPoint="0,0" EndPoint="0,1">
+        <GradientStop Color="#ffcacbe0" Offset="0" />
+        <GradientStop Color="#ff7e7cab" Offset="1" />
+    </LinearGradientBrush>
+
+    <LinearGradientBrush x:Key="PurpleGradient_Bottom_Top" StartPoint="0,1" EndPoint="0,0">
+        <GradientStop Color="#ffcacbe0" Offset="0" />
+        <GradientStop Color="#ff7e7cab" Offset="1" />
+    </LinearGradientBrush>
+
+    <LinearGradientBrush x:Key="PurpleGradient_Left_Right" StartPoint="0,0" EndPoint="1,0">
+        <GradientStop Color="#ffcacbe0" Offset="0" />
+        <GradientStop Color="#ff7e7cab" Offset="1" />
+    </LinearGradientBrush>
+
+    <LinearGradientBrush x:Key="PurpleGradient_Right_Left" StartPoint="0,0" EndPoint="1,0">
+        <GradientStop Color="#ffcacbe0" Offset="1" />
+        <GradientStop Color="#ff7e7cab" Offset="0" />
+    </LinearGradientBrush>
+    <!--End of Gradient-->
+
+    <!--PurpleDarkGradient-->
+    <LinearGradientBrush x:Key="PurpleDarkGradient_TopLeft_BottomRight" StartPoint="0,0" EndPoint="1,1">
+        <GradientStop Color="#FF6666CC" Offset="0" />
+        <GradientStop Color="#FFCC33FF" Offset="1" />
+    </LinearGradientBrush>
+
+    <LinearGradientBrush x:Key="PurpleDarkGradient_BottomLeft_TopRight" StartPoint="1,1" EndPoint="0,0">
+        <GradientStop Color="#FF6666CC" Offset="0" />
+        <GradientStop Color="#FFCC33FF" Offset="1" />
+    </LinearGradientBrush>
+
+    <LinearGradientBrush x:Key="PurpleDarkGradient_Top_Bottom" StartPoint="0,0" EndPoint="0,1">
+        <GradientStop Color="#FF6666CC" Offset="0" />
+        <GradientStop Color="#FFCC33FF" Offset="1" />
+    </LinearGradientBrush>
+
+    <LinearGradientBrush x:Key="PurpleDarkGradient_Bottom_Top" StartPoint="0,1" EndPoint="0,0">
+        <GradientStop Color="#FF6666CC" Offset="0" />
+        <GradientStop Color="#FFCC33FF" Offset="1" />
+    </LinearGradientBrush>
+
+    <LinearGradientBrush x:Key="PurpleDarkGradient_Left_Right" StartPoint="0,0" EndPoint="1,0">
+        <GradientStop Color="#FF6666CC" Offset="0" />
+        <GradientStop Color="#FFCC33FF" Offset="1" />
+    </LinearGradientBrush>
+
+    <LinearGradientBrush x:Key="PurpleDarkGradient_Right_Left" StartPoint="0,0" EndPoint="1,0">
+        <GradientStop Color="#FF6666CC" Offset="1" />
+        <GradientStop Color="#FFCC33FF" Offset="0" />
+    </LinearGradientBrush>
+    <!--End of Gradient-->
+
+
+<!--1 Begin of Ter Gradients-->
 
     <!--Ter1Gradient-->
     <LinearGradientBrush x:Key="Ter1Gradient_TopLeft_BottomRight" StartPoint="0,0" EndPoint="1,1">
@@ -407,282 +715,71 @@
     <!--End of Gradient-->
 
 
+    <!-- 2 Begin of ROM Gradients-->
 
-
-    <!--Gradients -Content: -->
-
-
-
-    <!-- AzureGradient -->
-    <!--all races-->
-    <LinearGradientBrush x:Key="AzureGradient_TopLeft_BottomRight" StartPoint="0,0" EndPoint="1,1">
-        <GradientStop Color="#FFd3d3d3" Offset="0" />
-        <GradientStop Color="#FF808080" Offset="1" />
+    <!-- Rom1Gradient -->
+    <LinearGradientBrush x:Key="Rom1Gradient_TopLeft_BottomRight" StartPoint="0,0" EndPoint="1,1">
+        <GradientStop Color="#FF136e45" Offset="0" />
+        <GradientStop Color="#FF0e935e" Offset="1" />
     </LinearGradientBrush>
 
-    <LinearGradientBrush x:Key="AzureGradient_BottomLeft_TopRight" StartPoint="1,1" EndPoint="0,0">
-        <GradientStop Color="#FFd3d3d3" Offset="0" />
-        <GradientStop Color="#FF808080" Offset="1" />
+    <LinearGradientBrush x:Key="Rom1Gradient_BottomLeft_TopRight" StartPoint="1,1" EndPoint="0,0">
+        <GradientStop Color="#FF136e45" Offset="0" />
+        <GradientStop Color="#FF0e935e" Offset="1" />
     </LinearGradientBrush>
 
-    <LinearGradientBrush x:Key="AzureGradient_Top_Bottom" StartPoint="0,0" EndPoint="0,1">
-        <GradientStop Color="#FFd3d3d3" Offset="0" />
-        <GradientStop Color="#FF808080" Offset="1" />
+    <LinearGradientBrush x:Key="Rom1Gradient_Top_Bottom" StartPoint="0,0" EndPoint="0,1">
+        <GradientStop Color="#FF136e45" Offset="0" />
+        <GradientStop Color="#FF0e935e" Offset="1" />
     </LinearGradientBrush>
 
-    <LinearGradientBrush x:Key="AzureGradient_Bottom_Top" StartPoint="0,1" EndPoint="0,0">
-        <GradientStop Color="#FFd3d3d3" Offset="0" />
-        <GradientStop Color="#FF808080" Offset="1" />
+    <LinearGradientBrush x:Key="Rom1Gradient_Bottom_Top" StartPoint="0,1" EndPoint="0,0">
+        <GradientStop Color="#FF136e45" Offset="0" />
+        <GradientStop Color="#FF0e935e" Offset="1" />
     </LinearGradientBrush>
 
-    <LinearGradientBrush x:Key="AzureGradient_Left_Right" StartPoint="0,0" EndPoint="1,0">
-        <GradientStop Color="#FFd3d3d3" Offset="0" />
-        <GradientStop Color="#FF808080" Offset="1" />
+    <LinearGradientBrush x:Key="Rom1Gradient_Left_Right" StartPoint="0,0" EndPoint="1,0">
+        <GradientStop Color="#FF136e45" Offset="0" />
+        <GradientStop Color="#FF0e935e" Offset="1" />
     </LinearGradientBrush>
 
-    <LinearGradientBrush x:Key="AzureGradient_Right_Left" StartPoint="0,0" EndPoint="1,0">
-        <GradientStop Color="#FFd3d3d3" Offset="1" />
-        <GradientStop Color="#FF808080" Offset="0" />
+    <LinearGradientBrush x:Key="Rom1Gradient_Right_Left" StartPoint="0,0" EndPoint="1,0">
+        <GradientStop Color="#FF136e45" Offset="1" />
+        <GradientStop Color="#FF0e935e" Offset="0" />
     </LinearGradientBrush>
     <!--End of Gradient-->
 
-    <!-- BlueGradient all races-->
-    <!--used for Federation and also for Dialogs and also for more-->
-    <LinearGradientBrush x:Key="BlueGradient_TopLeft_BottomRight" StartPoint="0,0" EndPoint="1,1">
-        <GradientStop Color="#ffdff3fc" Offset="0" />
-        <GradientStop Color="#ff7face3" Offset="1" />
+    <!--Rom2Gradient-->
+    <LinearGradientBrush x:Key="Rom2Gradient_TopLeft_BottomRight" StartPoint="0,0" EndPoint="1,1">
+        <GradientStop Color="#FF129418" Offset="0" />
+        <GradientStop Color="#FF09935f" Offset="1" />
     </LinearGradientBrush>
 
-    <LinearGradientBrush x:Key="BlueGradient_BottomLeft_TopRight" StartPoint="1,1" EndPoint="0,0">
-        <GradientStop Color="#ffdff3fc" Offset="0" />
-        <GradientStop Color="#ff7face3" Offset="1" />
+    <LinearGradientBrush x:Key="Rom2Gradient_BottomLeft_TopRight" StartPoint="1,1" EndPoint="0,0">
+        <GradientStop Color="#FF129418" Offset="0" />
+        <GradientStop Color="#FF09935f" Offset="1" />
     </LinearGradientBrush>
 
-    <LinearGradientBrush x:Key="BlueGradient_Top_Bottom" StartPoint="0,0" EndPoint="0,1">
-        <GradientStop Color="#ffdff3fc" Offset="0" />
-        <GradientStop Color="#ff7face3" Offset="1" />
+    <LinearGradientBrush x:Key="Rom2Gradient_Top_Bottom" StartPoint="0,0" EndPoint="0,1">
+        <GradientStop Color="#FF129418" Offset="0" />
+        <GradientStop Color="#FF09935f" Offset="1" />
     </LinearGradientBrush>
 
-    <LinearGradientBrush x:Key="BlueGradient_Bottom_Top" StartPoint="0,1" EndPoint="0,0">
-        <GradientStop Color="#ffdff3fc" Offset="0" />
-        <GradientStop Color="#ff7face3" Offset="1" />
+    <LinearGradientBrush x:Key="Rom2Gradient_Bottom_Top" StartPoint="0,1" EndPoint="0,0">
+        <GradientStop Color="#FF129418" Offset="0" />
+        <GradientStop Color="#FF09935f" Offset="1" />
     </LinearGradientBrush>
 
-    <LinearGradientBrush x:Key="BlueGradient_Left_Right" StartPoint="0,0" EndPoint="1,0">
-        <GradientStop Color="#ffdff3fc" Offset="0" />
-        <GradientStop Color="#ff7face3" Offset="1" />
+    <LinearGradientBrush x:Key="Rom2Gradient_Left_Right" StartPoint="0,0" EndPoint="1,0">
+        <GradientStop Color="#FF129418" Offset="0" />
+        <GradientStop Color="#FF09935f" Offset="1" />
     </LinearGradientBrush>
 
-    <LinearGradientBrush x:Key="BlueGradient_Right_Left" StartPoint="0,0" EndPoint="1,0">
-        <GradientStop Color="#ffdff3fc" Offset="1" />
-        <GradientStop Color="#ff7face3" Offset="0" />
-    </LinearGradientBrush>
-    <!--End of Gradient-->
-
-    <!-- BlueHoverGradient all races-->
-    <!--used for Federation and also for Dialogs and also for more-->
-    <LinearGradientBrush x:Key="BlueHoverGradient_TopLeft_BottomRight" StartPoint="0,0" EndPoint="1,1">
-        <GradientStop Color="#ffffffff" Offset="0" />
-        <GradientStop Color="#FF98C5FB" Offset="1" />
-    </LinearGradientBrush>
-
-    <LinearGradientBrush x:Key="BlueHoverGradient_BottomLeft_TopRight" StartPoint="1,1" EndPoint="0,0">
-        <GradientStop Color="#ffffffff" Offset="0" />
-        <GradientStop Color="#FF98C5FB" Offset="1" />
-    </LinearGradientBrush>
-
-    <LinearGradientBrush x:Key="BlueHoverGradient_Top_Bottom" StartPoint="0,0" EndPoint="0,1">
-        <GradientStop Color="#ffffffff" Offset="0" />
-        <GradientStop Color="#FF98C5FB" Offset="1" />
-    </LinearGradientBrush>
-
-    <LinearGradientBrush x:Key="BlueHoverGradient_Bottom_Top" StartPoint="0,1" EndPoint="0,0">
-        <GradientStop Color="#ffffffff" Offset="0" />
-        <GradientStop Color="#FF98C5FB" Offset="1" />
-    </LinearGradientBrush>
-
-    <LinearGradientBrush x:Key="BlueHoverGradient_Left_Right" StartPoint="0,0" EndPoint="1,0">
-        <GradientStop Color="#ffffffff" Offset="0" />
-        <GradientStop Color="#FF98C5FB" Offset="1" />
-    </LinearGradientBrush>
-
-    <LinearGradientBrush x:Key="BlueHoverGradient_Right_Left" StartPoint="0,0" EndPoint="1,0">
-        <GradientStop Color="#ffffffff" Offset="1" />
-        <GradientStop Color="#FF98C5FB" Offset="0" />
+    <LinearGradientBrush x:Key="Rom2Gradient_Right_Left" StartPoint="0,0" EndPoint="1,0">
+        <GradientStop Color="#FF129418" Offset="1" />
+        <GradientStop Color="#FF09935f" Offset="0" />
     </LinearGradientBrush>
     <!--End of Gradient-->
-
-    <!-- GrayGradient -->
-    <LinearGradientBrush x:Key="GrayGradient_TopLeft_BottomRight" StartPoint="0,0" EndPoint="1,1">
-        <GradientStop Color="#afcccccc" Offset="0" />
-        <GradientStop Color="#af666666" Offset="1" />
-    </LinearGradientBrush>
-
-    <LinearGradientBrush x:Key="GrayGradient_BottomLeft_TopRight" StartPoint="1,1" EndPoint="0,0">
-        <GradientStop Color="#afcccccc" Offset="0" />
-        <GradientStop Color="#af666666" Offset="1" />
-    </LinearGradientBrush>
-
-    <LinearGradientBrush x:Key="GrayGradient_Top_Bottom" StartPoint="0,0" EndPoint="0,1">
-        <GradientStop Color="#afcccccc" Offset="0" />
-        <GradientStop Color="#af666666" Offset="1" />
-    </LinearGradientBrush>
-
-    <LinearGradientBrush x:Key="GrayGradient_Bottom_Top" StartPoint="0,1" EndPoint="0,0">
-        <GradientStop Color="#afcccccc" Offset="0" />
-        <GradientStop Color="#af666666" Offset="1" />
-    </LinearGradientBrush>
-
-    <LinearGradientBrush x:Key="GrayGradient_Left_Right" StartPoint="0,0" EndPoint="1,0">
-        <GradientStop Color="#afcccccc" Offset="0" />
-        <GradientStop Color="#af666666" Offset="1" />
-    </LinearGradientBrush>
-
-    <LinearGradientBrush x:Key="GrayGradient_Right_Left" StartPoint="0,0" EndPoint="1,0">
-        <GradientStop Color="#afcccccc" Offset="1" />
-        <GradientStop Color="#af666666" Offset="0" />
-    </LinearGradientBrush>
-    <!--End of Gradient-->
-
-    <!-- OrangeGradient -->
-    <LinearGradientBrush x:Key="OrangeGradient_TopLeft_BottomRight" StartPoint="0,0" EndPoint="1,1">
-        <GradientStop Color="#ffdc961b" Offset="0" />
-        <GradientStop Color="#ffe7d490" Offset="1" />
-    </LinearGradientBrush>
-
-    <LinearGradientBrush x:Key="OrangeGradient_BottomLeft_TopRight" StartPoint="1,1" EndPoint="0,0">
-        <GradientStop Color="#ffdc961b" Offset="0" />
-        <GradientStop Color="#ffe7d490" Offset="1" />
-    </LinearGradientBrush>
-
-    <LinearGradientBrush x:Key="OrangeGradient_Top_Bottom" StartPoint="0,0" EndPoint="0,1">
-        <GradientStop Color="#ffdc961b" Offset="0" />
-        <GradientStop Color="#ffe7d490" Offset="1" />
-    </LinearGradientBrush>
-
-    <LinearGradientBrush x:Key="OrangeGradient_Bottom_Top" StartPoint="0,1" EndPoint="0,0">
-        <GradientStop Color="#ffdc961b" Offset="0" />
-        <GradientStop Color="#ffe7d490" Offset="1" />
-    </LinearGradientBrush>
-
-    <LinearGradientBrush x:Key="OrangeGradient_Left_Right" StartPoint="0,0" EndPoint="1,0">
-        <GradientStop Color="#ffdc961b" Offset="0" />
-        <GradientStop Color="#ffe7d490" Offset="1" />
-    </LinearGradientBrush>
-
-    <LinearGradientBrush x:Key="OrangeGradient_Right_Left" StartPoint="0,0" EndPoint="1,0">
-        <GradientStop Color="#ffdc961b" Offset="1" />
-        <GradientStop Color="#ffe7d490" Offset="0" />
-    </LinearGradientBrush>
-    <!--End of Gradient-->
-
-    <!--YellowGradient  // just used by Klingons - but they have their own Yellow1 and Yellow2-->
-    <!--<LinearGradientBrush x:Key="YellowGradient_Left_Right"
-                       PresentationOptions:Freeze="True"
-                       StartPoint="0,0"
-                       EndPoint="1,0">
-        <GradientStop Color="#ffffbd50"
-                  Offset="1" />
-        <GradientStop Color="#fffffca9"
-                  Offset="0" />
-    </LinearGradientBrush>-->
-
-    <!--PinkGradient-->
-    <LinearGradientBrush x:Key="PinkGradient_TopLeft_BottomRight" StartPoint="0,0" EndPoint="1,1">
-        <GradientStop Color="#fff4d9e2" Offset="0" />
-        <GradientStop Color="#ffe38ea1" Offset="1" />
-    </LinearGradientBrush>
-
-    <LinearGradientBrush x:Key="PinkGradient_BottomLeft_TopRight" StartPoint="1,1" EndPoint="0,0">
-        <GradientStop Color="#fff4d9e2" Offset="0" />
-        <GradientStop Color="#ffe38ea1" Offset="1" />
-    </LinearGradientBrush>
-
-    <LinearGradientBrush x:Key="PinkGradient_Top_Bottom" StartPoint="0,0" EndPoint="0,1">
-        <GradientStop Color="#fff4d9e2" Offset="0" />
-        <GradientStop Color="#ffe38ea1" Offset="1" />
-    </LinearGradientBrush>
-
-    <LinearGradientBrush x:Key="PinkGradient_Bottom_Top" StartPoint="0,1" EndPoint="0,0">
-        <GradientStop Color="#fff4d9e2" Offset="0" />
-        <GradientStop Color="#ffe38ea1" Offset="1" />
-    </LinearGradientBrush>
-
-    <LinearGradientBrush x:Key="PinkGradient_Left_Right" StartPoint="0,0" EndPoint="1,0">
-        <GradientStop Color="#fff4d9e2" Offset="0" />
-        <GradientStop Color="#ffe38ea1" Offset="1" />
-    </LinearGradientBrush>
-
-    <LinearGradientBrush x:Key="PinkGradient_Right_Left" StartPoint="0,0" EndPoint="1,0">
-        <GradientStop Color="#fff4d9e2" Offset="1" />
-        <GradientStop Color="#ffe38ea1" Offset="0" />
-    </LinearGradientBrush>
-    <!--End of Gradient-->
-
-    <!--PurpleGradient-->
-    <LinearGradientBrush x:Key="PurpleGradient_TopLeft_BottomRight" StartPoint="0,0" EndPoint="1,1">
-        <GradientStop Color="#ffcacbe0" Offset="0" />
-        <GradientStop Color="#ff7e7cab" Offset="1" />
-    </LinearGradientBrush>
-
-    <LinearGradientBrush x:Key="PurpleGradient_BottomLeft_TopRight" StartPoint="1,1" EndPoint="0,0">
-        <GradientStop Color="#ffcacbe0" Offset="0" />
-        <GradientStop Color="#ff7e7cab" Offset="1" />
-    </LinearGradientBrush>
-
-    <LinearGradientBrush x:Key="PurpleGradient_Top_Bottom" StartPoint="0,0" EndPoint="0,1">
-        <GradientStop Color="#ffcacbe0" Offset="0" />
-        <GradientStop Color="#ff7e7cab" Offset="1" />
-    </LinearGradientBrush>
-
-    <LinearGradientBrush x:Key="PurpleGradient_Bottom_Top" StartPoint="0,1" EndPoint="0,0">
-        <GradientStop Color="#ffcacbe0" Offset="0" />
-        <GradientStop Color="#ff7e7cab" Offset="1" />
-    </LinearGradientBrush>
-
-    <LinearGradientBrush x:Key="PurpleGradient_Left_Right" StartPoint="0,0" EndPoint="1,0">
-        <GradientStop Color="#ffcacbe0" Offset="0" />
-        <GradientStop Color="#ff7e7cab" Offset="1" />
-    </LinearGradientBrush>
-
-    <LinearGradientBrush x:Key="PurpleGradient_Right_Left" StartPoint="0,0" EndPoint="1,0">
-        <GradientStop Color="#ffcacbe0" Offset="1" />
-        <GradientStop Color="#ff7e7cab" Offset="0" />
-    </LinearGradientBrush>
-    <!--End of Gradient-->
-
-    <!--PurpleDarkGradient-->
-    <LinearGradientBrush x:Key="PurpleDarkGradient_TopLeft_BottomRight" StartPoint="0,0" EndPoint="1,1">
-        <GradientStop Color="#FF6666CC" Offset="0" />
-        <GradientStop Color="#FFCC33FF" Offset="1" />
-    </LinearGradientBrush>
-
-    <LinearGradientBrush x:Key="PurpleDarkGradient_BottomLeft_TopRight" StartPoint="1,1" EndPoint="0,0">
-        <GradientStop Color="#FF6666CC" Offset="0" />
-        <GradientStop Color="#FFCC33FF" Offset="1" />
-    </LinearGradientBrush>
-
-    <LinearGradientBrush x:Key="PurpleDarkGradient_Top_Bottom" StartPoint="0,0" EndPoint="0,1">
-        <GradientStop Color="#FF6666CC" Offset="0" />
-        <GradientStop Color="#FFCC33FF" Offset="1" />
-    </LinearGradientBrush>
-
-    <LinearGradientBrush x:Key="PurpleDarkGradient_Bottom_Top" StartPoint="0,1" EndPoint="0,0">
-        <GradientStop Color="#FF6666CC" Offset="0" />
-        <GradientStop Color="#FFCC33FF" Offset="1" />
-    </LinearGradientBrush>
-
-    <LinearGradientBrush x:Key="PurpleDarkGradient_Left_Right" StartPoint="0,0" EndPoint="1,0">
-        <GradientStop Color="#FF6666CC" Offset="0" />
-        <GradientStop Color="#FFCC33FF" Offset="1" />
-    </LinearGradientBrush>
-
-    <LinearGradientBrush x:Key="PurpleDarkGradient_Right_Left" StartPoint="0,0" EndPoint="1,0">
-        <GradientStop Color="#FF6666CC" Offset="1" />
-        <GradientStop Color="#FFCC33FF" Offset="0" />
-    </LinearGradientBrush>
-    <!--End of Gradient-->
-
 
     <!-- RomGreenGradient -->
     <LinearGradientBrush x:Key="RomGreenGradient_TopLeft_BottomRight" StartPoint="0,0" EndPoint="1,1">
@@ -717,6 +814,106 @@
     <!--End of Gradient-->
 
 
+    <!--Rom4Gradient-->
+    <LinearGradientBrush x:Key="Rom4Gradient_TopLeft_BottomRight" StartPoint="0,0" EndPoint="1,1">
+        <GradientStop Color="#FF129418" Offset="0" />
+        <GradientStop Color="#FFf4cb0d" Offset="1" />
+    </LinearGradientBrush>
+
+    <LinearGradientBrush x:Key="Rom4Gradient_BottomLeft_TopRight" StartPoint="1,1" EndPoint="0,0">
+        <GradientStop Color="#FF129418" Offset="0" />
+        <GradientStop Color="#FFf4cb0d" Offset="1" />
+    </LinearGradientBrush>
+
+    <LinearGradientBrush x:Key="Rom4Gradient_Top_Bottom" StartPoint="0,0" EndPoint="0,1">
+        <GradientStop Color="#FF129418" Offset="0" />
+        <GradientStop Color="#FFf4cb0d" Offset="1" />
+    </LinearGradientBrush>
+
+    <LinearGradientBrush x:Key="Rom4Gradient_Bottom_Top" StartPoint="0,1" EndPoint="0,0">
+        <GradientStop Color="#FF129418" Offset="0" />
+        <GradientStop Color="#FFf4cb0d" Offset="1" />
+    </LinearGradientBrush>
+
+    <LinearGradientBrush x:Key="Rom4Gradient_Left_Right" StartPoint="0,0" EndPoint="1,0">
+        <GradientStop Color="#FF129418" Offset="0" />
+        <GradientStop Color="#FFf4cb0d" Offset="1" />
+    </LinearGradientBrush>
+
+    <LinearGradientBrush x:Key="Rom4Gradient_Right_Left" StartPoint="0,0" EndPoint="1,0">
+        <GradientStop Color="#FF129418" Offset="1" />
+        <GradientStop Color="#FFf4cb0d" Offset="0" />
+    </LinearGradientBrush>
+    <!--End of Gradient-->
+
+
+    <!-- 5 RomHoverGradient -->
+    <LinearGradientBrush x:Key="RomHoverGradient_TopLeft_BottomRight" StartPoint="0,0" EndPoint="1,1">
+        <GradientStop Color="#FF37D680" Offset="0" />
+        <GradientStop Color="#FF019245" Offset="1" />
+    </LinearGradientBrush>
+
+    <LinearGradientBrush x:Key="RomHoverGradient_BottomLeft_TopRight" StartPoint="1,1" EndPoint="0,0">
+        <GradientStop Color="#FF37D680" Offset="0" />
+        <GradientStop Color="#FF019245" Offset="1" />
+    </LinearGradientBrush>
+
+    <LinearGradientBrush x:Key="RomHoverGradient_Top_Bottom" StartPoint="0,0" EndPoint="0,1">
+        <GradientStop Color="#FF37D680" Offset="0" />
+        <GradientStop Color="#FF019245" Offset="1" />
+    </LinearGradientBrush>
+
+    <LinearGradientBrush x:Key="RomHoverGradient_Bottom_Top" StartPoint="0,1" EndPoint="0,0">
+        <GradientStop Color="#FF37D680" Offset="0" />
+        <GradientStop Color="#FF019245" Offset="1" />
+    </LinearGradientBrush>
+
+    <LinearGradientBrush x:Key="RomHoverGradient_Left_Right" StartPoint="0,0" EndPoint="1,0">
+        <GradientStop Color="#FF37D680" Offset="0" />
+        <GradientStop Color="#FF019245" Offset="1" />
+    </LinearGradientBrush>
+
+    <LinearGradientBrush x:Key="RomHoverGradient_Right_Left" StartPoint="0,0" EndPoint="1,0">
+        <GradientStop Color="#FF37D680" Offset="1" />
+        <GradientStop Color="#FF019245" Offset="0" />
+    </LinearGradientBrush>
+    <!--End of Gradient-->
+
+
+    <!-- 6 RomPurpleBlueGradient -->
+    <LinearGradientBrush x:Key="RomPurpleBlueGradient_TopLeft_BottomRight" StartPoint="0,0" EndPoint="1,1">
+        <GradientStop Color="#FF6666CC" Offset="0" />
+        <GradientStop Color="#FFCC33FF" Offset="1" />
+    </LinearGradientBrush>
+
+    <LinearGradientBrush x:Key="RomPurpleBlueGradient_BottomLeft_TopRight" StartPoint="1,1" EndPoint="0,0">
+        <GradientStop Color="#FF6666CC" Offset="0" />
+        <GradientStop Color="#FFCC33FF" Offset="1" />
+    </LinearGradientBrush>
+
+    <LinearGradientBrush x:Key="RomPurpleBlueGradient_Top_Bottom" StartPoint="0,0" EndPoint="0,1">
+        <GradientStop Color="#FF6666CC" Offset="0" />
+        <GradientStop Color="#FFCC33FF" Offset="1" />
+    </LinearGradientBrush>
+
+    <LinearGradientBrush x:Key="RomPurpleBlueGradient_Bottom_Top" StartPoint="0,1" EndPoint="0,0">
+        <GradientStop Color="#FF6666CC" Offset="0" />
+        <GradientStop Color="#FFCC33FF" Offset="1" />
+    </LinearGradientBrush>
+
+    <LinearGradientBrush x:Key="RomPurpleBlueGradient_Left_Right" StartPoint="0,0" EndPoint="1,0">
+        <GradientStop Color="#FF6666CC" Offset="0" />
+        <GradientStop Color="#FFCC33FF" Offset="1" />
+    </LinearGradientBrush>
+
+    <LinearGradientBrush x:Key="RomPurpleBlueGradient_Right_Left" StartPoint="0,0" EndPoint="1,0">
+        <GradientStop Color="#FF6666CC" Offset="1" />
+        <GradientStop Color="#FFCC33FF" Offset="0" />
+    </LinearGradientBrush>
+    <!--End of Gradient-->
+
+    <!-- 3 Begin of Kling Gradients -->
+    
     <!-- Kling1Gradient -->
     <LinearGradientBrush x:Key="Kling1Gradient_TopLeft_BottomRight" StartPoint="0,0" EndPoint="1,1">
         <GradientStop Color="#FF570001" Offset="0" />
@@ -1039,170 +1236,7 @@
     <!--End of Gradient-->
     
     
-    <!-- Begin of ROM Gradients-->
 
-    <!-- Rom1Gradient -->
-    <LinearGradientBrush x:Key="Rom1Gradient_TopLeft_BottomRight" StartPoint="0,0" EndPoint="1,1">
-        <GradientStop Color="#FF136e45" Offset="0" />
-        <GradientStop Color="#FF0e935e" Offset="1" />
-    </LinearGradientBrush>
-
-    <LinearGradientBrush x:Key="Rom1Gradient_BottomLeft_TopRight" StartPoint="1,1" EndPoint="0,0">
-        <GradientStop Color="#FF136e45" Offset="0" />
-        <GradientStop Color="#FF0e935e" Offset="1" />
-    </LinearGradientBrush>
-
-    <LinearGradientBrush x:Key="Rom1Gradient_Top_Bottom" StartPoint="0,0" EndPoint="0,1">
-        <GradientStop Color="#FF136e45" Offset="0" />
-        <GradientStop Color="#FF0e935e" Offset="1" />
-    </LinearGradientBrush>
-
-    <LinearGradientBrush x:Key="Rom1Gradient_Bottom_Top" StartPoint="0,1" EndPoint="0,0">
-        <GradientStop Color="#FF136e45" Offset="0" />
-        <GradientStop Color="#FF0e935e" Offset="1" />
-    </LinearGradientBrush>
-
-    <LinearGradientBrush x:Key="Rom1Gradient_Left_Right" StartPoint="0,0" EndPoint="1,0">
-        <GradientStop Color="#FF136e45" Offset="0" />
-        <GradientStop Color="#FF0e935e" Offset="1" />
-    </LinearGradientBrush>
-
-    <LinearGradientBrush x:Key="Rom1Gradient_Right_Left" StartPoint="0,0" EndPoint="1,0">
-        <GradientStop Color="#FF136e45" Offset="1" />
-        <GradientStop Color="#FF0e935e" Offset="0" />
-    </LinearGradientBrush>
-    <!--End of Gradient-->
-
-    <!--Rom2Gradient-->
-    <LinearGradientBrush x:Key="Rom2Gradient_TopLeft_BottomRight" StartPoint="0,0" EndPoint="1,1">
-        <GradientStop Color="#FF129418" Offset="0" />
-        <GradientStop Color="#FF09935f" Offset="1" />
-    </LinearGradientBrush>
-
-    <LinearGradientBrush x:Key="Rom2Gradient_BottomLeft_TopRight" StartPoint="1,1" EndPoint="0,0">
-        <GradientStop Color="#FF129418" Offset="0" />
-        <GradientStop Color="#FF09935f" Offset="1" />
-    </LinearGradientBrush>
-
-    <LinearGradientBrush x:Key="Rom2Gradient_Top_Bottom" StartPoint="0,0" EndPoint="0,1">
-        <GradientStop Color="#FF129418" Offset="0" />
-        <GradientStop Color="#FF09935f" Offset="1" />
-    </LinearGradientBrush>
-
-    <LinearGradientBrush x:Key="Rom2Gradient_Bottom_Top" StartPoint="0,1" EndPoint="0,0">
-        <GradientStop Color="#FF129418" Offset="0" />
-        <GradientStop Color="#FF09935f" Offset="1" />
-    </LinearGradientBrush>
-
-    <LinearGradientBrush x:Key="Rom2Gradient_Left_Right" StartPoint="0,0" EndPoint="1,0">
-        <GradientStop Color="#FF129418" Offset="0" />
-        <GradientStop Color="#FF09935f" Offset="1" />
-    </LinearGradientBrush>
-
-    <LinearGradientBrush x:Key="Rom2Gradient_Right_Left" StartPoint="0,0" EndPoint="1,0">
-        <GradientStop Color="#FF129418" Offset="1" />
-        <GradientStop Color="#FF09935f" Offset="0" />
-    </LinearGradientBrush>
-    <!--End of Gradient-->
-
-
-    <!--Rom4Gradient-->
-    <LinearGradientBrush x:Key="Rom4Gradient_TopLeft_BottomRight" StartPoint="0,0" EndPoint="1,1">
-        <GradientStop Color="#FF129418" Offset="0" />
-        <GradientStop Color="#FFf4cb0d" Offset="1" />
-    </LinearGradientBrush>
-
-    <LinearGradientBrush x:Key="Rom4Gradient_BottomLeft_TopRight" StartPoint="1,1" EndPoint="0,0">
-        <GradientStop Color="#FF129418" Offset="0" />
-        <GradientStop Color="#FFf4cb0d" Offset="1" />
-    </LinearGradientBrush>
-
-    <LinearGradientBrush x:Key="Rom4Gradient_Top_Bottom" StartPoint="0,0" EndPoint="0,1">
-        <GradientStop Color="#FF129418" Offset="0" />
-        <GradientStop Color="#FFf4cb0d" Offset="1" />
-    </LinearGradientBrush>
-
-    <LinearGradientBrush x:Key="Rom4Gradient_Bottom_Top" StartPoint="0,1" EndPoint="0,0">
-        <GradientStop Color="#FF129418" Offset="0" />
-        <GradientStop Color="#FFf4cb0d" Offset="1" />
-    </LinearGradientBrush>
-
-    <LinearGradientBrush x:Key="Rom4Gradient_Left_Right" StartPoint="0,0" EndPoint="1,0">
-        <GradientStop Color="#FF129418" Offset="0" />
-        <GradientStop Color="#FFf4cb0d" Offset="1" />
-    </LinearGradientBrush>
-
-    <LinearGradientBrush x:Key="Rom4Gradient_Right_Left" StartPoint="0,0" EndPoint="1,0">
-        <GradientStop Color="#FF129418" Offset="1" />
-        <GradientStop Color="#FFf4cb0d" Offset="0" />
-    </LinearGradientBrush>
-    <!--End of Gradient-->
-
-    
-    <!-- 5 RomHoverGradient -->
-    <LinearGradientBrush x:Key="RomHoverGradient_TopLeft_BottomRight" StartPoint="0,0" EndPoint="1,1">
-        <GradientStop Color="#FF37D680" Offset="0" />
-        <GradientStop Color="#FF019245" Offset="1" />
-    </LinearGradientBrush>
-
-    <LinearGradientBrush x:Key="RomHoverGradient_BottomLeft_TopRight" StartPoint="1,1" EndPoint="0,0">
-        <GradientStop Color="#FF37D680" Offset="0" />
-        <GradientStop Color="#FF019245" Offset="1" />
-    </LinearGradientBrush>
-
-    <LinearGradientBrush x:Key="RomHoverGradient_Top_Bottom" StartPoint="0,0" EndPoint="0,1">
-        <GradientStop Color="#FF37D680" Offset="0" />
-        <GradientStop Color="#FF019245" Offset="1" />
-    </LinearGradientBrush>
-
-    <LinearGradientBrush x:Key="RomHoverGradient_Bottom_Top" StartPoint="0,1" EndPoint="0,0">
-        <GradientStop Color="#FF37D680" Offset="0" />
-        <GradientStop Color="#FF019245" Offset="1" />
-    </LinearGradientBrush>
-
-    <LinearGradientBrush x:Key="RomHoverGradient_Left_Right" StartPoint="0,0" EndPoint="1,0">
-        <GradientStop Color="#FF37D680" Offset="0" />
-        <GradientStop Color="#FF019245" Offset="1" />
-    </LinearGradientBrush>
-
-    <LinearGradientBrush x:Key="RomHoverGradient_Right_Left" StartPoint="0,0" EndPoint="1,0">
-        <GradientStop Color="#FF37D680" Offset="1" />
-        <GradientStop Color="#FF019245" Offset="0" />
-    </LinearGradientBrush>
-    <!--End of Gradient-->
-
-    
-    <!-- 6 RomPurpleBlueGradient -->
-    <LinearGradientBrush x:Key="RomPurpleBlueGradient_TopLeft_BottomRight" StartPoint="0,0" EndPoint="1,1">
-        <GradientStop Color="#FF6666CC" Offset="0" />
-        <GradientStop Color="#FFCC33FF" Offset="1" />
-    </LinearGradientBrush>
-
-    <LinearGradientBrush x:Key="RomPurpleBlueGradient_BottomLeft_TopRight" StartPoint="1,1" EndPoint="0,0">
-        <GradientStop Color="#FF6666CC" Offset="0" />
-        <GradientStop Color="#FFCC33FF" Offset="1" />
-    </LinearGradientBrush>
-
-    <LinearGradientBrush x:Key="RomPurpleBlueGradient_Top_Bottom" StartPoint="0,0" EndPoint="0,1">
-        <GradientStop Color="#FF6666CC" Offset="0" />
-        <GradientStop Color="#FFCC33FF" Offset="1" />
-    </LinearGradientBrush>
-
-    <LinearGradientBrush x:Key="RomPurpleBlueGradient_Bottom_Top" StartPoint="0,1" EndPoint="0,0">
-        <GradientStop Color="#FF6666CC" Offset="0" />
-        <GradientStop Color="#FFCC33FF" Offset="1" />
-    </LinearGradientBrush>
-
-    <LinearGradientBrush x:Key="RomPurpleBlueGradient_Left_Right" StartPoint="0,0" EndPoint="1,0">
-        <GradientStop Color="#FF6666CC" Offset="0" />
-        <GradientStop Color="#FFCC33FF" Offset="1" />
-    </LinearGradientBrush>
-
-    <LinearGradientBrush x:Key="RomPurpleBlueGradient_Right_Left" StartPoint="0,0" EndPoint="1,0">
-        <GradientStop Color="#FF6666CC" Offset="1" />
-        <GradientStop Color="#FFCC33FF" Offset="0" />
-    </LinearGradientBrush>
-    <!--End of Gradient-->
 
     <!--5 CardGradientBrushes-->
 
@@ -3518,7 +3552,7 @@
                      Value="True">
               <Setter TargetName="Border"
                       Property="Background"
-                      Value="{StaticResource {x:Static scc:ClientResources.HighlightBrushKey}}" />
+                      Value="{StaticResource {x:Static scc:ClientResources.AlertTextForegroundBrushKey}}" />
             </Trigger>
           </ControlTemplate.Triggers>
         </ControlTemplate>
@@ -4661,9 +4695,9 @@
                         <Rectangle Grid.Column="0"
                        Width="14"
                        SnapsToDevicePixels="True"
-                       Fill="{StaticResource {x:Static scc:ClientResources.VerticalSeparatorBackgroundBrushKey}}" />
+                       Fill="{StaticResource {x:Static scc:ClientResources.Vertical_Top_Bottom_Brush}}" />
                         <scc:PixelSnappingBorder x:Name="Border" Grid.Column="1" Margin="3,0,0,0" Padding="7,0,7,0" SnapsToDevicePixels="True"
-                                     Background="{StaticResource {x:Static scc:ClientResources.HorizontalSeparatorBackgroundBrushKey}}">
+                                     Background="{StaticResource {x:Static scc:ClientResources.Horizontal_Left_Right_Brush}}">
                             <ContentPresenter ContentSource="Header" VerticalAlignment="Center" SnapsToDevicePixels="True" />
                         </scc:PixelSnappingBorder>
                     </Grid>
@@ -4713,9 +4747,9 @@
             <Rectangle Grid.Column="0"
                        Width="14"
                        SnapsToDevicePixels="True"
-                       Fill="{StaticResource {x:Static scc:ClientResources.VerticalSeparatorBackgroundBrushKey}}" />
+                       Fill="{StaticResource {x:Static scc:ClientResources.Vertical_Top_Bottom_Brush}}" />
             <scc:PixelSnappingBorder x:Name="Border" Grid.Column="1" Margin="3,0,0,0" Padding="7,0,7,0" SnapsToDevicePixels="True"
-                                     Background="{StaticResource {x:Static scc:ClientResources.HorizontalSeparatorBackgroundBrushKey}}">
+                                     Background="{StaticResource {x:Static scc:ClientResources.Horizontal_Left_Right_Brush}}">
               <ContentPresenter ContentSource="Header" VerticalAlignment="Center" SnapsToDevicePixels="True" />
             </scc:PixelSnappingBorder>
           </Grid>
@@ -5900,11 +5934,8 @@
   <ControlTemplate x:Key="{x:Static scc:GameButton.GroupedVerticallyTemplateKey}"
                    TargetType="{x:Type scc:GameButton}">
     <DockPanel LastChildFill="True">
-      <Rectangle x:Name="CheckRectangle"
-                 DockPanel.Dock="Left"
-                 Fill="{StaticResource OrangeGradient_Left_Right}"
-                 Width="12"
-                 Margin="0,0,2,0" />
+      <Rectangle x:Name="CheckRectangle" DockPanel.Dock="Left" Width="12" Margin="0,0,2,0"
+                 Fill="{StaticResource OrangeGradient_Left_Right}"/>
 
       <ui:ButtonChrome x:Name="ButtonChrome"
                        Background="#FF666666"
@@ -5915,25 +5946,14 @@
                        RenderPressed="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=IsPressed}">
 
         <DockPanel LastChildFill="True">
-          <Border x:Name="Decorations"
-                  DockPanel.Dock="Right"
-                  Margin="4"
-                  Padding="2"
-                  Background="Black"
-                  HorizontalAlignment="Right"
-                  VerticalAlignment="Center"
+          <Border x:Name="Decorations" DockPanel.Dock="Right" Margin="4" Padding="2"
+                  Background="Black" HorizontalAlignment="Right" VerticalAlignment="Center"
                   Visibility="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(scc:GameControlBase.HasImage), Converter={StaticResource BooleanToVisibilityConverter}}">
-            <Image Width="16"
-                   Height="16"
-                   Stretch="Uniform"
-                   StretchDirection="DownOnly"
-                   VerticalAlignment="Center">
+            <Image Width="16" Height="16" Stretch="Uniform" StretchDirection="DownOnly" VerticalAlignment="Center">
               <Image.Source>
                 <MultiBinding Converter="{scc:CoalesceConverter}">
-                  <Binding RelativeSource="{RelativeSource TemplatedParent}"
-                           Path="ImageSourceSmall" />
-                  <Binding RelativeSource="{RelativeSource TemplatedParent}"
-                           Path="ImageSourceLarge" />
+                  <Binding RelativeSource="{RelativeSource TemplatedParent}" Path="ImageSourceSmall" />
+                  <Binding RelativeSource="{RelativeSource TemplatedParent}" Path="ImageSourceLarge" />
                 </MultiBinding>
               </Image.Source>
             </Image>
@@ -5948,65 +5968,45 @@
                             VerticalAlignment="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=VerticalContentAlignment}" />
               </ContentPresenter.Content>
             </ContentPresenter>
-
           </Border>
         </DockPanel>
       </ui:ButtonChrome>
     </DockPanel>
     <ControlTemplate.Triggers>
-            <!--DisplayMode" Value="Minimal"-->
-            <Trigger Property="DisplayMode" Value="Minimal">
-        <Setter TargetName="Decorations"
-                Property="Visibility"
-                Value="Collapsed" />
-      </Trigger>
-            <!--IsChecked-->
-            <Trigger Property="IsChecked" Value="False">
-        <Setter TargetName="CheckRectangle"
-                Property="Opacity"
-                Value="0.5" />
-      </Trigger>
+        <!--DisplayMode" Value="Minimal"-->
+        <Trigger Property="DisplayMode" Value="Minimal">
+            <Setter TargetName="Decorations" Property="Visibility" Value="Collapsed" />
+        </Trigger>
+        <!--IsChecked-->
+        <Trigger Property="IsChecked" Value="False">
+            <Setter TargetName="CheckRectangle" Property="Opacity" Value="0.5" />
+        </Trigger>
     </ControlTemplate.Triggers>
   </ControlTemplate>
     <!--End of GameButton.GroupedVerticallyTemplateKey-->
   
-    <!--used for game inside, upper left (Turn/Empire Info/)-->
+    <!--used for game inside, upper left (CombatScreen>"COMMIT"-->
   <ControlTemplate x:Key="{x:Static scc:GameButton.GroupedHorizontallyTemplateKey}"
                    TargetType="{x:Type scc:GameButton}">
     <DockPanel LastChildFill="True">
-      <Rectangle DockPanel.Dock="Left"
-                 Fill="{StaticResource {x:Static scc:ClientResources.VerticalSeparatorBackgroundBrushKey}}"
-                 Width="12"
-                 Margin="0,0,2,0" />
-
+      <Rectangle DockPanel.Dock="Left" Width="12" Margin="0,0,2,0"
+                 Fill="{StaticResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"/>
       <ui:ButtonChrome x:Name="ButtonChrome"
-                       Background="{StaticResource {x:Static scc:ClientResources.HorizontalSeparatorBackgroundBrushKey}}"
-                       
-                       DisabledBackground="{StaticResource BlueGradient_Left_Right}"
-                       HoverBackground="{StaticResource {x:Static scc:ClientResources.HorizontalRightLeftSeparatorBackgroundBrushKey}}"
-                       PressedBackground="{StaticResource {x:Static scc:ClientResources.HighlightBrushKey}}"
+                       Background="{StaticResource {x:Static scc:ClientResources.ImageBorderBrushKey}}"
+                       DisabledBackground="{StaticResource GrayGradient_Left_Right}"
+                       HoverBackground="{StaticResource {x:Static scc:ClientResources.AlertTextForegroundBrushKey}}"
+                       PressedBackground="{StaticResource {x:Static scc:ClientResources.AlertTextForegroundBrushKey}}"
                        RenderMouseOver="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=IsMouseOver}"
                        RenderPressed="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=IsPressed}">
         <DockPanel LastChildFill="True">
-          <Border x:Name="Decorations"
-                  DockPanel.Dock="Right"
-                  Margin="4"
-                  Padding="2"
-                  Background="Black"
-                  HorizontalAlignment="Right"
-                  VerticalAlignment="Center"
+          <Border x:Name="Decorations" DockPanel.Dock="Right" Margin="4" Padding="2"
+                  Background="Black" HorizontalAlignment="Right" VerticalAlignment="Center"
                   Visibility="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(scc:GameControlBase.HasImage), Converter={StaticResource BooleanToVisibilityConverter}}">
-            <Image Width="16"
-                   Height="16"
-                   Stretch="Uniform"
-                   StretchDirection="DownOnly"
-                   VerticalAlignment="Center">
+            <Image Width="16" Height="16" Stretch="Uniform" StretchDirection="DownOnly" VerticalAlignment="Center">
               <Image.Source>
                 <MultiBinding Converter="{scc:CoalesceConverter}">
-                  <Binding RelativeSource="{RelativeSource TemplatedParent}"
-                           Path="ImageSourceSmall" />
-                  <Binding RelativeSource="{RelativeSource TemplatedParent}"
-                           Path="ImageSourceLarge" />
+                  <Binding RelativeSource="{RelativeSource TemplatedParent}" Path="ImageSourceSmall" />
+                  <Binding RelativeSource="{RelativeSource TemplatedParent}" Path="ImageSourceLarge" />
                 </MultiBinding>
               </Image.Source>
             </Image>
@@ -6027,18 +6027,17 @@
       </ui:ButtonChrome>
     </DockPanel>
     <ControlTemplate.Triggers>
-        
-      <Trigger Property="DisplayMode" Value="Minimal">
-        <Setter TargetName="Decorations" Property="Visibility" Value="Collapsed" />
-      </Trigger>
-            
+        <Trigger Property="DisplayMode" Value="Minimal">
+            <Setter TargetName="Decorations" Property="Visibility" Value="Collapsed" />
+        </Trigger>
         <Trigger Property="IsEnabled" Value="True">
-                <Setter TargetName="Decorations" Property="Background" Value="{StaticResource {x:Static scc:ClientResources.HighlightBrushKey}}" />
-            </Trigger>
-
-        </ControlTemplate.Triggers>
+            <Setter TargetName="Decorations" Property="Background" Value="{StaticResource {x:Static scc:ClientResources.HighlightBrushKey}}" />
+        </Trigger>
+    </ControlTemplate.Triggers>
   </ControlTemplate>
-
+    <!--End of GroupedHorizontallyTemplateKey-->
+    
+    
   <ControlTemplate x:Key="{x:Static scc:GameButton.HyperlinkTemplateKey}"
                    TargetType="{x:Type scc:GameButton}">
     <Border>

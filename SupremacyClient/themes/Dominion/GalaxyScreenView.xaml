@@ -925,7 +925,7 @@
                                                     <GeometryDrawing Brush="{StaticResource Dom1Gradient_Top_Bottom}" Geometry="M51,14L60,14 60,18 55,18 51,14z"  />
                                                     <GeometryDrawing Brush="{StaticResource Dom1Gradient_Top_Bottom}" Geometry="M71,14L80,14 80,18 75,18 71,14z"  />
 
-                                                    <GeometryDrawing Brush="WhiteSmoke" Geometry="M 11,11 100,11 105,7 180,7 180,11 345,11 345,13 175,13 170,10 155,10 150,18, 130,18 125,10 105,10 100,13 11,13 Z" />
+                                                    <GeometryDrawing Brush="#ffe8e8e8" Geometry="M 11,11 100,11 105,7 180,7 180,11 345,11 345,13 175,13 170,10 155,10 150,18, 130,18 125,10 105,10 100,13 11,13 Z" />
 
                                                     <GeometryDrawing Brush="{StaticResource Dom1Gradient_Top_Bottom}" Geometry="M211,10L 220,10 220,6 215,6 211,10z"  />
                                                     <GeometryDrawing Brush="{StaticResource Dom1Gradient_Top_Bottom}" Geometry="M211,14L220,14 220,18 215,18 211,14z"  />

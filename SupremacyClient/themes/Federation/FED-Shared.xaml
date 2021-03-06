@@ -287,7 +287,59 @@
     </Setter>
   </Style>
 
-  <!--
+    <!--used for game inside, upper left (CombatScreen>"COMMIT"-->
+    <ControlTemplate x:Key="{x:Static scc:GameButton.GroupedHorizontallyTemplateKey}"
+                   TargetType="{x:Type scc:GameButton}">
+        <DockPanel LastChildFill="True">
+            <Rectangle DockPanel.Dock="Left" Width="12" Margin="0,0,2,0"
+                 Fill="{StaticResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"/>
+            <ui:ButtonChrome x:Name="ButtonChrome"
+                       Background="{StaticResource {x:Static scc:ClientResources.ImageBorderBrushKey}}"
+                       DisabledBackground="{StaticResource GrayGradient_Left_Right}"
+                       HoverBackground="{StaticResource {x:Static scc:ClientResources.AlertTextForegroundBrushKey}}"
+                       PressedBackground="{StaticResource {x:Static scc:ClientResources.AlertTextForegroundBrushKey}}"
+                       RenderMouseOver="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=IsMouseOver}"
+                       RenderPressed="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=IsPressed}">
+                <DockPanel LastChildFill="True">
+                    <Border x:Name="Decorations" DockPanel.Dock="Right" Margin="4" Padding="2"
+                  Background="Black" HorizontalAlignment="Right" VerticalAlignment="Center"
+                  Visibility="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(scc:GameControlBase.HasImage), Converter={StaticResource BooleanToVisibilityConverter}}">
+                        <Image Width="16" Height="16" Stretch="Uniform" StretchDirection="DownOnly" VerticalAlignment="Center">
+                            <Image.Source>
+                                <MultiBinding Converter="{scc:CoalesceConverter}">
+                                    <Binding RelativeSource="{RelativeSource TemplatedParent}" Path="ImageSourceSmall" />
+                                    <Binding RelativeSource="{RelativeSource TemplatedParent}" Path="ImageSourceLarge" />
+                                </MultiBinding>
+                            </Image.Source>
+                        </Image>
+                    </Border>
+                    <Border x:Name="ContentBorder"
+                  Background="{Binding ElementName=ButtonChrome, Path=RenderBackground}"
+                  Padding="{TemplateBinding Padding}">
+                        <ContentPresenter RecognizesAccessKey="True">
+                            <ContentPresenter.Content>
+                                <AccessText Text="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Label}"
+                            Foreground="{StaticResource {x:Static scc:ClientResources.ControlTextForegroundBrushKey}}"
+                            HorizontalAlignment="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=HorizontalContentAlignment}"
+                            VerticalAlignment="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=VerticalContentAlignment}" />
+                            </ContentPresenter.Content>
+                        </ContentPresenter>
+                    </Border>
+                </DockPanel>
+            </ui:ButtonChrome>
+        </DockPanel>
+        <ControlTemplate.Triggers>
+            <Trigger Property="DisplayMode" Value="Minimal">
+                <Setter TargetName="Decorations" Property="Visibility" Value="Collapsed" />
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="True">
+                <Setter TargetName="Decorations" Property="Background" Value="{StaticResource {x:Static scc:ClientResources.HighlightBrushKey}}" />
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+    <!--End of GroupedHorizontallyTemplateKey-->
+
+    <!--
     XCEED DATA GRID 
   -->
 

@@ -49,7 +49,7 @@
                         Width="14"
                         Height="21"
                         CornerRadius="10.5,0,0,10.5"
-                        Background="{DynamicResource Borg3Gradient_Left_Right}"/>
+                        Background="{DynamicResource Borg1Gradient_Left_Right}"/>
                 <ControlTemplate.Triggers>
                   <Trigger Property="IsMouseOver"
                            Value="True">
@@ -61,7 +61,7 @@
                            Value="True">
                     <Setter TargetName="Border"
                             Property="Background"
-                            Value="{DynamicResource Borg1Gradient_Left_Right}"/>
+                            Value="{DynamicResource Borg3Gradient_Left_Right}"/>
                     <Trigger.EnterActions>
                                             <SoundPlayerAction Source="vfs:///Resources/UI/Romulans/Sounds/ButtonClick.wav"/>
                     </Trigger.EnterActions>
@@ -84,7 +84,7 @@
                         Width="14"
                         Height="21"
                         CornerRadius="0,10.5,10.5,0"
-                        Background="{DynamicResource Borg3Gradient_Left_Right}"/>
+                        Background="{DynamicResource Borg1Gradient_Left_Right}"/>
                 <ControlTemplate.Triggers>
                   <Trigger Property="IsMouseOver"
                            Value="True">
@@ -96,7 +96,7 @@
                            Value="True">
                     <Setter TargetName="Border"
                             Property="Background"
-                            Value="{DynamicResource Borg1Gradient_Left_Right}"/>
+                            Value="{DynamicResource Borg3Gradient_Left_Right}"/>
                     <Trigger.EnterActions>
                                             <SoundPlayerAction Source="vfs:///Resources/UI/Romulans/Sounds/ButtonClick.wav"/>
                     </Trigger.EnterActions>
@@ -105,7 +105,9 @@
               </ControlTemplate>
             </RepeatButton.Template>
           </RepeatButton>
-          <ui:BlockBar x:Name="ValueBlockBar"
+            
+            <!--ValueBlockBar-->
+            <ui:BlockBar x:Name="ValueBlockBar"
                        DockPanel.Dock="Top"
                        BlockCount="20"
                        BlockMargin="2"
@@ -151,7 +153,7 @@
   <DataTemplate DataType="{x:Type local:ResearchApplicationData}">
     <Border x:Name="OuterBorder"
             BorderThickness="1,1,0,0"
-            BorderBrush="White"
+            BorderBrush="{DynamicResource {x:Static scc:ClientResources.ImageBorderBrushKey}}"
             Padding="4"
             SnapsToDevicePixels="True"
             TextBlock.FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
@@ -192,7 +194,7 @@
     <!--Image-->
   <DataTemplate x:Key="TechObjectImageTemplate"
                 DataType="{x:Type tech:TechObjectDesign}">
-    <Border BorderBrush="White"
+        <Border BorderBrush="{DynamicResource {x:Static scc:ClientResources.ImageBorderBrushKey}}"
             Margin="0,0,7,7"
             BorderThickness="2"
             CornerRadius="4"
@@ -206,8 +208,7 @@
 
     <!--Details-->
   <DataTemplate DataType="{x:Type local:ResearchApplicationDetails}">
-    <ScrollViewer CanContentScroll="False"
-                  MaxHeight="320">
+    <ScrollViewer CanContentScroll="False" MaxHeight="320" VerticalScrollBarVisibility="Auto">
       <Grid>
         <Grid.ColumnDefinitions>
           <ColumnDefinition Width="0.5*"/>
@@ -325,7 +326,7 @@
                     <DockPanel Margin="14,0,0,0">
                         <TextBlock DockPanel.Dock="Left"  Text="{s:StringResource Key=BIOTECH, Case=Upper}"
                                    Foreground="{DynamicResource DefaultTextBrush}"/>
-                        <TextBlock DockPanel.Dock="Right" Text="{Binding Path=Values[Biotech]}"
+                        <TextBlock DockPanel.Dock="Right" Text="{Binding Path=Progress[Biotech]}"
                                    Foreground="{DynamicResource DefaultTextBrush}" HorizontalAlignment="Right"
                     /></DockPanel>
 
@@ -440,10 +441,12 @@
                   <Grid>
                     <Grid.RowDefinitions>
                       <RowDefinition Height="Auto"/>
-                      <RowDefinition Height="2*"
-                                     MaxHeight="{Binding ElementName=ResearchMatrixScrollViewer, Path=ExtentHeight}"/>
+                                            <!--<RowDefinition Height="2*"-->
+                      <RowDefinition Height="1*"
+                                                                          MinHeight="28"/>
+                                     <!--MaxHeight="{Binding ElementName=ResearchMatrixScrollViewer, Path=ExtentHeight}"/>-->
                       <RowDefinition Height="*"
-                                     MinHeight="128"/>
+                                     MinHeight="28"/>
                     </Grid.RowDefinitions>
                     <Border x:Name="PART_ResearchFieldItemsHost"
                             Grid.Row="0"
@@ -456,7 +459,7 @@
                                   CanContentScroll="False"
                                   Grid.Row="1">
                       <Border x:Name="PART_ResearchMatrixHost"
-                              BorderBrush="White"
+                              BorderBrush="{DynamicResource DefaultTextBrush}"
                               BorderThickness="0,0,1,1"
                               SnapsToDevicePixels="True"
                               Width="{Binding ElementName=ResearchMatrixScrollViewer, Path=ViewportWidth}"/>
@@ -468,12 +471,14 @@
                     </ContentControl>
                   </Grid>
                 </TabItem>
-                <TabItem Header="{s:StringResource Key=ENCYCLOPEDIA, Case=Upper}">
+                    
                   <!--
                     ***************************
                     * BEGIN ENCYCLOPEDIA GRID *
                     ***************************
-                  -->
+                  -->                    
+                <TabItem Header="{s:StringResource Key=ENCYCLOPEDIA, Case=Upper}">
+
                   <Grid>
                     <Grid.ColumnDefinitions>
                       <ColumnDefinition Width="28"/>
@@ -718,7 +723,7 @@
                                          Stroke="Goldenrod"/>
 
 
-                                            <Path Stroke="WhiteSmoke" StrokeThickness="2" Opacity="0.7">
+                                            <Path Stroke="#ffe8e8e8" StrokeThickness="2" Opacity="0.7">
                                                 <Path.Data>
                                                     <PathGeometry>
                                                         <PathGeometry.Figures>
@@ -859,7 +864,7 @@
                                                     </PathGeometry>
                                                 </Path.Data>
                                             </Path>
-                                            <Path Stroke="WhiteSmoke" StrokeThickness="4" Opacity="0.3"  >
+                                            <Path Stroke="#ffe8e8e8" StrokeThickness="4" Opacity="0.3"  >
                                                 <Path.Data>
                                                     <PathGeometry>
                                                         <PathGeometry.Figures>
@@ -1041,7 +1046,7 @@
                                          Stroke="Goldenrod"/>
 
 
-                                            <Path Stroke="WhiteSmoke" StrokeThickness="2" Opacity="0.7">
+                                            <Path Stroke="#ffe8e8e8" StrokeThickness="2" Opacity="0.7">
                                                 <Path.Data>
                                                     <PathGeometry>
                                                         <PathGeometry.Figures>
@@ -1182,7 +1187,7 @@
                                                     </PathGeometry>
                                                 </Path.Data>
                                             </Path>
-                                            <Path Stroke="WhiteSmoke" StrokeThickness="4" Opacity="0.3"  >
+                                            <Path Stroke="#ffe8e8e8" StrokeThickness="4" Opacity="0.3"  >
                                                 <Path.Data>
                                                     <PathGeometry>
                                                         <PathGeometry.Figures>

@@ -156,7 +156,7 @@
                     <TextBox Foreground="{DynamicResource HeaderTextBrush}" Text="18 "  />
                     <TextBox Foreground="{DynamicResource HeaderTextBrush}" Text="19 "  />-->
                     <!--<TextBox Foreground="{DynamicResource HeaderTextBrush}" Text="20 "  />-->
-                    <!--<Border Background="{DynamicResource VerticalSeparatorBackgroundBrushKey}"></Border>-->
+                    <!--<Border Background="{DynamicResource Vertical_Top_Bottom_Brush}"></Border>-->
                 </StackPanel>
 
 
@@ -223,8 +223,8 @@
                            Foreground="{DynamicResource {x:Static scc:ClientResources.AlertTextForegroundBrushKey}}" />
                 <TextBox Text="(BUTTON) ScrollableItemsControlStyleKey " 
                            Foreground="{DynamicResource {x:Static scc:ClientResources.AlertTextForegroundBrushKey}}" />-->
-                    <TextBox Text="VerticalSeparatorBackgroundBrushKey  > see Background - doesn't work" 
-                           Background="{DynamicResource {x:Static scc:ClientResources.VerticalSeparatorBackgroundBrushKey}}" 
+                    <TextBox Text="Vertical_Top_Bottom_Brush  > see Background - doesn't work" 
+                           Background="{DynamicResource {x:Static scc:ClientResources.Vertical_Top_Bottom_Brush}}" 
                            Foreground="White" />
                     
                     <!--<TextBox Text=" "  Foreground="{DynamicResource HeaderTextBrush}" />-->
