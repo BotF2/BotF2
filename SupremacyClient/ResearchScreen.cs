@@ -69,9 +69,8 @@ namespace Supremacy.Client
 
             SetValue(Grid.IsSharedSizeScopeProperty, true);
 
-            ResourceDictionary themeResources;
 
-            if (ThemeHelper.TryLoadThemeResources(out themeResources))
+            if (ThemeHelper.TryLoadThemeResources(out ResourceDictionary themeResources))
                 Resources.MergedDictionaries.Add(themeResources);
         }
 
@@ -160,10 +159,9 @@ namespace Supremacy.Client
 
         private bool FilterEncyclopediaEntry(object value)
         {
-            var entry = value as IEncyclopediaEntry;
             var searchText = String.Empty;
 
-            if (entry == null)
+            if (!(value is IEncyclopediaEntry entry))
                 return false;
 
             if (_searchText != null)
@@ -291,9 +289,9 @@ namespace Supremacy.Client
                     _selectedApplication.SetValue(Selector.IsSelectedProperty, false);
                     _selectedApplication = null;
                 }
-                if (sender is ContentControl)
+                if (sender is ContentControl control)
                 {
-                    ((ContentControl)sender).SetValue(Selector.IsSelectedProperty, true);
+                    control.SetValue(Selector.IsSelectedProperty, true);
                     _selectedApplication = sender as DependencyObject;
                     if (_applicationDetailsHost != null)
                     {
@@ -301,7 +299,7 @@ namespace Supremacy.Client
                                                {
                                                    Content = new ResearchApplicationDetails(
                                                        ((ResearchApplicationData)
-                                                        ((ContentControl)sender).Content).Application,
+                                                        control.Content).Application,
                                                        AppContext.LocalPlayerEmpire)
                                                };
                         _applicationDetailsHost.Child = detailsContainer;
@@ -352,10 +350,10 @@ namespace Supremacy.Client
         {
             if ((_encyclopediaViewer != null)
                 && (_encyclopediaEntryListView.SelectedItem != null)
-                && (_encyclopediaEntryListView.SelectedItem is IEncyclopediaEntry))
+                && (_encyclopediaEntryListView.SelectedItem is IEncyclopediaEntry entry))
             {
                 _encyclopediaViewer.Document = GenerateEncyclopediaDocument(
-                    (IEncyclopediaEntry)_encyclopediaEntryListView.SelectedItem);
+                    entry);
             }
         }
 
@@ -386,11 +384,6 @@ namespace Supremacy.Client
 
             // EncyclopediaImage
             var image = new Border();
-            var imageSource = imageConverter.Convert(
-                entry.EncyclopediaImage,
-                typeof(BitmapImage),
-                null,
-                null) as BitmapImage;
 
             var paragraphs = TextHelper.TrimParagraphs(entry.EncyclopediaText).Split(
                 new[] { Environment.NewLine },
@@ -403,7 +396,11 @@ namespace Supremacy.Client
                 doc.Blocks.Add(firstParagraph);
             }
 
-            if (imageSource != null)
+            if (imageConverter.Convert(
+                entry.EncyclopediaImage,
+                typeof(BitmapImage),
+                null,
+                null) is BitmapImage imageSource)
             {
                 var imageWidth = imageSource.Width;
                 var imageHeight = imageSource.Height;
@@ -692,6 +689,11 @@ namespace Supremacy.Client
             get { return _pool.GetTechLevel(Field); }
         }
 
+        public Percentage Progress
+        {
+            get { return _pool.GetCurrentProject(Field).Progress.PercentFilled; } 
+        }
+
         public ResearchProject CurrentProject
         {
             get { return _pool.GetCurrentProject(Field); }
@@ -699,12 +701,8 @@ namespace Supremacy.Client
 
         public ResearchFieldData(ResearchField field, ResearchPool pool)
         {
-            if (field == null)
-                throw new ArgumentNullException("field");
-            if (pool == null)
-                throw new ArgumentNullException("pool");
-            _field = field;
-            _pool = pool;
+            _field = field ?? throw new ArgumentNullException("field");
+            _pool = pool ?? throw new ArgumentNullException("pool");
         }
     }
 
@@ -785,12 +783,8 @@ namespace Supremacy.Client
 
         public ResearchApplicationData(ResearchApplication application, ResearchPool pool)
         {
-            if (application == null)
-                throw new ArgumentNullException("application");
-            if (pool == null)
-                throw new ArgumentNullException("pool");
-            _application = application;
-            _pool = pool;
+            _application = application ?? throw new ArgumentNullException("application");
+            _pool = pool ?? throw new ArgumentNullException("pool");
         }
     }
 
@@ -908,12 +902,8 @@ namespace Supremacy.Client
 
         public ResearchApplicationDetails(ResearchApplication application, CivilizationManager civManager)
         {
-            if (application == null)
-                throw new ArgumentNullException("application");
-            if (civManager == null)
-                throw new ArgumentNullException("civManager");
-            _application = application;
-            _civManager = civManager;
+            _application = application ?? throw new ArgumentNullException("application");
+            _civManager = civManager ?? throw new ArgumentNullException("civManager");
         }
     }
 }

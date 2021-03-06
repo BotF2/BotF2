@@ -259,6 +259,7 @@ namespace Supremacy.Economy
             _ownerId = owner.CivID;
             _values = new ResearchPoolValueCollection();
             _bonuses = new ResearchBonusCollection(owner);
+            _points = new ResearchPointsCollection(owner);
             _techLevels = new int[matrix.Fields.Count];
             _queue = new List<ResearchProject>[matrix.Fields.Count];
             _cumulativePoints = new Meter(0, int.MaxValue);
@@ -456,8 +457,7 @@ namespace Supremacy.Economy
         /// <param name="propertyName">Name of the property that changed.</param>
         protected void OnPropertyChanged(string propertyName)
         {
-            if (PropertyChanged != null)
-                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
         #endregion
     }
