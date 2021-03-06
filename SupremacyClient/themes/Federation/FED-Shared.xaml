@@ -42,13 +42,24 @@
         <GradientStop Color="#ffed9300" Offset="1" />
     </LinearGradientBrush>
 
-    <LinearGradientBrush x:Key="{x:Static scc:ClientResources.VerticalSeparatorBackgroundBrushKey}" StartPoint="0,0" EndPoint="0,1">
+    <LinearGradientBrush x:Key="{x:Static scc:ClientResources.Vertical_Top_Bottom_Brush}" StartPoint="0,0" EndPoint="0,1">
         <GradientStop Color="#ffed9300" Offset="1" />
         <GradientStop Color="#ffe7d490" Offset="0" />
     </LinearGradientBrush>
 
-    <LinearGradientBrush x:Key="{x:Static scc:ClientResources.HorizontalSeparatorBackgroundBrushKey}" StartPoint="0,0" EndPoint="1,0">
-        <GradientStop Color="#ffd6bd6b" Offset="0" />
+    <LinearGradientBrush x:Key="{x:Static scc:ClientResources.Vertical_Bottom_Top_Brush}" StartPoint="0,0" EndPoint="0,1">
+        <GradientStop Color="#ffe7d490" Offset="0" />
+        <GradientStop Color="#ffed9300" Offset="1" />
+    </LinearGradientBrush>
+    
+    <LinearGradientBrush x:Key="{x:Static scc:ClientResources.Horizontal_Left_Right_Brush}" StartPoint="0,0" EndPoint="1,0">
+        <GradientStop Color="#ffed9300" Offset="0" />
+        <GradientStop Color="#ffe7d490" Offset="1" />
+    </LinearGradientBrush>
+
+
+    <LinearGradientBrush x:Key="{x:Static scc:ClientResources.Horizontal_Right_Left_Brush}" StartPoint="0,0" EndPoint="1,1">
+        <GradientStop Color="#ffe7d490" Offset="0" />
         <GradientStop Color="#ffed9300" Offset="1" />
     </LinearGradientBrush>
 
@@ -97,7 +108,7 @@
                         <Rectangle Grid.Column="0"
                        Width="14"
                        SnapsToDevicePixels="True"
-                       Fill="{StaticResource {x:Static scc:ClientResources.VerticalSeparatorBackgroundBrushKey}}" />
+                       Fill="{StaticResource {x:Static scc:ClientResources.Vertical_Top_Bottom_Brush}}" />
                         <scc:PixelSnappingBorder x:Name="Border" Grid.Column="1" Margin="3,0,0,0" Padding="7,0,7,0" SnapsToDevicePixels="True"
                                      Background="{StaticResource {x:Static scc:ClientResources.ImageBorderBrushKey}}">
                             <ContentPresenter ContentSource="Header" VerticalAlignment="Center" SnapsToDevicePixels="True" />
@@ -518,7 +529,7 @@
                      Value="True">
               <Setter TargetName="RowBorder"
                       Property="Background"
-                      Value="{StaticResource {x:Static scc:ClientResources.HighlightBrushKey}}" />
+                      Value="DarkBlue" />
             </Trigger>
           </ControlTemplate.Triggers>
         </ControlTemplate>
