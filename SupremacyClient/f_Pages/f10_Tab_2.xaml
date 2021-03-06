@@ -23,9 +23,9 @@
   <DockPanel LastChildFill="True">
 
         <StackPanel DockPanel.Dock="Right"
-                Margin="0,12,0,0"
+                Margin="0,5,0,0"
                 Orientation="Vertical"
-                HorizontalAlignment="Center">
+                HorizontalAlignment="Left">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
@@ -54,24 +54,33 @@
                     <ColumnDefinition Width="130"/>
                     <ColumnDefinition Width="130"/>
                     <ColumnDefinition Width="100"/>
-                    <ColumnDefinition Width="10"/>
+                    <ColumnDefinition Width="100"/>
                     <ColumnDefinition Width="100"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
 
-
-
-                
-                <TextBlock Text="What to do second....." 
+                <TextBox Text="{s:StringResource DIALOG_F10_TAB_2_HEADER}" 
                            Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="8"
                            Foreground="{DynamicResource DefaultTextBrush}"
-                           
-                           >
+                           ></TextBox>
 
-                </TextBlock>
+
+                <TextBox Text="{s:StringResource DIALOG_F10_TAB_2_TEXT_1}" 
+                           Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="8"
+                           Foreground="{DynamicResource DefaultTextBrush}"
+                           ></TextBox>
+
+                <TextBox Text="{s:StringResource DIALOG_F10_TAB_2_TEXT_2}" 
+                           Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="8"
+                           Foreground="{DynamicResource DefaultTextBrush}"
+                           ></TextBox>
+                <TextBox Text="{s:StringResource DIALOG_F10_TAB_2_TEXT_3}" 
+                           Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="8"
+                           Foreground="{DynamicResource DefaultTextBrush}"
+                           ></TextBox>
 
                 <!--Game Button-->
-                <TextBlock Text="GameButton -> " Grid.Row="14" Grid.Column="6"
+                <!--<TextBlock Text="GameButton -> " Grid.Row="14" Grid.Column="6"
                            Foreground="{DynamicResource DefaultTextBrush}"
                            
                            >
@@ -83,11 +92,11 @@
                       IsCancel="True" Margin="0,0,0,0"
                     >
                     <AccessText Text="{s:StringResource SETTINGS_ACCEPT}" />
-                </Button>
+                </Button>-->
                 <!--End Game Button-->
 
                 <!--Game Button-->
-                <TextBlock Text="GameButton -> " Grid.Row="15" Grid.Column="5"
+                <!--<TextBlock Text="GameButton -> " Grid.Row="15" Grid.Column="5"
                            Foreground="{DynamicResource DefaultTextBrush}"
                            
                            >
@@ -104,10 +113,10 @@
                       IsCancel="True" Margin="0,0,0,0"
                     >
                     <AccessText Text="{s:StringResource SETTINGS_ACCEPT}" />
-                </Button>
+                </Button>-->
                 <!--End Game Button-->
                 
-                <TextBlock Text="1 DefaultTextBrush" Grid.Row="1" Grid.Column="0"
+                <!--<TextBlock Text="1 DefaultTextBrush" Grid.Row="1" Grid.Column="0"
                            Foreground="{DynamicResource DefaultTextBrush}"
                            
                            >
@@ -232,7 +241,7 @@
 
                 <TextBlock Text="Dom5Gradient"  Grid.Row="5" Grid.Column="1"
                            Foreground="Black" VerticalAlignment="Center"
-                    Background="{DynamicResource Dom5Gradient_TopLeft_BottomRight}" />
+                    Background="{DynamicResource Dom5Gradient_TopLeft_BottomRight}" />-->
 
 
 
