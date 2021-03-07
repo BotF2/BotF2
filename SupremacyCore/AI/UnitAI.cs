@@ -394,152 +394,144 @@ namespace Supremacy.AI
                                 , civ.Name, attackFleet.Location, attackFleet.Ships.Count, attackFleet.UnitAIType, attackFleet.Activity);
                            
                         }
-                        //List<Ship> homeWarShips = new List<Ship>();
-                        //foreach (Ship ship in allAttackWarShips)
-                        //{ 
-                        //    if (ship.Sector == homeSystem.Sector)
-                        //    {                               
-                        //        homeWarShips.Add(ship);
-                        //        GameLog.Client.AI.DebugFormat("Add ship {0} to homeWarShip list at {1}", ship.Name, ship.Location);
-                        //    }
-                        //}
+
                         if (attackFleet.Ships.Count() > 1 && attackFleet.Ships.Count() == allAttackWarShips.Count() && othersHomeSystem != homeSystem) // are ship home?
                         {
                             //GameLog.Core.AI.DebugFormat("6");
                             fleetInTransit = true;
                             attackingShipsGotHome = true; // created as false at top of class - DoTurn
-                            Fleet newFleet = new Fleet();
-                            List<Ship> shipList = attackFleet.Ships.ToList();
-                            foreach (var aFleet in GameContext.Current.Universe.FindOwned<Fleet>(civ))
-                            {
-                                if (shipList.Contains(aFleet.Ships[0]))
-                                {
-                                    aFleet.UnitAIType = UnitAIType.SystemAttack;
-                                    aFleet.Activity = UnitActivity.Mission;
-                                    aFleet.Owner = civ;
-                                    aFleet.Location = homeSystem.Location;
-                                    aFleet.SetRoute(AStar.FindPath(newFleet, new List<Sector> { othersHomeSystem.Sector }));
-                                }
-                                //switch (civ.CivID)
-                                //{
-                                //    case 0:
-                                //        {
-                                //            var route = aFleet.Route;
-                                //            int count = aFleet.Ships.Count();
-                                //            for (int i = 0;  i< count; i++)
-                                //            {
-                                //                Ship ship = aFleet.Ships.First();
-                                //                aFleet.RemoveShip(ship);
-                                //                fedTransitFleet.AddShip(ship);
-                                //            }
-                                //            break;
-                                //        }
-                                //    default:
-                                //        break;
-                                //}
-                            }
-                            //foreach (Ship ship in shipList)
-                            //{
-                            //    attackFleet.RemoveShip(ship);
-                            //    newFleet.AddShip(ship);
-                            //    newFleet.UnitAIType = UnitAIType.SystemAttack;
-                            //    newFleet.Activity = UnitActivity.Mission;
-                            //    newFleet.Owner = civ;
-                            //    newFleet.Location = homeSystem.Location;
-                            //    newFleet.SetRoute(AStar.FindPath(newFleet, new List<Sector> { othersHomeSystem.Sector }));
-                            //}
-                            //newFleet = attackFleet;
-                            //if (newFleet != null)
-                            //{
+                                                          //Fleet newFleet = new Fleet();
+                                                          //List<Ship> shipList = attackFleet.Ships.ToList();
+                                                          //foreach (var aFleet in GameContext.Current.Universe.FindOwned<Fleet>(civ))
+                                                          //{
+                                                          //    if (shipList.Contains(aFleet.Ships[0]))
+                                                          //    {
+                                                          //        aFleet.UnitAIType = UnitAIType.SystemAttack;
+                                                          //        aFleet.Activity = UnitActivity.Mission;
+                                                          //        aFleet.Owner = civ;
+                                                          //        aFleet.Location = homeSystem.Location;
+                                                          //        aFleet.SetRoute(AStar.FindPath(newFleet, new List<Sector> { othersHomeSystem.Sector }));
+                                                          //    }
+                                                          //switch (civ.CivID)
+                                                          //{
+                                                          //    case 0:
+                                                          //        {
+                                                          //            var route = aFleet.Route;
+                                                          //            int count = aFleet.Ships.Count();
+                                                          //            for (int i = 0;  i< count; i++)
+                                                          //            {
+                                                          //                Ship ship = aFleet.Ships.First();
+                                                          //                aFleet.RemoveShip(ship);
+                                                          //                fedTransitFleet.AddShip(ship);
+                                                          //            }
+                                                          //            break;
+                                                          //        }
+                                                          //    default:
+                                                          //        break;
+                                                          //}
+                                                          //}
+                                                          //foreach (Ship ship in shipList)
+                                                          //{
+                                                          //    attackFleet.RemoveShip(ship);
+                                                          //    newFleet.AddShip(ship);
+                                                          //    newFleet.UnitAIType = UnitAIType.SystemAttack;
+                                                          //    newFleet.Activity = UnitActivity.Mission;
+                                                          //    newFleet.Owner = civ;
+                                                          //    newFleet.Location = homeSystem.Location;
+                                                          //    newFleet.SetRoute(AStar.FindPath(newFleet, new List<Sector> { othersHomeSystem.Sector }));
+                                                          //}
+                                                          //newFleet = attackFleet;
+                                                          //if (newFleet != null)
+                                                          //{
 
-                            //    switch (newFleet.OwnerID)
-                            //    {
-                            //        //fleet.SetRoute(AStar.FindPath(fleet, PathOptions.SafeTerritory, null, new List<Sector> { bestSystemToColonize.Sector }));
-                            //        case 0:
-                            //            if (fedTransitFleet == null)
-                            //            {
-                            //                fedTransitFleet = newFleet;
-                            //                //fedTransitFleet.Route = attackFleet.Route;
-                            //                //SendSystemAttackFleet(fedTransitFleet, attackFleet);
-                            //                fleetInTransit = true;
-                            //                GameLog.Core.AI.DebugFormat("Fed fleet in transit ={0}, fed count ={1} ", fleetInTransit, fedTransitFleet.Ships.Count());
-                            //            }
-                                  
-                            //            break;
-                            //        case 1:
-                            //            if (terranTransitFleet == null)
-                            //            {
-                            //                terranTransitFleet = newFleet;
-                            //                //terranTransitFleet.Route = attackFleet.Route;
-                            //                //SendSystemAttackFleet(terranTransitFleet, attackFleet);
-                            //                fleetInTransit = true;
-                            //                GameLog.Core.AI.DebugFormat("Terran fleet in transit ={0}, terran count ={1} ", fleetInTransit, terranTransitFleet.Ships.Count());
-                            //            }
-     
-                            //            break;
-                            //        case 2:
-                            //            if (romTransitFleet == null)
-                            //            {
-                            //                romTransitFleet = newFleet;
-                            //                //romTransitFleet.Route = attackFleet.Route;
-                            //                //SendSystemAttackFleet(romTransitFleet, attackFleet);
-                            //                fleetInTransit = true;
-                            //                GameLog.Core.AI.DebugFormat("Rom fleet in transit ={0}, rom count ={1} ", fleetInTransit, romTransitFleet.Ships.Count());
-                            //            }
-                            //            //transitFleet = attackFleet;
-                            //            //transitFleet.Location = location;
-                            //            break;
-                            //        case 3:
-                            //            if (klingTransitFleet == null)
-                            //            {
-                            //                klingTransitFleet = newFleet;
-                            //                //klingTransitFleet.Route = attackFleet.Route;
-                            //                //SendSystemAttackFleet(klingTransitFleet, attackFleet);
-                            //                fleetInTransit = true;
-                            //                GameLog.Core.AI.DebugFormat("Kling fleet in transit ={0}, kling count ={1} ", fleetInTransit, klingTransitFleet.Ships.Count());
-                            //            }
-                            //            //transitFleet = attackFleet;
-                            //            //transitFleet.Location = location;
-                            //            break;
-                            //        case 4:
-                            //            if (cardTransitFleet == null)
-                            //            {
-                            //                cardTransitFleet = newFleet;
-                            //                //cardTransitFleet.Route = attackFleet.Route;
-                            //                //SendSystemAttackFleet(cardTransitFleet, attackFleet);
-                            //                fleetInTransit = true;
-                            //                GameLog.Core.AI.DebugFormat("Card fleet in transit ={0}, card count ={1} ", fleetInTransit, cardTransitFleet.Ships.Count());
-                            //            }
-                            //            //transitFleet = attackFleet;
-                            //            //transitFleet.Location = location;
-                            //            break;
-                            //        case 5:
-                            //            if (domTransitFleet == null)
-                            //            {
-                            //                domTransitFleet = newFleet;
-                            //                //domTransitFleet.Route = attackFleet.Route;
-                            //                // SendSystemAttackFleet(domTransitFleet, attackFleet);
-                            //                fleetInTransit = true;
-                            //                GameLog.Core.AI.DebugFormat("Dom fleet in transit ={0}, dom count ={1} ", fleetInTransit, domTransitFleet.Ships.Count());
-                            //            }
-                            //            //transitFleet = attackFleet;
-                            //            //transitFleet.Location = location;
-                            //            break;
-                            //        case 6:
-                            //            if (borgTransitFleet == null)
-                            //            {
-                            //                borgTransitFleet = newFleet;
-                            //                //borgTransitFleet.Route = attackFleet.Route;
-                            //                //SendSystemAttackFleet(borgTransitFleet, attackFleet);
-                            //                fleetInTransit = true;
-                            //                GameLog.Core.AI.DebugFormat("Borg fleet in transit ={0}, borg count ={1} ", fleetInTransit, borgTransitFleet.Ships.Count());
-                            //            }
-                            //            //transitFleet = attackFleet;
-                            //            //transitFleet.Location = location;
-                            //            break;
-                            //        default:
-                            //            break;
-                            //    }
+                            switch (attackFleet.OwnerID)
+                            {
+                                //fleet.SetRoute(AStar.FindPath(fleet, PathOptions.SafeTerritory, null, new List<Sector> { bestSystemToColonize.Sector }));
+                                case 0:
+                                    if (fedTransitFleet == null)
+                                    {
+                                        fedTransitFleet = attackFleet;
+                                        //fedTransitFleet.Route = attackFleet.Route;
+                                        //SendSystemAttackFleet(fedTransitFleet, attackFleet);
+                                        fleetInTransit = true;
+                                        GameLog.Core.AI.DebugFormat("Fed fleet in transit ={0}, fed count ={1} ", fleetInTransit, fedTransitFleet.Ships.Count());
+                                    }
+
+                                    break;
+                                case 1:
+                                    if (terranTransitFleet == null)
+                                    {
+                                        terranTransitFleet = attackFleet;
+                                        //terranTransitFleet.Route = attackFleet.Route;
+                                        //SendSystemAttackFleet(terranTransitFleet, attackFleet);
+                                        fleetInTransit = true;
+                                        GameLog.Core.AI.DebugFormat("Terran fleet in transit ={0}, terran count ={1} ", fleetInTransit, terranTransitFleet.Ships.Count());
+                                    }
+
+                                    break;
+                                case 2:
+                                    if (romTransitFleet == null)
+                                    {
+                                        romTransitFleet = attackFleet;
+                                        //romTransitFleet.Route = attackFleet.Route;
+                                        //SendSystemAttackFleet(romTransitFleet, attackFleet);
+                                        fleetInTransit = true;
+                                        GameLog.Core.AI.DebugFormat("Rom fleet in transit ={0}, rom count ={1} ", fleetInTransit, romTransitFleet.Ships.Count());
+                                    }
+                                    //transitFleet = attackFleet;
+                                    //transitFleet.Location = location;
+                                    break;
+                                case 3:
+                                    if (klingTransitFleet == null)
+                                    {
+                                        klingTransitFleet = attackFleet;
+                                        //klingTransitFleet.Route = attackFleet.Route;
+                                        //SendSystemAttackFleet(klingTransitFleet, attackFleet);
+                                        fleetInTransit = true;
+                                        GameLog.Core.AI.DebugFormat("Kling fleet in transit ={0}, kling count ={1} ", fleetInTransit, klingTransitFleet.Ships.Count());
+                                    }
+                                    //transitFleet = attackFleet;
+                                    //transitFleet.Location = location;
+                                    break;
+                                case 4:
+                                    if (cardTransitFleet == null)
+                                    {
+                                        cardTransitFleet = attackFleet;
+                                        //cardTransitFleet.Route = attackFleet.Route;
+                                        //SendSystemAttackFleet(cardTransitFleet, attackFleet);
+                                        fleetInTransit = true;
+                                        GameLog.Core.AI.DebugFormat("Card fleet in transit ={0}, card count ={1} ", fleetInTransit, cardTransitFleet.Ships.Count());
+                                    }
+                                    //transitFleet = attackFleet;
+                                    //transitFleet.Location = location;
+                                    break;
+                                case 5:
+                                    if (domTransitFleet == null)
+                                    {
+                                        domTransitFleet = attackFleet;
+                                        //domTransitFleet.Route = attackFleet.Route;
+                                        // SendSystemAttackFleet(domTransitFleet, attackFleet);
+                                        fleetInTransit = true;
+                                        GameLog.Core.AI.DebugFormat("Dom fleet in transit ={0}, dom count ={1} ", fleetInTransit, domTransitFleet.Ships.Count());
+                                    }
+                                    //transitFleet = attackFleet;
+                                    //transitFleet.Location = location;
+                                    break;
+                                case 6:
+                                    if (borgTransitFleet == null)
+                                    {
+                                        borgTransitFleet = attackFleet;
+                                        //borgTransitFleet.Route = attackFleet.Route;
+                                        //SendSystemAttackFleet(borgTransitFleet, attackFleet);
+                                        fleetInTransit = true;
+                                        GameLog.Core.AI.DebugFormat("Borg fleet in transit ={0}, borg count ={1} ", fleetInTransit, borgTransitFleet.Ships.Count());
+                                    }
+                                    //transitFleet = attackFleet;
+                                    //transitFleet.Location = location;
+                                    break;
+                                default:
+                                    break;
+                            }
                             //}                          
                             //foreach (Fleet fleet in GameContext.Current.Universe.FindOwned<Fleet>(civ))
                             //{
