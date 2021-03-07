@@ -92,7 +92,7 @@ namespace Supremacy.Combat
                 }
 
                 //Resistance is futile, try assimilation before you attack then retreat if assimilated & no spy or diplomtic assimilated
-                bool foundDaBorg = _combatShips.Any(borg => borg.Item1.Owner.ShortName == "Borg");
+                bool foundDaBorg = _combatShips.Any(borg => borg.Item1.Owner.Key == "BORG");
                 bool assimilationSuccessful = false;
                 List<Tuple<CombatUnit, CombatWeapon[]>> notDaBorg = _combatShips.Where(xborg => xborg.Item1.Owner.ShortName != "Borg").Select(xborg => xborg).ToList();
                 if (foundDaBorg)

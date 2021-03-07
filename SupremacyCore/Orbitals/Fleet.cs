@@ -450,7 +450,7 @@ namespace Supremacy.Orbitals
         }
         public bool multiFleetHasAColonizer
         {
-            get { return Ships.Count > 1 && Ships.Any(s => s.ShipType == ShipType.Colony); }
+            get { return (Ships.Any(s => s.ShipType == ShipType.Colony) && Ships.Any(t => t.ShipType >= ShipType.FastAttack)); }
         }
         public bool IsConstructor
         {
@@ -458,7 +458,7 @@ namespace Supremacy.Orbitals
         }
         public bool multiFleetHasAConstructor
         {
-            get { return Ships.Count > 1 && Ships.Any(s =>s.ShipType == ShipType.Construction); }
+            get { return (Ships.Any(s =>s.ShipType == ShipType.Construction) && Ships.Any(t => t.ShipType >= ShipType.FastAttack)); }
         }
 
         public bool IsDiplomatic

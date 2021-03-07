@@ -1,4 +1,4 @@
-// Colony.cs
+// file:Colony.cs 
 //
 // Copyright (c) 2007 Mike Strobel
 //
@@ -449,6 +449,16 @@ namespace Supremacy.Universe
         public Race Inhabitants
         {
             get { return GameContext.Current.Races[_inhabitantId]; }
+            set { Inhabitants = value; }
+        }
+
+        /// <summary>
+        /// Gets the race that inhabits ID as string this <see cref="Colony"/>.
+        /// </summary>
+        /// <value>The race.</value>
+        public string InhabitantsID
+        {           
+            set { _inhabitantId = value; }
         }
 
         /// <summary>
@@ -525,10 +535,21 @@ namespace Supremacy.Universe
         /// Gets the local morale at this <see cref="Colony"/>.
         /// </summary>
         /// <value>The morale.</value>
-        public Meter Morale
+
+         public Meter Morale
         {
-            get { return _morale; }
+            get
+            {
+                if (this.Owner.ToString() == "BORG") { _morale = new Meter(101, 0, 200); } // Borg have no emotions - everytime 1 - 0 - 1
+
+                return _morale;
+            }
+            set
+            {
+                _morale = value;
+            }
         }
+    
 
         /// <summary>
         /// Gets the buildings at this <see cref="Colony"/>.

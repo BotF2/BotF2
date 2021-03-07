@@ -107,8 +107,8 @@ namespace Supremacy.Entities
         private int _baseMoraleLevel = 100;
         private int _moraleDriftRate = 1;
         private List<Civilization> _spiedCivList;
-        private Civilization _totalWarCivilization;
-        private Civilization _invasionMionrCiv;
+        private Civilization _targetCivilization;
+        private bool _inTransit;
 
         #endregion
 
@@ -202,8 +202,8 @@ namespace Supremacy.Entities
             _traits = (string)element.Element(ns + "Traits");
             _traits = _traits.Trim();
             _spiedCivList = SpiedCivList;
-            _totalWarCivilization = TotalWarCivilization;
-            _invasionMionrCiv = InvasionMinorCiv;
+            _targetCivilization = TargetCivilization;
+            _inTransit = _inTransit;
             //_intelOrdersIncomingToHost = IntelOrdersIncomingToHost;
 
             // When starting a game, options is null
@@ -493,21 +493,20 @@ namespace Supremacy.Entities
         /// is at in Total War with
         /// </summary>
         /// <value>The tech curve.</value>
-        public Civilization TotalWarCivilization
+        public Civilization TargetCivilization
         {
-            get { return _totalWarCivilization; }
-            set { if (_totalWarCivilization == null) { _totalWarCivilization = value; } }
+            get { return _targetCivilization; }
+            set { if (_targetCivilization == null) { _targetCivilization = value; } }
         }
 
         /// <summary>
-        /// Gets the <see cref="Civilization"/> this <see cref="Civilization"/>
-        /// is target of invasion 
+        /// Gets the <see cref="bool"/> this civ AI attacking fleet on the move />        
         /// </summary>
-        /// <value>The tech curve.</value>
-        public Civilization InvasionMinorCiv
+        /// <value> bool </value>
+        public bool InTransit
         {
-            get { return _invasionMionrCiv; }
-            set { if (_invasionMionrCiv == null) { _invasionMionrCiv = value; } }
+            get { return _inTransit; }
+            set { _inTransit = value; } 
         }
 
         /// <summary>

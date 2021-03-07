@@ -26,7 +26,7 @@ namespace Supremacy.Orbitals
         [NonCombatant] Sabotage, // not ingame at this time
         Science,
         Scout,
-        FastAttack,
+        FastAttack, // Destroyer and Frigate
         Cruiser,
         HeavyCruiser,
         StrikeCruiser,
