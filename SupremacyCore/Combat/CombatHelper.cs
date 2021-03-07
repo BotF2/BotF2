@@ -55,7 +55,7 @@ namespace Supremacy.Combat
             Dictionary<Civilization, CombatUnit> units = new Dictionary<Civilization, CombatUnit>();
             Sector sector = GameContext.Current.Universe.Map[location];
             List<Fleet> engagingFleets = GameContext.Current.Universe.FindAt<Fleet>(location).ToList();
-            TakeSidesAssets ExposedAssets = new TakeSidesAssets(location);
+            TakeSidesAssets ExposedAssets = new TakeSidesAssets(location); // part of an altering of collection while using, in TakeSidesAssets.cs line 34 and to GameEngine,cs line 1288
             int maxOppostionScanStrength = ExposedAssets.MaxOppositionScanStrengh;
             List<Fleet> oppositionFleets = ExposedAssets.OppositionFleets;
 

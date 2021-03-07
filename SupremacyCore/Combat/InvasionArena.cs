@@ -440,6 +440,12 @@ namespace Supremacy.Combat
                 return;
             }
 
+            if (InvasionID == 6) //Borg
+            {
+                _status = InvasionStatus.Victory;
+                AssimilatePopulation(Colony);
+            }
+
             if (Population.CurrentValue == 0 || Colony.OwnerID == InvaderID)
             {
                 _status = InvasionStatus.Victory;
@@ -458,6 +464,23 @@ namespace Supremacy.Combat
             }
         }
 
+        public void AssimilatePopulation(Colony colony)
+        {
+            CivilizationManager borgManager = GameContext.Current.CivilizationManagers[6];
+            Civilization borg = borgManager.Civilization; 
+            CivilizationManager targetEmpireCivManager = GameContext.Current.CivilizationManagers[colony.Owner];
+            Colony assimiltedCivHome = targetEmpireCivManager.HomeColony;
+            int gainedResearchPoints = assimiltedCivHome.NetResearch;
+            borgManager.Research.UpdateResearch(gainedResearchPoints);
+            colony.Owner = borg;
+            colony.OwnerID = borg.CivID;
+            colony.Inhabitants = borg.Race;
+            colony.InhabitantsID = borg.Race.Key;
+            colony.Morale = borgManager.HomeColony.Morale;
+            GameLog.Client.AI.DebugFormat("Assimilated colony ={0}, owner = {1}, inhabitants = {2} moral = {3}",
+                colony.Name, colony.Owner.Key, colony.Inhabitants.Key, colony.Morale.CurrentValue);
+        }
+
         private int ComputeDefenderCombatStrength()
         {
             return CombatHelper.ComputeGroundCombatStrength(Colony.Owner, Colony.Location, Population.CurrentValue);
@@ -467,14 +490,16 @@ namespace Supremacy.Combat
         {
             MapLocation location = Colony.Location;
             Civilization civilization = Colony.Owner;
-
+            //int borgFactor = 1;
+            //if (_invadingUnits.FirstOrDefault().OwnerID == 6 && Colony.OwnerID > 6)
+            //    borgFactor = 5;
             return _invadingUnits
                 .OfType<InvasionOrbital>()
                 .Where(o => !o.IsDestroyed)
                 .Select(o => o.Source)
                 .OfType<Ship>()
                 .Where(o => o.ShipType == ShipType.Transport)
-                .Select(o => o.ShipDesign.WorkCapacity)
+                .Select(o => o.ShipDesign.WorkCapacity) // * borgFactor)
                 .Sum(pop => CombatHelper.ComputeGroundCombatStrength(civilization, location, pop));
         }
 

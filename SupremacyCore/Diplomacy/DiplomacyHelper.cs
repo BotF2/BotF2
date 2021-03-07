@@ -125,8 +125,8 @@ namespace Supremacy.Diplomacy
             var diplomat = Diplomat.Get(otherPower);
             var foreignPower = diplomat.GetForeignPower(civ);
 
-            GameLog.Core.Diplomacy.DebugFormat(Environment.NewLine + "   Turn {6};BEFORE: otherPower.CivID=;{1};foreignPower.OwnerID=;{4};regardDelta=;{2};CurrentTrust=;{5};diplomat.Owner=;{3};civ=;{0}" + Environment.NewLine,
-            civ, otherPower.CivID, regardDelta, diplomat.Owner, foreignPower.OwnerID, foreignPower.DiplomacyData.Trust.CurrentValue, GameContext.Current.TurnNumber);
+           // GameLog.Core.Diplomacy.DebugFormat(Environment.NewLine + "   Turn {6};BEFORE: otherPower.CivID=;{1};foreignPower.OwnerID=;{4};regardDelta=;{2};CurrentTrust=;{5};diplomat.Owner=;{3};civ=;{0}" + Environment.NewLine,
+           // civ, otherPower.CivID, regardDelta, diplomat.Owner, foreignPower.OwnerID, foreignPower.DiplomacyData.Trust.CurrentValue, GameContext.Current.TurnNumber);
 
             if (foreignPower != null)
             {
@@ -135,8 +135,8 @@ namespace Supremacy.Diplomacy
                 foreignPower.UpdateRegardAndTrustMeters();
 
             }
-            GameLog.Core.Diplomacy.DebugFormat(Environment.NewLine + "   Turn {6};AFTER : otherPower.CivID=;{1};foreignPower.OwnerID=;{4};regardDelta=;{2};CurrentTrust=;{5};diplomat.Owner=;{3};civ=;{0}" + Environment.NewLine,
-            civ, otherPower.CivID, regardDelta, diplomat.Owner, foreignPower.OwnerID, foreignPower.DiplomacyData.Trust.CurrentValue, GameContext.Current.TurnNumber);
+           // GameLog.Core.Diplomacy.DebugFormat(Environment.NewLine + "   Turn {6};AFTER : otherPower.CivID=;{1};foreignPower.OwnerID=;{4};regardDelta=;{2};CurrentTrust=;{5};diplomat.Owner=;{3};civ=;{0}" + Environment.NewLine,
+            //civ, otherPower.CivID, regardDelta, diplomat.Owner, foreignPower.OwnerID, foreignPower.DiplomacyData.Trust.CurrentValue, GameContext.Current.TurnNumber);
         }
         public static void ApplyRegardDecay(RegardEventCategories category, RegardDecay decay)
         {
@@ -845,24 +845,21 @@ namespace Supremacy.Diplomacy
         /// <param name="sector"></param>
         /// <returns></returns>
         public static bool IsTravelAllowed(Civilization traveller, Sector sector)
-        {
-            
+        {           
             bool travel = true;
             if (traveller == null)
             {
-                //GameLog.Client.AI.DebugFormat("Null civ for sector ={0} {1}", sector.Name, sector.Location);
+                GameLog.Client.AI.DebugFormat("Null civ for sector ={0} {1}", sector.Name, sector.Location);
                 throw new ArgumentNullException("traveller");
             }
             if (sector == null)
                 throw new ArgumentNullException("sector");
-
-
-            
+           
             var sectorOwner = sector.Owner;
             if (sectorOwner == null)
                 sectorOwner = GameContext.Current.SectorClaims.GetOwner(sector.Location);
 
-            // GameLog.Core.Diplomacy.DebugFormat("traveller ={0}, sector location ={1}", traveller.Key, sector.Location);
+            //GameLog.Core.Diplomacy.DebugFormat("traveller ={0}, sector location ={1}", traveller.Key, sector.Location);
 
             return travel;
         }

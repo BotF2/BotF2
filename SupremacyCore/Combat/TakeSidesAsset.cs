@@ -31,7 +31,7 @@ namespace Supremacy.Combat
 
         public TakeSidesAssets(MapLocation location)
         {
-            List<Fleet> fleetsAtLocation = GameContext.Current.Universe.FindAt<Fleet>(location).ToList();
+            List<Fleet> fleetsAtLocation = GameContext.Current.Universe.FindAt<Fleet>(location).ToList(); // ToDo - part of altering collection while using, CombatHelper.cs line 58 
 
             if (fleetsAtLocation != null)
             {

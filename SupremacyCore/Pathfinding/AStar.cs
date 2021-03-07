@@ -119,9 +119,25 @@ namespace Supremacy.Pathfinding
         public static TravelRoute FindPath(Fleet fleet, PathOptions options, IEnumerable<Sector> forbiddenSectors, IEnumerable<Sector> waypoints)
         {
             if (fleet == null)
+            {
+                //GameLog.Client.AI.DebugFormat("TravelRout fleet is null");
                 throw new ArgumentNullException("fleet");
+            }
             if (waypoints == null)
+            {
+                //GameLog.Client.AI.DebugFormat("TravelRout waypoints is null");
                 throw new ArgumentNullException("waypoints");
+            }
+            foreach (var ship in fleet.Ships)
+            {
+                if (fleet.Owner != null)
+                    break;
+                if (ship.Owner != null)
+                {
+                    fleet.Owner = ship.Owner;
+                    break;
+                }
+            }
 
             ISet<Sector> forbiddenSectorSet;
 

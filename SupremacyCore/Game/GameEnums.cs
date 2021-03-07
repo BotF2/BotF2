@@ -115,11 +115,12 @@ namespace Supremacy.Game
         Colonizer,
         Medical,
         Constructor,
+        Building, //construction fleet set to build
         Attack,
-        Defense,
+        Defense, // an "escort" that needs to catch up with a construction ship that is already left home system
         Spy,
         Science,
-        Escort,
+        PostEscort, // combat ships that were in an fleet to escort but can now go home
         Raider,
         Diplomatic,
         Reserve,

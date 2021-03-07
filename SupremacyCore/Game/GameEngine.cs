@@ -558,6 +558,21 @@ namespace Supremacy.Game
 
             foreach (var fleet in allFleets)
             {
+                string _text = "";
+                int shipNum = fleet.Ships.Count();
+                string name = fleet.Name;
+                GameLog.Client.AI.DebugFormat("*Turn# = {0} Owner = {1} Fleet ObjectID ={2}, UnitAIType ={3}, UnitActivity ={4} Actibvity Duration ={5} Activity Start ={6}",
+                    GameContext.Current.TurnNumber, fleet.Owner.Name, fleet.ObjectID, fleet.UnitAIType, fleet.Activity, fleet.ActivityDuration, fleet.ActivityStart);
+                if (fleet.Route.Steps.Count() > 0)
+                    GameLog.Client.AI.DebugFormat("# of ships = {0} fleet Waypooints ={1} step 1 {2}", shipNum, fleet.Route.Waypoints, fleet.Route.Steps[0]);
+                for (int i = 0; i < shipNum; i++)
+                {
+                    _text = "Ship's Fleet# =" + i;
+                    Ship ship = fleet.Ships[i];
+                    _text += "/ObjectID =" + ship.ObjectID + "/Name =" + ship.Name;
+                    GameLog.Core.AI.DebugFormat(_text);
+                }
+
                 //If the fleet is stranded and out of fuel range, it can't move
                 if (fleet.IsStranded && !fleet.IsFleetInFuelRange())
                 {
@@ -1004,67 +1019,6 @@ namespace Supremacy.Game
                                 IntelHelper.SabotageEnergyExecute(civ2, civ1, foreignPower.LastStatementReceived.Parameter.ToString(), 99999);
                                 foreignPower.LastStatementReceived = null;
                                 break;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
                             //    GameLog.Core.Diplomacy.DebugFormat("LastStatementReceived Statement Type = {0} foreignPower counterparyt {1}, owner {2}",
                             //        Enum.GetName(typeof(StatementType), foreignPower.LastStatementReceived.StatementType),
                             //        foreignPower.Counterparty.Key,
@@ -1142,72 +1096,6 @@ namespace Supremacy.Game
                         if (statementSent.StatementType == StatementType.WarDeclaration)
                             foreignPower.DeclareWar();
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
                     }
                     else
                     {
@@ -1273,7 +1161,7 @@ namespace Supremacy.Game
             {
                 if (!combatLocations.Contains(fleet.Location))
                 {
-                        var assets = CombatHelper.GetCombatAssets(fleet.Location);
+                        var assets = CombatHelper.GetCombatAssets(fleet.Location); // part of altering collection while using from GameEngine 216 and CombatHelper.cs line 58
                         var fleetsOwners = fleetsAtLocation
                             .Select(o => o.Owner)
                             .Distinct()
@@ -2639,9 +2527,6 @@ namespace Supremacy.Game
                                 UnitAI.DoTurn(civ);
                                 //UnitAI.SetForTotalWarNextTurn();
                                 //UnitAI.SetForInvadeMinorNextTurn();
-                                //List<bool> _inRange = new List<bool> { true };
-                                //UnitAI.RangesByCiv = new Dictionary<int, List<bool>> { { 0, _inRange }, { 1, _inRange }, { 2, _inRange }, { 3, _inRange }, { 4, _inRange }, { 5, _inRange }, { 6, _inRange } };
-                                //UnitAI.OnlyOnce = new Dictionary<int, int> { { 0, 0 }, { 1, 0 }, { 2, 0 }, { 3, 0 }, { 4, 0 }, { 5, 0 }, { 6, 0 } }; ;
                             }
                         }
                         catch (Exception e)

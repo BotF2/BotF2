@@ -53,8 +53,15 @@ namespace Supremacy.Client.Views
                 //_designInstance.MakeProposalCommand.Execute(null);
                 if (_designInstance.SelectedForeignPower != null)
                 {
-                    _designInstance.SelectedForeignPower.OutgoingMessage.AvailableElements.First(o => o.ActionCategory == DiplomacyMessageElementActionCategory.Propose).AddCommand.Execute(null);
-                    _designInstance.SelectedForeignPower.OutgoingMessage.AvailableElements.First(o => o.ActionCategory == DiplomacyMessageElementActionCategory.Offer).AddCommand.Execute(null);
+                    try
+                    {
+                        _designInstance.SelectedForeignPower.OutgoingMessage.AvailableElements.First(o => o.ActionCategory == DiplomacyMessageElementActionCategory.Propose).AddCommand.Execute(null);
+                        _designInstance.SelectedForeignPower.OutgoingMessage.AvailableElements.First(o => o.ActionCategory == DiplomacyMessageElementActionCategory.Offer).AddCommand.Execute(null);
+                    }
+                    catch
+                    {
+                        GameLog.Client.Diplomacy.DebugFormat("DiplomacyScreenViewModel DesignInstance null");
+                    }
                 }
                 return _designInstance;
             }

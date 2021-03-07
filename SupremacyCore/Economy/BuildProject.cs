@@ -209,6 +209,13 @@ namespace Supremacy.Economy
                     //    _percentDONE_text = /*(100.0 * */(_industryInvested / IndustryRequired)).ToString();
                     //this.PercentComplete
 
+                    if (BuildDesign.Key.Contains("STARBASE") || BuildDesign.Key.Contains("OUTPOST") || BuildDesign.Key.Contains("STATION"))
+                    {
+                        GameLog.Core.Stations.DebugFormat(Environment.NewLine + "       Turn {4};IndustryRequired= ;{2};_industryInvested= ;{3};{0} at {1} not complete...;{5};percent done" + Environment.NewLine,
+                      BuildDesign, _location, IndustryRequired, _industryInvested, GameContext.Current.TurnNumber, PercentComplete.ToString());
+                    }
+
+            
                     GameLog.Core.Production.DebugFormat(Environment.NewLine + "       Turn {4};IndustryRequired= ;{2};_industryInvested= ;{3};{0} at {1} not complete...;{5};percent done" + Environment.NewLine,
                         BuildDesign, _location, IndustryRequired, _industryInvested, GameContext.Current.TurnNumber, PercentComplete.ToString());
                     return false;
