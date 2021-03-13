@@ -536,7 +536,7 @@ namespace Supremacy.Client
 
         private static bool CheckXNAFramework31()
         {
-            string _text = "";
+            string _text = ".";
 
             //RegRead HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\XNA\Framework\v3.1
 

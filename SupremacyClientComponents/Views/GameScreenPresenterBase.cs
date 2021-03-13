@@ -6,6 +6,7 @@ using Supremacy.Client.Commands;
 using Supremacy.Client.Context;
 using Supremacy.Client.Events;
 using Supremacy.Resources;
+using Supremacy.Utility;
 using System;
 using System.Linq;
 using System.Windows;
@@ -139,6 +140,11 @@ namespace Supremacy.Client.Views
         protected virtual void RegisterViewWithRegion()
         {
             _regionManager.Regions[ClientRegions.GameScreens].Add(View, ViewName, true);
+            string _text = "registering Screen " + ViewName;
+            Console.WriteLine(_text);
+            GameLog.Client.UI.InfoFormat(_text);
+            if (ViewName == "ColonyScreen")
+                GameLog.Client.UI.InfoFormat(_text);
         }
 
         protected virtual void UnregisterViewWithRegion()
@@ -246,6 +252,12 @@ namespace Supremacy.Client.Views
         {
             if (View.IsActive)
                 ClientCommands.ShowEndOfTurnSummary.Execute(null);
+        }
+
+        protected void ShowShipOverview()
+        {
+            if (View.IsActive)
+                ClientCommands.ShowShipOverview.Execute(null);
         }
 
         protected virtual IInteractionNode FindParentInteractionNode()

@@ -52,12 +52,14 @@ namespace Supremacy.Client
         private readonly INavigationService _navigationService;
         private readonly IGameWindow _gameWindow;
         private readonly SitRepDialog _sitRepDialog;
+        private readonly ShipOverview _shipOverview;
         private readonly IAppContext _appContext;
         private readonly IPlayerOrderService _playerOrderService;
         private readonly Dictionary<EventBase, SubscriptionToken> _eventSubscriptionTokens;
         private readonly List<IPresenter> _screenPresenters;
         private readonly DelegateCommand<object> _endTurnCommand;
         private readonly DelegateCommand<object> _showEndOfTurnSummaryCommand;
+        private readonly DelegateCommand<object> _showShipOverviewCommand;
         private readonly Dispatcher _dispatcher;
         private IDisposable _connectWaitCursorHandle;
         private IDisposable _gameStartWaitCursorHandle;
@@ -102,11 +104,13 @@ namespace Supremacy.Client
             _navigationService = navigationService;
             _gameWindow = gameWindow;
             _sitRepDialog = container.Resolve<SitRepDialog>();
+            _shipOverview = container.Resolve<ShipOverview>();
             _appContext = appContext;
             _client = client;
             _playerOrderService = playerOrderService;
             _endTurnCommand = new DelegateCommand<object>(ExecuteTurnCommand) { IsActive = false };
             _showEndOfTurnSummaryCommand = new DelegateCommand<object>(ExecuteShowEndOfTurnSummaryCommand) { IsActive = true };
+            _showShipOverviewCommand = new DelegateCommand<object>(ExecuteShowShipOverviewCommand) { IsActive = true };
             _eventSubscriptionTokens = new Dictionary<EventBase, SubscriptionToken>();
             _screenPresenters = new List<IPresenter>();
             _playerOrderService.ClearOrders();
@@ -116,6 +120,11 @@ namespace Supremacy.Client
         private void ExecuteShowEndOfTurnSummaryCommand(object obj)
         {
             ShowSummary(true);
+        }
+
+        private void ExecuteShowShipOverviewCommand(object obj)
+        {
+            ShowShipOverview(true);
         }
 
         private static void ExecuteTurnCommand(object obj)
@@ -177,6 +186,7 @@ namespace Supremacy.Client
         {
             ClientCommands.EndTurn.UnregisterCommand(_endTurnCommand);
             ClientCommands.ShowEndOfTurnSummary.UnregisterCommand(_showEndOfTurnSummaryCommand);
+            ClientCommands.ShowShipOverview.UnregisterCommand(_showShipOverviewCommand);
             ClientEvents.InvasionUpdateReceived.Unsubscribe(OnInvasionUpdateReceived);
 
             lock (_eventSubscriptionTokens)
@@ -217,6 +227,7 @@ namespace Supremacy.Client
         {
             ClientCommands.EndTurn.RegisterCommand(_endTurnCommand);
             ClientCommands.ShowEndOfTurnSummary.RegisterCommand(_showEndOfTurnSummaryCommand);
+            ClientCommands.ShowShipOverview.RegisterCommand(_showShipOverviewCommand);
             ClientEvents.InvasionUpdateReceived.Subscribe(OnInvasionUpdateReceived, ThreadOption.UIThread);
 
             lock (_eventSubscriptionTokens)
@@ -374,6 +385,28 @@ namespace Supremacy.Client
                 {
                     GameLog.Client.General.DebugFormat("################ Setting EnableCombatScreen = {0} - SUMMARY not shown at false - just click manually to SUMMARY if you want", ClientSettings.Current.EnableCombatScreen.ToString());
                     _sitRepDialog.ShowIfAnyVisibleEntries();
+                }
+            }
+        }
+
+        private void ShowShipOverview(bool showIfEmpty)
+        {
+            if (!_appContext.IsGameInPlay)
+                return;
+
+            _shipOverview.SitRepEntries = _appContext.LocalPlayerEmpire.SitRepEntries;
+
+            var service = ServiceLocator.Current.GetInstance<IPlayerOrderService>();
+
+            if (showIfEmpty)
+                _shipOverview.Show();
+            else if (!service.AutoTurn)
+            {
+                // works but doubled
+                if (ClientSettings.Current.EnableCombatScreen == true)   // only show SUMMARY if also CombatScreen are shown (if not, a quicker game is possible)
+                {
+                    GameLog.Client.General.DebugFormat("################ Setting EnableCombatScreen = {0} - SUMMARY not shown at false - just click manually to SUMMARY if you want", ClientSettings.Current.EnableCombatScreen.ToString());
+                    _shipOverview.ShowIfAnyVisibleEntries();
                 }
             }
         }
