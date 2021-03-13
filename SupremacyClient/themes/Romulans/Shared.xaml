@@ -357,7 +357,7 @@
     </ControlTemplate>
 
     <!--used in StartScreen, in DiplomaticScreen-->
-    <ControlTemplate x:Key="{x:Static scc:GameButton.GroupedVerticallyTemplateKey}"
+    <!--<ControlTemplate x:Key="{x:Static scc:GameButton.GroupedVerticallyTemplateKey}"
                    TargetType="{x:Type scc:GameButton}">
         <DockPanel LastChildFill="True">
             <Rectangle x:Name="CheckRectangle"
@@ -414,26 +414,26 @@
             </ui:ButtonChrome>
         </DockPanel>
         <ControlTemplate.Triggers>
-            <!--DisplayMode" Value="Minimal"-->
+            --><!--DisplayMode" Value="Minimal"--><!--
             <Trigger Property="DisplayMode" Value="Minimal">
                 <Setter TargetName="Decorations"
                 Property="Visibility"
                 Value="Collapsed" />
             </Trigger>
-            <!--IsChecked-->
+            --><!--IsChecked--><!--
             <Trigger Property="IsChecked" Value="False">
                 <Setter TargetName="CheckRectangle"
                 Property="Opacity"
                 Value="0.5" />
             </Trigger>
-            <!-- crashes the game
+            --><!-- crashes the game
             <Trigger Property="IsChecked" Value="True">
                 <Setter TargetName="ButtonChrome"
                 Property="Background"
                 Value="c" />
-            </Trigger>-->
+            </Trigger>--><!--
         </ControlTemplate.Triggers>
-    </ControlTemplate>
+    </ControlTemplate>-->
     <!--End of GameButton.GroupedVerticallyTemplateKey-->
 
     <!--used for game inside, upper left (CombatScreen>"COMMIT"-->

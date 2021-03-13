@@ -417,7 +417,7 @@
     </Style>
 
     <!--used for game inside, upper left (CombatScreen>"COMMIT"-->
-    <ControlTemplate x:Key="{x:Static scc:GameButton.GroupedHorizontallyTemplateKey}"
+    <!--<ControlTemplate x:Key="{x:Static scc:GameButton.GroupedHorizontallyTemplateKey}"
                    TargetType="{x:Type scc:GameButton}">
         <DockPanel LastChildFill="True">
             <Rectangle DockPanel.Dock="Left" Width="12" Margin="0,0,2,0"
@@ -465,7 +465,7 @@
                 <Setter TargetName="Decorations" Property="Background" Value="{StaticResource {x:Static scc:ClientResources.HighlightBrushKey}}" />
             </Trigger>
         </ControlTemplate.Triggers>
-    </ControlTemplate>
+    </ControlTemplate>-->
     <!--End of GroupedHorizontallyTemplateKey-->
 
     <Style x:Key="LCARS_StandardButtonStyle"
