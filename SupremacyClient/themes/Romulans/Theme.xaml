@@ -13,7 +13,7 @@
                     xmlns:local="clr-namespace:Supremacy.Client">
 
   <ResourceDictionary.MergedDictionaries>
-    <ResourceDictionary Source="ROM-Shared.xaml"/>
+    <ResourceDictionary Source="Shared.xaml"/>
     <ResourceDictionary Source="GameContextMenu.xaml"/>
     <ResourceDictionary Source="TechObjectInfo.xaml"/>
     <ResourceDictionary Source="InfoCard.xaml" />

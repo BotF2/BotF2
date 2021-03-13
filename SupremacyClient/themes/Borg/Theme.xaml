@@ -11,7 +11,7 @@
                     xmlns:local="clr-namespace:Supremacy.Client">
 
   <ResourceDictionary.MergedDictionaries>
-    <ResourceDictionary Source="BORG-Shared.xaml"/>
+    <ResourceDictionary Source="Shared.xaml"/>
     <ResourceDictionary Source="GameContextMenu.xaml"/>
     <ResourceDictionary Source="TechObjectInfo.xaml"/>
     <ResourceDictionary Source="InfoCard.xaml" />
