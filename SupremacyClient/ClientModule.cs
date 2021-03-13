@@ -121,31 +121,14 @@ namespace Supremacy.Client
             [NotNull] IMusicPlayer musicPlayer,
             [NotNull] ISoundPlayer soundPlayer)
         {
-            if (app == null)
-                throw new ArgumentNullException("app");
-            if (container == null)
-                throw new ArgumentNullException("container");
-            if (resourceManager == null)
-                throw new ArgumentNullException("resourceManager");
-            if (regionViewRegistry == null)
-                throw new ArgumentNullException("regionViewRegistry");
-            if (dispatcherService == null)
-                throw new ArgumentNullException("dispatcherService");
-            if (errorService == null)
-                throw new ArgumentNullException("errorService");
-            if (musicPlayer == null)
-                throw new ArgumentNullException("musicPlayer");
-            if (soundPlayer == null)
-                throw new ArgumentNullException("soundPlayer");
-
-            _app = app;
-            _container = container;
-            _resourceManager = resourceManager;
-            _regionViewRegistry = regionViewRegistry;
-            _dispatcherService = dispatcherService;
-            _errorService = errorService;
-            _musicPlayer = musicPlayer;
-            _soundPlayer = soundPlayer;
+            _app = app ?? throw new ArgumentNullException("app");
+            _container = container ?? throw new ArgumentNullException("container");
+            _resourceManager = resourceManager ?? throw new ArgumentNullException("resourceManager");
+            _regionViewRegistry = regionViewRegistry ?? throw new ArgumentNullException("regionViewRegistry");
+            _dispatcherService = dispatcherService ?? throw new ArgumentNullException("dispatcherService");
+            _errorService = errorService ?? throw new ArgumentNullException("errorService");
+            _musicPlayer = musicPlayer ?? throw new ArgumentNullException("musicPlayer");
+            _soundPlayer = soundPlayer ?? throw new ArgumentNullException("soundPlayer");
 
             _appContext = _container.Resolve<IAppContext>();
             _regionManager = _container.Resolve<IRegionManager>();
@@ -744,7 +727,11 @@ namespace Supremacy.Client
                 else if (_appContext.LocalPlayer.Empire.Key == "TERRANEMPIRE")
                     LoadTheme("TerranEmpire");
                 else
+                {
+                    MessageBox.Show("Empire is set to NOT-Playable - falling back to Default - Please restart, Select Single Player Menu and set Empire Playable to YES");
                     LoadDefaultTheme();
+                }
+                    
             }
         }
 
@@ -920,6 +907,7 @@ namespace Supremacy.Client
                 default:
                     break;
             }
+            
 
             var initData = GameInitData.CreateSinglePlayerGame(startScreen.Options, _id);
             localEmpire = GetLocalEmpireShortage(_id, out string localempire);

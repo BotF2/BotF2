@@ -100,6 +100,8 @@ namespace Supremacy.Client
                     GenericCommands.AcceptCommand,
                     OnGenericCommandsAcceptCommandExecuted));
 
+            GameLog.Client.Test.InfoFormat("F07-Dialog initialized");
+
         }
 
         public override void OnApplyTemplate()
@@ -231,10 +233,9 @@ namespace Supremacy.Client
 
         private bool FilterEncyclopediaEntry(object value)
         {
-            var entry = value as IEncyclopediaEntry;
             var searchText = String.Empty;
 
-            if (entry == null)
+            if (!(value is IEncyclopediaEntry entry))
                 return false;
 
             if (_searchText != null)
@@ -280,10 +281,10 @@ namespace Supremacy.Client
         {
             if ((_encyclopediaViewer != null)
                 && (_encyclopediaEntryListView.SelectedItem != null)
-                && (_encyclopediaEntryListView.SelectedItem is IEncyclopediaEntry))
+                && (_encyclopediaEntryListView.SelectedItem is IEncyclopediaEntry entry))
             {
                 _encyclopediaViewer.Document = GenerateEncyclopediaDocument(
-                    (IEncyclopediaEntry)_encyclopediaEntryListView.SelectedItem);
+                    entry);
             }
         }
 
@@ -315,11 +316,6 @@ namespace Supremacy.Client
 
             // EncyclopediaImage
             var image = new Border();
-            var imageSource = imageConverter.Convert(
-                entry.EncyclopediaImage,
-                typeof(BitmapImage),
-                null,
-                null) as BitmapImage;
 
             var paragraphs = TextHelper.TrimParagraphs(entry.EncyclopediaText).Split(
                 new[] { Environment.NewLine },
@@ -332,7 +328,11 @@ namespace Supremacy.Client
                 doc.Blocks.Add(firstParagraph);
             }
 
-            if (imageSource != null)
+            if (imageConverter.Convert(
+                entry.EncyclopediaImage,
+                typeof(BitmapImage),
+                null,
+                null) is BitmapImage imageSource)
             {
                 var imageWidth = imageSource.Width;
                 var imageHeight = imageSource.Height;

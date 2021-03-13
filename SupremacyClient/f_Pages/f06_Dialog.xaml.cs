@@ -59,6 +59,8 @@ namespace Supremacy.Client
                 new CommandBinding(
                     GenericCommands.TracesSetNoneCommand,
                     OnGenericCommandsTracesSetNoneCommandExecuted));
+
+            GameLog.Client.Test.InfoFormat("F06-Dialog initialized");
         }
 
         private void OnGenericCommandsCancelCommandExecuted(object source, ExecutedRoutedEventArgs e)
