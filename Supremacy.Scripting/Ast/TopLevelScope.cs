@@ -1,5 +1,6 @@
 using Microsoft.Scripting;
 using Microsoft.Scripting.Runtime;
+using System;
 
 namespace Supremacy.Scripting.Ast
 {
@@ -26,6 +27,7 @@ namespace Supremacy.Scripting.Ast
             {
                 ProcessParameters();
             }
+            Console.WriteLine("...doing TopLevelScope");
         }
 
         public TopLevelScope(CompilerContext ctx, SourceLocation loc)

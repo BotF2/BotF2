@@ -1153,7 +1153,7 @@
                          </TextBlock>
                          <TextBlock TextWrapping="Wrap"
                                Text="{s:StringResource BOMBARDMENT_STRATEGY_MAXIMUM_PRECISION_TEXT}"  
-                               Foreground="#ffdfdfff"
+                               Foreground="{StaticResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"
                                FontSize="12pt"                                 
                                Margin="0,3,0,0">
                          </TextBlock>
@@ -1167,7 +1167,7 @@
                                 </TextBlock>
                                 <TextBlock TextWrapping="Wrap"
                                     Text="{s:StringResource BOMBARDMENT_STRATEGY_BALANCED_TEXT}"  
-                                    Foreground="#ffdfdfff"
+                                    Foreground="{StaticResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"
                                     FontSize="12pt"                                 
                                     Margin="0,3,0,0">
                                 </TextBlock>
@@ -1181,7 +1181,7 @@
                                 </TextBlock>
                                 <TextBlock TextWrapping="Wrap"
                                     Text="{s:StringResource BOMBARDMENT_STRATEGY_MAXIMUM_DAMAGE_TEXT}"  
-                                    Foreground="#ffdfdfff"
+                                    Foreground="{StaticResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"
                                     FontSize="12pt"                                 
                                     Margin="0,3,0,0">
                                 </TextBlock>

@@ -34,9 +34,7 @@ namespace Supremacy.Client
         #region Constructors and Finalizers
         public SinglePlayerStartScreen([NotNull] ISoundPlayer soundPlayer)
         {
-            if (soundPlayer == null)
-                throw new ArgumentNullException("soundPlayer");
-            _soundPlayer = soundPlayer;
+            _soundPlayer = soundPlayer ?? throw new ArgumentNullException("soundPlayer");
 
             InitializeComponent();
 
