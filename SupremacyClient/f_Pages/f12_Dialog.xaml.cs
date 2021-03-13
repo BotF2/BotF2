@@ -7,6 +7,7 @@
 //
 // All other rights reserved.
 
+using Supremacy.Utility;
 using System.Windows.Input;
 
 namespace Supremacy.Client
@@ -56,6 +57,8 @@ namespace Supremacy.Client
                 new CommandBinding(
                     GenericCommands.TracesSetNoneCommand,
                     OnGenericCommandsTracesSetNoneCommandExecuted));
+
+            GameLog.Client.Test.InfoFormat("F12-Dialog initialized");
         }
 
         private void OnGenericCommandsCancelCommandExecuted(object source, ExecutedRoutedEventArgs e)

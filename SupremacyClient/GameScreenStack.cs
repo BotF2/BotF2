@@ -259,6 +259,7 @@ namespace Supremacy.Client
         {
             // works
             GameLog.Client.UI.DebugFormat("GameScreenStack.cs: screen={0}", screen);
+            Console.WriteLine("GameScreenStack.cs: screen={0}", screen);
             if (screen == null)
                 throw new ArgumentNullException("screen");
             lock (_screens)

@@ -16,6 +16,7 @@ using Supremacy.Client.Commands;
 using Supremacy.Client.Events;
 using NavigationCommands=Supremacy.Client.Commands.NavigationCommands;
 using Supremacy.UI;
+using Supremacy.Utility;
 
 namespace Supremacy.Client
 {
@@ -96,6 +97,8 @@ namespace Supremacy.Client
                     },
                     (s, e) => e.CanExecute = ClientCommands.JoinMultiplayerGame.CanExecute(null)));
             _MenuAnimation = new AsteroidsView();
+
+            GameLog.Client.Test.InfoFormat("MenuScreen initialized");
 
         }
 

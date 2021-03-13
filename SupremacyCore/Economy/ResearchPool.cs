@@ -332,6 +332,8 @@ namespace Supremacy.Economy
         /// <param name="researchPoints">The number of research points.</param>
         public void UpdateResearch(int researchPoints)
         {
+            GameLog.Client.Test.InfoFormat("UpdatingResearch...");
+            
             if (researchPoints < 0)
                 researchPoints = 0;
 
@@ -399,6 +401,7 @@ namespace Supremacy.Economy
             }
 
             _cumulativePoints.UpdateAndReset();
+            GameLog.Client.Test.InfoFormat("UpdatingResearch...DONE");
         }
 
         /// <summary>

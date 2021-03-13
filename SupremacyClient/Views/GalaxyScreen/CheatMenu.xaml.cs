@@ -1,4 +1,5 @@
-﻿using Supremacy.Client.Context;
+﻿// File:CheatMenu.xaml.cs
+using Supremacy.Client.Context;
 using Supremacy.Client.Services;
 using Supremacy.Economy;
 using Supremacy.Game;
