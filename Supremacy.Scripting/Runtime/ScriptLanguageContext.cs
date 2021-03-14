@@ -121,9 +121,9 @@ namespace Supremacy.Scripting.Runtime
             };
             //foreach (var item in parseContext.CurrentScope.TopLevel.Parameters.)
             //{
-               
+
             //}
-            Console.WriteLine("TopLevel {0}, StartLocation {1}, End {2}, Parent {3}, CompilerContext {4}, Explicit {5}, CompilerErrorCount {6}, CurrentAnonymousMethod {7}, InitilizserVarible {8}, languageContext {9}, IsVariableCapturingRequired {10}", parseContext.Compiler.ToString(), 
+            Console.WriteLine("TopLevel {0}, StartLocation {1}, End {2}, Parent {3}, CompilerContext {4}, Explicit {5}, CompilerErrorCount {6}, CurrentAnonymousMethod {7}, InitilizserVarible {8}, languageContext {9}, IsVariableCapturingRequired {10}", parseContext.Compiler.ToString(),
                 parseContext.CurrentScope.TopLevel,
                 parseContext.CurrentScope.StartLocation,
                 parseContext.CurrentScope.EndLocation,
@@ -137,7 +137,7 @@ namespace Supremacy.Scripting.Runtime
                 parseContext.LanguageContext,
                 parseContext.IsVariableCapturingRequired
                 );
-            Console.ReadLine();
+            //Console.ReadLine();
             AstInitializer.Initialize(parseContext, ref expression);
 
             Expression resolved = expression.Resolve(parseContext);
