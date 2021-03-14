@@ -69,9 +69,7 @@ namespace Supremacy.Client
 
             SetValue(Grid.IsSharedSizeScopeProperty, true);
 
-            ResourceDictionary themeResources;
-
-            if (ThemeHelper.TryLoadThemeResources(out themeResources))
+            if (ThemeHelper.TryLoadThemeResources(out ResourceDictionary themeResources))
                 Resources.MergedDictionaries.Add(themeResources);
         }
 
@@ -160,10 +158,9 @@ namespace Supremacy.Client
 
         private bool FilterEncyclopediaEntry(object value)
         {
-            var entry = value as IEncyclopediaEntry;
             var searchText = String.Empty;
 
-            if (entry == null)
+            if (!(value is IEncyclopediaEntry entry))
                 return false;
 
             if (_searchText != null)
@@ -352,10 +349,10 @@ namespace Supremacy.Client
         {
             if ((_researchViewer != null)
                 && (_researchEntryListView.SelectedItem != null)
-                && (_researchEntryListView.SelectedItem is IEncyclopediaEntry))
+                && (_researchEntryListView.SelectedItem is IEncyclopediaEntry entry))
             {
                 _researchViewer.Document = GenerateEncyclopediaDocument(
-                    (IEncyclopediaEntry)_researchEntryListView.SelectedItem);
+                    entry);
             }
         }
 
@@ -386,11 +383,6 @@ namespace Supremacy.Client
 
             // EncyclopediaImage
             var image = new Border();
-            var imageSource = imageConverter.Convert(
-                entry.EncyclopediaImage,
-                typeof(BitmapImage),
-                null,
-                null) as BitmapImage;
 
             var paragraphs = TextHelper.TrimParagraphs(entry.EncyclopediaText).Split(
                 new[] { Environment.NewLine },
@@ -403,7 +395,11 @@ namespace Supremacy.Client
                 doc.Blocks.Add(firstParagraph);
             }
 
-            if (imageSource != null)
+            if (imageConverter.Convert(
+                entry.EncyclopediaImage,
+                typeof(BitmapImage),
+                null,
+                null) is BitmapImage imageSource)
             {
                 var imageWidth = imageSource.Width;
                 var imageHeight = imageSource.Height;
@@ -699,12 +695,8 @@ namespace Supremacy.Client
 
         public EncyclopediaFieldData(ResearchField field, ResearchPool pool)
         {
-            if (field == null)
-                throw new ArgumentNullException("field");
-            if (pool == null)
-                throw new ArgumentNullException("pool");
-            _field = field;
-            _pool = pool;
+            _field = field ?? throw new ArgumentNullException("field");
+            _pool = pool ?? throw new ArgumentNullException("pool");
         }
     }
 
@@ -760,12 +752,8 @@ namespace Supremacy.Client
 
         public EncyclopediaApplicationData(ResearchApplication application, ResearchPool pool)
         {
-            if (application == null)
-                throw new ArgumentNullException("application");
-            if (pool == null)
-                throw new ArgumentNullException("pool");
-            _application = application;
-            _pool = pool;
+            _application = application ?? throw new ArgumentNullException("application");
+            _pool = pool ?? throw new ArgumentNullException("pool");
         }
     }
 
@@ -883,12 +871,8 @@ namespace Supremacy.Client
 
         public EncyclopediaApplicationDetails(ResearchApplication application, CivilizationManager civManager)
         {
-            if (application == null)
-                throw new ArgumentNullException("application");
-            if (civManager == null)
-                throw new ArgumentNullException("civManager");
-            _application = application;
-            _civManager = civManager;
+            _application = application ?? throw new ArgumentNullException("application");
+            _civManager = civManager ?? throw new ArgumentNullException("civManager");
         }
     }
 }
