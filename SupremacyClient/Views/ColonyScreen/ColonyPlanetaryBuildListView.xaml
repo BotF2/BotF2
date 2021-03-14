@@ -33,10 +33,9 @@
             <TextBlock x:Name="TurnsText"
                        Text="Turns" />-->
           </TextBlock>
-          <TextBlock x:Name="BuildDesignName"
-                     Foreground="{DynamicResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}"
-                     Text="{Binding Path=Description}" />
-        </DockPanel>
+          <TextBlock x:Name="BuildDesignName" Text="{Binding Path=Description}"
+                     Foreground="{DynamicResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}"/>
+                </DockPanel>
         <DataTemplate.Triggers>
 <!--
           <DataTrigger Binding="{Binding Path=TurnsRemaining}"

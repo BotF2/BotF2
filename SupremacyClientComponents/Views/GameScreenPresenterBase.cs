@@ -37,9 +37,9 @@ namespace Supremacy.Client.Views
             [NotNull] TPresentationModel model,
             [NotNull] TView view)
         {
-            if (ReferenceEquals(model, null))
+            if (model == null)
                 throw new ArgumentNullException("model");
-            if (ReferenceEquals(view, null))
+            if (view is null)
                 throw new ArgumentNullException("view");
 
             _container = container;
@@ -95,8 +95,7 @@ namespace Supremacy.Client.Views
         {
             get
             {
-                var view = View as DependencyObject;
-                if (view != null)
+                if (View is DependencyObject view)
                 {
                     var regionManager = CompositeRegionManager.GetRegionManager(view);
                     if (regionManager != null)
@@ -154,8 +153,7 @@ namespace Supremacy.Client.Views
 
         protected virtual void SetInteractionNode()
         {
-            var viewElement = View as DependencyObject;
-            if (viewElement != null)
+            if (View is DependencyObject viewElement)
                 Views.View.SetInteractionNode(viewElement, this);
         }
 
@@ -199,11 +197,10 @@ namespace Supremacy.Client.Views
             UnregisterCommandAndEventHandlers();
             TerminateOverride();
 
-            View.Model = default(TPresentationModel);
+            View.Model = default;
             View.AppContext = null;
 
-            var animationsHost = View as IAnimationsHost;
-            if (animationsHost != null)
+            if (View is IAnimationsHost animationsHost)
                 animationsHost.StopAnimations();
 
             IsRunning = false;
@@ -211,8 +208,7 @@ namespace Supremacy.Client.Views
 
         protected virtual void ClearInteractionNode()
         {
-            var viewElement = View as DependencyObject;
-            if (viewElement != null)
+            if (View is DependencyObject viewElement)
                 viewElement.ClearValue(Views.View.InteractionNodeProperty);
         }
 
@@ -226,8 +222,7 @@ namespace Supremacy.Client.Views
             {
                 foreach (var nestedView in nestedRegion.Views.ToList())
                 {
-                    var animationsHost = nestedView as IAnimationsHost;
-                    if (animationsHost != null)
+                    if (nestedView is IAnimationsHost animationsHost)
                         animationsHost.StopAnimations();
                     nestedRegion.Remove(nestedView);
                 }
@@ -262,8 +257,7 @@ namespace Supremacy.Client.Views
 
         protected virtual IInteractionNode FindParentInteractionNode()
         {
-            var view = View as DependencyObject;
-            if (view == null)
+            if (!(View is DependencyObject view))
                 return null;
 
             IInteractionNode ancestorNode = null;

@@ -435,10 +435,9 @@ namespace Supremacy.Economy
         {
             var civManager = GameContext.Current.CivilizationManagers[Builder];
 
-            TechObject spawnedInstance;
             //if(BuildDesign == StationDes)
             GameLog.Core.Production.DebugFormat(" Turn {3}: Trying to finish BuildProject ##########  {0} by {1} at {2}", BuildDesign, Builder, Location, GameContext.Current.TurnNumber);
-            if (civManager == null || !BuildDesign.TrySpawn(Location, Builder, out spawnedInstance))  // what does the TrySpawn have to do delta/needed for finishwith our OutOfRagneException in production? 
+            if (civManager == null || !BuildDesign.TrySpawn(Location, Builder, out TechObject spawnedInstance))  // what does the TrySpawn have to do delta/needed for finishwith our OutOfRagneException in production? 
                 return; // If we do or do not spawn does that change a collection to give out of range?
 
             //Wtf is going on here?
@@ -679,9 +678,7 @@ namespace Supremacy.Economy
         /// <param name="propertyName">Name of the property that changed.</param>
         protected void OnPropertyChanged(string propertyName)
         {
-            var handler = PropertyChanged;
-            if (handler != null)
-                handler(this, new PropertyChangedEventArgs(propertyName));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

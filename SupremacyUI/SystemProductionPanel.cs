@@ -135,10 +135,10 @@ namespace Supremacy.UI
 
             _children = new VisualCollection(this);
 
-            _grid = new Grid();
-
-
-            _grid.Width = 580;
+            _grid = new Grid
+            {
+                Width = 580
+            };
 
             _grid.ColumnDefinitions.Add(new ColumnDefinition());
             _grid.ColumnDefinitions.Add(new ColumnDefinition());

@@ -79,28 +79,13 @@ namespace Supremacy.Client
             [NotNull] IEventAggregator eventAggregator,
             [NotNull] INavigationCommandsProxy navigationCommands)
         {
-            if (app == null)
-                throw new ArgumentNullException("app");
-            if (appContext == null)
-                throw new ArgumentNullException("appContext");
-            if (audioEngine == null)
-                throw new ArgumentNullException("audioEngine");
-            if (musicPlayer == null)
-                throw new ArgumentNullException("musicPlayer");
-            if (soundPlayer == null)
-                throw new ArgumentNullException("soundPlayer");
-            if (eventAggregator == null)
-                throw new ArgumentNullException("eventAggregator");
-            if (navigationCommands == null)
-                throw new ArgumentNullException("navigationCommands");
-
-            _app = app;
-            _appContext = appContext;
-            _audioEngine = audioEngine;
-            _musicPlayer = musicPlayer;
-            _soundPlayer = soundPlayer;
-            _eventAggregator = eventAggregator;
-            _navigationCommands = navigationCommands;
+            _app = app ?? throw new ArgumentNullException("app");
+            _appContext = appContext ?? throw new ArgumentNullException("appContext");
+            _audioEngine = audioEngine ?? throw new ArgumentNullException("audioEngine");
+            _musicPlayer = musicPlayer ?? throw new ArgumentNullException("musicPlayer");
+            _soundPlayer = soundPlayer ?? throw new ArgumentNullException("soundPlayer");
+            _eventAggregator = eventAggregator ?? throw new ArgumentNullException("eventAggregator");
+            _navigationCommands = navigationCommands ?? throw new ArgumentNullException("navigationCommands");
             _waitCursorLock = new object();
             _settingsChangeScope = new StateScope();
 

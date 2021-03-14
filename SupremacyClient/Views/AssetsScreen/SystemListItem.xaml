@@ -131,7 +131,7 @@
               HorizontalAlignment="Stretch"
               BorderThickness="1"
               Margin="0,2,0,5"
-              BorderBrush="{DynamicResource {x:Static scc:ClientResources.DisabledTextForegroundBrushKey}}" />
+              BorderBrush="{DynamicResource {x:Static scc:ClientResources.ImageBorderBrushKey}}" />
         
         <!--#####   Column 0   ##### -->
         <!--Colony Name-->

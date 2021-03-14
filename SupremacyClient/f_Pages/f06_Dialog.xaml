@@ -563,6 +563,10 @@
                     Foreground="Black" VerticalAlignment="Center"
             Background="{DynamicResource DomHoverGradient_Right_Left}" />
 
+                    <TextBlock Text="Dom6Gradient"  
+                           Foreground="Black" VerticalAlignment="Center"
+                    Background="{DynamicResource Dom6Gradient_Left_Right}" />
+
 
                 </StackPanel>
 

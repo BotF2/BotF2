@@ -31,8 +31,7 @@ namespace Supremacy.Client
             if (exception is AppDomainUnloadedException)
                 return;
 
-            var supremacyException = exception as SupremacyException;
-            if (supremacyException != null)
+            if (exception is SupremacyException supremacyException)
             {
                 _errorService.HandleError(supremacyException);
                 Environment.Exit(Environment.ExitCode);
@@ -79,11 +78,12 @@ namespace Supremacy.Client
         {
             using (var client = new WebClient())
             {
-                var values = new NameValueCollection();
-
-                values["Version"] = ClientApp.ClientVersion.ToString();
-                values["Title"] = stackTrace.Split('\n')[0];
-                values["StackTrace"] = stackTrace;
+                var values = new NameValueCollection
+                {
+                    ["Version"] = ClientApp.ClientVersion.ToString(),
+                    ["Title"] = stackTrace.Split('\n')[0],
+                    ["StackTrace"] = stackTrace
+                };
 
                 string _text = Environment.NewLine + Environment.NewLine
                     + DateTime.Now + " #### ERROR " /*+ Environment.NewLine*/

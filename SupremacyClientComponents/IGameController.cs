@@ -83,31 +83,18 @@ namespace Supremacy.Client
             [NotNull] IGameClient client,
             [NotNull] IPlayerOrderService playerOrderService)
         {
-            if (container == null)
-                throw new ArgumentNullException("container");
-            if (navigationService == null)
-                throw new ArgumentNullException("navigationService");
-            if (gameWindow == null)
-                throw new ArgumentNullException("gameWindow");
             if (regionManager == null)
                 throw new ArgumentNullException("regionManager");
             if (regionViewRegistry == null)
                 throw new ArgumentNullException("regionViewRegistry");
-            if (appContext == null)
-                throw new ArgumentNullException("appContext");
-            if (client == null)
-                throw new ArgumentNullException("client");
-            if (playerOrderService == null)
-                throw new ArgumentNullException("playerOrderService");
-
-            _container = container;
-            _navigationService = navigationService;
-            _gameWindow = gameWindow;
+            _container = container ?? throw new ArgumentNullException("container");
+            _navigationService = navigationService ?? throw new ArgumentNullException("navigationService");
+            _gameWindow = gameWindow ?? throw new ArgumentNullException("gameWindow");
             _sitRepDialog = container.Resolve<SitRepDialog>();
             _shipOverview = container.Resolve<ShipOverview>();
-            _appContext = appContext;
-            _client = client;
-            _playerOrderService = playerOrderService;
+            _appContext = appContext ?? throw new ArgumentNullException("appContext");
+            _client = client ?? throw new ArgumentNullException("client");
+            _playerOrderService = playerOrderService ?? throw new ArgumentNullException("playerOrderService");
             _endTurnCommand = new DelegateCommand<object>(ExecuteTurnCommand) { IsActive = false };
             _showEndOfTurnSummaryCommand = new DelegateCommand<object>(ExecuteShowEndOfTurnSummaryCommand) { IsActive = true };
             _showShipOverviewCommand = new DelegateCommand<object>(ExecuteShowShipOverviewCommand) { IsActive = true };
@@ -203,9 +190,8 @@ namespace Supremacy.Client
             if (_lobbyScreenShown)
                 return;
 
-            SubscriptionToken subscriptionToken;
 
-            if (_eventSubscriptionTokens.TryGetValue(ClientEvents.LocalPlayerJoined, out subscriptionToken))
+            if (_eventSubscriptionTokens.TryGetValue(ClientEvents.LocalPlayerJoined, out SubscriptionToken subscriptionToken))
                 ClientEvents.LocalPlayerJoined.Unsubscribe(subscriptionToken);
 
             if (!_appContext.IsSinglePlayerGame)
@@ -218,9 +204,7 @@ namespace Supremacy.Client
 
         private void OnTerminated()
         {
-            var handler = Terminated;
-            if (handler != null)
-                handler(this, EventArgs.Empty);
+            Terminated?.Invoke(this, EventArgs.Empty);
         }
 
         private void HookCommandAndEventHandlers()
