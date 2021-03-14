@@ -142,6 +142,156 @@
         </Setter>
     </Style>
 
+
+    <!--LCARS_StandardButtonStyle-->
+    <Style x:Key="LCARS_StandardButtonStyle"
+         TargetType="{x:Type Button}"
+         BasedOn="{StaticResource LCARS_BaseButtonStyle}">
+        <Setter Property="FontFamily" Value="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}" />
+        <Setter Property="FontSize" Value="18pt" />
+        <!--<Setter Property="FontWeight" Value="Normal" />-->
+        <Setter Property="ClipToBounds" Value="False" />
+        <Setter Property="Focusable" Value="False" />
+        <Setter Property="Padding" Value="16,0,16,0" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                            <!--<ColumnDefinition Width="Auto" />-->
+                        </Grid.ColumnDefinitions>
+                        <Border Grid.Column="0"
+                    Background="{StaticResource PurpleGradient_Left_Right}"
+                    CornerRadius="14,0,0,14"
+                    Width="21" />
+                        <!--<Path Grid.Column="0"
+                    Height="28"
+                    Width="14"
+                    Stretch="Fill" 
+                    Fill="{StaticResource PurpleGradient_TopLeft_BottomRight}"
+                    Data="F1 M 16,32C 7.16345,32 3.8147e-006,24.8366 3.8147e-006,16C 3.8147e-006,7.16344 7.16345,5.72205e-006 16,5.72205e-006L 16,16L 16,32 Z"/>-->
+                        <Border x:Name="ContentBorder"
+                    Grid.Column="1"
+                    Margin="3,0,3,0"
+                    Padding="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Padding}"
+                    Background="{StaticResource BlueGradient_Left_Right}">
+                            <ContentPresenter Content="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Content}"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                RecognizesAccessKey="True" />
+                        </Border>
+                        <!--<Rectangle Grid.Column="2"
+                       Stretch="Fill"
+                       Fill="{StaticResource OrangeGradient_Left_Right}"
+                       Margin="0,0,3,0"
+                       Width="14" />-->
+                        <Border Grid.Column="3"
+                    Background="{StaticResource PurpleGradient_Right_Left}"
+                    CornerRadius="0,14,14,0"
+                    Width="21" />
+                        <!--<Path Grid.Column="3"
+                    Height="28"
+                    Width="14" 
+                    Stretch="Fill"
+                    Fill="{StaticResource PurpleGradient_TopLeft_BottomRight}" 
+                    Data="F1 M 9.79717e-016,5.72205e-006C 8.83655,5.72205e-006 16,7.16344 16,16C 16,24.8366 8.83655,32 9.79717e-016,32L 0,16L 9.79717e-016,5.72205e-006 Z"/>-->
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <!--IsEnabled  grayed out - don't set a color -->
+                        <Trigger Property="IsEnabled"
+                     Value="False">
+                            <Setter TargetName="ContentBorder"
+                      Property="Opacity"
+                      Value="0.33" />
+                        </Trigger>
+                        <!--IsMouseOver-->
+                        <Trigger Property="IsMouseOver"
+                     Value="True">
+                            <Setter TargetName="ContentBorder"
+                      Property="Background"
+                      Value="{StaticResource BlueHoverGradient_Left_Right}" />
+                        </Trigger>
+                        <!--IsPressed-->
+                        <Trigger Property="IsPressed"
+                     Value="True">
+                            <Setter TargetName="ContentBorder"
+                      Property="Background"
+                      Value="{StaticResource BlueGradient_Right_Left}" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="StandardButtonStyle"
+         TargetType="{x:Type Button}"
+         BasedOn="{StaticResource LCARS_StandardButtonStyle}" />
+
+    <Style TargetType="{x:Type Button}"
+         BasedOn="{StaticResource LCARS_StandardButtonStyle}" />
+    
+
+    <!--used in StartScreen, in DiplomaticScreen-->
+    <ControlTemplate x:Key="{x:Static scc:GameButton.GroupedVerticallyTemplateKey}"
+                   TargetType="{x:Type scc:GameButton}">
+        <DockPanel LastChildFill="True">
+
+            <Rectangle x:Name="CheckRectangle" DockPanel.Dock="Left" Width="12" Margin="0,0,2,0"
+                 Fill="{StaticResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"/>
+
+            <ui:ButtonChrome x:Name="ButtonChrome"
+                       Background="{StaticResource {x:Static scc:ClientResources.ImageBorderBrushKey}}"
+                       DisabledBackground="#ffFFFFFF"
+                       HoverBackground="{StaticResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}"
+                       PressedBackground="#ff70A3D0"
+                       RenderMouseOver="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=IsMouseOver}"
+                       RenderPressed="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=IsPressed}">
+
+                <DockPanel LastChildFill="True">
+                    <Border x:Name="Decorations" DockPanel.Dock="Right" Margin="4" Padding="2"
+                  Background="Black" HorizontalAlignment="Right" VerticalAlignment="Center"
+                  Visibility="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(scc:GameControlBase.HasImage), Converter={StaticResource BooleanToVisibilityConverter}}">
+                        <Image Width="16" Height="16" Stretch="Uniform" StretchDirection="DownOnly" VerticalAlignment="Center">
+                            <Image.Source>
+                                <MultiBinding Converter="{scc:CoalesceConverter}">
+                                    <Binding RelativeSource="{RelativeSource TemplatedParent}" Path="ImageSourceSmall" />
+                                    <Binding RelativeSource="{RelativeSource TemplatedParent}" Path="ImageSourceLarge" />
+                                </MultiBinding>
+                            </Image.Source>
+                        </Image>
+                    </Border>
+                    <Border x:Name="ContentBorder"
+                  Background="{Binding ElementName=ButtonChrome, Path=RenderBackground}"
+                  Padding="{TemplateBinding Padding}">
+                        <ContentPresenter RecognizesAccessKey="True">
+                            <ContentPresenter.Content>
+                                <AccessText Text="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Label}"
+                            HorizontalAlignment="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=HorizontalContentAlignment}"
+                            VerticalAlignment="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=VerticalContentAlignment}" />
+                            </ContentPresenter.Content>
+                        </ContentPresenter>
+                    </Border>
+                </DockPanel>
+            </ui:ButtonChrome>
+        </DockPanel>
+        <ControlTemplate.Triggers>
+            <!--DisplayMode" Value="Minimal"-->
+            <Trigger Property="DisplayMode" Value="Minimal">
+                <Setter TargetName="Decorations" Property="Visibility" Value="Collapsed" />
+            </Trigger>
+            <!--IsChecked-->
+            <Trigger Property="IsChecked" Value="False">
+                <Setter TargetName="CheckRectangle" Property="Opacity" Value="0.8" />
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+    <!--End of GameButton.GroupedVerticallyTemplateKey-->
+
+    <!--LockToggleButtonStyle-->
     <Style x:Key="LockToggleButtonStyle"
          TargetType="{x:Type ToggleButton}">
     <Setter Property="IsTabStop"
