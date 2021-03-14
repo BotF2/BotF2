@@ -66,15 +66,13 @@ namespace Supremacy.Client.Views
 
         private void OnDataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
-            var oldModel = e.OldValue as SystemAssaultScreenViewModel;
-            if (oldModel != null)
+            if (e.OldValue is SystemAssaultScreenViewModel oldModel)
             {
                 oldModel.StateChanged -= OnModelStateChanged;
                 oldModel.SelectedActionChanged -= OnModelSelectedActionChanged;
             }
-            
-            var newModel = e.NewValue as SystemAssaultScreenViewModel;
-            if (newModel != null)
+
+            if (e.NewValue is SystemAssaultScreenViewModel newModel)
             {
                 newModel.StateChanged += OnModelStateChanged;
                 newModel.SelectedActionChanged += OnModelSelectedActionChanged;
@@ -250,16 +248,9 @@ namespace Supremacy.Client.Views
 
         public ItemsControlTransitionSelector([NotNull] ItemsControl itemsControl, [NotNull] Transition backTransition, [NotNull] Transition forwardTransition)
         {
-            if (itemsControl == null)
-                throw new ArgumentNullException("itemsControl");
-            if (backTransition == null)
-                throw new ArgumentNullException("backTransition");
-            if (forwardTransition == null)
-                throw new ArgumentNullException("forwardTransition");
-
-            _itemsControl = itemsControl;
-            _backTransition = backTransition;
-            _forwardTransition = forwardTransition;
+            _itemsControl = itemsControl ?? throw new ArgumentNullException("itemsControl");
+            _backTransition = backTransition ?? throw new ArgumentNullException("backTransition");
+            _forwardTransition = forwardTransition ?? throw new ArgumentNullException("forwardTransition");
         }
 
         public override Transition SelectTransition(TransitionPresenter presenter, object fromContent, object toContent)
@@ -269,8 +260,7 @@ namespace Supremacy.Client.Views
 
             if (fromIndex < 0)
             {
-                var fromElement = fromContent as DependencyObject;
-                if (fromElement != null)
+                if (fromContent is DependencyObject fromElement)
                 {
                     var fromContainer = _itemsControl.ContainerFromElement(fromElement);
                     if (fromContainer == null)
@@ -295,8 +285,7 @@ namespace Supremacy.Client.Views
             
             if (toIndex < 0)
             {
-                var toElement = toContent as DependencyObject;
-                if (toElement != null)
+                if (toContent is DependencyObject toElement)
                 {
                     var toContainer = _itemsControl.ContainerFromElement(toElement);
                     if (toContainer == null)
@@ -348,8 +337,7 @@ namespace Supremacy.Client.Views
             dropCommand = null;
             draggedUnits = new List<CombatUnit>();
 
-            var targetElement = TargetElement as FrameworkElement;
-            if (targetElement == null)
+            if (!(TargetElement is FrameworkElement targetElement))
                 return false;
 
             var targetListBox = targetElement.FindLogicalAncestorByType<ListBox>();
@@ -360,14 +348,12 @@ namespace Supremacy.Client.Views
             if (view == null || view.Model == null)
                 return false;
 
-            var sourceElement = ExtractElement(obj) as DependencyObject;
-            if (sourceElement == null)
+            if (!(ExtractElement(obj) is DependencyObject sourceElement))
                 return false;
 
             var assaultGroup = SystemAssaultScreen.GetAssaultGroup(targetListBox);
 
-            var sourceListBox = sourceElement as ListBox;
-            if (sourceListBox == null)
+            if (!(sourceElement is ListBox sourceListBox))
             {
                 sourceListBox = sourceElement.FindLogicalAncestorByType<ListBox>();
 
@@ -412,8 +398,7 @@ namespace Supremacy.Client.Views
 
         public virtual void OnDropCompleted(IDataObject obj, Point dropPoint)
         {
-            var targetElement = TargetElement as FrameworkElement;
-            if (targetElement == null)
+            if (!(TargetElement is FrameworkElement targetElement))
                 return;
 
             var targetListBox = targetElement.FindLogicalAncestorByType<ListBox>();
@@ -424,10 +409,8 @@ namespace Supremacy.Client.Views
             if (targetGroup == AssaultGroup.Invalid || targetGroup == AssaultGroup.Destroyed)
                 return;
 
-            ICommand dropCommand;
-            List<CombatUnit> draggedUnits;
 
-            if (!CanDrop(obj, out draggedUnits, out dropCommand))
+            if (!CanDrop(obj, out List<CombatUnit> draggedUnits, out ICommand dropCommand))
                 return;
 
             if (!draggedUnits.All(o => dropCommand.CanExecute(o)))
@@ -446,11 +429,10 @@ namespace Supremacy.Client.Views
         public UIElement GetVisualFeedback(IDataObject obj)
         {
             var element = ExtractElement(obj);
-            var listBox = element as ListBox;
 
             UIElement visual;
 
-            if (listBox != null)
+            if (element is ListBox listBox)
             {
                 var selectedItems = listBox.Items
                     .OfType<object>()
@@ -569,15 +551,13 @@ namespace Supremacy.Client.Views
 
         public bool IsDraggable(UIElement draggedElement)
         {
-            var draggedFrameworkElement = draggedElement as FrameworkElement;
-            if (draggedFrameworkElement == null)
+            if (!(draggedElement is FrameworkElement draggedFrameworkElement))
                 return false;
 
             var draggedListBox = draggedFrameworkElement.FindVisualAncestorByType<ListBox>();
             if (draggedListBox != null)
             {
-                var sourceItem = Mouse.DirectlyOver as UIElement;
-                if (sourceItem == null)
+                if (!(Mouse.DirectlyOver is UIElement sourceItem))
                     return false;
 
                 var listBoxItem = sourceItem.FindVisualAncestorByType<ListBoxItem>();
