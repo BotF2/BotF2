@@ -227,7 +227,6 @@ namespace Supremacy.AI
                             }
                             else if(fleet.Ships.Count > 1)
                             {
-                                int count = fleet.Ships.Count();
                                 List<Ship> shipList = fleet.Ships.ToList();
                                 foreach (Ship ship in shipList)
                                 {
@@ -660,35 +659,7 @@ namespace Supremacy.AI
             if (fleet.Order != FleetOrders.AssaultSystemOrder)
                 fleet.SetOrder(new AssaultSystemOrder());
         }
-        //public static void UpdateTransitFleet(int civID)
-        //{
-        //    //switch (civID)
-        //    //{
-        //    //    case 0:
-        //    //        transitFleet = fedTransitFleet;
-        //    //        break;
-        //    //    case 1:
-        //    //        transitFleet = terranTransitFleet;
-        //    //        break;
-        //    //    case 2:
-        //    //        transitFleet = romTransitFleet;
-        //    //        break;
-        //    //    case 3:
-        //    //        transitFleet = klingTransitFleet;
-        //    //        break;
-        //    //    case 4:
-        //    //        transitFleet = cardTransitFleet;
-        //    //        break;
-        //    //    case 5:
-        //    //        transitFleet = domTransitFleet;
-        //    //        break;
-        //    //    case 6:
-        //    //        transitFleet = borgTransitFleet;
-        //    //        break;
-        //    //    default:
-        //    //        break;
-        //    //}
-        //}
+
         public static void BreakDownTransitFleet(Fleet fleet)
         {
             if (fleet != null)

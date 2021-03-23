@@ -16,6 +16,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Supremacy.PaceAndEmpirePower; // Project Pace and empire power
+using Supremacy.Universe;
 
 namespace Supremacy.Combat
 {
@@ -1988,17 +1989,27 @@ namespace Supremacy.Combat
             // Defense    FED + Kling
 
             Civilization firstShipOwner = _combatShipsTempNotDestroyed.FirstOrDefault()?.Item1.Owner;
+            
+            var theSector = _combatShipsTempNotDestroyed.FirstOrDefault().Item1.Source.Sector;
+            String systemName = "";
+            if (theSector.System != null)
+            {
+                systemName = _combatShipsTempNotDestroyed.FirstOrDefault().Item1.Source.Sector.System.Name;
+                // if combat is in a system what is it's name?
+            }
+            
             bool foundStation = false;
-            if (_combatStation != null && _combatShipsTempNotDestroyed.Contains(_combatStation))
+            if (_combatStation != null && !_combatStation.Item1.IsDestroyed)
             {
                 foundStation = true;
             }
 
             foreach (Tuple<CombatUnit, CombatWeapon[]> ship in _combatShipsTempNotDestroyed)
              {
-                if (foundStation)
+                if (foundStation || systemName != "") // is someone defending a station or a home system?
                 {
-                    if (!CombatHelper.WillEngage(ship.Item1.Owner, _combatStation.Item1.Owner))
+                    if ((_combatStation != null && !CombatHelper.WillEngage(ship.Item1.Owner, _combatStation.Item1.Owner))
+                        || systemName == ship.Item1.Owner.HomeSystemName)
                     {
                         _stayingThereShips.Add(ship);
                     }
