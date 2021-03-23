@@ -110,6 +110,7 @@ namespace Supremacy.Client
                 if (assets.Owner == _appContext.LocalPlayer.Empire)
                 {
                     _playerAssets = assets;
+                    _playerAssets.CombatID = this._update.CombatID;
                     break;
                 }
                 else
@@ -185,7 +186,7 @@ namespace Supremacy.Client
             //We need at least 3 ships to create a formation
             FormationButton.IsEnabled = _update.FriendlyAssets.Any(fa => fa.CombatShips.Count >= 3);
             //We need assets to be able to retreat
-            RetreatButton.IsEnabled = _update.FriendlyAssets.Any(fa => (fa.CombatShips.Count > 0) || (fa.NonCombatShips.Count > 0));
+            RetreatButton.IsEnabled = _update.FriendlyAssets.Any(fa => (fa.CombatShips.Count > 0 || fa.NonCombatShips.Count > 0)); // && fa.Owner != fa.Sector.Station.Owner);
             //Can hail
             HailButton.IsEnabled = _update.FriendlyAssets.Any(fa => (fa.CombatShips.Count > 0 || fa.NonCombatShips.Count > 0 || fa.Station != null)); //(update.RoundNumber == 1);
 

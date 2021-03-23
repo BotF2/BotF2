@@ -1858,6 +1858,8 @@ namespace Supremacy.Orbitals
                 if (UnitAI.GetBestSectorToExplore(Fleet, out bestSector))
                 {
                     Fleet.SetRouteInternal(AStar.FindPath(Fleet, PathOptions.SafeTerritory, null, new List<Sector> { bestSector }));
+                    Fleet.UnitAIType = UnitAIType.Explorer;
+                    Fleet.Activity = UnitActivity.Mission;
                 }
             }
         }

@@ -21,9 +21,7 @@ namespace Supremacy.Orbitals
         [NonCombatant] Transport,
         [NonCombatant] Medical,
         [NonCombatant] Spy,
-        [NonCombatant] Raider,   // not ingame at the moment
         [NonCombatant] Diplomatic,
-        [NonCombatant] Sabotage, // not ingame at this time
         Science,
         Scout,
         FastAttack, // Destroyer and Frigate

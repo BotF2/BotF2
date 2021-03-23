@@ -31,7 +31,7 @@ namespace Supremacy.Combat
         protected const double BaseChanceToAssimilate = 0.05;
         protected const double BaseChanceToRushFormation = 0.50;
         protected readonly Dictionary<ExperienceRank, double> _experienceAccuracy;
-        protected readonly List<Tuple<CombatUnit, CombatWeapon[]>> _combatShips;
+        protected readonly List<Tuple<CombatUnit, CombatWeapon[]>> _combatShips; // ships and stations
         protected List<Tuple<CombatUnit, CombatWeapon[]>> _combatShipsTemp; // Update xyz declare temp array done
         protected Tuple<CombatUnit, CombatWeapon[]> _combatStation;
         protected readonly Dictionary<int, Civilization> _targetOneData;
@@ -190,7 +190,7 @@ namespace Supremacy.Combat
             _assets = assets ?? throw new ArgumentNullException(nameof(assets));
             _updateCallback = updateCallback ?? throw new ArgumentNullException(nameof(updateCallback));
             _combatEndedCallback = combatEndedCallback ?? throw new ArgumentNullException(nameof(combatEndedCallback));
-            _orders = new Dictionary<int, CombatOrders>();
+            _orders = new Dictionary<int, CombatOrders>(); // in CombatOrders class there is the _orders dictionary of int object orbital id and value enum combat order. Here int is OwnerID
             _empireStrengths = new Dictionary<string, int>();
             _targetOneByCiv = new Dictionary<int, CombatTargetPrimaries>();
             _targetTwoByCiv = new Dictionary<int, CombatTargetSecondaries>();
@@ -237,7 +237,7 @@ namespace Supremacy.Combat
                 if (!_orders.ContainsKey(orders.OwnerID))
                 {
                     _orders[orders.OwnerID] = orders;
-                    //GameLog.Core.CombatDetails.DebugFormat("adding orders in dictionary for ID {0}", orders.OwnerID);
+                    GameLog.Core.CombatDetails.DebugFormat("adding orders in dictionary for ID {0}", orders.OwnerID);
                 }
 
                 List<int> outstandingOrders = _assets.Select(assets => assets.OwnerID).ToList(); // list of OwnerIDs, ints
@@ -407,10 +407,10 @@ namespace Supremacy.Combat
                 List<CombatAssets> hostileAssets = new List<CombatAssets>();
 
                 friendlyAssets.Add(playerAsset); // on each looping arbitrary one side or the other is 'friendly' for combatwindow right and left side
-                foreach (CombatAssets asset in _assets)
-                {
-                    GameLog.Core.Combat.DebugFormat("asset of {0} in sector", asset.Owner.Key);
-                }
+                //foreach (CombatAssets asset in _assets)
+                //{
+                //    GameLog.Core.Combat.DebugFormat("asset of {0} in sector", asset.Owner.Key);
+                //}
                 GameLog.Core.CombatDetails.DebugFormat("Current or first asset from {0} for current friendlyAssets", playerAsset.Owner.Key);
                 foreach (CombatAssets civAsset in _assets.Distinct().ToList())
                 {
@@ -456,13 +456,13 @@ namespace Supremacy.Combat
                     {
                         friendlyAssets.Add(otherAsset);
                         _ = friendlyAssets.Distinct().ToList();
-                        GameLog.Core.Combat.DebugFormat("asset of {0} added to friendlies", otherAsset.Owner.Key);
+                        //GameLog.Core.Combat.DebugFormat("asset of {0} added to friendlies", otherAsset.Owner.Key);
                     }
                     else
                     {
                         hostileAssets.Add(otherAsset);
                         _ = hostileAssets.Distinct().ToList();
-                        GameLog.Core.Combat.DebugFormat("asset for {0} added to hostilies", otherAsset.Owner.Key);
+                        //GameLog.Core.Combat.DebugFormat("asset for {0} added to hostilies", otherAsset.Owner.Key);
                     }
                 }
                 List<CombatAssets> leftOutAssets = new List<CombatAssets>();
@@ -666,6 +666,7 @@ namespace Supremacy.Combat
             {
                 GameLog.Core.CombatDetails.DebugFormat("Try Get Order for {0} {1} {2}", source.ObjectID, source.Name, source.Design.Name);
                 //if(_orders[source.OwnerID].GetOrder(source) == CombatOrder.)
+
                 _localOrder = _orders[source.OwnerID].GetOrder(source);
                 GameLog.Core.CombatDetails.DebugFormat("Got Order for {0} {1} {2}: -> order = {3}", source.ObjectID, source.Name, source.Design.Name, _orders[source.OwnerID].GetOrder(source));
                 return _localOrder; // this is the class CombatOrder.BORG (or FEDERATION or.....) that comes from public GetCombatOrder() in CombatOrders.cs
@@ -683,6 +684,13 @@ namespace Supremacy.Combat
             GameLog.Core.CombatDetails.DebugFormat("Setting order for {0} {1} ({2}) owner ={3} order={4}", source.ObjectID, source.Name, source.Design.Name, source.Owner.Name, _localOrder.ToString());
             return _localOrder; //CombatOrder.Engage; // not set to retreat because easy retreat in automatedCE will take ship out of combat by default
         }
+
+        //public void SetCombatOrder(Orbital source, CombatOrder order)
+        //{
+        //    Dictionary<int, CombatOrder> dictionary = new Dictionary<int, CombatOrder>();
+        //    dictionary.Add( source.ObjectID, order);
+        //    _orders[source.OwnerID].Add(source.OwnerID, dictionary);
+        //}
 
         protected Civilization GetTargetOne(Orbital source)
         {

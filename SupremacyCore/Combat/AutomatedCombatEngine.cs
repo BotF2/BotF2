@@ -41,12 +41,16 @@ namespace Supremacy.Combat
                 GameLog.Core.CombatDetails.DebugFormat("round# ={0} now", _roundNumber);
                 //  Once a ship has retreated, its important that it does not do it again..
                 List<Tuple<CombatUnit, CombatWeapon[]>> easyRetreatShips = _combatShips
-                    .Where(s => (s.Item1.IsCloaked == true || s.Item1.Source.OrbitalDesign.Key.Contains("FRIGATE") || (s.Item1.Source.OrbitalDesign.ShipType == "Scout")) && !s.Item1.IsDestroyed && GetCombatOrder(s.Item1.Source) == CombatOrder.Retreat) //  Destroyed ships cannot retreat
+                    .Where(s => (s.Item1.IsCloaked == true
+                    || s.Item1.Source.OrbitalDesign.Key.Contains("FRIGATE")
+                    || (s.Item1.Source.OrbitalDesign.ShipType == "Scout"))
+                    && !s.Item1.IsDestroyed && GetCombatOrder(s.Item1.Source) == CombatOrder.Retreat)
+
                     .ToList();
 
                 foreach (Tuple<CombatUnit, CombatWeapon[]> ship in easyRetreatShips)
                 {
-                    if (!RandomHelper.Chance(5) && (ship.Item1 != null)) // 25% to reatreat // Project Minichange
+                    if (!RandomHelper.Chance(5) && (ship.Item1 != null)) 
                     {
                         CombatAssets ownerAssets = GetAssets(ship.Item1.Owner);
                         if (!ownerAssets.EscapedShips.Contains(ship.Item1)) // escaped ships cannot escape again
@@ -62,7 +66,11 @@ namespace Supremacy.Combat
                 }
                 // other ships with retreat order have a lesser chance to retreat
                 List<Tuple<CombatUnit, CombatWeapon[]>> hardRetreatShips = _combatShips
-                    .Where(s => s.Item1.IsCloaked != true && !s.Item1.Source.OrbitalDesign.Key.Contains("FRIGATE") && s.Item1.Source.OrbitalDesign.ShipType != "Scout" && !s.Item1.IsDestroyed && GetCombatOrder(s.Item1.Source) == CombatOrder.Retreat) //  Destroyed ships cannot retreat
+                    .Where(s => s.Item1.IsCloaked != true
+                    && !s.Item1.Source.OrbitalDesign.Key.Contains("FRIGATE")
+                    && s.Item1.Source.OrbitalDesign.ShipType != "Scout"
+                    && !s.Item1.IsDestroyed && GetCombatOrder(s.Item1.Source) == CombatOrder.Retreat)
+
                     .ToList();
 
                 foreach (Tuple<CombatUnit, CombatWeapon[]> ship in hardRetreatShips)
@@ -436,7 +444,7 @@ namespace Supremacy.Combat
                 double FavorTheBoldAttackBonus = 1.0;
 
                 // Update X 18 august Flavor the bold modfiier
-                // Calculate and save EmpireDurability for later use in Flavor the Bold
+                // Calculate and save EmpireDurability for later use in Favor the Bold
                 int[,] EmpireTotalDurabilities = new int[12, 2];
 
                 // Initialize Array
@@ -1979,21 +1987,39 @@ namespace Supremacy.Combat
             // Attacker   CARD + ROM
             // Defense    FED + Kling
 
-            Civilization firstShipOwner = null; // Dummy, not all sectors have a Sector owner
+            Civilization firstShipOwner = _combatShipsTempNotDestroyed.FirstOrDefault()?.Item1.Owner;
+            bool foundStation = false;
+            if (_combatStation != null && _combatShipsTempNotDestroyed.Contains(_combatStation))
+            {
+                foundStation = true;
+            }
 
             foreach (Tuple<CombatUnit, CombatWeapon[]> ship in _combatShipsTempNotDestroyed)
-            {
-                firstShipOwner = _combatShipsTempNotDestroyed.FirstOrDefault()?.Item1.Owner;
-
-                if (!CombatHelper.WillEngage(ship.Item1.Owner, firstShipOwner))
+             {
+                if (foundStation)
+                {
+                    if (!CombatHelper.WillEngage(ship.Item1.Owner, _combatStation.Item1.Owner))
                     {
-                    _stayingThereShips.Add(ship);
-                    //GameLog.Core.CombatDetails.DebugFormat("added to _stayingThereShips = {0} {1}", ship.Item1.Name, ship.Item1.Description);
+                        _stayingThereShips.Add(ship);
+                    }
+                    else
+                    {
+                        _allRetreatShips.Add(ship);
+                        //GameLog.Core.CombatDetails.DebugFormat("added to _allRetreatShips = {0} {1}", ship.Item1.Name, ship.Item1.Description);
+                    }
                 }
                 else
                 {
-                    _allRetreatShips.Add(ship);
-                    //GameLog.Core.CombatDetails.DebugFormat("added to _allRetreatShips = {0} {1}", ship.Item1.Name, ship.Item1.Description);
+                    if (!CombatHelper.WillEngage(ship.Item1.Owner, firstShipOwner))
+                    {
+                        _stayingThereShips.Add(ship);
+                        //GameLog.Core.CombatDetails.DebugFormat("added to _stayingThereShips = {0} {1}", ship.Item1.Name, ship.Item1.Description);
+                    }
+                    else
+                    {
+                        _allRetreatShips.Add(ship);
+                        //GameLog.Core.CombatDetails.DebugFormat("added to _allRetreatShips = {0} {1}", ship.Item1.Name, ship.Item1.Description);
+                    }
                 }
             }
 

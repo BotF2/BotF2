@@ -556,21 +556,42 @@ namespace Supremacy.Game
         {
             var allFleets = GameContext.Current.Universe.Find<Fleet>().ToList();
 
+            //if (UnitAI.FedTransitFleet != null && UnitAI.FedTransitFleet.Ships.Count() > 0)
+            //    allFleets.Add(UnitAI.FedTransitFleet);
+            //if (UnitAI.TerranTransitFleet != null && UnitAI.TerranTransitFleet.Ships.Count() > 0)
+            //    allFleets.Add(UnitAI.TerranTransitFleet);
+            //if (UnitAI.RomTransitFleet != null && UnitAI.RomTransitFleet.Ships.Count() > 0)
+            //    allFleets.Add(UnitAI.RomTransitFleet);
+            //if (UnitAI.KlingTransitFleet != null && UnitAI.KlingTransitFleet.Ships.Count() > 0)
+            //    allFleets.Add(UnitAI.KlingTransitFleet);
+            //if (UnitAI.CardTransitFleet != null && UnitAI.CardTransitFleet.Ships.Count() > 0)
+            //    allFleets.Add(UnitAI.CardTransitFleet);
+            //if (UnitAI.DomTransitFleet != null && UnitAI.DomTransitFleet.Ships.Count() > 0)
+            //    allFleets.Add(UnitAI.DomTransitFleet);
+            //if (UnitAI.BorgTransitFleet != null && UnitAI.BorgTransitFleet.Ships.Count() > 0)
+            //    allFleets.Add(UnitAI.BorgTransitFleet);
+
             foreach (var fleet in allFleets)
             {
                 string _text = "";
                 int shipNum = fleet.Ships.Count();
                 string name = fleet.Name;
-                GameLog.Client.AI.DebugFormat("*Turn# = {0} Owner = {1} Fleet ObjectID ={2}, UnitAIType ={3}, UnitActivity ={4} Actibvity Duration ={5} Activity Start ={6}",
-                    GameContext.Current.TurnNumber, fleet.Owner.Name, fleet.ObjectID, fleet.UnitAIType, fleet.Activity, fleet.ActivityDuration, fleet.ActivityStart);
-                if (fleet.Route.Steps.Count() > 0)
-                    GameLog.Client.AI.DebugFormat("# of ships = {0} fleet Waypooints ={1} step 1 {2}", shipNum, fleet.Route.Waypoints, fleet.Route.Steps[0]);
-                for (int i = 0; i < shipNum; i++)
+                if (fleet.UnitAIType == UnitAIType.PostEscort)
+                    GameLog.Client.AI.DebugFormat("*** PostEscort, Turn# = {0} Owner = {1} Fleet location ={2}, UnitAIType ={3}, UnitActivity ={4} Actibvity Duration ={5} Activity Start ={6}",
+                        GameContext.Current.TurnNumber, fleet.Owner.Name, fleet.Location, fleet.UnitAIType, fleet.Activity, fleet.ActivityDuration, fleet.ActivityStart);
+                if (shipNum >=5 && fleet.UnitAIType != UnitAIType.SystemDefense)
+                    GameLog.Client.AI.DebugFormat("*** >5 and Not SystemDefence, Turn# = {0} Owner = {1} Fleet location ={2}, UnitAIType ={3}, UnitActivity ={4} Actibvity Duration ={5} Activity Start ={6}",
+                        GameContext.Current.TurnNumber, fleet.Owner.Name, fleet.Location, fleet.UnitAIType, fleet.Activity, fleet.ActivityDuration, fleet.ActivityStart);
+                if (fleet.Route.Steps.Count() > 0 && shipNum >= 5)
                 {
-                    _text = "Ship's Fleet# =" + i;
-                    Ship ship = fleet.Ships[i];
-                    _text += "/ObjectID =" + ship.ObjectID + "/Name =" + ship.Name;
-                    GameLog.Core.AI.DebugFormat(_text);
+                    GameLog.Client.AI.DebugFormat("# of ships = {0} fleet Waypooints ={1} step 1 {2}", shipNum, fleet.Route.Waypoints, fleet.Route.Steps[0]);
+                    for (int i = 0; i < shipNum; i++)
+                    {
+                        _text = "Ship's Fleet# =" + i;
+                        Ship ship = fleet.Ships[i];
+                        _text += "/ObjectID =" + ship.ObjectID + "/Name =" + ship.Name;
+                        GameLog.Core.AI.DebugFormat(_text);
+                    }
                 }
 
                 //If the fleet is stranded and out of fuel range, it can't move
@@ -666,6 +687,7 @@ namespace Supremacy.Game
 
                     if ((shipsDamaged > 0) || (shipsDestroyed > 0))
                     {
+                        GameLog.Client.AI.DebugFormat("shipDestroyed {0} Ship(s) went down a Black hole {1} {2}",shipsDestroyed, fleet.Owner.Key, fleet.Location);
                         civManager.SitRepEntries.Add(new BlackHoleEncounterSitRepEntry(fleet.Owner, fleet.Location, shipsDamaged, shipsDestroyed));
                     }
                 }

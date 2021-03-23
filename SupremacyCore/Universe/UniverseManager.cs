@@ -155,6 +155,18 @@ namespace Supremacy.Universe
             return items.OfType<T>().ToHashSet();
         }
 
+        public HashSet<T> FindStarType<T>(StarType starType)
+        {
+            if (starType == null)
+            {
+                throw new ArgumentNullException("startype");
+            }
+            var items = from item in _objects
+                        where (item != null && item.Sector != null && item.Sector.System != null && item.Sector.System.StarType == starType)
+                        select item;
+            return items.OfType<T>().ToHashSet(); 
+        }
+
         /// <summary>
         /// Finds all objects of the specified design owned by the specified <see cref="Civilization"/>.
         /// </summary>

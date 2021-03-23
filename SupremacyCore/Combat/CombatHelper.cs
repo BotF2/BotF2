@@ -272,7 +272,7 @@ namespace Supremacy.Combat
             IDiplomacyData diplomacyData = GameContext.Current.DiplomacyData[firstCiv, secondCiv];
             if (diplomacyData == null)
             {
-                GameLog.Core.Combat.DebugFormat("no diplomacyData !! - WillEngage = FALSE");
+                //GameLog.Core.Combat.DebugFormat("no diplomacyData !! - WillEngage = FALSE");
                 return true;
             }
             else if (diplomacyData.Status == ForeignPowerStatus.AtWar)
