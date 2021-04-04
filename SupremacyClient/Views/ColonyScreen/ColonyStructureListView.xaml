@@ -244,7 +244,7 @@
                              Text="{Binding Path=(s:TechObject.Design).Name, Converter={StaticResource StringResourceConverter}}" />
                   <TextBlock x:Name="ScrapText"
                              Foreground="Crimson"
-                             Text="(SCRAP)"
+                             Text="(X)"
                              Opacity="0.0" />
                 </TextBlock>
                                     <TextBlock Foreground="{StaticResource DefaultTextBrush}"
