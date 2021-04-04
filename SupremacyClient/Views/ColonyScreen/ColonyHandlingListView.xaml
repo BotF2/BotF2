@@ -158,9 +158,9 @@
                   <Border DockPanel.Dock="Left"
                           VerticalAlignment="Top"
                           CornerRadius="4"
-                          Margin="0,0,2,0"
+                          Margin="0,0,3,0"
                           Width="28"
-                          Height="18"
+                          Height="20"
                           Background="Black">
                     <Border x:Name="ImageBorder"
                             BorderBrush="White"
@@ -171,16 +171,21 @@
                       </Border.Background>-->
                     </Border>
                   </Border>
-                  <StackPanel Orientation="Horizontal"
+                    
+                 
+                  <StackPanel
+                      Orientation="Horizontal"                        
                               TextBlock.FontSize="{DynamicResource {x:Static scc:ClientResources.DefaultFontSizeKey}}"
                               TextBlock.FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
                               TextBlock.Foreground="{DynamicResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}">
+
+                      
                     <TextBlock Text="{Binding Path=BuildingDesign.Name}"
                                FontSize="{DynamicResource {x:Static scc:ClientResources.HeaderFontSizeKey}}"
                                FontWeight="{DynamicResource {x:Static scc:ClientResources.HeaderFontWeightKey}}"
                                Foreground="{DynamicResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}" />
                     <TextBlock x:Name="AgeText"
-                               Text="{Binding Path=Age, Mode=OneWay, StringFormat='{}Constructed {0} turns ago'}" />
+                               Text="{Binding Path=Age, Mode=OneWay, StringFormat='{} - Constructed {0} turns ago'}" />
                     <WrapPanel>
                       <TextBlock Text="Status: " />
                       <TextBlock x:Name="StatusText"
@@ -197,7 +202,7 @@
                         <scc:CheckableCommandParameter InnerParameter="{Binding Mode=OneWay}" />
                       </scc:GameButton.CommandParameter>
                     </scc:GameButton>
-                  </StackPanel>
+                                    </StackPanel>
                 </DockPanel>
                 <DataTemplate.Triggers>
                   <DataTrigger Binding="{Binding Path=IsActive}"
@@ -217,7 +222,11 @@
                   </DataTrigger>
                 </DataTemplate.Triggers>
               </DataTemplate>
+                
+                
             </scc:InfoCardService.InfoCardHeaderTemplate>
+              
+              
             <scc:InfoCardService.InfoCardContentTemplate>
               <DataTemplate DataType="{x:Type s:Building}">
                 <TabControl Margin="-5">
@@ -273,8 +282,10 @@
                 
               <Grid>
                 <Grid.ColumnDefinitions>
-                  <ColumnDefinition SharedSizeGroup="HandlingListItem_ImageColumn" />
+                  <ColumnDefinition  SharedSizeGroup="HandlingListItem_ImageColumn" />
                   <ColumnDefinition SharedSizeGroup="HandlingListItem_TextColumn" />
+                    <!--<ColumnDefinition SharedSizeGroup="HandlingListItem_EnergyCostsColumn" />-->
+                    <!--<ColumnDefinition SharedSizeGroup="HandlingListItem_MoreColumn" />-->
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                                     <!--<RowDefinition Height="10">-->
@@ -306,32 +317,46 @@
                     </Border>
                 </Border.ToolTip>
                 </Border>
-                <StackPanel Grid.Column="1"
+                <StackPanel 
+                    Grid.Column="1"
                             Orientation="Horizontal"
                             VerticalAlignment="Center"
                             HorizontalAlignment="Stretch"
                             Margin="7,0,7,0"
                             TextBlock.FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}">
-                  <TextBlock FontSize="12pt">
+                    <!--MinWidth for Column Energy-->
+                  <TextBlock FontSize="14pt"
+
+                            MinWidth="220"
+                            VerticalAlignment="Center"
+                            HorizontalAlignment="Stretch"
+                            Margin="7,0,7,0"
+                            TextBlock.FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}">                            
+                             
                   <TextBlock Foreground="{StaticResource HeaderTextBrush}"
+                             VerticalAlignment="Center"
+                             Grid.Column="2"
                              Text="{Binding Path=(s:TechObject.Design).Name, Converter={StaticResource StringResourceConverter}}" />
-                  <TextBlock x:Name="ScrapText"
+                                <TextBlock x:Name="ScrapText"
                              Foreground="#FFB90E0A"
-                             Text="(SCRAP)"
+                             Text="(X)"
                              Opacity="0.0" />
-                </TextBlock>
+                                </TextBlock>
+                    
                              <TextBlock Foreground="{StaticResource DefaultTextBrush}"
-                             FontSize="10pt"
+                             FontSize="12pt"
+                             VerticalAlignment="Center"
                              TextWrapping="NoWrap"
                              TextTrimming="CharacterEllipsis">
-                  <TextBlock x:Name="EnergyCostText">
+                  <TextBlock Grid.Column="2" x:Name="EnergyCostText">
                     <TextBlock Text="{Binding Path=(s:Building.BuildingDesign).EnergyCost}" />
                     <TextBlock Text="Energy," />
                   </TextBlock>
-                  <TextBlock Text="{Binding Path=Design, Converter={StaticResource BonusConverter}, ConverterParameter=CommaSeparated}" />
+                  <TextBlock Grid.Column="4" Text="{Binding Path=Design, Converter={StaticResource BonusConverter}, ConverterParameter=CommaSeparated}" />
                 </TextBlock>
               </StackPanel>
               </Grid>
+                
             </Button>
           </Border>
           <DataTemplate.Triggers>

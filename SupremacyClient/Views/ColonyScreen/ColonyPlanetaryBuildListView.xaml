@@ -12,6 +12,7 @@
             Margin="0"
             BorderBrush="{x:Null}"
             BorderThickness="0"
+            ScrollViewer.VerticalScrollBarVisibility="Visible"
             FontFamily="{DynamicResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
             FontSize="12pt"
             ItemsSource="{Binding Path=PlanetaryBuildProjects, Mode=OneWay}"
@@ -25,7 +26,7 @@
                    Background="Transparent"
                    IsHitTestVisible="True">
           <TextBlock x:Name="TurnEstimateText"
-                     DockPanel.Dock="Right"
+                     DockPanel.Dock="Right" Margin="30,0,0,0"
                      HorizontalAlignment="Right"
                      Foreground="{DynamicResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}"
                      Text="{Binding Path=TurnsRemaining, StringFormat='{}{0} Turn(s)'}">
