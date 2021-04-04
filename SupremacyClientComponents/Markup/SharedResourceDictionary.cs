@@ -52,7 +52,8 @@ namespace Supremacy.Client.Markup
 
                             foreach (var key in item.Keys)
                             {
-                                string _text2 = key.ToString(); Console.WriteLine(_text1 + "-" +_text2);
+                                string _text2 = key.ToString(); 
+                                //Console.WriteLine(_text1 + "-" +_text2);   // MergedDictionaries
                                 _allValue += +1;
                                 _allText += _text0 + ";" + _text1 + ";" + _allValue + ";" + _text2 + Environment.NewLine;
 

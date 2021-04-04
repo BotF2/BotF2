@@ -166,7 +166,8 @@ namespace Supremacy.Client
 
                 foreach (var item in Current.Resources.MergedDictionaries)
                 {
-                    string _text1 = item.Source.ToString(); Console.WriteLine(_text1);
+                    string _text1 = item.Source.ToString(); 
+                    //Console.WriteLine(_text1);  // Output of all keys of MergedDictionaries
                     _allValue += 1000;  // 1.000 step each file
 
                     foreach (var key in item.Keys)

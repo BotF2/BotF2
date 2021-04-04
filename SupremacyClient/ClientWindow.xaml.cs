@@ -213,7 +213,7 @@ namespace Supremacy.Client
 
                             ;
                         //works  MessageBox.Show(_text, process.ProcessName + " ID: " + process.Id);
-                        Console.WriteLine(_text); GameLog.Client.General.Info(_text);
+                        Console.WriteLine(_text); GameLog.Client.General.Info(_text);  // Garbage Collection
 
                         // old code
                         GameLog.Client.General.InfoFormat(
