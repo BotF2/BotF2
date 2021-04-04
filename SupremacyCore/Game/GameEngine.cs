@@ -40,6 +40,7 @@ namespace Supremacy.Game
     {
 
         public int _gameTurnNumber = 0;  // internal use
+        public string blank = " ";
 
         #region Public Members
 
@@ -2443,6 +2444,45 @@ namespace Supremacy.Game
                 {
                     fleet.Order.OnTurnEnding();
                 }
+            }
+
+            var allStations = GameContext.Current.Universe.Find<Station>(UniverseObjectType.Station);
+            foreach (var station in allStations)
+            {
+                string _rep = "Station at ";
+                _rep += station.Name + blank + station.Location ;
+
+                var civManager = GameContext.Current.CivilizationManagers[station.OwnerID];
+                civManager.SitRepEntries.Add(new ShipStatusSitRepEntry(civManager.Civilization, station.Location, _rep));
+            }
+
+            foreach (var fleet in allFleets)
+            {
+                foreach (var ship in fleet.Ships)
+                {
+                    //if (!fleet.Route.IsEmpty) 
+                string _rep = "Ship at ";
+
+
+                    _rep += ship.Location + ": " + ship.ObjectID + blank + ship.Name + " < " + ship.DesignName + " >";
+                    _rep += blank + fleet.Order;
+                    if (!fleet.Route.IsEmpty)
+                    {
+                        MapLocation _aim = fleet.Route.Waypoints.LastOrDefault();
+                        Sector _aimSector = GameContext.Current.Universe.Map[_aim];
+                        //GameContext.Current.Universe.Find<MapLocation>().TryFindFirstItem(o => o == _aim, out Sector _aimSector);
+                        _rep += " # on the way to " + _aim.ToString() + " named " + _aimSector.Name;
+                    }
+
+                var civManager = GameContext.Current.CivilizationManagers[ship.OwnerID];
+                var PlayerCivManager = GameContext.Current.CivilizationManagers[0];  // Federation - can be changed
+                    
+                    // only own civilization
+                    //civManager.SitRepEntries.Add(new StationRunningSitRepEntry(civManager.Civilization, ship.Location, _rep));
+
+                    // all ships shown
+                    PlayerCivManager.SitRepEntries.Add(new ShipStatusSitRepEntry(PlayerCivManager.Civilization, ship.Location, _rep));
+                } // end of each ship
             }
 
 

@@ -2132,20 +2132,35 @@ namespace Supremacy.Game
     {
         private readonly MapLocation _wormholeLocation;
         public ShipDestroyedInWormholeSitRepEntry(Civilization owner, MapLocation wormholeLocation) : base(owner, SitRepPriority.Purple)
-        {
-            _wormholeLocation = wormholeLocation;
-        }
+        { _wormholeLocation = wormholeLocation; }
         public override SitRepAction Action { get { return SitRepAction.CenterOnSector; } }
-        public override object ActionTarget
-        {
-            get { return GameContext.Current.Universe.Map[_wormholeLocation]; }
-        }
+        public override object ActionTarget { get { return GameContext.Current.Universe.Map[_wormholeLocation]; }}
         public override SitRepCategory Categories { get { return SitRepCategory.General; } }
         public override bool IsPriority { get { return true; } }
         public override string SitRepComment { get; set; }
         public override string SummaryText { get { return string.Format(ResourceManager.GetString("SITREP_FLEET_DESTROYED_UNSTABLE_WORMHOLE"), _wormholeLocation); } }
 
     }
+
+    [Serializable]
+    public class ShipStatusSitRepEntry : SitRepEntry
+    {
+        private readonly string _note;
+        private readonly MapLocation _loc;
+
+        public ShipStatusSitRepEntry(Civilization owner, MapLocation loc, string Note): base(owner, SitRepPriority.Pink)
+        { _loc = loc;  _note = Note; }
+
+        public string ResearchNote { get { return _note; } }
+        public override SitRepCategory Categories { get { return SitRepCategory.Military; } }
+        public override SitRepAction Action { get { return SitRepAction.CenterOnSector; } }
+        public override object ActionTarget { get { return GameContext.Current.Universe.Map[_loc]; } }
+        public override bool IsPriority { get { return true; } }
+        public override string SitRepComment { get; set; }
+        public override string SummaryText { get { return _note; } }
+
+    }
+    // End of SitRepEntry
 
     [Serializable]
     public class SupernovaSitRepEntry : SitRepEntry // not Supernovai
