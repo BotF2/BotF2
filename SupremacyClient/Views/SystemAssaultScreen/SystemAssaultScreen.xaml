@@ -830,11 +830,11 @@
                    HorizontalAlignment="Center"
                    Width="7"
                    Columns="1">
-        <Rectangle Fill="{StaticResource AzureGradient_Left_Right}"
+                <Rectangle Fill="{StaticResource AquaDarkGradient_Left_Right}"
                    Margin="0,3,0,0" />
                 <Rectangle Fill="{StaticResource {x:Static scc:ClientResources.AlertTextForegroundBrushKey}}"
                    Margin="0,3,0,3" />
-        <Rectangle Fill="{StaticResource AzureGradient_Left_Right}"
+                <Rectangle Fill="{StaticResource AquaDarkGradient_Left_Right}"
                    Margin="0,0,0,3" />
       </UniformGrid>
 
@@ -1233,24 +1233,26 @@
                 <Border CornerRadius="14,0,0,0"
                         Width="21"
                         Margin="0,0,2,0"
-                        Background="{StaticResource PurpleGradient_TopLeft_BottomRight}" />
-                  <!--TO DO: STRING IS HARDCODED ATM-->
-                <scc:GameButton Label="SELECT ALL"
+                        Background="Red" />
+                                <!--Background="{StaticResource PurpleGradient_TopLeft_BottomRight}" />-->
+                                
+                  <scc:GameButton Label="{s:StringResource SELECT_ALL, Case=Upper}"
                                 Padding="16,1,16,2"
                                 DisplayMode="GroupedHorizontally"
                                 CommandTarget="{Binding ElementName=_transportCheckList}"
                                 Command="{x:Static scc:CheckedListBox.SelectAllCommand}" />
-                  <!--TO DO: STRING IS HARDCODED ATM-->
-                <scc:GameButton Label="UNSELECT ALL"
+
+                  <scc:GameButton Label="{s:StringResource UNSELECT_ALL, Case=Upper}"
                                 Padding="16,1,16,2"
                                 DisplayMode="GroupedHorizontally"
                                 CommandTarget="{Binding ElementName=_transportCheckList}"
                                 Command="{x:Static scc:CheckedListBox.UnselectAllCommand}"
                                 Margin="2,0,0,0" />
+                  
                 <Border CornerRadius="0,14,0,0"
                         Margin="2,0,0,0"
                         Width="21"
-                        Background="{StaticResource PurpleGradient_TopLeft_BottomRight}" />
+                        Background="Red" />
               </scc:AutoGrid>
               <scc:AutoGrid DockPanel.Dock="Bottom"
                             Margin="0,2,0,0"
@@ -1267,7 +1269,7 @@
                 <Border CornerRadius="0,0,0,14"
                         Width="21"
                         Margin="0,0,4,0"
-                        Background="{StaticResource PurpleGradient_TopLeft_BottomRight}" />
+                        Background="Red" />
                 <!--<TextBlock Foreground="{StaticResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}"
                            Text="{s:StringResource SYSTEM_ASSAULT_LAND_TROOPS_STRENGTH}"
                            VerticalAlignment="Center" />-->
@@ -1292,7 +1294,7 @@
                 <Border CornerRadius="0,0,14,0"
                         Width="21"
                         Margin="4,0,0,0"
-                        Background="{StaticResource PurpleGradient_TopLeft_BottomRight}" />
+                        Background="Red" />
               </scc:AutoGrid>
               <scc:CheckedListBox x:Name="_transportCheckList"
                                   x:FieldModifier="private"
