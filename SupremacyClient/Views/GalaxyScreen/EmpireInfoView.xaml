@@ -29,7 +29,7 @@
                HorizontalAlignment="Right"
                Text="{Binding Path=Credits.LastChange, Mode=OneWay}" 
                />
-     <TextBlock Foreground="{StaticResource HeaderTextBrush}"
+        <TextBlock Foreground="#FFB27300"
                HorizontalAlignment="Left"
                Text="{Binding Source={s:StringResource MAINTENANCE_COST_LAST_TURN}, Mode=OneTime, Converter={StaticResource UpperCaseConverter}}" 
                >
@@ -39,7 +39,7 @@
             </TextBlock.ToolTip>
         </TextBlock>
 
-        <TextBlock Foreground="{Binding Path=Credits.LastChange, Converter={StaticResource NetValueBrushConverter}, ConverterParameter={StaticResource DefaultTextBrush}}"
+        <TextBlock Foreground="#FFB27300"
                HorizontalAlignment="Right"
                Text="{Binding Path=MaintenanceCostLastTurn, Mode=OneWay}" 
                />
