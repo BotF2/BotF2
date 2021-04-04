@@ -45,8 +45,8 @@ namespace Supremacy.Client.Views
         private readonly DelegateCommand<FleetView> _toggleTaskForceCamouflageCommand;
         private readonly DelegateCommand<ICheckableCommandParameter> _scrapCommand;
         private readonly List<IDisposable> _channelSubscriptions;
-        private INavigationService _navigationService = null;
-        private ISoundPlayer _soundPlayer = null;
+        private readonly INavigationService _navigationService = null;
+        private readonly ISoundPlayer _soundPlayer = null;
         #endregion
 
         #region Constructors and Finalizers
@@ -98,6 +98,8 @@ namespace Supremacy.Client.Views
             _navigationService = navigationService ?? throw new ArgumentNullException("navigationService");
 
             _soundPlayer = soundPlayer ?? throw new ArgumentNullException("soundPlayer");
+
+            var dummy = _soundPlayer;
         }
         #endregion
 

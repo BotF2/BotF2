@@ -80,9 +80,7 @@ namespace Supremacy.Economy
         /// <param name="project">The queued project.</param>
         public BuildSlotQueueItem(BuildProject project)
         {
-            if (project == null)
-                throw new ArgumentNullException("project");
-            _project = project;
+            _project = project ?? throw new ArgumentNullException("project");
             _count = 1;
             OnPropertyChanged("Count");
             OnPropertyChanged("Project");
@@ -136,8 +134,7 @@ namespace Supremacy.Economy
         /// <param name="propertyName">Name of the property that changed.</param>
         protected void OnPropertyChanged(string propertyName)
         {
-            if (PropertyChanged != null)
-                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
         #endregion
 
