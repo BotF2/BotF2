@@ -1,4 +1,4 @@
-// file:Colony.cs 
+// File:Colony.cs
 //
 // Copyright (c) 2007 Mike Strobel
 //
@@ -143,7 +143,7 @@ namespace Supremacy.Universe
         private Meter _shieldStrength;
 
         private int _shipyardId;
-        private string shipyard_slot_1_order = "";
+        //private string shipyard_slot_1_order = "";
         private int _systemId = -1;
         private CollectionBase<TradeRoute> _tradeRoutes;
 
@@ -535,21 +535,14 @@ namespace Supremacy.Universe
         /// Gets the local morale at this <see cref="Colony"/>.
         /// </summary>
         /// <value>The morale.</value>
-
-         public Meter Morale
+        public Meter Morale
         {
-            get
-            {
-                if (this.Owner.ToString() == "BORG") { _morale = new Meter(101, 0, 200); } // Borg have no emotions - everytime 1 - 0 - 1
+            get {
+                if (this.Owner.ToString() == "BORG") { _morale = new Meter(103,0,200);} // Borg have no emotions - everytime 1 - 0 - 1
 
-                return _morale;
-            }
-            set
-            {
-                _morale = value;
+                return _morale; 
             }
         }
-    
 
         /// <summary>
         /// Gets the buildings at this <see cref="Colony"/>.
