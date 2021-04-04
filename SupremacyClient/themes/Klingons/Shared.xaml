@@ -373,7 +373,7 @@
         <Setter Property="Focusable"
             Value="False" />
         <Setter Property="Background"
-            Value="{StaticResource Kling1Gradient_Top_Bottom}" />
+            Value="{StaticResource Kling1Gradient_Bottom_Top}" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type Button}">
@@ -618,7 +618,7 @@
         <DockPanel LastChildFill="True">
             <Rectangle x:Name="CheckRectangle"
                  DockPanel.Dock="Left"
-                 Fill="{StaticResource KlingYellow1Gradient_Bottom_Top}"
+                 Fill="{StaticResource {x:Static scc:ClientResources.ImageBorderBrushKey}}"
                  Width="12"
                  Margin="0,0,2,0" />
 
@@ -935,7 +935,7 @@
             <Border x:Name="ContentBorder"
                     Grid.Column="1"
                     Padding="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Padding}"
-                    Background="{StaticResource Kling1Gradient_Top_Bottom}">
+                    Background="{StaticResource Kling1Gradient_Bottom_Top}">
               <ContentPresenter Content="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Content}"
                                 HorizontalAlignment="Center"
                                 VerticalAlignment="Center"
@@ -1672,7 +1672,7 @@
                            Grid.Row="0"
                            Height="28"
                            VerticalAlignment="Top"
-                           Fill="{StaticResource KlingYellow1Gradient_Right_Left}"
+                           Fill="{StaticResource Kling1Gradient_Left_Right}"
                            Margin="7,0,0,0" />
                 <Rectangle Grid.Column="3"
                            Grid.Row="0"
@@ -2100,7 +2100,7 @@
                          Grid.Row="0"
                                        Height="28"
                          VerticalAlignment="Top"
-                         Fill="{StaticResource KlingYellow1Gradient_Right_Left}"
+                         Fill="{StaticResource Kling1Gradient_Left_Right}"
                          Margin="7,0,0,0" />
                             <Rectangle Grid.Column="3"
                          Grid.Row="0"

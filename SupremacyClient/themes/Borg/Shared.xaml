@@ -57,7 +57,7 @@
     <SolidColorBrush Color="#ff36E50E" x:Key="{x:Static scc:ClientResources.DefaultTextForegroundBrushKey}"/>  <!--Green-->
 
     <!--<SolidColorBrush Color="#ffadff2f" x:Key="{x:Static scc:ClientResources.ImageBorderBrushKey}"/>    --><!--GreenYellow-->
-    <SolidColorBrush Color="#FF00ff7f" x:Key="{x:Static scc:ClientResources.ImageBorderBrushKey}"/> <!--GreenYellow-->
+    <SolidColorBrush Color="#FF598D0D" x:Key="{x:Static scc:ClientResources.ImageBorderBrushKey}"/> <!--GreenYellow-->
     <SolidColorBrush Color="#FF00ff7f" x:Key="{x:Static scc:ClientResources.DisabledTextForegroundBrushKey}"/>   <!--DarkGreen-->
     <SolidColorBrush Color="#7f666666" x:Key="{x:Static scc:ClientResources.InactiveHighlightBrushKey}"/>   <!--Transparent-->
     <SolidColorBrush Color="#FFB90E0A" x:Key="{x:Static scc:ClientResources.AlertTextForegroundBrushKey}"/>
@@ -774,14 +774,13 @@
 
 
                         <!--Fill="{StaticResource Borg2Gradient_Top_Bottom}"-->
-                        <Rectangle x:Name="BottomEdge"
+                        <Rectangle x:Name="BottomEdge" Opacity="0.5"
                        Grid.Column="1"
                        Grid.Row="2"
                        Height="28"
                        Margin="3,0,3,0"
                        VerticalAlignment="Bottom"
-                       Fill="{StaticResource Borg2Gradient_Left_Right}"
-                        />
+                       Fill="{StaticResource Borg2Gradient_Top_Bottom}"></Rectangle>
 
                         <Grid Grid.Column="1"
                   Grid.Row="0"
@@ -802,8 +801,8 @@
                         SnapsToDevicePixels="True" />
 
                             <!--Fill="{StaticResource Borg5Gradient_Right_Left}"-->
-                            <Rectangle Grid.Column="1"
-                                Margin="3,0,3,0"
+                            <Rectangle Grid.Column="1" Margin="3,0,3,0" Opacity="0.5"
+                               
                                 Fill="{StaticResource Borg2Gradient_Left_Right}"
                           />
                         </Grid>
@@ -2221,6 +2220,163 @@
         </Setter>
     </Style>
     <!--End of ComboText at all-->
+
+
+    <!-- Begin of ListBox-->
+    <!--ListBox Styles-->
+    <Style x:Key="{x:Type ListBox}" TargetType="ListBox" BasedOn="{StaticResource BaseStyle}">
+        <Setter Property="SnapsToDevicePixels" Value="True" />
+        <Setter Property="OverridesDefaultStyle" Value="True" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="Foreground" Value="{StaticResource DefaultTextBrush}" />
+        <Setter Property="BorderBrush" Value="{StaticResource BlueGradient_Top_Bottom}" />
+        <Setter Property="BorderThickness" Value="2" />
+        <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto" />
+        <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto" />
+        <Setter Property="ScrollViewer.CanContentScroll" Value="True" />
+        <Setter Property="MinWidth" Value="4" />
+        <Setter Property="MinHeight" Value="4" />
+        <Setter Property="Margin" Value="0" />
+        <Setter Property="Padding" Value="0" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ListBox">
+                    <Border Name="Border"
+                  Background="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Background}"
+                  BorderBrush="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=BorderBrush}"
+                  BorderThickness="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=BorderThickness}">
+                        <ScrollViewer Margin="0" Focusable="False">
+                            <ItemsPresenter />
+                        </ScrollViewer>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsGrouping" Value="True">
+                            <Setter Property="ScrollViewer.CanContentScroll" Value="False" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="{x:Type ListBoxItem}" BasedOn="{StaticResource BaseStyle}">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="FontFamily" Value="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}" />
+        <Setter Property="FontSize"  Value="12pt" />
+        <Setter Property="Padding" Value="6,2,6,2" />
+        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+        <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                    <Border x:Name="Border"
+                  Background="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Background}"
+                  Padding="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Padding}">
+                        <ContentPresenter Content="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Content}"
+                              ContentTemplate="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=ContentTemplate}"
+                              ContentTemplateSelector="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=ContentTemplateSelector}"
+                              HorizontalAlignment="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=HorizontalContentAlignment}"
+                              VerticalAlignment="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=VerticalContentAlignment}"
+                              SnapsToDevicePixels="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=SnapsToDevicePixels}" />
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter TargetName="Border" Property="Background"
+                      Value="{StaticResource {x:Static scc:ClientResources.AlertTextForegroundBrushKey}}" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="{x:Type ListViewItem}" BasedOn="{StaticResource BaseStyle}">
+
+        <Style.Resources>
+            <SolidColorBrush Color="#7f146bdc"  x:Key="{x:Static SystemColors.HighlightBrushKey}"/>
+            <SolidColorBrush Color="#7f146bdc"  x:Key="{x:Static SystemColors.ControlBrushKey}"/>
+            <SolidColorBrush Color="#ffe7d490"  x:Key="{x:Static SystemColors.ControlTextBrushKey}"/>
+            <SolidColorBrush Color="#ffe7d490"  x:Key="{x:Static SystemColors.HighlightTextBrushKey}"/>
+        </Style.Resources>
+        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="FontFamily" Value="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}" />
+        <Setter Property="FontSize" Value="12pt" />
+        <Setter Property="Padding" Value="4,2,4,2" />
+        <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+
+        <!--<Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="{x:Type ListViewItem}">
+          <Border x:Name="Border"
+                  Background="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Background}"
+                  Padding="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Padding}">
+            <ContentPresenter Content="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Content}"
+                              ContentTemplate="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=ContentTemplate}"
+                              ContentTemplateSelector="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=ContentTemplateSelector}"
+                              HorizontalAlignment="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=HorizontalContentAlignment}"
+                              VerticalAlignment="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=VerticalContentAlignment}"
+                              SnapsToDevicePixels="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=SnapsToDevicePixels}" />
+          </Border>
+          <ControlTemplate.Triggers>
+            <Trigger Property="IsSelected"
+                     Value="True">
+              <Setter TargetName="Border"
+                      Property="Background"
+                      Value="{StaticResource {x:Static scc:ClientResources.HighlightBrushKey}}"/>
+            </Trigger>
+          </ControlTemplate.Triggers>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>-->
+    </Style>
+
+    <!--ListView-->
+    <Style TargetType="{x:Type ListView}" BasedOn="{StaticResource BaseStyle}">
+        <Setter Property="SnapsToDevicePixels" Value="True" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="Foreground" Value="{StaticResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}" />
+        <Setter Property="BorderBrush" Value="{StaticResource {x:Static scc:ClientResources.ImageBorderBrushKey}}" />
+        <Setter Property="BorderThickness" Value="2" />
+        <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto" />
+        <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto" />
+        <Setter Property="ScrollViewer.CanContentScroll" Value="True" />
+        <Setter Property="MinWidth" Value="4" />
+        <Setter Property="MinHeight" Value="4" />
+        <Setter Property="Margin" Value="0" />
+        <Setter Property="Padding" Value="0" />
+
+        <!--<Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="ListView">
+          <Border Name="Border"
+                  Margin="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Margin}"
+                  BorderThickness="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=BorderThickness}"
+                  BorderBrush="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=BorderBrush}"
+                  Background="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Background}">
+            <ScrollViewer>
+              <ItemsPresenter />
+            </ScrollViewer>
+          </Border>
+          <ControlTemplate.Triggers>
+            <Trigger Property="IsGrouping"
+                     Value="true">
+              <Setter Property="ScrollViewer.CanContentScroll"
+                      Value="false" />
+            </Trigger>
+            <Trigger Property="IsEnabled"
+                     Value="false">
+              <Setter TargetName="Border"
+                      Property="BorderBrush"
+                      Value="{StaticResource GrayGradient_Top_Bottom}" />
+            </Trigger>
+          </ControlTemplate.Triggers>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>-->
+    </Style>
+    
+    <!--End of ListBox-->
 
 
 </ResourceDictionary>

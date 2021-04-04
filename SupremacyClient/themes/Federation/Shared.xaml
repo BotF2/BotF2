@@ -12,8 +12,8 @@
                     xmlns:ui="clr-namespace:Supremacy.UI;assembly=SupremacyUI"
                     xmlns:xcdg="http://schemas.xceed.com/wpf/xaml/datagrid">
 
-    <SolidColorBrush Color="#ffeee384" x:Key="HeaderTextBrush"/>
-    <SolidColorBrush Color="#ffdfdfff" x:Key="{x:Static scc:ClientResources.HeaderTextForegroundBrushKey}"/>
+    <SolidColorBrush Color="#fff8c63f" x:Key="HeaderTextBrush"/>
+    <SolidColorBrush Color="#fff8c63f" x:Key="{x:Static scc:ClientResources.HeaderTextForegroundBrushKey}"/>
     <SolidColorBrush Color="#ffe7d490" x:Key="DefaultTextBrush"/>
     <SolidColorBrush Color="#ffe7d490" x:Key="{x:Static scc:ClientResources.DefaultTextForegroundBrushKey}"/>
     <SolidColorBrush Color="#ff999999" x:Key="DisabledTextBrush"/>
@@ -35,6 +35,13 @@
     <SolidColorBrush Color="#ffe7d490" x:Key="ParagraphBrush" />
     <SolidColorBrush Color="#FFFB6B1F" x:Key="WarningBrush" />
     <SolidColorBrush Color="#ffe7d490" x:Key="BeigeTextBrush" />
+
+    <!--unused-->
+    <SolidColorBrush Color="#ffeee384" x:Key="unused_1_old_HeaderText" />
+    <SolidColorBrush Color="#fffbdc89" x:Key="unused_2_old_HeaderText_more_orange" />
+
+
+
 
     <!--LinearGradientBrush-->
     <LinearGradientBrush x:Key="SeparatorBackgroundBrush" StartPoint="0,0" EndPoint="0,1">
@@ -87,7 +94,7 @@
   <ImageBrush x:Key="RightRepeatButton2"
               ImageSource="vfs:///Resources/UI/Federation/Shared/RightRepeatButton2.png" />-->
 
-    <!-- TabItem -->
+    <!-- TabItem >  all empires accessing this-->
     <Style TargetType="{x:Type TabItem}" BasedOn="{StaticResource BaseStyle}">
         <Setter Property="Height" Value="28" />
         <Setter Property="Margin" Value="2,0,0,0" />
@@ -108,9 +115,9 @@
                         <Rectangle Grid.Column="0"
                        Width="14"
                        SnapsToDevicePixels="True"
-                       Fill="{StaticResource {x:Static scc:ClientResources.Vertical_Top_Bottom_Brush}}" />
+                       Fill="{StaticResource GrayDarkGradient_Top_Bottom}" />
                         <scc:PixelSnappingBorder x:Name="Border" Grid.Column="1" Margin="3,0,0,0" Padding="7,0,7,0" SnapsToDevicePixels="True"
-                                     Background="{StaticResource {x:Static scc:ClientResources.ImageBorderBrushKey}}">
+                                     Background="{StaticResource AzureGradient_Top_Bottom}">
                             <ContentPresenter ContentSource="Header" VerticalAlignment="Center" SnapsToDevicePixels="True" />
                         </scc:PixelSnappingBorder>
                     </Grid>
@@ -177,7 +184,7 @@
                     Grid.Column="1"
                     Margin="3,0,3,0"
                     Padding="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Padding}"
-                    Background="{StaticResource BlueGradient_Left_Right}">
+                    Background="{StaticResource BlueGradient_Top_Bottom}">
                             <ContentPresenter Content="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Content}"
                                 HorizontalAlignment="Center"
                                 VerticalAlignment="Center"
@@ -189,7 +196,7 @@
                        Margin="0,0,3,0"
                        Width="14" />-->
                         <Border Grid.Column="3"
-                    Background="{StaticResource PurpleGradient_Right_Left}"
+                    Background="{StaticResource PurpleGradient_Top_Bottom}"
                     CornerRadius="0,14,14,0"
                     Width="21" />
                         <!--<Path Grid.Column="3"
@@ -212,14 +219,14 @@
                      Value="True">
                             <Setter TargetName="ContentBorder"
                       Property="Background"
-                      Value="{StaticResource BlueHoverGradient_Left_Right}" />
+                      Value="{StaticResource HoverAquaGradient_Bottom_Top}" />
                         </Trigger>
                         <!--IsPressed-->
                         <Trigger Property="IsPressed"
                      Value="True">
                             <Setter TargetName="ContentBorder"
                       Property="Background"
-                      Value="{StaticResource BlueGradient_Right_Left}" />
+                      Value="{StaticResource AquaGradient_Top_Bottom}" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
@@ -241,12 +248,12 @@
         <DockPanel LastChildFill="True">
 
             <Rectangle x:Name="CheckRectangle" DockPanel.Dock="Left" Width="12" Margin="0,0,2,0"
-                 Fill="{StaticResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"/>
+                 Fill="{StaticResource {x:Static scc:ClientResources.Vertical_Top_Bottom_Brush}}"/>
 
             <ui:ButtonChrome x:Name="ButtonChrome"
-                       Background="{StaticResource {x:Static scc:ClientResources.ImageBorderBrushKey}}"
+                       Background="{StaticResource AquaDarkGradient_Top_Bottom}"
                        DisabledBackground="#ffFFFFFF"
-                       HoverBackground="{StaticResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}"
+                       HoverBackground="{StaticResource HoverAquaGradient_Top_Bottom}"
                        PressedBackground="#ff70A3D0"
                        RenderMouseOver="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=IsMouseOver}"
                        RenderPressed="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=IsPressed}">
@@ -285,7 +292,7 @@
             </Trigger>
             <!--IsChecked-->
             <Trigger Property="IsChecked" Value="False">
-                <Setter TargetName="CheckRectangle" Property="Opacity" Value="0.8" />
+                <Setter TargetName="CheckRectangle" Property="Opacity" Value="0.4" />
             </Trigger>
         </ControlTemplate.Triggers>
     </ControlTemplate>
@@ -437,14 +444,14 @@
     </Setter>
   </Style>
 
-    <!--used for game inside, upper left (CombatScreen>"COMMIT"-->
+    <!--used for game inside, upper left (CombatScreen>"COMMIT" >>  as the screen is setup at starting, all empires use these colours -->  
     <ControlTemplate x:Key="{x:Static scc:GameButton.GroupedHorizontallyTemplateKey}"
                    TargetType="{x:Type scc:GameButton}">
         <DockPanel LastChildFill="True">
             <Rectangle DockPanel.Dock="Left" Width="12" Margin="0,0,2,0"
-                 Fill="{StaticResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"/>
+                 Fill="{DynamicResource SeparatorBackgroundBrush}"/>
             <ui:ButtonChrome x:Name="ButtonChrome"
-                       Background="{StaticResource {x:Static scc:ClientResources.ImageBorderBrushKey}}"
+                       Background="{StaticResource AquaDarkGradient_Top_Bottom}"
                        DisabledBackground="{StaticResource GrayGradient_Left_Right}"
                        HoverBackground="{StaticResource {x:Static scc:ClientResources.AlertTextForegroundBrushKey}}"
                        PressedBackground="{StaticResource {x:Static scc:ClientResources.AlertTextForegroundBrushKey}}"

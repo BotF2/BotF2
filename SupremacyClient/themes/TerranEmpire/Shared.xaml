@@ -70,14 +70,14 @@
     <!--<SolidColorBrush Color="#ff999999" x:Key="LCARS_DisabledTextBrush" />-->
     <SolidColorBrush Color="#ffe7d490" x:Key="BeigeTextBrush" />
 
-    <!--<SolidColorBrush Color="#ffe7d490" x:Key="{x:Static scc:ClientResources.HeaderTextForegroundBrushKey}" />-->
+    <SolidColorBrush Color="#ffe7d490" x:Key="{x:Static scc:ClientResources.HeaderTextForegroundBrushKey}" />
     <SolidColorBrush Color="#ffe7d490" x:Key="{x:Static scc:ClientResources.DefaultTextForegroundBrushKey}" />
     <!--<SolidColorBrush Color="#ffe7d490" x:Key="{x:Static scc:ClientResources.DefaultTextForegroundBrushKey}" />-->
     <SolidColorBrush Color="#ff41A52A" x:Key="{x:Static scc:ClientResources.DisabledTextForegroundBrushKey}" />
     <SolidColorBrush Color="#7f87DB7A" x:Key="{x:Static scc:ClientResources.HighlightBrushKey}" />
     <SolidColorBrush Color="#7f666666" x:Key="{x:Static scc:ClientResources.InactiveHighlightBrushKey}" />
     <SolidColorBrush Color="#ff000000" x:Key="{x:Static scc:ClientResources.ControlTextForegroundBrushKey}" />
-    <SolidColorBrush Color="#FFF1F23E" x:Key="{x:Static scc:ClientResources.ImageBorderBrushKey}" />
+    <SolidColorBrush Color="#FF767107" x:Key="{x:Static scc:ClientResources.ImageBorderBrushKey}" />
     <SolidColorBrush Color="#FFB90E0A"   x:Key="{x:Static scc:ClientResources.AlertTextForegroundBrushKey}" />
     <!--<SolidColorBrush Color="#ffe7d490" x:Key="{x:Static scc:ClientResources.ButtonBackground}" /> doesn't work-->
 
@@ -139,10 +139,10 @@
     <ControlTemplate x:Key="{x:Static scc:GameButton.GroupedVerticallyTemplateKey}"
                    TargetType="{x:Type scc:GameButton}">
         <DockPanel LastChildFill="True">
-            <Rectangle Width="12" x:Name="CheckRectangle" DockPanel.Dock="Left" Margin="0,0,2,0"  Fill="{StaticResource Ter4Gradient_Left_Right}"/>
+            <Rectangle Width="12" x:Name="CheckRectangle" DockPanel.Dock="Left" Margin="0,0,2,0"  Fill="{StaticResource PurpleGradient_Left_Right}"/>
             
             <ui:ButtonChrome x:Name="ButtonChrome"
-                       Background="{StaticResource Ter4Gradient_Right_Left}"
+                       Background="{StaticResource Ter5Gradient_Right_Left}"
                        DisabledBackground="{StaticResource BlueGradient_Left_Right}"
                        HoverBackground="{StaticResource TerHoverGradient_Top_Bottom}"
                        PressedBackground="{StaticResource Ter1Gradient_Right_Left}"
@@ -246,21 +246,21 @@
                        Width="8"
                        Margin="0,3,0,3"
                        HorizontalAlignment="Left"
-                       Fill="{StaticResource Ter1Gradient_Left_Right}" />
+                       Fill="{StaticResource GrayGradient_Left_Right}" />
                         <Rectangle x:Name="RightEdge"
                        Grid.Column="2"
                        Grid.Row="1"
                        Width="8"
                        Margin="0,3,0,3"
                        HorizontalAlignment="Right"
-                       Fill="{StaticResource Ter1Gradient_Left_Right}" />
+                       Fill="{StaticResource GrayGradient_Left_Right}" />
                         <Rectangle x:Name="BottomEdge"
                        Grid.Column="1"
                        Grid.Row="2"
                        Height="28"
                        Margin="3,0,3,0"
                        VerticalAlignment="Bottom"
-                       Fill="{StaticResource Ter3Gradient_Top_Bottom}" />
+                       Fill="{StaticResource Ter5Gradient_Top_Bottom}" />
 
                         <Grid Grid.Column="1"
                   Grid.Row="0"
@@ -281,7 +281,7 @@
                         SnapsToDevicePixels="True" />
                             <Rectangle Grid.Column="1"
                          Margin="3,0,3,0"
-                         Fill="{StaticResource Ter3Gradient_Right_Left}" />
+                         Fill="{StaticResource Ter5Gradient_Right_Left}" />
                         </Grid>
 
                         <ContentPresenter x:Name="PART_SelectedContentHost" Grid.Column="1"
@@ -354,7 +354,7 @@
                       Value="100" />-->
                             <Setter TargetName="Border"
                       Property="Background"
-                      Value="{StaticResource Ter2Gradient_Left_Right}" />
+                      Value="{StaticResource Ter1Gradient_Left_Right}" />
                         </Trigger>
                         <!--<Trigger Property="IsMouseDown"
                      Value="True">
@@ -567,7 +567,7 @@
             <Border x:Name="ContentBorder"
                     Grid.Column="1"
                     Padding="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Padding}"
-                    Background="{StaticResource {x:Static scc:ClientResources.Vertical_Top_Bottom_Brush}}">
+                    Background="{StaticResource PurpleGradient_Top_Bottom}">
                 
               <ContentPresenter Content="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Content}"
                                 HorizontalAlignment="Center"
@@ -576,14 +576,14 @@
             </Border>
             <Path x:Name="LeftEdge"
                   Grid.Column="0"
-                  Fill="{StaticResource Ter1Gradient_Top_Bottom}"
+                  Fill="{StaticResource Ter5Gradient_Top_Bottom}"
                   Data="M 0,28 L 28,28 28,0 5,0 0,5 Z"
                   VerticalAlignment="Center"
                   Height="{Binding ElementName=ContentBorder, Path=ActualHeight, Mode=OneWay}"
                   Stretch="Fill" />
             <Path x:Name="RightEdge"
                   Grid.Column="2"
-                  Fill="{StaticResource Ter1Gradient_Top_Bottom}"
+                  Fill="{StaticResource Ter5Gradient_Top_Bottom}"
                   Data="M 28,28L0,28 0,0 23,0 28,5 28,28 Z"
                   VerticalAlignment="Center"
                   Height="{Binding ElementName=ContentBorder, Path=ActualHeight, Mode=OneWay}"
@@ -603,12 +603,12 @@
               <Setter TargetName="ContentBorder"
                       Property="Background"
                       Value="{StaticResource TerHoverGradient_Top_Bottom}" />
-              <Setter TargetName="LeftEdge"
+              <!--<Setter TargetName="LeftEdge"
                       Property="Fill"
                       Value="{StaticResource TerHoverGradient_Top_Bottom}" />
               <Setter TargetName="RightEdge"
                       Property="Fill"
-                      Value="{StaticResource TerHoverGradient_Top_Bottom}" />
+                      Value="{StaticResource TerHoverGradient_Top_Bottom}" />-->
             </Trigger>
                         <!--IsPressed-->
                         <Trigger Property="IsPressed"
@@ -616,12 +616,12 @@
               <Setter TargetName="ContentBorder"
                       Property="Background"
                       Value="{StaticResource Ter6Gradient_Bottom_Top}" />
-              <Setter TargetName="LeftEdge"
+              <!--<Setter TargetName="LeftEdge"
                       Property="Fill"
                       Value="{StaticResource Ter6Gradient_Bottom_Top}" />
               <Setter TargetName="RightEdge"
                       Property="Fill"
-                      Value="{StaticResource Ter6Gradient_Bottom_Top}" />
+                      Value="{StaticResource Ter6Gradient_Bottom_Top}" />-->
             </Trigger>
           </ControlTemplate.Triggers>
         </ControlTemplate>
@@ -771,7 +771,7 @@
             <ControlTemplate x:Key="LeftRepeatButtonTemplate"   
                            TargetType="{x:Type RepeatButton}">
                 <Border x:Name="LeftButton"
-                     Background="{StaticResource OrangeGradient_TopLeft_BottomRight}"
+                     Background="{StaticResource PurpleGradient_TopLeft_BottomRight}"
                      CornerRadius="14,0,0,14" />
                 <ControlTemplate.Triggers>
                     <MultiTrigger>
@@ -808,7 +808,7 @@
             <ControlTemplate x:Key="RightRepeatButtonTemplate"
                            TargetType="{x:Type RepeatButton}">
             <Border x:Name="RightButton"
-                    Background="{StaticResource OrangeGradient_TopLeft_BottomRight}"
+                    Background="{StaticResource PurpleGradient_TopLeft_BottomRight}"
                     CornerRadius="0,14,14,0" />
             <ControlTemplate.Triggers>
               <MultiTrigger>
@@ -927,7 +927,7 @@
                                     HorizontalAlignment="Stretch" />
                 </Border>
                 <Border x:Name="BackgroundBorder"
-                        Background="{StaticResource Ter4Gradient_Top_Bottom}"
+                        Background="{StaticResource {x:Static scc:ClientResources.ImageBorderBrushKey}}"
                         MinWidth="14"
                         HorizontalAlignment="Stretch" />
               </DockPanel>
@@ -1011,7 +1011,7 @@
                 <xcdg:FixedCellPanel x:Name="PART_CellsHost"
                                      DockPanel.Dock="Left"
                                      Margin="{TemplateBinding BorderThickness}" />
-                <Rectangle Fill="{StaticResource Ter3Gradient_Top_Bottom}" />
+                                <Rectangle Fill="{StaticResource {x:Static scc:ClientResources.ImageBorderBrushKey}}" />
               </DockPanel>
             </Decorator>
           </Grid>
@@ -1488,7 +1488,7 @@
                Value="True">
                 <Setter TargetName="Arrow"
                 Property="Fill"
-                Value="White" />
+                Value="{StaticResource {x:Static scc:ClientResources.ImageBorderBrushKey}}" />
             </Trigger>
             <Trigger Property="ToggleButton.IsChecked"
                Value="True">
@@ -1508,7 +1508,7 @@
     <ControlTemplate x:Key="LCARS_ComboBoxTextBox"
                    TargetType="{x:Type TextBox}">
         <Border x:Name="Border"
-            BorderBrush="{StaticResource BlueGradient_Top_Bottom}"
+            BorderBrush="{StaticResource Ter2Gradient_Top_Bottom}"
             Background="#FF000000"
             BorderThickness="2"
             Focusable="False" />
@@ -1559,7 +1559,7 @@
                         </ToggleButton>
                         <Border x:Name="Border"
                     Grid.Column="0"
-                    BorderBrush="{StaticResource BlueGradient_Top_Bottom}"
+                    BorderBrush="{StaticResource Ter2Gradient_Top_Bottom}"
                     Background="#FF000000"
                     BorderThickness="2"
                     Focusable="False">
@@ -1613,35 +1613,35 @@
                                     <Border Grid.Column="0"
                           Grid.Row="0"
                           CornerRadius="14,0,0,0"
-                          Background="{StaticResource PurpleGradient_TopLeft_BottomRight}" />
+                          Background="{StaticResource Ter1Gradient_TopLeft_BottomRight}" />
                                     <Border Grid.Column="2"
                           Grid.Row="0"
                           CornerRadius="0,14,0,0"
-                          Background="{StaticResource PurpleGradient_TopLeft_BottomRight}" />
+                          Background="{StaticResource Ter1Gradient_TopLeft_BottomRight}" />
                                     <Border Grid.Column="2"
                           Grid.Row="2"
                           CornerRadius="0,0,14,0"
-                          Background="{StaticResource PurpleGradient_TopLeft_BottomRight}" />
+                          Background="{StaticResource Ter1Gradient_TopLeft_BottomRight}" />
                                     <Border Grid.Column="0"
                           Grid.Row="2"
                           CornerRadius="0,0,0,14"
-                          Background="{StaticResource PurpleGradient_TopLeft_BottomRight}" />
+                          Background="{StaticResource Ter1Gradient_TopLeft_BottomRight}" />
                                     <Border Grid.Column="0"
                           Grid.Row="1"
                           Margin="0,2,0,2"
-                          Background="{StaticResource OrangeGradient_Left_Right}" />
+                          Background="{StaticResource Ter5Gradient_Left_Right}" />
                                     <Border Grid.Column="2"
                           Grid.Row="1"
                           Margin="0,2,0,2"
-                          Background="{StaticResource OrangeGradient_Left_Right}" />
+                          Background="{StaticResource Ter5Gradient_Left_Right}" />
                                     <Border Grid.Column="1"
                           Grid.Row="0"
                           Margin="2,0,2,0"
-                          Background="{StaticResource OrangeGradient_Top_Bottom}" />
+                          Background="{StaticResource Ter5Gradient_Top_Bottom}" />
                                     <Border Grid.Column="1"
                           Grid.Row="2"
                           Margin="2,0,2,0"
-                          Background="{StaticResource OrangeGradient_Top_Bottom}" />
+                          Background="{StaticResource Ter5Gradient_Top_Bottom}" />
                                     <ScrollViewer Grid.Column="1"
                                 Grid.Row="1"
                                 Margin="2,2,2,0"
@@ -1704,11 +1704,11 @@
                     Width="14"
                     Visibility="Collapsed"
                     Margin="0,0,3,0"
-                    Background="{StaticResource OrangeGradient_Left_Right}"
+                    Background="{StaticResource Ter6Gradient_Left_Right}"
                     SnapsToDevicePixels="True" />
                         <Border x:Name="Border"
                     Grid.Column="1"
-                    Background="{StaticResource BlueGradient_Left_Right}"
+                    Background="{StaticResource Ter2Gradient_Left_Right}"
                     Padding="2"
                     SnapsToDevicePixels="True">
                             <ContentPresenter Margin="7,0,7,0" />
@@ -1719,7 +1719,7 @@
                      Value="true">
                             <Setter TargetName="Border"
                       Property="Background"
-                      Value="{StaticResource BlueHoverGradient_Left_Right}" />
+                      Value="{StaticResource TerHoverGradient_Left_Right}" />
                         </Trigger>
                         <Trigger Property="IsEnabled"
                      Value="false">
@@ -1740,7 +1740,7 @@
         <Setter Property="FontSize" Value="16pt" />
         <Setter Property="ClipToBounds" Value="False" />
         <Setter Property="Focusable" Value="False" />
-        <Setter Property="Background" Value="{StaticResource Ter1Gradient_Bottom_Top}" />
+        <Setter Property="Background" Value="{StaticResource PurpleGradient_Bottom_Top}" />
            
         <Setter Property="Template">
             <Setter.Value>
@@ -1766,7 +1766,7 @@
                      Value="False">
                             <Setter TargetName="ContentBorder"
                       Property="Background"
-                      Value="{DynamicResource Ter3Gradient_Bottom_Top}" />
+                      Value="{DynamicResource Ter1Gradient_Bottom_Top}" />
                             <Setter TargetName="ContentBorder"
                       Property="Opacity"
                       Value="0.33" />
@@ -1783,7 +1783,7 @@
                      Value="True">
                             <Setter TargetName="ContentBorder"
                       Property="Background"
-                      Value="{StaticResource Ter6Gradient_Bottom_Top}" />
+                      Value="{StaticResource Ter1Gradient_Bottom_Top}" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>

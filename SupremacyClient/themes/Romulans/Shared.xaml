@@ -38,10 +38,10 @@
 
 
 
-    <SolidColorBrush Color="#ff36E50E" x:Key="HeaderTextBrush"/>
-    <SolidColorBrush Color="#ff36E50E" x:Key="{x:Static scc:ClientResources.HeaderTextForegroundBrushKey}"/>
-    <SolidColorBrush Color="#ff77DC60" x:Key="DefaultTextBrush"/>
-    <SolidColorBrush Color="#ff77DC60" x:Key="{x:Static scc:ClientResources.DefaultTextForegroundBrushKey}"/>
+    <SolidColorBrush Color="#ffb5dc60" x:Key="HeaderTextBrush"/>
+    <SolidColorBrush Color="#ffb5dc60" x:Key="{x:Static scc:ClientResources.HeaderTextForegroundBrushKey}"/>
+    <SolidColorBrush Color="#ff36E50E" x:Key="DefaultTextBrush"/>
+    <SolidColorBrush Color="#ff36E50E" x:Key="{x:Static scc:ClientResources.DefaultTextForegroundBrushKey}"/>
     <SolidColorBrush Color="#ff41A52A" x:Key="DisabledTextBrush"/>
     <SolidColorBrush Color="#ff41A52A" x:Key="{x:Static scc:ClientResources.DisabledTextForegroundBrushKey}"/>
     <SolidColorBrush Color="#ff87DB7A" x:Key="SelectionBrush"/>
@@ -54,8 +54,8 @@
     <SolidColorBrush Color="#ff87DB7A" x:Key="{x:Static scc:ClientResources.HighlightBrushKey}"/>
     <SolidColorBrush Color="#ff87DB7A" x:Key="{x:Static SystemColors.HighlightBrushKey}" />
 
-    <SolidColorBrush Color="#Ff87DB7A" x:Key="BorderBrush" />
-    <SolidColorBrush Color="#Ff87DB7A" x:Key="{x:Static scc:ClientResources.ImageBorderBrushKey}"/>
+    <SolidColorBrush Color="#FF105305" x:Key="BorderBrush" />
+    <SolidColorBrush Color="#FF105305" x:Key="{x:Static scc:ClientResources.ImageBorderBrushKey}"/>
 
     <SolidColorBrush Color="#ffDCB960" x:Key="ParagraphBrush" />
     <SolidColorBrush Color="#FFFB6B1F" x:Key="WarningBrush" />
@@ -73,7 +73,11 @@
     <!-- unused colors - just as color storage -->
     <SolidColorBrush Color="#FF228B22" x:Key="unused_1" />
     <SolidColorBrush Color="#FF00FF00" x:Key="unused_2" />
-    
+    <SolidColorBrush Color="#ff36E50E" x:Key="unused_1_old_HeaderText" />
+    <SolidColorBrush Color="#ff77DC60" x:Key="unused_2_old_DefaultText" />
+    <SolidColorBrush Color="#ff41A52A" x:Key="unused_2_old_DisabledTextBrush" />
+    <SolidColorBrush Color="#ff205215" x:Key="unused_3_DisabledTextBrush"/>
+
 
     <!--LinearGradientBrush-->
     <LinearGradientBrush x:Key="SeparatorBackgroundBrush" StartPoint="0,0" EndPoint="0,1">
@@ -87,13 +91,13 @@
     </LinearGradientBrush>
 
     <LinearGradientBrush x:Key="{x:Static scc:ClientResources.Vertical_Top_Bottom_Brush}" StartPoint="0,0" EndPoint="0,1">
-        <GradientStop Color="#FF129418" Offset="1" />
-        <GradientStop Color="#FFf4cb0d" Offset="0" />
+        <GradientStop Color="#FF6666CC" Offset="1" />
+        <GradientStop Color="#FFCC33FF" Offset="0" />
     </LinearGradientBrush>
     
     <LinearGradientBrush x:Key="{x:Static scc:ClientResources.Vertical_Bottom_Top_Brush}" StartPoint="0,0" EndPoint="0,1">
-        <GradientStop Color="#FFf4cb0d" Offset="1" />
-        <GradientStop Color="#FF129418" Offset="0" />
+        <GradientStop Color="#FFCC33FF" Offset="1" />
+        <GradientStop Color="#FF6666CC" Offset="0" />
     </LinearGradientBrush>    
 
     <LinearGradientBrush x:Key="{x:Static scc:ClientResources.Horizontal_Left_Right_Brush}" StartPoint="0,0" EndPoint="1,0">
@@ -241,7 +245,7 @@
                         <!--IsSelected-->
                         <Trigger Property="IsSelected" Value="True">
                             <!--<Setter Property="Panel.ZIndex" Value="100" />-->
-                            <Setter TargetName="Border" Property="Background" Value="{StaticResource RomGreenGradient_Left_Right}" />
+                            <Setter TargetName="Border" Property="Background" Value="{StaticResource PinkGradient_Left_Right}" />
                         </Trigger>
                         <!--IsMouseDown-->
                         <!--<Trigger Property="IsMouseDown" Value="True">
@@ -355,9 +359,38 @@
             </Trigger>
         </ControlTemplate.Triggers>
     </ControlTemplate>
+    
+        <!--TextBoxBase-->
+  <!--<Style TargetType="{x:Type TextBoxBase}" BasedOn="{StaticResource BaseStyle}">
+    <Setter Property="Background" Value="Black" />
+        <Setter Property="Foreground" Value="{StaticResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}" />
+    <Setter Property="FontFamily" Value="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}" />
+    <Setter Property="FontSize" Value="12pt" />
+    <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="{x:Type TextBoxBase}">
+          <Border x:Name="Border" BorderThickness="2" SnapsToDevicePixels="True"
+                  BorderBrush="{StaticResource {x:Static scc:ClientResources.ImageBorderBrushKey}}">
+            <ScrollViewer x:Name="PART_ContentHost" Margin="2" SnapsToDevicePixels="True" />
+          </Border>
+          <ControlTemplate.Triggers>
+            <Trigger Property="IsEnabled" Value="False">
+              <Setter TargetName="Border" Property="BorderBrush" Value="{StaticResource GrayGradient_Top_Bottom}" />
+              <Setter Property="Foreground" Value="{StaticResource DisabledTextBrush}" />
+            </Trigger>
+          </ControlTemplate.Triggers>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+  </Style>
+
+  <Style x:Key="{x:Type TextBox}"
+         BasedOn="{StaticResource {x:Type TextBoxBase}}"
+         TargetType="{x:Type TextBox}" />-->
 
     <!--used in StartScreen, in DiplomaticScreen-->
-    <!--<ControlTemplate x:Key="{x:Static scc:GameButton.GroupedVerticallyTemplateKey}"
+    <ControlTemplate x:Key="{x:Static scc:GameButton.GroupedVerticallyTemplateKey}"
                    TargetType="{x:Type scc:GameButton}">
         <DockPanel LastChildFill="True">
             <Rectangle x:Name="CheckRectangle"
@@ -414,26 +447,26 @@
             </ui:ButtonChrome>
         </DockPanel>
         <ControlTemplate.Triggers>
-            --><!--DisplayMode" Value="Minimal"--><!--
+            <!--DisplayMode" Value="Minimal"-->
             <Trigger Property="DisplayMode" Value="Minimal">
                 <Setter TargetName="Decorations"
                 Property="Visibility"
                 Value="Collapsed" />
             </Trigger>
-            --><!--IsChecked--><!--
+            <!--IsChecked-->
             <Trigger Property="IsChecked" Value="False">
                 <Setter TargetName="CheckRectangle"
                 Property="Opacity"
                 Value="0.5" />
             </Trigger>
-            --><!-- crashes the game
+             <!--crashes the game-->
             <Trigger Property="IsChecked" Value="True">
                 <Setter TargetName="ButtonChrome"
                 Property="Background"
-                Value="c" />
-            </Trigger>--><!--
+                Value="{StaticResource Rom2Gradient_TopLeft_BottomRight}" />
+            </Trigger>
         </ControlTemplate.Triggers>
-    </ControlTemplate>-->
+    </ControlTemplate>
     <!--End of GameButton.GroupedVerticallyTemplateKey-->
 
     <!--used for game inside, upper left (CombatScreen>"COMMIT"-->
