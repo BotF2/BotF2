@@ -880,14 +880,14 @@
                                     <ColumnDefinition Width="*" />
                                     <ColumnDefinition Width="Auto" />
                                 </Grid.ColumnDefinitions>
-                                <Rectangle x:Name="TopEdge"
+                                <Rectangle x:Name="TopEdge" Opacity="0.6"
                            Grid.Column="0"
                            Grid.ColumnSpan="2"
                            Margin="0,0,0,0"
                            Fill="{StaticResource Borg3Gradient_Top_Bottom}" />
 
                                 <TextBlock FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
-                           FontSize="10pt"
+                           FontSize="12pt"
                            Foreground="Black"
                            VerticalAlignment="Center"
                            HorizontalAlignment="Center"

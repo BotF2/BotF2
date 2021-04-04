@@ -538,7 +538,7 @@
                                   Width="48"
                                   Height="40"
                                   Margin="0,0,7,0"
-                                  BorderBrush="White"
+                                  BorderBrush="{StaticResource {x:Static scc:ClientResources.ImageBorderBrushKey}}"
                                   BorderThickness="2"
                                   CornerRadius="4">
                             <Border.Background>
@@ -554,7 +554,21 @@
                                    Source="{DynamicResource Scrap_Indicator_Glyph}"
                                    Visibility="Hidden"
                                    IsHitTestVisible="False" />
-                          </Border>
+                                <Border.ToolTip>
+                                    <Border x:Name="ImageToolTipBorder"
+                                        Grid.Column="0"
+                                        VerticalAlignment="Center"
+                                        BorderBrush="{StaticResource HeaderTextBrush}"
+                                        BorderThickness="2"
+                                        CornerRadius="4"
+                                        Width="1000"
+                                        Height="840">
+                                        <Border.Background>
+                                          <ImageBrush ImageSource="{Binding Path=SelectedSectorStation.StationImage, Mode=OneWay}" />
+                                        </Border.Background>
+                                    </Border>
+                                </Border.ToolTip>
+                            </Border>
                           <TextBlock>
                             <TextBlock Foreground="{StaticResource HeaderTextBrush}"
                                        FontSize="14"                                       

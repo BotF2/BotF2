@@ -182,7 +182,7 @@
                          Grid.Row="0"
                          Width="14"
                          Margin="3,0,0,0"
-                         Fill="{StaticResource Dom3Gradient_Top_Bottom}" />
+                         Fill="{StaticResource Dom6Gradient_Top_Bottom}" />
               <Rectangle Grid.Column="3"
                          Grid.Row="1"
                          Width="14"
@@ -257,7 +257,7 @@
                       Margin="3,0,0,0">
                                 <TextBlock FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
                            FontSize="18pt"
-                           Foreground="{StaticResource WhiteHeaderBrush}"
+                           Foreground="{StaticResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"
                            Text="{s:StringResource SCAN_TEXT}"
                            HorizontalAlignment="Center" />
                             </Border>
@@ -682,9 +682,9 @@
                             </Grid.RowDefinitions>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="21" />
-                                <ColumnDefinition Width="0.25*" />
+                                <ColumnDefinition Width="0.20*" />
                                 <ColumnDefinition Width="0.30*" />
-                                <ColumnDefinition Width="0.45*" />
+                                <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition Width="13" />
                             </Grid.ColumnDefinitions>
                             
@@ -706,16 +706,61 @@
                             
                             <Grid Grid.Row="0" Grid.Column="1" Height="28" Margin="0,0,0,0" VerticalAlignment="Top">
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="400" />
                                     <ColumnDefinition Width="Auto" />
                                 </Grid.ColumnDefinitions>
-                                <Rectangle Grid.Column="0" Margin="3,0,0,0" x:Name="TopEdge"
-                                            Fill="{StaticResource Dom3Gradient_Top_Bottom}" />
 
-                                <TextBlock Text="{s:StringResource INFO_SHORTCUTS}" 
-                                    FontSize="13pt" VerticalAlignment="Center"  HorizontalAlignment="Center" Foreground="Black"      
-                                    FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
-                                   />
+                                <Rectangle x:Name="RightTopEdge"
+                           Grid.Column="0"
+                           Margin="0,0,0,0"
+                           HorizontalAlignment="Stretch"
+                           Height="28"
+                           VerticalAlignment="Top" >
+                                    <Rectangle.RenderTransform>
+                                        <ScaleTransform ScaleX="-1" ScaleY="1" CenterX="203" />
+                                    </Rectangle.RenderTransform>
+                                    <Rectangle.Fill>
+                                        <DrawingBrush>
+                                            <DrawingBrush.Drawing>
+                                                <DrawingGroup>
+                                                    <GeometryDrawing Brush="{StaticResource Dom1Gradient_Top_Bottom}" Geometry="M11,10L 20,10 20,6 15,6 11,10z" />
+
+                                                    <GeometryDrawing Brush="{StaticResource Dom1Gradient_Top_Bottom}" Geometry="M31,10L 40,10 40,6 35,6 31,10z"  />
+                                                    <GeometryDrawing Brush="{StaticResource Dom1Gradient_Top_Bottom}" Geometry="M51,10L 60,10 60,6 55,6 51,10z"  />
+                                                    <GeometryDrawing Brush="{StaticResource Dom1Gradient_Top_Bottom}" Geometry="M71,10L 80,10 80,6 75,6 71,10z"  />
+
+                                                    <GeometryDrawing Brush="{StaticResource Dom1Gradient_Top_Bottom}" Geometry="M11,14L20,14 20,18 15,18 11,14z"  />
+                                                    <GeometryDrawing Brush="{StaticResource Dom1Gradient_Top_Bottom}" Geometry="M31,14L40,14 40,18 35,18 31,14z"  />
+
+                                                    <GeometryDrawing Brush="{StaticResource Dom1Gradient_Top_Bottom}" Geometry="M51,14L60,14 60,18 55,18 51,14z"  />
+                                                    <GeometryDrawing Brush="{StaticResource Dom1Gradient_Top_Bottom}" Geometry="M71,14L80,14 80,18 75,18 71,14z"  />
+
+                                                    <GeometryDrawing Brush="#ffe8e8e8" Geometry="M 11,11 100,11 105,7 180,7 180,11 345,11 345,13 175,13 170,10 155,10 150,18, 130,18 125,10 105,10 100,13 11,13 Z" />
+
+                                                    <GeometryDrawing Brush="{StaticResource Dom1Gradient_Top_Bottom}" Geometry="M211,10L 220,10 220,6 215,6 211,10z"  />
+                                                    <GeometryDrawing Brush="{StaticResource Dom1Gradient_Top_Bottom}" Geometry="M211,14L220,14 220,18 215,18 211,14z"  />
+
+                                                    <GeometryDrawing Brush="{StaticResource Dom1Gradient_Top_Bottom}" Geometry="M231,10L 240,10 240,6 235,6 231,10z"  />
+                                                    <GeometryDrawing Brush="{StaticResource Dom1Gradient_Top_Bottom}" Geometry="M231,14L240,14 240,18 235,18 231,14z"  />
+
+                                                    <GeometryDrawing Brush="{StaticResource Dom1Gradient_Top_Bottom}" Geometry="M251,10L 260,10 260,6 255,6 251,10z"  />
+                                                    <GeometryDrawing Brush="{StaticResource Dom1Gradient_Top_Bottom}" Geometry="M251,14L260,14 260,18 255,18 251,14z"  />
+
+                                                    <GeometryDrawing Brush="{StaticResource Dom1Gradient_Top_Bottom}" Geometry="M271,10L 280,10 280,6 275,6 271,10z"  />
+                                                    <GeometryDrawing Brush="{StaticResource Dom1Gradient_Top_Bottom}" Geometry="M271,14L280,14 280,18 275,18 271,14z"  />
+                                                    <GeometryDrawing Brush="{StaticResource Dom3Gradient_Top_Bottom}" Geometry="M 300,0 303,0 303,28 300 0 Z" />
+                                                    <GeometryDrawing Brush="{StaticResource Dom3Gradient_Top_Bottom}" Geometry="M 320,0 323,0 323,28 320 0 Z" />
+                                                    <GeometryDrawing Brush="{StaticResource Dom3Gradient_Top_Bottom}" Geometry="M 340,0 343,0 343,28 340 0 Z" />
+
+                                                    <GeometryDrawing Brush="{StaticResource Borg4Gradient_Bottom_Top}" Geometry="M 0,6 10,6 15,2 347,2 348,3 348,25 347,26 175,26 170,20 165,20 160,26 105,26 110,20 115,20, 120,26 0,26 0,28 350,28 350,0 8,0 6,4 0,4 Z" />
+                                                    <GeometryDrawing Brush="{StaticResource Borg2Gradient_Bottom_Top}" Geometry="M 0,0 3,0 3,28 0,28 Z" />
+                                                </DrawingGroup>
+                                            </DrawingBrush.Drawing>
+                                        </DrawingBrush>
+                                    </Rectangle.Fill>
+                                </Rectangle>
+
+
 
                             </Grid>
                             <!--<Rectangle x:Name="LeftTopEdge"
@@ -775,7 +820,7 @@
                                 <!--LeftCenterTopEdge-->
                                 <Rectangle x:Name="LeftCenterTopEdge"
                            Grid.Column="0"
-                           Fill="{StaticResource Dom2Gradient_Top_Bottom}" />
+                           Fill="{StaticResource Dom6Gradient_Bottom_Top}" />
                 <StackPanel Grid.Column="1"
                             Orientation="Horizontal"
                             Margin="0,0,0,0">
@@ -887,7 +932,7 @@
                 <Rectangle x:Name="RightCenterTopEdge"
                            Grid.Column="2"
                            Margin="0,0,0,0"
-                           Fill="{StaticResource Dom2Gradient_Top_Bottom}" />
+                           Fill="{StaticResource Dom6Gradient_Bottom_Top}" />
                             </Grid>
               <Grid Grid.Column="3"
                     Grid.Row="0"
@@ -895,10 +940,29 @@
                     Margin="0,0,3,0"
                     VerticalAlignment="Top">
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="350" />
+                                    <ColumnDefinition Width="200" />
                                     <ColumnDefinition Width="Auto" />
                                 </Grid.ColumnDefinitions>
-                <Rectangle x:Name="RightTopEdge"
+
+                                <Border Grid.Column="0" Margin="0,0,0,0" x:Name="TopEdge"
+                                        BorderBrush="Green" BorderThickness="2"
+                                        >
+
+                                    <!--Fill="{StaticResource Dom3Gradient_Top_Bottom}" 
+                                           >-->
+
+                                        <!--<Rectangle.BorderBrush="Green" >
+                                            
+                                        </Rectangle.BorderBrush>-->
+                                </Border>
+
+                                <TextBlock Grid.Column="0" Text="{s:StringResource INFO_SHORTCUTS}" 
+                                    FontSize="13pt" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,0,0,0"
+                                    Foreground="{StaticResource {x:Static scc:ClientResources.DisabledTextForegroundBrushKey}}"      
+                                    FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
+                                   />
+
+                                <!--<Rectangle x:Name="RightTopEdge"
                            Grid.Column="0"
                            Margin="0,0,0,0"
                            HorizontalAlignment="Stretch"
@@ -948,11 +1012,12 @@
                                             </DrawingBrush.Drawing>
                                         </DrawingBrush>
                                     </Rectangle.Fill>
-                                </Rectangle>
+                                </Rectangle>-->
+                  
                 <TextBlock x:Name="InhabitantsText"
                            Grid.Column="1"
                            Margin="7,0,4,0"
-                           Foreground="{StaticResource BlueTextBrush}"
+                           Foreground="{StaticResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"
                            HorizontalAlignment="Right"
                            VerticalAlignment="Center"
                            Text="{Binding Path=SelectedSector.System.Colony.Inhabitants.PluralName, Mode=OneWay, Converter={StaticResource UpperCaseConverter}}"

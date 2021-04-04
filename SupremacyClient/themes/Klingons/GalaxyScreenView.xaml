@@ -95,6 +95,7 @@
               <Button x:Name="PART_TurnButton"
                       Grid.Column="0"
                       Grid.Row="0"
+                      FontSize="16pt"  
                       Command="{x:Static scc:ClientCommands.EndTurn}">
                 <Button.Content>
                   <TextBlock Text="{Binding Path=(scc:GameScreenViewBase.AppContext).CurrentGame.TurnNumber, StringFormat={s:StringResource Key=TURN_BUTTON_TEXT, Case=Upper}, RelativeSource={RelativeSource TemplatedParent}}" />
@@ -127,7 +128,7 @@
                                 <Rectangle.Fill>
                                     <DrawingBrush>
                                         <DrawingBrush.Drawing>
-                                            <GeometryDrawing Brush="{StaticResource KlingYellow1Gradient_TopLeft_BottomRight}"
+                                            <GeometryDrawing Brush="{StaticResource KlingYellow1Gradient_Right_Left}"
                                                              Geometry="F1 M 0,0L 10,0L 10,15L 28,3L 20,28L 0,28 Z" />
                                         </DrawingBrush.Drawing>
                                     </DrawingBrush>
@@ -146,7 +147,7 @@
                                 <Rectangle.Fill>
                                     <DrawingBrush>
                                         <DrawingBrush.Drawing>
-                                            <GeometryDrawing Brush="{StaticResource KlingYellow1Gradient_TopLeft_BottomRight}"
+                                            <GeometryDrawing Brush="{StaticResource KlingYellow1Gradient_Right_Left}"
                                        Geometry="F1 M 0,0L  19,0L 28,0L 19,0L 10,28L 0,28 Z" />
                                         </DrawingBrush.Drawing>
                                     </DrawingBrush>
@@ -173,7 +174,7 @@
                       Background="{StaticResource Kling3Gradient_Top_Bottom}">
                 <TextBlock FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
                            FontSize="18pt"
-                           Foreground="#fdfaa8"
+                           Foreground="{StaticResource Borg1Gradient_Bottom_Top}"
                            Text="{s:StringResource SECTOR_TEXT}"
                            HorizontalAlignment="Center" />
               </Border>
@@ -184,7 +185,7 @@
                       Background="{StaticResource Kling2Gradient_Bottom_Top}">
                 <TextBlock FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
                            FontSize="18pt"
-                           Foreground="#fdfaa8"
+                           Foreground="OrangeRed"
                            Text="{Binding Path=SelectedSector, Mode=OneWay, Converter={StaticResource SectorNameConverter}, ConverterParameter=UpperCase}"
                            HorizontalAlignment="Center" />
               </Border>
@@ -192,12 +193,12 @@
                          Grid.Row="0"
                          Width="14"
                          Margin="3,0,0,0"
-                         Fill="{StaticResource KlingYellow2Gradient_Top_Bottom}" />
+                         Fill="{StaticResource KlingYellow1Gradient_Top_Bottom}" />
               <Rectangle Grid.Column="3"
                          Grid.Row="1"
                          Width="14"
                          Margin="3,4,0,0"
-                         Fill="{StaticResource KlingYellow2Gradient_Top_Bottom}" />
+                         Fill="{StaticResource KlingYellow1Gradient_Bottom_Top}" />
               <Border Grid.Column="4"
                       Grid.Row="0"
                       Padding="14,0,14,0"
@@ -205,7 +206,7 @@
                       Background="{StaticResource Kling3Gradient_Top_Bottom}">
                 <TextBlock FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
                            FontSize="18pt"
-                           Foreground="#fdfaa8"
+                           Foreground="{StaticResource Borg1Gradient_Bottom_Top}"
                            Text="{s:StringResource AFFILIATION_TEXT}"
                            HorizontalAlignment="Center" />
               </Border>
@@ -217,7 +218,7 @@
                 <TextBlock x:Name="SectorOwnerText"
                            FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
                            FontSize="18pt"
-                           Foreground="#fdfaa8"
+                           Foreground="Orange"
                            Text="{Binding Path=SelectedSectorAllegiance, Mode=OneWay, Converter={StaticResource UpperCaseConverter}}"
                            HorizontalAlignment="Center" />
               </Border>
@@ -227,7 +228,7 @@
                       Margin="3,0,0,0">
                 <TextBlock FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
                            FontSize="18pt"
-                           Foreground="{StaticResource WhiteHeaderBrush}"
+                           Foreground="{StaticResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}"
                            Text="{s:StringResource SCAN_TEXT}"
                            HorizontalAlignment="Center" />
               </Border>
@@ -250,7 +251,7 @@
                          Padding="14,0,14,0">
                 <TextBlock FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
                            FontSize="18pt"
-                           Foreground="#fdfaa8"
+                           Foreground="Orange"
                            HorizontalAlignment="Center"
                            Text="{s:StringResource KLINGON_HEADLINE}"
                                            />
@@ -264,7 +265,7 @@
                          Padding="14,0,14,0">
                 <TextBlock FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
                            FontSize="18pt"
-                           Foreground="#fdfaa8"
+                           Foreground="{StaticResource {x:Static scc:ClientResources.DisabledTextForegroundBrushKey}}"
                            HorizontalAlignment="Center"
                            Text="{s:StringResource KLINGON_SUBLINE}"
                                            />
@@ -286,7 +287,7 @@
                       Padding="14,0,14,0">
                 <TextBlock FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
                            FontSize="18pt"
-                           Foreground="#fdfaa8"
+                           Foreground="{StaticResource Borg1Gradient_Bottom_Top}"
                            HorizontalAlignment="Center"
                            Text="{s:StringResource DIPLOMACY_TEXT}" 
                            />
@@ -617,7 +618,7 @@
 
                                 <TextBlock FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
                            FontSize="13pt"
-                           Foreground="Black"
+                           Foreground="{StaticResource {x:Static scc:ClientResources.DisabledTextForegroundBrushKey}}"
                            VerticalAlignment="Center"
                            HorizontalAlignment="Center"
                            Text="{s:StringResource INFO_SHORTCUTS}" />
@@ -843,7 +844,7 @@
                          Height="7"
                          Margin="3,0,3,0"
                          VerticalAlignment="Bottom"
-                         Fill="{StaticResource KlingYellow2Gradient_Top_Bottom}" />
+                         Fill="{StaticResource KlingYellow1Gradient_Top_Bottom}" />
               <Rectangle x:Name="RightBottomEdge"
                          Grid.Column="3"
                          Grid.Row="2"

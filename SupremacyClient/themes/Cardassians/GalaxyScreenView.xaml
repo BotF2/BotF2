@@ -135,9 +135,9 @@
                                             <DrawingGroup>
                                                 <GeometryDrawing Brush="{StaticResource Card4Gradient_TopLeft_BottomRight}"
                                        Geometry="F1 M 20,0 28,0 28,28 5,28 10,10 Z" />
-                                                <GeometryDrawing Brush="{StaticResource Card3Gradient_Top_Bottom}"
+                                                <GeometryDrawing Brush="{StaticResource Card2Gradient_Top_Bottom}"
                                        Geometry="F1 M 5,0 19,0 9,9 0,9 Z" />
-                                                <GeometryDrawing Brush="{StaticResource Card3Gradient_Top_Bottom}"
+                                                <GeometryDrawing Brush="{StaticResource Card2Gradient_Top_Bottom}"
                                        Geometry="F1 M 0,10 9,10 4,28 1,28 Z" />
                                             </DrawingGroup>
                                         </DrawingBrush.Drawing>
@@ -180,7 +180,7 @@
                       Grid.Row="1"
                       Padding="14,0,14,0"
                       Margin="3,4,0,0"
-                      Background="{StaticResource Card3Gradient_Top_Bottom}">
+                      Background="{StaticResource Card2Gradient_Bottom_Top}">
                                 <TextBlock FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
                            FontSize="18pt"
                            Foreground="Black"
@@ -191,7 +191,7 @@
                          Grid.Row="0"
                          Width="14"
                          Margin="3,0,0,0"
-                         Fill="{StaticResource Card1Gradient_Top_Bottom}" />
+                         Fill="{StaticResource Card4Gradient_Top_Bottom}" />
                             <Rectangle Grid.Column="3"
                          Grid.Row="1"
                          Width="14"
@@ -201,7 +201,7 @@
                       Grid.Row="0"
                       Padding="14,0,14,0"
                       Margin="3,0,0,0"
-                      Background="{StaticResource Card2Gradient_Top_Bottom}">
+                      Background="{StaticResource Card3Gradient_Top_Bottom}">
                                 <TextBlock FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
                            FontSize="18pt"
                            Foreground="Black"
@@ -212,7 +212,7 @@
                       Grid.Row="1"
                       Padding="14,0,14,0"
                       Margin="3,4,0,0"
-                      Background="{StaticResource OrangeGradient_Top_Bottom}">
+                      Background="{StaticResource Card2Gradient_Bottom_Top}">
                                 <TextBlock x:Name="SectorOwnerText"
                            FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
                            FontSize="18pt"
@@ -231,9 +231,9 @@
                                             <DrawingGroup>
                                                 <GeometryDrawing Brush="{StaticResource Card4Gradient_TopLeft_BottomRight}"
                                        Geometry="F1 M 8,0L0,0 0,28 23,28 18,10 8,0 Z" />
-                                                <GeometryDrawing Brush="{StaticResource Card3Gradient_Bottom_Top}"
+                                                <GeometryDrawing Brush="{StaticResource Card2Gradient_Bottom_Top}"
                                        Geometry="F1 M 28,0L9,0 19,9 28,9 28,0 Z" />
-                                                <GeometryDrawing Brush="{StaticResource Card3Gradient_Top_Bottom}"
+                                                <GeometryDrawing Brush="{StaticResource Card2Gradient_Top_Bottom}"
                                        Geometry="F1 M 28,10L19,10 24,28 28,28 28,10 Z" />
                                             </DrawingGroup>
                                         </DrawingBrush.Drawing>
@@ -266,7 +266,7 @@
                       Margin="0,0,3,0">
                                 <TextBlock FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
                            FontSize="18pt"
-                           Foreground="{StaticResource WhiteHeaderBrush}"
+                           Foreground="{StaticResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}"
                            Text="{s:StringResource SCAN_TEXT}"
                            HorizontalAlignment="Center" />
                             </Border>
@@ -285,7 +285,7 @@
                       Margin="3,0,0,0"
                       Height="28"
                       VerticalAlignment="Top"
-                      Background="{StaticResource Card3Gradient_Top_Bottom}"
+                      Background="{StaticResource Card4Gradient_Bottom_Top}"
                       Padding="14,0,14,0">
                                 <TextBlock FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
                            FontSize="18pt"
@@ -299,7 +299,7 @@
                          Margin="3,4,0,0"
                          Height="28"
                          VerticalAlignment="Top"
-                         Background="{StaticResource Card5Gradient_Top_Bottom}"
+                         Background="{StaticResource Card5Gradient_Bottom_Top}"
                          Padding="14,0,14,0">
                                 <TextBlock FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
                            FontSize="18pt"
@@ -315,7 +315,7 @@
                                 <Rectangle.Fill>
                                     <DrawingBrush>
                                         <DrawingBrush.Drawing>
-                                            <GeometryDrawing Brush="{StaticResource Card4Gradient_TopLeft_BottomRight}"
+                                            <GeometryDrawing Brush="{StaticResource Card5Gradient_TopLeft_BottomRight}"
                                        Geometry="F1 M 0,0L 28,0L 14,28L 28,28L 0,28 Z" />
                                         </DrawingBrush.Drawing>
                                     </DrawingBrush>
@@ -350,7 +350,7 @@
                       Margin="3,0,0,0"
                       Height="28"
                       VerticalAlignment="Top"
-                      Background="{StaticResource Card2Gradient_Top_Bottom}"
+                      Background="{StaticResource Card3Gradient_Top_Bottom}"
                       Padding="14,0,14,0">
                                 <TextBlock FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
                            FontSize="18pt"
@@ -545,7 +545,7 @@
                                         <Rectangle.Fill>
                                             <DrawingBrush>
                                                 <DrawingBrush.Drawing>
-                                                    <GeometryDrawing Brush="{StaticResource Card1Gradient_TopLeft_BottomRight}"
+                                                    <GeometryDrawing Brush="{StaticResource Card4Gradient_TopLeft_BottomRight}"
                                              Geometry="F1 M 0,37L14,37 18,21 28,0 0,0 0,37 Z" />
                                                 </DrawingBrush.Drawing>
                                             </DrawingBrush>
@@ -600,7 +600,18 @@
                           CommandParameter="{x:Static scc:GalaxyScreenInputMode.RedeployShips}"
                           Command="{x:Static scc:GalaxyScreenCommands.SetInputMode}"
                           Content="{s:StringResource Key=REDEPLOY_SHIPS, Case=Upper}" />
-                                    <Rectangle Grid.Column="3"
+                                    <Rectangle Grid.Column="3" Grid.Row="3" Width="21" Height="28" Margin="3,0,0,0" VerticalAlignment="Top">
+                                        <Rectangle.Fill>
+                                            <DrawingBrush>
+                                                <DrawingBrush.Drawing>
+                                                    <GeometryDrawing 
+                                       Brush="{StaticResource Card3Gradient_TopLeft_BottomRight}"
+                                       Geometry="F1 M 0,0L 14,0L 18,16 28,37L 0,37 Z " />
+                                                </DrawingBrush.Drawing>
+                                            </DrawingBrush>
+                                        </Rectangle.Fill>
+                                    </Rectangle>
+                                    <!--<Rectangle Grid.Column="3"
                              Grid.Row="3"
                              Width="21"
                              Height="28"
@@ -614,7 +625,7 @@
                                                 </DrawingBrush.Drawing>
                                             </DrawingBrush>
                                         </Rectangle.Fill>
-                                    </Rectangle>
+                                    </Rectangle>-->
                                     <Border Grid.Column="2"
                           Grid.ColumnSpan="2"
                           Grid.Row="0"
@@ -632,7 +643,7 @@
                                   Width="48"
                                   Height="40"
                                   Margin="0,0,7,0"
-                                  BorderBrush="White"
+                                  BorderBrush="{StaticResource {x:Static scc:ClientResources.ImageBorderBrushKey}}"
                                   BorderThickness="2"
                                   CornerRadius="4">
                                                         <Border.Background>
