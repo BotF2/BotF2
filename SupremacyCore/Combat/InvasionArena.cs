@@ -476,7 +476,7 @@ namespace Supremacy.Combat
             colony.OwnerID = borg.CivID;
             colony.Inhabitants = borg.Race;
             colony.InhabitantsID = borg.Race.Key;
-            colony.Morale = borgManager.HomeColony.Morale;
+            //colony.Morale = borgManager.HomeColony.Morale;
             GameLog.Client.AI.DebugFormat("Assimilated colony ={0}, owner = {1}, inhabitants = {2} moral = {3}",
                 colony.Name, colony.Owner.Key, colony.Inhabitants.Key, colony.Morale.CurrentValue);
         }
