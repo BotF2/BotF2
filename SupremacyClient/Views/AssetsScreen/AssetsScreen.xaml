@@ -579,7 +579,7 @@
                                                    VerticalAlignment="Center"
                                                    Margin="0,0,2,0"
                                                    ImageSourceSmall="vfs:///Resources/Images/UI/ScreenIcons/food.png"
-                                                   ToolTip="{s:StringResource Key=FOOD_TOOL_TIP}" />
+                                                   ToolTip="{s:StringResource Key=FOOD_TOOLTIP}" />
                                         <TextBlock
                                                 VerticalAlignment="Center"
                                                 HorizontalAlignment="Right"
