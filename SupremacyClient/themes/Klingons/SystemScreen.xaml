@@ -188,40 +188,41 @@
                 <TabItem x:Name="BuildListTab" Header="BUILD LIST">
                   <Grid>
                     <Grid.ColumnDefinitions>
-                      <ColumnDefinition Width="*" />
                       <ColumnDefinition Width="Auto" />
+                      <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                       <RowDefinition Height="Auto" />
                       <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
-                    <ContentControl Grid.Column="0"
-                                    Grid.Row="0"
-                                    Grid.RowSpan="2"
+                                        
+                      <ContentControl Grid.Column="0" Grid.Row="0" ScrollViewer.VerticalScrollBarVisibility="Auto"
+                                    MaxWidth="700" MaxHeight="420" VerticalAlignment="Top" HorizontalAlignment="Left"
                                     cal:RegionManager.RegionName="{x:Static scc:ColonyScreenRegions.PlanetaryBuildList}" />
-                    <ContentControl Style="{StaticResource KlingThinBorderStyle}"
-                                    VerticalAlignment="Top"
-                                    Grid.Column="1"
-                                    Grid.Row="0"
-                                    Margin="14,0,0,0">
-                      <Image Stretch="Uniform"
-                             Width="270"
-                             Height="225">
-                        <Image.Source>
-                          <Binding Path="SelectedPlanetaryBuildProject.BuildDesign"
-                                   Mode="OneWay"
-                                   Converter="{StaticResource TechObjectImageConverter}">
-                          </Binding>
-                        </Image.Source>
-                      </Image>
-                    </ContentControl>
-                    <ContentControl cal:RegionManager.RegionName="{x:Static scc:ColonyScreenRegions.SelectedPlanetaryBuildProjectInfo}"
-                                    Grid.Column="1"
-                                    Grid.Row="1"
+
+                                        <!--Image-->
+                                        <ContentControl Grid.Row="0"  Grid.Column="1" VerticalAlignment="Top" Margin="14,10,0,0"
+                                      ScrollViewer.VerticalScrollBarVisibility="Visible">
+                                            <Image Stretch="Fill" MaxWidth="700" MaxHeight="580" 
+                                        VerticalAlignment="Bottom" HorizontalAlignment="Right" ScrollViewer.VerticalScrollBarVisibility="Visible">
+
+                                                <Image.Source>
+                                                    <Binding Path="SelectedPlanetaryBuildProject.BuildDesign"
+                                               Mode="OneWay"
+                                               Converter="{StaticResource TechObjectImageConverter}">
+                                                    </Binding>
+                                                </Image.Source>
+                                            </Image>
+                                        </ContentControl>
+
+
+                                        <ContentControl cal:RegionManager.RegionName="{x:Static scc:ColonyScreenRegions.SelectedPlanetaryBuildProjectInfo}"
+                                    Grid.Column="1" Grid.Row="0" Margin="14,4,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"
+                                    Background="Black" ScrollViewer.VerticalScrollBarVisibility="Auto"
                                     DataContext="{Binding Path=SelectedPlanetaryBuildProject, Mode=OneWay}"
-                                    Margin="14,4,0,0" />
-                  </Grid>
-                </TabItem>
+                                    />
+                                    </Grid>
+                                </TabItem>
 
 
                 <!--ShipbuildingTab-->
