@@ -2371,7 +2371,7 @@ namespace Supremacy.Game
         private readonly int _aggressorCivilizationID;
         private readonly CivString _detailText;
         public WarDeclaredSitRepEntry(Civilization owner, Civilization aggressor, Civilization victim)
-            : base(owner, SitRepPriority.Red)
+            : base(owner, SitRepPriority.Purple)
         {
             if (aggressor == null)
                 throw new ArgumentNullException("aggressor");
