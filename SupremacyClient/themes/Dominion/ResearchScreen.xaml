@@ -23,17 +23,68 @@
              Stretch="Uniform"
              StretchDirection="DownOnly"
              Source="{Binding Path=Field, Converter={StaticResource ResearchFieldImageConverter}}"/>
-      <TextBlock DockPanel.Dock="Top"
+
+            <Grid DockPanel.Dock="Top">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>                    
+                    <ColumnDefinition Width="*"/>
+
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+            <!--<StackPanel Orientation="Horizontal" DockPanel.Dock="Top" HorizontalAlignment="Right" MinWidth="200">-->
+      <TextBlock Grid.Column="2"
                  FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
                  FontSize="16pt"
                  Foreground="{StaticResource HeaderTextBrush}"
-                 Margin="0,7,0,0"
-                 HorizontalAlignment="Center"
+                 Margin="5,5,0,0"
+                 VerticalAlignment="Center"
+                 HorizontalAlignment="Left"
+                 MaxHeight="24"
                  TextWrapping="Wrap"
                  TextTrimming="CharacterEllipsis"
                  Text="{Binding Path=Field.Name, Converter={StaticResource StringResourceConverter}, ConverterParameter=UpperCase}"/>
-      <DockPanel DockPanel.Dock="Top"
+                <!--TextWrapping="Wrap"-->
+
+
+                <TextBlock Grid.Column="3"
+                     Margin="0,5,0,0"
+                     FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+                     FontSize="12pt"
+                     Foreground="{StaticResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"
+                     VerticalAlignment="Top"
+                     HorizontalAlignment="Right"
+                     TextAlignment="Right"
+                Text="|"/>
+
+                <TextBlock Grid.Column="1"
+                     Margin="4,5,3,0"
+                     FontFamily="{StaticResource {x:Static scc:ClientResources.DefaultFontFamilyKey}}"
+                     FontSize="12pt"
+                     Foreground="{StaticResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"
+                     VerticalAlignment="Center"
+                     HorizontalAlignment="Right"
+                     TextAlignment="Right"
+                     Text="{Binding Path=Distribution.Value}"/>
+
+                <ToggleButton Grid.Column="0"
+                        Focusable="False"
+                        IsTabStop="False"
+                        Margin="0,5,0,0"
+                        Style="{DynamicResource LockToggleButtonStyle}"
+                        IsChecked="{Binding Path=Distribution.IsLocked, Mode=TwoWay}"
+                                                          >
+                <ToggleButton.ToolTip>
+                    <TextBlock Text="{s:StringResource Key=RESEARCH_DISTRIBUTION_LOCKED_TOOLTIP, Case=Upper}"
+                                       FontSize="20"/>
+                </ToggleButton.ToolTip>
+            </ToggleButton>
+
+            </Grid>
+
+            <DockPanel DockPanel.Dock="Top"
                  Margin="0,7,0,0">
+                
         <DockPanel DockPanel.Dock="Top">
           <RepeatButton DockPanel.Dock="Left"
                         Margin="0,0,2,0"
@@ -62,9 +113,9 @@
                     <Setter TargetName="Border"
                             Property="Background"
                             Value="{DynamicResource PurpleGradient_Left_Right}"/>
-                    <Trigger.EnterActions>
+                    <!--<Trigger.EnterActions>
                                             <SoundPlayerAction Source="vfs:///Resources/UI/Romulans/Sounds/ButtonClick.wav"/>
-                    </Trigger.EnterActions>
+                    </Trigger.EnterActions>-->
                   </Trigger>
                 </ControlTemplate.Triggers>
               </ControlTemplate>
@@ -97,9 +148,9 @@
                     <Setter TargetName="Border"
                             Property="Background"
                             Value="{DynamicResource PurpleGradient_Left_Right}"/>
-                    <Trigger.EnterActions>
+                    <!--<Trigger.EnterActions>
                                             <SoundPlayerAction Source="vfs:///Resources/UI/Romulans/Sounds/ButtonClick.wav"/>
-                    </Trigger.EnterActions>
+                    </Trigger.EnterActions>-->
                   </Trigger>
                 </ControlTemplate.Triggers>
               </ControlTemplate>
@@ -119,10 +170,16 @@
                      FontSize="12pt"
                      Foreground="{StaticResource {x:Static scc:ClientResources.HeaderTextForegroundBrushKey}}"
                      VerticalAlignment="Center">
-            <TextBlock Text="Level"/>
-            <TextBlock Text="{Binding Path=TechLevel}"/>
+            <TextBlock Text="Bonus"/>
+                         <!--<TextBlock Text="Bonus"/>--> 
+            <TextBlock Text="{Binding Path=Bonus}"/>
+                          <TextBlock Text="- "/>
+              <TextBlock Text="{s:StringResource Key=RESEARCH_PROGRESS}"/>
+                          <TextBlock Text=": "/>
+              <!--<TextBlock Text="{Binding Path=CurrentProject.Application.ResearchCost}"/>-->
+              <TextBlock Text="{Binding Path=Progress}"/>
           </TextBlock>
-          <ToggleButton DockPanel.Dock="Right"
+          <!--<ToggleButton DockPanel.Dock="Right"
                         Focusable="False"
                         IsTabStop="False"
                         Margin="0,0,0,0"
@@ -142,7 +199,7 @@
                      VerticalAlignment="Center"
                      HorizontalAlignment="Right"
                      TextAlignment="Right"
-                     Text="{Binding Path=Distribution.Value}"/>
+                     Text="{Binding Path=Distribution.Value}"/>-->
         </DockPanel>
       </DockPanel>
     </DockPanel>
@@ -151,14 +208,14 @@
   <DataTemplate DataType="{x:Type local:ResearchApplicationData}">
     <Border x:Name="OuterBorder"
             BorderThickness="1,1,0,0"
-            BorderBrush="White"
-            Padding="4"
+            BorderBrush="{StaticResource {x:Static scc:ClientResources.ImageBorderBrushKey}}"
+            Padding="2"
             SnapsToDevicePixels="True"
             TextBlock.FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
-            TextBlock.FontSize="14pt">
+            TextBlock.FontSize="10pt">
       <Border x:Name="InnerBorder">
         <TextBlock x:Name="ApplicationName"
-                   Foreground="{DynamicResource DisabledTextBrush}"
+                   Foreground="{DynamicResource HeaderTextBrush}"
                    Text="{Binding Path=DisplayText, Converter={StaticResource UpperCaseConverter}}"
                    TextWrapping="Wrap"
                    TextTrimming="CharacterEllipsis"/>
@@ -178,7 +235,7 @@
                 Value="1.0"/>
         <Setter TargetName="ApplicationName"
                 Property="Foreground"
-                Value="{DynamicResource HeaderTextBrush}"/>
+                Value="{DynamicResource DisabledTextBrush}"/>
       </DataTrigger>
       <DataTrigger Binding="{Binding Path=(Selector.IsSelected), RelativeSource={RelativeSource Mode=TemplatedParent}}"
                    Value="True">
@@ -191,7 +248,7 @@
 
   <DataTemplate x:Key="TechObjectImageTemplate"
                 DataType="{x:Type tech:TechObjectDesign}">
-    <Border BorderBrush="White"
+        <Border BorderBrush="{DynamicResource {x:Static scc:ClientResources.ImageBorderBrushKey}}"
             Margin="0,0,7,7"
             BorderThickness="2"
             CornerRadius="4"
@@ -275,7 +332,7 @@
   </DataTemplate>
 
     
-    
+    <!--Begin of Screen-->
   <Style TargetType="{x:Type local:ResearchScreen}">
     <Setter Property="Template">
       <Setter.Value>
@@ -285,12 +342,13 @@
             <DockPanel LastChildFill="True"
                        DataContext="{Binding Path=AppContext.LocalPlayerEmpire.Research, RelativeSource={RelativeSource TemplatedParent}}">
 
-                            <Button Grid.Row="0" Grid.Column="0" x:Name="PART_TurnButtonTop"
+                <!--place not working-->
+                            <!--<Button Grid.Row="0" Grid.Column="0" x:Name="PART_TurnButtonTop"
                       Command="{x:Static scc:ClientCommands.EndTurn}">
                                 <Button.Content>
                                     <TextBlock Text="{Binding Path=(scc:GameScreenViewBase.AppContext).CurrentGame.TurnNumber, StringFormat={s:StringResource Key=TURN_BUTTON_TEXT, Case=Upper}, RelativeSource={RelativeSource TemplatedParent}}" />
                                 </Button.Content>
-                                <!--<Button.Style>
+                                --><!--<Button.Style>
                                     <Style TargetType="{x:Type Button}" BasedOn="{StaticResource LCARS_StandardButtonStyle}">
                                         --><!--<Style.Triggers>
                                             <EventTrigger RoutedEvent="Button.Click">
@@ -300,41 +358,34 @@
                                           </EventTrigger>
                                         </Style.Triggers>--><!--
                                     </Style>
-                                </Button.Style>-->
-                            </Button>
+                                </Button.Style>--><!--
+                            </Button>-->
 
+                <!--Begin of Expander-->
                             <Expander DockPanel.Dock="Left"
                         Header="{s:StringResource Key=EMPIRE_TECH_INFO, Case=Upper}"
-                        Width="240"
+                        Width="200"
                         IsExpanded="True"
                         TextBlock.FontFamily="{DynamicResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
                         TextBlock.FontSize="14pt"
                         TextBlock.Foreground="{DynamicResource DefaultTextBrush}"
                         VerticalAlignment="Top">
+                                
+                                
+                                
                 <StackPanel>
 
-                                    <Button Grid.Row="0" Grid.Column="0" x:Name="PART_TurnButton"
+                                    <!--<Button Grid.Row="0" Grid.Column="0" Margin="5,5,5,15" x:Name="PART_TurnButton"
                       Command="{x:Static scc:ClientCommands.EndTurn}">
                                         <Button.Content>
                                             <TextBlock Text="{Binding Path=(scc:GameScreenViewBase.AppContext).CurrentGame.TurnNumber, StringFormat={s:StringResource Key=TURN_BUTTON_TEXT, Case=Upper}, RelativeSource={RelativeSource TemplatedParent}}" />
                                         </Button.Content>
-                                        <!--<Button.Style>
-                                            <Style TargetType="{x:Type Button}" BasedOn="{StaticResource LCARS_StandardButtonStyle}">
-                                                --><!--<Style.Triggers>
-                                            <EventTrigger RoutedEvent="Button.Click">
-                                            <EventTrigger.Actions>
-                                              <SoundPlayerAction Source="Resources/UI/Dominion/Sounds/Turn.wav" />
-                                            </EventTrigger.Actions>
-                                          </EventTrigger>
-                                        </Style.Triggers>--><!--
-                                            </Style>
-                                        </Button.Style>-->
-                                    </Button>
+                                    </Button>-->
 
                                     <TextBlock Foreground="{DynamicResource HeaderTextBrush}"
                              Text="{s:StringResource Key=RESEARCH, Case=Upper}"
                              FontSize="18pt"/>
-                  <DockPanel Margin="14,0,0,0">
+                  <DockPanel Margin="7,0,0,0">
                     <TextBlock DockPanel.Dock="Left"
                                Foreground="{DynamicResource DefaultTextBrush}"
                                Text="{s:StringResource Key=RESEARCH_LAST_TURN, Case=Upper}"/>
@@ -342,7 +393,7 @@
                                HorizontalAlignment="Right"
                                Text="{Binding Path=CumulativePoints.LastChange}"/>
                   </DockPanel>
-                  <DockPanel Margin="14,0,0,0">
+                  <DockPanel Margin="7,0,0,0">
                     <TextBlock DockPanel.Dock="Left"
                                Foreground="{DynamicResource DefaultTextBrush}"
                                Text="{s:StringResource Key=TOTAL_RESEARCH, Case=Upper}"/>
@@ -353,18 +404,17 @@
 
                                     <!--Beginn of PROGRESS-->
 
-                                    <TextBlock Text="{s:StringResource Key=PROGRESS, Case=Upper}" 
+                                    <!--<TextBlock Text="{s:StringResource Key=PROGRESS, Case=Upper}" 
                               FontSize="18pt" Foreground="{DynamicResource HeaderTextBrush}"/>
 
-                                    <DockPanel Margin="14,0,0,0">
+                                    <DockPanel Margin="7,0,0,0">
                                         <TextBlock DockPanel.Dock="Left"  Text="{s:StringResource Key=BIOTECH, Case=Upper}"
                                    Foreground="{DynamicResource DefaultTextBrush}"/>
-                                        <TextBlock DockPanel.Dock="Right" Text="{Binding Path=Values[Biotech], Converter={StaticResource EnumStringConverter}}"
+                                        <TextBlock DockPanel.Dock="Right" Text="{Binding Path=Values[Computers], Converter={StaticResource EnumStringConverter}}"
                                    Foreground="{DynamicResource DefaultTextBrush}" HorizontalAlignment="Right"
-                    />
-                                    </DockPanel>
+                                    /></DockPanel>
 
-                                    <DockPanel Margin="14,0,0,0">
+                                    <DockPanel Margin="7,0,0,0">
                                         <TextBlock DockPanel.Dock="Left"  Text="{s:StringResource Key=COMPUTERS, Case=Upper}"
                                    Foreground="{DynamicResource DefaultTextBrush}"/>
                                         <TextBlock DockPanel.Dock="Right" Text="{Binding Path=Values[Computers], Converter={StaticResource EnumStringConverter}}"
@@ -373,7 +423,7 @@
                                     </DockPanel>
 
 
-                                    <DockPanel Margin="14,0,0,0">
+                                    <DockPanel Margin="7,0,0,0">
                                         <TextBlock DockPanel.Dock="Left"  Text="{s:StringResource Key=CONSTRUCTION, Case=Upper}"
                                    Foreground="{DynamicResource DefaultTextBrush}"/>
                                         <TextBlock DockPanel.Dock="Right" Text="{Binding Path=Values[Construction], Converter={StaticResource EnumStringConverter}}"
@@ -381,39 +431,44 @@
                     />
                                     </DockPanel>
 
-                                    <DockPanel Margin="14,0,0,0">
+                                    <DockPanel Margin="7,0,0,0">
                                         <TextBlock DockPanel.Dock="Left"  Text="{s:StringResource Key=ENERGY, Case=Upper}"
                                    Foreground="{DynamicResource DefaultTextBrush}"/>
                                         <TextBlock DockPanel.Dock="Right" Text="{Binding Path=Values[Energy], Converter={StaticResource EnumStringConverter}}"
-                                   Foreground="{DynamicResource DefaultTextBrush}" HorizontalAlignment="Right"
-                    />
+                                   Foreground="{DynamicResource DefaultTextBrush}" HorizontalAlignment="Right"/>
+                    
                                     </DockPanel>
 
 
-                                    <DockPanel Margin="14,0,0,0">
+                                    <DockPanel Margin="7,0,0,0">
                                         <TextBlock DockPanel.Dock="Left"  Text="{s:StringResource Key=PROPULSION, Case=Upper}"
                                    Foreground="{DynamicResource DefaultTextBrush}"/>
                                         <TextBlock DockPanel.Dock="Right" Text="{Binding Path=Values[Propulsion], Converter={StaticResource EnumStringConverter} }"
-                                   Foreground="{DynamicResource DefaultTextBrush}" HorizontalAlignment="Right"
-                    />
+                                   Foreground="{DynamicResource DefaultTextBrush}" HorizontalAlignment="Right"/>
+                    
                                     </DockPanel>
 
 
-                                    <DockPanel Margin="14,0,0,0">
+                                    <DockPanel Margin="7,0,0,0">
                                         <TextBlock DockPanel.Dock="Left"  Text="{s:StringResource Key=WEAPONS, Case=Upper}"
                                    Foreground="{DynamicResource DefaultTextBrush}"/>
                                         <TextBlock DockPanel.Dock="Right" Text="{Binding Path=Values[Weapons]}"
-                                   Foreground="{DynamicResource DefaultTextBrush}" HorizontalAlignment="Right"
-                    />
-                                    </DockPanel>
+                                   Foreground="{DynamicResource DefaultTextBrush}" HorizontalAlignment="Right"/>
+                    
+                                    </DockPanel>-->
 
                                     <!--End of PROGRESS-->
 
                                     <!--Beginn of BOUNSES-->
+
+                                    <TextBlock Foreground="{DynamicResource HeaderTextBrush}"
+                             Text=" "
+                             FontSize="18pt"/>
+                    
                                     <TextBlock Foreground="{DynamicResource HeaderTextBrush}"
                              Text="{s:StringResource Key=RESEARCH_BONUSES, Case=Upper}"
                              FontSize="18pt"/>
-                  <DockPanel Margin="14,0,0,0">
+                  <DockPanel Margin="7,0,0,0">
                     <TextBlock DockPanel.Dock="Left"
                                Foreground="{DynamicResource DefaultTextBrush}"
                                Text="{Binding Source=TechCategory.BioTech, Converter={StaticResource EnumStringConverter}, ConverterParameter=UpperCase}"/>
@@ -421,7 +476,7 @@
                                HorizontalAlignment="Right"
                                Text="{Binding Path=Bonuses[BioTech]}"/>
                   </DockPanel>
-                  <DockPanel Margin="14,0,0,0">
+                  <DockPanel Margin="7,0,0,0">
                     <TextBlock DockPanel.Dock="Left"
                                Foreground="{DynamicResource DefaultTextBrush}"
                                Text="{Binding Source=TechCategory.Computers, Converter={StaticResource EnumStringConverter}, ConverterParameter=UpperCase}"/>
@@ -429,7 +484,7 @@
                                HorizontalAlignment="Right"
                                Text="{Binding Path=Bonuses[Computers]}"/>
                   </DockPanel>
-                  <DockPanel Margin="14,0,0,0">
+                  <DockPanel Margin="7,0,0,0">
                     <TextBlock DockPanel.Dock="Left"
                                Foreground="{DynamicResource DefaultTextBrush}"
                                Text="{Binding Source=TechCategory.Construction, Converter={StaticResource EnumStringConverter}, ConverterParameter=UpperCase}"/>
@@ -437,7 +492,7 @@
                                HorizontalAlignment="Right"
                                Text="{Binding Path=Bonuses[Construction]}"/>
                   </DockPanel>
-                  <DockPanel Margin="14,0,0,0">
+                  <DockPanel Margin="7,0,0,0">
                     <TextBlock DockPanel.Dock="Left"
                                Foreground="{DynamicResource DefaultTextBrush}"
                                Text="{Binding Source=TechCategory.Energy, Converter={StaticResource EnumStringConverter}, ConverterParameter=UpperCase}"/>
@@ -445,7 +500,7 @@
                                HorizontalAlignment="Right"
                                Text="{Binding Path=Bonuses[Energy]}"/>
                   </DockPanel>
-                  <DockPanel Margin="14,0,0,0">
+                  <DockPanel Margin="7,0,0,0">
                     <TextBlock DockPanel.Dock="Left"
                                Foreground="{DynamicResource DefaultTextBrush}"
                                Text="{Binding Source=TechCategory.Propulsion, Converter={StaticResource EnumStringConverter}, ConverterParameter=UpperCase}"/>
@@ -453,7 +508,7 @@
                                HorizontalAlignment="Right"
                                Text="{Binding Path=Bonuses[Propulsion]}"/>
                   </DockPanel>
-                  <DockPanel Margin="14,0,0,0">
+                  <DockPanel Margin="7,0,0,0">
                     <TextBlock DockPanel.Dock="Left"
                                Foreground="{DynamicResource DefaultTextBrush}"
                                Text="{Binding Source=TechCategory.Weapons, Converter={StaticResource EnumStringConverter}, ConverterParameter=UpperCase}"/>
@@ -461,27 +516,122 @@
                                HorizontalAlignment="Right"
                                Text="{Binding Path=Bonuses[Weapons]}"/>
                   </DockPanel>
+                    
+                                    <!--<TextBlock DockPanel.Dock="Right"
+                               HorizontalAlignment="Right"
+                                               Height="500"
+                               Text=" "/>-->
 
-                                    <Button Grid.Row="0" Grid.Column="0" x:Name="PART_TurnButtonBottom"
-                      Command="{x:Static scc:ClientCommands.EndTurn}">
-                                        <Button.Content>
-                                            <TextBlock Text="{Binding Path=(scc:GameScreenViewBase.AppContext).CurrentGame.TurnNumber, StringFormat={s:StringResource Key=TURN_BUTTON_TEXT, Case=Upper}, RelativeSource={RelativeSource TemplatedParent}}" />
-                                        </Button.Content>
-                                        <!--<Button.Style>
-                                            <Style TargetType="{x:Type Button}" BasedOn="{StaticResource LCARS_StandardButtonStyle}">
-                                                --><!--<Style.Triggers>
-                                            <EventTrigger RoutedEvent="Button.Click">
-                                            <EventTrigger.Actions>
-                                              <SoundPlayerAction Source="Resources/UI/Dominion/Sounds/Turn.wav" />
-                                            </EventTrigger.Actions>
-                                          </EventTrigger>
-                                        </Style.Triggers>--><!--
-                                            </Style>
-                                        </Button.Style>-->
-                                    </Button>
+                                    <TextBlock Foreground="{DynamicResource HeaderTextBrush}"
+                             Text=" "
+                             FontSize="18pt"/>
+
+                                    <TextBlock Foreground="{DynamicResource HeaderTextBrush}"
+                             Text="{s:StringResource Key=AIM_TECHLEVEL_TEXT, Case=Upper}"
+                             FontSize="18pt"/>
+
+                                    <DockPanel Margin="7,0,0,0">
+                                        <TextBlock DockPanel.Dock="Left"  Text="{s:StringResource Key=AIM_TECH_1, Case=Upper}"
+                                   Foreground="{DynamicResource DefaultTextBrush}"/>
+                                        <TextBlock DockPanel.Dock="Right" Text="{s:StringResource Key=AIM_TECH_1_VALUE, Case=Upper}"
+                                   Foreground="{DynamicResource DefaultTextBrush}" HorizontalAlignment="Right"
+                                    />
+                                    </DockPanel>
+                                    <DockPanel Margin="7,0,0,0">
+                                        <TextBlock DockPanel.Dock="Left"  Text="{s:StringResource Key=AIM_TECH_2, Case=Upper}"
+                                   Foreground="{DynamicResource DefaultTextBrush}"/>
+                                        <TextBlock DockPanel.Dock="Right" Text="{s:StringResource Key=AIM_TECH_2_VALUE, Case=Upper}"
+                                   Foreground="{DynamicResource DefaultTextBrush}" HorizontalAlignment="Right"
+                                    />
+                                    </DockPanel>
+                                    <DockPanel Margin="7,0,0,0">
+                                        <TextBlock DockPanel.Dock="Left"  Text="{s:StringResource Key=AIM_TECH_3, Case=Upper}"
+                                   Foreground="{DynamicResource DefaultTextBrush}"/>
+                                        <TextBlock DockPanel.Dock="Right" Text="{s:StringResource Key=AIM_TECH_3_VALUE, Case=Upper}"
+                                   Foreground="{DynamicResource DefaultTextBrush}" HorizontalAlignment="Right"
+                                    />
+                                    </DockPanel>
+
+                                    <DockPanel Margin="7,0,0,0">
+                                        <TextBlock DockPanel.Dock="Left"  Text="{s:StringResource Key=AIM_TECH_4, Case=Upper}"
+                                   Foreground="{DynamicResource DefaultTextBrush}"/>
+                                        <TextBlock DockPanel.Dock="Right" Text="{s:StringResource Key=AIM_TECH_4_VALUE, Case=Upper}"
+                                   Foreground="{DynamicResource DefaultTextBrush}" HorizontalAlignment="Right"
+                                    />
+                                    </DockPanel>
+
+                                    <DockPanel Margin="7,0,0,0">
+                                        <TextBlock DockPanel.Dock="Left"  Text="{s:StringResource Key=AIM_TECH_5, Case=Upper}"
+                                   Foreground="{DynamicResource DefaultTextBrush}"/>
+                                        <TextBlock DockPanel.Dock="Right" Text="{s:StringResource Key=AIM_TECH_5_VALUE, Case=Upper}"
+                                   Foreground="{DynamicResource DefaultTextBrush}" HorizontalAlignment="Right"
+                                    />
+                                    </DockPanel>
+
+                                    <DockPanel Margin="7,0,0,0">
+                                        <TextBlock DockPanel.Dock="Left"  Text="{s:StringResource Key=AIM_TECH_6, Case=Upper}"
+                                   Foreground="{DynamicResource DefaultTextBrush}"/>
+                                        <TextBlock DockPanel.Dock="Right" Text="{s:StringResource Key=AIM_TECH_6_VALUE, Case=Upper}"
+                                   Foreground="{DynamicResource DefaultTextBrush}" HorizontalAlignment="Right"
+                                    />
+                                    </DockPanel>
+
+                                    <DockPanel Margin="7,0,0,0">
+                                        <TextBlock DockPanel.Dock="Left"  Text="{s:StringResource Key=AIM_TECH_7, Case=Upper}"
+                                   Foreground="{DynamicResource DefaultTextBrush}"/>
+                                        <TextBlock DockPanel.Dock="Right" Text="{s:StringResource Key=AIM_TECH_7_VALUE, Case=Upper}"
+                                   Foreground="{DynamicResource DefaultTextBrush}" HorizontalAlignment="Right"
+                                    />
+                                    </DockPanel>
+
+                                    <DockPanel Margin="7,0,0,0">
+                                        <TextBlock DockPanel.Dock="Left"  Text="{s:StringResource Key=AIM_TECH_8, Case=Upper}"
+                                   Foreground="{DynamicResource DefaultTextBrush}"/>
+                                        <TextBlock DockPanel.Dock="Right" Text="{s:StringResource Key=AIM_TECH_8_VALUE, Case=Upper}"
+                                   Foreground="{DynamicResource DefaultTextBrush}" HorizontalAlignment="Right"
+                                    />
+                                    </DockPanel>
+
+                                    <DockPanel Margin="7,0,0,0">
+                                        <TextBlock DockPanel.Dock="Left"  Text="{s:StringResource Key=AIM_TECH_9, Case=Upper}"
+                                   Foreground="{DynamicResource DefaultTextBrush}"/>
+                                        <TextBlock DockPanel.Dock="Right" Text="{s:StringResource Key=AIM_TECH_9_VALUE, Case=Upper}"
+                                   Foreground="{DynamicResource DefaultTextBrush}" HorizontalAlignment="Right"
+                                    />
+                                    </DockPanel>
+
+                                    <DockPanel Margin="7,0,0,0">
+                                        <TextBlock DockPanel.Dock="Left"  Text="{s:StringResource Key=AIM_TECH_10, Case=Upper}"
+                                   Foreground="{DynamicResource DefaultTextBrush}"/>
+                                        <TextBlock DockPanel.Dock="Right" Text="{s:StringResource Key=AIM_TECH_10_VALUE, Case=Upper}"
+                                   Foreground="{DynamicResource DefaultTextBrush}" HorizontalAlignment="Right"
+                                    />
+                                    </DockPanel>
+
+                                    <DockPanel Margin="7,0,0,0">
+                                        <TextBlock DockPanel.Dock="Left"  Text="{s:StringResource Key=AIM_TECH_11, Case=Upper}"
+                                   Foreground="{DynamicResource DefaultTextBrush}"/>
+                                        <TextBlock DockPanel.Dock="Right" Text="{s:StringResource Key=AIM_TECH_11_VALUE, Case=Upper}"
+                                   Foreground="{DynamicResource DefaultTextBrush}" HorizontalAlignment="Right"
+                                    />
+                                    </DockPanel>
+
+                                    <DockPanel Margin="7,0,0,0">
+                                        <TextBlock DockPanel.Dock="Left"  Text="{s:StringResource Key=AIM_TECH_12, Case=Upper}"
+                                   Foreground="{DynamicResource DefaultTextBrush}"/>
+                                        <TextBlock DockPanel.Dock="Right" Text="{s:StringResource Key=AIM_TECH_12_VALUE, Case=Upper}"
+                                   Foreground="{DynamicResource DefaultTextBrush}" HorizontalAlignment="Right"
+                                    />
+                                    </DockPanel>
+
+
+
                                 </StackPanel>
               </Expander>
-              <TabControl Margin="4,0,0,0">
+
+
+                            <!--Tab RESEARCH_MATRIX-->
+                            <TabControl Margin="4,0,0,0">
                 <TabItem Header="{s:StringResource Key=RESEARCH_MATRIX, Case=Upper}">
                   <Grid>
                     <Grid.RowDefinitions>
@@ -498,7 +648,7 @@
                             Width="{Binding ElementName=ResearchMatrixScrollViewer, Path=ViewportWidth}"/>
                     <ScrollViewer x:Name="ResearchMatrixScrollViewer"
                                   HorizontalScrollBarVisibility="Disabled"
-                                  VerticalScrollBarVisibility="Visible"
+                                  VerticalScrollBarVisibility="Auto"
                                   CanContentScroll="False"
                                   Grid.Row="1">
                       <Border x:Name="PART_ResearchMatrixHost"

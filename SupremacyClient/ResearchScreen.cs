@@ -694,6 +694,11 @@ namespace Supremacy.Client
             get { return _pool.GetCurrentProject(Field).Progress.PercentFilled; } 
         }
 
+        public Percentage Bonus
+        {
+            get { return _pool.Bonuses[Field.FieldID]; }
+        }
+
         public ResearchProject CurrentProject
         {
             get { return _pool.GetCurrentProject(Field); }
