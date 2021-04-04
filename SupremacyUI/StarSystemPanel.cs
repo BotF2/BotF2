@@ -382,6 +382,13 @@ namespace Supremacy.UI
                                             = orbitals.Foreground
                                             = Brushes.Beige;
 
+                        race.Foreground = Brushes.Aquamarine;
+                        population.Foreground = Brushes.Goldenrod;
+                        growth.Foreground = Brushes.LightGreen;
+                        health.Foreground = Brushes.LightBlue;
+                        orbitals.Foreground = Brushes.LightGray;
+                        morale.Foreground = Brushes.YellowGreen;
+
                         name.Text = system.StarType == StarType.Nebula
                             ? string.Format(
                                 ResourceManager.GetString("NEBULA_NAME_FORMAT"),
