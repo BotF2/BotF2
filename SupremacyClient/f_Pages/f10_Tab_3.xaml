@@ -62,15 +62,32 @@
 
 
 
-        <TextBlock Text="{s:StringResource DIALOG_F10_Tab_3_TEXT_1}" TextWrapping="Wrap"
+        <TextBox Text="{s:StringResource DIALOG_F10_TAB_3_HEADER}" TextWrapping="Wrap"
                            Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="8" ScrollViewer.VerticalScrollBarVisibility="Auto"
                            Foreground="{DynamicResource DefaultTextBrush}"
                            
-                           >
+                           ></TextBox>
 
-                </TextBlock>
+        <TextBox Text="{s:StringResource DIALOG_F10_TAB_3_TEXT_1}" TextWrapping="Wrap"
+                           Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="8" ScrollViewer.VerticalScrollBarVisibility="Auto"
+                           Foreground="{DynamicResource DefaultTextBrush}"
+                           
+                           ></TextBox>
 
-                <!--Game Button-->
+        <TextBox Text="{s:StringResource DIALOG_F10_TAB_3_TEXT_2}" TextWrapping="Wrap"
+                           Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="8" ScrollViewer.VerticalScrollBarVisibility="Auto"
+                           Foreground="{DynamicResource DefaultTextBrush}"
+                           
+                           ></TextBox>
+
+        <TextBox Text="{s:StringResource DIALOG_F10_TAB_3_TEXT_3}" TextWrapping="Wrap"
+                           Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="8" ScrollViewer.VerticalScrollBarVisibility="Auto"
+                           Foreground="{DynamicResource DefaultTextBrush}"
+                           
+                           ></TextBox>
+
+
+        <!--Game Button--><!--
                 <TextBlock Text="GameButton -> " Grid.Row="14" Grid.Column="6"
                            Foreground="{DynamicResource DefaultTextBrush}"
                            
@@ -84,9 +101,9 @@
                     >
                     <AccessText Text="{s:StringResource SETTINGS_ACCEPT}" />
                 </Button>
-                <!--End Game Button-->
+                --><!--End Game Button-->
 
-                <!--Game Button-->
+                <!--Game Button--><!--
                 <TextBlock Text="GameButton -> " Grid.Row="15" Grid.Column="5"
                            Foreground="{DynamicResource DefaultTextBrush}"
                            
@@ -105,12 +122,12 @@
                     >
                     <AccessText Text="{s:StringResource SETTINGS_ACCEPT}" />
                 </Button>
-                <!--End Game Button-->
+                --><!--End Game Button--><!--
                 
                 <TextBlock Text="1 DefaultTextBrush" Grid.Row="1" Grid.Column="0"
                            Foreground="{DynamicResource DefaultTextBrush}"
                            
-                           >
+                           >--><!--
                     
                 </TextBlock>
                 
@@ -232,7 +249,7 @@
 
                 <TextBlock Text="Dom5Gradient"  Grid.Row="5" Grid.Column="1"
                            Foreground="Black" VerticalAlignment="Center"
-                    Background="{DynamicResource Dom5Gradient_TopLeft_BottomRight}" />
+                    Background="{DynamicResource Dom5Gradient_TopLeft_BottomRight}" />-->
 
 
 

@@ -479,6 +479,7 @@ namespace Supremacy.Client
             //_regionViewRegistry.RegisterViewWithRegion(ClientRegions.OptionsPages, typeof(AllOptionsPage));
             _regionViewRegistry.RegisterViewWithRegion(ClientRegions.f10_Pages, typeof(f10_Tab_1));
             _regionViewRegistry.RegisterViewWithRegion(ClientRegions.f10_Pages, typeof(f10_Tab_2));
+            _regionViewRegistry.RegisterViewWithRegion(ClientRegions.f10_Pages, typeof(f10_Tab_3));
 
             // _regionViewRegistry.RegisterViewWithRegion(AssetsScreenRegions.SpyList, typeof(SpyListView)); // keep it simple for now
             //_regionViewRegistry.RegisterViewWithRegion(AssetsScreenRegions.EmpireOverview, typeof(EmpireInfoView));
