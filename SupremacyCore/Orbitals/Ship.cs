@@ -52,7 +52,17 @@ namespace Supremacy.Orbitals
         /// <value>The name.</value>
         public override string Name
         {
-            get { return base.Name; }
+            get 
+            {
+                string _nameString = base.Name;
+                //Int32.TryParse(base.ExperiencePercent.ToString(), out int exp);
+                for (int i = 0; i < base.ExperiencePercent / 5; i++)
+                {
+                    _nameString += "*";
+                }
+
+                return _nameString; 
+            }
             set { base.Name = value; }
         }
 

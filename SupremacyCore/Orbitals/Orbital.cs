@@ -107,7 +107,7 @@ namespace Supremacy.Orbitals
         }
 
         /// <summary>
-        /// Gets or sets the crew experience level.
+        /// Gets or sets the crew experience level >   0 up to 10000
         /// </summary>
         /// <value>The crew experience level.</value>
         public int ExperienceLevel
@@ -170,6 +170,19 @@ namespace Supremacy.Orbitals
             get
             {
                 return GameContext.Current.Tables.EnumTables["ExperienceRank"][ExperienceRank.ToString()][0];
+            }
+        }
+
+        /// <summary>
+        /// Gets the crew experience rank.
+        /// </summary>
+        /// <value>The crew experience rank.</value>
+        public int ExperiencePercent 
+        {
+            get
+            {
+                //Meter I = ExperienceLevel / 100;
+                return _experienceLevel / 100;
             }
         }
 
