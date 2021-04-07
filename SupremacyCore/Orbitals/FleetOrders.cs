@@ -1852,7 +1852,7 @@ namespace Supremacy.Orbitals
             base.OnTurnBeginning();
             if (!IsAssigned)
                 return;
-            if (Fleet.Route.IsEmpty)
+            if (Fleet.Route.IsEmpty && (Fleet.UnitAIType != UnitAIType.SystemAttack || Fleet.UnitAIType != UnitAIType.Reserve))
             {
                 Sector bestSector;
                 if (UnitAI.GetBestSectorToExplore(Fleet, out bestSector))

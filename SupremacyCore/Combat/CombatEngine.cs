@@ -628,12 +628,14 @@ namespace Supremacy.Combat
                     {
                         continue;
                     }
-
-                    foreach (CombatUnit shipStats in assets.EscapedShips)
+                    if (assets.EscapedShips.Count() > 0)
                     {
-                        ((Ship)shipStats.Source).Fleet.Location = destination.Location;
-                        GameLog.Core.Combat.DebugFormat("PerformRetreat: {0} {1} retreats to {2}",
-                            ((Ship)shipStats.Source).Fleet.ObjectID, ((Ship)shipStats.Source).Fleet.Name, destination.Location.ToString());
+                        foreach (CombatUnit shipStats in assets.EscapedShips)
+                        {
+                            ((Ship)shipStats.Source).Fleet.Location = destination.Location;
+                            GameLog.Core.Combat.DebugFormat("PerformRetreat: {0} {1} retreats to {2}",
+                                ((Ship)shipStats.Source).Fleet.ObjectID, ((Ship)shipStats.Source).Fleet.Name, destination.Location.ToString());
+                        }
                     }
                 }
             }

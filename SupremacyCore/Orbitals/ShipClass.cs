@@ -18,8 +18,8 @@ namespace Supremacy.Orbitals
     {
         [NonCombatant] Colony = 0,
         [NonCombatant] Construction,
-        [NonCombatant] Transport,
         [NonCombatant] Medical,
+        [NonCombatant] Transport,       
         [NonCombatant] Spy,
         [NonCombatant] Diplomatic,
         Science,
