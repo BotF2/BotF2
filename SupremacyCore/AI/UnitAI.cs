@@ -423,7 +423,7 @@ namespace Supremacy.AI
                                         GameLog.Client.AI.DebugFormat("Start Constuction, fleet order ={0}, Owner ={1}, Sector ={2},{3}, Activity ={4} duration ={5} start ={6}",
                                             fleet.Order.OrderName, fleet.Owner.Key, fleet.Sector.Name, fleet.Location, fleet.Activity, fleet.ActivityDuration, fleet.ActivityStart);
                                     }
-                                    if (fleet.IsStranded) // && fleet.UnitAIType != UnitAIType.Building) // && !systemOfEmpire(fleet)
+                                    if (fleet.IsStranded || !fleet.CanMove) // && fleet.UnitAIType != UnitAIType.Building) // && !systemOfEmpire(fleet)
                                     {
                                         if (fleet.UnitAIType != UnitAIType.Building && fleet.Sector.Station != null)
                                         {
