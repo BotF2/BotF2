@@ -1,4 +1,4 @@
-// Orbital.cs
+// File:Orbital.cs
 //
 // Copyright (c) 2007 Mike Strobel
 //
@@ -30,6 +30,7 @@ namespace Supremacy.Orbitals
         private Meter _shieldStrength;
         private Meter _cloakStrength;
         private Meter _camouflagedMeter;
+        private Meter _firePower;
 
         /// <summary>
         /// Gets the type of the UniverseObject.
@@ -57,6 +58,15 @@ namespace Supremacy.Orbitals
         {
             get { return Design as OrbitalDesign; }
             set { Design = value; }
+        }
+
+        /// <summary>
+        /// Gets the fire power.
+        /// </summary>
+        /// <value>The crew.</value>
+        public Meter FirePower
+        {
+            get { return _firePower; }
         }
 
         /// <summary>
@@ -206,6 +216,9 @@ namespace Supremacy.Orbitals
             _shieldStrength = new Meter(design.ShieldStrength, 0, design.ShieldStrength);
             _cloakStrength = new Meter(design.CloakStrength, 0, design.CloakStrength);
             _camouflagedMeter = new Meter(design.CamouflagedStrength, 0, design.CamouflagedStrength);
+            
+            int _fp = (design.PrimaryWeapon.Damage * design.PrimaryWeapon.Count) + (design.SecondaryWeapon.Damage * design.SecondaryWeapon.Count);
+            _firePower = new Meter(_fp, 0, _fp);
         }
 
         /// <summary>
@@ -349,6 +362,7 @@ namespace Supremacy.Orbitals
 			writer.WriteObject(_shieldStrength);
             writer.WriteObject(_cloakStrength);
             writer.WriteObject(_camouflagedMeter);
+            writer.WriteObject(_firePower);
         }
 
 		public override void DeserializeOwnedData(SerializationReader reader, object context)
@@ -361,7 +375,8 @@ namespace Supremacy.Orbitals
             _cloakStrength = (Meter)reader.ReadObject();
             _camouflagedMeter = (Meter)reader.ReadObject();
             _crew.CurrentValueChanged += Crew_CurrentValueChanged;
-		}
+            _firePower = (Meter)reader.ReadObject();
+        }
     }
 
     /// <summary>
