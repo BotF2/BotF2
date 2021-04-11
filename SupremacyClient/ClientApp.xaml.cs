@@ -160,7 +160,7 @@ namespace Supremacy.Client
 
 
                     //int _dicCount = MergedDictionaries.Count;
-                string _allText = Environment.NewLine + "a;b;c;d;e;(Headline for Excel);g;" + Environment.NewLine;
+                string _allText = Environment.NewLine + "a;b;c;d;e;(Headline for Excel);g;888888" + Environment.NewLine;
                 int _allValue = 0;
                 string _text0 = Current.Resources.MergedDictionaries[0].Source.ToString();
 

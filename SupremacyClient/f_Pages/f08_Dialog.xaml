@@ -167,6 +167,7 @@
             
             <DockPanel LastChildFill="True"
                      Margin="0,2,0,2">
+            <TextBlock Text="ESC   for Closing"/>
             <!--<ui:BlockBar DockPanel.Dock="Left"
                          ui:BlockBar.IsReadOnly="True"
                          BlockCount="12"
