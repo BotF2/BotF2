@@ -165,7 +165,7 @@ namespace Supremacy.Client.Dialogs
                 visiblePriorities.Add(SitRepPriority.Red);
             if (BlueCheck.IsChecked.HasValue && BlueCheck.IsChecked.Value)
                 visiblePriorities.Add(SitRepPriority.Blue);
-            if (GrayCheck.IsChecked.HasValue && PinkCheck.IsChecked.Value)
+            if (GrayCheck.IsChecked.HasValue && GrayCheck.IsChecked.Value)
                 visiblePriorities.Add(SitRepPriority.Gray);
             if (PurpleCheck.IsChecked.HasValue && PurpleCheck.IsChecked.Value)
                 visiblePriorities.Add(SitRepPriority.Purple);
