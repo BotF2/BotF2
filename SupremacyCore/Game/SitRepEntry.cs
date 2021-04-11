@@ -1168,6 +1168,27 @@ namespace Supremacy.Game
     }
 
     [Serializable]
+    public class CombatSummarySitRepEntry : SitRepEntry
+    {
+        private readonly string _note;
+        private readonly MapLocation _loc;
+
+        public CombatSummarySitRepEntry(Civilization owner, MapLocation loc, string Note) : base(owner, SitRepPriority.Purple)
+        { _loc = loc; _note = Note; }
+
+        public string Note { get { return _note; } }
+        public override SitRepCategory Categories { get { return SitRepCategory.Military; } }
+        public override SitRepAction Action { get { return SitRepAction.CenterOnSector; } }
+        public override object ActionTarget { get { return GameContext.Current.Universe.Map[_loc]; } }
+        public override bool IsPriority { get { return true; } }
+        public override string SitRepComment { get; set; }
+        public override string SummaryText { get { return _note; } }
+
+    }
+    // End of SitRepEntry
+
+
+    [Serializable]
     public class CommendWarSitRepEntry : SitRepEntry
     {
         private readonly int _victimCivilizationID;
@@ -2127,6 +2148,26 @@ namespace Supremacy.Game
             }
         }
     }
+
+    [Serializable]
+    public class ShipAssimilatedSitRepEntry : SitRepEntry
+    {
+        private readonly string _note;
+        private readonly MapLocation _loc;
+
+        public ShipAssimilatedSitRepEntry(Civilization owner, MapLocation loc, string Note) : base(owner, SitRepPriority.Purple)
+        { _loc = loc; _note = Note; }
+
+        public string Note { get { return _note; } }
+        public override SitRepCategory Categories { get { return SitRepCategory.Military; } }
+        public override SitRepAction Action { get { return SitRepAction.CenterOnSector; } }
+        public override object ActionTarget { get { return GameContext.Current.Universe.Map[_loc]; } }
+        public override bool IsPriority { get { return true; } }
+        public override string SitRepComment { get; set; }
+        public override string SummaryText { get { return _note; } }
+
+    }
+    // End of SitRepEntry
 
     [Serializable]
     public class ShipDestroyedInWormholeSitRepEntry : SitRepEntry

@@ -606,8 +606,12 @@ namespace Supremacy.Combat
                     newfleet.Name = "Assimilated Assets";
                     GameContext.Current.CivilizationManagers[borg].Research.UpdateResearch(gainedResearchPoints);
 
+                    string _report = "Ship " + ship.ObjectID + " assimilated: " + ship.Name + " (" + ship.Design + "). We gained " + gainedResearchPoints + " research points.";
+
                     GameLog.Core.Combat.DebugFormat("Assimilated Assets: {0} {1}, Owner = {2}, OwnerID = {3}, Fleet.OwnerID = {4}, Order = {5} gainedResearchPoints ={6}",
                         ship.ObjectID, ship.Name, ship.Owner, ship.OwnerID, newfleet.OwnerID, newfleet.Order, gainedResearchPoints);
+
+                    GameContext.Current.CivilizationManagers[borg].SitRepEntries.Add(new ShipAssimilatedSitRepEntry( borg, ship.Location, _report));
                 }
             }
         }

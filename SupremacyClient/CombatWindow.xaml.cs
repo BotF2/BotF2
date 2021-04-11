@@ -28,7 +28,7 @@ using Supremacy.Utility;
 using System.Linq;
 using System.Collections.Generic;
 using Supremacy.Entities;
-
+using Supremacy.Game;
 
 namespace Supremacy.Client
 {
@@ -43,7 +43,7 @@ namespace Supremacy.Client
         private CombatAssets _otherAssets;
         private List<Civilization> _otherCivs; // this collection populates UI with 'other' civilizations found in the sector
         private List<Civilization> _friendlyCivs; // players civ and fight along side civs if any    
-        private Civilization _onlyFireIfFiredAppone;
+        private readonly Civilization _onlyFireIfFiredAppone;
         private Civilization _theTargeted1Civ;
         private Civilization _theTargeted2Civ;
         private IAppContext _appContext;
@@ -82,13 +82,16 @@ namespace Supremacy.Client
             OtherCivilizationsSummaryItem1.ItemTemplate = civTemplate;
 
             OtherCivilizationsSummaryItem1.DataContext = _otherCivs; // ListBox data context set to OtherCivs
-            
-            _onlyFireIfFiredAppone = new Civilization(); // The click of "Only Return Fire" radio button by human player
-            //_onlyFireIfFiredAppone.ShortName = "Only Return Fire";
-            _onlyFireIfFiredAppone.ShortName = ResourceManager.GetString("ONLY_RETURN_FIRE");
-            _onlyFireIfFiredAppone.CivID = 888;
-            _onlyFireIfFiredAppone.Key = "Only Return Fire";
-           // _theTargeted1Civ = new Civilization();
+
+            _onlyFireIfFiredAppone = new Civilization
+            {
+                //_onlyFireIfFiredAppone.ShortName = "Only Return Fire";
+                ShortName = ResourceManager.GetString("ONLY_RETURN_FIRE"),
+                CivID = 888,
+                Key = "Only Return Fire"
+            }; 
+            // The click of "Only Return Fire" radio button by human player
+               // _theTargeted1Civ = new Civilization();
             _theTargeted1Civ = _onlyFireIfFiredAppone;
            // _theTargeted2Civ = new Civilization();
             _theTargeted2Civ = _onlyFireIfFiredAppone;
@@ -103,6 +106,12 @@ namespace Supremacy.Client
         private void HandleCombatUpdate(CombatUpdate update)
         {
             _update = update;
+            string _report = _update.CombatID + ": " + "Combat at " + _update.Location 
+                + " > " + _update.FriendlyAssets.Count() + " on our side - " 
+                + _update.HostileAssets.Count() + " hostile "
+                ;
+
+            List<CivilizationManager> _civs = new List<CivilizationManager>();
 
 
             foreach (CombatAssets assets in update.FriendlyAssets)
@@ -135,11 +144,20 @@ namespace Supremacy.Client
 
                 if (_update.IsStandoff)
                 {
+                    string _standoffText = String.Format(ResourceManager.GetString("COMBAT_STANDOFF"));
                     HeaderText.Text = ResourceManager.GetString("COMBAT_HEADER") + ": "
-                        + String.Format(ResourceManager.GetString("COMBAT_STANDOFF"));
+                        + _standoffText;
                     SubHeaderText.Text = String.Format(
                         ResourceManager.GetString("COMBAT_TEXT_STANDOFF"),
                         _update.Sector.Name);
+                    _report += _standoffText + " - no winner";
+
+                    CivilizationManager playerCivManager = GameContext.Current.CivilizationManagers[_appContext.LocalPlayer.CivID];
+                    playerCivManager.SitRepEntries.Add(new CombatSummarySitRepEntry(playerCivManager.Civilization, _update.Sector.Location, _report));
+
+                    playerCivManager.SitRepEntries.Add(new CombatSummarySitRepEntry(playerCivManager.Civilization, _update.Sector.Location,
+                        String.Format(ResourceManager.GetString("COMBAT_TEXT_STANDOFF"), _update.Sector.Name))); 
+                       
                 }
                 else if (_playerAssets.HasSurvivingAssets)
                 {
