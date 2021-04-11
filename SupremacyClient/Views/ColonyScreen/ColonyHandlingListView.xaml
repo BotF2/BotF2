@@ -294,7 +294,7 @@
                 <Border x:Name="ImageBorder"
                         Grid.Column="0"
                         VerticalAlignment="Center"
-                        BorderBrush="{StaticResource HeaderTextBrush}"
+                        BorderBrush="{StaticResource {x:Static scc:ClientResources.ImageBorderBrushKey}}"
                         BorderThickness="2"
                         CornerRadius="4"
                         Width="35"

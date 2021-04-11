@@ -2229,7 +2229,7 @@
         <Setter Property="OverridesDefaultStyle" Value="True" />
         <Setter Property="Background" Value="Transparent" />
         <Setter Property="Foreground" Value="{StaticResource DefaultTextBrush}" />
-        <Setter Property="BorderBrush" Value="{StaticResource BlueGradient_Top_Bottom}" />
+        <Setter Property="BorderBrush" Value="{StaticResource {x:Static scc:ClientResources.ImageBorderBrushKey}}" />
         <Setter Property="BorderThickness" Value="2" />
         <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto" />
         <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto" />
