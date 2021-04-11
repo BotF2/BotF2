@@ -13,7 +13,7 @@ using System.Windows.Markup;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Rise of the UFP Team")]
 [assembly: AssemblyProduct("Rise of the UFP")]
-[assembly: AssemblyCopyright("Copyright (c) 2020 Rise of the UFP Team")]
+[assembly: AssemblyCopyright("Copyright (c) 2021 Rise of the UFP Team")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 [assembly: ComVisible(false)]
@@ -47,8 +47,8 @@ using System.Windows.Markup;
 //
 // You can specify all the values or you can default the Revision and Build Numbers 
 // by using the '*' as shown below:
-[assembly: AssemblyVersion("2020.17.0.1")]
-[assembly: AssemblyFileVersion("2020.17.0.1")]
+[assembly: AssemblyVersion("2021.17.0.2")]
+[assembly: AssemblyFileVersion("2021.17.0.2")]
 
 [assembly: XmlnsPrefix("http://schemas.startreksupremacy.com/xaml/core", "s")]
 [assembly: XmlnsDefinition("http://schemas.startreksupremacy.com/xaml/core", "Supremacy.Client")]
