@@ -558,7 +558,7 @@ namespace Supremacy.Game
             {
                 string _text;
                 int shipNum = fleet.Ships.Count();
-                string name = fleet.Name;
+                //string name = fleet.Name;
                 if (fleet.UnitAIType == UnitAIType.Reserve)
                     GameLog.Client.AI.DebugFormat("*** Reserve, Turn# = {0} Owner = {1} Fleet location ={2}, UnitAIType ={3}, UnitActivity ={4} Actibvity Duration ={5} Activity Start ={6}",
                         GameContext.Current.TurnNumber, fleet.Owner.Name, fleet.Location, fleet.UnitAIType, fleet.Activity, fleet.ActivityDuration, fleet.ActivityStart);
@@ -2602,12 +2602,12 @@ namespace Supremacy.Game
 
                 var civManager = GameContext.Current.CivilizationManagers[ship.OwnerID];
                 var PlayerCivManager = GameContext.Current.CivilizationManagers[0];  // Federation - can be changed
-                    
+
                     // only own civilization
-                    //civManager.SitRepEntries.Add(new StationRunningSitRepEntry(civManager.Civilization, ship.Location, _rep));
+                    civManager.SitRepEntries.Add(new ShipStatusSitRepEntry(civManager.Civilization, ship.Location, _rep));
 
                     // all ships shown
-                    PlayerCivManager.SitRepEntries.Add(new ShipStatusSitRepEntry(PlayerCivManager.Civilization, ship.Location, _rep));
+                    //PlayerCivManager.SitRepEntries.Add(new ShipStatusSitRepEntry(PlayerCivManager.Civilization, ship.Location, _rep));
                 } // end of each ship
             }
 
