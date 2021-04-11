@@ -27,10 +27,10 @@ namespace Supremacy.Client
 
         //private string _text = "text";
         //private string F08_Text_1 = "IsHitTestVisibleProperty";
-        private List<Fleet> _allFleets;
+        //private List<Fleet> _allFleets;
         //private Fleet _testFleet;
-        private string T2;
-        private IAppContext _appContext;
+        private readonly string T2;
+        //private IAppContext _appContext;
 
         //GameContext.Current.
 
@@ -39,22 +39,29 @@ namespace Supremacy.Client
         {
             InitializeComponent();
 
-            _appContext = ServiceLocator.Current.GetInstance<IAppContext>();
+            //_appContext = ServiceLocator.Current.GetInstance<IAppContext>();
             DataTemplate itemTemplate = TryFindResource("AssetsTreeItemTemplate") as DataTemplate;
 
             //string t1 = F08_Text_1;
+            string t1 = F08_Text_1;
+            //T1 = t1;
+
             string t2 = F08_Text_2;
             T2 = t2;
+            t2 = T2;
 
-            if (GameContext.Current != null)
-                _allFleets = GameContext.Current.Universe.Find<Fleet>().ToList();
+            string t3 = F08_Text_3;
+            //T3 = t2;
+
+            //if (GameContext.Current != null)
+            //    _allFleets = GameContext.Current.Universe.Find<Fleet>().ToList();
 
             //_testFleet = new Fleet();
             //_testFleet.TurnCreated = 1;
             //DataContext = _testFleet;
 
-            if (_allFleets != null)
-                DataContext = _allFleets;
+            //if (_allFleets != null)
+            //    DataContext = _allFleets;
 
             //T1.Value = "hel";
             //string t3 = F08_Text_3;
