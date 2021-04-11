@@ -71,10 +71,7 @@ namespace Supremacy.Client.Dialogs
         {
             base.OnApplyTemplate();
 
-
-            System.Windows.Controls.TextBox sitRepCommentText = GetTemplateChild("SitRepComment") as System.Windows.Controls.TextBox;
-
-            if (sitRepCommentText == null)
+            if (!(GetTemplateChild("SitRepComment") is System.Windows.Controls.TextBox sitRepCommentText))
                 return;
             sitRepCommentText.LostFocus += SitRepCommentText_OnLostFocus;
             sitRepCommentText.GotFocus += SitRepCommentText_OnGotFocus;
@@ -84,8 +81,7 @@ namespace Supremacy.Client.Dialogs
 
         private static void SitRepCommentText_OnTextChanged(object sender, TextChangedEventArgs e)
         {
-            System.Windows.Controls.TextBox sitRepCommentText = e.Source as System.Windows.Controls.TextBox;
-            if (sitRepCommentText == null)
+            if (!(e.Source is System.Windows.Controls.TextBox sitRepCommentText))
                 return;
             BindingExpression bindingExpression = sitRepCommentText.GetBindingExpression(System.Windows.Controls.TextBox.TextProperty);
             if (bindingExpression == null)
@@ -97,20 +93,17 @@ namespace Supremacy.Client.Dialogs
 
         private void SitRepCommentText_OnGotFocus(object sender, RoutedEventArgs e)
         {
-            System.Windows.Controls.TextBox sitRepCommentText = e.Source as System.Windows.Controls.TextBox;
-            if (sitRepCommentText == null)
+            if (!(e.Source is System.Windows.Controls.TextBox sitRepCommentText))
                 return;
             _previousSitRepCommentText = sitRepCommentText.Text;
         }
         private void SitRepCommentText_OnLostFocus(object sender, RoutedEventArgs e)
         {
-            System.Windows.Controls.TextBox sitRepCommentText = e.Source as System.Windows.Controls.TextBox;
             var previousText = _previousSitRepCommentText;
             _previousSitRepCommentText = null;
-            if ((sitRepCommentText == null) || String.Equals(sitRepCommentText.Text, previousText))
+            if ((!(e.Source is System.Windows.Controls.TextBox sitRepCommentText)) || String.Equals(sitRepCommentText.Text, previousText))
                 return;
-            SitRepEntry entry = DataContext as SitRepEntry;
-            if (entry == null)
+            if (!(DataContext is SitRepEntry entry))
                 return;
             if (String.IsNullOrEmpty(sitRepCommentText.Text.Trim()))
                 entry.SitRepComment = null;
@@ -225,10 +218,9 @@ namespace Supremacy.Client.Dialogs
 
         private void OnSitRepEntryDoubleClick(object sender, RoutedEventArgs e)
         {
-            SitRepEntry selection = ItemsView.SelectedItem as SitRepEntry;
-            if (selection != null)
+            if (ItemsView.SelectedItem is SitRepEntry selection)
             {
-                switch(selection.Action)
+                switch (selection.Action)
                 {
                     case SitRepAction.ShowScienceScreen:
                         Close();
@@ -258,7 +250,7 @@ namespace Supremacy.Client.Dialogs
                         Close();
                         var sector = selection.ActionTarget as Sector;
                         GalaxyScreenCommands.SelectSector.Execute(sector);
-                        GalaxyScreenCommands.CenterOnSector.Execute(sector);  
+                        GalaxyScreenCommands.CenterOnSector.Execute(sector);
                         break;
 
                     case SitRepAction.SelectTaskForce:
