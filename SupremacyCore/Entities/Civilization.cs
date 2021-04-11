@@ -203,7 +203,7 @@ namespace Supremacy.Entities
             _traits = _traits.Trim();
             _spiedCivList = SpiedCivList;
             _targetCivilization = TargetCivilization;
-            _inTransit = _inTransit;
+
             //_intelOrdersIncomingToHost = IntelOrdersIncomingToHost;
 
             // When starting a game, options is null
