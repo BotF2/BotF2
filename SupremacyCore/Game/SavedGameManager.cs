@@ -34,8 +34,9 @@ namespace Supremacy.Game
             { 
                 string _text = Path.Combine(ResourceManager.GetResourcePath(""), "SavedGames_V", Assembly.GetExecutingAssembly().GetName().Version.ToString());
                 _text = _text.Replace("V\\", "V");
-                //GameLog.Client.SaveLoad.DebugFormat("SavedGameDirectory = {0}", _text);
-                //Console.WriteLine(_text);
+                _text = _text.Replace(".\\", "");
+                GameLog.Client.SaveLoad.DebugFormat("SavedGameDirectory = {0}", _text);
+                Console.WriteLine(_text);
 
                 return _text;
             }
@@ -119,7 +120,8 @@ namespace Supremacy.Game
                 }
                 else
                 {
-                    string _shortSavedGameDirectory = SavedGameDirectory; //.Replace(".\\", "");
+                    string _shortSavedGameDirectory = SavedGameDirectory;
+                    _shortSavedGameDirectory = _shortSavedGameDirectory.Replace(".\\", "");
                     fullPath = Path.Combine(Environment.CurrentDirectory, _shortSavedGameDirectory, FixFileName(fileName));
                     //Console.WriteLine(fullPath);
                     fullPath = fullPath.Replace(_shortSavedGameDirectory + "\\" + _shortSavedGameDirectory, _shortSavedGameDirectory);  // removing double _shortSavedGameDirectory
