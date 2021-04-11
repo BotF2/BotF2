@@ -42,6 +42,9 @@ namespace Supremacy.Game
         public int _gameTurnNumber = 0;  // internal use
         public string blank = " ";
 
+        List<CivValue> CivValueList = new List<CivValue>();
+        public string newline = Environment.NewLine;
+
         #region Public Members
 
         /// <summary>
@@ -2446,11 +2449,158 @@ namespace Supremacy.Game
                 }
             }
 
+
+
+            foreach (var civ in CivValueList)
+            {
+                var civManager = GameContext.Current.CivilizationManagers[civ.AA_CIV_ID];
+
+                var allCivShips = GameContext.Current.Universe.Find<Ship>(UniverseObjectType.Ship).Where(o => o.OwnerID == civ.AA_CIV_ID);
+
+                string civValueShipSummary  = /*"(" + */civManager.CivilizationID + "> LT ShipSum1: "; //All;" + allCivShips.Count();
+                string civValueShipSummary2 = /*"(" + */civManager.CivilizationID + "> LT ShipSum2: "; //All;" + allCivShips.Count();  // more civil ships
+                int _count = 0;
+                int _fp = 0;
+                int _fpAll = 0;
+
+
+
+
+                var commandShips = allCivShips.Where(o => o.ShipType == ShipType.Command);
+                _count = commandShips.Count(); 
+                if (_count > 0) 
+                {
+                    _fp = commandShips.LastOrDefault().FirePower.CurrentValue * _count;
+                    civValueShipSummary += "Com " + _count + "x (FP:" + _fp + "); "; _fpAll += _fp; // if _count = 0 don't show, there are nothing 
+                }
+
+
+                var cruiserShips = allCivShips.Where(o => o.ShipType == ShipType.Cruiser || o.ShipType == ShipType.HeavyCruiser || o.ShipType == ShipType.StrikeCruiser);
+                //civValueShipSummary += ";Cru;" + _count = cruiserShips.Count();
+                _count = cruiserShips.Count(); 
+                _fp = 0;
+                if (_count > 0)
+                {
+                    _fp = cruiserShips.LastOrDefault().FirePower.CurrentValue * _count;
+                }
+                civValueShipSummary += "Cruiser " + _count + "x (FP:" + _fp + ")"; _fpAll += _fp; // if _count = 0 >>> show 0 
+
+
+                var fastAttackShips = allCivShips.Where(o => o.ShipType == ShipType.FastAttack);
+                //civValueShipSummary += ";Att;" + _count = fastAttackShips.Count();
+                _count = fastAttackShips.Count(); 
+                _fp = 0;
+                if (_count > 0)
+                {
+                    _fp = fastAttackShips.LastOrDefault().FirePower.CurrentValue * _count;
+                }
+                civValueShipSummary += "; Attack " + _count + "x (FP:" + _fp + ")"; _fpAll += _fp;
+
+                var scoutShips = allCivShips.Where(o => o.ShipType == ShipType.Scout);
+                //civValueShipSummary += ";Sco;" + _count = scoutShips.Count();
+                _count = scoutShips.Count();
+                _fp = 0;
+                if (_count > 0)
+                {
+                    _fp = scoutShips.LastOrDefault().FirePower.CurrentValue * _count;
+                }
+                civValueShipSummary += "; Scouts " + _count + "x (FP:" + _fp + ")"; _fpAll += _fp;
+
+                var scienceShips = allCivShips.Where(o => o.ShipType == ShipType.Science);
+                //civValueShipSummary += ";Sci;" + _count = scienceShips.Count();
+                _count = scienceShips.Count();
+                _fp = 0;
+                if (_count > 0)
+                {
+                    _fp = scienceShips.LastOrDefault().FirePower.CurrentValue * _count;
+                }
+                // civValueShipSummary2 ... frist line, no semi colon 
+                if (_count > 0) civValueShipSummary2 += "Sci " + _count + "x (FP:" + _fp + ")"; _fpAll += _fp;
+
+                var spyShips = allCivShips.Where(o => o.ShipType == ShipType.Spy);
+                //civValueShipSummary += ";Spy;" + _count = spyShips.Count();
+                _count = spyShips.Count();
+                _fp = 0;
+                if (_count > 0)
+                {
+                    _fp = spyShips.LastOrDefault().FirePower.CurrentValue * _count;
+                }
+                civValueShipSummary2 += "; Spy " + _count + "x ";// (FP:" + _fp + ")";
+
+                var diplomaticShips = allCivShips.Where(o => o.ShipType == ShipType.Diplomatic);
+                //civValueShipSummary += ";Dip;" + _count = diplomaticShips.Count();
+                _count = diplomaticShips.Count();
+                _fp = 0;
+                if (_count > 0)
+                {
+                    _fp = diplomaticShips.LastOrDefault().FirePower.CurrentValue * _count;
+                }
+                civValueShipSummary2 += "; Diplo " + _count + "x ";// (FP: " + _fp + ")";
+
+                var medicalShips = allCivShips.Where(o => o.ShipType == ShipType.Medical);
+                //civValueShipSummary += ";Med;" + _count = medicalShips.Count();
+                _count = medicalShips.Count();
+                _fp = 0;
+                if (_count > 0)
+                {
+                    _fp = medicalShips.LastOrDefault().FirePower.CurrentValue * _count;
+                }
+                civValueShipSummary2 += "; Med " + _count + "x ";// (FP: " + _fp + ")";
+
+                var transportShips = allCivShips.Where(o => o.ShipType == ShipType.Transport);
+                //civValueShipSummary += ";Tra;" + _count = transportShips.Count();
+                _count = transportShips.Count();
+                _fp = 0;
+                if (_count > 0)
+                {
+                    _fp = transportShips.LastOrDefault().FirePower.CurrentValue * _count;
+                }
+                if (_count > 0) civValueShipSummary2 += "; Tra " + _count + "x ";// (FP: " + _fp + ")";
+
+                var constructionShips = allCivShips.Where(o => o.ShipType == ShipType.Construction); 
+                //civValueShipSummary += ";Con;" + _count = constructionShips.Count();
+                _count = constructionShips.Count();
+                _fp = 0;
+                if (_count > 0)
+                {
+                    _fp = constructionShips.LastOrDefault().FirePower.CurrentValue * _count;
+                }
+                if (_count > 0) civValueShipSummary2 += "; Con " + _count + "x ";// (FP: " + _fp + ")"; 
+
+                var colonyShips = allCivShips.Where(o => o.ShipType == ShipType.Colony); 
+                //civValueShipSummary += ";Col;" + _count = colonyShips.Count();
+                _count = colonyShips.Count();
+                _fp = 0;
+                if (_count > 0)
+                {
+                    _fp = colonyShips.LastOrDefault().FirePower.CurrentValue * _count;
+                }
+                if (_count > 0) civValueShipSummary2 += "; Col " + _count + "x ";// (FP: " + _fp + ")";
+
+                civValueShipSummary += " - Ships: " + allCivShips.Count() + " - Fire Power Total: " + _fpAll;
+
+
+
+                civManager.SitRepEntries.Add(new ShipSummarySitRepEntry(civManager.Civilization, civValueShipSummary));
+                civManager.SitRepEntries.Add(new ShipSummarySitRepEntry(civManager.Civilization, civValueShipSummary2));
+
+                string _text = newline + "   CivValueList: " /*+ civ.AA_CIV_ID*/;
+                //_text += civ.CIV_KEY;
+                _text += ";Pop;" + civ.CIV_TOT_POP;
+                _text += ";Int;" + civ.CIV_TOT_INT;
+                _text += ";ID;" + civ.AA_CIV_ID;
+                _text += ";" + civ.CIV_KEY;
+                _text += newline + "   " + civValueShipSummary;
+                _text += newline + "   " + civValueShipSummary2;
+                GameLog.Core.CivsAndRaces.DebugFormat(_text);
+                Console.WriteLine(_text);
+            }
+
             var allStations = GameContext.Current.Universe.Find<Station>(UniverseObjectType.Station);
             foreach (var station in allStations)
             {
                 string _rep = "Station at ";
-                _rep += station.Name + blank + station.Location ;
+                _rep += station.Location + ": " + blank + station.ObjectID + blank + station.Name ;
 
                 var civManager = GameContext.Current.CivilizationManagers[station.OwnerID];
                 civManager.SitRepEntries.Add(new ShipStatusSitRepEntry(civManager.Civilization, station.Location, _rep));
@@ -2461,10 +2611,10 @@ namespace Supremacy.Game
                 foreach (var ship in fleet.Ships)
                 {
                     //if (!fleet.Route.IsEmpty) 
-                string _rep = "Ship at ";
+                    string _rep = "Ship ";
 
 
-                    _rep += ship.Location + ": " + ship.ObjectID + blank + ship.Name + " < " + ship.DesignName + " >";
+                    _rep += ship.ObjectID + " at " + ship.Location + ": " /*+ " < " */+ ship.DesignName + " >" + blank + ship.Name + " > ";
                     _rep += blank + fleet.Order;
                     if (!fleet.Route.IsEmpty)
                     {
@@ -2486,7 +2636,8 @@ namespace Supremacy.Game
             }
 
 
-
+ 
+            //var allCivs = GameContext.Current.Universe.Find<Fleet>(UniverseObjectType.Fleet);
             foreach (var civManager in GameContext.Current.CivilizationManagers)
             {
                 /*
@@ -2507,7 +2658,12 @@ namespace Supremacy.Game
                 Int32.TryParse(civManager.TotalPopulation.ToString(), out int _totalPopulation);
                 Int32.TryParse(civManager.TotalResearch.ToString(), out int _totalResearch);
 
-
+                AddCivValue(
+                    civManager.CivilizationID
+                    , civManager.Civilization.Key
+                    , civManager.TotalPopulation
+                    , civManager.TotalIntelligenceProduction
+                    );
 
                 civManager.AddCivHist(civManager.CivilizationID
                     , civManager.Civilization.Key
@@ -2546,6 +2702,9 @@ namespace Supremacy.Game
 
                     );
             }
+
+
+
 
             GameContext.Current.TurnNumber++;
             _gameTurnNumber = GameContext.Current.TurnNumber;
@@ -2671,6 +2830,75 @@ namespace Supremacy.Game
                 source,
                 new ParallelOptions { MaxDegreeOfParallelism = Environment.ProcessorCount * 4 },
                 body);
+        }
+
+    //    civManager.AddCivHist(civManager.CivilizationID
+    //, civManager.Civilization.Key
+    //, civManager.Credits.CurrentValue
+    //, civManager.Colonies.Count
+    //, _totalPopulation
+    //, civManager.MaintenanceCostLastTurn
+    //, _totalResearch
+    //);
+    //            // works - just for DEBUG  // optimized for CSV-Export (CopyPaste)
+    //            GameLog.Core.CivsAndRaces.DebugFormat(Environment.NewLine + "   Turn {0};Col:;{1};Pop:;{2};Morale:;{3};IntelProd;{9};IDef;{11};IAtt;{12};Maint;{10};Credits;{4};Change;{5};Research;{6};Dil;{14};Deut;{15};Dur;{16};{7};for;{8};{13};Owner;{17}" + Environment.NewLine
+    //                , GameContext.Current.TurnNumber                    
+
+    //                , civManager.Colonies.Count
+    //                , civManager.TotalPopulation
+    //                , civManager.AverageMorale
+    //                , civManager.Credits.CurrentValue
+    //                , civManager.Credits.CurrentChange
+    //                , civManager.Credits.LastChange
+
+    //                , civManager.Research.CumulativePoints
+    //                , civManager.Civilization.CivilizationType
+    //                , civManager.Civilization.Key
+    //                , civManager.TotalIntelligenceProduction
+    //                , civManager.MaintenanceCostLastTurn
+    //                , civManager.TotalIntelligenceDefenseAccumulated
+    //                , civManager.TotalIntelligenceAttackingAccumulated
+    //                , civManager.CivilizationID
+    //                , civManager.Resources.Dilithium.CurrentValue
+    //                , civManager.Resources.Deuterium.CurrentValue
+    //                , civManager.Resources.RawMaterials.CurrentValue
+    //                , civManager.HomeSystem.Owner.Key
+
+
+
+        // new list/stuff to find out 'Best' and 'Places' values for each civ
+        public class CivValue
+        {
+            public int AA_CIV_ID;
+            public string CIV_KEY;
+            public Meter CIV_TOT_POP;
+   
+            public int CIV_TOT_INT;
+     
+
+            public CivValue(
+                int aa_civ_ID
+                , string civ_key
+                , Meter civ_tot_pop
+                , int civ_tot_int
+                )
+            {
+                AA_CIV_ID = aa_civ_ID;
+                CIV_KEY = civ_key;
+                CIV_TOT_POP = civ_tot_pop;
+                CIV_TOT_INT = civ_tot_int;
+            }
+        }
+
+        public void AddCivValue(int civID, string civKey, Meter civTotPop, int civTotInt)
+        {
+            CivValue civValueNew = new CivValue(
+                civID
+                , civKey
+                , civTotPop
+                , civTotInt
+                );
+            CivValueList.Add(civValueNew);
         }
         // ReSharper restore UnusedMethodReturnValue.Local
         //public void GetAcceptReject(ForeignPower foreignPower)
