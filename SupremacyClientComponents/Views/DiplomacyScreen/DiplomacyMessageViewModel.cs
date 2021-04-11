@@ -62,14 +62,10 @@ namespace Supremacy.Client.Views
 
         public DiplomacyMessageViewModel([NotNull] Civilization sender, [NotNull] Civilization recipient)
         {
-            if (sender == null)
-                throw new ArgumentNullException("sender");
-            if (recipient == null)
-                throw new ArgumentNullException("recipient");
             _setAcceptButton = new DelegateCommand<ICheckableCommandParameter>(ExecuteSetAcceptButton, CanExecuteSetAcceptButton);
             _setRejectButton = new DelegateCommand<ICheckableCommandParameter>(ExecuteSetRejectButton, CanExecuteSetRejectButton);
-            _sender = sender;
-            _recipient = recipient;
+            _sender = sender ?? throw new ArgumentNullException("sender");
+            _recipient = recipient ?? throw new ArgumentNullException("recipient");
             _elements = new ObservableCollection<DiplomacyMessageElement>();
             _elementsView = new ReadOnlyObservableCollection<DiplomacyMessageElement>(_elements);
             _availableElements = new ObservableCollection<DiplomacyMessageAvailableElement>();
@@ -613,22 +609,17 @@ namespace Supremacy.Client.Views
 
         internal static string LookupDiplomacyText(DiplomacyStringID stringId, Tone tone, Civilization sender)
         {
-            var civStringKey = new DiplomacyStringKey(sender != null ? sender.Key : null, stringId);
+            var civStringKey = new DiplomacyStringKey(sender?.Key, stringId);
 
-            LocalizedString localizedString;
-
-            LocalizedTextGroup civTextGroup;
-            LocalizedTextGroup defaultTextGroup;
-
-            if (LocalizedTextDatabase.Instance.Groups.TryGetValue(civStringKey, out civTextGroup) &&
-                civTextGroup.Entries.TryGetValue(tone, out localizedString))
+            if (LocalizedTextDatabase.Instance.Groups.TryGetValue(civStringKey, out LocalizedTextGroup civTextGroup) &&
+                civTextGroup.Entries.TryGetValue(tone, out LocalizedString localizedString))
             {
                 return localizedString.LocalText;
             }
 
             var defaultStringKey = new DiplomacyStringKey(null, stringId);
 
-            if (LocalizedTextDatabase.Instance.Groups.TryGetValue(defaultStringKey, out defaultTextGroup) &&
+            if (LocalizedTextDatabase.Instance.Groups.TryGetValue(defaultStringKey, out LocalizedTextGroup defaultTextGroup) &&
                 defaultTextGroup.Entries.TryGetValue(tone, out localizedString))
             {
                 return localizedString.LocalText;
@@ -660,7 +651,7 @@ namespace Supremacy.Client.Views
 
             _elements.Add(element);
 
-            string st = ""; // needed
+            string st; // needed
 
             switch (availableElement.ActionCategory)
             {
@@ -669,7 +660,7 @@ namespace Supremacy.Client.Views
                     if (element.Tone == Tone.Indignant)
                     {
                         st = ResourceManager.GetString("OFFER_DIALOG_HINT"); // need to update the embassy screen with a new window to get the send button activated without delay.
-                        var result_Offer = MessageDialog.Show(st, MessageDialogButtons.Ok);
+                        _ = MessageDialog.Show(st, MessageDialogButtons.Ok);
                         GameLog.Client.Diplomacy.DebugFormat("OFFER_DIALOG_HINT is outcommented");
                     }
                     break;
@@ -678,7 +669,7 @@ namespace Supremacy.Client.Views
                     if (element.Tone == Tone.Indignant)
                     {
                         st = ResourceManager.GetString("REQUEST_DIALOG_HINT"); // need to update the embassy screen with a new window to get the send button activated without delay.
-                        var result_Request = MessageDialog.Show(st, MessageDialogButtons.Ok);
+                        _ = MessageDialog.Show(st, MessageDialogButtons.Ok);
                         GameLog.Client.Diplomacy.DebugFormat("REQUEST_DIALOG_HINT is outcommented");
                     }
                     break;
@@ -705,7 +696,7 @@ namespace Supremacy.Client.Views
                         break;
                 case DiplomacyMessageElementActionCategory.WarDeclaration:
                     st = ResourceManager.GetString("DECLARE_WAR_DIALOG_HINT"); // need to update the embassy screen with a new window to get the send button activated without delay.
-                    var result_DeclareWar = MessageDialog.Show(st, MessageDialogButtons.Ok);
+                    _ = MessageDialog.Show(st, MessageDialogButtons.Ok);
                     GameLog.Client.Diplomacy.DebugFormat("DECLARE_WAR_DIALOG_HINT is outcommented");
                     _statementElements.Add(element);
                     break;
@@ -764,8 +755,7 @@ namespace Supremacy.Client.Views
                     if (selectedParameter == null && !allowIncomplete)
                         continue;
 
-                    var parameterInfo = selectedParameter as IClauseParameterInfo;
-                    if (parameterInfo != null)
+                    if (selectedParameter is IClauseParameterInfo parameterInfo)
                     {
                         if (parameterInfo.IsParameterValid)
                             selectedParameter = parameterInfo.GetParameterData();
@@ -829,9 +819,9 @@ namespace Supremacy.Client.Views
             {
                 if (diplomat.CanCommendOrDenounceWar(_recipient, currentStatement))
                 {
-                    Func<IEnumerable<Civilization>> denouceWarParameters = () => diplomat.GetCommendOrDenounceWarParameters(_recipient, currentStatement).ToList();
+                    IEnumerable<Civilization> denouceWarParameters() => diplomat.GetCommendOrDenounceWarParameters(_recipient, currentStatement).ToList();
 
-                    Func<IEnumerable<Civilization>> commendWarParameters = () => denouceWarParameters().Where(
+                    IEnumerable<Civilization> commendWarParameters() => denouceWarParameters().Where(
                         c =>
                         {
                             var status = GameContext.Current.DiplomacyData[_sender, c].Status;

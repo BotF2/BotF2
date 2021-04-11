@@ -157,7 +157,9 @@ namespace Supremacy.Universe
 
         public HashSet<T> FindStarType<T>(StarType starType)
         {
+#pragma warning disable CS0472 // The result of the expression is always the same since a value of this type is never equal to 'null'
             if (starType == null)
+#pragma warning restore CS0472 // The result of the expression is always the same since a value of this type is never equal to 'null'
             {
                 throw new ArgumentNullException("startype");
             }
@@ -343,10 +345,8 @@ namespace Supremacy.Universe
                 ProductionFacilityDesign design = colony.GetFacilityType(pc);
                 if (design == null)
                     continue;
-                int credits;
-                ResourceValueCollection resources;
                 double modifier = 1.0 + colony.ScrapBonus;
-                design.GetScrapReturn(out credits, out resources);
+                design.GetScrapReturn(out int credits, out ResourceValueCollection resources);
                 credits = Math.Min(design.BuildCost, (int)Math.Floor(modifier * credits));
                 foreach (ResourceType resource in EnumUtilities.GetValues<ResourceType>())
                 {
@@ -380,10 +380,7 @@ namespace Supremacy.Universe
             if (civManager == null)
                 return Destroy(target);
 
-            int credits;
-            ResourceValueCollection resources;
-
-            target.Design.GetScrapReturn(out credits, out resources);
+            target.Design.GetScrapReturn(out int credits, out ResourceValueCollection resources);
 
             var targetSystem = target.Sector.System;
             

@@ -39,7 +39,9 @@ namespace Supremacy.Client
 
         private static readonly Func<double, double> PixelToPoint;
 
+#pragma warning disable IDE0052 // Remove unread private members
         private readonly IClientApplication _app;
+#pragma warning restore IDE0052 // Remove unread private members
         private readonly IAppContext _appContext;
         private readonly IEventAggregator _eventAggregator;
         private readonly INavigationCommandsProxy _navigationCommands;

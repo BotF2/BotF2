@@ -85,7 +85,7 @@ namespace Supremacy.Entities
         private int _civId = InvalidID;
         private CivilizationType _civType;
         private TechCurve _techCurve;
-        private string _traits;
+        private readonly string _traits;
         private string _color;
         private string _diplomacyReport;
         private Quadrant _homeQuadrant;
@@ -102,10 +102,10 @@ namespace Supremacy.Entities
         private string _shortNameArtDir;
         private string _shortNameFromThe;
         private string _shortNameToThe;
-        private string _shipPrefix;
+        private readonly string _shipPrefix;
         private float _industryToCreditsConversionRatio = 0.0f;
-        private int _baseMoraleLevel = 100;
-        private int _moraleDriftRate = 1;
+        private readonly int _baseMoraleLevel = 100;
+        private readonly int _moraleDriftRate = 1;
         private List<Civilization> _spiedCivList;
         private Civilization _targetCivilization;
         private bool _inTransit;
@@ -836,7 +836,7 @@ namespace Supremacy.Entities
         {
             if (ReferenceEquals(a, b))
                 return true;
-            if (((object)a == null) || ((object)b == null))
+            if ((a is null) || (b is null))
                 return false;
             return (a.Key == b.Key);
         }
@@ -851,7 +851,7 @@ namespace Supremacy.Entities
         {
             if (ReferenceEquals(a, b))
                 return false;
-            if (((object)a == null) || ((object)b == null))
+            if ((a is null) || (b is null))
                 return true;
             return (a.Key != b.Key);
         }

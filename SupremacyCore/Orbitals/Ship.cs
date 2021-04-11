@@ -200,7 +200,9 @@ namespace Supremacy.Orbitals
         /// Gets or sets the cloak strength.
         /// </summary>
         /// <value>The cloak strength.</value>
+#pragma warning disable CS0108 // Member hides inherited member; missing new keyword
         public int CloakStrength
+#pragma warning restore CS0108 // Member hides inherited member; missing new keyword
         {
             get { return _cloakStrength; }
             set

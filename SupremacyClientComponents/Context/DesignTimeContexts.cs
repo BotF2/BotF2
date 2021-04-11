@@ -20,8 +20,14 @@ namespace Supremacy.Client.Context
 
         private readonly LobbyData _lobbyData = null;
         private readonly KeyedCollectionBase<int, IPlayer> _players = null;
+
+#pragma warning disable IDE0044 // Add readonly modifier
         private MusicLibrary _defaultMusicLibrary = new MusicLibrary();
+#pragma warning restore IDE0044 // Add readonly modifier
+
+#pragma warning disable IDE0044 // Add readonly modifier
         private MusicLibrary _themeMusicLibrary = new MusicLibrary();
+#pragma warning restore IDE0044 // Add readonly modifier
         #endregion
 
         #region Properties

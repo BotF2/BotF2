@@ -1696,9 +1696,10 @@ namespace Supremacy.Orbitals
             }
 
             var buildOutput = project.ProductionCenter.GetBuildOutput(0);
-            var resources = new ResourceValueCollection();
-
-            resources[ResourceType.RawMaterials] = civManager.Resources[ResourceType.RawMaterials].CurrentValue;
+            var resources = new ResourceValueCollection
+            {
+                [ResourceType.RawMaterials] = civManager.Resources[ResourceType.RawMaterials].CurrentValue
+            };
 
             var usedResources = resources.Clone();
 
