@@ -206,12 +206,13 @@ namespace Supremacy.Orbitals
                          _percent = slot.Project.PercentComplete.ToString();
                     }
                     GameLog.Core.SaveLoad.DebugFormat(
-                        "ShipyardSlotID = " + slot.SlotID
+                        "Slot= " + slot.SlotID
                         + " at " + slot.Shipyard.Name
-                        + " (" + slot.Shipyard.Location
-                        + " ) doing " + _design
+                        /*+ " ("*/ + slot.Shipyard.Location
                         + " " + _percent
-                        + " percent done " //+ slot.Project.BuildDesign
+                        + " done for " + _design
+
+                        //+ " percent done " //+ slot.Project.BuildDesign
                         );
                 }
             } catch { };

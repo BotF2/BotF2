@@ -1,6 +1,7 @@
 ﻿// File:ShipOverview.xaml.cs  
 using Supremacy.Client.Commands;
 using Supremacy.Client.Controls;
+using Supremacy.Entities;
 using Supremacy.Game;
 using Supremacy.Orbitals;
 using Supremacy.Universe;
@@ -25,7 +26,7 @@ namespace Supremacy.Client.Dialogs
         private IEnumerable<SitRepEntry> _sitRepEntries;
         private string _previousSitRepCommentText;
         private static Dictionary<int, string> _SitRepComments = new Dictionary<int, string>(); // { { "98", false } };
-
+        public string newline = Environment.NewLine;
 
         public ShipOverview()
         {
@@ -176,12 +177,24 @@ namespace Supremacy.Client.Dialogs
             {
                 //_sitRepEntries.OrderBy(_sitRepEntries, SitRepPriority);
 
+
+                //var civ = GameContext.Current.CivilizationManagers[0].Civilization;
+                //var rep = new ScienceSummarySitRepEntry(civ,  "hello");
+
+
+                //_sitRepEntries.Add(rep);// = new List<SitRepEntry> { { 0, "Hello" } };
+
                 _sitRepEntries = _sitRepEntries.OrderByDescending(x => x.Priority).ToList();
-                //foreach (var item in _sitRepEntries)
-                //{
-                //    item.
-                //}
-                return _sitRepEntries; 
+
+                string _text = "Out of ShipOverview: " + newline;
+                foreach (var item in _sitRepEntries)
+                {
+                    _text += item.SummaryText + newline;
+                }
+                Console.WriteLine(_text);
+                GameLog.Client.SitReps.DebugFormat(_text);
+                return _sitRepEntries;
+                //return rep;
             }
             set
             {

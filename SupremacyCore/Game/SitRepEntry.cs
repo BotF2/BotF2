@@ -2163,6 +2163,26 @@ namespace Supremacy.Game
     // End of SitRepEntry
 
     [Serializable]
+    public class ShipSummarySitRepEntry : SitRepEntry
+    {
+        private readonly string _note;
+        //private readonly MapLocation _loc;
+
+        public ShipSummarySitRepEntry(Civilization owner, string Note) : base(owner, SitRepPriority.Gray)
+        { /*_loc = loc;*/ _note = Note; }
+
+        public string Note { get { return _note; } }
+        public override SitRepCategory Categories { get { return SitRepCategory.Military; } }
+        //public override SitRepAction Action { get { return SitRepAction.CenterOnSector; } }
+        //public override object ActionTarget { get { return GameContext.Current.Universe.Map[_loc]; } }
+        public override bool IsPriority { get { return true; } }
+        public override string SitRepComment { get; set; }
+        public override string SummaryText { get { return _note; } }
+
+    }
+    // End of SitRepEntry
+
+    [Serializable]
     public class SupernovaSitRepEntry : SitRepEntry // not Supernovai
     {
         private readonly int _colonyID;

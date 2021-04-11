@@ -1,4 +1,5 @@
-﻿    <!--File:ShipOverview.xaml-->
+﻿<!--File:ShipOverview.xaml    >>>>>>>> now included into SitRep -->
+<!--<dialogs:Dialog x:Class="Supremacy.Client.Dialogs.SitRepDialog-->
 <dialogs:Dialog x:Class="Supremacy.Client.Dialogs.ShipOverview"
                 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -7,13 +8,13 @@
                 xmlns:dialogs="clr-namespace:Supremacy.Client.Dialogs"
                 xmlns:controls="clr-namespace:Supremacy.Client.Controls"
                 IsModal="False"
-                Header="Ships OVerview"
+                Header="Ships Overview >>>>>>>> now included into SitRep"
                 MinHeight="600"
                 Width="1020">
 
   <dialogs:Dialog.Resources>
-    <DataTemplate x:Key="SitRepEntryTemplate"
-                  DataType="{x:Type s:SitRepEntry}">
+        <DataTemplate x:Key="ShipOverviewTemplate"
+            DataType="{x:Type s:SitRepEntry}">
       <DockPanel LastChildFill="True">
                 <!--<TextBlock VerticalAlignment="Center"   // not used
                    Text="- text space for player - not saved" />-->
@@ -172,7 +173,7 @@
                Text="{scc:StringResource Key=SITREP_DIALOG_HEADER, Case=Upper}" />-->
 
         <!--ListView-->
-        <ListView x:Name="ItemsView" ItemTemplate="{StaticResource SitRepEntryTemplate}" 
+        <ListView x:Name="ItemsView" ItemTemplate="{StaticResource ShipOverviewTemplate}" 
               Background="Black" ScrollViewer.HorizontalScrollBarVisibility="Auto" BorderBrush="{DynamicResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"
               Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="8" MouseDoubleClick="OnSitRepEntryDoubleClick">
             
