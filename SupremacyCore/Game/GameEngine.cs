@@ -41,8 +41,7 @@ namespace Supremacy.Game
 
         public int _gameTurnNumber = 0;  // internal use
         public string blank = " ";
-
-        List<CivValue> CivValueList = new List<CivValue>();
+        readonly List<CivValue> CivValueList = new List<CivValue>();
         public string newline = Environment.NewLine;
 
         #region Public Members
@@ -102,9 +101,7 @@ namespace Supremacy.Game
                 }
             }
 
-            var handler = TurnPhaseChanged;
-            if (handler != null)
-                handler(phase);
+            TurnPhaseChanged?.Invoke(phase);
         }
         #endregion
 
@@ -125,9 +122,7 @@ namespace Supremacy.Game
                 }
             }
 
-            var handler = TurnPhaseFinished;
-            if (handler != null)
-                handler(phase);
+            TurnPhaseFinished?.Invoke(phase);
         }
         #endregion
 
@@ -138,9 +133,7 @@ namespace Supremacy.Game
         /// <param name="fleet">A Fleet whose Location just changed.</param>
         private void OnFleetLocationChanged(Fleet fleet)
         {
-            var handler = FleetLocationChanged;
-            if (handler != null)
-                handler(this, new ParameterEventArgs<Fleet>(fleet));
+            FleetLocationChanged?.Invoke(this, new ParameterEventArgs<Fleet>(fleet));
         }
         #endregion
 
@@ -563,10 +556,10 @@ namespace Supremacy.Game
 
             foreach (var fleet in allFleets)
             {
-                string _text = "";
+                string _text;
                 int shipNum = fleet.Ships.Count();
                 string name = fleet.Name;
-                if (fleet.UnitAIType == UnitAIType.PostEscort)
+                if (fleet.UnitAIType == UnitAIType.Reserve)
                     GameLog.Client.AI.DebugFormat("*** Reserve, Turn# = {0} Owner = {1} Fleet location ={2}, UnitAIType ={3}, UnitActivity ={4} Actibvity Duration ={5} Activity Start ={6}",
                         GameContext.Current.TurnNumber, fleet.Owner.Name, fleet.Location, fleet.UnitAIType, fleet.Activity, fleet.ActivityDuration, fleet.ActivityStart);
                 if (shipNum >=5 && fleet.UnitAIType != UnitAIType.SystemDefense)
@@ -1227,8 +1220,7 @@ namespace Supremacy.Game
 
             foreach (var invadingFleet in invadingFleets)
             {
-                var assaultOrder = invadingFleet.Order as AssaultSystemOrder;
-                if (assaultOrder != null && !assaultOrder.IsValidOrder(invadingFleet))
+                if (invadingFleet.Order is AssaultSystemOrder assaultOrder && !assaultOrder.IsValidOrder(invadingFleet))
                     invadingFleet.SetOrder(invadingFleet.GetDefaultOrder());
             }
 
@@ -1362,36 +1354,30 @@ namespace Supremacy.Game
             switch (starType)
                     {
                         case StarType.Nebula:
-                            researchGained = researchGained * 5;
+                            researchGained *= 5;  // multiplied with 5
                             break;
                         case StarType.Blue:
                         case StarType.Orange:
                         case StarType.Red:
                         case StarType.White:
                         case StarType.Yellow:
-                            researchGained = researchGained * 10;
+                            researchGained *= 10;
                             break;
+
                         case StarType.XRayPulsar:
                         case StarType.RadioPulsar:
-
-
-
-
                         case StarType.NeutronStar:
-                            researchGained = researchGained * 15;
+                            researchGained *= 15;
                             break;
+
                         case StarType.BlackHole:
                         case StarType.Quasar:
-                            researchGained = researchGained * 20;
-
-
-
+                            researchGained *= 20;
                             break;
+
                         case StarType.Wormhole:
-                            researchGained = researchGained * 30;
+                            researchGained *= 30;
                             break; 
-
-
 
                         default:
                             researchGained = 1;
@@ -1952,10 +1938,12 @@ namespace Supremacy.Game
                             {
                                 // Rushing a project should have no impact on the industry of colony (since it's all been paid for)
                                 int tmpIndustry = colony.BuildSlots[0].Project.GetCurrentIndustryCost();
-                                ResourceValueCollection tmpResources = new ResourceValueCollection();
-                                tmpResources[ResourceType.Deuterium] = 999999;
-                                tmpResources[ResourceType.Dilithium] = 999999;
-                                tmpResources[ResourceType.RawMaterials] = 999999;
+                                ResourceValueCollection tmpResources = new ResourceValueCollection
+                                {
+                                    [ResourceType.Deuterium] = 999999,
+                                    [ResourceType.Dilithium] = 999999,
+                                    [ResourceType.RawMaterials] = 999999
+                                };
                                 civManager.Credits.AdjustCurrent(colony.BuildSlots[0].Project.GetTotalCreditsCost());
                                 colony.BuildSlots[0].Project.Advance(ref tmpIndustry, tmpResources);
                                 GameLog.Core.Production.DebugFormat("Turn {4}: BUY: {0} credits applied to {1} on {2} ({3})",
@@ -2073,10 +2061,12 @@ namespace Supremacy.Game
                     colonies.RandomizeInPlace();
 
                     //Get the resources available for the civilization
-                    ResourceValueCollection totalResourcesAvailable = new ResourceValueCollection();
-                    totalResourcesAvailable[ResourceType.Deuterium] = civManager.Resources.Deuterium.CurrentValue;
-                    totalResourcesAvailable[ResourceType.Dilithium] = civManager.Resources.Dilithium.CurrentValue;
-                    totalResourcesAvailable[ResourceType.RawMaterials] = civManager.Resources.RawMaterials.CurrentValue;
+                    ResourceValueCollection totalResourcesAvailable = new ResourceValueCollection
+                    {
+                        [ResourceType.Deuterium] = civManager.Resources.Deuterium.CurrentValue,
+                        [ResourceType.Dilithium] = civManager.Resources.Dilithium.CurrentValue,
+                        [ResourceType.RawMaterials] = civManager.Resources.RawMaterials.CurrentValue
+                    };
 
                     foreach (var colony in colonies)
                     {
@@ -2701,8 +2691,7 @@ namespace Supremacy.Game
         public void DoAIPlayers(object gameContext, List<Civilization> autoTurnCiv)
         {
             var errors = new System.Collections.Concurrent.ConcurrentStack<Exception>();
-            var game = gameContext as GameContext;
-            if (game == null)
+            if (!(gameContext is GameContext game))
                 throw new ArgumentException("gameContext must be a valid GameContext instance");
 
             GameContext.PushThreadContext(game);
@@ -2773,9 +2762,7 @@ namespace Supremacy.Game
             if (combat == null)
                 throw new ArgumentNullException("combat");
 
-            var handler = CombatOccurring;
-            if (handler != null)
-                handler(combat);
+            CombatOccurring?.Invoke(combat);
         }
         #endregion
 
@@ -2790,9 +2777,7 @@ namespace Supremacy.Game
             if (invasionArena == null)
                 throw new ArgumentNullException("invasionArena");
 
-            var handler = InvasionOccurring;
-            if (handler != null)
-                handler(invasionArena);
+            InvasionOccurring?.Invoke(invasionArena);
         }
         #endregion
 
