@@ -506,8 +506,7 @@ namespace Supremacy.AI
                                 }
                                 if (fleet.Activity == UnitActivity.NoActivity || fleet.Route.IsEmpty || fleet.Order.IsComplete)
                                 {
-                                    Colony bestSystemForDiplomacy;
-                                    if (GetBestColonyForDiplomacy(fleet, out bestSystemForDiplomacy))
+                                    if (GetBestColonyForDiplomacy(fleet, out Colony bestSystemForDiplomacy))
                                     {
                                         if (bestSystemForDiplomacy.OwnerID < 6)
                                         {
@@ -540,8 +539,7 @@ namespace Supremacy.AI
                             {
                                 if (fleet.Activity == UnitActivity.NoActivity || fleet.Route.IsEmpty || fleet.Order.IsComplete)
                                 {
-                                    Colony bestSystemForSpying;
-                                    if (GetBestColonyForSpying(fleet, out bestSystemForSpying))
+                                    if (GetBestColonyForSpying(fleet, out Colony bestSystemForSpying))
                                     {
                                         if (bestSystemForSpying != null && bestSystemForSpying.OwnerID < 6)
                                         {
@@ -578,8 +576,7 @@ namespace Supremacy.AI
                             {
                                 if (fleet.Activity == UnitActivity.NoActivity || fleet.Route.IsEmpty || fleet.Order.IsComplete)
                                 {
-                                    StarSystem bestSystemForScience;
-                                    if (GetBestSystemForScience(fleet, out bestSystemForScience))
+                                    if (GetBestSystemForScience(fleet, out StarSystem bestSystemForScience))
                                     {
                                         if (bestSystemForScience != null)
                                         {
