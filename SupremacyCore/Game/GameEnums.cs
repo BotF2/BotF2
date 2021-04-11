@@ -1,4 +1,4 @@
-// Enums.cs
+// File:GameEnums.cs
 //
 // Copyright (c) 2007 Mike Strobel
 //
@@ -117,10 +117,10 @@ namespace Supremacy.Game
         Constructor,
         Building, //construction fleet set to build
         Attack,
-        Defense, // an "escort" that needs to catch up with a construction ship that is already left home system
+        //Defense, // an "escort" that needs to catch up with a construction ship that is already left home system
         Spy,
         Science,
-        PostEscort, // combat ships that were in an fleet to escort but can now go home
+        //PostEscort, // combat ships that were in an fleet to escort but can now go home
         Raider,
         Diplomatic,
         Reserve,

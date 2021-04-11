@@ -97,9 +97,9 @@ namespace Supremacy.Orbitals
                         }
 
                         if (ship.IsCloaked)
-                            _NameString = _NameString + String.Format(ResourceManager.GetString("CLOAKED"));
+                            _NameString += String.Format(ResourceManager.GetString("CLOAKED"));
                         if (ship.IsCamouflaged)
-                            _NameString = _NameString + String.Format(ResourceManager.GetString("CAMOUFLAGED"));
+                            _NameString += String.Format(ResourceManager.GetString("CAMOUFLAGED"));
                     }
 
                     if (design == null || design.Name == null)
@@ -448,7 +448,7 @@ namespace Supremacy.Orbitals
         {
             get { return Ships.Count == 1 && Ships[0].ShipType == ShipType.Colony; }
         }
-        public bool multiFleetHasAColonizer
+        public bool MultiFleetHasAColonizer
         {
             get { return (Ships.Any(s => s.ShipType == ShipType.Colony) && Ships.Any(t => t.ShipType >= ShipType.FastAttack)); }
         }
@@ -456,7 +456,7 @@ namespace Supremacy.Orbitals
         {
             get { return Ships.Count == 1 && Ships[0].ShipType == ShipType.Construction; }
         }
-        public bool multiFleetHasAConstructor
+        public bool MultiFleetHasAConstructor
         {
             get { return (Ships.Any(s =>s.ShipType == ShipType.Construction) && Ships.Any(t => t.ShipType >= ShipType.FastAttack)); }
         }

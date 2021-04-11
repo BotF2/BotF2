@@ -1,4 +1,4 @@
-﻿// File:ShipOverview.xaml.cs  
+﻿// File:ShipOverview.xaml.cs  >>>>>>>> now included into SitRep -->
 using Supremacy.Client.Commands;
 using Supremacy.Client.Controls;
 using Supremacy.Entities;
@@ -25,7 +25,7 @@ namespace Supremacy.Client.Dialogs
         private SitRepCategory _visibleCategories;
         private IEnumerable<SitRepEntry> _sitRepEntries;
         private string _previousSitRepCommentText;
-        private static Dictionary<int, string> _SitRepComments = new Dictionary<int, string>(); // { { "98", false } };
+        //private static Dictionary<int, string> _SitRepComments = new Dictionary<int, string>(); // { { "98", false } };
         public string newline = Environment.NewLine;
 
         public ShipOverview()
