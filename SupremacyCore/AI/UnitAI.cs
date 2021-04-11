@@ -21,8 +21,6 @@ using Supremacy.Utility;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Windows.Media;
-using static Supremacy.Orbitals.BuildStationOrder;
 
 namespace Supremacy.AI
 {
@@ -1478,6 +1476,9 @@ namespace Supremacy.AI
                 possibleColonies = GameContext.Current.Universe.Find<Colony>()
                 //We need to know about it (no cheating)
                 .Where(s => mapData.IsScanned(s.Location) && mapData.IsExplored(s.Location))
+                // Borg do not play well with others
+                .Where(d => d.Owner.Key != "BORG" && fleet.Owner.Key != "BORG")
+                .Where(d => d.Owner.Key == "BORG" && fleet.Owner.Key == "BORG")
                 //In fuel range
                 .Where(c => FleetHelper.IsSectorWithinFuelRange(c.Sector, fleet)
                 //Where we can enter the sector
