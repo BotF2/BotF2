@@ -17,6 +17,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Supremacy.PaceAndEmpirePower; // Project Pace and empire power
 using Supremacy.Universe;
+using Supremacy.Tech;
 
 namespace Supremacy.Combat
 {
@@ -46,7 +47,6 @@ namespace Supremacy.Combat
                     || s.Item1.Source.OrbitalDesign.Key.Contains("FRIGATE")
                     || (s.Item1.Source.OrbitalDesign.ShipType == "Scout"))
                     && !s.Item1.IsDestroyed && GetCombatOrder(s.Item1.Source) == CombatOrder.Retreat)
-
                     .ToList();
 
                 foreach (Tuple<CombatUnit, CombatWeapon[]> ship in easyRetreatShips)
@@ -1983,70 +1983,68 @@ namespace Supremacy.Combat
             List<Tuple<CombatUnit, CombatWeapon[]>> _stayingThereShips = new List<Tuple<CombatUnit, CombatWeapon[]>>();
             List<Tuple<CombatUnit, CombatWeapon[]>> _allRetreatShips = new List<Tuple<CombatUnit, CombatWeapon[]>>();
 
-            // cases:    (minors as well)
-
-            // Attacker   CARD + ROM
-            // Defense    FED + Kling
-
             Civilization firstShipOwner = _combatShipsTempNotDestroyed.FirstOrDefault()?.Item1.Owner;
-            
-            var theSector = _combatShipsTempNotDestroyed.FirstOrDefault().Item1.Source.Sector;
-            String systemName = "";
-            if (theSector.System != null)
-            {
-                systemName = _combatShipsTempNotDestroyed.FirstOrDefault().Item1.Source.Sector.System.Name;
-                // if combat is in a system what is it's name?
-            }
-            
-            bool foundStation = false;
-            if (_combatStation != null && !_combatStation.Item1.IsDestroyed)
-            {
-                foundStation = true;
-            }
 
-            foreach (Tuple<CombatUnit, CombatWeapon[]> ship in _combatShipsTempNotDestroyed)
-             {
-                if (foundStation || systemName != "") // is someone defending a station or a home system?
+            List<Tuple<CombatUnit, CombatWeapon[]>> constructOrColonyShips = _combatShips
+                    .Where(s => ((s.Item1.Source.OrbitalDesign.ShipType == "Construction")
+                    || (s.Item1.Source.OrbitalDesign.ShipType == "Colony"))
+                    && !s.Item1.IsDestroyed)
+                    .ToList();
+            if (_combatShipsTempNotDestroyed.Count() > 0)
+            {
+
+                var theSector = _combatShipsTempNotDestroyed.FirstOrDefault().Item1.Source.Sector;
+                String systemName = "";
+                if (theSector.System != null)
                 {
-                    if ((_combatStation != null && !CombatHelper.WillEngage(ship.Item1.Owner, _combatStation.Item1.Owner))
-                        || systemName == ship.Item1.Owner.HomeSystemName)
-                    {
-                        _stayingThereShips.Add(ship);
-                    }
-                    else
-                    {
-                        _allRetreatShips.Add(ship);
-                        //GameLog.Core.CombatDetails.DebugFormat("added to _allRetreatShips = {0} {1}", ship.Item1.Name, ship.Item1.Description);
-                    }
+                    systemName = _combatShipsTempNotDestroyed.FirstOrDefault().Item1.Source.Sector.System.Name;
+                    // if combat is in a system what is it's name?
                 }
-                else
+
+                bool foundStation = false;
+                if (_combatStation != null && !_combatStation.Item1.IsDestroyed)
                 {
-                    if (!CombatHelper.WillEngage(ship.Item1.Owner, firstShipOwner))
+                    foundStation = true;
+                }
+
+                foreach (Tuple<CombatUnit, CombatWeapon[]> ship in _combatShipsTempNotDestroyed)
+                {
+                    if (systemName != "" && (systemName == ship.Item1.Owner.HomeSystemName || (theSector.System.Owner != null && !CombatHelper.WillEngage(ship.Item1.Owner, theSector.System.Owner))))
+                        _stayingThereShips.Add(ship); // at a home system to defend
+                    else if (foundStation && !CombatHelper.WillEngage(ship.Item1.Owner, _combatStation.Item1.Owner))
+                        _stayingThereShips.Add(ship); // at a station to defend
+                    else if (constructOrColonyShips.Count() > 0) //
                     {
-                        _stayingThereShips.Add(ship);
-                        //GameLog.Core.CombatDetails.DebugFormat("added to _stayingThereShips = {0} {1}", ship.Item1.Name, ship.Item1.Description);
+                        CombatUnit firstConstrutorOrColonyCombatUnit = constructOrColonyShips.FirstOrDefault()?.Item1;
+                        if (ship.Item1.Owner == firstConstrutorOrColonyCombatUnit.Owner || !CombatHelper.WillEngage(ship.Item1.Owner, firstConstrutorOrColonyCombatUnit.Owner))
+                            _stayingThereShips.Add(ship); // first owner of a colony or construction ship stays
+                        else
+                            _allRetreatShips.Add(ship);
                     }
+                    else if (firstShipOwner != null && !CombatHelper.WillEngage(ship.Item1.Owner, firstShipOwner))
+                        _stayingThereShips.Add(ship); // otherwise who is first stays
                     else
-                    {
                         _allRetreatShips.Add(ship);
-                        //GameLog.Core.CombatDetails.DebugFormat("added to _allRetreatShips = {0} {1}", ship.Item1.Name, ship.Item1.Description);
-                    }
+                    //GameLog.Core.CombatDetails.DebugFormat("added to _allRetreatShips = {0} {1}", ship.Item1.Name, ship.Item1.Description);
+
                 }
             }
-
-            foreach (Tuple<CombatUnit, CombatWeapon[]> ship in _allRetreatShips)
+            if (_allRetreatShips.Count() > 0)
             {
-                if (ship.Item1 != null)
+                foreach (Tuple<CombatUnit, CombatWeapon[]> ship in _allRetreatShips)
                 {
-                    GameLog.Core.CombatDetails.DebugFormat("END retreated ship = {0} {1}", ship.Item1.Name, ship.Item1.Description);
-                    CombatAssets ownerAssets = GetAssets(ship.Item1.Owner);
-                    if (!ownerAssets.EscapedShips.Contains(ship.Item1))
+                    if (ship.Item1 != null)
                     {
-                        GameLog.Core.CombatDetails.DebugFormat("END EscapedShips = {0} {1}", ship.Item1.Name, ship.Item1.Description);
-                        ownerAssets.EscapedShips.Add(ship.Item1);
-                        _ = ownerAssets.CombatShips.Remove(ship.Item1);
-                        _ = ownerAssets.NonCombatShips.Remove(ship.Item1);
-                        _ = _combatShips.Remove(ship);
+                        GameLog.Core.CombatDetails.DebugFormat("END retreated ship = {0} {1}", ship.Item1.Name, ship.Item1.Description);
+                        CombatAssets ownerAssets = GetAssets(ship.Item1.Owner);
+                        if (!ownerAssets.EscapedShips.Contains(ship.Item1))
+                        {
+                            GameLog.Core.CombatDetails.DebugFormat("END EscapedShips = {0} {1}", ship.Item1.Name, ship.Item1.Description);
+                            ownerAssets.EscapedShips.Add(ship.Item1);
+                            _ = ownerAssets.CombatShips.Remove(ship.Item1);
+                            _ = ownerAssets.NonCombatShips.Remove(ship.Item1);
+                            _ = _combatShips.Remove(ship);
+                        }
                     }
                 }
             }
