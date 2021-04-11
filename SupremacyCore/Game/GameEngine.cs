@@ -560,20 +560,6 @@ namespace Supremacy.Game
         {
             var allFleets = GameContext.Current.Universe.Find<Fleet>().ToList();
 
-            //if (UnitAI.FedTransitFleet != null && UnitAI.FedTransitFleet.Ships.Count() > 0)
-            //    allFleets.Add(UnitAI.FedTransitFleet);
-            //if (UnitAI.TerranTransitFleet != null && UnitAI.TerranTransitFleet.Ships.Count() > 0)
-            //    allFleets.Add(UnitAI.TerranTransitFleet);
-            //if (UnitAI.RomTransitFleet != null && UnitAI.RomTransitFleet.Ships.Count() > 0)
-            //    allFleets.Add(UnitAI.RomTransitFleet);
-            //if (UnitAI.KlingTransitFleet != null && UnitAI.KlingTransitFleet.Ships.Count() > 0)
-            //    allFleets.Add(UnitAI.KlingTransitFleet);
-            //if (UnitAI.CardTransitFleet != null && UnitAI.CardTransitFleet.Ships.Count() > 0)
-            //    allFleets.Add(UnitAI.CardTransitFleet);
-            //if (UnitAI.DomTransitFleet != null && UnitAI.DomTransitFleet.Ships.Count() > 0)
-            //    allFleets.Add(UnitAI.DomTransitFleet);
-            //if (UnitAI.BorgTransitFleet != null && UnitAI.BorgTransitFleet.Ships.Count() > 0)
-            //    allFleets.Add(UnitAI.BorgTransitFleet);
 
             foreach (var fleet in allFleets)
             {
@@ -581,7 +567,7 @@ namespace Supremacy.Game
                 int shipNum = fleet.Ships.Count();
                 string name = fleet.Name;
                 if (fleet.UnitAIType == UnitAIType.PostEscort)
-                    GameLog.Client.AI.DebugFormat("*** PostEscort, Turn# = {0} Owner = {1} Fleet location ={2}, UnitAIType ={3}, UnitActivity ={4} Actibvity Duration ={5} Activity Start ={6}",
+                    GameLog.Client.AI.DebugFormat("*** Reserve, Turn# = {0} Owner = {1} Fleet location ={2}, UnitAIType ={3}, UnitActivity ={4} Actibvity Duration ={5} Activity Start ={6}",
                         GameContext.Current.TurnNumber, fleet.Owner.Name, fleet.Location, fleet.UnitAIType, fleet.Activity, fleet.ActivityDuration, fleet.ActivityStart);
                 if (shipNum >=5 && fleet.UnitAIType != UnitAIType.SystemDefense)
                     GameLog.Client.AI.DebugFormat("*** >5 and Not SystemDefence, Turn# = {0} Owner = {1} Fleet location ={2}, UnitAIType ={3}, UnitActivity ={4} Actibvity Duration ={5} Activity Start ={6}",
