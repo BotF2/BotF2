@@ -31,17 +31,15 @@ namespace Supremacy.Client.Markup
                 //works 
                 GameLog.Client.UI.DebugFormat("SharedResourceDictionary.cs: _sourceUri={0}", value);
 
-                ResourceDictionary sharedDictionary;
-
-                if (SharedDictionaries.TryGetValue(value, out sharedDictionary))
+                if (SharedDictionaries.TryGetValue(value, out ResourceDictionary sharedDictionary))
                 {
                     // If the dictionary is already loaded, get it from the cache
                     MergedDictionaries.Add(sharedDictionary);
 
                     if (MergedDictionaries != null)
                     {
-                        int _dicCount = MergedDictionaries.Count;
-                        string _allText = Environment.NewLine + "a;b;c;d;e;(Headline for Excel);g;" + Environment.NewLine; 
+                        //int _dicCount = MergedDictionaries.Count;
+                        string _allText = Environment.NewLine + "a;b;c;d;e;(Headline for Excel);g;" + Environment.NewLine;
                         int _allValue = 0;
                         string _text0 = MergedDictionaries[0].Source.ToString();
 
@@ -52,7 +50,7 @@ namespace Supremacy.Client.Markup
 
                             foreach (var key in item.Keys)
                             {
-                                string _text2 = key.ToString(); 
+                                string _text2 = key.ToString();
                                 //Console.WriteLine(_text1 + "-" +_text2);   // MergedDictionaries
                                 _allValue += +1;
                                 _allText += _text0 + ";" + _text1 + ";" + _allValue + ";" + _text2 + Environment.NewLine;

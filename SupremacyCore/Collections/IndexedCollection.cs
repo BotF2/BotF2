@@ -985,8 +985,7 @@ namespace Supremacy.Collections
         private static bool HasIndexablePropertyOnLeft<T>(E leftSide, IndexedCollection<T> sourceCollection)
         {
             return leftSide.NodeType == ExpressionType.MemberAccess
-                ? sourceCollection.PropertyHasIndex(((MemberExpression)leftSide).Member.Name)
-                : false;
+                    && sourceCollection.PropertyHasIndex(((MemberExpression)leftSide).Member.Name);
         }
 
         private static int? GetHashRight<T>(IndexedCollection<T> sourceCollection, E leftSide, E rightSide)

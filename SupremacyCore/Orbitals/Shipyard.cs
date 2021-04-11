@@ -149,7 +149,7 @@ namespace Supremacy.Orbitals
                 GameLog.Client.ShipProduction.DebugFormat("Shipyard before BuildQueueItem = {0}, index {1}", buildQueueItem.Description, count);
                 count++;
             }
-            int bays = BuildSlots.Count();
+            //int bays = BuildSlots.Count();
             int baysWithProjects = 0;
             foreach (var slot in BuildSlots)
             {

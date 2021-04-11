@@ -145,7 +145,7 @@ namespace Supremacy.Orbitals
                     return OrderName;
 
                 var fleet = Fleet;
-                var sector = (fleet != null) ? fleet.Sector.Name : null;
+                var sector = fleet?.Sector.Name;  // checking for Sector existing and Name
 
                 //GameLog.Core.Combat.DebugFormat("getting Status of Assault System...returning {0}", string.Format(statusFormat, sector));
                 return string.Format(statusFormat, sector);
@@ -1060,11 +1060,6 @@ namespace Supremacy.Orbitals
                 Fleet.Route = TravelRoute.Empty;
         }
 
-
-        private void CreateInfluence(Civilization civ, StarSystem system)
-        {
-            
-        }
     }
 
     #endregion
@@ -1854,8 +1849,7 @@ namespace Supremacy.Orbitals
                 return;
             if (Fleet.Route.IsEmpty && (Fleet.UnitAIType != UnitAIType.SystemAttack || Fleet.UnitAIType != UnitAIType.Reserve))
             {
-                Sector bestSector;
-                if (UnitAI.GetBestSectorToExplore(Fleet, out bestSector))
+                if (UnitAI.GetBestSectorToExplore(Fleet, out Sector bestSector))
                 {
                     Fleet.SetRouteInternal(AStar.FindPath(Fleet, PathOptions.SafeTerritory, null, new List<Sector> { bestSector }));
                     Fleet.UnitAIType = UnitAIType.Explorer;

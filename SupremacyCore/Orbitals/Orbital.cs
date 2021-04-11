@@ -157,8 +157,7 @@ namespace Supremacy.Orbitals
                 var rankTable = GameContext.Current.Tables.ShipTables["ExperienceRanks"];
                 for (int i = 0; i < rankTable.Rows.Count; i++)
                 {
-                    int minimum;
-                    if (int.TryParse(rankTable[i][0], out minimum))
+                    if (int.TryParse(rankTable[i][0], out int minimum))
                     {
                         if (ExperienceLevel >= minimum)
                         {

@@ -650,12 +650,12 @@ namespace Supremacy.UI
 
         private bool IsExplored(Sector sector)
         {
-            return sector == null ? false : AppContext.LocalPlayerEmpire.MapData.IsExplored(sector.Location);
+            return sector != null && AppContext.LocalPlayerEmpire.MapData.IsExplored(sector.Location);
         }
 
         private bool IsScanned(Sector sector)
         {
-            return sector == null ? false : AppContext.LocalPlayerEmpire.MapData.IsScanned(sector.Location);
+            return sector != null && AppContext.LocalPlayerEmpire.MapData.IsScanned(sector.Location);
         }
         #endregion
     }

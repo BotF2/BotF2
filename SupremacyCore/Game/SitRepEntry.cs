@@ -2101,7 +2101,8 @@ namespace Supremacy.Game
         {
             get
             {
-                string StarTypeFullText = ".";
+                string StarTypeFullText;
+
                 if (ScienceShip != null) // science ship destroyed < null ref 
                 {
                     switch (ScienceShip.Sector.System.StarType)

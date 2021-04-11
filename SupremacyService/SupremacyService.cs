@@ -260,9 +260,7 @@ namespace Supremacy.WCF
 
         internal void DropPlayer(Player player)
         {
-            ServerPlayerInfo playerInfo;
-
-            if (_playerInfo.TryGetValue(player, out playerInfo))
+            if (_playerInfo.TryGetValue(player, out ServerPlayerInfo playerInfo))
                 return;
 
             DropPlayer(playerInfo);
@@ -437,9 +435,7 @@ namespace Supremacy.WCF
 
         internal ISupremacyCallback GetPlayerCallback(Player player)
         {
-            ServerPlayerInfo playerInfo;
-
-            if (_playerInfo.TryGetValue(player, out playerInfo))
+            if (_playerInfo.TryGetValue(player, out ServerPlayerInfo playerInfo))
                 return playerInfo.Callback;
 
             return null;
@@ -788,8 +784,7 @@ namespace Supremacy.WCF
 
         private void OnChannelClosing(object sender, EventArgs e)
         {
-            var channel = sender as IContextChannel;
-            if (channel == null)
+            if (!(sender is IContextChannel channel))
                 return;
 
             ClearChannelClosingHandling(channel);
@@ -805,7 +800,7 @@ namespace Supremacy.WCF
         {
             lock (_playerInfo.SyncRoot)
             {
-                var currentInvasion = _invasionEngine != null ? _invasionEngine.InvasionArena : null;
+                var currentInvasion = _invasionEngine?.InvasionArena;
                 if (currentInvasion != null &&
                     currentInvasion.InvaderID == player.EmpireID)
                 {
@@ -1076,10 +1071,7 @@ namespace Supremacy.WCF
 
         public HostGameResult HostGame([NotNull] GameInitData initData, out Player localPlayer, out LobbyData lobbyData)
         {
-            if (initData == null)
-                throw new ArgumentNullException("initData");
-
-            _gameInitData = initData;
+            _gameInitData = initData ?? throw new ArgumentNullException("initData");
 
             localPlayer = null;
             lobbyData = null;
@@ -1465,10 +1457,12 @@ namespace Supremacy.WCF
                     return;
                 }
 
-                Civilization _target = new Civilization(); // The AI generates a dummy target for non-human player civ
-                _target.ShortName = "Only Return Fire";
-                _target.CivID = 888; 
-                _target.Key = "Only Return Fire";
+                Civilization _target = new Civilization
+                {
+                    ShortName = "Only Return Fire",
+                    CivID = 888,
+                    Key = "Only Return Fire"
+                }; // The AI generates a dummy target for non-human player civ
 
                 var blanketOrder = CombatOrder.Engage;
                 var blanketTargetOne = _target;
