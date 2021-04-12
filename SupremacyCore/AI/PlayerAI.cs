@@ -10,15 +10,12 @@
 
 using System;
 using System.Collections.Generic;
-//using System.Linq;
 using Obtics.Collections;
-using Supremacy.Combat;
 using Supremacy.Diplomacy;
 using Supremacy.Entities;
 using Supremacy.Game;
 using Supremacy.Intelligence;
 using Supremacy.Orbitals;
-
 using Supremacy.Universe;
 using Supremacy.Utility;
 
@@ -71,68 +68,32 @@ namespace Supremacy.AI
 
             //var possibleInvadeMinorCivs = GameContext.Current.Civilizations.Where(o => o.IsEmpire == false).ToList();
 
-            if (Civ.IsEmpire && Civ.Traits.Contains("Warlike"))
+            if (Civ.IsEmpire && GameContext.Current.TurnNumber > 5)
             {
-                if (Civ.TargetCivilization != null  && GameContext.Current.TurnNumber > 5)
+                if (Civ.Traits.Contains("Warlike"))
                 {
-                    int civFirePower = CalculateFirePower(Civ);
-                    int targetFirePower = CalculateFirePower(Civ.TargetCivilization);
-                    if ( civFirePower < targetFirePower)
+                    if (Civ.TargetCivilization != null)
                     {
-                        Civ.TargetCivilization = null;
+                        TurnOffTargetCiv(Civ);
                     }
-                    else if (IsCivDefeated(Civ.TargetCivilization)) 
+                    else if (Civ.TargetCivilization == null) //AI empire so look for invasion conditions
                     {
-                        Civ.TargetCivilization = null;
-                        // break down the fleet in UnitAI
+                        FindTargetCiv(Civ);
                     }
                 }
-
-                else if (Civ.TargetCivilization == null && GameContext.Current.TurnNumber > 5) //AI empire so look for invasion conditions
+                else if (DiplomacyHelper.IsAtWar(Civ))
                 {
-                    var possibleInvasionCivs = GameContext.Current.Civilizations.Where(o => o.IsEmpire).ToList();
-                    foreach (Civilization possibleInvasionCiv in possibleInvasionCivs)
+                    if (Civ.TargetCivilization != null)
                     {
-                        Double lastRange = 999;
-
-                        if (DiplomacyHelper.IsContactMade(Civ, possibleInvasionCiv)
-                            && !GameContext.Current.CivilizationManagers[possibleInvasionCiv].IsHomeColonyDestroyed
-                            && !DiplomacyHelper.AreAllied(possibleInvasionCiv, Civ)
-                            && possibleInvasionCiv.TargetCivilization == null)
-                        {
-                            MapLocation empire = GameContext.Current.CivilizationManagers[possibleInvasionCiv].HomeSystem.Location;
-                            MapLocation ai = GameContext.Current.CivilizationManagers[Civ].HomeSystem.Location;
-                            Double curretRange = Math.Sqrt(Math.Pow((empire.X - ai.X), 2) + Math.Pow((empire.Y - ai.Y), 2));
-
-                            //var maintenaceValue = GameContext.Current.CivilizationManagers[possibleInvasionCiv].MaintenanceCostLastTurn;
-                            int civFirePower = CalculateFirePower(Civ);
-                            int targetFirePower = CalculateFirePower(possibleInvasionCiv);
-                            if (possibleInvasionCiv.TargetCivilization == null && targetFirePower * 1.2 < civFirePower)
-                            {
-                                if (curretRange < lastRange)
-                                {
-                                    if (UnitAI.CanAllShipsGetThere(Civ, possibleInvasionCiv))
-                                    {
-                                        Civ.TargetCivilization = possibleInvasionCiv;
-                                        lastRange = curretRange;
-                                        if (!DiplomacyHelper.AreAtWar(Civ, Civ.TargetCivilization))
-                                        {
-                                            GameLog.Core.AI.DebugFormat("Declare War {0} on {1}", Civ.Name, Civ.TargetCivilization.Name);
-                                            var diplomat = Diplomat.Get(Civ);
-                                            ForeignPower foreignPower = diplomat.GetForeignPower(Civ.TargetCivilization);
-                                            foreignPower.DeclareWar();
-                                        }
-                                        GameLog.Client.AI.DebugFormat("{0} set Invasion! on {1} ", Civ.Name, Civ.TargetCivilization.Name);
-                                    }
-                                }
-                            }
-                            else Civ.TargetCivilization = null;
-                        }
+                        TurnOffTargetCiv(Civ);
+                    }
+                    else if (Civ.TargetCivilization == null)
+                    {
+                        FindTargetCiv(Civ);
                     }
                 }
             }
         }
- 
         #endregion
 
         //public static void AssimilateSystem(Colony colony)
@@ -165,7 +126,62 @@ namespace Supremacy.AI
         //    GameContext.Current.CivilizationManagers[colony.Owner].Research.UpdateResearch(gainedResearchPoints);
         //    }
         //}
+        public static void TurnOffTargetCiv(Civilization aCiv)
+        {
+            int civFirePower = CalculateFirePower(aCiv);
+            int targetFirePower = CalculateFirePower(aCiv.TargetCivilization);
+            if (civFirePower < targetFirePower)
+            {
+                aCiv.TargetCivilization = null;
+            }
+            else if (IsCivDefeated(aCiv.TargetCivilization))
+            {
+                aCiv.TargetCivilization = null;
+                // break down the fleet in UnitAI
+            }
+        }
+        public static void FindTargetCiv(Civilization daCiv)
+        {
+            var possibleInvasionCivs = GameContext.Current.Civilizations.Where(o => o.IsEmpire).ToList();
+            foreach (Civilization possibleInvasionCiv in possibleInvasionCivs)
+            {
+                Double lastRange = 999;
 
+                if (DiplomacyHelper.IsContactMade(daCiv, possibleInvasionCiv)
+                    && !GameContext.Current.CivilizationManagers[possibleInvasionCiv].IsHomeColonyDestroyed
+                    && !DiplomacyHelper.AreAllied(possibleInvasionCiv, daCiv)
+                    && possibleInvasionCiv.TargetCivilization == null)
+                {
+                    MapLocation empire = GameContext.Current.CivilizationManagers[possibleInvasionCiv].HomeSystem.Location;
+                    MapLocation ai = GameContext.Current.CivilizationManagers[daCiv].HomeSystem.Location;
+                    Double curretRange = Math.Sqrt(Math.Pow((empire.X - ai.X), 2) + Math.Pow((empire.Y - ai.Y), 2));
+
+                    //var maintenaceValue = GameContext.Current.CivilizationManagers[possibleInvasionCiv].MaintenanceCostLastTurn;
+                    int civFirePower = CalculateFirePower(daCiv);
+                    int targetFirePower = CalculateFirePower(possibleInvasionCiv);
+                    if (possibleInvasionCiv.TargetCivilization == null && targetFirePower * 1.2 < civFirePower)
+                    {
+                        if (curretRange < lastRange)
+                        {
+                            if (UnitAI.CanAllShipsGetThere(daCiv, possibleInvasionCiv))
+                            {
+                                daCiv.TargetCivilization = possibleInvasionCiv;
+                                lastRange = curretRange;
+                                if (!DiplomacyHelper.AreAtWar(daCiv, daCiv.TargetCivilization))
+                                {
+                                    GameLog.Core.AI.DebugFormat("Declare War {0} on {1}", daCiv.Name, daCiv.TargetCivilization.Name);
+                                    var diplomat = Diplomat.Get(daCiv);
+                                    ForeignPower foreignPower = diplomat.GetForeignPower(daCiv.TargetCivilization);
+                                    foreignPower.DeclareWar();
+                                }
+                                GameLog.Client.AI.DebugFormat("{0} set Invasion! on {1} ", daCiv.Name, daCiv.TargetCivilization.Name);
+                            }
+                        }
+                    }
+                    else daCiv.TargetCivilization = null;
+                }
+            }
+        }
         public static bool IsCivDefeated(Civilization undefeatedCiv)
         {
             bool stillViable = false;
@@ -306,7 +322,7 @@ namespace Supremacy.AI
             return 100 * value;
         }
 
-        public static int GetFleetDanger(Fleet fleet, int range,  bool anyDanger) // bool testMoves,
+        public static int GetFleetDanger(Fleet fleet, int range, bool anyDanger) // bool testMoves,
         {
             return GetSectorDanger(fleet.Owner, fleet.Sector, range); //, testMoves);
         }
@@ -330,7 +346,7 @@ namespace Supremacy.AI
 
             if (range < 0)
             {
-                range = DangerRange; 
+                range = DangerRange;
             }
 
             for (int dX = -range; dX < range; dX++)
@@ -355,7 +371,7 @@ namespace Supremacy.AI
                         foreach (var ship in fleet.Ships)
                         {
                             if (ship.Owner != null)
-                            fleet.Owner = ship.Owner;
+                                fleet.Owner = ship.Owner;
                         }
                         if (!DiplomacyHelper.AreAtWar(who, fleet.Owner))
                         {
@@ -375,10 +391,10 @@ namespace Supremacy.AI
                         //if ((sector.Location.X >= 0 || sector.Location.X <= map.Width) && (sector.Location.Y >= 0 || sector.Location.Y <= map.Height))
                         //{
 
-                            if (fleet.Owner != null && DiplomacyHelper.IsTravelAllowed(fleet.Owner, sector) && (fleet.Speed >= distance)) // || !testMoves ||
-                            {
-                                ++count;
-                            }
+                        if (fleet.Owner != null && DiplomacyHelper.IsTravelAllowed(fleet.Owner, sector) && (fleet.Speed >= distance)) // || !testMoves ||
+                        {
+                            ++count;
+                        }
                         //}
                     }
                 }
@@ -388,8 +404,8 @@ namespace Supremacy.AI
             {
                 count += borderDanger;
             }
-           // GameLog.Client.AI.DebugFormat("* Sector Danger ={0}",count);
-           // count = 20;
+            // GameLog.Client.AI.DebugFormat("* Sector Danger ={0}",count);
+            // count = 20;
             return count;
         }
 

@@ -111,6 +111,7 @@ namespace Supremacy.AI
                                     else if (fleet.Location == othersHomeSystem.Location)
                                     {
                                         // ************* ToDo invasion 
+                                        SystemAssult(fleet);
                                         GameLog.Core.AI.DebugFormat("## Do Invasion at Target system, civ ={1}, targete{2}", civ.Name, civ.TargetCivilization.Name);
                                         // send home and re-set UnitAIType 
                                     }
@@ -620,21 +621,6 @@ namespace Supremacy.AI
             fleet.OwnerID = theCiv.CivID;
             fleet.SetRoute(AStar.FindPath(fleet, PathOptions.SafeTerritory, _deathStars, new List<Sector> { destination }));
         }
-        public static void SendSystemAttackFleet(Fleet fieldFleet, Fleet attackFleet)
-        {
-            if (attackFleet.Ships.Count() > 0)
-            {
-                //StarSystem othersHomeSystem = GameContext.Current.CivilizationManagers[attackFleet.Owner.TargetCivilization].HomeSystem;
-                fieldFleet = attackFleet;
-                fieldFleet.Owner = attackFleet.Ships[0].Owner;
-                fieldFleet.Location = attackFleet.Ships[0].Location;
-                fieldFleet.UnitAIType = UnitAIType.SystemAttack;
-                fieldFleet.Activity = UnitActivity.Mission;
-                fieldFleet.SetOrder(new EngageOrder());
-                //fieldFleet.Route.Clear();
-                //fieldFleet.(AStar.FindPath(fieldFleet, new List<Sector> { othersHomeSystem.Sector }));
-            }
-        }
 
         public static void SystemAssult(Fleet fleet)
         {
@@ -1064,15 +1050,6 @@ namespace Supremacy.AI
             if (otherColony || otherStation)
                 return false;
             return true;
-        }
-        public static bool SystemOfEmpire(Fleet fleet)
-        {
-            GetFleetOwner(fleet);
-            bool empireColony = GameContext.Current.Universe.Objects.Where(o => o.Location == fleet.Location && o.ObjectType == UniverseObjectType.Colony && o.OwnerID < 7).Any();
-            bool otherStation = GameContext.Current.Universe.Objects.Where(o => o.Location == fleet.Location && o.ObjectType == UniverseObjectType.Station && o.OwnerID < 7).Any();
-            if (empireColony || otherStation)
-                return true;
-            return false;
         }
 
         /*
