@@ -90,7 +90,7 @@ namespace Supremacy.Client
             get
             {
                 GameLog.Client.General.InfoFormat("Current Version = {0}", Current.Version);
-                GameLog.Client.General.InfoFormat("Time running = {0}", DateTime.Now - starttime);
+                GameLog.Client.GeneralDetails.DebugFormat("Time running = {0}", DateTime.Now - starttime);
                 Console.WriteLine("Time running = {0}", DateTime.Now - starttime);
                 return Current.Version;
             }
@@ -179,7 +179,7 @@ namespace Supremacy.Client
 
                     }
                 }
-                GameLog.Client.UI.DebugFormat(_allText);
+                GameLog.Client.UIDetails.DebugFormat(_allText);
             }
             catch
             {

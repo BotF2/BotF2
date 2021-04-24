@@ -165,10 +165,12 @@ namespace Supremacy.Tech
             return _nextDesignId++;
         }
 
+
         /// <summary>
         /// Loads the tech database from XML.
         /// </summary>
         /// <returns>The tech database.</returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0054:Use '++' operator", Justification = "<Pending>")]
         public static TechDatabase Load()
         {
             var schemas = new XmlSchemaSet();
@@ -1981,6 +1983,7 @@ namespace Supremacy.Tech
         /// Adds the specified <see cref="TechObjectDesign"/> to this <see cref="TechDatabase"/>.
         /// </summary>
         /// <param name="design">The <see cref="TechObjectDesign"/> to add.</param>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0038:Use pattern matching", Justification = "<Pending>")]
         public void Add(TechObjectDesign design)
         {
             if (design == null)
@@ -2029,6 +2032,7 @@ namespace Supremacy.Tech
             _orbitalBatteryDesigns.Clear();
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0038:Use pattern matching", Justification = "<Pending>")]
         private bool DoRemove(TechObjectDesign design)
         {
             if (design is BuildingDesign)

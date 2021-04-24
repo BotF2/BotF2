@@ -39,13 +39,8 @@ namespace Supremacy.Client
 
         public MultiplayerLobby([NotNull] IAppContext appContext, [NotNull] IResourceManager resourceManager)
         {
-            if (appContext == null)
-                throw new ArgumentNullException("appContext");
-            if (resourceManager == null)
-                throw new ArgumentNullException("resourceManager");
-
-            AppContext = appContext;
-            _resourceManager = resourceManager;
+            AppContext = appContext ?? throw new ArgumentNullException("appContext");
+            _resourceManager = resourceManager ?? throw new ArgumentNullException("resourceManager");
 
             InitializeComponent();
 
@@ -261,8 +256,7 @@ namespace Supremacy.Client
 
         private static void OnSlotViewSlotOpened(object sender, EventArgs e)
         {
-            var slotView = sender as PlayerSlotView;
-            if (slotView == null)
+            if (!(sender is PlayerSlotView slotView))
                 return;
 
             ClientCommands.ClearPlayerSlot.Execute(slotView.Slot.SlotID);
@@ -270,8 +264,7 @@ namespace Supremacy.Client
 
         private static void OnSlotViewSlotClosed(object sender, EventArgs e)
         {
-            var slotView = sender as PlayerSlotView;
-            if (slotView == null)
+            if (!(sender is PlayerSlotView slotView))
                 return;
 
             ClientCommands.ClosePlayerSlot.Execute(slotView.Slot.SlotID);
@@ -279,8 +272,7 @@ namespace Supremacy.Client
 
         private static void OnSlotViewAssignedPlayerChanged(object sender, EventArgs e)
         {
-            var slotView = sender as PlayerSlotView;
-            if (slotView == null)
+            if (!(sender is PlayerSlotView slotView))
                 return;
 
             var playerId = Player.UnassignedPlayerID;
@@ -392,9 +384,7 @@ namespace Supremacy.Client
 
         private void OnIsActiveChanged()
         {
-            var handler = IsActiveChanged;
-            if (handler != null)
-                handler(this, EventArgs.Empty);
+            IsActiveChanged?.Invoke(this, EventArgs.Empty);
         }
 
         public bool IsActive

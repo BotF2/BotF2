@@ -68,7 +68,7 @@ namespace Supremacy.Client.Input
             Execute();
         }
 
-        [SuppressMessage("Microsoft.Design", "CA1030:UseEventsWhereAppropriate")]
+        //[SuppressMessage("Microsoft.Design", "CA1030:UseEventsWhereAppropriate")]
         public void RaiseCanExecuteChanged()
         {
             OnCanExecuteChanged();
@@ -161,7 +161,7 @@ namespace Supremacy.Client.Input
             Execute((T)parameter);
         }
 
-        [SuppressMessage("Microsoft.Design", "CA1030:UseEventsWhereAppropriate")]
+        //[SuppressMessage("Microsoft.Design", "CA1030:UseEventsWhereAppropriate")]
         public void RaiseCanExecuteChanged()
         {
             OnCanExecuteChanged();

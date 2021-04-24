@@ -34,8 +34,8 @@ namespace Supremacy.Client
         public static readonly RoutedCommand SaveGameCommand;
         public static readonly RoutedCommand RetireCommand;
         public static readonly RoutedCommand ExitCommand;
-        private AsteroidsView _MenuAnimation;
-        private Animation _Animation = new Animation();
+        private readonly AsteroidsView _MenuAnimation;
+        private readonly Animation _Animation = new Animation();
 
         //_MenuAnimation method in the AsteroidView class
 
@@ -98,7 +98,7 @@ namespace Supremacy.Client
                     (s, e) => e.CanExecute = ClientCommands.JoinMultiplayerGame.CanExecute(null)));
             _MenuAnimation = new AsteroidsView();
 
-            GameLog.Client.Test.InfoFormat("MenuScreen initialized");
+            GameLog.Client.UI.DebugFormat("MenuScreen initialized");
 
         }
 
