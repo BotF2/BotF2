@@ -19,7 +19,7 @@ namespace Supremacy.Client
     {
         public F06_Dialog()
         {
-            GameLog.Client.UI.InfoFormat("Initialize Dialog...");
+            GameLog.Client.UIDetails.DebugFormat("Initialize Dialog...");
                 
             InitializeComponent();
 
@@ -60,7 +60,7 @@ namespace Supremacy.Client
                     GenericCommands.TracesSetNoneCommand,
                     OnGenericCommandsTracesSetNoneCommandExecuted));
 
-            GameLog.Client.Test.InfoFormat("F06-Dialog initialized");
+            GameLog.Client.UIDetails.DebugFormat("F06-Dialog initialized");
         }
 
         private void OnGenericCommandsCancelCommandExecuted(object source, ExecutedRoutedEventArgs e)

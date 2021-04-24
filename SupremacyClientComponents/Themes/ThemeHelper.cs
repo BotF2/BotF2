@@ -30,7 +30,7 @@ namespace Supremacy.Client.Themes
                 UriKind.RelativeOrAbsolute);
 
             string _text = "including" + themeUri.ToString();
-            GameLog.Client.UI.DebugFormat(_text);
+            GameLog.Client.UIDetails.DebugFormat(_text);
             Console.WriteLine(_text);
 
             try
@@ -48,7 +48,7 @@ namespace Supremacy.Client.Themes
             }
             catch (Exception e)
             {
-                GameLog.Client.GameData.DebugFormat("ThemeHelper.cs: problem at try sharedResources Exception {0} {1}", e.Message, e.StackTrace);
+                GameLog.Client.GameData.ErrorFormat("ThemeHelper.cs: problem at try sharedResources Exception {0} {1}", e.Message, e.StackTrace);
             }
             
             resources = null;

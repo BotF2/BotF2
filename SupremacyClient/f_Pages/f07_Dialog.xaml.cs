@@ -100,7 +100,7 @@ namespace Supremacy.Client
                     GenericCommands.AcceptCommand,
                     OnGenericCommandsAcceptCommandExecuted));
 
-            GameLog.Client.Test.InfoFormat("F07-Dialog initialized");
+            GameLog.Client.UIDetails.DebugFormat("F07-Dialog initialized");
 
         }
 

@@ -14,9 +14,9 @@ namespace Supremacy.Client
     /// <summary>
     /// Interaction logic for f10_Tab_1.xaml.cs
     /// </summary>
-    public partial class f10_Tab_1
+    public partial class F10_Tab_1
     {
-        public f10_Tab_1()
+        public F10_Tab_1()
         {
             InitializeComponent();
 

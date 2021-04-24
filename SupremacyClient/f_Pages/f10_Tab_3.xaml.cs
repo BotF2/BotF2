@@ -15,11 +15,11 @@ namespace Supremacy.Client
     /// <summary>
     /// Interaction logic for f10_Tab_3.xaml.cs
     /// </summary>
-    public partial class f10_Tab_3
+    public partial class F10_Tab_3
     {
-        public f10_Tab_3()
+        public F10_Tab_3()
         {
-            GameLog.Client.UI.InfoFormat("Initialize TAB for Dialog...");
+            GameLog.Client.UIDetails.DebugFormat("Initialize TAB for Dialog...");
 
             InitializeComponent();
 
