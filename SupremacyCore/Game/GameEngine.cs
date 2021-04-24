@@ -2427,24 +2427,21 @@ namespace Supremacy.Game
 
 
 
-            foreach (var civ in CivValueList)
+            foreach (var civManager in GameContext.Current.CivilizationManagers)
             {
-                var civManager = GameContext.Current.CivilizationManagers[civ.AA_CIV_ID];
 
-                var allCivShips = GameContext.Current.Universe.Find<Ship>(UniverseObjectType.Ship).Where(o => o.OwnerID == civ.AA_CIV_ID);
+                var allCivShips = GameContext.Current.Universe.Find<Ship>(UniverseObjectType.Ship).Where(o => o.OwnerID == civManager.CivilizationID);
 
-                string civValueShipSummary  = /*"(" + */civManager.CivilizationID + "> LT ShipSum1: "; //All;" + allCivShips.Count();
+                string civValueShipSummary = /*"(" + */civManager.CivilizationID + "> LT ShipSum1: "; //All;" + allCivShips.Count();
                 string civValueShipSummary2 = /*"(" + */civManager.CivilizationID + "> LT ShipSum2: "; //All;" + allCivShips.Count();  // more civil ships
                 int _count = 0;
                 int _fp = 0;
                 int _fpAll = 0;
 
 
-
-
                 var commandShips = allCivShips.Where(o => o.ShipType == ShipType.Command);
-                _count = commandShips.Count(); 
-                if (_count > 0) 
+                _count = commandShips.Count();
+                if (_count > 0)
                 {
                     _fp = commandShips.LastOrDefault().FirePower.CurrentValue * _count;
                     civValueShipSummary += "Com " + _count + "x (FP:" + _fp + "); "; _fpAll += _fp; // if _count = 0 don't show, there are nothing 
@@ -2453,7 +2450,7 @@ namespace Supremacy.Game
 
                 var cruiserShips = allCivShips.Where(o => o.ShipType == ShipType.Cruiser || o.ShipType == ShipType.HeavyCruiser || o.ShipType == ShipType.StrikeCruiser);
                 //civValueShipSummary += ";Cru;" + _count = cruiserShips.Count();
-                _count = cruiserShips.Count(); 
+                _count = cruiserShips.Count();
                 _fp = 0;
                 if (_count > 0)
                 {
@@ -2464,7 +2461,7 @@ namespace Supremacy.Game
 
                 var fastAttackShips = allCivShips.Where(o => o.ShipType == ShipType.FastAttack);
                 //civValueShipSummary += ";Att;" + _count = fastAttackShips.Count();
-                _count = fastAttackShips.Count(); 
+                _count = fastAttackShips.Count();
                 _fp = 0;
                 if (_count > 0)
                 {
@@ -2533,7 +2530,7 @@ namespace Supremacy.Game
                 }
                 if (_count > 0) civValueShipSummary2 += "; Tra " + _count + "x ";// (FP: " + _fp + ")";
 
-                var constructionShips = allCivShips.Where(o => o.ShipType == ShipType.Construction); 
+                var constructionShips = allCivShips.Where(o => o.ShipType == ShipType.Construction);
                 //civValueShipSummary += ";Con;" + _count = constructionShips.Count();
                 _count = constructionShips.Count();
                 _fp = 0;
@@ -2543,7 +2540,7 @@ namespace Supremacy.Game
                 }
                 if (_count > 0) civValueShipSummary2 += "; Con " + _count + "x ";// (FP: " + _fp + ")"; 
 
-                var colonyShips = allCivShips.Where(o => o.ShipType == ShipType.Colony); 
+                var colonyShips = allCivShips.Where(o => o.ShipType == ShipType.Colony);
                 //civValueShipSummary += ";Col;" + _count = colonyShips.Count();
                 _count = colonyShips.Count();
                 _fp = 0;
@@ -2559,15 +2556,18 @@ namespace Supremacy.Game
 
                 civManager.SitRepEntries.Add(new ShipSummarySitRepEntry(civManager.Civilization, civValueShipSummary));
                 civManager.SitRepEntries.Add(new ShipSummarySitRepEntry(civManager.Civilization, civValueShipSummary2));
+            }
 
+                foreach (var civ in CivValueList)
+                {
                 string _text = newline + "   CivValueList: " /*+ civ.AA_CIV_ID*/;
                 //_text += civ.CIV_KEY;
                 _text += ";Pop;" + civ.CIV_TOT_POP;
                 _text += ";Int;" + civ.CIV_TOT_INT;
                 _text += ";ID;" + civ.AA_CIV_ID;
                 _text += ";" + civ.CIV_KEY;
-                _text += newline + "   " + civValueShipSummary;
-                _text += newline + "   " + civValueShipSummary2;
+                //_text += newline + "   " + civValueShipSummary;
+                //_text += newline + "   " + civValueShipSummary2;
                 GameLog.Core.CivsAndRaces.DebugFormat(_text);
                 Console.WriteLine(_text);
             }
