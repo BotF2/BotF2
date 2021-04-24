@@ -92,7 +92,7 @@ namespace Supremacy.Client
 
         private void OnGenericCommandsTracesSetAllwithoutDetailsCommandExecuted(object source, ExecutedRoutedEventArgs e)
         {
-            ClientSettings.Current.TracesAudio = true;  // just for testing
+            //ClientSettings.Current.TracesAudio = true;  // just for testing
 
             ClientSettings.Current.Save();
             ClientSettings.Current.Reload();
@@ -100,7 +100,7 @@ namespace Supremacy.Client
 
         private void OnGenericCommandsTracesSetSomeCommandExecuted(object source, ExecutedRoutedEventArgs e)
         {
-            ClientSettings.Current.TracesAudio = false;  // just for testing
+            //ClientSettings.Current.TracesAudio = false;  // just for testing
 
             ClientSettings.Current.Save();
             ClientSettings.Current.Reload();
@@ -109,7 +109,7 @@ namespace Supremacy.Client
         private void OnGenericCommandsTracesSetNoneCommandExecuted(object source, ExecutedRoutedEventArgs e)
         {
             //ClientSettings.Traces_ClearAllProperty();
-            ClientSettings.Current.TracesAudio = false;
+            //ClientSettings.Current.TracesAudio = false;
 
             ClientSettings.Current.Save();
             ClientSettings.Current.Reload();

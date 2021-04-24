@@ -15,8 +15,8 @@
             xmlns:s="clr-namespace:Supremacy.Client;assembly=SupremacyWPF"
             xmlns:scc="http://schemas.startreksupremacy.com/xaml/presentation"
             xmlns:cal="http://www.codeplex.com/CompositeWPF"
-            Width="580"
-            Height="550"
+            Width="680"
+            Height="650"
             Background="Transparent"
             SnapsToDevicePixels="True">
   <DockPanel LastChildFill="True">

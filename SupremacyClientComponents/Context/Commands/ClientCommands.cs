@@ -40,6 +40,7 @@ namespace Supremacy.Client.Commands
         public static readonly CompositeCommand FakeCommand = new CompositeCommand(true);
         public static readonly CompositeCommand LogTxtCommand = new CompositeCommand(true);
         public static readonly CompositeCommand ErrorTxtCommand = new CompositeCommand(true);
+        public static readonly CompositeCommand ShowSettingsFileCommand = new CompositeCommand(true);
         public static readonly CompositeCommand ShowCreditsDialog = new CompositeCommand(true);
         public static readonly CompositeCommand ShowMultiplayerConnectDialog = new CompositeCommand(true);
         public static readonly CompositeCommand HostMultiplayerGame = new CompositeCommand(true);
