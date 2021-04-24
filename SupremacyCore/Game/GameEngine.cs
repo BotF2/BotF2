@@ -2679,16 +2679,13 @@ namespace Supremacy.Game
                     );
             }
 
-
-
-
             GameContext.Current.TurnNumber++;
             _gameTurnNumber = GameContext.Current.TurnNumber;
         }
         #endregion
 
         #region DoAIPlayers() Method
-        public void DoAIPlayers(object gameContext, List<Civilization> autoTurnCiv)
+        public void DoAIPlayers(object gameContext, List<Civilization> autoTurnCiv) 
         {
             var errors = new System.Collections.Concurrent.ConcurrentStack<Exception>();
             if (!(gameContext is GameContext game))
@@ -2721,8 +2718,6 @@ namespace Supremacy.Game
 
                                 PlayerAI.DoTurn(civ);
                                 UnitAI.DoTurn(civ);
-                                //UnitAI.SetForTotalWarNextTurn();
-                                //UnitAI.SetForInvadeMinorNextTurn();
                             }
                         }
                         catch (Exception e)

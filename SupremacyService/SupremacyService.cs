@@ -66,6 +66,7 @@ namespace Supremacy.WCF
         //private IntelEngine _intelEngine;
         private InvasionEngine _invasionEngine;
         private GameContext _game;
+        private Civilization _alreadyDidCivAsAI;
         private bool _isGameStarted;
         private bool _isGameEnding;
         private int _isProcessingTurn;
@@ -1559,10 +1560,26 @@ namespace Supremacy.WCF
 
         private void OnInvasionOccurring(InvasionArena invasionArena)
         {
-            if (_invasionEngine == null)
-                _invasionEngine = new InvasionEngine(SendInvasionUpdateCallback, NotifyInvasionEndedCallback);
+            if (!invasionArena.Invader.IsHuman)
+            {
 
-            _scheduler.Schedule(() => _invasionEngine.BeginInvasion(invasionArena));
+                if (_alreadyDidCivAsAI == null || _alreadyDidCivAsAI != invasionArena.Invader)
+                {                   
+                    _alreadyDidCivAsAI = invasionArena.Invader;
+                    GameLog.Client.AI.DebugFormat("_alreadyDidCivAsAI = {0}", invasionArena.Invader.Key);
+                    if (_invasionEngine == null)
+                        _invasionEngine = new InvasionEngine(SendInvasionUpdateCallback, NotifyInvasionEndedCallback);
+
+                    _scheduler.Schedule(() => _invasionEngine.BeginInvasion(invasionArena));
+                }
+            }
+            else
+            {
+                if (_invasionEngine == null)
+                    _invasionEngine = new InvasionEngine(SendInvasionUpdateCallback, NotifyInvasionEndedCallback);
+
+                _scheduler.Schedule(() => _invasionEngine.BeginInvasion(invasionArena));
+            }
         }
 
         public void SendInvasionOrders(InvasionOrders orders)

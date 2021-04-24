@@ -70,24 +70,13 @@ namespace Supremacy.AI
 
             if (Civ.IsEmpire && GameContext.Current.TurnNumber > 5)
             {
-                if (Civ.Traits.Contains("Warlike"))
+                if (Civ.Traits.Contains("Warlike") || DiplomacyHelper.IsAtWar(Civ))
                 {
                     if (Civ.TargetCivilization != null)
                     {
                         TurnOffTargetCiv(Civ);
                     }
                     else if (Civ.TargetCivilization == null) //AI empire so look for invasion conditions
-                    {
-                        FindTargetCiv(Civ);
-                    }
-                }
-                else if (DiplomacyHelper.IsAtWar(Civ))
-                {
-                    if (Civ.TargetCivilization != null)
-                    {
-                        TurnOffTargetCiv(Civ);
-                    }
-                    else if (Civ.TargetCivilization == null)
                     {
                         FindTargetCiv(Civ);
                     }

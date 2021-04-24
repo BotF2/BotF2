@@ -158,8 +158,8 @@ namespace Supremacy.Orbitals
             if (!base.IsValidOrder(fleet))
                 return false;
 
-            //if (!fleet.IsCombatant && !fleet.HasTroopTransports)
-            //    return false;
+            if (!fleet.HasTroopTransports)
+                return false;
 
             var system = GameContext.Current.Universe.Map[fleet.Location].System;
             if (system == null || !system.IsInhabited)

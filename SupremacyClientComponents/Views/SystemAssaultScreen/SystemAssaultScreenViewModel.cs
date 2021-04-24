@@ -311,7 +311,16 @@ namespace Supremacy.Client.Views
 
         public InvasionStatus InvasionStatus
         {
-            get { return _currentUpdate == null ? InvasionStatus.InProgress : _currentUpdate.Status; }
+            get
+            {
+                if (!_currentUpdate.Invader.IsHuman)
+                {
+                    TerminateOverride();
+                    GameLog.Client.AI.DebugFormat("TermianlaOveride for non Human player {0}!", _currentUpdate.Invader.Key);
+                }
+
+                return _currentUpdate == null ? InvasionStatus.InProgress : _currentUpdate.Status;
+            }
         }
 
         protected virtual void OnInvasionStatusChanged()
@@ -826,6 +835,7 @@ namespace Supremacy.Client.Views
 
         private void OnInvasionUpdateReceived(ClientDataEventArgs<InvasionArena> e)
         {
+            
             var newUpdate = e.Value;
 
             if (_currentUpdate != null &&
@@ -836,8 +846,8 @@ namespace Supremacy.Client.Views
                 else
                     throw new InvalidOperationException("Combat update received while another combat was in progress.");
             }
-
-            ProcessUpdate(newUpdate);
+            if (newUpdate.Invader.IsHuman)
+                ProcessUpdate(newUpdate);
 
             //ServiceLocator.Current.GetInstance<INavigationService>().ActivateScreen(this.ViewName);
         }
@@ -923,6 +933,11 @@ namespace Supremacy.Client.Views
             if (newInvasion ||
                 SelectedAction == InvasionAction.StandDown)
             {
+                if (!update.Invader.IsHuman)
+                {
+                    newInvasion = false;
+                    GameLog.Client.AI.DebugFormat("newInvasion ={0} for non human invader {1}", newInvasion, update.Invader.Key);
+                }
                 ProcessUpdateCallback(newInvasion, update);
                 return;
             }

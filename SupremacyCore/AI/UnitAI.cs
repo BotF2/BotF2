@@ -89,26 +89,55 @@ namespace Supremacy.AI
                             // Is there a systemattack fleet, YES
                             if (fleet.UnitAIType == UnitAIType.SystemAttack && homeSystem != othersHomeSystem)
                             {
-                                if (fleet.Ships.Count() > 4)
+                                if (fleet.Ships.Count() > 4 || fleet.Owner.Key == "BORG")
                                 {
                                     if (fleet.Location == homeSystem.Location)
                                     {
                                         attackFleet = fleet;
                                         if (attackFleet.Ships.Count() >= allAttackWarShips.Count())
                                         {
-                                            //fleet.Owner = civ;
-                                            //fleet.Location = homeSystem.Location;
-                                            fleet.UnitAIType = UnitAIType.SystemAttack;
-                                            fleet.Activity = UnitActivity.Mission;
-                                            fleet.SetOrder(new EngageOrder());
-                                            if (fleet.Location != othersHomeSystem.Location)
-                                                fleet.SetRoute(AStar.FindPath(fleet, PathOptions.SafeTerritory, _deathStars, new List<Sector> { othersHomeSystem.Sector }));
-
+                                            // send fleet to other home system
+                                            int civFirePower = CalculateFirePower(civ);
+                                            int targetFirePower = CalculateFirePower(civ.TargetCivilization);
+                                            if (targetFirePower * 1.2 < civFirePower)
+                                            {
+                                                //fleet.Owner = civ; 
+                                                //fleet.Location = homeSystem.Location;
+                                                fleet.UnitAIType = UnitAIType.SystemAttack;
+                                                fleet.Activity = UnitActivity.Mission;
+                                                fleet.SetOrder(new EngageOrder());
+                                                if (fleet.Location != othersHomeSystem.Location)
+                                                    fleet.SetRoute(AStar.FindPath(fleet, PathOptions.SafeTerritory, _deathStars, new List<Sector> { othersHomeSystem.Sector }));
+                                            }
+                                            else
+                                            {
+                                                List<Colony> colonyTargetes = GameContext.Current.Universe.FindOwned<Colony>(civ.TargetCivilization).ToList();
+                                                Double lastRange = 999;
+                                                if (colonyTargetes.Count() > 1)
+                                                {
+                                                    colonyTargetes.Remove(othersHomeSystem.Colony);
+                                                    foreach (Colony colonyTarget in colonyTargetes)
+                                                    {
+                                                        MapLocation target = colonyTarget.Location;
+                                                        MapLocation ai = homeSystem.Location;
+                                                        Double curretRange = Math.Sqrt(Math.Pow((target.X - ai.X), 2) + Math.Pow((target.Y - ai.Y), 2));
+                                                        if (curretRange < lastRange)
+                                                        {
+                                                            lastRange = curretRange;
+                                                            fleet.Route.Clear();
+                                                            fleet.SetRoute(AStar.FindPath(fleet, PathOptions.SafeTerritory, _deathStars, new List<Sector> { colonyTarget.Sector }));
+                                                        }
+                                                    }
+                                                }
+                                                else
+                                                    civ.TargetCivilization = null;
+                                            }
                                             //GameLog.Core.AI.DebugFormat("Civ {0} now in SystemAttack UnitAIType target ={1}, attack fleet location ={2} Count() ={3}, Route length {4} "
                                             //    , civ.Name, civ.TargetCivilization.Name, attackFleet.Location, attackFleet.Ships.Count, attackFleet.Route.Length);
                                         }
                                     }
-                                    else if (fleet.Location == othersHomeSystem.Location)
+                                    else if (fleet.Location == othersHomeSystem.Location
+                                        || GameContext.Current.Universe.FindOwned<Colony>(civ.TargetCivilization).Where(o => o.Location == fleet.Location).Any())
                                     {
                                         // ************* ToDo invasion 
                                         SystemAssult(fleet);
@@ -612,6 +641,20 @@ namespace Supremacy.AI
             }
         }
         // Methods
+        private static int CalculateFirePower(Civilization civ)
+        {
+            int firePower = 0;
+            foreach (Fleet civFleet in GameContext.Current.Universe.FindOwned<Fleet>(civ).ToList())
+            {
+                foreach (Ship ship in civFleet.Ships.Where(s => s.ShipType >= ShipType.Scout || s.ShipType == ShipType.Transport).ToList())
+                {
+                    firePower += ship.Firepower();
+                    // GameLog.Client.AI.DebugFormat("A ship all attack ships {0} location ={1}", ship.Name, ship.Location );
+                }
+            }
+            return firePower;
+        }
+
         public static void BuildAndSendFleet(Fleet fleet, Civilization theCiv, UnitActivity activity, UnitAIType unitAIType, Sector destination)
         {
             fleet.SetOrder(new AvoidOrder());

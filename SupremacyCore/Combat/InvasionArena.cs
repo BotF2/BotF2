@@ -390,7 +390,11 @@ namespace Supremacy.Combat
 
         public IEnumerable<InvasionUnit> DefendingUnits => _defendingUnits;
 
-        public InvasionStatus Status => _status;
+        public InvasionStatus Status
+        {
+            get { return _status; }
+            set { _status = value; }
+        }
 
         public bool IsFinished => _status != InvasionStatus.InProgress;
 
@@ -440,11 +444,11 @@ namespace Supremacy.Combat
                 return;
             }
 
-            if (InvasionID == 6) //Borg
-            {
-                _status = InvasionStatus.Victory;
-                AssimilatePopulation(Colony);
-            }
+            //if (InvaderID == 6) // 
+            //{
+            //    _status = InvasionStatus.Victory;
+            //    AssimilatePopulation(Colony); crashes the game
+            //}
 
             if (Population.CurrentValue == 0 || Colony.OwnerID == InvaderID)
             {
@@ -454,7 +458,7 @@ namespace Supremacy.Combat
             {
                 _status = InvasionStatus.Defeat;
             }
-            else if ((IsMultiplayerGame && RoundNumber == 5) || RoundNumber > MaxRounds) // Change roundnumber in MP to 5 (was 3)
+            else if (Invader.IsHuman && (IsMultiplayerGame && RoundNumber == 5) || RoundNumber > MaxRounds) // || _canLandTroops == false) // Change roundnumber in MP to 5 (was 3)
             {
                 _status = InvasionStatus.Stalemate;
             }
@@ -464,22 +468,22 @@ namespace Supremacy.Combat
             }
         }
 
-        public void AssimilatePopulation(Colony colony)
-        {
-            CivilizationManager borgManager = GameContext.Current.CivilizationManagers[6];
-            Civilization borg = borgManager.Civilization; 
-            CivilizationManager targetEmpireCivManager = GameContext.Current.CivilizationManagers[colony.Owner];
-            Colony assimiltedCivHome = targetEmpireCivManager.HomeColony;
-            int gainedResearchPoints = assimiltedCivHome.NetResearch;
-            borgManager.Research.UpdateResearch(gainedResearchPoints);
-            colony.Owner = borg;
-            colony.OwnerID = borg.CivID;
-            colony.Inhabitants = borg.Race;
-            colony.InhabitantsID = borg.Race.Key;
-            //colony.Morale = borgManager.HomeColony.Morale;
-            GameLog.Client.AI.DebugFormat("Assimilated colony ={0}, owner = {1}, inhabitants = {2} moral = {3}",
-                colony.Name, colony.Owner.Key, colony.Inhabitants.Key, colony.Morale.CurrentValue);
-        }
+        //public void AssimilatePopulation(Colony colony) // CRASH, around colony.Inhabitants = 
+        //{
+        //    CivilizationManager borgManager = GameContext.Current.CivilizationManagers[6];
+        //    Civilization borg = borgManager.Civilization; 
+        //    CivilizationManager targetEmpireCivManager = GameContext.Current.CivilizationManagers[colony.Owner];
+        //    Colony assimiltedCivHome = targetEmpireCivManager.HomeColony;
+        //    int gainedResearchPoints = assimiltedCivHome.NetResearch;
+        //    borgManager.Research.UpdateResearch(gainedResearchPoints);
+        //    colony.Owner = borg;
+        //    colony.OwnerID = borg.CivID;
+        //    colony.Inhabitants = borg.Race;
+        //    colony.InhabitantsID = borg.Race.Key;
+        //    //colony.Morale = borgManager.HomeColony.Morale;
+        //    GameLog.Client.AI.DebugFormat("Assimilated colony ={0}, owner = {1}, inhabitants = {2} moral = {3}",
+        //        colony.Name, colony.Owner.Key, colony.Inhabitants.Key, colony.Morale.CurrentValue);
+        //}
 
         private int ComputeDefenderCombatStrength()
         {
@@ -488,19 +492,22 @@ namespace Supremacy.Combat
 
         private int ComputeInvaderCombatStrength()
         {
-            MapLocation location = Colony.Location;
-            Civilization civilization = Colony.Owner;
+            int invaderPopulation = _invadingUnits
+                    .OfType<InvasionOrbital>()
+                    .Where(o => !o.IsDestroyed)
+                    .Select(o => o.Source)
+                    .OfType<Ship>()
+                    .Where(o => o.ShipType == ShipType.Transport)
+                    .Select(o => o.ShipDesign.WorkCapacity) // * borgFactor)
+                    .Sum();
+            double raceMod = Math.Max(0.1, Math.Min(2.0, Invader.Race.CombatEffectiveness));
+            double weaponTechMod = 1.0 + (0.1 * GameContext.Current.CivilizationManagers[Invader].Research.GetTechLevel(TechCategory.Weapons));
+            double result = invaderPopulation * weaponTechMod * raceMod;
             //int borgFactor = 1;
             //if (_invadingUnits.FirstOrDefault().OwnerID == 6 && Colony.OwnerID > 6)
             //    borgFactor = 5;
-            return _invadingUnits
-                .OfType<InvasionOrbital>()
-                .Where(o => !o.IsDestroyed)
-                .Select(o => o.Source)
-                .OfType<Ship>()
-                .Where(o => o.ShipType == ShipType.Transport)
-                .Select(o => o.ShipDesign.WorkCapacity) // * borgFactor)
-                .Sum(pop => CombatHelper.ComputeGroundCombatStrength(civilization, location, pop));
+
+            return (int)result;
         }
 
         public bool Equals(InvasionArena other)
@@ -652,8 +659,36 @@ namespace Supremacy.Combat
                     _experienceAccuracy[rank] = 0.75;
                 }
             }
+            if (!invasionArena.Invader.IsHuman)
+            {
+                var transports = invasionArena.InvadingUnits.Where(n => n.Design.Key.Contains("TRANSPORT")).ToArray();
 
-            SendUpdate();
+                if (invasionArena.HasOrbitalDefenses)
+                {
+                    InvasionOrders attackOrbitals = new InvasionOrders(invasionArena.InvasionID, InvasionAction.AttackOrbitalDefenses, InvasionTargetingStrategy.MaximumDamage, transports);
+                    _invasionArena.Status = InvasionStatus.InProgress;
+                    SubmitOrders(attackOrbitals);
+                }
+                if (invasionArena.ColonyShieldStrength.CurrentValue > 0)
+                {
+                    InvasionOrders attackSheilds = new InvasionOrders(invasionArena.InvasionID, InvasionAction.BombardPlanet, InvasionTargetingStrategy.MaximumDamage, transports);
+                    _invasionArena.Status = InvasionStatus.InProgress;
+                    SubmitOrders(attackSheilds);
+                }
+                if (invasionArena.CanLandTroops)
+                {
+                    InvasionOrders landTroops = new InvasionOrders(invasionArena.InvasionID, InvasionAction.LandTroops, InvasionTargetingStrategy.MaximumDamage, transports);
+                    _invasionArena.Status = InvasionStatus.InProgress;
+                    SubmitOrders(landTroops);
+                }
+                if (invasionArena.Status == InvasionStatus.Victory)
+                    _invasionEndedCallback(this);
+                GameLog.Client.AI.DebugFormat("InvasionArean status = {0}", invasionArena.Status);
+            }
+            else
+            {
+                SendUpdate();
+            }
         }
 
         private void SendUpdate()
@@ -1300,7 +1335,14 @@ namespace Supremacy.Combat
         {
             foreach (InvasionUnit unit in _invasionArena.DefendingUnits.Concat(_invasionArena.InvadingUnits))
             {
-                unit.CommitSourceChanges();
+                try
+                {
+                    unit.CommitSourceChanges();
+                }
+                catch
+                {
+                    continue;
+                }
 
                 if (_invasionArena.Colony.Population.IsMinimized && unit.Design.Key.Contains("CARD_AUTOMATED_MISSILE"))
                 {
