@@ -38,6 +38,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Windows;
+using System.Collections.Generic;
 
 namespace Supremacy.Client
 {
@@ -99,6 +100,7 @@ namespace Supremacy.Client
         private readonly DelegateCommand<bool> _endGameCommand;
         private readonly DelegateCommand<SavedGameHeader> _loadGameCommand;
         private readonly DelegateCommand<object> _showCreditsDialogCommand;
+        private readonly DelegateCommand<object> _showSettingsFileCommand;
         private readonly DelegateCommand<MultiplayerConnectParameters> _joinMultiplayerGameCommand;
         private readonly DelegateCommand<string> _hostMultiplayerGameCommand;
         private readonly DelegateCommand<bool> _exitCommand;
@@ -108,6 +110,18 @@ namespace Supremacy.Client
 
         private bool _isExiting;
         private IGameController _gameController;
+        private string _text;
+        private readonly string newline = Environment.NewLine;
+        //private string _trueText;
+        //private string _falseText;
+        //private string _restText;
+        //private string truesText;
+        private string _resultText;
+        //private string falseText;
+        //private string restText;
+        //private int _truelength;
+        //private int _length;
+        //private Dictionary<int, string, string, string> _array;
         #endregion
 
         #region Constructor & Lifetime
@@ -190,6 +204,7 @@ namespace Supremacy.Client
             _exitCommand = new DelegateCommand<bool>(ExecuteExitCommand);
             _loadGameCommand = new DelegateCommand<SavedGameHeader>(ExecuteLoadGameCommand);
             _showCreditsDialogCommand = new DelegateCommand<object>(ExecuteShowCreditsDialogCommand);
+            _showSettingsFileCommand = new DelegateCommand<object>(ExecuteShowSettingsFileCommand);
             _joinMultiplayerGameCommand = new DelegateCommand<MultiplayerConnectParameters>(ExecuteJoinMultiplayerGameCommand);
             _hostMultiplayerGameCommand = new DelegateCommand<string>(ExecuteHostMultiplayerGameCommand);
         }
@@ -319,6 +334,117 @@ namespace Supremacy.Client
         private void ExecuteEndGameCommand(bool showConfirmation)
         {
             EndGame(showConfirmation);
+        }
+
+        private void ExecuteShowSettingsFileCommand(object obj)
+        {
+            var file = Path.Combine(
+                ResourceManager.GetResourcePath(""),
+                "SupremacyClient..Settings.xaml");
+            file = file.Replace(".\\", "");
+            //string _text1;
+
+            if (!string.IsNullOrEmpty(file) && File.Exists(file))
+            {
+                var stream = new FileStream(
+                    file,
+                    FileMode.Open,
+                    FileAccess.Read);
+
+                _text = "";
+
+                using (var reader = new StreamReader(stream))
+                {
+                    Console.WriteLine("---------------");
+
+                    while (!reader.EndOfStream)
+                    {
+                        var line = reader.ReadLine();
+                        if (line == null)
+                            break;
+                        //Console.WriteLine(line);
+                        _text += line;
+                    }
+
+                }
+                //stream.Close;
+            }
+
+            var coll = _text.Split(' ');
+            var _trues = new List<String>(); /*_trues.Clear();*/
+            var _false = new List<String>(); /*_false.Clear();*/
+            var _rest = new List<String>(); /*_rest.Clear();*/
+            //_array = new Dictionary<int, string, string, string>();
+
+            foreach (var item in coll)
+                {
+                    Console.WriteLine(item);
+                    if (item.Contains("True")) { _trues.Add(item); }// += item + newline;}
+                    if (item.Contains("False")) { _false.Add(item); }
+                    if (!item.Contains("True") && !item.Contains("False")) { _rest.Add(item); }
+                }
+
+            //_resultText = "";
+            //int columnsize = 40;
+            //_length = _trues.Count;
+            //if (_false.Count > _length) _length = _false.Count;
+            //if (_rest.Count > _length) _length = _rest.Count;
+
+            //for (int i = 0; i < _length; i++)
+            //{
+            //    truesText = "";
+            //    falseText = "";
+            //    restText = "";
+            //    try { 
+            //    if (_trues[i] != null) truesText = _trues[i];
+
+            //        while (truesText.Length < columnsize) { truesText += " ";}
+
+            //    if (_false[i] != null) falseText = _false[i];
+            //        while (falseText.Length < columnsize) { falseText += " "; }
+            //        if (_rest[i] != null) restText = _rest[i];
+            //    } catch { 
+            //        // ss
+            //    }
+
+            //_resultText += truesText + falseText + restText + newline;
+            //}
+            _resultText = "CONTENT OF SupremacyClient..Settings.xaml "  + DateTime.Now + newline;
+
+            _resultText += newline + "VALUES" + newline + "======" + newline;
+            foreach (var item in _rest) { _resultText += item + newline; }
+
+            _resultText += newline + "TRUE" + newline + "====" + newline;
+            foreach (var item in _trues) { _resultText += item + newline; }
+
+            _resultText += newline + "FALSE" + newline + "=====" + newline;
+            foreach (var item in _false) { _resultText += item + newline; }
+
+            //_resultText += newline + "REST" + newline + "====" + newline;
+            //foreach (var item in _rest) { _resultText += item + newline; }
+            
+            _resultText += newline + newline;
+
+            StreamWriter streamWriter = new StreamWriter(file+".txt");
+                streamWriter.Write(_resultText);
+                streamWriter.Close();
+
+                var _file = Path.Combine(ResourceManager.GetResourcePath(""), file+ ".txt");
+                if (!string.IsNullOrEmpty(_file) && File.Exists(_file))
+                {
+                    ProcessStartInfo processStartInfo = new ProcessStartInfo { UseShellExecute = true, FileName = _file };
+
+                    try { _ = Process.Start(processStartInfo); }
+                    catch { MessageBox.Show("Could not load Text-File about Settings"); }
+                }
+
+
+                //var result = MessageDialog.Show(_resultText, MessageDialogButtons.YesNo);
+                //MessageBox.Show(_resultText);
+                //MessageBox.Show(_trueText);
+                //MessageBox.Show(_falseText);
+                //MessageBox.Show(_restText);
+            
         }
         #endregion
 
@@ -477,9 +603,9 @@ namespace Supremacy.Client
             //_regionViewRegistry.RegisterViewWithRegion(ClientRegions.OptionsPages, typeof(GraphicsOptionsPage));  // remove outcomment to be shown again
             //_regionViewRegistry.RegisterViewWithRegion(ClientRegions.OptionsPages, typeof(GeneralOptionsPage));
             //_regionViewRegistry.RegisterViewWithRegion(ClientRegions.OptionsPages, typeof(AllOptionsPage));
-            _regionViewRegistry.RegisterViewWithRegion(ClientRegions.f10_Pages, typeof(f10_Tab_1));
-            _regionViewRegistry.RegisterViewWithRegion(ClientRegions.f10_Pages, typeof(f10_Tab_2));
-            _regionViewRegistry.RegisterViewWithRegion(ClientRegions.f10_Pages, typeof(f10_Tab_3));
+            _regionViewRegistry.RegisterViewWithRegion(ClientRegions.f10_Pages, typeof(F10_Tab_1));
+            _regionViewRegistry.RegisterViewWithRegion(ClientRegions.f10_Pages, typeof(F10_Tab_2));
+            _regionViewRegistry.RegisterViewWithRegion(ClientRegions.f10_Pages, typeof(F10_Tab_3));
 
             // _regionViewRegistry.RegisterViewWithRegion(AssetsScreenRegions.SpyList, typeof(SpyListView)); // keep it simple for now
             //_regionViewRegistry.RegisterViewWithRegion(AssetsScreenRegions.EmpireOverview, typeof(EmpireInfoView));
@@ -600,7 +726,8 @@ namespace Supremacy.Client
             //string techlvl = _appContext.LobbyData.GameOptions.StartingTechLevel.ToString();
             //string empireID = _appContext.LocalPlayerEmpire.Civilization.Key.Substring(3, 0);
 
-            string introTextCase = "empty_introTextCase";  // SinglePlayerGame working
+            string introTextCase;  // SinglePlayerGame working
+            //string introTextCase = "empty_introTextCase";
 
 
             introTextCase = localEmpire + startTechLvl;  // startTechLvl = -1 shown
@@ -644,7 +771,7 @@ namespace Supremacy.Client
                 
                 if (_hints.Length > 0)   // later: make additional OPTION to show hints or not
                 {
-                    var result = MessageDialog.Show(statusWindow.Content = _resourceManager.GetString("LOADING_GAME_HINTS"),
+                    _ = MessageDialog.Show(statusWindow.Content = _resourceManager.GetString("LOADING_GAME_HINTS"),
                                 MessageDialogButtons.Ok);
                     //"Remember:" + Environment.NewLine +
                     //    "- Right mouse click in the game to see the Panel Access Menu." + Environment.NewLine +
@@ -699,6 +826,7 @@ namespace Supremacy.Client
             _logTxtCommand.IsActive = true;
             _errorTxtCommand.IsActive = true;
             _showCreditsDialogCommand.IsActive = true;
+            _showSettingsFileCommand.IsActive = true;
             _startSinglePlayerGameCommand.IsActive = !isConnected && !isGameEnding && !gameControllerExists;
             _joinMultiplayerGameCommand.IsActive = !isConnected && !isGameEnding && !gameControllerExists;
             _hostMultiplayerGameCommand.IsActive = !isConnected && !isGameEnding && !gameControllerExists;
@@ -748,9 +876,9 @@ namespace Supremacy.Client
             if (!_app.LoadThemeResources(theme))
                 _app.LoadDefaultResources();
 
-            themeShipyard = theme;
+            ThemeShipyard = theme;
 
-            _app.LoadThemeResourcesShipyard(themeShipyard);
+            _app.LoadThemeResourcesShipyard(ThemeShipyard);
 
             // load theme music
             _appContext.ThemeMusicLibrary.Load(Path.Combine(MusicThemeBasePath, theme, MusicPackFileName));
@@ -887,6 +1015,7 @@ namespace Supremacy.Client
             ClientCommands.HostMultiplayerGame.RegisterCommand(_hostMultiplayerGameCommand);
             ClientCommands.LoadGame.RegisterCommand(_loadGameCommand);
             ClientCommands.ShowCreditsDialog.RegisterCommand(_showCreditsDialogCommand);
+            ClientCommands.ShowSettingsFileCommand.RegisterCommand(_showSettingsFileCommand);
             ClientCommands.Exit.RegisterCommand(_exitCommand);
         }
         private void ExecuteSP_DirectlyGameCommand(int _id)
@@ -1076,8 +1205,7 @@ namespace Supremacy.Client
 
         private void OnGameControllerTerminated(object sender, EventArgs args)
         {
-            var gameController = sender as IGameController;
-            if (gameController == null)
+            if (!(sender is IGameController gameController))
                 return;
             gameController.Terminated -= OnGameControllerTerminated;
             Interlocked.CompareExchange(ref _gameController, null, gameController);
@@ -1087,6 +1215,6 @@ namespace Supremacy.Client
             UpdateCommands();
         }
 
-        public string themeShipyard { get; set; }
+        public string ThemeShipyard { get; set; }
     }
 }
