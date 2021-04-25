@@ -1367,6 +1367,15 @@ namespace Supremacy.Combat
             AddDiplomacyMemories();
 
             _invasionEndedCallback(this);
+
+            CivilizationManager civManagerAttacked = GameContext.Current.CivilizationManagers[_invasionArena.Defender.CivID];
+            civManagerAttacked.SitRepEntries.Add(new SystemAssaultSitRepEntry(_invasionArena.Defender, _invasionArena.Colony, _invasionArena.Status.ToString(), 
+                _invasionArena.Colony.Population.CurrentValue, _invasionArena.Colony.Owner.Name));
+
+            CivilizationManager civManagerAssaulting = GameContext.Current.CivilizationManagers[_invasionArena.Invader.CivID];
+            civManagerAssaulting.SitRepEntries.Add(new SystemAssaultSitRepEntry(_invasionArena.Defender, _invasionArena.Colony, _invasionArena.Status.ToString(),
+                _invasionArena.Colony.Population.CurrentValue, _invasionArena.Colony.Owner.Name));
+
         }
 
         private void AddDiplomacyMemories()

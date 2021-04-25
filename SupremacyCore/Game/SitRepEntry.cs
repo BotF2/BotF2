@@ -2274,23 +2274,31 @@ namespace Supremacy.Game
     public class SystemAssaultSitRepEntry : SitRepEntry 
     {
         private readonly int _colonyID;
-        public SystemAssaultSitRepEntry(Civilization owner, Colony colony)
+        private readonly string _status;
+        private readonly int _pop;
+        private readonly string _newOwner;
+        public SystemAssaultSitRepEntry(Civilization owner, Colony colony, string status, int pop, string newOwner)
             : base(owner, SitRepPriority.Purple)
         {
             if (colony == null)
                 throw new ArgumentNullException("colony missing for SystemAssault");
-            _colonyID = colony.ObjectID;
+            _colonyID = colony.System.ObjectID;
+            _status = status;
+            _pop = pop;
+            _newOwner = newOwner;  // maybe "new" Owner
         }
-        public Colony Colony { get { return GameContext.Current.Universe.Get<Colony>(_colonyID); } }
-        public override SitRepAction Action { get { return SitRepAction.ViewColony; } }
-        public override object ActionTarget { get { return Colony; } }
+        public StarSystem System { get { return GameContext.Current.Universe.Get<StarSystem>(_colonyID); } }
+        //public Colony Colony { get { return GameContext.Current.Universe.Get<Colony>(_colonyID); } }
+        public override SitRepAction Action { get { return SitRepAction.CenterOnSector; } }
+        
+        public override object ActionTarget { get { return System.Sector; } }
         public override SitRepCategory Categories { get { return SitRepCategory.SpecialEvent; } }
         public override bool HasDetails { get { return true; } } // turn on/off for extra Dialog window
-        public override string HeaderText { get { return string.Format(ResourceManager.GetString("SYSTEMASSAULT_HEADER_TEXT"), Colony.Name); } }
-        public override string DetailText { get { return string.Format(ResourceManager.GetString("SYSTEMASSAULT_DETAIL_TEXT"), Colony.Name); } }
+        public override string HeaderText { get { return string.Format(ResourceManager.GetString("SYSTEMASSAULT_HEADER_TEXT"), System.Colony.Name, _status, _pop, _newOwner); } }
+        public override string DetailText { get { return string.Format(ResourceManager.GetString("SYSTEMASSAULT_DETAIL_TEXT"), System.Colony.Name, _status, _pop, _newOwner); } }
         public override string DetailImage { get { return "vfs:///Resources/Images/ScriptedEvents/SystemAssault.png"; } }
         public override string SitRepComment { get; set; }
-        public override string SummaryText { get { return string.Format(ResourceManager.GetString("SYSTEMASSAULT_SUMMARY_TEXT"), Colony.Name); } }
+        public override string SummaryText { get { return string.Format(ResourceManager.GetString("SYSTEMASSAULT_SUMMARY_TEXT"), System.Colony.Name, _status, _pop, _newOwner); } }
         public override bool IsPriority { get { return true; } }
 
     }
