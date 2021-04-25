@@ -1403,7 +1403,7 @@ namespace Supremacy.Game
     [Serializable]
     public class NewSabotagedSitRepEntry : SitRepEntry
     {
-        //private readonly Civilization _attacked;
+        //private readonly Civilization _attacked; // not used
         private readonly Civilization _attacking;
         private readonly int _systemId;
         private readonly int _removedStuff;
@@ -1419,7 +1419,7 @@ namespace Supremacy.Game
         {
             if (colony == null)
                 throw new ArgumentNullException("colony");
-            //_attacked = owner;
+            //_attacked = attacked;
             _attacking = attacking;
             _systemId = colony.System.ObjectID;
             _removedStuff = removedStuff;  // facilities or credits or research points 
@@ -2269,6 +2269,33 @@ namespace Supremacy.Game
         public override string SitRepComment { get; set; }
         public override string SummaryText { get { return string.Format(ResourceManager.GetString("SITREP_STARVATION"), Colony.Name); } }
     }
+
+    [Serializable]
+    public class SystemAssaultSitRepEntry : SitRepEntry 
+    {
+        private readonly int _colonyID;
+        public SystemAssaultSitRepEntry(Civilization owner, Colony colony)
+            : base(owner, SitRepPriority.Purple)
+        {
+            if (colony == null)
+                throw new ArgumentNullException("colony missing for SystemAssault");
+            _colonyID = colony.ObjectID;
+        }
+        public Colony Colony { get { return GameContext.Current.Universe.Get<Colony>(_colonyID); } }
+        public override SitRepAction Action { get { return SitRepAction.ViewColony; } }
+        public override object ActionTarget { get { return Colony; } }
+        public override SitRepCategory Categories { get { return SitRepCategory.SpecialEvent; } }
+        public override bool HasDetails { get { return true; } } // turn on/off for extra Dialog window
+        public override string HeaderText { get { return string.Format(ResourceManager.GetString("SYSTEMASSAULT_HEADER_TEXT"), Colony.Name); } }
+        public override string DetailText { get { return string.Format(ResourceManager.GetString("SYSTEMASSAULT_DETAIL_TEXT"), Colony.Name); } }
+        public override string DetailImage { get { return "vfs:///Resources/Images/ScriptedEvents/SystemAssault.png"; } }
+        public override string SitRepComment { get; set; }
+        public override string SummaryText { get { return string.Format(ResourceManager.GetString("SYSTEMASSAULT_SUMMARY_TEXT"), Colony.Name); } }
+        public override bool IsPriority { get { return true; } }
+
+    }
+    // End of SitRepEntry
+
 
     [Serializable]
     public class TerroristBombingOfShipProductionSitRepEntry : SitRepEntry
