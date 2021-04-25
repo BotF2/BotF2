@@ -85,7 +85,7 @@ namespace Supremacy.AI
 
                         // Have target civilization
                         if (civ.TargetCivilization != null)
-                         {
+                        {
                             // Is there a systemattack fleet, YES
                             if (fleet.UnitAIType == UnitAIType.SystemAttack && homeSystem != othersHomeSystem)
                             {
@@ -94,12 +94,13 @@ namespace Supremacy.AI
                                     if (fleet.Location == homeSystem.Location)
                                     {
                                         attackFleet = fleet;
+                                        List<Colony> colonyTargetes = GameContext.Current.Universe.FindOwned<Colony>(civ.TargetCivilization).ToList();
                                         if (attackFleet.Ships.Count() >= allAttackWarShips.Count())
                                         {
                                             // send fleet to other home system
                                             int civFirePower = CalculateFirePower(civ);
-                                            int targetFirePower = CalculateFirePower(civ.TargetCivilization);
-                                            if (targetFirePower * 1.2 < civFirePower)
+                                            int targetFirePower = CalculateFirePower(civ.TargetCivilization, othersHomeSystem);
+                                            if (targetFirePower * 1.1 < civFirePower)
                                             {
                                                 //fleet.Owner = civ; 
                                                 //fleet.Location = homeSystem.Location;
@@ -109,29 +110,26 @@ namespace Supremacy.AI
                                                 if (fleet.Location != othersHomeSystem.Location)
                                                     fleet.SetRoute(AStar.FindPath(fleet, PathOptions.SafeTerritory, _deathStars, new List<Sector> { othersHomeSystem.Sector }));
                                             }
-                                            else
-                                            {
-                                                List<Colony> colonyTargetes = GameContext.Current.Universe.FindOwned<Colony>(civ.TargetCivilization).ToList();
+                                            else if (colonyTargetes.Count() > 1)
+                                            {                                                
                                                 Double lastRange = 999;
-                                                if (colonyTargetes.Count() > 1)
+                                                colonyTargetes.Remove(othersHomeSystem.Colony);
+                                                foreach (Colony colonyTarget in colonyTargetes)
                                                 {
-                                                    colonyTargetes.Remove(othersHomeSystem.Colony);
-                                                    foreach (Colony colonyTarget in colonyTargetes)
+                                                    MapLocation target = colonyTarget.Location;
+                                                    MapLocation ai = homeSystem.Location;
+                                                    Double curretRange = Math.Sqrt(Math.Pow((target.X - ai.X), 2) + Math.Pow((target.Y - ai.Y), 2));
+                                                    if (curretRange < lastRange)
                                                     {
-                                                        MapLocation target = colonyTarget.Location;
-                                                        MapLocation ai = homeSystem.Location;
-                                                        Double curretRange = Math.Sqrt(Math.Pow((target.X - ai.X), 2) + Math.Pow((target.Y - ai.Y), 2));
-                                                        if (curretRange < lastRange)
-                                                        {
-                                                            lastRange = curretRange;
-                                                            fleet.Route.Clear();
-                                                            fleet.SetRoute(AStar.FindPath(fleet, PathOptions.SafeTerritory, _deathStars, new List<Sector> { colonyTarget.Sector }));
-                                                        }
+                                                        lastRange = curretRange;
+                                                        fleet.Route.Clear();
+                                                        fleet.SetRoute(AStar.FindPath(fleet, PathOptions.SafeTerritory, _deathStars, new List<Sector> { colonyTarget.Sector }));
                                                     }
                                                 }
-                                                else
-                                                    civ.TargetCivilization = null;
                                             }
+                                            else
+                                                civ.TargetCivilization = null;
+                                            
                                             //GameLog.Core.AI.DebugFormat("Civ {0} now in SystemAttack UnitAIType target ={1}, attack fleet location ={2} Count() ={3}, Route length {4} "
                                             //    , civ.Name, civ.TargetCivilization.Name, attackFleet.Location, attackFleet.Ships.Count, attackFleet.Route.Length);
                                         }
@@ -139,7 +137,6 @@ namespace Supremacy.AI
                                     else if (fleet.Location == othersHomeSystem.Location
                                         || GameContext.Current.Universe.FindOwned<Colony>(civ.TargetCivilization).Where(o => o.Location == fleet.Location).Any())
                                     {
-                                        // ************* ToDo invasion 
                                         SystemAssult(fleet);
                                         GameLog.Core.AI.DebugFormat("## Do Invasion at Target system, civ ={1}, targete{2}", civ.Name, civ.TargetCivilization.Name);
                                         // send home and re-set UnitAIType 
@@ -147,7 +144,7 @@ namespace Supremacy.AI
                                 }
                                 else
                                 {
-                                    if (!fleet.Route.Waypoints.Contains(othersHomeSystem.Location))
+                                    if (!fleet.Route.Waypoints.Contains(othersHomeSystem.Location) || fleet.Route.IsEmpty) // fleet.UnitAIType == UnitAIType.SystemAttack
                                     {
                                         fleet.SetRoute(AStar.FindPath(fleet, PathOptions.SafeTerritory, _deathStars, new List<Sector> { homeSystem.Sector }));
                                     }
@@ -651,6 +648,23 @@ namespace Supremacy.AI
                     firePower += ship.Firepower();
                     // GameLog.Client.AI.DebugFormat("A ship all attack ships {0} location ={1}", ship.Name, ship.Location );
                 }
+            }
+            return firePower;
+        }
+        private static int CalculateFirePower(Civilization civ, StarSystem otherHomeSystem)
+        {
+            int firePower = 0;
+            foreach (Fleet civFleet in GameContext.Current.Universe.FindOwned<Fleet>(civ).ToList())
+            {
+                foreach (Ship ship in civFleet.Ships.Where(s => s.ShipType >= ShipType.Scout || s.ShipType == ShipType.Transport).ToList())
+                {
+                    firePower += ship.Firepower();
+                    // GameLog.Client.AI.DebugFormat("A ship all attack ships {0} location ={1}", ship.Name, ship.Location );
+                }
+            }
+            if (otherHomeSystem.Sector.Station != null)
+            {
+                firePower += otherHomeSystem.Sector.Station.Firepower();
             }
             return firePower;
         }

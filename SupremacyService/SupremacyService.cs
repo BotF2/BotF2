@@ -1519,12 +1519,20 @@ namespace Supremacy.WCF
 
         #region Invasion
         private void NotifyInvasionEndedCallback(InvasionEngine engine)
-        {
-            var player = GetPlayerByEmpire(engine.InvasionArena.Invader);
-            if (player.IsHumanPlayer)
+          {
+            Player player = GetPlayerByEmpire(engine.InvasionArena.Invader);
+            if (player == null)
+            {
+                if (_invasionEngine == engine)
+                {
+                    _invasionEngine = null;
+                    _gameEngine.NotifyCombatFinished();
+                }
+            }
+            else if (player.IsHumanPlayer) //this is bool based on return (_playerId >= GameHostID) GameHostID is always 0    
                 return;
 
-            if (_invasionEngine == engine)
+            else if (_invasionEngine == engine)
             {
                 _invasionEngine = null;
                 _gameEngine.NotifyCombatFinished();
@@ -1570,7 +1578,7 @@ namespace Supremacy.WCF
                     if (_invasionEngine == null)
                         _invasionEngine = new InvasionEngine(SendInvasionUpdateCallback, NotifyInvasionEndedCallback);
 
-                    _scheduler.Schedule(() => _invasionEngine.BeginInvasion(invasionArena));
+                    _scheduler.Schedule(() =>  _invasionEngine.BeginInvasion(invasionArena));
                 }
             }
             else

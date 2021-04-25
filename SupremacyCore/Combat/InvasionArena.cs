@@ -682,7 +682,7 @@ namespace Supremacy.Combat
                     SubmitOrders(landTroops);
                 }
                 if (invasionArena.Status == InvasionStatus.Victory)
-                    _invasionEndedCallback(this);
+                   // _invasionEndedCallback(this);
                 GameLog.Client.AI.DebugFormat("InvasionArean status = {0}", invasionArena.Status);
             }
             else
@@ -832,8 +832,8 @@ namespace Supremacy.Combat
              * Any remaining orbital weapons platforms which have charged weapons will have a chance to shoot down
              * the invader's troop transports as they try to land.
              */
-
-            ProcessSpaceCombat(transports, defendingUnits);
+            if (defendingUnits.Count() > 0)
+                ProcessSpaceCombat(transports, defendingUnits);
 
             _ = transports.RemoveWhere(o => o.IsDestroyed);
 
@@ -1337,6 +1337,8 @@ namespace Supremacy.Combat
             {
                 try
                 {
+                    //if (unit.IsDestroyed == true)
+                    //    continue;
                     unit.CommitSourceChanges();
                 }
                 catch
