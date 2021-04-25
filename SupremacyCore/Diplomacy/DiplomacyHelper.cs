@@ -995,17 +995,17 @@ namespace Supremacy.Diplomacy
         /// </summary>
         /// <param name="minorPower"></param>
         /// <returns></returns>
-        public static bool IsIndependent([NotNull] Civilization minorPower)
+        public static bool IsIndependent([NotNull] Civilization Power)
         {
-            if (minorPower == null)
+            if (Power == null)
                 throw new ArgumentNullException("minorPower");
 
-            if (minorPower.IsEmpire)
+            if (Power.IsEmpire)
                 return true;
 
             foreach (var empire in GameContext.Current.Civilizations)
             {
-                if (empire.IsEmpire && IsMember(minorPower, empire))
+                if (empire.IsEmpire && IsMember(Power, empire))
                     return false;
             }
 

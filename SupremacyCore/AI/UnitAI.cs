@@ -104,14 +104,13 @@ namespace Supremacy.AI
                                             {
                                                 //fleet.Owner = civ; 
                                                 //fleet.Location = homeSystem.Location;
-                                                fleet.UnitAIType = UnitAIType.SystemAttack;
-                                                fleet.Activity = UnitActivity.Mission;
+
                                                 fleet.SetOrder(new EngageOrder());
                                                 if (fleet.Location != othersHomeSystem.Location)
                                                     fleet.SetRoute(AStar.FindPath(fleet, PathOptions.SafeTerritory, _deathStars, new List<Sector> { othersHomeSystem.Sector }));
                                             }
                                             else if (colonyTargetes.Count() > 1)
-                                            {                                                
+                                            {
                                                 Double lastRange = 999;
                                                 colonyTargetes.Remove(othersHomeSystem.Colony);
                                                 foreach (Colony colonyTarget in colonyTargetes)
@@ -129,26 +128,28 @@ namespace Supremacy.AI
                                             }
                                             else
                                                 civ.TargetCivilization = null;
-                                            
+
                                             //GameLog.Core.AI.DebugFormat("Civ {0} now in SystemAttack UnitAIType target ={1}, attack fleet location ={2} Count() ={3}, Route length {4} "
                                             //    , civ.Name, civ.TargetCivilization.Name, attackFleet.Location, attackFleet.Ships.Count, attackFleet.Route.Length);
                                         }
                                     }
-                                    else if (fleet.Location == othersHomeSystem.Location
+                                    else if ((fleet.Location == othersHomeSystem.Location
                                         || GameContext.Current.Universe.FindOwned<Colony>(civ.TargetCivilization).Where(o => o.Location == fleet.Location).Any())
+                                        && fleet.Ships.Where(o => o.ShipType == ShipType.Transport).Any())
                                     {
+                                        // ************* ToDo invasion 
                                         SystemAssult(fleet);
                                         GameLog.Core.AI.DebugFormat("## Do Invasion at Target system, civ ={1}, targete{2}", civ.Name, civ.TargetCivilization.Name);
                                         // send home and re-set UnitAIType 
                                     }
                                 }
-                                else
+                                else if (fleet.Route.IsEmpty || !fleet.Route.Waypoints.Contains(othersHomeSystem.Location))
                                 {
-                                    if (!fleet.Route.Waypoints.Contains(othersHomeSystem.Location) || fleet.Route.IsEmpty) // fleet.UnitAIType == UnitAIType.SystemAttack
-                                    {
-                                        fleet.SetRoute(AStar.FindPath(fleet, PathOptions.SafeTerritory, _deathStars, new List<Sector> { homeSystem.Sector }));
-                                    }
-                                }
+                                    fleet.SetRoute(AStar.FindPath(fleet, PathOptions.SafeTerritory, _deathStars, new List<Sector> { homeSystem.Sector }));
+                                    fleet.UnitAIType = UnitAIType.NoUnitAI;
+                                    fleet.Activity = UnitActivity.NoActivity;
+
+                                }                                
                             }
                             else if (fleet.Ships.Any(o => o.ShipType >= ShipType.Scout || o.ShipType == ShipType.Transport))// No systemattack fleet so make one
                             {

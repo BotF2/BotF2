@@ -131,30 +131,51 @@ namespace Supremacy.AI
         }
         public static void FindTargetCiv(Civilization daCiv)
         {
-            var possibleInvasionCivs = GameContext.Current.Civilizations.Where(o => o.IsEmpire).ToList();
-            foreach (Civilization possibleInvasionCiv in possibleInvasionCivs)
-            {
-                Double lastRange = 999;
+            var possibleCivs = GameContext.Current.Civilizations.ToList();
 
-                if (DiplomacyHelper.IsContactMade(daCiv, possibleInvasionCiv)
-                    && !GameContext.Current.CivilizationManagers[possibleInvasionCiv].IsHomeColonyDestroyed
-                    && !DiplomacyHelper.AreAllied(possibleInvasionCiv, daCiv)
-                    && possibleInvasionCiv.TargetCivilization == null)
+            //if (daCiv.Traits.Contains("Warlike"))
+            //{
+            //    foreach (int civID in _possibleInvasionCivs)
+            //    {
+            //        possibleCivs.Add(GameContext.Current.CivilizationManagers[civID].Civilization);
+            //    }
+            //}
+            //else
+            //{
+            //    foreach (int civID in _possibleInvasionEmpires)
+            //    {
+            //        possibleCivs.Add(GameContext.Current.CivilizationManagers[civID].Civilization);
+            //    }
+            //}
+
+            foreach (Civilization invasionCiv in possibleCivs)
+            {
+                if (!daCiv.Traits.Contains("Warlike") && invasionCiv.CivID > 6 && daCiv != invasionCiv) // not warlike and a minor so skip
+                    continue;
+
+                    Double lastRange = 999;
+
+                if (DiplomacyHelper.IsContactMade(daCiv, invasionCiv)
+                    && !GameContext.Current.CivilizationManagers[invasionCiv].IsHomeColonyDestroyed
+                    && !DiplomacyHelper.AreAllied(invasionCiv, daCiv)
+                    && !DiplomacyHelper.IsMember(invasionCiv, daCiv)
+                    && invasionCiv.TargetCivilization == null)
                 {
-                    MapLocation empire = GameContext.Current.CivilizationManagers[possibleInvasionCiv].HomeSystem.Location;
+                    MapLocation empire = GameContext.Current.CivilizationManagers[invasionCiv].HomeSystem.Location;
                     MapLocation ai = GameContext.Current.CivilizationManagers[daCiv].HomeSystem.Location;
                     Double curretRange = Math.Sqrt(Math.Pow((empire.X - ai.X), 2) + Math.Pow((empire.Y - ai.Y), 2));
 
                     //var maintenaceValue = GameContext.Current.CivilizationManagers[possibleInvasionCiv].MaintenanceCostLastTurn;
                     int civFirePower = CalculateFirePower(daCiv);
-                    int targetFirePower = CalculateFirePower(possibleInvasionCiv);
-                    if (possibleInvasionCiv.TargetCivilization == null && targetFirePower * 1.2 < civFirePower)
+                    int targetFirePower = CalculateFirePower(invasionCiv);
+                    if (invasionCiv.TargetCivilization == null && targetFirePower * 1.1 < civFirePower)
                     {
                         if (curretRange < lastRange)
                         {
-                            if (UnitAI.CanAllShipsGetThere(daCiv, possibleInvasionCiv))
+                            if (UnitAI.CanAllShipsGetThere(daCiv, invasionCiv))
                             {
-                                daCiv.TargetCivilization = possibleInvasionCiv;
+                                
+                                daCiv.TargetCivilization = invasionCiv;
                                 lastRange = curretRange;
                                 if (!DiplomacyHelper.AreAtWar(daCiv, daCiv.TargetCivilization))
                                 {
@@ -169,7 +190,7 @@ namespace Supremacy.AI
                     }
                     else daCiv.TargetCivilization = null;
                 }
-            }
+            }           
         }
         public static bool IsCivDefeated(Civilization undefeatedCiv)
         {
