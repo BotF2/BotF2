@@ -133,24 +133,9 @@ namespace Supremacy.AI
         {
             var possibleCivs = GameContext.Current.Civilizations.ToList();
 
-            //if (daCiv.Traits.Contains("Warlike"))
-            //{
-            //    foreach (int civID in _possibleInvasionCivs)
-            //    {
-            //        possibleCivs.Add(GameContext.Current.CivilizationManagers[civID].Civilization);
-            //    }
-            //}
-            //else
-            //{
-            //    foreach (int civID in _possibleInvasionEmpires)
-            //    {
-            //        possibleCivs.Add(GameContext.Current.CivilizationManagers[civID].Civilization);
-            //    }
-            //}
-
             foreach (Civilization invasionCiv in possibleCivs)
             {
-                if (!daCiv.Traits.Contains("Warlike") && invasionCiv.CivID > 6 && daCiv != invasionCiv) // not warlike and a minor so skip
+                if (!daCiv.Traits.Contains("Warlike") && invasionCiv.CivID > 6)  // not warlike and a minor so skip
                     continue;
 
                     Double lastRange = 999;
@@ -159,13 +144,13 @@ namespace Supremacy.AI
                     && !GameContext.Current.CivilizationManagers[invasionCiv].IsHomeColonyDestroyed
                     && !DiplomacyHelper.AreAllied(invasionCiv, daCiv)
                     && !DiplomacyHelper.IsMember(invasionCiv, daCiv)
-                    && invasionCiv.TargetCivilization == null)
+                    && invasionCiv.TargetCivilization == null
+                    && daCiv != invasionCiv)
                 {
                     MapLocation empire = GameContext.Current.CivilizationManagers[invasionCiv].HomeSystem.Location;
                     MapLocation ai = GameContext.Current.CivilizationManagers[daCiv].HomeSystem.Location;
                     Double curretRange = Math.Sqrt(Math.Pow((empire.X - ai.X), 2) + Math.Pow((empire.Y - ai.Y), 2));
 
-                    //var maintenaceValue = GameContext.Current.CivilizationManagers[possibleInvasionCiv].MaintenanceCostLastTurn;
                     int civFirePower = CalculateFirePower(daCiv);
                     int targetFirePower = CalculateFirePower(invasionCiv);
                     if (invasionCiv.TargetCivilization == null && targetFirePower * 1.1 < civFirePower)
