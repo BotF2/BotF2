@@ -43,6 +43,8 @@ namespace Supremacy.Game
         public string blank = " ";
         readonly List<CivValue> CivValueList = new List<CivValue>();
         public string newline = Environment.NewLine;
+        public int AAASpecialWidth1;
+        public int AAASpecialHeight1;
 
         #region Public Members
 
@@ -454,32 +456,42 @@ namespace Supremacy.Game
             //GameLog.Print("GameVersion = {0}", GameContext.Current.GameMod.Version);
             GameLog.Core.General.InfoFormat("Options: ---------------------------");
             GameLog.Core.General.InfoFormat("Options: GalaxySize = {0} ({1} x {2})", GameContext.Current.Options.GalaxySize, GameContext.Current.Universe.Map.Width, GameContext.Current.Universe.Map.Height);
-            GameLog.Core.General.InfoFormat("Options: GalaxyShape = {0}", GameContext.Current.Options.GalaxyShape);
-            GameLog.Core.General.InfoFormat("Options: StarDensity = {0}", GameContext.Current.Options.StarDensity);
-            GameLog.Core.General.InfoFormat("Options: PlanetDensity = {0}", GameContext.Current.Options.PlanetDensity);
+            GameLog.Core.GeneralDetails.DebugFormat("Options: GalaxyShape = {0}", GameContext.Current.Options.GalaxyShape);
+            GameLog.Core.GeneralDetails.DebugFormat("Options: StarDensity = {0}", GameContext.Current.Options.StarDensity);
+            GameLog.Core.GeneralDetails.DebugFormat("Options: PlanetDensity = {0}", GameContext.Current.Options.PlanetDensity);
             GameLog.Core.General.InfoFormat("Options: StartingTechLevel = {0}", GameContext.Current.Options.StartingTechLevel);
-            GameLog.Core.General.InfoFormat("Options: MinorRaceFrequency = {0}", GameContext.Current.Options.MinorRaceFrequency);
-            GameLog.Core.General.InfoFormat("Options: GalaxyCanon = {0}", GameContext.Current.Options.GalaxyCanon);
-            GameLog.Core.General.InfoFormat("Options: ---------------------------");
-            GameLog.Core.General.InfoFormat("Options: FederationPlayable = {0}", GameContext.Current.Options.FederationPlayable);
-            GameLog.Core.General.InfoFormat("Options: RomulanPlayable = {0}", GameContext.Current.Options.RomulanPlayable);
-            GameLog.Core.General.InfoFormat("Options: KlingonPlayable = {0}", GameContext.Current.Options.KlingonPlayable);
-            GameLog.Core.General.InfoFormat("Options: CardassianPlayable = {0}", GameContext.Current.Options.CardassianPlayable);
-            GameLog.Core.General.InfoFormat("Options: DominionPlayable = {0}", GameContext.Current.Options.DominionPlayable);
-            GameLog.Core.General.InfoFormat("Options: BorgPlayable = {0}", GameContext.Current.Options.BorgPlayable);
-            GameLog.Core.General.InfoFormat("Options: TerranEmpirePlayable = {0}", GameContext.Current.Options.TerranEmpirePlayable);
-            GameLog.Core.General.InfoFormat("Options: ---------------------------");
-            GameLog.Core.General.InfoFormat("Options: FederationModifier = {0}", GameContext.Current.Options.FederationModifier);
-            GameLog.Core.General.InfoFormat("Options: RomulanModifier = {0}", GameContext.Current.Options.RomulanModifier);
-            GameLog.Core.General.InfoFormat("Options: KlingonModifier = {0}", GameContext.Current.Options.KlingonModifier);
-            GameLog.Core.General.InfoFormat("Options: CardassianModifier = {0}", GameContext.Current.Options.CardassianModifier);
-            GameLog.Core.General.InfoFormat("Options: DominionModifier = {0}", GameContext.Current.Options.DominionModifier);
-            GameLog.Core.General.InfoFormat("Options: BorgModifier = {0}", GameContext.Current.Options.BorgModifier);
-            GameLog.Core.General.InfoFormat("Options: TerranEmpireModifier = {0}", GameContext.Current.Options.TerranEmpireModifier);
+            GameLog.Core.GeneralDetails.DebugFormat("Options: MinorRaceFrequency = {0}", GameContext.Current.Options.MinorRaceFrequency);
+            GameLog.Core.GeneralDetails.DebugFormat("Options: GalaxyCanon = {0}", GameContext.Current.Options.GalaxyCanon);
+            GameLog.Core.GeneralDetails.DebugFormat("Options: ---------------------------");
+            GameLog.Core.GeneralDetails.DebugFormat("Options: FederationPlayable = {0}", GameContext.Current.Options.FederationPlayable);
+            GameLog.Core.GeneralDetails.DebugFormat("Options: RomulanPlayable = {0}", GameContext.Current.Options.RomulanPlayable);
+            GameLog.Core.GeneralDetails.DebugFormat("Options: KlingonPlayable = {0}", GameContext.Current.Options.KlingonPlayable);
+            GameLog.Core.GeneralDetails.DebugFormat("Options: CardassianPlayable = {0}", GameContext.Current.Options.CardassianPlayable);
+            GameLog.Core.GeneralDetails.DebugFormat("Options: DominionPlayable = {0}", GameContext.Current.Options.DominionPlayable);
+            GameLog.Core.GeneralDetails.DebugFormat("Options: BorgPlayable = {0}", GameContext.Current.Options.BorgPlayable);
+            GameLog.Core.GeneralDetails.DebugFormat("Options: TerranEmpirePlayable = {0}", GameContext.Current.Options.TerranEmpirePlayable);
+            GameLog.Core.GeneralDetails.DebugFormat("Options: ---------------------------");
+            GameLog.Core.GeneralDetails.DebugFormat("Options: FederationModifier = {0}", GameContext.Current.Options.FederationModifier);
+            GameLog.Core.GeneralDetails.DebugFormat("Options: RomulanModifier = {0}", GameContext.Current.Options.RomulanModifier);
+            GameLog.Core.GeneralDetails.DebugFormat("Options: KlingonModifier = {0}", GameContext.Current.Options.KlingonModifier);
+            GameLog.Core.GeneralDetails.DebugFormat("Options: CardassianModifier = {0}", GameContext.Current.Options.CardassianModifier);
+            GameLog.Core.GeneralDetails.DebugFormat("Options: DominionModifier = {0}", GameContext.Current.Options.DominionModifier);
+            GameLog.Core.GeneralDetails.DebugFormat("Options: BorgModifier = {0}", GameContext.Current.Options.BorgModifier);
+            GameLog.Core.GeneralDetails.DebugFormat("Options: TerranEmpireModifier = {0}", GameContext.Current.Options.TerranEmpireModifier);
 
-            GameLog.Core.General.InfoFormat("Options: EmpireModifierRecurringBalancing = {0}", GameContext.Current.Options.EmpireModifierRecurringBalancing);
-            GameLog.Core.General.InfoFormat("Options: GamePace = {0}", GameContext.Current.Options.GamePace);
-            GameLog.Core.General.InfoFormat("Options: TurnTimer = {0}", GameContext.Current.Options.TurnTimerEnum);
+            GameLog.Core.GeneralDetails.DebugFormat("Options: EmpireModifierRecurringBalancing = {0}", GameContext.Current.Options.EmpireModifierRecurringBalancing);
+            GameLog.Core.GeneralDetails.DebugFormat("Options: GamePace = {0}", GameContext.Current.Options.GamePace);
+            GameLog.Core.GeneralDetails.DebugFormat("Options: TurnTimer = {0}", GameContext.Current.Options.TurnTimerEnum);
+
+            Table ToolTipImageSizeTable = GameContext.Current.Tables.UniverseTables["Sizes"];
+            AAASpecialWidth1 = (int)Number.ParseSingle(ToolTipImageSizeTable["Width"][0]);
+            AAASpecialHeight1 = (int)Number.ParseSingle(ToolTipImageSizeTable["Height"][0]);
+            string _text = "AAASpecialWidth1=" + AAASpecialWidth1 + " x " + "AAASpecialHeight1=" + AAASpecialHeight1;
+            Console.WriteLine(_text);            
+            GameLog.Core.GeneralDetails.DebugFormat(_text);
+            
+
+
 
             /* With StrengthModifier it is possible to increase some stuff or to decrease */
             /* default value is 1.0 - range shall be 0.1 to 1.9 */
@@ -504,7 +516,7 @@ namespace Supremacy.Game
             float ColonyTroopStrenghtMod = Number.ParseSingle(strengthTable["ColonyTroopStrenghtMod"][0]);
 
             var newline = Environment.NewLine;
-            GameLog.Core.GameInitData.DebugFormat("StrengthModifier: " + newline +
+            GameLog.Core.GameInitDataDetails.DebugFormat("StrengthModifier: " + newline +
                 "EspionageMod = {0}" + newline +
                 "SabotageMod = {1}" + newline + 
                 "InternalSecurityMod = {2}" + newline +
@@ -545,6 +557,7 @@ namespace Supremacy.Game
 
             game.TurnNumber = 1;
             _gameTurnNumber = 1;
+            
         }
         #endregion
 
@@ -1205,7 +1218,8 @@ namespace Supremacy.Game
             {
                 CombatReset.Reset();
                 OnInvasionOccurring(invasion);
-                CombatReset.WaitOne();
+                if (invasion.Invader.IsHuman)
+                    CombatReset.WaitOne();
             }
 
             var invadingFleets = invasions
@@ -1413,19 +1427,10 @@ namespace Supremacy.Game
                     var civManager = GameContext.Current.CivilizationManagers[civ.CivID];
                     civManager.Research.UpdateResearch(
                         civManager.Colonies.Sum(c => c.GetProductionOutput(ProductionCategory.Research)));
-
-                    //string researchSummary = "";
-                    //researchSummary += "Research Summary: " + "Gained P. = " + civManager.Research.CumulativePoints;
-                    //researchSummary += "Progress: " + "Bio: " + civManager.Research;
-
-                    //civManager.SitRepEntries.Add(new ScienceSummarySitRepEntry(civ, researchSummary));
-
                 }
                 catch (Exception e)
                 {
-                    GameLog.Core.General.Error(string.Format("DoResearch failed for {0}",
-                        civ.Name),
-                        e);
+                    GameLog.Core.General.Error(string.Format("DoResearch failed for {0}", civ.Name), e);
                 }
                 finally
                 {
@@ -2432,8 +2437,8 @@ namespace Supremacy.Game
 
                 var allCivShips = GameContext.Current.Universe.Find<Ship>(UniverseObjectType.Ship).Where(o => o.OwnerID == civManager.CivilizationID);
 
-                string civValueShipSummary = /*"(" + */civManager.CivilizationID + "> LT ShipSum1: "; //All;" + allCivShips.Count();
-                string civValueShipSummary2 = /*"(" + */civManager.CivilizationID + "> LT ShipSum2: "; //All;" + allCivShips.Count();  // more civil ships
+                string civValueShipSummary = /*"(" + civManager.CivilizationID + "> */"LT-ShipSum1: "; //All;" + allCivShips.Count();
+                string civValueShipSummary2 = /*"(" + civManager.CivilizationID + "> */"LT-ShipSum2: "; //All;" + allCivShips.Count();  // more civil ships
                 int _count = 0;
                 int _fp = 0;
                 int _fpAll = 0;
@@ -2488,7 +2493,7 @@ namespace Supremacy.Game
                     _fp = scienceShips.LastOrDefault().FirePower.CurrentValue * _count;
                 }
                 // civValueShipSummary2 ... frist line, no semi colon 
-                if (_count > 0) civValueShipSummary2 += "Sci " + _count + "x (FP:" + _fp + ")"; _fpAll += _fp;
+                if (_count > 0) civValueShipSummary2 += "Science " + _count + "x (FP:" + _fp + ")"; _fpAll += _fp;
 
                 var spyShips = allCivShips.Where(o => o.ShipType == ShipType.Spy);
                 //civValueShipSummary += ";Spy;" + _count = spyShips.Count();
@@ -2518,7 +2523,7 @@ namespace Supremacy.Game
                 {
                     _fp = medicalShips.LastOrDefault().FirePower.CurrentValue * _count;
                 }
-                civValueShipSummary2 += "; Med " + _count + "x ";// (FP: " + _fp + ")";
+                civValueShipSummary2 += "; Medical " + _count + "x ";// (FP: " + _fp + ")";
 
                 var transportShips = allCivShips.Where(o => o.ShipType == ShipType.Transport);
                 //civValueShipSummary += ";Tra;" + _count = transportShips.Count();
@@ -2528,7 +2533,7 @@ namespace Supremacy.Game
                 {
                     _fp = transportShips.LastOrDefault().FirePower.CurrentValue * _count;
                 }
-                if (_count > 0) civValueShipSummary2 += "; Tra " + _count + "x ";// (FP: " + _fp + ")";
+                if (_count > 0) civValueShipSummary2 += "; Transport " + _count + "x ";// (FP: " + _fp + ")";
 
                 var constructionShips = allCivShips.Where(o => o.ShipType == ShipType.Construction);
                 //civValueShipSummary += ";Con;" + _count = constructionShips.Count();
@@ -2538,7 +2543,7 @@ namespace Supremacy.Game
                 {
                     _fp = constructionShips.LastOrDefault().FirePower.CurrentValue * _count;
                 }
-                if (_count > 0) civValueShipSummary2 += "; Con " + _count + "x ";// (FP: " + _fp + ")"; 
+                if (_count > 0) civValueShipSummary2 += "; Construction " + _count + "x ";// (FP: " + _fp + ")"; 
 
                 var colonyShips = allCivShips.Where(o => o.ShipType == ShipType.Colony);
                 //civValueShipSummary += ";Col;" + _count = colonyShips.Count();
@@ -2548,7 +2553,7 @@ namespace Supremacy.Game
                 {
                     _fp = colonyShips.LastOrDefault().FirePower.CurrentValue * _count;
                 }
-                if (_count > 0) civValueShipSummary2 += "; Col " + _count + "x ";// (FP: " + _fp + ")";
+                if (_count > 0) civValueShipSummary2 += "; Colony " + _count + "x ";// (FP: " + _fp + ")";
 
                 civValueShipSummary += " - Ships: " + allCivShips.Count() + " - Fire Power Total: " + _fpAll;
 
