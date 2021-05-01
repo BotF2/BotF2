@@ -34,6 +34,8 @@ namespace Supremacy.Client
         bool IsTerranEmpirePlayable { get; }
 
         IPlayer LocalPlayer { get; }
+
+        //int Size1 { get { return AAASpecialWidth1; } }
         ILobbyData LobbyData { get; }
         CivilizationManager LocalPlayerEmpire { get; }
         IEnumerable<IPlayer> RemotePlayers { get; }

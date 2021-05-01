@@ -112,16 +112,11 @@ namespace Supremacy.Client
         private IGameController _gameController;
         private string _text;
         private readonly string newline = Environment.NewLine;
-        //private string _trueText;
-        //private string _falseText;
-        //private string _restText;
-        //private string truesText;
+
+        private int SpecialWidth1 = 576;
+        private int SpecialHeight1 = 480;
+
         private string _resultText;
-        //private string falseText;
-        //private string restText;
-        //private int _truelength;
-        //private int _length;
-        //private Dictionary<int, string, string, string> _array;
         #endregion
 
         #region Constructor & Lifetime

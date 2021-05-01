@@ -140,6 +140,20 @@ namespace Supremacy.Game
         Bonus_Biggest = 5
     }
 
+    /// <summary>
+    /// for Tooltip-Image-Size
+    /// </summary>
+    /// 
+    //public enum SpecialSize : int  // for Tooltip-Image-Size
+    //{
+    //    Width1 = 576,
+    //    Height1 = 480,
+    //    Width2 = 1152,
+    //    Height2 = 960,
+    //    Width3 = 576,
+    //    Height3 = 480
+    //}
+
     public enum EmpireModifierRecurringBalancing : byte
     {
         No = 0,
@@ -370,6 +384,42 @@ namespace Supremacy.Game
         /// </summary>
         /// <value> TerranEmpire Modifier yes or no.</value>
         public EmpireModifierRecurringBalancing EmpireModifierRecurringBalancing { get; set; }
+
+        ///// <summary>
+        ///// Gets or sets Special size for Tooltip image size.
+        ///// </summary>
+        ///// <value> TerranEmpire Modifier yes or no.</value>
+        //public SpecialSize Width1 { get; set; }
+
+        ///// <summary>
+        ///// Gets or sets Special size for Tooltip image size.
+        ///// </summary>
+        ///// <value> TerranEmpire Modifier yes or no.</value>
+        //public SpecialSize Height1 { get; set; }
+
+        ///// <summary>
+        ///// Gets or sets Special size for Tooltip image size.
+        ///// </summary>
+        ///// <value> TerranEmpire Modifier yes or no.</value>
+        //public SpecialSize Width2 { get; set; }
+
+        ///// <summary>
+        ///// Gets or sets Special size for Tooltip image size.
+        ///// </summary>
+        ///// <value> TerranEmpire Modifier yes or no.</value>
+        //public SpecialSize Height2 { get; set; }
+
+        ///// <summary>
+        ///// Gets or sets Special size for Tooltip image size.
+        ///// </summary>
+        ///// <value> TerranEmpire Modifier yes or no.</value>
+        //public SpecialSize Width3 { get; set; }
+
+        ///// <summary>
+        ///// Gets or sets Special size for Tooltip image size.
+        ///// </summary>
+        ///// <value> TerranEmpire Modifier yes or no.</value>
+        //public SpecialSize Height3 { get; set; }
 
         /// <summary>
         /// Gets or sets GamePace

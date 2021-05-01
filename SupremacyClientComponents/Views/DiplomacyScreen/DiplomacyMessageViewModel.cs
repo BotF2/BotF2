@@ -680,8 +680,10 @@ namespace Supremacy.Client.Views
                         element.Description.ToString(),
                         element.SelectedParameter.ToString(),
                         element.ElementType.ToString());
+#pragma warning disable IDE0059 // Unnecessary assignment of a value
                     st = ResourceManager.GetString("PROPOSE_DIALOG_HINT"); // need to update the embassy screen with a new window to get the send button activated without delay.
-                    //var result_Propose = MessageDialog.Show(st, MessageDialogButtons.Ok);
+#pragma warning restore IDE0059 // Unnecessary assignment of a value
+                               //var result_Propose = MessageDialog.Show(st, MessageDialogButtons.Ok);
                     GameLog.Client.Diplomacy.DebugFormat("PROPOSE_DIALOG_HINT is outcommented");
                     break;
                 case DiplomacyMessageElementActionCategory.Commend:

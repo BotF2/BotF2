@@ -31,6 +31,7 @@
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
@@ -42,8 +43,7 @@
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="*" />
+                    <!--<RowDefinition Height="*" />-->
                     <RowDefinition Height="Auto"
                      MinHeight="00" />
                     <!--MinHeight before 27-->
@@ -69,13 +69,11 @@
             <!--<TextBlock Foreground="{DynamicResource DefaultTextBrush}" Text="Hello" ></TextBlock>-->
 
 
-            <TextBox Text="{s:StringResource DIALOG_F10_TAB_1_TEXT_1}" TextWrapping="Wrap"
-                           ScrollViewer.VerticalScrollBarVisibility="Auto"
-                           Foreground="{DynamicResource DefaultTextBrush}"
-                           Grid.ColumnSpan="8"
-                           >
+            <TextBox Text="{s:StringResource DIALOG_F10_TAB_1_TEXT_1}" TextWrapping="Wrap" MaxHeight="400"
+                            Grid.ColumnSpan="8" ScrollViewer.VerticalScrollBarVisibility="Visible" Foreground="{DynamicResource DefaultTextBrush}"
+                           ></TextBox>
 
-                </TextBox>
+                
 
                 <!--Game Button-->
                 <!--<TextBlock Text="GameButton -> " 
@@ -93,153 +91,6 @@
                 </Button>-->
                 <!--End Game Button-->
 
-                <!--Game Button-->
-                <!--<TextBlock Text="GameButton -> " 
-                           Foreground="{DynamicResource DefaultTextBrush}"
-                           
-                           >
-                </TextBlock>
-                <TextBlock Text="LCARS_StandardButtonStyle -> " 
-                           Foreground="{DynamicResource DefaultTextBrush}"
-                           
-                           >
-                </TextBlock>-->                
-                <!--<Button x:Name="AcceptButton" Grid.Row="15" Grid.Column="7"
-                      Command="{x:Static local:GenericCommands.AcceptCommand}"
-                      Style="{DynamicResource LCARS_StandardButtonStyle}"
-                        
-                      IsCancel="True" Margin="0,0,0,0"
-                    >
-                    <AccessText Text="{s:StringResource SETTINGS_ACCEPT}" />
-                </Button>-->
-                <!--End Game Button-->
-                
-                <!--<TextBlock Text="1 DefaultTextBrush" Grid.Row="1" Grid.Column="0"
-                           Foreground="{DynamicResource DefaultTextBrush}"
-                           
-                           >
-                    
-                </TextBlock>
-                
-                <TextBlock Text="2 HeaderTextBrush" Grid.Row="2" Grid.Column="0"
-                           Foreground="{DynamicResource HeaderTextBrush}"
-                           
-                           >
-
-                </TextBlock>-->
-
-                <!--<TextBlock Text="3 WhiteHeaderBrush" Grid.Row="3" Grid.Column="0"
-                           Foreground="{DynamicResource WhiteHeaderBrush}"
-                           
-                           >
-
-                </TextBlock>
-
-
-                <TextBlock Text="4 DisabledTextBrush" Grid.Row="4" Grid.Column="0"
-                           Foreground="{DynamicResource DisabledTextBrush}"
-                           
-                           >
-
-                </TextBlock>-->
-
-                <!--<TextBlock Text="5 BorderBrush" Grid.Row="5" Grid.Column="0"
-                           Foreground="{DynamicResource BorderBrush}"
-                           
-                           >
-
-                </TextBlock>
-
-                <TextBlock Text="6 AlertTextForegroundBrushKey" Grid.Row="6" Grid.Column="0"
-                           Foreground="{DynamicResource AlertTextForegroundBrushKey}"
-                           
-                           >
-
-                </TextBlock>
-
-                <TextBlock Text="7 HighlightBrushKey" Grid.Row="7" Grid.Column="0"
-                           Foreground="{DynamicResource HighlightBrushKey}"
-                           
-                           >
-
-                </TextBlock>
-
-                <TextBlock Text="8 HeaderTextBrush" Grid.Row="8" Grid.Column="0"
-                           Foreground="{DynamicResource HeaderTextBrush}"
-                           
-                           >
-
-                </TextBlock>
-
-                <TextBlock Text="9 SelectionBrush" Grid.Row="9" Grid.Column="0"
-                           Foreground="{DynamicResource SelectionBrush}"
-                           
-                           >
-
-                </TextBlock>
-
-
-                <TextBlock Text="10 " Grid.Row="10" Grid.Column="0"
-                           Foreground="{DynamicResource HeaderTextBrush}"
-                           
-                           >
-
-                </TextBlock>
-
-                <TextBlock Text="11 LCARS_Corner_TopLeft_Tall" Grid.Row="11" Grid.Column="0" Grid.ColumnSpan="2"
-                           Foreground="{DynamicResource HeaderTextBrush}"
-                           
-                           >
-
-                </TextBlock>
-
-                <TextBlock Text="12 " Grid.Row="12" Grid.Column="0"
-                           Foreground="{DynamicResource HeaderTextBrush}"
-                           
-                           >
-
-                </TextBlock>
-
-                <TextBlock Text="13 " Grid.Row="13" Grid.Column="0"
-                           Foreground="{DynamicResource HeaderTextBrush}"
-                           
-                           >
-
-                </TextBlock>
-
-                <TextBlock Text="14 " Grid.Row="14" Grid.Column="0"
-                           Foreground="{DynamicResource HeaderTextBrush}"
-                           
-                           >
-
-                </TextBlock>
-
-                <TextBlock Text="15 " Grid.Row="15" Grid.Column="0"
-                           Foreground="{DynamicResource HeaderTextBrush}"
-                           
-                           >-->
-
-                <!--</TextBlock>-->
-
-                <!--<TextBlock Text="Dom1Gradient"  Grid.Row="1" Grid.Column="1"
-                           Foreground="Black" VerticalAlignment="Center"
-                    Background="{DynamicResource Dom1Gradient_TopLeft_BottomRight}" />
-
-                <TextBlock Text="Dom2Gradient"  Grid.Row="2" Grid.Column="1"
-                           Foreground="Black" VerticalAlignment="Center"
-                    Background="{DynamicResource Dom2Gradient_TopLeft_BottomRight}" />
-
-                <TextBlock Text="Dom3Gradient"  Grid.Row="3" Grid.Column="1"
-                           Foreground="Black" VerticalAlignment="Center"
-                    Background="{DynamicResource Dom3Gradient_TopLeft_BottomRight}" />
-
-                <TextBlock Text="Dom4Gradient"  Grid.Row="4" Grid.Column="1"
-                           Foreground="Black" VerticalAlignment="Center"
-                    Background="{DynamicResource Dom4Gradient_TopLeft_BottomRight}" />
-
-                <TextBlock Text="Dom5Gradient"  Grid.Row="5" Grid.Column="1"
-                           Foreground="Black" VerticalAlignment="Center"
-                    Background="{DynamicResource Dom5Gradient_TopLeft_BottomRight}" />-->
         </StackPanel>
 
 
