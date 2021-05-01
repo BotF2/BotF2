@@ -157,6 +157,8 @@ namespace Supremacy.Combat
                     goto TryAgain;
                     //throw;
                 }
+
+
             }
         }
 
@@ -199,7 +201,7 @@ namespace Supremacy.Combat
             SyncLockTargetTwos = _targetTwoByCiv;
             _combatShips = new List<Tuple<CombatUnit, CombatWeapon[]>>();
 
-            GameLog.Core.Combat.DebugFormat("_combatId = {0}, _roundNumber = {1}" //, _targetOneByCiv = {2}, _targetOneByCiv = {3}"
+            GameLog.Core.CombatDetails.DebugFormat("_combatId = {0}, _roundNumber = {1}" //, _targetOneByCiv = {2}, _targetOneByCiv = {3}"
                 , CombatID
                 , _roundNumber
                 );
@@ -324,7 +326,7 @@ namespace Supremacy.Combat
 
                 _assets.ForEach(a => a.CombatID = CombatID); // assign combatID for each asset _assets
                 CalculateEmpireStrengths();
-                GameLog.Core.Combat.DebugFormat("_roundNumber = {0}, AllSidesStandDown() = {1}, IsCombatOver ={2}", _roundNumber, AllSidesStandDown(), IsCombatOver);
+                GameLog.Core.CombatDetails.DebugFormat("_roundNumber = {0}, AllSidesStandDown() = {1}, IsCombatOver ={2}", _roundNumber, AllSidesStandDown(), IsCombatOver);
                 RechargeWeapons();
                 ResolveCombatRoundCore(); // call to AutomatedCombatEngine's CombatResolveCombatRoundCore
 
@@ -394,7 +396,7 @@ namespace Supremacy.Combat
 
         public void SendInitialUpdate()
         {
-            GameLog.Core.Combat.DebugFormat("Called SendInitalUpdate to now call SendUpdates()");
+            GameLog.Core.CombatDetails.DebugFormat("Called SendInitalUpdate to now call SendUpdates()");
             SendUpdates();
         }
 
@@ -511,7 +513,7 @@ namespace Supremacy.Combat
                 GameLog.Core.CombatDetails.DebugFormat("Surviving assets in sector {0}? ={1}", _assets[i].Owner.Key, _assets[i].HasSurvivingAssets);
                 if (!_assets[i].HasSurvivingAssets)
                 {
-                    GameLog.Core.Combat.DebugFormat("remove defeated Player {0} asset from sector", _assets[i].Owner.Key);
+                    GameLog.Core.CombatDetails.DebugFormat("remove defeated Player {0} asset from sector", _assets[i].Owner.Key);
                     _assets.RemoveAt(i--);
                 }
             }
@@ -570,7 +572,8 @@ namespace Supremacy.Combat
 
             foreach (KeyValuePair<string, int> empire in _empireStrengths)
             {
-                GameLog.Core.Combat.DebugFormat("Strength for {0} = {1}", empire.Key, empire.Value);
+                GameLog.Core.CombatDetails.DebugFormat("Strength for {0} = {1}", empire.Key, empire.Value);
+                //GameContext.Current.CivilizationManagers[assimilatedCiv].SitRepEntries.Add(new ShipAssimilatedSitRepEntry(assimilatedCiv, ship.Location, _report));
                 //makes crash !!   _empireStrengths.Add(empire.Key, empire.Value);
             }
         }
@@ -606,12 +609,17 @@ namespace Supremacy.Combat
                     newfleet.Name = "Assimilated Assets";
                     GameContext.Current.CivilizationManagers[borg].Research.UpdateResearch(gainedResearchPoints);
 
-                    string _report = "Ship " + ship.ObjectID + " assimilated: " + ship.Name + " (" + ship.Design + "). We gained " + gainedResearchPoints + " research points.";
+                    string _report = "Ship " + ship.ObjectID + " assimilated: " + ship.Name + " (" + ship.Design + ").";
 
-                    GameLog.Core.Combat.DebugFormat("Assimilated Assets: {0} {1}, Owner = {2}, OwnerID = {3}, Fleet.OwnerID = {4}, Order = {5} gainedResearchPoints ={6}",
+                    GameLog.Core.CombatDetails.DebugFormat("Assimilated Assets: {0} {1}, Owner = {2}, OwnerID = {3}, Fleet.OwnerID = {4}, Order = {5} gainedResearchPoints ={6}",
                         ship.ObjectID, ship.Name, ship.Owner, ship.OwnerID, newfleet.OwnerID, newfleet.Order, gainedResearchPoints);
 
+                    GameContext.Current.CivilizationManagers[assimilatedCiv].SitRepEntries.Add(new ShipAssimilatedSitRepEntry(assimilatedCiv, ship.Location, _report));
+
+                    //for Borg only: 
+                    _report += "We gained " + gainedResearchPoints + " research points.";
                     GameContext.Current.CivilizationManagers[borg].SitRepEntries.Add(new ShipAssimilatedSitRepEntry( borg, ship.Location, _report));
+
                 }
             }
         }
@@ -623,7 +631,7 @@ namespace Supremacy.Combat
         {
             try // CHANGE X
             {
-                GameLog.Core.Combat.DebugFormat("PerformRetreat begins");
+                GameLog.Core.CombatDetails.DebugFormat("PerformRetreat begins");
                 foreach (CombatAssets assets in _assets)
                 {
                     Universe.Sector destination = CombatHelper.CalculateRetreatDestination(assets);
@@ -637,7 +645,7 @@ namespace Supremacy.Combat
                         foreach (CombatUnit shipStats in assets.EscapedShips)
                         {
                             ((Ship)shipStats.Source).Fleet.Location = destination.Location;
-                            GameLog.Core.Combat.DebugFormat("PerformRetreat: {0} {1} retreats to {2}",
+                            GameLog.Core.CombatDetails.DebugFormat("PerformRetreat: {0} {1} retreats to {2}",
                                 ((Ship)shipStats.Source).Fleet.ObjectID, ((Ship)shipStats.Source).Fleet.Name, destination.Location.ToString());
                         }
                     }
@@ -645,7 +653,7 @@ namespace Supremacy.Combat
             }
             catch (Exception e)
             {
-                GameLog.Core.Combat.DebugFormat("##### Problem at PerformRetreat" + Environment.NewLine + "{0}", e);
+                GameLog.Core.CombatDetails.DebugFormat("##### Problem at PerformRetreat" + Environment.NewLine + "{0}", e);
                 //((Ship)shipStats.Source).Fleet.ObjectID, ((Ship)shipStats.Source).Fleet.Name, destination.Location.ToString(), e);
             }
         }
