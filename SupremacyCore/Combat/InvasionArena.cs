@@ -1368,13 +1368,22 @@ namespace Supremacy.Combat
 
             _invasionEndedCallback(this);
 
+            string invaderUnitsDestroyed = "0";
+            invaderUnitsDestroyed = _invasionArena.InvadingUnits.Where(o => o.Health.IsMinimized).ToList().Count().ToString();
+            string defenderUnitsDestroyed = "0";
+            defenderUnitsDestroyed = _invasionArena.DefendingUnits.Where(o => o.Health.IsMinimized).ToList().Count().ToString();
+
+            //string _note = 
+
+            
+
             CivilizationManager civManagerAttacked = GameContext.Current.CivilizationManagers[_invasionArena.Defender.CivID];
             civManagerAttacked.SitRepEntries.Add(new SystemAssaultSitRepEntry(_invasionArena.Defender, _invasionArena.Colony, _invasionArena.Status.ToString(), 
-                _invasionArena.Colony.Population.CurrentValue, _invasionArena.Colony.Owner.Name));
+                _invasionArena.Colony.Population.CurrentValue, _invasionArena.Colony.Owner.Name, invaderUnitsDestroyed, defenderUnitsDestroyed));
 
             CivilizationManager civManagerAssaulting = GameContext.Current.CivilizationManagers[_invasionArena.Invader.CivID];
             civManagerAssaulting.SitRepEntries.Add(new SystemAssaultSitRepEntry(_invasionArena.Defender, _invasionArena.Colony, _invasionArena.Status.ToString(),
-                _invasionArena.Colony.Population.CurrentValue, _invasionArena.Colony.Owner.Name));
+                _invasionArena.Colony.Population.CurrentValue, _invasionArena.Colony.Owner.Name, invaderUnitsDestroyed, defenderUnitsDestroyed));
 
         }
 

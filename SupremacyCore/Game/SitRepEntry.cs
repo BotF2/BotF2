@@ -2084,7 +2084,7 @@ namespace Supremacy.Game
         public string ResearchNote { get { return _researchNote; }}
         public override SitRepCategory Categories { get { return SitRepCategory.Research; } }
         public override SitRepAction Action { get { return SitRepAction.ShowScienceScreen; } }
-        public override bool IsPriority { get { return true; } }
+        public override bool IsPriority { get { return false; } }
         public override string SitRepComment { get; set; }
         public override string SummaryText { get { return _researchNote; } }
 
@@ -2277,15 +2277,20 @@ namespace Supremacy.Game
         private readonly string _status;
         private readonly int _pop;
         private readonly string _newOwner;
-        public SystemAssaultSitRepEntry(Civilization owner, Colony colony, string status, int pop, string newOwner)
+        private readonly string _invaderUnitsDestroyed;
+        private readonly string _defenderUnitsDestroyed;
+        public SystemAssaultSitRepEntry(Civilization owner, Colony colony, string status, int pop, string newOwner, string invaderUnitsDestroyed, string defenderUnitsDestroyed)
             : base(owner, SitRepPriority.Purple)
         {
             if (colony == null)
                 throw new ArgumentNullException("colony missing for SystemAssault");
             _colonyID = colony.System.ObjectID;
-            _status = status;
+            _status = status.ToUpper();
             _pop = pop;
             _newOwner = newOwner;  // maybe "new" Owner
+            _invaderUnitsDestroyed = invaderUnitsDestroyed;
+            _defenderUnitsDestroyed = defenderUnitsDestroyed;
+
         }
         public StarSystem System { get { return GameContext.Current.Universe.Get<StarSystem>(_colonyID); } }
         //public Colony Colony { get { return GameContext.Current.Universe.Get<Colony>(_colonyID); } }
@@ -2294,11 +2299,14 @@ namespace Supremacy.Game
         public override object ActionTarget { get { return System.Sector; } }
         public override SitRepCategory Categories { get { return SitRepCategory.SpecialEvent; } }
         public override bool HasDetails { get { return true; } } // turn on/off for extra Dialog window
-        public override string HeaderText { get { return string.Format(ResourceManager.GetString("SYSTEMASSAULT_HEADER_TEXT"), System.Colony.Name, _status, _pop, _newOwner); } }
-        public override string DetailText { get { return string.Format(ResourceManager.GetString("SYSTEMASSAULT_DETAIL_TEXT"), System.Colony.Name, _status, _pop, _newOwner); } }
+        public override string HeaderText { get { return string.Format(ResourceManager.GetString("SYSTEMASSAULT_HEADER_TEXT")
+            , System.Colony.Name, _status, _pop, _newOwner, _invaderUnitsDestroyed, _defenderUnitsDestroyed); } }
+        public override string DetailText { get { return string.Format(ResourceManager.GetString("SYSTEMASSAULT_DETAIL_TEXT")
+            , System.Colony.Name, _status, _pop, _newOwner, _invaderUnitsDestroyed, _defenderUnitsDestroyed); } }
         public override string DetailImage { get { return "vfs:///Resources/Images/ScriptedEvents/SystemAssault.png"; } }
         public override string SitRepComment { get; set; }
-        public override string SummaryText { get { return string.Format(ResourceManager.GetString("SYSTEMASSAULT_SUMMARY_TEXT"), System.Colony.Name, _status, _pop, _newOwner); } }
+        public override string SummaryText { get { return string.Format(ResourceManager.GetString("SYSTEMASSAULT_SUMMARY_TEXT")
+            , System.Colony.Name, _status, _pop, _newOwner, _invaderUnitsDestroyed, _defenderUnitsDestroyed); } }
         public override bool IsPriority { get { return true; } }
 
     }
