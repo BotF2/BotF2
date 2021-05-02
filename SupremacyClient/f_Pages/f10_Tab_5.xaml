@@ -1,4 +1,4 @@
-﻿<!-- File:f10_Tab_1.xaml
+﻿<!-- File:f10_Tab_5.xaml
     
    Copyright (c) 2007 Mike Strobel
   
@@ -6,7 +6,7 @@
    For details, see <http://www.opensource.org/licenses/ms-rl.html>.
   
    All other rights reserved. -->
-<scc:Dialog x:Class="Supremacy.Client.F10_Tab_1"
+<scc:Dialog x:Class="Supremacy.Client.F10_Tab_5"
             xmlns="http://schemas.microsoft.com/netfx/2007/xaml/presentation"
             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
             xmlns:local="clr-namespace:Supremacy.Client"
@@ -18,7 +18,7 @@
             ScrollViewer.VerticalScrollBarVisibility="Auto"
             Background="Black"
             SnapsToDevicePixels="True">
-    <!--Header="{s:StringResource DIALOG_F10_TAB_1_HEADER}"-->
+    <!--Header="{s:StringResource DIALOG_F10_TAB_5_HEADER}"-->
 
     
   <!--<DockPanel LastChildFill="True">-->
@@ -55,13 +55,13 @@
                 </Grid.ColumnDefinitions>
 
         <StackPanel Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="8" Margin="0,10,0,5"  >
-            <TextBlock Text="{s:StringResource DIALOG_F10_TAB_1_HEADER}" 
+            <TextBlock Text="{s:StringResource DIALOG_F10_TAB_5_HEADER}" 
                        Foreground="{DynamicResource DefaultTextBrush}"
                            
                        ></TextBlock>
         
             
-            <TextBox Text="{s:StringResource DIALOG_F10_TAB_1_TEXT_1}" MaxHeight="565" BorderBrush="Black" 
+            <TextBox Text="{s:StringResource DIALOG_F10_TAB_5_TEXT_1}" MaxHeight="565" BorderBrush="Black" 
                      VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Auto" ScrollViewer.CanContentScroll="True"
                             Grid.ColumnSpan="8" Foreground="{DynamicResource DefaultTextBrush}"
                            ></TextBox>

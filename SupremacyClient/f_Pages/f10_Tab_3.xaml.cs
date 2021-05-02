@@ -8,7 +8,6 @@
 // All other rights reserved.
 
 using System.Windows.Input;
-using Supremacy.Utility;
 
 namespace Supremacy.Client
 {
@@ -19,8 +18,6 @@ namespace Supremacy.Client
     {
         public F10_Tab_3()
         {
-            GameLog.Client.UIDetails.DebugFormat("Initialize TAB for Dialog...");
-
             InitializeComponent();
 
             InputBindings.Add(
@@ -101,6 +98,11 @@ namespace Supremacy.Client
 
             ClientSettings.Current.Save();
             ClientSettings.Current.Reload();
+        }
+
+        private void TextBox_Scroll(object sender, System.Windows.Controls.Primitives.ScrollEventArgs e)
+        {
+
         }
     }
 }

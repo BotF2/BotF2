@@ -44,7 +44,7 @@
                     <AccessText Text="{s:StringResource SETTINGS_ACCEPT}" />
                 </Button>
 
-                <TextBlock Text="F6 Dialog = Colors" 
+                <TextBlock Text="{s:StringResource DIALOG_F6_HEADER}" 
                            Margin="100,0,0,6" FontSize="28" Foreground="{DynamicResource HeaderTextBrush}"
                            >
                 </TextBlock>

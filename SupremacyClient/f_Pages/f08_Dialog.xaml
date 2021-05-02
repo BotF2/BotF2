@@ -29,6 +29,8 @@
         RelativeSource={RelativeSource Mode=FindAncestor, 
         AncestorType={x:Type scc:GalaxyScreenView}}}">-->
 
+    <!--Text="{s:StringResource DIALOG_F10_HEADER}"-->
+
     <FrameworkElement.Resources>
 
         <DataTemplate x:Key="AssetsTreeItemTemplate">

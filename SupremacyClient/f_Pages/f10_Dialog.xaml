@@ -34,9 +34,9 @@
                     HorizontalAlignment="Right" Margin="0,0,56,0" MinWidth="150"
              >
                 <AccessText Text="{s:StringResource SETTINGS_ACCEPT}" />
-            </Button>        
-            
-            <TextBlock Grid.Row="0" Grid.Column="0" Text="F 10 - Dialog = Several Infos" 
+            </Button>
+
+            <TextBlock Grid.Row="0" Grid.Column="0" Text="{s:StringResource DIALOG_F10_HEADER}" 
                            Foreground="{DynamicResource HeaderTextBrush}"
                            FontSize="24" HorizontalAlignment="Left"
                            >
@@ -83,7 +83,7 @@
             <TabControl.ItemContainerStyle>
                 <Style TargetType="{x:Type TabItem}" BasedOn="{StaticResource {x:Type TabItem}}">
                     <!--<Setter Property="Header" Value="{Binding Path=(scc:IClientOptionsPage.Header)}" />-->
-                    <Setter Property="Header" Value="Tab" />
+                    <Setter Property="Header" Value="-- Tab -- " />
 
                            
                             <!--Value="{s:StringResource DIALOG_F10_TAB_1_HEADER}" />-->                    

@@ -38,7 +38,7 @@
                         <AccessText Text="{s:StringResource SETTINGS_ACCEPT}" />
                     </Button>
 
-                    <TextBlock Text="F 11 Dialog = Empty" 
+                <TextBlock Text="{s:StringResource DIALOG_F11_HEADER}"
                            Margin="100,0,0,6" FontSize="28" Foreground="{DynamicResource HeaderTextBrush}"
                            >
                     </TextBlock>

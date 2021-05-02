@@ -38,7 +38,7 @@
                 </Button>
 
                 <!--<TextBlock Text="F7 Dialog = Empire's History"-->
-                <TextBlock Text="F7 Dialog = Empty" 
+                <TextBlock Text="{s:StringResource DIALOG_F7_HEADER}"
                            Margin="100,0,0,6" FontSize="28" Foreground="{DynamicResource HeaderTextBrush}"
                            >
                 </TextBlock>

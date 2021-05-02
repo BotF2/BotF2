@@ -99,5 +99,10 @@ namespace Supremacy.Client
             ClientSettings.Current.Save();
             ClientSettings.Current.Reload();
         }
+
+        private void TextBox_Scroll(object sender, System.Windows.Controls.Primitives.ScrollEventArgs e)
+        {
+
+        }
     }
 }

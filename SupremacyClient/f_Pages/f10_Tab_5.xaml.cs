@@ -1,4 +1,4 @@
-// <!-- File:f10_Tab_2.xaml.cs
+// <!-- File:f10_Tab_5.xaml.cs
 //
 // Copyright (c) 2007 Mike Strobel
 //
@@ -12,11 +12,11 @@ using System.Windows.Input;
 namespace Supremacy.Client
 {
     /// <summary>
-    /// Interaction logic for f10_Tab_2.xaml.cs
+    /// Interaction logic for f10_Tab_5.xaml.cs
     /// </summary>
-    public partial class F10_Tab_2
+    public partial class F10_Tab_5
     {
-        public F10_Tab_2()
+        public F10_Tab_5()
         {
             InitializeComponent();
 

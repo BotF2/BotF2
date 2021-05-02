@@ -36,9 +36,9 @@
                   Command="{x:Static local:GenericCommands.AcceptCommand}" IsCancel="True"
                   Style="{DynamicResource LCARS_StandardButtonStyle}">
                     <AccessText Text="{s:StringResource SETTINGS_ACCEPT}" />
-                </Button>  
+                </Button>
 
-                <TextBlock Text="Basic Power Overview ( best is a 6 ) - F12 - Dialog" 
+                <TextBlock Text="{s:StringResource DIALOG_F12_HEADER}"
                            Margin="80,0,0,6" FontSize="28" Foreground="{DynamicResource HeaderTextBrush}"
                            >
                 </TextBlock>
