@@ -63,18 +63,6 @@ namespace Supremacy.AI
                 {
                     if (fleet.Ships.Count > 0)
                     {
-
-                        //if (fleet.UnitAIType == UnitAIType.SystemAttack)
-                        //{
-                        //    GameLog.Client.AI.DebugFormat("***** SystemAttack Fleet of {0} UnitAIType {1}", fleet.Owner.Name, fleet.UnitAIType);
-                        //}
-                        //if (othersHomeSystem != homeSystem && fleet.Location == othersHomeSystem.Location)
-                        //{
-                        //    GameLog.Client.AI.DebugFormat("***** Fleet of {0} at Other's Home {1}, ship count {2} type {3}", fleet.Owner.Name, othersHomeSystem.Name, fleet.Ships.Count(), fleet.Ships[0].ShipType);
-                        //}
-                        //GameLog.Core.AI.DebugFormat("Turn {0}: Processing Fleet in turn {4}: {1} {2} at {3}..."
-                        //, GameContext.Current.TurnNumber.ToString(), fleet.ObjectID, fleet.Name, fleet.ClassName, fleet.Location); 
-
                         //Make sure all fleets are cloaked
                         foreach (Ship ship in fleet.Ships.Where(ship => ship.CanCloak && !ship.IsCloaked))
                         {
@@ -89,63 +77,69 @@ namespace Supremacy.AI
                             // Is there a systemattack fleet, YES
                             if (fleet.UnitAIType == UnitAIType.SystemAttack && homeSystem != othersHomeSystem)
                             {
-                                if (fleet.Ships.Count() > 4 || fleet.Owner.Key == "BORG")
+                                if (fleet.Location == homeSystem.Location)
                                 {
-                                    if (fleet.Location == homeSystem.Location)
+                                    attackFleet = fleet;
+                                    List<Colony> colonyTargetes = GameContext.Current.Universe.FindOwned<Colony>(civ.TargetCivilization).ToList();
+                                    if (attackFleet.Ships.Count() >= allAttackWarShips.Count())
                                     {
-                                        attackFleet = fleet;
-                                        List<Colony> colonyTargetes = GameContext.Current.Universe.FindOwned<Colony>(civ.TargetCivilization).ToList();
-                                        if (attackFleet.Ships.Count() >= allAttackWarShips.Count())
+                                        // send fleet to other home system
+                                        int civFirePower = CalculateFirePower(civ);
+                                        int targetFirePower = CalculateFirePower(civ.TargetCivilization, othersHomeSystem);
+                                        if (targetFirePower * 1.1 < civFirePower)
                                         {
-                                            // send fleet to other home system
-                                            int civFirePower = CalculateFirePower(civ);
-                                            int targetFirePower = CalculateFirePower(civ.TargetCivilization, othersHomeSystem);
-                                            if (targetFirePower * 1.1 < civFirePower)
-                                            {
-                                                //fleet.Owner = civ; 
-                                                //fleet.Location = homeSystem.Location;
+                                            //fleet.Owner = civ; 
+                                            //fleet.Location = homeSystem.Location;
 
-                                                fleet.SetOrder(new EngageOrder());
-                                                if (fleet.Location != othersHomeSystem.Location)
-                                                    fleet.SetRoute(AStar.FindPath(fleet, PathOptions.SafeTerritory, _deathStars, new List<Sector> { othersHomeSystem.Sector }));
-                                            }
-                                            else if (colonyTargetes.Count() > 1)
+                                            fleet.SetOrder(new EngageOrder());
+                                            if (fleet.Location != othersHomeSystem.Location)
+                                                fleet.SetRoute(AStar.FindPath(fleet, PathOptions.SafeTerritory, _deathStars, new List<Sector> { othersHomeSystem.Sector }));
+                                        }
+                                        else if (colonyTargetes.Count() > 1)
+                                        {
+                                            Double lastRange = 999;
+                                            colonyTargetes.Remove(othersHomeSystem.Colony);
+                                            foreach (Colony colonyTarget in colonyTargetes)
                                             {
-                                                Double lastRange = 999;
-                                                colonyTargetes.Remove(othersHomeSystem.Colony);
-                                                foreach (Colony colonyTarget in colonyTargetes)
+                                                MapLocation target = colonyTarget.Location;
+                                                MapLocation ai = homeSystem.Location;
+                                                Double curretRange = Math.Sqrt(Math.Pow((target.X - ai.X), 2) + Math.Pow((target.Y - ai.Y), 2));
+                                                if (curretRange < lastRange)
                                                 {
-                                                    MapLocation target = colonyTarget.Location;
-                                                    MapLocation ai = homeSystem.Location;
-                                                    Double curretRange = Math.Sqrt(Math.Pow((target.X - ai.X), 2) + Math.Pow((target.Y - ai.Y), 2));
-                                                    if (curretRange < lastRange)
-                                                    {
-                                                        lastRange = curretRange;
-                                                        fleet.Route.Clear();
-                                                        fleet.SetRoute(AStar.FindPath(fleet, PathOptions.SafeTerritory, _deathStars, new List<Sector> { colonyTarget.Sector }));
-                                                    }
+                                                    lastRange = curretRange;
+                                                    fleet.Route.Clear();
+                                                    fleet.SetRoute(AStar.FindPath(fleet, PathOptions.SafeTerritory, _deathStars, new List<Sector> { colonyTarget.Sector }));
                                                 }
                                             }
-                                            else
-                                                civ.TargetCivilization = null;
-
-                                            //GameLog.Core.AI.DebugFormat("Civ {0} now in SystemAttack UnitAIType target ={1}, attack fleet location ={2} Count() ={3}, Route length {4} "
-                                            //    , civ.Name, civ.TargetCivilization.Name, attackFleet.Location, attackFleet.Ships.Count, attackFleet.Route.Length);
                                         }
+                                        else
+                                            civ.TargetCivilization = null;
+
+                                        //GameLog.Core.AI.DebugFormat("Civ {0} now in SystemAttack UnitAIType target ={1}, attack fleet location ={2} Count() ={3}, Route length {4} "
+                                        //    , civ.Name, civ.TargetCivilization.Name, attackFleet.Location, attackFleet.Ships.Count, attackFleet.Route.Length);
                                     }
-                                    else if ((fleet.Location == othersHomeSystem.Location
-                                        || GameContext.Current.Universe.FindOwned<Colony>(civ.TargetCivilization).Where(o => o.Location == fleet.Location).Any())
-                                        && fleet.Ships.Where(o => o.ShipType == ShipType.Transport).Any())
-                                    {
-                                        // ************* ToDo invasion 
-                                        SystemAssult(fleet);
-                                        GameLog.Core.AI.DebugFormat("## Do Invasion at Target system, civ ={1}, targete{2}", civ.Name, civ.TargetCivilization.Name);
-                                        // send home and re-set UnitAIType / can we already set ships to reserve here for return to home?
-                                    }
+                                }
+                                else if ((fleet.Location == othersHomeSystem.Location
+                                || GameContext.Current.Universe.FindOwned<Colony>(civ.TargetCivilization).Where(o => o.Location == fleet.Location).Any())
+                                && (fleet.Ships.Where(o => o.ShipType == ShipType.Transport).Any()
+                                && fleet.Ships.Where(o => o.IsCombatant).Any()))
+                                {
+                                    // ************* ToDo invasion 
+                                    SystemAssult(fleet);
+                                    GameLog.Core.AI.DebugFormat("## Do Invasion at Target system, civ ={0}, targetCivilization ={1}", civ.Name, civ.TargetCivilization.Name);
+                                    // send home and re-set UnitAIType / can we already set ships to reserve here for return to home?
+                                }
+                                else if ((fleet.Location == othersHomeSystem.Location
+                                || GameContext.Current.Universe.FindOwned<Colony>(civ.TargetCivilization).Where(o => o.Location == fleet.Location).Any())
+                                && (!fleet.Ships.Any(n => n.ShipType == ShipType.Transport) || !fleet.Ships.Any(n => n.IsCombatant)))
+                                {
+                                    fleet.SetRoute(AStar.FindPath(fleet, PathOptions.SafeTerritory, _deathStars, new List<Sector> { homeSystem.Sector }));
+                                    fleet.UnitAIType = UnitAIType.NoUnitAI;
+                                    fleet.Activity = UnitActivity.NoActivity;
                                 }
                                 else if (fleet.UnitAIType == UnitAIType.SystemAttack
                                     && fleet.Location != homeSystem.Location
-                                    && fleet.Location != othersHomeSystem.Location
+                                   //         && fleet.Location != othersHomeSystem.Location
                                     && (fleet.Route.IsEmpty || !fleet.Route.Waypoints.Contains(othersHomeSystem.Location)))
                                 {
                                     fleet.SetRoute(AStar.FindPath(fleet, PathOptions.SafeTerritory, _deathStars, new List<Sector> { homeSystem.Sector }));
@@ -153,15 +147,16 @@ namespace Supremacy.AI
                                     fleet.Activity = UnitActivity.NoActivity;
                                     civ.TargetCivilization = null;
                                 }
-                                else if (fleet.Activity != UnitActivity.Hold
-                                    && fleet.Location != homeSystem.Location                                   
-                                    && (fleet.Route.IsEmpty || !fleet.Route.Waypoints.Contains(othersHomeSystem.Location)))
-                                {
-                                    fleet.SetRoute(AStar.FindPath(fleet, PathOptions.SafeTerritory, _deathStars, new List<Sector> { homeSystem.Sector }));
-                                    fleet.UnitAIType = UnitAIType.NoUnitAI;
-                                    fleet.Activity = UnitActivity.NoActivity;                                      
-                                }                                
-                            }
+                                //else if (fleet.Activity == UnitActivity.NoActivity
+                                //    && fleet.UnitAIType == UnitAIType.Reserve
+                                //    && fleet.Location != homeSystem.Location
+                                //    && (fleet.Route.IsEmpty || !fleet.Route.Waypoints.Contains(othersHomeSystem.Location)))
+                                //{
+                                //    fleet.SetRoute(AStar.FindPath(fleet, PathOptions.SafeTerritory, _deathStars, new List<Sector> { homeSystem.Sector }));
+                                //    fleet.UnitAIType = UnitAIType.NoUnitAI;
+                                //    fleet.Activity = UnitActivity.NoActivity;
+                                //}                                
+                            }   
                             else if (fleet.Ships.Any(o => o.ShipType >= ShipType.Scout || o.ShipType == ShipType.Transport))// No systemattack fleet so make one
                             {
                                 //GameLog.Core.AI.DebugFormat("Combat Ships ={0} with target ={1}", civ.Name, civ.TargetCivilization.Name);
@@ -203,13 +198,6 @@ namespace Supremacy.AI
                                             continue;
                                         }
                                     }
-                                    //else if (fleet.Ships.Where(o => o.ShipType >= ShipType.FastAttack || o.ShipType == ShipType.Transport).Any())
-                                    //{
-                                    //    fleet.Route.Clear();
-                                    //    BuildAndSendFleet(fleet, civ, UnitActivity.Mission, UnitAIType.Reserve, homeSystem.Sector);                                           
-                                    //    continue;
-                                    //}
-                                    // colony, constructor and medical unchanged, we hope
                                 }
                                 else if (fleet.Sector == homeSystem.Sector)
                                 {
@@ -261,19 +249,6 @@ namespace Supremacy.AI
                                     }
                                 }
                             }
-                            //if (attackFleet.Ships.Count() >= allAttackWarShips.Count())
-                            //{
-                            //    attackFleet.Owner = civ;
-                            //    attackFleet.Location = homeSystem.Location;
-                            //    attackFleet.UnitAIType = UnitAIType.SystemAttack;
-                            //    attackFleet.Activity = UnitActivity.Mission;
-                            //    attackFleet.SetOrder(new EngageOrder());
-                            //    if (attackFleet.Location != othersHomeSystem.Location)
-                            //        attackFleet.SetRoute(AStar.FindPath(fleet, PathOptions.SafeTerritory, _deathStars, new List<Sector> { othersHomeSystem.Sector }));
-
-                            //    //GameLog.Core.AI.DebugFormat("Civ {0} now in SystemAttack UnitAIType target ={1}, attack fleet location ={2} Count() ={3}, Route length {4} "
-                            //    //    , civ.Name, civ.TargetCivilization.Name, attackFleet.Location, attackFleet.Ships.Count, attackFleet.Route.Length);
-                            //}
                         }
 
                         // ****  No TargetCiv
@@ -698,30 +673,6 @@ namespace Supremacy.AI
                 fleet.SetOrder(new AssaultSystemOrder());
         }
 
-        //public static void BreakDownTransitFleet(Fleet fleet)
-        //{
-        //    if (fleet != null)
-        //    {
-        //        GetFleetOwner(fleet);
-        //        List<Ship> listOfShips = fleet.Ships.ToList();
-        //        Fleet goHomeFleet = new Fleet();
-        //        MapLocation location;
-        //        foreach (Ship ship in listOfShips)
-        //        {
-        //            location = ship.Location;
-        //            fleet.RemoveShip(ship);
-        //            goHomeFleet.AddShip(ship);
-        //            goHomeFleet.Location = location;
-        //            //goHomeFleet.Route.Clear();
-        //            goHomeFleet.SetRoute(AStar.FindPath(goHomeFleet, PathOptions.SafeTerritory, _deathStars, new List<Sector> { GameContext.Current.CivilizationManagers[fleet.Owner].HomeSystem.Sector }));
-        //            GameLog.Core.AI.DebugFormat("Breakdown Fleet adding ship ={0} at {1}", ship.Name, ship.Location);
-        //        }
-        //        goHomeFleet.UnitAIType = UnitAIType.NoUnitAI;
-        //        goHomeFleet.Activity = UnitActivity.NoActivity;
-        //    }
-        //    GameLog.Core.AI.DebugFormat("Should we destroy fleet here?, fleetShipsCount() ={0} ", fleet.Ships.Count());
-        //    // fleet = null;
-        //}
         public static bool CanAllShipsGetThere(Civilization attacker, Civilization attacked)
         {
             IEnumerable<Fleet> attackWarShips = GameContext.Current.Universe.FindOwned<Fleet>(attacker).Where(s => s.IsBattleFleet
@@ -1014,12 +965,6 @@ namespace Supremacy.AI
             CivilizationManager civManager = GameContext.Current.CivilizationManagers[civ];
             CivilizationMapData mapData = civManager.MapData;
 
-            //Unscanned
-            //if (!mapData.IsScanned(sector.Location))
-            //{
-            //    value += UnscannedSectorValue;
-            //}
-
             //Unexplored
             if (!mapData.IsExplored(sector.Location))
             {
@@ -1270,8 +1215,6 @@ namespace Supremacy.AI
                 bestSector = null;
                 return false;
             }
-            //List<Fleet> constructorFleets = GameContext.Current.Universe.FindOwned<Fleet>(fleet.Owner)
-            //    .Where(f => f.IsConstructor || f.MultiFleetHasAConstructor).ToList();
             //GameLog.Client.AI.DebugFormat("A");
             int halfMapWidthX = GameContext.Current.Universe.Map.Width / 2;
             int halfMapHeightY = GameContext.Current.Universe.Map.Height / 2;
@@ -1331,15 +1274,12 @@ namespace Supremacy.AI
                             if(_sectors.Any(o => o == aFleet.Sector))
                             _sectors.Remove(aFleet.Sector);
                         }
-                       // if (otherConstructors != null && otherConstructors.Count() != 0)
+
                         bestSector = _sectors.Last(); //objectsAlongCenterAxis[objectsAlongCenterAxis.Count - 1].Sector;
       
                         if (bestSector == null)
                             return false;
-                        //if (result.Owner != null && result.Owner != fleet.Owner)
-                        //{
-                        //    return false;
-                        //}
+
                         // GameLog.Core.AI.DebugFormat("Borg station selected sector = {0} {1}", result.Location, result.Name);
                         return true;
                     }
@@ -1397,9 +1337,6 @@ namespace Supremacy.AI
                         //GameLog.Client.AI.DebugFormat("Klingons to Cardassians");
                         //var furthestObject = GameContext.Current.Universe.FindFurthestObject<UniverseObject>(homeSector.Location, fleet.Owner);
                         Sector homeSector = GameContext.Current.Universe.HomeColonyLookup[fleet.Owner].Sector;
-                        //MapLocation min = new MapLocation(quarterMapWidthX, quarterMapHeightY);
-                        //MapLocation max = new MapLocation(thirdMapWidthX, thirdMapHeightY);
-                        
 
                         var objectsAroundHome = GameContext.Current.Universe.Objects
                             .Where(s => s.Location != null

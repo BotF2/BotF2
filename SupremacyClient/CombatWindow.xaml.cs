@@ -200,7 +200,7 @@ namespace Supremacy.Client
             //We need combat assets to be able to rush the opposition
             RushButton.IsEnabled = _update.FriendlyAssets.Any(fa => fa.CombatShips.Count > 0);
             //There needs to be transports in the opposition to be able to target them
-            TransportsButton.IsEnabled = false;
+            TransportsButton.IsEnabled = _update.HostileAssets.Any(h => h.IsTransport);
             //We need at least 3 ships to create a formation
             FormationButton.IsEnabled = _update.FriendlyAssets.Any(fa => fa.CombatShips.Count >= 3);
             //We need assets to be able to retreat

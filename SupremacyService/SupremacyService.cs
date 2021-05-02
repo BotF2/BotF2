@@ -1568,9 +1568,10 @@ namespace Supremacy.WCF
 
         private void OnInvasionOccurring(InvasionArena invasionArena)
         {
-            if (!invasionArena.Invader.IsHuman)
+            bool doneOnceAlready = false;
+            if (!invasionArena.Invader.IsHuman && doneOnceAlready == false)
             {
-
+                
                 if (_alreadyDidCivAsAI == null || _alreadyDidCivAsAI != invasionArena.Invader)
                 {                   
                     _alreadyDidCivAsAI = invasionArena.Invader;
@@ -1579,14 +1580,16 @@ namespace Supremacy.WCF
                         _invasionEngine = new InvasionEngine(SendInvasionUpdateCallback, NotifyInvasionEndedCallback);
 
                     _scheduler.Schedule(() =>  _invasionEngine.BeginInvasion(invasionArena));
+                    doneOnceAlready = true;
                 }
             }
-            else
+            else if (doneOnceAlready == false)
             {
                 if (_invasionEngine == null)
                     _invasionEngine = new InvasionEngine(SendInvasionUpdateCallback, NotifyInvasionEndedCallback);
-
+                 
                 _scheduler.Schedule(() => _invasionEngine.BeginInvasion(invasionArena));
+                doneOnceAlready = true;
             }
         }
 

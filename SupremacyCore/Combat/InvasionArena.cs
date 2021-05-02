@@ -639,55 +639,56 @@ namespace Supremacy.Combat
 
         public void BeginInvasion([NotNull] InvasionArena invasionArena)
         {
-            VerifyNoInvasionInProgress();
-
-            _invasionArena = invasionArena ?? throw new ArgumentNullException(nameof(invasionArena));
-            _invasionArena.Update();    // make sure all stats are up-to-date
-
-            //TODO: Didn't this get moved out of CombatEngine?
-            Data.Table accuracyTable = GameContext.Current.Tables.ShipTables["AccuracyModifiers"];
-            _experienceAccuracy = new Dictionary<ExperienceRank, double>();
-            foreach (ExperienceRank rank in EnumHelper.GetValues<ExperienceRank>())
+            if (VerifyNoInvasionInProgress())
             {
-                // _experienceAccuracy[rank] = Number.ParseDouble(accuracyTable[rank.ToString()][0]);
-                if (double.TryParse(accuracyTable[rank.ToString()][0], out double modifier))
+                _invasionArena = invasionArena ?? throw new ArgumentNullException(nameof(invasionArena));
+                _invasionArena.Update();    // make sure all stats are up-to-date
+
+                //TODO: Didn't this get moved out of CombatEngine?
+                Data.Table accuracyTable = GameContext.Current.Tables.ShipTables["AccuracyModifiers"];
+                _experienceAccuracy = new Dictionary<ExperienceRank, double>();
+                foreach (ExperienceRank rank in EnumHelper.GetValues<ExperienceRank>())
                 {
-                    _experienceAccuracy[rank] = modifier;
+                    // _experienceAccuracy[rank] = Number.ParseDouble(accuracyTable[rank.ToString()][0]);
+                    if (double.TryParse(accuracyTable[rank.ToString()][0], out double modifier))
+                    {
+                        _experienceAccuracy[rank] = modifier;
+                    }
+                    else
+                    {
+                        _experienceAccuracy[rank] = 0.75;
+                    }
+                }
+                if (!invasionArena.Invader.IsHuman)
+                {
+                    var transports = invasionArena.InvadingUnits.Where(n => n.Design.Key.Contains("TRANSPORT")).ToArray();
+
+                    if (invasionArena.HasOrbitalDefenses)
+                    {
+                        InvasionOrders attackOrbitals = new InvasionOrders(invasionArena.InvasionID, InvasionAction.AttackOrbitalDefenses, InvasionTargetingStrategy.MaximumDamage, transports);
+                        _invasionArena.Status = InvasionStatus.InProgress;
+                        SubmitOrders(attackOrbitals);
+                    }
+                    if (invasionArena.ColonyShieldStrength.CurrentValue > 0)
+                    {
+                        InvasionOrders attackSheilds = new InvasionOrders(invasionArena.InvasionID, InvasionAction.BombardPlanet, InvasionTargetingStrategy.MaximumDamage, transports);
+                        _invasionArena.Status = InvasionStatus.InProgress;
+                        SubmitOrders(attackSheilds);
+                    }
+                    if (invasionArena.CanLandTroops)
+                    {
+                        InvasionOrders landTroops = new InvasionOrders(invasionArena.InvasionID, InvasionAction.LandTroops, InvasionTargetingStrategy.MaximumDamage, transports);
+                        _invasionArena.Status = InvasionStatus.InProgress;
+                        SubmitOrders(landTroops);
+                    }
+                    if (invasionArena.Status == InvasionStatus.Victory)
+                        // _invasionEndedCallback(this);
+                        GameLog.Client.AI.DebugFormat("InvasionArean status = {0}", invasionArena.Status);
                 }
                 else
                 {
-                    _experienceAccuracy[rank] = 0.75;
+                    SendUpdate();
                 }
-            }
-            if (!invasionArena.Invader.IsHuman)
-            {
-                var transports = invasionArena.InvadingUnits.Where(n => n.Design.Key.Contains("TRANSPORT")).ToArray();
-
-                if (invasionArena.HasOrbitalDefenses)
-                {
-                    InvasionOrders attackOrbitals = new InvasionOrders(invasionArena.InvasionID, InvasionAction.AttackOrbitalDefenses, InvasionTargetingStrategy.MaximumDamage, transports);
-                    _invasionArena.Status = InvasionStatus.InProgress;
-                    SubmitOrders(attackOrbitals);
-                }
-                if (invasionArena.ColonyShieldStrength.CurrentValue > 0)
-                {
-                    InvasionOrders attackSheilds = new InvasionOrders(invasionArena.InvasionID, InvasionAction.BombardPlanet, InvasionTargetingStrategy.MaximumDamage, transports);
-                    _invasionArena.Status = InvasionStatus.InProgress;
-                    SubmitOrders(attackSheilds);
-                }
-                if (invasionArena.CanLandTroops)
-                {
-                    InvasionOrders landTroops = new InvasionOrders(invasionArena.InvasionID, InvasionAction.LandTroops, InvasionTargetingStrategy.MaximumDamage, transports);
-                    _invasionArena.Status = InvasionStatus.InProgress;
-                    SubmitOrders(landTroops);
-                }
-                if (invasionArena.Status == InvasionStatus.Victory)
-                   // _invasionEndedCallback(this);
-                GameLog.Client.AI.DebugFormat("InvasionArean status = {0}", invasionArena.Status);
-            }
-            else
-            {
-                SendUpdate();
             }
         }
 
@@ -1399,12 +1400,13 @@ namespace Supremacy.Combat
             }
         }
 
-        protected void VerifyNoInvasionInProgress()
+        protected bool VerifyNoInvasionInProgress()
         {
             if (_invasionArena != null)
             {
-                throw new InvalidOperationException("An invasion is already in progress.");
+                return false; //throw new InvalidOperationException("An invasion is already in progress.");
             }
+            else return true;
         }
     }
 }
