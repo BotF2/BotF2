@@ -153,6 +153,7 @@ namespace Supremacy.Client
                 groupItem.Header = group.Key;
                 groupItem.ItemsSource = entriesView;
                 groupItem.IsExpanded = true;
+                //groupItem.IsExpanded = false;
                 _encyclopediaEntryListView.Items.Add(groupItem);
             }
         }
@@ -367,22 +368,26 @@ namespace Supremacy.Client
             var imageConverter = new EncyclopediaImageConverter();
             var fiendImageConverter = new ResearchFieldImageConverter();
 
-            var headerRun = new Run(entry.EncyclopediaHeading);
-            var headerBlock = new Paragraph(headerRun)
-                              {
-                                  FontFamily = FindResource(ClientResources.DefaultFontFamilyKey) as FontFamily,
-                                  FontSize = 16d * 96d / 72d,
-                                  Foreground = FindResource(ClientResources.HeaderTextForegroundBrushKey) as Brush
-                              };
 
-            doc.Blocks.Add(headerBlock);
+            //// Begin of Encyclopedia-HEADER
+            //var headerRun = new Run(entry.EncyclopediaHeading);
+            //var headerBlock = new Paragraph(headerRun)
+            //                  {
+            //                      FontFamily = FindResource(ClientResources.DefaultFontFamilyKey) as FontFamily,
+            //                      FontSize = 16d * 96d / 72d,
+            //                      Foreground = FindResource(ClientResources.HeaderTextForegroundBrushKey) as Brush
+            //                  };
 
-            doc.FontFamily = FindResource(ClientResources.DefaultFontFamilyKey) as FontFamily;
-            doc.FontSize = 12d * 96d / 72d;
-            doc.Foreground = FindResource(ClientResources.DefaultTextForegroundBrushKey) as Brush;
-            doc.TextAlignment = TextAlignment.Left;
+            //doc.Blocks.Add(headerBlock);
 
-            // EncyclopediaImage
+            //doc.FontFamily = FindResource(ClientResources.DefaultFontFamilyKey) as FontFamily;
+            //doc.FontSize = 12d * 96d / 72d;
+            //doc.Foreground = FindResource(ClientResources.DefaultTextForegroundBrushKey) as Brush;
+            //doc.TextAlignment = TextAlignment.Right;
+            //// END of Encyclopedia-HEADER
+
+
+            // Begin of Encyclopedia-IMAGE
             var image = new Border();
 
             var paragraphs = TextHelper.TrimParagraphs(entry.EncyclopediaText).Split(
@@ -417,10 +422,12 @@ namespace Supremacy.Client
                     imageWidth = imageHeight * imageRatio;
                 }
 
-                image.Width = imageWidth;
-                image.Height = imageHeight;
+                //image.Width = imageWidth;
+                image.Width = 576;
+                //image.Height = imageHeight;
+                image.Height = 480;
                 image.BorderBrush = Brushes.White;
-                image.BorderThickness = new Thickness(2.0);
+                image.BorderThickness = new Thickness(0.0); // 0 = turned off
                 image.CornerRadius = new CornerRadius(14.0);
                 image.Background = new ImageBrush(imageSource) { Stretch = Stretch.UniformToFill };
 
@@ -439,15 +446,17 @@ namespace Supremacy.Client
                 else
                     firstParagraph.Inlines.Add(imageFloater);
             }
+            // END of Encyclopedia-HEADER
 
-            doc.Blocks.AddRange(paragraphs);
+            // Begin of Encyclopedia-PARAGRAPHS
+            //doc.Blocks.AddRange(paragraphs);
 
             if (design != null)
             {
                 var statsControl = new ContentControl
                                    {
-                                       Margin = new Thickness(0, 14, 0, 0),
-                                       Width = 320,
+                                       Margin = new Thickness(0, 5, 0, 0),
+                                       Width = 300,  // old: 320
                                        Content = new TechObjectDesignViewModel
                                                  {
                                                      Design = design,
@@ -462,7 +471,7 @@ namespace Supremacy.Client
                                      Margin = new Thickness(0)
                                  };
 
-                doc.Blocks.Add(statsBlock);
+                //doc.Blocks.Add(statsBlock);
 
                 var techTable = new Table();
                 techTable.RowGroups.Add(new TableRowGroup());
@@ -482,8 +491,8 @@ namespace Supremacy.Client
                         fiendImageConverter.Convert(field, typeof(BitmapImage), null, null)
                         as ImageSource) { Stretch = Stretch.Uniform };
 
-                    techIcon.Width = 54;
-                    techIcon.Height = 45;
+                    techIcon.Width = 45;  // old 56
+                    techIcon.Height = 36;  // old 45
                     techIcon.Padding = new Thickness(4);
                     techIcon.BorderBrush = Brushes.White;
                     techIcon.BorderThickness = new Thickness(2.0);
@@ -531,12 +540,44 @@ namespace Supremacy.Client
                     techTable.RowGroups[0].Rows[0].Cells.Add(new TableCell(techIconContainer));
                 }
 
-                techTable.ClearFloaters = WrapDirection.Both;
-                techTable.Margin = new Thickness(0, 14, 0, 0);
-                techTable.CellSpacing = 7.0;
+                
+                techTable.ClearFloaters = WrapDirection.Right;
+                techTable.Margin = new Thickness(0, 10, 0, 0);  // old: 14 instead 10
+                techTable.CellSpacing = 5.0;  // old: 7 instead 5
 
-                doc.Blocks.Add(techTable);
+                //doc.Blocks.Add(techTable);  // Requirements Tech Level
+
+                // Begin of Encyclopedia-HEADER
+                var headerRun = new Run(entry.EncyclopediaHeading);
+                var headerBlock = new Paragraph(headerRun)
+                {
+                    FontFamily = FindResource(ClientResources.DefaultFontFamilyKey) as FontFamily,
+                    FontSize = 16d * 96d / 72d,
+                    Foreground = FindResource(ClientResources.HeaderTextForegroundBrushKey) as Brush
+                };
+
+                //doc.Blocks.Add(headerBlock);
+
+                doc.FontFamily = FindResource(ClientResources.DefaultFontFamilyKey) as FontFamily;
+                doc.FontSize = 12d * 96d / 72d;
+                doc.Foreground = FindResource(ClientResources.DefaultTextForegroundBrushKey) as Brush;
+                doc.TextAlignment = TextAlignment.Left;
+                // END of Encyclopedia-HEADER
+
+                doc.Blocks.AddRange(paragraphs);  // Description
+
+                doc.Blocks.Add(statsBlock);  // Statistic data
+
+                doc.Blocks.Add(techTable);  // Requirements Tech Level
+
+                //doc.Foreground = FindResource(ClientResources.HeaderTextForegroundBrushKey) as Brush;
+                //doc.TextAlignment = TextAlignment.Center;
+                //doc.FontSize += 4;
+
+                doc.Blocks.Add(headerBlock);
             }
+            
+            // END of Encyclopedia-PARAGRAPHS
 
             return doc;
         }
