@@ -1002,6 +1002,11 @@ namespace Supremacy.WCF
             return _game.GenerateID();
         }
 
+        public void SaveGameDeleteManualSaved()
+        {
+            SavedGameManager.SaveGameDeleteManualSaved();
+        }
+
         public void SaveGame(string fileName)
         {
             EnsurePlayer();

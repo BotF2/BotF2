@@ -59,7 +59,7 @@ namespace Supremacy.Client
         private readonly List<IPresenter> _screenPresenters;
         private readonly DelegateCommand<object> _endTurnCommand;
         private readonly DelegateCommand<object> _showEndOfTurnSummaryCommand;
-        private readonly DelegateCommand<object> _showShipOverviewCommand;
+        //private readonly DelegateCommand<object> _showShipOverviewCommand;
         private readonly Dispatcher _dispatcher;
         private IDisposable _connectWaitCursorHandle;
         private IDisposable _gameStartWaitCursorHandle;
@@ -97,7 +97,7 @@ namespace Supremacy.Client
             _playerOrderService = playerOrderService ?? throw new ArgumentNullException("playerOrderService");
             _endTurnCommand = new DelegateCommand<object>(ExecuteTurnCommand) { IsActive = false };
             _showEndOfTurnSummaryCommand = new DelegateCommand<object>(ExecuteShowEndOfTurnSummaryCommand) { IsActive = true };
-            _showShipOverviewCommand = new DelegateCommand<object>(ExecuteShowShipOverviewCommand) { IsActive = true };
+            //_showShipOverviewCommand = new DelegateCommand<object>(ExecuteShowShipOverviewCommand) { IsActive = true };
             _eventSubscriptionTokens = new Dictionary<EventBase, SubscriptionToken>();
             _screenPresenters = new List<IPresenter>();
             _playerOrderService.ClearOrders();
@@ -173,7 +173,7 @@ namespace Supremacy.Client
         {
             ClientCommands.EndTurn.UnregisterCommand(_endTurnCommand);
             ClientCommands.ShowEndOfTurnSummary.UnregisterCommand(_showEndOfTurnSummaryCommand);
-            ClientCommands.ShowShipOverview.UnregisterCommand(_showShipOverviewCommand);
+            //ClientCommands.ShowShipOverview.UnregisterCommand(_showShipOverviewCommand);
             ClientEvents.InvasionUpdateReceived.Unsubscribe(OnInvasionUpdateReceived);
 
             lock (_eventSubscriptionTokens)
@@ -211,7 +211,7 @@ namespace Supremacy.Client
         {
             ClientCommands.EndTurn.RegisterCommand(_endTurnCommand);
             ClientCommands.ShowEndOfTurnSummary.RegisterCommand(_showEndOfTurnSummaryCommand);
-            ClientCommands.ShowShipOverview.RegisterCommand(_showShipOverviewCommand);
+            //ClientCommands.ShowShipOverview.RegisterCommand(_showShipOverviewCommand);
             ClientEvents.InvasionUpdateReceived.Subscribe(OnInvasionUpdateReceived, ThreadOption.UIThread);
 
             lock (_eventSubscriptionTokens)

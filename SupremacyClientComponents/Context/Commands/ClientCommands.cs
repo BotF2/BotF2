@@ -51,11 +51,12 @@ namespace Supremacy.Client.Commands
         public static readonly CompositeCommand SendUpdatedGameOptions = new CompositeCommand(true);
         public static readonly CompositeCommand LoadGame = new CompositeCommand(true);
         public static readonly CompositeCommand SaveGame = new CompositeCommand(true);
+        public static readonly CompositeCommand SaveGameDeleteManualSaved = new CompositeCommand(true);
         public static readonly CompositeCommand ShowSaveGameDialog = new CompositeCommand(true);
         public static readonly CompositeCommand CancelCommand = new CompositeCommand(true);
         public static readonly CompositeCommand EndTurn = new CompositeCommand(true);
         public static readonly CompositeCommand ShowEndOfTurnSummary = new CompositeCommand(true);
-        public static readonly CompositeCommand ShowShipOverview = new CompositeCommand(true);
+        //public static readonly CompositeCommand ShowShipOverview = new CompositeCommand(true);
         public static readonly CompositeCommand SendChatMessage = new CompositeCommand(true);
         public static readonly CompositeCommand EndGame = new CompositeCommand(true);
         public static readonly CompositeCommand Exit = new CompositeCommand(false);

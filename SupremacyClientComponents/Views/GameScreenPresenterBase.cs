@@ -249,11 +249,11 @@ namespace Supremacy.Client.Views
                 ClientCommands.ShowEndOfTurnSummary.Execute(null);
         }
 
-        protected void ShowShipOverview()
-        {
-            if (View.IsActive)
-                ClientCommands.ShowShipOverview.Execute(null);
-        }
+        //protected void ShowShipOverview()
+        //{
+        //    if (View.IsActive)
+        //        ClientCommands.ShowShipOverview.Execute(null);
+        //}
 
         protected virtual IInteractionNode FindParentInteractionNode()
         {

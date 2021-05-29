@@ -163,10 +163,11 @@ namespace Supremacy.Client
             InputBindings.Add(new KeyBinding(ClientCommands.ErrorTxtCommand, Key.E, ModifierKeys.Control));
             //InputBindings.Add(new KeyBinding(CollectGarbageCommand, new KeyGesture(Key.G, ModifierKeys.Control))); - see above - from Mike
             InputBindings.Add(new KeyBinding(ClientCommands.ShowEndOfTurnSummary, Key.I, ModifierKeys.Control));
-            InputBindings.Add(new KeyBinding(ClientCommands.ShowShipOverview, Key.D1, ModifierKeys.Control));
+            //InputBindings.Add(new KeyBinding(ClientCommands.ShowShipOverview, Key.D1, ModifierKeys.Control));
             InputBindings.Add(new KeyBinding(ClientCommands.LogTxtCommand, Key.L, ModifierKeys.Control));
             InputBindings.Add(new KeyBinding(ClientCommands.OptionsCommand, Key.O, ModifierKeys.Control));
             InputBindings.Add(new KeyBinding(ClientCommands.SaveGame, Key.S, ModifierKeys.Control)); // CRTL+S makes saved file "_manual_save"
+            InputBindings.Add(new KeyBinding(ClientCommands.SaveGameDeleteManualSaved, Key.S, ModifierKeys.Alt)); // deletes file from CRTL+S "_manual_save"
             //InputBindings.Add(new KeyBinding(ClientCommands.ShowSaveGameDialog, Key.S, ModifierKeys.Alt));// ALT+S shows SaveGameDialog    // does not work yet
             InputBindings.Add(new KeyBinding(ClientCommands.EndTurn, Key.T, ModifierKeys.Control));
             InputBindings.Add(new KeyBinding(ClientCommands.ShowSettingsFileCommand, Key.X, ModifierKeys.Alt));
