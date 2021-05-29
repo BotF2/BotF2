@@ -18,6 +18,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Windows;
 
 namespace Supremacy.Game
 {
@@ -35,8 +36,8 @@ namespace Supremacy.Game
                 string _text = Path.Combine(ResourceManager.GetResourcePath(""), "SavedGames_V", Assembly.GetExecutingAssembly().GetName().Version.ToString());
                 _text = _text.Replace("V\\", "V");
                 _text = _text.Replace(".\\", "");
-                GameLog.Client.SaveLoad.DebugFormat("SavedGameDirectory = {0}", _text);
-                Console.WriteLine(_text);
+                //GameLog.Client.SaveLoad.DebugFormat("SavedGameDirectory = {0}", _text);
+                //Console.WriteLine(_text);
 
                 return _text;
             }
@@ -326,6 +327,25 @@ namespace Supremacy.Game
             Channel.Publish(new GameSavedMessage(header));
 
             return true;
+        }
+
+        public static bool SaveGameDeleteManualSaved()
+        {
+            string fileName = Path.Combine(SavedGameDirectory, FixFileName("_manual_save(CTRL+S).sav"));
+
+            try
+            {
+
+
+                if (File.Exists(fileName))
+                {
+                    File.Delete(fileName);
+                    MessageBox.Show("Deleted: " + fileName);
+                    return true;
+                }
+            }
+            catch { MessageBox.Show("Problem at deleting: " + fileName); ; return false; }
+            return false;
         }
 
         /// <summary>
