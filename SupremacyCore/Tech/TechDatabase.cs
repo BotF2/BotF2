@@ -597,7 +597,7 @@ namespace Supremacy.Tech
 
             if (_traceTechObjectDatabase == true)
             {
-                var pathOutputFile = "./lib/";  // instead of ./Resources/Data/
+                var pathOutputFile = "./Resources/Data/";  // instead of ./Resources/Data/
                 var separator = ";";
                 var line = "";
                 StreamWriter streamWriter;
@@ -609,7 +609,7 @@ namespace Supremacy.Tech
                 if (GameLog.Core.GameInitData.IsDebugEnabled == true)
                     try // avoid hang up if this file is opened by another program 
                 {
-                    file = pathOutputFile + "_FromTechObj-ProdFac_(autoCreated).csv";
+                    file = pathOutputFile + "z_FromTechObj-ProdFac_(autoCreated).csv";
 
                     Console.WriteLine("writing {0}", file);
 
@@ -794,7 +794,7 @@ namespace Supremacy.Tech
                 }
                 catch (Exception e)
                 {
-                    GameLog.Core.GameData.Error("Cannot write ... _FromTechObj-ProductionFacilities_(autoCreated).csv", e);
+                    GameLog.Core.GameData.Error("Cannot write ... z_FromTechObj-ProductionFacilities_(autoCreated).csv", e);
                 }
 
                 // End of ProductionFacilities
@@ -806,7 +806,7 @@ namespace Supremacy.Tech
                 if (GameLog.Core.GameInitData.IsDebugEnabled == true)
                     try // avoid hang up if this file is opened by another program 
                 {
-                    file = pathOutputFile + "_FromTechObj-Buildings_(autoCreated).csv";
+                    file = pathOutputFile + "z_FromTechObj-Buildings_(autoCreated).csv";
 
                     Console.WriteLine("writing {0}", file);
 
@@ -1035,7 +1035,7 @@ namespace Supremacy.Tech
                 }
                 catch (Exception e)
                 {
-                    GameLog.Core.GameData.Error("Cannot write ... _FromTechObj-Buildings_(autoCreated).csv", e);
+                    GameLog.Core.GameData.Error("Cannot write ... z_FromTechObj-Buildings_(autoCreated).csv", e);
                 }
 
                 // End of Buildings
@@ -1046,7 +1046,7 @@ namespace Supremacy.Tech
                 try // avoid hang up if this file is opened by another program 
                 {
                     // PossibleShipNames   // at the moment not working because I didn't found a way to read the dictionary
-                    file = pathOutputFile + "_FromTechObj-ShipNames_(autoCreated).csv";
+                    file = pathOutputFile + "z_FromTechObj-ShipNames_(autoCreated).csv";
 
                     streamWriter = new StreamWriter(file);
 
@@ -1076,7 +1076,7 @@ namespace Supremacy.Tech
                 }
                 catch (Exception e)
                 {
-                    GameLog.Core.GameData.Error("Cannot write ... _FromTechObj-ShipNames_(autoCreated).csv", e);
+                    GameLog.Core.GameData.Error("Cannot write ... z_FromTechObj-ShipNames_(autoCreated).csv", e);
                 }
                 // End of PShipNames
                 #endregion PossibleShipNames_To_CSV;
@@ -1085,7 +1085,7 @@ namespace Supremacy.Tech
                 try // avoid hang up if this file is opened by another program 
                 {
                     // Ships    
-                    file = pathOutputFile + "_FromTechObj-Ships_(autoCreated).csv";   //Console.WriteLine("writing {0}", file);
+                    file = pathOutputFile + "z_FromTechObj-Ships_(autoCreated).csv";   //Console.WriteLine("writing {0}", file);
 
                     if (file == null)
                         goto WriterClose;
@@ -1123,7 +1123,7 @@ namespace Supremacy.Tech
                         "CE_ShieldRecharge" + separator +
 
                         "CE_ShipType" + separator +
-                        "CE_ClassName" + separator +
+
                         "CE_Dilithium" + separator +
                         "CE_CloakStrength" + separator +
                         "CE_CamouflagedStrength" + separator +
@@ -1135,7 +1135,7 @@ namespace Supremacy.Tech
                         "CE_WorkCapacity" + separator +
                         "CE_InterceptAbility" + separator +
 
-
+                        "CE_ClassName" + separator +
                         //"CE_PrimaryWeaponName" + separator + // not useful for current working
                         "CE_Beam Count" + separator +
                         "CE_Refire" + separator +           // there is a need to export this first  (btw. first refire rate and out of that: damage)
@@ -1145,8 +1145,9 @@ namespace Supremacy.Tech
 
                         //"CE_SecondaryWeaponName" + separator + // not useful for current working
                         "CE_Torpedo Count" + separator +
-                        "CE_Damage" + separator + 
-                        
+                        "CE_Damage" + separator +
+                        "FirePower" + separator +
+
                         "CE_ObsoletedDesigns" + separator +  // for real it's ObsoletedItems
                         "CE_UpgradableDesigns" + separator +   // for real it's UpgradeOptions
                         "CE_PossibleNames" 
@@ -1160,6 +1161,8 @@ namespace Supremacy.Tech
 
                     foreach (var item in db.ShipDesigns)   // each item
                     {
+                        int _firepower = (item.PrimaryWeapon.Count * item.PrimaryWeapon.Damage)
+                                            + (item.SecondaryWeapon.Count * item.SecondaryWeapon.Damage);
                         line =
                             "Ship" + separator +
                             item.Key + separator +
@@ -1211,7 +1214,7 @@ namespace Supremacy.Tech
                             item.ShieldRechargeRate + "percent" + separator +  // percent bust be replaced after GoogleSheet-Export
 
                             item.ShipType + separator +
-                            item.ClassName + separator +
+
 
                             item.Dilithium + separator +
                             item.CloakStrength + separator +
@@ -1226,7 +1229,7 @@ namespace Supremacy.Tech
                             item.InterceptAbility + "percent" + separator +  // percent bust be replaced after GoogleSheet-Export
 
 
-
+                            item.ClassName + separator +
                             //"Beam" + separator + // item.PrimaryWeaponName doesn't work  // not useful for current working
                             item.PrimaryWeapon.Count + separator +
                             item.PrimaryWeapon.Refire + "percent" + separator +   // percent bust be replaced after GoogleSheet-Export // first refire !!
@@ -1235,6 +1238,8 @@ namespace Supremacy.Tech
                             //"Torpedo" + separator + // item.SecondaryWeaponName doesn't work // not useful for current working
                             item.SecondaryWeapon.Count + separator +
                             item.SecondaryWeapon.Damage + separator +
+
+                            _firepower + separator +
 
 
                              // <ObsoletedItems>  // new trying ... just insert Key ... don't forget to change "II" -> "I" and as well "III" to "II"  and more
@@ -1267,7 +1272,7 @@ namespace Supremacy.Tech
                 }
                 catch (Exception e)
                 {
-                    GameLog.Core.GameData.Error("Cannot write ... _FromTechObj-Ships_(autoCreated).csv", e);
+                    GameLog.Core.GameData.Error("Cannot write ... z_FromTechObj-Ships_(autoCreated).csv", e);
                 }
 
                 // End of Ships
@@ -1277,7 +1282,7 @@ namespace Supremacy.Tech
                 try // avoid hang up if this file is opened by another program 
                 {
                     // PossibleShipNames   // at the moment not working because I didn't found a way to read the dictionary
-                    file = pathOutputFile + "_FromTechObj-Shipyards_(autoCreated).csv";
+                    file = pathOutputFile + "z_FromTechObj-Shipyards_(autoCreated).csv";
                     //Console.WriteLine("writing {0}", file);
 
                     if (file == null)
@@ -1405,7 +1410,7 @@ namespace Supremacy.Tech
                 }
                 catch (Exception e)
                 {
-                    GameLog.Core.GameData.Error("Cannot write ... _FromTechObj-Shipyards_(autoCreated).csv", e);
+                    GameLog.Core.GameData.Error("Cannot write ... z_FromTechObj-Shipyards_(autoCreated).csv", e);
                 }
                 
                 // End of Shipyards
@@ -1416,7 +1421,7 @@ namespace Supremacy.Tech
                 try // avoid hang up if this file is opened by another program 
                 {
                     // PossibleShipNames   // at the moment not working because I didn't found a way to read the dictionary
-                    file = pathOutputFile + "_FromTechObj-Stations_(autoCreated).csv";
+                    file = pathOutputFile + "z_FromTechObj-Stations_(autoCreated).csv";
                     Console.WriteLine("writing {0}", file);
 
                     if (file == null)
@@ -1593,7 +1598,7 @@ namespace Supremacy.Tech
                 }
                 catch (Exception e)
                 {
-                    GameLog.Core.GameData.Error("Cannot write ... _FromTechObj-Stations_(autoCreated).csv", e);
+                    GameLog.Core.GameData.Error("Cannot write ... z_FromTechObj-Stations_(autoCreated).csv", e);
                 }
 
                 // End of Stations
@@ -1604,7 +1609,7 @@ namespace Supremacy.Tech
                 try // avoid hang up if this file is opened by another program 
                 {
                     // PossibleShipNames   // at the moment not working because I didn't found a way to read the dictionary
-                    file = pathOutputFile + "_FromTechObj-OrbBat_(autoCreated).csv";
+                    file = pathOutputFile + "z_FromTechObj-OrbBat_(autoCreated).csv";
                     Console.WriteLine("writing {0}", file);
 
                     if (file == null)
@@ -1772,7 +1777,7 @@ namespace Supremacy.Tech
                 }
                 catch (Exception e)
                 {
-                    GameLog.Core.GameData.Error("Cannot write ... _FromTechObj-OrbBat_(autoCreated).csv", e);
+                    GameLog.Core.GameData.Error("Cannot write ... z_FromTechObj-OrbBat_(autoCreated).csv", e);
                 }
 
                 // End of OrbBat

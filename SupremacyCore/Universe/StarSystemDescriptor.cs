@@ -51,7 +51,7 @@ namespace Supremacy.Universe
             //var line = "";
             StreamWriter streamWriter;
             StreamWriter streamWriter2;
-            var pathOutputFile = "./lib/";  // instead of ./Resources/Data/
+            var pathOutputFile = "./Resources/Data/";  // instead of ./Resources/Data/
             var file = "./lib/test-FromHomeSystems.txt";
             var file2 = "./lib/test2-FromHomeSystems.txt";
             streamWriter = new StreamWriter(file);
@@ -66,7 +66,7 @@ namespace Supremacy.Universe
             try // avoid hang up if this file is opened by another program 
             {
                 // better //  file = "./From_HomeSystemsXML_(autoCreated).csv";
-                file = pathOutputFile + "_FromHomeSystemsXML_(autoCreated).csv";
+                file = pathOutputFile + "z_FromHomeSystemsXML_(autoCreated).csv";
 
                 Console.WriteLine("writing {0}", file);
 
@@ -106,7 +106,7 @@ namespace Supremacy.Universe
 
 
 
-                file2 = pathOutputFile + "_FromHomeSystemsXML_StartingLevel_(autoCreated).csv";
+                file2 = pathOutputFile + "z_FromHomeSystemsXML_StartingLevel_(autoCreated).csv";
 
                 Console.WriteLine("writing {0}", file2);
 
@@ -262,7 +262,7 @@ namespace Supremacy.Universe
             }
             catch (Exception e)
             {
-                GameLog.Core.GameData.Error("Problem with HomeSystems.xml or writing file _FromHomeSystemsXML_(autoCreated).csv", e);
+                GameLog.Core.GameData.Error("Problem with HomeSystems.xml or writing file z_FromHomeSystemsXML_(autoCreated).csv", e);
             }
 
 
@@ -364,8 +364,7 @@ namespace Supremacy.Universe
         #region Methods
         private void OnPropertyChanged(string propertyName)
         {
-            if (PropertyChanged != null)
-                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
         #endregion
     }
@@ -379,6 +378,7 @@ namespace Supremacy.Universe
         private string _inhabitants;
         private StarType? _starType;
         private SystemBonus _bonuses = SystemBonus.Random;
+#pragma warning disable IDE0044 // Add readonly modifier
         private List<string> _startingShips;
         private List<string> _startingShipyards;
         private List<string> _startingBuildings;
@@ -396,6 +396,7 @@ namespace Supremacy.Universe
         private ProductionFacilityDescriptor _energyPF = null;
         private ProductionFacilityDescriptor _researchPF = null;
         private ProductionFacilityDescriptor _intelligencePF = null;
+#pragma warning restore IDE0044 // Add readonly modifier
         #endregion
 
         #region Constructors
@@ -461,9 +462,7 @@ namespace Supremacy.Universe
             {
                 if (value != _planets)
                 {
-                    if (value == null)
-                        throw new ArgumentNullException();
-                    _planets = value;
+                    _planets = value ?? throw new ArgumentNullException();
                 }
             }
         }
@@ -475,7 +474,7 @@ namespace Supremacy.Universe
             {
                 if (value != _systemName)
                 {
-                    _systemName = (value != null) ? value.Trim() : null;
+                    _systemName = value?.Trim();
                     OnPropertyChanged("Name");
                     OnPropertyChanged("IsNameDefined");
                 }
@@ -607,8 +606,7 @@ namespace Supremacy.Universe
         #region Methods
         private void OnPropertyChanged(string propertyName)
         {
-            if (PropertyChanged != null)
-                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
         #endregion
 
@@ -749,9 +747,7 @@ namespace Supremacy.Universe
                             if (techLevel["Food"] != null)
                             {
                                 XmlElement pf = techLevel["Food"];
-
-                                _foodPF = new ProductionFacilityDescriptor();
-                                _foodPF.DesignType = pf.InnerText.Trim().ToUpperInvariant();
+                                _foodPF = new ProductionFacilityDescriptor { DesignType = pf.InnerText.Trim().ToUpperInvariant() };
 
                                 if (pf.HasAttribute("Count"))
                                 {
@@ -783,8 +779,7 @@ namespace Supremacy.Universe
                             {
                                 XmlElement pf = techLevel["Industry"];
 
-                                _industryPF = new ProductionFacilityDescriptor();
-                                _industryPF.DesignType = pf.InnerText.Trim().ToUpperInvariant();
+                                _industryPF = new ProductionFacilityDescriptor { DesignType = pf.InnerText.Trim().ToUpperInvariant() };
 
                                 if (pf.HasAttribute("Count"))
                                 {
@@ -816,8 +811,8 @@ namespace Supremacy.Universe
                             {
                                 XmlElement pf = techLevel["Energy"];
 
-                                _energyPF = new ProductionFacilityDescriptor();
-                                _energyPF.DesignType = pf.InnerText.Trim().ToUpperInvariant();
+                                _energyPF = new ProductionFacilityDescriptor { DesignType = pf.InnerText.Trim().ToUpperInvariant() };
+
 
                                 if (pf.HasAttribute("Count"))
                                 {
@@ -849,8 +844,7 @@ namespace Supremacy.Universe
                             {
                                 XmlElement pf = techLevel["Research"];
 
-                                _researchPF = new ProductionFacilityDescriptor();
-                                _researchPF.DesignType = pf.InnerText.Trim().ToUpperInvariant();
+                                _researchPF = new ProductionFacilityDescriptor { DesignType = pf.InnerText.Trim().ToUpperInvariant() }; 
 
                                 if (pf.HasAttribute("Count"))
                                 {
@@ -882,8 +876,7 @@ namespace Supremacy.Universe
                             {
                                 XmlElement pf = techLevel["Intelligence"];
 
-                                _intelligencePF = new ProductionFacilityDescriptor();
-                                _intelligencePF.DesignType = pf.InnerText.Trim().ToUpperInvariant();
+                                _intelligencePF = new ProductionFacilityDescriptor { DesignType = pf.InnerText.Trim().ToUpperInvariant() };
 
                                 if (pf.HasAttribute("Count"))
                                 {
@@ -1128,7 +1121,7 @@ namespace Supremacy.Universe
             {
                 if (value != _planetName)
                 {
-                    _planetName = (value != null) ? value.Trim() : null;
+                    _planetName = value?.Trim();
                     OnPropertyChanged("Name");
                     OnPropertyChanged("IsNameDefined");
                 }
@@ -1228,8 +1221,7 @@ namespace Supremacy.Universe
 
         private void OnPropertyChanged(string propertyName)
         {
-            if (PropertyChanged != null)
-                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
         public PlanetDescriptor()
@@ -1240,7 +1232,6 @@ namespace Supremacy.Universe
 
         public PlanetDescriptor(XmlElement xmlNode) : this()
         {
-            int tempInteger;
 
             if (xmlNode.HasAttribute("Name"))
                 Name = xmlNode.GetAttribute("Name").Trim();
@@ -1248,7 +1239,7 @@ namespace Supremacy.Universe
                 Size = (PlanetSize)Enum.Parse(typeof(PlanetSize), xmlNode.GetAttribute("Size").Trim());
             if (xmlNode.HasAttribute("Type") && Enum.IsDefined(typeof(PlanetType), xmlNode.GetAttribute("Type").Trim()))
                 Type = (PlanetType)Enum.Parse(typeof(PlanetType), xmlNode.GetAttribute("Type").Trim());
-            if ((xmlNode.HasAttribute("MaxNumberOfPlanets")) && int.TryParse(xmlNode.GetAttribute("MaxNumberOfPlanets").Trim(), out tempInteger))
+            if ((xmlNode.HasAttribute("MaxNumberOfPlanets")) && int.TryParse(xmlNode.GetAttribute("MaxNumberOfPlanets").Trim(), out int tempInteger))
                 MaxNumberOfPlanets = tempInteger;
             if ((xmlNode.HasAttribute("MinNumberOfPlanets")) && int.TryParse(xmlNode.GetAttribute("MinNumberOfPlanets").Trim(), out tempInteger))
                 MinNumberOfPlanets = tempInteger;

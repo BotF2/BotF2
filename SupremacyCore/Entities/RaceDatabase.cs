@@ -124,7 +124,7 @@ namespace Supremacy.Entities
 
                 if (_traceRacesXML == true)
                 {
-                    var pathOutputFile = "./lib/";  // instead of ./Resources/Data/
+                    var pathOutputFile = "./Resources/Data/";  // instead of ./Resources/Data/
                     var separator = ";";
                     var line = "";
                     StreamWriter streamWriter;
@@ -134,7 +134,7 @@ namespace Supremacy.Entities
 
                     try // avoid hang up if this file is opened by another program 
                     {
-                        file = pathOutputFile + "_FromRacesXML_(autoCreated).csv";
+                        file = pathOutputFile + "z_FromRacesXML_(autoCreated).csv";
 
                         Console.WriteLine("writing {0}", file);
 
@@ -165,7 +165,7 @@ namespace Supremacy.Entities
                         // End of head line
 
 
-                        GameLog.Core.GameData.DebugFormat("begin writing _FromRacesXML_(autoCreated).csv ... beware of NO dismatch of Keys between Civ..xml and Races.xml");
+                        GameLog.Core.GameData.DebugFormat("begin writing z_FromRacesXML_(autoCreated).csv ... beware of NO dismatch of Keys between Civ..xml and Races.xml");
                         string RaceName = "";
                         foreach (var race in raceDatabase)   // each race
                         {
@@ -217,7 +217,7 @@ namespace Supremacy.Entities
                     }
                     catch (Exception e)
                     {
-                        GameLog.Core.GameData.Error("Cannot write ... _FromRacesXML_(autoCreated).csv", e);
+                        GameLog.Core.GameData.Error("Cannot write ... z_FromRacesXML_(autoCreated).csv", e);
                     }
 
                     streamWriter.Close();

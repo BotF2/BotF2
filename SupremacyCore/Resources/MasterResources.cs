@@ -23,20 +23,20 @@ namespace Supremacy.Resources
                     #region traceCivilizationsXML_To_CSV
 
                     bool _traceCivilizationsXML = true;  // file is writen while starting a game -> Federation -> Start
-                    GameLog.Core.XML2CSVOutput.DebugFormat("{0} for writing _FromCivilizationsXML_(autoCreated).csv - may hang up a start of the game", _traceCivilizationsXML);
+                    GameLog.Core.XML2CSVOutput.DebugFormat("{0} for writing z_FromCivilizationsXML_(autoCreated).csv - may hang up a start of the game", _traceCivilizationsXML);
                     if (_traceCivilizationsXML == true)
                     {
-                        var pathOutputFile = "./lib/";  // instead of ./Resources/Data/
+                        var pathOutputFile = "./Resources/Data/";  // instead of ./Resources/Data/
                         var separator = ";";
                         var line = "";
                         StreamWriter streamWriter;
                         var file = "./lib/testCiv.txt";
                         streamWriter = new StreamWriter(file);
-                        String strHeader = "";  // first line of output files
+                        String strHeader;  // first line of output files
 
                         try // avoid hang up if this file is opened by another program 
                         {
-                            file = pathOutputFile + "_FromCivilizationsXML_(autoCreated).csv";
+                            file = pathOutputFile + "z_FromCivilizationsXML_(autoCreated).csv";
 
                             Console.WriteLine("writing {0}", file);
 
@@ -65,7 +65,7 @@ namespace Supremacy.Resources
                             streamWriter.WriteLine(strHeader);
                             // End of head line
 
-                            GameLog.Core.GameData.InfoFormat("begin writing _FromCivilizationsXML_(autoCreated).csv ... would breaks if dismatch of Keys between Civ..xml and Races.xml");
+                            GameLog.Core.GameData.InfoFormat("begin writing z_FromCivilizationsXML_(autoCreated).csv ... would breaks if dismatch of Keys between Civ..xml and Races.xml");
                             string RaceName = "";
                             foreach (var civ in m_CivDatabase)   // each civ
                             {
@@ -113,11 +113,11 @@ namespace Supremacy.Resources
                             }
                         WriterClose:
                             streamWriter.Close();
-                            GameLog.Core.GameData.WarnFormat("successfully ended writing _FromCivilizationsXML_(autoCreated).csv");
+                            GameLog.Core.GameData.WarnFormat("successfully ended writing z_FromCivilizationsXML_(autoCreated).csv");
                         }
                         catch (Exception e)
                         {
-                            GameLog.Core.GameData.Error("Cannot write ... _FromCivilizationsXML_(autoCreated).csv", e);
+                            GameLog.Core.GameData.Error("Cannot write ... z_FromCivilizationsXML_(autoCreated).csv", e);
                         }
                     }
                     #endregion traceCivilizationsXML_To_CSV

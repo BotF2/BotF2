@@ -90,7 +90,7 @@ namespace Supremacy.Text
                 .Elements("Entry");
 
             // for Output file
-            var pathOutputfile = "./lib/";  // instead of ./Resources/Data/
+            var pathOutputfile = "./Resources/Data/";  // instead of ./Resources/Data/
             var separator = ";";
             var line = "";
             StreamWriter streamWriter;
@@ -104,7 +104,7 @@ namespace Supremacy.Text
                 //if (_XML2CSVOutput == false)
                 //    continue;
 
-                file = pathOutputfile + "_FromTextDatabase_(autoCreated).csv";
+                file = pathOutputfile + "z_FromTextDatabase_(autoCreated).csv";
                 Console.WriteLine("writing {0}", file);
 
                 if (file == null)
@@ -207,7 +207,7 @@ namespace Supremacy.Text
             }
             catch (Exception e)
             {
-                GameLog.Core.GameData.Error("Cannot write ... _FromTextDatabase_(autoCreated).csv", e);
+                GameLog.Core.GameData.Error("Cannot write ... z_FromTextDatabase_(autoCreated).csv", e);
             }
 
             return database;
@@ -380,9 +380,7 @@ namespace Supremacy.Text
 
             public ClientTextDatabaseEntry([NotNull] string key)
             {
-                if (key == null)
-                    throw new ArgumentNullException("key");
-                _key = key;
+                _key = key ?? throw new ArgumentNullException("key");
                 _localizedEntries = new KeyedCollectionBase<string, TLocalizedEntry>(entry => entry.Language);
             }
 
@@ -470,9 +468,8 @@ namespace Supremacy.Text
             {
                 var culture = ResourceManager.CurrentCulture;
 
-                TLocalizedEntry localizedEntry;
 
-                if (_localizedEntries.TryGetValue(culture.Name, out localizedEntry))
+                if (_localizedEntries.TryGetValue(culture.Name, out TLocalizedEntry localizedEntry))
                     return localizedEntry;
 
                 while (!culture.IsNeutralCulture &&
@@ -532,9 +529,7 @@ namespace Supremacy.Text
                 string custom1,
                 string custom2)
             {
-                if (language == null)
-                    throw new ArgumentNullException("language");
-                _language = language;
+                _language = language ?? throw new ArgumentNullException("language");
 
                 if (name != null)
                     name = name.Trim();
@@ -616,10 +611,7 @@ namespace Supremacy.Text
                 //string classLevel,
                 string description)
             {
-                if (language == null)
-                    throw new ArgumentNullException("language");
-
-                _language = language;
+                _language = language ?? throw new ArgumentNullException("language");
 
                 if (singularName != null)
                     singularName = singularName.Trim();

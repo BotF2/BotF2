@@ -357,15 +357,15 @@ namespace Supremacy.Tech
 
                 // CSV_Output
 
-                var pathOutputFile = "./lib/";  // instead of ./Resources/Data/
+                var pathOutputFile = "./Resources/Data/";  // instead of ./Resources/Data/
                 var separator = ";";
                 var line = "";
                 StreamWriter streamWriter;
-                var file = "./lib/test_FromTechTrees.txt";
+                var file = "./lib/testz_FromTechTrees.txt";
                 streamWriter = new StreamWriter(file);
                 String strHeader = "";  // first line of output files
 
-                file = pathOutputFile + "_FromTechTrees_(autoCreated).csv";
+                file = pathOutputFile + "z_FromTechTrees_(autoCreated).csv";
 
                 Console.WriteLine("writing {0}", file);
 
@@ -527,7 +527,7 @@ namespace Supremacy.Tech
                         }
                         catch (Exception e)
                         {
-                            GameLog.Core.GameData.Error("Cannot write ... _FromTechTrees_(autoCreated).csv", e);
+                            GameLog.Core.GameData.Error("Cannot write ... z_FromTechTrees_(autoCreated).csv", e);
                         }
 
                         // End of TechTrees_To_CSV
