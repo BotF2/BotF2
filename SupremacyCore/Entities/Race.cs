@@ -136,9 +136,8 @@ namespace Supremacy.Entities
 
                 foreach (var name in planetTypeNames)
                 {
-                    PlanetType planetType;
 
-                    if (EnumHelper.TryParse(name.Trim(), out planetType))
+                    if (EnumHelper.TryParse(name.Trim(), out PlanetType planetType))
                         planetTypes.Add(planetType);
                 }
 

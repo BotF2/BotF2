@@ -274,16 +274,15 @@ namespace Supremacy.Game
             foreach (var design in _techDatabase)
             {
                 ///GameLog.Client.GameInitData.DebugFormat("THE design Key ={0}; Name ={1}; Description ={2}", design.Key, design.Name, design.Description);
-                LocalizedTextGroup localizedText; // This is Orbital Batteries Only!!! 
-                if (LocalizedTextDatabase.Instance.Groups.TryGetValue(new TechObjectTextGroupKey(design.Key), out localizedText))
+                        // This is Orbital Batteries Only!!! 
+                if (LocalizedTextDatabase.Instance.Groups.TryGetValue(new TechObjectTextGroupKey(design.Key), out LocalizedTextGroup localizedText))
                 {
                     //GameLog.Client.GameInitData.DebugFormat("###### textDatabase localizedTest = {0} {1} {2} {3} {4}",
                     //    localizedText.DefaultEntry, localizedText.DefaultLocalText, localizedText.Entries, localizedText.Key, design.Key );
                     design.LocalizedText = localizedText;
                     continue;
                 }
-                ITextDatabaseEntry<ITechObjectTextDatabaseEntry> entry; 
-                if (!techObjectTable.TryGetEntry(design.Key, out entry)) 
+                if (!techObjectTable.TryGetEntry(design.Key, out ITextDatabaseEntry<ITechObjectTextDatabaseEntry> entry))
                     continue;
                 design.TextDatabaseEntry = entry.GetLocalizedEntry(ResourceManager.CurrentLocale);
                 //GameLog.Client.GameInitData.DebugFormat("THE ^^TextDatabaseEntry ={0} {1}", design.TextDatabaseEntry.Name, design.TextDatabaseEntry.Description);
@@ -393,9 +392,7 @@ namespace Supremacy.Game
         private void OnTurnNumberChanged()
         {
             GameLog.Client.General.InfoFormat("------------------------------ TURN {0} ------------------------------", TurnNumber);
-            var handler = TurnNumberChanged;
-            if (handler != null)
-                handler(this, EventArgs.Empty);
+            TurnNumberChanged?.Invoke(this, EventArgs.Empty);
 
             if (!IsMultiplayerGame)
             {
@@ -540,9 +537,8 @@ namespace Supremacy.Game
         /// <returns>The popped context, or <c>null</c> if the stack is empty.</returns>
         public static GameContext PopThreadContext()
         {
-            GameContext result;
 
-            if (!ThreadStack.TryPop(out result))
+            if (!ThreadStack.TryPop(out GameContext result))
                 return result;
 
             return null;
@@ -557,8 +553,7 @@ namespace Supremacy.Game
         /// <returns><c>true</c> if successful; otherwise, <c>false</c>.</returns>
         public static bool CheckAndPop(GameContext context)
         {
-            GameContext top;
-            if (!_stack.TryPeek(out top))
+            if (!_stack.TryPeek(out GameContext top))
             {
                 return false;
             }
@@ -576,8 +571,7 @@ namespace Supremacy.Game
         /// <returns>The popped context, or <c>null</c> if the stack is empty.</returns>
         public static GameContext Pop()
         {
-            GameContext result;
-            if (!_stack.TryPop(out result))
+            if (!_stack.TryPop(out GameContext result))
                 return null;
             return result;
         }
@@ -588,8 +582,7 @@ namespace Supremacy.Game
         /// <returns>The context.</returns>
         public static GameContext Peek()
         {
-            GameContext result;
-            if (!_stack.TryPeek(out result))
+            if (!_stack.TryPeek(out GameContext result))
                 return null;
             return result;
         }
@@ -764,9 +757,7 @@ namespace Supremacy.Game
         {
             get
             {
-                GameContext context;
-
-                if (ThreadStack.TryPeek(out context))
+                if (ThreadStack.TryPeek(out GameContext context))
                     return context;
 
                 return null;
@@ -1107,8 +1098,7 @@ namespace Supremacy.Game
                             {
                                 var buildingDesign = Current.TechDatabase.DesignIdMap[building];
 
-                                TechObject instance = null;
-                                Current.TechDatabase.BuildingDesigns[buildingDesign].TrySpawn(colony.Location, colony.Owner, out instance);
+                                Current.TechDatabase.BuildingDesigns[buildingDesign].TrySpawn(colony.Location, colony.Owner, out TechObject instance);
                                 //GameLog.Client.GameData.DebugFormat("Starting Buildings: buildingDesign={0}, {1}", buildingDesign, building);
                                 if (instance != null)
                                     colony.ActivateBuilding(instance as Building);
@@ -1122,8 +1112,7 @@ namespace Supremacy.Game
                             {
                                 var shipyardDesign = Current.TechDatabase.DesignIdMap[shipyard];
 
-                                TechObject instance = null;
-                                Current.TechDatabase.ShipyardDesigns[shipyardDesign].TrySpawn(colony.Location, colony.Owner, out instance);
+                                Current.TechDatabase.ShipyardDesigns[shipyardDesign].TrySpawn(colony.Location, colony.Owner, out TechObject instance);
                                 //GameLog.Client.GameData.DebugFormat("Starting Shipyards: shipyardDesign={0}, {1}", shipyardDesign, shipyard);
                                 if (instance != null)
                                 {
@@ -1163,8 +1152,7 @@ namespace Supremacy.Game
                             {
                                 var OBDesign = Current.TechDatabase.DesignIdMap[OB];
 
-                                TechObject instance = null;
-                                Current.TechDatabase.OrbitalBatteryDesigns[OBDesign].TrySpawn(colony.Location, colony.Owner, out instance);
+                                Current.TechDatabase.OrbitalBatteryDesigns[OBDesign].TrySpawn(colony.Location, colony.Owner, out TechObject instance);
                                 if (instance != null)
                                 {
                                     colony.ActivateOrbitalBattery();

@@ -300,7 +300,7 @@ namespace Supremacy.UI
                 
                    
             }
-            GameLog.Client.General.DebugFormat("Images for Stars loaded...");
+            GameLog.Client.GeneralDetails.DebugFormat("Images for Stars loaded...");
 
             s_textTypeface = new Typeface(
                 new FontFamily("#Resources/Fonts/Calibri"),
@@ -503,7 +503,7 @@ namespace Supremacy.UI
 
         private void OnLoaded(object sender, RoutedEventArgs e)
         {
-            GameLog.Client.General.InfoFormat("GalaxyGridPanel.cs: OnLoading is beginning...");
+            GameLog.Client.GeneralDetails.InfoFormat("GalaxyGridPanel.cs: OnLoading is beginning...");
             GalaxyScreenView galaxyScreen = this.FindVisualAncestorByType<GalaxyScreenView>();
             if (galaxyScreen != null)
             {

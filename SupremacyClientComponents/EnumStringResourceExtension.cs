@@ -48,20 +48,19 @@ namespace Supremacy.Client
                     text = text.ToUpper();
                     break;
             }
-            
-            var provideValueTarget = serviceProvider.GetService(typeof(IProvideValueTarget)) as IProvideValueTarget;
-            
-            if (provideValueTarget != null)
+
+
+            if (serviceProvider.GetService(typeof(IProvideValueTarget)) is IProvideValueTarget provideValueTarget)
             {
                 var property = provideValueTarget.TargetProperty;
-                
+
                 if (!(property is DependencyProperty) &&
                     !(property is PropertyInfo) &&
                     !(property is PropertyDescriptor))
                 {
                     return this;
                 }
-                
+
                 if (Equals(property, ContentControl.ContentProperty))
                     return new AccessText { Text = text };
             }

@@ -22,13 +22,8 @@ namespace Supremacy.Utility
 
         public GameScheduler([NotNull] IScheduler baseScheduler, [NotNull] Func<GameContext> gameContextCallback)
         {
-            if (baseScheduler == null)
-                throw new ArgumentNullException("baseScheduler");
-            if (gameContextCallback == null)
-                throw new ArgumentNullException("gameContextCallback");
-
-            _baseScheduler = baseScheduler;
-            _gameContextCallback = gameContextCallback;
+            _baseScheduler = baseScheduler ?? throw new ArgumentNullException("baseScheduler");
+            _gameContextCallback = gameContextCallback ?? throw new ArgumentNullException("gameContextCallback");
         }
 
         public IDisposable Schedule(Action action)

@@ -143,9 +143,12 @@ namespace Supremacy.Economy
                     return GameContext.Current.TechDatabase[_buildTypeId];
                 else
                 {
+                    if (GameContext.Current != null && GameContext.Current.TechDatabase != null) 
+                    { 
                     string _text = "#### Error on BuildDesign - not available or found ... returning a null or maybe cancelling a build project";
                     Console.WriteLine(_text);
                     GameLog.Client.General.ErrorFormat(_text);
+                    }
                     return null;
                 }
 
@@ -176,7 +179,7 @@ namespace Supremacy.Economy
                 //      );
 
                 if (_industryInvested == 0)
-                    GameLog.Core.Production.DebugFormat("indInvested=0"); // just or breakpoint
+                    GameLog.Core.ProductionDetails.DebugFormat("indInvested=0"); // just or breakpoint
 
                 return _industryInvested; 
             }
@@ -436,7 +439,7 @@ namespace Supremacy.Economy
             var civManager = GameContext.Current.CivilizationManagers[Builder];
 
             //if(BuildDesign == StationDes)
-            GameLog.Core.Production.DebugFormat(" Turn {3}: Trying to finish BuildProject ##########  {0} by {1} at {2}", BuildDesign, Builder, Location, GameContext.Current.TurnNumber);
+            GameLog.Core.ProductionDetails.DebugFormat(" Turn {3}: Trying to finish BuildProject ##########  {0} by {1} at {2}", BuildDesign, Builder, Location, GameContext.Current.TurnNumber);
             if (civManager == null || !BuildDesign.TrySpawn(Location, Builder, out TechObject spawnedInstance))  // what does the TrySpawn have to do delta/needed for finishwith our OutOfRagneException in production? 
                 return; // If we do or do not spawn does that change a collection to give out of range?
 

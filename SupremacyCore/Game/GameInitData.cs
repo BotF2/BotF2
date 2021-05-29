@@ -121,7 +121,7 @@ namespace Supremacy.Game
                 throw new ArgumentNullException("savedGameHeader");
 
             DateTime _time = DateTime.Now;
-            GameLog.Core.General.DebugFormat("CreateFromSavedGame: {0}", savedGameHeader.FileName);  // GameLog always ... Core.General
+            GameLog.Core.GeneralDetails.DebugFormat("CreateFromSavedGame: {0}", savedGameHeader.FileName);  // GameLog always ... Core.General
 
             GameLog.Core.General.InfoFormat("Deserialized: savedGameHeader;FileName;{0}", savedGameHeader.FileName);
             GameLog.Core.GeneralDetails.DebugFormat("Deserialized: savedGameHeader;LocalPlayerEmpireID;{0}", savedGameHeader.LocalPlayerEmpireID);
@@ -333,8 +333,7 @@ namespace Supremacy.Game
 
         protected void OnPropertyChanged(string propertyName)
         {
-            if (PropertyChanged != null)
-                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
         #endregion
     }

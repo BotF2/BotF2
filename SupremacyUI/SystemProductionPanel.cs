@@ -733,7 +733,7 @@ namespace Supremacy.UI
                             activateCommand.Execute(category);
                         }
 
-                        GameLog.Client.Production.DebugFormat("slider_ActiveUnitsChanged... category {1} IN-CREASED {0}", delta, category);
+                        GameLog.Client.ProductionDetails.DebugFormat("slider_ActiveUnitsChanged... category {1} IN-CREASED {0}", delta, category);
                     }
                     else
                     {
@@ -743,7 +743,7 @@ namespace Supremacy.UI
                             deactivateCommand.Execute(category);
                         }
 
-                        GameLog.Client.Production.DebugFormat("slider_ActiveUnitsChanged... category {1} DE-CREASED {0}", delta, category);
+                        GameLog.Client.ProductionDetails.DebugFormat("slider_ActiveUnitsChanged... category {1} DE-CREASED {0}", delta, category);
                     }
                 }
                 
