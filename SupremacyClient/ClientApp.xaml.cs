@@ -570,18 +570,24 @@ namespace Supremacy.Client
                     Process.Start(xna_copy);
                     Thread.Sleep(1000);
                 }
+                else
+                {
+                    _text = "Did not found file " + xna_check + "to check for XNA 3.1"
+                        + newline + newline + "*** if already installed copy any file to folder \\Resources AND game-folder and named it 'XNA31_ok.info'";
+                    MessageBox.Show(_text, "WARNING", MessageBoxButton.OK);
+                }
             }
 
             // Second check after xna_copy was done
             if (!File.Exists(xna_check))
             {
-                _text = "Sorry, Microsoft XNA Framework V3.1 might not be installed - but it is necessary. "
-                    + newline + newline
-                    + "Version 3.1 is ABSOLUTELY needed, any newer Version can be installed, but additional !"
-                    + newline + newline
-                    + "Download it at www.microsoft.com/download/details.aspx?id=15163"
-                    + newline + newline
-                    + "Press OK for going on, but don't wonder if the game crashes ..or maybe not...."
+                _text = "Sorry, Microsoft XNA Framework V3.1 might not be installed - but it is necessary. " 
+                    + newline + newline + "Version 3.1 is ABSOLUTELY needed, any newer Version can be installed, but additional !" 
+                    + newline + newline + "Install out of folder \\Resources\\XNA31_NEEDED_INSTALL\\ or" 
+                    + newline + newline + "Download it at www.microsoft.com/download/details.aspx?id=15163" 
+                    + newline + newline + "*** if already installed copy any file to folder \\Resources AND game-folder and named it 'XNA31_ok.info'"
+                    + newline + newline + "Download  it at www.microsoft.com/download/details.aspx?id=15163"
+                    + newline + newline + "Press OK for going on, but don't wonder if the game crashes ..or maybe not...."
                     ;
                 GameLog.Client.General.Info(_text);
                 MessageBox.Show(_text, "CHECK", MessageBoxButton.OK);
