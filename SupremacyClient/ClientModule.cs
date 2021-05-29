@@ -99,6 +99,7 @@ namespace Supremacy.Client
         private readonly DelegateCommand<object> _continueGameCommand;
         private readonly DelegateCommand<bool> _endGameCommand;
         private readonly DelegateCommand<SavedGameHeader> _loadGameCommand;
+        private readonly DelegateCommand<SavedGameHeader> _deleteManualSavedGameCommand;
         private readonly DelegateCommand<object> _showCreditsDialogCommand;
         private readonly DelegateCommand<object> _showSettingsFileCommand;
         private readonly DelegateCommand<MultiplayerConnectParameters> _joinMultiplayerGameCommand;
@@ -113,8 +114,8 @@ namespace Supremacy.Client
         private string _text;
         private readonly string newline = Environment.NewLine;
 
-        private int SpecialWidth1 = 576;
-        private int SpecialHeight1 = 480;
+        //private int SpecialWidth1 = 576;
+        //private int SpecialHeight1 = 480;
 
         private string _resultText;
         #endregion
@@ -198,6 +199,7 @@ namespace Supremacy.Client
             _endGameCommand = new DelegateCommand<bool>(ExecuteEndGameCommand);
             _exitCommand = new DelegateCommand<bool>(ExecuteExitCommand);
             _loadGameCommand = new DelegateCommand<SavedGameHeader>(ExecuteLoadGameCommand);
+            _deleteManualSavedGameCommand = new DelegateCommand<SavedGameHeader>(ExecuteDeleteManualSavedGameCommand);
             _showCreditsDialogCommand = new DelegateCommand<object>(ExecuteShowCreditsDialogCommand);
             _showSettingsFileCommand = new DelegateCommand<object>(ExecuteShowSettingsFileCommand);
             _joinMultiplayerGameCommand = new DelegateCommand<MultiplayerConnectParameters>(ExecuteJoinMultiplayerGameCommand);
@@ -224,7 +226,7 @@ namespace Supremacy.Client
             try
             {
                 if (System.IO.File.Exists(file))
-                    System.Diagnostics.Process.Start(file);
+                    _ = Process.Start(file);
             }
             catch
             {
@@ -246,12 +248,17 @@ namespace Supremacy.Client
         private void ExecuteLoadGameCommand(SavedGameHeader header)
         {
             var initData = GameInitData.CreateFromSavedGame(header);
-            GameLog.Client.General.Debug("doing ExecuteLoadGameCommand ...");
+            GameLog.Client.GeneralDetails.Debug("doing ExecuteLoadGameCommand ...");
             RunGameController(gameController => gameController.RunLocal(initData), initData.IsMultiplayerGame);
-            GameLog.Client.General.Debug("doing gameController.RunLocal(initData) ...");
+            GameLog.Client.GeneralDetails.Debug("doing gameController.RunLocal(initData) ...");
 
             startTechLvl = GetStartTechLvl(initData.Options.StartingTechLevel.ToString());
             localEmpire = GetLocalEmpireShortage(initData.LocalPlayerEmpireID, out string localempire);
+        }
+
+        private void ExecuteDeleteManualSavedGameCommand(object obj)
+        {
+            SavedGameManager.SaveGameDeleteManualSaved();
         }
 
         private void ExecuteOptionsCommand(object obj) { _optionsDialog.ShowDialog();}
@@ -607,6 +614,16 @@ namespace Supremacy.Client
             _regionViewRegistry.RegisterViewWithRegion(ClientRegions.f10_Pages, typeof(F10_Tab_7));
             _regionViewRegistry.RegisterViewWithRegion(ClientRegions.f10_Pages, typeof(F10_Tab_8));
             _regionViewRegistry.RegisterViewWithRegion(ClientRegions.f10_Pages, typeof(F10_Tab_9));
+
+            _regionViewRegistry.RegisterViewWithRegion(ClientRegions.f11_Pages, typeof(F11_Tab_1));
+            _regionViewRegistry.RegisterViewWithRegion(ClientRegions.f11_Pages, typeof(F11_Tab_2));
+            _regionViewRegistry.RegisterViewWithRegion(ClientRegions.f11_Pages, typeof(F11_Tab_3));
+            _regionViewRegistry.RegisterViewWithRegion(ClientRegions.f11_Pages, typeof(F11_Tab_4));
+            _regionViewRegistry.RegisterViewWithRegion(ClientRegions.f11_Pages, typeof(F11_Tab_5));
+            _regionViewRegistry.RegisterViewWithRegion(ClientRegions.f11_Pages, typeof(F11_Tab_6));
+            _regionViewRegistry.RegisterViewWithRegion(ClientRegions.f11_Pages, typeof(F11_Tab_7));
+            _regionViewRegistry.RegisterViewWithRegion(ClientRegions.f11_Pages, typeof(F11_Tab_8));
+            _regionViewRegistry.RegisterViewWithRegion(ClientRegions.f11_Pages, typeof(F11_Tab_9));
 
 
             // _regionViewRegistry.RegisterViewWithRegion(AssetsScreenRegions.SpyList, typeof(SpyListView)); // keep it simple for now

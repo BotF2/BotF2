@@ -264,40 +264,67 @@
     <Compile Include="f_Pages\f09_Dialog.xaml.cs">
       <DependentUpon>f09_Dialog.xaml</DependentUpon>
     </Compile>
-    <Compile Include="f_Pages\f10_Tab_2.xaml.cs">
+    <Compile Include="f_Pages\f11_Dialog\f11_Dialog.xaml.cs">
+      <DependentUpon>f11_Dialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="f_Pages\f11_Dialog\f11_Tab_1.xaml.cs">
+      <DependentUpon>f11_Tab_1.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="f_Pages\f11_Dialog\f11_Tab_2.xaml.cs">
+      <DependentUpon>f11_Tab_2.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="f_Pages\f11_Dialog\f11_Tab_3.xaml.cs">
+      <DependentUpon>f11_Tab_3.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="f_Pages\f11_Dialog\f11_Tab_4.xaml.cs">
+      <DependentUpon>f11_Tab_4.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="f_Pages\f11_Dialog\f11_Tab_5.xaml.cs">
+      <DependentUpon>f11_Tab_5.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="f_Pages\f11_Dialog\f11_Tab_6.xaml.cs">
+      <DependentUpon>f11_Tab_6.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="f_Pages\f11_Dialog\f11_Tab_7.xaml.cs">
+      <DependentUpon>f11_Tab_7.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="f_Pages\f11_Dialog\f11_Tab_8.xaml.cs">
+      <DependentUpon>f11_Tab_8.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="f_Pages\f11_Dialog\f11_Tab_9.xaml.cs">
+      <DependentUpon>f11_Tab_9.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="f_Pages\f10_Dialog\f10_Tab_2.xaml.cs">
       <DependentUpon>f10_Tab_2.xaml</DependentUpon>
     </Compile>
-    <Compile Include="f_Pages\f10_Tab_3.xaml.cs">
+    <Compile Include="f_Pages\f10_Dialog\f10_Tab_3.xaml.cs">
       <DependentUpon>f10_Tab_3.xaml</DependentUpon>
     </Compile>
-    <Compile Include="f_Pages\f10_Tab_9.xaml.cs">
+    <Compile Include="f_Pages\f10_Dialog\f10_Tab_9.xaml.cs">
       <DependentUpon>f10_Tab_9.xaml</DependentUpon>
     </Compile>
-    <Compile Include="f_Pages\f10_Tab_8.xaml.cs">
+    <Compile Include="f_Pages\f10_Dialog\f10_Tab_8.xaml.cs">
       <DependentUpon>f10_Tab_8.xaml</DependentUpon>
     </Compile>
-    <Compile Include="f_Pages\f10_Tab_7.xaml.cs">
+    <Compile Include="f_Pages\f10_Dialog\f10_Tab_7.xaml.cs">
       <DependentUpon>f10_Tab_7.xaml</DependentUpon>
     </Compile>
-    <Compile Include="f_Pages\f10_Tab_6.xaml.cs">
+    <Compile Include="f_Pages\f10_Dialog\f10_Tab_6.xaml.cs">
       <DependentUpon>f10_Tab_6.xaml</DependentUpon>
     </Compile>
-    <Compile Include="f_Pages\f10_Tab_5.xaml.cs">
+    <Compile Include="f_Pages\f10_Dialog\f10_Tab_5.xaml.cs">
       <DependentUpon>f10_Tab_5.xaml</DependentUpon>
     </Compile>
-    <Compile Include="f_Pages\f10_Tab_4.xaml.cs">
+    <Compile Include="f_Pages\f10_Dialog\f10_Tab_4.xaml.cs">
       <DependentUpon>f10_Tab_4.xaml</DependentUpon>
     </Compile>
-    <Compile Include="f_Pages\f10_Tab_1.xaml.cs">
+    <Compile Include="f_Pages\f10_Dialog\f10_Tab_1.xaml.cs">
       <DependentUpon>f10_Tab_1.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="f_Pages\f11_Dialog.xaml.cs">
-      <DependentUpon>f11_Dialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="f_Pages\f12_Dialog.xaml.cs">
       <DependentUpon>f12_Dialog.xaml</DependentUpon>
     </Compile>
-    <Compile Include="f_Pages\f10_Dialog.xaml.cs">
+    <Compile Include="f_Pages\f10_Dialog\f10_Dialog.xaml.cs">
       <DependentUpon>f10_Dialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="f_Pages\f07_Dialog.xaml.cs">
@@ -432,43 +459,79 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="f_Pages\f10_Tab_2.xaml">
+    <Page Include="f_Pages\f11_Dialog\f11_Dialog.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="f_Pages\f10_Tab_3.xaml">
+    <Page Include="f_Pages\f11_Dialog\f11_Tab_1.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="f_Pages\f10_Tab_9.xaml">
+    <Page Include="f_Pages\f11_Dialog\f11_Tab_2.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="f_Pages\f10_Tab_8.xaml">
+    <Page Include="f_Pages\f11_Dialog\f11_Tab_3.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="f_Pages\f10_Tab_7.xaml">
+    <Page Include="f_Pages\f11_Dialog\f11_Tab_4.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="f_Pages\f10_Tab_6.xaml">
+    <Page Include="f_Pages\f11_Dialog\f11_Tab_5.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="f_Pages\f10_Tab_5.xaml">
+    <Page Include="f_Pages\f11_Dialog\f11_Tab_6.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="f_Pages\f10_Tab_4.xaml">
+    <Page Include="f_Pages\f11_Dialog\f11_Tab_7.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="f_Pages\f10_Tab_1.xaml">
+    <Page Include="f_Pages\f11_Dialog\f11_Tab_8.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="f_Pages\f11_Dialog.xaml">
+    <Page Include="f_Pages\f11_Dialog\f11_Tab_9.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="f_Pages\f10_Dialog\f10_Tab_2.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="f_Pages\f10_Dialog\f10_Tab_3.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="f_Pages\f10_Dialog\f10_Tab_9.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="f_Pages\f10_Dialog\f10_Tab_8.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="f_Pages\f10_Dialog\f10_Tab_7.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="f_Pages\f10_Dialog\f10_Tab_6.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="f_Pages\f10_Dialog\f10_Tab_5.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="f_Pages\f10_Dialog\f10_Tab_4.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="f_Pages\f10_Dialog\f10_Tab_1.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -476,7 +539,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="f_Pages\f10_Dialog.xaml">
+    <Page Include="f_Pages\f10_Dialog\f10_Dialog.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

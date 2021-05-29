@@ -1,4 +1,4 @@
-// <!-- File:F11.xaml.cs
+// <!-- File:f11_Tab_5.xaml.cs
 //
 // Copyright (c) 2007 Mike Strobel
 //
@@ -7,17 +7,16 @@
 //
 // All other rights reserved.
 
-using Supremacy.Utility;
 using System.Windows.Input;
 
 namespace Supremacy.Client
 {
     /// <summary>
-    /// Interaction logic for F11.xaml.cs
+    /// Interaction logic for f11_Tab_5.xaml.cs
     /// </summary>
-    public partial class F11_Dialog
+    public partial class F11_Tab_5
     {
-        public F11_Dialog()
+        public F11_Tab_5()
         {
             InitializeComponent();
 
@@ -57,8 +56,6 @@ namespace Supremacy.Client
                 new CommandBinding(
                     GenericCommands.TracesSetNoneCommand,
                     OnGenericCommandsTracesSetNoneCommandExecuted));
-
-            GameLog.Client.UIDetails.DebugFormat("F11-Dialog initialized");
         }
 
         private void OnGenericCommandsCancelCommandExecuted(object source, ExecutedRoutedEventArgs e)
@@ -101,6 +98,11 @@ namespace Supremacy.Client
 
             ClientSettings.Current.Save();
             ClientSettings.Current.Reload();
+        }
+
+        private void TextBox_Scroll(object sender, System.Windows.Controls.Primitives.ScrollEventArgs e)
+        {
+
         }
     }
 }

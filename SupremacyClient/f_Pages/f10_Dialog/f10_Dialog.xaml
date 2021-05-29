@@ -83,7 +83,7 @@
             <TabControl.ItemContainerStyle>
                 <Style TargetType="{x:Type TabItem}" BasedOn="{StaticResource {x:Type TabItem}}">
                     <!--<Setter Property="Header" Value="{Binding Path=(scc:IClientOptionsPage.Header)}" />-->
-                    <Setter Property="Header" Value="-- Tab -- " />
+                    <Setter Property="Header" Value="-- Tab --- " />
 
                            
                             <!--Value="{s:StringResource DIALOG_F10_TAB_1_HEADER}" />-->                    
