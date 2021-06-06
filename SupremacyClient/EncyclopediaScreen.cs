@@ -151,7 +151,7 @@ namespace Supremacy.Client
                 groupItem.Resources.Add(typeof(TreeViewItem), itemStyle);
                 groupItem.Header = group.Key;
                 groupItem.ItemsSource = entriesView;
-                groupItem.IsExpanded = true;
+                groupItem.IsExpanded = false;
                 _researchEntryListView.Items.Add(groupItem);
             }
         }
@@ -288,9 +288,9 @@ namespace Supremacy.Client
                     _selectedApplication.SetValue(Selector.IsSelectedProperty, false);
                     _selectedApplication = null;
                 }
-                if (sender is ContentControl)
+                if (sender is ContentControl control)
                 {
-                    ((ContentControl)sender).SetValue(Selector.IsSelectedProperty, true);
+                    control.SetValue(Selector.IsSelectedProperty, true);
                     _selectedApplication = sender as DependencyObject;
                     if (_applicationDetailsHost != null)
                     {
@@ -298,7 +298,7 @@ namespace Supremacy.Client
                                                {
                                                    Content = new EncyclopediaApplicationDetails(
                                                        ((EncyclopediaApplicationData)
-                                                        ((ContentControl)sender).Content).EncyclopediaApplication,
+                                                        control.Content).EncyclopediaApplication,
                                                        AppContext.LocalPlayerEmpire)
                                                };
                         _applicationDetailsHost.Child = detailsContainer;
@@ -408,12 +408,12 @@ namespace Supremacy.Client
                 if (imageRatio >= 1.0)
                 {
                     imageWidth = Math.Max(200, Math.Min(imageWidth, 270));
-                    imageHeight = imageWidth / imageRatio;
+                    imageHeight = imageWidth / imageRatio *2;
                 }
                 else
                 {
                     imageHeight = Math.Max(200, Math.Min(imageHeight, 270));
-                    imageWidth = imageHeight * imageRatio;
+                    imageWidth = imageHeight * imageRatio * 2;
                 }
 
                 image.Width = imageWidth;
@@ -673,25 +673,13 @@ namespace Supremacy.Client
         private readonly ResearchField _field;
         private readonly ResearchPool _pool;
 
-        public ResearchField Field
-        {
-            get { return _field; }
-        }
+        public ResearchField Field => _field;
 
-        public Distribution<int> Distribution
-        {
-            get { return _pool.Distributions[Field.FieldID]; }
-        }
+        public Distribution<int> Distribution => _pool.Distributions[Field.FieldID];
 
-        public int TechLevel
-        {
-            get { return _pool.GetTechLevel(Field); }
-        }
+        public int TechLevel => _pool.GetTechLevel(Field);
 
-        public ResearchProject CurrentProject
-        {
-            get { return _pool.GetCurrentProject(Field); }
-        }
+        public ResearchProject CurrentProject => _pool.GetCurrentProject(Field);
 
         public EncyclopediaFieldData(ResearchField field, ResearchPool pool)
         {
@@ -730,25 +718,13 @@ namespace Supremacy.Client
             }
         }
 
-        public ResearchApplication EncyclopediaApplication
-        {
-            get { return _application; }
-        }
+        public ResearchApplication EncyclopediaApplication => _application;
 
-        public bool IsResearched
-        {
-            get { return _pool.IsResearched(EncyclopediaApplication); }
-        }
+        public bool IsResearched => _pool.IsResearched(EncyclopediaApplication);
 
-        public bool IsResearching
-        {
-            get { return _pool.IsResearching(EncyclopediaApplication); }
-        }
+        public bool IsResearching => _pool.IsResearching(EncyclopediaApplication);
 
-        public int TechLevel
-        {
-            get { return _application.Level; }
-        }
+        public int TechLevel => _application.Level;
 
         public EncyclopediaApplicationData(ResearchApplication application, ResearchPool pool)
         {
@@ -762,25 +738,13 @@ namespace Supremacy.Client
         private readonly ResearchApplication _application;
         private readonly CivilizationManager _civManager;
 
-        public ResearchApplication EncyclopediaApplication
-        {
-            get { return _application; }
-        }
+        public ResearchApplication EncyclopediaApplication => _application;
 
-        public bool IsResearched
-        {
-            get { return _civManager.Research.IsResearched(EncyclopediaApplication); }
-        }
+        public bool IsResearched => _civManager.Research.IsResearched(EncyclopediaApplication);
 
-        public bool IsResearching
-        {
-            get { return _civManager.Research.IsResearching(EncyclopediaApplication); }
-        }
+        public bool IsResearching => _civManager.Research.IsResearching(EncyclopediaApplication);
 
-        public int TechLevel
-        {
-            get { return _application.Level; }
-        }
+        public int TechLevel => _application.Level;
 
         public ICollection<TechObjectDesign> DependentBuildings
         {

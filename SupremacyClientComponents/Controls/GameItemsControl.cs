@@ -26,10 +26,7 @@ namespace Supremacy.Client.Controls
 
         public static readonly DependencyProperty IsFirstItemProperty = IsFirstItemPropertyKey.DependencyProperty;
 
-        public bool IsFirstItem
-        {
-            get { return (bool)GetValue(IsFirstItemProperty); }
-        }
+        public bool IsFirstItem => (bool)GetValue(IsFirstItemProperty);
 
         private static object CoerceIsFirstItem(DependencyObject d, object baseValue)
         {
@@ -67,10 +64,7 @@ namespace Supremacy.Client.Controls
 
         public static readonly DependencyProperty IsLastItemProperty = IsLastItemPropertyKey.DependencyProperty;
 
-        public bool IsLastItem
-        {
-            get { return (bool)GetValue(IsLastItemProperty); }
-        }
+        public bool IsLastItem => (bool)GetValue(IsLastItemProperty);
 
         private static object CoerceIsLastItem(DependencyObject d, object baseValue)
         {

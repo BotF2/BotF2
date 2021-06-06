@@ -69,15 +69,9 @@ namespace Supremacy.Diplomacy
             CounterpartyID= counterparty.CivID;
         }
 
-        public bool IsContactMade
-        {
-            get { return _diplomacyData.IsContactMade(); }
-        }
+        public bool IsContactMade => _diplomacyData.IsContactMade();
 
-        public int LastStatusChange
-        {
-            get { return _diplomacyData.LastStatusChange; }
-        }
+        public int LastStatusChange => _diplomacyData.LastStatusChange;
 
         public int TurnsSinceLastStatusChange
         {
@@ -107,20 +101,11 @@ namespace Supremacy.Diplomacy
             }
         }
 
-        public IIndexedCollection<RegardEvent> RegardEvents
-        {
-            get { return _regardEvents; }
-        }
+        public IIndexedCollection<RegardEvent> RegardEvents => _regardEvents;
 
-        public DiplomacyDataInternal DiplomacyData
-        {
-            get { return _diplomacyData; }
-        }
+        public DiplomacyDataInternal DiplomacyData => _diplomacyData;
 
-        public IDiplomacyData CounterpartyDiplomacyData
-        {
-            get { return GameContext.Current.DiplomacyData[CounterpartyID, OwnerID]; }
-        }
+        public IDiplomacyData CounterpartyDiplomacyData => GameContext.Current.DiplomacyData[CounterpartyID, OwnerID];
 
         public Civilization Owner
         {
@@ -134,10 +119,7 @@ namespace Supremacy.Diplomacy
             protected set { CounterpartyID = (value != null) ? value.CivID : Civilization.InvalidID; }
         }
 
-        public ForeignPower CounterpartyForeignPower
-        {
-            get { return GameContext.Current.Diplomats[CounterpartyID].GetForeignPower(Owner); }
-        }
+        public ForeignPower CounterpartyForeignPower => GameContext.Current.Diplomats[CounterpartyID].GetForeignPower(Owner);
 
         public void MakeContact(int contactTurn = 0)
         {
@@ -578,10 +560,7 @@ namespace Supremacy.Diplomacy
 
         #region Implementation of ICivIdentity
 
-        int ICivIdentity.CivID
-        {
-            get { return CounterpartyID; }
-        }
+        int ICivIdentity.CivID => CounterpartyID;
 
         #endregion
 

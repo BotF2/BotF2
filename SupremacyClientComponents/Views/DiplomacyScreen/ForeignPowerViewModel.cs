@@ -85,90 +85,43 @@ namespace Supremacy.Client.Views
             }
         }
 
-        public Civilization Counterparty
-        {
-            get
-            {
+        public Civilization Counterparty =>
                 //GameLog.Client.Diplomacy.DebugFormat("_foreignPower.Counterparty = {0}", _foreignPower.Counterparty);
-                return _foreignPower.Counterparty;
-            }
-        }
+                _foreignPower.Counterparty;
 
-        public string CounterpartyDiplomacyReport
-        {
-            get
-            {
+        public string CounterpartyDiplomacyReport =>
                 //works, but too long    GameLog.Client.Diplomacy.DebugFormat("_foreignPower.Counterparty.DiplomacyReport = {0}", _foreignPower.Counterparty.DiplomacyReport);
-                return _foreignPower.Counterparty.DiplomacyReport;
-            }
-        }
+                _foreignPower.Counterparty.DiplomacyReport;
 
-        public Civilization Owner
-        {
-            get { return _foreignPower.Owner; }
-        }
+        public Civilization Owner => _foreignPower.Owner;
 
-        public Meter CounterpartyRegard
-        {
-            get
-            {
+        public Meter CounterpartyRegard =>
                 //GameLog.Client.Diplomacy.DebugFormat("coutnerpartyRegard = {0}", _foreignPower.CounterpartyDiplomacyData.Regard);
-                return _foreignPower.CounterpartyDiplomacyData.Regard;
-            }
-        }
+                _foreignPower.CounterpartyDiplomacyData.Regard;
 
-        public Meter CounterpartyTrust
-        {
-            get
-            {
+        public Meter CounterpartyTrust =>
                 //GameLog.Client.Diplomacy.DebugFormat("coutnerpartyTrust = {0}", _foreignPower.CounterpartyDiplomacyData.Trust);
-                return _foreignPower.CounterpartyDiplomacyData.Trust;
-            }
-        }
+                _foreignPower.CounterpartyDiplomacyData.Trust;
 
-        public RegardLevel EffectiveRegard
-        {
-            get
-            {
+        public RegardLevel EffectiveRegard =>
                 // this is stuff for just shown in view
                 //GameLog.Client.Diplomacy.DebugFormat("coutnerpartyEffectiveRegard ={0}", _foreignPower.CounterpartyDiplomacyData.EffectiveRegard);
-                return _foreignPower.CounterpartyDiplomacyData.EffectiveRegard;
-            }
-        }
+                _foreignPower.CounterpartyDiplomacyData.EffectiveRegard;
 
-        public ForeignPowerStatus Status
-        {
-            get
-            {
+        public ForeignPowerStatus Status =>
                 // this is stuff for just shown in view
                 // GameLog.Client.Diplomacy.DebugFormat("coutnerparty status ={0}", _foreignPower.CounterpartyDiplomacyData.Status);
-                return _foreignPower.CounterpartyDiplomacyData.Status;
-            }
-        }
+                _foreignPower.CounterpartyDiplomacyData.Status;
 
-        public int TurnsSinceLastStatusChange
-        {
-            get { return GameContext.Current.TurnNumber - _foreignPower.LastStatusChange; }
-        }
+        public int TurnsSinceLastStatusChange => GameContext.Current.TurnNumber - _foreignPower.LastStatusChange;
 
-        public bool IsEmbargoInPlace
-        {
-            get { return _foreignPower.IsEmbargoInPlace; }
-        }
+        public bool IsEmbargoInPlace => _foreignPower.IsEmbargoInPlace;
 
-        public bool IsDiplomatAvailable
-        {
-            get
-            {
+        public bool IsDiplomatAvailable =>
                 //GameLog.Client.Diplomacy.DebugFormat("Is Diplomat Available ={0}, false if AtWar", _foreignPower.IsDiplomatAvailable);
-                return _foreignPower.IsDiplomatAvailable;
-            }
-        }
+                _foreignPower.IsDiplomatAvailable;
 
-        public ReadOnlyObservableCollection<ActiveAgreementViewModel> ActiveAgreements
-        {
-            get { return _activeAgreementsView; }
-        }
+        public ReadOnlyObservableCollection<ActiveAgreementViewModel> ActiveAgreements => _activeAgreementsView;
 
         #region IncomingMessage Property
 
@@ -326,10 +279,7 @@ namespace Supremacy.Client.Views
         [field: NonSerialized]
         public event EventHandler IncomingMessageCategoryChanged;
 
-        public DiplomaticMessageCategory IncomingMessageCategory
-        {
-            get
-            {
+        public DiplomaticMessageCategory IncomingMessageCategory =>
                 //if (_foreignPower.ProposalReceived != null || _foreignPower.ResponseReceived != null || _foreignPower.StatementReceived != null)
 
                 //GameLog.Client.Diplomacy.DebugFormat("$$ Proposal received ? ={0}, Response received = {1}, Statement Received ={2}, Proposal Received ={3}"
@@ -338,9 +288,7 @@ namespace Supremacy.Client.Views
                 //    , _foreignPower.StatementReceived.StatementType.ToString()
                 //    , _foreignPower.ProposalReceived);
 
-                return ResolveMessageCategory(_foreignPower.ProposalReceived ?? (object)_foreignPower.ResponseReceived ?? _foreignPower.StatementReceived ?? (object)_foreignPower.ProposalReceived);
-            }
-        }
+                ResolveMessageCategory(_foreignPower.ProposalReceived ?? (object)_foreignPower.ResponseReceived ?? _foreignPower.StatementReceived ?? (object)_foreignPower.ProposalReceived);
 
         protected virtual void OnIncomingMessageCategoryChanged()
         {
@@ -573,10 +521,7 @@ namespace Supremacy.Client.Views
 
         #region Implementation of ICivIdentity
 
-        int ICivIdentity.CivID
-        {
-            get { return _foreignPower.CounterpartyID; }
-        }
+        int ICivIdentity.CivID => _foreignPower.CounterpartyID;
 
         #endregion
 

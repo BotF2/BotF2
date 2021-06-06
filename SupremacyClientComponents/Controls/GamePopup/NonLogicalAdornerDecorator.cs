@@ -39,9 +39,6 @@ namespace Supremacy.Client.Controls
             return _child;
         }
 
-        protected override int VisualChildrenCount
-        {
-            get { return _child == null ? 0 : 1; }
-        }
+        protected override int VisualChildrenCount => _child == null ? 0 : 1;
     }
 }

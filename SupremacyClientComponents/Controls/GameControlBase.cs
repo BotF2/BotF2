@@ -119,10 +119,7 @@ namespace Supremacy.Client.Controls
         #endregion
 
         #region IGameControl Implementation
-        bool IGameControl.CanUpdateCanExecuteWhenHidden
-        {
-            get { return CanUpdateCanExecuteWhenHidden; }
-        }
+        bool IGameControl.CanUpdateCanExecuteWhenHidden => CanUpdateCanExecuteWhenHidden;
 
         object IGameControl.CoerceCommandParameter(DependencyObject obj, object value)
         {
@@ -131,10 +128,7 @@ namespace Supremacy.Client.Controls
 
         EventHandler IGameControl.CommandCanExecuteHandler { get; set; }
 
-        GameControlService.GameControlFlagManager IGameControl.Flags
-        {
-            get { return _flags; }
-        }
+        GameControlService.GameControlFlagManager IGameControl.Flags => _flags;
 
         bool IGameControl.HasImage
         {
@@ -175,11 +169,8 @@ namespace Supremacy.Client.Controls
         #endregion
 
         #region Properties
-        protected virtual bool CanUpdateCanExecuteWhenHidden
-        {
-            get { return false; }
-        }
-        
+        protected virtual bool CanUpdateCanExecuteWhenHidden => false;
+
         public ICommand Command
         {
             get { return (ICommand)GetValue(CommandProperty); }

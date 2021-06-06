@@ -32,10 +32,7 @@ namespace Supremacy.Scripting.Events
             _affectedProjects = new List<BuildProject>();
         }
 
-        public override bool CanExecute
-        {
-            get { return _occurrenceChance > 0 && base.CanExecute; }
-        }
+        public override bool CanExecute => _occurrenceChance > 0 && base.CanExecute;
 
         protected override void InitializeOverride(IDictionary<string, object> options)
         {
@@ -97,11 +94,13 @@ namespace Supremacy.Scripting.Events
                     foreach (var affectedProject in _affectedProjects)
                     {
                         affectedProject.IsPaused = true;
-                        GameLog.Client.GameData.DebugFormat("affectedProject: {0}", affectedProject);
+                        Console.WriteLine("affectedProject: {0}", affectedProject);
+                        GameLog.Client.EventsDetails.DebugFormat("affectedProject: {0}", affectedProject);
                     }
 
                     var targetCiv = target.Owner;
-                    GameLog.Client.GameData.DebugFormat("target.OwnerID: {0}", target.OwnerID);
+                    Console.WriteLine("target.OwnerID: {0}", target.OwnerID);
+                    GameLog.Client.EventsDetails.DebugFormat("target.OwnerID: {0}", target.OwnerID);
                     int targetColonyId = target.ObjectID;
 
                     OnUnitTargeted(target);

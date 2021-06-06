@@ -193,10 +193,7 @@ namespace Supremacy.Client
         public event Action<EventArgs> Started;
         public event Action<EventArgs> Stopped;
 
-        public bool IsRunning
-        {
-            get { return _isServiceRunning; }
-        }
+        public bool IsRunning => _isServiceRunning;
 
         public void Start([CanBeNull] GameOptions gameOptions, bool allowRemoteConnections)
         {

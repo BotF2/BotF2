@@ -62,30 +62,15 @@ namespace Supremacy.Text
             set { _effectBrush = value; }
         }
 
-        public static TextStyle Default
-        {
-            get { return _defaultStyle; }
-        }
+        public static TextStyle Default => _defaultStyle;
 
-        public static TextStyle Hidden
-        {
-            get { return _hiddenStyle; }
-        }
+        public static TextStyle Hidden => _hiddenStyle;
 
-        public static Brush DefaultForeground
-        {
-            get { return null; }
-        }
+        public static Brush DefaultForeground => null;
 
-        public static Brush DefaultBackground
-        {
-            get { return null; }
-        }
-       
-        public static Brush DefaultEffectBrush
-        {
-            get { return null; }
-        }
+        public static Brush DefaultBackground => null;
+
+        public static Brush DefaultEffectBrush => null;
 
         static TextStyle() { }
 

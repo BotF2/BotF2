@@ -65,10 +65,7 @@ namespace Supremacy.VFS
             StringComparer = new CaseCultureStringComparer(false, true, null);
         }
 
-        public IIndexedCollection<IFilesSource> Sources
-        {
-            get { return _sources; }
-        }
+        public IIndexedCollection<IFilesSource> Sources => _sources;
 
         /// <summary>
         /// Dispose pattern.
@@ -129,10 +126,7 @@ namespace Supremacy.VFS
             set { _name = value; }
         }
 
-        public virtual bool IsReadOnly
-        {
-            get { return !_sources.Any(source => !source.IsReadOnly); }
-        }
+        public virtual bool IsReadOnly => !_sources.Any(source => !source.IsReadOnly);
 
         /// <summary>
         /// Releases unmanaged and - optionally - managed resources

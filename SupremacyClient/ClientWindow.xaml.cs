@@ -131,64 +131,68 @@ namespace Supremacy.Client
 
             ApplyAntiAliasingSettings();
 
-            InputBindings.Add(new KeyBinding(CollectGarbageCommand,new KeyGesture(Key.G, ModifierKeys.Control)));
-            InputBindings.Add(new KeyBinding(ToggleFullScreenModeCommand, Key.Enter, ModifierKeys.Alt));
+            _ = InputBindings.Add(new KeyBinding(CollectGarbageCommand,new KeyGesture(Key.G, ModifierKeys.Control)));
+            _ = InputBindings.Add(new KeyBinding(ToggleFullScreenModeCommand, Key.Enter, ModifierKeys.Alt));
 
 
-            InputBindings.Add(new KeyBinding(ClientCommands.EscapeCommand, new KeyGesture(Key.Escape, ModifierKeys.None))); // Escape
+            _ = InputBindings.Add(new KeyBinding(ClientCommands.EscapeCommand, new KeyGesture(Key.Escape, ModifierKeys.None))); // Escape
 
 
-            InputBindings.Add(new KeyBinding(_navigationCommands.ActivateScreen, new KeyGesture(Key.F1, ModifierKeys.None))
-                { CommandParameter = StandardGameScreens.GalaxyScreen });
-            InputBindings.Add(new KeyBinding(_navigationCommands.ActivateScreen, new KeyGesture(Key.F2, ModifierKeys.None))
-                { CommandParameter = StandardGameScreens.ColonyScreen });
-            InputBindings.Add(new KeyBinding(_navigationCommands.ActivateScreen, new KeyGesture(Key.F3, ModifierKeys.None))
-                { CommandParameter = StandardGameScreens.DiplomacyScreen });
-            InputBindings.Add(new KeyBinding(_navigationCommands.ActivateScreen, new KeyGesture(Key.F4, ModifierKeys.None))
-                { CommandParameter = StandardGameScreens.ScienceScreen });
-            InputBindings.Add(new KeyBinding(_navigationCommands.ActivateScreen,new KeyGesture(Key.F5, ModifierKeys.None))
-                { CommandParameter = StandardGameScreens.IntelScreen});
-                
-            InputBindings.Add(new KeyBinding(ClientCommands.F06_Command, Key.F6, ModifierKeys.None));
-            InputBindings.Add(new KeyBinding(ClientCommands.F07_Command, Key.F7, ModifierKeys.None));
-            InputBindings.Add(new KeyBinding(ClientCommands.F08_Command, Key.F8, ModifierKeys.None));
-            InputBindings.Add(new KeyBinding(ClientCommands.F09_Command, Key.F9, ModifierKeys.None));
-            InputBindings.Add(new KeyBinding(ClientCommands.F10_Command, Key.F10, ModifierKeys.None));
-            InputBindings.Add(new KeyBinding(ClientCommands.F11_Command, Key.F11, ModifierKeys.None));
-            InputBindings.Add(new KeyBinding(ClientCommands.F12_Command, Key.F12, ModifierKeys.None));// new for lift Fog of War  = ALT + F
+            _ = InputBindings.Add(new KeyBinding(_navigationCommands.ActivateScreen, new KeyGesture(Key.F1, ModifierKeys.None))
+            { CommandParameter = StandardGameScreens.GalaxyScreen });
+            _ = InputBindings.Add(new KeyBinding(_navigationCommands.ActivateScreen, new KeyGesture(Key.F2, ModifierKeys.None))
+            { CommandParameter = StandardGameScreens.ColonyScreen });
+            _ = InputBindings.Add(new KeyBinding(_navigationCommands.ActivateScreen, new KeyGesture(Key.F3, ModifierKeys.None))
+            { CommandParameter = StandardGameScreens.DiplomacyScreen });
+            _ = InputBindings.Add(new KeyBinding(_navigationCommands.ActivateScreen, new KeyGesture(Key.F4, ModifierKeys.None))
+            { CommandParameter = StandardGameScreens.ScienceScreen });
+            _ = InputBindings.Add(new KeyBinding(_navigationCommands.ActivateScreen,new KeyGesture(Key.F5, ModifierKeys.None))
+            { CommandParameter = StandardGameScreens.IntelScreen});
 
-            InputBindings.Add(new KeyBinding(ClientCommands.AutoTurnCommand, Key.A, ModifierKeys.Alt));
+            _ = InputBindings.Add(new KeyBinding(ClientCommands.F06_Command, Key.F6, ModifierKeys.None));
+            _ = InputBindings.Add(new KeyBinding(ClientCommands.F07_Command, Key.F7, ModifierKeys.None));
+            _ = InputBindings.Add(new KeyBinding(ClientCommands.F08_Command, Key.F8, ModifierKeys.None));
+            _ = InputBindings.Add(new KeyBinding(ClientCommands.F09_Command, Key.F9, ModifierKeys.None));
+            _ = InputBindings.Add(new KeyBinding(ClientCommands.F10_Command, Key.F10, ModifierKeys.None));
+            _ = InputBindings.Add(new KeyBinding(ClientCommands.F11_Command, Key.F11, ModifierKeys.None));
+            _ = InputBindings.Add(new KeyBinding(ClientCommands.F12_Command, Key.F12, ModifierKeys.None));// new for lift Fog of War  = ALT + F
 
-            InputBindings.Add(new KeyBinding(ClientCommands.TracesCommand, Key.C, ModifierKeys.Control));
-            InputBindings.Add(new KeyBinding(ClientCommands.ErrorTxtCommand, Key.E, ModifierKeys.Control));
+            _ = InputBindings.Add(new KeyBinding(ClientCommands.AutoTurnCommand, Key.A, ModifierKeys.Alt));
+
+            //                                                      CheatMenu uses CTRL + C
+
+            _ = InputBindings.Add(new KeyBinding(ClientCommands.ErrorTxtCommand, Key.E, ModifierKeys.Control));
             //InputBindings.Add(new KeyBinding(CollectGarbageCommand, new KeyGesture(Key.G, ModifierKeys.Control))); - see above - from Mike
-            InputBindings.Add(new KeyBinding(ClientCommands.ShowEndOfTurnSummary, Key.I, ModifierKeys.Control));
+            _ = InputBindings.Add(new KeyBinding(ClientCommands.ShowEndOfTurnSummary, Key.I, ModifierKeys.Control));
             //InputBindings.Add(new KeyBinding(ClientCommands.ShowShipOverview, Key.D1, ModifierKeys.Control));
-            InputBindings.Add(new KeyBinding(ClientCommands.LogTxtCommand, Key.L, ModifierKeys.Control));
-            InputBindings.Add(new KeyBinding(ClientCommands.OptionsCommand, Key.O, ModifierKeys.Control));
-            InputBindings.Add(new KeyBinding(ClientCommands.SaveGame, Key.S, ModifierKeys.Control)); // CRTL+S makes saved file "_manual_save"
-            InputBindings.Add(new KeyBinding(ClientCommands.SaveGameDeleteManualSaved, Key.S, ModifierKeys.Alt)); // deletes file from CRTL+S "_manual_save"
+            _ = InputBindings.Add(new KeyBinding(ClientCommands.LogTxtCommand, Key.L, ModifierKeys.Control));
+            _ = InputBindings.Add(new KeyBinding(ClientCommands.OptionsCommand, Key.O, ModifierKeys.Control));
+            _ = InputBindings.Add(new KeyBinding(ClientCommands.TracesCommand, Key.P, ModifierKeys.Control));
+            _ = InputBindings.Add(new KeyBinding(ClientCommands.SaveGame, Key.S, ModifierKeys.Control)); // CRTL+S makes saved file "_manual_save"
+            //_ = InputBindings.Add(new KeyBinding(ClientCommands.SaveGameDeleteManualSaved, Key.S, ModifierKeys.Alt)); // deletes file from CRTL+S "_manual_save"
             //InputBindings.Add(new KeyBinding(ClientCommands.ShowSaveGameDialog, Key.S, ModifierKeys.Alt));// ALT+S shows SaveGameDialog    // does not work yet
-            InputBindings.Add(new KeyBinding(ClientCommands.EndTurn, Key.T, ModifierKeys.Control));
-            InputBindings.Add(new KeyBinding(ClientCommands.ShowSettingsFileCommand, Key.X, ModifierKeys.Alt));
+            _ = InputBindings.Add(new KeyBinding(ClientCommands.EndTurn, Key.T, ModifierKeys.Control));
+
+            _ = InputBindings.Add(new KeyBinding(ClientCommands.FakeCommand, Key.F11, ModifierKeys.Control));
 
 
-            InputBindings.Add(new KeyBinding(ClientCommands.FakeCommand, Key.F11, ModifierKeys.Control));
-
+            //ALT
+            _ = InputBindings.Add(new KeyBinding(ClientCommands.SaveGameDeleteManualSaved, Key.S, ModifierKeys.Alt)); // deletes file from CRTL+S "_manual_save"
+            _ = InputBindings.Add(new KeyBinding(ClientCommands.ShowSettingsFileCommand, Key.X, ModifierKeys.Alt));
 
             //CommandBindings
 
-            CommandBindings.Add(
+            _ = CommandBindings.Add(
                 new CommandBinding(
                     ClientCommands.EscapeCommand,
                     ExecuteEscapeCommand));
 
-            CommandBindings.Add(
+            _ = CommandBindings.Add(
                 new CommandBinding(
                     ToggleFullScreenModeCommand,
                     (s, e) => ToggleFullScreenMode()));
 
-            CommandBindings.Add(
+            _ = CommandBindings.Add(
                 new CommandBinding(
                     CollectGarbageCommand,
                     (s, e) =>
@@ -235,7 +239,7 @@ namespace Supremacy.Client
                             GC.GetTotalMemory(false));
                     }));
 
-            CommandBindings.Add(
+            _ = CommandBindings.Add(
                 new CommandBinding(
                     ClientCommands.AutoTurnCommand,
                     (s, e) =>
@@ -248,7 +252,7 @@ namespace Supremacy.Client
                         }
                     }));
 
-            var settings = ClientSettings.Current;
+            ClientSettings settings = ClientSettings.Current;
 
             Width = settings.ClientWindowWidth;
             Height = settings.ClientWindowHeight;

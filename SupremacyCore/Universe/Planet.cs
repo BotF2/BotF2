@@ -179,10 +179,7 @@ namespace Supremacy.Universe
         /// <value>
         /// <c>true</c> if this <see cref="Planet"/> has a food bonus; otherwise, <c>false</c>.
         /// </value>
-        public bool HasFoodBonus
-        {
-            get { return (_bonuses & PlanetBonus.Food) == PlanetBonus.Food; }
-        }
+        public bool HasFoodBonus => (_bonuses & PlanetBonus.Food) == PlanetBonus.Food;
 
         /// <summary>
         /// Gets a value indicating whether this <see cref="Planet"/> has an energy bonus.
@@ -190,10 +187,7 @@ namespace Supremacy.Universe
         /// <value>
         /// <c>true</c> if this <see cref="Planet"/> has an energy bonus; otherwise, <c>false</c>.
         /// </value>
-        public bool HasEnergyBonus
-        {
-            get { return (_bonuses & PlanetBonus.Energy) == PlanetBonus.Energy; }
-        }
+        public bool HasEnergyBonus => (_bonuses & PlanetBonus.Energy) == PlanetBonus.Energy;
         #endregion
 
         #region Methods

@@ -98,13 +98,7 @@ namespace Supremacy.Client.Interop
                 return UnsafeNativeMethods.DeleteObject(handle);
             }
 
-            internal virtual int HandleCollectorType
-            {
-                get
-                {
-                    return CommonHandles.GDI;
-                }
-            }
+            internal virtual int HandleCollectorType => CommonHandles.GDI;
 
             public override bool IsInvalid
             {

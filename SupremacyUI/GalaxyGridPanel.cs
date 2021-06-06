@@ -131,6 +131,10 @@ namespace Supremacy.UI
         private List<Clock> _animationClocks;
         private readonly DelegateCommand<Sector> _centerOnSectorCommand;
         private readonly DelegateCommand<Sector> _centerOnHomeSectorCommand;
+        private readonly DelegateCommand<Sector> _centerOn1Command;
+        private readonly DelegateCommand<Sector> _centerOn2Command;
+        private readonly DelegateCommand<Sector> _centerOn3Command;
+        private readonly DelegateCommand<Sector> _centerOn4Command;
         private readonly DelegateCommand<Sector> _selectSectorCommand;
         private readonly DelegateCommand<object> _zoomInCommand;
         private readonly DelegateCommand<object> _zoomOutCommand;
@@ -407,12 +411,22 @@ namespace Supremacy.UI
             _zoomInCommand = new DelegateCommand<object>(ExecuteZoomInCommand);
             _zoomOutCommand = new DelegateCommand<object>(ExecuteZoomOutCommand);
             _centerOnHomeSectorCommand = new DelegateCommand<Sector>(ExecuteCenterOnHomeSectorCommand);
+            _centerOn1Command = new DelegateCommand<Sector>(ExecuteCenterOn1Command);
+            _centerOn2Command = new DelegateCommand<Sector>(ExecuteCenterOn2Command);
+            _centerOn3Command = new DelegateCommand<Sector>(ExecuteCenterOn3Command);
+            _centerOn4Command = new DelegateCommand<Sector>(ExecuteCenterOn4Command);
             _selectSectorCommand = new DelegateCommand<Sector>(ExecuteSelectSectorCommand);
 
             GalaxyScreenCommands.CenterOnSector.RegisterCommand(_centerOnSectorCommand);
             GalaxyScreenCommands.MapZoomIn.RegisterCommand(_zoomInCommand);
             GalaxyScreenCommands.MapZoomOut.RegisterCommand(_zoomOutCommand);
             GalaxyScreenCommands.CenterOnHomeSector.RegisterCommand(_centerOnHomeSectorCommand);
+            GalaxyScreenCommands.CenterOn1.RegisterCommand(_centerOn1Command);
+            GalaxyScreenCommands.CenterOn2.RegisterCommand(_centerOn2Command);
+            GalaxyScreenCommands.CenterOn3.RegisterCommand(_centerOn3Command);
+            GalaxyScreenCommands.CenterOn4.RegisterCommand(_centerOn4Command);
+
+
             GalaxyScreenCommands.SelectSector.RegisterCommand(_selectSectorCommand);
 
             _ = ClientEvents.ScreenRefreshRequired.Subscribe(OnScreenRefreshRequired, ThreadOption.UIThread);
@@ -907,7 +921,7 @@ namespace Supremacy.UI
                 StarNameFontSize,
                 brush)
                 {
-                    MaxTextWidth = (SectorSize - 6),
+                    MaxTextWidth = SectorSize - 6,
                     TextAlignment = TextAlignment.Center,
                     MaxLineCount = 2,
                     Trimming = TextTrimming.CharacterEllipsis,
@@ -1161,6 +1175,41 @@ namespace Supremacy.UI
             //SelectedSector = GameContext.Current.CivilizationManagers[PlayerCivilization.CivID].SeatOfGovernment.Sector;
             AutoScrollToSector(GameContext.Current.CivilizationManagers[PlayerCivilization.CivID].SeatOfGovernment.Sector);
         }
+        private void ExecuteCenterOn1Command(Sector sector)  // Center to Quadrant 1
+        {
+            MapLocation loc = new MapLocation(
+                GameContext.Current.Universe.Map.Width / 4 + 1,
+                GameContext.Current.Universe.Map.Height / 4 + 1);
+            StarSystem _new = new StarSystem { Location = loc };
+            if (_new != null) AutoScrollToSector(_new.Sector);
+        }
+
+        private void ExecuteCenterOn2Command(Sector sector)  // Center to Quadrant 2
+        {
+            MapLocation loc = new MapLocation(
+                GameContext.Current.Universe.Map.Width / 4 * 3 + 1,
+                GameContext.Current.Universe.Map.Height / 4 + 1);
+            StarSystem _new = new StarSystem { Location = loc };
+            if (_new != null) AutoScrollToSector(_new.Sector);
+        }
+
+        private void ExecuteCenterOn3Command(Sector sector)  // Center to Quadrant 3
+        {
+            MapLocation loc = new MapLocation(
+                GameContext.Current.Universe.Map.Width / 4 + 1,
+                GameContext.Current.Universe.Map.Height / 4 * 3 - 1);
+            StarSystem _new = new StarSystem { Location = loc };
+            if (_new != null) AutoScrollToSector(_new.Sector);
+        }
+
+        private void ExecuteCenterOn4Command(Sector sector)  // Center to Quadrant 4
+        {
+            MapLocation loc = new MapLocation(
+                GameContext.Current.Universe.Map.Width / 4 * 3 - 1,
+                GameContext.Current.Universe.Map.Height / 4 * 3 - 1);
+            StarSystem _new = new StarSystem { Location = loc };
+            if (_new != null) AutoScrollToSector(_new.Sector);
+        }
 
         public void CenterOnSelectedSector()
         {
@@ -1171,6 +1220,31 @@ namespace Supremacy.UI
         {
             ExecuteCenterOnHomeSectorCommand(SelectedSector);
         }
+
+        //public void CenterOn1()
+        //{
+        //    int w = GameContext.Current.Universe.Map.Width / 4;
+        //    int h = GameContext.Current.Universe.Map.Height / 4;
+        //    MapLocation loc = new MapLocation(w, h);
+        //    //int aimSector = GameContext.Current.Universe.Find<Sector>.Where(o => o.Sector.Location == loc).ToList();
+        //    int SelectedSector = GameContext.Current.Universe.Objects.Where(o => o.Sector.Location == loc && o.ObjectType == UniverseObjectType.StarSystem).FirstOrDefault().ObjectID;// && o.Sector.Location.X == w && o.Sector.Location.Y == h);
+        //    ExecuteCenterOnSectorCommand(GameContext.Current.Universe.Objects[SelectedSector].Sector);
+        //}
+
+        //public void CenterOn2()
+        //{
+        //    ExecuteCenterOnHomeSectorCommand(SelectedSector);
+        //}
+
+        //public void CenterOn3()
+        //{
+        //    ExecuteCenterOnHomeSectorCommand(SelectedSector);
+        //}
+
+        //public void CenterOn4()
+        //{
+        //    ExecuteCenterOnHomeSectorCommand(SelectedSector);
+        //}
 
         public void SetHorizontalOffset(double offset, bool snapToGrid)
         {

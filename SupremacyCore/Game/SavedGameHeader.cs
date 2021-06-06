@@ -21,13 +21,7 @@ namespace Supremacy.Game
     /// </summary>
     public sealed class SavedGameHeader
     {
-        public string Title
-        {
-            get
-            {
-                return IsAutoSave ? ResourceManager.GetString("AUTO_SAVE_GAME_TITLE") : FileName;
-            }
-        }
+        public string Title => IsAutoSave ? ResourceManager.GetString("AUTO_SAVE_GAME_TITLE") : FileName;
 
         public bool IsAutoSave { get; set; }
 
@@ -61,13 +55,7 @@ namespace Supremacy.Game
         /// Gets the name of the empire.
         /// </summary>
         /// <value>The name of the empire.</value>
-        public string LocalPlayerEmpireName
-        {
-            get
-            {
-                return "Game";
-            }
-        }
+        public string LocalPlayerEmpireName => "Game";
 
         /// <summary>
         /// Gets the turn number.

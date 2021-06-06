@@ -89,10 +89,7 @@ namespace Supremacy.Orbitals
             }
         }
 
-        protected override string DefaultImageSubFolder
-        {
-            get { return "Stations/"; }
-        }
+        protected override string DefaultImageSubFolder => "Stations/";
 
         /// <summary>
         /// Appends the XML data for this instance.
@@ -242,9 +239,6 @@ namespace Supremacy.Orbitals
         /// Gets the encyclopedia category under which the entry appears.
         /// </summary>
         /// <value>The encyclopedia category.</value>
-        public override EncyclopediaCategory EncyclopediaCategory
-        {
-            get { return EncyclopediaCategory.Stations; }
-        }
+        public override EncyclopediaCategory EncyclopediaCategory => EncyclopediaCategory.Stations;
     }
 }

@@ -28,14 +28,8 @@ namespace Supremacy.Client.Commands
             _remoteHost = remoteHost;
         }
 
-        public string PlayerName
-        {
-            get { return _playerName; }
-        }
+        public string PlayerName => _playerName;
 
-        public string RemoteHost
-        {
-            get { return _remoteHost; }
-        }
+        public string RemoteHost => _remoteHost;
     }
 }

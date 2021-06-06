@@ -30,10 +30,7 @@ namespace Supremacy.Client.Views
 
         public abstract string ViewName { get; }
 
-        protected IRegionManager RegionManager
-        {
-            get { return _regionManager; }
-        }
+        protected IRegionManager RegionManager => _regionManager;
 
         internal GameScreenPresenterBase<TViewModel, TView> Presenter { get; set; }
 
@@ -125,10 +122,7 @@ namespace Supremacy.Client.Views
 
         #endregion
 
-        object IInteractionNode.UIElement
-        {
-            get { return View; }
-        }
+        object IInteractionNode.UIElement => View;
 
         IInteractionNode IInteractionNode.FindParent()
         {

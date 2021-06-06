@@ -1656,14 +1656,8 @@
                                         </DrawingBrush>
                                     </Rectangle.Fill>
                     </Rectangle>
-                <Path x:Name="TopLeftCollapsed"
-                      Grid.Column="0"
-                      Grid.Row="0"
-                      Width="21"
-                      Height="28"
-                      Stretch="Fill"
-                      Fill="DarkGreen"
-                      Data="F1 M 28,0L0,5 0,23 28,28 28,0 z" />
+                <Path x:Name="TopLeftCollapsed" Grid.Column="0" Grid.Row="0" Width="21" Height="28"
+                      Data="F1 M 28,0L0,5 0,23 28,28 28,0 z" Stretch="Fill" Fill="DarkGreen" />
                 <ContentControl Grid.Column="1"
                                 Grid.Row="0"
                                 VerticalAlignment="Top"

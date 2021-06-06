@@ -126,17 +126,11 @@ namespace Supremacy.Client.Controls
 
         protected internal IInputElement FocusedElement { get; set; }
 
-        public InfoCardSite InfoCardSite
-        {
-            get { return InfoCardSite.GetInfoCardSite(this) ?? RegisteredInfoCardSite; }
-        }
+        public InfoCardSite InfoCardSite => InfoCardSite.GetInfoCardSite(this) ?? RegisteredInfoCardSite;
 
         internal InfoCardSite RegisteredInfoCardSite { get; set; }
 
-        internal bool IsContainerForItem
-        {
-            get { return _isContainerForItem; }
-        }
+        internal bool IsContainerForItem => _isContainerForItem;
 
         protected override void OnIsKeyboardFocusWithinChanged(DependencyPropertyChangedEventArgs e)
         {

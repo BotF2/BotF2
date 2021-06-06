@@ -87,10 +87,7 @@ namespace Supremacy.Client.Controls
 
         public static readonly DependencyProperty DataProperty = DataPropertyKey.DependencyProperty;
 
-        public object Data
-        {
-            get { return GetValue(DataProperty); }
-        }
+        public object Data => GetValue(DataProperty);
         #endregion
 
         public event EventHandler DataChanged;

@@ -37,15 +37,9 @@ namespace Supremacy.Universe
             }
         }
 
-        public bool IsAllowedTypesDefined
-        {
-            get { return ((_allowedTypes != null) && (_allowedTypes.Length > 0)); }
-        }
+        public bool IsAllowedTypesDefined => ((_allowedTypes != null) && (_allowedTypes.Length > 0));
 
-        public bool IsAllowedSizesDefined
-        {
-            get { return ((_allowedSizes != null) && (_allowedSizes.Length > 0)); }
-        }
+        public bool IsAllowedSizesDefined => ((_allowedSizes != null) && (_allowedSizes.Length > 0));
 
         public PlanetType[] AllowedTypes
         {

@@ -36,19 +36,13 @@ namespace Supremacy.Orbitals
         /// Gets the type of the UniverseObject.
         /// </summary>
         /// <value>The type of the UniverseObject.</value>
-        public override UniverseObjectType ObjectType
-        {
-            get { return UniverseObjectType.Orbital; }
-        }
+        public override UniverseObjectType ObjectType => UniverseObjectType.Orbital;
 
         /// <summary>
         /// Gets the crew complement.
         /// </summary>
         /// <value>The crew.</value>
-        public Meter Crew
-        {
-            get { return _crew; }
-        }
+        public Meter Crew => _crew;
 
         /// <summary>
         /// Gets or sets the design.
@@ -64,46 +58,31 @@ namespace Supremacy.Orbitals
         /// Gets the fire power.
         /// </summary>
         /// <value>The crew.</value>
-        public Meter FirePower
-        {
-            get { return _firePower; }
-        }
+        public Meter FirePower => _firePower;
 
         /// <summary>
         /// Gets the hull strength.
         /// </summary>
         /// <value>The hull strength.</value>
-        public Meter HullStrength
-        {
-            get { return _hullStrength; }
-        }
+        public Meter HullStrength => _hullStrength;
 
         /// <summary>
         /// Gets the shield strength.
         /// </summary>
         /// <value>The shield strength.</value>
-        public Meter ShieldStrength
-        {
-            get { return _shieldStrength; }
-        }
+        public Meter ShieldStrength => _shieldStrength;
 
         /// <summary>
         /// Gets the cloak strength.
         /// </summary>
         /// <value>The cloak strength.</value>
-        public Meter CloakStrength
-        {
-            get { return _cloakStrength; }
-        }
+        public Meter CloakStrength => _cloakStrength;
 
         /// <summary>
         /// Gets the camouflage strength.
         /// </summary>
         /// <value>The camouflage strength.</value>
-        public Meter CamouflagedMeter
-        {
-            get { return _camouflagedMeter; }
-        }
+        public Meter CamouflagedMeter => _camouflagedMeter;
 
         /// <summary>
         /// Gets a value indicating whether this <see cref="Orbital"/> is combatant.
@@ -111,10 +90,7 @@ namespace Supremacy.Orbitals
         /// <value>
         /// <c>true</c> if this <see cref="Orbital"/> is combatant; otherwise, <c>false</c>.
         /// </value>
-        public bool IsCombatant
-        {
-            get { return OrbitalDesign.IsCombatant; }
-        }
+        public bool IsCombatant => OrbitalDesign.IsCombatant;
 
         /// <summary>
         /// Gets or sets the crew experience level >   0 up to 10000
@@ -130,10 +106,7 @@ namespace Supremacy.Orbitals
         /// Gets a value indicating whether this <see cref="Orbital"/> is manned.
         /// </summary>
         /// <value><c>true</c> if this <see cref="Orbital"/> is manned; otherwise, <c>false</c>.</value>
-        public bool IsManned
-        {
-            get { return (OrbitalDesign.CrewSize > 0); }
-        }
+        public bool IsManned => (OrbitalDesign.CrewSize > 0);
 
         /// <summary>
         /// Gets a value indicating whether this <see cref="Orbital"/> is operational.
@@ -141,10 +114,7 @@ namespace Supremacy.Orbitals
         /// <value>
         /// <c>true</c> if this <see cref="Orbital"/> is operational; otherwise, <c>false</c>.
         /// </value>
-        public bool IsOperational
-        {
-            get { return (!IsManned || !Crew.IsMinimized); }
-        }
+        public bool IsOperational => (!IsManned || !Crew.IsMinimized);
 
         /// <summary>
         /// Gets the crew experience rank.
@@ -174,31 +144,17 @@ namespace Supremacy.Orbitals
         /// Gets the crew experience rank as a string.
         /// </summary>
         /// <value>The experience rank as a string.</value>
-        public string ExperienceRankString
-        {
-            get
-            {
-                return GameContext.Current.Tables.EnumTables["ExperienceRank"][ExperienceRank.ToString()][0];
-            }
-        }
+        public string ExperienceRankString => GameContext.Current.Tables.EnumTables["ExperienceRank"][ExperienceRank.ToString()][0];
 
         /// <summary>
         /// Gets the crew experience rank.
         /// </summary>
         /// <value>The crew experience rank.</value>
-        public int ExperiencePercent 
-        {
-            get
-            {
+        public int ExperiencePercent =>
                 //Meter I = ExperienceLevel / 100;
-                return _experienceLevel / 100;
-            }
-        }
+                _experienceLevel / 100;
 
-        public virtual bool IsMobile
-        {
-            get { return false; }
-        }
+        public virtual bool IsMobile => false;
 
         public Orbital() { }
 

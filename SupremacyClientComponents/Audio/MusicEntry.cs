@@ -22,15 +22,9 @@ namespace Supremacy.Client.Audio
         #endregion
 
         #region Properties
-        public string FileName
-        {
-            get { return _fileName; }
-        }
+        public string FileName => _fileName;
 
-        public string TrackName
-        {
-            get { return _trackName; }
-        }
+        public string TrackName => _trackName;
 
         // TODO: what sense does it have to have a different fading each track?
         // shouldn't FadeTime better be part of the MusicPlayer settings?

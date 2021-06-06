@@ -69,10 +69,7 @@ namespace Supremacy.Utility
                 dueTime);
         }
 
-        public DateTimeOffset Now
-        {
-            get { return _baseScheduler.Now; }
-        }
+        public DateTimeOffset Now => _baseScheduler.Now;
     }
 
     public static class SchedulerExtensions

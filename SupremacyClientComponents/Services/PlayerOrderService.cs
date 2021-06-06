@@ -28,10 +28,7 @@ namespace Supremacy.Client.Services
         }
 
         #region Implementation of IPlayerOrderService
-        public ReadOnlyCollection<Order> Orders
-        {
-            get { return _orders.AsReadOnly(); }
-        }
+        public ReadOnlyCollection<Order> Orders => _orders.AsReadOnly();
 
         public void AddOrder(Order order)
         {

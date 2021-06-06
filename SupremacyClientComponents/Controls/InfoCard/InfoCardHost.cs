@@ -82,10 +82,7 @@ namespace Supremacy.Client.Controls
                 container.OnInfoCardWindowChanged(e.OldValue as IInfoCardWindow, e.NewValue as IInfoCardWindow);
         }
 
-        internal IInfoCardWindow InfoCardWindow
-        {
-            get { return GetInfoCardWindow(this); }
-        }
+        internal IInfoCardWindow InfoCardWindow => GetInfoCardWindow(this);
 
         internal static IInfoCardWindow GetInfoCardWindow(DependencyObject d)
         {

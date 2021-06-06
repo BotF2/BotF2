@@ -23,9 +23,6 @@ namespace Supremacy.Client.Commands
             _parameter = parameter;
         }
 
-        public TParameter Parameter
-        {
-            get { return _parameter; }
-        }
+        public TParameter Parameter => _parameter;
     }
 }

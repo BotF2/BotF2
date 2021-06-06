@@ -10,14 +10,8 @@ namespace Supremacy.Universe
         public const int MinValue = 0;
         public const int MaxValue = 255;
 
-        public int X
-        {
-            get { return _x; }
-        }
-        public int Y
-        {
-            get { return _y; }
-        }
+        public int X => _x;
+        public int Y => _y;
 
         public MapLocation(int x, int y)
         {

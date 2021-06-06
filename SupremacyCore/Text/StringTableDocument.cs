@@ -20,15 +20,9 @@ namespace Supremacy.Text
         private StringTableEntryCollection _entries;
         private List<StringTableNode> _nodes;
 
-        public IList<StringTableNode> Nodes
-        {
-            get { return _nodes; }
-        }
+        public IList<StringTableNode> Nodes => _nodes;
 
-        internal StringTableEntryCollection Entries
-        {
-            get { return _entries; }
-        }
+        internal StringTableEntryCollection Entries => _entries;
 
         internal StringTableDocument()
         {

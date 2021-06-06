@@ -97,28 +97,19 @@ namespace Supremacy.Client.Controls
 
         #region HasOpenPopups Property
 
-        public bool HasOpenPopups
-        {
-            get { return _openPopups.Any(); }
-        }
+        public bool HasOpenPopups => _openPopups.Any();
 
         #endregion
 
         #region OpenPopups Property
 
-        public ReadOnlyGamePopupCollection OpenPopups
-        {
-            get { return _openPopups; }
-        }
+        public ReadOnlyGamePopupCollection OpenPopups => _openPopups;
 
         #endregion
 
         #region Popups Property
 
-        public GamePopupCollection Popups
-        {
-            get { return _popups; }
-        }
+        public GamePopupCollection Popups => _popups;
 
         #endregion
 
@@ -174,10 +165,7 @@ namespace Supremacy.Client.Controls
 
         #region Visual Child Enumeration
 
-        protected override int VisualChildrenCount
-        {
-            get { return base.VisualChildrenCount + _openPopupRoots.Count; }
-        }
+        protected override int VisualChildrenCount => base.VisualChildrenCount + _openPopupRoots.Count;
 
         protected override Visual GetVisualChild(int index)
         {

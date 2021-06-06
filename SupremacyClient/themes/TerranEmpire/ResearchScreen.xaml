@@ -690,7 +690,7 @@
                     <Border Grid.Column="3"
                             Grid.Row="2"
                             Margin="0,3,0,3"
-                            Background="{StaticResource Ter3Gradient_Left_Right}"/>
+                            Background="{StaticResource Ter4Gradient_Left_Right}"/>
 
                     <!-- Search Bar -->
                     <Grid Grid.Column="1"
@@ -741,7 +741,7 @@
                               Foreground="{DynamicResource DefaultTextBrush}"
                               FontSize="12pt"
                               ScrollViewer.CanContentScroll="False"
-                              ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                              ScrollViewer.HorizontalScrollBarVisibility="Auto">
                       <!--<TreeView.Resources>
                         <Style TargetType="{x:Type ScrollViewer}">
                           <Setter Property="CanContentScroll"

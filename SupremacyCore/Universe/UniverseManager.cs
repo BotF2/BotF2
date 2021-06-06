@@ -41,10 +41,7 @@ namespace Supremacy.Universe
         /// Gets the tables in the UniverseTables set.
         /// </summary>
         /// <value>The tables.</value>
-        public static TableMap Tables
-        {
-            get { return s_tables; }
-        }
+        public static TableMap Tables => s_tables;
 
         /// <summary>
         /// Initializes the <see cref="UniverseManager"/> class.
@@ -64,10 +61,7 @@ namespace Supremacy.Universe
         /// Gets the map of the game universe.
         /// </summary>
         /// <value>The map.</value>
-        public SectorMap Map
-        {
-            get { return _map; }
-        }
+        public SectorMap Map => _map;
 
         /// <summary>
         /// Gets or sets the objects in the game universe.
@@ -79,10 +73,7 @@ namespace Supremacy.Universe
             internal set { _objects = value; }
         }
 
-        public GameObjectLookupCollection<Civilization, Colony> HomeColonyLookup
-        {
-            get { return _homeColonyLookup; }
-        }
+        public GameObjectLookupCollection<Civilization, Colony> HomeColonyLookup => _homeColonyLookup;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="UniverseManager"/> class.

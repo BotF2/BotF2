@@ -247,7 +247,7 @@ namespace Supremacy.Client
 
         private void ExecuteLoadGameCommand(SavedGameHeader header)
         {
-            var initData = GameInitData.CreateFromSavedGame(header);
+            GameInitData initData = GameInitData.CreateFromSavedGame(header);
             GameLog.Client.GeneralDetails.Debug("doing ExecuteLoadGameCommand ...");
             RunGameController(gameController => gameController.RunLocal(initData), initData.IsMultiplayerGame);
             GameLog.Client.GeneralDetails.Debug("doing gameController.RunLocal(initData) ...");
@@ -258,7 +258,7 @@ namespace Supremacy.Client
 
         private void ExecuteDeleteManualSavedGameCommand(object obj)
         {
-            SavedGameManager.SaveGameDeleteManualSaved();
+            _ = SavedGameManager.SaveGameDeleteManualSaved();
         }
 
         private void ExecuteOptionsCommand(object obj) { _optionsDialog.ShowDialog();}
@@ -850,6 +850,7 @@ namespace Supremacy.Client
             _joinMultiplayerGameCommand.IsActive = !isConnected && !isGameEnding && !gameControllerExists;
             _hostMultiplayerGameCommand.IsActive = !isConnected && !isGameEnding && !gameControllerExists;
             _loadGameCommand.IsActive = !isConnected && !isGameEnding && !gameControllerExists;
+            _deleteManualSavedGameCommand.IsActive = true;
             _continueGameCommand.IsActive = isGameInPlay;
             _endGameCommand.IsActive = isConnected && !isGameEnding;
         }
@@ -1033,6 +1034,7 @@ namespace Supremacy.Client
             ClientCommands.JoinMultiplayerGame.RegisterCommand(_joinMultiplayerGameCommand);
             ClientCommands.HostMultiplayerGame.RegisterCommand(_hostMultiplayerGameCommand);
             ClientCommands.LoadGame.RegisterCommand(_loadGameCommand);
+            ClientCommands.SaveGameDeleteManualSaved.RegisterCommand(_deleteManualSavedGameCommand);
             ClientCommands.ShowCreditsDialog.RegisterCommand(_showCreditsDialogCommand);
             ClientCommands.ShowSettingsFileCommand.RegisterCommand(_showSettingsFileCommand);
             ClientCommands.Exit.RegisterCommand(_exitCommand);

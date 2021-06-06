@@ -156,10 +156,7 @@ namespace Supremacy.Client.Controls
             return OnPopupOpening();
         }
 
-        GamePopup IGamePopupAnchor.Popup
-        {
-            get { return (GamePopup)GetTemplateChild(PopupPartName); }
-        }
+        GamePopup IGamePopupAnchor.Popup => (GamePopup)GetTemplateChild(PopupPartName);
 
         bool IGamePopupAnchor.PopupOpenedWithMouse
         {
@@ -167,10 +164,7 @@ namespace Supremacy.Client.Controls
             set { _flags.SetFlag(Flags.PopupOpenedWithMouse, value); }
         }
 
-        Thumb IGamePopupAnchor.ResizeGrip
-        {
-            get { return (Thumb)GetTemplateChild(ResizeGripPartName); }
-        }
+        Thumb IGamePopupAnchor.ResizeGrip => (Thumb)GetTemplateChild(ResizeGripPartName);
 
         #endregion
 

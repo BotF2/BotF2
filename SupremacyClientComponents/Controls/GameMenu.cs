@@ -91,16 +91,10 @@ namespace Supremacy.Client.Controls
             }
         }
 
-        private GameMenuItem HighlightedMenuItem
-        {
-            get
-            {
-                return Items
+        private GameMenuItem HighlightedMenuItem => Items
                     .Cast<object>()
                     .Select((t, index) => ItemContainerGenerator.ContainerFromIndex(index) as GameMenuItem)
                     .FirstOrDefault(menuItem => menuItem != null && menuItem.IsHighlighted);
-            }
-        }
 
         private DispatcherTimer MouseOverTimer
         {

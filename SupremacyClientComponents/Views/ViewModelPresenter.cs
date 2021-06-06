@@ -17,10 +17,7 @@ namespace Supremacy.Client.Views
             model.View = view;
         }
 
-        protected override string ViewName
-        {
-            get { return Model.ViewName; }
-        }
+        protected override string ViewName => Model.ViewName;
 
         protected override void RegisterViewWithRegion()
         {

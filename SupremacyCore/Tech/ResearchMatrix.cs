@@ -81,10 +81,7 @@ namespace Supremacy.Tech
             _values = new byte[EnumUtilities.GetValues<TechCategory>().Count];
         }
 
-        public int HighestTechLevel
-        {
-            get { return _values.Max(); }
-        }
+        public int HighestTechLevel => _values.Max();
 
         #region IEnumerable<KeyValuePair<TechCategory,int>> Members
         public IEnumerator<KeyValuePair<TechCategory, int>> GetEnumerator()
@@ -148,10 +145,7 @@ namespace Supremacy.Tech
         /// Gets the <see cref="ResearchField"/>s contained in this <see cref="ResearchMatrix"/>.
         /// </summary>
         /// <value>The <see cref="ResearchField"/>.</value>
-        public IList<ResearchField> Fields
-        {
-            get { return _fields.AsReadOnly(); }
-        }
+        public IList<ResearchField> Fields => _fields.AsReadOnly();
 
         /// <summary>
         /// Gets the <see cref="ResearchField"/> corresponding to the specified field ID.
@@ -318,10 +312,7 @@ namespace Supremacy.Tech
         /// </summary>
         /// <value>The the collection of <see cref="ResearchApplication"/>s contained in
         /// this <see cref="ResearchField"/>.</value>
-        public ICollection<ResearchApplication> Applications
-        {
-            get { return _applications.AsReadOnly(); }
-        }
+        public ICollection<ResearchApplication> Applications => _applications.AsReadOnly();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ResearchField"/> class.

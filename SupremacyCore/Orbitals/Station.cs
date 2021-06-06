@@ -33,10 +33,7 @@ namespace Supremacy.Orbitals
         /// Gets the type of the UniverseObject.
         /// </summary>
         /// <value>The type of the UniverseObject.</value>
-        public sealed override UniverseObjectType ObjectType
-        {
-            get { return UniverseObjectType.Station; }
-        }
+        public sealed override UniverseObjectType ObjectType => UniverseObjectType.Station;
 
         /// <summary>
         /// Gets or sets the station design.
@@ -67,10 +64,7 @@ namespace Supremacy.Orbitals
         /// Gets the build slots at this <see cref="Station"/>.
         /// </summary>
         /// <value>The build slots.</value>
-        public IIndexedEnumerable<BuildSlot> BuildSlots
-        {
-            get { return _buildSlots; }
-        }
+        public IIndexedEnumerable<BuildSlot> BuildSlots => _buildSlots;
 
         /// <summary>
         /// Gets the build output for the specified build slot number.
@@ -86,10 +80,7 @@ namespace Supremacy.Orbitals
         /// Gets the build queue at this <see cref="Station"/>.
         /// </summary>
         /// <value>The build queue.</value>
-        public IList<BuildQueueItem> BuildQueue
-        {
-            get { return _buildQueue; }
-        }
+        public IList<BuildQueueItem> BuildQueue => _buildQueue;
 
         /// <summary>
         /// Remove any completed projects from the build slots and dequeue new projects

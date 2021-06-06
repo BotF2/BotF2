@@ -34,10 +34,7 @@ namespace Supremacy.Scripting
         }
 
         #region Implementation of IScriptService
-        public ScriptLanguageContext Context
-        {
-            get { return _context; }
-        }
+        public ScriptLanguageContext Context => _context;
         #endregion
     }
 }

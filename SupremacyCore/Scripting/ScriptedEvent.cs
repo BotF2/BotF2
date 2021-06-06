@@ -49,10 +49,7 @@ namespace Supremacy.Scripting
             }
         }
 
-        public int LastExecution
-        {
-            get { return _lastExecution; }
-        }
+        public int LastExecution => _lastExecution;
 
         public virtual bool CanExecute
         {
@@ -67,10 +64,7 @@ namespace Supremacy.Scripting
             }
         }
 
-        protected virtual Random RandomProvider
-        {
-            get { return Supremacy.Utility.RandomProvider.Shared; }
-        }
+        protected virtual Random RandomProvider => Supremacy.Utility.RandomProvider.Shared;
 
         protected void RecordExecution()
         {

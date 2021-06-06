@@ -67,7 +67,8 @@
                     <DockPanel LastChildFill="True"
                 Grid.IsSharedSizeScope="True">
                         <DockPanel.Background>
-                            <ImageBrush Stretch="UniformToFill" ImageSource="vfs:///Resources/UI/Cardassians/GalaxyScreen/Starmap.png">
+                            <ImageBrush Stretch="UniformToFill" ImageSource="vfs:///Resources/Images/UI/Backgrounds/Starmap.png">
+                                <!--<ImageBrush Stretch="UniformToFill" ImageSource="vfs:///Resources/UI/Borg/GalaxyScreen/Starmap.png">-->
                             </ImageBrush>
                         </DockPanel.Background>
                         <!--Galaxy Screen Header Info Panel left to right-->
@@ -135,9 +136,9 @@
                                             <DrawingGroup>
                                                 <GeometryDrawing Brush="{StaticResource Card4Gradient_TopLeft_BottomRight}"
                                        Geometry="F1 M 20,0 28,0 28,28 5,28 10,10 Z" />
-                                                <GeometryDrawing Brush="{StaticResource Card2Gradient_Top_Bottom}"
+                                                <GeometryDrawing Brush="{StaticResource Card3Gradient_Top_Bottom}"
                                        Geometry="F1 M 5,0 19,0 9,9 0,9 Z" />
-                                                <GeometryDrawing Brush="{StaticResource Card2Gradient_Top_Bottom}"
+                                                <GeometryDrawing Brush="{StaticResource Card5Gradient_Top_Bottom}"
                                        Geometry="F1 M 0,10 9,10 4,28 1,28 Z" />
                                             </DrawingGroup>
                                         </DrawingBrush.Drawing>
@@ -158,7 +159,7 @@
                                        Geometry="F1 M 20,28L28,28 28,0 6,0 18,10 z" />
                                                 <GeometryDrawing Brush="{StaticResource Card5Gradient_Top_Bottom}"
                                        Geometry="F1 M 0,0 5,0 17,10 0,12 z " />
-                                                <GeometryDrawing Brush="{StaticResource Card5Gradient_Bottom_Top}"
+                                                <GeometryDrawing Brush="{StaticResource Card3Gradient_Bottom_Top}"
                                        Geometry="F1 M 0,13 16,9 19,28 2,28 z" />
                                             </DrawingGroup>
                                         </DrawingBrush.Drawing>
@@ -180,7 +181,7 @@
                       Grid.Row="1"
                       Padding="14,0,14,0"
                       Margin="3,4,0,0"
-                      Background="{StaticResource Card2Gradient_Bottom_Top}">
+                      Background="{StaticResource PinkGradient_Top_Bottom}">
                                 <TextBlock FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
                            FontSize="18pt"
                            Foreground="Black"
@@ -212,7 +213,7 @@
                       Grid.Row="1"
                       Padding="14,0,14,0"
                       Margin="3,4,0,0"
-                      Background="{StaticResource Card2Gradient_Bottom_Top}">
+                      Background="{StaticResource PinkGradient_Top_Bottom}">
                                 <TextBlock x:Name="SectorOwnerText"
                            FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
                            FontSize="18pt"
@@ -231,9 +232,9 @@
                                             <DrawingGroup>
                                                 <GeometryDrawing Brush="{StaticResource Card4Gradient_TopLeft_BottomRight}"
                                        Geometry="F1 M 8,0L0,0 0,28 23,28 18,10 8,0 Z" />
-                                                <GeometryDrawing Brush="{StaticResource Card2Gradient_Bottom_Top}"
+                                                <GeometryDrawing Brush="{StaticResource Card3Gradient_Bottom_Top}"
                                        Geometry="F1 M 28,0L9,0 19,9 28,9 28,0 Z" />
-                                                <GeometryDrawing Brush="{StaticResource Card2Gradient_Top_Bottom}"
+                                                <GeometryDrawing Brush="{StaticResource Card5Gradient_Top_Bottom}"
                                        Geometry="F1 M 28,10L19,10 24,28 28,28 28,10 Z" />
                                             </DrawingGroup>
                                         </DrawingBrush.Drawing>
@@ -253,7 +254,7 @@
                                        Geometry="F1 M 8,28 L 0,28 0,0 22,0 10,10 8,28 Z" />
                                                 <GeometryDrawing Brush="{StaticResource Card5Gradient_Top_Bottom}"
                                        Geometry="F1 M 11,10 23,0 28,0 28,10 Z" />
-                                                <GeometryDrawing Brush="{StaticResource Card5Gradient_Bottom_Top}"
+                                                <GeometryDrawing Brush="{StaticResource Card3Gradient_Bottom_Top}"
                                        Geometry="F1 M 11,11 28 ,13 28,28 9,28 Z " />
                                             </DrawingGroup>
                                         </DrawingBrush.Drawing>
@@ -513,44 +514,28 @@
                                             </DrawingBrush>
                                         </Rectangle.Fill>
                                     </Rectangle>
-                                    <ContentControl Grid.Column="1"
-                                  Grid.Row="0"
-                                                    VerticalAlignment="Top"
-                                  Margin="7,0,0,0"
-                                  FontSize="18pt">
-                                        <TextBlock FontSize="18pt"
-                               Foreground="{StaticResource BeigeTextBrush}"
-                               FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
-                               Text="{s:StringResource TASK_FORCES_TEXT}" />
-                                    </ContentControl>
-                                    <Rectangle Grid.Column="2"
-                             Grid.Row="0"
-                                               Height="28"
-                             VerticalAlignment="Top"
-                             Fill="{StaticResource Card5Gradient_Top_Bottom}"
-                             Margin="7,0,0,0" />
-                                    <Rectangle Grid.Column="3"
-                             Grid.Row="0"
-                                               Width="14"
-                             Height="28"
-                             VerticalAlignment="Top"
-                             Fill="{StaticResource Card3Gradient_Left_Right}"
-                             Margin="3,0,0,0" />
-                                    <Rectangle Grid.Column="4"
-                             Grid.Row="0"
-                                               Width="21"
-                             Height="28"
-                             VerticalAlignment="Top"
-                             Margin="3,0,0,0">
+                                    
+                                    <ContentControl Grid.Row="0" Grid.Column="1" FontSize="18pt" Margin="7,0,0,0" VerticalAlignment="Top">
+                                        <TextBlock FontSize="18pt" Text="{s:StringResource TASK_FORCES_TEXT}"
+                                                   Foreground="{StaticResource BeigeTextBrush}" FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
+                                    /></ContentControl>
+                                    
+                                    <Rectangle Grid.Row="0" Grid.Column="2" Height="28" VerticalAlignment="Top" Margin="7,0,0,0"
+                                               Fill="{StaticResource Card5Gradient_Top_Bottom}"/>
+                                    
+                                    <Rectangle Grid.Row="0" Grid.Column="3" Width="14" Height="28" VerticalAlignment="Top" Margin="3,0,0,0" 
+                                               Fill="{StaticResource Card3Gradient_Left_Right}"/>
+
+                                    <Rectangle Grid.Row="0" Grid.Column="4" Width="21" Height="28" VerticalAlignment="Top" Margin="3,0,0,0">
                                         <Rectangle.Fill>
                                             <DrawingBrush>
                                                 <DrawingBrush.Drawing>
-                                                    <GeometryDrawing Brush="{StaticResource Card4Gradient_TopLeft_BottomRight}"
-                                             Geometry="F1 M 0,37L14,37 18,21 28,0 0,0 0,37 Z" />
+                                                    <GeometryDrawing Geometry="F1 M 0,37L14,37 18,21 28,0 0,0 0,37 Z" Brush="{StaticResource Card4Gradient_TopLeft_BottomRight}"/>
                                                 </DrawingBrush.Drawing>
                                             </DrawingBrush>
                                         </Rectangle.Fill>
                                     </Rectangle>
+                                    
                                 </Grid>
                                 <Grid x:Name="ContentSite"
                       DockPanel.Dock="Bottom">
@@ -659,6 +644,20 @@
                                    Source="{DynamicResource Scrap_Indicator_Glyph}"
                                    Visibility="Hidden"
                                    IsHitTestVisible="False" />
+                                                        <Border.ToolTip>
+                                                            <Border x:Name="ImageToolTipBorder"
+                                        Grid.Column="0"
+                                        VerticalAlignment="Center"
+                                        BorderBrush="{StaticResource HeaderTextBrush}"
+                                        BorderThickness="2"
+                                        CornerRadius="4"
+                                        Width="1000"
+                                        Height="840">
+                                                                <Border.Background>
+                                                                    <ImageBrush ImageSource="{Binding Path=SelectedSectorStation.StationImage, Mode=OneWay}" />
+                                                                </Border.Background>
+                                                            </Border>
+                                                        </Border.ToolTip>
                                                     </Border>
                                                     <TextBlock>
                             <TextBlock Foreground="{StaticResource HeaderTextBrush}"
@@ -719,20 +718,20 @@
                                     <DrawingBrush>
                                         <DrawingBrush.Drawing>
                                             <GeometryDrawing Brush="Transparent"
-                           Geometry="F1 M 0,0 13,0 21,36 12,36 12,42 0,42 Z  ">
+                           Geometry="F1 M 0,0 13,0 21,36 12,36 12,42 0,42 Z  " >
                                                 <GeometryDrawing.Pen>
-                                                    <Pen LineJoin="Bevel" Thickness="2">
-                                                        <Pen.Brush>
+                                                    <Pen LineJoin="Bevel" Thickness="2"  Brush="{StaticResource Card3Gradient_Top_Bottom}">
+                                                        <!--<Pen.Brush>
                                                             <LinearGradientBrush StartPoint="0.0,0.0"
                                                                                  EndPoint="0.1,1.0">
                                                                 <LinearGradientBrush.GradientStops>
-                                                                    <GradientStop Color="Goldenrod"
+                                                                    <GradientStop Color="#ff8F6624"
                                                                                 Offset="0" />
-                                                                    <GradientStop Color="OrangeRed"
+                                                                    <GradientStop Color="#ff553d15"
                                                                                 Offset="1" />
                                                                 </LinearGradientBrush.GradientStops>
                                                             </LinearGradientBrush>
-                                                        </Pen.Brush>
+                                                        </Pen.Brush>-->
                                                     </Pen>
                                                 </GeometryDrawing.Pen>
                                             </GeometryDrawing>
@@ -762,18 +761,18 @@
                                                 <GeometryDrawing Brush="Transparent"
                                                Geometry="F1 M 0,0 197,0 200,28 150,28 150,36 4,36 Z " >
                                                     <GeometryDrawing.Pen>
-                                                        <Pen LineJoin="Bevel" Thickness="2">
-                                                            <Pen.Brush>
+                                                        <Pen LineJoin="Bevel" Thickness="2" Brush="{StaticResource Card4Gradient_Top_Bottom}">
+                                                            <!--<Pen.Brush>
                                                                 <LinearGradientBrush StartPoint="0.0,0.0"
                                                                                  EndPoint="0.1,1.0">
                                                                     <LinearGradientBrush.GradientStops>
-                                                                        <GradientStop Color="Goldenrod"
+                                                                        <GradientStop Color="#ff8F6624"
                                                                                 Offset="0" />
-                                                                        <GradientStop Color="OrangeRed"
+                                                                        <GradientStop Color="#ff553d15"
                                                                                 Offset="1" />
                                                                     </LinearGradientBrush.GradientStops>
                                                                 </LinearGradientBrush>
-                                                            </Pen.Brush>
+                                                            </Pen.Brush>-->
                                                         </Pen>
                                                     </GeometryDrawing.Pen>
                                                 </GeometryDrawing>
@@ -789,9 +788,10 @@
                            Fill="{StaticResource OrangeGradient_Top_Bottom}" />-->
 
                                 <TextBlock FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
-                           FontSize="13pt"
+                           FontSize="14pt"
+                                           Margin="0,3,40,0"
                            Height="28"
-                           Foreground="Goldenrod"
+                           Foreground="#ff8F6624"
                            VerticalAlignment="Center"
                            HorizontalAlignment="Center"
                            Text="{s:StringResource INFO_SHORTCUTS}" />
@@ -819,18 +819,18 @@
                                                 <GeometryDrawing Brush="Transparent"
                                                Geometry="F1 M 0,0 200,0 200,28 4,28 Z " >
                                                     <GeometryDrawing.Pen>
-                                                        <Pen LineJoin="Bevel" Thickness="2">
-                                                            <Pen.Brush>
+                                                        <Pen LineJoin="Bevel" Thickness="2"  Brush="{StaticResource Card3Gradient_Top_Bottom}">
+                                                            <!--<Pen.Brush>
                                                                 <LinearGradientBrush StartPoint="0.0,0.0"
                                                                                  EndPoint="0.1,1.0">
                                                                     <LinearGradientBrush.GradientStops>
-                                                                        <GradientStop Color="OrangeRed"
+                                                                        <GradientStop Color="#ff553d15"
                                                                                 Offset="0" />
-                                                                        <GradientStop Color="Goldenrod"
+                                                                        <GradientStop Color="#ff8F6624"
                                                                                 Offset="1" />
                                                                     </LinearGradientBrush.GradientStops>
                                                                 </LinearGradientBrush>
-                                                            </Pen.Brush>
+                                                            </Pen.Brush>-->
                                                         </Pen>
                                                     </GeometryDrawing.Pen>
                                                 </GeometryDrawing>
@@ -925,7 +925,58 @@
                                                 </ToolTip>
                                             </Button.ToolTip>
                                         </Button>
+                        
+                                        <Button  Margin="0,0,3,0" MinWidth="30" x:Name="Center1Button"
+                            Command="{x:Static scc:GalaxyScreenCommands.CenterOn1}"                                                 
+                            Style="{StaticResource LCARS_BorderButtonStyle}"
+                            Content="{s:StringResource Key=CENTER_1_BUTTON_TEXT, Case=Upper}"
+                                            >
+                                            <Button.ToolTip>
+                                                <ToolTip>
+                                                    <TextBlock FontSize="20" Text="{s:StringResource CENTER_1_BUTTON_TOOLTIP}"
+                                                        FontFamily="{DynamicResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"/>
+                                                </ToolTip>
+                                            </Button.ToolTip>
+                                        </Button>
 
+                                        <Button  Margin="0,0,3,0" MinWidth="30" x:Name="Center2Button"
+                            Command="{x:Static scc:GalaxyScreenCommands.CenterOn2}"                                                 
+                            Style="{StaticResource LCARS_BorderButtonStyle}"
+                            Content="{s:StringResource Key=CENTER_2_BUTTON_TEXT, Case=Upper}"
+                                            >
+                                            <Button.ToolTip>
+                                                <ToolTip>
+                                                    <TextBlock FontSize="20" Text="{s:StringResource CENTER_2_BUTTON_TOOLTIP}"
+                                                        FontFamily="{DynamicResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"/>
+                                                </ToolTip>
+                                            </Button.ToolTip>
+                                        </Button>
+
+                                        <Button  Margin="0,0,3,0" MinWidth="30" x:Name="Center3Button"
+                            Command="{x:Static scc:GalaxyScreenCommands.CenterOn3}"                                                 
+                            Style="{StaticResource LCARS_BorderButtonStyle}"
+                            Content="{s:StringResource Key=CENTER_3_BUTTON_TEXT, Case=Upper}"
+                                            >
+                                            <Button.ToolTip>
+                                                <ToolTip>
+                                                    <TextBlock FontSize="20" Text="{s:StringResource CENTER_3_BUTTON_TOOLTIP}"
+                                                        FontFamily="{DynamicResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"/>
+                                                </ToolTip>
+                                            </Button.ToolTip>
+                                        </Button>
+
+                                        <Button  Margin="0,0,3,0" MinWidth="30" x:Name="Center4Button"
+                            Command="{x:Static scc:GalaxyScreenCommands.CenterOn4}"                                                 
+                            Style="{StaticResource LCARS_BorderButtonStyle}"
+                            Content="{s:StringResource Key=CENTER_4_BUTTON_TEXT, Case=Upper}"
+                                            >
+                                            <Button.ToolTip>
+                                                <ToolTip>
+                                                    <TextBlock FontSize="20" Text="{s:StringResource CENTER_4_BUTTON_TOOLTIP}"
+                                                        FontFamily="{DynamicResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"/>
+                                                </ToolTip>
+                                            </Button.ToolTip>
+                                        </Button>
 
                                     </StackPanel>
 
@@ -959,18 +1010,18 @@
                                                 <GeometryDrawing Brush="Transparent"
                                                Geometry="F1 M 200,0L0,0 0,28 196,28 200,0 z " >
                                                     <GeometryDrawing.Pen>
-                                                        <Pen LineJoin="Bevel" Thickness="2">
-                                                            <Pen.Brush>
+                                                        <Pen LineJoin="Bevel" Thickness="2"  Brush="{StaticResource Card4Gradient_Top_Bottom}">
+                                                            <!--<Pen.Brush>
                                                                 <LinearGradientBrush StartPoint="0.0,0.0"
                                                                                  EndPoint="0.1,1.0">
                                                                     <LinearGradientBrush.GradientStops>
-                                                                        <GradientStop Color="Goldenrod"
+                                                                        <GradientStop Color="#ff8F6624"
                                                                                 Offset="0" />
-                                                                        <GradientStop Color="OrangeRed"
+                                                                        <GradientStop Color="#ff553d15"
                                                                                 Offset="1" />
                                                                     </LinearGradientBrush.GradientStops>
                                                                 </LinearGradientBrush>
-                                                            </Pen.Brush>
+                                                            </Pen.Brush>-->
                                                         </Pen>
                                                     </GeometryDrawing.Pen>
                                                 </GeometryDrawing>
@@ -1000,18 +1051,18 @@
                                                 <GeometryDrawing Brush="Transparent"
                                                Geometry="F1 M 200,0L 3,0 0,28  195,28 z " >
                                                     <GeometryDrawing.Pen>
-                                                        <Pen LineJoin="Bevel" Thickness="2">
-                                                            <Pen.Brush>
+                                                        <Pen LineJoin="Bevel" Thickness="2"  Brush="{StaticResource Card3Gradient_Top_Bottom}">
+                                                            <!--<Pen.Brush>
                                                                 <LinearGradientBrush StartPoint="0.0,0.0"
                                                                                  EndPoint="0.1,1.0">
                                                                     <LinearGradientBrush.GradientStops>
-                                                                        <GradientStop Color="OrangeRed"
+                                                                        <GradientStop Color="#ff553d15"
                                                                                 Offset="0" />
-                                                                        <GradientStop Color="Goldenrod"
+                                                                        <GradientStop Color="#ff8F6624"
                                                                                 Offset="1" />
                                                                     </LinearGradientBrush.GradientStops>
                                                                 </LinearGradientBrush>
-                                                            </Pen.Brush>
+                                                            </Pen.Brush>-->
                                                         </Pen>
                                                     </GeometryDrawing.Pen>
                                                 </GeometryDrawing>
@@ -1022,7 +1073,7 @@
                                 <TextBlock x:Name="InhabitantsText"
                            Grid.Column="1"
                            Margin="7,0,4,0"
-                           Foreground="{StaticResource BeigeTextBrush}"
+                           Foreground="{StaticResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"
                            VerticalAlignment="Center"
                            Text="{Binding Path=SelectedSector.System.Colony.Inhabitants.PluralName, Mode=OneWay, Converter={StaticResource UpperCaseConverter}}"
                            FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
@@ -1044,18 +1095,18 @@
                                             <GeometryDrawing Brush="Transparent"
                                                              Geometry="F1 M 0,0 10,0 21,28 12,28 12,42 0,42 Z  ">
                                                 <GeometryDrawing.Pen>
-                                                    <Pen LineJoin="Bevel" Thickness="2">
-                                                        <Pen.Brush>
+                                                    <Pen LineJoin="Bevel" Thickness="2" Brush="{StaticResource Card3Gradient_Top_Bottom}">
+                                                        <!--<Pen.Brush>
                                                             <LinearGradientBrush StartPoint="0.0,0.0"
                                                                                  EndPoint="0.1,1.0">
                                                                 <LinearGradientBrush.GradientStops>
-                                                                    <GradientStop Color="Goldenrod"
+                                                                    <GradientStop Color="#ff8F6624"
                                                                                 Offset="0" />
-                                                                    <GradientStop Color="OrangeRed"
+                                                                    <GradientStop Color="#ff553d15"
                                                                                 Offset="1" />
                                                                 </LinearGradientBrush.GradientStops>
                                                             </LinearGradientBrush>
-                                                        </Pen.Brush>
+                                                        </Pen.Brush>-->
                                                     </Pen>
                                                 </GeometryDrawing.Pen>
                                             </GeometryDrawing>
@@ -1076,18 +1127,18 @@
                                             <GeometryDrawing Brush="Transparent"
                                                Geometry="F1 M 0,0 12,0.5 12,99.5 0,100 Z " >
                                                 <GeometryDrawing.Pen>
-                                                    <Pen LineJoin="Bevel" Thickness="2">
-                                                        <Pen.Brush>
+                                                    <Pen LineJoin="Bevel" Thickness="2" Brush="{StaticResource Card4Gradient_Top_Bottom}">
+                                                        <!--<Pen.Brush>
                                                             <LinearGradientBrush StartPoint="0.0,0.0"
                                                                                  EndPoint="0.1,1.0">
                                                                 <LinearGradientBrush.GradientStops>
-                                                                    <GradientStop Color="OrangeRed"
+                                                                    <GradientStop Color="#ff553d15"
                                                                                 Offset="0" />
-                                                                    <GradientStop Color="Goldenrod"
+                                                                    <GradientStop Color="#ff8F6624"
                                                                                 Offset="1" />
                                                                 </LinearGradientBrush.GradientStops>
                                                             </LinearGradientBrush>
-                                                        </Pen.Brush>
+                                                        </Pen.Brush>-->
                                                     </Pen>
                                                 </GeometryDrawing.Pen>
                                             </GeometryDrawing>
@@ -1109,18 +1160,18 @@
                                             <GeometryDrawing Brush="Transparent"
                                                Geometry="F1 M 0,0.5 12,0 12,100 0,99.5 Z " >
                                                 <GeometryDrawing.Pen>
-                                                    <Pen LineJoin="Bevel" Thickness="2">
-                                                        <Pen.Brush>
+                                                    <Pen LineJoin="Bevel" Thickness="2"  Brush="{StaticResource Card4Gradient_Top_Bottom}">
+                                                        <!--<Pen.Brush>
                                                             <LinearGradientBrush StartPoint="0.0,0.0"
                                                                                  EndPoint="0.1,1.0">
                                                                 <LinearGradientBrush.GradientStops>
-                                                                    <GradientStop Color="OrangeRed"
+                                                                    <GradientStop Color="#ff553d15"
                                                                                 Offset="0" />
-                                                                    <GradientStop Color="Goldenrod"
+                                                                    <GradientStop Color="#ff8F6624"
                                                                                 Offset="1" />
                                                                 </LinearGradientBrush.GradientStops>
                                                             </LinearGradientBrush>
-                                                        </Pen.Brush>
+                                                        </Pen.Brush>-->
                                                     </Pen>
                                                 </GeometryDrawing.Pen>
                                             </GeometryDrawing>
@@ -1140,18 +1191,18 @@
                                             <GeometryDrawing Brush="Transparent"
                                                              Geometry="F1 M 0,0.5 12,0 12,14 21,14 20.5,21 0,21 z ">
                                                 <GeometryDrawing.Pen>
-                                                    <Pen LineJoin="Bevel" Thickness="2">
-                                                        <Pen.Brush>
+                                                    <Pen LineJoin="Bevel" Thickness="2" Brush="{StaticResource Card3Gradient_Top_Bottom}">
+                                                        <!--<Pen.Brush>
                                                             <LinearGradientBrush StartPoint="0.0,0.0"
                                                                                  EndPoint="0.1,1.0">
                                                                 <LinearGradientBrush.GradientStops>
-                                                                    <GradientStop Color="Goldenrod"
+                                                                    <GradientStop Color="#ff8F6624"
                                                                                 Offset="0" />
-                                                                    <GradientStop Color="OrangeRed"
+                                                                    <GradientStop Color="#ff553d15"
                                                                                 Offset="1" />
                                                                 </LinearGradientBrush.GradientStops>
                                                             </LinearGradientBrush>
-                                                        </Pen.Brush>
+                                                        </Pen.Brush>-->
                                                     </Pen>
                                                 </GeometryDrawing.Pen>
                                             </GeometryDrawing>
@@ -1165,21 +1216,21 @@
                          Height="7"
                          Margin="3,0,0,0"
                          VerticalAlignment="Bottom"
-                         Fill="{StaticResource OrangeGradient_Top_Bottom}" />
+                         Fill="{StaticResource Card4Gradient_Top_Bottom}" />
                             <Rectangle x:Name="CenterBottomEdge"
                          Grid.Column="2"
                          Grid.Row="2"
                          Height="7"
                          Margin="3,0,3,0"
                          VerticalAlignment="Bottom"
-                         Fill="OrangeRed" />
+                         Fill="{StaticResource Card3Gradient_Top_Bottom}" />
                             <Rectangle x:Name="RightBottomEdge"
                          Grid.Column="3"
                          Grid.Row="2"
                          Height="7"
                          Margin="0,0,3,0"
                          VerticalAlignment="Bottom"
-                         Fill="{StaticResource OrangeGradient_Top_Bottom}" />
+                         Fill="{StaticResource Card4Gradient_Top_Bottom}" />
                             <Rectangle x:Name="BottomRightCorner"
                          Grid.Column="4"
                          Grid.Row="2"
@@ -1196,18 +1247,18 @@
                                             <GeometryDrawing Brush="Transparent"
                                                              Geometry="F1 M 0,0.5 12,0 12,14 21,14 20.5,21 0,21 z ">
                                                 <GeometryDrawing.Pen>
-                                                    <Pen LineJoin="Bevel" Thickness="2">
-                                                        <Pen.Brush>
+                                                    <Pen LineJoin="Bevel" Thickness="2" Brush="{StaticResource Card3Gradient_Top_Bottom}">
+                                                        <!--<Pen.Brush>
                                                             <LinearGradientBrush StartPoint="0.0,0.0"
                                                                                  EndPoint="0.1,1.0">
                                                                 <LinearGradientBrush.GradientStops>
-                                                                    <GradientStop Color="Goldenrod"
+                                                                    <GradientStop Color="#ff8F6624"
                                                                                 Offset="0" />
-                                                                    <GradientStop Color="OrangeRed"
+                                                                    <GradientStop Color="#ff553d15"
                                                                                 Offset="1" />
                                                                 </LinearGradientBrush.GradientStops>
                                                             </LinearGradientBrush>
-                                                        </Pen.Brush>
+                                                        </Pen.Brush>-->
                                                     </Pen>
                                                 </GeometryDrawing.Pen>
                                             </GeometryDrawing>

@@ -23,10 +23,7 @@ namespace Supremacy.WCF
         [DataMember]
         private readonly byte[] _buffer;
 
-        public GameStartData Data
-        {
-            get { return StreamUtility.Read<GameStartData>(_buffer); }
-        }
+        public GameStartData Data => StreamUtility.Read<GameStartData>(_buffer);
 
         public GameStartMessage(GameStartData data)
         {

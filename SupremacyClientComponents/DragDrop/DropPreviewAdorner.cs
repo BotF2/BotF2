@@ -73,12 +73,9 @@ namespace Supremacy.Client.DragDrop
 			}
 		}
 
-		protected override int VisualChildrenCount
-		{
-			get { return 1; }
-		}
+        protected override int VisualChildrenCount => 1;
 
-		private void UpdatePosition()
+        private void UpdatePosition()
 		{
 			var layer = Parent as AdornerLayer;
 		    if (layer != null)

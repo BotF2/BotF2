@@ -944,10 +944,7 @@ namespace Supremacy.Client.Views
 
         #region Overrides of GameScreenPresenterBase<ColonyScreenPresentationModel,IColonyScreenView>
 
-        protected override string ViewName
-        {
-            get { return StandardGameScreens.ColonyScreen; }
-        }
+        protected override string ViewName => StandardGameScreens.ColonyScreen;
 
         #endregion
     }

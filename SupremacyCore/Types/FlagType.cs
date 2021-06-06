@@ -35,20 +35,11 @@ namespace Supremacy.Types
         #endregion
 
         #region Properties and Indexers
-        public string Name
-        {
-            get { return ToString(); }
-        }
+        public string Name => ToString();
 
-        public int Value
-        {
-            get { return _value; }
-        }
+        public int Value => _value;
 
-        public bool IsEmpty
-        {
-            get { return (_value == EmptyValue); }
-        }
+        public bool IsEmpty => (_value == EmptyValue);
         #endregion
 
         #region Methods

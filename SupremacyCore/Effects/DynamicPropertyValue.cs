@@ -34,10 +34,7 @@ namespace Supremacy.Effects
         private readonly DynamicPropertyMetadata<TValue> _metadata;
         private List<DynamicPropertyModifier<TValue>> _modifiers;
 
-        public DynamicProperty<TValue> Property
-        {
-            get { return _property; }
-        }
+        public DynamicProperty<TValue> Property => _property;
 
         private void SetFlag(Flags flag, bool value)
         {
@@ -110,10 +107,7 @@ namespace Supremacy.Effects
             private set { _value = value; }
         }
 
-        internal ModifiedValue<TValue> ModifiedValue
-        {
-            get { return _value as ModifiedValue<TValue>; }
-        }
+        internal ModifiedValue<TValue> ModifiedValue => _value as ModifiedValue<TValue>;
 
         internal void ResetCoercedValue(bool updateValue)
         {

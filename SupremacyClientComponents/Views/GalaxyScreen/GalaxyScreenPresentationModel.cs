@@ -1,4 +1,4 @@
-// GalaxyScreenPresentationModel.cs
+// File:GalaxyScreenPresentationModel.cs
 //
 // Copyright (c) 2009 Mike Strobel
 //
@@ -58,20 +58,11 @@ namespace Supremacy.Client.Views
             }
         }
 
-        public string StationName
-        {
-            get { return _stationName; }
-        }
+        public string StationName => _stationName;
 
-        public string StationStatus
-        {
-            get { return _stationStatus; }
-        }
+        public string StationStatus => _stationStatus;
 
-        public BitmapImage StationImage
-        {
-            get { return _stationImage; }
-        }
+        public BitmapImage StationImage => _stationImage;
 
         public bool StationScrapVisibility
         {
@@ -129,18 +120,20 @@ namespace Supremacy.Client.Views
             _stationImage = ImageCache.Current.Get(uri);
         }
 
-        private BitmapImage GetImage(string insigniaPath)
-        {
-            Uri imageUri;
-            //var imagePath = insigniaPath.ToLowerInvariant();
+//#pragma warning disable IDE0051 // Remove unused private members
+//        private BitmapImage GetImage(string insigniaPath)
+//#pragma warning restore IDE0051 // Remove unused private members
+//        {
+//            Uri imageUri;
+//            //var imagePath = insigniaPath.ToLowerInvariant();
 
-            if (File.Exists(ResourceManager.GetResourcePath(insigniaPath)))
-                imageUri = ResourceManager.GetResourceUri(insigniaPath);
-            else
-                imageUri = ResourceManager.GetResourceUri(@"Resources\Images\Insignias\__default.png");
+//            if (File.Exists(ResourceManager.GetResourcePath(insigniaPath)))
+//                imageUri = ResourceManager.GetResourceUri(insigniaPath);
+//            else
+//                imageUri = ResourceManager.GetResourceUri(@"Resources\Images\Insignias\__default.png");
 
-            return ImageCache.Current.Get(imageUri);
-        }
+//            return ImageCache.Current.Get(imageUri);
+//        }
     }
 
     public class GalaxyScreenPresentationModel : PresentationModelBase
@@ -208,10 +201,7 @@ namespace Supremacy.Client.Views
         #endregion
 
         #region Properties and Indexers
-        public IEmpirePlayerStatusCollection EmpirePlayers
-        {
-            get { return _empirePlayers; }
-        }
+        public IEmpirePlayerStatusCollection EmpirePlayers => _empirePlayers;
 
         public IEnumerable<Ship> AvailableShips
         {
@@ -267,13 +257,7 @@ namespace Supremacy.Client.Views
             }
         }
 
-        public StationPresentationModel SelectedSectorStation
-        {
-            get
-            {
-                return _selectedSectorStation;
-            }
-        }
+        public StationPresentationModel SelectedSectorStation => _selectedSectorStation;
 
         public Sector HoveredSector
         {

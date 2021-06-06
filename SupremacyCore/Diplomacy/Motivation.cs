@@ -27,11 +27,8 @@ namespace Supremacy.Diplomacy
 
         public MotivationType Type { get; set; }
         public int Priority { get; set; }
-        
-        public bool IsValid
-        {
-            get { return (Type != MotivationType.NoMotivation); }
-        }
+
+        public bool IsValid => (Type != MotivationType.NoMotivation);
 
         public override bool Equals(object obj)
         {

@@ -13,9 +13,6 @@ namespace Supremacy.VFS
         /// <param name="path">The base path of the source.</param>
         public ReadOnlyHardDiskSource(string name, string path) : base(name, path) { }
 
-        public override sealed bool IsReadOnly
-        {
-            get { return true; }
-        }
+        public override sealed bool IsReadOnly => true;
     }
 }

@@ -61,15 +61,9 @@ namespace Supremacy.Effects
             }
         }
 
-        public IEffectTarget Target
-        {
-            get { return _target; }
-        }
+        public IEffectTarget Target => _target;
 
-        public Effect Effect
-        {
-            get { return _effect; }
-        }
+        public Effect Effect => _effect;
 
         public EffectState State
         {
@@ -103,20 +97,11 @@ namespace Supremacy.Effects
             }
         }
 
-        public EffectGroupBinding EffectGroupBinding
-        {
-            get { return _effectGroupBinding; }
-        }
-        
-        protected ScriptParameters SystemScriptParameters
-        {
-            get { return _systemScriptParameters.Value; }
-        }
+        public EffectGroupBinding EffectGroupBinding => _effectGroupBinding;
 
-        protected ScriptParameters MergedScriptParameters
-        {
-            get { return _mergedScriptParameters.Value; }
-        }
+        protected ScriptParameters SystemScriptParameters => _systemScriptParameters.Value;
+
+        protected ScriptParameters MergedScriptParameters => _mergedScriptParameters.Value;
 
         private void UpdateState()
         {

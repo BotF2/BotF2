@@ -13,10 +13,7 @@ namespace Supremacy.Client.Data
     {
         private static readonly Lazy<TInstance> _instance = new Lazy<TInstance>();
 
-        public static TInstance Instance
-        {
-            get { return _instance.Value; }
-        }
+        public static TInstance Instance => _instance.Value;
 
         #region IValueConverter Members
         object IValueConverter.Convert(object value, Type targetType, object parameter, CultureInfo culture)

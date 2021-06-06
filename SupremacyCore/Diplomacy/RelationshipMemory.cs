@@ -32,20 +32,11 @@ namespace Supremacy.Diplomacy
         private readonly MemoryType _memoryType;
         private int _value;
 
-        public MemoryType MemoryType
-        {
-            get { return _memoryType; }
-        }
+        public MemoryType MemoryType => _memoryType;
 
-        public int TurnCreated
-        {
-            get { return _turnCreated; }
-        }
+        public int TurnCreated => _turnCreated;
 
-        public int TurnLastUpdated
-        {
-            get { return _turnCreated; }
-        }
+        public int TurnLastUpdated => _turnCreated;
 
         public int Value
         {
@@ -53,10 +44,7 @@ namespace Supremacy.Diplomacy
             internal set { _value = value; }
         }
 
-        public object Parameter
-        {
-            get { return _parameter; }
-        }
+        public object Parameter => _parameter;
 
         public RelationshipMemory(MemoryType memoryType, int value)
             : this(memoryType, value, null) { }
@@ -75,15 +63,9 @@ namespace Supremacy.Diplomacy
         }
 
         #region IAttitudeAdjuster Members
-        public string Description
-        {
-            get { return _memoryType.ToString(); }
-        }
+        public string Description => _memoryType.ToString();
 
-        public bool IsNegative
-        {
-            get { return (_value < 0); }
-        }
+        public bool IsNegative => (_value < 0);
         #endregion
 
         public override string ToString()

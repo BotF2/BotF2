@@ -65,7 +65,8 @@
            <DockPanel LastChildFill="True"
                       Grid.IsSharedSizeScope="True">
                         <DockPanel.Background>
-                            <ImageBrush Stretch="UniformToFill" ImageSource="vfs:///Resources/UI/Romulans/GalaxyScreen/Starmap.png">
+                            <ImageBrush Stretch="UniformToFill" ImageSource="vfs:///Resources/Images/UI/Backgrounds/Starmap.png">
+                                <!--<ImageBrush Stretch="UniformToFill" ImageSource="vfs:///Resources/UI/Borg/GalaxyScreen/Starmap.png">-->
                             </ImageBrush>
                         </DockPanel.Background>
                         <!--Galaxy Screen Header Info Panel left to right-->
@@ -114,7 +115,7 @@
                                 <Rectangle.Fill>
                                     <DrawingBrush>
                                         <DrawingBrush.Drawing>
-                                            <GeometryDrawing Brush="{StaticResource Rom2Gradient_TopLeft_BottomRight}"
+                                            <GeometryDrawing Brush="{StaticResource RomPurpleBlueGradient_TopLeft_BottomRight}"
                                        Geometry="F1 M 0,0L 28,0L 28,28L 7,28 Z" />
                                         </DrawingBrush.Drawing>
                                     </DrawingBrush>
@@ -128,7 +129,7 @@
                                 <Rectangle.Fill>
                                     <DrawingBrush>
                                         <DrawingBrush.Drawing>
-                                            <GeometryDrawing Brush="{StaticResource Rom2Gradient_TopLeft_BottomRight}"
+                                            <GeometryDrawing Brush="{StaticResource RomPurpleBlueGradient_TopLeft_BottomRight}"
                                        Geometry="F1 M 2,0L 9,0L 28,0L 28,28L 16,28L 9,0L 2,0 Z " />
                                         </DrawingBrush.Drawing>
                                     </DrawingBrush>
@@ -163,7 +164,7 @@
                       Grid.Row="1"
                       Padding="14,0,14,0"
                       Margin="3,4,0,0"
-                      Background="{StaticResource RomPurpleBlueGradient_Top_Bottom}">
+                      Background="{StaticResource Rom2Gradient_Top_Bottom}">
                 <TextBlock FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
                            FontSize="18pt"
                            Foreground="Black"
@@ -174,12 +175,12 @@
                          Grid.Row="0"
                          Width="14"
                          Margin="3,0,0,0"
-                         Fill="{StaticResource Rom2Gradient_Top_Bottom}" />
+                         Fill="{StaticResource RomPurpleBlueGradient_Top_Bottom}" />
               <Rectangle Grid.Column="3"
                          Grid.Row="1"
                          Width="14"
                          Margin="3,4,0,0"
-                         Fill="{StaticResource Rom2Gradient_Top_Bottom}" />
+                         Fill="{StaticResource RomPurpleBlueGradient_Bottom_Top}" />
               <Border Grid.Column="4"
                       Grid.Row="0"
                       Padding="14,0,14,0"
@@ -195,7 +196,7 @@
                       Grid.Row="1"
                       Padding="14,0,14,0"
                       Margin="3,4,0,0"
-                      Background="{StaticResource RomPurpleBlueGradient_Top_Bottom}">
+                      Background="{StaticResource Rom2Gradient_Top_Bottom}">
                 <TextBlock x:Name="SectorOwnerText"
                            FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
                            FontSize="18pt"
@@ -231,7 +232,7 @@
                                 <Rectangle.Fill>
                                     <DrawingBrush>
                                         <DrawingBrush.Drawing>
-                                            <GeometryDrawing Brush="{StaticResource Rom2Gradient_TopLeft_BottomRight}"
+                                            <GeometryDrawing Brush="{StaticResource RomPurpleBlueGradient_TopLeft_BottomRight}"
                                        Geometry="F1 M 0,0L 28,0L 28,28L 7,28 Z" />
                                         </DrawingBrush.Drawing>
                                     </DrawingBrush>
@@ -288,7 +289,7 @@
                                 <Rectangle.Fill>
                                     <DrawingBrush>
                                         <DrawingBrush.Drawing>
-                                            <GeometryDrawing Brush="{StaticResource Rom2Gradient_TopLeft_BottomRight}"
+                                            <GeometryDrawing Brush="{StaticResource RomPurpleBlueGradient_TopLeft_BottomRight}"
                                                              Geometry="F1 M 0,0L 7,0L 14,28L 28,28L 0,28 Z" />
                                         </DrawingBrush.Drawing>
                                     </DrawingBrush>
@@ -371,7 +372,7 @@
                                 <Rectangle.Fill>
                                     <DrawingBrush>
                                         <DrawingBrush.Drawing>
-                                            <GeometryDrawing Brush="{StaticResource Rom2Gradient_TopLeft_BottomRight}"
+                                            <GeometryDrawing Brush="{StaticResource RomPurpleBlueGradient_TopLeft_BottomRight}"
                                        Geometry="F1 M 0,0L 7,0L 14,28L 28,28L 0,28 Z" />
                                         </DrawingBrush.Drawing>
                                     </DrawingBrush>
@@ -611,7 +612,21 @@
                                    Source="{DynamicResource Scrap_Indicator_Glyph}"
                                    Visibility="Hidden"
                                    IsHitTestVisible="False" />
-                           </Border>
+                                                        <Border.ToolTip>
+                                                            <Border x:Name="ImageToolTipBorder"
+                                        Grid.Column="0"
+                                        VerticalAlignment="Center"
+                                        BorderBrush="{StaticResource HeaderTextBrush}"
+                                        BorderThickness="2"
+                                        CornerRadius="4"
+                                        Width="1000"
+                                        Height="840">
+                                                                <Border.Background>
+                                                                    <ImageBrush ImageSource="{Binding Path=SelectedSectorStation.StationImage, Mode=OneWay}" />
+                                                                </Border.Background>
+                                                            </Border>
+                                                        </Border.ToolTip>
+                                                    </Border>
                            <TextBlock>
                             <TextBlock Foreground="{StaticResource HeaderTextBrush}"
                                        FontSize="14"                                       
@@ -801,6 +816,58 @@
                                             <Button.ToolTip>
                                                 <ToolTip>
                                                     <TextBlock FontSize="20" Text="{s:StringResource CENTER_HOME_BUTTON_TOOLTIP}"
+                                                        FontFamily="{DynamicResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"/>
+                                                </ToolTip>
+                                            </Button.ToolTip>
+                                        </Button>
+
+                                        <Button  Margin="0,0,3,0" MinWidth="30" x:Name="Center1Button"
+                            Command="{x:Static scc:GalaxyScreenCommands.CenterOn1}"                                                 
+                            Style="{StaticResource LCARS_BorderButtonStyle}"
+                            Content="{s:StringResource Key=CENTER_1_BUTTON_TEXT, Case=Upper}"
+                                            >
+                                            <Button.ToolTip>
+                                                <ToolTip>
+                                                    <TextBlock FontSize="20" Text="{s:StringResource CENTER_1_BUTTON_TOOLTIP}"
+                                                        FontFamily="{DynamicResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"/>
+                                                </ToolTip>
+                                            </Button.ToolTip>
+                                        </Button>
+
+                                        <Button  Margin="0,0,3,0" MinWidth="30" x:Name="Center2Button"
+                            Command="{x:Static scc:GalaxyScreenCommands.CenterOn2}"                                                 
+                            Style="{StaticResource LCARS_BorderButtonStyle}"
+                            Content="{s:StringResource Key=CENTER_2_BUTTON_TEXT, Case=Upper}"
+                                            >
+                                            <Button.ToolTip>
+                                                <ToolTip>
+                                                    <TextBlock FontSize="20" Text="{s:StringResource CENTER_2_BUTTON_TOOLTIP}"
+                                                        FontFamily="{DynamicResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"/>
+                                                </ToolTip>
+                                            </Button.ToolTip>
+                                        </Button>
+
+                                        <Button  Margin="0,0,3,0" MinWidth="30" x:Name="Center3Button"
+                            Command="{x:Static scc:GalaxyScreenCommands.CenterOn3}"                                                 
+                            Style="{StaticResource LCARS_BorderButtonStyle}"
+                            Content="{s:StringResource Key=CENTER_3_BUTTON_TEXT, Case=Upper}"
+                                            >
+                                            <Button.ToolTip>
+                                                <ToolTip>
+                                                    <TextBlock FontSize="20" Text="{s:StringResource CENTER_3_BUTTON_TOOLTIP}"
+                                                        FontFamily="{DynamicResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"/>
+                                                </ToolTip>
+                                            </Button.ToolTip>
+                                        </Button>
+
+                                        <Button  Margin="0,0,3,0" MinWidth="30" x:Name="Center4Button"
+                            Command="{x:Static scc:GalaxyScreenCommands.CenterOn4}"                                                 
+                            Style="{StaticResource LCARS_BorderButtonStyle}"
+                            Content="{s:StringResource Key=CENTER_4_BUTTON_TEXT, Case=Upper}"
+                                            >
+                                            <Button.ToolTip>
+                                                <ToolTip>
+                                                    <TextBlock FontSize="20" Text="{s:StringResource CENTER_4_BUTTON_TOOLTIP}"
                                                         FontFamily="{DynamicResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"/>
                                                 </ToolTip>
                                             </Button.ToolTip>

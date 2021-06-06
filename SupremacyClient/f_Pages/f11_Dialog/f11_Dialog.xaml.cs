@@ -21,11 +21,11 @@ namespace Supremacy.Client
         {
             InitializeComponent();
 
-            InputBindings.Add(
-                new KeyBinding(
-                    GenericCommands.CancelCommand,
-                    Key.Escape,
-                    ModifierKeys.None));
+            //InputBindings.Add(
+            //    new KeyBinding(
+            //        GenericCommands.CancelCommand,
+            //        Key.Escape,
+            //        ModifierKeys.None));
 
             InputBindings.Add(
                 new KeyBinding(
@@ -33,30 +33,30 @@ namespace Supremacy.Client
                     Key.Enter,
                     ModifierKeys.None));
 
-            CommandBindings.Add(
-                new CommandBinding(
-                    GenericCommands.CancelCommand,
-                    OnGenericCommandsCancelCommandExecuted));
+            //CommandBindings.Add(
+            //    new CommandBinding(
+            //        GenericCommands.CancelCommand,
+            //        OnGenericCommandsCancelCommandExecuted));
 
             CommandBindings.Add(
                 new CommandBinding(
                     GenericCommands.AcceptCommand,
                     OnGenericCommandsAcceptCommandExecuted));
 
-            CommandBindings.Add(
-                new CommandBinding(
-                    GenericCommands.TracesSetAllwithoutDetailsCommand,
-                    OnGenericCommandsTracesSetAllwithoutDetailsCommandExecuted));
+            //CommandBindings.Add(
+            //    new CommandBinding(
+            //        GenericCommands.TracesSetAllwithoutDetailsCommand,
+            //        OnGenericCommandsTracesSetAllwithoutDetailsCommandExecuted));
 
-            CommandBindings.Add(
-                new CommandBinding(
-                    GenericCommands.TracesSetSomeCommand,
-                    OnGenericCommandsTracesSetSomeCommandExecuted));
+            //CommandBindings.Add(
+            //    new CommandBinding(
+            //        GenericCommands.TracesSetSomeCommand,
+            //        OnGenericCommandsTracesSetSomeCommandExecuted));
 
-            CommandBindings.Add(
-                new CommandBinding(
-                    GenericCommands.TracesSetNoneCommand,
-                    OnGenericCommandsTracesSetNoneCommandExecuted));
+            //CommandBindings.Add(
+            //    new CommandBinding(
+            //        GenericCommands.TracesSetNoneCommand,
+            //        OnGenericCommandsTracesSetNoneCommandExecuted));
 
             GameLog.Client.UIDetails.DebugFormat("F11-Dialog initialized");
         }

@@ -28,10 +28,7 @@ namespace Supremacy.Client
             _cache = new Cache<string, BitmapImage>(StringComparer.OrdinalIgnoreCase);
         }
 
-        public static ImageCache Current
-        {
-            get { return s_current; }
-        }
+        public static ImageCache Current => s_current;
 
         public bool ForceCaching { get; set; }
 

@@ -27,15 +27,9 @@ namespace Supremacy.Economy
         private readonly int _colonyId;
         private readonly int _designId;
 
-        public Colony Source
-        {
-            get { return GameContext.Current.Universe.Objects[_colonyId] as Colony; }
-        }
+        public Colony Source => GameContext.Current.Universe.Objects[_colonyId] as Colony;
 
-        public ProductionFacilityDesign FacilityDesign
-        {
-            get { return GameContext.Current.TechDatabase.ProductionFacilityDesigns[_designId]; }
-        }
+        public ProductionFacilityDesign FacilityDesign => GameContext.Current.TechDatabase.ProductionFacilityDesigns[_designId];
 
         protected override int GetIndustryAvailable()
         {
@@ -68,15 +62,9 @@ namespace Supremacy.Economy
     {
         [NonSerialized] private Lazy<Colony> _colony;
 
-        public Colony Source
-        {
-            get { return _colony.Value; }
-        }
+        public Colony Source => _colony.Value;
 
-        public OrbitalBatteryDesign OrbitalBatteryDesign
-        {
-            get { return BuildDesign as OrbitalBatteryDesign; }
-        }
+        public OrbitalBatteryDesign OrbitalBatteryDesign => BuildDesign as OrbitalBatteryDesign;
 
         protected override int GetIndustryAvailable()
         {
@@ -123,20 +111,11 @@ namespace Supremacy.Economy
     {
         private readonly int _baseTypeId;
 
-        public override string Description
-        {
-            get
-            {
-                return string.Format(
+        public override string Description => string.Format(
                     ResourceManager.GetString("UPGRADE_FORMAT_STRING"),
                     ResourceManager.GetString(FacilityDesign.Name));
-            }
-        }
 
-        protected ProductionFacilityDesign BaseFacilityType
-        {
-            get { return GameContext.Current.TechDatabase.ProductionFacilityDesigns[_baseTypeId]; }
-        }
+        protected ProductionFacilityDesign BaseFacilityType => GameContext.Current.TechDatabase.ProductionFacilityDesigns[_baseTypeId];
 
         protected override int IndustryRequired
         {
@@ -148,15 +127,9 @@ namespace Supremacy.Economy
             }
         }
 
-        protected override ResourceValueCollection ResourcesRequired
-        {
-            get { return new ResourceValueCollection(); }
-        }
+        protected override ResourceValueCollection ResourcesRequired => new ResourceValueCollection();
 
-        public override bool IsUpgrade
-        {
-            get { return true; }
-        }
+        public override bool IsUpgrade => true;
 
         public override void Finish()
         {
@@ -187,20 +160,11 @@ namespace Supremacy.Economy
         private readonly int _baseTypeId;
         private readonly ResourceValueCollection _resourcesRequired;
 
-        public override string Description
-        {
-            get
-            {
-                return string.Format(
+        public override string Description => string.Format(
                     ResourceManager.GetString("UPGRADE_FORMAT_STRING"),
                     ResourceManager.GetString(OrbitalBatteryDesign.Name));
-            }
-        }
 
-        protected OrbitalBatteryDesign BaseOrbitalBatteryDesign
-        {
-            get { return GameContext.Current.TechDatabase.OrbitalBatteryDesigns[_baseTypeId]; }
-        }
+        protected OrbitalBatteryDesign BaseOrbitalBatteryDesign => GameContext.Current.TechDatabase.OrbitalBatteryDesigns[_baseTypeId];
 
         protected override int IndustryRequired
         {
@@ -212,15 +176,9 @@ namespace Supremacy.Economy
             }
         }
 
-        protected override ResourceValueCollection ResourcesRequired
-        {
-            get { return _resourcesRequired; }
-        }
+        protected override ResourceValueCollection ResourcesRequired => _resourcesRequired;
 
-        public override bool IsUpgrade
-        {
-            get { return true; }
-        }
+        public override bool IsUpgrade => true;
 
         public override void Finish()
         {

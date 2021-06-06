@@ -34,73 +34,49 @@ namespace Supremacy.Game
         /// Gets the game option tables.
         /// </summary>
         /// <value>The game option tables.</value>
-        public TableMap GameOptionTables
-        {
-            get { return _gameOptionTables; }
-        }
+        public TableMap GameOptionTables => _gameOptionTables;
 
         /// <summary>
         /// Gets the resource tables.
         /// </summary>
         /// <value>The resource tables.</value>
-        public TableMap ResourceTables
-        {
-            get { return _resourceTables; }
-        }
+        public TableMap ResourceTables => _resourceTables;
 
         /// <summary>
         /// Gets the universe tables.
         /// </summary>
         /// <value>The universe tables.</value>
-        public TableMap UniverseTables
-        {
-            get { return _universeTables; }
-        }
+        public TableMap UniverseTables => _universeTables;
 
         /// <summary>
         /// Gets the morale tables.
         /// </summary>
         /// <value>The morale tables.</value>
-        public TableMap MoraleTables
-        {
-            get { return _moraleTables; }
-        }
+        public TableMap MoraleTables => _moraleTables;
 
         /// <summary>
         /// Gets the diplomacy tables.
         /// </summary>
         /// <value>The diplomacy tables.</value>
-        public TableMap DiplomacyTables
-        {
-            get { return _diplomacyTables; }
-        }
+        public TableMap DiplomacyTables => _diplomacyTables;
 
         /// <summary>
         /// Gets the enum string tables.
         /// </summary>
         /// <value>The enum string tables.</value>
-        public TableMap EnumTables
-        {
-            get { return _enumTables; }
-        }
+        public TableMap EnumTables => _enumTables;
 
         /// <summary>
         /// Gets the ship tables.
         /// </summary>
         /// <value>The ship tables.</value>
-        public TableMap ShipTables
-        {
-            get { return _shipTables; }
-        }
+        public TableMap ShipTables => _shipTables;
 
         /// <summary>
         /// Gets the strength tables.
         /// </summary>
         /// <value>The strength tables.</value>
-        public TableMap StrengthTables
-        {
-            get { return _strengthTables; }
-        }
+        public TableMap StrengthTables => _strengthTables;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="GameTables"/> class.

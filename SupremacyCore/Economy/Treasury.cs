@@ -36,35 +36,17 @@ namespace Supremacy.Economy
             _totalExpenses = totalExpenses;
         }
 
-        public int TurnNumber
-        {
-            get { return _turnNumber; }
-        }
+        public int TurnNumber => _turnNumber;
 
-        public int InitialCreditReserves
-        {
-            get { return _initialCreditReserves; }
-        }
+        public int InitialCreditReserves => _initialCreditReserves;
 
-        public int TotalIncome
-        {
-            get { return _totalIncome; }
-        }
+        public int TotalIncome => _totalIncome;
 
-        public int TotalExpenses
-        {
-            get { return _totalExpenses; }
-        }
+        public int TotalExpenses => _totalExpenses;
 
-        public int FinalCreditReserves
-        {
-            get { return _initialCreditReserves + _totalIncome - _totalExpenses; }
-        }
+        public int FinalCreditReserves => _initialCreditReserves + _totalIncome - _totalExpenses;
 
-        public int NetChange
-        {
-            get { return FinalCreditReserves - _initialCreditReserves; }
-        }
+        public int NetChange => FinalCreditReserves - _initialCreditReserves;
     }
 
     [Serializable]
@@ -129,10 +111,7 @@ namespace Supremacy.Economy
             protected set { _previousChange = value; }
         }
 
-        public int CurrentChange
-        {
-            get { return (CurrentLevel - PreviousLevel); }
-        }
+        public int CurrentChange => (CurrentLevel - PreviousLevel);
 
         public int GrossIncome
         {
@@ -154,10 +133,7 @@ namespace Supremacy.Economy
             }
         }
 
-        public int NetIncome
-        {
-            get { return (GrossIncome - Maintenance); }
-        }
+        public int NetIncome => (GrossIncome - Maintenance);
 
         public bool TryGiveAmount(int amount)
         {

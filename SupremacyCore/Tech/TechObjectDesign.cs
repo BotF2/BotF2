@@ -81,10 +81,7 @@ namespace Supremacy.Tech
             _designKey = designKey;
         }
 
-        public string DesignKey
-        {
-            get { return _designKey; }
-        }
+        public string DesignKey => _designKey;
 
         public bool Equals(TechObjectTextGroupKey other)
         {
@@ -145,10 +142,7 @@ namespace Supremacy.Tech
             GameLog.Client.GameData.DebugFormat("TechObjectStringKey-Name={0}", Name);
         }
 
-        public string Name
-        {
-            get { return _name; }
-        }
+        public string Name => _name;
 
         public bool Equals(TechObjectStringKey other)
         {
@@ -294,10 +288,7 @@ namespace Supremacy.Tech
         /// Gets the localized name.
         /// </summary>
         /// <value>The localized name.</value>
-        public string LocalizedName
-        {
-            get { return Name; }
-        }
+        public string LocalizedName => Name;
 
         /// <summary>
         /// Gets or sets the description.
@@ -335,10 +326,7 @@ namespace Supremacy.Tech
         /// Gets the localized description.
         /// </summary>
         /// <value>The localized description.</value>
-        public string LocalizedDescription
-        {
-            get { return Description; }
-        }
+        public string LocalizedDescription => Description;
 
         //public string LocalizedClassLevel
         //{
@@ -513,20 +501,11 @@ namespace Supremacy.Tech
             }
         }
 
-        protected virtual string DefaultImageSubFolder
-        {
-            get { return string.Empty; }
-        }
+        protected virtual string DefaultImageSubFolder => string.Empty;
 
-        protected virtual string DefaultShipsUnderConstructionSubFolder
-        {
-            get { return string.Empty; }
-        }
+        protected virtual string DefaultShipsUnderConstructionSubFolder => string.Empty;
 
-        public ScriptExpression BuildCondition
-        {
-            get { return _buildCondition; }
-        }
+        public ScriptExpression BuildCondition => _buildCondition;
 
         /// <summary>
         /// Gets a value indicating whether an image is explicitly defined.
@@ -534,10 +513,7 @@ namespace Supremacy.Tech
         /// <value>
         /// <c>true</c> if an image is explicitly defined; otherwise, <c>false</c>.
         /// </value>
-        public bool IsImageDefined
-        {
-            get { return (_image != null); }
-        }
+        public bool IsImageDefined => (_image != null);
 
         /// <summary>
         /// Gets a value indicating whether the image is the default (automatic).
@@ -545,10 +521,7 @@ namespace Supremacy.Tech
         /// <value>
         /// <c>true</c> if the image is the default (automatic); otherwise, <c>false</c>.
         /// </value>
-        public bool IsImageAutomatic
-        {
-            get { return (_image == null); }
-        }
+        public bool IsImageAutomatic => (_image == null);
 
         /// <summary>
         /// Gets a value indicating whether the image is linked to another object.
@@ -556,10 +529,7 @@ namespace Supremacy.Tech
         /// <value>
         /// <c>true</c> if the image is linked to another object; otherwise, <c>false</c>.
         /// </value>
-        public bool IsImageLinked
-        {
-            get { return ((_image != null) && _image.StartsWith("@")); }
-        }
+        public bool IsImageLinked => ((_image != null) && _image.StartsWith("@"));
 
         public TechObjectDesign ImageLinkSource
         {
@@ -585,33 +555,21 @@ namespace Supremacy.Tech
         /// That is, for each list in the return value, at least one of the items
         /// in the list must be present in order to construct an object of this design.
         /// </remarks>
-        public IPrerequisiteCollection Prerequisites
-        {
-            get { return _prerequisites; }
-        }
+        public IPrerequisiteCollection Prerequisites => _prerequisites;
 
-        public IList<EffectGroup> Effects
-        {
-            get { return _effects; }
-        }
+        public IList<EffectGroup> Effects => _effects;
 
         /// <summary>
         /// Gets the list of designs to which an object of this design is upgradable.
         /// </summary>
         /// <value>The list of designs.</value>
-        public IList<TechObjectDesign> UpgradableDesigns
-        {
-            get { return _upgradableDesigns; }
-        }
+        public IList<TechObjectDesign> UpgradableDesigns => _upgradableDesigns;
 
         /// <summary>
         /// Gets the list of designs rendered obsolete by this design.
         /// </summary>
         /// <value>The list of designs.</value>
-        public IList<TechObjectDesign> ObsoletedDesigns
-        {
-            get { return _obsoletedDesigns; }
-        }
+        public IList<TechObjectDesign> ObsoletedDesigns => _obsoletedDesigns;
 
         /// <summary>
         /// Gets or sets a value indicating whether this <see cref="TechObjectDesign"/> is universally available.
@@ -940,10 +898,7 @@ namespace Supremacy.Tech
         /// Gets the resource costs for building an object of this design..
         /// </summary>
         /// <value>The resource costs.</value>
-        public ResourceValueCollection BuildResourceCosts
-        {
-            get { return _resourceCosts; }
-        }
+        public ResourceValueCollection BuildResourceCosts => _resourceCosts;
 
         /// <summary>
         /// Gets or sets the industry cost for building an object of this design.
@@ -964,10 +919,7 @@ namespace Supremacy.Tech
         /// Gets the tech level requirements for building an object of this design.
         /// </summary>
         /// <value>The tech level requirements.</value>
-        public TechLevelCollection TechRequirements
-        {
-            get { return _techRequirements; }
-        }
+        public TechLevelCollection TechRequirements => _techRequirements;
         #endregion
 
         /// <summary>
@@ -1059,37 +1011,25 @@ namespace Supremacy.Tech
         /// Gets the heading displayed in the Encyclopedia index.
         /// </summary>
         /// <value>The heading.</value>
-        public string EncyclopediaHeading
-        {
-            get { return Name; }
-        }
+        public string EncyclopediaHeading => Name;
 
         /// <summary>
         /// Gets the text displayed in the Encyclopedia entry.
         /// </summary>
         /// <value>The text.</value>
-        public string EncyclopediaText
-        {
-            get { return Description; }
-        }
+        public string EncyclopediaText => Description;
 
         /// <summary>
         /// Gets the image displayed in the Encyclopedia entry.
         /// </summary>
         /// <value>The image.</value>
-        public string EncyclopediaImage
-        {
-            get { return Image; }
-        }
+        public string EncyclopediaImage => Image;
 
         /// <summary>
         /// Gets the encyclopedia category under which the entry appears.
         /// </summary>
         /// <value>The encyclopedia category.</value>
-        public virtual EncyclopediaCategory EncyclopediaCategory
-        {
-            get { return EncyclopediaCategory.None; }
-        }
+        public virtual EncyclopediaCategory EncyclopediaCategory => EncyclopediaCategory.None;
 
         protected internal ITechObjectTextDatabaseEntry TextDatabaseEntry
         {

@@ -124,10 +124,7 @@ namespace Supremacy.Client.Views
 
         public UIElement TargetElement { get; set; }
 
-        public bool ApplyMouseOffset
-        {
-            get { return false; }
-        }
+        public bool ApplyMouseOffset => false;
 
         public UIElement GetVisualFeedback(IDataObject obj)
         {
@@ -286,10 +283,7 @@ namespace Supremacy.Client.Views
 
         #region IDragSourceAdvisor Members
 
-        public DragDropEffects SupportedEffects
-        {
-            get { return DragDropEffects.Move; }
-        }
+        public DragDropEffects SupportedEffects => DragDropEffects.Move;
 
         public UIElement SourceElement { get; set; }
 

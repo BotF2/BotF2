@@ -63,30 +63,15 @@ namespace Supremacy.Diplomacy
 
         #region Implementation of IProposal
 
-        public int TurnSent
-        {
-            get { return _turnSent; }
-        }
+        public int TurnSent => _turnSent;
 
-        public Civilization Sender
-        {
-            get { return GameContext.Current.Civilizations[_sender]; }
-        }
+        public Civilization Sender => GameContext.Current.Civilizations[_sender];
 
-        public Civilization Recipient
-        {
-            get { return GameContext.Current.Civilizations[_recipient]; }
-        }
+        public Civilization Recipient => GameContext.Current.Civilizations[_recipient];
 
-        public IIndexedCollection<IClause> Clauses
-        {
-            get { return _clauses; }
-        }
+        public IIndexedCollection<IClause> Clauses => _clauses;
 
-        public Tone Tone
-        {
-            get { return Tone.Calm; }
-        }
+        public Tone Tone => Tone.Calm;
 
         #endregion
     }

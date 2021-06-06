@@ -420,10 +420,7 @@ namespace Supremacy.Client.Dialogs
                 Close();
         }
 
-        protected DialogManager ParentDialogManager
-        {
-            get { return ItemsControl.ItemsControlFromItemContainer(this) as DialogManager; }
-        }
+        protected DialogManager ParentDialogManager => ItemsControl.ItemsControlFromItemContainer(this) as DialogManager;
 
         internal bool SetFocus()
         {

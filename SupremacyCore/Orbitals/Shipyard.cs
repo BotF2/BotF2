@@ -35,10 +35,7 @@ namespace Supremacy.Orbitals
         /// Gets the type of the UniverseObject.
         /// </summary>
         /// <value>The type of the UniverseObject.</value>
-        public sealed override UniverseObjectType ObjectType
-        {
-            get { return UniverseObjectType.Shipyard; }
-        }
+        public sealed override UniverseObjectType ObjectType => UniverseObjectType.Shipyard;
 
         /// <summary>
         /// Gets the shipyard design.
@@ -72,10 +69,7 @@ namespace Supremacy.Orbitals
             _buildQueue = new ObservableCollection<BuildQueueItem>();
         }
 
-        public IIndexedEnumerable<ShipyardBuildSlot> BuildSlots
-        {
-            get { return _buildSlots; }
-        }
+        public IIndexedEnumerable<ShipyardBuildSlot> BuildSlots => _buildSlots;
 
         //public IIndexedEnumerable<BuildProject> BuildSlotQueues
         //{
@@ -87,10 +81,7 @@ namespace Supremacy.Orbitals
         /// Gets the build slots at this <see cref="Shipyard"/>.
         /// </summary>
         /// <value>The build slots.</value>
-        IIndexedEnumerable<BuildSlot> IProductionCenter.BuildSlots
-        {
-            get { return _buildSlots; }
-        }
+        IIndexedEnumerable<BuildSlot> IProductionCenter.BuildSlots => _buildSlots;
 
         /// <summary>
         /// Gets the build output for the specified build slot number.
@@ -132,10 +123,7 @@ namespace Supremacy.Orbitals
         /// Gets the build queue at this <see cref="Shipyard"/>.
         /// </summary>
         /// <value>The build queue.</value>
-        public IList<BuildQueueItem> BuildQueue
-        {
-            get { return _buildQueue; }
-        }
+        public IList<BuildQueueItem> BuildQueue => _buildQueue;
 
         /// <summary>
         /// Remove any completed projects from the build slots and dequeue new projects

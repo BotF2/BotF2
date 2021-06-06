@@ -29,10 +29,7 @@ namespace Supremacy.Types
         #endregion
 
         #region Properties
-        public Meter Meter
-        {
-            get { return _meter; }
-        }
+        public Meter Meter => _meter;
         #endregion
     }
 
@@ -98,15 +95,9 @@ namespace Supremacy.Types
         #endregion
 
         #region Properties
-        public bool IsMaximized
-        {
-            get { return (CurrentValue == Maximum); }
-        }
+        public bool IsMaximized => (CurrentValue == Maximum);
 
-        public bool IsMinimized
-        {
-            get { return (CurrentValue == Minimum); }
-        }
+        public bool IsMinimized => (CurrentValue == Minimum);
 
         public bool AutoClamp
         {
@@ -172,10 +163,7 @@ namespace Supremacy.Types
         /// <summary>
         /// The difference between the current and base values
         /// </summary>
-        public int CurrentChange
-        {
-            get { return CurrentValue - BaseValue; }
-        }
+        public int CurrentChange => CurrentValue - BaseValue;
 
         /// <summary>
         /// The base efficiency of the Meter
@@ -235,10 +223,7 @@ namespace Supremacy.Types
         /// <summary>
         /// The change between the current value and last value
         /// </summary>
-        public int LastChange
-        {
-            get { return (CurrentValue - LastValue); }
-        }
+        public int LastChange => (CurrentValue - LastValue);
 
         /// <summary>
         /// The last (adjusted) efficiency of the Meter

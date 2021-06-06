@@ -34,10 +34,7 @@ namespace Supremacy.Resources
         private static readonly string _workingDirectory;
         private static readonly IVfsService _vfsService;
 
-        public static string WorkingDirectory
-        {
-            get { return _workingDirectory; }
-        }
+        public static string WorkingDirectory => _workingDirectory;
 
         // checks whether commandLineArguments are done and more
         public static GameMod CurrentMod
@@ -55,10 +52,7 @@ namespace Supremacy.Resources
             }
         }
 
-        public static IVfsService VfsService
-        {
-            get { return _vfsService; }
-        }
+        public static IVfsService VfsService => _vfsService;
 
         static ResourceManager()
         {

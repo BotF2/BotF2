@@ -23,34 +23,13 @@ namespace Supremacy.Intelligence
         //{
         //    get { return IntelHelper.NewSpiedColonies; }
         //}
-        public static Civilization CivZero
-        {
-            get { return GameContext.Current.CivilizationManagers[0].Civilization; }
-        }
-        public static Civilization CivOne
-        {
-            get { return GameContext.Current.CivilizationManagers[1].Civilization; }
-        }
-        public static Civilization CivTwo
-        {
-            get { return GameContext.Current.CivilizationManagers[2].Civilization; }
-        }
-        public static Civilization CivThree
-        {
-            get { return GameContext.Current.CivilizationManagers[3].Civilization; }
-        }
-        public static Civilization CivFour
-        {
-            get { return GameContext.Current.CivilizationManagers[4].Civilization; }
-        }
-        public static Civilization CivFive
-        {
-            get { return GameContext.Current.CivilizationManagers[5].Civilization; }
-        }
-        public static Civilization CivSix
-        {
-            get { return GameContext.Current.CivilizationManagers[6].Civilization; }
-        }
+        public static Civilization CivZero => GameContext.Current.CivilizationManagers[0].Civilization;
+        public static Civilization CivOne => GameContext.Current.CivilizationManagers[1].Civilization;
+        public static Civilization CivTwo => GameContext.Current.CivilizationManagers[2].Civilization;
+        public static Civilization CivThree => GameContext.Current.CivilizationManagers[3].Civilization;
+        public static Civilization CivFour => GameContext.Current.CivilizationManagers[4].Civilization;
+        public static Civilization CivFive => GameContext.Current.CivilizationManagers[5].Civilization;
+        public static Civilization CivSix => GameContext.Current.CivilizationManagers[6].Civilization;
         public static bool IsSpiedZero(Civilization localCivFromScreen)
         {
             if (DesignTimeObjects.SubedZero)

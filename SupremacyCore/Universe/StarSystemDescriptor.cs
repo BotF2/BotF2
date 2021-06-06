@@ -439,10 +439,7 @@ namespace Supremacy.Universe
         }
 
         [DependsOn("Bonuses")]
-        public bool HasBonuses
-        {
-            get { return (_bonuses != 0); }
-        }
+        public bool HasBonuses => (_bonuses != 0);
 
         public string Inhabitants
         {
@@ -496,107 +493,47 @@ namespace Supremacy.Universe
         }
 
         [DependsOn("Inhabitants")]
-        public bool IsInhabitantsDefined
-        {
-            get { return (_inhabitants != null); }
-        }
+        public bool IsInhabitantsDefined => (_inhabitants != null);
 
         [DependsOn("StarType")]
-        public bool IsStarTypeDefined
-        {
-            get { return (_starType != null); }
-        }
+        public bool IsStarTypeDefined => (_starType != null);
 
         [DependsOn("Name")]
-        public bool IsNameDefined
-        {
-            get { return (_systemName != null); }
-        }
+        public bool IsNameDefined => (_systemName != null);
 
-        public List<string> StartingShips
-        {
-            get { return _startingShips; }
-        }
+        public List<string> StartingShips => _startingShips;
 
-        public List<string> StartingShipyards
-        {
-            get { return _startingShipyards; }
-        }
+        public List<string> StartingShipyards => _startingShipyards;
 
-        public List<string> StartingBuildings
-        {
-            get { return _startingBuildings; }
-        }
+        public List<string> StartingBuildings => _startingBuildings;
 
-        public List<string> StartingOutposts
-        {
-            get { return _startingOutposts; }
-        }
+        public List<string> StartingOutposts => _startingOutposts;
 
-        public List<string> StartingOrbitalBatteries
-        {
-            get { return _startingOrbitalBatteries; }
-        }
+        public List<string> StartingOrbitalBatteries => _startingOrbitalBatteries;
 
-        public float PopulationRatio
-        {
-            get { return _populationRatio; }
-        }
+        public float PopulationRatio => _populationRatio;
 
-        public float Credits
-        {
-            get { return _credits; }
-        }
+        public float Credits => _credits;
 
-        public float Deuterium
-        {
-            get { return _deuterium; }
-        }
+        public float Deuterium => _deuterium;
 
-        public float Dilithium
-        {
-            get { return _dilithium; }
-        }
+        public float Dilithium => _dilithium;
 
-        public float RawMaterials
-        {
-            get { return _rawMaterials; }
-        }
+        public float RawMaterials => _rawMaterials;
 
-        public float Food
-        {
-            get { return _food; }
-        }
+        public float Food => _food;
 
-        public float Morale
-        {
-            get { return _morale; }
-        }
+        public float Morale => _morale;
 
-        public ProductionFacilityDescriptor FoodPF
-        {
-            get { return _foodPF; }
-        }
+        public ProductionFacilityDescriptor FoodPF => _foodPF;
 
-        public ProductionFacilityDescriptor IndustryPF
-        {
-            get { return _industryPF; }
-        }
+        public ProductionFacilityDescriptor IndustryPF => _industryPF;
 
-        public ProductionFacilityDescriptor EnergyPF
-        {
-            get { return _energyPF; }
-        }
+        public ProductionFacilityDescriptor EnergyPF => _energyPF;
 
-        public ProductionFacilityDescriptor ResearchPF
-        {
-            get { return _researchPF; }
-        }
+        public ProductionFacilityDescriptor ResearchPF => _researchPF;
 
-        public ProductionFacilityDescriptor IntelligencePF
-        {
-            get { return _intelligencePF; }
-        }
+        public ProductionFacilityDescriptor IntelligencePF => _intelligencePF;
         #endregion
 
         #region INotifyPropertyChanged Members
@@ -1087,31 +1024,19 @@ namespace Supremacy.Universe
         }
 
         [DependsOn("Bonuses")]
-        public bool HasBonuses
-        {
-            get { return (_bonuses != 0); }
-        }
+        public bool HasBonuses => (_bonuses != 0);
 
         [DependsOn("IsSinglePlanet")]
         [DependsOn("Name")]
-        public bool IsNameDefined
-        {
-            get { return (_planetName != null); }
-        }
+        public bool IsNameDefined => (_planetName != null);
 
         [DependsOn("IsSinglePlanet")]
         [DependsOn("Size")]
-        public bool IsSizeDefined
-        {
-            get { return (IsSinglePlanet && (_planetSize != null)); }
-        }
+        public bool IsSizeDefined => (IsSinglePlanet && (_planetSize != null));
 
         [DependsOn("IsSinglePlanet")]
         [DependsOn("Type")]
-        public bool IsTypeDefined
-        {
-            get { return (IsSinglePlanet && (_planetType != null)); }
-        }
+        public bool IsTypeDefined => (IsSinglePlanet && (_planetType != null));
 
         [DependsOn("IsSinglePlanet")]
         public string Name
@@ -1129,10 +1054,7 @@ namespace Supremacy.Universe
         }
 
         [DependsOn("MaxNumberOfPlanets")]
-        public bool IsSinglePlanet
-        {
-            get { return (_maxNumberOfPlanets == 1); }
-        }
+        public bool IsSinglePlanet => (_maxNumberOfPlanets == 1);
 
         public int MinNumberOfPlanets
         {

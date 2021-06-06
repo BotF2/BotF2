@@ -29,10 +29,7 @@ namespace Supremacy.Types
         #endregion
 
         #region Properties and Indexers
-        public Distribution<TKey> Source
-        {
-            get { return _source; }
-        }
+        public Distribution<TKey> Source => _source;
         #endregion
     }
 
@@ -90,10 +87,7 @@ namespace Supremacy.Types
             }
         }
 
-        internal StateScope SuppressValueChangedScope
-        {
-            get { return _suppressValueChangedScope; }
-        }
+        internal StateScope SuppressValueChangedScope => _suppressValueChangedScope;
 
         public Percentage Value
         {
@@ -301,10 +295,7 @@ namespace Supremacy.Types
             }
         }
 
-        public ICollection<Distribution<TKey>> Children
-        {
-            get { return _children.Values; }
-        }
+        public ICollection<Distribution<TKey>> Children => _children.Values;
 
         public Distribution<TKey> this[TKey key]
         {

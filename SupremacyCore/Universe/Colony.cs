@@ -48,10 +48,7 @@ namespace Supremacy.Universe
             ((Colony)d).OnPropertyChanged("TotalEnergy");
         }
 
-        public int TotalEnergy
-        {
-            get { return GetValue(TotalEnergyProperty).CurrentValue; }
-        }
+        public int TotalEnergy => GetValue(TotalEnergyProperty).CurrentValue;
         #endregion
 
 
@@ -265,41 +262,17 @@ namespace Supremacy.Universe
             OriginalOwner = system.Owner;
         }
 
-        public ColonyFacilitiesAccessor ActiveFacilities
-        {
-            get { return _activeFacilitiesProvider; }
-        }
+        public ColonyFacilitiesAccessor ActiveFacilities => _activeFacilitiesProvider;
 
-        public ColonyFacilitiesAccessor ScrappedFacilities
-        {
-            get { return _scrappedFacilitiesProvider; }
-        }
+        public ColonyFacilitiesAccessor ScrappedFacilities => _scrappedFacilitiesProvider;
 
-        public ColonyFacilitiesAccessor TotalFacilities
-        {
-            get { return _totalFacilitiesProvider; }
-        }
+        public ColonyFacilitiesAccessor TotalFacilities => _totalFacilitiesProvider;
 
-        public ColonyFacilitiesAccessor FoodActiveFacilities
-        {
-            get { return _activeFacilitiesProvider; }
-        }
-        public ColonyFacilitiesAccessor IndustryActiveFacilities
-        {
-            get { return _activeFacilitiesProvider; }
-        }
-        public ColonyFacilitiesAccessor EnergyActiveFacilities
-        {
-            get { return _activeFacilitiesProvider; }
-        }
-        public ColonyFacilitiesAccessor ResearchActiveFacilities
-        {
-            get { return _activeFacilitiesProvider; }
-        }
-        public ColonyFacilitiesAccessor IntelligenceActiveFacilities
-        {
-            get { return _activeFacilitiesProvider; }
-        }
+        public ColonyFacilitiesAccessor FoodActiveFacilities => _activeFacilitiesProvider;
+        public ColonyFacilitiesAccessor IndustryActiveFacilities => _activeFacilitiesProvider;
+        public ColonyFacilitiesAccessor EnergyActiveFacilities => _activeFacilitiesProvider;
+        public ColonyFacilitiesAccessor ResearchActiveFacilities => _activeFacilitiesProvider;
+        public ColonyFacilitiesAccessor IntelligenceActiveFacilities => _activeFacilitiesProvider;
         public int AvailableLabor
         {
             get 
@@ -328,19 +301,13 @@ namespace Supremacy.Universe
             }
         }
 
-        public IIndexedCollection<OrbitalBattery> OrbitalBatteries
-        {
-            get { return _orbitalBatteries; }
-        }
+        public IIndexedCollection<OrbitalBattery> OrbitalBatteries => _orbitalBatteries;
 
         /// <summary>
         /// Gets the type of the <see cref="UniverseObject"/>.
         /// </summary>
         /// <value>The type of the <see cref="UniverseObject"/>.</value>
-        public override sealed UniverseObjectType ObjectType
-        {
-            get { return UniverseObjectType.Colony; }
-        }
+        public override sealed UniverseObjectType ObjectType => UniverseObjectType.Colony;
 
         /// <summary>
         /// Gets the original owner of this <see cref="Colony"/>.
@@ -370,7 +337,8 @@ namespace Supremacy.Universe
         {
             get
             {
-                var baseGrowthRate = ((decimal)System.GetGrowthRate(Inhabitants) * (((decimal)-0.8 + (decimal)_health.PercentFilled) * 5)) * 100;
+                var baseGrowthRate = (decimal)System.GetGrowthRate(Inhabitants) * (((decimal)-0.8 + (decimal)_health.PercentFilled) * 5) * 100;
+                //baseGrowthRate += 0.01m;
                 var modifier = new ValueModifier<decimal>
                                {
                                    IsOffsetAppliedFirst = false,
@@ -390,6 +358,11 @@ namespace Supremacy.Universe
                         }
                     }
                 }
+
+                string _text = System.Name + ": baseGrowthRate " + baseGrowthRate.ToString() + ", modifier: " + modifier.Multiplier.ToString();
+                Console.WriteLine(_text);
+                GameLog.Core.CivsAndRacesDetails.DebugFormat(_text);
+                
                 return Convert.ToSingle(0.01m * modifier.Apply(baseGrowthRate));
             }
         }
@@ -419,28 +392,19 @@ namespace Supremacy.Universe
         /// Gets the food reserves meter for this  <see cref="Colony"/>.
         /// </summary>
         /// <value>The food reserves.</value>
-        public Meter FoodReserves
-        {
-            get { return _foodReserves; }
-        }
+        public Meter FoodReserves => _foodReserves;
 
         /// <summary>
         /// Gets the star system in which this <see cref="Colony"/> resides.
         /// </summary>
         /// <value>The star system.</value>
-        public StarSystem System
-        {
-            get { return GameContext.Current.Universe.Get<StarSystem>(_systemId); }
-        }
+        public StarSystem System => GameContext.Current.Universe.Get<StarSystem>(_systemId);
 
         /// <summary>
         /// Gets or sets the name of this <see cref="Colony"/>.
         /// </summary>
         /// <value>The name.</value>
-        public override string Name
-        {
-            get { return base.Name ?? ((System != null) ? System.Name : null); }
-        }
+        public override string Name => base.Name ?? (System?.Name);
 
         /// <summary>
         /// Gets the race that inhabits this <see cref="Colony"/>.
@@ -484,12 +448,12 @@ namespace Supremacy.Universe
             }
         }
 
-        public string ShipyardSlot_1_Status(ShipyardBuildSlot buildSlot)
-        {
-            string status = this.GetShipyardSlotStatus(buildSlot);
-            //return status;
-            return "hello";
-        }
+        //public string ShipyardSlot_1_Status(ShipyardBuildSlot buildSlot)
+        //{
+        //    string status = this.GetShipyardSlotStatus(buildSlot);
+        //    //return status;
+        //    return "hello";
+        //}
 
         public string GetShipyardSlotStatus(ShipyardBuildSlot buildSlot)
         {
@@ -506,8 +470,8 @@ namespace Supremacy.Universe
                 if (shipyard.ShipyardDesign.BuildSlotEnergyCost > NetEnergy)
                     return "out of energy";
 
-                string status = "hello";
-                status = buildSlot.Project.BuildDesign.ToString();
+            //string status = "hello";
+            string status = buildSlot.Project.BuildDesign.ToString();
                 //return base.Name ?? ((System != null) ? System.Name : null); 
 
                 return status;
@@ -517,19 +481,13 @@ namespace Supremacy.Universe
         /// Gets the population of this <see cref="Colony"/>.
         /// </summary>
         /// <value>The population.</value>
-        public Meter Population
-        {
-            get { return _population; }
-        }
+        public Meter Population => _population;
 
         /// <summary>
         /// Gets the planetary shield strength of this <see cref="Colony"/>.
         /// </summary>
         /// <value>The planetary shield strength.</value>
-        public Meter ShieldStrength
-        {
-            get { return _shieldStrength; }
-        }
+        public Meter ShieldStrength => _shieldStrength;
 
         /// <summary>
         /// Gets the local morale at this <see cref="Colony"/>.
@@ -548,33 +506,21 @@ namespace Supremacy.Universe
         /// Gets the buildings at this <see cref="Colony"/>.
         /// </summary>
         /// <value>The buildings.</value>
-        public IObservableIndexedCollection<Building> Buildings
-        {
-            get { return _buildings; }
-        }
+        public IObservableIndexedCollection<Building> Buildings => _buildings;
 
         /// <summary>
         /// Gets the active buildings at this <see cref="Colony"/>.
         /// </summary>
         /// <value>The active buildings.</value>
-        public IEnumerable<Building> ActiveBuildings
-        {
-            get
-            {
-                return Obtics.Collections.ObservableEnumerable.Where(
-                    _buildings, 
+        public IEnumerable<Building> ActiveBuildings => Obtics.Collections.ObservableEnumerable.Where(
+                    _buildings,
                     o => ValueProvider.Property<Building, bool>(o, "IsActive"));
-            }
-        }
 
         /// <summary>
         /// Gets the buildings at this <see cref="Colony"/>.
         /// </summary>
         /// <value>The buildings.</value>
-        internal IList<Building> BuildingsInternal
-        {
-            get { return _buildings; }
-        }
+        internal IList<Building> BuildingsInternal => _buildings;
 
         /// <summary>
         /// Gets or sets a value indicating whether production is automated.
@@ -596,25 +542,16 @@ namespace Supremacy.Universe
         /// The scrap bonus is a multiplier that gets applied to the amount of credits
         /// and resources recovered when scrapping an item at this <see cref="Colony"/>.
         /// </remarks>
-        public Percentage ScrapBonus
-        {
-            get
-            {
-                return 0.01f * (from building in Buildings
-                                where building.IsActive && !building.Scrap
-                                from bonus in building.BuildingDesign.GetBonuses(BonusType.PercentScrapping)
-                                select bonus).Sum(o => o.Amount);
-            }
-        }
+        public Percentage ScrapBonus => 0.01f * (from building in Buildings
+                                                 where building.IsActive && !building.Scrap
+                                                 from bonus in building.BuildingDesign.GetBonuses(BonusType.PercentScrapping)
+                                                 select bonus).Sum(o => o.Amount);
 
         /// <summary>
         /// Gets the population health level at this <see cref="Colony"/>.
         /// </summary>
         /// <value>The population health level.</value>
-        public Meter Health
-        {
-            get { return _health; }
-        }
+        public Meter Health => _health;
 
         #region Properties for System Panel Data Binding
         /// <summary>
@@ -625,7 +562,6 @@ namespace Supremacy.Universe
         {
             get
             {
-                int _taxCredits = 0;
                 var modifier = new OutputModifier(0, 1.0f);
                 var moraleMod = _morale.CurrentValue / (0.5f * MoraleHelper.MaxValue);
                 var adjustedPop = Population.CurrentValue * moraleMod;
@@ -658,7 +594,7 @@ namespace Supremacy.Universe
                 // c) base value = 200
 
                 // OLD - 31 july 2019 *3 to *3.5 and +500
-                _taxCredits = (int)((adjustedPop * modifier.Efficiency * moraleMod) + modifier.Bonus + NetIndustry * 1.5 + 200);
+                int _taxCredits = (int)(adjustedPop * modifier.Efficiency * moraleMod + modifier.Bonus + NetIndustry * 1.5 + 200);
 
                 // only for LocalPlayer
                 //if (this.OwnerID == )
@@ -731,19 +667,13 @@ namespace Supremacy.Universe
         /// Gets the net food production at this <see cref="Colony"/>.
         /// </summary>
         /// <value>The net food production.</value>
-        public int NetFood
-        {
-            get { return GetProductionOutput(ProductionCategory.Food) - Population.CurrentValue; }
-        }
+        public int NetFood => GetProductionOutput(ProductionCategory.Food) - Population.CurrentValue;
 
         /// <summary>
         /// Gets the net industry production at this <see cref="Colony"/>.
         /// </summary>
         /// <value>The net industry production.</value>
-        public int NetIndustry
-        {
-            get { return GetProductionOutput(ProductionCategory.Industry); }
-        }
+        public int NetIndustry => GetProductionOutput(ProductionCategory.Industry);
 
         /// <summary>
         /// Gets the net energy production at this <see cref="Colony"/>.
@@ -777,50 +707,33 @@ namespace Supremacy.Universe
         /// Gets the net research production at this <see cref="Colony"/>.
         /// </summary>
         /// <value>The net research production.</value>
-        public int NetResearch
-        {
-            get { return GetProductionOutput(ProductionCategory.Research); }
-        }
+        public int NetResearch => GetProductionOutput(ProductionCategory.Research);
 
         /// <summary>
         /// Gets the net intelligence production at this <see cref="Colony"/>.
         /// </summary>
         /// <value>The net intelligence production.</value>
-        public int NetIntelligence
-        {
-            get
-            {
+        public int NetIntelligence =>
                 //GameLog.Client.Intel.DebugFormat("NetIntelligence ={0}", GetProductionOutput(ProductionCategory.Intelligence));
-                return GetProductionOutput(ProductionCategory.Intelligence);
-            }
-        }
+                GetProductionOutput(ProductionCategory.Intelligence);
 
         /// <summary>
         /// Gets the net dilithium production at this <see cref="Colony"/>.
         /// </summary>
         /// <value>The net dilithium production.</value>
-        public int NetDilithium
-        {
-            get { return GetResourceProduction(ResourceType.Dilithium); }
-        }
+        public int NetDilithium => GetResourceProduction(ResourceType.Dilithium);
 
         /// <summary>
         /// Gets the net deuterium production at this <see cref="Colony"/>.
         /// </summary>
         /// <value>The net deuterium production.</value>
-        public int NetDeuterium
-        {
-            get { return GetResourceProduction(ResourceType.Deuterium); }
-        }
+        public int NetDeuterium => GetResourceProduction(ResourceType.Deuterium);
 
         /// <summary>
         /// Gets the net raw materials production at this <see cref="Colony"/>.
         /// </summary>
         /// <value>The net raw materials production.</value>
-        public int NetRawMaterials
-        {
-            get { return GetResourceProduction(ResourceType.RawMaterials); }
-        }
+        public int NetRawMaterials => GetResourceProduction(ResourceType.RawMaterials);
         #endregion
 
         #region IProductionCenter Members
@@ -855,10 +768,7 @@ namespace Supremacy.Universe
         /// Gets the build queue at this <see cref="Colony"/>.
         /// </summary>
         /// <value>The build queue.</value>
-        public IList<BuildQueueItem> BuildQueue
-        {
-            get { return _buildQueue; }
-        }
+        public IList<BuildQueueItem> BuildQueue => _buildQueue;
 
         /// <summary>
         /// Gets the buildslot queue at this <see cref="Colony"/>.
@@ -874,10 +784,7 @@ namespace Supremacy.Universe
         /// </summary>
         /// <value>The build slots.</value>
         [NotNull]
-        public IIndexedEnumerable<BuildSlot> BuildSlots
-        {
-            get { return IndexedEnumerable.Single(_buildSlot); }
-        }
+        public IIndexedEnumerable<BuildSlot> BuildSlots => IndexedEnumerable.Single(_buildSlot);
 
         /// <summary>
         /// Gets the build output for the specified build slot number.
@@ -955,15 +862,9 @@ namespace Supremacy.Universe
         /// Gets the trade routes available at this <see cref="Colony"/>.
         /// </summary>
         /// <value>The trade routes.</value>
-        public IList<TradeRoute> TradeRoutes
-        {
-            get { return _tradeRoutes; }
-        }
+        public IList<TradeRoute> TradeRoutes => _tradeRoutes;
 
-        public Meter CreditsFromTrade
-        {
-            get { return _creditsFromTrade; }
-        }
+        public Meter CreditsFromTrade => _creditsFromTrade;
 
         public int TradeRoutesPossible
         {
@@ -1265,11 +1166,13 @@ namespace Supremacy.Universe
             var modifier = GetProductionModifier(category);
             int baseOutput = unitOutput * activeUnits;
 
+#pragma warning disable IDE0059 // Unnecessary assignment of a value
             int tempProd = (int)(baseOutput + (baseOutput * modifier.Efficiency)) + modifier.Bonus;
-            /*int _population = */   
+
+            /*int _population = */
             Int32.TryParse(Population.ToString(), out int _population);
             int labor = _population / 10;
-            int laborAvailable = 0;
+            int laborAvailable;
 
             int _laborpool_unused = AvailableLabor;
             int _foodActive = GetActiveFacilities(ProductionCategory.Food);
@@ -1282,8 +1185,9 @@ namespace Supremacy.Universe
             int _researchPF_unused = TotalEnergyFacilities - _researchActive;
             int _intelActive = GetActiveFacilities(ProductionCategory.Intelligence);
             int _intelPF_unused = TotalIntelligenceFacilities - _intelActive;
-            int _optimizedPF = 0;
-            int _diff = 0;
+#pragma warning restore IDE0059 // Unnecessary assignment of a value
+            int _optimizedPF;
+            //int _diff;
             //while (GetAvailableLabor() > 0)
             laborAvailable = GetAvailableLabor() / 10
                     + GetActiveFacilities(ProductionCategory.Research) 
@@ -1298,7 +1202,7 @@ namespace Supremacy.Universe
                 {
                 int _foodDeficit = Math.Min(FoodReserves.CurrentValue - Population.CurrentValue + baseOutput, 0);
 
-                GameLog.Core.Production.DebugFormat("Turn {0}: Food {1} of {2}, unused {3}, laborAv= {6}, Pop= {4} for Colony {5}"
+                GameLog.Core.ProductionDetails.DebugFormat("Turn {0}: Food {1} of {2}, unused {3}, laborAv= {6}, Pop= {4} for Colony {5}"
                     , GameContext.Current.TurnNumber
                     , _foodActive
                     , TotalFoodFacilities
@@ -1311,7 +1215,7 @@ namespace Supremacy.Universe
                     );
                 
                 _optimizedPF = (_population / unitOutput);
-                _diff =  _optimizedPF - _foodActive;
+                int _diff =  _optimizedPF - _foodActive;
 
                 //colony.FoodReserves.AdjustCurrent(GetProductionOutput(ProductionCategory.Food));
                 //int _foodDeficit = Math.Min(FoodReserves.CurrentValue - Population.CurrentValue + baseOutput, 0);
@@ -1319,14 +1223,14 @@ namespace Supremacy.Universe
                 //FoodReserves.UpdateAndReset();
 
                 if (Name == "Borg" && category == ProductionCategory.Food)
-                    GameLog.Core.Production.DebugFormat("Borg and Food"); // just for Breakpoint
+                    GameLog.Core.ProductionDetails.DebugFormat("Borg and Food"); // just for Breakpoint
                 
                 while (laborAvailable > 0 && _foodPF_unused > 0)
                 {
                     if (_foodDeficit > 0)
                     {
                         if (Name == "Borg" && category == ProductionCategory.Food)
-                            GameLog.Core.Production.DebugFormat("Borg and _foodDeficit"); // just for Breakpoint
+                            GameLog.Core.ProductionDetails.DebugFormat("Borg and _foodDeficit"); // just for Breakpoint
                         continue;
                     }
                     //FoodReserves - _population + 
@@ -1721,13 +1625,14 @@ namespace Supremacy.Universe
             int _intelPF_unused = TotalIntelligenceFacilities - GetActiveFacilities(ProductionCategory.Intelligence);
 
 
-    //        var energyBuildings = Buildings.
-    //            .Where(o => o.BuildingDesign.Bonuses.Where(b => b.BonusType == BonusType.Energy).ToList());
-    //        var energyBuildingAvailable = Buildings
-    //.           Where(o => !o.IsActive && !o.BuildingDesign.AlwaysOnline && 
-    //                o.BuildingDesign.Bonuses.Where(b => b.BonusType == BonusType.Energy).ToList()); // || b.BonusType == BonusType.PercentEnergy));
+            //        var energyBuildings = Buildings.
+            //            .Where(o => o.BuildingDesign.Bonuses.Where(b => b.BonusType == BonusType.Energy).ToList());
+            //        var energyBuildingAvailable = Buildings
+            //.           Where(o => !o.IsActive && !o.BuildingDesign.AlwaysOnline && 
+            //                o.BuildingDesign.Bonuses.Where(b => b.BonusType == BonusType.Energy).ToList()); // || b.BonusType == BonusType.PercentEnergy));
 
             //if (this.)
+            Report();
 
 
             var shutDown = 0;
@@ -1812,6 +1717,52 @@ namespace Supremacy.Universe
             Next:
                 continue;
             }
+        }
+
+        private void Report()
+        {
+            //int _laborpool_unused = this.AvailableLabor;
+            string _text = "AvailableLabor:" + AvailableLabor.ToString();
+            int _foodPF_unused = TotalFoodFacilities - GetActiveFacilities(ProductionCategory.Food);
+            _text += ", Food: " + GetActiveFacilities(ProductionCategory.Food) + "/" + TotalFoodFacilities; // _foodPF_unused;
+            int _industryPF_unused = TotalIndustryFacilities - GetActiveFacilities(ProductionCategory.Industry);
+            _text += ", Prod: " + GetActiveFacilities(ProductionCategory.Industry) + "/" + TotalIndustryFacilities; // _industryPF_unused;
+            // already comes in ... 
+            int _energyPF_unused = TotalEnergyFacilities - GetActiveFacilities(ProductionCategory.Energy);
+            _text += ", Energy: " + GetActiveFacilities(ProductionCategory.Energy) + "/" + TotalEnergyFacilities; // _energyPF_unused;
+            int _researchPF_unused = TotalResearchFacilities - GetActiveFacilities(ProductionCategory.Research);
+            _text += ", Res: " + GetActiveFacilities(ProductionCategory.Research) + "/" + TotalResearchFacilities; // _researchPF_unused;
+            int _intelPF_unused = TotalIntelligenceFacilities - GetActiveFacilities(ProductionCategory.Intelligence);
+            _text += ", Int: " + GetActiveFacilities(ProductionCategory.Intelligence) + "/" + TotalIntelligenceFacilities; // _intelPF_unused;
+
+            Console.WriteLine(_text);
+#pragma warning disable IDE0059 // Unnecessary assignment of a value
+            int dummy = _foodPF_unused
+
+                + _industryPF_unused
+                + _energyPF_unused
+                + _researchPF_unused
+                + _intelPF_unused;
+
+            var dummy2 = _activeFoodFacilities;
+            var dummy3 = _activeIndustryFacilities;
+            var dummy4 = _activeEnergyFacilities;
+            var dummy5 = _activeResearchFacilities;
+            var dummy6 =  _activeIntelligenceFacilities;
+
+            var dummy11 = _totalFoodFacilities;
+            var dummy12 = _totalIndustryFacilities;
+            var dummy13 = _totalEnergyFacilities;
+            var dummy14 = _totalResearchFacilities;
+            var dummy15 = _totalIntelligenceFacilities;
+
+            var dummy21 = _foodPF_unused;
+            var dummy22 = _industryPF_unused;
+            var dummy23 = _energyPF_unused;
+            var dummy24 = _researchPF_unused;
+            var dummy25 = _intelPF_unused;
+#pragma warning restore IDE0059 // Unnecessary assignment of a value
+
         }
 
         /// <summary>
@@ -1975,20 +1926,11 @@ namespace Supremacy.Universe
         /// //////////
         /// </summary>
 
-        public int ActiveOrbitalBatteries
-        {
-            get { return _activeOrbitalBatteries.Value; }
-        }
+        public int ActiveOrbitalBatteries => _activeOrbitalBatteries.Value;
 
-        public int TotalOrbitalBatteries
-        {
-            get { return _totalOrbitalBatteries.Value; }
-        }
+        public int TotalOrbitalBatteries => _totalOrbitalBatteries.Value;
 
-        public int ScrappedOrbitalBatteries
-        {
-            get { return _scrappedOrbitalBatteries.Value; }
-        }
+        public int ScrappedOrbitalBatteries => _scrappedOrbitalBatteries.Value;
 
         public bool ActivateOrbitalBattery()
         {
@@ -2427,10 +2369,7 @@ namespace Supremacy.Universe
             }
             #endregion
 
-            public bool IsReadOnly
-            {
-                get { return false; }
-            }
+            public bool IsReadOnly => false;
 
             #region Implementation of INotifyPropertyChanged
             [field: NonSerialized]
@@ -2438,9 +2377,7 @@ namespace Supremacy.Universe
 
             private void OnPropertyChanged(string propertyName)
             {
-                var handler = PropertyChanged;
-                if (handler != null)
-                    handler(this, new PropertyChangedEventArgs(propertyName));
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
             }
             #endregion
         }
@@ -2601,9 +2538,8 @@ namespace Supremacy.Universe
              */
             foreach (var sourceBuilding in sourceBuildings)
             {
-                Building cloneTarget;
 
-                if (context.TryRemap(sourceBuilding, out cloneTarget))
+                if (context.TryRemap(sourceBuilding, out Building cloneTarget))
                     _buildings.Replace(sourceBuilding.ObjectID, cloneTarget);
 
                 if (_buildings.TryGetValue(sourceBuilding.ObjectID, out cloneTarget))
@@ -2628,9 +2564,7 @@ namespace Supremacy.Universe
 
         public ColonyFacilitiesAccessor([NotNull] IValueProvider<int>[] array)
         {
-            if (array == null)
-                throw new ArgumentNullException("array");
-            _array = array;
+            _array = array ?? throw new ArgumentNullException("array");
         }
 
         public IValueProvider<int> this[ProductionCategory category]

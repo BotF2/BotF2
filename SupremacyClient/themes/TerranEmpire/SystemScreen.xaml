@@ -73,7 +73,7 @@
                              Margin="4,0,0,0" 
                        Width="14"
                        SnapsToDevicePixels="True"
-                       Fill="{StaticResource Ter5Gradient_Top_Bottom}" />
+                       Fill="{StaticResource Ter3Gradient_Top_Bottom}" />
                 
                   <Button Grid.Column="2"
                         Margin="3,0,0,0" 
@@ -134,7 +134,7 @@
                   <Rectangle Grid.Column="9"
                            Grid.Row="0"
                            Margin="3,0,0,0"
-                           Fill="{StaticResource Ter5Gradient_Bottom_Top}" />
+                           Fill="{StaticResource Ter3Gradient_Bottom_Top}" />
                 
                   
                   <Border Grid.Column="10"

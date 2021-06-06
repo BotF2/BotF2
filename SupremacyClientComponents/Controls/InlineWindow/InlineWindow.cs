@@ -740,10 +740,7 @@ namespace Supremacy.Client.Controls
         /// <value>
         /// <c>true</c> if the window can maximize; otherwise, <c>false</c>.
         /// </value>
-        internal bool CanMaximizeResolved
-        {
-            get { return ResolveMaximize(ResizeMode, WindowState, WindowStyle); }
-        }
+        internal bool CanMaximizeResolved => ResolveMaximize(ResizeMode, WindowState, WindowStyle);
 
         /// <summary>
         /// Gets whether the window can minimize.
@@ -751,10 +748,7 @@ namespace Supremacy.Client.Controls
         /// <value>
         /// <c>true</c> if the window can minimize; otherwise, <c>false</c>.
         /// </value>
-        internal bool CanMinimizeResolved
-        {
-            get { return ResolveMinimize(ResizeMode, WindowState, WindowStyle); }
-        }
+        internal bool CanMinimizeResolved => ResolveMinimize(ResizeMode, WindowState, WindowStyle);
 
         /// <summary>
         /// Gets whether the window can minimize.

@@ -40,15 +40,9 @@ namespace Supremacy.Scripting
         }
 
         [ConstructorArgument("parameter")]
-        public ScriptParameter Parameter
-        {
-            get { return _parameter; }
-        }
+        public ScriptParameter Parameter => _parameter;
 
         [ConstructorArgument("value")]
-        public object Value
-        {
-            get { return _value; }
-        }
+        public object Value => _value;
     }
 }

@@ -62,28 +62,22 @@ namespace Supremacy.VFS
         /// <value>
         /// <c>true</c> if this file source is read only; otherwise, <c>false</c>.
         /// </value>
-	    public virtual bool IsReadOnly
-	    {
-            get { return true; }
-	    }
+	    public virtual bool IsReadOnly => true;
 
-	    private readonly CaseCultureStringComparer _stringComparer;
-		/// <summary>
-		/// Gets or sets the string comparer helper.
-		/// </summary>
-		/// <value>The string comparer.</value>
-		protected CaseCultureStringComparer StringComparer
-		{
-			get { return _stringComparer; }
-		}
+        private readonly CaseCultureStringComparer _stringComparer;
+        /// <summary>
+        /// Gets or sets the string comparer helper.
+        /// </summary>
+        /// <value>The string comparer.</value>
+        protected CaseCultureStringComparer StringComparer => _stringComparer;
 
-		/// <summary>
-		/// Gets or sets a value indicating whether this instance is case sensitive.
-		/// </summary>
-		/// <value>
-		/// 	<c>true</c> if this instance is case sensitive; otherwise, <c>false</c>.
-		/// </value>
-		public bool IsCaseSensitive
+        /// <summary>
+        /// Gets or sets a value indicating whether this instance is case sensitive.
+        /// </summary>
+        /// <value>
+        /// 	<c>true</c> if this instance is case sensitive; otherwise, <c>false</c>.
+        /// </value>
+        public bool IsCaseSensitive
 		{
 			get { return _stringComparer.IsCaseSensitive; }
 			set { _stringComparer.IsCaseSensitive = value; }
@@ -101,26 +95,20 @@ namespace Supremacy.VFS
 			set { _stringComparer.IsInvariantCulture = value; }
 		}
 
-		/// <summary>
-		/// Gets the current culture.
-		/// </summary>
-		/// <value>The current culture.</value>
-		public CultureInfo CultureInfo
-		{
-			get { return _stringComparer.CultureInfo; }
-		}
+        /// <summary>
+        /// Gets the current culture.
+        /// </summary>
+        /// <value>The current culture.</value>
+        public CultureInfo CultureInfo => _stringComparer.CultureInfo;
 
-		private readonly Dictionary<string, string> _definedPaths;
-		/// <summary>
-		/// Gets the defined paths inside the source.
-		/// </summary>
-		/// <value>The defined paths.</value>
-		protected Dictionary<string, string> DefinedPaths
-		{
-			get { return _definedPaths; }
-		}
+        private readonly Dictionary<string, string> _definedPaths;
+        /// <summary>
+        /// Gets the defined paths inside the source.
+        /// </summary>
+        /// <value>The defined paths.</value>
+        protected Dictionary<string, string> DefinedPaths => _definedPaths;
 
-		private int _sleepTime = 10;
+        private int _sleepTime = 10;
 		/// <summary>
 		/// Gets or sets the sleep time when a request is blocked.
 		/// </summary>

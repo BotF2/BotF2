@@ -960,13 +960,7 @@ namespace Supremacy.Client.Controls
 
         // PUBLIC PROCEDURES
 
-        public static InfoCard CurrentInfoCard
-        {
-            get
-            {
-                return Current._currentInfoCard;
-            }
-        }
+        public static InfoCard CurrentInfoCard => Current._currentInfoCard;
 
         private InfoCard CreateInfoCard(DependencyObject obj)
         {

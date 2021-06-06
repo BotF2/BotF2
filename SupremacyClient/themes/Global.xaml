@@ -711,34 +711,37 @@
 
 
     <!-- Ter3Gradient -->
+    <!--old-->
+    <!--<GradientStop Color="#FFF1F23E" Offset="0" />-->
+    <!--<GradientStop Color="#FF767107" Offset="1" />-->
     <LinearGradientBrush x:Key="Ter3Gradient_TopLeft_BottomRight" StartPoint="0,0" EndPoint="1,1">
-        <GradientStop Color="#FFF1F23E" Offset="0" />
-        <GradientStop Color="#FF767107" Offset="1" />
+        <GradientStop Color="#FFffbc49" Offset="0" />
+        <GradientStop Color="#FFa94b1d" Offset="1" />
     </LinearGradientBrush>
 
     <LinearGradientBrush x:Key="Ter3Gradient_BottomLeft_TopRight" StartPoint="1,1" EndPoint="0,0">
-        <GradientStop Color="#FFF1F23E" Offset="0" />
-        <GradientStop Color="#FF767107" Offset="1" />
+        <GradientStop Color="#FFffbc49" Offset="0" />
+        <GradientStop Color="#FFa94b1d" Offset="1" />
     </LinearGradientBrush>
 
     <LinearGradientBrush x:Key="Ter3Gradient_Top_Bottom" StartPoint="0,0" EndPoint="0,1">
-        <GradientStop Color="#FFF1F23E" Offset="0" />
-        <GradientStop Color="#FF767107" Offset="1" />
+        <GradientStop Color="#FFffbc49" Offset="0" />
+        <GradientStop Color="#FFa94b1d" Offset="1" />
     </LinearGradientBrush>
 
     <LinearGradientBrush x:Key="Ter3Gradient_Bottom_Top" StartPoint="0,1" EndPoint="0,0">
-        <GradientStop Color="#FFF1F23E" Offset="0" />
-        <GradientStop Color="#FF767107" Offset="1" />
+        <GradientStop Color="#FFffbc49" Offset="0" />
+        <GradientStop Color="#FFa94b1d" Offset="1" />
     </LinearGradientBrush>
 
     <LinearGradientBrush x:Key="Ter3Gradient_Left_Right" StartPoint="0,0" EndPoint="1,0">
-        <GradientStop Color="#FFF1F23E" Offset="0" />
-        <GradientStop Color="#FF767107" Offset="1" />
+        <GradientStop Color="#FFffbc49" Offset="0" />
+        <GradientStop Color="#FFa94b1d" Offset="1" />
     </LinearGradientBrush>
 
     <LinearGradientBrush x:Key="Ter3Gradient_Right_Left" StartPoint="0,0" EndPoint="1,0">
-        <GradientStop Color="#FFF1F23E" Offset="1" />
-        <GradientStop Color="#FF767107" Offset="0" />
+        <GradientStop Color="#FFffbc49" Offset="1" />
+        <GradientStop Color="#FFa94b1d" Offset="0" />
     </LinearGradientBrush>
     <!--End of Gradient-->
 
@@ -2984,7 +2987,7 @@
                          Height="8"
                          Margin="3,0,0,0"
                          VerticalAlignment="Top"
-                         Fill="{StaticResource GrayGradient_Top_Bottom}" />
+                         Fill="{StaticResource Ter4Gradient_Top_Bottom}" />
 
                             <Rectangle x:Name="LeftCenterTopEdge"
                          Grid.Column="2"
@@ -2992,7 +2995,7 @@
                          Height="8"
                          Margin="3,0,3,0"
                          VerticalAlignment="Top"
-                         Fill="{StaticResource Ter4Gradient_Top_Bottom}" />
+                         Fill="{StaticResource GrayGradient_Top_Bottom}" />
 
                             <Rectangle x:Name="RightTopEdge"
                          Grid.Column="3"
@@ -3000,7 +3003,7 @@
                          Height="8"
                          Margin="0,0,3,0"
                          VerticalAlignment="Top"
-                         Fill="{StaticResource GrayGradient_Top_Bottom}" />
+                         Fill="{StaticResource Ter4Gradient_Top_Bottom}" />
 
                             <Rectangle x:Name="LeftEdge"
                          Grid.Column="0"
@@ -3008,7 +3011,7 @@
                          Width="8"
                          Margin="0,3,0,3"
                          HorizontalAlignment="Left"
-                         Fill="{StaticResource Ter4Gradient_Left_Right}" />
+                         Fill="{StaticResource Ter1Gradient_Top_Bottom}" />
 
                             <Rectangle x:Name="RightEdge"
                          Grid.Column="4"
@@ -3016,7 +3019,7 @@
                          Width="8"
                          Margin="0,3,0,3"
                          HorizontalAlignment="Right"
-                         Fill="{StaticResource Ter4Gradient_Right_Left}" />
+                         Fill="{StaticResource Ter1Gradient_Top_Bottom}" />
 
                             <Rectangle x:Name="LeftBottomEdge"
                          Grid.Column="1"
@@ -3024,7 +3027,7 @@
                          Height="8"
                          Margin="3,0,0,0"
                          VerticalAlignment="Bottom"
-                         Fill="{StaticResource Ter4Gradient_Top_Bottom}" />
+                         Fill="{StaticResource GrayGradient_Top_Bottom}" />
 
                             <Rectangle x:Name="CenterBottomEdge"
                          Grid.Column="2"
@@ -3032,7 +3035,7 @@
                          Height="8"
                          Margin="3,0,3,0"
                          VerticalAlignment="Bottom"
-                         Fill="{StaticResource Ter2Gradient_Top_Bottom}" />
+                         Fill="{StaticResource Ter3Gradient_Top_Bottom}" />
 
                             <Rectangle x:Name="RightBottomEdge"
                          Grid.Column="3"
@@ -3040,7 +3043,7 @@
                          Height="8"
                          Margin="0,0,3,0"
                          VerticalAlignment="Bottom"
-                         Fill="{StaticResource Ter4Gradient_Top_Bottom}" />
+                         Fill="{StaticResource GrayGradient_Top_Bottom}" />
 
                             <ContentPresenter Grid.Column="1"
                                 Grid.ColumnSpan="3"
@@ -3683,7 +3686,7 @@
     <Setter Property="OverridesDefaultStyle" Value="True" />
     <Setter Property="Background" Value="Transparent" />
     <Setter Property="Foreground" Value="{StaticResource DefaultTextBrush}" />
-    <Setter Property="BorderBrush" Value="{StaticResource BlueGradient_Top_Bottom}" />
+    <Setter Property="BorderBrush" Value="{StaticResource {x:Static scc:ClientResources.ImageBorderBrushKey}}" />
     <Setter Property="BorderThickness" Value="2" />
     <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto" />
     <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto" />

@@ -1212,6 +1212,7 @@ namespace Supremacy.Game
                 GameLog.Core.Combat.DebugFormat("---- COMBAT OCCURED GameEngine --------------------");
                 OnCombatOccurring(combat);
                 CombatReset.WaitOne();
+
             }
 
             foreach (var invasion in invasions)
@@ -1274,10 +1275,15 @@ namespace Supremacy.Game
                         /*
                          * If there is not enough food to feed the population, we need to kill off some of the
                          * population due to starvation.  Otherwise, we increase the population according to the
-                         * growth rate iff we did not suffer a loss due to starvation during the previous turn.
+                         * growth rate if we did not suffer a loss due to starvation during the previous turn.
                          * We want to ensure that there is a 1-turn period between population loss and recovery.
                          */
+                        //if (colony.Name == "Ledos")
+                        //    ; // ddd;
+
                         var growthRate = colony.GrowthRate;
+
+
                         if (foodDeficit < 0)
                         {
                             popChange = -(int)Math.Floor(0.1 * Math.Sqrt(Math.Abs(colony.Population.CurrentValue * foodDeficit)));
@@ -1362,13 +1368,15 @@ namespace Supremacy.Game
                         return;
 
                     int researchGained = (int)(scienceShip.ShipDesign.ScanStrength * scienceShip.ShipDesign.ScienceAbility);
-                // works GameLog.Core.Research.DebugFormat("Turn {3}: Base research gained for {0} {1} is {2}",
+                    researchGained += 1;
+
+                    // works GameLog.Core.Research.DebugFormat("Turn {3}: Base research gained for {0} {1} is {2}",
                     //scienceShip.ObjectID, scienceShip.Name, researchGained, GameContext.Current.TurnNumber);
 
-            switch (starType)
+                    switch (starType)
                     {
                         case StarType.Nebula:
-                            researchGained *= 5;  // multiplied with 5
+                            researchGained *= 20;  // multiplied with 5
                             break;
                         case StarType.Blue:
                         case StarType.Orange:
@@ -1397,6 +1405,9 @@ namespace Supremacy.Game
                             researchGained = 1;
                             break;
                     }
+
+                    
+                    
 
                     GameContext.Current.CivilizationManagers[scienceShip.Owner].Research.UpdateResearch(researchGained);
 
@@ -1861,11 +1872,12 @@ namespace Supremacy.Game
                         colony.HandlePF();
 
                         GameLog.Core.Production.DebugFormat("--------------------------------------------------------------");
-                        GameLog.Core.Production.DebugFormat("Turn {0}: {1} undone colonies = {4}, Credits = {2} - DoProduction for Colony {3}"
+                        GameLog.Core.Production.DebugFormat("Turn {0}: {1} undone colonies = {5}, Credits = {2}, Health = {4} - DoProduction for Colony {3}"
                             , GameContext.Current.TurnNumber
                             , civ.Key 
                             , civManager.Credits
                             , colony.Name
+                            , colony.Health
                             , _coloniesToDo
                             ); // last = 4
 
@@ -1951,7 +1963,7 @@ namespace Supremacy.Game
                                 };
                                 civManager.Credits.AdjustCurrent(colony.BuildSlots[0].Project.GetTotalCreditsCost());
                                 colony.BuildSlots[0].Project.Advance(ref tmpIndustry, tmpResources);
-                                GameLog.Core.Production.DebugFormat("Turn {4}: BUY: {0} credits applied to {1} on {2} ({3})",
+                                GameLog.Core.ProductionDetails.DebugFormat("Turn {4}: BUY: {0} credits applied to {1} on {2} ({3})",
                                     tmpIndustry,
                                     colony.BuildSlots[0].Project.BuildDesign.Name,
                                     colony.Name,
@@ -1977,7 +1989,7 @@ namespace Supremacy.Game
                                 int dilithiumUsed = totalResourcesBefore[ResourceType.Dilithium] - totalResourcesAvailable[ResourceType.Dilithium];
                                 int rawMaterialsUsed = totalResourcesBefore[ResourceType.RawMaterials] - totalResourcesAvailable[ResourceType.RawMaterials];
 
-                                GameLog.Core.Production.DebugFormat(Environment.NewLine + "   Turn {5}: passing={6}, {7} industry, {0} deuterium, {1} dilithium, {2} duranium applied to project {3} on {4} {9}, {8} percent done" + Environment.NewLine
+                                GameLog.Core.ProductionDetails.DebugFormat(Environment.NewLine + "   Turn {5}: passing={6}, {7} industry, {0} deuterium, {1} dilithium, {2} duranium applied to project {3} on {4} {9}, {8} percent done" + Environment.NewLine
                                     , deuteriumUsed, dilithiumUsed, rawMaterialsUsed
                                     , colony.BuildSlots[0].Project, colony, GameContext.Current.TurnNumber
                                     , _colonyBuildProject_SameTurn, industry, colony.BuildSlots[0].Project.PercentComplete
@@ -1990,7 +2002,7 @@ namespace Supremacy.Game
 
                                 if (_colonyBuildProject_SameTurn > 4)
                                 {
-                                    GameLog.Core.Production.DebugFormat(Environment.NewLine + "   Turn {3}: Construction of {0} forced to be finished on {1} ({2})" + Environment.NewLine
+                                    GameLog.Core.ProductionDetails.DebugFormat(Environment.NewLine + "   Turn {3}: Construction of {0} forced to be finished on {1} ({2})" + Environment.NewLine
                                        , colony.BuildSlots[0].Project.BuildDesign.Name, colony.Name, civ.Name, GameContext.Current.TurnNumber);
                                     colony.BuildSlots[0].Project.Finish();
                                     colony.BuildSlots[0].Project = null;
@@ -2019,11 +2031,11 @@ namespace Supremacy.Game
                     }
                         else
                             //go on 
-                            GameLog.Core.Production.DebugFormat(string.Format("Turn {0}: DoProduction - BuildQueue*s* ot empty for {1} ({2})" + Environment.NewLine + "-----",
+                            GameLog.Core.ProductionDetails.DebugFormat(string.Format("Turn {0}: DoProduction - BuildQueue*s* not empty for {1} ({2})" + Environment.NewLine + "-----",
                             GameContext.Current.TurnNumber, colony.Name, civ.Name)); 
                         // above SitRep added if colony is finished and empty
 
-                        GameLog.Core.Production.DebugFormat(string.Format("Turn {0}: DoProduction DONE for {1} ({2})" + Environment.NewLine + "-----",
+                        GameLog.Core.ProductionDetails.DebugFormat(string.Format("Turn {0}: DoProduction DONE for {1} ({2})" + Environment.NewLine + "-----",
                             GameContext.Current.TurnNumber, colony.Name, civ.Name));
                         // continue as well if not finish
                         break;
@@ -2580,22 +2592,22 @@ namespace Supremacy.Game
             var allStations = GameContext.Current.Universe.Find<Station>(UniverseObjectType.Station);
             foreach (var station in allStations)
             {
-                string _rep = "Station at ";
-                _rep += station.Location + ": " + blank + station.ObjectID + blank + station.Name ;
+                string _rep = "Station " + station.ObjectID + " at ";
+                _rep += station.Location + ": " + blank + station.ObjectID + blank + station.Name + " (Maint.=" + station.Design.MaintenanceCost + ")";
 
                 var civManager = GameContext.Current.CivilizationManagers[station.OwnerID];
                 civManager.SitRepEntries.Add(new ShipStatusSitRepEntry(civManager.Civilization, station.Location, _rep));
             }
 
-            foreach (var fleet in allFleets)
+            foreach (Fleet fleet in allFleets)
             {
-                foreach (var ship in fleet.Ships)
+                foreach (Ship ship in fleet.Ships)
                 {
                     //if (!fleet.Route.IsEmpty) 
                     string _rep = "Ship ";
 
 
-                    _rep += ship.ObjectID + " at " + ship.Location + ": " /*+ " < " */+ ship.DesignName + " >" + blank + ship.Name + " > ";
+                    _rep += ship.ObjectID + " at " + ship.Location + ": " /*+ " < " */+ ship.DesignName + " (Maint.="+ ship.Design.MaintenanceCost + ") >" + blank + ship.Name + " > ";
                     _rep += blank + fleet.Order;
                     if (!fleet.Route.IsEmpty)
                     {
@@ -2605,8 +2617,8 @@ namespace Supremacy.Game
                         _rep += " # on the way to " + _aim.ToString() + " named " + _aimSector.Name;
                     }
 
-                var civManager = GameContext.Current.CivilizationManagers[ship.OwnerID];
-                var PlayerCivManager = GameContext.Current.CivilizationManagers[0];  // Federation - can be changed
+                    CivilizationManager civManager = GameContext.Current.CivilizationManagers[ship.OwnerID];
+                    CivilizationManager PlayerCivManager = GameContext.Current.CivilizationManagers[0];  // Federation - can be changed
 
                     // only own civilization
                     civManager.SitRepEntries.Add(new ShipStatusSitRepEntry(civManager.Civilization, ship.Location, _rep));
@@ -2762,7 +2774,15 @@ namespace Supremacy.Game
             if (combat == null)
                 throw new ArgumentNullException("combat");
 
+            for (int i = 0; i < combat.Count(); i++)
+            {
+                string _report = "Combat: ";
+                var civManager = GameContext.Current.CivilizationManagers[combat[i].OwnerID];
+                civManager.SitRepEntries.Add(new CombatSummarySitRepEntry(combat[i].Owner, combat[i].Location, _report)); 
+            }
+
             CombatOccurring?.Invoke(combat);
+
         }
         #endregion
 

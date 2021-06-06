@@ -53,10 +53,7 @@ namespace Supremacy.Text
             }
         }
 
-        public RichText RichText
-        {
-            get { return _richText; }
-        }
+        public RichText RichText => _richText;
 
         public RichString(int offset, int length, TextStyle style, RichText richtext)
         {

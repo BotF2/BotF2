@@ -83,64 +83,43 @@ namespace Supremacy.Tech
         /// Gets the subset of building designs in this <see cref="TechDatabase"/>.
         /// </summary>
         /// <value>The building designs.</value>
-        public TechObjectDesignMap<BuildingDesign> BuildingDesigns
-        {
-            get { return _buildingDesigns; }
-        }
+        public TechObjectDesignMap<BuildingDesign> BuildingDesigns => _buildingDesigns;
 
         /// <summary>
         /// Gets the subset of shipyard designs in this <see cref="TechDatabase"/>.
         /// </summary>
         /// <value>The shipyard designs.</value>
-        public TechObjectDesignMap<ShipyardDesign> ShipyardDesigns
-        {
-            get { return _shipyardDesigns; }
-        }
+        public TechObjectDesignMap<ShipyardDesign> ShipyardDesigns => _shipyardDesigns;
 
         /// <summary>
         /// Gets the subset of ship designs in this <see cref="TechDatabase"/>.
         /// </summary>
         /// <value>The ship designs.</value>
-        public TechObjectDesignMap<ShipDesign> ShipDesigns
-        {
-            get { return _shipDesigns; }
-        }
+        public TechObjectDesignMap<ShipDesign> ShipDesigns => _shipDesigns;
 
         /// <summary>
         /// Gets the subset of station designs in this <see cref="TechDatabase"/>.
         /// </summary>
         /// <value>The station designs.</value>
-        public TechObjectDesignMap<StationDesign> StationDesigns
-        {
-            get { return _stationDesigns; }
-        }
+        public TechObjectDesignMap<StationDesign> StationDesigns => _stationDesigns;
 
         /// <summary>
         /// Gets the subset of facility designs in this <see cref="TechDatabase"/>.
         /// </summary>
         /// <value>The facility designs.</value>
-        public TechObjectDesignMap<ProductionFacilityDesign> ProductionFacilityDesigns
-        {
-            get { return _productionFacilityDesigns; }
-        }
+        public TechObjectDesignMap<ProductionFacilityDesign> ProductionFacilityDesigns => _productionFacilityDesigns;
 
         /// <summary>
         /// Gets the subset of orbital battery designs in this <see cref="TechDatabase"/>.
         /// </summary>
         /// <value>The orbital battery designs.</value>
-        public TechObjectDesignMap<OrbitalBatteryDesign> OrbitalBatteryDesigns
-        {
-            get { return _orbitalBatteryDesigns; }
-        }
+        public TechObjectDesignMap<OrbitalBatteryDesign> OrbitalBatteryDesigns => _orbitalBatteryDesigns;
 
         /// <summary>
         /// Gets the dictionary that maps the designs' unique keys to design IDs.
         /// </summary>
         /// <value>The design ID map.</value>
-        public IDictionary<string, int> DesignIdMap
-        {
-            get { return _designIdMap; }
-        }
+        public IDictionary<string, int> DesignIdMap => _designIdMap;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TechDatabase"/> class.

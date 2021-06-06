@@ -59,10 +59,7 @@ namespace Supremacy.Orbitals
         /// <remarks>
         /// An orbital is manned if it has a crew size greater than zero.
         /// </remarks>
-        public bool IsManned
-        {
-            get { return (_crewSize > 0); }
-        }
+        public bool IsManned => (_crewSize > 0);
 
         /// <summary>
         /// Gets or sets the hull strength.
@@ -110,10 +107,7 @@ namespace Supremacy.Orbitals
         /// <value>
         /// <c>true</c> if this <see cref="OrbitalDesign"/> is combatant; otherwise, <c>false</c>.
         /// </value>
-        public virtual bool IsCombatant
-        {
-            get { return _primaryWeapon.Count + _secondaryWeapon.Count > 0; }
-        }
+        public virtual bool IsCombatant => _primaryWeapon.Count + _secondaryWeapon.Count > 0;
 
         /// <summary>
         /// Gets string ShipType from TechObjectDatabase.xml <see cref="OrbitalDesign"/> ShipType.

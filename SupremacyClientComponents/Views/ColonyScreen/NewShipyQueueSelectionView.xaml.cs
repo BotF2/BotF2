@@ -70,13 +70,7 @@ namespace Supremacy.Client.Views
         }
         #endregion
 
-        public string ShipQueueFunctionPath
-        {
-            get
-            {
-                return "vfs:///Resources/UI/" + Context.DesignTimeAppContext.Instance.LocalPlayerEmpire.Civilization.Key + "/ColonyScreen/Ship_Functions.png";
-            }
-        }
+        public string ShipQueueFunctionPath => "vfs:///Resources/UI/" + Context.DesignTimeAppContext.Instance.LocalPlayerEmpire.Civilization.Key + "/ColonyScreen/Ship_Functions.png";
 
         private void CanExecuteAcceptCommand(object sender, CanExecuteRoutedEventArgs e)
         {

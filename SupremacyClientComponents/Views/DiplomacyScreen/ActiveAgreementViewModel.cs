@@ -59,10 +59,7 @@ namespace Supremacy.Client.Views
             UpdateDescription();
         }
 
-        public ReadOnlyObservableCollection<DiplomacyMessageElement> Elements
-        {
-            get { return _elementsView; }
-        }
+        public ReadOnlyObservableCollection<DiplomacyMessageElement> Elements => _elementsView;
 
         #region StartTurn Property
 

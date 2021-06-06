@@ -309,15 +309,9 @@ namespace Supremacy.Data
             throw new Exception("The method or operation is not implemented.");
         }
 
-        public int Count
-        {
-            get { throw new Exception("The method or operation is not implemented."); }
-        }
+        public int Count => throw new Exception("The method or operation is not implemented.");
 
-        public bool IsReadOnly
-        {
-            get { throw new Exception("The method or operation is not implemented."); }
-        }
+        public bool IsReadOnly => throw new Exception("The method or operation is not implemented.");
 
         public bool Remove(Table item)
         {

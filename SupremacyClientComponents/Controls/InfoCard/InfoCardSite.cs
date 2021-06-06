@@ -249,17 +249,11 @@ namespace Supremacy.Client.Controls
         #region Properties
 
         #region HasOpenInfoCards Property
-        public bool HasOpenInfoCards
-        {
-            get { return _openInfoCards.Any(); }
-        }
+        public bool HasOpenInfoCards => _openInfoCards.Any();
         #endregion
 
         #region OpenInfoCards Property
-        public ReadOnlyInfoCardCollection OpenInfoCards
-        {
-            get { return _openInfoCards; }
-        }
+        public ReadOnlyInfoCardCollection OpenInfoCards => _openInfoCards;
         #endregion
 
         #region CanInfoCardsPin Property
@@ -322,10 +316,7 @@ namespace Supremacy.Client.Controls
         #endregion
 
         #region InfoCards Property
-        public InfoCardCollection InfoCards
-        {
-            get { return _infoCards; }
-        }
+        public InfoCardCollection InfoCards => _infoCards;
         #endregion
 
         #region ActiveInfoCard Property
@@ -858,10 +849,7 @@ namespace Supremacy.Client.Controls
         #endregion
 
         #region Visual Child Enumeration
-        protected override int VisualChildrenCount
-        {
-            get { return base.VisualChildrenCount + 1; }
-        }
+        protected override int VisualChildrenCount => base.VisualChildrenCount + 1;
 
         protected override Visual GetVisualChild(int index)
         {

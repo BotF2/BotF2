@@ -59,10 +59,7 @@ namespace Supremacy.Entities
         /// Gets the display name of this <see cref="Race"/>.
         /// </summary>
         /// <value>The display name.</value>
-        public string Name
-        {
-            get { return PluralName; }
-        }
+        public string Name => PluralName;
 
         /// <summary>
         /// Gets or sets the description of this <see cref="Race"/>.
@@ -91,10 +88,7 @@ namespace Supremacy.Entities
             set { _combatEffectiveness = value; }
         }
 
-        public PlanetTypeFlags HabitablePlanetTypes
-        {
-            get { return _habitablePlanetTypes; }
-        }
+        public PlanetTypeFlags HabitablePlanetTypes => _habitablePlanetTypes;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Race"/> class.
@@ -206,10 +200,7 @@ namespace Supremacy.Entities
         /// Gets the heading displayed in the Encyclopedia index.
         /// </summary>
         /// <value>The heading.</value>
-        public string EncyclopediaHeading
-        {
-            get { return ResourceManager.GetString(PluralName); }
-        }
+        public string EncyclopediaHeading => ResourceManager.GetString(PluralName);
 
         /// <summary>
         /// Gets the text displayed in the Encyclopedia entry.
@@ -264,19 +255,13 @@ namespace Supremacy.Entities
         /// Gets the image displayed in the Encyclopedia entry.
         /// </summary>
         /// <value>The image.</value>
-        public string EncyclopediaImage
-        {
-            get { return ImagePath; }
-        }
+        public string EncyclopediaImage => ImagePath;
 
         /// <summary>
         /// Gets the encyclopedia category under which the entry appears.
         /// </summary>
         /// <value>The encyclopedia category.</value>
-        public EncyclopediaCategory EncyclopediaCategory
-        {
-            get { return EncyclopediaCategory.Races; }
-        }
+        public EncyclopediaCategory EncyclopediaCategory => EncyclopediaCategory.Races;
 
         #endregion
 

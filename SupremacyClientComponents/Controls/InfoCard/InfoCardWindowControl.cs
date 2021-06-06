@@ -81,20 +81,11 @@ namespace Supremacy.Client.Controls
             remove { PopupWindowClosedEvent -= value; }
         }
 
-        public InfoCardSite InfoCardSite
-        {
-            get { return InfoCardHost.InfoCardSite; }
-        }
+        public InfoCardSite InfoCardSite => InfoCardHost.InfoCardSite;
 
-        public bool IsClosing
-        {
-            get { return _isClosing; }
-        }
+        public bool IsClosing => _isClosing;
 
-        public Point Location
-        {
-            get { return new Point(Left, Top); }
-        }
+        public Point Location => new Point(Left, Top);
 
         event EventHandler IInfoCardWindow.LocationChanged
         {

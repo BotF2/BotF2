@@ -55,10 +55,7 @@ namespace Supremacy.Universe
         /// Gets the map location of this <see cref="Sector"/>.
         /// </summary>
         /// <value>The map location.</value>
-        public MapLocation Location
-        {
-            get { return _location; }
-        }
+        public MapLocation Location => _location;
 
         /// <summary>
         /// Gets the system located in this <see cref="Sector"/>.
@@ -145,19 +142,13 @@ namespace Supremacy.Universe
         /// Gets a value indicating whether this <see cref="Sector"/> is owned.
         /// </summary>
         /// <value><c>true</c> if this <see cref="Sector"/> is owned; otherwise, <c>false</c>.</value>
-        public bool IsOwned
-        {
-            get { return (Owner != null); }
-        }
+        public bool IsOwned => (Owner != null);
 
         /// <summary>
         /// Gets the owner of this <see cref="Sector"/>.
         /// </summary>
         /// <value>The owner.</value>
-        public Civilization Owner
-        {
-            get { return this.GetOwner(); }
-        }
+        public Civilization Owner => this.GetOwner();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Sector"/> class.

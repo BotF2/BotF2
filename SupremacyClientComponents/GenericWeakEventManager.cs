@@ -281,10 +281,7 @@ namespace Supremacy.Client
                 _eventDescriptor.RemoveEventHandler(target, _handlerDelegate);
             }
 
-            internal bool IsEmpty
-            {
-                get { return _listeners.IsEmpty; }
-            }
+            internal bool IsEmpty => _listeners.IsEmpty;
         }
     }
 }

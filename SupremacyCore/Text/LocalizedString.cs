@@ -32,10 +32,7 @@ namespace Supremacy.Text
             }
         }
 
-        public LocalizedStringValueCollection Values
-        {
-            get { return _values; }
-        }
+        public LocalizedStringValueCollection Values => _values;
 
         public string LocalText
         {

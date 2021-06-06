@@ -88,10 +88,7 @@ namespace Supremacy.Economy
             }
         }
 
-        protected override string DefaultImageSubFolder
-        {
-            get { return "ProductionFacilities/"; }
-        }
+        protected override string DefaultImageSubFolder => "ProductionFacilities/";
 
         /// <summary>
         /// Appends the XML data for this instance.
@@ -150,9 +147,6 @@ namespace Supremacy.Economy
         /// Gets the encyclopedia category under which the entry appears.
         /// </summary>
         /// <value>The encyclopedia category.</value>
-        public override EncyclopediaCategory EncyclopediaCategory
-        {
-            get { return EncyclopediaCategory.Buildings; }
-        }
+        public override EncyclopediaCategory EncyclopediaCategory => EncyclopediaCategory.Buildings;
     }
 }

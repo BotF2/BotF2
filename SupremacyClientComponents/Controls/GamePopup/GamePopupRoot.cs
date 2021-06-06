@@ -56,10 +56,7 @@ namespace Supremacy.Client.Controls
             Initialize();
         }
 
-        internal GamePopup Popup
-        {
-            get { return _popup; }
-        }
+        internal GamePopup Popup => _popup;
 
         protected override void OnRenderSizeChanged(SizeChangedInfo sizeInfo)
         {
@@ -268,10 +265,7 @@ namespace Supremacy.Client.Controls
             set { _transformDecorator.LayoutTransform = value; }
         }
 
-        protected override int VisualChildrenCount
-        {
-            get { return 1; }
-        }
+        protected override int VisualChildrenCount => 1;
 
         public override void OnApplyTemplate()
         {
@@ -280,10 +274,7 @@ namespace Supremacy.Client.Controls
             _mainContainer = GetTemplateChild("PART_MainContainer") as DockPanel;
         }
 
-        private Thickness MainContainerMargin
-        {
-            get { return _mainContainer != null ? _mainContainer.Margin : ZeroThickness; }
-        }
+        private Thickness MainContainerMargin => _mainContainer != null ? _mainContainer.Margin : ZeroThickness;
 
         internal void SetPosition(PlacementMode preferedPlacement, UIElement placementTarget, Point mousePosition, bool secondSetPositionCall = false)
         {

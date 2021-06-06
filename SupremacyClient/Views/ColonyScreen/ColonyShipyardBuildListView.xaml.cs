@@ -33,9 +33,6 @@ namespace Supremacy.Client.Views
                 command.Execute(selectedProject);
         }
 
-        private ColonyScreenPresentationModel PresentationModel
-        {
-            get { return DataContext as ColonyScreenPresentationModel; }
-        }
+        private ColonyScreenPresentationModel PresentationModel => DataContext as ColonyScreenPresentationModel;
     }
 }

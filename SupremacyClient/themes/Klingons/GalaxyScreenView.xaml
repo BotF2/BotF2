@@ -68,7 +68,8 @@
                     <DockPanel LastChildFill="True"
                      Grid.IsSharedSizeScope="True">
                         <DockPanel.Background>
-                            <ImageBrush Stretch="UniformToFill" ImageSource="vfs:///Resources/UI/Klingons/GalaxyScreen/Starmap.png">
+                            <ImageBrush Stretch="UniformToFill" ImageSource="vfs:///Resources/Images/UI/Backgrounds/Starmap.png">
+                                <!--<ImageBrush Stretch="UniformToFill" ImageSource="vfs:///Resources/UI/Borg/GalaxyScreen/Starmap.png">-->
                             </ImageBrush>
                         </DockPanel.Background>
             <Grid DockPanel.Dock="Top"
@@ -415,7 +416,7 @@
                              Grid.Row="0"
                              Height="28"
                              VerticalAlignment="Top"
-                             Fill="{StaticResource KlingYellow1Gradient_Right_Left}"
+                             Fill="{StaticResource Kling1Gradient_Right_Left}"
                              Margin="7,0,0,0" />
                   <Rectangle Grid.Column="3"
                              Grid.Row="0"
@@ -536,7 +537,21 @@
                                    Source="{DynamicResource Scrap_Indicator_Glyph}"
                                    Visibility="Hidden"
                                    IsHitTestVisible="False" />
-                          </Border>
+                                                        <Border.ToolTip>
+                                                            <Border x:Name="ImageToolTipBorder"
+                                        Grid.Column="0"
+                                        VerticalAlignment="Center"
+                                        BorderBrush="{StaticResource HeaderTextBrush}"
+                                        BorderThickness="2"
+                                        CornerRadius="4"
+                                        Width="1152"
+                                        Height="960">
+                                                                <Border.Background>
+                                                                    <ImageBrush ImageSource="{Binding Path=SelectedSectorStation.StationImage, Mode=OneWay}" />
+                                                                </Border.Background>
+                                                            </Border>
+                                                        </Border.ToolTip>
+                                                    </Border>
                           <TextBlock>
                             <TextBlock Foreground="{StaticResource HeaderTextBrush}"
                                        FontSize="14"
@@ -733,6 +748,57 @@
                                             </Button.ToolTip>
                                         </Button>
 
+                                        <Button  Margin="0,0,3,0" MinWidth="30" x:Name="Center1Button"
+                            Command="{x:Static scc:GalaxyScreenCommands.CenterOn1}"                                                 
+                            Style="{StaticResource LCARS_BorderButtonStyle}"
+                            Content="{s:StringResource Key=CENTER_1_BUTTON_TEXT, Case=Upper}"
+                                            >
+                                            <Button.ToolTip>
+                                                <ToolTip>
+                                                    <TextBlock FontSize="20" Text="{s:StringResource CENTER_1_BUTTON_TOOLTIP}"
+                                                        FontFamily="{DynamicResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"/>
+                                                </ToolTip>
+                                            </Button.ToolTip>
+                                        </Button>
+
+                                        <Button  Margin="0,0,3,0" MinWidth="30" x:Name="Center2Button"
+                            Command="{x:Static scc:GalaxyScreenCommands.CenterOn2}"                                                 
+                            Style="{StaticResource LCARS_BorderButtonStyle}"
+                            Content="{s:StringResource Key=CENTER_2_BUTTON_TEXT, Case=Upper}"
+                                            >
+                                            <Button.ToolTip>
+                                                <ToolTip>
+                                                    <TextBlock FontSize="20" Text="{s:StringResource CENTER_2_BUTTON_TOOLTIP}"
+                                                        FontFamily="{DynamicResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"/>
+                                                </ToolTip>
+                                            </Button.ToolTip>
+                                        </Button>
+
+                                        <Button  Margin="0,0,3,0" MinWidth="30" x:Name="Center3Button"
+                            Command="{x:Static scc:GalaxyScreenCommands.CenterOn3}"                                                 
+                            Style="{StaticResource LCARS_BorderButtonStyle}"
+                            Content="{s:StringResource Key=CENTER_3_BUTTON_TEXT, Case=Upper}"
+                                            >
+                                            <Button.ToolTip>
+                                                <ToolTip>
+                                                    <TextBlock FontSize="20" Text="{s:StringResource CENTER_3_BUTTON_TOOLTIP}"
+                                                        FontFamily="{DynamicResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"/>
+                                                </ToolTip>
+                                            </Button.ToolTip>
+                                        </Button>
+
+                                        <Button  Margin="0,0,3,0" MinWidth="30" x:Name="Center4Button"
+                            Command="{x:Static scc:GalaxyScreenCommands.CenterOn4}"                                                 
+                            Style="{StaticResource LCARS_BorderButtonStyle}"
+                            Content="{s:StringResource Key=CENTER_4_BUTTON_TEXT, Case=Upper}"
+                                            >
+                                            <Button.ToolTip>
+                                                <ToolTip>
+                                                    <TextBlock FontSize="20" Text="{s:StringResource CENTER_4_BUTTON_TOOLTIP}"
+                                                        FontFamily="{DynamicResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"/>
+                                                </ToolTip>
+                                            </Button.ToolTip>
+                                        </Button>
 
                                     </StackPanel>
 

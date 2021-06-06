@@ -160,10 +160,7 @@ namespace Supremacy.Client.Controls
             Close();
         }
 
-        public InfoCardSite InfoCardSite
-        {
-            get { return InfoCardHost.InfoCardSite; }
-        }
+        public InfoCardSite InfoCardSite => InfoCardHost.InfoCardSite;
 
 
         public Point Location

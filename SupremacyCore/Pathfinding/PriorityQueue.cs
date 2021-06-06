@@ -44,10 +44,7 @@ namespace Supremacy.Pathfinding
             return v;
         }
 
-        public bool IsEmpty
-        {
-            get { return !_list.Any(); }
-        }
+        public bool IsEmpty => !_list.Any();
     }
 
     //[Serializable]

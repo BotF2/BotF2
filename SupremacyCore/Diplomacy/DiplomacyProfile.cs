@@ -42,10 +42,7 @@ namespace Supremacy.Diplomacy
             }
         }
 
-        public RelationshipMemoryWeightCollection MemoryWeights
-        {
-            get { return _memoryWeights; }
-        }
+        public RelationshipMemoryWeightCollection MemoryWeights => _memoryWeights;
 
         protected override void BeginInitCore()
         {
@@ -141,10 +138,7 @@ namespace Supremacy.Diplomacy
             }
         }
 
-        public DiplomacyProfileCollection CivilizationProfiles
-        {
-            get { return _civilizationProfiles; }
-        }
+        public DiplomacyProfileCollection CivilizationProfiles => _civilizationProfiles;
 
         public static DiplomacyDatabase Load()
         {

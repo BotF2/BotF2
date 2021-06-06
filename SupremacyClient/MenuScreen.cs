@@ -55,9 +55,9 @@ namespace Supremacy.Client
         }
         #endregion
 
-        public AsteroidsView MenuAnimation { get { return _MenuAnimation; } }
+        public AsteroidsView MenuAnimation => _MenuAnimation;
 
-        public Animation Animation { get { return _Animation; } }
+        public Animation Animation => _Animation;
 
         public MenuScreen([NotNull] IUnityContainer container) : base(container)
         {

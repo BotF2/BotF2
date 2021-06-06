@@ -19,14 +19,8 @@ namespace Supremacy.Client
             _newValue = newValue;
         }
 
-        public T NewValue
-        {
-            get { return _newValue; }
-        }
+        public T NewValue => _newValue;
 
-        public T OldValue
-        {
-            get { return _oldValue; }
-        }
+        public T OldValue => _oldValue;
     }
 }

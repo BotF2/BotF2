@@ -27,9 +27,6 @@ namespace Supremacy.Client.OptionsPages
             }
         }
 
-        public string Header
-        {
-            get { return _resourceManager.GetString("SETTINGS_TRACES_TAB"); }
-        }
+        public string Header => _resourceManager.GetString("SETTINGS_TRACES_TAB");
     }
 }

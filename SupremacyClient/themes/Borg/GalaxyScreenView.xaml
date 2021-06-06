@@ -67,8 +67,9 @@
                 <DockPanel LastChildFill="True"
                      Grid.IsSharedSizeScope="True">
                     <DockPanel.Background>
-                        <ImageBrush Stretch="UniformToFill" ImageSource="vfs:///Resources/UI/Borg/GalaxyScreen/Starmap.png">
-                        </ImageBrush>
+                        <ImageBrush Stretch="UniformToFill" ImageSource="vfs:///Resources/Images/UI/Backgrounds/Starmap.png">
+                                <!--<ImageBrush Stretch="UniformToFill" ImageSource="vfs:///Resources/UI/Borg/GalaxyScreen/Starmap.png">-->
+                                </ImageBrush>
                     </DockPanel.Background>
               <Grid DockPanel.Dock="Top"
                   Margin="6,6,6,4">
@@ -144,18 +145,33 @@
                   <!--Cube End-->
                   
                   <!--Begin of Empty rectangle - Dark Green Border-->
-                   <Border x:Name="BottomLeftBorder"
+                   <!--<Border x:Name="BottomLeftBorder"
                       Grid.Column="1"
                       Grid.Row="1"
                       Background="Transparent"
                       Padding="14,0,14,0"
                       Margin="3,4,0,0"
                       BorderBrush="DarkGreen"
-                      BorderThickness="2"   />
+                      BorderThickness="2"   />-->
                    <!--End of Empty rectangle - Dark Green Border-->
 
+                            <!--<Ellipse Grid.Row="1" Grid.Column="1" Height="28" Width="28" Fill="Green"  
+                                      VerticalAlignment="Center" HorizontalAlignment="Center"   
+                                      Opacity="0.3" StrokeThickness="4" Stroke="#1ffe36"/>
 
-                  <Border Grid.Column="2"
+                            <Ellipse Grid.Row="1" Grid.Column="1" Height="9" Width="9" Fill="#cce259"  
+                                       Canvas.Top="15" Canvas.Left="5" 
+                                      Opacity="0.6" StrokeThickness="2" Stroke="#1ffe36"/>
+
+                            <Ellipse Grid.Row="1" Grid.Column="1" Height="6" Width="6" Fill="Azure"  
+                                      VerticalAlignment="Center" HorizontalAlignment="Center"   
+                                      Opacity="0.6" StrokeThickness="2" Stroke="Goldenrod"/>-->
+
+                            <Path Grid.Column="1" Grid.Row="1" Width="28" Height="28" Margin="0,0,0,0"
+                      Data="F1 M 28,4 L 0,8 0,25 28,28 28,0 z" Stretch="Fill" Fill="{StaticResource Borg2Gradient_Left_Right}" />
+
+
+                            <Border Grid.Column="2"
                       Grid.Row="0"
                       Padding="14,0,14,0"
                       Margin="3,0,0,0"
@@ -239,40 +255,18 @@
                            Text="{Binding Path=HoveredSector, Mode=OneWay, Converter={StaticResource SectorScanStrengthConverter}}"
                            HorizontalAlignment="Center" />
                </Border>
-                            <Ellipse 
-                                         Grid.Column="6" 
-                                         Grid.Row="0"
-                                         VerticalAlignment="Center"
-                                         HorizontalAlignment="Center"
-                                         Height="28"
-                                         Width="28"
-                                         Fill="Green"
-                                         Opacity="0.3"
-                                         StrokeThickness="4"
-                                         Stroke="#1ffe36"/>
+                            <Ellipse Grid.Row="0" Grid.Column="6" Height="28" Width="28" Fill="Green"  
+                                      VerticalAlignment="Center" HorizontalAlignment="Center"   
+                                      Opacity="0.3" StrokeThickness="4" Stroke="#1ffe36"/>
 
-                            <Ellipse  
-                                         Grid.Column="6" 
-                                         Grid.Row="0"
-                                         Canvas.Top="15"
-                                         Canvas.Left="5"
-                                         Height="9"
-                                         Width="9"
-                                         Fill="#cce259"
-                                        Opacity="0.6"
-                                        StrokeThickness="2"
-                                         Stroke="#1fe336"/>
-                            <Ellipse  
-                                         Grid.Column="6" 
-                                         Grid.Row="0"
-                                         VerticalAlignment="Center"
-                                         HorizontalAlignment="Center"
-                                         Height="6"
-                                         Width="6"
-                                         Fill="Azure"
-                                         Opacity="0.6"
-                                         StrokeThickness="2"
-                                         Stroke="Goldenrod"/>
+                            <Ellipse Grid.Row="0" Grid.Column="6" Height="9" Width="9" Fill="#cce259"  
+                                       Canvas.Top="15" Canvas.Left="5" 
+                                      Opacity="0.6" StrokeThickness="2" Stroke="#1ffe36"/>
+
+                            <Ellipse Grid.Row="0" Grid.Column="6" Height="6" Width="6" Fill="Azure"  
+                                      VerticalAlignment="Center" HorizontalAlignment="Center"   
+                                      Opacity="0.6" StrokeThickness="2" Stroke="Goldenrod"/>
+
                             <Path Grid.Column="6" 
                                   Grid.Row="0" 
                                   Stroke="SpringGreen" 
@@ -415,58 +409,29 @@
                                 </ItemsControl>
 
                 </Border>
-                <Ellipse  Grid.Column="10"
-                          Grid.Row="0"
+                            <!--Start of Borg Drawing-->
 
-                                         VerticalAlignment="Center"
-                                         HorizontalAlignment="Center"
-                                         Height="28"
-                                         Width="28"
-                                         Fill="Green"
-                                         Opacity="0.3"
-                                         StrokeThickness="4"
-                                         Stroke="#1ffe36"/>
+                            <Ellipse Grid.Row="0" Grid.Column="10" Height="28" Width="28" Fill="Green"  
+                                      VerticalAlignment="Center" HorizontalAlignment="Center"   
+                                      Opacity="0.3" StrokeThickness="4" Stroke="#1ffe36"/>
 
-                            <Ellipse  
-                                         Grid.Column="10" 
-                                         Grid.Row="0"
-                                         Canvas.Top="15"
-                                         Canvas.Left="5"
-                                         Height="9"
-                                         Width="9"
-                                         Fill="#cce259"
-                                        Opacity="0.6"
-                                        StrokeThickness="2"
-                                         Stroke="#1fe336"/>
-                            <Ellipse  
-                                         Grid.Column="10" 
-                                         Grid.Row="0"
-                                         VerticalAlignment="Center"
-                                         HorizontalAlignment="Center"
-                                         Height="6"
-                                         Width="6"
-                                         Fill="Azure"
-                                         Opacity="0.6"
-                                         StrokeThickness="2"
-                                         Stroke="Goldenrod"/>
-                            <Path 
-                                         Grid.Column="10" 
-                                         Grid.Row="0"                                
-                                  Stroke="SpringGreen" 
-                                  StrokeThickness="2" 
-                                  Opacity="0.5" >
+                            <Ellipse Grid.Row="0" Grid.Column="10" Height="9" Width="9" Fill="#cce259"  
+                                       Canvas.Top="15" Canvas.Left="5" 
+                                      Opacity="0.6" StrokeThickness="2" Stroke="#1ffe36"/>
+
+                            <Ellipse Grid.Row="0" Grid.Column="10" Height="6" Width="6" Fill="Azure"  
+                                      VerticalAlignment="Center" HorizontalAlignment="Center"   
+                                      Opacity="0.6" StrokeThickness="2" Stroke="Goldenrod"/>
+                            <Path Grid.Row="0" Grid.Column="10"      
+                                  Opacity="0.5" StrokeThickness="2" Stroke="SpringGreen">        
                                 <Path.Data>
                                     <PathGeometry>
                                         <PathGeometry.Figures>
                                             <PathFigure StartPoint="0,1">
                                                 <PathFigure.Segments>
-                                                    <BezierSegment Point1="5,5"
-                                                            Point2="6,10"
-                                                            Point3="10,12"/>
+                                                    <BezierSegment Point1="5,5" Point2="6,10" Point3="10,12"/>
                                                     <LineSegment Point="14,14" />
-                                                    <BezierSegment Point1="14,18"
-                                                            Point2="26,20"
-                                                            Point3="28,25"/>
+                                                    <BezierSegment Point1="14,18" Point2="26,20" Point3="28,25"/>
                                                 </PathFigure.Segments>
                                             </PathFigure>
                                         </PathGeometry.Figures>
@@ -521,6 +486,8 @@
                                     </PathGeometry>
                                 </Path.Data>
                             </Path>
+
+                            <!--End of Borg Drawing-->
 
 
                             <!--Cube Beginn-->
@@ -800,7 +767,21 @@
                                    Source="{DynamicResource Scrap_Indicator_Glyph}"
                                    Visibility="Hidden"
                                    IsHitTestVisible="False" />
-                          </Border>
+                                                        <Border.ToolTip>
+                                                            <Border x:Name="ImageToolTipBorder"
+                                        Grid.Column="0"
+                                        VerticalAlignment="Center"
+                                        BorderBrush="{StaticResource HeaderTextBrush}"
+                                        BorderThickness="2"
+                                        CornerRadius="4"
+                                        Width="1000"
+                                        Height="840">
+                                                                <Border.Background>
+                                                                    <ImageBrush ImageSource="{Binding Path=SelectedSectorStation.StationImage, Mode=OneWay}" />
+                                                                </Border.Background>
+                                                            </Border>
+                                                        </Border.ToolTip>
+                                                    </Border>
                           <TextBlock>
                             <TextBlock Foreground="{StaticResource HeaderTextBrush}"
                                        FontSize="14"
@@ -1294,6 +1275,57 @@
                                             </Button.ToolTip>
                                         </Button>
 
+                                        <Button  Margin="0,0,3,0" MinWidth="30" x:Name="Center1Button"
+                            Command="{x:Static scc:GalaxyScreenCommands.CenterOn1}"                                                 
+                            Style="{StaticResource LCARS_BorderButtonStyle}"
+                            Content="{s:StringResource Key=CENTER_1_BUTTON_TEXT, Case=Upper}"
+                                            >
+                                            <Button.ToolTip>
+                                                <ToolTip>
+                                                    <TextBlock FontSize="20" Text="{s:StringResource CENTER_1_BUTTON_TOOLTIP}"
+                                                        FontFamily="{DynamicResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"/>
+                                                </ToolTip>
+                                            </Button.ToolTip>
+                                        </Button>
+
+                                        <Button  Margin="0,0,3,0" MinWidth="30" x:Name="Center2Button"
+                            Command="{x:Static scc:GalaxyScreenCommands.CenterOn2}"                                                 
+                            Style="{StaticResource LCARS_BorderButtonStyle}"
+                            Content="{s:StringResource Key=CENTER_2_BUTTON_TEXT, Case=Upper}"
+                                            >
+                                            <Button.ToolTip>
+                                                <ToolTip>
+                                                    <TextBlock FontSize="20" Text="{s:StringResource CENTER_2_BUTTON_TOOLTIP}"
+                                                        FontFamily="{DynamicResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"/>
+                                                </ToolTip>
+                                            </Button.ToolTip>
+                                        </Button>
+
+                                        <Button  Margin="0,0,3,0" MinWidth="30" x:Name="Center3Button"
+                            Command="{x:Static scc:GalaxyScreenCommands.CenterOn3}"                                                 
+                            Style="{StaticResource LCARS_BorderButtonStyle}"
+                            Content="{s:StringResource Key=CENTER_3_BUTTON_TEXT, Case=Upper}"
+                                            >
+                                            <Button.ToolTip>
+                                                <ToolTip>
+                                                    <TextBlock FontSize="20" Text="{s:StringResource CENTER_3_BUTTON_TOOLTIP}"
+                                                        FontFamily="{DynamicResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"/>
+                                                </ToolTip>
+                                            </Button.ToolTip>
+                                        </Button>
+
+                                        <Button  Margin="0,0,3,0" MinWidth="30" x:Name="Center4Button"
+                            Command="{x:Static scc:GalaxyScreenCommands.CenterOn4}"                                                 
+                            Style="{StaticResource LCARS_BorderButtonStyle}"
+                            Content="{s:StringResource Key=CENTER_4_BUTTON_TEXT, Case=Upper}"
+                                            >
+                                            <Button.ToolTip>
+                                                <ToolTip>
+                                                    <TextBlock FontSize="20" Text="{s:StringResource CENTER_4_BUTTON_TOOLTIP}"
+                                                        FontFamily="{DynamicResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"/>
+                                                </ToolTip>
+                                            </Button.ToolTip>
+                                        </Button>
 
                                     </StackPanel>
 

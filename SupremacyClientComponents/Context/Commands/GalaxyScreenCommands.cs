@@ -47,6 +47,10 @@ namespace Supremacy.Client.Commands
         public static readonly CompositeCommand SelectSector = new CompositeCommand();
         public static readonly CompositeCommand CenterOnSector = new CompositeCommand();
         public static readonly CompositeCommand CenterOnHomeSector = new CompositeCommand();
+        public static readonly CompositeCommand CenterOn1 = new CompositeCommand();
+        public static readonly CompositeCommand CenterOn2 = new CompositeCommand();
+        public static readonly CompositeCommand CenterOn3 = new CompositeCommand();
+        public static readonly CompositeCommand CenterOn4 = new CompositeCommand();
         public static readonly CompositeCommand ToggleTaskForceCloak = new CompositeCommand();
         public static readonly CompositeCommand ToggleTaskForceCamouflage = new CompositeCommand();
         public static readonly CompositeCommand IssueTaskForceOrder = new CompositeCommand();
@@ -60,20 +64,11 @@ namespace Supremacy.Client.Commands
         private readonly Ship _ship;
         private readonly Fleet _targetFleet;
 
-        public Ship Ship
-        {
-            get { return _ship; }
-        }
+        public Ship Ship => _ship;
 
-        public Fleet TargetFleet
-        {
-            get { return _targetFleet; }
-        }
+        public Fleet TargetFleet => _targetFleet;
 
-        public bool HasTargetFleet
-        {
-            get { return (_targetFleet != null); }
-        }
+        public bool HasTargetFleet => (_targetFleet != null);
 
         public RedeployShipCommandArgs([NotNull] Ship ship)
             : this(ship, null) { }
@@ -120,10 +115,7 @@ namespace Supremacy.Client.Commands
                 _scrap = false;
         }
 
-        public IIndexedCollection<TechObject> Objects
-        {
-            get { return _objects; }
-        }
+        public IIndexedCollection<TechObject> Objects => _objects;
 
         #region Implementation of ICheckableCommandParameter
         public event EventHandler InnerParameterChanged;

@@ -25,25 +25,13 @@ namespace Supremacy.Client.Views
             _children = new ObservableCollection<DiplomacyGraphNode>();
         }
 
-        public Civilization Civilization
-        {
-            get { return _civilization; }
-        }
+        public Civilization Civilization => _civilization;
 
-        public ICommand SelectNodeCommand
-        {
-            get { return _selectNodeCommand; }
-        }
+        public ICommand SelectNodeCommand => _selectNodeCommand;
 
-        public ObservableCollection<DiplomacyGraphNode> Children
-        {
-            get { return _children; }
-        }
+        public ObservableCollection<DiplomacyGraphNode> Children => _children;
 
-        public string ToolTip
-        {
-            get { return _civilization.ShortName; }
-        }
+        public string ToolTip => _civilization.ShortName;
 
         #region Implementation of INotifyPropertyChanged
 

@@ -7,10 +7,7 @@ namespace Supremacy.Threading
     {
         private static readonly Lazy<EventLoopScheduler> _clientEventLoop;
 
-        public static IScheduler ClientEventLoop
-        {
-            get { return _clientEventLoop.Value;}
-        }
+        public static IScheduler ClientEventLoop => _clientEventLoop.Value;
 
         static Scheduler()
         {

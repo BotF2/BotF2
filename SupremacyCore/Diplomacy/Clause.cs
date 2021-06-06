@@ -240,10 +240,7 @@ namespace Supremacy.Diplomacy
             }
         }
 
-        public bool IsDataInitialized
-        {
-            get { return _isDataInitialized.IsSet; }
-        }
+        public bool IsDataInitialized => _isDataInitialized.IsSet;
 
         void IClauseInternal.SetDataInitialized()
         {

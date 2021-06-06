@@ -39,10 +39,7 @@ namespace Supremacy.Client.Events
     {
         private readonly string _screenName;
 
-        public string ScreenName
-        {
-            get { return _screenName; }
-        }
+        public string ScreenName => _screenName;
 
         public ScreenActivatedEventArgs([NotNull] string screenName)
         {
@@ -171,10 +168,7 @@ namespace Supremacy.Client.Events
             _gameContext = gameContext;
         }
 
-        public IGameContext GameContext
-        {
-            get { return _gameContext; }
-        }
+        public IGameContext GameContext => _gameContext;
     }
 
     public class GameContextEventArgs<TData> : ClientDataEventArgs<TData>
@@ -192,10 +186,7 @@ namespace Supremacy.Client.Events
             _gameContext = gameContext;
         }
 
-        public IGameContext GameContext
-        {
-            get { return _gameContext; }
-        }
+        public IGameContext GameContext => _gameContext;
     }
 
     public sealed class ServerInitializationFailedEvent : CompositePresentationEvent<ClientEventArgs> { }

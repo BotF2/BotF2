@@ -30,14 +30,8 @@ namespace Supremacy.Client.Audio
         #region Properties
         public string Name { get; set; }
         public string Path { get; set; }
-        public List<MusicEntry> Entries
-        {
-            get { return _musicList; }
-        }
-        public Dictionary<string, MusicEntry> Dictionary
-        {
-            get { return _musicDict; }
-        }
+        public List<MusicEntry> Entries => _musicList;
+        public Dictionary<string, MusicEntry> Dictionary => _musicDict;
         #endregion
 
         #region Methods

@@ -37,15 +37,9 @@ namespace Supremacy.Effects
                    };
         }
 
-        public DynamicProperty TargetProperty
-        {
-            get { return _targetProperty; }
-        }
+        public DynamicProperty TargetProperty => _targetProperty;
 
-        public ScriptExpression ValueScript
-        {
-            get { return _valueScript.Value; }
-        }
+        public ScriptExpression ValueScript => _valueScript.Value;
 
         protected override EffectBinding BindCore(EffectGroupBinding effectGroupBinding, IEffectTarget effectTarget)
         {

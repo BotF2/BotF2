@@ -482,11 +482,7 @@ namespace Supremacy.Entities
         /// Gets or sets the traits of this <see cref="Civilization"/>.
         /// </summary>
         /// <value>The tech curve.</value>
-        public string Traits
-        {
-            get { return _traits; }
-            //set { _traits = value; }
-        }
+        public string Traits => _traits;
 
         /// <summary>
         /// Gets the <see cref="Civilization"/> this <see cref="Civilization"/>
@@ -515,10 +511,7 @@ namespace Supremacy.Entities
         /// <value>
         /// <c>true</c> if this <see cref="Civilization"/> is an empire; otherwise, <c>false</c>.
         /// </value>
-        public bool IsEmpire
-        {
-            get { return (_civType == CivilizationType.Empire); }
-        }
+        public bool IsEmpire => (_civType == CivilizationType.Empire);
 
         /// <summary>
         /// Gets a value indicating whether this <see cref="Civilization"/> can expand.
@@ -526,10 +519,7 @@ namespace Supremacy.Entities
         /// <value>
         /// <c>true</c> if this instance can expand; otherwise, <c>false</c>.
         /// </value>
-        public bool CanExpand
-        {
-            get { return (_civType != CivilizationType.MinorPower); }
-        }
+        public bool CanExpand => (_civType != CivilizationType.MinorPower);
 
         /// <summary>
         /// Gets or sets the primary race of this <see cref="Civilization"/>.
@@ -606,35 +596,23 @@ namespace Supremacy.Entities
         /// <summary>
         /// Returns this civilizations ship name prefix
         /// </summary>
-        public string ShipPrefix
-        {
-            get { return _shipPrefix; }
-        }
+        public string ShipPrefix => _shipPrefix;
 
         /// <summary>
         /// Return the base morale level for this civilization
         /// </summary>
-        public int BaseMoraleLevel
-        {
-            get { return _baseMoraleLevel; }
-        }
+        public int BaseMoraleLevel => _baseMoraleLevel;
 
         /// <summary>
         /// The morale drift rate for the civilization
         /// </summary>
-        public int MoraleDriftRate
-        {
-            get { return _moraleDriftRate; }
-        }
+        public int MoraleDriftRate => _moraleDriftRate;
 
         /// <summary>
         /// Gets the display name of this <see cref="Civilization"/>.
         /// </summary>
         /// <value>The display name.</value>
-        public string Name
-        {
-            get { return ShortName; }
-        }
+        public string Name => ShortName;
         #endregion
 
         #region Methods

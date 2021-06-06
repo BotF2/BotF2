@@ -15,9 +15,6 @@ namespace Supremacy.Collections
         protected WeakReference(T target)
             : base(target, false) { }
 
-        public new T Target
-        {
-            get { return (T)base.Target; }
-        }
+        public new T Target => (T)base.Target;
     }
 }

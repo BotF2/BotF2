@@ -23,24 +23,12 @@ namespace Supremacy.WCF
                       new EventLoopScheduler("ServerCallbackScheduler[" + player.Name + "]"));
         }
 
-        public Player Player
-        {
-            get { return _player; }
-        }
+        public Player Player => _player;
 
-        public ISupremacyCallback Callback
-        {
-            get { return _callback; }
-        }
+        public ISupremacyCallback Callback => _callback;
 
-        public OperationContext Session
-        {
-            get { return _session; }
-        }
+        public OperationContext Session => _session;
 
-        public IScheduler Scheduler
-        {
-            get { return _scheduler.Value; }
-        }
+        public IScheduler Scheduler => _scheduler.Value;
     }
 }

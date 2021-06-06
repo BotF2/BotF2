@@ -46,10 +46,7 @@ namespace Supremacy.Orbitals
         /// Gets the type of the UniverseObject.
         /// </summary>
         /// <value>The type of the UniverseObject.</value>
-        public sealed override UniverseObjectType ObjectType
-        {
-            get { return UniverseObjectType.Fleet; }
-        }
+        public sealed override UniverseObjectType ObjectType => UniverseObjectType.Fleet;
 
         /// <summary>
         /// Gets or sets the name of this <see cref="Fleet"/>.
@@ -218,10 +215,7 @@ namespace Supremacy.Orbitals
         /// <value>
         /// <c>true</c> if this <see cref="Fleet"/> is visible; otherwise, <c>false</c>.
         /// </value>
-        public bool IsVisible
-        {
-            get { return !_isInTow; }
-        }
+        public bool IsVisible => !_isInTow;
 
         /// <summary>
         /// Gets or sets a value indicating whether the list of ships in this <see cref="Fleet"/> is locked.
@@ -321,10 +315,7 @@ namespace Supremacy.Orbitals
         /// <value>
         /// <c>true</c> if this <see cref="Fleet"/> can move; otherwise, <c>false</c>.
         /// </value>
-        public override bool CanMove
-        {
-            get { return (Speed > 0); }
-        }
+        public override bool CanMove => (Speed > 0);
 
         /// <summary>
         /// Gets a value indicating whether this <see cref="Fleet"/> is stranded.
@@ -404,16 +395,9 @@ namespace Supremacy.Orbitals
         /// <value>
         /// <c>true</c> if this <see cref="Fleet"/> is combatant; otherwise, <c>false</c>.
         /// </value>
-        public bool IsCombatant
-        {
-            get { return Ships.Any(o => o.IsCombatant); }
-        }
+        public bool IsCombatant => Ships.Any(o => o.IsCombatant);
 
-        public bool IsBattleFleet
-        {
-            get
-            {
-                return !IsScout && !IsFastAttack && Ships.All(
+        public bool IsBattleFleet => !IsScout && !IsFastAttack && Ships.All(
                     o => o.IsCombatant &&
                          o.ShipType != ShipType.Colony &&
                          o.ShipType != ShipType.Construction &&
@@ -422,64 +406,26 @@ namespace Supremacy.Orbitals
                          o.ShipType != ShipType.Transport &&
                          o.ShipType != ShipType.Diplomatic &&
                          o.ShipType != ShipType.Spy);
-            }
-        }
 
-        public bool HasCommandShip
-        {
-            get { return Ships.Any(o => o.ShipType == ShipType.Command); }
-        }
+        public bool HasCommandShip => Ships.Any(o => o.ShipType == ShipType.Command);
 
-        public bool IsScout
-        {
-            get { return Ships.Count == 1 && Ships[0].ShipType == ShipType.Scout; }
-        }
+        public bool IsScout => Ships.Count == 1 && Ships[0].ShipType == ShipType.Scout;
 
-        public bool IsFastAttack
-        {
-            get { return Ships.Count == 1 && Ships[0].ShipType == ShipType.FastAttack; }
-        }
+        public bool IsFastAttack => Ships.Count == 1 && Ships[0].ShipType == ShipType.FastAttack;
 
-        public bool IsTransport
-        {
-            get { return Ships.Count == 1 && Ships[0].ShipType == ShipType.Transport; }
-        }
-        public bool IsColonizer
-        {
-            get { return Ships.Count == 1 && Ships[0].ShipType == ShipType.Colony; }
-        }
-        public bool MultiFleetHasAColonizer
-        {
-            get { return (Ships.Any(s => s.ShipType == ShipType.Colony) && Ships.Any(t => t.ShipType >= ShipType.FastAttack)); }
-        }
-        public bool IsConstructor
-        {
-            get { return Ships.Count == 1 && Ships[0].ShipType == ShipType.Construction; }
-        }
-        public bool MultiFleetHasAConstructor
-        {
-            get { return (Ships.Any(s =>s.ShipType == ShipType.Construction) && Ships.Any(t => t.ShipType >= ShipType.FastAttack)); }
-        }
+        public bool IsTransport => Ships.Count == 1 && Ships[0].ShipType == ShipType.Transport;
+        public bool IsColonizer => Ships.Count == 1 && Ships[0].ShipType == ShipType.Colony;
+        public bool MultiFleetHasAColonizer => (Ships.Any(s => s.ShipType == ShipType.Colony) && Ships.Any(t => t.ShipType >= ShipType.FastAttack));
+        public bool IsConstructor => Ships.Count == 1 && Ships[0].ShipType == ShipType.Construction;
+        public bool MultiFleetHasAConstructor => (Ships.Any(s => s.ShipType == ShipType.Construction) && Ships.Any(t => t.ShipType >= ShipType.FastAttack));
 
-        public bool IsDiplomatic
-        {
-            get { return Ships.Count == 1 && Ships[0].ShipType == ShipType.Diplomatic; }
-        }
+        public bool IsDiplomatic => Ships.Count == 1 && Ships[0].ShipType == ShipType.Diplomatic;
 
-        public bool IsSpy
-        {
-            get { return Ships.Count == 1 && Ships[0].ShipType == ShipType.Spy; }
-        }
+        public bool IsSpy => Ships.Count == 1 && Ships[0].ShipType == ShipType.Spy;
 
-        public bool IsMedical
-        {
-            get { return Ships.Count == 1 && Ships[0].ShipType == ShipType.Medical; }
-        }
+        public bool IsMedical => Ships.Count == 1 && Ships[0].ShipType == ShipType.Medical;
 
-        public bool IsScience
-        {
-            get { return Ships.Count == 1 && Ships[0].ShipType == ShipType.Science; }
-        }
+        public bool IsScience => Ships.Count == 1 && Ships[0].ShipType == ShipType.Science;
 
         /// <summary>
         /// Gets a value indicating whether this <see cref="Fleet"/> contains any troop transport ships.
@@ -487,10 +433,7 @@ namespace Supremacy.Orbitals
         /// <value>
         /// <c>true</c> if this <see cref="Fleet"/> contains any troop transport ships; otherwise, <c>false</c>.
         /// </value>
-        public bool HasTroopTransports
-        {
-            get { return Ships.Any(o => o.ShipDesign.ShipType == ShipType.Transport); }
-        }
+        public bool HasTroopTransports => Ships.Any(o => o.ShipDesign.ShipType == ShipType.Transport);
 
         /// <summary>
         /// Gets a value indicating whether this <see cref="Fleet"/> can cloak.
@@ -607,22 +550,13 @@ namespace Supremacy.Orbitals
         /// <value>
         /// <c>true</c> if this <see cref="Fleet"/> can enter wormhole; otherwise, <c>false</c>.
         /// </value>
-        public bool CanEnterWormhole
-        {
-            get
-            {
-                return this.Sector.System.StarType == StarType.Wormhole;
-            }
-        }
+        public bool CanEnterWormhole => this.Sector.System.StarType == StarType.Wormhole;
 
         /// <summary>
         /// Gets a read-only collection of the ships attached to this <see cref="Fleet"/>.
         /// </summary>
         /// <value>The ships.</value>
-        public IIndexedCollection<Ship> Ships
-        {
-            get { return _ships.AsReadOnly();  }
-        }
+        public IIndexedCollection<Ship> Ships => _ships.AsReadOnly();
         #endregion
 
         #region Constructors
@@ -1036,9 +970,6 @@ namespace Supremacy.Orbitals
 
         public int ActivityStart { get; private set; }
 
-        public int ActivityDuration
-        {
-            get { return Activity != UnitActivity.NoActivity ? (int)(GameContext.Current.TurnNumber - ActivityStart) : 0; }
-         }
+        public int ActivityDuration => Activity != UnitActivity.NoActivity ? (int)(GameContext.Current.TurnNumber - ActivityStart) : 0;
     }
 }

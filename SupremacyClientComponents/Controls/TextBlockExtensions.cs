@@ -25,15 +25,9 @@ namespace Supremacy.Client.Controls
             _dataContext = dataContext;
         }
 
-        public Uri NavigateUri
-        {
-            get { return _navigateUri; }
-        }
+        public Uri NavigateUri => _navigateUri;
 
-        public object DataContext
-        {
-            get { return _dataContext; }
-        }
+        public object DataContext => _dataContext;
     }
 
     public static class TextBlockExtensions

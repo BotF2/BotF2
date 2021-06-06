@@ -58,8 +58,8 @@
                           BorderBrush="{StaticResource BorderBrush}"
                           BorderThickness="2"
                           CornerRadius="4"
-                            Width="525"
-                            Height="420">
+                            Width="576"
+                            Height="480">
                     <Border.Background>
                         <ImageBrush ImageSource="{Binding Path=SelectedColony.OrbitalBatteryDesign.Image, Converter={StaticResource TechObjectImageConverter}}" />
                     </Border.Background>
@@ -309,8 +309,8 @@
                             BorderBrush="{StaticResource HeaderTextBrush}"
                             BorderThickness="2"
                             CornerRadius="4"
-                            Width="525"
-                            Height="420">
+                            Width="580"
+                            Height="484">
                         <Border.Background>
                             <ImageBrush ImageSource="{Binding Path=(s:TechObject.Design).Image, Converter={StaticResource TechObjectImageConverter}}" />
                         </Border.Background>

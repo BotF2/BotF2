@@ -34,25 +34,13 @@ namespace Supremacy.Diplomacy
 
         #region IDiplomacyDataExtended Members
 
-        public int OwnerID
-        {
-            get { return _baseData.OwnerID; }
-        }
+        public int OwnerID => _baseData.OwnerID;
 
-        public int CounterpartyID
-        {
-            get { return _baseData.CounterpartyID; }
-        }
+        public int CounterpartyID => _baseData.CounterpartyID;
 
-        public IDiplomacyData BaseData
-        {
-            get { return _baseData; }
-        }
+        public IDiplomacyData BaseData => _baseData;
 
-        public IIndexedCollection<Motivation> Motivations
-        {
-            get { return _motivations; }
-        }
+        public IIndexedCollection<Motivation> Motivations => _motivations;
 
         public Motivation CurrentMotivation
         {
@@ -126,20 +114,11 @@ namespace Supremacy.Diplomacy
 
         #region IDiplomacyData Members
 
-        public Meter Regard
-        {
-            get { return _baseData.Regard; }
-        }
+        public Meter Regard => _baseData.Regard;
 
-        public Meter Trust
-        {
-            get { return _baseData.Trust; }
-        }
+        public Meter Trust => _baseData.Trust;
 
-        public RegardLevel EffectiveRegard
-        {
-            get { return _baseData.EffectiveRegard; }
-        }
+        public RegardLevel EffectiveRegard => _baseData.EffectiveRegard;
 
         public int ContactTurn
         {
@@ -152,10 +131,7 @@ namespace Supremacy.Diplomacy
             set { _baseData.FirstDiplomaticAction = value; }
         }
 
-        public int ContactDuration
-        {
-            get { return _baseData.ContactDuration; }
-        }
+        public int ContactDuration => _baseData.ContactDuration;
 
         public ForeignPowerStatus Status
         {
@@ -169,10 +145,7 @@ namespace Supremacy.Diplomacy
             internal set { _baseData.LastStatusChange = value; }
         }
 
-        public int TurnsSinceLastStatusChange
-        {
-            get { return _baseData.TurnsSinceLastStatusChange; }
-        }
+        public int TurnsSinceLastStatusChange => _baseData.TurnsSinceLastStatusChange;
 
         #endregion
 

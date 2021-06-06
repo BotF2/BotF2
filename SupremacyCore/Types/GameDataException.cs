@@ -25,9 +25,6 @@ namespace Supremacy.Types
             _fileName = fileName;
         }
 
-        public string FileName
-        {
-            get { return _fileName; }
-        }
+        public string FileName => _fileName;
     }
 }

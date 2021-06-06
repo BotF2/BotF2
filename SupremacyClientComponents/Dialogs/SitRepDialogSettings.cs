@@ -18,9 +18,7 @@ namespace Supremacy.Client.Dialogs
 
         public static bool GetShowGreenItems(DependencyObject source)
         {
-            if (source == null)
-                throw new ArgumentNullException("source");
-            return (bool)source.GetValue(ShowGreenItemsProperty);
+            return source == null ? throw new ArgumentNullException("source") : (bool)source.GetValue(ShowGreenItemsProperty);
         }
 
         public static void SetShowGreenItems(DependencyObject source, bool value)
@@ -44,9 +42,7 @@ namespace Supremacy.Client.Dialogs
 
         public static bool GetShowOrangeItems(DependencyObject source)
         {
-            if (source == null)
-                throw new ArgumentNullException("source");
-            return (bool)source.GetValue(ShowOrangeItemsProperty);
+            return source == null ? throw new ArgumentNullException("source") : (bool)source.GetValue(ShowOrangeItemsProperty);
         }
 
         public static void SetShowOrangeItems(DependencyObject source, bool value)
@@ -70,9 +66,7 @@ namespace Supremacy.Client.Dialogs
 
         public static bool GetShowRedItems(DependencyObject source)
         {
-            if (source == null)
-                throw new ArgumentNullException("source");
-            return (bool)source.GetValue(ShowRedItemsProperty);
+            return source == null ? throw new ArgumentNullException("source") : (bool)source.GetValue(ShowRedItemsProperty);
         }
 
         public static void SetShowRedItems(DependencyObject source, bool value)
@@ -96,9 +90,7 @@ namespace Supremacy.Client.Dialogs
 
         public static bool GetShowBlueItems(DependencyObject source)
         {
-            if (source == null)
-                throw new ArgumentNullException("source");
-            return (bool)source.GetValue(ShowBlueItemsProperty);
+            return source == null ? throw new ArgumentNullException("source") : (bool)source.GetValue(ShowBlueItemsProperty);
         }
 
         public static void SetShowBlueItems(DependencyObject source, bool value)
@@ -122,9 +114,7 @@ namespace Supremacy.Client.Dialogs
 
         public static bool GetShowGrayItems(DependencyObject source)
         {
-            if (source == null)
-                throw new ArgumentNullException("source");
-            return (bool)source.GetValue(ShowGrayItemsProperty);
+            return source == null ? throw new ArgumentNullException("source") : (bool)source.GetValue(ShowGrayItemsProperty);
         }
 
         public static void SetShowGrayItems(DependencyObject source, bool value)
@@ -149,9 +139,7 @@ namespace Supremacy.Client.Dialogs
 
         public static bool GetShowPurpleItems(DependencyObject source)
         {
-            if (source == null)
-                throw new ArgumentNullException("source");
-            return (bool)source.GetValue(ShowPurpleItemsProperty);
+            return source == null ? throw new ArgumentNullException("source") : (bool)source.GetValue(ShowPurpleItemsProperty);
         }
 
         public static void SetShowPurpleItems(DependencyObject source, bool value)
@@ -176,9 +164,7 @@ namespace Supremacy.Client.Dialogs
 
         public static bool GetShowPinkItems(DependencyObject source)
         {
-            if (source == null)
-                throw new ArgumentNullException("source");
-            return (bool)source.GetValue(ShowPinkItemsProperty);
+            return source == null ? throw new ArgumentNullException("source") : (bool)source.GetValue(ShowPinkItemsProperty);
         }
 
         public static void SetShowPinkItems(DependencyObject source, bool value)
@@ -189,6 +175,54 @@ namespace Supremacy.Client.Dialogs
         }
 
         #endregion ShowPinkItems Attached Property
+
+        #region ShowBrownItems Attached Property
+
+        public static readonly DependencyProperty ShowBrownItemsProperty = DependencyProperty.RegisterAttached(
+            "ShowBrownItems",
+            typeof(bool),
+            typeof(SitRepDialogSettings),
+            new FrameworkPropertyMetadata(
+                true,
+                FrameworkPropertyMetadataOptions.None));
+
+        public static bool GetShowBrownItems(DependencyObject source)
+        {
+            return source == null ? throw new ArgumentNullException("source") : (bool)source.GetValue(ShowBrownItemsProperty);
+        }
+
+        public static void SetShowBrownItems(DependencyObject source, bool value)
+        {
+            if (source == null)
+                throw new ArgumentNullException("source");
+            source.SetValue(ShowBrownItemsProperty, value);
+        }
+
+        #endregion ShowBrownItems Attached Property
+
+        #region ShowAquaItems Attached Property
+
+        public static readonly DependencyProperty ShowAquaItemsProperty = DependencyProperty.RegisterAttached(
+            "ShowAquaItems",
+            typeof(bool),
+            typeof(SitRepDialogSettings),
+            new FrameworkPropertyMetadata(
+                true,
+                FrameworkPropertyMetadataOptions.None));
+
+        public static bool GetShowAquaItems(DependencyObject source)
+        {
+            return source == null ? throw new ArgumentNullException("source") : (bool)source.GetValue(ShowAquaItemsProperty);
+        }
+
+        public static void SetShowAquaItems(DependencyObject source, bool value)
+        {
+            if (source == null)
+                throw new ArgumentNullException("source");
+            source.SetValue(ShowAquaItemsProperty, value);
+        }
+
+        #endregion ShowAquaItems Attached Property
 
         #region VisibleCategories Attached Property
 

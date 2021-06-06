@@ -51,6 +51,7 @@ namespace Supremacy.Orbitals
 
         private static readonly List<FleetOrder> _orders;
 
+
         static FleetOrders()
         {
             EngageOrder = new EngageOrder();
@@ -87,6 +88,7 @@ namespace Supremacy.Orbitals
                           ExploreOrder,
                           AssaultSystemOrder,
                       };
+
         }
 
         public static ICollection<FleetOrder> GetAvailableOrders(Fleet fleet)
@@ -99,15 +101,9 @@ namespace Supremacy.Orbitals
     [Serializable]
     public sealed class EngageOrder : FleetOrder
     {
-        public override string OrderName
-        {
-            get { return ResourceManager.GetString("FLEET_ORDER_ENGAGE"); }
-        }
+        public override string OrderName => ResourceManager.GetString("FLEET_ORDER_ENGAGE");
 
-        public override string Status
-        {
-            get { return ResourceManager.GetString("FLEET_ORDER_ENGAGE"); }
-        }
+        public override string Status => ResourceManager.GetString("FLEET_ORDER_ENGAGE");
 
         public override bool IsValidOrder(Fleet fleet)
         {
@@ -125,10 +121,7 @@ namespace Supremacy.Orbitals
     [Serializable]
     public sealed class AssaultSystemOrder : FleetOrder
     {
-        public override string OrderName
-        {
-            get { return LocalizedTextDatabase.Instance.GetString(typeof(AssaultSystemOrder), "Description"); }
-        }
+        public override string OrderName => LocalizedTextDatabase.Instance.GetString(typeof(AssaultSystemOrder), "Description");
         //             get { return ResourceManager.GetString("SYSTEM_ASSAULT_DESCRIPTION"); }
         //             get { return LocalizedTextDatabase.Instance.GetString(typeof(AssaultSystemOrder), "Description"); }
 
@@ -182,20 +175,11 @@ namespace Supremacy.Orbitals
     [Serializable]
     public sealed class AvoidOrder : FleetOrder
     {
-        public override string OrderName
-        {
-            get { return ResourceManager.GetString("FLEET_ORDER_AVOID"); }
-        }
+        public override string OrderName => ResourceManager.GetString("FLEET_ORDER_AVOID");
 
-        public override string Status
-        {
-            get { return ResourceManager.GetString("FLEET_ORDER_AVOID"); }
-        }
+        public override string Status => ResourceManager.GetString("FLEET_ORDER_AVOID");
 
-        public override bool WillEngageHostiles
-        {
-            get { return false; }
-        }
+        public override bool WillEngageHostiles => false;
 
         public override FleetOrder Create()
         {
@@ -212,40 +196,22 @@ namespace Supremacy.Orbitals
     {
         private readonly bool _isComplete;
 
-        public override string OrderName
-        {
-            get { return ResourceManager.GetString("FLEET_ORDER_COLONIZE"); }
-        }
+        public override string OrderName => ResourceManager.GetString("FLEET_ORDER_COLONIZE");
 
-        public override string Status
-        {
-            get { return ResourceManager.GetString("FLEET_ORDER_COLONIZE"); }
-        }
+        public override string Status => ResourceManager.GetString("FLEET_ORDER_COLONIZE");
 
         public override FleetOrder Create()
         {
             return new ColonizeOrder();
         }
 
-        public override bool IsComplete
-        {
-            get { return _isComplete; }
-        }
+        public override bool IsComplete => _isComplete;
 
-        public override bool IsCancelledOnRouteChange
-        {
-            get { return true; }
-        }
+        public override bool IsCancelledOnRouteChange => true;
 
-        public override bool IsRouteCancelledOnAssign
-        {
-            get { return true; }
-        }
+        public override bool IsRouteCancelledOnAssign => true;
 
-        public override bool WillEngageHostiles
-        {
-            get { return false; }
-        }
+        public override bool WillEngageHostiles => false;
 
         public ColonizeOrder()
         {
@@ -337,40 +303,22 @@ namespace Supremacy.Orbitals
     [Serializable]
     public sealed class MedicalOrder : FleetOrder
     {
-        public override string OrderName
-        {
-            get { return ResourceManager.GetString("FLEET_ORDER_MEDICAL"); }
-        }
+        public override string OrderName => ResourceManager.GetString("FLEET_ORDER_MEDICAL");
 
-        public override string Status
-        {
-            get { return ResourceManager.GetString("FLEET_ORDER_MEDICAL"); }
-        }
+        public override string Status => ResourceManager.GetString("FLEET_ORDER_MEDICAL");
 
         public override FleetOrder Create()
         {
             return new MedicalOrder();
         }
 
-        public override bool IsCancelledOnMove
-        {
-            get { return true; }
-        }
+        public override bool IsCancelledOnMove => true;
 
-        public override bool IsCancelledOnRouteChange
-        {
-            get { return true; }
-        }
+        public override bool IsCancelledOnRouteChange => true;
 
-        public override bool IsRouteCancelledOnAssign
-        {
-            get { return true; }
-        }
+        public override bool IsRouteCancelledOnAssign => true;
 
-        public override bool WillEngageHostiles
-        {
-            get { return false; }
-        }
+        public override bool WillEngageHostiles => false;
 
         public override bool IsValidOrder(Fleet fleet)
         {
@@ -395,26 +343,47 @@ namespace Supremacy.Orbitals
 
         protected internal override void OnTurnEnding()
         {
+            string blank = " ";
 
-            //Medicate the colony --- // PopulationHealth is a percent value !!  // healthAdjustment is also a percent valuee.g. 80% * 1,1 = 88%
-            var healthAdjustment = 1 + (Fleet.Ships.Where(s => s.ShipType == ShipType.Medical).Sum(s => s.ShipDesign.PopulationHealth) / 10); 
-            if (Fleet.Sector.System.Colony is null) // currentx
-            {
-                //do nothing
-            }
-
+            //Medicate the colony --- // PopulationHealth is a percent value !!  // healthAdjustment is also a percent valuee.g. 80% * 1,3= 104% 
+            //PopHealth = 0.16 (not 16)
+            //int helpByShip = Fleet.Ships.Where(s => s.ShipType == ShipType.Medical).Sum(s => s.ShipDesign.PopulationHealth);
+            Colony colony = Fleet.Sector.System.Colony;
+            int oldHealth = colony.Health.CurrentValue;
+            var healthAdjustment = 1.01f + (Fleet.Ships.Where(s => s.ShipType == ShipType.Medical).Sum(s => s.ShipDesign.PopulationHealth) / 2);
+            //healthAdjustment = helpByShip / 10;
+            if (healthAdjustment > 1.24f) healthAdjustment = 1.24f;
+            if (Fleet.Sector.System.Colony is null)
+                { /*do nothing*/ }
             else if(Fleet.Ships.Any(s => s.ShipType == ShipType.Medical))
-            {
+                {
                 Fleet.Sector.System.Colony.Health.AdjustCurrent(healthAdjustment);
                 Fleet.Sector.System.Colony.Health.UpdateAndReset();
 
+
+                string _report = Fleet.ObjectID 
+                    + blank + Fleet.Name + " (" + Fleet.ClassName + ") doing Medical help at"
+                    + blank + Fleet.Sector.System.Colony.Name
+                    //+ blank + Fleet.Sector.System.Colony.ObjectID 
+                    + blank + Fleet.Sector.System.Colony.Location + ": value adjusted ="
+                    + blank + healthAdjustment + "%, new ="
+                    + blank + Fleet.Sector.System.Colony.Health.CurrentValue
+                    + blank + "(old=" + oldHealth + ")";
+
+                Console.WriteLine(_report);
+                GameLog.Core.ColoniesDetails.DebugFormat(_report);
                 //GameLog.Core.Colonies.DebugFormat("{0} (# {1} {2}) doing Medical help at {3} ({4} at {5}): value adjusted = {6}%, new = {7}"
-                //    ,Fleet.Name, Fleet.ObjectID, Fleet.Ships.FirstOrDefault().ShipDesign.Name
-                //    , Fleet.Sector.System.Colony.Name,Fleet.Sector.System.Colony.ObjectID, Fleet.Sector.System.Colony.Location
+                //    , Fleet.Name, Fleet.ObjectID, Fleet.Ships.FirstOrDefault().ShipDesign.Name
+                //    , Fleet.Sector.System.Colony.Name, Fleet.Sector.System.Colony.ObjectID, Fleet.Sector.System.Colony.Location
                 //    , healthAdjustment, Fleet.Sector.System.Colony.Health.CurrentValue);
 
-                //ToDo: SitRep
+                _report = healthAdjustment + " up to " + Fleet.Sector.System.Colony.Health.CurrentValue + " (old: " + oldHealth + ") by " + Fleet.Name + " (Medical Ship)";
+                GameContext.Current.CivilizationManagers[Fleet.OwnerID].SitRepEntries.Add(new ShipMedicalHelpProvidedSitRepEntry(Fleet.Owner, Fleet.Location, _report));
+
+                _report = healthAdjustment + " up to " + Fleet.Sector.System.Colony.Health.CurrentValue + " (old: " + oldHealth + ") by " + Fleet.Name + " (" + Fleet.Owner.ShortName + " Medical Ship)";
+                GameContext.Current.CivilizationManagers[Fleet.Sector.System.OwnerID].SitRepEntries.Add(new ShipMedicalHelpProvidedSitRepEntry(Fleet.Owner, Fleet.Location, _report));
             }
+
             //If the colony is not ours, just doing small medical help + increase regard + trust etc
             if (Fleet.Sector.System.Colony is null) // currentx
             {
@@ -422,7 +391,6 @@ namespace Supremacy.Orbitals
             }
             else if(Fleet.Sector.System.Owner != null && Fleet.Sector.System.Colony.Owner != null && Fleet.Sector.System.Owner != Fleet.Owner )
             {
-
                 var foreignPower = Diplomat.Get(Fleet.Sector.System.Owner).GetForeignPower(Fleet.Owner);
                 healthAdjustment = ((healthAdjustment - 1) / 3) + 1;
 
@@ -449,14 +417,21 @@ namespace Supremacy.Orbitals
                     //secondManager.SitRepEntries.Add(new WarDeclaredSitRepEntry(secondCiv, firstCiv));
                     ////var soundPlayer = new SoundPlayer("Resources/SoundFX/GroundCombat/Bombardment_SM.ogg"); ToDo - not working yet
                 }
-                
+
+                string _report = Fleet.ObjectID
+                    + blank + Fleet.Name + " doing Medical help at "
+                    + blank + Fleet.Sector.System.Colony.Name
+                    //+ blank + Fleet.Sector.System.Colony.ObjectID 
+                    + blank + Fleet.Sector.System.Colony.Location + ": value adjusted = "
+                    + blank + healthAdjustment + "%, new = "
+                    + blank + Fleet.Sector.System.Colony.Health.CurrentValue;
+
+                Console.WriteLine(_report);
+                GameLog.Core.ColoniesDetails.DebugFormat(_report);
             }
-           
         }
 
-        public override bool IsComplete {
-            get { return Fleet.Sector.System.Colony.Health.CurrentValue >= 100; }
-        }
+        public override bool IsComplete => Fleet.Sector.System.Colony.Health.CurrentValue >= 100;
     }
     #endregion
 
@@ -467,40 +442,22 @@ namespace Supremacy.Orbitals
     {
         private readonly bool _isComplete;
 
-        public override string OrderName
-        {
-            get { return ResourceManager.GetString("FLEET_ORDER_SPY_ON"); }
-        }
+        public override string OrderName => ResourceManager.GetString("FLEET_ORDER_SPY_ON");
 
-        public override string Status
-        {
-            get { return ResourceManager.GetString("FLEET_ORDER_SPY_ON"); }
-        }
+        public override string Status => ResourceManager.GetString("FLEET_ORDER_SPY_ON");
 
         public override FleetOrder Create()
         {
             return new SpyOnOrder();
         }
 
-        public override bool IsComplete
-        {
-            get { return _isComplete; }
-        }
+        public override bool IsComplete => _isComplete;
 
-        public override bool IsCancelledOnRouteChange
-        {
-            get { return true; }
-        }
+        public override bool IsCancelledOnRouteChange => true;
 
-        public override bool IsRouteCancelledOnAssign
-        {
-            get { return true; }
-        }
+        public override bool IsRouteCancelledOnAssign => true;
 
-        public override bool WillEngageHostiles
-        {
-            get { return false; }
-        }
+        public override bool WillEngageHostiles => false;
 
         public SpyOnOrder()
         {
@@ -526,7 +483,7 @@ namespace Supremacy.Orbitals
 
         public override bool IsValidOrder(Fleet fleet)
         {
-            var civManager = GameContext.Current.CivilizationManagers[fleet.Owner];
+            //var civManager = GameContext.Current.CivilizationManagers[fleet.Owner];
             if (!base.IsValidOrder(fleet))
                 return false;
            // if (civManager.SpiedCivList.Where(S => S.CivID == fleet.Sector.System.Colony.OwnerID).Any()) // only install spy network once per empire
@@ -580,7 +537,7 @@ namespace Supremacy.Orbitals
         private static void CreateSpyOn(Civilization civ, StarSystem system)
         {
             var colonies =  GameContext.Current.CivilizationManagers[system.Owner].Colonies; //IntelHelper.NewSpiedColonies; ???????
-            var civManager = GameContext.Current.CivilizationManagers[civ];
+            //var civManager = GameContext.Current.CivilizationManagers[civ];
 
             //int defenseIntelligence = GameContext.Current.CivilizationManagers[system.Owner].TotalIntelligence + 1;  // TotalIntelligence of attacked civ
             //if (defenseIntelligence - 1 < 0.1)
@@ -746,40 +703,22 @@ namespace Supremacy.Orbitals
     {
         private readonly bool _isComplete;
 
-        public override string OrderName
-        {
-            get { return ResourceManager.GetString("FLEET_ORDER_SABOTAGE"); }
-        }
+        public override string OrderName => ResourceManager.GetString("FLEET_ORDER_SABOTAGE");
 
-        public override string Status
-        {
-            get { return ResourceManager.GetString("FLEET_ORDER_SABOTAGE"); }
-        }
+        public override string Status => ResourceManager.GetString("FLEET_ORDER_SABOTAGE");
 
         public override FleetOrder Create()
         {
             return new SabotageOrder();
         }
 
-        public override bool IsComplete
-        {
-            get { return _isComplete; }
-        }
+        public override bool IsComplete => _isComplete;
 
-        public override bool IsCancelledOnRouteChange
-        {
-            get { return true; }
-        }
+        public override bool IsCancelledOnRouteChange => true;
 
-        public override bool IsRouteCancelledOnAssign
-        {
-            get { return true; }
-        }
+        public override bool IsRouteCancelledOnAssign => true;
 
-        public override bool WillEngageHostiles
-        {
-            get { return false; }
-        }
+        public override bool WillEngageHostiles => false;
 
         public SabotageOrder()
         {
@@ -856,7 +795,7 @@ namespace Supremacy.Orbitals
 
         private static void CreateSabotage(Civilization civ, StarSystem system)
         {
-            var sabotagedCiv = GameContext.Current.CivilizationManagers[system.Owner].Colonies;
+            //var sabotagedCiv = GameContext.Current.CivilizationManagers[system.Owner].Colonies;
             var civManager = GameContext.Current.CivilizationManagers[civ.Key];
             int ratioLevel = 1;
 
@@ -937,40 +876,22 @@ namespace Supremacy.Orbitals
     {
         private readonly bool _isComplete;
 
-        public override string OrderName
-        {
-            get { return ResourceManager.GetString("FLEET_ORDER_INFLUENCE"); }
-        }
+        public override string OrderName => ResourceManager.GetString("FLEET_ORDER_INFLUENCE");
 
-        public override string Status
-        {
-            get { return ResourceManager.GetString("FLEET_ORDER_INFLUENCE"); }
-        }
+        public override string Status => ResourceManager.GetString("FLEET_ORDER_INFLUENCE");
 
         public override FleetOrder Create()
         {
             return new InfluenceOrder();
         }
 
-        public override bool IsComplete
-        {
-            get { return _isComplete; }
-        }
+        public override bool IsComplete => _isComplete;
 
-        public override bool IsCancelledOnRouteChange
-        {
-            get { return true; }
-        }
+        public override bool IsCancelledOnRouteChange => true;
 
-        public override bool IsRouteCancelledOnAssign
-        {
-            get { return true; }
-        }
+        public override bool IsRouteCancelledOnAssign => true;
 
-        public override bool WillEngageHostiles
-        {
-            get { return false; }
-        }
+        public override bool WillEngageHostiles => false;
 
         public InfluenceOrder()
         {
@@ -1105,20 +1026,11 @@ namespace Supremacy.Orbitals
             }
         }
 
-        public override string OrderName
-        {
-            get { return ResourceManager.GetString("FLEET_ORDER_TOW"); }
-        }
+        public override string OrderName => ResourceManager.GetString("FLEET_ORDER_TOW");
 
-        public override string Status
-        {
-            get
-            {
-                return String.Format(
+        public override string Status => String.Format(
                     ResourceManager.GetString("FLEET_ORDER_STATUS_TOW"),
                     TargetFleet);
-            }
-        }
 
         public override string DisplayText
         {
@@ -1140,10 +1052,7 @@ namespace Supremacy.Orbitals
             }
         }
 
-        public override bool WillEngageHostiles
-        {
-            get { return false; }
-        }
+        public override bool WillEngageHostiles => false;
 
         public override bool IsComplete
         {
@@ -1315,40 +1224,19 @@ namespace Supremacy.Orbitals
     {
         private MapLocation _startingLocation;
 
-        public override string OrderName
-        {
-            get { return ResourceManager.GetString("FLEET_ORDER_ENTER_WORMHOLE"); }
-        }
+        public override string OrderName => ResourceManager.GetString("FLEET_ORDER_ENTER_WORMHOLE");
 
-        public override string Status
-        {
-            get
-            {
-                return String.Format(
+        public override string Status => String.Format(
                     ResourceManager.GetString("FLEET_ORDER_ENTER_WORMHOLE"),
                     Fleet);
-            }
-        }
 
-        public override string DisplayText
-        {
-            get
-            {
-                return String.Format(
+        public override string DisplayText => String.Format(
                     ResourceManager.GetString("ORDER_ENTER_WORMHOLE"),
                     Status);
-            }
-        }
 
-        public override bool WillEngageHostiles
-        {
-            get { return false; }
-        }
+        public override bool WillEngageHostiles => false;
 
-        public override bool IsComplete
-        {
-            get { return Fleet.Location != _startingLocation; }
-        }
+        public override bool IsComplete => Fleet.Location != _startingLocation;
 
         public override FleetOrder Create()
         {
@@ -1401,15 +1289,9 @@ namespace Supremacy.Orbitals
             return false;
         }
 
-        public override bool IsCancelledOnRouteChange
-        {
-            get { return true; }
-        }
+        public override bool IsCancelledOnRouteChange => true;
 
-        public override bool IsRouteCancelledOnAssign
-        {
-            get { return true; }
-        }
+        public override bool IsRouteCancelledOnAssign => true;
     }
     #endregion
 
@@ -1420,30 +1302,15 @@ namespace Supremacy.Orbitals
     {
         private int _turnsCollecting;
 
-        public override string OrderName
-        {
-            get { return ResourceManager.GetString("FLEET_ORDER_COLLECT_DEUTERIUM"); }
-        }
+        public override string OrderName => ResourceManager.GetString("FLEET_ORDER_COLLECT_DEUTERIUM");
 
-        public override string Status
-        {
-            get { return ResourceManager.GetString("FLEET_ORDER_COLLECT_DEUTERIUM"); }
-        }
+        public override string Status => ResourceManager.GetString("FLEET_ORDER_COLLECT_DEUTERIUM");
 
-        public override bool IsCancelledOnRouteChange
-        {
-            get { return true; }
-        }
+        public override bool IsCancelledOnRouteChange => true;
 
-        public override bool IsRouteCancelledOnAssign
-        {
-            get { return true; }
-        }
+        public override bool IsRouteCancelledOnAssign => true;
 
-        public override bool WillEngageHostiles
-        {
-            get { return false; }
-        }
+        public override bool WillEngageHostiles => false;
 
         public override FleetOrder Create()
         {
@@ -1496,30 +1363,15 @@ namespace Supremacy.Orbitals
         private bool _finished;
         private StationBuildProject _buildProject;
 
-        public StationDesign StationDesign
-        {
-            get { return BuildProject.BuildDesign as StationDesign; }
-        }
+        public StationDesign StationDesign => BuildProject.BuildDesign as StationDesign;
 
-        public override string OrderName
-        {
-            get { return ResourceManager.GetString("FLEET_ORDER_BUILD_STATION"); }
-        }
+        public override string OrderName => ResourceManager.GetString("FLEET_ORDER_BUILD_STATION");
 
-        public override string Status
-        {
-            get
-            {
-                return String.Format(
+        public override string Status => String.Format(
                     ResourceManager.GetString("FLEET_ORDER_STATUS_BUILD_STATION"),
                     ResourceManager.GetString(_buildProject.StationDesign.Name));
-            }
-        }
 
-        public override string TargetDisplayMember
-        {
-            get { return "BuildDesign.LocalizedName"; }
-        }
+        public override string TargetDisplayMember => "BuildDesign.LocalizedName";
 
         public override object Target
         {
@@ -1549,24 +1401,13 @@ namespace Supremacy.Orbitals
             }
         }
 
-        public override bool IsCancelledOnRouteChange
-        {
-            get { return true; }
-        }
+        public override bool IsCancelledOnRouteChange => true;
 
-        public override bool IsRouteCancelledOnAssign
-        {
-            get { return true; }
-        }
+        public override bool IsRouteCancelledOnAssign => true;
 
-        public override bool IsCancelledOnMove {
-            get { return true; }
-        }
+        public override bool IsCancelledOnMove => true;
 
-        public override bool IsComplete
-        {
-            get { return (BuildProject != null) && BuildProject.IsCompleted; }
-        }
+        public override bool IsComplete => (BuildProject != null) && BuildProject.IsCompleted;
 
         public override FleetOrder Create()
         {
@@ -1757,27 +1598,18 @@ namespace Supremacy.Orbitals
 
             // ReSharper restore SuggestBaseTypeForParameter
 
-            public Fleet Fleet
-            {
-                get { return GameContext.Current.Universe.Objects[_fleetId] as Fleet; }
-            }
+            public Fleet Fleet => GameContext.Current.Universe.Objects[_fleetId] as Fleet;
 
             #region IProductionCenter Members
 
-            public IIndexedEnumerable<BuildSlot> BuildSlots
-            {
-                get { return IndexedEnumerable.Single(_buildSlot); }
-            }
+            public IIndexedEnumerable<BuildSlot> BuildSlots => IndexedEnumerable.Single(_buildSlot);
 
             public int GetBuildOutput(int slot)
             {
                 return Fleet.Ships.Where(o => o.ShipType == ShipType.Construction).Sum(o => o.ShipDesign.WorkCapacity);
             }
 
-            public IList<BuildQueueItem> BuildQueue
-            {
-                get { return new ReadOnlyCollection<BuildQueueItem>(new List<BuildQueueItem>()); }
-            }
+            public IList<BuildQueueItem> BuildQueue => new ReadOnlyCollection<BuildQueueItem>(new List<BuildQueueItem>());
 
             public void ProcessQueue() { }
 
@@ -1785,25 +1617,13 @@ namespace Supremacy.Orbitals
 
             #region IUniverseObject Members
 
-            public int ObjectID
-            {
-                get { return Fleet.ObjectID; }
-            }
+            public int ObjectID => Fleet.ObjectID;
 
-            public MapLocation Location
-            {
-                get { return Fleet.Location; }
-            }
+            public MapLocation Location => Fleet.Location;
 
-            public int OwnerID
-            {
-                get { return Fleet.OwnerID; }
-            }
+            public int OwnerID => Fleet.OwnerID;
 
-            public Civilization Owner
-            {
-                get { return Fleet.Owner; }
-            }
+            public Civilization Owner => Fleet.Owner;
 
             #endregion
         }
@@ -1818,25 +1638,13 @@ namespace Supremacy.Orbitals
     [Serializable]
     public sealed class ExploreOrder : FleetOrder
     {
-        public override string OrderName
-        {
-            get { return ResourceManager.GetString("FLEET_ORDER_EXPLORE"); }
-        }
+        public override string OrderName => ResourceManager.GetString("FLEET_ORDER_EXPLORE");
 
-        public override string Status
-        {
-            get { return ResourceManager.GetString("FLEET_ORDER_STATUS_EXPLORE"); }
-        }
+        public override string Status => ResourceManager.GetString("FLEET_ORDER_STATUS_EXPLORE");
 
-        public override bool WillEngageHostiles
-        {
-            get { return false; }
-        }
+        public override bool WillEngageHostiles => false;
 
-        public override bool IsCancelledOnRouteChange
-        {
-            get { return true; }
-        }
+        public override bool IsCancelledOnRouteChange => true;
 
         public override FleetOrder Create()
         {

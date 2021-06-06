@@ -30,10 +30,7 @@ namespace Supremacy.Client.Views
                 command.Execute(buildQueueItem);
         }
 
-        private ColonyScreenPresentationModel PresentationModel
-        {
-            get { return DataContext as ColonyScreenPresentationModel; }
-        }
+        private ColonyScreenPresentationModel PresentationModel => DataContext as ColonyScreenPresentationModel;
 
         bool IsCurrentBuildProjectValid()
         {

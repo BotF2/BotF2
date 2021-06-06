@@ -309,15 +309,9 @@ namespace Supremacy.Orbitals
             }
         }
 
-        protected override string DefaultImageSubFolder
-        {
-            get { return "Ships/"; }
-        }
+        protected override string DefaultImageSubFolder => "Ships/";
 
-        protected override string DefaultShipsUnderConstructionSubFolder
-        {
-            get { return "Ships_Under_Construction/"; }
-        }
+        protected override string DefaultShipsUnderConstructionSubFolder => "Ships_Under_Construction/";
 
         /// <summary>
         /// Appends the XML data for this instance.
@@ -524,9 +518,6 @@ namespace Supremacy.Orbitals
         /// Gets the encyclopedia category under which the entry appears.
         /// </summary>
         /// <value>The encyclopedia category.</value>
-        public override EncyclopediaCategory EncyclopediaCategory
-        {
-            get { return EncyclopediaCategory.Ships; }
-        }
+        public override EncyclopediaCategory EncyclopediaCategory => EncyclopediaCategory.Ships;
     }
 }

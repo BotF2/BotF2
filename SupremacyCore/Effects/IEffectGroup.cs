@@ -91,71 +91,32 @@ namespace Supremacy.Effects
 
             _effects.ForEach(o => o.EffectGroup = this);
         }
-        
-        internal EffectParameterCollection SystemParameters
-        {
-            get { return _systemParameters.Value; }
-        }
 
-        internal ScriptParameter SourceScriptParameter
-        {
-            get { return _sourceScriptParameter.Value; }
-        }
+        internal EffectParameterCollection SystemParameters => _systemParameters.Value;
 
-        internal ScriptParameters SystemScriptParameters
-        {
-            get { return _systemScriptParameters.Value; }
-        }
+        internal ScriptParameter SourceScriptParameter => _sourceScriptParameter.Value;
 
-        public IEffectActivation Activation
-        {
-            get { return _activation; }
-        }
+        internal ScriptParameters SystemScriptParameters => _systemScriptParameters.Value;
 
-        public IEffectScope Scope
-        {
-            get { return _scope; }
-        }
+        public IEffectActivation Activation => _activation;
 
-        public IIndexedCollection<Effect> Effects
-        {
-            get { return _effects; }
-        }
+        public IEffectScope Scope => _scope;
 
-        public IEffectParameterBindingCollection CustomParameterBindings
-        {
-            get { return _customParameterBindings; }
-        }
+        public IIndexedCollection<Effect> Effects => _effects;
 
-        internal ScriptParameters CustomScriptParameters
-        {
-            get { return _customScriptParameters.Value; }
-        }
+        public IEffectParameterBindingCollection CustomParameterBindings => _customParameterBindings;
 
-        internal RuntimeScriptParameters CustomRuntimeScriptParameters
-        {
-            get { return _customRuntimeScriptParameters.Value; }
-        }
+        internal ScriptParameters CustomScriptParameters => _customScriptParameters.Value;
 
-        internal ScriptExpression ActivationScript
-        {
-            get { return _activationScript.Value; }
-        }
+        internal RuntimeScriptParameters CustomRuntimeScriptParameters => _customRuntimeScriptParameters.Value;
 
-        internal ScriptExpression ScopeScript
-        {
-            get { return _scopeScript.Value; }
-        }
-        
-        internal string ActivationDescription
-        {
-            get { return _activationDescription.Value; }
-        }
+        internal ScriptExpression ActivationScript => _activationScript.Value;
 
-        internal string ScopeDescription
-        {
-            get { return _scopeDescription.Value; }
-        }
+        internal ScriptExpression ScopeScript => _scopeScript.Value;
+
+        internal string ActivationDescription => _activationDescription.Value;
+
+        internal string ScopeDescription => _scopeDescription.Value;
 
         public EffectGroupBinding Bind(IEffectSource source)
         {

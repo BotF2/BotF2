@@ -16,10 +16,7 @@ namespace Supremacy.Types
             _isSet = isSet;
         }
 
-        public bool IsSet
-        {
-            get { return _isSet; }
-        }
+        public bool IsSet => _isSet;
 
         public void Set()
         {

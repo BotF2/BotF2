@@ -27,64 +27,43 @@ namespace Supremacy.Economy
         /// Gets the description of the ship under construction.
         /// </summary>
         /// <value>The description.</value>
-        public override string Description
-        {
-            get { return ResourceManager.GetString(BuildDesign.Name); }
-        }
+        public override string Description => ResourceManager.GetString(BuildDesign.Name);
 
         /// <summary>
         /// Gets the dilithium needed.
         /// </summary>
         /// <value>The dilithium needed.</value>
-        public int DilithiumNeeded
-        {
-            get { return ResourcesRequired[ResourceType.Dilithium]; }
-        }
+        public int DilithiumNeeded => ResourcesRequired[ResourceType.Dilithium];
 
         /// <summary>
         /// Gets the dilithium used.
         /// </summary>
         /// <value>The dilithium used.</value>
-        public int DilithiumUsed
-        {
-            get { return ResourcesInvested[ResourceType.Dilithium]; }
-        }
+        public int DilithiumUsed => ResourcesInvested[ResourceType.Dilithium];
 
         /// <summary>
         /// Gets the deuterium needed.
         /// </summary>
         /// <value>The deuterium needed.</value>
-        public int DeuteriumNeeded
-        {
-            get { return ResourcesRequired[ResourceType.Deuterium]; }
-        }
+        public int DeuteriumNeeded => ResourcesRequired[ResourceType.Deuterium];
 
         /// <summary>
         /// Gets the deuterium used.
         /// </summary>
         /// <value>The deuterium used.</value>
-        public int DeuteriumUsed
-        {
-            get { return ResourcesInvested[ResourceType.Deuterium]; }
-        }
+        public int DeuteriumUsed => ResourcesInvested[ResourceType.Deuterium];
 
         /// <summary>
         /// Gets the raw materials needed.
         /// </summary>
         /// <value>The raw materials needed.</value>
-        public int RawMaterialsNeeded
-        {
-            get { return ResourcesRequired[ResourceType.RawMaterials]; }
-        }
+        public int RawMaterialsNeeded => ResourcesRequired[ResourceType.RawMaterials];
 
         /// <summary>
         /// Gets the raw materials used.
         /// </summary>
         /// <value>The raw materials used.</value>
-        public int RawMaterialsUsed
-        {
-            get { return ResourcesInvested[ResourceType.RawMaterials]; }
-        }
+        public int RawMaterialsUsed => ResourcesInvested[ResourceType.RawMaterials];
 
         public bool HasRawMaterialsShortage
         {
@@ -108,10 +87,7 @@ namespace Supremacy.Economy
         /// Gets the shipyard at which this <see cref="ShipBuildProject"/> is under construction.
         /// </summary>
         /// <value>The shipyard.</value>
-        public Shipyard Shipyard
-        {
-            get { return GameContext.Current.Universe.Objects[_shipyardId] as Shipyard; }
-        }
+        public Shipyard Shipyard => GameContext.Current.Universe.Objects[_shipyardId] as Shipyard;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ShipBuildProject"/> class.
@@ -159,33 +135,21 @@ namespace Supremacy.Economy
         /// <value>
         /// <c>true</c>.
         /// </value>
-        public override bool IsUpgrade
-        {
-            get { return true; }
-        }
+        public override bool IsUpgrade => true;
 
         /// <summary>
         /// Gets the description of the ship under construction.
         /// </summary>
         /// <value>The description.</value>
-        public override string Description
-        {
-            get
-            {
-                return string.Format(
+        public override string Description => string.Format(
                     ResourceManager.GetString("SHIP_UPGRADING_FORMAT"),
                     ResourceManager.GetString(BuildDesign.Name));
-            }
-        }
 
         /// <summary>
         /// Gets the ship being upgraded.
         /// </summary>
         /// <value>The ship being upgraded.</value>
-        public Ship UpgradeTarget
-        {
-            get { return GameContext.Current.Universe.Objects[_upgradeTargetId] as Ship; }
-        }
+        public Ship UpgradeTarget => GameContext.Current.Universe.Objects[_upgradeTargetId] as Ship;
 
         /// <summary>
         /// Finishes this <see cref="ShipUpgradeProject"/> and creates the newly constructed item.
@@ -233,41 +197,26 @@ namespace Supremacy.Economy
         /// Gets the description of the ship being repaired.
         /// </summary>
         /// <value>The description.</value>
-        public override string Description
-        {
-            get
-            {
-                return string.Format(ResourceManager.GetString("SHIP_REPAIRING_FORMAT"),
+        public override string Description => string.Format(ResourceManager.GetString("SHIP_REPAIRING_FORMAT"),
                     ResourceManager.GetString(BuildDesign.Name));
-            }
-        }
 
         /// <summary>
         /// Gets the ship being repaired.
         /// </summary>
         /// <value>The ship being repaired.</value>
-        public Ship RepairTarget
-        {
-            get { return GameContext.Current.Universe.Objects[_repairTargetId] as Ship; }
-        }
+        public Ship RepairTarget => GameContext.Current.Universe.Objects[_repairTargetId] as Ship;
 
         /// <summary>
         /// Gets the total industry required to complete this <see cref="ShipRepairProject"/>.
         /// </summary>
         /// <value>The industry required.</value>
-        protected override int IndustryRequired
-        {
-            get { return _laborRequired; }
-        }
+        protected override int IndustryRequired => _laborRequired;
 
         /// <summary>
         /// Gets the total resources required to complete this <see cref="ShipRepairProject"/>.
         /// </summary>
         /// <value>The resources required.</value>
-        protected override ResourceValueCollection ResourcesRequired
-        {
-            get { return _resourcesRequired; }
-        }
+        protected override ResourceValueCollection ResourcesRequired => _resourcesRequired;
 
         /// <summary>
         /// Finishes this <see cref="ShipRepairProject"/>.

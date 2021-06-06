@@ -76,10 +76,7 @@ namespace Supremacy.Game
         /// Gets the unassigned players.
         /// </summary>
         /// <value>The unassigned players.</value>
-        public IEnumerable<Player> UnassignedPlayers
-        {
-            get { return Players.Where(p => !Slots.Any(s => s.Player == p)); }
-        }
+        public IEnumerable<Player> UnassignedPlayers => Players.Where(p => !Slots.Any(s => s.Player == p));
 
         /// <summary>
         /// Gets or sets the playable empires.

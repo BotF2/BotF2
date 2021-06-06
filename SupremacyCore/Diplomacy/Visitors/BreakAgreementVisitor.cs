@@ -19,10 +19,7 @@ namespace Supremacy.Diplomacy.Visitors
             _agreement = agreement;
         }
 
-        protected IAgreement Agreement
-        {
-            get { return _agreement; }
-        }
+        protected IAgreement Agreement => _agreement;
 
         public static void BreakAgreement([NotNull] IAgreement agreement)
         {

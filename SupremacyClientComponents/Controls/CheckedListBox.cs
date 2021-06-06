@@ -94,10 +94,7 @@ namespace Supremacy.Client.Controls
             set { SetValue(IsSelectedProperty, value); }
         }
 
-        internal MultiSelector ParentSelector
-        {
-            get { return ItemsControl.ItemsControlFromItemContainer(this) as MultiSelector; }
-        }
+        internal MultiSelector ParentSelector => ItemsControl.ItemsControlFromItemContainer(this) as MultiSelector;
 
         public event RoutedEventHandler Selected
         {

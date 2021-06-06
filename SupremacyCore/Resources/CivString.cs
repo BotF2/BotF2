@@ -100,20 +100,11 @@ namespace Supremacy.Resources
             }
         }
 
-        public Tone? Tone
-        {
-            get { return _demeanor; }
-        }
+        public Tone? Tone => _demeanor;
 
-        public string Category
-        {
-            get { return _category; }
-        }
+        public string Category => _category;
 
-        public string Key
-        {
-            get { return _stringKey; }
-        }
+        public string Key => _stringKey;
 
         public string Value
         {

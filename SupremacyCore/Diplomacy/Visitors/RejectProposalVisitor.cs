@@ -24,15 +24,9 @@ namespace Supremacy.Diplomacy.Visitors
             _agreementData = new Dictionary<object, object>();
         }
 
-        protected IProposal Proposal
-        {
-            get { return _proposal; }
-        }
+        protected IProposal Proposal => _proposal;
 
-        protected Dictionary<object, object> AgreementData
-        {
-            get { return _agreementData; }
-        }
+        protected Dictionary<object, object> AgreementData => _agreementData;
 
         public static void Visit([NotNull] IProposal proposal, int turnAccepted = 0)
         {

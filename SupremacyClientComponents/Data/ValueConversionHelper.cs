@@ -144,20 +144,11 @@ namespace Supremacy.Client.Data
                 set { throw new NotSupportedException(); }
             }
 
-            public IContainer Container
-            {
-                get { return null; }
-            }
+            public IContainer Container => null;
 
-            public object Instance
-            {
-                get { return null; }
-            }
+            public object Instance => null;
 
-            public PropertyDescriptor PropertyDescriptor
-            {
-                get { return null; }
-            }
+            public PropertyDescriptor PropertyDescriptor => null;
 
             public object GetService(Type serviceType)
             {

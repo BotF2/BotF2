@@ -91,15 +91,9 @@ namespace Supremacy.Client
             set { SetValue(AppContextProperty, value); }
         }
 
-        protected IPlayerOrderService PlayerOrderService
-        {
-            get { return _playerOrderService; }
-        }
+        protected IPlayerOrderService PlayerOrderService => _playerOrderService;
 
-        protected IRegionManager RegionManager
-        {
-            get { return _regionManager; }
-        }
+        protected IRegionManager RegionManager => _regionManager;
 
         protected void PauseAnimations()
         {

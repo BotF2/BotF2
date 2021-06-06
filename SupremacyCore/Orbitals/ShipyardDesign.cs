@@ -107,10 +107,7 @@ namespace Supremacy.Orbitals
         /// Gets the encyclopedia category for a building of this design.
         /// </summary>
         /// <value>The encyclopedia category.</value>
-        public override EncyclopediaCategory EncyclopediaCategory
-        {
-            get { return EncyclopediaCategory.Shipyards; }
-        }
+        public override EncyclopediaCategory EncyclopediaCategory => EncyclopediaCategory.Shipyards;
 
         /// <summary>
         /// Gets or sets the maximum tech level of ships that can be constructed at a station of this design.
@@ -172,10 +169,7 @@ namespace Supremacy.Orbitals
                 _maxBuildTechLevel = NoMaxBuildTechLevel;
         }
 
-        protected override string DefaultImageSubFolder
-        {
-            get { return "Shipyards/"; }
-        }
+        protected override string DefaultImageSubFolder => "Shipyards/";
 
         /// <summary>
         /// Appends the XML data for this instance.

@@ -28,10 +28,7 @@ namespace Supremacy.Client.Audio
         #endregion
 
         #region Properties
-        public Dictionary<string, MusicPack> MusicPacks
-        {
-            get { return _musicPacks; }
-        }
+        public Dictionary<string, MusicPack> MusicPacks => _musicPacks;
         #endregion
 
         #region Methods

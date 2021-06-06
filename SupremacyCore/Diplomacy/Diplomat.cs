@@ -28,25 +28,13 @@ namespace Supremacy.Diplomacy
         private int _seatOfGovernmentId;
         private CivilizationKeyedMap<ForeignPower> _foreignPowers;
 
-        public int OwnerID
-        {
-            get { return _ownerId; }
-        }
+        public int OwnerID => _ownerId;
 
-        public Civilization Owner
-        {
-            get { return GameContext.Current.Civilizations[_ownerId]; }
-        }
+        public Civilization Owner => GameContext.Current.Civilizations[_ownerId];
 
-        public Treasury OwnerTreasury
-        {
-            get { return GameContext.Current.CivilizationManagers[_ownerId].Treasury; }
-        }
+        public Treasury OwnerTreasury => GameContext.Current.CivilizationManagers[_ownerId].Treasury;
 
-        public ResourcePool OwnerResources
-        {
-            get { return GameContext.Current.CivilizationManagers[_ownerId].Resources; }
-        }
+        public ResourcePool OwnerResources => GameContext.Current.CivilizationManagers[_ownerId].Resources;
 
         public Colony SeatOfGovernment
         {

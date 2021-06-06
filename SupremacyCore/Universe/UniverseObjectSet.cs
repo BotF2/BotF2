@@ -175,10 +175,7 @@ namespace Supremacy.Universe
             return @this.TryGetValue(key, out UniverseObject item);
         }
 
-        IEqualityComparer<int> IKeyedLookup<int, UniverseObject>.KeyComparer
-        {
-            get { return EqualityComparer<int>.Default; }
-        }
+        IEqualityComparer<int> IKeyedLookup<int, UniverseObject>.KeyComparer => EqualityComparer<int>.Default;
 
         IEnumerable<int> IKeyedCollection<int, UniverseObject>.Keys
         {

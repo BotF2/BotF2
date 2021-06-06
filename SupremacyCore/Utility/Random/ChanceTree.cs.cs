@@ -39,15 +39,9 @@ namespace Supremacy.Utility
             _chances = new List<Chance<TItem>>();
         }
 
-        protected IList<Chance<TItem>> Chances
-        {
-            get { return _chances; }
-        }
+        protected IList<Chance<TItem>> Chances => _chances;
 
-        public bool IsEmpty
-        {
-            get { return _count == 0 || _chances.TrueForAll(o => o.CurrentWeight <= 0); }
-        }
+        public bool IsEmpty => _count == 0 || _chances.TrueForAll(o => o.CurrentWeight <= 0);
 
         public void AddChance(int chance, TItem item)
         {

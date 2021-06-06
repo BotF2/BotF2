@@ -82,10 +82,7 @@ namespace Supremacy.Economy
         /// Gets the production center at which construction is taking place.
         /// </summary>
         /// <value>The production center at which construction is taking place.</value>
-        public virtual IProductionCenter ProductionCenter
-        {
-            get { return GameContext.Current.Universe.Objects[_productionCenterId] as IProductionCenter; }
-        }
+        public virtual IProductionCenter ProductionCenter => GameContext.Current.Universe.Objects[_productionCenterId] as IProductionCenter;
 
         public override string ToString()
         {
@@ -98,19 +95,13 @@ namespace Supremacy.Economy
         /// <value>
         /// <c>true</c> if this <see cref="BuildProject"/> is an upgrade project; otherwise, <c>false</c>.
         /// </value>
-        public virtual bool IsUpgrade
-        {
-            get { return false; }
-        }
+        public virtual bool IsUpgrade => false;
 
         /// <summary>
         /// Gets the description of the item under construction.
         /// </summary>
         /// <value>The description.</value>
-        public virtual string Description
-        {
-            get { return ResourceManager.GetString(BuildDesign.Name); }
-        }
+        public virtual string Description => ResourceManager.GetString(BuildDesign.Name);
 
         /// <summary>
         /// Gets or sets the location where construction is taking place.
@@ -126,10 +117,7 @@ namespace Supremacy.Economy
         /// Gets the civilization that initiated this <see cref="BuildProject"/>.
         /// </summary>
         /// <value>The builder.</value>
-        public Civilization Builder
-        {
-            get { return GameContext.Current.Civilizations[_ownerId]; }
-        }
+        public Civilization Builder => GameContext.Current.Civilizations[_ownerId];
 
         /// <summary>
         /// Gets the design of the item being constructed.
@@ -137,17 +125,17 @@ namespace Supremacy.Economy
         /// <value>The construction design.</value>
         public TechObjectDesign BuildDesign
         {
-            get 
+            get
             {
                 if (GameContext.Current != null && GameContext.Current.TechDatabase != null)
                     return GameContext.Current.TechDatabase[_buildTypeId];
                 else
                 {
-                    if (GameContext.Current != null && GameContext.Current.TechDatabase != null) 
-                    { 
-                    string _text = "#### Error on BuildDesign - not available or found ... returning a null or maybe cancelling a build project";
-                    Console.WriteLine(_text);
-                    GameLog.Client.General.ErrorFormat(_text);
+                    if (GameContext.Current != null && GameContext.Current.TechDatabase != null)
+                    {
+                        string _text = "#### Error on BuildDesign - not available or found ... returning a null or maybe cancelling a build project";
+                        Console.WriteLine(_text);
+                        GameLog.Client.General.ErrorFormat(_text);
                     }
                     return null;
                 }
@@ -171,17 +159,17 @@ namespace Supremacy.Economy
         /// <value>The industry invested.</value>
         public virtual int IndustryInvested
         {
-            get 
+            get
             {
                 //GameLog.Core.Production.DebugFormat("Turn {0};_industryInvested_Before=;{1}"
                 //      , GameContext.Current.TurnNumber
                 //      , _industryInvested
                 //      );
 
-                if (_industryInvested == 0)
-                    GameLog.Core.ProductionDetails.DebugFormat("indInvested=0"); // just or breakpoint
+                //if (_industryInvested == 0)
+                //    GameLog.Core.ProductionDetails.DebugFormat("indInvested=0"); // just or breakpoint
 
-                return _industryInvested; 
+                return _industryInvested;
             }
             protected set { _industryInvested = value; }
         }
@@ -190,10 +178,7 @@ namespace Supremacy.Economy
         /// Gets the amount of resources that have been invested thus far.
         /// </summary>
         /// <value>The resources invested.</value>
-        public ResourceValueCollection ResourcesInvested
-        {
-            get { return _resourcesInvested; }
-        }
+        public ResourceValueCollection ResourcesInvested => _resourcesInvested;
 
         /// <summary>
         /// Gets a value indicating whether this <see cref="BuildProject"/> is completed.
@@ -218,7 +203,7 @@ namespace Supremacy.Economy
                       BuildDesign, _location, IndustryRequired, _industryInvested, GameContext.Current.TurnNumber, PercentComplete.ToString());
                     }
 
-            
+
                     GameLog.Core.Production.DebugFormat(Environment.NewLine + "       Turn {4};IndustryRequired= ;{2};_industryInvested= ;{3};{0} at {1} not complete...;{5};percent done" + Environment.NewLine,
                         BuildDesign, _location, IndustryRequired, _industryInvested, GameContext.Current.TurnNumber, PercentComplete.ToString());
                     return false;
@@ -250,17 +235,17 @@ namespace Supremacy.Economy
         /// </value>
         public bool IsCancelled
         {
-            get 
+            get
             {
                 if (GetFlag(BuildProjectFlags.Cancelled))
                     GameLog.Core.Production.DebugFormat("##### Project has flag: IsCancelled");
-                return GetFlag(BuildProjectFlags.Cancelled); 
+                return GetFlag(BuildProjectFlags.Cancelled);
             }
-            protected set 
+            protected set
             {
                 if (GetFlag(BuildProjectFlags.Cancelled))
                     GameLog.Core.Production.DebugFormat("##### Project is set to flag: IsCancelled");
-                SetFlag(BuildProjectFlags.Cancelled, value); 
+                SetFlag(BuildProjectFlags.Cancelled, value);
             }
         }
 
@@ -297,10 +282,7 @@ namespace Supremacy.Economy
         /// <value>
         /// <c>true</c> if this project is partially complete; otherwise, <c>false</c>.
         /// </value>
-        public bool IsPartiallyComplete
-        {
-            get { return (PercentComplete > 0.0f); }
-        }
+        public bool IsPartiallyComplete => (PercentComplete > 0.0f);
 
         /// <summary>
         /// Gets the percent completion of this <see cref="BuildProject"/>.
@@ -308,12 +290,12 @@ namespace Supremacy.Economy
         /// <value>The percent completion.</value>
         public virtual Percentage PercentComplete
         {
-            get 
+            get
             {
                 if ((Percentage)((double)_industryInvested / IndustryRequired) == 100 && this.IsCompleted != true)
                     GameLog.Core.Stations.DebugFormat("100% completed (Industry only, but maybe a gap of Duranium");
 
-                return (Percentage)((double)_industryInvested / IndustryRequired); 
+                return (Percentage)((double)_industryInvested / IndustryRequired);
             }
         }
 
@@ -321,28 +303,19 @@ namespace Supremacy.Economy
         /// Gets the total industry required to complete this <see cref="BuildProject"/>.
         /// </summary>
         /// <value>The industry required.</value>
-        protected virtual int IndustryRequired
-        {
-            get { return BuildDesign.BuildCost; }
-        }
+        protected virtual int IndustryRequired => BuildDesign.BuildCost;
 
         /// <summary>
         /// Gets the total resources required to complete this <see cref="BuildProject"/>.
         /// </summary>
         /// <value>The resources required.</value>
-        protected virtual ResourceValueCollection ResourcesRequired
-        {
-            get { return BuildDesign.BuildResourceCosts; }
-        }
+        protected virtual ResourceValueCollection ResourcesRequired => BuildDesign.BuildResourceCosts;
 
         /// <summary>
         /// Gets the number of turns remaining until this <see cref="BuildProject"/> is completed.
         /// </summary>
         /// <value>The turns remaining.</value>
-        public virtual int TurnsRemaining
-        {
-            get { return GetTimeEstimate(); }
-        }
+        public virtual int TurnsRemaining => GetTimeEstimate();
 
         protected bool GetFlag(BuildProjectFlags flag)
         {
@@ -457,7 +430,7 @@ namespace Supremacy.Economy
 
             if (newEntry == null)
             {
-                GameLog.Core.Production.DebugFormat(" Turn {3}: BuildProject.FINISHED: ##########  {0} built by {1} at {2}", 
+                GameLog.Core.Production.DebugFormat(" Turn {3}: BuildProject.FINISHED: ##########  {0} built by {1} at {2}",
                     BuildDesign, Builder, Location, GameContext.Current.TurnNumber);
 
                 newEntry = new ItemBuiltSitRepEntry(Builder, BuildDesign, Location);
@@ -478,7 +451,7 @@ namespace Supremacy.Economy
             var industryRemaining = IndustryRequired - IndustryInvested;
 
             var turns = industryRemaining / industryAvailable;
-            
+
             if (industryRemaining % industryAvailable > 0)
                 ++turns;
 
@@ -561,7 +534,7 @@ namespace Supremacy.Economy
                 BuildProjectFlags.DeuteriumShortage |
                 BuildProjectFlags.DilithiumShortage |
                 BuildProjectFlags.RawMaterialsShortage);
-            
+
             var resourceTypes = EnumHelper.GetValues<ResourceType>();
 
             for (var i = 0; i < resourceTypes.Length; i++)
@@ -580,7 +553,7 @@ namespace Supremacy.Economy
                     GameLog.Core.Test.DebugFormat(Environment.NewLine + "   Turn {3}: Estimated One Turn: resource = {0}, delta/missing = {1} for {2}", resource.ToString(), delta.ToString(), this.BuildDesign.Description, GameContext.Current.TurnNumber);
 
                     deltaIndustry -= delta;
-                    
+
                     civManager.SitRepEntries.Add(new BuildProjectResourceShortageSitRepEntry(civ, resource.ToString(), delta.ToString(), this.BuildDesign.Description));
 
                 }
@@ -607,7 +580,7 @@ namespace Supremacy.Economy
 
                 delta /= timeEstimate;
                 delta += ((ResourcesRequired[resource] - _resourcesInvested[resource]) % timeEstimate);
-                
+
                 delta = Math.Min(delta, resources[resource]);
 
                 resources[resource] -= delta;

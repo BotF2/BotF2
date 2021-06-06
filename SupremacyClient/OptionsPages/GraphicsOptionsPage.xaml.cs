@@ -20,9 +20,6 @@ namespace Supremacy.Client.OptionsPages
             InitializeComponent();
         }
 
-        public string Header
-        {
-            get { return _resourceManager.GetString("SETTINGS_GRAPHICS_TAB"); }
-        }
+        public string Header => _resourceManager.GetString("SETTINGS_GRAPHICS_TAB");
     }
 }

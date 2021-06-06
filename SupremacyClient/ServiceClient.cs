@@ -95,15 +95,9 @@ namespace Supremacy.Client
             catch (FaultException) { }
         }
 
-        public bool IsClosing
-        {
-            get { return (InnerChannel.State == CommunicationState.Closing); }
-        }
+        public bool IsClosing => (InnerChannel.State == CommunicationState.Closing);
 
-        public bool IsClosed
-        {
-            get { return (InnerChannel.State == CommunicationState.Closed); }
-        }
+        public bool IsClosed => (InnerChannel.State == CommunicationState.Closed);
 
         public void Pong(int pingId)
         {

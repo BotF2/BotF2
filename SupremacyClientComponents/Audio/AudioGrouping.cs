@@ -69,7 +69,7 @@ namespace Supremacy.Client.Audio
             }
         }
 
-        internal FMOD.ChannelGroup ChannelGroup { get { return _channelGroup; } }
+        internal FMOD.ChannelGroup ChannelGroup => _channelGroup;
         #endregion
 
         #region Construction & Lifetime

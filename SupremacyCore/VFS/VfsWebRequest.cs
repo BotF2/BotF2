@@ -22,10 +22,7 @@ namespace Supremacy.VFS
     {
         private readonly Uri _requestUri;
 
-        public override Uri RequestUri
-        {
-            get { return _requestUri; }
-        }
+        public override Uri RequestUri => _requestUri;
 
         public VfsWebRequest([NotNull] Uri requestUri)
         {
@@ -77,10 +74,7 @@ namespace Supremacy.VFS
     {
         private readonly Uri _responseUri;
 
-        public sealed override Uri ResponseUri
-        {
-            get { return _responseUri; }
-        }
+        public sealed override Uri ResponseUri => _responseUri;
 
         public VfsWebResponse([NotNull] Uri responseUri)
         {
@@ -92,10 +86,7 @@ namespace Supremacy.VFS
 
         private readonly Lazy<IVfsService> _vfsService = new Lazy<IVfsService>(() => ResourceManager.VfsService);
 
-        protected IVfsService VfsService
-        {
-            get { return _vfsService.Value; }
-        }
+        protected IVfsService VfsService => _vfsService.Value;
 
         public override Stream GetResponseStream()
         {

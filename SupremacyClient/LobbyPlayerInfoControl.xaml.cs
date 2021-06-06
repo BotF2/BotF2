@@ -53,10 +53,7 @@ namespace Supremacy.Client
                 EmpireChanged(this, new EventArgs());
         }
 
-        public int SelectedEmpireID
-        {
-            get { return ((KeyValuePair<int, string>)EmpireList.SelectedItem).Key; }
-        }
+        public int SelectedEmpireID => ((KeyValuePair<int, string>)EmpireList.SelectedItem).Key;
 
         public LobbyData LobbyData
         {

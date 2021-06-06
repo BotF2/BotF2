@@ -100,10 +100,7 @@ namespace Supremacy.WCF
 
         #region Properties
 
-        internal static ISupremacyCallback Callback
-        {
-            get { return OperationContext.Current.GetCallbackChannel<ISupremacyCallback>(); }
-        }
+        internal static ISupremacyCallback Callback => OperationContext.Current.GetCallbackChannel<ISupremacyCallback>();
 
         internal Player CurrentPlayer
         {
@@ -130,10 +127,7 @@ namespace Supremacy.WCF
 
         internal ServiceHost Host { get; set; }
 
-        internal LobbyData LobbyData
-        {
-            get { return _lobbyData; }
-        }
+        internal LobbyData LobbyData => _lobbyData;
         #endregion
 
         #region Methods

@@ -18,10 +18,7 @@ namespace Supremacy.Scripting.Events
     public class GammaRayBurstEvent : UnitScopedEvent<Colony>
     {
         private int _occurrenceChance = 200;
-        public override bool CanExecute
-        {
-            get { return _occurrenceChance > 0 && base.CanExecute; }
-        }
+        public override bool CanExecute => _occurrenceChance > 0 && base.CanExecute;
 
         protected override void InitializeOverride(IDictionary<string, object> options)
         {

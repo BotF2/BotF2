@@ -104,10 +104,7 @@ namespace Supremacy.Client.Views
         #endregion
 
         #region Public and Protected Methods
-        protected override string ViewName
-        {
-            get { return StandardGameScreens.GalaxyScreen; }
-        }
+        protected override string ViewName => StandardGameScreens.GalaxyScreen;
 
         protected override void InvalidateCommands()
         {

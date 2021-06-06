@@ -28,10 +28,7 @@ namespace Supremacy.Types
         #endregion
 
         #region Properties
-        public T Parameter
-        {
-            get { return _parameter; }
-        }
+        public T Parameter => _parameter;
         #endregion
     }
 
@@ -49,10 +46,7 @@ namespace Supremacy.Types
         #endregion
 
         #region Properties
-        public T Parameter
-        {
-            get { return _parameter; }
-        }
+        public T Parameter => _parameter;
         #endregion
     }
 

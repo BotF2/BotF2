@@ -18,15 +18,9 @@ namespace Supremacy.Text
         private string _oldKey;
         private string _newKey;
 
-        public string OldKey
-        {
-            get { return _oldKey; }
-        }
+        public string OldKey => _oldKey;
 
-        public string NewKey
-        {
-            get { return _newKey; }
-        }
+        public string NewKey => _newKey;
 
         public KeyChangedEventArgs(string oldKey, string newKey)
         {
@@ -62,15 +56,9 @@ namespace Supremacy.Text
             }
         }
 
-        internal StringTableNode KeyNode
-        {
-            get { return _keyNode; }
-        }
+        internal StringTableNode KeyNode => _keyNode;
 
-        internal StringTableNode ValueNode
-        {
-            get { return _valueNode; }
-        }
+        internal StringTableNode ValueNode => _valueNode;
 
         public string Value
         {

@@ -41,19 +41,13 @@ namespace Supremacy.Orbitals
 
         public int UnitEnergyCost { get; set; }
 
-        protected override string DefaultImageSubFolder
-        {
-            get { return "OrbitalBatteries/"; }
-        }
+        protected override string DefaultImageSubFolder => "OrbitalBatteries/";
 
         /// <summary>
         /// Gets the encyclopedia category for a building of this design.
         /// </summary>
         /// <value>The encyclopedia category.</value>
-        public override EncyclopediaCategory EncyclopediaCategory
-        {
-            get { return EncyclopediaCategory.Batteries; }
-        }
+        public override EncyclopediaCategory EncyclopediaCategory => EncyclopediaCategory.Batteries;
 
         protected internal override void AppendXml(XmlElement baseElement)
         {

@@ -61,10 +61,7 @@ namespace Supremacy.Economy
             _isActive = reader.ReadBoolean();
         }
 
-        public override bool OnHold
-        {
-            get { return HasProject && (Project.IsPaused || !IsActive); }
-        }
+        public override bool OnHold => HasProject && (Project.IsPaused || !IsActive);
 
         public override void SerializeOwnedData(SerializationWriter writer, object context)
         {

@@ -36,25 +36,13 @@ namespace Supremacy.Effects
             _targetEffectBindings = new KeyedCollectionBase<IEffectTarget, TargetEffectBinding>(o => o.Target);
         }
 
-        public IEffectSource Source
-        {
-            get { return _source; }
-        }
+        public IEffectSource Source => _source;
 
-        public EffectGroup EffectGroup
-        {
-            get { return _effectGroup; }
-        }
+        public EffectGroup EffectGroup => _effectGroup;
 
-        public IEffectParameterBindingCollection CustomParameterBindings
-        {
-            get { return _customParameterBindings; }
-        }
+        public IEffectParameterBindingCollection CustomParameterBindings => _customParameterBindings;
 
-        public IEnumerable<EffectBinding> EffectBindings
-        {
-            get { return _targetEffectBindings.SelectMany(o => o.EffectBindings); }
-        }
+        public IEnumerable<EffectBinding> EffectBindings => _targetEffectBindings.SelectMany(o => o.EffectBindings);
 
         public IIndexedCollection<EffectBinding> GetEffectBindings(IEffectTarget target)
         {
@@ -217,15 +205,9 @@ namespace Supremacy.Effects
                 _effectBindings = effectBindings;
             }
 
-            public IEffectTarget Target
-            {
-                get { return _target; }
-            }
+            public IEffectTarget Target => _target;
 
-            public IIndexedCollection<EffectBinding> EffectBindings
-            {
-                get { return _effectBindings; }
-            }
+            public IIndexedCollection<EffectBinding> EffectBindings => _effectBindings;
         }
 
         #endregion

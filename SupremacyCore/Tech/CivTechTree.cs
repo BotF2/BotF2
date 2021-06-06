@@ -42,87 +42,49 @@ namespace Supremacy.Tech
         /// Gets the subset of building designs in this <see cref="TechTree"/>.
         /// </summary>
         /// <value>The building designs.</value>
-        public IEnumerable<BuildingDesign> BuildingDesigns
-        {
-            get
-            {
-                return _buildingDesigns
+        public IEnumerable<BuildingDesign> BuildingDesigns => _buildingDesigns
                     .Select(i => GameContext.Current.TechDatabase[i])
                     .OfType<BuildingDesign>();
-            }
-
-        }
 
         /// <summary>
         /// Gets the subset of shipyard designs in this <see cref="TechTree"/>.
         /// </summary>
         /// <value>The shipyard designs.</value>
-        public IEnumerable<ShipyardDesign> ShipyardDesigns
-        {
-            get
-            {
-                return _shipyardDesigns
+        public IEnumerable<ShipyardDesign> ShipyardDesigns => _shipyardDesigns
                     .Select(i => GameContext.Current.TechDatabase[i])
                     .OfType<ShipyardDesign>();
-            }
-
-        }
 
         /// <summary>
         /// Gets the subset of ship designs in this <see cref="TechTree"/>.
         /// </summary>
         /// <value>The ship designs.</value>
-        public IEnumerable<ShipDesign> ShipDesigns
-        {
-            get
-            {
-                return _shipDesigns
+        public IEnumerable<ShipDesign> ShipDesigns => _shipDesigns
                     .Select(i => GameContext.Current.TechDatabase[i])
                     .OfType<ShipDesign>();
-            }
-        }
 
         /// <summary>
         /// Gets the subset of station designs in this <see cref="TechTree"/>.
         /// </summary>
         /// <value>The station designs.</value>
-        public IEnumerable<StationDesign> StationDesigns
-        {
-            get
-            {
-                return _stationDesigns
+        public IEnumerable<StationDesign> StationDesigns => _stationDesigns
                     .Select(i => GameContext.Current.TechDatabase[i])
                     .OfType<StationDesign>();
-            }
-        }
 
         /// <summary>
         /// Gets the subset of facility designs in this <see cref="TechTree"/>.
         /// </summary>
         /// <value>The facility designs.</value>
-        public IEnumerable<ProductionFacilityDesign> ProductionFacilityDesigns
-        {
-            get
-            {
-                return _productionFacilityDesigns
+        public IEnumerable<ProductionFacilityDesign> ProductionFacilityDesigns => _productionFacilityDesigns
                     .Select(i => GameContext.Current.TechDatabase[i])
                     .OfType<ProductionFacilityDesign>();
-            }
-        }
 
         /// <summary>
         /// Gets the subset of orbital battery designs in this <see cref="TechTree"/>.
         /// </summary>
         /// <value>The orbital battery designs.</value>
-        public IEnumerable<OrbitalBatteryDesign> OrbitalBatteryDesigns
-        {
-            get
-            {
-                return _orbitalBatteryDesigns
+        public IEnumerable<OrbitalBatteryDesign> OrbitalBatteryDesigns => _orbitalBatteryDesigns
                     .Select(i => GameContext.Current.TechDatabase[i])
                     .OfType<OrbitalBatteryDesign>();
-            }
-        }
 
         /// <summary>
         /// Gets a value indicating whether this <see cref="TechTree"/> is empty.
@@ -130,18 +92,12 @@ namespace Supremacy.Tech
         /// <value>
         /// <c>true</c> if this <see cref="TechTree"/> is empty; otherwise, <c>false</c>.
         /// </value>
-        public bool IsEmpty
-        {
-            get
-            {
-                return _buildingDesigns.Count == 0 &&
+        public bool IsEmpty => _buildingDesigns.Count == 0 &&
                        _shipyardDesigns.Count == 0 &&
                        _shipDesigns.Count == 0 &&
                        _stationDesigns.Count == 0 &&
                        _productionFacilityDesigns.Count == 0 &&
                        _orbitalBatteryDesigns.Count == 0;
-            }
-        }
 
         /// <summary>
         /// Determines whether this <see cref="TechTree"/> contains the specified <see cref="TechObjectDesign"/>.

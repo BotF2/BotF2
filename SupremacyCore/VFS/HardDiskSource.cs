@@ -81,10 +81,7 @@ namespace Supremacy.VFS
             set { _pathResolver = value ?? (() => _path); }
         }
 
-        public override bool IsReadOnly
-        {
-            get { return false; }
-        }
+        public override bool IsReadOnly => false;
         #endregion
 
         #region Methods
@@ -407,73 +404,49 @@ namespace Supremacy.VFS
             }
 
             #region IVirtualFileInfo Members
-            public IFilesSource Source
-            {
-                get { return _source; }
-            }
+            public IFilesSource Source => _source;
 
             /// <summary>
             /// Gets a value indicating whether the file exists.
             /// </summary>
             /// <value><c>true</c> if the gile exists; otherwise, <c>false</c>.</value>
-            public bool Exists
-            {
-                get { return _physicalFileInfo.Exists; }
-            }
+            public bool Exists => _physicalFileInfo.Exists;
 
             /// <summary>
             /// Gets a value indicating whether the file is read only.
             /// </summary>
             /// <value><c>true</c> if the file is read only; otherwise, <c>false</c>.</value>
-            public bool IsReadOnly
-            {
-                get { return _source.IsReadOnly; }
-            }
+            public bool IsReadOnly => _source.IsReadOnly;
 
             /// <summary>
             /// Gets the file's virtual path.
             /// </summary>
             /// <value>The file's virtual path.</value>
-            public string VirtualPath
-            {
-                get { return _virtualPath; }
-            }
+            public string VirtualPath => _virtualPath;
 
             /// <summary>
             /// Gets the length of the file in bytes.
             /// </summary>
             /// <value>The length of the file in bytes.</value>
-            public long Length
-            {
-                get { return _physicalFileInfo.Length; }
-            }
+            public long Length => _physicalFileInfo.Length;
 
             /// <summary>
             /// Gets the name of the file without the directory name.
             /// </summary>
             /// <value>The name of the file.</value>
-            public string FileName
-            {
-                get { return IOPath.GetFileName(_physicalFileInfo.FullName); }
-            }
+            public string FileName => IOPath.GetFileName(_physicalFileInfo.FullName);
 
             /// <summary>
             /// Gets the name of the virtual directory containing the file.
             /// </summary>
             /// <value>The name of the virtual directory containing the file.</value>
-            public string DirectoryName
-            {
-                get { return IOPath.GetDirectoryName(_physicalFileInfo.FullName); }
-            }
+            public string DirectoryName => IOPath.GetDirectoryName(_physicalFileInfo.FullName);
 
             /// <summary>
             /// Gets the file extension.
             /// </summary>
             /// <value>The file extension.</value>
-            public string Extension
-            {
-                get { return IOPath.GetExtension(_physicalFileInfo.FullName); }
-            }
+            public string Extension => IOPath.GetExtension(_physicalFileInfo.FullName);
 
             /// <summary>
             /// Gets or sets the file's attributes.

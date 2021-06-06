@@ -23,10 +23,7 @@ namespace Supremacy.Text
         private List<RichString> _parts = new List<RichString>(1);
         private string _string = string.Empty;
 
-        public static RichText Empty
-        {
-            get { return new RichText(); }
-        }
+        public static RichText Empty => new RichText();
 
         public Brush BackgroundBrush
         {
@@ -60,15 +57,9 @@ namespace Supremacy.Text
             }
         }
 
-        public bool IsEmpty
-        {
-            get { return string.IsNullOrEmpty(_string); }
-        }
+        public bool IsEmpty => string.IsNullOrEmpty(_string);
 
-        public int Length
-        {
-            get { return _string.Length; }
-        }
+        public int Length => _string.Length;
 
         public string Text
         {
@@ -858,20 +849,11 @@ namespace Supremacy.Text
             private readonly object _object;
             private readonly int _startOffset;
 
-            public int EndOffset
-            {
-                get { return _endOffset; }
-            }
+            public int EndOffset => _endOffset;
 
-            public object Object
-            {
-                get { return _object; }
-            }
+            public object Object => _object;
 
-            public int StartOffset
-            {
-                get { return _startOffset; }
-            }
+            public int StartOffset => _startOffset;
 
             public TextRangeDataRecord(int startOffset, int endOffset, object @object)
             {

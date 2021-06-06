@@ -49,8 +49,8 @@ namespace Supremacy.Client.Views
 
         public ShipBuildProject SelectedBuildProject // Change in this is seen at ColonyScreenPresenter inside of ExecuteSelectShipBuildProjectCommand(ShipyardBuildSlot buildSlot)
         {
-            get { return (ShipBuildProject)GetValue(SelectedBuildProjectProperty); }
-            set { SetValue(SelectedBuildProjectProperty, value); }
+            get => (ShipBuildProject)GetValue(SelectedBuildProjectProperty);
+            set => SetValue(SelectedBuildProjectProperty, value);
         }
         #endregion
 
@@ -70,17 +70,14 @@ namespace Supremacy.Client.Views
         }
         #endregion
 
-        public string ShipFunctionPath
-        {
-            get
-            {
-                return "vfs:///Resources/UI/" + Context.DesignTimeAppContext.Instance.LocalPlayerEmpire.Civilization.Key + "/ColonyScreen/Ship_Functions.png";
-            }
-        }
+        public string ShipFunctionPath => "vfs:///Resources/UI/" + Context.DesignTimeAppContext.Instance.LocalPlayerEmpire.Civilization.Key + "/ColonyScreen/Ship_Functions.png";
+
+        public int SpecialWidth1 => Context.DesignTimeAppContext.Instance.ASpecialWidth1;// ActualWidthProperty;
+        public int SpecialHeight1 => Context.DesignTimeAppContext.Instance.ASpecialHeight1;
 
         private void CanExecuteAcceptCommand(object sender, CanExecuteRoutedEventArgs e)
         {
-            e.CanExecute = (SelectedBuildProject != null);
+            e.CanExecute = SelectedBuildProject != null;
         }
 
         private void ExecuteAcceptCommand(object sender, ExecutedRoutedEventArgs e)
@@ -92,8 +89,7 @@ namespace Supremacy.Client.Views
 
         private void OnBuildProjectListMouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            var source = e.OriginalSource as DependencyObject;
-            if (source == null)
+            if (!(e.OriginalSource is DependencyObject source))
                 return;
 
             var contanier = source.FindVisualAncestorByType<ListBoxItem>();

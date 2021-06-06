@@ -19,7 +19,7 @@ namespace Supremacy.Effects
         private readonly object _stackingKey;
         private readonly StateScope _invalidationSuppressionScope;
 
-        protected virtual string Description { get { return null; } }
+        protected virtual string Description => null;
 
         protected DynamicPropertyModifier()
         {
@@ -35,10 +35,7 @@ namespace Supremacy.Effects
         }
 
         [CanBeNull]
-        public object StackingKey
-        {
-            get { return _stackingKey; }
-        }
+        public object StackingKey => _stackingKey;
 
         public TValue ProvideValue(TValue baseValue, TValue currentValue)
         {

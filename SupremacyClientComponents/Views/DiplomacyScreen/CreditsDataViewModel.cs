@@ -251,10 +251,7 @@ namespace Supremacy.Client.Views
 
         #region Implementation of IClauseParameterInfo
 
-        bool IClauseParameterInfo.IsParameterValid
-        {
-            get { return ImmediateAmount > 0 || RecurringAmount > 0; }
-        }
+        bool IClauseParameterInfo.IsParameterValid => ImmediateAmount > 0 || RecurringAmount > 0;
 
         object IClauseParameterInfo.GetParameterData()
         {

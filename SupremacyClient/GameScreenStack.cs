@@ -237,10 +237,7 @@ namespace Supremacy.Client
             Loaded += OnLoaded;
         }
 
-        public ReadOnlyObservableCollection<Control> Screens
-        {
-            get { return _screensView; }
-        }
+        public ReadOnlyObservableCollection<Control> Screens => _screensView;
 
         void OnLoaded(object sender, RoutedEventArgs e)
         {
@@ -358,10 +355,7 @@ namespace Supremacy.Client
             }
         }
 
-        protected override int VisualChildrenCount
-        {
-            get { return 1; }
-        }
+        protected override int VisualChildrenCount => 1;
 
         protected override Visual GetVisualChild(int index)
         {

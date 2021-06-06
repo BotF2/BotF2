@@ -15,10 +15,7 @@ namespace Supremacy.Client.Views
 
         #region Overrides of GameScreenPresenterBase<AssetsScreenPresentationModel,IAssetsScreenView>
 
-        protected override string ViewName
-        {
-            get { return StandardGameScreens.IntelScreen; }
-        }
+        protected override string ViewName => StandardGameScreens.IntelScreen;
 
         protected override void RegisterCommandAndEventHandlers()
         {

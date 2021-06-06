@@ -85,10 +85,7 @@ namespace Supremacy.Client.Views
 
         public static readonly DependencyProperty UpgradeableDesignsResolvedProperty = UpgradeableDesignsResolvedPropertyKey.DependencyProperty;
 
-        public ReadOnlyCollection<TechObjectDesign> UpgradeableDesignsResolved
-        {
-            get { return (ReadOnlyCollection<TechObjectDesign>)GetValue(UpgradeableDesignsResolvedProperty); }
-        }
+        public ReadOnlyCollection<TechObjectDesign> UpgradeableDesignsResolved => (ReadOnlyCollection<TechObjectDesign>)GetValue(UpgradeableDesignsResolvedProperty);
 
         private static object CoerceUpgradeableDesignsResolved(DependencyObject d, object baseValue)
         {
@@ -125,10 +122,7 @@ namespace Supremacy.Client.Views
 
         public static readonly DependencyProperty ObsoletedDesignsResolvedProperty = ObsoletedDesignsResolvedPropertyKey.DependencyProperty;
 
-        public ReadOnlyCollection<TechObjectDesign> ObsoletedDesignsResolved
-        {
-            get { return (ReadOnlyCollection<TechObjectDesign>)GetValue(ObsoletedDesignsResolvedProperty); }
-        }
+        public ReadOnlyCollection<TechObjectDesign> ObsoletedDesignsResolved => (ReadOnlyCollection<TechObjectDesign>)GetValue(ObsoletedDesignsResolvedProperty);
 
         private static object CoerceObsoletedDesignsResolved(DependencyObject d, object baseValue)
         {

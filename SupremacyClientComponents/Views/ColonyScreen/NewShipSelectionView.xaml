@@ -93,7 +93,25 @@
                 MaxHeight="250"
                 Stretch="Uniform"
                 StretchDirection="DownOnly"
-                Source="{Binding ElementName=BuildProjectList, Path=SelectedItem.BuildDesign.Image}"/>
+                Source="{Binding ElementName=BuildProjectList, Path=SelectedItem.BuildDesign.Image}">
+
+                <Image.ToolTip>
+                    <Border x:Name="ImageToolTipBorder"
+                            Grid.Column="0"
+                            VerticalAlignment="Center"
+                            BorderBrush="{StaticResource HeaderTextBrush}"
+                            BorderThickness="2"
+                            CornerRadius="4"
+                            
+                            MaxWidth="{Binding ElementName=_self, Path=SpecialWidth1}"
+                            MaxHeight="{Binding ElementName=_self, Path=SpecialHeight1}">
+                        <Border.Background>
+                            <ImageBrush ImageSource="{Binding ElementName=BuildProjectList, Path=SelectedItem.BuildDesign.Image, Converter={StaticResource TechObjectImageConverter}}" />
+                        </Border.Background>
+                    </Border>
+                </Image.ToolTip>
+            </Image>
+            <!--Background="{Binding ElementName=BuildProjectList, Path=SelectedItem.BuildDesign.Image, Converter={StaticResource TechObjectImageConverter}}"-->
 
             <ScrollViewer Margin="0,15,0,0"
                 VerticalScrollBarVisibility="Auto">

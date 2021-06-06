@@ -61,34 +61,19 @@ namespace Supremacy.Client.Views
         protected bool IsRunning { get; private set; }
 
         [NotNull]
-        protected IPlayerOrderService PlayerOrderService
-        {
-            get { return _playerOrderService; }
-        }
+        protected IPlayerOrderService PlayerOrderService => _playerOrderService;
 
         [NotNull]
-        protected INavigationCommandsProxy NavigationCommands
-        {
-            get { return _navigationCommands; }
-        }
+        protected INavigationCommandsProxy NavigationCommands => _navigationCommands;
 
         [NotNull]
-        protected IAppContext AppContext
-        {
-            get { return _appContext; }
-        }
+        protected IAppContext AppContext => _appContext;
 
         [NotNull]
-        public TPresentationModel Model
-        {
-            get { return _model; }
-        }
+        public TPresentationModel Model => _model;
 
         [NotNull]
-        protected IResourceManager ResourceManager
-        {
-            get { return _resourceManager; }
-        }
+        protected IResourceManager ResourceManager => _resourceManager;
 
         [NotNull]
         protected IRegionManager RegionManager
@@ -106,10 +91,7 @@ namespace Supremacy.Client.Views
         }
 
         [NotNull]
-        protected IEventAggregator EventAggregator
-        {
-            get { return _eventAggregator; }
-        }
+        protected IEventAggregator EventAggregator => _eventAggregator;
 
         [NotNull]
         protected abstract string ViewName { get; }
@@ -233,10 +215,7 @@ namespace Supremacy.Client.Views
 
         #region IGameScreenPresenter<TPresentationModel,TView> Implementation
         [NotNull]
-        public TView View
-        {
-            get { return _view; }
-        }
+        public TView View => _view;
         #endregion
 
         #region Public and Protected Methods
@@ -285,10 +264,7 @@ namespace Supremacy.Client.Views
 
         #region Implementation of IInteractionNode
 
-        object IInteractionNode.UIElement
-        {
-            get { return View; }
-        }
+        object IInteractionNode.UIElement => View;
 
         IInteractionNode IInteractionNode.FindParent()
         {
@@ -309,10 +285,7 @@ namespace Supremacy.Client.Views
             : base(container, model, view) { }
         #endregion
 
-        protected override string ViewName
-        {
-            get { return StandardGameScreens.DiplomacyScreen; }
-        }
+        protected override string ViewName => StandardGameScreens.DiplomacyScreen;
     }
 
     public class ScienceScreenPresenter
@@ -326,10 +299,7 @@ namespace Supremacy.Client.Views
             : base(container, model, view) { }
         #endregion
 
-        protected override string ViewName
-        {
-            get { return StandardGameScreens.ScienceScreen; }
-        }
+        protected override string ViewName => StandardGameScreens.ScienceScreen;
     }
 
     public class EncyclopediaScreenPresenter
@@ -343,10 +313,7 @@ namespace Supremacy.Client.Views
             : base(container, model, view) { }
         #endregion
 
-        protected override string ViewName
-        {
-            get { return StandardGameScreens.EncyclopediaScreen; }
-        }
+        protected override string ViewName => StandardGameScreens.EncyclopediaScreen;
     }
 
     //public class IntelScreenPresenter

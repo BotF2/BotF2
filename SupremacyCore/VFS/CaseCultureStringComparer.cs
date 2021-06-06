@@ -78,19 +78,16 @@ namespace Supremacy.VFS.Utilities
 		}
 
 		private CultureInfo _cultureInfo;
-		/// <summary>
-		/// Gets the current culture.
-		/// </summary>
-		/// <value>The current culture.</value>
-		public CultureInfo CultureInfo
-		{
-			get { return _cultureInfo; }
-		}
+        /// <summary>
+        /// Gets the current culture.
+        /// </summary>
+        /// <value>The current culture.</value>
+        public CultureInfo CultureInfo => _cultureInfo;
 
-		/// <summary>
-		/// Name of the current culture.
-		/// </summary>
-		private string _cultureName;
+        /// <summary>
+        /// Name of the current culture.
+        /// </summary>
+        private string _cultureName;
 
 		#endregion
 

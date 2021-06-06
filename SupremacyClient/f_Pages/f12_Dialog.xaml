@@ -237,8 +237,13 @@
                 <TextBlock Grid.Row="11" Grid.Column="12" Text="4"  HorizontalAlignment="Center"/>
                 <!--<TextBlock Grid.Row="11" Grid.Column="12" Text="DUMMY" />-->
                 <!--</StackPanel>-->
-                    
-                                    <!--<StackPanel Orientation="Horizontal" Grid.Row="5" Margin="0,0,0,0">-->
+
+                <TextBlock Grid.Row="12" Text="" Grid.ColumnSpan="13" Background="#FFFFFFFF" Margin="20,0,20,0" HorizontalAlignment="Left"/>
+
+                <TextBlock Grid.Row="13" Text="{s:StringResource DIALOG_F12_TEXT_2}" Foreground="{DynamicResource HeaderTextBrush}"
+                           Grid.ColumnSpan="13" TextWrapping="Wrap"  Background="#FF000000" Margin="20,0,20,0" HorizontalAlignment="Left" />
+
+                <!--<StackPanel Orientation="Horizontal" Grid.Row="5" Margin="0,0,0,0">-->
                 <!--<TextBlock Grid.Row="6" Text="Dummy" Margin="20,0,0,0"/>
                 <TextBlock Grid.Row="6" Grid.Column="3" Text="Food"/>
                 <TextBlock Grid.Row="6" Grid.Column="4" Text="Con" />
@@ -252,6 +257,8 @@
                 <TextBlock Grid.Row="6" Grid.Column="12" Text="Tr" />
                 --><!--<TextBlock Grid.Row="6" Grid.Column="12" Text="DUMMY" />-->
                 <!--</StackPanel>-->
+                
+                
                     
             </Grid>
 

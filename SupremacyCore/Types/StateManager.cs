@@ -34,10 +34,7 @@ namespace Supremacy.Types
             _transitionMap = transitionMap;
         }
 
-        public TStateEnum CurrentState
-        {
-            get { return (TStateEnum)State.Get(typeof(TStateEnum), _currentState); }
-        }
+        public TStateEnum CurrentState => (TStateEnum)State.Get(typeof(TStateEnum), _currentState);
 
         public bool TryChange(TStateEnum desiredState)
         {
@@ -94,20 +91,11 @@ namespace Supremacy.Types
             _disposition = disposition;
         }
 
-        public int From
-        {
-            get { return _from; }
-        }
+        public int From => _from;
 
-        public int To
-        {
-            get { return _to; }
-        }
+        public int To => _to;
 
-        public StateChangeDisposition Disposition
-        {
-            get { return _disposition; }
-        }
+        public StateChangeDisposition Disposition => _disposition;
 
         #region IEquatable<StateTransition<TStateEnum>> Members
 
@@ -156,15 +144,9 @@ namespace Supremacy.Types
             _value = value;
         }
 
-        public string Name
-        {
-            get { return ToString(); }
-        }
+        public string Name => ToString();
 
-        public int Value
-        {
-            get { return _value; }
-        }
+        public int Value => _value;
 
         public int Toint()
         {

@@ -36,10 +36,7 @@ namespace Supremacy.Text
             return null;
         }
 
-        public LocalizedTextGroupCollection Groups
-        {
-            get { return _groups; }
-        }
+        public LocalizedTextGroupCollection Groups => _groups;
 
         public void Merge([NotNull] LocalizedTextDatabase database, bool overwrite = false)
         {
@@ -102,10 +99,7 @@ namespace Supremacy.Text
 
         private static readonly Lazy<LocalizedTextDatabase> _instance = new Lazy<LocalizedTextDatabase>(Load, LazyThreadSafetyMode.PublicationOnly);
 
-        public static LocalizedTextDatabase Instance
-        {
-            get { return _instance.Value; }
-        }
+        public static LocalizedTextDatabase Instance => _instance.Value;
 
         public static LocalizedTextDatabase Load()
         {
@@ -189,35 +183,17 @@ namespace Supremacy.Text
         private static readonly object _diplomacyScreen = new StandardLocalizedTextGroupKey("DiplomacyScreen");
         private static readonly object _diplomacyText = new StandardLocalizedTextGroupKey("DiplomacyText");
 
-        public static object GalaxyScreen
-        {
-            get { return _galaxyScreen; }
-        }
+        public static object GalaxyScreen => _galaxyScreen;
 
-        public static object ColonyScreen
-        {
-            get { return _colonyScreen; }
-        }
+        public static object ColonyScreen => _colonyScreen;
 
-        public static object InvasionScreen
-        {
-            get { return _invasionScreen; }
-        }
+        public static object InvasionScreen => _invasionScreen;
 
-        public static object AssetsScreen
-        {
-            get { return _assetsScreen; }
-        }
+        public static object AssetsScreen => _assetsScreen;
 
-        public static object DiplomacyScreen
-        {
-            get { return _diplomacyScreen; }
-        }
+        public static object DiplomacyScreen => _diplomacyScreen;
 
-        public static object DiplomacyText
-        {
-            get { return _diplomacyText; }
-        }
+        public static object DiplomacyText => _diplomacyText;
 
         [TypeConverter(typeof(LocalizedTextGroupKeyConverter))]
         public sealed class StandardLocalizedTextGroupKey
@@ -232,10 +208,7 @@ namespace Supremacy.Text
                 _name = name;
             }
 
-            public string Name
-            {
-                get { return _name; }
-            }
+            public string Name => _name;
 
             public override string ToString()
             {
@@ -304,10 +277,7 @@ namespace Supremacy.Text
             }
         }
 
-        public LocalizedStringCollection Entries
-        {
-            get { return _entries; }
-        }
+        public LocalizedStringCollection Entries => _entries;
 
         public LocalizedString DefaultEntry
         {
@@ -481,15 +451,9 @@ namespace Supremacy.Text
             _name = name;
         }
 
-        public Type Type
-        {
-            get { return _type; }
-        }
+        public Type Type => _type;
 
-        public string Name
-        {
-            get { return _name; }
-        }
+        public string Name => _name;
     }
 
     public sealed class ContextualTextEntryKey : IEquatable<ContextualTextEntryKey>
@@ -508,15 +472,9 @@ namespace Supremacy.Text
             _context = context;
         }
 
-        public object BaseKey
-        {
-            get { return _baseKey; }
-        }
+        public object BaseKey => _baseKey;
 
-        public object Context
-        {
-            get { return _context; }
-        }
+        public object Context => _context;
 
         public bool Equals(ContextualTextEntryKey other)
         {

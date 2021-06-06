@@ -66,10 +66,7 @@ namespace Supremacy.Diplomacy
         private int _lastStatusChange;
         private ForeignPowerStatus _diplomacyStatus;
 
-        protected static TableMap DiplomacyTables
-        {
-            get { return GameContext.Current.Tables.DiplomacyTables; }
-        }
+        protected static TableMap DiplomacyTables => GameContext.Current.Tables.DiplomacyTables;
 
         public DiplomacyData(int ownerId, int counterpartyId)
         {
@@ -93,30 +90,15 @@ namespace Supremacy.Diplomacy
             OnPropertyChanged("EffectiveRegard");
         }
 
-        public int OwnerID
-        {
-            get { return _ownerId; }
-        }
+        public int OwnerID => _ownerId;
 
-        public int CounterpartyID
-        {
-            get { return _counterpartyId; }
-        }
+        public int CounterpartyID => _counterpartyId;
 
-        public Meter Regard
-        {
-            get { return _regard; }
-        }
+        public Meter Regard => _regard;
 
-        public Meter Trust
-        {
-            get { return _trust; }
-        }
+        public Meter Trust => _trust;
 
-        public RegardLevel EffectiveRegard
-        {
-            get { return CalculateRegardLevel(_regard.CurrentValue); }
-        }
+        public RegardLevel EffectiveRegard => CalculateRegardLevel(_regard.CurrentValue);
 
         public int ContactTurn
         {
@@ -162,15 +144,9 @@ namespace Supremacy.Diplomacy
             }
         }
 
-        public bool AtWar
-        {
-            get { return Status == ForeignPowerStatus.AtWar; }
-        }
+        public bool AtWar => Status == ForeignPowerStatus.AtWar;
 
-        public RegardLevel EffectiveTrust
-        {
-            get { return CalculateRegardLevel(_trust.CurrentValue); }
-        }
+        public RegardLevel EffectiveTrust => CalculateRegardLevel(_trust.CurrentValue);
 
         [OnDeserialized]
         private void OnDeserialized(StreamingContext context)

@@ -218,20 +218,14 @@ namespace Supremacy.Text
             throw new NotSupportedException();
         }
 
-        public bool IsChanged
-        {
-            get { return false; }
-        }
+        public bool IsChanged => false;
 
         public void RejectChanges()
         {
             throw new NotSupportedException();
         }
 
-        public bool IsReadOnly
-        {
-            get { return true; }
-        }
+        public bool IsReadOnly => true;
 
         ITextDatabaseTable<TEntry> ITextDatabase.GetTable<TEntry>()
         {
@@ -242,15 +236,9 @@ namespace Supremacy.Text
             return null;
         }
 
-        private ClientTextDatabaseTable<ITechObjectTextDatabaseEntry> TechObjectTextTable
-        {
-            get { return _techObjectTextTable; }
-        }
+        private ClientTextDatabaseTable<ITechObjectTextDatabaseEntry> TechObjectTextTable => _techObjectTextTable;
 
-        private ClientTextDatabaseTable<IRaceTextDatabaseEntry> RaceTextTable
-        {
-            get { return _raceTextTable; }
-        }
+        private ClientTextDatabaseTable<IRaceTextDatabaseEntry> RaceTextTable => _raceTextTable;
 
         public void Save()
         {
@@ -308,25 +296,16 @@ namespace Supremacy.Text
                 throw new NotSupportedException();
             }
 
-            public int Count
-            {
-                get { return _entries.Count; }
-            }
+            public int Count => _entries.Count;
 
-            public bool IsReadOnly
-            {
-                get { return true; }
-            }
+            public bool IsReadOnly => true;
 
             public void AcceptChanges()
             {
                 throw new NotSupportedException();
             }
 
-            public bool IsChanged
-            {
-                get { return false; }
-            }
+            public bool IsChanged => false;
 
             public void RejectChanges()
             {
@@ -419,40 +398,25 @@ namespace Supremacy.Text
                 throw new NotSupportedException();
             }
 
-            public int Count
-            {
-                get { return _localizedEntries.Count; }
-            }
+            public int Count => _localizedEntries.Count;
 
-            public bool IsReadOnly
-            {
-                get { return true; }
-            }
+            public bool IsReadOnly => true;
 
             public void AcceptChanges()
             {
                 throw new NotSupportedException();
             }
 
-            public bool IsChanged
-            {
-                get { return false; }
-            }
+            public bool IsChanged => false;
 
             public void RejectChanges()
             {
                 throw new NotSupportedException();
             }
 
-            public string Key
-            {
-                get { return _key; }
-            }
+            public string Key => _key;
 
-            public IEnumerable<TLocalizedEntry> LocalizedEntries
-            {
-                get { return _localizedEntries; }
-            }
+            public IEnumerable<TLocalizedEntry> LocalizedEntries => _localizedEntries;
 
             public TLocalizedEntry CreateLocalizedEntry(string language)
             {
@@ -551,22 +515,13 @@ namespace Supremacy.Text
                 throw new NotSupportedException();
             }
 
-            public bool IsChanged
-            {
-                get { return false; }
-            }
+            public bool IsChanged => false;
 
             public void RejectChanges() { }
 
-            public string Language
-            {
-                get { return _language; }
-            }
+            public string Language => _language;
 
-            public string LanguageName
-            {
-                get { return CultureInfo.GetCultureInfo(Language).EnglishName; }
-            }
+            public string LanguageName => CultureInfo.GetCultureInfo(Language).EnglishName;
 
             public Dictionary<string, object> GetSavedValues()
             {
@@ -633,22 +588,13 @@ namespace Supremacy.Text
                 throw new NotSupportedException();
             }
 
-            public bool IsChanged
-            {
-                get { return false; }
-            }
+            public bool IsChanged => false;
 
             public void RejectChanges() { }
 
-            public string Language
-            {
-                get { return _language; }
-            }
+            public string Language => _language;
 
-            public string LanguageName
-            {
-                get { return CultureInfo.GetCultureInfo(Language).EnglishName; }
-            }
+            public string LanguageName => CultureInfo.GetCultureInfo(Language).EnglishName;
 
             public Dictionary<string, object> GetSavedValues()
             {

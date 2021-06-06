@@ -58,10 +58,7 @@ namespace Supremacy.Client.Views
             OnPropertyChanged("SelectedColony");
         }
 
-        public bool AddShipToQueue
-        {
-            get { return true; }
-        }
+        public bool AddShipToQueue => true;
 
         public Colony SelectedColony
         {

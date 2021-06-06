@@ -125,20 +125,11 @@ namespace Supremacy.Client
 
         }
 
-        public string F08_Text_1
-        {
-            get { return "hello 8" /*_text1*/; }
-        }
+        public string F08_Text_1 => "hello 8" /*_text1*/;
 
-        public string F08_Text_2
-        {
-            get { return "hello 8" /*_text1*/; }
-        }
+        public string F08_Text_2 => "hello 8" /*_text1*/;
 
-        private string F08_Text_3
-        {
-            get { return "hello 8" /*_text1*/; }
-        }
+        private string F08_Text_3 => "hello 8" /*_text1*/;
 
         private void OnGenericCommandsCancelCommandExecuted(object source, ExecutedRoutedEventArgs e)
         {

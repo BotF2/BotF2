@@ -29,10 +29,7 @@ namespace Supremacy.Economy
         /// Gets the colony at which construction is taking place.
         /// </summary>
         /// <value>The colony.</value>
-        public Colony Colony
-        {
-            get { return GameContext.Current.Universe.Objects[_colonyId] as Colony; }
-        }
+        public Colony Colony => GameContext.Current.Universe.Objects[_colonyId] as Colony;
 
         /// <summary>
         /// Gets the amount of industry available for investment during the current turn.
@@ -79,32 +76,20 @@ namespace Supremacy.Economy
         /// <value>
         /// <c>true</c>
         /// </value>
-        public override bool IsUpgrade
-        {
-            get { return true; }
-        }
+        public override bool IsUpgrade => true;
 
         /// <summary>
         /// Gets the description of the target building design
         /// </summary>
         /// <value>The description.</value>
-        public override string Description
-        {
-            get
-            {
-                return string.Format(ResourceManager.GetString("UPGRADE_FORMAT_STRING"),
+        public override string Description => string.Format(ResourceManager.GetString("UPGRADE_FORMAT_STRING"),
                     ResourceManager.GetString(BuildDesign.Name));
-            }
-        }
 
         /// <summary>
         /// Gets the target upgrade design.
         /// </summary>
         /// <value>The target upgrade design.</value>
-        public Building UpgradeTarget
-        {
-            get { return GameContext.Current.Universe.Objects[_upgradeTargetId] as Building; }
-        }
+        public Building UpgradeTarget => GameContext.Current.Universe.Objects[_upgradeTargetId] as Building;
 
         /// <summary>
         /// Finishes this <see cref="StructureUpgradeProject"/> and creates the newly constructed item.
@@ -151,23 +136,14 @@ namespace Supremacy.Economy
         /// <value>
         /// <c>true</c>
         /// </value>
-        public override bool IsUpgrade
-        {
-            get { return true; }
-        }
+        public override bool IsUpgrade => true;
 
         /// <summary>
         /// Gets the description of the target building design
         /// </summary>
         /// <value>The description.</value>
-        public override string Description
-        {
-            get
-            {
-                return string.Format(ResourceManager.GetString("UPGRADE_FORMAT_STRING"),
+        public override string Description => string.Format(ResourceManager.GetString("UPGRADE_FORMAT_STRING"),
                     ResourceManager.GetString(BuildDesign.Name));
-            }
-        }
 
         /// <summary>
         /// Gets the target upgrade design.

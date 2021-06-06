@@ -280,10 +280,7 @@ namespace Supremacy.Client.Events
                 BindingOperations.ClearBinding(this, ObservedValueProperty);
             }
 
-            internal bool IsEmpty
-            {
-                get { return _listeners.IsEmpty; }
-            }
+            internal bool IsEmpty => _listeners.IsEmpty;
         }
     }
 }

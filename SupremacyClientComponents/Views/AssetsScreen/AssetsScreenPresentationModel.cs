@@ -69,13 +69,10 @@ namespace Supremacy.Client.Views
         //    OnPropertyChanged("SelectedColony");
         //}
         #endregion
- 
+
         #region Properties for AssestsScreen
 
-        public CivilizationManager MyLocalCivManager
-        {
-            get { return IntelHelper.LocalCivManager; }
-        }
+        public CivilizationManager MyLocalCivManager => IntelHelper.LocalCivManager;
 
         public List<Civilization> LocalSpyingCivList
         {
@@ -584,13 +581,7 @@ namespace Supremacy.Client.Views
             }
         }
 
-        public int ValuesFromTurn
-        {
-            get
-            {
-                return GameContext.Current.TurnNumber;
-            }
-        }
+        public int ValuesFromTurn => GameContext.Current.TurnNumber;
 
         public int TotalDilithium
         {
@@ -653,20 +644,8 @@ namespace Supremacy.Client.Views
         }
 
 
-        public string LocalCivName
-        {
-            get
-            {
-                return MyLocalCivManager.Civilization.Name;  // keep this on AppContext
-            }
-        }
-        public static Civilization LocalCiv
-        {
-            get
-            {
-                return IntelHelper.LocalCivManager.Civilization;
-            }
-        }
+        public string LocalCivName => MyLocalCivManager.Civilization.Name;  // keep this on AppContext
+        public static Civilization LocalCiv => IntelHelper.LocalCivManager.Civilization;
         // ### Federation ####
         public static Civilization SpiedZeroCiv
         {
@@ -706,13 +685,7 @@ namespace Supremacy.Client.Views
                 }
             }
         }
-        public static string SpiedFedName
-        {
-            get
-            {
-                return "Federation";
-            }
-        }
+        public static string SpiedFedName => "Federation";
         //## Terran ##
         public static Civilization SpiedOneCiv
         {
@@ -751,14 +724,8 @@ namespace Supremacy.Client.Views
                     return zero;
                 }
             }
-        }  
-        public static string SpiedTerranName
-        {
-            get
-            {
-                return "Terran Empire"; 
-            }
         }
+        public static string SpiedTerranName => "Terran Empire";
         //## Romulan ##
         public static Civilization SpiedTwoCiv
         {
@@ -797,13 +764,7 @@ namespace Supremacy.Client.Views
                 }
             }
         }
-        public static string SpiedRomName
-        {
-            get
-            {
-                return "Romulans"; 
-            }
-        }
+        public static string SpiedRomName => "Romulans";
         // ## Klingons ##
         public static Civilization SpiedThreeCiv
         {
@@ -842,13 +803,7 @@ namespace Supremacy.Client.Views
                 }
             }
         }
-        public static string SpiedKlingName
-        {
-            get
-            {
-                return "Klingons";
-            }
-        }
+        public static string SpiedKlingName => "Klingons";
         //## Cardassians ##
         public static Civilization SpiedFourCiv
         {
@@ -887,13 +842,7 @@ namespace Supremacy.Client.Views
                 }
             }
         }
-        public static string SpiedCardName
-        {
-            get
-            {
-                return "Cardassians";
-            }
-        }
+        public static string SpiedCardName => "Cardassians";
         //## Dominion ##
         public static Civilization SpiedFiveCiv
         {
@@ -932,13 +881,7 @@ namespace Supremacy.Client.Views
                 }
             }
         }
-        public static string SpiedDomName
-        {
-            get
-            {
-                return "Dominion";
-            }
-        }
+        public static string SpiedDomName => "Dominion";
         // ## Borg ##
         public static Civilization SpiedSixCiv
         {
@@ -977,13 +920,7 @@ namespace Supremacy.Client.Views
                 }
             }
         }
-        public static string SpiedBorgName
-        {
-            get
-            {
-                return "Borg";
-            }
-        }
+        public static string SpiedBorgName => "Borg";
 
         #endregion
 

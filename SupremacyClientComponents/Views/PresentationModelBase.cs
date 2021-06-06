@@ -31,15 +31,9 @@ namespace Supremacy.Client.Views
 
         #region Implementation of IPresentationModel
 
-        public IAppContext AppContext
-        {
-            get { return _appContext; }
-        }
+        public IAppContext AppContext => _appContext;
 
-        public string TurnNumberText
-        {
-            get { return "Turn " + GameContext.Current.TurnNumber; }
-        }
+        public string TurnNumberText => "Turn " + GameContext.Current.TurnNumber;
 
         public void NotifyLoaded()
         {

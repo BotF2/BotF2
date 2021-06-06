@@ -33,10 +33,7 @@ namespace Supremacy.Scripting
             }
         }
 
-        protected IIndexedKeyedCollection<MapLocation, LocationTargetHistoryEntry> LocationTargetHistory
-        {
-            get { return _locationTargetHistory; }
-        }
+        protected IIndexedKeyedCollection<MapLocation, LocationTargetHistoryEntry> LocationTargetHistory => _locationTargetHistory;
 
         internal sealed override void InitializeCore(IDictionary<string, object> options)
         {
@@ -126,15 +123,9 @@ namespace Supremacy.Scripting
                 _turnNumber = turnNumber;
             }
 
-            public MapLocation Location
-            {
-                get { return _location; }
-            }
+            public MapLocation Location => _location;
 
-            public int TurnNumber
-            {
-                get { return _turnNumber; }
-            }
+            public int TurnNumber => _turnNumber;
         }
 
         #endregion

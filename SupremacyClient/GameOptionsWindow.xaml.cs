@@ -31,10 +31,7 @@ namespace Supremacy.Client
             DialogResult = true;
         }
 
-        public GameOptions Options
-        {
-            get { return OptionsPanel.Options; }
-        }
+        public GameOptions Options => OptionsPanel.Options;
 
     }
 }

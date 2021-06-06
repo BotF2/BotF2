@@ -26,15 +26,9 @@ namespace Supremacy.Resources
 
         private readonly Dictionary<string, string> _strings;
 
-        public ICollection<string> Keys
-        {
-            get { return _strings.Keys; }
-        }
+        public ICollection<string> Keys => _strings.Keys;
 
-        public ICollection<string> Values
-        {
-            get { return _strings.Values; }
-        }
+        public ICollection<string> Values => _strings.Values;
 
         public string this[string key]
         {

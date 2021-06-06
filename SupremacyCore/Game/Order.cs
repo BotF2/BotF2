@@ -84,10 +84,7 @@ namespace Supremacy.Game
         /// Gets the execution context.
         /// </summary>
         /// <value>The execution context.</value>
-        protected GameContext ExecutionContext
-        {
-            get { return _executionContext; }
-        }
+        protected GameContext ExecutionContext => _executionContext;
 
         /// <summary>
         /// Gets a value indicating whether this <see cref="Order"/> has been executed.
@@ -95,10 +92,7 @@ namespace Supremacy.Game
         /// <value>
         /// <c>true</c> if this <see cref="Order"/> has been executed; otherwise, <c>false</c>.
         /// </value>
-        public bool IsExecuted
-        {
-            get { return _isExecuted; }
-        }
+        public bool IsExecuted => _isExecuted;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Order"/> class.
@@ -992,10 +986,7 @@ namespace Supremacy.Game
         private readonly bool _scrap;
         private readonly int _targetId;
 
-        public TechObject Target
-        {
-            get { return GameContext.Current.Universe.Get<TechObject>(_targetId); }
-        }
+        public TechObject Target => GameContext.Current.Universe.Get<TechObject>(_targetId);
 
         public ScrapOrder(TechObject target)
             : this(true, target) { }
@@ -1034,10 +1025,7 @@ namespace Supremacy.Game
         private readonly int _targetId;
         private readonly string _name;
 
-        public UniverseObject Target
-        {
-            get { return GameContext.Current.Universe.Get<UniverseObject>(_targetId); }
-        }
+        public UniverseObject Target => GameContext.Current.Universe.Get<UniverseObject>(_targetId);
 
         public SetObjectNameOrder([NotNull] UniverseObject target, string name)
             : base(target.Owner)
@@ -1120,10 +1108,7 @@ namespace Supremacy.Game
     {
         private readonly IProposal _proposal;
 
-        public IProposal Proposal
-        {
-            get { return _proposal; }
-        }
+        public IProposal Proposal => _proposal;
 
         public SendProposalOrder([NotNull] IProposal proposal)
             : base(proposal.Sender)
@@ -1156,10 +1141,7 @@ namespace Supremacy.Game
     {
         private readonly Statement _statement;
 
-        public Statement Statement
-        {
-            get { return _statement; }
-        }
+        public Statement Statement => _statement;
 
         public SendStatementOrder([NotNull] Statement statement)
             : base(statement.Sender)

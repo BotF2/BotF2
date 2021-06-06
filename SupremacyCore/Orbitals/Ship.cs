@@ -41,10 +41,7 @@ namespace Supremacy.Orbitals
         /// Gets the type of the UniverseObject.
         /// </summary>
         /// <value>The type of the UniverseObject.</value>
-        public sealed override UniverseObjectType ObjectType
-        {
-            get { return UniverseObjectType.Ship; }
-        }
+        public sealed override UniverseObjectType ObjectType => UniverseObjectType.Ship;
 
         /// <summary>
         /// Gets or sets the name of this <see cref="Ship"/>.
@@ -70,34 +67,21 @@ namespace Supremacy.Orbitals
         /// Returns the name of the design
         /// eg "FED_SCOUT_III"
         /// </summary>
-        public string DesignName
-        {
-            get { return ShipDesign.Name; }
-        }
+        public string DesignName => ShipDesign.Name;
 
         /// <summary>
         /// Returns the name of the design
         /// eg "FED_SCOUT_III"
         /// </summary>
-        public string ClassName
-        {           
-            get {return ShipDesign.ClassName + " " + ResourceManager.GetString("SHIP_CLASS");
-            }
-        }
+        public string ClassName => ShipDesign.ClassName + " " + ResourceManager.GetString("SHIP_CLASS");
 
         /// <summary>
         /// Gets the fuel reserve.
         /// </summary>
         /// <value>The fuel reserve.</value>
-        public Meter FuelReserve
-        {
-            get { return _fuelReserve; }
-        }
+        public Meter FuelReserve => _fuelReserve;
 
-        public override bool IsMobile
-        {
-            get { return (_speed > 0); }
-        }
+        public override bool IsMobile => (_speed > 0);
 
         /// <summary>
         /// Gets a value indicating whether this <see cref="Ship"/> is stranded.
@@ -105,10 +89,7 @@ namespace Supremacy.Orbitals
         /// <value>
         /// <c>true</c> if this <see cref="Ship"/> is stranded; otherwise, <c>false</c>.
         /// </value>
-        public bool IsStranded
-        {
-            get { return _fuelReserve.IsMinimized; }
-        }
+        public bool IsStranded => _fuelReserve.IsMinimized;
 
         /// <summary>
         /// Gets or sets the speed.
@@ -147,10 +128,7 @@ namespace Supremacy.Orbitals
         /// Gets the type of the ship.
         /// </summary>
         /// <value>The type of the ship.</value>
-        public ShipType ShipType
-        {
-            get { return _shipType; }
-        }
+        public ShipType ShipType => _shipType;
 
         /// <summary>
         /// Gets or sets the ship design.
@@ -191,10 +169,7 @@ namespace Supremacy.Orbitals
         /// <value>
         /// 	<c>true</c> if this <see cref="Ship"/> can cloak; otherwise, <c>false</c>.
         /// </value>
-        public bool CanCloak
-        {
-            get { return (ShipDesign.CloakStrength > 0); }
-        }
+        public bool CanCloak => (ShipDesign.CloakStrength > 0);
 
         /// <summary>
         /// Gets or sets the cloak strength.
@@ -251,10 +226,7 @@ namespace Supremacy.Orbitals
         /// <value>
         /// 	<c>true</c> if this <see cref="Ship"/> can camouflage; otherwise, <c>false</c>.
         /// </value>
-        public bool CanCamouflage
-        {
-            get { return (ShipDesign.CamouflagedStrength > 0); }
-        }
+        public bool CanCamouflage => (ShipDesign.CamouflagedStrength > 0);
 
         /// <summary>
         /// Gets or sets the camouflage strength.

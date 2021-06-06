@@ -83,30 +83,15 @@ namespace Supremacy.Orbitals
         #endregion
 
         #region Properties and Indexers
-        public bool IsDesignOfShipsKnown
-        {
-            get { return _ships.All(ship => ship.IsDesignKnown); }
-        }
+        public bool IsDesignOfShipsKnown => _ships.All(ship => ship.IsDesignKnown);
 
-        public bool IsNumberOfShipsKnown
-        {
-            get { return _ships.All(ship => ship.IsPresenceKnown); }
-        }
+        public bool IsNumberOfShipsKnown => _ships.All(ship => ship.IsPresenceKnown);
 
-        public bool IsOwned
-        {
-            get { return _isOwned; }
-        }
+        public bool IsOwned => _isOwned;
 
-        public bool IsOwnerKnown
-        {
-            get { return _isOwnerKnown; }
-        }
+        public bool IsOwnerKnown => _isOwnerKnown;
 
-        public bool IsPresenceKnown
-        {
-            get { return _isPresenceKnown; }
-        }
+        public bool IsPresenceKnown => _isPresenceKnown;
 
         public string Name
         {
@@ -148,15 +133,9 @@ namespace Supremacy.Orbitals
             }
         }
 
-        public IIndexedCollection<ShipView> Ships
-        {
-            get { return _ships; }
-        }
+        public IIndexedCollection<ShipView> Ships => _ships;
 
-        public Fleet Source
-        {
-            get { return GameContext.Current.Universe.Get<Fleet>(_sourceId); }
-        }
+        public Fleet Source => GameContext.Current.Universe.Get<Fleet>(_sourceId);
         #endregion
 
         #region Public and Protected Methods
@@ -289,25 +268,13 @@ namespace Supremacy.Orbitals
         #endregion
 
         #region Properties and Indexers
-        public bool IsDesignKnown
-        {
-            get { return _isDesignKnown; }
-        }
+        public bool IsDesignKnown => _isDesignKnown;
 
-        public bool IsOwned
-        {
-            get { return _isOwned; }
-        }
+        public bool IsOwned => _isOwned;
 
-        public bool IsPresenceKnown
-        {
-            get { return _isPresenceKnown; }
-        }
+        public bool IsPresenceKnown => _isPresenceKnown;
 
-        public Ship Source
-        {
-            get { return GameContext.Current.Universe.Get<Ship>(_sourceId); }
-        }
+        public Ship Source => GameContext.Current.Universe.Get<Ship>(_sourceId);
         #endregion
 
         #region Public and Protected Methods

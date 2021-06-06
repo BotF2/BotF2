@@ -61,10 +61,7 @@ namespace Supremacy.Universe
         /// Gets the waypoints of a <see cref="TravelRoute"/>.
         /// </summary>
         /// <value>The waypoints.</value>
-        public IList<MapLocation> Waypoints
-        {
-            get { return _waypoints.AsReadOnly(); }
-        }
+        public IList<MapLocation> Waypoints => _waypoints.AsReadOnly();
 
         /// <summary>
         /// Gets all of the individual steps comprising a <see cref="TravelRoute"/>.
@@ -76,28 +73,19 @@ namespace Supremacy.Universe
         /// original waypoints will be respected, but the path between them may
         /// change.
         /// </remarks>
-        public IList<MapLocation> Steps
-        {
-            get { return _path.AsReadOnly(); }
-        }
+        public IList<MapLocation> Steps => _path.AsReadOnly();
 
         /// <summary>
         /// Gets a value indicating whether this <see cref="TravelRoute"/> is empty.
         /// </summary>
         /// <value><c>true</c> if this instance is empty; otherwise, <c>false</c>.</value>
-        public bool IsEmpty
-        {
-            get { return (_path.Count == 0); }
-        }
+        public bool IsEmpty => (_path.Count == 0);
 
         /// <summary>
         /// Gets the length of this <see cref="TravelRoute"/>.
         /// </summary>
         /// <value>The length.</value>
-        public int Length
-        {
-            get { return _path.Count; }
-        }
+        public int Length => _path.Count;
 
         /// <summary>
         /// Clears this <see cref="TravelRoute"/>.

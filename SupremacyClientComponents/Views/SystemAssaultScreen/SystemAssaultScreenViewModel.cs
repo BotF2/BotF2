@@ -162,89 +162,41 @@ namespace Supremacy.Client.Views
             RoundNumber = 1;
         }
 
-        public override string ViewName
-        {
-            get { return StandardGameScreens.SystemAssaultScreen; }
-        }
+        public override string ViewName => StandardGameScreens.SystemAssaultScreen;
 
         #region Commands
 
-        public ICommand SetActionCommand
-        {
-            get { return _setActionCommand; }
-        }
+        public ICommand SetActionCommand => _setActionCommand;
 
-        public ICommand SetTargetingStrategyCommand
-        {
-            get { return _setTargetingStrategyCommand; }
-        }
+        public ICommand SetTargetingStrategyCommand => _setTargetingStrategyCommand;
 
-        public ICommand CommitOrdersCommand
-        {
-            get { return _commitOrdersCommand; }
-        }
+        public ICommand CommitOrdersCommand => _commitOrdersCommand;
 
-        public ICommand StandbyOrderCommand
-        {
-            get { return _standbyOrderCommand; }
-        }
+        public ICommand StandbyOrderCommand => _standbyOrderCommand;
 
-        public ICommand AttackOrderCommand
-        {
-            get { return _attackOrderCommand; }
-        }
+        public ICommand AttackOrderCommand => _attackOrderCommand;
 
-        public ICommand LandTroopsOrderCommand
-        {
-            get { return _landTroopsOrderCommand; }
-        }
+        public ICommand LandTroopsOrderCommand => _landTroopsOrderCommand;
 
-        public ICommand DoneCommand
-        {
-            get { return _doneCommand; }
-        }
+        public ICommand DoneCommand => _doneCommand;
 
-        public Meter DefenderPopulation
-        {
-            get { return _defenderPopulation; }
-        }
+        public Meter DefenderPopulation => _defenderPopulation;
 
-        public Meter DefenderCombatStrength
-        {
-            get { return _defenderCombatStrength; }
-        }
+        public Meter DefenderCombatStrength => _defenderCombatStrength;
 
-        public Meter ColonyShieldStrength
-        {
-            get { return _colonyShieldStrength; }
-        }
+        public Meter ColonyShieldStrength => _colonyShieldStrength;
 
         #endregion
 
-        public IEnumerable<AssaultUnitViewModel> InvadingUnits
-        {
-            get { return _invadingUnits; }
-        }
+        public IEnumerable<AssaultUnitViewModel> InvadingUnits => _invadingUnits;
 
-        public IEnumerable<AssaultUnitViewModel> TroopTransports
-        {
-            get { return _troopTransports; }
-        }
+        public IEnumerable<AssaultUnitViewModel> TroopTransports => _troopTransports;
 
-        public IEnumerable<AssaultUnitViewModel> DefendingUnits
-        {
-            get { return _defendingUnits; }
-        }
+        public IEnumerable<AssaultUnitViewModel> DefendingUnits => _defendingUnits;
 
-        public IEnumerable<AssaultUnitViewModel> DestroyedInvadingUnits
-        {
-            get { return _destroyedInvadingUnits; }
-        }
+        public IEnumerable<AssaultUnitViewModel> DestroyedInvadingUnits => _destroyedInvadingUnits;
 
-        public IEnumerable<AssaultUnitViewModel> DestroyedDefendingUnits
-        {
-            get { return _destroyedDefendingUnits; }
-        }
+        public IEnumerable<AssaultUnitViewModel> DestroyedDefendingUnits => _destroyedDefendingUnits;
 
         #region Invader Property
 
@@ -455,10 +407,7 @@ namespace Supremacy.Client.Views
         [field: NonSerialized]
         public event EventHandler StateChanged;
 
-        public SystemAssaultScreenState State
-        {
-            get { return _stateManager.CurrentState; }
-        }
+        public SystemAssaultScreenState State => _stateManager.CurrentState;
 
         protected virtual void OnStateChanged()
         {
@@ -576,10 +525,7 @@ namespace Supremacy.Client.Views
 
 
 
-        public int SelectedTransportsNetCombatStrength
-        {
-            get { return SelectedTransportsCombatStrength - DefenderCombatStrength.CurrentValue; }
-        }
+        public int SelectedTransportsNetCombatStrength => SelectedTransportsCombatStrength - DefenderCombatStrength.CurrentValue;
 
         protected virtual void OnSelectedTransportsNetCombatStrengthChanged()
         {
@@ -1085,15 +1031,9 @@ namespace Supremacy.Client.Views
                 _troopCount = CombatHelper.ComputeGroundCombatStrength(unit.Source.Owner, unit.Source.Location, ((Ship)(unit.Source)).ShipDesign.WorkCapacity);
         }
 
-        public InvasionUnit Unit
-        {
-            get { return _unit; }
-        }
+        public InvasionUnit Unit => _unit;
 
-        public int TroopCount
-        {
-            get { return _troopCount; }
-        }
+        public int TroopCount => _troopCount;
 
         private static AssaultUnitCategory ResolveCategory(InvasionUnit unit)
         {
@@ -1220,10 +1160,7 @@ namespace Supremacy.Client.Views
         [field: NonSerialized]
         public event EventHandler IsDestroyedChanged;
 
-        public bool IsDestroyed
-        {
-            get { return _unit.IsDestroyed; }
-        }
+        public bool IsDestroyed => _unit.IsDestroyed;
 
         protected virtual void OnIsDestroyedChanged()
         {
@@ -1264,28 +1201,19 @@ namespace Supremacy.Client.Views
 
         #region Design Property
 
-        public TechObjectDesign Design
-        {
-            get { return _unit.Design; }
-        }
+        public TechObjectDesign Design => _unit.Design;
 
         #endregion
 
         #region Name Property
 
-        public string Name
-        {
-            get { return _unit.Name; }
-        }
+        public string Name => _unit.Name;
 
         #endregion
 
         #region Category Property
 
-        public AssaultUnitCategory Category
-        {
-            get { return _category; }
-        }
+        public AssaultUnitCategory Category => _category;
 
         #endregion
 

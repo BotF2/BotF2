@@ -27,15 +27,9 @@ namespace Supremacy.Effects
             _propertyModifier = new EffectPropertyModifier(this);
         }
 
-        public new SetPropertyEffect Effect
-        {
-            get { return (SetPropertyEffect)base.Effect; }
-        }
+        public new SetPropertyEffect Effect => (SetPropertyEffect)base.Effect;
 
-        public new DynamicObject Target
-        {
-            get { return (DynamicObject)base.Target; }
-        }
+        public new DynamicObject Target => (DynamicObject)base.Target;
 
         protected override void AttachCore()
         {
@@ -85,15 +79,9 @@ namespace Supremacy.Effects
                 _currentValue = currentValue;
             }
 
-            public TValue BaseValue
-            {
-                get { return _baseValue; }
-            }
+            public TValue BaseValue => _baseValue;
 
-            public TValue CurrentValue
-            {
-                get { return _currentValue; }
-            }
+            public TValue CurrentValue => _currentValue;
         }
 
         #region Nested Class: EffectPropertyModifier
@@ -124,10 +112,7 @@ namespace Supremacy.Effects
                 }
             }
 
-            protected override string Description
-            {
-                get { return _effectBinding.Description ?? base.Description; }
-            }
+            protected override string Description => _effectBinding.Description ?? base.Description;
 
             protected override TValue ProvideValueCore(TValue baseValue, TValue currentValue)
             {

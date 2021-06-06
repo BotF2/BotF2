@@ -501,10 +501,7 @@ namespace Supremacy.Effects
         }
 
         // Size of this data store 
-        public override int Count
-        {
-            get { return _count; }
-        }
+        public override int Count => _count;
 
         private const int Size = 3;
 
@@ -1057,10 +1054,7 @@ namespace Supremacy.Effects
         }
 
         // Size of this data store 
-        public override int Count
-        {
-            get { return _count; }
-        }
+        public override int Count => _count;
 
         private const int Size = 6;
 
@@ -1221,10 +1215,7 @@ namespace Supremacy.Effects
         }
 
         // Size of this data store
-        public override int Count
-        {
-            get { return _count; }
-        }
+        public override int Count => _count;
 
         // Compare two Entry nodes in the _entries array
         private int Compare(int left, int right)
@@ -1484,10 +1475,7 @@ namespace Supremacy.Effects
             return iLo;
         }
 
-        public override int Count
-        {
-            get { return _count; }
-        }
+        public override int Count => _count;
 
         // MinSize chosen to be larger than MaxSize of the ArrayObjectMap with some extra space for new values
         // The MaxSize and Growth are chosen to minimize memory usage as we grow the array 
@@ -1603,10 +1591,7 @@ namespace Supremacy.Effects
         }
 
         // Size of this data store
-        public override int Count
-        {
-            get { return _entries.Count; }
-        }
+        public override int Count => _entries.Count;
 
         // 163 is chosen because it is the first prime larger than 128, the MAXSIZE of SortedObjectMap
         internal const int MinSize = 163;
@@ -1937,10 +1922,7 @@ namespace Supremacy.Effects
             return iLo;
         }
 
-        public override int Count
-        {
-            get { return _count; }
-        }
+        public override int Count => _count;
 
         // MinSize chosen to be small, growth rate of 1.5 is slow at small sizes, but increasingly agressive as 
         // the array grows

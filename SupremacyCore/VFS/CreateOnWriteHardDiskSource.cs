@@ -90,20 +90,11 @@ namespace Supremacy.VFS
                 _createStreamLock = new object();
             }
 
-            public override bool CanRead
-            {
-                get { return false; }
-            }
+            public override bool CanRead => false;
 
-            public override bool CanSeek
-            {
-                get { return !IsDisposed; }
-            }
+            public override bool CanSeek => !IsDisposed;
 
-            public override bool CanWrite
-            {
-                get { return !IsDisposed; }
-            }
+            public override bool CanWrite => !IsDisposed;
 
             public override long Length
             {

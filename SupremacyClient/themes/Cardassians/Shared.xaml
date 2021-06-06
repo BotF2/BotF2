@@ -1740,9 +1740,8 @@
                                 <Rectangle.Fill>
                                     <DrawingBrush>
                                         <DrawingBrush.Drawing>
-                                            <GeometryDrawing PresentationOptions:Freeze="True"
-                                       Brush="{StaticResource Card3Gradient_TopLeft_BottomRight}"
-                                       Geometry="F1 M -7.62939e-006,56L 3.8147e-006,18.6666C 2.96699e-006,12.4445 2.11928e-006,6.22229 3.11111,3.11121C 6.22222,0 12.4444,0 18.6667,0L 28,0L 28,37.3333L 18.6667,37.3333C 15.5556,37.3333 12.4444,37.3333 10.8889,40.4445C 9.33334,43.5556 9.33334,49.7778 9.33334,56L -7.62939e-006,56 Z " />
+                                            <GeometryDrawing Brush="{StaticResource Card3Gradient_TopLeft_BottomRight}"
+                                           Geometry="F1 M 0,56L 0,20L 10,0 L26,0 L26,38  L18,38 L10,56 Z" />
                                         </DrawingBrush.Drawing>
                                     </DrawingBrush>
                                 </Rectangle.Fill>
@@ -1774,12 +1773,19 @@
                          Height="28"
                          VerticalAlignment="Top"
                          Margin="3,0,0,0">
-                                <Rectangle.Fill>
+                                <!--<Rectangle.Fill>
                                     <DrawingBrush>
                                         <DrawingBrush.Drawing>
                                             <GeometryDrawing PresentationOptions:Freeze="True"
                                        Brush="{StaticResource Card3Gradient_TopLeft_BottomRight}"
                                        Geometry="F1 M 9.33333,0C 20.379,0 28,7.62097 28,18.6666C 28,29.7123 20.379,37.3333 9.33333,37.3333L 8.74201e-007,37.3333L 8.74201e-007,0L 9.33333,0 Z " />
+                                        </DrawingBrush.Drawing>
+                                    </DrawingBrush>
+                                </Rectangle.Fill>-->
+                                <Rectangle.Fill>
+                                    <DrawingBrush>
+                                        <DrawingBrush.Drawing>
+                                            <GeometryDrawing Geometry="F1 M 0,37L14,37 18,21 28,0 0,0 0,37 Z" Brush="{StaticResource Card3Gradient_TopLeft_BottomRight}"/>
                                         </DrawingBrush.Drawing>
                                     </DrawingBrush>
                                 </Rectangle.Fill>
@@ -1816,9 +1822,8 @@
                                 <Rectangle.Fill>
                                     <DrawingBrush>
                                         <DrawingBrush.Drawing>
-                                            <GeometryDrawing PresentationOptions:Freeze="True"
-                                       Brush="{StaticResource Card3Gradient_TopLeft_BottomRight}"
-                                       Geometry="F1 M 4.76837e-007,0L 1.19209e-005,28C 1.10732e-005,37.3333 1.02255e-005,46.6667 4.66668,51.3333C 9.33334,56 18.6667,56 28,56L 28,18.6666L 18.6667,18.6666C 15.5556,18.6666 12.4445,18.6666 10.8889,15.5555C 9.33334,12.4445 9.33334,6.22229 9.33334,0L 4.76837e-007,0 Z " />
+                                            <GeometryDrawing Brush="{StaticResource Card3Gradient_TopLeft_BottomRight}"
+                                           Geometry="F1 M0,0L0,36 10,56 26,56 26,18 18,18 10,0 0,0 Z" />
                                         </DrawingBrush.Drawing>
                                     </DrawingBrush>
                                 </Rectangle.Fill>

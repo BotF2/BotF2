@@ -791,15 +791,9 @@ namespace Supremacy.Client.Controls
             return true;
         }
 
-        private IGamePopupAnchor RootPopupAnchor
-        {
-            get { return ((_popupAnchors.Count > 0) ? _popupAnchors[_popupAnchors.Count - 1] : null); }
-        }
+        private IGamePopupAnchor RootPopupAnchor => ((_popupAnchors.Count > 0) ? _popupAnchors[_popupAnchors.Count - 1] : null);
 
-        internal IGamePopupAnchor TopmostPopupAnchor
-        {
-            get { return ((_popupAnchors.Count > 0) ? _popupAnchors[0] : null); }
-        }
+        internal IGamePopupAnchor TopmostPopupAnchor => ((_popupAnchors.Count > 0) ? _popupAnchors[0] : null);
 
         public static void CloseAllPopups(GamePopupCloseReason closeReason)
         {

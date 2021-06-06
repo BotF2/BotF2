@@ -47,40 +47,19 @@ namespace Supremacy.Diplomacy
 
         #region Implementation of IResponse
 
-        public int TurnSent
-        {
-            get { return _turnSent; }
-        }
+        public int TurnSent => _turnSent;
 
-        public Civilization Sender
-        {
-            get { return _proposal.Recipient; }
-        }
+        public Civilization Sender => _proposal.Recipient;
 
-        public Civilization Recipient
-        {
-            get { return _proposal.Sender; }
-        }
+        public Civilization Recipient => _proposal.Sender;
 
-        public ResponseType ResponseType
-        {
-            get { return _responseType; }
-        }
+        public ResponseType ResponseType => _responseType;
 
-        public IProposal Proposal
-        {
-            get { return _proposal; }
-        }
+        public IProposal Proposal => _proposal;
 
-        public IProposal CounterProposal
-        {
-            get { return _counterProposal; }
-        }
+        public IProposal CounterProposal => _counterProposal;
 
-        public Tone Tone
-        {
-            get { return Tone.Calm; }
-        }
+        public Tone Tone => Tone.Calm;
 
         #endregion
 

@@ -20,15 +20,9 @@ namespace Supremacy.Types
             _name = name;
         }
 
-        public Guid Guid
-        {
-            get { return _guid; }
-        }
+        public Guid Guid => _guid;
 
-        public string Name
-        {
-            get { return _name; }
-        }
+        public string Name => _name;
 
         public override string ToString()
         {

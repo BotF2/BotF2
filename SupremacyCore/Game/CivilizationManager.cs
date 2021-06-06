@@ -199,54 +199,36 @@ namespace Supremacy.Game
         /// Gets the civilization ID.
         /// </summary>
         /// <value>The civilization ID.</value>
-        public int CivilizationID
-        {
-            get { return _civId; }
-        }
+        public int CivilizationID => _civId;
 
         /// <summary>
         /// Gets the civilization.
         /// </summary>
         /// <value>The civilization.</value>
-        public Civilization Civilization
-        {
-            get { return GameContext.Current.Civilizations[_civId]; }
-        }
+        public Civilization Civilization => GameContext.Current.Civilizations[_civId];
 
         /// <summary>
         /// Gets the total population of all the civilization's colonies.
         /// </summary>
         /// <value>The total population.</value>
-        public Meter TotalPopulation
-        {
-            get { return _totalPopulation; }
-        }
+        public Meter TotalPopulation => _totalPopulation;
 
         /// <summary>
         /// Gets the total research of all the civilization's colonies.
         /// </summary>
         /// <value>The total population.</value>
-        public Meter TotalResearch
-        {
-            get { return _totalResearch; }
-        }
+        public Meter TotalResearch => _totalResearch;
 
         /// <summary>
         /// Gets the credits in the civilization's treasury.
         /// </summary>
         /// <value>The credits.</value>
-        public Meter Credits
-        {
-            get { return _credits; }
-        }
+        public Meter Credits => _credits;
 
         /// <summary>
         /// Gets the civilization's treasury.
         /// </summary>
-        public Treasury Treasury
-        {
-            get { return _treasury; }
-        }
+        public Treasury Treasury => _treasury;
 
         /// <summary>
         /// Gets the civilization's MaintenanceCostLastTurn.
@@ -259,35 +241,26 @@ namespace Supremacy.Game
 
 
 
-/// <summary>
-/// Gets the civilization's resource pool.
-/// </summary>
-/// <value>The resource pool.</value>
-[NotNull]
-        public ResourcePool Resources
-        {
-            get { return _resources; }
-        }
+        /// <summary>
+        /// Gets the civilization's resource pool.
+        /// </summary>
+        /// <value>The resource pool.</value>
+        [NotNull]
+        public ResourcePool Resources => _resources;
 
         /// <summary>
         /// Gets the civilization's research pool.
         /// </summary>
         /// <value>The research pool.</value>
         [NotNull]
-        public ResearchPool Research
-        {
-            get { return _research; }
-        }
+        public ResearchPool Research => _research;
 
         /// <summary>
         /// Gets a list of the civilization's colonies.
         /// </summary>
         /// <value>The colonies.</value>
         [NotNull]
-        public UniverseObjectList<Colony> Colonies
-        {
-            get { return _colonies; }
-        }
+        public UniverseObjectList<Colony> Colonies => _colonies;
 
         [NotNull]
         public Colony SeatOfGovernment
@@ -325,10 +298,7 @@ namespace Supremacy.Game
             } 
         }
 
-        public List<Civilization> SpiedCivList
-        {
-            get { return _spiedCivList; }
-        }
+        public List<Civilization> SpiedCivList => _spiedCivList;
 
 
         /// <summary>
@@ -460,19 +430,13 @@ namespace Supremacy.Game
         /// Gets the civilization's global bonuses.
         /// </summary>
         /// <value>The global bonuses.</value>
-        public IList<Bonus> GlobalBonuses
-        {
-            get { return _globalBonuses; }
-        }
+        public IList<Bonus> GlobalBonuses => _globalBonuses;
 
         /// <summary>
         /// Gets the map data for the civilization.
         /// </summary>
         /// <value>The map data.</value>
-        public CivilizationMapData MapData
-        {
-            get { return _mapData; }
-        }
+        public CivilizationMapData MapData => _mapData;
 
         /// <summary>
         /// Gets the desired borders for the civilization.
@@ -668,10 +632,7 @@ namespace Supremacy.Game
 
         #region Implementation of ICivIdentity
 
-        int ICivIdentity.CivID
-        {
-            get { return _civId; }
-        }
+        int ICivIdentity.CivID => _civId;
 
         public List<int> IntelIDs { get => _IntelIDs; set => _IntelIDs = value; }
 

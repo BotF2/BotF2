@@ -46,10 +46,7 @@ namespace Supremacy.Scripting
             }
         }
 
-        protected IKeyedCollection<int, CivTargetHistoryEntry> CivilizationTargetHistory
-        {
-            get { return _civilizationTargetHistory; }
-        } 
+        protected IKeyedCollection<int, CivTargetHistoryEntry> CivilizationTargetHistory => _civilizationTargetHistory;
 
         protected virtual bool CanTargetCivilization([NotNull] Civilization civ)
         {
@@ -148,20 +145,11 @@ namespace Supremacy.Scripting
                 _turnNumber = turnNumber;
             }
 
-            public int CivID
-            {
-                get { return _civId; }
-            }
+            public int CivID => _civId;
 
-            public Civilization Civilization
-            {
-                get { return GameContext.Current.Civilizations[_civId]; }
-            }
+            public Civilization Civilization => GameContext.Current.Civilizations[_civId];
 
-            public int TurnNumber
-            {
-                get { return _turnNumber; }
-            }
+            public int TurnNumber => _turnNumber;
 
             void IOwnedDataSerializable.DeserializeOwnedData(SerializationReader reader, object context)
             {

@@ -80,10 +80,7 @@ namespace Supremacy.Client
         #endregion
 
         #region Properties and Indexers
-        public new static ClientApp Current
-        {
-            get { return (ClientApp)Application.Current; }
-        }
+        public new static ClientApp Current => (ClientApp)Application.Current;
 
         public static Version ClientVersion
         {
@@ -96,25 +93,13 @@ namespace Supremacy.Client
             }
         }
 
-        public Version Version
-        {
-            get { return Assembly.GetEntryAssembly().GetName().Version; }
-        }
+        public Version Version => Assembly.GetEntryAssembly().GetName().Version;
 
-        public string ClientHint
-        {
-            get { return ClientVersion + newline + ResourceManager.GetString("HINT_FOR_RUNNING"); }
-        }
+        public string ClientHint => ClientVersion + newline + ResourceManager.GetString("HINT_FOR_RUNNING");
 
-        public bool IsShuttingDown
-        {
-            get { return _isShuttingDown; }
-        }
+        public bool IsShuttingDown => _isShuttingDown;
 
-        public IClientCommandLineArguments CommandLineArguments
-        {
-            get { return CmdLineArgs; }
-        }
+        public IClientCommandLineArguments CommandLineArguments => CmdLineArgs;
         #endregion
 
         #region Methods
@@ -572,9 +557,12 @@ namespace Supremacy.Client
                 }
                 else
                 {
-                    _text = "Did not found file " + xna_check + "to check for XNA 3.1"
-                        + newline + newline + "*** if already installed copy any file to folder \\Resources AND game-folder and named it 'XNA31_ok.info'";
+                    _text = "Did not found file " + xna_copy + newline + "to check for XNA 3.1"
+                        + newline + newline + "*** if already installed copy any file to folder \\Resources and named it 'XNA31_ok.info'"
+                        + newline + newline + "*** or rename the fake file 'XNA31_ok_OFF.info' to 'XNA31_ok.info'";
                     MessageBox.Show(_text, "WARNING", MessageBoxButton.OK);
+
+                    
                 }
             }
 

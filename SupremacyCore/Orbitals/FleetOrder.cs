@@ -94,10 +94,7 @@ namespace Supremacy.Orbitals
         /// <c>TargetDisplayMember</c> is typically a property name, and is used primarily for data-binding
         /// in the game client.
         /// </remarks>
-        public virtual string TargetDisplayMember
-        {
-            get { return "."; }
-        }
+        public virtual string TargetDisplayMember => ".";
 
         /// <summary>
         /// Gets the complete status text that should be displayed in the task forces list in the game.
@@ -169,28 +166,19 @@ namespace Supremacy.Orbitals
         /// <value>
         /// <c>true</c> if this <see cref="FleetOrder"/> has been completed; otherwise, <c>false</c>.
         /// </value>
-        public virtual bool IsComplete
-        {
-            get { return false; }
-        }
+        public virtual bool IsComplete => false;
 
         /// <summary>
         /// Gets the percentage of completion of this <see cref="FleetOrder"/> (if applicable).
         /// </summary>
         /// <value>The percentage of completion, or <c>null</c> if not applicable.</value>
-        public virtual Percentage? PercentComplete
-        {
-            get { return null; }
-        }
+        public virtual Percentage? PercentComplete => null;
 
         /// <summary>
         /// Gets the number of turns remaining until this <see cref="FleetOrder"/> has been completed.
         /// </summary>
         /// <value>The number of turns remaining.</value>
-        public virtual int? TurnsRemaining
-        {
-            get { return null; }
-        }
+        public virtual int? TurnsRemaining => null;
 
         /// <summary>
         /// Gets or sets the object that is the target of this <see cref="FleetOrder"/> (if applicable).
@@ -223,10 +211,7 @@ namespace Supremacy.Orbitals
         /// <value>
         /// <c>true</c> if the route is cancelled; otherwise, <c>false</c>.
         /// </value>
-        public virtual bool IsRouteCancelledOnAssign
-        {
-            get { return false; }
-        }
+        public virtual bool IsRouteCancelledOnAssign => false;
 
         /// <summary>
         /// Gets a value indicating whether this <see cref="FleetOrder"/> is cancelled when the
@@ -235,10 +220,7 @@ namespace Supremacy.Orbitals
         /// <value>
         /// <c>true</c> if this <see cref="FleetOrder"/> is cancelled; otherwise, <c>false</c>.
         /// </value>
-        public virtual bool IsCancelledOnRouteChange
-        {
-            get { return false; }
-        }
+        public virtual bool IsCancelledOnRouteChange => false;
 
         /// <summary>
         /// Gets a value indicating whether this <see cref="FleetOrder"/> is cancelled when the
@@ -246,10 +228,7 @@ namespace Supremacy.Orbitals
         /// </summary>
         /// <value>
         /// <c>true</c> if this <see cref="FleetOrder"/> is cancelled; otherwise, <c>false</c></value>.
-        public virtual bool IsCancelledOnMove
-        {
-            get { return false; }
-        }
+        public virtual bool IsCancelledOnMove => false;
 
         /// <summary>
         /// Gets a value indicating whether a fleet will engage hostiles when assigned this <see cref="FleetOrder"/>.

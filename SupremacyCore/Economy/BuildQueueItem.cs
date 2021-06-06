@@ -27,10 +27,7 @@ namespace Supremacy.Economy
         /// Gets the number of equivalent projects that are enqueued.
         /// </summary>
         /// <value>The number of equivalent projects.</value>
-        public int Count
-        {
-            get { return _count; }
-        }
+        public int Count => _count;
 
         public string Description
         {
@@ -50,19 +47,13 @@ namespace Supremacy.Economy
         /// Gets the queued project.
         /// </summary>
         /// <value>The queued project.</value>
-        public BuildProject Project
-        {
-            get { return _project; }
-        }
+        public BuildProject Project => _project;
 
         /// <summary>
         /// Gets the total number of turns remaining until all items in this entry are completed.
         /// </summary>
         /// <value>The turns remaining.</value>
-        public int TurnsRemaining
-        {
-            get { return _project.TurnsRemaining * _count; }
-        }
+        public int TurnsRemaining => _project.TurnsRemaining * _count;
 
         /// <summary>
         /// When called notifies all listeners that the number of turns remaining has changed

@@ -54,40 +54,19 @@ namespace Supremacy.Diplomacy
 
         #region Implementation of IAgreement
 
-        public int SenderID
-        {
-            get { return Proposal.Sender.CivID; }
-        }
+        public int SenderID => Proposal.Sender.CivID;
 
-        public int RecipientID
-        {
-            get { return Proposal.Recipient.CivID; }
-        }
+        public int RecipientID => Proposal.Recipient.CivID;
 
-        public Civilization Sender
-        {
-            get { return GameContext.Current.Civilizations[SenderID]; }
-        }
+        public Civilization Sender => GameContext.Current.Civilizations[SenderID];
 
-        public Civilization Recipient
-        {
-            get { return GameContext.Current.Civilizations[RecipientID]; }
-        }
+        public Civilization Recipient => GameContext.Current.Civilizations[RecipientID];
 
-        public int StartTurn
-        {
-            get { return _startTurn; }
-        }
+        public int StartTurn => _startTurn;
 
-        public int EndTurn
-        {
-            get { return _endTurn; }
-        }
+        public int EndTurn => _endTurn;
 
-        public IProposal Proposal
-        {
-            get { return _proposal; }
-        }
+        public IProposal Proposal => _proposal;
 
         public IDictionary<object, object> Data
         {

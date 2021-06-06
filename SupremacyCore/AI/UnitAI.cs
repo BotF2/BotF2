@@ -28,6 +28,8 @@ namespace Supremacy.AI
     {
         private static IEnumerable<Sector> _deathStars = GameContext.Current.Universe.FindStarType<Sector>(StarType.BlackHole).ToList()
             .Concat(GameContext.Current.Universe.FindStarType<Sector>(StarType.NeutronStar).ToList());
+        private static string _text;
+
         public static void DoTurn([NotNull] Civilization civ)
         {
             if (civ == null)
@@ -1205,6 +1207,7 @@ namespace Supremacy.AI
         public static bool GetBestSectorForStation(Fleet fleet, List<Fleet> constructionFleets, out Sector bestSector)
         {
             //GameLog.Client.AI.DebugFormat("GetBestSectorForStation");
+            Console.WriteLine("GetBestSectorForStation: " + fleet.Name + fleet.Location);
             GetFleetOwner(fleet);
             if (fleet == null)
             {
@@ -1229,7 +1232,9 @@ namespace Supremacy.AI
             {
                 case "BORG":
                     {
-                        //GameLog.Client.AI.DebugFormat("GetBorg");
+                        _text = "GetBestSectorForStation: GetBorg";
+                        Console.WriteLine(_text);
+                        //GameLog.Client;.AI.DebugFormat(_text);
                         int borgX = GameContext.Current.Universe.HomeColonyLookup[fleet.Owner].Location.X;
                         int borgXDelta = Math.Abs(GameContext.Current.Universe.HomeColonyLookup[fleet.Owner].Location.X - halfMapWidthX)/4;
                         int borgY = GameContext.Current.Universe.HomeColonyLookup[fleet.Owner].Location.Y;
@@ -1258,7 +1263,9 @@ namespace Supremacy.AI
                         }
                         catch
                         {
-                            GameLog.Client.AI.DebugFormat("unable to sort objects for Borg station location");
+                            _text = "unable to sort objects for Borg station location";
+                            Console.WriteLine(_text);
+                            GameLog.Client.AIDetails.DebugFormat(_text);
                             bestSector = null;
                             return false;
                         }
@@ -1280,12 +1287,16 @@ namespace Supremacy.AI
                         if (bestSector == null)
                             return false;
 
-                        // GameLog.Core.AI.DebugFormat("Borg station selected sector = {0} {1}", result.Location, result.Name);
+                        _text = "Borg station selected sector  at " + bestSector.Location + bestSector.Name;
+                        Console.WriteLine(_text);
+                        // GameLog.Core.AI.DebugFormat(_text);
                         return true;
                     }
 
                 case "DOMINION":
                     {
+                        _text = "GetBestSectorForStation: DOMINION";
+                        Console.WriteLine(_text);
                         //GameLog.Client.AI.DebugFormat("Dominion");
                         int domX = GameContext.Current.Universe.HomeColonyLookup[fleet.Owner].Location.X;
                         int domXDelta = Math.Abs(halfMapWidthX - GameContext.Current.Universe.HomeColonyLookup[fleet.Owner].Location.X) / 4;
@@ -1318,14 +1329,18 @@ namespace Supremacy.AI
                         }
                         catch 
                         {
-                            GameLog.Client.AI.DebugFormat("unable to sort objects for Dominion station location");
+                            _text = "unable to sort objects for Dominion station location";
+                            Console.WriteLine(_text);
+                            GameLog.Client.AIDetails.DebugFormat(_text);
                             bestSector = null;
                             return false;
                         }
                         bestSector = objectsAlongCenterAxis.Last().Sector; //[objectsAlongCenterAxis.Count - 1].Sector;
                         if (bestSector == null)
                             return false;
-                        // GameLog.Core.AI.DebugFormat("Dominion station selected sector = {0} {1}", result.Location, result.Name);
+                        _text = "Dominion station selected sector  at " + bestSector.Location + bestSector.Name;
+                        Console.WriteLine(_text);
+                        // GameLog.Core.AI.DebugFormat(_text);
                         return true;
                     }
                 case "KLINGONS":
@@ -1363,12 +1378,16 @@ namespace Supremacy.AI
                         bestSector = objectsAroundHome.Last().Sector; //[objectsAroundHome.Count - 1].Sector;
                         if (bestSector == null)
                             return false;
-                        //GameLog.Core.AI.DebugFormat("*///*{0} station selected sector = {1} {2}", fleet.Owner.Key, bestSector.Location, bestSector.Name);
+                        _text = fleet.Owner.Key + " station selected sector at " + bestSector.Location + bestSector.Name;
+                        Console.WriteLine(_text);
+                        // GameLog.Core.AI.DebugFormat(_text);
                         return true;
                     }
                 default:
                     bestSector = null;
-                    //GameLog.Core.AI.DebugFormat("{0} no sector for station", fleet.Owner.Key);
+                    _text = fleet.Owner.Key + " no sector for station";
+                    Console.WriteLine(_text);
+                    //GameLog.Core.AI.DebugFormat(_text);
                     return false; // could not find sector for station
             }
         }
@@ -1559,7 +1578,7 @@ namespace Supremacy.AI
             const int NeutralColonyPriority = 10;
             const int FriendlyColonyPriority = 5;
 
-            int value = similarTraits;
+            //int value = similarTraits;  // just for Gamelog below
 
             if (DiplomacyHelper.AreAllied(otherCiv, civ) || DiplomacyHelper.AreFriendly(otherCiv, civ))
             {
@@ -1717,7 +1736,7 @@ namespace Supremacy.AI
             }
             if (system.Owner != null && system.Owner != civ)
             {
-                Civilization otherCiv = system.Owner;
+                //Civilization otherCiv = system.Owner;
                 if (DiplomacyHelper.AreAtWar(system.Owner, civ))
                     return 0;
             }

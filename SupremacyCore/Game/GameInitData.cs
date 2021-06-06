@@ -199,10 +199,7 @@ namespace Supremacy.Game
         }
 
         #region Properties and Indexers
-        public bool IsMultiplayerGame
-        {
-            get { return ((GameType == GameType.MultiplayerNew) || (GameType == GameType.MultiplayerLoad)); }
-        }
+        public bool IsMultiplayerGame => ((GameType == GameType.MultiplayerNew) || (GameType == GameType.MultiplayerLoad));
 
         public int LocalPlayerEmpireID
         {

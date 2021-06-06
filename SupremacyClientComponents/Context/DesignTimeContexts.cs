@@ -23,28 +23,18 @@ namespace Supremacy.Client.Context
 
 #pragma warning disable IDE0044 // Add readonly modifier
         private MusicLibrary _defaultMusicLibrary = new MusicLibrary();
-#pragma warning restore IDE0044 // Add readonly modifier
-
-#pragma warning disable IDE0044 // Add readonly modifier
         private MusicLibrary _themeMusicLibrary = new MusicLibrary();
 #pragma warning restore IDE0044 // Add readonly modifier
         #endregion
 
         #region Properties
-        public static DesignTimeAppContext Instance
-        {
-            get { return _instance.Value; }
-        }
+        public static DesignTimeAppContext Instance => _instance.Value;
 
-        public MusicLibrary DefaultMusicLibrary
-        {
-            get { return _defaultMusicLibrary; }
-        }
+        public MusicLibrary DefaultMusicLibrary => _defaultMusicLibrary;
 
-        public MusicLibrary ThemeMusicLibrary
-        {
-            get { return _themeMusicLibrary; }
-        }
+        public MusicLibrary ThemeMusicLibrary => _themeMusicLibrary;
+        public int ASpecialWidth1 => 576;
+        public int ASpecialHeight1 => 480;
         #endregion
 
         #region Construction & Lifetime
@@ -102,104 +92,47 @@ namespace Supremacy.Client.Context
 
         #region Implementation of IClientContext
 
-        public IGameContext CurrentGame
-        {
-            get { return GameContext.Current; }
-        }
+        public IGameContext CurrentGame => GameContext.Current;
 
-        public bool IsConnected
-        {
-            get { return true; }
-        }
+        public bool IsConnected => true;
 
-        public bool IsGameHost
-        {
-            get { return true; }
-        }
+        public bool IsGameHost => true;
 
-        public bool IsGameInPlay
-        {
-            get { return true; }
-        }
+        public bool IsGameInPlay => true;
 
-        public bool IsGameEnding
-        {
-            get { return false; }
-        }
+        public bool IsGameEnding => false;
 
-        public bool IsSinglePlayerGame
-        {
-            get { return true; }
-        }
+        public bool IsSinglePlayerGame => true;
 
-        public bool IsFederationPlayable
-        {
-            get { return true; }
-        }
+        public bool IsFederationPlayable => true;
 
 
-        public bool IsRomulanPlayable
-        {
-            get { return true; }
-        }
+        public bool IsRomulanPlayable => true;
 
 
-        public bool IsKlingonPlayable
-        {
-            get { return true; }
-        }
+        public bool IsKlingonPlayable => true;
 
 
-        public bool IsCardassianPlayable
-        {
-            get { return true; }
-        }
+        public bool IsCardassianPlayable => true;
 
 
-        public bool IsDominionPlayable
-        {
-            get { return true; }
-        }
+        public bool IsDominionPlayable => true;
 
-        public bool IsBorgPlayable
-        {
-            get { return true; }
-        }
+        public bool IsBorgPlayable => true;
 
-        public bool IsTerranEmpirePlayable
-        {
-            get { return true; }
-        }
+        public bool IsTerranEmpirePlayable => true;
 
-        public IPlayer LocalPlayer
-        {
-            get { return PlayerContext.Current.Players[0]; }
-        }
+        public IPlayer LocalPlayer => PlayerContext.Current.Players[0];
 
-        public ILobbyData LobbyData
-        {
-            get { return _lobbyData; }
-        }
+        public ILobbyData LobbyData => _lobbyData;
 
-        public CivilizationManager LocalPlayerEmpire
-        {
-            get { return GameContext.Current.CivilizationManagers[LocalPlayer.EmpireID]; }
-        }
+        public CivilizationManager LocalPlayerEmpire => GameContext.Current.CivilizationManagers[LocalPlayer.EmpireID];
 
-        public IEnumerable<IPlayer> RemotePlayers
-        {
-            get { return Enumerable.Empty<IPlayer>(); }
-        }
+        public IEnumerable<IPlayer> RemotePlayers => Enumerable.Empty<IPlayer>();
 
-        public IKeyedCollection<int, IPlayer> Players
-        {
-            get { return _players; }
-        }
+        public IKeyedCollection<int, IPlayer> Players => _players;
 
-        public bool IsTurnFinished
-        {
-            get { return false; }
-        }
+        public bool IsTurnFinished => false;
 
         #endregion
     }
@@ -220,34 +153,13 @@ namespace Supremacy.Client.Context
         /// Host Civilization Manager has been used as a substitute for a civ not in the game
         /// In this case Federation is not in game, CivID Zero
         /// </summary>
-        public static bool SubedZero
-        {
-            get { return _subedZero; }
-        }
-        public static bool SubedOne
-        {
-            get { return _subedOne; }
-        }
-        public static bool SubedTwo
-        {
-            get { return _subedTwo; }
-        }
-        public static bool SubedThree
-        {
-            get { return _subedThree; }
-        }
-        public static bool SubedFour
-        {
-            get { return _subedFour; }
-        }
-        public static bool SubedFive
-        {
-            get { return _subedFive; }
-        }
-        public static bool SubedSix
-        {
-            get { return _subedSix; }
-        }
+        public static bool SubedZero => _subedZero;
+        public static bool SubedOne => _subedOne;
+        public static bool SubedTwo => _subedTwo;
+        public static bool SubedThree => _subedThree;
+        public static bool SubedFour => _subedFour;
+        public static bool SubedFive => _subedFive;
+        public static bool SubedSix => _subedSix;
         #region  Constuctor
         static DesignTimeObjects() 
         {
@@ -388,69 +300,30 @@ namespace Supremacy.Client.Context
                 return _spiedCivDummy;
             }
         }
-        public static List<CivilizationManager> AvailableCivManagers
-        {
-            get { return _availableCivManagers; }
-        }
+        public static List<CivilizationManager> AvailableCivManagers => _availableCivManagers;
 
         /// <summary>
         /// This is the Host Civilization Manager, see IntelHelper.localCivManager for civ manager in multiplayer
         /// Info on multiplayer civ manager is from AssetsScreen.xaml.cs so hope this works for multiplayer local machine
         /// </summary>
-        public static CivilizationManager CivilizationManager 
-        {
-            get { return DesignTimeAppContext.Instance.LocalPlayerEmpire; }
-        }
+        public static CivilizationManager CivilizationManager => DesignTimeAppContext.Instance.LocalPlayerEmpire;
 
         /// <summary>
         /// This is the Host home colony, see IntelHelper.localCivManager for civ manager / colonies in multiplayer
         /// </summary>
-        public static Colony Colony
-        {
-            get
-            {
-                return DesignTimeAppContext.Instance.LocalPlayerEmpire.HomeColony;
-            }
-        }
+        public static Colony Colony => DesignTimeAppContext.Instance.LocalPlayerEmpire.HomeColony;
         /// <summary>
         /// This is the Host home colony, see IntelHelper.localCivManager for civ manager / colonies in multiplayer
         /// </summary>
-        public static IEnumerable<Colony> Colonies
-        {
-            get { return GameContext.Current.CivilizationManagers.SelectMany(o => o.Colonies); }
-        }
-        public static IEnumerable<Colony> SpiedZeroColonies
-        {
-            get { return GameContext.Current.CivilizationManagers.SelectMany(o => o.Colonies).Where(o => o.OwnerID == SpiedCivZero.CivilizationID); }
-        }
-        public static IEnumerable<Colony> SpiedOneColonies
-        {
-            get { return GameContext.Current.CivilizationManagers.SelectMany(o => o.Colonies).Where(o => o.OwnerID == SpiedCivOne.CivilizationID); }
-        }
-        public static IEnumerable<Colony> SpiedTwoColonies
-        {
-            get { return GameContext.Current.CivilizationManagers.SelectMany(o => o.Colonies).Where(o => o.OwnerID == SpiedCivTwo.CivilizationID); }
-        }
-        public static IEnumerable<Colony> SpiedThreeColonies
-        {
-            get { return GameContext.Current.CivilizationManagers.SelectMany(o => o.Colonies).Where(o => o.OwnerID == SpiedCivThree.CivilizationID); }
-        }
-        public static IEnumerable<Colony> SpiedFourColonies
-        {
-            get { return GameContext.Current.CivilizationManagers.SelectMany(o => o.Colonies).Where(o => o.OwnerID == SpiedCivFour.CivilizationID); }
-        }
-        public static IEnumerable<Colony> SpiedFiveColonies
-        {
-            get { return GameContext.Current.CivilizationManagers.SelectMany(o => o.Colonies).Where(o => o.OwnerID == SpiedCivFive.CivilizationID); }
-        }
-        public static IEnumerable<Colony> SpiedSixColonies
-        {
-            get { return GameContext.Current.CivilizationManagers.SelectMany(o => o.Colonies).Where(o => o.OwnerID == SpiedCivSix.CivilizationID); }
-        }
-        public static IEnumerable<StarSystem> StarSystems
-        {
-            get { return GameContext.Current.Universe.Find<StarSystem>(); }
-        }
+        public static IEnumerable<Colony> Colonies => GameContext.Current.CivilizationManagers.SelectMany(o => o.Colonies);
+        public static IEnumerable<Colony> SpiedZeroColonies => GameContext.Current.CivilizationManagers.SelectMany(o => o.Colonies).Where(o => o.OwnerID == SpiedCivZero.CivilizationID);
+        public static IEnumerable<Colony> SpiedOneColonies => GameContext.Current.CivilizationManagers.SelectMany(o => o.Colonies).Where(o => o.OwnerID == SpiedCivOne.CivilizationID);
+        public static IEnumerable<Colony> SpiedTwoColonies => GameContext.Current.CivilizationManagers.SelectMany(o => o.Colonies).Where(o => o.OwnerID == SpiedCivTwo.CivilizationID);
+        public static IEnumerable<Colony> SpiedThreeColonies => GameContext.Current.CivilizationManagers.SelectMany(o => o.Colonies).Where(o => o.OwnerID == SpiedCivThree.CivilizationID);
+        public static IEnumerable<Colony> SpiedFourColonies => GameContext.Current.CivilizationManagers.SelectMany(o => o.Colonies).Where(o => o.OwnerID == SpiedCivFour.CivilizationID);
+        public static IEnumerable<Colony> SpiedFiveColonies => GameContext.Current.CivilizationManagers.SelectMany(o => o.Colonies).Where(o => o.OwnerID == SpiedCivFive.CivilizationID);
+        public static IEnumerable<Colony> SpiedSixColonies => GameContext.Current.CivilizationManagers.SelectMany(o => o.Colonies).Where(o => o.OwnerID == SpiedCivSix.CivilizationID);
+        public static IEnumerable<StarSystem> StarSystems => GameContext.Current.Universe.Find<StarSystem>();
 
         public static IEnumerable<StarSystem> ControlledSystems
         {

@@ -216,10 +216,7 @@ namespace Supremacy.Client.Controls
                     _controls.Add(new WeakReference(control));
             }
 
-            public bool HasLiveReferences
-            {
-                get { return (_controls.Count > 0); }
-            }
+            public bool HasLiveReferences => (_controls.Count > 0);
 
             public void OnCommandUIProviderPropertyChanged(object sender, PropertyChangedEventArgs e)
             {

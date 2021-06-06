@@ -100,15 +100,9 @@ namespace Supremacy.Client.Dialogs
             protected set { SetValue(ActiveDialogPropertyKey, value); }
         }
 
-        internal ContentPresenter ActiveDialogPresenter
-        {
-            get { return _activeDialogPresenter; }
-        }
+        internal ContentPresenter ActiveDialogPresenter => _activeDialogPresenter;
 
-        protected IRegionManager RootRegionManager
-        {
-            get { return _rootRegionManager; }
-        }
+        protected IRegionManager RootRegionManager => _rootRegionManager;
 
         private IRegion ModalDialogsRegion
         {

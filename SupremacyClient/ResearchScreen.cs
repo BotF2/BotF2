@@ -152,8 +152,8 @@ namespace Supremacy.Client
                 groupItem.Resources.Add(typeof(TreeViewItem), itemStyle);
                 groupItem.Header = group.Key;
                 groupItem.ItemsSource = entriesView;
-                groupItem.IsExpanded = true;
-                //groupItem.IsExpanded = false;
+                //groupItem.IsExpanded = true;
+                groupItem.IsExpanded = false;
                 _encyclopediaEntryListView.Items.Add(groupItem);
             }
         }
@@ -362,7 +362,7 @@ namespace Supremacy.Client
         {
             if (entry == null)
                 return new FlowDocument();
-            
+
             var design = entry as TechObjectDesign;
             var doc = new FlowDocument();
             var imageConverter = new EncyclopediaImageConverter();
@@ -370,20 +370,21 @@ namespace Supremacy.Client
 
 
             //// Begin of Encyclopedia-HEADER
-            //var headerRun = new Run(entry.EncyclopediaHeading);
-            //var headerBlock = new Paragraph(headerRun)
-            //                  {
-            //                      FontFamily = FindResource(ClientResources.DefaultFontFamilyKey) as FontFamily,
-            //                      FontSize = 16d * 96d / 72d,
-            //                      Foreground = FindResource(ClientResources.HeaderTextForegroundBrushKey) as Brush
-            //                  };
+            var headerRun = new Run(entry.EncyclopediaHeading);
+            var headerBlock = new Paragraph(headerRun)
+            {
+                FontFamily = FindResource(ClientResources.DefaultFontFamilyKey) as FontFamily,
+                FontSize = 16d * 96d / 72d,
+                Foreground = FindResource(ClientResources.HeaderTextForegroundBrushKey) as Brush
+            };
 
-            //doc.Blocks.Add(headerBlock);
+            if (entry.EncyclopediaCategory == EncyclopediaCategory.Races)
+                doc.Blocks.Add(headerBlock);
 
-            //doc.FontFamily = FindResource(ClientResources.DefaultFontFamilyKey) as FontFamily;
-            //doc.FontSize = 12d * 96d / 72d;
-            //doc.Foreground = FindResource(ClientResources.DefaultTextForegroundBrushKey) as Brush;
-            //doc.TextAlignment = TextAlignment.Right;
+            doc.FontFamily = FindResource(ClientResources.DefaultFontFamilyKey) as FontFamily;
+            doc.FontSize = 12d * 96d / 72d;
+            doc.Foreground = FindResource(ClientResources.DefaultTextForegroundBrushKey) as Brush;
+            doc.TextAlignment = TextAlignment.Left;
             //// END of Encyclopedia-HEADER
 
 
@@ -393,6 +394,9 @@ namespace Supremacy.Client
             var paragraphs = TextHelper.TrimParagraphs(entry.EncyclopediaText).Split(
                 new[] { Environment.NewLine },
                 StringSplitOptions.RemoveEmptyEntries).Select(o => new Paragraph(new Run(o))).ToList();
+
+            if (entry.EncyclopediaCategory == EncyclopediaCategory.Races)
+                doc.Blocks.AddRange(paragraphs);
 
             var firstParagraph = paragraphs.FirstOrDefault();
             if (firstParagraph == null)
@@ -407,25 +411,27 @@ namespace Supremacy.Client
                 null,
                 null) is BitmapImage imageSource)
             {
-                var imageWidth = imageSource.Width;
-                var imageHeight = imageSource.Height;
+                //var imageWidth = imageSource.Width;
+                //var imageHeight = imageSource.Height;
 
-                var imageRatio = imageWidth / imageHeight;
-                if (imageRatio >= 1.0)
-                {
-                    imageWidth = Math.Max(200, Math.Min(imageWidth, 270));
-                    imageHeight = imageWidth / imageRatio;
-                }
-                else
-                {
-                    imageHeight = Math.Max(200, Math.Min(imageHeight, 270));
-                    imageWidth = imageHeight * imageRatio;
-                }
+                //var imageRatio = imageWidth / imageHeight;
+                //if (imageRatio >= 1.0)
+                //{
+                //    imageWidth = Math.Max(400, Math.Min(imageWidth, 576));
+                //    imageHeight = imageWidth / imageRatio;
+                //}
+                //else
+                //{
+                //    imageHeight = Math.Max(400, Math.Min(imageHeight, 480));
+                //    imageWidth = imageHeight * imageRatio;
+                //}
 
                 //image.Width = imageWidth;
-                image.Width = 576;
                 //image.Height = imageHeight;
+
+                image.Width = 576;
                 image.Height = 480;
+
                 image.BorderBrush = Brushes.White;
                 image.BorderThickness = new Thickness(0.0); // 0 = turned off
                 image.CornerRadius = new CornerRadius(14.0);
@@ -433,20 +439,21 @@ namespace Supremacy.Client
 
                 var imageMargin = new Thickness(14, 0, 0, 14);
                 var imageFloater = new Floater
-                                   {
-                                       Blocks = { new BlockUIContainer(image) },
-                                       Margin = imageMargin,
-                                       Width = image.Width,
-                                       HorizontalAlignment = HorizontalAlignment.Right,
-                                       Padding = new Thickness(0)
-                                   };
-                
+                {
+                    Blocks = { new BlockUIContainer(image) },
+                    Margin = imageMargin,
+                    Width = image.Width,
+                    HorizontalAlignment = HorizontalAlignment.Right,
+                    Padding = new Thickness(0)
+                };
+
                 if (firstParagraph.Inlines.Any())
                     firstParagraph.Inlines.InsertBefore(firstParagraph.Inlines.First(), imageFloater);
                 else
                     firstParagraph.Inlines.Add(imageFloater);
             }
             // END of Encyclopedia-HEADER
+
 
             // Begin of Encyclopedia-PARAGRAPHS
             //doc.Blocks.AddRange(paragraphs);
@@ -548,13 +555,13 @@ namespace Supremacy.Client
                 //doc.Blocks.Add(techTable);  // Requirements Tech Level
 
                 // Begin of Encyclopedia-HEADER
-                var headerRun = new Run(entry.EncyclopediaHeading);
-                var headerBlock = new Paragraph(headerRun)
-                {
-                    FontFamily = FindResource(ClientResources.DefaultFontFamilyKey) as FontFamily,
-                    FontSize = 16d * 96d / 72d,
-                    Foreground = FindResource(ClientResources.HeaderTextForegroundBrushKey) as Brush
-                };
+                //var headerRun = new Run(entry.EncyclopediaHeading);
+                //var headerBlock = new Paragraph(headerRun)
+                //{
+                //    FontFamily = FindResource(ClientResources.DefaultFontFamilyKey) as FontFamily,
+                //    FontSize = 16d * 96d / 72d,
+                //    Foreground = FindResource(ClientResources.HeaderTextForegroundBrushKey) as Brush
+                //};
 
                 //doc.Blocks.Add(headerBlock);
 
@@ -713,37 +720,19 @@ namespace Supremacy.Client
     public class ResearchFieldData
     {
         private readonly ResearchField _field;
-        private readonly ResearchPool _pool; 
+        private readonly ResearchPool _pool;
 
-        public ResearchField Field
-        {
-            get { return _field; }
-        }
+        public ResearchField Field => _field;
 
-        public Distribution<int> Distribution
-        {
-            get { return _pool.Distributions[Field.FieldID]; }
-        }
+        public Distribution<int> Distribution => _pool.Distributions[Field.FieldID];
 
-        public int TechLevel
-        {
-            get { return _pool.GetTechLevel(Field); }
-        }
+        public int TechLevel => _pool.GetTechLevel(Field);
 
-        public Percentage Progress
-        {
-            get { return _pool.GetCurrentProject(Field).Progress.PercentFilled; } 
-        }
+        public Percentage Progress => _pool.GetCurrentProject(Field).Progress.PercentFilled;
 
-        public Percentage Bonus
-        {
-            get { return _pool.Bonuses[Field.FieldID]; }
-        }
+        public Percentage Bonus => _pool.Bonuses[Field.FieldID];
 
-        public ResearchProject CurrentProject
-        {
-            get { return _pool.GetCurrentProject(Field); }
-        }
+        public ResearchProject CurrentProject => _pool.GetCurrentProject(Field);
 
         public ResearchFieldData(ResearchField field, ResearchPool pool)
         {
@@ -807,25 +796,13 @@ namespace Supremacy.Client
             }
         }
 
-        public ResearchApplication Application
-        {
-            get { return _application; }
-        }
+        public ResearchApplication Application => _application;
 
-        public bool IsResearched
-        {
-            get { return _pool.IsResearched(Application); }
-        }
+        public bool IsResearched => _pool.IsResearched(Application);
 
-        public bool IsResearching
-        {
-            get { return _pool.IsResearching(Application); }
-        }
+        public bool IsResearching => _pool.IsResearching(Application);
 
-        public int TechLevel
-        {
-            get { return _application.Level; }
-        }
+        public int TechLevel => _application.Level;
 
         public ResearchApplicationData(ResearchApplication application, ResearchPool pool)
         {
@@ -839,25 +816,13 @@ namespace Supremacy.Client
         private readonly ResearchApplication _application;
         private readonly CivilizationManager _civManager;
 
-        public ResearchApplication Application
-        {
-            get { return _application; }
-        }
+        public ResearchApplication Application => _application;
 
-        public bool IsResearched
-        {
-            get { return _civManager.Research.IsResearched(Application); }
-        }
+        public bool IsResearched => _civManager.Research.IsResearched(Application);
 
-        public bool IsResearching
-        {
-            get { return _civManager.Research.IsResearching(Application); }
-        }
+        public bool IsResearching => _civManager.Research.IsResearching(Application);
 
-        public int TechLevel
-        {
-            get { return _application.Level; }
-        }
+        public int TechLevel => _application.Level;
 
         public ICollection<TechObjectDesign> DependentBuildings
         {

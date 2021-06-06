@@ -65,25 +65,13 @@ namespace Supremacy.VFS
             }
         }
 
-        public override bool CanRead
-        {
-            get { return !IsDisposed && _baseStream.CanRead; }
-        }
+        public override bool CanRead => !IsDisposed && _baseStream.CanRead;
 
-        protected bool IsDisposed
-        {
-            get { return _closed; }
-        }
+        protected bool IsDisposed => _closed;
 
-        public override bool CanSeek
-        {
-            get { return !IsDisposed && _baseStream.CanSeek; }
-        }
+        public override bool CanSeek => !IsDisposed && _baseStream.CanSeek;
 
-        public override bool CanWrite
-        {
-            get { return !IsDisposed && _baseStream.CanWrite; }
-        }
+        public override bool CanWrite => !IsDisposed && _baseStream.CanWrite;
 
         public override long Length
         {
@@ -207,25 +195,13 @@ namespace Supremacy.VFS
         public string SourceName { get; protected internal set; }
         public string VirtualPath { get; protected internal set; }
 
-        string IVirtualFileStreamInternal.ResolvedPath
-        {
-            get { return ResolvedPath; }
-        }
+        string IVirtualFileStreamInternal.ResolvedPath => ResolvedPath;
 
-        protected internal string ResolvedPath
-        {
-            get { return _resolvedPath; }
-        }
+        protected internal string ResolvedPath => _resolvedPath;
 
-        public FileAccess Access
-        {
-            get { return _access; }
-        }
+        public FileAccess Access => _access;
 
-        public FileShare Share
-        {
-            get { return _share; }
-        }
+        public FileShare Share => _share;
         #endregion
     }
 }

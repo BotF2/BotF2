@@ -49,10 +49,7 @@ namespace Supremacy.Universe
         /// Gets the type of the UniverseObject.
         /// </summary>
         /// <value>The type of the UniverseObject.</value>
-        public override UniverseObjectType ObjectType
-        {
-            get { return UniverseObjectType.StarSystem; }
-        }
+        public override UniverseObjectType ObjectType => UniverseObjectType.StarSystem;
 
         /// <summary>
         /// Gets or sets a system's bonuses.
@@ -70,10 +67,7 @@ namespace Supremacy.Universe
         /// <value>
         /// <c>true</c> if this instance has Dilithium bonus; otherwise, <c>false</c>.
         /// </value>
-        public bool HasDilithiumBonus
-        {
-            get { return ((_bonuses & SystemBonus.Dilithium) == SystemBonus.Dilithium); }
-        }
+        public bool HasDilithiumBonus => ((_bonuses & SystemBonus.Dilithium) == SystemBonus.Dilithium);
 
         /// <summary>
         /// Gets a value indicating whether this instance has a Raw Materials bonus.
@@ -81,10 +75,7 @@ namespace Supremacy.Universe
         /// <value>
         /// <c>true</c> if this instance has a Raw Materials bonus; otherwise, <c>false</c>.
         /// </value>
-        public bool HasRawMaterialsBonus
-        {
-            get { return ((_bonuses & SystemBonus.RawMaterials) == SystemBonus.RawMaterials); }
-        }
+        public bool HasRawMaterialsBonus => ((_bonuses & SystemBonus.RawMaterials) == SystemBonus.RawMaterials);
 
         /// <summary>
         /// Gets or sets the design of the star.
@@ -104,19 +95,13 @@ namespace Supremacy.Universe
         /// Gets the planets.
         /// </summary>
         /// <value>The planets.</value>
-        public IIndexedCollection<Planet> Planets
-        {
-            get { return _planets; }
-        }
+        public IIndexedCollection<Planet> Planets => _planets;
 
         /// <summary>
         /// Gets the planets in reversed order.
         /// </summary>
         /// <value>The planets in reversed order.</value>
-        public IEnumerable<Planet> ReversedPlanets
-        {
-            get { return _planets.Reverse(); }
-        }
+        public IEnumerable<Planet> ReversedPlanets => _planets.Reverse();
 
         /// <summary>
         /// Gets or sets the colony present in this <see cref="StarSystem"/>.
@@ -134,10 +119,7 @@ namespace Supremacy.Universe
         /// <value>
         /// <c>true</c> if this <see cref="StarSystem"/> is inhabited; otherwise, <c>false</c>.
         /// </value>
-        public bool IsInhabited
-        {
-            get { return (HasColony && (Colony.Population.CurrentValue > 0)); }
-        }
+        public bool IsInhabited => (HasColony && (Colony.Population.CurrentValue > 0));
 
         /// <summary>
         /// Gets a value indicating whether this <see cref="StarSystem"/> has colony.
@@ -145,10 +127,7 @@ namespace Supremacy.Universe
         /// <value>
         /// <c>true</c> if this <see cref="StarSystem"/> has colony; otherwise, <c>false</c>.
         /// </value>
-        public bool HasColony
-        {
-            get { return (_colony != null); }
-        }
+        public bool HasColony => (_colony != null);
         #endregion
 
         #region Methods

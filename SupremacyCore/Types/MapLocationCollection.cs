@@ -40,18 +40,9 @@ namespace Supremacy.Universe
     {
         private int _count;
 
-        public int Count
-        {
-            get { return _count; }
-        }
+        public int Count => _count;
 
-        public MapRectangle Region
-        {
-            get
-            {
-                return _region;
-            }
-        }
+        public MapRectangle Region => _region;
 
         private readonly MapRectangle _region;
         private readonly int _depthLeft;
@@ -65,13 +56,7 @@ namespace Supremacy.Universe
         protected QuadNode<T>[,] _nodes;
         protected List<T> _members = new List<T>();
 
-        protected bool IsLeaf
-        {
-            get
-            {
-                return _nodes == null;
-            }
-        }
+        protected bool IsLeaf => _nodes == null;
 
         public IEnumerator<T> GetEnumerator()
         {
@@ -202,10 +187,7 @@ namespace Supremacy.Universe
             _lastSearchHit = 0;
         }
 
-        public MapLocation Location
-        {
-            get { return _location; }
-        }
+        public MapLocation Location => _location;
 
         public int LastSearchHit
         {
@@ -213,15 +195,9 @@ namespace Supremacy.Universe
             set { _lastSearchHit = value; }
         }
 
-        public MapRectangle BoundingBox
-        {
-            get { return _boundingBox; }
-        }
+        public MapRectangle BoundingBox => _boundingBox;
 
-        IIntersectsRectangle2D IQuadTreeMember.BoundingBox
-        {
-            get { return _boundingBox; }
-        }
+        IIntersectsRectangle2D IQuadTreeMember.BoundingBox => _boundingBox;
     }
 
     public interface IIntersectsRectangle2D
@@ -266,34 +242,10 @@ namespace Supremacy.Universe
         private readonly byte _y1;
         private readonly byte _y2;
 
-        public int MinX
-        {
-            get
-            {
-                return Math.Min(_x1, _x2);
-            }
-        }
-        public int MaxX
-        {
-            get
-            {
-                return Math.Max(_x1, _x2);
-            }
-        }
-        public int MinY
-        {
-            get
-            {
-                return Math.Min(_y1, _y2);
-            }
-        }
-        public int MaxY
-        {
-            get
-            {
-                return Math.Max(_y1, _y2);
-            }
-        }
+        public int MinX => Math.Min(_x1, _x2);
+        public int MaxX => Math.Max(_x1, _x2);
+        public int MinY => Math.Min(_y1, _y2);
+        public int MaxY => Math.Max(_y1, _y2);
 
         public bool Contains(MapRectangle rectangle)
         {

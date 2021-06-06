@@ -31,10 +31,7 @@ namespace Supremacy.Types
             _syncRoot = syncRoot ?? new object();
         }
 
-        public object SyncRoot
-        {
-            get { return _syncRoot; }
-        }
+        public object SyncRoot => _syncRoot;
 
         protected T Synchronize<T>([NotNull] Func<T> function)
         {

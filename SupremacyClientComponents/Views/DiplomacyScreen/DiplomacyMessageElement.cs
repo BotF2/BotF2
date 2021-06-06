@@ -121,25 +121,13 @@ namespace Supremacy.Client.Views
             return HasParameter;
         }
 
-        public DiplomacyMessageElementType ElementType
-        {
-            get { return _elementType; }
-        }
+        public DiplomacyMessageElementType ElementType => _elementType;
 
-        public DiplomacyMessageElementActionCategory ActionCategory
-        {
-            get { return _actionCategory; }
-        }
+        public DiplomacyMessageElementActionCategory ActionCategory => _actionCategory;
 
-        public ICommand EditParameterCommand
-        {
-            get { return _editParameterCommand; }
-        }
+        public ICommand EditParameterCommand => _editParameterCommand;
 
-        public ICommand RemoveCommand
-        {
-            get { return _removeCommand; }
-        }
+        public ICommand RemoveCommand => _removeCommand;
 
         #region Description Property
 
@@ -233,10 +221,7 @@ namespace Supremacy.Client.Views
         [field: NonSerialized]
         public event EventHandler HasParameterChanged;
 
-        public bool HasParameter
-        {
-            get { return HasFixedParameter || _parametersCallback != null; }
-        }
+        public bool HasParameter => HasFixedParameter || _parametersCallback != null;
 
         protected virtual void OnHasParameterChanged()
         {
@@ -280,10 +265,7 @@ namespace Supremacy.Client.Views
         [field: NonSerialized]
         public event EventHandler IsParameterSelectedChanged;
 
-        public bool IsParameterSelected
-        {
-            get { return (_selectedParameter != null); }
-        }
+        public bool IsParameterSelected => (_selectedParameter != null);
 
         protected virtual void OnIsParameterSelectedChanged()
         {
@@ -599,15 +581,9 @@ namespace Supremacy.Client.Views
 
         #region Implementation of ILinkCommandSite
 
-        ICommand ILinkCommandSite.LinkCommand
-        {
-            get { return new DelegateCommand(() => { }); }
-        }
+        ICommand ILinkCommandSite.LinkCommand => new DelegateCommand(() => { });
 
-        object ILinkCommandSite.LinkCommandParameter
-        {
-            get { return this; }
-        }
+        object ILinkCommandSite.LinkCommandParameter => this;
 
         #endregion
     }

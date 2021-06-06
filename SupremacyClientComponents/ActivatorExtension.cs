@@ -149,10 +149,7 @@ namespace Supremacy.Client
         }
 
         private readonly List<Type> _typeArguments;
-        public IList<Type> TypeArguments
-        {
-            get { return _typeArguments; }
-        }
+        public IList<Type> TypeArguments => _typeArguments;
 
         [ConstructorArgument("typeArgument1")]
         public Type TypeArgument1
@@ -346,10 +343,7 @@ namespace Supremacy.Client
         /// </remarks>
         /// </summary>
         /// <value>The property values.</value>
-        public List<ActivatorSetter> PropertyValues
-        {
-            get { return _propertyValues; }
-        }
+        public List<ActivatorSetter> PropertyValues => _propertyValues;
 
         /// <summary>
         /// Gets the created object.

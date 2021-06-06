@@ -125,15 +125,9 @@ namespace Supremacy.Client.Views
             RemoveElement(element);
         }
 
-        public ICommand SetAcceptButton
-        {
-            get { return _setAcceptButton; }
-        }
+        public ICommand SetAcceptButton => _setAcceptButton;
 
-        public ICommand SetRejectButton
-        {
-            get { return _setRejectButton; }
-        }
+        public ICommand SetRejectButton => _setRejectButton;
 
         public string Response
         {
@@ -172,64 +166,31 @@ namespace Supremacy.Client.Views
             }
         }
 
-        public Dictionary<int, string> AcceptedRejected
-        {
-            get { return _acceptedRejected; }
-        }
+        public Dictionary<int, string> AcceptedRejected => _acceptedRejected;
 
-        public Civilization Sender
-        {
-            get { return _sender; }
-        }
+        public Civilization Sender => _sender;
 
-        public Civilization Recipient
-        {
-            get { return _recipient; }
-        }
+        public Civilization Recipient => _recipient;
 
-        public ReadOnlyObservableCollection<DiplomacyMessageElement> Elements
-        {
-            get { return _elementsView; }
-        }
+        public ReadOnlyObservableCollection<DiplomacyMessageElement> Elements => _elementsView;
 
-        public ReadOnlyObservableCollection<DiplomacyMessageElement> TreatyElements
-        {
-            get { return _treatyElementsView; }
-        }
+        public ReadOnlyObservableCollection<DiplomacyMessageElement> TreatyElements => _treatyElementsView;
 
-        public ReadOnlyObservableCollection<DiplomacyMessageElement> RequestElements
-        {
-            get { return _requestElementsView; }
-        }
+        public ReadOnlyObservableCollection<DiplomacyMessageElement> RequestElements => _requestElementsView;
 
-        public ReadOnlyObservableCollection<DiplomacyMessageElement> OfferElements
-        {
-            get { return _offerElementsView; }
-        }
+        public ReadOnlyObservableCollection<DiplomacyMessageElement> OfferElements => _offerElementsView;
 
-        public ReadOnlyObservableCollection<DiplomacyMessageElement> StatementElements
-        {
-            get { return _statementElementsView; }
-        }
+        public ReadOnlyObservableCollection<DiplomacyMessageElement> StatementElements => _statementElementsView;
 
         //public ReadOnlyObservableCollection<DiplomacyMessageElement> AcceptRejectElements  // we do not view this??? 
         //{
         //    get { return _acceptRejectElementsView; }
         //}
 
-        public ReadOnlyObservableCollection<DiplomacyMessageAvailableElement> AvailableElements
-        {
-            get { return _availableElementsView; }
-        }
+        public ReadOnlyObservableCollection<DiplomacyMessageAvailableElement> AvailableElements => _availableElementsView;
 
-        internal bool IsStatement
-        {
-            get { return _elements.All(o => o.ElementType <= DiplomacyMessageElementType.DenounceSabotageStatement); }
-        }
-        internal bool IsTreaty
-        {
-            get { return _elements.All(o => o.ElementType > DiplomacyMessageElementType.TreatyWarPact); }
-        }
+        internal bool IsStatement => _elements.All(o => o.ElementType <= DiplomacyMessageElementType.DenounceSabotageStatement);
+        internal bool IsTreaty => _elements.All(o => o.ElementType > DiplomacyMessageElementType.TreatyWarPact);
         public int HideAcceptRejectButtons
         {
             get
@@ -404,10 +365,7 @@ namespace Supremacy.Client.Views
         [field: NonSerialized]
         public event EventHandler HasOfferLeadInTextChanged;
 
-        public bool HasOfferLeadInText
-        {
-            get { return !string.IsNullOrWhiteSpace(OfferLeadInText); }
-        }
+        public bool HasOfferLeadInText => !string.IsNullOrWhiteSpace(OfferLeadInText);
 
         protected virtual void OnHasOfferLeadInTextChanged()
         {
@@ -452,10 +410,7 @@ namespace Supremacy.Client.Views
         [field: NonSerialized]
         public event EventHandler HasRequestLeadInTextChanged;
 
-        public bool HasRequestLeadInText
-        {
-            get { return !string.IsNullOrWhiteSpace(RequestLeadInText); }
-        }
+        public bool HasRequestLeadInText => !string.IsNullOrWhiteSpace(RequestLeadInText);
 
         protected virtual void OnHasRequestLeadInTextChanged()
         {
@@ -500,10 +455,7 @@ namespace Supremacy.Client.Views
         [field: NonSerialized]
         public event EventHandler HasTreatyLeadInTextChanged;
 
-        public bool HasTreatyLeadInText
-        {
-            get { return !string.IsNullOrWhiteSpace(TreatyLeadInText); }
-        }
+        public bool HasTreatyLeadInText => !string.IsNullOrWhiteSpace(TreatyLeadInText);
 
         protected virtual void OnHasTreatyLeadInTextChanged()
         {

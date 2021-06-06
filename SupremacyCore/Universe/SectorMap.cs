@@ -23,20 +23,14 @@ namespace Supremacy.Universe
         /// Gets the width of a <see cref="SectorMap"/>.
         /// </summary>
         /// <value>The width.</value>
-        public int Width
-        {
-            get { return _sectors.GetLength(0); }
-        }
+        public int Width => _sectors.GetLength(0);
 
         /// <summary>
         /// Gets the height of a <see cref="SectorMap"/>.
         /// </summary>
         /// <value>The height.</value>
-        public int Height
-        {
-            get { return _sectors.GetLength(1); }
-        }
-        
+        public int Height => _sectors.GetLength(1);
+
         /// <summary>
         /// Gets the <see cref="Sector"/> in the <see cref="SectorMap"/> at the specified location
         /// </summary>

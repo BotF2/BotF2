@@ -95,15 +95,9 @@ namespace Supremacy.Client
         #endregion
 
         #region Properties and Indexers
-        public int EmpireID
-        {
-            get { return CivSelector.SelectedIndex; }
-        }
+        public int EmpireID => CivSelector.SelectedIndex;
 
-        public GameOptions Options
-        {
-            get { return OptionsPanel.Options; }
-        }
+        public GameOptions Options => OptionsPanel.Options;
         #endregion
 
         #region Private Methods

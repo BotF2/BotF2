@@ -832,10 +832,7 @@ namespace Supremacy.Client.Views
 
         #region Overrides of ViewModelBase<INewDiplomacyScreenView,DiplomacyScreenViewModel>
 
-        public override string ViewName
-        {
-            get { return StandardGameScreens.DiplomacyScreen; }
-        }
+        public override string ViewName => StandardGameScreens.DiplomacyScreen;
 
         protected internal override void RegisterViewWithRegion()
         {
@@ -849,96 +846,39 @@ namespace Supremacy.Client.Views
 
         #endregion
 
-        public ReadOnlyObservableCollection<ForeignPowerViewModel> ForeignPowers
-        {
-            get { return _foreignPowersView; }
-        }
+        public ReadOnlyObservableCollection<ForeignPowerViewModel> ForeignPowers => _foreignPowersView;
         // DiplayMode
-        public ICommand SetDisplayModeCommand
-        {
-            get { return _setDisplayModeCommand; }
-        }
+        public ICommand SetDisplayModeCommand => _setDisplayModeCommand;
 
-        public ICommand CommendCommand
-        {
-            get { return _commendCommand; }
-        }
+        public ICommand CommendCommand => _commendCommand;
 
-        public ICommand DenounceCommand
-        {
-            get { return _denounceCommand; }
-        }
+        public ICommand DenounceCommand => _denounceCommand;
 
-        public ICommand ThreatenCommand
-        {
-            get { return _threatenCommand; }
-        }
+        public ICommand ThreatenCommand => _threatenCommand;
 
         //public ICommand MakeProposalCommand
         //{
         //    get { return _makeProposalCommand; }
         //}
 
-        public ICommand DeclareWarCommand
-        {
-            get { return _declareWarCommand; }
-        }
-        public ICommand EndWarCommand
-        {
-            get { return _endWarCommand; }
-        }
-        public ICommand OpenBordersCommand
-        {
-            get { return _openBordersCommand; }
-        }
-        public ICommand NonAgressionCommand
-        {
-            get { return _nonAgressionCommand; }
-        }
-        public ICommand AffiliationCommand
-        {
-            get { return _affiliationCommand; }
-        }
-        public ICommand DefenceAllianceCommand
-        {
-            get { return _defenceAllianceCommand; }
-        }
-        public ICommand FullAllianceCommand
-        {
-            get { return _fullAllianceCommand; }
-        }
-        public ICommand MembershipCommand
-        {
-            get { return _membershipCommand; }
-        }
+        public ICommand DeclareWarCommand => _declareWarCommand;
+        public ICommand EndWarCommand => _endWarCommand;
+        public ICommand OpenBordersCommand => _openBordersCommand;
+        public ICommand NonAgressionCommand => _nonAgressionCommand;
+        public ICommand AffiliationCommand => _affiliationCommand;
+        public ICommand DefenceAllianceCommand => _defenceAllianceCommand;
+        public ICommand FullAllianceCommand => _fullAllianceCommand;
+        public ICommand MembershipCommand => _membershipCommand;
 
-        public ICommand EditMessageCommand
-        {
-            get { return _editMessageCommand; }
-        }
+        public ICommand EditMessageCommand => _editMessageCommand;
 
-        public ICommand SendMessageCommand
-        {
-            get
-            {
-                return _sendMessageCommand;
-            }
-        }
+        public ICommand SendMessageCommand => _sendMessageCommand;
 
-        public ICommand CancelMessageCommand
-        {
-            get { return _cancelMessageCommand; }
-        }
+        public ICommand CancelMessageCommand => _cancelMessageCommand;
 
-        public ICommand ResetGraphCommand
-        {
-            get { return _resetGraphCommand; }
-        }
+        public ICommand ResetGraphCommand => _resetGraphCommand;
 
-        public ICommand SetSelectedGraphNodeCommand
-        {
-            get { return _setSelectedGraphNodeCommand; }
-        }
+        public ICommand SetSelectedGraphNodeCommand => _setSelectedGraphNodeCommand;
 
         #region PlayerCivilization Property
 
@@ -1248,16 +1188,10 @@ namespace Supremacy.Client.Views
         [field: NonSerialized]
         public event EventHandler IsMessageEditInProgressChanged;
 
-        public bool IsMessageEditInProgress
-        {
-            get
-            {
-                return DisplayMode == DiplomacyScreenDisplayMode.Outbox &&
+        public bool IsMessageEditInProgress => DisplayMode == DiplomacyScreenDisplayMode.Outbox &&
                        SelectedForeignPower != null &&
                        SelectedForeignPower.OutgoingMessage != null &&
                        SelectedForeignPower.OutgoingMessage.IsEditing;
-            }
-        }
 
         //public bool IsFullAllianceButtonVisible { get; private set; }
 

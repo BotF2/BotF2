@@ -168,20 +168,11 @@ namespace Supremacy.Client.Views
         #endregion
 
         #region Properties and Indexers
-        protected IUnityContainer Container
-        {
-            get { return _container; }
-        }
+        protected IUnityContainer Container => _container;
 
-        protected INavigationCommandsProxy NavigationCommands
-        {
-            get { return _navigationCommands; }
-        }
+        protected INavigationCommandsProxy NavigationCommands => _navigationCommands;
 
-        protected IResourceManager ResourceManager
-        {
-            get { return _resourceManager; }
-        }
+        protected IResourceManager ResourceManager => _resourceManager;
         #endregion
 
         #region Public and Protected Methods
@@ -221,10 +212,7 @@ namespace Supremacy.Client.Views
             set { DataContext = value; }
         }
 
-        protected IPlayerOrderService PlayerOrderService
-        {
-            get { return _playerOrderService; }
-        }
+        protected IPlayerOrderService PlayerOrderService => _playerOrderService;
 
         public virtual void OnCreated()
         {

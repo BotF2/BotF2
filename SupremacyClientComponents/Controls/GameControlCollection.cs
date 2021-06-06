@@ -49,10 +49,7 @@ namespace Supremacy.Client.Controls
             return (IndexOf(label) != -1);
         }
 
-        public GameControlContext Context
-        {
-            get { return _context; }
-        }
+        public GameControlContext Context => _context;
 
         public int IndexOf(string label)
         {
@@ -111,10 +108,7 @@ namespace Supremacy.Client.Controls
             catch (ArgumentOutOfRangeException) { }
         }
 
-        public object Owner
-        {
-            get { return _owner; }
-        }
+        public object Owner => _owner;
 
         public T this[string label]
         {

@@ -14,10 +14,7 @@ namespace Supremacy.Client.Services
     internal class ApplicationSettingsService : IApplicationSettingsService
     {
         #region Implementation of IApplicationSettingsService
-        public ApplicationSettingsBase Settings
-        {
-            get { return Properties.Settings.Default; }
-        }
+        public ApplicationSettingsBase Settings => Properties.Settings.Default;
         #endregion
     }
 }

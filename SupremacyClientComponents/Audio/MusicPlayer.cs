@@ -85,9 +85,9 @@ namespace Supremacy.Client.Audio
             set { _fadeTime = UpdateInterval / (1000.0f * value); }
         }
 
-        public bool IsPlaying { get { return _isPlaying; } }
-        public MusicEntry CurrentMusicEntry { get { return _musicEntry.Value; } }
-        public IAudioTrack CurrentAudioTrack { get { return _audioTrack; } }
+        public bool IsPlaying => _isPlaying;
+        public MusicEntry CurrentMusicEntry => _musicEntry.Value;
+        public IAudioTrack CurrentAudioTrack => _audioTrack;
         #endregion
 
         #region Construction & Lifetime

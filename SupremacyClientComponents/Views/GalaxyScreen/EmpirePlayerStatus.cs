@@ -86,10 +86,7 @@ namespace Supremacy.Client.Views
         }
 
         #region Empire Property
-        public Civilization Empire
-        {
-            get { return _appContext.CurrentGame.Civilizations[_empireId]; }
-        }
+        public Civilization Empire => _appContext.CurrentGame.Civilizations[_empireId];
         #endregion
 
         #region Player Property

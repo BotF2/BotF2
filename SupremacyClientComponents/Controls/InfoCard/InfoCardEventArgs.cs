@@ -39,9 +39,6 @@ namespace Supremacy.Client.Controls
         /// Gets or sets the <see cref="InfoCard"/> that is the focus of this event.
         /// </summary>
         /// <value>The <see cref="InfoCard"/> that is the focus of this event.</value>
-        public InfoCard InfoCard
-        {
-            get { return _infoCard; }
-        }
+        public InfoCard InfoCard => _infoCard;
     }
 }

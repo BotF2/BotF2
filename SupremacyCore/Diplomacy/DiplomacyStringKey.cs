@@ -114,15 +114,9 @@ namespace Supremacy.Diplomacy
             _stringId = stringId;
         }
 
-        public string Civilization
-        {
-            get { return _civilization; }
-        }
+        public string Civilization => _civilization;
 
-        public DiplomacyStringID StringID
-        {
-            get { return _stringId; }
-        }
+        public DiplomacyStringID StringID => _stringId;
 
         public bool Equals(DiplomacyStringKey other)
         {

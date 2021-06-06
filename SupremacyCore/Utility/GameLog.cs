@@ -45,20 +45,11 @@ namespace Supremacy.Utility
             Core.General.Info(now);  // new line for saving under Date
         }
 
-        public static GameLog Client
-        {
-            get { return GetLog("Client"); }
-        }
+        public static GameLog Client => GetLog("Client");
 
-        public static GameLog Server
-        {
-            get { return GetLog("Server"); }
-        }
+        public static GameLog Server => GetLog("Server");
 
-        public static GameLog Core
-        {
-            get { return GetLog("Core"); }
-        }
+        public static GameLog Core => GetLog("Core");
 
         protected static class Repositories
         {
@@ -135,78 +126,78 @@ namespace Supremacy.Utility
             public const string XMLCheckDetails = "XMLCheckDetails";
             public const string XML2CSVOutputDetails = "XML2CSVOutputDetails";
         }
-        public ILog AI { get { return LogManager.GetLogger(Repositories.AI); } }
-        public ILog AIDetails { get { return LogManager.GetLogger(Repositories.AIDetails); } }
-        public ILog Audio { get { return LogManager.GetLogger(Repositories.Audio); } }
-        public ILog AudioDetails { get { return LogManager.GetLogger(Repositories.AudioDetails); } }
-        public ILog CivsAndRaces { get { return LogManager.GetLogger(Repositories.CivsAndRaces); } }
-        public ILog CivsAndRacesDetails { get { return LogManager.GetLogger(Repositories.CivsAndRacesDetails); } }
-        public ILog Colonies { get { return LogManager.GetLogger(Repositories.Colonies); } }
-        public ILog ColoniesDetails { get { return LogManager.GetLogger(Repositories.ColoniesDetails); } }
-        public ILog Combat { get { return LogManager.GetLogger(Repositories.Combat); } }
-        public ILog CombatDetails { get { return LogManager.GetLogger(Repositories.CombatDetails); } }
-        public ILog Credits { get { return LogManager.GetLogger(Repositories.Credits); } }
-        public ILog CreditsDetails { get { return LogManager.GetLogger(Repositories.CreditsDetails); } }
-        public ILog Deuterium { get { return LogManager.GetLogger(Repositories.Deuterium); } }
-        public ILog DeuteriumDetails { get { return LogManager.GetLogger(Repositories.DeuteriumDetails); } }
-        public ILog Dilithium { get { return LogManager.GetLogger(Repositories.Dilithium); } }
-        public ILog DilithiumDetails { get { return LogManager.GetLogger(Repositories.DilithiumDetails); } }
-        public ILog Duranium { get { return LogManager.GetLogger(Repositories.Duranium); } }
-        public ILog DuraniumDetails { get { return LogManager.GetLogger(Repositories.DuraniumDetails); } }
-        public ILog Diplomacy { get { return LogManager.GetLogger(Repositories.Diplomacy); } }
-        public ILog DiplomacyDetails { get { return LogManager.GetLogger(Repositories.DiplomacyDetails); } }
-        public ILog Energy { get { return LogManager.GetLogger(Repositories.Energy); } }
-        public ILog EnergyDetails { get { return LogManager.GetLogger(Repositories.EnergyDetails); } }
-        public ILog Events { get { return LogManager.GetLogger(Repositories.Events); } }
-        public ILog EventsDetails { get { return LogManager.GetLogger(Repositories.EventsDetails); } }
-        public ILog GalaxyGenerator { get { return LogManager.GetLogger(Repositories.GalaxyGenerator); } }
-        public ILog GalaxyGeneratorDetails { get { return LogManager.GetLogger(Repositories.GalaxyGeneratorDetails); } }
-        public ILog GameData { get { return LogManager.GetLogger(Repositories.GameData); } }
-        public ILog GameDataDetails { get { return LogManager.GetLogger(Repositories.GameDataDetails); } }
-        public ILog GameInitData { get { return LogManager.GetLogger(Repositories.GameInitData); } }
-        public ILog GameInitDataDetails { get { return LogManager.GetLogger(Repositories.GameInitDataDetails); } }
-        public ILog General { get { return LogManager.GetLogger(Repositories.General); } }
-        public ILog GeneralDetails { get { return LogManager.GetLogger(Repositories.GeneralDetails); } }
-        public ILog InfoText { get { return LogManager.GetLogger(Repositories.InfoText); } }
-        public ILog InfoTextDetails { get { return LogManager.GetLogger(Repositories.InfoTextDetails); } }
-        public ILog Intel { get { return LogManager.GetLogger(Repositories.Intel); } }
-        public ILog IntelDetails { get { return LogManager.GetLogger(Repositories.IntelDetails); } }
-        public ILog MapData { get { return LogManager.GetLogger(Repositories.MapData); } }
-        public ILog MapDataDetails { get { return LogManager.GetLogger(Repositories.MapDataDetails); } }
-        public ILog Multiplay { get { return LogManager.GetLogger(Repositories.Multiplay); } }
-        public ILog MultiplayDetails { get { return LogManager.GetLogger(Repositories.MultiplayDetails); } }
+        public ILog AI => LogManager.GetLogger(Repositories.AI);
+        public ILog AIDetails => LogManager.GetLogger(Repositories.AIDetails);
+        public ILog Audio => LogManager.GetLogger(Repositories.Audio);
+        public ILog AudioDetails => LogManager.GetLogger(Repositories.AudioDetails);
+        public ILog CivsAndRaces => LogManager.GetLogger(Repositories.CivsAndRaces);
+        public ILog CivsAndRacesDetails => LogManager.GetLogger(Repositories.CivsAndRacesDetails);
+        public ILog Colonies => LogManager.GetLogger(Repositories.Colonies);
+        public ILog ColoniesDetails => LogManager.GetLogger(Repositories.ColoniesDetails);
+        public ILog Combat => LogManager.GetLogger(Repositories.Combat);
+        public ILog CombatDetails => LogManager.GetLogger(Repositories.CombatDetails);
+        public ILog Credits => LogManager.GetLogger(Repositories.Credits);
+        public ILog CreditsDetails => LogManager.GetLogger(Repositories.CreditsDetails);
+        public ILog Deuterium => LogManager.GetLogger(Repositories.Deuterium);
+        public ILog DeuteriumDetails => LogManager.GetLogger(Repositories.DeuteriumDetails);
+        public ILog Dilithium => LogManager.GetLogger(Repositories.Dilithium);
+        public ILog DilithiumDetails => LogManager.GetLogger(Repositories.DilithiumDetails);
+        public ILog Duranium => LogManager.GetLogger(Repositories.Duranium);
+        public ILog DuraniumDetails => LogManager.GetLogger(Repositories.DuraniumDetails);
+        public ILog Diplomacy => LogManager.GetLogger(Repositories.Diplomacy);
+        public ILog DiplomacyDetails => LogManager.GetLogger(Repositories.DiplomacyDetails);
+        public ILog Energy => LogManager.GetLogger(Repositories.Energy);
+        public ILog EnergyDetails => LogManager.GetLogger(Repositories.EnergyDetails);
+        public ILog Events => LogManager.GetLogger(Repositories.Events);
+        public ILog EventsDetails => LogManager.GetLogger(Repositories.EventsDetails);
+        public ILog GalaxyGenerator => LogManager.GetLogger(Repositories.GalaxyGenerator);
+        public ILog GalaxyGeneratorDetails => LogManager.GetLogger(Repositories.GalaxyGeneratorDetails);
+        public ILog GameData => LogManager.GetLogger(Repositories.GameData);
+        public ILog GameDataDetails => LogManager.GetLogger(Repositories.GameDataDetails);
+        public ILog GameInitData => LogManager.GetLogger(Repositories.GameInitData);
+        public ILog GameInitDataDetails => LogManager.GetLogger(Repositories.GameInitDataDetails);
+        public ILog General => LogManager.GetLogger(Repositories.General);
+        public ILog GeneralDetails => LogManager.GetLogger(Repositories.GeneralDetails);
+        public ILog InfoText => LogManager.GetLogger(Repositories.InfoText);
+        public ILog InfoTextDetails => LogManager.GetLogger(Repositories.InfoTextDetails);
+        public ILog Intel => LogManager.GetLogger(Repositories.Intel);
+        public ILog IntelDetails => LogManager.GetLogger(Repositories.IntelDetails);
+        public ILog MapData => LogManager.GetLogger(Repositories.MapData);
+        public ILog MapDataDetails => LogManager.GetLogger(Repositories.MapDataDetails);
+        public ILog Multiplay => LogManager.GetLogger(Repositories.Multiplay);
+        public ILog MultiplayDetails => LogManager.GetLogger(Repositories.MultiplayDetails);
 
-        public ILog Production { get { return LogManager.GetLogger(Repositories.Production); } }
-        public ILog ProductionDetails { get { return LogManager.GetLogger(Repositories.ProductionDetails); } }
+        public ILog Production => LogManager.GetLogger(Repositories.Production);
+        public ILog ProductionDetails => LogManager.GetLogger(Repositories.ProductionDetails);
         //public ILog ReportErrorsToEmail // that's no category
         //{
         //    get { return LogManager.GetLogger(Repositories.ReportErrorsToEmail); }
         //}
-        public ILog Research { get { return LogManager.GetLogger(Repositories.Research); } }
-        public ILog ResearchDetails { get { return LogManager.GetLogger(Repositories.ResearchDetails); } }
-        public ILog SaveLoad { get { return LogManager.GetLogger(Repositories.SaveLoad); } }
-        public ILog SaveLoadDetails { get { return LogManager.GetLogger(Repositories.SaveLoadDetails); } }
-        public ILog Ships { get { return LogManager.GetLogger(Repositories.Ships); } }
-        public ILog ShipsDetails { get { return LogManager.GetLogger(Repositories.ShipsDetails); } }
-        public ILog ShipProduction { get { return LogManager.GetLogger(Repositories.ShipProduction); } }
-        public ILog ShipProductionDetails { get { return LogManager.GetLogger(Repositories.ShipProductionDetails); } }
-        public ILog SitReps { get { return LogManager.GetLogger(Repositories.SitReps); } }
-        public ILog SitRepsDetails { get { return LogManager.GetLogger(Repositories.SitRepsDetails); } }
-        public ILog Stations { get { return LogManager.GetLogger(Repositories.Stations); } }
-        public ILog StationsDetails { get { return LogManager.GetLogger(Repositories.StationsDetails); } }
-        public ILog Structures { get { return LogManager.GetLogger(Repositories.Structures); } }
-        public ILog StructuresDetails { get { return LogManager.GetLogger(Repositories.StructuresDetails); } }
-        public ILog SystemAssault { get { return LogManager.GetLogger(Repositories.SystemAssault); } }
-        public ILog SystemAssaultDetails { get { return LogManager.GetLogger(Repositories.SystemAssaultDetails); } }
-        public ILog Test { get { return LogManager.GetLogger(Repositories.Test); } }
-        public ILog TradeRoutes { get { return LogManager.GetLogger(Repositories.TradeRoutes); } }
-        public ILog TradeRoutesDetails { get { return LogManager.GetLogger(Repositories.TradeRoutesDetails); } }
-        public ILog UI { get { return LogManager.GetLogger(Repositories.UI); } }
-        public ILog UIDetails { get { return LogManager.GetLogger(Repositories.UIDetails); } }
-        public ILog XMLCheck { get { return LogManager.GetLogger(Repositories.XMLCheck); } }
-        public ILog XMLCheckDetails { get { return LogManager.GetLogger(Repositories.XMLCheckDetails); } }
-        public ILog XML2CSVOutput { get { return LogManager.GetLogger(Repositories.XML2CSVOutput); } }
-        public ILog XML2CSVOutputDetails { get { return LogManager.GetLogger(Repositories.XML2CSVOutputDetails); } }
+        public ILog Research => LogManager.GetLogger(Repositories.Research);
+        public ILog ResearchDetails => LogManager.GetLogger(Repositories.ResearchDetails);
+        public ILog SaveLoad => LogManager.GetLogger(Repositories.SaveLoad);
+        public ILog SaveLoadDetails => LogManager.GetLogger(Repositories.SaveLoadDetails);
+        public ILog Ships => LogManager.GetLogger(Repositories.Ships);
+        public ILog ShipsDetails => LogManager.GetLogger(Repositories.ShipsDetails);
+        public ILog ShipProduction => LogManager.GetLogger(Repositories.ShipProduction);
+        public ILog ShipProductionDetails => LogManager.GetLogger(Repositories.ShipProductionDetails);
+        public ILog SitReps => LogManager.GetLogger(Repositories.SitReps);
+        public ILog SitRepsDetails => LogManager.GetLogger(Repositories.SitRepsDetails);
+        public ILog Stations => LogManager.GetLogger(Repositories.Stations);
+        public ILog StationsDetails => LogManager.GetLogger(Repositories.StationsDetails);
+        public ILog Structures => LogManager.GetLogger(Repositories.Structures);
+        public ILog StructuresDetails => LogManager.GetLogger(Repositories.StructuresDetails);
+        public ILog SystemAssault => LogManager.GetLogger(Repositories.SystemAssault);
+        public ILog SystemAssaultDetails => LogManager.GetLogger(Repositories.SystemAssaultDetails);
+        public ILog Test => LogManager.GetLogger(Repositories.Test);
+        public ILog TradeRoutes => LogManager.GetLogger(Repositories.TradeRoutes);
+        public ILog TradeRoutesDetails => LogManager.GetLogger(Repositories.TradeRoutesDetails);
+        public ILog UI => LogManager.GetLogger(Repositories.UI);
+        public ILog UIDetails => LogManager.GetLogger(Repositories.UIDetails);
+        public ILog XMLCheck => LogManager.GetLogger(Repositories.XMLCheck);
+        public ILog XMLCheckDetails => LogManager.GetLogger(Repositories.XMLCheckDetails);
+        public ILog XML2CSVOutput => LogManager.GetLogger(Repositories.XML2CSVOutput);
+        public ILog XML2CSVOutputDetails => LogManager.GetLogger(Repositories.XML2CSVOutputDetails);
 
         protected GameLog(Type type)
         {

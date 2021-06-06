@@ -27,12 +27,18 @@ namespace Supremacy.Client.Context
     {
         MusicLibrary DefaultMusicLibrary { get; }
         MusicLibrary ThemeMusicLibrary { get; }
+
+        //int  ASpecialWidth1 { get; }
+        //int ASpecialHeight1 { get; }
     }
 
     public class AppContext : IAppContext, IDisposable
     {
         #region Fields
         private const string DefaultMusicLibraryPath = "Resources/UI/Default/MusicPacks.xml";
+
+        //private readonly int ASpecialWidth1 = 576;
+        //private readonly int ASpecialHeight1 = 480;
 
         private readonly ReaderWriterLockSlim _accessLock;
         private readonly Dispatcher _dispatcher;
@@ -42,13 +48,13 @@ namespace Supremacy.Client.Context
         private bool _isConnected;
         private bool _isDisposed;
         private bool _isSinglePlayerGame;
-        private bool _isBorgPlayable = false;
-        private bool _isTerranEmpirePlayable = false;
-        private bool _isFederationPlayable = false;
-        private bool _isRomulanPlayable = false;
-        private bool _isKlingonPlayable = false;
-        private bool _isCardassianPlayable = false;
-        private bool _isDominionPlayable = false;
+        private readonly bool _isBorgPlayable = false;
+        private readonly bool _isTerranEmpirePlayable = false;
+        private readonly bool _isFederationPlayable = false;
+        private readonly bool _isRomulanPlayable = false;
+        private readonly bool _isKlingonPlayable = false;
+        private readonly bool _isCardassianPlayable = false;
+        private readonly bool _isDominionPlayable = false;
         public bool _audioTrace;
         private bool _isGameHost;
         private bool _isGameEnding;
@@ -57,20 +63,27 @@ namespace Supremacy.Client.Context
         private IPlayer _localPlayer;
         private IEnumerable<IPlayer> _remotePlayers;
         private ILobbyData _lobbyData;
+#pragma warning disable IDE0044 // Add readonly modifier
         private MusicLibrary _defaultMusicLibrary = new MusicLibrary();
         private MusicLibrary _themeMusicLibrary = new MusicLibrary();
+#pragma warning restore IDE0044 // Add readonly modifier
+
         #endregion
 
         #region Properties
-        public MusicLibrary DefaultMusicLibrary
-        {
-            get { return _defaultMusicLibrary; }
-        }
+        public MusicLibrary DefaultMusicLibrary => _defaultMusicLibrary;
 
-        public MusicLibrary ThemeMusicLibrary
-        {
-            get { return _themeMusicLibrary; }
-        }
+        public MusicLibrary ThemeMusicLibrary => _themeMusicLibrary;
+
+        //public int ASpecialWidth1
+        //{
+        //    get { return 576; }
+        //}
+
+        //public int ASpecialHeight1
+        //{
+        //    get { return 480; }
+        //}
         #endregion
 
         #region Constructors and Finalizers
@@ -93,8 +106,7 @@ namespace Supremacy.Client.Context
         #region Public and Protected Methods
         protected void OnPropertyChanged(string propertyName)
         {
-            if (PropertyChanged != null)
-                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
         #endregion
 

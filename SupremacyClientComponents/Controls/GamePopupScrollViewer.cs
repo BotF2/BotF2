@@ -12,10 +12,7 @@ namespace Supremacy.Client.Controls
             FocusableProperty.OverrideMetadata(typeof(GamePopupScrollViewer), new FrameworkPropertyMetadata(false));
         }
 
-        internal Size MeasureConstraint
-        {
-            get { return _measureConstraint; }
-        }
+        internal Size MeasureConstraint => _measureConstraint;
 
         protected override Size MeasureOverride(Size constraint)
         {

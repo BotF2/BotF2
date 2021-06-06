@@ -198,10 +198,7 @@ namespace Supremacy.Client
         /// <value>
         /// <c>true</c> if there are any suspended property changes; otherwise, <c>false</c>.
         /// </value>
-        public bool IsDirty
-        {
-            get { return _isDirty; }
-        }
+        public bool IsDirty => _isDirty;
 
         /// <summary>
         /// Gets whether property change notifications are currently suspended.
@@ -209,10 +206,7 @@ namespace Supremacy.Client
         /// <value>
         /// <c>true</c> if property change notifications are currently suspended; otherwise, <c>false</c>.
         /// </value>
-        public bool IsPropertyChangeSuspended
-        {
-            get { return (_usageCounter > 0); }
-        }
+        public bool IsPropertyChangeSuspended => (_usageCounter > 0);
 
         /// <summary>
         /// Raises the <c>CollectionChanged</c> event with the provided arguments.

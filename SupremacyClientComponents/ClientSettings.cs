@@ -3233,10 +3233,7 @@ namespace Supremacy.Client
             return _attachedValues.TryGetValue(attachableMemberIdentifier, out value);
         }
 
-        int IAttachedPropertyStore.PropertyCount
-        {
-            get { return _attachedValues.Count; }
-        }
+        int IAttachedPropertyStore.PropertyCount => _attachedValues.Count;
 
         #endregion
 

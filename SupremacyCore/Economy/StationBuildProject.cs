@@ -39,20 +39,14 @@ namespace Supremacy.Economy
         /// Gets the station design.
         /// </summary>
         /// <value>The station design.</value>
-        public StationDesign StationDesign
-        {
-            get { return BuildDesign as StationDesign; }
-        }
+        public StationDesign StationDesign => BuildDesign as StationDesign;
 
 
         /// <summary>
         /// Gets the description of the station under construction.
         /// </summary>
         /// <value>The description.</value>
-        public override string Description
-        {
-            get { return ResourceManager.GetString(BuildDesign.Name); }
-        }
+        public override string Description => ResourceManager.GetString(BuildDesign.Name);
 
         public bool HasRawMaterialsShortage
         {

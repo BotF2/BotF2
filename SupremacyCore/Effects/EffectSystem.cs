@@ -156,10 +156,7 @@ namespace Supremacy.Effects
             }
         }
 
-        public static bool IsSuspended
-        {
-            get { return SuspendEffectsScope.IsWithin; }
-        }
+        public static bool IsSuspended => SuspendEffectsScope.IsWithin;
 
         public static IDisposable SuspendEffects()
         {

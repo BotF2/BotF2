@@ -46,10 +46,7 @@ namespace Supremacy.Scripting
             set { _description = value; }
         }
 
-        public Dictionary<string, object> Options
-        {
-            get { return _options; }
-        }
+        public Dictionary<string, object> Options => _options;
 
         protected override void EndInitCore()
         {

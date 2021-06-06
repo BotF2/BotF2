@@ -90,10 +90,7 @@ namespace Supremacy.Universe
         /// <summary>
         /// Gets whether or not this <see cref="UniverseObject"/> is owned.
         /// </summary>
-        public bool IsOwned
-        {
-            get { return (_ownerId != Civilization.InvalidID); }
-        }
+        public bool IsOwned => (_ownerId != Civilization.InvalidID);
 
         /// <summary>
         /// Gets or sets the owner of this <see cref="UniverseObject"/>.
@@ -126,33 +123,21 @@ namespace Supremacy.Universe
         /// Gets the turn number on which this <see cref="UniverseObject"/> was created.
         /// </summary>
         /// <value>The turn created.</value>
-        public int TurnCreated
-        {
-            get { return _turnCreated; }
-        }
+        public int TurnCreated => _turnCreated;
 
         /// <summary>
         /// Gets the turn number on which ownership of this <see cref="Colony"/> last changed.
         /// </summary>
         /// <value>The turn created.</value>
-        public int LastOwnershipChange
-        {
-            get { return _lastOwnershipChange; }
-        }
+        public int LastOwnershipChange => _lastOwnershipChange;
 
-        public int Age
-        {
-            get { return (GameContext.Current.TurnNumber - _turnCreated); }
-        }
-       
+        public int Age => (GameContext.Current.TurnNumber - _turnCreated);
+
         /// <summary>
         /// Gets the galactic sector in which this <see cref="UniverseObject"/> resides.
         /// </summary>
         /// <value>The sector.</value>
-        public Sector Sector
-        {
-            get { return GameContext.Current.Universe.Map[Location]; }
-        }
+        public Sector Sector => GameContext.Current.Universe.Map[Location];
 
         /// <summary>
         /// Gets the galactic Quadrant in which this <see cref="UniverseObject"/> resides.
@@ -180,20 +165,14 @@ namespace Supremacy.Universe
         /// <value>
         /// <c>true</c> if this <see cref="UniverseObject"/> can move; otherwise, <c>false</c>.
         /// </value>
-        public virtual bool CanMove
-        {
-            get { return false; }
-        }
+        public virtual bool CanMove => false;
 
         /// <summary>
         /// Gets the type of the UniverseObject.
         /// </summary>
         /// <value>The type of the UniverseObject.</value>
         [Indexable]
-        public virtual UniverseObjectType ObjectType
-        {
-            get { return UniverseObjectType.Unknown; }
-        }
+        public virtual UniverseObjectType ObjectType => UniverseObjectType.Unknown;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="UniverseObject"/> class.
@@ -427,10 +406,7 @@ namespace Supremacy.Universe
             }
         }
 
-        EffectBindingCollection IEffectTargetInternal.EffectBindingsInternal
-        {
-            get { return _effectBindings.Value; }
-        }
+        EffectBindingCollection IEffectTargetInternal.EffectBindingsInternal => _effectBindings.Value;
 
         #endregion
     }

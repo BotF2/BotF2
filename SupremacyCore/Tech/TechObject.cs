@@ -30,10 +30,7 @@ namespace Supremacy.Tech
         /// Gets the type of the UniverseObject.
         /// </summary>
         /// <value>The type of the UniverseObject.</value>
-        public override UniverseObjectType ObjectType
-        {
-            get { return UniverseObjectType.TechObject; }
-        }
+        public override UniverseObjectType ObjectType => UniverseObjectType.TechObject;
 
         /// <summary>
         /// Gets or sets a value indicating whether this <see cref="TechObject"/> will be scrapped.

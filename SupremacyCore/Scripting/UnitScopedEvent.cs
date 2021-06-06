@@ -47,10 +47,7 @@ namespace Supremacy.Scripting
             }
         }
 
-        protected IKeyedCollection<int, UnitTargetHistoryEntry> UnitTargetHistory
-        {
-            get { return _unitTargetHistory; }
-        }
+        protected IKeyedCollection<int, UnitTargetHistoryEntry> UnitTargetHistory => _unitTargetHistory;
 
         internal sealed override void InitializeCore(IDictionary<string, object> options)
         {
@@ -156,30 +153,15 @@ namespace Supremacy.Scripting
                 _turnNumber = turnNumber;
             }
 
-            public TUnit Target
-            {
-                get { return GameContext.Current.Universe.Objects[_targetId] as TUnit; }
-            }
+            public TUnit Target => GameContext.Current.Universe.Objects[_targetId] as TUnit;
 
-            public Civilization Owner
-            {
-                get { return GameContext.Current.Civilizations[_ownerId]; }
-            }
+            public Civilization Owner => GameContext.Current.Civilizations[_ownerId];
 
-            public int TargetID
-            {
-                get { return _targetId; }
-            }
+            public int TargetID => _targetId;
 
-            public int OwnerID
-            {
-                get { return _ownerId; }
-            }
+            public int OwnerID => _ownerId;
 
-            public int TurnNumber
-            {
-                get { return _turnNumber; }
-            }
+            public int TurnNumber => _turnNumber;
         }
 
         #endregion

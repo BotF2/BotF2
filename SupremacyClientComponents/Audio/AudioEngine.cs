@@ -73,20 +73,11 @@ namespace Supremacy.Client.Audio
             }
         }
 
-        public FMOD.System System
-        {
-            get { return _system; }
-        }
-        
-        public IScheduler Scheduler
-        {
-            get { return _scheduler; }
-        }
+        public FMOD.System System => _system;
 
-        public IAudioGrouping Master
-        {
-            get { return _masterChannelGroup; }
-        }
+        public IScheduler Scheduler => _scheduler;
+
+        public IAudioGrouping Master => _masterChannelGroup;
 
         public float Volume
         {
@@ -94,10 +85,7 @@ namespace Supremacy.Client.Audio
             set { _masterChannelGroup.Volume = value; }
         }
 
-        public object Lock
-        {
-            get { return _updateLock; }
-        }
+        public object Lock => _updateLock;
         #endregion
 
         #region Construction & Lifetime

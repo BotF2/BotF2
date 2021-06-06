@@ -216,9 +216,6 @@ namespace Supremacy.Client
             ServerList.Items.Refresh();
         }
 
-        public Selector ServerList
-        {
-            get { return PART_ServerList; }
-        }
+        public Selector ServerList => PART_ServerList;
     }
 }

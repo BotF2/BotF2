@@ -27,28 +27,19 @@ namespace Supremacy.Economy
         /// Gets the Dilithium stockpile.
         /// </summary>
         /// <value>The Dilithium stockpile.</value>
-        public Meter Dilithium
-        {
-            get { return _values[(int)ResourceType.Dilithium]; }
-        }
+        public Meter Dilithium => _values[(int)ResourceType.Dilithium];
 
         /// <summary>
         /// Gets the Deuterium stockpile.
         /// </summary>
         /// <value>The Deuterium stockpile.</value>
-        public Meter Deuterium
-        {
-            get { return _values[(int)ResourceType.Deuterium]; }
-        }
+        public Meter Deuterium => _values[(int)ResourceType.Deuterium];
 
         /// <summary>
         /// Gets the Raw Materials stockpile.
         /// </summary>
         /// <value>The Raw Materials stockpile.</value>
-        public Meter RawMaterials
-        {
-            get { return _values[(int)ResourceType.RawMaterials]; }
-        }
+        public Meter RawMaterials => _values[(int)ResourceType.RawMaterials];
 
         /// <summary>
         /// Gets the stockpile for the specified resource type.

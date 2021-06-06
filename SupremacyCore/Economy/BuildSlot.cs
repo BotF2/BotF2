@@ -54,15 +54,9 @@ namespace Supremacy.Economy
             }
         }
 
-        public bool HasProject
-        {
-            get { return (_project != null); }
-        }
+        public bool HasProject => (_project != null);
 
-        public bool AllShipsToQueue
-        {
-            get { return true; }
-        }
+        public bool AllShipsToQueue => true;
 
         [ContractInvariantMethod, UsedImplicitly]
         private void Invariants()
@@ -89,10 +83,7 @@ namespace Supremacy.Economy
         /// <see cref="BuildSlot"/> is on hold.
         /// </summary>
         /// <value><c>true</c> if project is on hold; otherwise, <c>false</c>.</value>
-        public virtual bool OnHold
-        {
-            get { return HasProject && _project.IsPaused; }
-        }
+        public virtual bool OnHold => HasProject && _project.IsPaused;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="BuildSlot"/> class.

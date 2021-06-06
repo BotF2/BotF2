@@ -87,25 +87,22 @@ namespace Supremacy.Effects
         /// <remarks> 
         ///     There is no guarantee on this value. It can vary between application runs.
         /// </remarks>
-        public int Id { get { return _id; } }
+        public int Id => _id;
 
         /// <summary>
         /// The system (CLR) type that this DynamicObjectType represents 
         /// </summary> 
-        public Type SystemType { get { return _systemType; } }
+        public Type SystemType => _systemType;
 
         /// <summary>
         /// The DynamicObjectType of the base class
         /// </summary>
-        public DynamicObjectType BaseType
-        {
-            get { return _baseDType; }
-        }
+        public DynamicObjectType BaseType => _baseDType;
 
         /// <summary>
         ///     Returns the name of the represented system (CLR) type 
         /// </summary>
-        public string Name { get { return SystemType.Name; } }
+        public string Name => SystemType.Name;
 
         /// <summary>
         ///     Determines whether the specifed object is an instance of the current DynamicObjectType 

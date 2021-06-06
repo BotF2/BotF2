@@ -27,10 +27,7 @@ namespace Supremacy.Effects
             ValueExpression = valueExpression;
         }
 
-        public bool HasDescription
-        {
-            get { return !string.IsNullOrWhiteSpace(DescriptionExpression); }
-        }
+        public bool HasDescription => !string.IsNullOrWhiteSpace(DescriptionExpression);
 
         public string DescriptionExpression
         {
