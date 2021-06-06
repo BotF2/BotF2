@@ -37,15 +37,9 @@ namespace Supremacy.Messaging
         #endregion
 
         #region Public Properties
-        public static IChannel<T> Public
-        {
-            get { return _publicChannel; }
-        }
+        public static IChannel<T> Public => _publicChannel;
 
-        public static Channel<T> Private
-        {
-            get { return _publicChannel; }
-        }
+        public static Channel<T> Private => _publicChannel;
 
         public IChannel<T> this[string key]
         {
@@ -446,10 +440,7 @@ namespace Supremacy.Messaging
                 }
             }
 
-            private object SyncLock
-            {
-                get { return _syncLock; }
-            }
+            private object SyncLock => _syncLock;
 
             private readonly object _syncLock;
             private readonly TimeSpan? _timeout;

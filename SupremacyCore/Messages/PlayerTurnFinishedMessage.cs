@@ -16,9 +16,6 @@ namespace Supremacy.Messages
             _player = player;
         }
 
-        public IPlayer Player
-        {
-            get { return _player; }
-        }
+        public IPlayer Player => _player;
     }
 }

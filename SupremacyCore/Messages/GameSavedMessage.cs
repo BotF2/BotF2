@@ -11,9 +11,6 @@ namespace Supremacy.Messages
             _savedGameHeader = savedGameHeader;
         }
 
-        public SavedGameHeader SavedGameHeader
-        {
-            get { return _savedGameHeader; }
-        }
+        public SavedGameHeader SavedGameHeader => _savedGameHeader;
     }
 }

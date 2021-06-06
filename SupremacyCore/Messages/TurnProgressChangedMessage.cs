@@ -11,9 +11,6 @@ namespace Supremacy.Messages
             _turnPhase = turnPhase;
         }
 
-        public TurnPhase TurnPhase
-        {
-            get { return _turnPhase; }
-        }
+        public TurnPhase TurnPhase => _turnPhase;
     }
 }

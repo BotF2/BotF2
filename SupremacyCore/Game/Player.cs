@@ -170,10 +170,7 @@ namespace Supremacy.Game
         /// <value>
         /// <c>true</c> if the player is human; <c>false</c> if the player is AI-controlled.
         /// </value>
-        public bool IsHumanPlayer
-        {
-            get { return (_playerId >= GameHostID); }
-        }
+        public bool IsHumanPlayer => (_playerId >= GameHostID);
 
         /// <summary>
         /// Gets or sets the selected empire ID.
@@ -217,10 +214,7 @@ namespace Supremacy.Game
         /// <value>
         /// <c>true</c> if this <see cref="Player"/> is the game host; otherwise, <c>false</c>.
         /// </value>
-        public bool IsGameHost
-        {
-            get { return _playerId == GameHostID; }
-        }
+        public bool IsGameHost => _playerId == GameHostID;
 
         /// <summary>
         /// Returns a <see cref="T:System.String"/> that represents the current <see cref="Player"/>.
@@ -298,10 +292,7 @@ namespace Supremacy.Game
 
         #region Implementation of ICivIdentity
 
-        int ICivIdentity.CivID
-        {
-            get { return _empireId; }
-        }
+        int ICivIdentity.CivID => _empireId;
 
         #endregion
     }

@@ -63,23 +63,11 @@ namespace Supremacy.Intelligence
             get { return _sitReps_Temp; }
             set { _sitReps_Temp = value; }
         }
-        public static UniverseObjectList<Colony> NewSpiedColonies
-        {
-            get { return _newSpiedColonies; }
-        }
-        public static Civilization NewSpyCiv
-        {
-            get { return _newSpyCiv; }
-        }
-        public static Civilization NewTargetCiv
-        {
-            get { return _newTargetCiv; }
-        }
+        public static UniverseObjectList<Colony> NewSpiedColonies => _newSpiedColonies;
+        public static Civilization NewSpyCiv => _newSpyCiv;
+        public static Civilization NewTargetCiv => _newTargetCiv;
 
-        public static CivilizationManager LocalCivManager
-        {
-            get { return _localCivManager; }
-        }
+        public static CivilizationManager LocalCivManager => _localCivManager;
         public static int DefenseAccumulatedInteInt
         {
             get
@@ -96,59 +84,20 @@ namespace Supremacy.Intelligence
                 return _attackAccumulatedIntelInt;
             }
         }
-        public static bool ShowNetwork_0
-        {
-            get { return _showNetwork_0; }
-        }
-        public static bool ShowNetwork_1
-        {
-            get { return _showNetwork_1; }
-        }
-        public static bool ShowNetwork_2
-        {
-            get { return _showNetwork_2; }
-        }
-        public static bool ShowNetwork_3
-        {
-            get { return _showNetwork_3; }
-        }
-        public static bool ShowNetwork_4
-        {
-            get { return _showNetwork_4; }
-        }
-        public static bool ShowNetwork_5
-        {
-            get { return _showNetwork_5; }
-        }
-        public static bool ShowNetwork_6
-        {
-            get { return _showNetwork_6; }
-        }
+        public static bool ShowNetwork_0 => _showNetwork_0;
+        public static bool ShowNetwork_1 => _showNetwork_1;
+        public static bool ShowNetwork_2 => _showNetwork_2;
+        public static bool ShowNetwork_3 => _showNetwork_3;
+        public static bool ShowNetwork_4 => _showNetwork_4;
+        public static bool ShowNetwork_5 => _showNetwork_5;
+        public static bool ShowNetwork_6 => _showNetwork_6;
 
-        public static List<Civilization> SpyingCiv_0_List
-        {
-            get { return _spyingCiv_0_List; }
-        }
-        public static List<Civilization> SpyingCiv_1_List
-        {
-            get { return _spyingCiv_1_List; }
-        }
-        public static List<Civilization> SpyingCiv_2_List
-        {
-            get { return _spyingCiv_2_List; }
-        }
-        public static List<Civilization> SpyingCiv_3_List
-        {
-            get { return _spyingCiv_3_List; }
-        }
-        public static List<Civilization> SpyingCiv_4_List
-        {
-            get { return _spyingCiv_4_List; }
-        }
-        public static List<Civilization> SpyingCiv_5_List
-        {
-            get { return _spyingCiv_5_List; }
-        }
+        public static List<Civilization> SpyingCiv_0_List => _spyingCiv_0_List;
+        public static List<Civilization> SpyingCiv_1_List => _spyingCiv_1_List;
+        public static List<Civilization> SpyingCiv_2_List => _spyingCiv_2_List;
+        public static List<Civilization> SpyingCiv_3_List => _spyingCiv_3_List;
+        public static List<Civilization> SpyingCiv_4_List => _spyingCiv_4_List;
+        public static List<Civilization> SpyingCiv_5_List => _spyingCiv_5_List;
 
         /// <summary>
         /// Using the civ manager as a param from AssetsScreen. Hope this is the local machine local player

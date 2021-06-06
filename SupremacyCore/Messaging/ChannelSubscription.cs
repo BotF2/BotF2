@@ -17,10 +17,7 @@ namespace Supremacy.Messaging
         }
 
         #region Overrides
-        public override IObserver<T> Subscriber
-        {
-            get { return _subscriber; }
-        }
+        public override IObserver<T> Subscriber => _subscriber;
 
         protected override void Dispose(bool disposing)
         {

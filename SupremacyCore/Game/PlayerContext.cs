@@ -33,10 +33,7 @@ namespace Supremacy.Game
         #region Properties
         public static PlayerContext Current { get; set; }
 
-        public IIndexedCollection<Player> Players
-        {
-            get { return _players; }
-        }
+        public IIndexedCollection<Player> Players => _players;
         #endregion
 
         #region Methods

@@ -39,25 +39,13 @@ namespace Supremacy.Game
             _data = GetClaim(ownerId, location, weight);
         }
 
-        public int OwnerID
-        {
-            get { return ExtractOwnerID(_data); }
-        }
+        public int OwnerID => ExtractOwnerID(_data);
 
-        public Civilization Owner
-        {
-            get { return ExtractOwner(_data); }
-        }
+        public Civilization Owner => ExtractOwner(_data);
 
-        public MapLocation Location
-        {
-            get { return ExtractLocation(_data); }
-        }
+        public MapLocation Location => ExtractLocation(_data);
 
-        public int Weight
-        {
-            get { return ExtractWeight(_data); }
-        }
+        public int Weight => ExtractWeight(_data);
 
         #region Helper Methods
 

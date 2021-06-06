@@ -15,10 +15,7 @@ namespace Supremacy.Messaging
         #region Properties
         public abstract IObserver<T> Subscriber { get; }
 
-        public ChannelThreadOption ThreadOption
-        {
-            get { return _threadOption; }
-        }
+        public ChannelThreadOption ThreadOption => _threadOption;
         #endregion
 
         #region IDisposable Members

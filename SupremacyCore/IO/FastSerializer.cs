@@ -142,10 +142,7 @@ namespace Supremacy.IO.Serialization
         /// It is important to use the same list on both client and server ends to ensure
         /// that the same surrogated-types are supported.
         /// </summary>
-        public static List<IFastSerializationTypeSurrogate> TypeSurrogates
-        {
-            get { return s_typeSurrogates; }
-        }
+        public static List<IFastSerializationTypeSurrogate> TypeSurrogates => s_typeSurrogates;
         #endregion
 
         #endregion Static
@@ -3096,10 +3093,7 @@ namespace Supremacy.IO.Serialization
             #endregion
 
             #region Properties and Indexers
-            public Type WrappedType
-            {
-                get { return _wrappedType; }
-            }
+            public Type WrappedType => _wrappedType;
             #endregion
 
             #region Methods
@@ -3200,10 +3194,7 @@ namespace Supremacy.IO.Serialization
                 get { return _stringList[index]; }
             }
 
-            public int Count
-            {
-                get { return _stringListIndex; }
-            }
+            public int Count => _stringListIndex;
             #endregion Properties
 
             #region Methods
@@ -3330,10 +3321,7 @@ namespace Supremacy.IO.Serialization
         /// Warning: Retrieving the Position in certain stream types can be expensive,
         /// e.g. a FileStream, so use sparingly unless known to be a MemoryStream.
         /// </summary>
-        public int BytesRemaining
-        {
-            get { return _endPosition - (int)BaseStream.Position; }
-        }
+        public int BytesRemaining => _endPosition - (int)BaseStream.Position;
         #endregion Properties
 
         #region Methods

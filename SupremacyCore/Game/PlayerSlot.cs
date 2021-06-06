@@ -71,10 +71,7 @@ namespace Supremacy.Game
             }
         }
 
-        public bool IsFrozen
-        {
-            get { return false; }
-        }
+        public bool IsFrozen => false;
 
         public bool IsVacant
         {
