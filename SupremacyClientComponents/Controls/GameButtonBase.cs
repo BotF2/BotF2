@@ -352,7 +352,7 @@ namespace Supremacy.Client.Controls
             if (e.Key == Key.Space)
             {
                 if (((Keyboard.Modifiers & (ModifierKeys.Control | ModifierKeys.Alt)) != ModifierKeys.Alt) &&
-                    !IsMouseCaptured && 
+                    !IsMouseCaptured &&
                     (e.OriginalSource == this))
                 {
                     _flags.SetFlag(Flags.IsSpaceKeyDown, true);
@@ -381,9 +381,9 @@ namespace Supremacy.Client.Controls
                     if ((IsKeyboardFocused) && !IsInMainFocusScope(this))
                     {
                         IGamePopupAnchor popupAnchor = PopupControlService.GetParentPopupAnchor(this);
-                        if ((popupAnchor == null) || 
+                        if ((popupAnchor == null) ||
                             (popupAnchor == this) ||
-                            !popupAnchor.IsPopupOpen || 
+                            !popupAnchor.IsPopupOpen ||
                             !StaysOpenOnClick)
                         {
                             GameControl.BlurFocus(this, false);
@@ -459,7 +459,7 @@ namespace Supremacy.Client.Controls
                 if ((IsKeyboardFocused) && (!IsInMainFocusScope(this)))
                 {
                     IGamePopupAnchor popupAnchor = PopupControlService.GetParentPopupAnchor(this);
-                    if ((popupAnchor == null) || 
+                    if ((popupAnchor == null) ||
                         (popupAnchor == this) ||
                         !popupAnchor.IsPopupOpen ||
                         !StaysOpenOnClick)

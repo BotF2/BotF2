@@ -285,7 +285,7 @@ namespace Supremacy.Universe
         /// <c>true</c> if <paramref name="sector"/> is equal to this <see cref="Sector"/>;
         /// otherwise, <c>false</c>.
         /// </returns>
-        
+
         public virtual bool Equals(Sector sector)
         {
             if (sector is null)
@@ -349,7 +349,7 @@ namespace Supremacy.Universe
             return Equals(obj as Sector);
         }
 
-    
+
         /// <summary>
         /// Serves as a hash function for a particular type.
         /// </summary>

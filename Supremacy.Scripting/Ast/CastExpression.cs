@@ -120,9 +120,9 @@ namespace Supremacy.Scripting.Ast
         public override void Dump(SourceWriter sw, int indentChange)
         {
             sw.Write("(");
-            
+
             DestinationType.Dump(sw);
-            
+
             sw.Write(") ");
 
             if (!Child.IsPrimaryExpression)

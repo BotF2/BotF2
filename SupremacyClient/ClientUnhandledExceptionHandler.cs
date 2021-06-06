@@ -94,14 +94,14 @@ namespace Supremacy.Client
                 GameLog.Core.General.ErrorFormat(_text, ""); // "" for avoiding message "argument missing" for log4net
                 Console.WriteLine(_text);
 
-                try 
+                try
                 {
-                    System.Diagnostics.Process.Start(".\\Resources\\reportError.bat");  
+                    System.Diagnostics.Process.Start(".\\Resources\\reportError.bat");
                     // batch opens a web site with email function, 
                     // but just if batch file is activated = rem is removed before web adress
                     // opens Win10 mail function which might be connected to Google Mail account or any other
                 }
-                catch (Exception ex) { throw ex;}
+                catch (Exception ex) { throw ex; }
 
                 // old code
                 //try

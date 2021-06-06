@@ -44,7 +44,7 @@ namespace Supremacy.Client.Controls
         {
             RoutedUICommand routedCommand = command as RoutedUICommand;
             GameCommandUIProvider provider = uiProvider as GameCommandUIProvider;
-            
+
             if ((uiProvider.Label == null) && (routedCommand != null) && (provider != null))
                 provider.Label = routedCommand.Text;
 

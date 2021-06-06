@@ -24,10 +24,10 @@ namespace Supremacy.Scripting.Ast
         private readonly Type _queriedType;
         private MethodBase _bestCandidate;
         private Type _delegateType;
-        
+
 
         public MethodGroupExpression(MemberInfo[] members, Type type, SourceSpan span, bool inacessibleCandidatesOnly)
-            : this(members, type,  span)
+            : this(members, type, span)
         {
             _hasInaccessibleCandidatesOnly = inacessibleCandidatesOnly;
         }
@@ -102,7 +102,7 @@ namespace Supremacy.Scripting.Ast
         private static int BetterExpressionConversion(ParseContext ec, Argument a, Type p, Type q)
         {
             Type argumentType = a.Value.Type;
-            
+
             if (a.Value is LambdaExpression)
             {
                 // Uwrap delegate from Expression<T>

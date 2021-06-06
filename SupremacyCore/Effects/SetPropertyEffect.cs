@@ -31,10 +31,10 @@ namespace Supremacy.Effects
             ScriptParameters mergedParameters = SystemScriptParameters.Merge(EffectGroup.CustomScriptParameters);
 
             return new ScriptExpression
-                   {
-                       ScriptCode = _valueExpression,
-                       Parameters = mergedParameters
-                   };
+            {
+                ScriptCode = _valueExpression,
+                Parameters = mergedParameters
+            };
         }
 
         public DynamicProperty TargetProperty => _targetProperty;

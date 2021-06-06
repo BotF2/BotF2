@@ -89,7 +89,7 @@ namespace Supremacy.Game
 
         public static void SetFleetRoute(Fleet fleet, TravelRoute route)
         {
-            if (fleet==null)
+            if (fleet == null)
                 throw new ArgumentNullException("fleet");
             if (route == null)
                 route = TravelRoute.Empty;

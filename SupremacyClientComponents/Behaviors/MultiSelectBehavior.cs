@@ -58,7 +58,7 @@ namespace Supremacy.Client.Behaviors
                 return;
 
             Point endPoint = e.GetPosition(_selector);
-            
+
             if (!_selectionAdorner.EndPoint.HasValue)
             {
                 Vector dragDistance = endPoint - _selectionAdorner.StartPoint;
@@ -69,7 +69,7 @@ namespace Supremacy.Client.Behaviors
                 }
                 _selector.CaptureMouse();
             }
-            
+
             _selectionAdorner.EndPoint = endPoint;
 
             List<KeyValuePair<object, UIElement>> itemsInSelectionRectangle = FindItemsInSelectionRectangle().ToList();
@@ -96,28 +96,28 @@ namespace Supremacy.Client.Behaviors
         private IEnumerable<KeyValuePair<object, UIElement>> FindItemsInSelectionRectangle()
         {
             Rect rect = new Rect
-                       {
-                           X = Math.Min(
+            {
+                X = Math.Min(
                                _selectionAdorner.StartPoint.X,
                                _selectionAdorner.EndPoint.HasValue
                                    ? _selectionAdorner.EndPoint.Value.X
                                    : 0),
 
-                           Y = Math.Min(
+                Y = Math.Min(
                                _selectionAdorner.StartPoint.Y,
                                _selectionAdorner.EndPoint.HasValue ? _selectionAdorner.EndPoint.Value.Y : 0),
 
-                           Width = Math.Abs(
+                Width = Math.Abs(
                                _selectionAdorner.EndPoint.HasValue
                                    ? _selectionAdorner.EndPoint.Value.X - _selectionAdorner.StartPoint.X
                                    : 0),
 
-                           Height = Math.Abs(
+                Height = Math.Abs(
                                _selectionAdorner.EndPoint.HasValue
                                    ? _selectionAdorner.EndPoint.Value.Y - _selectionAdorner.StartPoint.Y
                                    : 0)
 
-                       };
+            };
 
             return from object item in _selector.Items
                    let container = item as UIElement ??
@@ -134,7 +134,10 @@ namespace Supremacy.Client.Behaviors
             return from object item in _selector.Items
                    select item as UIElement ??
                           _selector.ItemContainerGenerator.ContainerFromItem(item) as UIElement
-                   into container where container != null where Selector.GetIsSelected(container) select container;
+                   into container
+                   where container != null
+                   where Selector.GetIsSelected(container)
+                   select container;
         }
 
         private void OnSelectorPreviewMouseDown(object sender, MouseButtonEventArgs e)
@@ -148,10 +151,10 @@ namespace Supremacy.Client.Behaviors
                 return;
 
             IEnumerable<HitTestResult> hitTestResults = from object item in _selector.Items
-                                 select item as UIElement ?? _selector.ItemContainerGenerator.ContainerFromItem(item) as UIElement
+                                                        select item as UIElement ?? _selector.ItemContainerGenerator.ContainerFromItem(item) as UIElement
                                  into container
-                                 where container != null
-                                 select VisualTreeHelper.HitTest(container, e.GetPosition(container));
+                                                        where container != null
+                                                        select VisualTreeHelper.HitTest(container, e.GetPosition(container));
 
             if (hitTestResults.Any(hitTestResult => (hitTestResult != null) && (hitTestResult.VisualHit != null)))
                 return;
@@ -195,10 +198,10 @@ namespace Supremacy.Client.Behaviors
         private void ClearSelection()
         {
             IEnumerable<DependencyObject> containers = from object item in _selector.Items
-                             let container = item as UIElement ??
-                                             _selector.ItemContainerGenerator.ContainerFromItem(item)
-                             where container != null
-                             select container;
+                                                       let container = item as UIElement ??
+                                                                       _selector.ItemContainerGenerator.ContainerFromItem(item)
+                                                       where container != null
+                                                       select container;
 
             foreach (DependencyObject container in containers)
                 Selector.SetIsSelected(container, false);

@@ -46,8 +46,8 @@ namespace Supremacy.Universe
                 Random r = new Random();
                 int rInt = r.Next(-2, 2);
 
-                int xLoc = (int)(((x + 1.0) * width / 2.0)+rInt);
-                int yLoc = (int)(((y + 1.0) * height / 2.0)+rInt);
+                int xLoc = (int)(((x + 1.0) * width / 2.0) + rInt);
+                int yLoc = (int)(((y + 1.0) * height / 2.0) + rInt);
 
                 if (xLoc < 0) xLoc = 0;
                 if (xLoc > width) xLoc = width;
@@ -80,8 +80,8 @@ namespace Supremacy.Universe
 
                 positions.Add(borgNode);
 
-                if ( newNode.Location != dominionLocation && newNode.Location != borgLocation)
-                positions.Add(newNode);
+                if (newNode.Location != dominionLocation && newNode.Location != borgLocation)
+                    positions.Add(newNode);
 
                 attempts = 0;
             }

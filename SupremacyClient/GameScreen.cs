@@ -163,7 +163,7 @@ namespace Supremacy.Client
 
                 target = WpfHelper.GetParent(target as FrameworkElement);
             }
-            
+
             (descendant as FrameworkElement)?.BringIntoView();
         }
 

@@ -19,7 +19,7 @@ namespace Supremacy.Orbitals
         [NonCombatant] Colony = 0,
         [NonCombatant] Construction,
         [NonCombatant] Medical,
-        [NonCombatant] Transport,       
+        [NonCombatant] Transport,
         [NonCombatant] Spy,
         [NonCombatant] Diplomatic,
         Science,
@@ -36,8 +36,8 @@ namespace Supremacy.Orbitals
     /// indicates that a the ship type is non-combatant.
     /// </summary>
     [AttributeUsage(
-        AttributeTargets.Enum | AttributeTargets.Field, 
-        AllowMultiple = false, 
+        AttributeTargets.Enum | AttributeTargets.Field,
+        AllowMultiple = false,
         Inherited = false)]
     public sealed class NonCombatantAttribute : Attribute
     {

@@ -111,7 +111,7 @@ namespace Supremacy.Diplomacy
             get { return _firstDiplomaticAction; }
             set { _firstDiplomaticAction = value; }
         }
-        
+
         public int ContactDuration
         {
             get

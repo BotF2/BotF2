@@ -15,7 +15,7 @@ namespace Supremacy.Messaging.Internal
         [DebuggerStepThrough]
         public static void ArgumentNotNull<T>(T value, string parameterName)
             where T
-		        : class
+                : class
         {
             if (value == null)
             {

@@ -38,7 +38,7 @@ namespace Supremacy.Universe
         /// Initializes a new instance of the <see cref="TravelRoute"/> class.
         /// </summary>
         /// <param name="waypoints">The waypoints.</param>
-        public TravelRoute(IEnumerable<MapLocation> waypoints) 
+        public TravelRoute(IEnumerable<MapLocation> waypoints)
         {
             _path = new List<MapLocation>();
             _waypoints = new List<MapLocation>(waypoints);
@@ -54,7 +54,7 @@ namespace Supremacy.Universe
             _waypoints = new List<MapLocation>();
             foreach (Sector sector in waypoints)
                 _waypoints.Add(sector.Location);
-			_waypoints.TrimExcess();
+            _waypoints.TrimExcess();
         }
 
         /// <summary>
@@ -143,16 +143,16 @@ namespace Supremacy.Universe
         }
         #endregion
 
-    	public void SerializeOwnedData(SerializationWriter writer, object context)
-    	{
-    		writer.Write(_path);
-			writer.Write(_waypoints);
-    	}
+        public void SerializeOwnedData(SerializationWriter writer, object context)
+        {
+            writer.Write(_path);
+            writer.Write(_waypoints);
+        }
 
-    	public void DeserializeOwnedData(SerializationReader reader, object context)
-    	{
-    		_path = reader.ReadList<MapLocation>();
-			_waypoints = reader.ReadList<MapLocation>();
-    	}
+        public void DeserializeOwnedData(SerializationReader reader, object context)
+        {
+            _path = reader.ReadList<MapLocation>();
+            _waypoints = reader.ReadList<MapLocation>();
+        }
     }
 }

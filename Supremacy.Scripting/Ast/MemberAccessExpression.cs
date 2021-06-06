@@ -295,7 +295,7 @@ namespace Supremacy.Scripting.Ast
                 }
 
                 Left = leftResolved;
-                
+
                 memberLookup = OnErrorMemberLookupFailed(
                     ec,
                     null,
@@ -507,7 +507,7 @@ namespace Supremacy.Scripting.Ast
                     resolvedAsType.Span,
                     704,
                     Severity.Error);
-                
+
                 return null;
             }
 

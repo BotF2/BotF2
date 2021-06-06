@@ -62,7 +62,7 @@ namespace Supremacy.Effects
             lock (EffectSystem.SyncRoot)
             {
                 TargetEffectBinding targetEffectBinding;
-                
+
                 if (_targetEffectBindings.TryGetValue(effectTarget, out targetEffectBinding))
                 {
                     throw new InvalidOperationException(

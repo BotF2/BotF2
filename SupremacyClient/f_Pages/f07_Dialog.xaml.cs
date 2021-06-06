@@ -153,13 +153,13 @@ namespace Supremacy.Client
             foreach (Entities.Civilization civ in GameContext.Current.Civilizations)
             {
                 //if (DiplomacyHelper.IsMember(civ, playerCiv))
-                    techTree.Merge(GameContext.Current.TechTrees[civ]);
+                techTree.Merge(GameContext.Current.TechTrees[civ]);
             }
 
             IOrderedEnumerable<IGrouping<EncyclopediaCategory, IEncyclopediaEntry>> groups = (
                              from civ in GameContext.Current.Civilizations
-                             //let diplomacyStatus = DiplomacyHelper.GetForeignPowerStatus(playerCiv, civ)
-                             //where (diplomacyStatus != ForeignPowerStatus.NoContact) || (civ.CivID == playerCivId)
+                                 //let diplomacyStatus = DiplomacyHelper.GetForeignPowerStatus(playerCiv, civ)
+                                 //where (diplomacyStatus != ForeignPowerStatus.NoContact) || (civ.CivID == playerCivId)
                              let raceEntry = civ.Race as IEncyclopediaEntry
                              where raceEntry != null
                              select raceEntry
@@ -271,7 +271,7 @@ namespace Supremacy.Client
                 return;
 
             System.Collections.Generic.IEnumerable<ICollectionView> groupViews = (from groupItem in _encyclopediaEntryListView.Items.OfType<TreeViewItem>()
-                              select groupItem.ItemsSource).OfType<ICollectionView>();
+                                                                                  select groupItem.ItemsSource).OfType<ICollectionView>();
 
             foreach (ICollectionView groupView in groupViews)
                 groupView.Refresh();

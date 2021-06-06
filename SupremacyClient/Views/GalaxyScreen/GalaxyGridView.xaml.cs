@@ -54,7 +54,7 @@ namespace Supremacy.Client.Views
             GalaxyGrid.SectorDoubleClicked += OnSectorDoubleClicked;
 
             PropertyChangedEventManager.AddListener(_appContext, this, "LocalPlayerEmpire");
-            
+
             _revealMapCommand = new DelegateCommand<object>(ExecuteRevealMapCommand);
             _cheatMenuCommand = new DelegateCommand<object>(ExecuteCheatMenuCommand);
             _f12_ScreenCommand = new DelegateCommand<object>(Execute_f12_ScreenCommand);
@@ -129,7 +129,7 @@ namespace Supremacy.Client.Views
                 {
                     MapLocation loc = new MapLocation(x, y);
                     mapData.SetExplored(loc, true);
-                    mapData.SetScanStrength(loc, 99); 
+                    mapData.SetScanStrength(loc, 99);
                 }
             }
 
@@ -151,8 +151,8 @@ namespace Supremacy.Client.Views
             // to do: just check whether IsHumanPlayer more than one (whenever SP is started by MP-Screen)
             //if (PlayerContext.Current.Players.Count)
             //    if (PlayerContext.Current.Players.Contains)
-                    if (!_appContext.IsSinglePlayerGame)
-                    {
+            if (!_appContext.IsSinglePlayerGame)
+            {
                 MessageDialog.Show("Cheat Menu is not available in MultiPlayer", "INFO", MessageDialogButtons.Ok);
                 return;
             }
@@ -228,7 +228,7 @@ namespace Supremacy.Client.Views
         public bool ReceiveWeakEvent(Type managerType, object sender, EventArgs e)
         {
             IAppContext appContext = sender as IAppContext;
-            
+
             if (appContext == null)
                 return false;
 

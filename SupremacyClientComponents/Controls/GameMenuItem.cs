@@ -91,7 +91,7 @@ namespace Supremacy.Client.Controls
             if ((IsSelected) && (!IsHighlighted))
                 IsHighlighted = true;
         }
-        
+
         private UIElement GetTargetElement()
         {
             UIElement element = null;
@@ -210,11 +210,11 @@ namespace Supremacy.Client.Controls
 
                 // Bind to IsPopupOpen
                 Binding binding = new Binding
-                              {
-                                  Mode = BindingMode.TwoWay,
-                                  Source = newContent,
-                                  Path = new PropertyPath(PopupControlService.IsPopupOpenProperty)
-                              };
+                {
+                    Mode = BindingMode.TwoWay,
+                    Source = newContent,
+                    Path = new PropertyPath(PopupControlService.IsPopupOpenProperty)
+                };
 
                 SetBinding(PopupControlService.IsPopupOpenProperty, binding);
 
@@ -222,19 +222,19 @@ namespace Supremacy.Client.Controls
                 {
                     // Bind to IsEnabled
                     binding = new Binding
-                              {
-                                  Source = newContent,
-                                  Path = new PropertyPath("IsEnabled")
-                              };
+                    {
+                        Source = newContent,
+                        Path = new PropertyPath("IsEnabled")
+                    };
 
                     SetBinding(IsContentEnabledProperty, binding);
 
                     // Bind to Visibility
                     binding = new Binding
-                              {
-                                  Source = newContent,
-                                  Path = new PropertyPath("Visibility")
-                              };
+                    {
+                        Source = newContent,
+                        Path = new PropertyPath("Visibility")
+                    };
 
                     SetBinding(VisibilityProperty, binding);
                 }
@@ -248,26 +248,26 @@ namespace Supremacy.Client.Controls
                 {
                     // Configure bindings
                     binding = new Binding
-                              {
-                                  Source = newContent,
-                                  Path = new PropertyPath(GameControlService.ImageSourceLargeProperty)
-                              };
+                    {
+                        Source = newContent,
+                        Path = new PropertyPath(GameControlService.ImageSourceLargeProperty)
+                    };
 
                     SetBinding(GameControlService.ImageSourceLargeProperty, binding);
 
                     binding = new Binding
-                              {
-                                  Source = newContent,
-                                  Path = new PropertyPath(GameControlService.ImageSourceSmallProperty)
-                              };
+                    {
+                        Source = newContent,
+                        Path = new PropertyPath(GameControlService.ImageSourceSmallProperty)
+                    };
 
                     SetBinding(GameControlService.ImageSourceSmallProperty, binding);
 
                     binding = new Binding
-                              {
-                                  Source = newContent,
-                                  Path = new PropertyPath(GameControlService.LabelProperty)
-                              };
+                    {
+                        Source = newContent,
+                        Path = new PropertyPath(GameControlService.LabelProperty)
+                    };
 
                     SetBinding(GameControlService.LabelProperty, binding);
                 }
@@ -277,7 +277,7 @@ namespace Supremacy.Client.Controls
                 GameControlService.SetIsExternalContentSupported(this, false);
             }
         }
-        
+
         protected override void OnGotKeyboardFocus(KeyboardFocusChangedEventArgs e)
         {
             if (e == null)

@@ -41,7 +41,7 @@ namespace Supremacy.Client.Views
         private readonly ReadOnlyObservableCollection<DiplomacyMessageElement> _requestElementsView;
         private readonly ReadOnlyObservableCollection<DiplomacyMessageElement> _statementElementsView;
         private readonly ReadOnlyObservableCollection<DiplomacyMessageElement> _treatyElementsView;
-       // private readonly ReadOnlyObservableCollection<DiplomacyMessageElement> _acceptRejectElementsView; // no view of this???
+        // private readonly ReadOnlyObservableCollection<DiplomacyMessageElement> _acceptRejectElementsView; // no view of this???
         private readonly ObservableCollection<DiplomacyMessageAvailableElement> _availableElements;
         private readonly ReadOnlyObservableCollection<DiplomacyMessageAvailableElement> _availableElementsView;
 
@@ -95,19 +95,19 @@ namespace Supremacy.Client.Views
                                        };
 
             _treatyLeadInTextScript = new ScriptExpression(returnObservableResult: false)
-                                      {
-                                          Parameters = _leadInParameters
-                                      };
+            {
+                Parameters = _leadInParameters
+            };
 
             _offerLeadInTextScript = new ScriptExpression(returnObservableResult: false)
-                                     {
-                                         Parameters = _leadInParameters
-                                     };
+            {
+                Parameters = _leadInParameters
+            };
 
             _requestLeadInTextScript = new ScriptExpression(returnObservableResult: false)
-                                       {
-                                           Parameters = _leadInParameters
-                                       };
+            {
+                Parameters = _leadInParameters
+            };
 
             CollectionViewSource.GetDefaultView(_availableElementsView).GroupDescriptions.Add(new PropertyGroupDescription("ActionDescription"));
         }
@@ -141,7 +141,7 @@ namespace Supremacy.Client.Views
                 if (_acceptedRejected.ContainsKey(selectedID))
                     return _acceptedRejected[selectedID];
                 //}
-                return "...";                           
+                return "...";
             }
             set
             {
@@ -150,7 +150,7 @@ namespace Supremacy.Client.Views
                     int turn = GameContext.Current.TurnNumber;
                     if (_turnOfResponse != turn)
                     {
-                        _acceptedRejected.Clear(); 
+                        _acceptedRejected.Clear();
                         _turnOfResponse = turn;
                     }
                     int selectedID = DiplomacyScreenViewModel.DesignInstance.SelectedForeignPower.Owner.CivID;
@@ -212,9 +212,9 @@ namespace Supremacy.Client.Views
         }
 
         internal IDiplomaticExchange CreateMessage()
-            {
-                return IsStatement ? (IDiplomaticExchange)CreateStatement() : CreateProposal();
-            }
+        {
+            return IsStatement ? (IDiplomaticExchange)CreateStatement() : CreateProposal();
+        }
 
         public void Send()
         {
@@ -249,9 +249,9 @@ namespace Supremacy.Client.Views
         {
             if (_sendOrder != null)
                 ServiceLocator.Current.GetInstance<IPlayerOrderService>().RemoveOrder(_sendOrder);
-            
+
             _sendOrder = null;
-            
+
             IsEditing = true;
             PopulateAvailableElements();
         }
@@ -509,7 +509,7 @@ namespace Supremacy.Client.Views
                 _treatyLeadInTextScript.ScriptCode = QuoteString(LookupDiplomacyText(treatyLeadInId, _tone, _sender) ?? string.Empty);
                 TreatyLeadInText = _treatyLeadInTextScript.Evaluate<string>(_leadInRuntimeParameters);
             }
-            
+
             if (offerLeadInId == DiplomacyStringID.None)
             {
                 OfferLeadInText = null;
@@ -553,7 +553,7 @@ namespace Supremacy.Client.Views
                     sb.Append('\\');
                 sb.Append(c);
             }
-            
+
             sb.Append('"');
 
             return sb.ToString();
@@ -592,12 +592,12 @@ namespace Supremacy.Client.Views
                 throw new ArgumentNullException("availableElement");
 
             DiplomacyMessageElement element = new DiplomacyMessageElement(_sender, _recipient, availableElement.ActionCategory, availableElement.ElementType, _removeElementCommand)
-                          {
-                              ParametersCallback = availableElement.ParametersCallback,
-                              HasFixedParameter = availableElement.FixedParameter != null,
-                              SelectedParameter = availableElement.FixedParameter,
-                              IsEditing = IsEditing
-                          };
+            {
+                ParametersCallback = availableElement.ParametersCallback,
+                HasFixedParameter = availableElement.FixedParameter != null,
+                SelectedParameter = availableElement.FixedParameter,
+                IsEditing = IsEditing
+            };
 
             element.UpdateDescription();
 
@@ -628,14 +628,14 @@ namespace Supremacy.Client.Views
                 case DiplomacyMessageElementActionCategory.Propose:
                     _treatyElements.Add(element);
                     if (element != null && element.Description != null && element.SelectedParameter != null && element.ElementType != null)
-                    GameLog.Client.Diplomacy.DebugFormat("### Proposal element added to _treatyElemetns, {0}, {1}, {2}",
-                        element.Description.ToString(),
-                        element.SelectedParameter.ToString(),
-                        element.ElementType.ToString());
+                        GameLog.Client.Diplomacy.DebugFormat("### Proposal element added to _treatyElemetns, {0}, {1}, {2}",
+                            element.Description.ToString(),
+                            element.SelectedParameter.ToString(),
+                            element.ElementType.ToString());
 #pragma warning disable IDE0059 // Unnecessary assignment of a value
                     st = ResourceManager.GetString("PROPOSE_DIALOG_HINT"); // need to update the embassy screen with a new window to get the send button activated without delay.
 #pragma warning restore IDE0059 // Unnecessary assignment of a value
-                               //var result_Propose = MessageDialog.Show(st, MessageDialogButtons.Ok);
+                    //var result_Propose = MessageDialog.Show(st, MessageDialogButtons.Ok);
                     GameLog.Client.Diplomacy.DebugFormat("PROPOSE_DIALOG_HINT is outcommented");
                     break;
                 case DiplomacyMessageElementActionCategory.Commend:
@@ -647,7 +647,7 @@ namespace Supremacy.Client.Views
                     //{
                     //    IntelHelper.ExecuteStealCredits(Sender, Recipient, "dip_Terrorists");
                     //}
-                        break;
+                    break;
                 case DiplomacyMessageElementActionCategory.WarDeclaration:
                     st = ResourceManager.GetString("DECLARE_WAR_DIALOG_HINT"); // need to update the embassy screen with a new window to get the send button activated without delay.
                     _ = MessageDialog.Show(st, MessageDialogButtons.Ok);
@@ -699,7 +699,7 @@ namespace Supremacy.Client.Views
             foreach (DiplomacyMessageElement element in _elements)
             {
                 ClauseType clauseType = DiplomacyScreenViewModel.ElementTypeToClauseType(element.ElementType);
-               // GameLog.Client.Diplomacy.DebugFormat("((()))ElementTypeToClause out Clause ={0}", DiplomacyScreenViewModel.ElementTypeToClauseType(element.ElementType).ToString());
+                // GameLog.Client.Diplomacy.DebugFormat("((()))ElementTypeToClause out Clause ={0}", DiplomacyScreenViewModel.ElementTypeToClauseType(element.ElementType).ToString());
                 if (clauseType == ClauseType.NoClause)
                     continue;
 
@@ -725,7 +725,7 @@ namespace Supremacy.Client.Views
                 }
                 else
                 {
-                    clauses.Add(new Clause(clauseType));                    
+                    clauses.Add(new Clause(clauseType));
                 }
             }
 
@@ -749,8 +749,8 @@ namespace Supremacy.Client.Views
             if (statementType == StatementType.NoStatement)
                 return null;
             //if(statementType != StatementType.NoStatement)
-                //GameLog.Core.Diplomacy.DebugFormat("((()))Create Statement {0} *vs* Recipient = {1}: Tone = {2}  StatementType = {3} ",
-                // _sender.ShortName, _recipient.ShortName, _tone, statementType.ToString());
+            //GameLog.Core.Diplomacy.DebugFormat("((()))Create Statement {0} *vs* Recipient = {1}: Tone = {2}  StatementType = {3} ",
+            // _sender.ShortName, _recipient.ShortName, _tone, statementType.ToString());
 
             return new Statement(_sender, _recipient, statementType, _tone);
         }
@@ -1039,7 +1039,7 @@ namespace Supremacy.Client.Views
             Diplomat diplomat = Diplomat.Get(playerEmpire);
 
             Civilization senderCiv = DiplomacyHelper.DiploScreenSelectedForeignPower;
-            ForeignPower selectedForeignPower = diplomat.GetForeignPower(senderCiv);  
+            ForeignPower selectedForeignPower = diplomat.GetForeignPower(senderCiv);
 
             bool localPlayerIsHosting = DiplomacyScreenViewModel.DesignInstance.localIsHost;
             string Accepted = "ACCEPTED";
@@ -1119,7 +1119,7 @@ namespace Supremacy.Client.Views
                         leadInId = DiplomacyStringID.AcceptDemandLeadIn;
                     else if (!response.Proposal.HasTreaty())
                         leadInId = DiplomacyStringID.AcceptExchangeLeadIn;
-                    else 
+                    else
                         leadInId = DiplomacyStringID.AcceptProposalLeadIn;
                     break;
                 case ResponseType.Reject:
@@ -1140,9 +1140,9 @@ namespace Supremacy.Client.Views
             }
 
             DiplomacyMessageViewModel message = new DiplomacyMessageViewModel(response.Sender, response.Recipient)
-                          {
-                              Tone = response.Proposal.Tone,
-                          };
+            {
+                Tone = response.Proposal.Tone,
+            };
 
             message._treatyLeadInTextScript.ScriptCode = QuoteString(LookupDiplomacyText(leadInId, message._tone, message._sender) ?? string.Empty);
             message.TreatyLeadInText = message._treatyLeadInTextScript.Evaluate<string>(message._leadInRuntimeParameters);
@@ -1157,10 +1157,10 @@ namespace Supremacy.Client.Views
                 throw new ArgumentNullException("proposal");
 
             DiplomacyStringID leadInId;
-             
+
             switch ((object)proposal.Clauses[0].ClauseType) // not all cases used below, ToDo
             {
-                case ClauseType.TreatyOpenBorders: 
+                case ClauseType.TreatyOpenBorders:
                     leadInId = DiplomacyStringID.OpenBordersClause;
                     break;
                 case ClauseType.TreatyAffiliation:
@@ -1213,7 +1213,7 @@ namespace Supremacy.Client.Views
 
         public void OnPropertyChanged(bool placeHolder, string propertyName)
         {
-            if(placeHolder)
+            if (placeHolder)
                 _propertyChanged.Raise(this, propertyName);
         }
 

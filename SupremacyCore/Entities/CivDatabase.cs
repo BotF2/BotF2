@@ -188,7 +188,7 @@ namespace Supremacy.Entities
 
             if (_reverseLookup == null)
                 _reverseLookup = new Dictionary<string, Civilization>(StringComparer.OrdinalIgnoreCase);
-            
+
             lock (_reverseLookup)
             {
                 foreach (Civilization civ in Items)

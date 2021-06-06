@@ -391,7 +391,7 @@ namespace Supremacy.Scripting.Ast
                             TypeManager.GetFullNameSignature(nonMethods[0])),
                         Severity.Error,
                         span);
-                    
+
                     return null;
                 }
 

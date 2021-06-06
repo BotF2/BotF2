@@ -261,23 +261,23 @@ namespace Supremacy.Client
             _ = SavedGameManager.SaveGameDeleteManualSaved();
         }
 
-        private void ExecuteOptionsCommand(object obj) { _optionsDialog.ShowDialog();}
-        private void ExecuteTracesCommand(object obj) { _tracesDialog.ShowDialog();}
+        private void ExecuteOptionsCommand(object obj) { _optionsDialog.ShowDialog(); }
+        private void ExecuteTracesCommand(object obj) { _tracesDialog.ShowDialog(); }
 
         private void Execute_f06_Command(object obj) { _f06_Dialog.ShowDialog(); }
         private void Execute_f07_Command(object obj) { _f07_Dialog.ShowDialog(); }
-        private void Execute_f08_Command(object obj) { _f08_Dialog.ShowDialog();}
-        private void Execute_f09_Command(object obj) { _f09_Dialog.ShowDialog();}
-        private void Execute_f10_Command(object obj) { _f10_Dialog.ShowDialog();}
-        private void Execute_f11_Command(object obj) { _f11_Dialog.ShowDialog();}
-        private void Execute_f12_Command(object obj) { _f12_Dialog.ShowDialog();}
+        private void Execute_f08_Command(object obj) { _f08_Dialog.ShowDialog(); }
+        private void Execute_f09_Command(object obj) { _f09_Dialog.ShowDialog(); }
+        private void Execute_f10_Command(object obj) { _f10_Dialog.ShowDialog(); }
+        private void Execute_f11_Command(object obj) { _f11_Dialog.ShowDialog(); }
+        private void Execute_f12_Command(object obj) { _f12_Dialog.ShowDialog(); }
 
-        private void Execute_s0_Command(object obj) { ExecuteSP_DirectlyGameCommand(0);}
-        private void Execute_s1_Command(object obj) { ExecuteSP_DirectlyGameCommand(1);}
-        private void Execute_s2_Command(object obj) { ExecuteSP_DirectlyGameCommand(2);}
-        private void Execute_s3_Command(object obj) { ExecuteSP_DirectlyGameCommand(3);}
-        private void Execute_s4_Command(object obj) { ExecuteSP_DirectlyGameCommand(4);}
-        private void Execute_s5_Command(object obj) { ExecuteSP_DirectlyGameCommand(5);}
+        private void Execute_s0_Command(object obj) { ExecuteSP_DirectlyGameCommand(0); }
+        private void Execute_s1_Command(object obj) { ExecuteSP_DirectlyGameCommand(1); }
+        private void Execute_s2_Command(object obj) { ExecuteSP_DirectlyGameCommand(2); }
+        private void Execute_s3_Command(object obj) { ExecuteSP_DirectlyGameCommand(3); }
+        private void Execute_s4_Command(object obj) { ExecuteSP_DirectlyGameCommand(4); }
+        private void Execute_s5_Command(object obj) { ExecuteSP_DirectlyGameCommand(5); }
         private void Execute_s6_Command(object obj) { ExecuteSP_DirectlyGameCommand(6); }
 
         private void ExecuteFakeCommand(object obj) { _fakeDialog.ShowDialog(); }
@@ -299,7 +299,7 @@ namespace Supremacy.Client
                 {
                     Process.Start(processStartInfo);
                 }
-                catch 
+                catch
                 {
                     MessageBox.Show("Could not load Log.txt");
                 }
@@ -308,18 +308,18 @@ namespace Supremacy.Client
 
         private void ExecuteErrorTxtCommand(object obj)
         {
-            string errorFile = Path.Combine(ResourceManager.GetResourcePath(""),"Error.txt");
+            string errorFile = Path.Combine(ResourceManager.GetResourcePath(""), "Error.txt");
 
             if (!string.IsNullOrEmpty(errorFile) && File.Exists(errorFile))
             {
                 double fileSize = new FileInfo(errorFile).Length;
-                if (fileSize == 0) { MessageBox.Show("Error.txt is empty - nothing to load"); return;}
-                if (fileSize < 0) { MessageBox.Show("Could not load Error.txt");return;}
+                if (fileSize == 0) { MessageBox.Show("Error.txt is empty - nothing to load"); return; }
+                if (fileSize < 0) { MessageBox.Show("Could not load Error.txt"); return; }
 
                 ProcessStartInfo processStartInfo = new ProcessStartInfo { UseShellExecute = true, FileName = errorFile };
 
-                try { _ = Process.Start(processStartInfo);}
-                catch { MessageBox.Show("Could not load Error.txt");}
+                try { _ = Process.Start(processStartInfo); }
+                catch { MessageBox.Show("Could not load Error.txt"); }
             }
         }
 
@@ -379,12 +379,12 @@ namespace Supremacy.Client
             //_array = new Dictionary<int, string, string, string>();
 
             foreach (string item in coll)
-                {
-                    Console.WriteLine(item);
-                    if (item.Contains("True")) { _trues.Add(item); }// += item + newline;}
-                    if (item.Contains("False")) { _false.Add(item); }
-                    if (!item.Contains("True") && !item.Contains("False")) { _rest.Add(item); }
-                }
+            {
+                Console.WriteLine(item);
+                if (item.Contains("True")) { _trues.Add(item); }// += item + newline;}
+                if (item.Contains("False")) { _false.Add(item); }
+                if (!item.Contains("True") && !item.Contains("False")) { _rest.Add(item); }
+            }
 
             //_resultText = "";
             //int columnsize = 40;
@@ -411,7 +411,7 @@ namespace Supremacy.Client
 
             //_resultText += truesText + falseText + restText + newline;
             //}
-            _resultText = "CONTENT OF SupremacyClient..Settings.xaml "  + DateTime.Now + newline;
+            _resultText = "CONTENT OF SupremacyClient..Settings.xaml " + DateTime.Now + newline;
 
             _resultText += newline + "VALUES" + newline + "======" + newline;
             foreach (string item in _rest) { _resultText += item + newline; }
@@ -424,29 +424,29 @@ namespace Supremacy.Client
 
             //_resultText += newline + "REST" + newline + "====" + newline;
             //foreach (var item in _rest) { _resultText += item + newline; }
-            
+
             _resultText += newline + newline;
 
-            StreamWriter streamWriter = new StreamWriter(file+".txt");
-                streamWriter.Write(_resultText);
-                streamWriter.Close();
+            StreamWriter streamWriter = new StreamWriter(file + ".txt");
+            streamWriter.Write(_resultText);
+            streamWriter.Close();
 
-            string _file = Path.Combine(ResourceManager.GetResourcePath(""), file+ ".txt");
-                if (!string.IsNullOrEmpty(_file) && File.Exists(_file))
-                {
-                    ProcessStartInfo processStartInfo = new ProcessStartInfo { UseShellExecute = true, FileName = _file };
+            string _file = Path.Combine(ResourceManager.GetResourcePath(""), file + ".txt");
+            if (!string.IsNullOrEmpty(_file) && File.Exists(_file))
+            {
+                ProcessStartInfo processStartInfo = new ProcessStartInfo { UseShellExecute = true, FileName = _file };
 
-                    try { _ = Process.Start(processStartInfo); }
-                    catch { MessageBox.Show("Could not load Text-File about Settings"); }
-                }
+                try { _ = Process.Start(processStartInfo); }
+                catch { MessageBox.Show("Could not load Text-File about Settings"); }
+            }
 
 
-                //var result = MessageDialog.Show(_resultText, MessageDialogButtons.YesNo);
-                //MessageBox.Show(_resultText);
-                //MessageBox.Show(_trueText);
-                //MessageBox.Show(_falseText);
-                //MessageBox.Show(_restText);
-            
+            //var result = MessageDialog.Show(_resultText, MessageDialogButtons.YesNo);
+            //MessageBox.Show(_resultText);
+            //MessageBox.Show(_trueText);
+            //MessageBox.Show(_falseText);
+            //MessageBox.Show(_restText);
+
         }
         #endregion
 
@@ -578,7 +578,7 @@ namespace Supremacy.Client
             _container.RegisterType<IColonyScreenView, ColonyScreenView>(new ExternallyControlledLifetimeManager());
             _container.RegisterType<INewDiplomacyScreenView, NewDiplomacyScreen>(new ExternallyControlledLifetimeManager());
             _container.RegisterType<IScienceScreenView, ResearchScreen>(new ExternallyControlledLifetimeManager());
-           // _container.RegisterType<IIntelScreenView, IntelScreen>(new ExternallyControlledLifetimeManager());
+            // _container.RegisterType<IIntelScreenView, IntelScreen>(new ExternallyControlledLifetimeManager());
             _container.RegisterType<IAssetsScreenView, AssetsScreen>(new ExternallyControlledLifetimeManager());
             _container.RegisterType<IEncyclopediaScreenView, EncyclopediaScreen>(new ExternallyControlledLifetimeManager());
             _container.RegisterType<ILobbyScreenView, MultiplayerLobby>(new ContainerControlledLifetimeManager());
@@ -637,7 +637,7 @@ namespace Supremacy.Client
             //_regionViewRegistry.RegisterViewWithRegion(AssetsScreenRegions.ShipStats, typeof(ShipInfoPanel));
 
             _regionViewRegistry.RegisterViewWithRegion(CommonGameScreenRegions.PlanetsView, typeof(StarSystemPanel));
-           // _regionViewRegistry.RegisterViewWithRegion(CommonGameScreenRegions.SpyListView, typeof(SpyListView));
+            // _regionViewRegistry.RegisterViewWithRegion(CommonGameScreenRegions.SpyListView, typeof(SpyListView));
 
             _regionViewRegistry.RegisterViewWithRegion(GalaxyScreenRegions.EmpireOverview, typeof(EmpireInfoView));
             _regionViewRegistry.RegisterViewWithRegion(GalaxyScreenRegions.EmpireResources, typeof(EmpireResourcesView));
@@ -752,14 +752,15 @@ namespace Supremacy.Client
             introTextCase = localEmpire + startTechLvl;  // startTechLvl = -1 shown
             if (startTechLvl == -1)
                 introTextCase = _resourceManager.GetString("GAME_START_INFO_LOADING_GAME");
-                    //"...history from the saved game continues ... let's see what the future will bring...";
+            //"...history from the saved game continues ... let's see what the future will bring...";
 
             try
             {
                 if (_appContext.RemotePlayers != null)
                     introTextCase = _resourceManager.GetString("GAME_START_INFO_MP_JOINER_LOADING_GAME");
                 //"...Competition to Supremacy of Galaxy begins... join and let your empire raise ...";
-            } catch { }
+            }
+            catch { }
 
             if (_appContext.IsGameHost == true)
                 introTextCase = _resourceManager.GetString("GAME_START_INFO_MP_HOSTER_LOADING_GAME");
@@ -775,7 +776,8 @@ namespace Supremacy.Client
             try
             {
                 introText += _resourceManager.GetString(introTextCase);
-            } catch { introText = "";  }
+            }
+            catch { introText = ""; }
 
             statusWindow.Content = introText + statusWindow.Content + Environment.NewLine;
 
@@ -787,7 +789,7 @@ namespace Supremacy.Client
             //if (_appContext.IsSinglePlayerGame == false)   // see below, depending on Length out of en.txt or later on OPTION
             {
                 string _hints = _resourceManager.GetString("LOADING_GAME_HINTS");
-                
+
                 if (_hints.Length > 0)   // later: make additional OPTION to show hints or not
                 {
                     _ = MessageDialog.Show(statusWindow.Content = _resourceManager.GetString("LOADING_GAME_HINTS"),
@@ -880,7 +882,7 @@ namespace Supremacy.Client
                     MessageBox.Show("Empire is set to NOT-Playable - falling back to Default - Please restart, Select Single Player Menu and set Empire Playable to YES");
                     LoadDefaultTheme();
                 }
-                    
+
             }
         }
 
@@ -1143,7 +1145,7 @@ namespace Supremacy.Client
 
                 runDelegate.BeginInvoke(
                     _gameController,
-                    delegate(IAsyncResult result)
+                    delegate (IAsyncResult result)
                     {
                         try
                         {

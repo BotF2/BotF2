@@ -39,8 +39,8 @@ namespace Supremacy.Universe
     {
         #region TotalEnergy Dynamic Property
         public static readonly DynamicProperty<int> TotalEnergyProperty = DynamicProperty<int>.Register(
-            "TotalEnergy", 
-            typeof(Colony), 
+            "TotalEnergy",
+            typeof(Colony),
             new DynamicPropertyMetadata<int>(OnTotalEnergyChanged));
 
         private static void OnTotalEnergyChanged(DynamicObject d, DynamicPropertyChangedEventArgs<int> e)
@@ -123,7 +123,7 @@ namespace Supremacy.Universe
 
         private UniverseObjectList<OrbitalBattery> _orbitalBatteries;
         private ObservableCollection<BuildQueueItem> _buildQueue;
-       // private ObservableCollection<BuildQueueItem> _buildSlotQueue;
+        // private ObservableCollection<BuildQueueItem> _buildSlotQueue;
         private BuildSlot _buildSlot;
         private Meter _creditsFromTrade;
         private int _tradeRoutesPossible = -1;
@@ -161,7 +161,7 @@ namespace Supremacy.Universe
                 throw new ArgumentNullException("system");
             if (inhabitants == null)
                 throw new ArgumentNullException("inhabitants");
-            
+
             _population.Maximum = system.GetMaxPopulation(inhabitants);
 
             _inhabitantId = inhabitants.Key;
@@ -275,12 +275,12 @@ namespace Supremacy.Universe
         public ColonyFacilitiesAccessor IntelligenceActiveFacilities => _activeFacilitiesProvider;
         public int AvailableLabor
         {
-            get 
+            get
             {
                 int _available = GetAvailableLabor() / 10 * -1;
                 if (_available < 1)
                     _available = 0;
-                return _available; 
+                return _available;
             }
         }
         public OrbitalBatteryDesign OrbitalBatteryDesign
@@ -340,10 +340,10 @@ namespace Supremacy.Universe
                 decimal baseGrowthRate = (decimal)System.GetGrowthRate(Inhabitants) * (((decimal)-0.8 + (decimal)_health.PercentFilled) * 5) * 100;
                 //baseGrowthRate += 0.01m;
                 ValueModifier<decimal> modifier = new ValueModifier<decimal>
-                               {
-                                   IsOffsetAppliedFirst = false,
-                                   HasCompoundMultiplier = false
-                               };
+                {
+                    IsOffsetAppliedFirst = false,
+                    HasCompoundMultiplier = false
+                };
                 foreach (Building building in Buildings.Where(b => b.IsActive))
                 {
                     foreach (Bonus bonus in building.BuildingDesign.Bonuses)
@@ -362,7 +362,7 @@ namespace Supremacy.Universe
                 string _text = System.Name + ": baseGrowthRate " + baseGrowthRate.ToString() + ", modifier: " + modifier.Multiplier.ToString();
                 Console.WriteLine(_text);
                 GameLog.Core.CivsAndRacesDetails.DebugFormat(_text);
-                
+
                 return Convert.ToSingle(0.01m * modifier.Apply(baseGrowthRate));
             }
         }
@@ -421,7 +421,7 @@ namespace Supremacy.Universe
         /// </summary>
         /// <value>The race.</value>
         public string InhabitantsID
-        {           
+        {
             set { _inhabitantId = value; }
         }
 
@@ -457,24 +457,24 @@ namespace Supremacy.Universe
 
         public string GetShipyardSlotStatus(ShipyardBuildSlot buildSlot)
         {
-                if (buildSlot == null)
-                    return "not available";
+            if (buildSlot == null)
+                return "not available";
 
             Shipyard shipyard = Shipyard;
-                if (shipyard == null || !Equals(shipyard, buildSlot.Shipyard))
-                    return "error";
+            if (shipyard == null || !Equals(shipyard, buildSlot.Shipyard))
+                return "error";
 
-                if (!buildSlot.IsActive)
-                    return "in-active";
+            if (!buildSlot.IsActive)
+                return "in-active";
 
-                if (shipyard.ShipyardDesign.BuildSlotEnergyCost > NetEnergy)
-                    return "out of energy";
+            if (shipyard.ShipyardDesign.BuildSlotEnergyCost > NetEnergy)
+                return "out of energy";
 
             //string status = "hello";
             string status = buildSlot.Project.BuildDesign.ToString();
-                //return base.Name ?? ((System != null) ? System.Name : null); 
+            //return base.Name ?? ((System != null) ? System.Name : null); 
 
-                return status;
+            return status;
         }
 
         /// <summary>
@@ -495,10 +495,11 @@ namespace Supremacy.Universe
         /// <value>The morale.</value>
         public Meter Morale
         {
-            get {
-                if (this.Owner.ToString() == "BORG") { _morale = new Meter(103,0,200);} // Borg have no emotions - everytime 1 - 0 - 1
+            get
+            {
+                if (this.Owner.ToString() == "BORG") { _morale = new Meter(103, 0, 200); } // Borg have no emotions - everytime 1 - 0 - 1
 
-                return _morale; 
+                return _morale;
             }
         }
 
@@ -582,7 +583,7 @@ namespace Supremacy.Universe
                         else if (bonus.BonusType == BonusType.PercentCredits)
                         {
                             modifier.Efficiency += (bonus.Amount / 100f);
-                            GameLog.Core.Credits.DebugFormat("{0}: Bonus Credits Percent = {1}", building.Design, bonus.Amount/100f);
+                            GameLog.Core.Credits.DebugFormat("{0}: Bonus Credits Percent = {1}", building.Design, bonus.Amount / 100f);
                         }
                     }
                 }
@@ -610,7 +611,7 @@ namespace Supremacy.Universe
                 //    , _taxCredits
                 //);
 
-                return _taxCredits; 
+                return _taxCredits;
             }
         }
 
@@ -822,14 +823,14 @@ namespace Supremacy.Universe
 
                 if (queueItem.Count > 1)
                 {
-                    slot.Project = queueItem.Project.CloneEquivalent(); 
+                    slot.Project = queueItem.Project.CloneEquivalent();
                     queueItem.DecrementCount();
                 }
                 else
                 {
                     slot.Project = queueItem.Project;
                     BuildQueue.Remove(queueItem);
-                }                
+                }
             }
         }
         public void ProcessBuildSlotQueue()
@@ -868,7 +869,7 @@ namespace Supremacy.Universe
 
         public int TradeRoutesPossible
         {
-            get 
+            get
             {
 
                 _tradeRoutesPossible = _tradeRoutes.Count - TradeRoutesAssigned;
@@ -876,13 +877,13 @@ namespace Supremacy.Universe
                 if (_tradeRoutesPossible < 1)
                     _tradeRoutesPossible = 0;
 
-                return _tradeRoutesPossible; 
+                return _tradeRoutesPossible;
             }
         }
 
         public int TradeRoutesAssigned
         {
-            get 
+            get
             {
                 int tradeRouteAssigned = 0;
                 foreach (TradeRoute tr in TradeRoutes)
@@ -1190,8 +1191,8 @@ namespace Supremacy.Universe
             //int _diff;
             //while (GetAvailableLabor() > 0)
             laborAvailable = GetAvailableLabor() / 10
-                    + GetActiveFacilities(ProductionCategory.Research) 
-                    + GetActiveFacilities(ProductionCategory.Intelligence); 
+                    + GetActiveFacilities(ProductionCategory.Research)
+                    + GetActiveFacilities(ProductionCategory.Intelligence);
 
             //while (laborAvailable > 0)
             //{ laborAvailable += GetAvailableLabor; }
@@ -1199,7 +1200,7 @@ namespace Supremacy.Universe
 
 
             if (category == ProductionCategory.Food)
-                {
+            {
                 int _foodDeficit = Math.Min(FoodReserves.CurrentValue - Population.CurrentValue + baseOutput, 0);
 
                 GameLog.Core.ProductionDetails.DebugFormat("Turn {0}: Food {1} of {2}, unused {3}, laborAv= {6}, Pop= {4} for Colony {5}"
@@ -1213,9 +1214,9 @@ namespace Supremacy.Universe
                     , laborAvailable
                     , _foodDeficit
                     );
-                
+
                 _optimizedPF = (_population / unitOutput);
-                int _diff =  _optimizedPF - _foodActive;
+                int _diff = _optimizedPF - _foodActive;
 
                 //colony.FoodReserves.AdjustCurrent(GetProductionOutput(ProductionCategory.Food));
                 //int _foodDeficit = Math.Min(FoodReserves.CurrentValue - Population.CurrentValue + baseOutput, 0);
@@ -1224,7 +1225,7 @@ namespace Supremacy.Universe
 
                 if (Name == "Borg" && category == ProductionCategory.Food)
                     GameLog.Core.ProductionDetails.DebugFormat("Borg and Food"); // just for Breakpoint
-                
+
                 while (laborAvailable > 0 && _foodPF_unused > 0)
                 {
                     if (_foodDeficit > 0)
@@ -1241,12 +1242,12 @@ namespace Supremacy.Universe
 
                 }
                 if (baseOutput < 10) { baseOutput = 10; }
-                }
+            }
 
 
 
             switch (category)
-            { 
+            {
                 case ProductionCategory.Intelligence:
                     if (baseOutput < 10)
                         baseOutput = 10;
@@ -1306,7 +1307,7 @@ namespace Supremacy.Universe
             {
                 baseValue = GetBaseResourceProduction(ResourceType.Deuterium);
             }
-            return (int)((baseValue + (baseValue * modifier.Efficiency) + modifier.Bonus+2)); // UPDATE X 28 july 2019 reduced a bit deuterium
+            return (int)((baseValue + (baseValue * modifier.Efficiency) + modifier.Bonus + 2)); // UPDATE X 28 july 2019 reduced a bit deuterium
         }
 
         /// <summary>
@@ -1466,7 +1467,7 @@ namespace Supremacy.Universe
                 _facilityTypes[(int)category] = TechObjectDesign.InvalidDesignID;
                 return;
             }
-            
+
             if (design.Category != category)
                 throw new ArgumentException("Production category mismatch");
 
@@ -1748,7 +1749,7 @@ namespace Supremacy.Universe
             IValueProvider<int> dummy3 = _activeIndustryFacilities;
             IValueProvider<int> dummy4 = _activeEnergyFacilities;
             IValueProvider<int> dummy5 = _activeResearchFacilities;
-            IValueProvider<int> dummy6 =  _activeIntelligenceFacilities;
+            IValueProvider<int> dummy6 = _activeIntelligenceFacilities;
 
             IValueProvider<int> dummy11 = _totalFoodFacilities;
             IValueProvider<int> dummy12 = _totalIndustryFacilities;
@@ -1855,7 +1856,7 @@ namespace Supremacy.Universe
             Next:
                 continue;
             }
-            
+
             return shutDown;
         }
 
@@ -1914,13 +1915,17 @@ namespace Supremacy.Universe
 
         public int EnergyCostEachOrbitalBattery
         {
-            get { try 
-                { 
+            get
+            {
+                try
+                {
                     if (OrbitalBatteryDesign != null)
-                    return OrbitalBatteryDesign.UnitEnergyCost;
+                        return OrbitalBatteryDesign.UnitEnergyCost;
 
                     return 0;
-                } catch { return 0; } }
+                }
+                catch { return 0; }
+            }
         }
         /// <summary>
         /// //////////
@@ -2059,10 +2064,10 @@ namespace Supremacy.Universe
             for (int i = 0; i < count; i++)
             {
                 OrbitalBattery battery = new OrbitalBattery(OrbitalBatteryDesign)
-                              {
-                                  OwnerID = OwnerID,
-                                  Location = Location
-                              };
+                {
+                    OwnerID = OwnerID,
+                    Location = Location
+                };
 
                 GameContext.Current.Universe.Objects.Add(battery);
 
@@ -2118,7 +2123,7 @@ namespace Supremacy.Universe
                 return false;
 
             buildSlot.IsActive = true;
-            
+
             OnPropertyChanged("NetEnergy");
 
             return true;
@@ -2302,8 +2307,8 @@ namespace Supremacy.Universe
         {
             return BuildSlots.Any(t => t.Project != null && t.Project.BuildDesign == design) ||
                    BuildQueue.Any(item => item.Project.BuildDesign == design);
-                   //||
-                   //BuildSlotQueue.Any(item => item.Project.BuildDesign == design);
+            //||
+            //BuildSlotQueue.Any(item => item.Project.BuildDesign == design);
         }
 
         /// <summary>

@@ -58,7 +58,7 @@ namespace Supremacy.Client.Views
             ScriptParameters scriptParameters = new ScriptParameters(
                 new ScriptParameter("$sender", typeof(Civilization)),
                 new ScriptParameter("$recipient", typeof(Civilization)));
-                //new ScriptParameter("$target", typeof(Civilization)));
+            //new ScriptParameter("$target", typeof(Civilization)));
 
             if (parameterType != null) // for target of war pact, who do both sender and recipient declare war on
             {
@@ -544,7 +544,7 @@ namespace Supremacy.Client.Views
 
                 case DiplomacyMessageElementType.WarDeclaration:
                     return DiplomacyStringID.WarDeclaration;
-                    
+
                 case DiplomacyMessageElementType.TreatyWarPact:
                     return DiplomacyStringID.WarPactClause;
 
@@ -556,7 +556,7 @@ namespace Supremacy.Client.Views
 
                 case DiplomacyMessageElementType.TreatyOpenBordersClause:
                     return DiplomacyStringID.OpenBordersClause;
-                    
+
                 case DiplomacyMessageElementType.TreatyTradePactClause:
                     break;
 

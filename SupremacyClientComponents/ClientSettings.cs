@@ -114,7 +114,7 @@ namespace Supremacy.Client
                 }
 
                 foreach (AttachableMemberIdentifier key in _attachedValues.Keys)
-                { 
+                {
                     AttachablePropertyServices.SetProperty(this, key, _attachedValues[key]);
                     GameLog.Client.GeneralDetails.DebugFormat("RELOAD: ADDED entry: {0} = {1}",
                         key, _attachedValues[key]);
@@ -166,7 +166,7 @@ namespace Supremacy.Client
 
                 ClientSettings settings;
 
-               
+
                 if (File.Exists(filePath))
                 {
                     using (FileStream fileReader = File.OpenRead(filePath))
@@ -182,7 +182,7 @@ namespace Supremacy.Client
                                        new ClientSettings();
 
                             GameLog.Client.General.InfoFormat("LOADCORE {0}: Content: " + Environment.NewLine + Environment.NewLine + "{1}" + Environment.NewLine, filePath, File.ReadAllText(filePath));
-                        
+
                             if (settings == null)
                                 settings = new ClientSettings();
 
@@ -193,7 +193,7 @@ namespace Supremacy.Client
 
                             //_ = System.Windows.MessageBox.Show("please stop the game and delete manually: " + Environment.NewLine + filePath, "PROBLEM",MessageBoxButton.OK);
 
-                            string _text = "LOADCORE "+ filePath+": Problem reading the file >> will be deleted" + Environment.NewLine + e;
+                            string _text = "LOADCORE " + filePath + ": Problem reading the file >> will be deleted" + Environment.NewLine + e;
                             GameLog.Client.General.InfoFormat(_text);
                             Console.WriteLine(_text);
                             File.Delete(filePath);
@@ -1170,7 +1170,7 @@ namespace Supremacy.Client
 
         public event EventHandler<PropertyChangedRoutedEventArgs<bool>> TracesAudioChanged;
 
-        private void OnTracesAudioChanged(bool oldValue, bool newValue) => 
+        private void OnTracesAudioChanged(bool oldValue, bool newValue) =>
             TracesAudioChanged?.Invoke(this, new PropertyChangedRoutedEventArgs<bool>(oldValue, newValue));
 
         public static readonly DependencyProperty TracesAudioProperty = DependencyProperty.Register(
@@ -1228,7 +1228,7 @@ namespace Supremacy.Client
             }
         }
         #endregion TracesAudioDetails Property
- 
+
         #region TracesCivsAndRaces Property
         public static readonly DependencyProperty TracesCivsAndRacesProperty = DependencyProperty.Register(
             "CivsAndRaces",
@@ -1339,7 +1339,7 @@ namespace Supremacy.Client
             }
         }
         #endregion TracesColoniesDetails Property
-        
+
         #region TracesCombat Property
         public static readonly DependencyProperty TracesCombatProperty = DependencyProperty.Register(
             "Combat",
@@ -1447,7 +1447,7 @@ namespace Supremacy.Client
             }
         }
         #endregion TracesCreditsDetails Property
-        
+
         #region TracesDeuterium Property
 
         public static readonly DependencyProperty TracesDeuteriumProperty = DependencyProperty.Register(
@@ -1718,7 +1718,7 @@ namespace Supremacy.Client
             }
         }
         #endregion TracesEnergyDetails Property
-        
+
         #region TracesEvents Property
         public static readonly DependencyProperty TracesEventsProperty = DependencyProperty.Register(
             "Events",
@@ -1827,7 +1827,7 @@ namespace Supremacy.Client
             }
         }
         #endregion TracesGalaxyGeneratorDetails Property
-        
+
         #region TracesGameData Property
         public static readonly DependencyProperty TracesGameDataProperty = DependencyProperty.Register(
             "GameData",
@@ -1899,7 +1899,7 @@ namespace Supremacy.Client
             }
         }
         #endregion TracesGameDataDetails Property
-        
+
         #region TracesGameInitData Property
         public static readonly DependencyProperty TracesGameInitDataProperty = DependencyProperty.Register(
             "GameInitData",
@@ -2064,7 +2064,7 @@ namespace Supremacy.Client
             }
         }
         #endregion TracesIntelDetails Property
-        
+
 
         #region TracesMapData Property
         public static readonly DependencyProperty TracesMapDataProperty = DependencyProperty.Register(
@@ -2119,7 +2119,7 @@ namespace Supremacy.Client
             }
         }
         #endregion TracesMapDataDetails Property
-        
+
 
         #region TracesMultiPlay Property
         public static readonly DependencyProperty TracesMultiPlayProperty = DependencyProperty.Register(
@@ -2174,7 +2174,7 @@ namespace Supremacy.Client
             }
         }
         #endregion TracesMultiPlayDetails Property
-        
+
 
         #region TracesProduction Property
         public static readonly DependencyProperty TracesProductionProperty = DependencyProperty.Register(
@@ -2229,7 +2229,7 @@ namespace Supremacy.Client
             }
         }
         #endregion TracesProductionDetails Property
-        
+
 
 
         #region TracesSitReps Property
@@ -2295,7 +2295,7 @@ namespace Supremacy.Client
             }
         }
         #endregion TracesSitRepsDetails Property
-       
+
 
         #region TracesReportErrorsToEmail Property
         public static readonly DependencyProperty ReportErrorsToEmailProperty = DependencyProperty.Register(
@@ -2641,7 +2641,7 @@ namespace Supremacy.Client
             }
         }
         #endregion TracesStructuresDetails Property
-       
+
         #region TracesSystemAssault Property
         public static readonly DependencyProperty TracesSystemAssaultProperty = DependencyProperty.Register(
             "SystemAssault",
@@ -2934,7 +2934,7 @@ namespace Supremacy.Client
                 SetValue(TracesXML2CSVOutputProperty, value);
                 //GameLog.Client.General.InfoFormat("TracesXML2CSVOutput = {0}", value);
                 if (value == true)
-                { 
+                {
                     GameLog.SetRepositoryToDebug("XML2CSVOutput");
                 }
                 else

@@ -75,7 +75,7 @@ namespace Supremacy.Scripting.Ast
             _inTransit = true;
 
             Expression e = DoSimpleNameResolve(ec);
-            
+
             _inTransit = false;
 
             if (e == null)

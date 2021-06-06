@@ -489,10 +489,10 @@ namespace Supremacy.Client.Controls
                     else
                     {
                         InfoCardTimer = new DispatcherTimer(DispatcherPriority.Normal)
-                                             {
-                                                 Interval = TimeSpan.FromMilliseconds(InitialShowDelay),
-                                                 Tag = true
-                                             };
+                        {
+                            Interval = TimeSpan.FromMilliseconds(InitialShowDelay),
+                            Tag = true
+                        };
                         InfoCardTimer.Tick += OnRaiseInfoCardOpeningEvent;
                         InfoCardTimer.Start();
                     }
@@ -700,7 +700,7 @@ namespace Supremacy.Client.Controls
 
         internal void ProcessPreviewKeyDownForInfoCard(KeyEventArgs e)
         {
-            
+
         }
 
         internal void ProcessPreviewMouseMoveForInfoCard(MouseEventArgs e)
@@ -770,9 +770,9 @@ namespace Supremacy.Client.Controls
                         _currentInfoCard.Close();
                         _quickShow = true;
                         InfoCardTimer = new DispatcherTimer(DispatcherPriority.Normal)
-                                             {
-                                                 Interval = TimeSpan.FromMilliseconds(BetweenShowDelay)
-                                             };
+                        {
+                            Interval = TimeSpan.FromMilliseconds(BetweenShowDelay)
+                        };
                         InfoCardTimer.Tick += OnBetweenShowDelay;
                         InfoCardTimer.Start();
                     }
@@ -882,7 +882,7 @@ namespace Supremacy.Client.Controls
                             }
                             return;
                         }
-                        
+
                         _currentInfoCard.Open();
                     }
                 }

@@ -27,7 +27,7 @@ namespace Supremacy.WCF
 
                 if (_playerIdLookup.TryGetValue(playerId, out playerInfo))
                     return playerInfo;
-                
+
                 return null;
             }
         }
@@ -70,10 +70,10 @@ namespace Supremacy.WCF
             lock (SyncRoot)
             {
                 ServerPlayerInfo item = this[index];
-                
+
                 _sessionIdLookup.Remove(item.Session.SessionId);
                 _playerIdLookup.Remove(item.Player.PlayerID);
-                
+
                 base.RemoveItem(index);
             }
         }
@@ -84,7 +84,7 @@ namespace Supremacy.WCF
             {
                 _sessionIdLookup.Clear();
                 _playerIdLookup.Clear();
-                
+
                 base.ClearItems();
             }
         }

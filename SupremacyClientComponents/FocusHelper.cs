@@ -65,7 +65,7 @@ namespace Supremacy.Client
                     return false;
 
                 uint foregroundProcessId;
-                
+
                 NativeMethods.GetWindowThreadProcessId(foregroundWindow, out foregroundProcessId);
 
                 return NativeMethods.GetCurrentProcessId() == foregroundProcessId;

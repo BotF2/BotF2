@@ -58,7 +58,7 @@ namespace Supremacy.Client.Data
 
                 if (converter == null)
                     return DependencyProperty.UnsetValue;
-                
+
                 if (converter == DefaultValueConverter.ValueConverterNotNeeded)
                     return value;
 
@@ -318,7 +318,7 @@ namespace Supremacy.Client.Data
                 TypeConverter typeConverter = null;
 
                 System.Xaml.XamlType knownType = XamlReader.GetWpfSchemaContext().GetXamlType(type);
-                
+
                 if (knownType != null && knownType.TypeConverter != null)
                     typeConverter = knownType.TypeConverter.ConverterInstance;
 

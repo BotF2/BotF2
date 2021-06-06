@@ -126,7 +126,7 @@ namespace Supremacy.Scripting.Ast
         }
 
         public TypeArguments Clone()
-		{
+        {
             return this == Empty ? (this) : new TypeArguments(_arguments.ToArray());
         }
 

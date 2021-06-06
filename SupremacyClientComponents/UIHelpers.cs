@@ -750,7 +750,7 @@ namespace Supremacy.Client
 
             while ((currentElement != null) && (currentElement != rootElement))
             {
-                DependencyObject sibling = FindPreviousSibling(currentElement) ;
+                DependencyObject sibling = FindPreviousSibling(currentElement);
 
                 while (sibling != null)
                 {
@@ -791,13 +791,13 @@ namespace Supremacy.Client
 
             DependencyObject previous = null;
 
-            foreach (DependencyObject child in GetVisualChildren(parent)) 
+            foreach (DependencyObject child in GetVisualChildren(parent))
             {
                 if (child == startElement)
                     break;
                 previous = child;
             }
-            
+
             return previous;
         }
 

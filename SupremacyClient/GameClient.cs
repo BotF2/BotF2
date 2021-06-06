@@ -62,7 +62,7 @@ namespace Supremacy.Client
                     ClientEvents.PlayerJoined.Publish(new ClientDataEventArgs<IPlayer>(localPlayer));
                 },
                 _scheduler)();
-            
+
             //ClientEvents.LobbyUpdated.Publish(new ClientDataEventArgs<ILobbyData>(lobbyData));
         }
 
@@ -145,7 +145,7 @@ namespace Supremacy.Client
                         return;
 
                     IPlayer recipient = GetPlayerFromID(recipientId);
-                    
+
                     ClientEvents.ChatMessageReceived.Publish(
                         new ClientDataEventArgs<ChatMessage>(
                             new ChatMessage(sender, message, recipient)));
@@ -243,7 +243,7 @@ namespace Supremacy.Client
         private readonly DelegateCommand<CombatOrders> _sendCombatOrdersCommand;
         private readonly DelegateCommand<CombatTargetPrimaries> _sendCombatTarget1Command;
         private readonly DelegateCommand<CombatTargetSecondaries> _sendCombatTarget2Command;
-       // private readonly DelegateCommand<IntelOrders> _sendIntelOrdersCommand;
+        // private readonly DelegateCommand<IntelOrders> _sendIntelOrdersCommand;
         private readonly DelegateCommand<InvasionOrders> _sendInvasionOrdersCommand;
         private readonly DelegateCommand<object> _endInvasionCommand;
         private readonly DelegateCommand<string> _saveGameCommand;
@@ -262,10 +262,10 @@ namespace Supremacy.Client
         private bool _isDisposed;
 
         public GameClient(
-            [NotNull] ISupremacyCallback clientCallback, 
+            [NotNull] ISupremacyCallback clientCallback,
             [NotNull] IPlayerOrderService playerOrderService)
-            //[NotNull] IPlayerTarget1Service playerTarget1Service,
-            //[NotNull] IPlayerTarget2Service playerTarget2Service)
+        //[NotNull] IPlayerTarget1Service playerTarget1Service,
+        //[NotNull] IPlayerTarget2Service playerTarget2Service)
         {
             if (clientCallback == null)
                 throw new ArgumentNullException("clientCallback");
@@ -284,7 +284,7 @@ namespace Supremacy.Client
             _sendCombatOrdersCommand = new DelegateCommand<CombatOrders>(ExecuteSendCombatOrdersCommand) { IsActive = true };
             _sendCombatTarget1Command = new DelegateCommand<CombatTargetPrimaries>(ExecuteSendCombatTarget1Command) { IsActive = true };
             _sendCombatTarget2Command = new DelegateCommand<CombatTargetSecondaries>(ExecuteSendCombatTarget2Command) { IsActive = true };
-           // _sendIntelOrdersCommand = new DelegateCommand<IntelOrders>(ExecuteSendIntelOrdersCommand) { IsActive = true };
+            // _sendIntelOrdersCommand = new DelegateCommand<IntelOrders>(ExecuteSendIntelOrdersCommand) { IsActive = true };
             _sendInvasionOrdersCommand = new DelegateCommand<InvasionOrders>(ExecuteSendInvasionOrdersCommand) { IsActive = true };
             _endInvasionCommand = new DelegateCommand<object>(ExecuteEndInvasionCommand) { IsActive = true };
             _saveGameCommand = new DelegateCommand<string>(ExecuteSaveGameCommand) { IsActive = false };
@@ -320,7 +320,8 @@ namespace Supremacy.Client
             ExecuteRemoteCommand(() => _serviceClient.AssignPlayerSlot(slotAndPlayerId.First, slotAndPlayerId.Second));
         }
 
-        protected void ExecuteRemoteCommand(Action remoteCommand) {
+        protected void ExecuteRemoteCommand(Action remoteCommand)
+        {
             ServiceClient serviceClient;
 
             lock (_clientLock)
@@ -560,7 +561,7 @@ namespace Supremacy.Client
                         GameLog.Client.General.Error(e);
                     }
 
-            if (!serviceClient.IsClosed)
+                    if (!serviceClient.IsClosed)
                     {
                         try
                         {
@@ -575,12 +576,12 @@ namespace Supremacy.Client
                         {
                             serviceClient.Close();
                         }
-                        catch(Exception e)
+                        catch (Exception e)
                         {
                             GameLog.Client.General.Error(e);
                         }
                     }
-                    
+
                     if (_connectionEstablished)
                         OnDisconnected();
                 }
@@ -614,7 +615,7 @@ namespace Supremacy.Client
                 ClientCommands.SendCombatOrders.RegisterCommand(_sendCombatOrdersCommand);
                 ClientCommands.SendCombatTarget1.RegisterCommand(_sendCombatTarget1Command);
                 ClientCommands.SendCombatTarget2.RegisterCommand(_sendCombatTarget2Command);
-               // ClientCommands.SendIntelOrders.RegisterCommand(_sendIntelOrdersCommand);
+                // ClientCommands.SendIntelOrders.RegisterCommand(_sendIntelOrdersCommand);
                 ClientCommands.SendInvasionOrders.RegisterCommand(_sendInvasionOrdersCommand);
                 ClientCommands.EndInvasion.RegisterCommand(_endInvasionCommand);
                 ClientCommands.SaveGame.RegisterCommand(_saveGameCommand);
@@ -643,7 +644,7 @@ namespace Supremacy.Client
 
         private void ExecuteSendCombatOrdersCommand(CombatOrders orders)
         {
-            if (orders != null && _serviceClient !=null)
+            if (orders != null && _serviceClient != null)
             {
                 ExecuteRemoteCommand(() => _serviceClient.SendCombatOrders(orders));
             }
@@ -745,7 +746,7 @@ namespace Supremacy.Client
                 ClientCommands.SendCombatOrders.UnregisterCommand(_sendCombatOrdersCommand);
                 ClientCommands.SendCombatTarget1.UnregisterCommand(_sendCombatTarget1Command);
                 ClientCommands.SendCombatTarget2.UnregisterCommand(_sendCombatTarget2Command);
-             //   ClientCommands.SendIntelOrders.UnregisterCommand(_sendIntelOrdersCommand);
+                //   ClientCommands.SendIntelOrders.UnregisterCommand(_sendIntelOrdersCommand);
                 ClientCommands.SendInvasionOrders.UnregisterCommand(_sendInvasionOrdersCommand);
                 ClientCommands.EndInvasion.UnregisterCommand(_endInvasionCommand);
                 ClientCommands.SaveGame.UnregisterCommand(_saveGameCommand);

@@ -43,7 +43,7 @@ namespace Supremacy.Scripting.Events
 
         protected override void OnTurnPhaseFinishedOverride(GameContext game, TurnPhase phase)
         {
-            if (phase == TurnPhase.PreTurnOperations  && GameContext.Current.TurnNumber >30)
+            if (phase == TurnPhase.PreTurnOperations && GameContext.Current.TurnNumber > 30)
             {
                 IEnumerable<Entities.Civilization> affectedCivs = game.Civilizations
                     .Where(c =>
@@ -89,9 +89,9 @@ namespace Supremacy.Scripting.Events
                     }
 
                     GameLog.Client.GameData.DebugFormat("HomeSystemName is: {0}", target.Name);
-                    target.Population.AdjustCurrent(- (population / 3));
+                    target.Population.AdjustCurrent(-(population / 3));
                     target.Population.UpdateAndReset();
-                    target.Health.AdjustCurrent(- (health / 2));
+                    target.Health.AdjustCurrent(-(health / 2));
                     target.Health.UpdateAndReset();
 
                     GameLog.Core.Events.DebugFormat("Colony = {0}, population after = {1}, health after = {2}", targetColonyId, target.Population.CurrentValue, target.Health.CurrentValue);

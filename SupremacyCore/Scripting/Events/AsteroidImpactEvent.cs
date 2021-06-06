@@ -69,7 +69,7 @@ namespace Supremacy.Scripting.Events
 
         protected override void OnTurnPhaseFinishedOverride(GameContext game, TurnPhase phase)
         {
-            if (phase == TurnPhase.PreTurnOperations && GameContext.Current.TurnNumber >=80)
+            if (phase == TurnPhase.PreTurnOperations && GameContext.Current.TurnNumber >= 80)
             {
                 IEnumerable<Entities.Civilization> affectedCivs = game.Civilizations
                     .Where(
@@ -84,7 +84,7 @@ namespace Supremacy.Scripting.Events
                     .Where(CanTargetUnit)
                     .GroupBy(o => o.OwnerID);
 
-                foreach (IGrouping<int, Colony> group in targetGroups) 
+                foreach (IGrouping<int, Colony> group in targetGroups)
                 {
                     List<Colony> productionCenters = group.ToList();
 
@@ -96,7 +96,7 @@ namespace Supremacy.Scripting.Events
                         .Where(o => o.HasProject && !o.Project.IsPaused && !o.Project.IsCancelled)
                         .Select(o => o.Project)
                         .ToList();
-                        //;
+                    //;
 
                     foreach (BuildProject affectedProject in _affectedProjects)
                     {

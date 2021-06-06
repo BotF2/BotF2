@@ -62,9 +62,10 @@ namespace Supremacy.Tech
         /// <value>The design.</value>
         public TechObjectDesign Design
         {
-            get {
+            get
+            {
                 try
-                    {
+                {
 
                     //GameLog.Core.General.DebugFormat("working on design ID {0}"
                     //    , _designId
@@ -79,17 +80,17 @@ namespace Supremacy.Tech
                         //    );
                         return null;
                     }
-                        
-                    }
-                catch (Exception e)
-                    {
-                        GameLog.Core.General.Error(string.Format("### Problem on Design name {0} design ID {1}"
-                            , Design.Name
-                            , _designId
-                            , e));
-                        return GameContext.Current.TechDatabase[_designId];
-                    }
+
                 }
+                catch (Exception e)
+                {
+                    GameLog.Core.General.Error(string.Format("### Problem on Design name {0} design ID {1}"
+                        , Design.Name
+                        , _designId
+                        , e));
+                    return GameContext.Current.TechDatabase[_designId];
+                }
+            }
             set { _designId = (value != null) ? value.DesignID : TechObjectDesign.InvalidDesignID; }
         }
 
@@ -108,19 +109,19 @@ namespace Supremacy.Tech
             _scrap = false;
         }
 
-		public override void SerializeOwnedData(SerializationWriter writer, object context)
-		{
-			base.SerializeOwnedData(writer, context);
-			writer.WriteOptimized(_designId);
-			writer.Write(_scrap);
-		}
+        public override void SerializeOwnedData(SerializationWriter writer, object context)
+        {
+            base.SerializeOwnedData(writer, context);
+            writer.WriteOptimized(_designId);
+            writer.Write(_scrap);
+        }
 
-		public override void DeserializeOwnedData(SerializationReader reader, object context)
-		{
-			base.DeserializeOwnedData(reader, context);
-			_designId = reader.ReadOptimizedInt32();
-			_scrap = reader.ReadBoolean();
-		}
+        public override void DeserializeOwnedData(SerializationReader reader, object context)
+        {
+            base.DeserializeOwnedData(reader, context);
+            _designId = reader.ReadOptimizedInt32();
+            _scrap = reader.ReadBoolean();
+        }
 
         public override void CloneFrom(Cloneable source, ICloneContext context)
         {

@@ -138,7 +138,7 @@ namespace Supremacy.Types
             get
             {
                 if (IsMinimized)
-                    return 0f; 
+                    return 0f;
                 return 0.01f * (((CurrentValue - Minimum) * 100) / (Maximum - Minimum));
             }
             // ReSharper restore PossibleLossOfFraction
@@ -248,7 +248,7 @@ namespace Supremacy.Types
         #endregion
 
         #region INotifyPropertyChanged Members
-        [field : NonSerialized]
+        [field: NonSerialized]
         public event PropertyChangedEventHandler PropertyChanged;
         #endregion
 

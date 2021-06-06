@@ -45,7 +45,7 @@ namespace Supremacy.Scripting.Ast
 
             result = from.Clone<Scope>(this);
             _scopeMap[from] = result;
-            
+
             return result;
         }
 

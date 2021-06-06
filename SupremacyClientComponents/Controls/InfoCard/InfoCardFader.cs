@@ -12,11 +12,11 @@ namespace Supremacy.Client.Controls
         {
             Storyboard storyboard = new Storyboard();
             DoubleAnimation opacityAnimation = new DoubleAnimation(targetOpacity, fadeDuration)
-                                   {
-                                       BeginTime = delayDuration.TimeSpan
-                                   };
+            {
+                BeginTime = delayDuration.TimeSpan
+            };
             Storyboard.SetTargetProperty(
-                opacityAnimation, 
+                opacityAnimation,
                 new PropertyPath(UIElement.OpacityProperty));
             storyboard.Children.Add(opacityAnimation);
             return storyboard;
@@ -45,8 +45,8 @@ namespace Supremacy.Client.Controls
                 return;
 
             InfoCardSite infoCardSite = infoCardToFade.InfoCardSite;
-            if ((infoCardSite == null) || 
-                !infoCardSite.IsInactiveInfoCardFadeEnabled || 
+            if ((infoCardSite == null) ||
+                !infoCardSite.IsInactiveInfoCardFadeEnabled ||
                 (infoCardSite.InactiveInfoCardFadeOpacity == 1.0))
             {
                 return;

@@ -58,7 +58,7 @@ namespace Supremacy.Client.Views
                 _actionTabs,
                 new ItemsControlTransitionSelector(
                     _actionTabs,
-                    new SlideTransition { IsFromContentPushed = true, Direction = TransitionDirection.Backward   },
+                    new SlideTransition { IsFromContentPushed = true, Direction = TransitionDirection.Backward },
                     new SlideTransition { IsFromContentPushed = true, Direction = TransitionDirection.Forward }));
 
             DataContextChanged += OnDataContextChanged;
@@ -282,7 +282,7 @@ namespace Supremacy.Client.Views
                     }
                 }
             }
-            
+
             if (toIndex < 0)
             {
                 if (toContent is DependencyObject toElement)
@@ -443,46 +443,46 @@ namespace Supremacy.Client.Views
                     FrameworkElement selectedItem = selectedItems[0];
 
                     visual = new Rectangle
-                             {
-                                 Height = selectedItem.ActualHeight,
-                                 Width = selectedItem.ActualWidth,
-                                 Opacity = 0.85,
-                                 IsHitTestVisible = false,
-                                 Fill = new VisualBrush(selectedItem)
-                                        {
-                                            AutoLayoutContent = false,
-                                            Stretch = Stretch.None,
-                                            AlignmentX = AlignmentX.Left,
-                                            AlignmentY = AlignmentY.Top
-                                        }
-                             };
+                    {
+                        Height = selectedItem.ActualHeight,
+                        Width = selectedItem.ActualWidth,
+                        Opacity = 0.85,
+                        IsHitTestVisible = false,
+                        Fill = new VisualBrush(selectedItem)
+                        {
+                            AutoLayoutContent = false,
+                            Stretch = Stretch.None,
+                            AlignmentX = AlignmentX.Left,
+                            AlignmentY = AlignmentY.Top
+                        }
+                    };
                 }
                 else
                 {
                     Canvas canvas = new Canvas
-                                 {
-                                     Width = selectedItems[0].ActualWidth + ((selectedItems.Count - 1) * 4),
-                                     Height = selectedItems[0].ActualHeight + ((selectedItems.Count - 1) * 4)
-                                 };
+                    {
+                        Width = selectedItems[0].ActualWidth + ((selectedItems.Count - 1) * 4),
+                        Height = selectedItems[0].ActualHeight + ((selectedItems.Count - 1) * 4)
+                    };
 
                     for (int i = selectedItems.Count - 1; i >= 0; i--)
                     {
                         FrameworkElement selectedItem = selectedItems[i];
 
                         Rectangle rectangle = new Rectangle
-                                        {
-                                            Height = selectedItem.ActualHeight,
-                                            Width = selectedItem.ActualWidth,
-                                            Opacity = 0.85,
-                                            IsHitTestVisible = false,
-                                            Fill = new VisualBrush(selectedItem)
-                                                   {
-                                                       AutoLayoutContent = false,
-                                                       Stretch = Stretch.None,
-                                                       AlignmentX = AlignmentX.Left,
-                                                       AlignmentY = AlignmentY.Top
-                                                   }
-                                        };
+                        {
+                            Height = selectedItem.ActualHeight,
+                            Width = selectedItem.ActualWidth,
+                            Opacity = 0.85,
+                            IsHitTestVisible = false,
+                            Fill = new VisualBrush(selectedItem)
+                            {
+                                AutoLayoutContent = false,
+                                Stretch = Stretch.None,
+                                AlignmentX = AlignmentX.Left,
+                                AlignmentY = AlignmentY.Top
+                            }
+                        };
 
                         Canvas.SetLeft(rectangle, i * 4);
                         Canvas.SetTop(rectangle, i * 4);
@@ -496,19 +496,19 @@ namespace Supremacy.Client.Views
             else
             {
                 visual = new Rectangle
-                         {
-                             Height = element.ActualHeight,
-                             Width = element.ActualWidth,
-                             Opacity = 0.85,
-                             IsHitTestVisible = false,
-                             Fill = new VisualBrush(element)
-                                    {
-                                        AutoLayoutContent = false,
-                                        Stretch = Stretch.None,
-                                        AlignmentX = AlignmentX.Left,
-                                        AlignmentY = AlignmentY.Top
-                                    }
-                         };
+                {
+                    Height = element.ActualHeight,
+                    Width = element.ActualWidth,
+                    Opacity = 0.85,
+                    IsHitTestVisible = false,
+                    Fill = new VisualBrush(element)
+                    {
+                        AutoLayoutContent = false,
+                        Stretch = Stretch.None,
+                        AlignmentX = AlignmentX.Left,
+                        AlignmentY = AlignmentY.Top
+                    }
+                };
             }
 
             return visual;

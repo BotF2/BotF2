@@ -86,8 +86,8 @@ namespace Supremacy.Effects
 
         #region Implementation of IOwnedDataSerializable
         public override void SerializeOwnedData([NotNull] SerializationWriter writer, [CanBeNull] object context)
-    	{
-    	    base.SerializeOwnedData(writer, context);
+        {
+            base.SerializeOwnedData(writer, context);
 
             int propertyCount = _dynamicPropertyValues.Count;
 
@@ -107,7 +107,7 @@ namespace Supremacy.Effects
                 writer.WriteTokenizedObject(new DynamicPropertyKey(property));
                 writer.WriteObject(baseValue);
             }
-    	}
+        }
 
         [Serializable]
         private sealed class DynamicPropertyKey : IOwnedDataSerializableAndRecreatable
@@ -181,7 +181,7 @@ namespace Supremacy.Effects
         }
 
         public override void DeserializeOwnedData([NotNull] SerializationReader reader, [CanBeNull] object context)
-		{
+        {
             base.DeserializeOwnedData(reader, context);
 
             int count = reader.ReadInt32();
@@ -193,7 +193,7 @@ namespace Supremacy.Effects
 
                 DeserializeBaseValue(key, baseValue);
             }
-		}
+        }
         #endregion
 
         #region Overrides of Cloneable

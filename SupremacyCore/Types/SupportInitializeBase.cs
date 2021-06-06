@@ -84,7 +84,7 @@ namespace Supremacy.Types
                 _isInitialized = false;
                 _isInitializing = true;
 
-                BeginInitCore();                
+                BeginInitCore();
             }
         }
 

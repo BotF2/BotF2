@@ -13,7 +13,7 @@ namespace Supremacy.Client.Controls
             KeyboardNavigation.IsTabStopProperty.OverrideMetadata(
                 typeof(ScrollViewerItemsPresenter),
                 new FrameworkPropertyMetadata(false));
-            
+
             FocusableProperty.OverrideMetadata(
                 typeof(ScrollViewerItemsPresenter),
                 new FrameworkPropertyMetadata(true));

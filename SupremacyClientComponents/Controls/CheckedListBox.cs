@@ -22,7 +22,7 @@ namespace Supremacy.Client.Controls
                 new CommandBinding(
                     SelectAllCommand,
                     OnSelectAll));
-            
+
             CommandManager.RegisterClassCommandBinding(
                  typeof(CheckedListBox),
                  new CommandBinding(

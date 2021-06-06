@@ -282,7 +282,7 @@ namespace Supremacy.Messaging
                     deadSubscriptions.Value.Add(subscription);
                     continue;
                 }
-                
+
                 try
                 {
                     IScheduler scheduler;
@@ -402,7 +402,7 @@ namespace Supremacy.Messaging
                     DispatcherTimer timer = null;
 
                     if (_timeout.HasValue)
-                    {    
+                    {
                         timer = new DispatcherTimer(
                             _timeout.Value,
                             DispatcherPriority.Send,

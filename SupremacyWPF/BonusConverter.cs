@@ -88,7 +88,7 @@ namespace Supremacy.Client
                     }
                     _ = sb.Append(BonusDescriptions.GetDescription(bonuses[i]));
                 }
-                
+
             }
             else if (value is ShipyardDesign)
             {

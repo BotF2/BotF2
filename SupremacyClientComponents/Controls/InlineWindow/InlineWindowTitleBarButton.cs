@@ -306,7 +306,7 @@ namespace Supremacy.Client.Controls
         {
             // Override default properties
             IsTabStopProperty.OverrideMetadata(
-                typeof(InlineWindowTitleBarButton), 
+                typeof(InlineWindowTitleBarButton),
                 new FrameworkPropertyMetadata(false));
 
             FocusableProperty.OverrideMetadata(

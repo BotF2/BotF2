@@ -57,12 +57,12 @@ namespace Supremacy.Utility
             while (true)
             {
                 Dictionary<Type, object> newCache = new Dictionary<Type, object>(cache) { { type, newEntry } };
-                
+
                 if (Interlocked.CompareExchange(ref _cache, newCache, cache) == cache)
                     return newEntry;
 
                 cache = _cache;
-                
+
                 if (cache.TryGetValue(type, out value))
                     return (CacheEntry<T>)value;
             }
@@ -163,7 +163,7 @@ namespace Supremacy.Utility
 
         #region CacheEntry Class
 
-        private sealed class CacheEntry<T> where T : struct 
+        private sealed class CacheEntry<T> where T : struct
         {
             public readonly T[] Values;
             public readonly string[] Names;

@@ -35,7 +35,7 @@ namespace Supremacy.Network
             else
             {
                 IPHostEntry hostEntry = null;
-                
+
                 try
                 {
                     hostEntry = Dns.GetHostEntry(host);

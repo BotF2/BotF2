@@ -80,9 +80,9 @@ namespace Supremacy.Game
                 , int maintenanceHist
                 , int researchHist
                 )
-                    {
-                        CivIDHistAndTurn = civIDHistAndTurn;
-                        CivIDHist = civIDHist;
+            {
+                CivIDHistAndTurn = civIDHistAndTurn;
+                CivIDHist = civIDHist;
                 CivKeyHist = civKeyHist;
                 CreditsHist = creditsHist;
                 ColoniesHist = coloniesHist;
@@ -295,7 +295,7 @@ namespace Supremacy.Game
                             "                    SitRep: {0}" + Environment.NewLine, rep.SummaryText, rep.Owner, rep.Categories, rep.Action, GameContext.Current.TurnNumber);
                 }
                 return _sitRepEntries;
-            } 
+            }
         }
 
         public List<Civilization> SpiedCivList => _spiedCivList;

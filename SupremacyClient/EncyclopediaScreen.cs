@@ -251,9 +251,9 @@ namespace Supremacy.Client
                             _researchMatrixGrid.RowDefinitions[row].Height = new GridLength(1.0, GridUnitType.Auto);
                         }
                         internalGrid = new Grid
-                                       {
-                                           VerticalAlignment = VerticalAlignment.Stretch
-                                       };
+                        {
+                            VerticalAlignment = VerticalAlignment.Stretch
+                        };
                         internalGrid.ColumnDefinitions.Add(new ColumnDefinition());
                         internalGrid.SetValue(Grid.ColumnProperty, field.FieldID);
                         internalGrid.SetValue(Grid.RowProperty, row);
@@ -295,12 +295,12 @@ namespace Supremacy.Client
                     if (_applicationDetailsHost != null)
                     {
                         ContentControl detailsContainer = new ContentControl
-                                               {
-                                                   Content = new EncyclopediaApplicationDetails(
+                        {
+                            Content = new EncyclopediaApplicationDetails(
                                                        ((EncyclopediaApplicationData)
                                                         control.Content).EncyclopediaApplication,
                                                        AppContext.LocalPlayerEmpire)
-                                               };
+                        };
                         _applicationDetailsHost.Child = detailsContainer;
                     }
                 }
@@ -368,11 +368,11 @@ namespace Supremacy.Client
 
             Run headerRun = new Run(entry.EncyclopediaHeading);
             Paragraph headerBlock = new Paragraph(headerRun)
-                              {
-                                  FontFamily = FindResource(ClientResources.DefaultFontFamilyKey) as FontFamily,
-                                  FontSize = 16d * 96d / 72d,
-                                  Foreground = FindResource(ClientResources.HeaderTextForegroundBrushKey) as Brush
-                              };
+            {
+                FontFamily = FindResource(ClientResources.DefaultFontFamilyKey) as FontFamily,
+                FontSize = 16d * 96d / 72d,
+                Foreground = FindResource(ClientResources.HeaderTextForegroundBrushKey) as Brush
+            };
 
             doc.Blocks.Add(headerBlock);
 
@@ -408,7 +408,7 @@ namespace Supremacy.Client
                 if (imageRatio >= 1.0)
                 {
                     imageWidth = Math.Max(200, Math.Min(imageWidth, 270));
-                    imageHeight = imageWidth / imageRatio *2;
+                    imageHeight = imageWidth / imageRatio * 2;
                 }
                 else
                 {
@@ -425,14 +425,14 @@ namespace Supremacy.Client
 
                 Thickness imageMargin = new Thickness(14, 0, 0, 14);
                 Floater imageFloater = new Floater
-                                   {
-                                       Blocks = { new BlockUIContainer(image) },
-                                       Margin = imageMargin,
-                                       Width = image.Width,
-                                       HorizontalAlignment = HorizontalAlignment.Right,
-                                       Padding = new Thickness(0)
-                                   };
-                
+                {
+                    Blocks = { new BlockUIContainer(image) },
+                    Margin = imageMargin,
+                    Width = image.Width,
+                    HorizontalAlignment = HorizontalAlignment.Right,
+                    Padding = new Thickness(0)
+                };
+
                 if (firstParagraph.Inlines.Any())
                     firstParagraph.Inlines.InsertBefore(firstParagraph.Inlines.First(), imageFloater);
                 else
@@ -444,22 +444,22 @@ namespace Supremacy.Client
             if (design != null)
             {
                 ContentControl statsControl = new ContentControl
-                                   {
-                                       Margin = new Thickness(0, 14, 0, 0),
-                                       Width = 320,
-                                       Content = new TechObjectDesignViewModel
-                                                 {
-                                                     Design = design,
-                                                     Civilization = AppContext.LocalPlayer.Empire
-                                                 },
-                                       Style = FindResource("TechObjectInfoPanelStyle") as Style
-                                   };
+                {
+                    Margin = new Thickness(0, 14, 0, 0),
+                    Width = 320,
+                    Content = new TechObjectDesignViewModel
+                    {
+                        Design = design,
+                        Civilization = AppContext.LocalPlayer.Empire
+                    },
+                    Style = FindResource("TechObjectInfoPanelStyle") as Style
+                };
 
                 Paragraph statsBlock = new Paragraph(new InlineUIContainer(statsControl))
-                                 {
-                                     TextAlignment = TextAlignment.Center,
-                                     Margin = new Thickness(0)
-                                 };
+                {
+                    TextAlignment = TextAlignment.Center,
+                    Margin = new Thickness(0)
+                };
 
                 doc.Blocks.Add(statsBlock);
 
@@ -479,7 +479,8 @@ namespace Supremacy.Client
 
                     ImageBrush imageBrush = new ImageBrush(
                         fiendImageConverter.Convert(field, typeof(BitmapImage), null, null)
-                        as ImageSource) { Stretch = Stretch.Uniform };
+                        as ImageSource)
+                    { Stretch = Stretch.Uniform };
 
                     techIcon.Width = 54;
                     techIcon.Height = 45;
@@ -496,7 +497,7 @@ namespace Supremacy.Client
                     techTextShadow.FontSize = 16 * (96d / 72d);
                     techTextShadow.HorizontalAlignment = HorizontalAlignment.Right;
                     techTextShadow.VerticalAlignment = VerticalAlignment.Bottom;
-                    
+
                     techText.Text = design.TechRequirements[techCategory].ToString();
                     techText.Foreground = Brushes.White;
                     techText.SetResourceReference(TextBlock.FontFamilyProperty, ClientResources.DefaultFontFamilyKey);
@@ -553,8 +554,8 @@ namespace Supremacy.Client
                 return;
 
             IEnumerable<ICollectionView> groupViews = (from groupItem in _researchEntryListView.Items.OfType<TreeViewItem>()
-                              select groupItem.ItemsSource).OfType<ICollectionView>();
-            
+                                                       select groupItem.ItemsSource).OfType<ICollectionView>();
+
             foreach (ICollectionView groupView in groupViews)
                 groupView.Refresh();
         }
@@ -590,7 +591,7 @@ namespace Supremacy.Client
             {
                 BuildResearchFields();
             }
-            foreach (Distribution<int> distribution in 
+            foreach (Distribution<int> distribution in
                 AppContext.LocalPlayerEmpire.Research.Distributions.Children)
             {
                 PropertyChangedEventManager.AddListener(

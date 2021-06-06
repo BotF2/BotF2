@@ -114,7 +114,7 @@ namespace Supremacy.Client
                     // TODO: Figure out the correct brush
 
                     default:
-                        return defaultBrush; 
+                        return defaultBrush;
                 }
             }
             return value;

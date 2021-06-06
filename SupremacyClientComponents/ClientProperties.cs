@@ -9,8 +9,8 @@ namespace Supremacy.Client
 
         public static readonly DependencyProperty ScaleFactorProperty = DependencyProperty.RegisterAttached(
             "ScaleFactor",
-            typeof (double),
-            typeof (ClientProperties),
+            typeof(double),
+            typeof(ClientProperties),
             new FrameworkPropertyMetadata(
                 1.0,
                 FrameworkPropertyMetadataOptions.Inherits));
@@ -19,7 +19,7 @@ namespace Supremacy.Client
         {
             if (source == null)
                 throw new ArgumentNullException("source");
-            return (double) source.GetValue(ScaleFactorProperty);
+            return (double)source.GetValue(ScaleFactorProperty);
         }
 
         public static void SetScaleFactor(UIElement source, double value)

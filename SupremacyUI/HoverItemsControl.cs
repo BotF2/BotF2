@@ -53,7 +53,7 @@ namespace Supremacy.UI
                 sourceControl.HoveredItemChanged(sourceControl, e);
             }
         }
-        
+
         public event ItemClickedEventHandler ItemClicked;
         public event DependencyPropertyChangedEventHandler HoveredItemChanged;
 
@@ -65,7 +65,7 @@ namespace Supremacy.UI
 
         private void HoverItemsControl_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            
+
         }
 
         private void ItemContainerGenerator_StatusChanged(object sender, EventArgs e)
@@ -95,7 +95,7 @@ namespace Supremacy.UI
         {
             ItemClicked?.Invoke(this, clickedItem);
         }
-        
+
         protected override void OnItemsChanged(NotifyCollectionChangedEventArgs e)
         {
             base.OnItemsChanged(e);

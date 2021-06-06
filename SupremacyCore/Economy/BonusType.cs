@@ -71,13 +71,13 @@ namespace Supremacy.Economy
                 case BonusType.PercentEnergyResearch:
                 case BonusType.PercentExternalAffairs:
                 case BonusType.PercentGeneralIntelligence:
-				case BonusType.PercentInternalAffairs:
+                case BonusType.PercentInternalAffairs:
                 case BonusType.PercentMilitarySabotage:
                 case BonusType.PercentPoliticalSabotage:
                 case BonusType.PercentPropulsionResearch:
                 case BonusType.PercentResearchEmpireWide:
                 case BonusType.PercentSabotage:
-                case BonusType.PercentShipExperience: 
+                case BonusType.PercentShipExperience:
                 case BonusType.PercentTotalIntelligence:
                 case BonusType.PercentWeaponsResearch:
                     return true;

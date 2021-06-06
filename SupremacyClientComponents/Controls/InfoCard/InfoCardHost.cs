@@ -146,7 +146,7 @@ namespace Supremacy.Client.Controls
             if (infoCard != null)
                 infoCard.Location = Location;
         }
-        
+
         public Point? Location { get; internal set; }
     }
 }

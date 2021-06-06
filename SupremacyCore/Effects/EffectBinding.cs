@@ -13,7 +13,7 @@ using Supremacy.Utility;
 namespace Supremacy.Effects
 {
     [Serializable]
-    public abstract class EffectBinding: INotifyPropertyChanged
+    public abstract class EffectBinding : INotifyPropertyChanged
     {
         private readonly Effect _effect;
         private readonly EffectGroupBinding _effectGroupBinding;
@@ -83,7 +83,7 @@ namespace Supremacy.Effects
         {
             get
             {
-                lock (EffectSystem.SyncRoot) 
+                lock (EffectSystem.SyncRoot)
                     return (_state != EffectState.Detached);
             }
         }

@@ -112,7 +112,7 @@ namespace Supremacy.Utility
 
             IConvertible convertible = value as IConvertible;
             TypeCode typeCode = (convertible != null) ? convertible.GetTypeCode() : Type.GetTypeCode(value.GetType());
-    
+
             switch (typeCode)
             {
                 case TypeCode.Boolean:
@@ -146,13 +146,13 @@ namespace Supremacy.Utility
                 case TypeCode.String:
                     return ToInt16((string)value);
             }
-    
+
             if (convertible != null)
             {
                 try { return convertible.ToInt16(provider); }
                 catch { return null; }
             }
-    
+
             return null;
         }
 
@@ -259,7 +259,7 @@ namespace Supremacy.Utility
 
             IConvertible convertible = value as IConvertible;
             TypeCode typeCode = (convertible != null) ? convertible.GetTypeCode() : Type.GetTypeCode(value.GetType());
-    
+
             switch (typeCode)
             {
                 case TypeCode.Boolean:
@@ -293,13 +293,13 @@ namespace Supremacy.Utility
                 case TypeCode.String:
                     return ToUInt16((string)value);
             }
-    
+
             if (convertible != null)
             {
                 try { return convertible.ToUInt16(provider); }
                 catch { return null; }
             }
-    
+
             return null;
         }
 
@@ -406,7 +406,7 @@ namespace Supremacy.Utility
 
             IConvertible convertible = value as IConvertible;
             TypeCode typeCode = (convertible != null) ? convertible.GetTypeCode() : Type.GetTypeCode(value.GetType());
-    
+
             switch (typeCode)
             {
                 case TypeCode.Boolean:
@@ -440,13 +440,13 @@ namespace Supremacy.Utility
                 case TypeCode.String:
                     return ToInt32((string)value);
             }
-    
+
             if (convertible != null)
             {
                 try { return convertible.ToInt32(provider); }
                 catch { return null; }
             }
-    
+
             return null;
         }
 
@@ -553,7 +553,7 @@ namespace Supremacy.Utility
 
             IConvertible convertible = value as IConvertible;
             TypeCode typeCode = (convertible != null) ? convertible.GetTypeCode() : Type.GetTypeCode(value.GetType());
-    
+
             switch (typeCode)
             {
                 case TypeCode.Boolean:
@@ -587,13 +587,13 @@ namespace Supremacy.Utility
                 case TypeCode.String:
                     return ToUInt32((string)value);
             }
-    
+
             if (convertible != null)
             {
                 try { return convertible.ToUInt32(provider); }
                 catch { return null; }
             }
-    
+
             return null;
         }
 
@@ -700,7 +700,7 @@ namespace Supremacy.Utility
 
             IConvertible convertible = value as IConvertible;
             TypeCode typeCode = (convertible != null) ? convertible.GetTypeCode() : Type.GetTypeCode(value.GetType());
-    
+
             switch (typeCode)
             {
                 case TypeCode.Boolean:
@@ -734,13 +734,13 @@ namespace Supremacy.Utility
                 case TypeCode.String:
                     return ToInt64((string)value);
             }
-    
+
             if (convertible != null)
             {
                 try { return convertible.ToInt64(provider); }
                 catch { return null; }
             }
-    
+
             return null;
         }
 
@@ -847,7 +847,7 @@ namespace Supremacy.Utility
 
             IConvertible convertible = value as IConvertible;
             TypeCode typeCode = (convertible != null) ? convertible.GetTypeCode() : Type.GetTypeCode(value.GetType());
-    
+
             switch (typeCode)
             {
                 case TypeCode.Boolean:
@@ -881,13 +881,13 @@ namespace Supremacy.Utility
                 case TypeCode.String:
                     return ToUInt64((string)value);
             }
-    
+
             if (convertible != null)
             {
                 try { return convertible.ToUInt64(provider); }
                 catch { return null; }
             }
-    
+
             return null;
         }
 
@@ -994,7 +994,7 @@ namespace Supremacy.Utility
 
             IConvertible convertible = value as IConvertible;
             TypeCode typeCode = (convertible != null) ? convertible.GetTypeCode() : Type.GetTypeCode(value.GetType());
-    
+
             switch (typeCode)
             {
                 case TypeCode.Boolean:
@@ -1028,13 +1028,13 @@ namespace Supremacy.Utility
                 case TypeCode.String:
                     return ToByte((string)value);
             }
-    
+
             if (convertible != null)
             {
                 try { return convertible.ToByte(provider); }
                 catch { return null; }
             }
-    
+
             return null;
         }
 
@@ -1141,7 +1141,7 @@ namespace Supremacy.Utility
 
             IConvertible convertible = value as IConvertible;
             TypeCode typeCode = (convertible != null) ? convertible.GetTypeCode() : Type.GetTypeCode(value.GetType());
-    
+
             switch (typeCode)
             {
                 case TypeCode.Boolean:
@@ -1175,13 +1175,13 @@ namespace Supremacy.Utility
                 case TypeCode.String:
                     return ToSByte((string)value);
             }
-    
+
             if (convertible != null)
             {
                 try { return convertible.ToSByte(provider); }
                 catch { return null; }
             }
-    
+
             return null;
         }
 
@@ -1290,7 +1290,7 @@ namespace Supremacy.Utility
 
             IConvertible convertible = value as IConvertible;
             TypeCode typeCode = (convertible != null) ? convertible.GetTypeCode() : Type.GetTypeCode(value.GetType());
-    
+
             switch (typeCode)
             {
                 case TypeCode.Boolean:
@@ -1324,13 +1324,13 @@ namespace Supremacy.Utility
                 case TypeCode.String:
                     return ToBoolean((string)value);
             }
-    
+
             if (convertible != null)
             {
                 try { return convertible.ToBoolean(provider); }
                 catch { return null; }
             }
-    
+
             return null;
         }
 
@@ -1437,7 +1437,7 @@ namespace Supremacy.Utility
 
             IConvertible convertible = value as IConvertible;
             TypeCode typeCode = (convertible != null) ? convertible.GetTypeCode() : Type.GetTypeCode(value.GetType());
-    
+
             switch (typeCode)
             {
                 case TypeCode.Boolean:
@@ -1471,13 +1471,13 @@ namespace Supremacy.Utility
                 case TypeCode.String:
                     return ToDouble((string)value);
             }
-    
+
             if (convertible != null)
             {
                 try { return convertible.ToDouble(provider); }
                 catch { return null; }
             }
-    
+
             return null;
         }
 
@@ -1584,7 +1584,7 @@ namespace Supremacy.Utility
 
             IConvertible convertible = value as IConvertible;
             TypeCode typeCode = (convertible != null) ? convertible.GetTypeCode() : Type.GetTypeCode(value.GetType());
-    
+
             switch (typeCode)
             {
                 case TypeCode.Boolean:
@@ -1618,13 +1618,13 @@ namespace Supremacy.Utility
                 case TypeCode.String:
                     return ToSingle((string)value);
             }
-    
+
             if (convertible != null)
             {
                 try { return convertible.ToSingle(provider); }
                 catch { return null; }
             }
-    
+
             return null;
         }
 
@@ -1731,7 +1731,7 @@ namespace Supremacy.Utility
 
             IConvertible convertible = value as IConvertible;
             TypeCode typeCode = (convertible != null) ? convertible.GetTypeCode() : Type.GetTypeCode(value.GetType());
-    
+
             switch (typeCode)
             {
                 case TypeCode.Boolean:
@@ -1765,13 +1765,13 @@ namespace Supremacy.Utility
                 case TypeCode.String:
                     return ToDecimal((string)value);
             }
-    
+
             if (convertible != null)
             {
                 try { return convertible.ToDecimal(provider); }
                 catch { return null; }
             }
-    
+
             return null;
         }
 
@@ -1885,7 +1885,7 @@ namespace Supremacy.Utility
 
             IConvertible convertible = value as IConvertible;
             TypeCode typeCode = (convertible != null) ? convertible.GetTypeCode() : Type.GetTypeCode(value.GetType());
-    
+
             switch (typeCode)
             {
                 case TypeCode.Boolean:
@@ -1919,13 +1919,13 @@ namespace Supremacy.Utility
                 case TypeCode.String:
                     return ToChar((string)value);
             }
-    
+
             if (convertible != null)
             {
                 try { return convertible.ToChar(provider); }
                 catch { return null; }
             }
-    
+
             return null;
         }
 
@@ -2032,7 +2032,7 @@ namespace Supremacy.Utility
 
             IConvertible convertible = value as IConvertible;
             TypeCode typeCode = (convertible != null) ? convertible.GetTypeCode() : Type.GetTypeCode(value.GetType());
-    
+
             switch (typeCode)
             {
                 case TypeCode.Boolean:
@@ -2066,13 +2066,13 @@ namespace Supremacy.Utility
                 case TypeCode.String:
                     return ToDateTime((string)value);
             }
-    
+
             if (convertible != null)
             {
                 try { return convertible.ToDateTime(provider); }
                 catch { return null; }
             }
-    
+
             return null;
         }
 

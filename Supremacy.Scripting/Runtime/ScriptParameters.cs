@@ -25,7 +25,7 @@ namespace Supremacy.Scripting
 
             return new ScriptParameters(this.Concat(otherParameters));
         }
-        
+
         public ScriptParameters Merge([NotNull] params ScriptParameter[] otherParameters)
         {
             if (otherParameters == null)

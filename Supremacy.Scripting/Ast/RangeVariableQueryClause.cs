@@ -63,11 +63,11 @@ namespace Supremacy.Scripting.Ast
                     initializer,
                     declaration));
             return new AnonymousObjectCreationExpression
-                   {
-                       FileName = declaration.FileName,
-                       Span = declaration.Span,
-                       Initializer = anonInitializer
-                   };
+            {
+                FileName = declaration.FileName,
+                Span = declaration.Span,
+                Initializer = anonInitializer
+            };
         }
 
         public override void BeginInit(ParseContext parseContext, bool raiseInitialized)

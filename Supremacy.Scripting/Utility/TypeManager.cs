@@ -1719,7 +1719,7 @@ namespace Supremacy.Scripting.Utility
         public static bool IsEnumType(this Type t, bool allowNullable = false)
         {
             t = DropGenericTypeArguments(t);
-            
+
             if (t.BaseType == CoreTypes.Enum)
             {
                 return true;
@@ -1944,7 +1944,7 @@ namespace Supremacy.Scripting.Utility
             //
             // However, since we're determining whether B.Foo() overrides A.Foo(),
             // we need to do a signature based comparision and consider them equal.
-            
+
             if (a == b)
             {
                 return true;
@@ -2167,7 +2167,7 @@ namespace Supremacy.Scripting.Utility
             {
                 Type[] typeArgsDefinition = DropGenericTypeArguments(t).GetGenericArguments();
                 Type[] typeArgs = t.GetGenericArguments();
-                
+
                 for (int i = 0; i < typeArgsDefinition.Length; ++i)
                 {
                     Variance variance = GetTypeParameterVariance(typeArgsDefinition[i]);

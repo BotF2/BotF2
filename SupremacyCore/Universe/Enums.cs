@@ -38,10 +38,11 @@ namespace Supremacy.Universe
         [SupportsPlanets] Yellow,
         [SupportsPlanets] Orange,
         [SupportsPlanets] Red,
-        
+
         [SupportsPlanets(AllowedTypes = new[] { PlanetType.Rogue },
                             AllowedSizes = new[] { PlanetSize.Tiny },
-                            MaxNumberOfPlanets = 1)] Nebula,  //  for nebula maximum ONE planet (Borg nebula, Dominion)
+                            MaxNumberOfPlanets = 1)]
+        Nebula,  //  for nebula maximum ONE planet (Borg nebula, Dominion)
         Wormhole,
         NeutronStar,
         RadioPulsar,
@@ -203,27 +204,27 @@ namespace Supremacy.Universe
     [Flags]
     public enum BonusRestriction : uint
     {
-        None                = 0x00000000,
-        HomeSystem          = 0x00000001,
-        NativeSystem        = 0x00000002,
-        NonNativeSystem     = 0x00000004,
-        ConqueredSystem     = 0x00000008,
-        WhiteStar           = 0x00000010,
-        BlueStar            = 0x00000020,
-        YellowStar          = 0x00000080,
-        OrangeStar          = 0x00000100,
-        RedStar             = 0x00000200,
-        ArcticPlanet        = 0x00000400,
-        Asteroids           = 0x00000800,
-        BarrenPlanet        = 0x00001000,
-        CrystallinePlanet   = 0x00002000,
-        DemonPlanet         = 0x00004000,
-        DesertPlanet        = 0x00008000,
-        GasGiant            = 0x00010000,
-        JunglePlanet        = 0x00020000,
-        OceanicPlanet       = 0x00040000,
-        RoguePlanet         = 0x00080000,
-        TerranPlanet        = 0x00100000,
-        VolcanicPlanet      = 0x00200000,
+        None = 0x00000000,
+        HomeSystem = 0x00000001,
+        NativeSystem = 0x00000002,
+        NonNativeSystem = 0x00000004,
+        ConqueredSystem = 0x00000008,
+        WhiteStar = 0x00000010,
+        BlueStar = 0x00000020,
+        YellowStar = 0x00000080,
+        OrangeStar = 0x00000100,
+        RedStar = 0x00000200,
+        ArcticPlanet = 0x00000400,
+        Asteroids = 0x00000800,
+        BarrenPlanet = 0x00001000,
+        CrystallinePlanet = 0x00002000,
+        DemonPlanet = 0x00004000,
+        DesertPlanet = 0x00008000,
+        GasGiant = 0x00010000,
+        JunglePlanet = 0x00020000,
+        OceanicPlanet = 0x00040000,
+        RoguePlanet = 0x00080000,
+        TerranPlanet = 0x00100000,
+        VolcanicPlanet = 0x00200000,
     }
 }

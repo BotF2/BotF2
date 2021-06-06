@@ -134,7 +134,7 @@ namespace Supremacy.Game
         public bool IsOwned(MapLocation location)
         {
             CollectionBase<SectorClaim> claims;
-            
+
             if (!_claims.TryGetValue(location, out claims))
                 return false;
 
@@ -187,7 +187,7 @@ namespace Supremacy.Game
         public bool IsDisputed(MapLocation location)
         {
             CollectionBase<SectorClaim> claims;
-            
+
             if (!_claims.TryGetValue(location, out claims))
                 return false;
 
@@ -206,7 +206,7 @@ namespace Supremacy.Game
         public bool IsDisputed(MapLocation location, Civilization accordingTo)
         {
             CollectionBase<SectorClaim> claims;
-            
+
             if (!_claims.TryGetValue(location, out claims))
                 return false;
 
@@ -295,7 +295,7 @@ namespace Supremacy.Game
         /// </summary>
         public SectorClaimGrid()
         {
-            _claims = new Dictionary<MapLocation,CollectionBase<SectorClaim>>();
+            _claims = new Dictionary<MapLocation, CollectionBase<SectorClaim>>();
             _claimsByOwner = new Dictionary<int, CollectionBase<SectorClaim>>();
         }
 

@@ -253,9 +253,9 @@ namespace Supremacy.Client
                             _researchMatrixGrid.RowDefinitions[row].Height = new GridLength(1.0, GridUnitType.Auto);
                         }
                         internalGrid = new Grid
-                                       {
-                                           VerticalAlignment = VerticalAlignment.Stretch
-                                       };
+                        {
+                            VerticalAlignment = VerticalAlignment.Stretch
+                        };
                         internalGrid.ColumnDefinitions.Add(new ColumnDefinition());
                         internalGrid.SetValue(Grid.ColumnProperty, field.FieldID);
                         internalGrid.SetValue(Grid.RowProperty, row);
@@ -297,12 +297,12 @@ namespace Supremacy.Client
                     if (_applicationDetailsHost != null)
                     {
                         ContentControl detailsContainer = new ContentControl
-                                               {
-                                                   Content = new ResearchApplicationDetails(
+                        {
+                            Content = new ResearchApplicationDetails(
                                                        ((ResearchApplicationData)
                                                         control.Content).Application,
                                                        AppContext.LocalPlayerEmpire)
-                                               };
+                        };
                         _applicationDetailsHost.Child = detailsContainer;
                     }
                 }
@@ -461,22 +461,22 @@ namespace Supremacy.Client
             if (design != null)
             {
                 ContentControl statsControl = new ContentControl
-                                   {
-                                       Margin = new Thickness(0, 5, 0, 0),
-                                       Width = 300,  // old: 320
-                                       Content = new TechObjectDesignViewModel
-                                                 {
-                                                     Design = design,
-                                                     Civilization = AppContext.LocalPlayer.Empire
-                                                 },
-                                       Style = FindResource("TechObjectInfoPanelStyle") as Style
-                                   };
+                {
+                    Margin = new Thickness(0, 5, 0, 0),
+                    Width = 300,  // old: 320
+                    Content = new TechObjectDesignViewModel
+                    {
+                        Design = design,
+                        Civilization = AppContext.LocalPlayer.Empire
+                    },
+                    Style = FindResource("TechObjectInfoPanelStyle") as Style
+                };
 
                 Paragraph statsBlock = new Paragraph(new InlineUIContainer(statsControl))
-                                 {
-                                     TextAlignment = TextAlignment.Center,
-                                     Margin = new Thickness(0)
-                                 };
+                {
+                    TextAlignment = TextAlignment.Center,
+                    Margin = new Thickness(0)
+                };
 
                 //doc.Blocks.Add(statsBlock);
 
@@ -496,7 +496,8 @@ namespace Supremacy.Client
 
                     ImageBrush imageBrush = new ImageBrush(
                         fiendImageConverter.Convert(field, typeof(BitmapImage), null, null)
-                        as ImageSource) { Stretch = Stretch.Uniform };
+                        as ImageSource)
+                    { Stretch = Stretch.Uniform };
 
                     techIcon.Width = 45;  // old 56
                     techIcon.Height = 36;  // old 45
@@ -513,7 +514,7 @@ namespace Supremacy.Client
                     techTextShadow.FontSize = 16 * (96d / 72d);
                     techTextShadow.HorizontalAlignment = HorizontalAlignment.Right;
                     techTextShadow.VerticalAlignment = VerticalAlignment.Bottom;
-                    
+
                     techText.Text = design.TechRequirements[techCategory].ToString();
                     techText.Foreground = Brushes.White;
                     techText.SetResourceReference(TextBlock.FontFamilyProperty, ClientResources.DefaultFontFamilyKey);
@@ -547,7 +548,7 @@ namespace Supremacy.Client
                     techTable.RowGroups[0].Rows[0].Cells.Add(new TableCell(techIconContainer));
                 }
 
-                
+
                 techTable.ClearFloaters = WrapDirection.Right;
                 techTable.Margin = new Thickness(0, 10, 0, 0);  // old: 14 instead 10
                 techTable.CellSpacing = 5.0;  // old: 7 instead 5
@@ -583,7 +584,7 @@ namespace Supremacy.Client
 
                 doc.Blocks.Add(headerBlock);
             }
-            
+
             // END of Encyclopedia-PARAGRAPHS
 
             return doc;
@@ -602,8 +603,8 @@ namespace Supremacy.Client
                 return;
 
             IEnumerable<ICollectionView> groupViews = (from groupItem in _encyclopediaEntryListView.Items.OfType<TreeViewItem>()
-                              select groupItem.ItemsSource).OfType<ICollectionView>();
-            
+                                                       select groupItem.ItemsSource).OfType<ICollectionView>();
+
             foreach (ICollectionView groupView in groupViews)
                 groupView.Refresh();
         }
@@ -639,7 +640,7 @@ namespace Supremacy.Client
             {
                 BuildResearchFields();
             }
-            foreach (Distribution<int> distribution in 
+            foreach (Distribution<int> distribution in
                 AppContext.LocalPlayerEmpire.Research.Distributions.Children)
             {
                 PropertyChangedEventManager.AddListener(
@@ -768,7 +769,7 @@ namespace Supremacy.Client
             }
         }
 
-        public string DisplayTextTooltip        
+        public string DisplayTextTooltip
         {
             get
             {

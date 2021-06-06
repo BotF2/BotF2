@@ -655,16 +655,16 @@ namespace Supremacy.Diplomacy
         public static ProposalClauseState Load(XContainer element)
         {
             return new ProposalClauseState
-                   {
-                       AcceptPriority = (int?)element.Element("AcceptPriority") ?? 0,
-                       Clause = EnumHelper.ParseOrGetDefault<ClauseType>((string)element.Element("Clause")),
-                       RecipientRegardResult = (int?)element.Element("RecipientRegardResult") ?? 0,
-                       RejectPriority = (int?)element.Element("RejectPriority") ?? 0,
-                       SenderRegardResult = (int?)element.Element("SenderRegardResult") ?? 0,
-                       SendPriority = (int?)element.Element("SendPriority") ?? 0,
-                       ViolationRegardCost = (int?)element.Element("ViolationRegardCost") ?? 0,
-                       ViolationTrustCost = (int?)element.Element("ViolationTrustCost") ?? 0
-                   };
+            {
+                AcceptPriority = (int?)element.Element("AcceptPriority") ?? 0,
+                Clause = EnumHelper.ParseOrGetDefault<ClauseType>((string)element.Element("Clause")),
+                RecipientRegardResult = (int?)element.Element("RecipientRegardResult") ?? 0,
+                RejectPriority = (int?)element.Element("RejectPriority") ?? 0,
+                SenderRegardResult = (int?)element.Element("SenderRegardResult") ?? 0,
+                SendPriority = (int?)element.Element("SendPriority") ?? 0,
+                ViolationRegardCost = (int?)element.Element("ViolationRegardCost") ?? 0,
+                ViolationTrustCost = (int?)element.Element("ViolationTrustCost") ?? 0
+            };
         }
 
         #endregion

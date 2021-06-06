@@ -123,7 +123,7 @@ namespace Supremacy.Client.Events
             LobbyData = lobbyData;
         }
 
-        public LocalPlayerJoinedEventArgs([NotNull] IPlayer player, [NotNull] ILobbyData lobbyData) 
+        public LocalPlayerJoinedEventArgs([NotNull] IPlayer player, [NotNull] ILobbyData lobbyData)
             : this(ServiceLocator.Current.GetInstance<IAppContext>(), player, lobbyData) { }
 
         public IPlayer Player { get; private set; }
@@ -264,7 +264,7 @@ namespace Supremacy.Client.Events
             ClientConnectionBroken = eventAggregator.GetEvent<ClientConnectionBrokenEvent>();
             ClientDisconnected = eventAggregator.GetEvent<ClientDisconnectedEvent>();
             CombatUpdateReceived = eventAggregator.GetEvent<CombatUpdateReceivedEvent>();
-           // IntelUpdateReceived = eventAggregator.GetEvent<IntelUpdateReceivedEvent>();
+            // IntelUpdateReceived = eventAggregator.GetEvent<IntelUpdateReceivedEvent>();
             InvasionUpdateReceived = eventAggregator.GetEvent<InvasionUpdateReceivedEvent>();
             LocalPlayerJoined = eventAggregator.GetEvent<LocalPlayerJoinedEvent>();
             PlayerJoined = eventAggregator.GetEvent<PlayerJoinedEvent>();

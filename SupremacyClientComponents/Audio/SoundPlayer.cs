@@ -56,7 +56,7 @@ namespace Supremacy.Client.Audio
 
             _isDisposed = true;
 
-            lock(_updateLock)
+            lock (_updateLock)
             {
                 foreach (IAudioTrack track in _audioTracks)
                 {
@@ -86,7 +86,7 @@ namespace Supremacy.Client.Audio
         public void Play(string pack, string sound)
         {
             MusicEntry track = _appContext.ThemeMusicLibrary.LookupTrack(pack, sound);
-            if(track == null) track = _appContext.DefaultMusicLibrary.LookupTrack(pack, sound);
+            if (track == null) track = _appContext.DefaultMusicLibrary.LookupTrack(pack, sound);
 
             if (track != null)
             {
@@ -102,7 +102,7 @@ namespace Supremacy.Client.Audio
         public void PlayAny(string pack)
         {
             MusicPack musicPack = null;
-            if(!_appContext.ThemeMusicLibrary.MusicPacks.TryGetValue(pack, out musicPack))
+            if (!_appContext.ThemeMusicLibrary.MusicPacks.TryGetValue(pack, out musicPack))
                 _appContext.DefaultMusicLibrary.MusicPacks.TryGetValue(pack, out musicPack);
 
             if (musicPack != null)

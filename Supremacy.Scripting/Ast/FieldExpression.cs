@@ -174,7 +174,7 @@ namespace Supremacy.Scripting.Ast
 			/*1649*/ "Members of readonly field '{0}' cannot be passed ref or out (except in a constructor).",
 			/*1650*/ "Fields of static readonly field '{0}' cannot be assigned to (except in a static constructor or a variable initializer).",
 			/*1651*/ "Fields of static readonly field '{0}' cannot be passed ref or out (except in a static constructor)."
-		};
+        };
 
         // The return value is always null.  Returning a value simplifies calling code.
         private Expression Report_AssignToReadonly(ParseContext ec, Expression rightSide)

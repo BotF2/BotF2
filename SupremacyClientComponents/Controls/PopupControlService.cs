@@ -217,7 +217,7 @@ namespace Supremacy.Client.Controls
             {
                 bool isRootPopupAnchor = (RootPopupAnchor == popupAnchor);
                 bool isTargetPopupAnchor = (TopmostPopupAnchor == popupAnchor);
-         
+
                 if (!CloseTopmostPopup(closeReason))
                     return false;
 
@@ -264,13 +264,13 @@ namespace Supremacy.Client.Controls
                 popupHost.KeyDown -= OnKeyDown;
                 popupHost.LostMouseCapture -= OnLostMouseCapture;
                 popupHost.PreviewKeyDown -= OnPreviewKeyDown;
-                
+
                 popupHost.RemoveHandler(
-                    Mouse.PreviewMouseDownOutsideCapturedElementEvent, 
+                    Mouse.PreviewMouseDownOutsideCapturedElementEvent,
                     (MouseButtonEventHandler)OnClickThrough);
-                
+
                 popupHost.RemoveHandler(
-                    Mouse.PreviewMouseUpOutsideCapturedElementEvent, 
+                    Mouse.PreviewMouseUpOutsideCapturedElementEvent,
                     (MouseButtonEventHandler)OnClickThrough);
             }
 
@@ -379,7 +379,7 @@ namespace Supremacy.Client.Controls
                 {
                     UIElement childElement = itemsControl.Items[index] as UIElement ??
                                        itemsControl.ItemContainerGenerator.ContainerFromIndex(index) as UIElement;
-                    
+
                     if (childElement == null)
                         continue;
 
@@ -480,7 +480,7 @@ namespace Supremacy.Client.Controls
 
             IGamePopupAnchor popupAnchor = popupHost.Popup.TemplatedParent as IGamePopupAnchor;
             if ((popupAnchor == null) ||
-                ((e.ChangedButton != MouseButton.Left) && (e.ChangedButton != MouseButton.Right)) || 
+                ((e.ChangedButton != MouseButton.Left) && (e.ChangedButton != MouseButton.Right)) ||
                 !HasCapture(popupAnchor))
             {
                 return;
@@ -538,7 +538,7 @@ namespace Supremacy.Client.Controls
                 contextMenu.AddHandler(
                     GameControlService.PreviewClickEvent,
                     (RoutedEventHandler)OnContextMenuItemPreviewClick);
-                
+
                 contextMenu.Closed += OnContextMenuClosed;
 
                 // Prevent the context menu from closing the popup
@@ -550,7 +550,7 @@ namespace Supremacy.Client.Controls
         }
 
         private static void OnIsPopupOpenPropertyValueChanged(
-            DependencyObject o, 
+            DependencyObject o,
             DependencyPropertyChangedEventArgs e)
         {
             IGamePopupAnchor popupAnchor = o as IGamePopupAnchor;
@@ -576,11 +576,11 @@ namespace Supremacy.Client.Controls
                         // The first time a Popup is created, it doesn't have its visual tree generated yet...
                         // so in this case we place the content in a temporary ContentPresenter for measurement purposes
                         ContentPresenter presenter = new ContentPresenter
-                                        {
-                                            Content = GetPopupContent(popupAnchorObj),
-                                            ContentTemplate = GetPopupContentTemplate(popupAnchorObj),
-                                            ContentTemplateSelector = GetPopupContentTemplateSelector(popupAnchorObj)
-                                        };
+                        {
+                            Content = GetPopupContent(popupAnchorObj),
+                            ContentTemplate = GetPopupContentTemplate(popupAnchorObj),
+                            ContentTemplateSelector = GetPopupContentTemplateSelector(popupAnchorObj)
+                        };
                         element = presenter;
                         element.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
                     }
@@ -665,7 +665,7 @@ namespace Supremacy.Client.Controls
         }
 
         private static void OnPopupContentPropertyValueChanged(
-            DependencyObject o, 
+            DependencyObject o,
             DependencyPropertyChangedEventArgs e)
         {
             ILogicalParent control = o as ILogicalParent;
@@ -762,7 +762,7 @@ namespace Supremacy.Client.Controls
                     delegate
                     {
                         popupAnchorElement.UpdateLayout();
-                        
+
                         if (popupAnchor.Popup == null || !popupAnchor.IsPopupOpen)
                             return;
 

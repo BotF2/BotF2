@@ -22,7 +22,7 @@ namespace Supremacy.Client
     /// <summary>
     /// Interaction logic for f08_Dialog.xaml.cs
     /// </summary>
-    public partial class F08_Dialog 
+    public partial class F08_Dialog
     {
 
         //private string _text = "text";

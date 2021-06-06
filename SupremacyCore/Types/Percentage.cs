@@ -53,7 +53,7 @@ namespace Supremacy.Types
         {
             if (float.IsNaN(value) || float.IsInfinity(value))
                 throw new ArgumentException("Value cannot be NaN or Infinity.", "value");
-            
+
             ApplyErrorCorrectionAndLimitPrecision(ref value);
 
             if (value > float.MaxValue)
@@ -322,7 +322,7 @@ namespace Supremacy.Types
                 value = nearestTenthPercentage;
                 return;
             }
-            
+
             value = (float)Math.Round(value, 4);
         }
 

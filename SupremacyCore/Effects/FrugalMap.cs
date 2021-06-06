@@ -1646,19 +1646,19 @@ namespace Supremacy.Effects
                         case FrugalMapStoreState.ThreeObjectMap:
                             newStore = new ThreeObjectMap();
                             break;
-                        
+
                         case FrugalMapStoreState.SixObjectMap:
                             newStore = new SixObjectMap();
                             break;
-                        
+
                         case FrugalMapStoreState.Array:
                             newStore = new ArrayObjectMap();
                             break;
-                        
+
                         case FrugalMapStoreState.SortedArray:
                             newStore = new SortedObjectMap();
                             break;
-                        
+
                         case FrugalMapStoreState.Hashtable:
                             newStore = new HashObjectMap();
                             break;
@@ -1703,7 +1703,7 @@ namespace Supremacy.Effects
         {
             if (_mapStore == null)
                 throw new ArgumentOutOfRangeException("index");
-            
+
             _mapStore.GetKeyValuePair(index, out key, out value);
         }
 

@@ -231,10 +231,10 @@ namespace Supremacy.Client.Controls
             double high = Minimum + dMin + (SmallChange - (dMin % SmallChange));
 
             double snapped = Math.Abs(d - low) < Math.Abs(high - d) ? low : high;
-            
+
             if (snapped < Minimum)
                 return Minimum;
-            
+
             if (snapped > Maximum)
                 return Maximum;
 

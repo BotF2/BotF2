@@ -76,9 +76,9 @@ namespace Supremacy.Xna
             // We need a luminance chain
             int chainLength = 1;
             int startSize = (int)MathHelper.Min(width / 16, height / 16);
-            
+
             int size;
-            
+
             for (size = 16; size < startSize; size *= 4)
             {
                 chainLength++;
@@ -420,8 +420,8 @@ namespace Supremacy.Xna
 
             // We didn't find one, let's make one
             IntermediateTexture newTexture = new IntermediateTexture
-                             {
-                                 RenderTarget = new RenderTarget2D(
+            {
+                RenderTarget = new RenderTarget2D(
                                      _graphicsDevice,
                                      width,
                                      height,
@@ -430,8 +430,8 @@ namespace Supremacy.Xna
                                      msType,
                                      msQuality,
                                      RenderTargetUsage.DiscardContents)
-                             
-                             };
+
+            };
 
             _intermediateTextures.Add(newTexture);
 

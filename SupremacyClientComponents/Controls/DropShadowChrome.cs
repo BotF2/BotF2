@@ -39,7 +39,7 @@ namespace Supremacy.Client.Controls
                 "BorderThickness",
                 typeof(Thickness),
                 typeof(DropShadowChrome),
-                new FrameworkPropertyMetadata(new Thickness(5), 
+                new FrameworkPropertyMetadata(new Thickness(5),
                     FrameworkPropertyMetadataOptions.AffectsRender));
 
         public static readonly DependencyProperty ColorProperty = DependencyProperty.Register(
@@ -53,7 +53,7 @@ namespace Supremacy.Client.Controls
             "CornerRadius",
             typeof(CornerRadius),
             typeof(DropShadowChrome),
-            new FrameworkPropertyMetadata(new CornerRadius(0), 
+            new FrameworkPropertyMetadata(new CornerRadius(0),
                 FrameworkPropertyMetadataOptions.AffectsRender));
 
         public static readonly DependencyProperty XOffsetProperty = DependencyProperty.Register(
@@ -88,7 +88,7 @@ namespace Supremacy.Client.Controls
             GradientStopCollection stops = new GradientStopCollection
                         {
                             new GradientStop(
-                                color, 
+                                color,
                                 offsetPercentage + 0.0 * gradientAmount),
                             new GradientStop(
                                 Color.FromArgb((byte)(0.74336 * alpha), color.R, color.G, color.B),
@@ -186,7 +186,7 @@ namespace Supremacy.Client.Controls
             }
 
             RadialGradientBrush brush = new RadialGradientBrush(CreateStops(offsetPercentage));
-            
+
             switch (corner)
             {
                 case Corners.TopLeft:
@@ -258,9 +258,9 @@ namespace Supremacy.Client.Controls
                 brush.Freeze();
 
                 PathFigure figure = new PathFigure
-                             {
-                                 StartPoint = new Point(innerBounds.Left + CornerRadius.TopLeft, innerBounds.Top)
-                             };
+                {
+                    StartPoint = new Point(innerBounds.Left + CornerRadius.TopLeft, innerBounds.Top)
+                };
                 figure.Segments.Add(
                     new LineSegment(
                         new Point(

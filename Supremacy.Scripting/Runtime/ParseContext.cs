@@ -108,7 +108,7 @@ namespace Supremacy.Scripting.Runtime
         #endregion
 
         private readonly List<NamespaceTracker> _importedNamespaces;
-        private readonly Dictionary<string, FullNamedExpression> _registeredAliases; 
+        private readonly Dictionary<string, FullNamedExpression> _registeredAliases;
         private Options _flags;
 
         public LambdaExpression CurrentAnonymousMethod { get; set; }

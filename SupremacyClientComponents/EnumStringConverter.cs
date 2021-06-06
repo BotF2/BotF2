@@ -68,7 +68,7 @@ namespace Supremacy.Client
                 {
                     try
                     {
-                        string[] parts = value.ToString().Split(new[] {'.'}, StringSplitOptions.RemoveEmptyEntries);
+                        string[] parts = value.ToString().Split(new[] { '.' }, StringSplitOptions.RemoveEmptyEntries);
                         if (parts.Length < 2)
                         {
                             typeName = parameter as string;

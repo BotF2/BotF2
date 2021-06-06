@@ -12,7 +12,7 @@ namespace Supremacy.Diplomacy.Visitors
         {
             if (agreement == null)
                 throw new ArgumentNullException("agreement");
-            
+
             agreement.Proposal.Accept(this);
         }
 

@@ -54,7 +54,7 @@ namespace Supremacy.Client
         public override object ProvideValue(IServiceProvider serviceProvider)
         {
             string text = ResourceManager.GetString(_key);
-            
+
             switch (Case)
             {
                 case StringCase.Lower:
@@ -66,11 +66,11 @@ namespace Supremacy.Client
             }
 
             IProvideValueTarget provideValueTarget = serviceProvider.GetService(typeof(IProvideValueTarget)) as IProvideValueTarget;
-            
+
             if (provideValueTarget != null)
             {
                 object property = provideValueTarget.TargetProperty;
-                
+
                 if (!(property is DependencyProperty) &&
                     !(property is PropertyInfo) &&
                     !(property is PropertyDescriptor))

@@ -11,10 +11,10 @@ using System;
 
 namespace Supremacy.Universe
 {
-	[AttributeUsage(AttributeTargets.Field, AllowMultiple = false)]
-	public sealed class UninhabitableAttribute : Attribute
-	{
-	    public static readonly UninhabitableAttribute Default = new UninhabitableAttribute();
+    [AttributeUsage(AttributeTargets.Field, AllowMultiple = false)]
+    public sealed class UninhabitableAttribute : Attribute
+    {
+        public static readonly UninhabitableAttribute Default = new UninhabitableAttribute();
 
         public override bool IsDefaultAttribute()
         {
@@ -25,5 +25,5 @@ namespace Supremacy.Universe
         {
             return (obj is UninhabitableAttribute);
         }
-	}
+    }
 }

@@ -52,8 +52,8 @@ namespace Supremacy.Universe
             get { return GameContext.Current.Universe.Objects[_targetColonyId] as Colony; }
             set
             {
-                _targetColonyId = (value != null) 
-                    ? value.ObjectID 
+                _targetColonyId = (value != null)
+                    ? value.ObjectID
                     : -1;
 
                 foreach (TradeRoute route in SourceColony.TradeRoutes)

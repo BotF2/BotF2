@@ -31,29 +31,29 @@ namespace Supremacy.Client.Views
                 throw new ArgumentNullException("lobbyData");
 
             foreach (Player player in lobbyData.Players)
-            { 
+            {
                 this[player.Empire].Player = player;
-                GameLog.Client.General.DebugFormat("PlayerID = {0}, Name = {1}, EmpireID = {2}, Empire = {3}", player.PlayerID, player.Name, player.EmpireID, player.Empire );
-            
+                GameLog.Client.General.DebugFormat("PlayerID = {0}, Name = {1}, EmpireID = {2}, Empire = {3}", player.PlayerID, player.Name, player.EmpireID, player.Empire);
+
             }
             UpdateRelationshipStatus();
         }
 
         public void UpdatePlayerReadiness([NotNull] IPlayer player)
         {
-           
+
             if (player == null)
                 throw new ArgumentNullException("player");
 
             this[player.Empire].IsReady = true;
-//Plays a "click" sound when turn button is pressed. Sound plays on all machines in Multiplayer.
+            //Plays a "click" sound when turn button is pressed. Sound plays on all machines in Multiplayer.
             //var soundPlayer = new SoundPlayer("Resources/SoundFX/ChatMessage.wav");
             //{
             //    if (File.Exists("Resources/SoundFX/ChatMessage.wav"));
             //    soundPlayer.Play();
             //}  
         }
-        
+
         public void ClearPlayerReadiness()
         {
             foreach (EmpirePlayerStatus status in this)
@@ -97,10 +97,10 @@ namespace Supremacy.Client.Views
                 if (_playerId < Game.Player.GameHostID)
                 {
                     return new Player
-                           {
-                               EmpireID = _empireId,
-                               PlayerID = Game.Player.ComputerPlayerID
-                           };
+                    {
+                        EmpireID = _empireId,
+                        PlayerID = Game.Player.ComputerPlayerID
+                    };
                 }
 
                 return _appContext.Players[_playerId];

@@ -78,10 +78,10 @@ namespace Supremacy.Scripting
             get
             {
                 CompileScript();
-             
+
                 if (_delegate != null)
                     return _delegate.Method.ReturnType;
-                
+
                 return typeof(object);
             }
         }
@@ -102,7 +102,7 @@ namespace Supremacy.Scripting
                     return (TResult)valueProvider.Value;
                 }
             }
-            
+
             return (TResult)result;
         }
 

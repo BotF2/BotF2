@@ -24,7 +24,7 @@ namespace Supremacy.Xna
         private const string XnaContentExtension = ".xnb";
 
         // ReSharper disable InconsistentNaming
-        
+
         private readonly object _modelLock = new object();
         private readonly string _workingDirectory;
 
@@ -161,10 +161,10 @@ namespace Supremacy.Xna
                 24d * 96d / 72d,
                 Brushes.White,
                 VisualTreeHelper.GetDpi(this).PixelsPerDip)
-                          {
-                              MaxTextWidth = targetSize.Width,
-                              TextAlignment = TextAlignment.Center
-                          };
+            {
+                MaxTextWidth = targetSize.Width,
+                TextAlignment = TextAlignment.Center
+            };
 
             drawingContext.DrawText(
                 message,

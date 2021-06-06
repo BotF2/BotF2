@@ -36,7 +36,7 @@ namespace Supremacy.Scripting.Runtime
         private static Parser _parser;
         private static Dictionary<Identifier, Type> _xamlTypeMap;
         private static readonly Dictionary<string, TypeTracker> _typeGroups = new Dictionary<string, TypeTracker>();
-        
+
         private readonly HashSet<string> _defines = new HashSet<string>();
         private readonly TopNamespaceTracker _topNamespace;
         private readonly EventHandler<AssemblyLoadedEventArgs> _onAssemblyLoadHandler;
@@ -91,7 +91,7 @@ namespace Supremacy.Scripting.Runtime
         }
 
         public MSAst.LambdaExpression ParseScript(
-            SourceUnit scriptSource, 
+            SourceUnit scriptSource,
             ScriptCompilerOptions compilerOptions,
             ErrorSink errorSink)
         {
@@ -102,10 +102,10 @@ namespace Supremacy.Scripting.Runtime
             Expression expression = ParseExpression(scriptSource);
 
             LinkParents.Link(expression);
-            
+
             ParseContext parseContext = new ParseContext(compilerContext)
             {
-              
+
                 CurrentScope = new TopLevelScope(
                                        compilerContext,
                                        new ParametersCompiled(
@@ -114,7 +114,7 @@ namespace Supremacy.Scripting.Runtime
                                                         o.Name,
                                                         null,
                                                         SourceSpan.None)
-                                                    {
+                                               {
                                                    ParameterType = o.Type
                                                })),
                                        expression.Span.Start)
@@ -167,7 +167,7 @@ namespace Supremacy.Scripting.Runtime
         {
             NamespaceTracker currentTracker = _topNamespace;
             string[] parts = nsName.Split(new[] { '.' }, StringSplitOptions.RemoveEmptyEntries);
-            
+
             foreach (string part in parts)
             {
                 if (!currentTracker.TryGetValue((SymbolId)part, out MemberTracker memberTracker))
@@ -176,7 +176,7 @@ namespace Supremacy.Scripting.Runtime
                 }
 
                 currentTracker = memberTracker as NamespaceTracker;
-                
+
                 if (currentTracker == null)
                 {
                     return null;
@@ -198,7 +198,7 @@ namespace Supremacy.Scripting.Runtime
             IEnumerable<ScriptNamespaceAliasAttribute> aliasAttributes = assembly
                 .GetCustomAttributes(typeof(ScriptNamespaceAliasAttribute), false)
                 .Cast<ScriptNamespaceAliasAttribute>();
-            
+
             foreach (ScriptNamespaceAliasAttribute aliasAttribute in aliasAttributes)
             {
                 NamespaceTracker namespaceTracker = LookupNamespace(aliasAttribute.Namespace);

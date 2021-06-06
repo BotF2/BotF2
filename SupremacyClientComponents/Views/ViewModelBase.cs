@@ -13,7 +13,7 @@ using Supremacy.Client.Context;
 namespace Supremacy.Client.Views
 {
     public abstract class ViewModelBase<TView, TViewModel> : PresentationModelBase,
-        IInteractionNode, 
+        IInteractionNode,
         INotifyPropertyChanged
         where TView : class, IGameScreenView<TViewModel>
         where TViewModel : ViewModelBase<TView, TViewModel>

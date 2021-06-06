@@ -33,7 +33,7 @@ namespace Supremacy.Client.Controls
             string imageSourceLarge,
             string imageSourceSmall,
             InputGestureCollection inputGestures)
-            :this(name,
+            : this(name,
                      ownerType,
                      label,
                      (!string.IsNullOrEmpty(imageSourceLarge)
@@ -42,21 +42,22 @@ namespace Supremacy.Client.Controls
                      (!string.IsNullOrEmpty(imageSourceSmall)
                           ? new BitmapImage(new Uri(imageSourceSmall, UriKind.RelativeOrAbsolute))
                           : null),
-                     inputGestures) { }
+                     inputGestures)
+        { }
 
         public GameCommand(
-            string name, 
-            Type ownerType, 
-            string label, 
-            ImageSource imageSourceLarge, 
+            string name,
+            Type ownerType,
+            string label,
+            ImageSource imageSourceLarge,
             ImageSource imageSourceSmall)
-            : this(name, ownerType, label,imageSourceLarge,imageSourceSmall, null) { }
+            : this(name, ownerType, label, imageSourceLarge, imageSourceSmall, null) { }
 
         public GameCommand(
-            string name, 
-            Type ownerType, 
-            string label, 
-            ImageSource imageSourceLarge, 
+            string name,
+            Type ownerType,
+            string label,
+            ImageSource imageSourceLarge,
             ImageSource imageSourceSmall,
             InputGestureCollection inputGestures)
             : base(name, ownerType, inputGestures)
@@ -82,9 +83,9 @@ namespace Supremacy.Client.Controls
 
             if (routedCommand == null)
                 return command.CanExecute(parameter);
-            
+
             return routedCommand.CanExecute(
-                parameter, 
+                parameter,
                 commandSource.CommandTarget ?? alternateTarget);
         }
 
@@ -95,10 +96,10 @@ namespace Supremacy.Client.Controls
 
             object parameter = commandSource.CommandParameter;
             RoutedCommand routedCommand = alternateCommand as RoutedCommand;
-            
+
             if (routedCommand == null)
                 return alternateCommand.CanExecute(parameter);
-            
+
             return routedCommand.CanExecute(
                 parameter,
                 commandSource.CommandTarget ?? commandSource as IInputElement);
@@ -112,7 +113,7 @@ namespace Supremacy.Client.Controls
 
             object parameter = commandSource.CommandParameter;
             RoutedCommand routedCommand = command as RoutedCommand;
-            
+
             if (routedCommand != null)
             {
                 IInputElement commandTarget = commandSource.CommandTarget ?? commandSource as IInputElement;

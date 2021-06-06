@@ -29,7 +29,7 @@ using Supremacy.Utility;
 namespace Supremacy.Client
 {
     [UsedImplicitly]
-    internal sealed class GameScreenStackRegionAdapter :RegionAdapterBase<GameScreenStack>
+    internal sealed class GameScreenStackRegionAdapter : RegionAdapterBase<GameScreenStack>
     {
         public GameScreenStackRegionAdapter(IRegionBehaviorFactory defaultBehaviors) : base(defaultBehaviors) { }
 
@@ -167,7 +167,7 @@ namespace Supremacy.Client
 
         private void OnActiveViewsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
-            if (_updating) 
+            if (_updating)
                 return;
 
             try
@@ -297,8 +297,8 @@ namespace Supremacy.Client
                 }
                 _itemsContainer.Children.Remove(screen);
                 _screens.Remove(screen);
-                
-                if(ClientApp.Current.IsShuttingDown)
+
+                if (ClientApp.Current.IsShuttingDown)
                     return;
 
                 screen.Style = null;
@@ -370,7 +370,7 @@ namespace Supremacy.Client
 
         protected override Size ArrangeOverride(Size arrangeBounds)
         {
-            
+
             _itemsContainer.Arrange(new Rect(arrangeBounds));
             return arrangeBounds;
         }

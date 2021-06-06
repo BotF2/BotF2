@@ -95,7 +95,7 @@ namespace Supremacy.Client.Services
                      BindingHelpers.SetInlines(
                          messageText,
                          (Inline[])formattedTextConverter.Convert(message));
-                     
+
                      MessageDialog.Show(
                          header,
                          messageText,

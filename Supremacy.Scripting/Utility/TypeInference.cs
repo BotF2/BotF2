@@ -470,8 +470,8 @@ namespace Supremacy.Scripting.Utility
                 {
                     Type[] g_args = t.GetGenericArguments();
                     rtype = g_args[rtype.GenericParameterPosition];
-				}
-      
+                }
+
                 // Remove dependent types, they cannot be fixed yet
                 RemoveDependentTypes(types_to_fix, rtype);
             }

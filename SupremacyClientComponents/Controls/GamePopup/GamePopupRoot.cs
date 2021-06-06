@@ -181,7 +181,7 @@ namespace Supremacy.Client.Controls
                 });
 
             _adornerDecorator.SetBinding(
-                ClipToBoundsProperty, 
+                ClipToBoundsProperty,
                 new Binding
                 {
                     Mode = BindingMode.OneWay,
@@ -207,7 +207,7 @@ namespace Supremacy.Client.Controls
             {
                 FlowDirection direction = (FlowDirection)child.GetValue(FlowDirectionProperty);
                 FlowDirection flowDirection = FlowDirection;
-                
+
                 if (direction != flowDirection)
                     animateFromRight = !animateFromRight;
 
@@ -217,7 +217,7 @@ namespace Supremacy.Client.Controls
                     0.0,
                     duration,
                     FillBehavior.Stop);
-                
+
                 renderTransform.BeginAnimation(TranslateTransform.XProperty, horizontalAnimation);
             }
 
@@ -300,108 +300,108 @@ namespace Supremacy.Client.Controls
             switch (preferedPlacement)
             {
                 case PlacementMode.Bottom:
-                {
-                    if (ActualHeight * _dpiYfactor + _relativeToTargetPoint.Y > screenBounds.Top + screenBounds.Height)
                     {
-                        PositionTop(_relativeToTargetPoint, secondSetPositionCall);
-                        if (_arrow != null)
-                            _arrow.Margin = new Thickness(arrowMargin.Left, -1.0, arrowMargin.Right, arrowMargin.Bottom);
-                    }
-                    else
-                    {
-                        _relativeToTargetPoint.Y += placementTarget != null ? placementTarget.RenderSize.Height * _dpiYfactor : 0.0;
-                        PositionBottom(_relativeToTargetPoint, secondSetPositionCall);
-                        if (_arrow != null)
-                            _arrow.Margin = new Thickness(arrowMargin.Left, arrowMargin.Top, arrowMargin.Right, -1.0);
-                    }
+                        if (ActualHeight * _dpiYfactor + _relativeToTargetPoint.Y > screenBounds.Top + screenBounds.Height)
+                        {
+                            PositionTop(_relativeToTargetPoint, secondSetPositionCall);
+                            if (_arrow != null)
+                                _arrow.Margin = new Thickness(arrowMargin.Left, -1.0, arrowMargin.Right, arrowMargin.Bottom);
+                        }
+                        else
+                        {
+                            _relativeToTargetPoint.Y += placementTarget != null ? placementTarget.RenderSize.Height * _dpiYfactor : 0.0;
+                            PositionBottom(_relativeToTargetPoint, secondSetPositionCall);
+                            if (_arrow != null)
+                                _arrow.Margin = new Thickness(arrowMargin.Left, arrowMargin.Top, arrowMargin.Right, -1.0);
+                        }
 
-                    if (secondSetPositionCall)
+                        if (secondSetPositionCall)
+                            break;
+
+                        SetPosition(PlacementMode.Right, placementTarget, mousePosition, true);
                         break;
-
-                    SetPosition(PlacementMode.Right, placementTarget, mousePosition, true);
-                    break;
-                }
+                    }
 
                 case PlacementMode.Right:
-                {
-                    if (ActualWidth * _dpiXfactor + _relativeToTargetPoint.X > screenBounds.Left + screenBounds.Width)
                     {
-                        _relativeToTargetPoint.X += placementTarget != null ? placementTarget.RenderSize.Width * _dpiXfactor : 0.0;
-                        PositionLeft(_relativeToTargetPoint, secondSetPositionCall);
-                        if (_arrow != null)
+                        if (ActualWidth * _dpiXfactor + _relativeToTargetPoint.X > screenBounds.Left + screenBounds.Width)
                         {
-                            _arrow.HorizontalAlignment = HorizontalAlignment.Right;
-                            _arrow.Margin = new Thickness(arrowMargin.Left, arrowMargin.Top, horizontalOffset, arrowMargin.Bottom);
+                            _relativeToTargetPoint.X += placementTarget != null ? placementTarget.RenderSize.Width * _dpiXfactor : 0.0;
+                            PositionLeft(_relativeToTargetPoint, secondSetPositionCall);
+                            if (_arrow != null)
+                            {
+                                _arrow.HorizontalAlignment = HorizontalAlignment.Right;
+                                _arrow.Margin = new Thickness(arrowMargin.Left, arrowMargin.Top, horizontalOffset, arrowMargin.Bottom);
+                            }
                         }
-                    }
-                    else
-                    {
-                        PositionRight(_relativeToTargetPoint, secondSetPositionCall);
-                        if (_arrow != null)
+                        else
                         {
-                            _arrow.HorizontalAlignment = HorizontalAlignment.Left;
-                            _arrow.Margin = new Thickness(horizontalOffset, arrowMargin.Top, arrowMargin.Right, arrowMargin.Bottom);
+                            PositionRight(_relativeToTargetPoint, secondSetPositionCall);
+                            if (_arrow != null)
+                            {
+                                _arrow.HorizontalAlignment = HorizontalAlignment.Left;
+                                _arrow.Margin = new Thickness(horizontalOffset, arrowMargin.Top, arrowMargin.Right, arrowMargin.Bottom);
+                            }
                         }
-                    }
 
-                    if (secondSetPositionCall)
+                        if (secondSetPositionCall)
+                            break;
+
+                        SetPosition(PlacementMode.Bottom, placementTarget, mousePosition, true);
                         break;
-
-                    SetPosition(PlacementMode.Bottom, placementTarget, mousePosition, true);
-                    break;
-                }
+                    }
 
                 case PlacementMode.Left:
-                {
-                    if (screenBounds.Left > _relativeToTargetPoint.X - ActualWidth * _dpiXfactor)
                     {
-                        PositionRight(_relativeToTargetPoint, secondSetPositionCall);
-                        if (_arrow != null)
+                        if (screenBounds.Left > _relativeToTargetPoint.X - ActualWidth * _dpiXfactor)
                         {
-                            _arrow.HorizontalAlignment = HorizontalAlignment.Left;
-                            _arrow.Margin = new Thickness(horizontalOffset, arrowMargin.Top, arrowMargin.Right, arrowMargin.Bottom);
+                            PositionRight(_relativeToTargetPoint, secondSetPositionCall);
+                            if (_arrow != null)
+                            {
+                                _arrow.HorizontalAlignment = HorizontalAlignment.Left;
+                                _arrow.Margin = new Thickness(horizontalOffset, arrowMargin.Top, arrowMargin.Right, arrowMargin.Bottom);
+                            }
                         }
-                    }
-                    else
-                    {
-                        _relativeToTargetPoint.X += placementTarget != null ? placementTarget.RenderSize.Width * _dpiXfactor : 0.0;
-                        PositionLeft(_relativeToTargetPoint, secondSetPositionCall);
-                        if (_arrow != null)
+                        else
                         {
-                            _arrow.HorizontalAlignment = HorizontalAlignment.Right;
-                            _arrow.Margin = new Thickness(arrowMargin.Left, arrowMargin.Top, horizontalOffset, arrowMargin.Bottom);
+                            _relativeToTargetPoint.X += placementTarget != null ? placementTarget.RenderSize.Width * _dpiXfactor : 0.0;
+                            PositionLeft(_relativeToTargetPoint, secondSetPositionCall);
+                            if (_arrow != null)
+                            {
+                                _arrow.HorizontalAlignment = HorizontalAlignment.Right;
+                                _arrow.Margin = new Thickness(arrowMargin.Left, arrowMargin.Top, horizontalOffset, arrowMargin.Bottom);
+                            }
                         }
-                    }
 
-                    if (secondSetPositionCall)
+                        if (secondSetPositionCall)
+                            break;
+
+                        SetPosition(PlacementMode.Bottom, placementTarget, mousePosition, true);
                         break;
-
-                    SetPosition(PlacementMode.Bottom, placementTarget, mousePosition, true);
-                    break;
-                }
+                    }
 
                 case PlacementMode.Top:
-                {
-                    if (ActualHeight * _dpiYfactor - _relativeToTargetPoint.Y > screenBounds.Top)
                     {
-                        _relativeToTargetPoint.Y += placementTarget != null ? placementTarget.RenderSize.Height * _dpiYfactor : 0.0;
-                        PositionBottom(_relativeToTargetPoint, secondSetPositionCall);
-                        if (_arrow != null)
-                            _arrow.Margin = new Thickness(arrowMargin.Left, arrowMargin.Top, arrowMargin.Right, -1.0);
-                    }
-                    else
-                    {
-                        PositionTop(_relativeToTargetPoint, secondSetPositionCall);
-                        if (_arrow != null)
-                            _arrow.Margin = new Thickness(arrowMargin.Left, -1.0, arrowMargin.Right, arrowMargin.Bottom);
-                    }
+                        if (ActualHeight * _dpiYfactor - _relativeToTargetPoint.Y > screenBounds.Top)
+                        {
+                            _relativeToTargetPoint.Y += placementTarget != null ? placementTarget.RenderSize.Height * _dpiYfactor : 0.0;
+                            PositionBottom(_relativeToTargetPoint, secondSetPositionCall);
+                            if (_arrow != null)
+                                _arrow.Margin = new Thickness(arrowMargin.Left, arrowMargin.Top, arrowMargin.Right, -1.0);
+                        }
+                        else
+                        {
+                            PositionTop(_relativeToTargetPoint, secondSetPositionCall);
+                            if (_arrow != null)
+                                _arrow.Margin = new Thickness(arrowMargin.Left, -1.0, arrowMargin.Right, arrowMargin.Bottom);
+                        }
 
-                    if (secondSetPositionCall)
+                        if (secondSetPositionCall)
+                            break;
+
+                        SetPosition(PlacementMode.Right, placementTarget, mousePosition, true);
                         break;
-
-                    SetPosition(PlacementMode.Right, placementTarget, mousePosition, true);
-                    break;
-                }
+                    }
             }
         }
 

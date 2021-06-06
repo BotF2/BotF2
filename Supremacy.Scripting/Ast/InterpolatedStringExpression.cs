@@ -42,7 +42,7 @@ namespace Supremacy.Scripting.Ast
             _literalExpression = literalExpression;
             _translateEscapeCharacter = translateEscapeCharacter;
         }
-        
+
         internal InterpolatedStringExpression()
         {
             // For cloning purposes only.
@@ -176,7 +176,7 @@ namespace Supremacy.Scripting.Ast
                         CompilerErrors.InterpolatedExpressionCannotContainBraces,
                         CreateSourceSpanCallback(index, index + 1));
                 }
-                
+
                 if (source[index] == '}')
                 {
                     ++index;
@@ -262,10 +262,10 @@ namespace Supremacy.Scripting.Ast
                 ArrayUtils.Insert(
                     new Argument(new ConstantExpression<string>(_stringBuilder.ToString())),
                     _expressions.Select(e => new Argument(e)).ToArray()))
-                   {
+                {
                     Span = _sourceSpanCallback(_stringStartIndex, endIndex - _startIndex),
                     FileName = _parseContext.Compiler.SourceUnit.Path
-                   };
+                };
         }
 
         public void AddExpression(Expression expression, int endIndex)

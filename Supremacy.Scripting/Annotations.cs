@@ -159,7 +159,7 @@ namespace Supremacy.Annotations
     {
     }
 
-    
+
     /// <summary>
     /// Indicates that the value of marked element could be <c>null</c> sometimes, so the check for <c>null</c> is necessary before its usage
     /// </summary>
@@ -167,9 +167,9 @@ namespace Supremacy.Annotations
     public sealed class CanBeNullAttribute : Attribute
     {
     }
-    
 
-    
+
+
 
     /// <summary>
     /// Indicates that the value of marked element could never be <c>null</c>

@@ -60,7 +60,7 @@ namespace Supremacy.Client.Controls
             }
 
             string accessKey = GetAccessKey();
-            
+
             if (string.IsNullOrEmpty(accessKey))
                 return;
 

@@ -89,7 +89,7 @@ namespace Supremacy.Scripting.Events
                     }
 
                     GameLog.Core.Events.DebugFormat("HomeSystemName is: {0}", target.Name);
-                    target.Population.AdjustCurrent(- population / 3 * 2);
+                    target.Population.AdjustCurrent(-population / 3 * 2);
                     target.Population.UpdateAndReset();
                     target.Health.AdjustCurrent(-health / 3 * 2);
                     target.Health.UpdateAndReset();

@@ -27,7 +27,7 @@ namespace Supremacy.Utility
         }
 
         public void DoAppend(LoggingEvent loggingEvent)
-         {
+        {
             lock (_syncLock)
             {
                 if (_isClosed)

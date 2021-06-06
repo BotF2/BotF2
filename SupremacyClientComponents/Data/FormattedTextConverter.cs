@@ -41,7 +41,7 @@ namespace Supremacy.Client.Data
     public class FormattedTextConverter : ValueConverter<FormattedTextConverter>
     {
         private static readonly DelegatingWeakEventListener<RoutedEventArgs> HyperlinkClickedWeakEventListener;
-        
+
         private static readonly ColorConverter _colorConverter = new ColorConverter();
         private static readonly BrushConverter _brushConverter = new BrushConverter();
 
@@ -102,7 +102,7 @@ namespace Supremacy.Client.Data
                     if (current == '[' && next != '[')
                     {
                         string text = sb.ToString();
-                        
+
                         sb.Length = 0;
                         i += (next == '/') ? 2 : 1;
                         current = line[i];
@@ -193,69 +193,69 @@ namespace Supremacy.Client.Data
             switch (inlineType)
             {
                 case InlineType.Hyperlink:
-                {
-                    Uri uri;
+                    {
+                        Uri uri;
 
-                    if (!Uri.TryCreate(param, UriKind.Absolute, out uri))
-                        uri = null;
+                        if (!Uri.TryCreate(param, UriKind.Absolute, out uri))
+                            uri = null;
 
                         Hyperlink link = new Hyperlink();
-                    link.NavigateUri = uri;
+                        link.NavigateUri = uri;
 
-                    GenericWeakEventManager.AddListener(
-                        link,
-                        "Click",
-                        HyperlinkClickedWeakEventListener);
+                        GenericWeakEventManager.AddListener(
+                            link,
+                            "Click",
+                            HyperlinkClickedWeakEventListener);
 
-                    span = link;
-                    break;
-                }
-
-                case InlineType.Bold:
-                {
-                    span = new Bold();
-                    break;
-                }
-
-                case InlineType.Italic:
-                {
-                    span = new Italic();
-                    break;
-                }
-
-                case InlineType.Underline:
-                {
-                    span = new Underline();
-                    break;
-                }
-
-                case InlineType.Colored:
-                {
-                    span = new Span
-                           {
-                               Foreground = new SolidColorBrush(
-                                   (Color)_colorConverter.ConvertFromInvariantString(param))
-                           };
-                    break;
-                }
-
-                case InlineType.Foreground:
-                {
-                    span = new Span();
-
-                        Match match = _resourceReferenceRegex.Match(param);
-                    if (!match.Success)
-                    {
-                        span.Foreground = (Brush) _brushConverter.ConvertFromInvariantString(param);
-                        return span;
+                        span = link;
+                        break;
                     }
 
-                    span.SetResourceReference(
-                        TextElement.ForegroundProperty,
-                        match.Groups["ResourceKey"].Value);
+                case InlineType.Bold:
+                    {
+                        span = new Bold();
+                        break;
+                    }
 
-                    break;
-                }
+                case InlineType.Italic:
+                    {
+                        span = new Italic();
+                        break;
+                    }
+
+                case InlineType.Underline:
+                    {
+                        span = new Underline();
+                        break;
+                    }
+
+                case InlineType.Colored:
+                    {
+                        span = new Span
+                        {
+                            Foreground = new SolidColorBrush(
+                                       (Color)_colorConverter.ConvertFromInvariantString(param))
+                        };
+                        break;
+                    }
+
+                case InlineType.Foreground:
+                    {
+                        span = new Span();
+
+                        Match match = _resourceReferenceRegex.Match(param);
+                        if (!match.Success)
+                        {
+                            span.Foreground = (Brush)_brushConverter.ConvertFromInvariantString(param);
+                            return span;
+                        }
+
+                        span.SetResourceReference(
+                            TextElement.ForegroundProperty,
+                            match.Groups["ResourceKey"].Value);
+
+                        break;
+                    }
 
                 default:
                     span = new Span();

@@ -69,36 +69,36 @@ namespace Supremacy.Client.Controls
             {
                 case NotifyCollectionChangedAction.Add:
                 case NotifyCollectionChangedAction.Replace:
-                {
-                    foreach (object newItem in e.NewItems)
                     {
-                            IVariantControl variantControl = newItem as IVariantControl;
-                        if (variantControl != null)
+                        foreach (object newItem in e.NewItems)
                         {
-                            if (_context != GameControlContext.None)
-                                variantControl.Context = _context;
-                            if (_itemVariantSize.HasValue)
-                                variantControl.VariantSize = _itemVariantSize.Value;
+                            IVariantControl variantControl = newItem as IVariantControl;
+                            if (variantControl != null)
+                            {
+                                if (_context != GameControlContext.None)
+                                    variantControl.Context = _context;
+                                if (_itemVariantSize.HasValue)
+                                    variantControl.VariantSize = _itemVariantSize.Value;
+                            }
+                            if (logicalParent != null)
+                                logicalParent.AddLogicalChild(newItem);
                         }
-                        if (logicalParent != null)
-                            logicalParent.AddLogicalChild(newItem);
+                        break;
                     }
-                    break;
-                }
             }
 
             switch (e.Action)
             {
                 case NotifyCollectionChangedAction.Remove:
                 case NotifyCollectionChangedAction.Replace:
-                {
-                    if (logicalParent != null)
                     {
-                        foreach (object oldItem in e.OldItems)
-                            logicalParent.RemoveLogicalChild(oldItem);
+                        if (logicalParent != null)
+                        {
+                            foreach (object oldItem in e.OldItems)
+                                logicalParent.RemoveLogicalChild(oldItem);
+                        }
+                        break;
                     }
-                    break;
-                }
             }
 
             try

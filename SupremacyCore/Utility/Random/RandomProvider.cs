@@ -27,7 +27,7 @@ namespace Supremacy.Utility
             {
                 if (_random == null)
                     _random = new MersenneTwister();
-                
+
                 return _random;
             }
         }

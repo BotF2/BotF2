@@ -58,7 +58,7 @@ namespace Supremacy.Orbitals
             get { return _turnAssigned; }
             private set
             {
-                 _turnAssigned = value;
+                _turnAssigned = value;
                 OnPropertyChanged("TurnAssigned");
                 OnPropertyChanged("IsAssigned");
             }
@@ -106,7 +106,7 @@ namespace Supremacy.Orbitals
             {
                 string displayText;
                 Percentage? percentComplete = PercentComplete;
-                
+
                 if (Fleet.IsInTow)
                 {
                     displayText = String.Format(
@@ -274,7 +274,7 @@ namespace Supremacy.Orbitals
         public virtual bool IsValidOrder(Fleet fleet)
         {
             if (fleet != null)
-            {   
+            {
                 if (IsTargetRequired(fleet))
                 {
                     if (Target != null)
@@ -324,7 +324,8 @@ namespace Supremacy.Orbitals
         /// <summary>
         /// Called when a fleet moves while this <see cref="FleetOrder"/> is assigned.
         /// </summary>
-        public virtual void OnFleetMoved() {
+        public virtual void OnFleetMoved()
+        {
             Fleet fleet = Fleet;
             if ((fleet != null) && IsCancelledOnMove)
             {
@@ -410,7 +411,7 @@ namespace Supremacy.Orbitals
         /// <summary>
         /// Occurs when a property value is changed.
         /// </summary>
-        [field:NonSerialized]
+        [field: NonSerialized]
         public event PropertyChangedEventHandler PropertyChanged;
 
         /// <summary>

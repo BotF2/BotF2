@@ -138,7 +138,7 @@ namespace Supremacy.AI
                 if (!daCiv.Traits.Contains("Warlike") && invasionCiv.CivID > 6)  // not warlike and a minor so skip
                     continue;
 
-                    Double lastRange = 999;
+                Double lastRange = 999;
 
                 if (DiplomacyHelper.IsContactMade(daCiv, invasionCiv)
                     && !GameContext.Current.CivilizationManagers[invasionCiv].IsHomeColonyDestroyed
@@ -159,7 +159,7 @@ namespace Supremacy.AI
                         {
                             if (UnitAI.CanAllShipsGetThere(daCiv, invasionCiv))
                             {
-                                
+
                                 daCiv.TargetCivilization = invasionCiv;
                                 lastRange = curretRange;
                                 if (!DiplomacyHelper.AreAtWar(daCiv, daCiv.TargetCivilization))
@@ -175,7 +175,7 @@ namespace Supremacy.AI
                     }
                     else daCiv.TargetCivilization = null;
                 }
-            }           
+            }
         }
         public static bool IsCivDefeated(Civilization undefeatedCiv)
         {

@@ -51,7 +51,7 @@ namespace Supremacy.Orbitals
         /// Initializes a new instance of the <see cref="Station"/> class using the specified design.
         /// </summary>
         /// <param name="design">The design.</param>
-        public Station(StationDesign design) 
+        public Station(StationDesign design)
             : base(design)
         {
             _buildQueue = new List<BuildQueueItem>();
@@ -89,20 +89,20 @@ namespace Supremacy.Orbitals
         public void ProcessQueue() { }
         #endregion
 
-		public override void SerializeOwnedData(SerializationWriter writer, object context)
-		{
-			base.SerializeOwnedData(writer, context);
-			writer.WriteOptimized(_buildSlots.ToArray());
-			writer.WriteOptimized(_buildOutput);
-			writer.Write(_buildQueue);
-		}
+        public override void SerializeOwnedData(SerializationWriter writer, object context)
+        {
+            base.SerializeOwnedData(writer, context);
+            writer.WriteOptimized(_buildSlots.ToArray());
+            writer.WriteOptimized(_buildOutput);
+            writer.Write(_buildQueue);
+        }
 
-		public override void DeserializeOwnedData(SerializationReader reader, object context)
-		{
-			base.DeserializeOwnedData(reader, context);
+        public override void DeserializeOwnedData(SerializationReader reader, object context)
+        {
+            base.DeserializeOwnedData(reader, context);
             _buildSlots = new ArrayWrapper<BuildSlot>((BuildSlot[])reader.ReadOptimizedObjectArray(typeof(BuildSlot)));
-			_buildOutput = reader.ReadOptimizedInt32();
-			_buildQueue = reader.ReadList<BuildQueueItem>();
-		}
+            _buildOutput = reader.ReadOptimizedInt32();
+            _buildQueue = reader.ReadList<BuildQueueItem>();
+        }
     }
 }

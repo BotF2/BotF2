@@ -255,11 +255,11 @@ namespace Supremacy.Game
                 return false;
 
             Fleet fleet = new Fleet
-                        {
-                            ObjectID = _fleetId,
-                            OwnerID = OwnerID,
-                            Location = _location
-                        };
+            {
+                ObjectID = _fleetId,
+                OwnerID = OwnerID,
+                Location = _location
+            };
 
             GameContext.Current.Universe.Objects.Add(fleet);
 
@@ -733,7 +733,7 @@ namespace Supremacy.Game
 
             if (fleet.Order is AssaultSystemOrder)
                 fleet.Order = fleet.GetDefaultOrder();
-            
+
             _route = fleet.Route;
         }
 
@@ -945,13 +945,13 @@ namespace Supremacy.Game
         {
             if (colony == null)
                 throw new ArgumentNullException("colony");
-            
+
             _colonyId = colony.ObjectID;
 
             EnumValueCollection<ProductionCategory> productionCategories = EnumUtilities.GetValues<ProductionCategory>();
-            
+
             _scrappedFacilities = new int[productionCategories.Count];
-            
+
             foreach (ProductionCategory category in productionCategories)
                 _scrappedFacilities[(int)category] = colony.GetScrappedFacilities(category);
         }

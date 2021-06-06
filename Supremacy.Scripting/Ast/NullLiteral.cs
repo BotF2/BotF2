@@ -58,8 +58,8 @@ namespace Supremacy.Scripting.Ast
         }
 
         public override System.Linq.Expressions.Expression TransformCore(ScriptGenerator generator)
-		{
+        {
             return System.Linq.Expressions.Expression.Constant(null);
-		}
+        }
     }
 }

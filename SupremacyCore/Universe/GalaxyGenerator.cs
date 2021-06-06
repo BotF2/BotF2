@@ -631,13 +631,13 @@ namespace Supremacy.Universe
                 {
                     GameLog.Core.GalaxyGenerator.WarnFormat("Failed to find a suitable home sector for civilization {0}.  Galaxy generation will start over.",
                         empireCivs[index].Name);
-                        empireCivs.RemoveAt(index--);
+                    empireCivs.RemoveAt(index--);
                     return false;
                 }
 
                 //We have a valid position
 
-                    
+
 
                 empireHomeLocations.Add(positions[iPosition]);
                 chosenCivs.Add(empireCivs[index]);
@@ -710,7 +710,7 @@ namespace Supremacy.Universe
                 GameLog.Core.GalaxyGenerator.WarnFormat("No more minor race definitions available.  Galaxy generation will stop.");
                 return false;
             }
-                
+
             //There are enough. Find their homes
             for (int index = 0; index < wantedMinorRaceCount; index++)
             {
@@ -1141,12 +1141,12 @@ namespace Supremacy.Universe
                                 if (planetSize != PlanetSize.NoWorld)
                                 {
                                     Planet planet = new Planet
-                                                 {
-                                                     PlanetSize = planetSize,
-                                                     PlanetType = GetPlanetType(system.StarType, planetSize, i),
-                                                     Variation = RandomHelper.Random(Planet.MaxVariations),
-                                                     Bonuses = PlanetBonus.Random
-                                                 };
+                                    {
+                                        PlanetSize = planetSize,
+                                        PlanetType = GetPlanetType(system.StarType, planetSize, i),
+                                        Variation = RandomHelper.Random(Planet.MaxVariations),
+                                        Bonuses = PlanetBonus.Random
+                                    };
 
                                     planets.Add(planet);
                                 }
@@ -1189,10 +1189,10 @@ namespace Supremacy.Universe
                         //foreach (var pos in positions)
                         //{
                         if (system.Name == "Dummy")
-                            {
-                                system.Name = starNames.FirstOrDefault();
-                                starNames.Remove(system.Name);
-                            }
+                        {
+                            system.Name = starNames.FirstOrDefault();
+                            starNames.Remove(system.Name);
+                        }
 
                         var qry = from s in systemNamesList
                                   group s by s into grp

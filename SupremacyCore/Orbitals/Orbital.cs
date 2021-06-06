@@ -171,7 +171,7 @@ namespace Supremacy.Orbitals
             _shieldStrength = new Meter(design.ShieldStrength, 0, design.ShieldStrength);
             _cloakStrength = new Meter(design.CloakStrength, 0, design.CloakStrength);
             _camouflagedMeter = new Meter(design.CamouflagedStrength, 0, design.CamouflagedStrength);
-            
+
             int _fp = (design.PrimaryWeapon.Damage * design.PrimaryWeapon.Count) + (design.SecondaryWeapon.Damage * design.SecondaryWeapon.Count);
             _firePower = new Meter(_fp, 0, _fp);
         }
@@ -212,7 +212,7 @@ namespace Supremacy.Orbitals
 
             // repair abilities are better in allied systems with colonies or starbases
             Entities.Civilization claimingCiv = null;
-            if(GameContext.Current.SectorClaims != null)
+            if (GameContext.Current.SectorClaims != null)
                 claimingCiv = GameContext.Current.SectorClaims.GetPerceivedOwner(Sector.Location, Owner);
             if (claimingCiv == Owner)
             {
@@ -266,7 +266,7 @@ namespace Supremacy.Orbitals
             //base.DynamicObjectType // that?
             // No shield regeneration // use Reharge value /7 from it. Here is where the ship regeneration is 
             // next 2 lines not needed they are in Regnerate shields -> no they are needed, its that thats working
-            double increase = (OrbitalDesign.ShieldRechargeRate /7) * ShieldStrength.Maximum; // Reduce Oribtal ShieldRecharge to 50% Not yet tested
+            double increase = (OrbitalDesign.ShieldRechargeRate / 7) * ShieldStrength.Maximum; // Reduce Oribtal ShieldRecharge to 50% Not yet tested
             ShieldStrength.AdjustCurrent((int)Math.Ceiling(increase));
 
 
@@ -281,7 +281,7 @@ namespace Supremacy.Orbitals
                 claimingCiv = GameContext.Current.SectorClaims.GetPerceivedOwner(Sector.Location, Owner);
 
             //GameLog.Core.MapData.DebugFormat("claimingCiv = {0}, Sector {1}, but owner=newOwner wish to be = {2}", claimingCiv, Sector.Location.ToString(), Owner);
-            
+
             if (claimingCiv == Owner)
             {
                 if ((Sector.System != null) && Sector.System.HasColony && Sector.System.Owner == Owner)
@@ -294,7 +294,7 @@ namespace Supremacy.Orbitals
                     _hullStrength.UpdateAndReset();
                     //GameLog.Core.MapData.DebugFormat("claiming: Sector has colony = {0}, Sector = {1}, Owner = {2}", Sector.System.Colony.Name, Sector.Location.ToString(), Owner);
                 }
-                if (Sector.Station != null) 
+                if (Sector.Station != null)
                 {
                     _shieldStrength.Reset(_shieldStrength.Maximum);
                     increase = 0.10;
@@ -309,24 +309,24 @@ namespace Supremacy.Orbitals
         }
 
         public override void SerializeOwnedData(SerializationWriter writer, object context)
-		{
-			base.SerializeOwnedData(writer, context);
-			writer.WriteObject(_crew);
-			writer.Write(_experienceLevel);
-			writer.WriteObject(_hullStrength);
-			writer.WriteObject(_shieldStrength);
+        {
+            base.SerializeOwnedData(writer, context);
+            writer.WriteObject(_crew);
+            writer.Write(_experienceLevel);
+            writer.WriteObject(_hullStrength);
+            writer.WriteObject(_shieldStrength);
             writer.WriteObject(_cloakStrength);
             writer.WriteObject(_camouflagedMeter);
             writer.WriteObject(_firePower);
         }
 
-		public override void DeserializeOwnedData(SerializationReader reader, object context)
-		{
-			base.DeserializeOwnedData(reader, context);
-			_crew = (Meter)reader.ReadObject();
-			_experienceLevel = reader.ReadUInt16();
-			_hullStrength = (Meter)reader.ReadObject();
-			_shieldStrength = (Meter)reader.ReadObject();
+        public override void DeserializeOwnedData(SerializationReader reader, object context)
+        {
+            base.DeserializeOwnedData(reader, context);
+            _crew = (Meter)reader.ReadObject();
+            _experienceLevel = reader.ReadUInt16();
+            _hullStrength = (Meter)reader.ReadObject();
+            _shieldStrength = (Meter)reader.ReadObject();
             _cloakStrength = (Meter)reader.ReadObject();
             _camouflagedMeter = (Meter)reader.ReadObject();
             _crew.CurrentValueChanged += Crew_CurrentValueChanged;

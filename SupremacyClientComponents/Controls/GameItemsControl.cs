@@ -205,7 +205,7 @@ namespace Supremacy.Client.Controls
                 }
                 else
                 {
-                    IVariantControl itemContainer = ItemContainerGenerator.ContainerFromItem(item) as  IVariantControl;
+                    IVariantControl itemContainer = ItemContainerGenerator.ContainerFromItem(item) as IVariantControl;
                     if (itemContainer != null)
                         itemContainer.VariantSize = newVariantSize;
                 }
@@ -224,7 +224,7 @@ namespace Supremacy.Client.Controls
                 }
                 else
                 {
-                    IVariantControl itemContainer = ItemContainerGenerator.ContainerFromItem(item) as  IVariantControl;
+                    IVariantControl itemContainer = ItemContainerGenerator.ContainerFromItem(item) as IVariantControl;
                     if (itemContainer != null)
                         itemContainer.Context = newContext;
                 }

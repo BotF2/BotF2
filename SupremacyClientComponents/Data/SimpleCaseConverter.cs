@@ -109,11 +109,11 @@ namespace Supremacy.Client.Data
         public override object ProvideValue(IServiceProvider serviceProvider)
         {
             return new SimpleCaseConverter
-                   {
-                       Case = Case,
-                       IfMatch = IfMatch,
-                       Else = Else
-                   };
+            {
+                Case = Case,
+                IfMatch = IfMatch,
+                Else = Else
+            };
         }
     }
 }

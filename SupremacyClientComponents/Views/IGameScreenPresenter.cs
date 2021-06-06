@@ -32,7 +32,7 @@ namespace Supremacy.Client.Views
         void Terminate();
     }
 
-    public interface IGameScreenPresenter<out TPresentationModel, out TView> : IPresenter 
+    public interface IGameScreenPresenter<out TPresentationModel, out TView> : IPresenter
         where TView : IGameScreenView<TPresentationModel>
     {
         /// <summary>

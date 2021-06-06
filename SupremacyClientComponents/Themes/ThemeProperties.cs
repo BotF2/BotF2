@@ -282,7 +282,7 @@ namespace Supremacy.Client.Themes
                 throw new ArgumentNullException("target");
             target.SetValue(OuterBorderPressedProperty, value);
         }
-        
+
         public static TextTrimming GetTextTrimming(DependencyObject target)
         {
             if (target == null)
@@ -296,7 +296,7 @@ namespace Supremacy.Client.Themes
                 throw new ArgumentNullException("target");
             target.SetValue(TextTrimmingProperty, value);
         }
-        
+
         public static TextWrapping GetTextWrapping(DependencyObject target)
         {
             if (target == null)

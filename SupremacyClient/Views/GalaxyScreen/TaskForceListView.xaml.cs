@@ -25,7 +25,7 @@ namespace Supremacy.Client.Views
         {
             if (appContext == null)
                 throw new ArgumentNullException("appContext");
-            
+
             _appContext = appContext;
 
             InitializeComponent();
@@ -44,8 +44,8 @@ namespace Supremacy.Client.Views
                 // doesn't work fine        GameLog.Print("container = {0}, item = {1}", container.ToString(), item.ToString());
 
                 //works     GameLog.Print("TaskForceList.Items.Count = {0}", TaskForceList.Items.Count);   // gives amount of blue lines = sections, not more
-              
-                
+
+
                 if (DragDropManager.GetDropTargetAdvisor(container) == null)
                     DragDropManager.SetDropTargetAdvisor(container, new TaskForceDropTargetAdvisor());
                 if (DragDropManager.GetDragSourceAdvisor(container) == null)
@@ -113,19 +113,19 @@ namespace Supremacy.Client.Views
             if (fleetView.Source.CanCloak)
             {
                 MenuItem cloakItem = new MenuItem
-                                {
-                                    IsCheckable = true,
-                                    Header = "Cloak",
-                                    Command = GalaxyScreenCommands.ToggleTaskForceCloak,
-                                    CommandParameter = fleetView
-                                };
+                {
+                    IsCheckable = true,
+                    Header = "Cloak",
+                    Command = GalaxyScreenCommands.ToggleTaskForceCloak,
+                    CommandParameter = fleetView
+                };
 
                 Binding cloakBinding = new Binding
-                                   {
-                                       Source = fleetView.Source,
-                                       Path = new PropertyPath("IsCloaked", new object[0]),
-                                       Mode = BindingMode.OneWay
-                                   };
+                {
+                    Source = fleetView.Source,
+                    Path = new PropertyPath("IsCloaked", new object[0]),
+                    Mode = BindingMode.OneWay
+                };
 
                 cloakItem.SetBinding(MenuItem.IsCheckedProperty, cloakBinding);
                 orderMenu.Items.Add(cloakItem);
@@ -157,11 +157,11 @@ namespace Supremacy.Client.Views
             foreach (FleetOrder order in FleetOrders.GetAvailableOrders(fleetView.Source))
             {
                 MenuItem orderItem = new MenuItem
-                                {
-                                    Header = order,
-                                    Command = GalaxyScreenCommands.IssueTaskForceOrder,
-                                    CommandParameter = new Pair<FleetView, FleetOrder>(fleetView, order)
-                                };
+                {
+                    Header = order,
+                    Command = GalaxyScreenCommands.IssueTaskForceOrder,
+                    CommandParameter = new Pair<FleetView, FleetOrder>(fleetView, order)
+                };
                 orderMenu.Items.Add(orderItem);
             }
 
@@ -197,6 +197,6 @@ namespace Supremacy.Client.Views
             d.SetValue(IsOrderMenuOpenedProperty, value);
         }
         #endregion
-        
+
     }
 }

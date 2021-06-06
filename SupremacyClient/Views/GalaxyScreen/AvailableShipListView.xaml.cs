@@ -120,7 +120,7 @@ namespace Supremacy.Client.Views
                     targetItemsControl.SelectedItems.Add(ship);
             }
         }
-    
+
 
         public UIElement TargetElement { get; set; }
 

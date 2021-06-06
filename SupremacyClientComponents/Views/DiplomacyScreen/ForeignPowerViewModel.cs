@@ -21,7 +21,7 @@ namespace Supremacy.Client.Views
         private readonly ObservableCollection<ActiveAgreementViewModel> _activeAgreements;
         private readonly ReadOnlyObservableCollection<ActiveAgreementViewModel> _activeAgreementsView;
         public ForeignPowerViewModel([NotNull] ForeignPower foreignPower)
-         {
+        {
             if (foreignPower == null)
             {
                 return;
@@ -33,7 +33,7 @@ namespace Supremacy.Client.Views
             _activeAgreementsView = new ReadOnlyObservableCollection<ActiveAgreementViewModel>(_activeAgreements);
 
             //GameLog.Client.Diplomacy.DebugFormat("foreignPower Owner = {0}", foreignPower.Owner.ShortName);
-            
+
             UpdateIncomingMessage();
             UpdateActiveAgreements();
         }
@@ -311,8 +311,8 @@ namespace Supremacy.Client.Views
                 {
                     if (OutgoingMessage != null)
                     {
-                       GameLog.Client.Diplomacy.DebugFormat("##### ........ OutgoingMessageCategory = {0} Sender ={1} first statement element ={2} latst ={3}", ResolveMessageCategory(OutgoingMessage).ToString(),
-                         OutgoingMessage.Sender.ShortName, OutgoingMessage.StatementElements.FirstOrDefault(), OutgoingMessage.StatementElements.LastOrDefault());
+                        GameLog.Client.Diplomacy.DebugFormat("##### ........ OutgoingMessageCategory = {0} Sender ={1} first statement element ={2} latst ={3}", ResolveMessageCategory(OutgoingMessage).ToString(),
+                          OutgoingMessage.Sender.ShortName, OutgoingMessage.StatementElements.FirstOrDefault(), OutgoingMessage.StatementElements.LastOrDefault());
                     }
                 }
                 catch { GameLog.Client.Diplomacy.DebugFormat("Unable to get outgoing message to reslove catagory"); }
@@ -417,7 +417,7 @@ namespace Supremacy.Client.Views
             }
 
             IResponse response = message as IResponse;
-            
+
             if (response != null)
             {
                 //GameLog.Client.Diplomacy.DebugFormat("Response Recipient ={0} Sender ={1}", response.Recipient, response.Sender);
@@ -425,7 +425,7 @@ namespace Supremacy.Client.Views
             }
 
             Statement statement = message as Statement;
-            
+
             if (statement != null)
             {
                 //GameLog.Client.Diplomacy.DebugFormat("Statement Recipient ={0} Sender ={1}", statement.Recipient, statement.Sender);
@@ -507,11 +507,11 @@ namespace Supremacy.Client.Views
                     case StatementType.T54:
                         //GameLog.Client.Diplomacy.DebugFormat("Message Statement");
                         return DiplomaticMessageCategory.Statement;
-                    
-                    //case StatementType.ThreatenDestroyColony:
-                    //case StatementType.ThreatenTradeEmbargo:
-                    //case StatementType.ThreatenDeclareWar:
-                    //    GameLog.Client.Diplomacy.DebugFormat("Message Threat");
+
+                        //case StatementType.ThreatenDestroyColony:
+                        //case StatementType.ThreatenTradeEmbargo:
+                        //case StatementType.ThreatenDeclareWar:
+                        //    GameLog.Client.Diplomacy.DebugFormat("Message Threat");
                         //return DiplomaticMessageCategory.Threat;
                 }
             }

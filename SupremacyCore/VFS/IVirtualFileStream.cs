@@ -38,7 +38,7 @@ namespace Supremacy.VFS
         /// Gets the file sharing level imposed by the stream.
         /// </summary>
         /// <value>The file sharing level imposed by the stream.</value>
-        FileShare Share { get; } 
+        FileShare Share { get; }
         #endregion
     }
 }

@@ -24,7 +24,7 @@ namespace Supremacy.Client.Controls
             }
             return InvalidIndex;
         }
-        
+
         public int IndexOf(Guid uniqueId)
         {
             for (int index = 0; index < Count; index++)

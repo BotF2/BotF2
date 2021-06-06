@@ -154,7 +154,7 @@ namespace Supremacy.Client.Context
             _accessLock.EnterWriteLock();
             try
             {
-                args.Value.UpdateLocalGame((GameContext) _currentGame);
+                args.Value.UpdateLocalGame((GameContext)_currentGame);
             }
             finally
             {
@@ -387,7 +387,8 @@ namespace Supremacy.Client.Context
         #region Implementation of IAppContext
         public bool IsConnected
         {
-            get {
+            get
+            {
                 _accessLock.EnterReadLock();
                 try
                 {

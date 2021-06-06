@@ -68,13 +68,13 @@ namespace Supremacy.IO.Serialization
         internal const long OptimizationFailure64BitValue = 72057594037927936; // 0x0100000000000000
 
         internal static readonly BitVector32.Section DateDayMask = BitVector32.CreateSection(31, DateMonthMask);
-                                                     // 5 bits
+        // 5 bits
 
         internal static readonly BitVector32.Section DateHasTimeOrKindMask = BitVector32.CreateSection(1, DateDayMask);
-                                                     // 1 bit  total= 3 bytes
+        // 1 bit  total= 3 bytes
 
         internal static readonly BitVector32.Section DateMonthMask = BitVector32.CreateSection(12, DateYearMask);
-                                                     // 4 bits
+        // 4 bits
 
         /// <summary>
         /// Section masks used for packing DateTime values
@@ -82,16 +82,16 @@ namespace Supremacy.IO.Serialization
         internal static readonly BitVector32.Section DateYearMask = BitVector32.CreateSection(9999); //14 bits
 
         internal static readonly BitVector32.Section HasDaysSection = BitVector32.CreateSection(1, IsNegativeSection);
-                                                     //1 bit
+        //1 bit
 
         internal static readonly BitVector32.Section HasMillisecondsSection = BitVector32.CreateSection(
             1, HasSecondsSection); //1 bit
 
         internal static readonly BitVector32.Section HasSecondsSection = BitVector32.CreateSection(1, HasTimeSection);
-                                                     //1 bit
+        //1 bit
 
         internal static readonly BitVector32.Section HasTimeSection = BitVector32.CreateSection(1, HasDaysSection);
-                                                     //1 bit
+        //1 bit
 
         internal static readonly BitVector32.Section HoursSection = BitVector32.CreateSection(
             23, HasMillisecondsSection); // 5 bits
@@ -105,10 +105,10 @@ namespace Supremacy.IO.Serialization
             1024, SecondsSection); // 10 bits - total 31 bits = 4 bytes
 
         internal static readonly BitVector32.Section MinutesSection = BitVector32.CreateSection(59, HoursSection);
-                                                     // 6 bits  total = 2 bytes
+        // 6 bits  total = 2 bytes
 
         internal static readonly BitVector32.Section SecondsSection = BitVector32.CreateSection(59, MinutesSection);
-                                                     // 6 bits total = 3 bytes
+        // 6 bits total = 3 bytes
         #endregion
 
         #region Fields
@@ -232,9 +232,9 @@ namespace Supremacy.IO.Serialization
             _objectTokenLookup = new Dictionary<object, int>();
             _stringLookup = new UniqueStringList();
             _binaryFormatter = new BinaryFormatter
-                              {
-                                  AssemblyFormat = FormatterAssemblyStyle.Simple
-                              };
+            {
+                AssemblyFormat = FormatterAssemblyStyle.Simple
+            };
         }
         #endregion
 
@@ -3284,9 +3284,9 @@ namespace Supremacy.IO.Serialization
         public SerializationReader(Stream stream) : base(stream)
         {
             _binaryFormatter = new BinaryFormatter
-                              {
-                                  AssemblyFormat = FormatterAssemblyStyle.Simple
-                              };
+            {
+                AssemblyFormat = FormatterAssemblyStyle.Simple
+            };
 
             _endPosition = ReadInt32();
             stream.Position = _endPosition;
@@ -3440,20 +3440,20 @@ namespace Supremacy.IO.Serialization
                 case SerializedType.EmptyTypedArrayType:
                     return new DateTime[0];
                 default:
-                {
-                    BitArray optimizeFlags = readTypedArrayOptimizeFlags(t);
-                        DateTime[] result = new DateTime[ReadOptimizedInt32()];
-                    for (int i = 0; i < result.Length; i++)
                     {
-                        if (optimizeFlags == null || (optimizeFlags != s_fullyOptimizableTypedArray && !optimizeFlags[i]))
-                            result[i] = ReadDateTime();
-                        else
+                        BitArray optimizeFlags = readTypedArrayOptimizeFlags(t);
+                        DateTime[] result = new DateTime[ReadOptimizedInt32()];
+                        for (int i = 0; i < result.Length; i++)
                         {
-                            result[i] = ReadOptimizedDateTime();
+                            if (optimizeFlags == null || (optimizeFlags != s_fullyOptimizableTypedArray && !optimizeFlags[i]))
+                                result[i] = ReadDateTime();
+                            else
+                            {
+                                result[i] = ReadOptimizedDateTime();
+                            }
                         }
+                        return result;
                     }
-                    return result;
-                }
             }
         }
 
@@ -3566,20 +3566,20 @@ namespace Supremacy.IO.Serialization
                 case SerializedType.EmptyTypedArrayType:
                     return new short[0];
                 default:
-                {
-                    BitArray optimizeFlags = readTypedArrayOptimizeFlags(t);
-                        short[] result = new short[ReadOptimizedInt32()];
-                    for (int i = 0; i < result.Length; i++)
                     {
-                        if (optimizeFlags == null || (optimizeFlags != s_fullyOptimizableTypedArray && !optimizeFlags[i]))
-                            result[i] = ReadInt16();
-                        else
+                        BitArray optimizeFlags = readTypedArrayOptimizeFlags(t);
+                        short[] result = new short[ReadOptimizedInt32()];
+                        for (int i = 0; i < result.Length; i++)
                         {
-                            result[i] = ReadOptimizedInt16();
+                            if (optimizeFlags == null || (optimizeFlags != s_fullyOptimizableTypedArray && !optimizeFlags[i]))
+                                result[i] = ReadInt16();
+                            else
+                            {
+                                result[i] = ReadOptimizedInt16();
+                            }
                         }
+                        return result;
                     }
-                    return result;
-                }
             }
         }
 
@@ -3597,20 +3597,20 @@ namespace Supremacy.IO.Serialization
                 case SerializedType.EmptyTypedArrayType:
                     return new int[0];
                 default:
-                {
-                    BitArray optimizeFlags = readTypedArrayOptimizeFlags(t);
-                        int[] result = new int[ReadOptimizedInt32()];
-                    for (int i = 0; i < result.Length; i++)
                     {
-                        if (optimizeFlags == null || (optimizeFlags != s_fullyOptimizableTypedArray && !optimizeFlags[i]))
-                            result[i] = ReadInt32();
-                        else
+                        BitArray optimizeFlags = readTypedArrayOptimizeFlags(t);
+                        int[] result = new int[ReadOptimizedInt32()];
+                        for (int i = 0; i < result.Length; i++)
                         {
-                            result[i] = ReadOptimizedInt32();
+                            if (optimizeFlags == null || (optimizeFlags != s_fullyOptimizableTypedArray && !optimizeFlags[i]))
+                                result[i] = ReadInt32();
+                            else
+                            {
+                                result[i] = ReadOptimizedInt32();
+                            }
                         }
+                        return result;
                     }
-                    return result;
-                }
             }
         }
 
@@ -3628,20 +3628,20 @@ namespace Supremacy.IO.Serialization
                 case SerializedType.EmptyTypedArrayType:
                     return new long[0];
                 default:
-                {
-                    BitArray optimizeFlags = readTypedArrayOptimizeFlags(t);
-                        long[] result = new long[ReadOptimizedInt64()];
-                    for (int i = 0; i < result.Length; i++)
                     {
-                        if (optimizeFlags == null || (optimizeFlags != s_fullyOptimizableTypedArray && !optimizeFlags[i]))
-                            result[i] = ReadInt64();
-                        else
+                        BitArray optimizeFlags = readTypedArrayOptimizeFlags(t);
+                        long[] result = new long[ReadOptimizedInt64()];
+                        for (int i = 0; i < result.Length; i++)
                         {
-                            result[i] = ReadOptimizedInt64();
+                            if (optimizeFlags == null || (optimizeFlags != s_fullyOptimizableTypedArray && !optimizeFlags[i]))
+                                result[i] = ReadInt64();
+                            else
+                            {
+                                result[i] = ReadOptimizedInt64();
+                            }
                         }
+                        return result;
                     }
-                    return result;
-                }
             }
         }
 
@@ -3915,13 +3915,13 @@ namespace Supremacy.IO.Serialization
                 case 0:
                     return s_fullyOptimizableTypedArray;
                 default:
-                {
+                    {
                         BitArray result = new BitArray(ReadBytes((length + 7) / 8))
-                                 {
-                                     Length = length
-                                 };
-                    return result;
-                }
+                        {
+                            Length = length
+                        };
+                        return result;
+                    }
             }
         }
 
@@ -4459,20 +4459,20 @@ namespace Supremacy.IO.Serialization
                 case SerializedType.EmptyTypedArrayType:
                     return new TimeSpan[0];
                 default:
-                {
-                    BitArray optimizeFlags = readTypedArrayOptimizeFlags(t);
-                        TimeSpan[] result = new TimeSpan[ReadOptimizedInt32()];
-                    for (int i = 0; i < result.Length; i++)
                     {
-                        if (optimizeFlags == null || (optimizeFlags != s_fullyOptimizableTypedArray && !optimizeFlags[i]))
-                            result[i] = ReadTimeSpan();
-                        else
+                        BitArray optimizeFlags = readTypedArrayOptimizeFlags(t);
+                        TimeSpan[] result = new TimeSpan[ReadOptimizedInt32()];
+                        for (int i = 0; i < result.Length; i++)
                         {
-                            result[i] = ReadOptimizedTimeSpan();
+                            if (optimizeFlags == null || (optimizeFlags != s_fullyOptimizableTypedArray && !optimizeFlags[i]))
+                                result[i] = ReadTimeSpan();
+                            else
+                            {
+                                result[i] = ReadOptimizedTimeSpan();
+                            }
                         }
+                        return result;
                     }
-                    return result;
-                }
             }
         }
 
@@ -4541,20 +4541,20 @@ namespace Supremacy.IO.Serialization
                 case SerializedType.EmptyTypedArrayType:
                     return new ushort[0];
                 default:
-                {
-                    BitArray optimizeFlags = readTypedArrayOptimizeFlags(t);
-                        ushort[] result = new ushort[ReadOptimizedUInt32()];
-                    for (int i = 0; i < result.Length; i++)
                     {
-                        if (optimizeFlags == null || (optimizeFlags != s_fullyOptimizableTypedArray && !optimizeFlags[i]))
-                            result[i] = ReadUInt16();
-                        else
+                        BitArray optimizeFlags = readTypedArrayOptimizeFlags(t);
+                        ushort[] result = new ushort[ReadOptimizedUInt32()];
+                        for (int i = 0; i < result.Length; i++)
                         {
-                            result[i] = ReadOptimizedUInt16();
+                            if (optimizeFlags == null || (optimizeFlags != s_fullyOptimizableTypedArray && !optimizeFlags[i]))
+                                result[i] = ReadUInt16();
+                            else
+                            {
+                                result[i] = ReadOptimizedUInt16();
+                            }
                         }
+                        return result;
                     }
-                    return result;
-                }
             }
         }
 
@@ -4573,20 +4573,20 @@ namespace Supremacy.IO.Serialization
                 case SerializedType.EmptyTypedArrayType:
                     return new uint[0];
                 default:
-                {
-                    BitArray optimizeFlags = readTypedArrayOptimizeFlags(t);
-                        uint[] result = new uint[ReadOptimizedUInt32()];
-                    for (int i = 0; i < result.Length; i++)
                     {
-                        if (optimizeFlags == null || (optimizeFlags != s_fullyOptimizableTypedArray && !optimizeFlags[i]))
-                            result[i] = ReadUInt32();
-                        else
+                        BitArray optimizeFlags = readTypedArrayOptimizeFlags(t);
+                        uint[] result = new uint[ReadOptimizedUInt32()];
+                        for (int i = 0; i < result.Length; i++)
                         {
-                            result[i] = ReadOptimizedUInt32();
+                            if (optimizeFlags == null || (optimizeFlags != s_fullyOptimizableTypedArray && !optimizeFlags[i]))
+                                result[i] = ReadUInt32();
+                            else
+                            {
+                                result[i] = ReadOptimizedUInt32();
+                            }
                         }
+                        return result;
                     }
-                    return result;
-                }
             }
         }
 
@@ -4605,20 +4605,20 @@ namespace Supremacy.IO.Serialization
                 case SerializedType.EmptyTypedArrayType:
                     return new ulong[0];
                 default:
-                {
-                    BitArray optimizeFlags = readTypedArrayOptimizeFlags(t);
-                        ulong[] result = new ulong[ReadOptimizedInt64()];
-                    for (int i = 0; i < result.Length; i++)
                     {
-                        if (optimizeFlags == null || (optimizeFlags != s_fullyOptimizableTypedArray && !optimizeFlags[i]))
-                            result[i] = ReadUInt64();
-                        else
+                        BitArray optimizeFlags = readTypedArrayOptimizeFlags(t);
+                        ulong[] result = new ulong[ReadOptimizedInt64()];
+                        for (int i = 0; i < result.Length; i++)
                         {
-                            result[i] = ReadOptimizedUInt64();
+                            if (optimizeFlags == null || (optimizeFlags != s_fullyOptimizableTypedArray && !optimizeFlags[i]))
+                                result[i] = ReadUInt64();
+                            else
+                            {
+                                result[i] = ReadOptimizedUInt64();
+                            }
                         }
+                        return result;
                     }
-                    return result;
-                }
             }
         }
 
@@ -4735,28 +4735,28 @@ namespace Supremacy.IO.Serialization
                 case SerializedType.NonOptimizedTypedArrayType:
                 case SerializedType.PartiallyOptimizedTypedArrayType:
                 case SerializedType.FullyOptimizedTypedArrayType:
-                {
-                    BitArray optimizeFlags = readTypedArrayOptimizeFlags(typeCode);
-                    int length = ReadOptimizedInt32();
-                    if (defaultElementType == null)
-                        defaultElementType = ReadOptimizedType();
-
-                    Array result = Array.CreateInstance(defaultElementType, length);
-
-                    for (int i = 0; i < length; i++)
                     {
-                        if (optimizeFlags == null)
-                            result.SetValue(ReadObject(), i);
-                        else if (optimizeFlags == s_fullyOptimizableTypedArray || !optimizeFlags[i])
-                        {
-                                IOwnedDataSerializable value = (IOwnedDataSerializable)FormatterServices.GetSafeUninitializedObject(defaultElementType);
-                            ReadOwnedData(value, null);
-                            result.SetValue(value, i);
-                        }
-                    }
+                        BitArray optimizeFlags = readTypedArrayOptimizeFlags(typeCode);
+                        int length = ReadOptimizedInt32();
+                        if (defaultElementType == null)
+                            defaultElementType = ReadOptimizedType();
 
-                    return result;
-                }
+                        Array result = Array.CreateInstance(defaultElementType, length);
+
+                        for (int i = 0; i < length; i++)
+                        {
+                            if (optimizeFlags == null)
+                                result.SetValue(ReadObject(), i);
+                            else if (optimizeFlags == s_fullyOptimizableTypedArray || !optimizeFlags[i])
+                            {
+                                IOwnedDataSerializable value = (IOwnedDataSerializable)FormatterServices.GetSafeUninitializedObject(defaultElementType);
+                                ReadOwnedData(value, null);
+                                result.SetValue(value, i);
+                            }
+                        }
+
+                        return result;
+                    }
             }
 
             return null;
@@ -4934,55 +4934,55 @@ namespace Supremacy.IO.Serialization
                                 return null;
                             }
                         case SerializedType.OwnedDataSerializableAndRecreatableType:
-                        {
+                            {
                                 Type structType = ReadOptimizedType();
                                 object result = PrepareNewObject(structType);
-                            ReadOwnedData((IOwnedDataSerializable)result, null);
-                            return result;
-                        }
-                        case SerializedType.OptimizedEnumType:
-                        {
-                            Type enumType = ReadOptimizedType();
-                            Type underlyingType = Enum.GetUnderlyingType(enumType);
-                            return underlyingType == typeof(int) || underlyingType == typeof(uint)
-                                   || underlyingType == typeof(long)
-                                   || underlyingType == typeof(ulong)
-                                       ? Enum.ToObject(enumType, ReadOptimizedUInt64())
-                                       : Enum.ToObject(enumType, ReadUInt64());
-                        }
-                        case SerializedType.EnumType:
-                        {
-                            Type enumType = ReadOptimizedType();
-                            Type underlyingType = Enum.GetUnderlyingType(enumType);
-                            if (underlyingType == typeof(Int32))
-                                return Enum.ToObject(enumType, ReadInt32());
-                            if (underlyingType == typeof(Byte))
-                                return Enum.ToObject(enumType, ReadByte());
-                            if (underlyingType == typeof(Int16))
-                                return Enum.ToObject(enumType, ReadInt16());
-                            if (underlyingType == typeof(UInt32))
-                                return Enum.ToObject(enumType, ReadUInt32());
-                            if (underlyingType == typeof(Int64))
-                                return Enum.ToObject(enumType, ReadInt64());
-                            if (underlyingType == typeof(SByte))
-                                return Enum.ToObject(enumType, ReadSByte());
-                            if (underlyingType == typeof(UInt16))
-                                return Enum.ToObject(enumType, ReadUInt16());
-                            return Enum.ToObject(enumType, ReadUInt64());
-                        }
-                        case SerializedType.SurrogateHandledType:
-                        {
-                            Type serializedType = ReadOptimizedType();
-                            IFastSerializationTypeSurrogate typeSurrogate = SerializationWriter.FindSurrogateForType(serializedType);
-                            return typeSurrogate.Deserialize(this, serializedType);
-                        }
-                        default:
-                        {
-                            object result = processArrayTypes(typeCode, null);
-                            if (result != null)
+                                ReadOwnedData((IOwnedDataSerializable)result, null);
                                 return result;
-                            throw new InvalidOperationException("Unrecognized TypeCode: " + typeCode);
-                        }
+                            }
+                        case SerializedType.OptimizedEnumType:
+                            {
+                                Type enumType = ReadOptimizedType();
+                                Type underlyingType = Enum.GetUnderlyingType(enumType);
+                                return underlyingType == typeof(int) || underlyingType == typeof(uint)
+                                       || underlyingType == typeof(long)
+                                       || underlyingType == typeof(ulong)
+                                           ? Enum.ToObject(enumType, ReadOptimizedUInt64())
+                                           : Enum.ToObject(enumType, ReadUInt64());
+                            }
+                        case SerializedType.EnumType:
+                            {
+                                Type enumType = ReadOptimizedType();
+                                Type underlyingType = Enum.GetUnderlyingType(enumType);
+                                if (underlyingType == typeof(Int32))
+                                    return Enum.ToObject(enumType, ReadInt32());
+                                if (underlyingType == typeof(Byte))
+                                    return Enum.ToObject(enumType, ReadByte());
+                                if (underlyingType == typeof(Int16))
+                                    return Enum.ToObject(enumType, ReadInt16());
+                                if (underlyingType == typeof(UInt32))
+                                    return Enum.ToObject(enumType, ReadUInt32());
+                                if (underlyingType == typeof(Int64))
+                                    return Enum.ToObject(enumType, ReadInt64());
+                                if (underlyingType == typeof(SByte))
+                                    return Enum.ToObject(enumType, ReadSByte());
+                                if (underlyingType == typeof(UInt16))
+                                    return Enum.ToObject(enumType, ReadUInt16());
+                                return Enum.ToObject(enumType, ReadUInt64());
+                            }
+                        case SerializedType.SurrogateHandledType:
+                            {
+                                Type serializedType = ReadOptimizedType();
+                                IFastSerializationTypeSurrogate typeSurrogate = SerializationWriter.FindSurrogateForType(serializedType);
+                                return typeSurrogate.Deserialize(this, serializedType);
+                            }
+                        default:
+                            {
+                                object result = processArrayTypes(typeCode, null);
+                                if (result != null)
+                                    return result;
+                                throw new InvalidOperationException("Unrecognized TypeCode: " + typeCode);
+                            }
                     }
             }
         }

@@ -38,8 +38,8 @@ namespace Supremacy.Client.Views
         public Sector Sector
         {
             get { return _sector; }
-            set 
-            { 
+            set
+            {
                 _sector = value;
                 Update();
             }
@@ -50,9 +50,10 @@ namespace Supremacy.Client.Views
             get
             {
                 Civilization _playerCiv = AppContext.LocalPlayer.Empire;
-                return _playerCiv; }
-            set 
-            { 
+                return _playerCiv;
+            }
+            set
+            {
                 _playerCiv = value;
                 Update();
             }
@@ -66,7 +67,7 @@ namespace Supremacy.Client.Views
 
         public bool StationScrapVisibility
         {
-            get 
+            get
             {
                 if (Sector != null && Sector.Owner == PlayerCiv)
                     _stationScrapVisibility = true;
@@ -120,20 +121,20 @@ namespace Supremacy.Client.Views
             _stationImage = ImageCache.Current.Get(uri);
         }
 
-//#pragma warning disable IDE0051 // Remove unused private members
-//        private BitmapImage GetImage(string insigniaPath)
-//#pragma warning restore IDE0051 // Remove unused private members
-//        {
-//            Uri imageUri;
-//            //var imagePath = insigniaPath.ToLowerInvariant();
+        //#pragma warning disable IDE0051 // Remove unused private members
+        //        private BitmapImage GetImage(string insigniaPath)
+        //#pragma warning restore IDE0051 // Remove unused private members
+        //        {
+        //            Uri imageUri;
+        //            //var imagePath = insigniaPath.ToLowerInvariant();
 
-//            if (File.Exists(ResourceManager.GetResourcePath(insigniaPath)))
-//                imageUri = ResourceManager.GetResourceUri(insigniaPath);
-//            else
-//                imageUri = ResourceManager.GetResourceUri(@"Resources\Images\Insignias\__default.png");
+        //            if (File.Exists(ResourceManager.GetResourcePath(insigniaPath)))
+        //                imageUri = ResourceManager.GetResourceUri(insigniaPath);
+        //            else
+        //                imageUri = ResourceManager.GetResourceUri(@"Resources\Images\Insignias\__default.png");
 
-//            return ImageCache.Current.Get(imageUri);
-//        }
+        //            return ImageCache.Current.Get(imageUri);
+        //        }
     }
 
     public class GalaxyScreenPresentationModel : PresentationModelBase
@@ -186,14 +187,14 @@ namespace Supremacy.Client.Views
             : base(appContext)
         {
             _empirePlayers = new EmpirePlayerStatusCollection();
-            
+
             _empirePlayers.AddRange(
                 from civ in appContext.CurrentGame.Civilizations
                 where civ.IsEmpire
                 select new EmpirePlayerStatus(appContext, civ)
-                       {
-                           Player = appContext.Players.FirstOrDefault(o => o.EmpireID == civ.CivID)
-                       }
+                {
+                    Player = appContext.Players.FirstOrDefault(o => o.EmpireID == civ.CivID)
+                }
                 );
 
             _selectedSectorStation = new StationPresentationModel(appContext);
@@ -250,9 +251,9 @@ namespace Supremacy.Client.Views
                 }
                 _selectedSector = value;
                 OnSelectedSectorChanged();
-                
+
                 _selectedSectorStation.Sector = _selectedSector;
-               // _stationScrapVisibility = _selectedSectorStation.ScrapVisibility;
+                // _stationScrapVisibility = _selectedSectorStation.ScrapVisibility;
                 OnSelectedSectorStationChanged();
             }
         }
@@ -312,7 +313,7 @@ namespace Supremacy.Client.Views
         {
             get
             {
-                return _selectedShipResolved ?? _selectedShip;  
+                return _selectedShipResolved ?? _selectedShip;
             }
             set
             {
@@ -346,7 +347,7 @@ namespace Supremacy.Client.Views
             }
         }
 
-        public IEnumerable<ShipView> SelectedShipsInTaskForce 
+        public IEnumerable<ShipView> SelectedShipsInTaskForce
         {
             get
             {
@@ -370,7 +371,7 @@ namespace Supremacy.Client.Views
         public FleetViewWrapper SelectedTaskForce
         {
             get
-            {           
+            {
                 if (_selectedSector != null && _selectedTaskForce != null)
                 {
 
@@ -433,7 +434,7 @@ namespace Supremacy.Client.Views
 
         public IEnumerable<FleetViewWrapper> VisibleTaskForces
         {
-            get 
+            get
             {
                 if (_localPlayerTaskForces == null)
                     return _otherVisibleTaskForces;
@@ -459,7 +460,7 @@ namespace Supremacy.Client.Views
                 OnISpyTaskForcesChanged();
             }
         }
-        
+
         public void GeneratePlayerTaskForces(Civilization playerCiv)
         {
             CivilizationMapData mapData = AppContext.LocalPlayerEmpire.MapData;
@@ -477,7 +478,7 @@ namespace Supremacy.Client.Views
                         fleetView.InsigniaImage = GetInsigniaImage(playerCiv.InsigniaPath);
                         playerList.Add(fleetView);
                     }
-                    else if (SelectedSector.Station != null                        
+                    else if (SelectedSector.Station != null
                         && DiplomacyHelper.IsScanBlocked(playerCiv, fleetView.View.Source.Sector))
                     {
                         //works
@@ -505,7 +506,7 @@ namespace Supremacy.Client.Views
                             fleetView.IsUnknown = true;
                             fleetView.InsigniaImage = GetInsigniaImage("Resources/Images/Insignias/__unknown.png");
                             count++;
-                       
+
                         }
                         else fleetView.InsigniaImage = GetInsigniaImage(fleetView.View.Source.Owner.InsigniaPath);
                     }
@@ -555,7 +556,7 @@ namespace Supremacy.Client.Views
         {
             AvailableShipsChanged?.Invoke(this, EventArgs.Empty);
         }
-        
+
         private void OnInputModeChanged()
         {
             InputModeChanged?.Invoke(this, EventArgs.Empty);
@@ -595,7 +596,7 @@ namespace Supremacy.Client.Views
         {
             SelectedShipChanged?.Invoke(this, EventArgs.Empty);
         }
-        
+
         private void OnSelectedShipInTaskForceChanged()
         {
             SelectedShipInTaskForceChanged?.Invoke(this, EventArgs.Empty);

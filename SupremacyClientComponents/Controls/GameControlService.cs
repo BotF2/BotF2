@@ -378,7 +378,7 @@ namespace Supremacy.Client.Controls
                 }
             }
 
-            if (!control.Flags.GetFlag(GameControlFlags.IsAttachedToCommandCanExecuteChanged) && 
+            if (!control.Flags.GetFlag(GameControlFlags.IsAttachedToCommandCanExecuteChanged) &&
                 (newCommand != null) &&
                 (control.CanUpdateCanExecuteWhenHidden || control.IsVisible))
             {
@@ -482,73 +482,73 @@ namespace Supremacy.Client.Controls
             {
                 case VariantSize.Large:
                 case VariantSize.Medium:
-                {
-                        ImageSource imageSource = GetImageSourceSmall(element) ?? GetImageSourceLarge(element);
-                    if (imageSource != null)
                     {
-                        UpdateBaseUri(element, imageSource);
-
-                        if (!element.IsEnabled)
-                            drawingContext.PushOpacity(0.4);
-
-                        try
+                        ImageSource imageSource = GetImageSourceSmall(element) ?? GetImageSourceLarge(element);
+                        if (imageSource != null)
                         {
-                            DrawImage(
-                                drawingContext,
-                                FrameworkElement.GetFlowDirection(element),
-                                imageSource,
-                                new Rect(x + 3, bounds.Top + ((bounds.Height - 16) / 2), 16, 16));
-                        }
-                        finally
-                        {
+                            UpdateBaseUri(element, imageSource);
+
                             if (!element.IsEnabled)
-                                drawingContext.Pop();
-                        }
+                                drawingContext.PushOpacity(0.4);
 
-                        x += 22; // 3 pixels padding on each side of image
-                    }
+                            try
+                            {
+                                DrawImage(
+                                    drawingContext,
+                                    FrameworkElement.GetFlowDirection(element),
+                                    imageSource,
+                                    new Rect(x + 3, bounds.Top + ((bounds.Height - 16) / 2), 16, 16));
+                            }
+                            finally
+                            {
+                                if (!element.IsEnabled)
+                                    drawingContext.Pop();
+                            }
+
+                            x += 22; // 3 pixels padding on each side of image
+                        }
 
                         // Draw the label
                         string label = GetLabel(element);
-                    if (!string.IsNullOrEmpty(label))
-                    {
+                        if (!string.IsNullOrEmpty(label))
+                        {
                             object oldForeground = (object)TextElement.GetForeground(element);
                             FrameworkElement frameworkElement = element as FrameworkElement;
-                        if ((!element.IsEnabled) && (frameworkElement != null))
-                        {
-                            if (element.GetBaseValueSource(TextElement.ForegroundProperty) != BaseValueSource.Local)
-                                oldForeground = DependencyProperty.UnsetValue;
+                            if ((!element.IsEnabled) && (frameworkElement != null))
+                            {
+                                if (element.GetBaseValueSource(TextElement.ForegroundProperty) != BaseValueSource.Local)
+                                    oldForeground = DependencyProperty.UnsetValue;
 
                                 // Set the disabled brush
                                 Brush foreground = (Brush)frameworkElement.GetValue(ForegroundDisabledProperty);
-                            if (foreground != null)
-                                TextElement.SetForeground(element, foreground);
-                        }
-
-                        try
-                        {
-                                FormattedText text = CreateFormattedTextForLabel(element);
-                            DrawText(
-                                drawingContext,
-                                FrameworkElement.GetFlowDirection(element),
-                                text,
-                                new Point(x, bounds.Top + ((bounds.Height - text.Height) / 2)));
-                        }
-                        finally
-                        {
-                            // If disabled, restore the old foreground
-                            if ((!element.IsEnabled) && (frameworkElement != null))
-                            {
-                                if (oldForeground == DependencyProperty.UnsetValue)
-                                    element.ClearValue(TextElement.ForegroundProperty);
-                                else
-                                    TextElement.SetForeground(element, (Brush)oldForeground);
+                                if (foreground != null)
+                                    TextElement.SetForeground(element, foreground);
                             }
 
+                            try
+                            {
+                                FormattedText text = CreateFormattedTextForLabel(element);
+                                DrawText(
+                                    drawingContext,
+                                    FrameworkElement.GetFlowDirection(element),
+                                    text,
+                                    new Point(x, bounds.Top + ((bounds.Height - text.Height) / 2)));
+                            }
+                            finally
+                            {
+                                // If disabled, restore the old foreground
+                                if ((!element.IsEnabled) && (frameworkElement != null))
+                                {
+                                    if (oldForeground == DependencyProperty.UnsetValue)
+                                        element.ClearValue(TextElement.ForegroundProperty);
+                                    else
+                                        TextElement.SetForeground(element, (Brush)oldForeground);
+                                }
+
+                            }
                         }
+                        break;
                     }
-                    break;
-                }
             }
         }
 
@@ -556,7 +556,7 @@ namespace Supremacy.Client.Controls
         {
             // If in RTL, un-mirror the glyph shapes (since the drawing canvas is mirrored)
             ScaleTransform antiMirror = (flowDirection == FlowDirection.RightToLeft ? new ScaleTransform(-1, 1) : null);
-            
+
             if (flowDirection == FlowDirection.RightToLeft)
                 bounds.X = -bounds.X - bounds.Width;
 
@@ -576,7 +576,7 @@ namespace Supremacy.Client.Controls
         {
             // If in RTL, un-mirror the glyph shapes (since the drawing canvas is mirrored)
             ScaleTransform antiMirror = (flowDirection == FlowDirection.RightToLeft ? new ScaleTransform(-1, 1) : null);
-            
+
             if (text.FlowDirection == FlowDirection.RightToLeft)
                 point.X = -point.X;
 
@@ -609,34 +609,34 @@ namespace Supremacy.Client.Controls
             {
                 case VariantSize.Large:
                 case VariantSize.Medium:
-                {
+                    {
                         Size size = new Size();
 
                         // Add space for the 16z16 image
                         ImageSource imageSource = GetImageSourceSmall(element) ?? GetImageSourceLarge(element);
-                    if (imageSource != null)
-                    {
-                        UpdateBaseUri(element, imageSource);
-                        size.Width += 22; // 3 pixels padding on each side of image
-                        size.Height = Math.Max(size.Height, 16);
-                    }
+                        if (imageSource != null)
+                        {
+                            UpdateBaseUri(element, imageSource);
+                            size.Width += 22; // 3 pixels padding on each side of image
+                            size.Height = Math.Max(size.Height, 16);
+                        }
 
                         // Add space for the label
                         string label = GetLabel(element);
-                    if (!string.IsNullOrEmpty(label))
-                    {
+                        if (!string.IsNullOrEmpty(label))
+                        {
                             FormattedText text = CreateFormattedTextForLabel(element);
-                        size.Width += text.Width + 5; // 5 pixels padding on right side of label
-                        size.Height = Math.Max(size.Height, text.Height);
+                            size.Width += text.Width + 5; // 5 pixels padding on right side of label
+                            size.Height = Math.Max(size.Height, text.Height);
+                        }
+
+                        return size;
                     }
 
-                    return size;
-                }
-
                 default:
-                {
-                    return new Size(0, 0);
-                }
+                    {
+                        return new Size(0, 0);
+                    }
             }
         }
 
@@ -650,9 +650,9 @@ namespace Supremacy.Client.Controls
         private static void UpdateBaseUri(DependencyObject obj, ImageSource source)
         {
             IUriContext uriContext = source as IUriContext;
-            if ((uriContext != null) && 
-                !source.IsFrozen && 
-                (uriContext.BaseUri == null) && 
+            if ((uriContext != null) &&
+                !source.IsFrozen &&
+                (uriContext.BaseUri == null) &&
                 (BaseUriHelper.GetBaseUri(obj) != null))
             {
                 uriContext.BaseUri = BaseUriHelper.GetBaseUri(obj);
@@ -685,7 +685,7 @@ namespace Supremacy.Client.Controls
                 throw new ArgumentNullException("obj");
             return obj.GetValue(CommandParameterProperty);
         }
-        
+
         public static void SetCommandParameter(DependencyObject obj, object value)
         {
             if (obj == null)
@@ -699,7 +699,7 @@ namespace Supremacy.Client.Controls
                 throw new ArgumentNullException("obj");
             return (IInputElement)obj.GetValue(CommandTargetProperty);
         }
-        
+
         public static void SetCommandTarget(DependencyObject obj, IInputElement value)
         {
             if (obj == null)
@@ -727,7 +727,7 @@ namespace Supremacy.Client.Controls
                 throw new ArgumentNullException("obj");
             return (bool)obj.GetValue(HasLabelProperty);
         }
-        
+
         public static void SetHasLabel(DependencyObject obj, bool value)
         {
             if (obj == null)
@@ -755,7 +755,7 @@ namespace Supremacy.Client.Controls
                 throw new ArgumentNullException("obj");
             return (ImageSource)obj.GetValue(ImageSourceLargeProperty);
         }
-        
+
         public static void SetImageSourceLarge(DependencyObject obj, ImageSource value)
         {
             if (obj == null)
@@ -769,7 +769,7 @@ namespace Supremacy.Client.Controls
                 throw new ArgumentNullException("obj");
             return (ImageSource)obj.GetValue(ImageSourceSmallProperty);
         }
-        
+
         public static void SetImageSourceSmall(DependencyObject obj, ImageSource value)
         {
             if (obj == null)
@@ -783,7 +783,7 @@ namespace Supremacy.Client.Controls
                 throw new ArgumentNullException("obj");
             return (bool)obj.GetValue(IsExternalContentSupportedProperty);
         }
-        
+
         public static void SetIsExternalContentSupported(DependencyObject obj, bool value)
         {
             if (obj == null)
@@ -797,7 +797,7 @@ namespace Supremacy.Client.Controls
                 throw new ArgumentNullException("obj");
             return (bool)obj.GetValue(IsHighlightedProperty);
         }
-        
+
         public static void SetIsHighlighted(DependencyObject obj, bool value)
         {
             if (obj == null)
@@ -811,7 +811,7 @@ namespace Supremacy.Client.Controls
                 throw new ArgumentNullException("obj");
             return (string)obj.GetValue(LabelProperty);
         }
-        
+
         public static void SetLabel(DependencyObject obj, string value)
         {
             if (obj == null)
@@ -825,7 +825,7 @@ namespace Supremacy.Client.Controls
                 throw new ArgumentNullException("obj");
             return (string)obj.GetValue(MenuItemDescriptionProperty);
         }
-        
+
         public static void SetMenuItemDescription(DependencyObject obj, string value)
         {
             if (obj == null)
@@ -839,7 +839,7 @@ namespace Supremacy.Client.Controls
                 throw new ArgumentNullException("obj");
             return (VariantSize)obj.GetValue(VariantSizeProperty);
         }
-        
+
         public static void SetVariantSize(DependencyObject obj, VariantSize value)
         {
             if (obj == null)

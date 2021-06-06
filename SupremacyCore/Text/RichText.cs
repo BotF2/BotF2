@@ -68,7 +68,7 @@ namespace Supremacy.Text
             {
                 if (value == null)
                     throw new ArgumentNullException("value");
-                
+
                 AssertValid();
 
                 _string = string.Empty;
@@ -599,7 +599,7 @@ namespace Supremacy.Text
             foreach (RichString richString in _parts)
             {
                 richString.Style = new TextStyle(
-                    richString.Style.FontStyle, 
+                    richString.Style.FontStyle,
                     weight,
                     richString.Style.Foreground,
                     richString.Style.Background,

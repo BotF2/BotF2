@@ -66,7 +66,7 @@ namespace Supremacy.Diplomacy
             _diplomacyData = new DiplomacyDataInternal(owner.CivID, counterparty.CivID);
 
             OwnerID = owner.CivID;
-            CounterpartyID= counterparty.CivID;
+            CounterpartyID = counterparty.CivID;
         }
 
         public bool IsContactMade => _diplomacyData.IsContactMade();
@@ -232,7 +232,7 @@ namespace Supremacy.Diplomacy
                         new WarDeclaredSitRepEntry(
                             civ,
                             owner,
-                            counterparty));    
+                            counterparty));
                 }
             }
         }
@@ -343,7 +343,7 @@ namespace Supremacy.Diplomacy
         {
             if (regardEvent == null)
                 throw new ArgumentNullException("regardEvent");
-            
+
             _regardEvents.Add(regardEvent);
         }
 
@@ -351,7 +351,7 @@ namespace Supremacy.Diplomacy
         {
             if (regardEvent == null)
                 throw new ArgumentNullException("regardEvent");
-            
+
             _regardEvents.Remove(regardEvent);
         }
 
@@ -401,7 +401,7 @@ namespace Supremacy.Diplomacy
             PurgeOldRegardEvents();
 
             Types.Meter regardMeter = DiplomacyData.Regard;
-            
+
             regardMeter.SaveCurrentAndResetToBase();
 
             foreach (RegardEvent regardEvent in _regardEvents)
@@ -431,7 +431,7 @@ namespace Supremacy.Diplomacy
             Civilization owner = Owner;
             Civilization counterparty = Counterparty;
             AgreementMatrix agreementMatrix = GameContext.Current.AgreementMatrix;
-            
+
             if (agreementMatrix.IsAgreementActive(owner, counterparty, ClauseType.TreatyMembership))
             {
                 ownerStatus = owner.IsEmpire ? ForeignPowerStatus.CounterpartyIsMember : ForeignPowerStatus.OwnerIsMember;
@@ -507,7 +507,7 @@ namespace Supremacy.Diplomacy
                 counterpartyStatus = ForeignPowerStatus.OwnerIsUnreachable;
                 return;
             }
-          
+
             if (DiplomacyData.Status == ForeignPowerStatus.AtWar)
             {
                 ownerStatus = ForeignPowerStatus.AtWar;
@@ -590,10 +590,10 @@ namespace Supremacy.Diplomacy
 
         void IOwnedDataSerializable.SerializeOwnedData(SerializationWriter writer, object context)
         {
-           // GameLog.Client.Diplomacy.DebugFormat("SerializeOwnedData ....");
+            // GameLog.Client.Diplomacy.DebugFormat("SerializeOwnedData ....");
             writer.WriteObject(_regardEvents);
             writer.WriteObject(_diplomacyData);
-            
+
             writer.WriteOptimized(OwnerID);
             writer.WriteOptimized(CounterpartyID);
             writer.Write(IsEmbargoInPlace);

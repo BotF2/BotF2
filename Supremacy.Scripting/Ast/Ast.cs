@@ -179,7 +179,7 @@ namespace Supremacy.Scripting.Ast
             {
                 T node = nodeList[i];
                 T currentNode = node;
-                
+
                 if (node == null)
                 {
                     continue;
@@ -193,7 +193,7 @@ namespace Supremacy.Scripting.Ast
                 }
 
                 nodeList.RemoveAt(i);
-                
+
                 if (node is object)
                 {
                     nodeList.Insert(i, node);
@@ -217,7 +217,7 @@ namespace Supremacy.Scripting.Ast
         }
 
         public virtual void Dump(SourceWriter sw, int indentChange) { }
-        
+
         public virtual void BeginInit(ParseContext parseContext, bool raiseInitialized)
         {
             BeginInit();

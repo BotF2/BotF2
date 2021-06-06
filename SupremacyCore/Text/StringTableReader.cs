@@ -180,7 +180,7 @@ namespace Supremacy.Text
                 {
                     currentNode.Content = buffer.ToString();
                 }
-                if ((currentNode.Content.Length > 0) 
+                if ((currentNode.Content.Length > 0)
                     || (currentNode.NodeType == StringTableNodeType.Value))
                 {
                     doc.Nodes.Add(currentNode);

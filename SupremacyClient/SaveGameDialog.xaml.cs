@@ -36,7 +36,7 @@ namespace Supremacy.Client
             InitializeComponent();
             SaveButton.IsEnabled = true;
             IsVisibleChanged += SaveGameDialogIsVisibleChanged;
-            
+
             InputBindings.Add(
                 new KeyBinding(GenericCommands.CancelCommand,
                                Key.Escape,

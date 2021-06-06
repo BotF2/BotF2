@@ -51,7 +51,7 @@ namespace Supremacy.UI
         private readonly TextBlock _energyOutputText;
         private readonly TextBlock _energyScrapText;
         private readonly UnitActivationBar _energySlider;
-        
+
         private readonly TextBlock _foodActiveText;
         private readonly TextBlock _foodFacilityText;
         private readonly ImageBrush _foodImage;
@@ -320,22 +320,22 @@ namespace Supremacy.UI
 
             /* FOOD IMAGE */
             _foodImageBorder = new Border
-                               {
-                                   BorderBrush = FindResource("DefaultTextBrush") as Brush ?? Foreground,
-                                   BorderThickness = new Thickness(2.0),
-                                   CornerRadius = new CornerRadius(2.0),
-                                        MinWidth = imageWidth,
-                                        MinHeight = imageHeight,
-                                        Margin = new Thickness(0, rowSpacing, 0, 0),
-                                   Background = _foodImage
-                               };
+            {
+                BorderBrush = FindResource("DefaultTextBrush") as Brush ?? Foreground,
+                BorderThickness = new Thickness(2.0),
+                CornerRadius = new CornerRadius(2.0),
+                MinWidth = imageWidth,
+                MinHeight = imageHeight,
+                Margin = new Thickness(0, rowSpacing, 0, 0),
+                Background = _foodImage
+            };
             _foodImageBorder_TOOLTIP = new Border
             {
                 BorderBrush = FindResource("DefaultTextBrush") as Brush ?? Foreground,
                 BorderThickness = new Thickness(0.0),
                 CornerRadius = new CornerRadius(0.0),
-                MinWidth = 8*imageWidth,
-                MinHeight = 8*imageHeight,
+                MinWidth = 8 * imageWidth,
+                MinHeight = 8 * imageHeight,
                 Margin = new Thickness(0, rowSpacing, 0, 0),
                 Background = _foodImage
             };
@@ -348,22 +348,22 @@ namespace Supremacy.UI
 
             /* INDUSTRY IMAGE */
             _industryImageBorder = new Border
-                                   {
-                                       BorderBrush = FindResource("DefaultTextBrush") as Brush ?? Foreground,
-                                       BorderThickness = new Thickness(2.0),
-                                       CornerRadius = new CornerRadius(2.0),
-                                        MinWidth = imageWidth,
-                                        MinHeight = imageHeight,
-                                       Margin = new Thickness(0, rowSpacing, 0, 0),
-                                       Background = _industryImage
-                                   };
+            {
+                BorderBrush = FindResource("DefaultTextBrush") as Brush ?? Foreground,
+                BorderThickness = new Thickness(2.0),
+                CornerRadius = new CornerRadius(2.0),
+                MinWidth = imageWidth,
+                MinHeight = imageHeight,
+                Margin = new Thickness(0, rowSpacing, 0, 0),
+                Background = _industryImage
+            };
             _industryImageBorder_TOOLTIP = new Border
             {
                 BorderBrush = FindResource("DefaultTextBrush") as Brush ?? Foreground,
                 BorderThickness = new Thickness(0.0),
                 CornerRadius = new CornerRadius(0.0),
-                MinWidth = 8*imageWidth,
-                MinHeight = 8*imageHeight,
+                MinWidth = 8 * imageWidth,
+                MinHeight = 8 * imageHeight,
                 Margin = new Thickness(0, rowSpacing, 0, 0),
                 Background = _industryImage
             };
@@ -376,15 +376,15 @@ namespace Supremacy.UI
 
             /* ENERGY IMAGE */
             _energyImageBorder = new Border
-                                 {
-                                     BorderBrush = FindResource("DefaultTextBrush") as Brush ?? Foreground,
-                                     BorderThickness = new Thickness(2.0),
-                                     CornerRadius = new CornerRadius(2.0),
-                                        MinWidth = imageWidth,
-                                        MinHeight = imageHeight,
-                                     Margin = new Thickness(0, rowSpacing, 0, 0),
-                                     Background = _energyImage
-                                 };
+            {
+                BorderBrush = FindResource("DefaultTextBrush") as Brush ?? Foreground,
+                BorderThickness = new Thickness(2.0),
+                CornerRadius = new CornerRadius(2.0),
+                MinWidth = imageWidth,
+                MinHeight = imageHeight,
+                Margin = new Thickness(0, rowSpacing, 0, 0),
+                Background = _energyImage
+            };
             _energyImageBorder_TOOLTIP = new Border
             {
                 BorderBrush = FindResource("DefaultTextBrush") as Brush ?? Foreground,
@@ -404,15 +404,15 @@ namespace Supremacy.UI
 
             /* RESEARCH IMAGE */
             _researchImageBorder = new Border
-                                   {
-                                       BorderBrush = FindResource("DefaultTextBrush") as Brush ?? Foreground,
-                                       BorderThickness = new Thickness(2.0),
-                                       CornerRadius = new CornerRadius(2.0),
-                                        MinWidth = imageWidth,
-                                        MinHeight = imageHeight,
-                                       Margin = new Thickness(0, rowSpacing, 0, 0),
-                                       Background = _researchImage
-                                   };
+            {
+                BorderBrush = FindResource("DefaultTextBrush") as Brush ?? Foreground,
+                BorderThickness = new Thickness(2.0),
+                CornerRadius = new CornerRadius(2.0),
+                MinWidth = imageWidth,
+                MinHeight = imageHeight,
+                Margin = new Thickness(0, rowSpacing, 0, 0),
+                Background = _researchImage
+            };
             _researchImageBorder_TOOLTIP = new Border
             {
                 BorderBrush = FindResource("DefaultTextBrush") as Brush ?? Foreground,
@@ -432,15 +432,15 @@ namespace Supremacy.UI
 
             /* INTELLIGENCE IMAGE */
             _intelligenceImageBorder = new Border
-                                    {
-                                        BorderBrush = FindResource("DefaultTextBrush") as Brush ?? Foreground,
-                                        BorderThickness = new Thickness(2.0),
-                                        CornerRadius = new CornerRadius(2.0),
-                                        MinWidth = imageWidth,
-                                        MinHeight = imageHeight,
-                                        Margin = new Thickness(0, rowSpacing, 0, 0),
-                                        Background = _intelligenceImage
-                                    };
+            {
+                BorderBrush = FindResource("DefaultTextBrush") as Brush ?? Foreground,
+                BorderThickness = new Thickness(2.0),
+                CornerRadius = new CornerRadius(2.0),
+                MinWidth = imageWidth,
+                MinHeight = imageHeight,
+                Margin = new Thickness(0, rowSpacing, 0, 0),
+                Background = _intelligenceImage
+            };
             _intelligenceImageBorder_TOOLTIP = new Border
             {
                 BorderBrush = FindResource("DefaultTextBrush") as Brush ?? Foreground,
@@ -677,7 +677,7 @@ namespace Supremacy.UI
 
             int delta = Math.Abs(e.NewValue - e.OldValue);
 
-            
+
             if (delta != 0)
             {
                 int i;
@@ -746,7 +746,7 @@ namespace Supremacy.UI
                         GameLog.Client.ProductionDetails.DebugFormat("slider_ActiveUnitsChanged... category {1} DE-CREASED {0}", delta, category);
                     }
                 }
-                
+
 
                 if ((activeText != null) && (facilityText != null))
                 {

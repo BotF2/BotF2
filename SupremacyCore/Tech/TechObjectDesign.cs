@@ -214,7 +214,7 @@ namespace Supremacy.Tech
         public const int InvalidDesignID = -1;
 
         public const string MissingImageUri = "vfs:///Resources/Images/__image_missing.png";
-        
+
         protected const string UnknownDesignKey = "<unknown>";
 
         private ushort _designId;
@@ -227,7 +227,7 @@ namespace Supremacy.Tech
         private byte _populationHealth;
         private bool _isUniversallyAvailable;
         private readonly ScriptExpression _buildCondition;
- 
+
         [NonSerialized]
         private ITechObjectTextDatabaseEntry _textDatabaseEntry;
         [NonSerialized]
@@ -370,8 +370,8 @@ namespace Supremacy.Tech
             get { return (Percentage)Math.Round(0.01 * _populationHealth, 3); }
             set
             {
-                 _populationHealth = (byte)(value * 100);
-                 OnPropertyChanged("PopulationHealth");
+                _populationHealth = (byte)(value * 100);
+                OnPropertyChanged("PopulationHealth");
             }
         }
 
@@ -663,12 +663,12 @@ namespace Supremacy.Tech
             if (element["BuildCondition"] != null)
             {
                 _buildCondition = new ScriptExpression
-                                  {
-                                      Parameters = new ScriptParameters(
+                {
+                    Parameters = new ScriptParameters(
                                           new ScriptParameter("$source", typeof(Colony)),
                                           new ScriptParameter("$design", GetType())),
-                                      ScriptCode = element["BuildCondition"].InnerText.Trim()
-                                  };
+                    ScriptCode = element["BuildCondition"].InnerText.Trim()
+                };
             }
             // ReSharper restore PossibleNullReferenceException
         }
@@ -906,11 +906,11 @@ namespace Supremacy.Tech
         /// <value>The build cost.</value>
         public int BuildCost
         {
-            get 
+            get
             {
                 if (_buildCost == 0)
                     _buildCost = 1;  // e.g. MARTIAL LAW  // a zero causes a crash if it is devided by _buildCosts for calculating percentage
-                return _buildCost; 
+                return _buildCost;
             }
             set { _buildCost = Math.Max(value, 0); }
         }
@@ -1066,7 +1066,7 @@ namespace Supremacy.Tech
         /// <summary>
         /// Occurs when a property value changes.
         /// </summary>
-        [field:NonSerialized]
+        [field: NonSerialized]
         public event PropertyChangedEventHandler PropertyChanged;
 
         /// <summary>

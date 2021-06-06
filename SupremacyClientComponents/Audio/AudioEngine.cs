@@ -132,7 +132,7 @@ namespace Supremacy.Client.Audio
                 }
 
                 // reverse iterate to allow remove by Dispose()
-                for ( int i = _channelGroups.Count - 1; i >= 0; --i )
+                for (int i = _channelGroups.Count - 1; i >= 0; --i)
                 {
                     try
                     {
@@ -264,7 +264,7 @@ namespace Supremacy.Client.Audio
                 }
             }
         }
-        
+
         internal void RemoveGrouping(FMODGrouping channelGroup)
         {
             try

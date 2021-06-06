@@ -387,7 +387,7 @@ namespace Supremacy.Client
                         {
                             property.SetValue(value, propertyValue.Value);
                         }
-                            // try to use a type converter to get the value
+                        // try to use a type converter to get the value
                         else if (property.Converter.CanConvertFrom(propertyValueType))
                         {
                             try
@@ -400,7 +400,7 @@ namespace Supremacy.Client
                             }
                         }
                     }
-                        // if the property is nullable and the assigned value is null, assign null
+                    // if the property is nullable and the assigned value is null, assign null
                     else if (property.PropertyType.IsClass ||
                              (property.PropertyType.IsGenericType && property.PropertyType.GetGenericTypeDefinition() == typeof(Nullable<>)))
                     {

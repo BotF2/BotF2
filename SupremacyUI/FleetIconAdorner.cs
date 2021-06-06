@@ -147,7 +147,7 @@ namespace Supremacy.UI
                                        from fleet in _fleets
                                        where fleet.IsPresenceKnown && fleet.Source.IsInDistress() && fleet.Ships[0].Source.Owner == _playerCiv
                                        select fleet;
-                                   
+
 
             if (!fleetsInDistress.Any())
             {
@@ -172,14 +172,14 @@ namespace Supremacy.UI
                 null,
                 new Duration(TimeSpan.FromSeconds(3)),
                 RepeatBehavior.Forever)
-                           {
-                               Children =
+            {
+                Children =
                                    {
                                        widthAnimation,
                                        heightAnimation,
                                        opacityAnimation
                                    }
-                           };
+            };
 
             _clockGroup = timeline.CreateClock();
 
@@ -206,8 +206,8 @@ namespace Supremacy.UI
                 int _countHolder = _fleets.Sum(o => o.Ships.Count);
                 string _countString = _countHolder.ToString();
                 IEnumerable<FleetView> fleetsCloaked = from fleet in _fleets
-                    where fleet.IsPresenceKnown && fleet.Source.IsCloaked && fleet.Ships[0].Source.Owner != _playerCiv
-                    select fleet;
+                                                       where fleet.IsPresenceKnown && fleet.Source.IsCloaked && fleet.Ships[0].Source.Owner != _playerCiv
+                                                       select fleet;
 
                 if (fleetsCloaked.Count() > 0)
                 {

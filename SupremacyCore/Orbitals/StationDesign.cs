@@ -174,10 +174,10 @@ namespace Supremacy.Orbitals
                 //}
                 //else
                 //{
-                    if (timesUsed > 0)
-                    {
-                        newStationName = newStationName + " " + ShipSuffixes.Alphabetical(timesUsed);
-                    }
+                if (timesUsed > 0)
+                {
+                    newStationName = newStationName + " " + ShipSuffixes.Alphabetical(timesUsed);
+                }
                 //}
 
                 station.Name = newStationName;
@@ -231,7 +231,7 @@ namespace Supremacy.Orbitals
             civManager.MapData.UpgradeScanStrength(location, ScanStrength, SensorRange);
 
             spawnedInstance = station;
-            GameLog.Core.Stations.DebugFormat("placed Station = {0} {1}, Owner = {2}, Location = {3}", spawnedInstance.ObjectID, spawnedInstance.Name, station.Owner, station.Location); 
+            GameLog.Core.Stations.DebugFormat("placed Station = {0} {1}, Owner = {2}, Location = {3}", spawnedInstance.ObjectID, spawnedInstance.Name, station.Owner, station.Location);
             return true;
         }
 

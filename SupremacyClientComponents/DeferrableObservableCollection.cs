@@ -67,7 +67,7 @@ namespace Supremacy.Client
                         for (int i = 0; i < count; i++)
                         {
                             int compare = _sortComparer.Compare(item, this[i]);
-                            
+
                             if (compare > 0)
                                 continue;
 
@@ -78,7 +78,7 @@ namespace Supremacy.Client
 
                             if (i >= index)
                                 break;
-                            
+
                             if (i >= index || i != count - 1)
                                 continue;
 

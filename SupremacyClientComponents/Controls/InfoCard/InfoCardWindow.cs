@@ -17,8 +17,8 @@ namespace Supremacy.Client.Controls
         #endregion
 
         #region Constructors and Finalizers
-		[SuppressMessage("Microsoft.Performance", "CA1810:InitializeReferenceTypeStaticFieldsInline")]
-		static InfoCardWindow()
+        [SuppressMessage("Microsoft.Performance", "CA1810:InitializeReferenceTypeStaticFieldsInline")]
+        static InfoCardWindow()
         {
             ShowInTaskbarProperty.OverrideMetadata(
                 typeof(InfoCardWindow),
@@ -44,10 +44,10 @@ namespace Supremacy.Client.Controls
                 typeof(InfoCardWindow),
                 new FrameworkPropertyMetadata(Brushes.Transparent));
 
-		    EventManager.RegisterClassHandler(
-		        typeof(InfoCard),
-		        InfoCard.PinnedEvent,
-		        (RoutedEventHandler)OnInfoCardPinned);
+            EventManager.RegisterClassHandler(
+                typeof(InfoCard),
+                InfoCard.PinnedEvent,
+                (RoutedEventHandler)OnInfoCardPinned);
 
             EventManager.RegisterClassHandler(
                 typeof(InfoCard),
@@ -84,20 +84,20 @@ namespace Supremacy.Client.Controls
 
         public InfoCardWindow(InfoCardHost container)
         {
-			if (container == null)
-				throw new ArgumentNullException("container");
+            if (container == null)
+                throw new ArgumentNullException("container");
 
-			InfoCardHost.SetInfoCardWindow(this, this);
+            InfoCardHost.SetInfoCardWindow(this, this);
 
-		    WindowStyle = WindowStyle.None;
-		    ResizeMode = ResizeMode.NoResize;
-		    AllowsTransparency = true;
+            WindowStyle = WindowStyle.None;
+            ResizeMode = ResizeMode.NoResize;
+            AllowsTransparency = true;
             Background = Brushes.Transparent;
             Width = 0;
             Height = 0;
             SizeToContent = SizeToContent.WidthAndHeight;
 
-			InfoCardHost = container;
+            InfoCardHost = container;
 
             Window ownerWindow = GetWindow(InfoCardSite);
             if (ownerWindow != null)
@@ -119,7 +119,7 @@ namespace Supremacy.Client.Controls
             Setup(location);
 
             Loaded += OnLoaded;
-		}
+        }
         #endregion
 
         private void OnLoaded(object sender, RoutedEventArgs e)

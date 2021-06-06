@@ -127,7 +127,7 @@ namespace Supremacy.Orbitals
                 return maneuverablity;
             }
             return 0;
-        
+
         }
 
         /// <summary>

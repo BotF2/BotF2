@@ -18,7 +18,7 @@ namespace Supremacy.Client.OptionsPages
                 throw new ArgumentNullException("resourceManager");
 
             _resourceManager = resourceManager;
-            
+
             InitializeComponent();
         }
 

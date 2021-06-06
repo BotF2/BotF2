@@ -502,7 +502,7 @@ namespace Supremacy.Tech
             }
             GameLog.Core.XMLCheck.InfoFormat("lastSuccessfullyLoadedShipDesign = {0}", lastSuccessfullyLoadedShipDesign);
             //if (lastSuccessfullyLoadedShipDesign == "MAQUIS")
-                GameLog.Client.General.InfoFormat("{0} of successfullyLoadedShipDesign (once 396 were fine)", successfullyLoadedShipDesignCounter);
+            GameLog.Client.General.InfoFormat("{0} of successfullyLoadedShipDesign (once 396 were fine)", successfullyLoadedShipDesignCounter);
 
             /************
              * Stations *
@@ -587,194 +587,194 @@ namespace Supremacy.Tech
                 #region ProductionFacilities_To_CSV
                 if (GameLog.Core.GameInitData.IsDebugEnabled == true)
                     try // avoid hang up if this file is opened by another program 
-                {
-                    file = pathOutputFile + "z_FromTechObj-ProdFac_(autoCreated).csv";
-
-                    Console.WriteLine("writing {0}", file);
-
-                    if (file == null)
-                        goto WriterClose;
-
-                    streamWriter = new StreamWriter(file);
-
-                    strHeader =    // Head line
-                        "CE_ProductionFacility" + separator +
-                        "ATT_Key" + separator +
-
-                        "CE_TechRequirements" + separator +
-                        "CE_BioTech" + separator +
-                        "CE_Computers" + separator +
-                        "CE_Construction" + separator +
-                        "CE_Energy" + separator +
-                        "CE_Propulsion" + separator +
-                        "CE_Weapons" + separator +
-                        "CE_BuildCost" + separator +
-                        "CE_IsUniversallyAvailable" + separator +
-
-                        "CE_LaborCost" + separator +
-                        "CE_Category" + separator +
-                        "CE_UnitOutput" + separator +
-
-                        // just placeholder
-                        //"CE_Bonus" + separator +  // no bonus for ProdFac, because Type_1_Dilithium is not used - the Dilithium >BUILDING=Structure< is in usage
-                        //"CE_Restrictions" + separator +   // no buildcondition for ProdFac, because Type_1_Dilithium is not used - the Dilithium >BUILDING=Structure<s is in usage
-                        "CE_Prerequisites" + separator +
-                        "CE_ObsoletedItems" + separator +
-                        "CE_UpgradeOptions" + separator +
-                        "CE_Image" 
-                        ;
-
-                    streamWriter.WriteLine(strHeader);
-                    // End of head line
-
-                    string category = "";
-                    foreach (ProductionFacilityDesign PF in db.ProductionFacilityDesigns)   // each shipyard
                     {
-                        //App.DoEvents();  // for avoid error after 60 seconds
+                        file = pathOutputFile + "z_FromTechObj-ProdFac_(autoCreated).csv";
 
-                        if (PF.Category > 0)
-                            category = PF.Category.ToString();
+                        Console.WriteLine("writing {0}", file);
 
-                        if (PF.Category == 0)
+                        if (file == null)
+                            goto WriterClose;
+
+                        streamWriter = new StreamWriter(file);
+
+                        strHeader =    // Head line
+                            "CE_ProductionFacility" + separator +
+                            "ATT_Key" + separator +
+
+                            "CE_TechRequirements" + separator +
+                            "CE_BioTech" + separator +
+                            "CE_Computers" + separator +
+                            "CE_Construction" + separator +
+                            "CE_Energy" + separator +
+                            "CE_Propulsion" + separator +
+                            "CE_Weapons" + separator +
+                            "CE_BuildCost" + separator +
+                            "CE_IsUniversallyAvailable" + separator +
+
+                            "CE_LaborCost" + separator +
+                            "CE_Category" + separator +
+                            "CE_UnitOutput" + separator +
+
+                            // just placeholder
+                            //"CE_Bonus" + separator +  // no bonus for ProdFac, because Type_1_Dilithium is not used - the Dilithium >BUILDING=Structure< is in usage
+                            //"CE_Restrictions" + separator +   // no buildcondition for ProdFac, because Type_1_Dilithium is not used - the Dilithium >BUILDING=Structure<s is in usage
+                            "CE_Prerequisites" + separator +
+                            "CE_ObsoletedItems" + separator +
+                            "CE_UpgradeOptions" + separator +
+                            "CE_Image"
+                            ;
+
+                        streamWriter.WriteLine(strHeader);
+                        // End of head line
+
+                        string category = "";
+                        foreach (ProductionFacilityDesign PF in db.ProductionFacilityDesigns)   // each shipyard
                         {
-                            category = PF.Category.ToString();
-                            if (PF.Key.Contains("DILITHIUM"))
-                                category = "Dilithium";
-                            if (PF.Key.Contains("DEUTERIUM"))
-                                category = "Deuterium";
-                            if (PF.Key.Contains("RAWMATERIALS"))
-                                category = "RawMaterials";
-                        }
+                            //App.DoEvents();  // for avoid error after 60 seconds
 
-                        //doesn't work
-                        string imageString = "";
-                        //if (PF.Image != null)
-                        //    {
-                        //        try { imageString = PF.Image; } catch { }
-                        //    }
+                            if (PF.Category > 0)
+                                category = PF.Category.ToString();
 
-                        string obsDesign = "";
-                        foreach (TechObjectDesign obsolete in PF.ObsoletedDesigns)
-                        {
-                            obsDesign += obsolete.Key + ",";
-                        }
-                        //GameLog.Core.GameData.DebugFormat("{0} has obsolete designs = {1} ", PF.Key, obsDesign);
-
-
-                        string prerequisitesCollection = "";
-                        foreach (PrerequisiteGroup prereq in PF.Prerequisites)
-                        {
-                            foreach (TechObjectDesign item in prereq)
+                            if (PF.Category == 0)
                             {
-                                prerequisitesCollection += prereq.FirstOrDefault().Key + ",";
+                                category = PF.Category.ToString();
+                                if (PF.Key.Contains("DILITHIUM"))
+                                    category = "Dilithium";
+                                if (PF.Key.Contains("DEUTERIUM"))
+                                    category = "Deuterium";
+                                if (PF.Key.Contains("RAWMATERIALS"))
+                                    category = "RawMaterials";
                             }
+
+                            //doesn't work
+                            string imageString = "";
+                            //if (PF.Image != null)
+                            //    {
+                            //        try { imageString = PF.Image; } catch { }
+                            //    }
+
+                            string obsDesign = "";
+                            foreach (TechObjectDesign obsolete in PF.ObsoletedDesigns)
+                            {
+                                obsDesign += obsolete.Key + ",";
+                            }
+                            //GameLog.Core.GameData.DebugFormat("{0} has obsolete designs = {1} ", PF.Key, obsDesign);
+
+
+                            string prerequisitesCollection = "";
+                            foreach (PrerequisiteGroup prereq in PF.Prerequisites)
+                            {
+                                foreach (TechObjectDesign item in prereq)
+                                {
+                                    prerequisitesCollection += prereq.FirstOrDefault().Key + ",";
+                                }
+                            }
+                            //GameLog.Core.GameData.DebugFormat("{0} has prerequisites = {1} ", PF.Key, prerequisitesCollection);
+
+
+                            string upgradeDesign = "";
+                            foreach (TechObjectDesign upgrade in PF.UpgradableDesigns)
+                            {
+                                upgradeDesign += upgrade.Key + ",";
+                            }
+                            //GameLog.Core.GameData.DebugFormat("{0} has upgrade designs = {1} ", PF.Key, upgradeDesign);
+
+
+                            //string bonusCollection = "";
+                            ////string _bon = GameContext.Current.TechDatabase.ProductionFacilityDesigns.[PF.DesignID].UnitOutput.;
+                            //foreach (var _bonus in PF.UnitOutput())
+                            //{
+                            //    bonusCollection += upgrade.Key + ",";
+                            //}
+                            //bonusCollection = "Bonus for {0}" + PF.Key;
+                            //GameLog.Core.Txxt.DebugFormat("{0} has bonusCollection = {1} ", PF.Key, bonusCollection);
+
+
+
+                            //string _buildcondition = "";   // no buildcondition for ProdFac, because Type_1_Dilithium is not used - the Dilithium >BUILDING=Structure<s is in usage
+                            //_buildcondition = "BuildCondition for " + PF.Key;
+                            //// following doesn't work yet
+                            //try { 
+                            //    foreach (var buildCond in PF.BuildCondition.ScriptCode)
+                            //    {
+                            //        _buildcondition += buildCond.ToString() + ",";
+                            //    }
+                            //    GameLog.Core.Txxest.DebugFormat("{0} has _buildcondition = {1} ", PF.Key, _buildcondition);
+                            //}
+                            //catch
+                            //{
+                            //    _buildcondition = "BuildCondition for " + PF.Key;
+                            //}
+
+
+                            line =
+                            "ProductionFacility" + separator +
+                            PF.Key + separator +
+
+
+                            //<TechRequirements>
+                            "xx" + separator + // needs to be empty for "<TechRequirements></TechRequirements>" + separator +  
+                                               // after GoogleSheet-Export: replace...
+                                               // </Weapons> by </Weapons></TechRequirements>
+                                               // and <TechRequirements></TechRequirements> by just a beginning <TechRequirements>
+
+                            //"<Biotech>" + separator +                // not helpful
+                            PF.TechRequirements[TechCategory.BioTech] + separator +
+                            //"</Biotech>" + separator +                 // not helpful
+                            //"<Computers>" + separator +                 // not helpful
+                            PF.TechRequirements[TechCategory.Computers] + separator +
+                            //"</Computers>" + separator +                // not helpful
+                            //"<Construction>" + separator +                 // not helpful
+                            PF.TechRequirements[TechCategory.Construction] + separator +
+                            //"</Construction>" + separator +                // not helpful
+                            //"<Energy>" + separator +                 // not helpful
+                            PF.TechRequirements[TechCategory.Energy] + separator +
+                            //"</Energy>" + separator +                // not helpful
+                            //"<Propulsion>" + separator +                 // not helpful
+                            PF.TechRequirements[TechCategory.Propulsion] + separator +
+                            //"</Propulsion>" + separator +                // not helpful
+                            //"<Weapons>" + separator +                 // not helpful
+                            PF.TechRequirements[TechCategory.Weapons] + separator +
+                            //"</Weapons>" + separator +                // not helpful
+
+
+                            PF.BuildCost + separator +
+                            PF.IsUniversallyAvailable + separator +
+                            PF.LaborCost + separator +
+                            category + separator +
+                            PF.UnitOutput.ToString() + separator +
+
+                            // just placeholders
+                            //"Bonus for " + PF.Key + separator +
+                            //bonusCollection + separator +       // no bonus for ProdFac, because Type_1_Dilithium is not used - the Dilithium >BUILDING=Structure<s is in usage
+
+                            //"Restrictions for " + PF.Key + separator +
+                            //_buildcondition + separator +       // no buildcondition for ProdFac, because Type_1_Dilithium is not used - the Dilithium >BUILDING=Structure<s is in usage
+
+
+                            // + separator +  // doesn't work
+
+                            //"Prerequisites for " + PF.Key + separator +
+                            prerequisitesCollection + separator +
+
+                            //"ObsoletedItems for " + PF.Key + separator +
+                            obsDesign + separator +
+
+                            //"UpgradeOptions for " + PF.Key                                                
+                            upgradeDesign + separator +
+
+                            imageString
+                            ;
+
+                            //Console.WriteLine("{0}", line);
+
+                            streamWriter.WriteLine(line);
                         }
-                        //GameLog.Core.GameData.DebugFormat("{0} has prerequisites = {1} ", PF.Key, prerequisitesCollection);
-
-
-                        string upgradeDesign = "";
-                        foreach (TechObjectDesign upgrade in PF.UpgradableDesigns)
-                        {
-                            upgradeDesign += upgrade.Key + ",";
-                        }
-                        //GameLog.Core.GameData.DebugFormat("{0} has upgrade designs = {1} ", PF.Key, upgradeDesign);
-
-
-                        //string bonusCollection = "";
-                        ////string _bon = GameContext.Current.TechDatabase.ProductionFacilityDesigns.[PF.DesignID].UnitOutput.;
-                        //foreach (var _bonus in PF.UnitOutput())
-                        //{
-                        //    bonusCollection += upgrade.Key + ",";
-                        //}
-                        //bonusCollection = "Bonus for {0}" + PF.Key;
-                        //GameLog.Core.Txxt.DebugFormat("{0} has bonusCollection = {1} ", PF.Key, bonusCollection);
-
-
-
-                        //string _buildcondition = "";   // no buildcondition for ProdFac, because Type_1_Dilithium is not used - the Dilithium >BUILDING=Structure<s is in usage
-                        //_buildcondition = "BuildCondition for " + PF.Key;
-                        //// following doesn't work yet
-                        //try { 
-                        //    foreach (var buildCond in PF.BuildCondition.ScriptCode)
-                        //    {
-                        //        _buildcondition += buildCond.ToString() + ",";
-                        //    }
-                        //    GameLog.Core.Txxest.DebugFormat("{0} has _buildcondition = {1} ", PF.Key, _buildcondition);
-                        //}
-                        //catch
-                        //{
-                        //    _buildcondition = "BuildCondition for " + PF.Key;
-                        //}
-
-
-                        line =
-                        "ProductionFacility" + separator +
-                        PF.Key + separator +
-                        
-
-                        //<TechRequirements>
-                        "xx" + separator + // needs to be empty for "<TechRequirements></TechRequirements>" + separator +  
-                                           // after GoogleSheet-Export: replace...
-                                           // </Weapons> by </Weapons></TechRequirements>
-                                           // and <TechRequirements></TechRequirements> by just a beginning <TechRequirements>
-
-                        //"<Biotech>" + separator +                // not helpful
-                        PF.TechRequirements[TechCategory.BioTech] + separator +
-                        //"</Biotech>" + separator +                 // not helpful
-                        //"<Computers>" + separator +                 // not helpful
-                        PF.TechRequirements[TechCategory.Computers] + separator +
-                        //"</Computers>" + separator +                // not helpful
-                        //"<Construction>" + separator +                 // not helpful
-                        PF.TechRequirements[TechCategory.Construction] + separator +
-                        //"</Construction>" + separator +                // not helpful
-                        //"<Energy>" + separator +                 // not helpful
-                        PF.TechRequirements[TechCategory.Energy] + separator +
-                        //"</Energy>" + separator +                // not helpful
-                        //"<Propulsion>" + separator +                 // not helpful
-                        PF.TechRequirements[TechCategory.Propulsion] + separator +
-                        //"</Propulsion>" + separator +                // not helpful
-                        //"<Weapons>" + separator +                 // not helpful
-                        PF.TechRequirements[TechCategory.Weapons] + separator +
-                        //"</Weapons>" + separator +                // not helpful
-
-
-                        PF.BuildCost + separator +
-                        PF.IsUniversallyAvailable + separator +
-                        PF.LaborCost + separator +
-                        category + separator +
-                        PF.UnitOutput.ToString() + separator +
-
-                        // just placeholders
-                        //"Bonus for " + PF.Key + separator +
-                        //bonusCollection + separator +       // no bonus for ProdFac, because Type_1_Dilithium is not used - the Dilithium >BUILDING=Structure<s is in usage
-
-                        //"Restrictions for " + PF.Key + separator +
-                        //_buildcondition + separator +       // no buildcondition for ProdFac, because Type_1_Dilithium is not used - the Dilithium >BUILDING=Structure<s is in usage
-
-
-                        // + separator +  // doesn't work
-
-                        //"Prerequisites for " + PF.Key + separator +
-                        prerequisitesCollection + separator + 
-
-                        //"ObsoletedItems for " + PF.Key + separator +
-                        obsDesign + separator + 
-
-                        //"UpgradeOptions for " + PF.Key                                                
-                        upgradeDesign + separator +
-
-                        imageString
-                        ;
-
-                        //Console.WriteLine("{0}", line);
-
-                        streamWriter.WriteLine(line);
                     }
-                }
-                catch (Exception e)
-                {
-                    GameLog.Core.GameData.Error("Cannot write ... z_FromTechObj-ProductionFacilities_(autoCreated).csv", e);
-                }
+                    catch (Exception e)
+                    {
+                        GameLog.Core.GameData.Error("Cannot write ... z_FromTechObj-ProductionFacilities_(autoCreated).csv", e);
+                    }
 
                 // End of ProductionFacilities
                 #endregion ProductionFacilities_To_CSV
@@ -784,238 +784,238 @@ namespace Supremacy.Tech
                 #region Buildings_To_CSV
                 if (GameLog.Core.GameInitData.IsDebugEnabled == true)
                     try // avoid hang up if this file is opened by another program 
-                {
-                    file = pathOutputFile + "z_FromTechObj-Buildings_(autoCreated).csv";
-
-                    Console.WriteLine("writing {0}", file);
-
-                    if (file == null)
-                        goto WriterClose;
-
-                    streamWriter = new StreamWriter(file);
-
-                    strHeader =    // Head line
-                        "CE_Building" + separator +
-                        "ATT_Key" + separator +
-
-                        "CE_B1_Amount" + separator +
-                        "CE_Bonus1" + separator +
-
-                        "CE_B2_Amount" + separator +
-                        "CE_Bonus2" + separator +
-
-                        "CE_B3_Amount" + separator +
-                        "CE_Bonus3" + separator +
-
-
-                        // no more than 3 bonuses, but prepared for 5
-                        //"CE_Bonus4" + separator +
-                        //"CE_B4_Amount" + separator +
-
-                        //"CE_Bonus5" + separator +
-                        //"CE_B5_Amount" + separator +
-
-
-                        "CE_TechRequirements" + separator +
-                        "CE_BioTech" + separator +
-                        "CE_Computers" + separator +
-                        "CE_Construction" + separator +
-                        "CE_Energy" + separator +
-                        "CE_Propulsion" + separator +
-                        "CE_Weapons" + separator +
-                        "CE_BuildCost" + separator +
-                        "CE_IsUniversallyAvailable" + separator +
-
-                        "CE_EnergyCost" + separator +
-                        //"CE_Category" + separator +
-
-                        // just placeholder
-
-                        "CE_Restriction1" + separator +
-                        "CE_Restriction2" + separator +
-                        "CE_Restriction3" + separator +
-                        "CE_Restriction4" + separator +
-                        "CE_Restriction5" //+ separator +
-                        ;
-
-                    streamWriter.WriteLine(strHeader);
-                    // End of head line
-
-                    //string Restriction = "";
-
-                    //string bonusType = "";
-                    string bonustype1 = "";
-                    string bonustype2 = "";
-                    string bonustype3 = "";
-                    //string bonustype4 = "";
-                    //string bonustype5 = "";
-
-                    string bonusAmount1 = "";
-                    string bonusAmount2 = "";
-                    string bonusAmount3 = "";
-                    //string bonusAmount4 = "";
-                    //string bonusAmount5 = "";
-
-
-                    foreach (BuildingDesign B in db.BuildingDesigns)   // each shipyard
                     {
-                        //App.DoEvents();  // for avoid error after 60 seconds
+                        file = pathOutputFile + "z_FromTechObj-Buildings_(autoCreated).csv";
 
-                        int i = 0;
+                        Console.WriteLine("writing {0}", file);
 
-                        foreach (Bonus bonus in B.Bonuses)
+                        if (file == null)
+                            goto WriterClose;
+
+                        streamWriter = new StreamWriter(file);
+
+                        strHeader =    // Head line
+                            "CE_Building" + separator +
+                            "ATT_Key" + separator +
+
+                            "CE_B1_Amount" + separator +
+                            "CE_Bonus1" + separator +
+
+                            "CE_B2_Amount" + separator +
+                            "CE_Bonus2" + separator +
+
+                            "CE_B3_Amount" + separator +
+                            "CE_Bonus3" + separator +
+
+
+                            // no more than 3 bonuses, but prepared for 5
+                            //"CE_Bonus4" + separator +
+                            //"CE_B4_Amount" + separator +
+
+                            //"CE_Bonus5" + separator +
+                            //"CE_B5_Amount" + separator +
+
+
+                            "CE_TechRequirements" + separator +
+                            "CE_BioTech" + separator +
+                            "CE_Computers" + separator +
+                            "CE_Construction" + separator +
+                            "CE_Energy" + separator +
+                            "CE_Propulsion" + separator +
+                            "CE_Weapons" + separator +
+                            "CE_BuildCost" + separator +
+                            "CE_IsUniversallyAvailable" + separator +
+
+                            "CE_EnergyCost" + separator +
+                            //"CE_Category" + separator +
+
+                            // just placeholder
+
+                            "CE_Restriction1" + separator +
+                            "CE_Restriction2" + separator +
+                            "CE_Restriction3" + separator +
+                            "CE_Restriction4" + separator +
+                            "CE_Restriction5" //+ separator +
+                            ;
+
+                        streamWriter.WriteLine(strHeader);
+                        // End of head line
+
+                        //string Restriction = "";
+
+                        //string bonusType = "";
+                        string bonustype1 = "";
+                        string bonustype2 = "";
+                        string bonustype3 = "";
+                        //string bonustype4 = "";
+                        //string bonustype5 = "";
+
+                        string bonusAmount1 = "";
+                        string bonusAmount2 = "";
+                        string bonusAmount3 = "";
+                        //string bonusAmount4 = "";
+                        //string bonusAmount5 = "";
+
+
+                        foreach (BuildingDesign B in db.BuildingDesigns)   // each shipyard
                         {
-                            i = i + 1;  // first "bonus 1" then bonus 2
+                            //App.DoEvents();  // for avoid error after 60 seconds
 
-                            string bonusType = bonus.BonusType.ToString();
-                            string bonusAmount = bonus.Amount.ToString();
+                            int i = 0;
 
-                            switch (i)
+                            foreach (Bonus bonus in B.Bonuses)
                             {
-                                case 1: bonustype1 = bonusType; bonusAmount1 = bonusAmount; break;
-                                case 2: bonustype2 = bonusType; bonusAmount2 = bonusAmount; break;
-                                case 3: bonustype3 = bonusType; bonusAmount3 = bonusAmount; break;
-                                    //case 4: bonustype4 = bonusType; bonusAmount4 = bonusAmount; break;
-                                    //case 5: bonustype5 = bonusType; bonusAmount5 = bonusAmount; break;
+                                i = i + 1;  // first "bonus 1" then bonus 2
+
+                                string bonusType = bonus.BonusType.ToString();
+                                string bonusAmount = bonus.Amount.ToString();
+
+                                switch (i)
+                                {
+                                    case 1: bonustype1 = bonusType; bonusAmount1 = bonusAmount; break;
+                                    case 2: bonustype2 = bonusType; bonusAmount2 = bonusAmount; break;
+                                    case 3: bonustype3 = bonusType; bonusAmount3 = bonusAmount; break;
+                                        //case 4: bonustype4 = bonusType; bonusAmount4 = bonusAmount; break;
+                                        //case 5: bonustype5 = bonusType; bonusAmount5 = bonusAmount; break;
+                                }
+
                             }
 
+                            string Restriction = "";
+                            // Restriction: put into one string with including semicolon, out just at the end (otherwise split and count)
+
+                            // often
+                            //if (B.HasRestriction(BuildRestriction.None)) { Restriction += "None;"; }  // delivers wrong result
+                            if (B.HasRestriction(BuildRestriction.OnePerSystem)) { Restriction += "OnePerSystem;"; }
+                            if (B.HasRestriction(BuildRestriction.OnePerEmpire)) { Restriction += "OnePerEmpire;"; }
+                            if (B.HasRestriction(BuildRestriction.HomeSystem)) { Restriction += "HomeSystem;"; }
+
+
+                            if (B.HasRestriction(BuildRestriction.ArcticPlanet)) { Restriction += "ArcticPlanet;"; }
+                            if (B.HasRestriction(BuildRestriction.Asteroids)) { Restriction += "Asteroids;"; }
+                            if (B.HasRestriction(BuildRestriction.BarrenPlanet)) { Restriction += "BarrenPlanet;"; }
+                            if (B.HasRestriction(BuildRestriction.BlueStar)) { Restriction += "BlueStar;"; }
+                            if (B.HasRestriction(BuildRestriction.ConqueredSystem)) { Restriction += "ConqueredSystem;"; }
+                            if (B.HasRestriction(BuildRestriction.CrystallinePlanet)) { Restriction += "CrystallinePlanet;"; }
+                            if (B.HasRestriction(BuildRestriction.DemonPlanet)) { Restriction += "DemonPlanet;"; }
+                            if (B.HasRestriction(BuildRestriction.DesertPlanet)) { Restriction += "DesertPlanet;"; }
+                            if (B.HasRestriction(BuildRestriction.DilithiumBonus)) { Restriction += "DilithiumBonus;"; }
+                            if (B.HasRestriction(BuildRestriction.GasGiant)) { Restriction += "GasGiant;"; }
+                            if (B.HasRestriction(BuildRestriction.JunglePlanet)) { Restriction += "JunglePlanet;"; }
+                            if (B.HasRestriction(BuildRestriction.MemberSystem)) { Restriction += "MemberSystem;"; }
+                            if (B.HasRestriction(BuildRestriction.Moons)) { Restriction += "Moons;"; }
+                            if (B.HasRestriction(BuildRestriction.NativeSystem)) { Restriction += "NativeSystem;"; }
+                            if (B.HasRestriction(BuildRestriction.Nebula)) { Restriction += "Nebula;"; }
+                            if (B.HasRestriction(BuildRestriction.NonNativeSystem)) { Restriction += "NonNativeSystem;"; }
+                            if (B.HasRestriction(BuildRestriction.OceanicPlanet)) { Restriction += "OceanicPlanet;"; }
+                            if (B.HasRestriction(BuildRestriction.OnePer100MaxPopUnits)) { Restriction += "OnePer100MaxPopUnits;"; }
+                            if (B.HasRestriction(BuildRestriction.OrangeStar)) { Restriction += "OrangeStar;"; }
+                            if (B.HasRestriction(BuildRestriction.RawMaterialsBonus)) { Restriction += "RawMaterialsBonus;"; }
+                            if (B.HasRestriction(BuildRestriction.RedStar)) { Restriction += "RedStar;"; }
+                            if (B.HasRestriction(BuildRestriction.RoguePlanet)) { Restriction += "RoguePlanet;"; }
+                            if (B.HasRestriction(BuildRestriction.TerranPlanet)) { Restriction += "TerranPlanet;"; }
+                            if (B.HasRestriction(BuildRestriction.VolcanicPlanet)) { Restriction += "VolcanicPlanet;"; }
+                            if (B.HasRestriction(BuildRestriction.WhiteStar)) { Restriction += "WhiteStar;"; }
+                            if (B.HasRestriction(BuildRestriction.YellowStar)) { Restriction += "YellowStar;"; }
+
+                            if (B.HasRestriction(BuildRestriction.GreenStar)) { Restriction += "Green Star (no Green Stars in Universe!);"; }
+
+
+
+                            line =
+                            "Building" + separator +
+                            B.Key + separator +
+                            //B.Image + separator +
+
+                            bonusAmount1 + separator +
+                            bonustype1 + separator +
+
+                            bonusAmount2 + separator +
+                            bonustype2 + separator +
+
+                            bonusAmount3 + separator +
+                            bonustype3 + separator +
+
+
+                            // no more than 3 bonuses, but prepared for 5
+
+                            //bonusAmount4 + separator +
+                            //bonustype4 + separator +
+
+                            //bonusAmount5 + separator +
+                            //bonustype5 + separator +
+
+
+
+
+                            //shipyard.DesignID + separator +   // not useful for current working
+                            //shipyard.ShipType + separator +  // moved down for current working
+                            //shipyard.ClassName + separator +  // moved down for current working
+                            //shipyard.Key;   // just for testing
+
+                            //<TechRequirements>
+                            "xx" + separator + // needs to be empty for "<TechRequirements></TechRequirements>" + separator +  
+                                               // after GoogleSheet-Export: replace...
+                                               // </Weapons> by </Weapons></TechRequirements>
+                                               // and <TechRequirements></TechRequirements> by just a beginning <TechRequirements>
+
+                            //"<Biotech>" + separator +                // not helpful
+                            B.TechRequirements[TechCategory.BioTech] + separator +
+                            //"</Biotech>" + separator +                 // not helpful
+                            //"<Computers>" + separator +                 // not helpful
+                            B.TechRequirements[TechCategory.Computers] + separator +
+                            //"</Computers>" + separator +                // not helpful
+                            //"<Construction>" + separator +                 // not helpful
+                            B.TechRequirements[TechCategory.Construction] + separator +
+                            //"</Construction>" + separator +                // not helpful
+                            //"<Energy>" + separator +                 // not helpful
+                            B.TechRequirements[TechCategory.Energy] + separator +
+                            //"</Energy>" + separator +                // not helpful
+                            //"<Propulsion>" + separator +                 // not helpful
+                            B.TechRequirements[TechCategory.Propulsion] + separator +
+                            //"</Propulsion>" + separator +                // not helpful
+                            //"<Weapons>" + separator +                 // not helpful
+                            B.TechRequirements[TechCategory.Weapons] + separator +
+                            //"</Weapons>" + separator +                // not helpful
+
+
+                            B.BuildCost + separator +
+                            B.IsUniversallyAvailable + separator +
+
+                            B.EnergyCost + separator +
+
+                            //category + separator +
+
+
+
+                            // just placeholders
+                            //"Bonus for " + 
+
+
+                            Restriction // for " + B.Key //+ separator +
+                                        //"Prerequisites for " + B.Key + separator +
+                                        //"ObsoletedItems for " + B.Key + separator +
+                                        //"UpgradeOptions for " + B.Key
+                            ;
+
+                            //Console.WriteLine("{0}", line);
+
+                            streamWriter.WriteLine(line);
+
+                            //clear strings for next buildingng
+                            bonustype1 = ""; bonusAmount1 = "";
+                            bonustype2 = ""; bonusAmount2 = "";
+                            bonustype3 = ""; bonusAmount3 = "";
+                            //bonustype4 = ""; bonusAmount4 = "";
+                            //bonustype5 = ""; bonusAmount5 = "";
+
+                            Restriction = "";
                         }
-
-                        string Restriction = "";
-                        // Restriction: put into one string with including semicolon, out just at the end (otherwise split and count)
-
-                        // often
-                        //if (B.HasRestriction(BuildRestriction.None)) { Restriction += "None;"; }  // delivers wrong result
-                        if (B.HasRestriction(BuildRestriction.OnePerSystem)) { Restriction += "OnePerSystem;"; }
-                        if (B.HasRestriction(BuildRestriction.OnePerEmpire)) { Restriction += "OnePerEmpire;"; }
-                        if (B.HasRestriction(BuildRestriction.HomeSystem)) { Restriction += "HomeSystem;"; }
-
-
-                        if (B.HasRestriction(BuildRestriction.ArcticPlanet)) { Restriction += "ArcticPlanet;"; }
-                        if (B.HasRestriction(BuildRestriction.Asteroids)) { Restriction += "Asteroids;"; }
-                        if (B.HasRestriction(BuildRestriction.BarrenPlanet)) { Restriction += "BarrenPlanet;"; }
-                        if (B.HasRestriction(BuildRestriction.BlueStar)) { Restriction += "BlueStar;"; }
-                        if (B.HasRestriction(BuildRestriction.ConqueredSystem)) { Restriction += "ConqueredSystem;"; }
-                        if (B.HasRestriction(BuildRestriction.CrystallinePlanet)) { Restriction += "CrystallinePlanet;"; }
-                        if (B.HasRestriction(BuildRestriction.DemonPlanet)) { Restriction += "DemonPlanet;"; }
-                        if (B.HasRestriction(BuildRestriction.DesertPlanet)) { Restriction += "DesertPlanet;"; }
-                        if (B.HasRestriction(BuildRestriction.DilithiumBonus)) { Restriction += "DilithiumBonus;"; }
-                        if (B.HasRestriction(BuildRestriction.GasGiant)) { Restriction += "GasGiant;"; }
-                        if (B.HasRestriction(BuildRestriction.JunglePlanet)) { Restriction += "JunglePlanet;"; }
-                        if (B.HasRestriction(BuildRestriction.MemberSystem)) { Restriction += "MemberSystem;"; }
-                        if (B.HasRestriction(BuildRestriction.Moons)) { Restriction += "Moons;"; }
-                        if (B.HasRestriction(BuildRestriction.NativeSystem)) { Restriction += "NativeSystem;"; }
-                        if (B.HasRestriction(BuildRestriction.Nebula)) { Restriction += "Nebula;"; }
-                        if (B.HasRestriction(BuildRestriction.NonNativeSystem)) { Restriction += "NonNativeSystem;"; }
-                        if (B.HasRestriction(BuildRestriction.OceanicPlanet)) { Restriction += "OceanicPlanet;"; }
-                        if (B.HasRestriction(BuildRestriction.OnePer100MaxPopUnits)) { Restriction += "OnePer100MaxPopUnits;"; }
-                        if (B.HasRestriction(BuildRestriction.OrangeStar)) { Restriction += "OrangeStar;"; }
-                        if (B.HasRestriction(BuildRestriction.RawMaterialsBonus)) { Restriction += "RawMaterialsBonus;"; }
-                        if (B.HasRestriction(BuildRestriction.RedStar)) { Restriction += "RedStar;"; }
-                        if (B.HasRestriction(BuildRestriction.RoguePlanet)) { Restriction += "RoguePlanet;"; }
-                        if (B.HasRestriction(BuildRestriction.TerranPlanet)) { Restriction += "TerranPlanet;"; }
-                        if (B.HasRestriction(BuildRestriction.VolcanicPlanet)) { Restriction += "VolcanicPlanet;"; }
-                        if (B.HasRestriction(BuildRestriction.WhiteStar)) { Restriction += "WhiteStar;"; }
-                        if (B.HasRestriction(BuildRestriction.YellowStar)) { Restriction += "YellowStar;"; }
-
-                        if (B.HasRestriction(BuildRestriction.GreenStar)) { Restriction += "Green Star (no Green Stars in Universe!);"; }
-
-
-
-                        line =
-                        "Building" + separator +
-                        B.Key + separator +
-                        //B.Image + separator +
-
-                        bonusAmount1 + separator +
-                        bonustype1 + separator +
-
-                        bonusAmount2 + separator +
-                        bonustype2 + separator +
-
-                        bonusAmount3 + separator +
-                        bonustype3 + separator +
-
-
-                        // no more than 3 bonuses, but prepared for 5
-
-                        //bonusAmount4 + separator +
-                        //bonustype4 + separator +
-
-                        //bonusAmount5 + separator +
-                        //bonustype5 + separator +
-
-
-
-
-                        //shipyard.DesignID + separator +   // not useful for current working
-                        //shipyard.ShipType + separator +  // moved down for current working
-                        //shipyard.ClassName + separator +  // moved down for current working
-                        //shipyard.Key;   // just for testing
-
-                        //<TechRequirements>
-                        "xx" + separator + // needs to be empty for "<TechRequirements></TechRequirements>" + separator +  
-                                           // after GoogleSheet-Export: replace...
-                                           // </Weapons> by </Weapons></TechRequirements>
-                                           // and <TechRequirements></TechRequirements> by just a beginning <TechRequirements>
-
-                        //"<Biotech>" + separator +                // not helpful
-                        B.TechRequirements[TechCategory.BioTech] + separator +
-                        //"</Biotech>" + separator +                 // not helpful
-                        //"<Computers>" + separator +                 // not helpful
-                        B.TechRequirements[TechCategory.Computers] + separator +
-                        //"</Computers>" + separator +                // not helpful
-                        //"<Construction>" + separator +                 // not helpful
-                        B.TechRequirements[TechCategory.Construction] + separator +
-                        //"</Construction>" + separator +                // not helpful
-                        //"<Energy>" + separator +                 // not helpful
-                        B.TechRequirements[TechCategory.Energy] + separator +
-                        //"</Energy>" + separator +                // not helpful
-                        //"<Propulsion>" + separator +                 // not helpful
-                        B.TechRequirements[TechCategory.Propulsion] + separator +
-                        //"</Propulsion>" + separator +                // not helpful
-                        //"<Weapons>" + separator +                 // not helpful
-                        B.TechRequirements[TechCategory.Weapons] + separator +
-                        //"</Weapons>" + separator +                // not helpful
-
-
-                        B.BuildCost + separator +
-                        B.IsUniversallyAvailable + separator +
-
-                        B.EnergyCost + separator +
-
-                        //category + separator +
-
-
-
-                        // just placeholders
-                        //"Bonus for " + 
-
-
-                        Restriction // for " + B.Key //+ separator +
-                        //"Prerequisites for " + B.Key + separator +
-                        //"ObsoletedItems for " + B.Key + separator +
-                        //"UpgradeOptions for " + B.Key
-                        ;
-
-                        //Console.WriteLine("{0}", line);
-
-                        streamWriter.WriteLine(line);
-
-                        //clear strings for next buildingng
-                        bonustype1 = ""; bonusAmount1 = "";
-                        bonustype2 = ""; bonusAmount2 = "";
-                        bonustype3 = ""; bonusAmount3 = "";
-                        //bonustype4 = ""; bonusAmount4 = "";
-                        //bonustype5 = ""; bonusAmount5 = "";
-
-                        Restriction = "";
                     }
-                }
-                catch (Exception e)
-                {
-                    GameLog.Core.GameData.Error("Cannot write ... z_FromTechObj-Buildings_(autoCreated).csv", e);
-                }
+                    catch (Exception e)
+                    {
+                        GameLog.Core.GameData.Error("Cannot write ... z_FromTechObj-Buildings_(autoCreated).csv", e);
+                    }
 
                 // End of Buildings
                 #endregion Buildings_To_CSV
@@ -1129,7 +1129,7 @@ namespace Supremacy.Tech
 
                         "CE_ObsoletedDesigns" + separator +  // for real it's ObsoletedItems
                         "CE_UpgradableDesigns" + separator +   // for real it's UpgradeOptions
-                        "CE_PossibleNames" 
+                        "CE_PossibleNames"
                         ;
                     //"CE_SecondaryWeapon.Damage" + separator +
 
@@ -1391,7 +1391,7 @@ namespace Supremacy.Tech
                 {
                     GameLog.Core.GameData.Error("Cannot write ... z_FromTechObj-Shipyards_(autoCreated).csv", e);
                 }
-                
+
                 // End of Shipyards
                 #endregion Shipyards_To_CSV
 

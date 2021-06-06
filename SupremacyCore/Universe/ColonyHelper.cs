@@ -78,7 +78,7 @@ namespace Supremacy.Universe
                 , colony.Population.CurrentValue
                 , shipyardBuildSlotsCount
                 , colony.Buildings.Count
-                , total 
+                , total
                 );
 
             // ReSharper restore AccessToModifiedClosure

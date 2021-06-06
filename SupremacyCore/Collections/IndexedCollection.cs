@@ -1081,8 +1081,8 @@ namespace Supremacy.Collections
                         string property = propExp.Member.Name;
                         Dictionary<int, HashSet<TSource>> myIndex =
                                 sourceCollection.GetIndexByProperty(property).LookupTable;
-                            //try
-                            //{
+                        //try
+                        //{
                         if (myIndex.ContainsKey(hashRight.Value))
                         {
                             IEnumerable<TSource> sourceEnum = myIndex[hashRight.Value].AsEnumerable();
@@ -1093,10 +1093,10 @@ namespace Supremacy.Collections
                                     yield return item;
                                 }
                         }
-                            //} catch
-                            //{
+                        //} catch
+                        //{
 
-                            //}
+                        //}
 
                         noIndex = false; //we found an index, whether it had values or not is another matter
                     }

@@ -102,11 +102,11 @@ namespace Supremacy.Client
             {
                 if (!options.ShowUsage)
                 {
-                    options.Usage("Unrecognized command line argument: '" + e.Args.InvalidCmdArg  + "'.");
+                    options.Usage("Unrecognized command line argument: '" + e.Args.InvalidCmdArg + "'.");
                     ClientApp.Current.Shutdown();
                 }
             }
-            
+
             if (!options.ShowUsage)
                 return;
 

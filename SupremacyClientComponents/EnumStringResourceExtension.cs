@@ -38,7 +38,7 @@ namespace Supremacy.Client
         public override object ProvideValue(IServiceProvider serviceProvider)
         {
             string text = ResourceManager.GetString(_key);
-            
+
             switch (Case)
             {
                 case StringCase.Lower:

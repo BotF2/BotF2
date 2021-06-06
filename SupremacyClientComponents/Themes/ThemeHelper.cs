@@ -50,7 +50,7 @@ namespace Supremacy.Client.Themes
             {
                 GameLog.Client.GameData.ErrorFormat("ThemeHelper.cs: problem at try sharedResources Exception {0} {1}", e.Message, e.StackTrace);
             }
-            
+
             resources = null;
             return false;
         }

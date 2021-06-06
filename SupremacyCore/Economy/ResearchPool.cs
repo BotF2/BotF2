@@ -266,7 +266,7 @@ namespace Supremacy.Economy
                     else
                     {
                         _cumulativePoints.BaseValue += application.ResearchCost;
-                        
+
                         // Make sure the current and last values match so to not show any deltas
                         _cumulativePoints.Reset();
                         _cumulativePoints.SaveCurrentAndResetToBase();
@@ -309,7 +309,7 @@ namespace Supremacy.Economy
         public void UpdateResearch(int researchPoints)
         {
             GameLog.Client.Test.InfoFormat("UpdatingResearch...");
-            
+
             if (researchPoints < 0)
                 researchPoints = 0;
 
@@ -341,7 +341,7 @@ namespace Supremacy.Economy
 
                     //civManager.SitRepEntries.Add(new ScienceSummarySitRepEntry(Owner, researchSummary));
 
-                    
+
                     if (_queue[field.FieldID][i].IsFinished)
                     {
                         FinishProject(field.FieldID, i--);
@@ -396,7 +396,7 @@ namespace Supremacy.Economy
 
             ICollection<TechObjectDesign> designsAfter = TechTreeHelper.GetDesignsForCurrentTechLevels(Owner);
             List<TechObjectDesign> newDesigns = designsAfter.Except(designsBefore).ToList();
-            
+
             if (civManager != null)
                 civManager.SitRepEntries.Add(new ResearchCompleteSitRepEntry(Owner, finishedApp, newDesigns));
         }
@@ -445,7 +445,7 @@ namespace Supremacy.Economy
     /// A collection of <see cref="Meter"/>s indexed by <see cref="TechCategory"/>.
     /// </summary>
     [Serializable]
-    public class ResearchPoolValueCollection 
+    public class ResearchPoolValueCollection
         : Dictionary<TechCategory, Meter>,
           IOwnedDataSerializableAndRecreatable,
           ICloneable
@@ -612,28 +612,28 @@ namespace Supremacy.Economy
     //        }
     //    }
 
-        /// <summary>
-        /// Gets or sets the percentage-based bonus for the specified field ID.
-        /// </summary>
-        /// <value>The bonus.</value>
-        //public int this[int fieldId]
-        //{
-        //    get
-        //    {
-        //        GameLog.Core.Research.DebugFormat("ResearchPointsCollection for {0}", this[GameContext.Current.ResearchMatrix.Fields[fieldId].TechCategory]);
-        //        return this[GameContext.Current.ResearchMatrix.Fields[fieldId].TechCategory];
-        //    }
-        //}
+    /// <summary>
+    /// Gets or sets the percentage-based bonus for the specified field ID.
+    /// </summary>
+    /// <value>The bonus.</value>
+    //public int this[int fieldId]
+    //{
+    //    get
+    //    {
+    //        GameLog.Core.Research.DebugFormat("ResearchPointsCollection for {0}", this[GameContext.Current.ResearchMatrix.Fields[fieldId].TechCategory]);
+    //        return this[GameContext.Current.ResearchMatrix.Fields[fieldId].TechCategory];
+    //    }
+    //}
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ResearchPointsCollection"/> class.
-        /// </summary>
-        //public ResearchPointsCollection([NotNull] Civilization owner)
-        //{
-        //    if (owner == null)
-        //        throw new ArgumentNullException("owner");
-        //    // works    GameLog.Print("ResearchPointsCollection Owner = {0} = {1}", owner.CivID, owner.Name);
-        //    _ownerId = owner.CivID;
-        //}
+    /// <summary>
+    /// Initializes a new instance of the <see cref="ResearchPointsCollection"/> class.
+    /// </summary>
+    //public ResearchPointsCollection([NotNull] Civilization owner)
+    //{
+    //    if (owner == null)
+    //        throw new ArgumentNullException("owner");
+    //    // works    GameLog.Print("ResearchPointsCollection Owner = {0} = {1}", owner.CivID, owner.Name);
+    //    _ownerId = owner.CivID;
+    //}
     //}
 }

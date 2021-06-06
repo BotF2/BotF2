@@ -68,7 +68,7 @@ namespace Supremacy.Economy
                 throw new ArgumentNullException("initialTreasury");
             CopyFrom(initialTreasury);
         }
-        
+
         public Treasury(int initialLevel)
         {
             if (initialLevel < 0)

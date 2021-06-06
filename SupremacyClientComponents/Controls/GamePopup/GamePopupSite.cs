@@ -123,7 +123,7 @@ namespace Supremacy.Client.Controls
                 return;
 
             _openPopupRoots.Add(popupRoot);
-            
+
             InvalidateMeasure();
         }
 

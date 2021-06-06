@@ -111,7 +111,7 @@ namespace Supremacy.Game
                     {
                         nearestDistance = MapLocation.GetDistance(location1, location2);
                     }
-                }    
+                }
             }
             return nearestDistance;
         }

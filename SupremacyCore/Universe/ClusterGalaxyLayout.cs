@@ -31,8 +31,8 @@ namespace Supremacy.Universe
             int i;
             int attempts;
 
-            List<Tuple<Tuple<double, double>, Tuple<double, double>>> clustersPosition = 
-                new List<Tuple<Tuple<double,double>,Tuple<double,double>>>();
+            List<Tuple<Tuple<double, double>, Tuple<double, double>>> clustersPosition =
+                new List<Tuple<Tuple<double, double>, Tuple<double, double>>>();
 
             int averageClusters = Math.Min(width, height) / 20;
             int clusters;

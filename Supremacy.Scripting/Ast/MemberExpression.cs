@@ -87,7 +87,7 @@ namespace Supremacy.Scripting.Ast
                 if (obsoleteAttribute != null)
                 {
                     ErrorInfo error;
-                    
+
                     if (obsoleteAttribute.IsError)
                     {
                         error = CompilerErrors.MemberIsObsolete;
@@ -139,7 +139,7 @@ namespace Supremacy.Scripting.Ast
                 CompilerErrors.StaticMemberCannotBeAccessedWithInstanceReference,
                 Span,
                 GetSignatureForError());
-            
+
             return this;
         }
 

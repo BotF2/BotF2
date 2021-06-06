@@ -781,7 +781,7 @@ namespace Supremacy.Universe
                             {
                                 XmlElement pf = techLevel["Research"];
 
-                                _researchPF = new ProductionFacilityDescriptor { DesignType = pf.InnerText.Trim().ToUpperInvariant() }; 
+                                _researchPF = new ProductionFacilityDescriptor { DesignType = pf.InnerText.Trim().ToUpperInvariant() };
 
                                 if (pf.HasAttribute("Count"))
                                 {

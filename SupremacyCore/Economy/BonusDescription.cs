@@ -68,7 +68,7 @@ namespace Supremacy.Economy
 
             if (!_descriptions.TryGetValue(bonus.BonusType.ToString(), 0, out description))
                 return string.Format("{0:+#,0;-#,0} {1}", bonus.Amount, bonus.BonusType);
-            
+
             if (!_descriptions.TryGetValue(bonus.BonusType.ToString(), 1, out isPercent) || !StringHelper.IsTrue(isPercent))
                 return String.Format("{0:+#,0;-#,0} {1}", bonus.Amount, description);
 

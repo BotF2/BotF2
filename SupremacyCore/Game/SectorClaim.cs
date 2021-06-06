@@ -77,7 +77,7 @@ namespace Supremacy.Game
                 return null;
 
             Civilization owner;
-            
+
             if (GameContext.Current.Civilizations.TryGetValue(ownerId, out owner))
                 return owner;
 

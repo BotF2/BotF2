@@ -16,7 +16,7 @@ namespace Supremacy.Text
     {
         private readonly LocalizedStringValueCollection _values;
         private object _name;
-        
+
         public LocalizedString()
         {
             _values = new LocalizedStringValueCollection();
@@ -39,7 +39,7 @@ namespace Supremacy.Text
             get
             {
                 LocalizedStringValue value;
-                
+
                 if (TryGetValue(ResourceManager.CurrentCulture, false, out value))
                     return value.Text;
 

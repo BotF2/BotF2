@@ -99,7 +99,7 @@ namespace Supremacy.Client.Views
             _toggleBuildingIsActiveCommand = new DelegateCommand<Building>(
                 ExecuteToggleBuildingIsActiveCommand,
                 CanExecuteToggleBuildingIsActiveCommand);
-            
+
             _toggleShipyardBuildSlotCommand = new DelegateCommand<ShipyardBuildSlot>(
                 ExecuteToggleShipyardBuildSlotCommand,
                 CanExecuteToggleShipyardBuildSlotCommand);
@@ -217,7 +217,7 @@ namespace Supremacy.Client.Views
 
             PlayerOrderService.AddOrder(new ToggleShipyardBuildSlotOrder(buildSlot));
         }
-        
+
         private bool CanExecuteSelectShipBuildProjectCommand(ShipyardBuildSlot buildSlot)
         {
             if (buildSlot == null)
@@ -270,7 +270,7 @@ namespace Supremacy.Client.Views
             //buildSlot.Shipyard.BuildQueue.Add(_buildQueueItem);
             //buildSlot.Shipyard.ProcessQueue();
             //buildSlot.Project = project;
-            
+
             PlayerOrderService.AddOrder(new UpdateProductionOrder(buildSlot.Shipyard));
         }
 
@@ -460,7 +460,7 @@ namespace Supremacy.Client.Views
 
             Colony selectedColony = Model.SelectedColony;
             GameLog.Core.UI.DebugFormat("OnSelectedColonyChanged: selectedColony = {0}", selectedColony);  // Colony changes...
-                 // ..."in the background", in F2 = System Screen (only own colonies), not in Galaxy View showing planets of foreign colonies
+                                                                                                           // ..."in the background", in F2 = System Screen (only own colonies), not in Galaxy View showing planets of foreign colonies
             if (selectedColony != null)
             {
                 Microsoft.Practices.Composite.Regions.IRegionManager regionManager = CompositeRegionManager.GetRegionManager((DependencyObject)View);
@@ -587,7 +587,7 @@ namespace Supremacy.Client.Views
             _toggleBuildingIsActiveCommand.RaiseCanExecuteChanged();
             _toggleShipyardBuildSlotCommand.RaiseCanExecuteChanged();
             _selectShipBuildProjectCommand.RaiseCanExecuteChanged();
-            
+
         }
 
         protected override void RegisterCommandAndEventHandlers()
@@ -695,7 +695,7 @@ namespace Supremacy.Client.Views
 
             if (/*project.IsCancelled || */project.IsCompleted || project.IsRushed)
                 return false;
-            
+
             if (Model.SelectedColony == null)
                 return false;
 
@@ -899,7 +899,7 @@ namespace Supremacy.Client.Views
 
             Model.AddToPlanetaryBuildQueueCommand = null;
             Model.AddToShipyardBuildQueueCommand = null;
-           
+
             Model.RemoveFromPlanetaryBuildQueueCommand = null;
             Model.RemoveFromShipyardBuildQueueCommand = null;
             Model.CancelBuildProjectCommand = null;

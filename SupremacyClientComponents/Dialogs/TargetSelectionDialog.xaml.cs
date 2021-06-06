@@ -112,11 +112,11 @@ namespace Supremacy.Client.Dialogs
         public static TTarget Show<TTarget>(IEnumerable<TTarget> targets, string displayMember, string title) where TTarget : class
         {
             TargetSelectionDialog dialog = new TargetSelectionDialog
-                         {
-                             Targets = targets,
-                             TargetDisplayMember = displayMember,
-                             Header = title
-                         };
+            {
+                Targets = targets,
+                TargetDisplayMember = displayMember,
+                Header = title
+            };
 
             bool? dialogResult = dialog.ShowDialog();
             if (!dialogResult.HasValue || !dialogResult.Value)

@@ -162,7 +162,7 @@ namespace Supremacy.Utility
             while (true)
             {
                 prior += _chances[index].CurrentWeight;
-                
+
                 if (chance < prior)
                     return index;
 

@@ -152,7 +152,7 @@ namespace Supremacy.Universe
                                              }
                                          }
                                      },
-                                     
+
                                      {
                                          StarType.BlackHole,
                                          new [,,] { { { -8 } } }
@@ -168,12 +168,12 @@ namespace Supremacy.Universe
                                          new [,,] { { { -4 } } }
                                      },
 
-									 {
+                                     {
                                          StarType.NeutronStar,
                                          new [,,] { { { -8 } } }
                                      },
-									 
-									 {
+
+                                     {
                                          StarType.Quasar,
                                          new[,,]
                                          {
@@ -289,11 +289,11 @@ namespace Supremacy.Universe
             if (minDistance > 0)
             {
                 // TODO
-/*
-                minDistance += Math.Max(
-                    interferenceFrames.GetLength(1) / 2,
-                    interferenceFrames.GetLength(2) / 2);
-*/
+                /*
+                                minDistance += Math.Max(
+                                    interferenceFrames.GetLength(1) / 2,
+                                    interferenceFrames.GetLength(2) / 2);
+                */
             }
 
             return homeLocations.All(o => MapLocation.GetDistance(o, location) >= minDistance);

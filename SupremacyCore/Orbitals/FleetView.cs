@@ -57,10 +57,10 @@ namespace Supremacy.Orbitals
             {
                 if (IsUnknown)
                     // return "unknown";
-                return string.Format(ResourceManager.GetString("UNKNOWN"));
+                    return string.Format(ResourceManager.GetString("UNKNOWN"));
                 if (IsUnScannable)
                     return string.Format(ResourceManager.GetString("SCAN_BLOCKED"));
-                    //return "scan blocked";
+                //return "scan blocked";
                 else
                     return View.ClassName;
             }
@@ -148,10 +148,10 @@ namespace Supremacy.Orbitals
 
             List<ShipView> ships = new List<ShipView>();
             FleetView fleetView = new FleetView
-                {
-                    _sourceId = fleet.ObjectID,
-                    _isOwned = (fleet.OwnerID == owner.CivID)
-                };
+            {
+                _sourceId = fleet.ObjectID,
+                _isOwned = (fleet.OwnerID == owner.CivID)
+            };
 
             CivilizationManager civManager = GameContext.Current.CivilizationManagers[owner];
 

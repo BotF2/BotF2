@@ -56,7 +56,7 @@ namespace Supremacy.Client.Controls
         }
 
         #endregion
-        
+
         #region TinyTemplateKey Resource Key
 
         private static ComponentResourceKey _tinyTemplateKey;

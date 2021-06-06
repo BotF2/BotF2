@@ -47,39 +47,39 @@ namespace Supremacy.Client.Data
                     value = Math.Round(value);
                     break;
                 case RoundMode.RoundToEven:
-                {
+                    {
                         double roundedValue = Math.Round(value);
-                    if (roundedValue % 2 == 0)
-                    {
-                        value = roundedValue;
+                        if (roundedValue % 2 == 0)
+                        {
+                            value = roundedValue;
+                        }
+                        else if (value == roundedValue)
+                        {
+                            value++;
+                        }
+                        else
+                        {
+                            value = roundedValue + (roundedValue < value ? 1 : -1);
+                        }
+                        break;
                     }
-                    else if (value == roundedValue)
-                    {
-                        value++;
-                    }
-                    else
-                    {
-                        value = roundedValue + (roundedValue < value ? 1 : -1);
-                    }
-                    break;
-                }
                 case RoundMode.RoundToOdd:
-                {
+                    {
                         double roundedValue = Math.Round(value);
-                    if (roundedValue % 2 == 1)
-                    {
-                        value = roundedValue;
+                        if (roundedValue % 2 == 1)
+                        {
+                            value = roundedValue;
+                        }
+                        else if (value == roundedValue)
+                        {
+                            value++;
+                        }
+                        else
+                        {
+                            value = roundedValue + (roundedValue < value ? 1 : -1);
+                        }
+                        break;
                     }
-                    else if (value == roundedValue)
-                    {
-                        value++;
-                    }
-                    else
-                    {
-                        value = roundedValue + (roundedValue < value ? 1 : -1);
-                    }
-                    break;
-                }
             }
             return value;
         }

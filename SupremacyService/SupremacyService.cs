@@ -223,7 +223,7 @@ namespace Supremacy.WCF
             catch (SupremacyException e)
             {
                 SendKeys.SendWait("^e"); // Error.txt  
-                Thread.Sleep(1000);                
+                Thread.Sleep(1000);
                 SendKeys.SendWait("^l"); // Log.txt
                 Thread.Sleep(1000);
 
@@ -497,16 +497,16 @@ namespace Supremacy.WCF
                 GameLog.Server.General.InfoFormat("AI processing time: {0}", stopwatch.Elapsed);
 
                 stopwatch.Restart();
-                OH:
+            OH:
                 try
-                { 
+                {
                     await DoTurnCore().ConfigureAwait(false);
                 }
                 catch (Exception)
                 {
                     GameLog.Core.General.DebugFormat("Hit await, ************** issue #398 *******************");
                     Thread.Sleep(0050);
-                    goto OH;      
+                    goto OH;
                 }
 
 
@@ -1197,7 +1197,7 @@ namespace Supremacy.WCF
                 recipientId);
         }
 
-        public void EndTurn(PlayerOrdersMessage orders) 
+        public void EndTurn(PlayerOrdersMessage orders)
         {
             EnsurePlayer();
 
@@ -1226,7 +1226,7 @@ namespace Supremacy.WCF
 
             TryProcessTurn();
         }
- 
+
         public void UpdateGameOptions(GameOptions options)
         {
             if (_isGameStarted)
@@ -1369,7 +1369,7 @@ namespace Supremacy.WCF
                 GameLog.Server.Combat.DebugFormat("null reference old closed issue #164 {0} appears not to crash code", orders.ToString());
                 GameLog.Server.Combat.Error(e);
             }
-        } 
+        }
 
         public void SendCombatTarget1(CombatTargetPrimaries target1)
         {
@@ -1518,7 +1518,7 @@ namespace Supremacy.WCF
 
         #region Invasion
         private void NotifyInvasionEndedCallback(InvasionEngine engine)
-          {
+        {
             Player player = GetPlayerByEmpire(engine.InvasionArena.Invader);
             if (player == null)
             {
@@ -1570,15 +1570,15 @@ namespace Supremacy.WCF
             bool doneOnceAlready = false;
             if (!invasionArena.Invader.IsHuman && doneOnceAlready == false)
             {
-                
+
                 if (_alreadyDidCivAsAI == null || _alreadyDidCivAsAI != invasionArena.Invader)
-                {                   
+                {
                     _alreadyDidCivAsAI = invasionArena.Invader;
                     GameLog.Client.AI.DebugFormat("_alreadyDidCivAsAI = {0}", invasionArena.Invader.Key);
                     if (_invasionEngine == null)
                         _invasionEngine = new InvasionEngine(SendInvasionUpdateCallback, NotifyInvasionEndedCallback);
 
-                    _scheduler.Schedule(() =>  _invasionEngine.BeginInvasion(invasionArena));
+                    _scheduler.Schedule(() => _invasionEngine.BeginInvasion(invasionArena));
                     doneOnceAlready = true;
                 }
             }
@@ -1586,7 +1586,7 @@ namespace Supremacy.WCF
             {
                 if (_invasionEngine == null)
                     _invasionEngine = new InvasionEngine(SendInvasionUpdateCallback, NotifyInvasionEndedCallback);
-                 
+
                 _scheduler.Schedule(() => _invasionEngine.BeginInvasion(invasionArena));
                 doneOnceAlready = true;
             }

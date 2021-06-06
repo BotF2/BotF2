@@ -17,7 +17,7 @@ namespace Supremacy.Scripting.Events
     [Serializable]
     public class SupernovaEvent : UnitScopedEvent<Colony>
     {
-        
+
         private int _occurrenceChance = 200;
         public override bool CanExecute => _occurrenceChance > 0 && base.CanExecute;
 
@@ -86,9 +86,9 @@ namespace Supremacy.Scripting.Events
                     }
 
                     GameLog.Client.GameData.DebugFormat("HomeSystemName is: {0}", target.Name);
-                    target.Population.AdjustCurrent( - population/6 * 3);
+                    target.Population.AdjustCurrent(-population / 6 * 3);
                     target.Population.UpdateAndReset();
-                    target.Health.AdjustCurrent(-health/ 5);
+                    target.Health.AdjustCurrent(-health / 5);
                     target.Health.UpdateAndReset();
 
                     GameContext.Current.Universe.UpdateSectors();

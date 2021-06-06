@@ -28,7 +28,7 @@ namespace Supremacy.Orbitals
     public class Shipyard : TechObject, IProductionCenter
     {
         private ArrayWrapper<ShipyardBuildSlot> _buildSlots;
-       // private ArrayWrapper<BuildProject> _buildSlotQueues;
+        // private ArrayWrapper<BuildProject> _buildSlotQueues;
         private ObservableCollection<BuildQueueItem> _buildQueue;
 
         /// <summary>
@@ -61,10 +61,10 @@ namespace Supremacy.Orbitals
             : base(design)
         {
             _buildSlots = new ArrayWrapper<ShipyardBuildSlot>(new ShipyardBuildSlot[design.BuildSlots]);
-           // _buildSlotQueues = new ArrayWrapper<BuildProject>(new BuildProject[design.BuildSlotQueues]);
-            
+            // _buildSlotQueues = new ArrayWrapper<BuildProject>(new BuildProject[design.BuildSlotQueues]);
+
             for (int i = 0; i < _buildSlots.Count; i++)
-                _buildSlots[i] = new ShipyardBuildSlot { Shipyard = this, SlotID = i};
+                _buildSlots[i] = new ShipyardBuildSlot { Shipyard = this, SlotID = i };
 
             _buildQueue = new ObservableCollection<BuildQueueItem>();
         }
@@ -104,7 +104,7 @@ namespace Supremacy.Orbitals
                     break;
             }
 
-            if(ShipyardDesign.BuildSlotMaxOutput > 0)
+            if (ShipyardDesign.BuildSlotMaxOutput > 0)
                 output = Math.Min(output, ShipyardDesign.BuildSlotMaxOutput);
 
             float shipBuildingBonus = Sector.System.Colony.Buildings
@@ -131,7 +131,7 @@ namespace Supremacy.Orbitals
         /// </summary>
         public void ProcessQueue()
         {
-           int count = 0;
+            int count = 0;
             foreach (BuildQueueItem buildQueueItem in BuildQueue)
             {
                 GameLog.Client.ShipProduction.DebugFormat("Shipyard before BuildQueueItem = {0}, index {1}", buildQueueItem.Description, count);
@@ -181,7 +181,7 @@ namespace Supremacy.Orbitals
             base.SerializeOwnedData(writer, context);
             writer.Write(_buildQueue.Cast<object>().ToArray());
             writer.WriteOptimized(_buildSlots.ToArray());
-            
+
             try
             {
                 foreach (ShipyardBuildSlot slot in _buildSlots)
@@ -190,8 +190,8 @@ namespace Supremacy.Orbitals
                     string _percent = "0 %";
                     if (slot.Project != null && slot.Project.BuildDesign != null)
                     {
-                         _design = slot.Project.BuildDesign.ToString();
-                         _percent = slot.Project.PercentComplete.ToString();
+                        _design = slot.Project.BuildDesign.ToString();
+                        _percent = slot.Project.PercentComplete.ToString();
                     }
                     GameLog.Core.SaveLoad.DebugFormat(
                         "Slot= " + slot.SlotID
@@ -203,7 +203,8 @@ namespace Supremacy.Orbitals
                         //+ " percent done " //+ slot.Project.BuildDesign
                         );
                 }
-            } catch { };
+            }
+            catch { };
         }
 
         public override void DeserializeOwnedData(SerializationReader reader, object context)

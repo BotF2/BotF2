@@ -31,7 +31,7 @@ namespace Supremacy.Scripting.Ast
             clone._initializer = Clone(cloneContext, _initializer);
             clone.ResolvedDimensions = ResolvedDimensions;
             clone.ResolvedElementType = ResolvedElementType;
-            
+
             clone.RankSpecifier = RankSpecifier;
 
             Dimensions.CloneTo(cloneContext, clone.Dimensions);
@@ -163,7 +163,7 @@ namespace Supremacy.Scripting.Ast
             }
 
             _baseType = _baseType.Resolve(ec) as FullNamedExpression;
-            
+
             if (_baseType == null)
             {
                 return false;
@@ -180,7 +180,7 @@ namespace Supremacy.Scripting.Ast
             }
 
             Type = arrayTypeExpr.Type;
-            
+
             ResolvedElementType = Type.GetElementType();
             ResolvedDimensions = Type.GetArrayRank();
 
@@ -525,7 +525,7 @@ namespace Supremacy.Scripting.Ast
                 }
 
                 sw.Write(" ");
-                
+
                 DumpChild(value, sw);
             }
 

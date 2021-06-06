@@ -13,7 +13,8 @@ namespace Supremacy.Client.Controls
         Large,
     }
 
-    public class VariantSizeConverter : EnumConverter {
+    public class VariantSizeConverter : EnumConverter
+    {
 
         public VariantSizeConverter()
             : base(typeof(VariantSize)) { }

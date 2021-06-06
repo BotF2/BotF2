@@ -94,22 +94,22 @@ namespace Supremacy.Game
             GameLog.Client.GameInitData.DebugFormat("... no Output for often used Tables: MessageDialogButtons, TechCategory, SitRepCategory");
 
             GameTables tables = new GameTables
-                         {
-                             _resourceTables = TableMap.ReadFromFile(
+            {
+                _resourceTables = TableMap.ReadFromFile(
                                  ResourceManager.GetResourcePath(tablesPath + "ResourceTables.txt")),
-                             _universeTables = TableMap.ReadFromFile(
+                _universeTables = TableMap.ReadFromFile(
                                  ResourceManager.GetResourcePath(tablesPath + "UniverseTables.txt")),
-                             _moraleTables = TableMap.ReadFromFile(
+                _moraleTables = TableMap.ReadFromFile(
                                  ResourceManager.GetResourcePath(tablesPath + "MoraleTables.txt")),
-                             _enumTables = TableMap.ReadFromFile(
+                _enumTables = TableMap.ReadFromFile(
                                  ResourceManager.GetResourcePath(tablesPath + "EnumStrings.txt")),
-                             _shipTables = TableMap.ReadFromFile(
+                _shipTables = TableMap.ReadFromFile(
                                  ResourceManager.GetResourcePath(tablesPath + "ShipTables.txt")),
-                             _diplomacyTables = TableMap.ReadFromFile(
+                _diplomacyTables = TableMap.ReadFromFile(
                                  ResourceManager.GetResourcePath(tablesPath + "DiplomacyTables.txt")),
-                             _gameOptionTables = TableMap.ReadFromFile(
+                _gameOptionTables = TableMap.ReadFromFile(
                                  ResourceManager.GetResourcePath(tablesPath + "GameOptionTables.txt")),
-                              _strengthTables = TableMap.ReadFromFile(
+                _strengthTables = TableMap.ReadFromFile(
                                  ResourceManager.GetResourcePath(tablesPath + "StrengthTables.txt"))
             };
 

@@ -284,7 +284,7 @@ namespace Supremacy.Scripting.Utility
             }
 
             ObsoleteAttribute obsoleteAttribute = Attribute.GetCustomAttribute(
-                mi, 
+                mi,
                 TypeManager.PredefinedAttributes.Obsolete,
                 false) as ObsoleteAttribute;
 

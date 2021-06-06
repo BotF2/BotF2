@@ -44,9 +44,9 @@ namespace Supremacy.Client.Views
                 new ScriptParameter("$endTurn", typeof(int)));
 
             _descriptionScript = new ScriptExpression(returnObservableResult: false)
-                                 {
-                                     Parameters = _descriptionParameters
-                                 };
+            {
+                Parameters = _descriptionParameters
+            };
 
             _descriptionRuntimeParameters = new RuntimeScriptParameters
                                        {
@@ -207,10 +207,10 @@ namespace Supremacy.Client.Views
                     {
                         element.HasFixedParameter = true;
                         element.SelectedParameter = new CreditsDataViewModel
-                                                    {
-                                                        ImmediateAmount = data.ImmediateAmount,
-                                                        RecurringAmount = data.RecurringAmount
-                                                    };
+                        {
+                            ImmediateAmount = data.ImmediateAmount,
+                            RecurringAmount = data.RecurringAmount
+                        };
                     }
                 }
                 else if (clause.Data != null)

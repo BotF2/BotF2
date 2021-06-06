@@ -24,9 +24,9 @@ namespace Supremacy.Client.Controls
                 return;
 
             HyperlinkClickedEventArgs args = new HyperlinkClickedEventArgs(link.NavigateUri, link, link.DataContext);
-            
+
             link.RaiseEvent(args);
-            
+
             if (args.Handled)
                 e.Handled = true;
         }
@@ -90,14 +90,14 @@ namespace Supremacy.Client.Controls
                         mnemonic.TextDecorations.Add(TextDecorations.Underline);
 
                         inline = new Span
-                                 {
-                                     Inlines =
+                        {
+                            Inlines =
                                          {
                                              head,
                                              mnemonic,
                                              tail
                                          }
-                                 };
+                        };
 
                         handleAccessKeyCharacter = false;
                     }

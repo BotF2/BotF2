@@ -53,7 +53,7 @@ using Scheduler = System.Concurrency.Scheduler;
 
 namespace Supremacy.Client
 {
-    
+
     /// <summary>
     /// Interaction logic for MyApp.xaml
     /// </summary>
@@ -65,7 +65,7 @@ namespace Supremacy.Client
 
         private static SplashScreen _splashScreen;
         private static Mutex _singleInstanceMutex;
-        
+
         private bool _isShuttingDown;
         public static string newline = Environment.NewLine;
         public static DateTime starttime = DateTime.Now;
@@ -144,20 +144,20 @@ namespace Supremacy.Client
                                 as ResourceDictionary;
 
 
-                    //int _dicCount = MergedDictionaries.Count;
+                //int _dicCount = MergedDictionaries.Count;
                 string _allText = Environment.NewLine + "a;b;c;d;e;(Headline for Excel);g;888888" + Environment.NewLine;
                 int _allValue = 0;
                 string _text0 = Current.Resources.MergedDictionaries[0].Source.ToString();
 
                 foreach (ResourceDictionary item in Current.Resources.MergedDictionaries)
                 {
-                    string _text1 = item.Source.ToString(); 
+                    string _text1 = item.Source.ToString();
                     //Console.WriteLine(_text1);  // Output of all keys of MergedDictionaries
                     _allValue += 1000;  // 1.000 step each file
 
                     foreach (object key in item.Keys)
                     {
-                        string _text2 = key.ToString(); 
+                        string _text2 = key.ToString();
                         //Console.WriteLine(_text1 + "-" + _text2);
                         _allValue += +1;
                         _allText += _text0 + ";" + _text1 + ";" + _allValue + ";" + _text2 + Environment.NewLine;
@@ -214,7 +214,7 @@ namespace Supremacy.Client
                     "/SupremacyClient;Component/themes/{0}/Theme.xaml",
                     theme),
                 UriKind.RelativeOrAbsolute);
-            
+
             ResourceDictionary themeDictionary = null;
             try
             {
@@ -260,7 +260,7 @@ namespace Supremacy.Client
 
             GameLog.Client.GameData.DebugFormat("");
             GameLog.Client.GameData.DebugFormat("");
-            GameLog.Client.GameData.DebugFormat("////////////////////////////// XAML TRACE //////////////////////////////");  
+            GameLog.Client.GameData.DebugFormat("////////////////////////////// XAML TRACE //////////////////////////////");
             GameLog.Client.GameData.DebugFormat(" Current source: {0}", currentSource);
             GameLog.Client.GameData.DebugFormat(" Root source:    {0}", parentUri.ToString());
             GameLog.Client.GameData.DebugFormat("");
@@ -378,7 +378,7 @@ namespace Supremacy.Client
         [UsedImplicitly]
         private static class EntryPoint
         {
-            
+
             [STAThread, UsedImplicitly]
             private static void Main(string[] args)
             {
@@ -417,7 +417,7 @@ namespace Supremacy.Client
                 //Error - txt - First Run.txt
                 string file = appDir + "\\" + "Error-txt - First Run.txt";
                 string fileResourceFolder = appDir + "\\Resources\\" + "Error-txt - First Run.txt";
-                
+
                 // File delivered by Dropbox is more up to date
                 if (File.Exists(fileResourceFolder))
                 {
@@ -427,7 +427,7 @@ namespace Supremacy.Client
                 {
                     if (!File.Exists(file))
                     {
-                         //streamWriter;
+                        //streamWriter;
                         StreamWriter streamWriter = new StreamWriter(file);
                         streamWriter.WriteLine("if the game crash after first start...");
                         streamWriter.WriteLine("...make sure you have the requirements installed:");
@@ -502,13 +502,13 @@ namespace Supremacy.Client
                             GameLog.Client.Audio.InfoFormat("wav format is needed for GameContextMenuItem.wav (if used)");
                         }
                     }
-                      
+
                     if (File.Exists("Resources\\Data\\Civilizations.xml"))
                         StartClient(args);
                     else
-                        MessageBox.Show("Resources\\Data\\Civilizations.xml is missing" + Environment.NewLine + Environment.NewLine + 
-                            "Make sure you have the folder \\Resources !!" + Environment.NewLine + "(only delivered within an original game release)","WARNING",
-                            MessageBoxButton.OK);    
+                        MessageBox.Show("Resources\\Data\\Civilizations.xml is missing" + Environment.NewLine + Environment.NewLine +
+                            "Make sure you have the folder \\Resources !!" + Environment.NewLine + "(only delivered within an original game release)", "WARNING",
+                            MessageBoxButton.OK);
                 }
                 catch (Exception e)
                 {
@@ -562,17 +562,17 @@ namespace Supremacy.Client
                         + newline + newline + "*** or rename the fake file 'XNA31_ok_OFF.info' to 'XNA31_ok.info'";
                     MessageBox.Show(_text, "WARNING", MessageBoxButton.OK);
 
-                    
+
                 }
             }
 
             // Second check after xna_copy was done
             if (!File.Exists(xna_check))
             {
-                _text = "Sorry, Microsoft XNA Framework V3.1 might not be installed - but it is necessary. " 
-                    + newline + newline + "Version 3.1 is ABSOLUTELY needed, any newer Version can be installed, but additional !" 
-                    + newline + newline + "Install out of folder \\Resources\\XNA31_NEEDED_INSTALL\\ or" 
-                    + newline + newline + "Download it at www.microsoft.com/download/details.aspx?id=15163" 
+                _text = "Sorry, Microsoft XNA Framework V3.1 might not be installed - but it is necessary. "
+                    + newline + newline + "Version 3.1 is ABSOLUTELY needed, any newer Version can be installed, but additional !"
+                    + newline + newline + "Install out of folder \\Resources\\XNA31_NEEDED_INSTALL\\ or"
+                    + newline + newline + "Download it at www.microsoft.com/download/details.aspx?id=15163"
                     + newline + newline + "*** if already installed copy any file to folder \\Resources AND game-folder and named it 'XNA31_ok.info'"
                     + newline + newline + "Download  it at www.microsoft.com/download/details.aspx?id=15163"
                     + newline + newline + "Press OK for going on, but don't wonder if the game crashes ..or maybe not...."
@@ -605,26 +605,37 @@ namespace Supremacy.Client
             //{
             //    GameLog.Client.General.Info(".NET Framework 4.7.2 or later found");
             //} else if
-            if (version >= 528040) { 
+            if (version >= 528040)
+            {
                 GameLog.Client.General.Info(".NET Framework 4.8 or later found");
-            } else if (version >= 461808) {
+            }
+            else if (version >= 461808)
+            {
                 GameLog.Client.General.Info(".NET Framework 4.7.2 or later found");
-            } else if (version >= 461308) {
+            }
+            else if (version >= 461308)
+            {
                 GameLog.Client.General.Info(".NET Framework 4.7.1 found");
-            } else if (version >= 460798) {
+            }
+            else if (version >= 460798)
+            {
                 GameLog.Client.General.Info(".NET Framework 4.7 found");
-            } else if (version >= 394802) {
+            }
+            else if (version >= 394802)
+            {
                 GameLog.Client.General.Info(".NET Framework 4.6.2 found");
-            } else if (version >= 394254) {
+            }
+            else if (version >= 394254)
+            {
                 GameLog.Client.General.Info(".NET Framework 4.6.1 found"); // no need to check older ones
-            //} else if (version >= 393295) {
-            //    GameLog.Client.General.Info(".NET Framework 4.6 found"); 
-            //} else if (version >= 379893) {
-            //    GameLog.Client.General.Info(".NET Framework 4.5.2 found");
-            //} else if (version >= 378675) {
-            //    GameLog.Client.General.Info(".NET Framework 4.5.1 found");
-            //} else if (version >= 378389) {
-            //    GameLog.Client.General.Info(".NET Framework 4.5 found");
+                                                                           //} else if (version >= 393295) {
+                                                                           //    GameLog.Client.General.Info(".NET Framework 4.6 found"); 
+                                                                           //} else if (version >= 379893) {
+                                                                           //    GameLog.Client.General.Info(".NET Framework 4.5.2 found");
+                                                                           //} else if (version >= 378675) {
+                                                                           //    GameLog.Client.General.Info(".NET Framework 4.5.1 found");
+                                                                           //} else if (version >= 378389) {
+                                                                           //    GameLog.Client.General.Info(".NET Framework 4.5 found");
             }
             else
             {
@@ -649,7 +660,8 @@ namespace Supremacy.Client
                 }
             }
 
-            if (!string.IsNullOrWhiteSpace(CmdLineArgs.Traces)) {
+            if (!string.IsNullOrWhiteSpace(CmdLineArgs.Traces))
+            {
                 List<string> traces = CmdLineArgs.Traces.Split(',').ToList();
                 traces.ForEach(t =>
                     GameLog.SetRepositoryToDebug(t)
@@ -659,7 +671,7 @@ namespace Supremacy.Client
             if (CmdLineArgs.TraceLevel != PresentationTraceLevel.None)
                 PresentationTraceSources.Refresh();
 
-            AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException; 
+            AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 
             try
             {
@@ -739,7 +751,7 @@ namespace Supremacy.Client
             _splashScreen = new SplashScreen("resources/images/backgrounds/splash.png");  // hardcoded, file out of Code
             _splashScreen.Show(false);
         }
-      
+
 
         private static void OnGameWindowSourceInitialized(object sender, EventArgs e)
         {
@@ -747,7 +759,7 @@ namespace Supremacy.Client
             _splashScreen.Close(TimeSpan.Zero);
         }
 
-#region Bootstrapper Class
+        #region Bootstrapper Class
         private class Bootstrapper : UnityBootstrapper
         {
             // What is Unity Bootstrapper? --> https://msdn.microsoft.com/en-us/library/ff921139.aspx
@@ -797,7 +809,6 @@ namespace Supremacy.Client
                 return _shell;
             }
         }
-#endregion
+        #endregion
     }
 }
- 

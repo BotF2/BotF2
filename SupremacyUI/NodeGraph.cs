@@ -593,7 +593,7 @@ namespace Supremacy.UI
             //add system drag
             Debug.Assert(coefficientOfDampening > 0);
             Debug.Assert(coefficientOfDampening < 1);
-            graphContentPresenter.Velocity *= 1 - coefficientOfDampening*frameRate;
+            graphContentPresenter.Velocity *= 1 - coefficientOfDampening * frameRate;
 
             //add force
             graphContentPresenter.Velocity += forceVector * frameRate;

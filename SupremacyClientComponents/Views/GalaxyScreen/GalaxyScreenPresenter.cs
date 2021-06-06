@@ -229,7 +229,7 @@ namespace Supremacy.Client.Views
         private void ExecuteAddShipToTaskForceCommand(RedeployShipCommandArgs args)
         {
             PlayerOperations.RedeployShip(args.Ship, args.TargetFleet);
-            
+
             RefreshTaskForceList();
 
             Model.SelectedTaskForce = null;
@@ -621,13 +621,13 @@ namespace Supremacy.Client.Views
                         .Where(s => s.OwnerID == AppContext.LocalPlayer.EmpireID);
 
                     //foreach (var ownedShip in ownedShipsAtLocation)
-                        //GameLog.Client.Intel.DebugFormat("local player ownedship.Name = {0}", ownedShip.Name);
+                    //GameLog.Client.Intel.DebugFormat("local player ownedship.Name = {0}", ownedShip.Name);
 
                     availableShips = ownedShipsAtLocation.Where(
                         ship => !selectedTaskForce.View.Ships.Any(o => Equals(o.Source, ship))); //?? your ships that are not selected, just available
 
                     //foreach (var availableShip in availableShips)
-                        //GameLog.Client.Intel.DebugFormat("availableShip.Name = {0}", availableShip.Name);
+                    //GameLog.Client.Intel.DebugFormat("availableShip.Name = {0}", availableShip.Name);
                 }
 
                 Ship selectedShip = Model.SelectedShip;
@@ -637,7 +637,7 @@ namespace Supremacy.Client.Views
                     selectedShipInTaskForce = selectedTaskForce.View.Ships.FirstOrDefault(o => o.Source == selectedShip);
 
                     GameLog.Client.Intel.DebugFormat("Contains(selectedShip) - selectedShipInTaskForce = {0}", selectedTaskForce.View.Ships.Count);
-                }                
+                }
                 else
                 {
                     selectedShipInTaskForce = Model.SelectedShipInTaskForce;
@@ -650,9 +650,9 @@ namespace Supremacy.Client.Views
                     }
                 }
             }
-            
+
             Model.AvailableShips = availableShips;
-           
+
             Model.SelectedShipInTaskForce = selectedShipInTaskForce;
 
             if (selectedTaskForce != null)

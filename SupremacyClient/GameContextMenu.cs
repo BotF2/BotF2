@@ -60,7 +60,7 @@ namespace Supremacy.Client
 
         static GameContextMenu()
         {
-           // PropertyChangedEventHandler fred = PropertyChanged();
+            // PropertyChangedEventHandler fred = PropertyChanged();
             //This OverrideMetadata call tells the system that this element wants to provide a style that is different than its base class.
             //This style is defined in themes\generic.xaml
             DefaultStyleKeyProperty.OverrideMetadata(typeof(GameContextMenu), new FrameworkPropertyMetadata(typeof(GameContextMenu)));

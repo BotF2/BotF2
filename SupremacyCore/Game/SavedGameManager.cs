@@ -31,8 +31,8 @@ namespace Supremacy.Game
 
         public static string SavedGameDirectory
         {
-            get 
-            { 
+            get
+            {
                 string _text = Path.Combine(ResourceManager.GetResourcePath(""), "SavedGames_V", Assembly.GetExecutingAssembly().GetName().Version.ToString());
                 _text = _text.Replace("V\\", "V");
                 _text = _text.Replace(".\\", "");
@@ -388,7 +388,7 @@ namespace Supremacy.Game
             {
                 GameLog.Core.SaveLoad.WarnFormat("Problem at saving autosav and previous autosav Exception {0} {1}", e.Message, e.StackTrace);
             }
-           
+
             return SaveGame(AutoSaveFileName, game, localPlayer, lobbyData);
         }
     }

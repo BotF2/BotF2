@@ -101,7 +101,7 @@ namespace Supremacy.Scripting.Runtime.Binders
         public override bool CanConvertFrom(Type fromType, Type toType, bool toNotNullable, NarrowingLevel level)
         {
             ConversionResultKind? conversionResultKind = level.ToConversionResultKind();
-            
+
             if (!conversionResultKind.HasValue)
             {
                 return toType.IsAssignableFrom(fromType);

@@ -44,7 +44,7 @@ namespace Supremacy.Client
             typeof(ShipyardDockView),
             new PropertyMetadata());
 
-        public  ShipyardBuildSlot ShipyardBuildSlot
+        public ShipyardBuildSlot ShipyardBuildSlot
         {
             get { return (ShipyardBuildSlot)GetValue(ShipyardBuildSlotProperty); }
             set { SetValue(ShipyardBuildSlotProperty, value); }

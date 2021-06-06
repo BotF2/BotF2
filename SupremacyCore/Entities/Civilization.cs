@@ -502,7 +502,7 @@ namespace Supremacy.Entities
         public bool InTransit
         {
             get { return _inTransit; }
-            set { _inTransit = value; } 
+            set { _inTransit = value; }
         }
 
         /// <summary>
@@ -526,17 +526,17 @@ namespace Supremacy.Entities
         /// </summary>
         /// <value>The primary race.</value>
         public Race Race
-        { 
-        get
+        {
+            get
             {
-               try
+                try
                 {
                     return (_raceId == Race.InvalidRaceKey) ? null : GameContext.Current.Races[_raceId];
                 }
                 catch (Exception e)
                 {
                     GameLog.Core.GameData.ErrorFormat("##### Problem with Race = {0} {1} {2}", Race, e.Message, e.StackTrace);
-                    
+
                 }
                 return (_raceId == Race.InvalidRaceKey) ? null : GameContext.Current.Races[_raceId];
             }
@@ -720,7 +720,7 @@ namespace Supremacy.Entities
                     new XElement(
                         ns + "Race",
                         Race),
-                    
+
                     new XElement(
                         ns + "ShortName",
                         ShortName),

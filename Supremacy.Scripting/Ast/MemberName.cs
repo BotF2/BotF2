@@ -117,7 +117,7 @@ namespace Supremacy.Scripting.Ast
                 Span = Span,
                 Left = lexpr
             };
-            
+
             memberAccessExpression.TypeArguments.Add(TypeArguments);
 
             return memberAccessExpression;

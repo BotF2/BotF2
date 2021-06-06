@@ -43,17 +43,17 @@ namespace Supremacy.Game
             if (options == null)
                 throw new ArgumentNullException("options");
 
-            GameLog.Client.GameData.DebugFormat("CreateSinglePlayerGame: SP-GameName={0}, SP-Name={2}, localPlayerEmpireID={1}", 
+            GameLog.Client.GameData.DebugFormat("CreateSinglePlayerGame: SP-GameName={0}, SP-Name={2}, localPlayerEmpireID={1}",
                                                         SinglePlayerGameName, localPlayerEmpireID, SinglePlayerName);
 
             GameInitData initData = new GameInitData
-                           {
-                               GameName = SinglePlayerGameName,
-                               Options = options,
-                               GameType = GameType.SinglePlayerNew,
-                               LocalPlayerEmpireID = localPlayerEmpireID,
-                               LocalPlayerName = SinglePlayerName,
-                           };
+            {
+                GameName = SinglePlayerGameName,
+                Options = options,
+                GameType = GameType.SinglePlayerNew,
+                LocalPlayerEmpireID = localPlayerEmpireID,
+                LocalPlayerName = SinglePlayerName,
+            };
 
             initData.PopulateEmpires();
 
@@ -89,12 +89,12 @@ namespace Supremacy.Game
                 throw new ArgumentNullException("localPlayerName");
 
             GameInitData initData = new GameInitData
-                           {
-                               Options = options,
-                               GameType = GameType.MultiplayerNew,
-                               LocalPlayerEmpireID = -1,
-                               LocalPlayerName = localPlayerName,
-                           };
+            {
+                Options = options,
+                GameType = GameType.MultiplayerNew,
+                LocalPlayerEmpireID = -1,
+                LocalPlayerName = localPlayerName,
+            };
 
             initData.PopulateEmpires();
 
@@ -109,7 +109,7 @@ namespace Supremacy.Game
                 initData.SlotStatus[i] = Game.SlotStatus.Open;
             }
 
-            GameLog.Client.GameData.DebugFormat("GameInitData.cs: CreateMultiplayerGame: LocalPlayerName={0}, LocalPlayerEmpireID={1}", 
+            GameLog.Client.GameData.DebugFormat("GameInitData.cs: CreateMultiplayerGame: LocalPlayerName={0}, LocalPlayerEmpireID={1}",
                 initData.LocalPlayerName, initData.LocalPlayerEmpireID);
 
             return initData;
@@ -178,23 +178,23 @@ namespace Supremacy.Game
                 GameLog.Core.GeneralDetails.DebugFormat("Deserialized: savedGameHeader;SlotClaims;{0}", slotStatus);
             }
 
-            GameLog.Core.GeneralDetails.DebugFormat("Deserialized: savedGameHeader;Single or MultiplayerGame;{0}", savedGameHeader.IsMultiplayerGame ? GameType.MultiplayerLoad : GameType.SinglePlayerLoad  );
-                
+            GameLog.Core.GeneralDetails.DebugFormat("Deserialized: savedGameHeader;Single or MultiplayerGame;{0}", savedGameHeader.IsMultiplayerGame ? GameType.MultiplayerLoad : GameType.SinglePlayerLoad);
+
             GameLog.Client.SaveLoad.DebugFormat("Loading Time = {0}", DateTime.Now - _time);
             Console.WriteLine("Loading Time = {0}", DateTime.Now - _time);
 
             return new GameInitData
-                   {
-                       LocalPlayerEmpireID = savedGameHeader.LocalPlayerEmpireID,
-                       LocalPlayerName = savedGameHeader.LocalPlayerName,
-                       EmpireIDs = savedGameHeader.EmpireIDs,
-                       EmpireNames = savedGameHeader.EmpireNames,
-                       Options = savedGameHeader.Options,
-                       SaveGameFileName = savedGameHeader.FileName,
-                       SlotClaims = savedGameHeader.SlotClaims,
-                       SlotStatus = savedGameHeader.SlotStatus,
-                       GameType = savedGameHeader.IsMultiplayerGame ? GameType.MultiplayerLoad : GameType.SinglePlayerLoad
-                   };
+            {
+                LocalPlayerEmpireID = savedGameHeader.LocalPlayerEmpireID,
+                LocalPlayerName = savedGameHeader.LocalPlayerName,
+                EmpireIDs = savedGameHeader.EmpireIDs,
+                EmpireNames = savedGameHeader.EmpireNames,
+                Options = savedGameHeader.Options,
+                SaveGameFileName = savedGameHeader.FileName,
+                SlotClaims = savedGameHeader.SlotClaims,
+                SlotStatus = savedGameHeader.SlotStatus,
+                GameType = savedGameHeader.IsMultiplayerGame ? GameType.MultiplayerLoad : GameType.SinglePlayerLoad
+            };
 
         }
 
@@ -306,7 +306,7 @@ namespace Supremacy.Game
         #endregion
 
         #region INotifyPropertyChanged Implementation
-        [field : NonSerialized]
+        [field: NonSerialized]
         public event PropertyChangedEventHandler PropertyChanged;
         #endregion
 

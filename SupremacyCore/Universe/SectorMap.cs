@@ -93,7 +93,7 @@ namespace Supremacy.Universe
         {
             int width = _sectors.GetLength(0);
             int height = _sectors.GetLength(1);
-            
+
             for (int x = 0; x < width; x++)
             {
                 for (int y = 0; y < height; y++)

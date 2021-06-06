@@ -23,7 +23,7 @@ namespace Supremacy.Scripting.Ast
         protected override void CreateArguments(ParseContext ec, out Arguments args)
         {
             base.CreateArguments(ec, out args);
-            
+
             Expression resultSelectorExpr;
 
             //
@@ -36,9 +36,9 @@ namespace Supremacy.Scripting.Ast
             }
             else
             {
-                
+
                 resultSelectorExpr = CreateRangeVariableType(
-                    Scope, 
+                    Scope,
                     ec,
                     RangeVariable,
                     new NameExpression { Name = RangeVariable.VariableName, Span = RangeVariable.Span });

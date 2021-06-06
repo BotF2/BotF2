@@ -22,12 +22,12 @@ namespace Supremacy.IO
         internal static BinaryFormatter CreateFormatter()
         {
             return new BinaryFormatter
-                   {
-                       AssemblyFormat = FormatterAssemblyStyle.Simple,
-                       FilterLevel = TypeFilterLevel.Low,
-                       TypeFormat = FormatterTypeStyle.TypesWhenNeeded,
-                       Context = new StreamingContext(StreamingContextStates.Persistence)
-                   };
+            {
+                AssemblyFormat = FormatterAssemblyStyle.Simple,
+                FilterLevel = TypeFilterLevel.Low,
+                TypeFormat = FormatterTypeStyle.TypesWhenNeeded,
+                Context = new StreamingContext(StreamingContextStates.Persistence)
+            };
         }
 
         public static T Read<T>(byte[] buffer) where T : class

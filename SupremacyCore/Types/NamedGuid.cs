@@ -36,10 +36,10 @@ namespace Supremacy.Types
         {
             if (ReferenceEquals(null, other))
                 return false;
-            
+
             if (ReferenceEquals(this, other))
                 return true;
-            
+
             return other._guid.Equals(_guid);
         }
 

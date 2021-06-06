@@ -273,15 +273,15 @@ namespace Supremacy.Client.Controls
                             if (!_childData.TryGetValue(child, out layoutInfo))
                             {
                                 layoutInfo = new ChildLayoutInfo
-                                             {
-                                                 OriginalColumn = Undefined,
-                                                 OriginalRow = Undefined
-                                             };
+                                {
+                                    OriginalColumn = Undefined,
+                                    OriginalRow = Undefined
+                                };
 
                                 if (!child.HasDefaultValue(ColumnProperty))
                                 {
                                     layoutInfo.OriginalColumn = GetColumn(child);
-                                
+
                                     if ((Orientation == Orientation.Vertical) &&
                                         (layoutInfo.OriginalColumn >= ColumnDefinitions.Count))
                                     {

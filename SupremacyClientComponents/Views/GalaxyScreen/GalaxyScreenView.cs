@@ -44,9 +44,9 @@ namespace Supremacy.Client.Views
             _ = InputBindings.Add(new KeyBinding(GalaxyScreenCommands.MapZoomIn, Key.OemPlus, ModifierKeys.Control));
             _ = InputBindings.Add(new KeyBinding(GalaxyScreenCommands.MapZoomOut, Key.Subtract, ModifierKeys.Control));
             _ = InputBindings.Add(new KeyBinding(GalaxyScreenCommands.MapZoomOut, Key.OemMinus, ModifierKeys.Control));
-             
-                    
-            CommandBindings.Add(new CommandBinding(ClientCommands.EscapeCommand,ExecuteEscapeCommand,CanExecuteEscapeCommand));
+
+
+            CommandBindings.Add(new CommandBinding(ClientCommands.EscapeCommand, ExecuteEscapeCommand, CanExecuteEscapeCommand));
         }
 
         private void CanExecuteEscapeCommand(object sender, CanExecuteRoutedEventArgs args)

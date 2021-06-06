@@ -103,11 +103,11 @@ namespace Supremacy.Client
         private void AppendNoticeToChatPanel(string message)
         {
             TextBlock text = new TextBlock
-                       {
-                           Foreground = Brushes.Yellow,
-                           TextWrapping = TextWrapping.Wrap,
-                           Text = "*** " + message
-                       };
+            {
+                Foreground = Brushes.Yellow,
+                TextWrapping = TextWrapping.Wrap,
+                Text = "*** " + message
+            };
             ChatPanel.Children.Add(text);
         }
 
@@ -129,7 +129,8 @@ namespace Supremacy.Client
             // at this point LocalPlayer has a defined EmpireID = an int, but no Empire !!
 
             //Federation !!! Do not change EmpireID to key. Key is not set at this stage and will crash multiplayer games at the lobby
-            if ((AppContext.LocalPlayer.EmpireID == 0) && (OptionsPanel.Options.FederationPlayable == EmpirePlayable.No)) {
+            if ((AppContext.LocalPlayer.EmpireID == 0) && (OptionsPanel.Options.FederationPlayable == EmpirePlayable.No))
+            {
                 MessageDialog.Show(Environment.NewLine + _resourceManager.GetString("CIV_1_NOT_IN GAME"), MessageDialogButtons.Ok);
                 return;
             }
@@ -147,14 +148,14 @@ namespace Supremacy.Client
                 MessageDialog.Show(Environment.NewLine + _resourceManager.GetString("CIV_3_NOT_IN GAME"), MessageDialogButtons.Ok);
                 return;
             }
-            
+
             //"Klingons":
             if ((AppContext.LocalPlayer.EmpireID == 3) && (OptionsPanel.Options.KlingonPlayable == EmpirePlayable.No))
             {
                 MessageDialog.Show(Environment.NewLine + _resourceManager.GetString("CIV_4_NOT_IN GAME"), MessageDialogButtons.Ok);
                 return;
             }
-            
+
             //"Cardassians":
             if ((AppContext.LocalPlayer.EmpireID == 4) && (OptionsPanel.Options.CardassianPlayable == EmpirePlayable.No))
             {
@@ -225,7 +226,7 @@ namespace Supremacy.Client
 
         private void CreateSlots(ILobbyData lobbyData)
         {
-            if ((lobbyData == null) || (lobbyData.Slots == null) ||(lobbyData.Players == null))
+            if ((lobbyData == null) || (lobbyData.Slots == null) || (lobbyData.Players == null))
                 return;
 
             ClearSlots();

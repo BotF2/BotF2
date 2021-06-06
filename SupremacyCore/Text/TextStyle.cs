@@ -137,14 +137,14 @@ namespace Supremacy.Text
         public void Dump(XmlWriter writer)
         {
             XamlServices.Save(writer, this);
-//            writer.WriteStartElement("TextStyle");
-//            writer.WriteAttributeString("FontStyle", this.FontWeight.ToString());
-//            writer.WriteAttributeString("FontWeight", this.FontWeight.ToString());
-//            writer.WriteAttributeString("Foreground", this.Foreground.ToString());
-//            writer.WriteAttributeString("Background", this.Background.ToString());
-//            writer.WriteAttributeString("Effect", ((object)this.Effect).ToString());
-//            writer.WriteAttributeString("EffectBrush", this.EffectBrush.ToString());
-//            writer.WriteEndElement();
+            //            writer.WriteStartElement("TextStyle");
+            //            writer.WriteAttributeString("FontStyle", this.FontWeight.ToString());
+            //            writer.WriteAttributeString("FontWeight", this.FontWeight.ToString());
+            //            writer.WriteAttributeString("Foreground", this.Foreground.ToString());
+            //            writer.WriteAttributeString("Background", this.Background.ToString());
+            //            writer.WriteAttributeString("Effect", ((object)this.Effect).ToString());
+            //            writer.WriteAttributeString("EffectBrush", this.EffectBrush.ToString());
+            //            writer.WriteEndElement();
         }
 
         public bool Equals(TextStyle other)

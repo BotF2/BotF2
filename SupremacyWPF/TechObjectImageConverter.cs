@@ -88,7 +88,7 @@ namespace Supremacy.Client
         }
         #endregion
     }
-    
+
     [ValueConversion(typeof(Sector), typeof(int))]
     public class SectorScanStrengthConverter : AppContextAwareValueConverter
     {

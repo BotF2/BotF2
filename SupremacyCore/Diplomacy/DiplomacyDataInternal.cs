@@ -103,7 +103,7 @@ namespace Supremacy.Diplomacy
 
         public void SetContactTurn(int contactTurn)
         {
-                ContactTurn = contactTurn == 0 ? GameContext.Current.TurnNumber : contactTurn;
+            ContactTurn = contactTurn == 0 ? GameContext.Current.TurnNumber : contactTurn;
         }
 
         public void SetFirstDiplomaticAction(bool firstDiplomaticAction)
@@ -154,7 +154,7 @@ namespace Supremacy.Diplomacy
             _baseData = reader.Read<DiplomacyData>();
             _motivations = reader.Read<CollectionBase<Motivation>>();
             //_threatMap = reader.Read<InfluenceMap>();
-            
+
             LastTotalWarAttack = reader.ReadOptimizedInt32();
             LastColdWarAttack = reader.ReadOptimizedInt32();
             LastIncursion = reader.ReadOptimizedInt32();

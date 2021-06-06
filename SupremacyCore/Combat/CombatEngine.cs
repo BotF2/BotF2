@@ -350,7 +350,7 @@ namespace Supremacy.Combat
 
             SendUpdates();
 
-           //GameLog.Core.CombatDetails.DebugFormat("ResolveCombatRound Sent SendUpdates then call RemoveDefeatedPlayers()");
+            //GameLog.Core.CombatDetails.DebugFormat("ResolveCombatRound Sent SendUpdates then call RemoveDefeatedPlayers()");
             RemoveDefeatedPlayers();
 
             RunningTargetOne = false;
@@ -618,7 +618,7 @@ namespace Supremacy.Combat
 
                     //for Borg only: 
                     _report += "We gained " + gainedResearchPoints + " research points.";
-                    GameContext.Current.CivilizationManagers[borg].SitRepEntries.Add(new ShipAssimilatedSitRepEntry( borg, ship.Location, _report));
+                    GameContext.Current.CivilizationManagers[borg].SitRepEntries.Add(new ShipAssimilatedSitRepEntry(borg, ship.Location, _report));
 
                 }
             }

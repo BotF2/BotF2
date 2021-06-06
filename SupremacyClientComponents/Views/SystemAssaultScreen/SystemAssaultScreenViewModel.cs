@@ -548,11 +548,11 @@ namespace Supremacy.Client.Views
         {
             get
             {
-                int GroundCombatOddsValue = 100; 
+                int GroundCombatOddsValue = 100;
                 try
                 {
-                    int attack = SelectedTransportsCombatStrength ;   // minus ? - 5
-                    int defend = _defenderCombatStrength.CurrentValue ;  // plus + 5
+                    int attack = SelectedTransportsCombatStrength;   // minus ? - 5
+                    int defend = _defenderCombatStrength.CurrentValue;  // plus + 5
 
                     GroundCombatOddsValue = 100 + attack - defend;
 
@@ -803,7 +803,7 @@ namespace Supremacy.Client.Views
             AssaultScreenSettings settings = AssaultScreenSettings.Instance;
 
             _stateManager.TryChange(SystemAssaultScreenState.ReplayingResults);
-            
+
             if (SelectedAction == InvasionAction.UnloadAllOrdinance)
             {
                 ExplosionInterval = settings.ExplosionIntervalUnloadAllOrdinance;
@@ -832,11 +832,11 @@ namespace Supremacy.Client.Views
             {
                 case InvasionAction.AttackOrbitalDefenses:
                     playbackDuration = settings.AttackOrbitalDefensesReplayDuration;
-                    soundEffect= "AttackOrbitalDefenses";
+                    soundEffect = "AttackOrbitalDefenses";
                     break;
                 case InvasionAction.BombardPlanet:
                     playbackDuration = settings.BombardmentReplayDuration;
-                    soundEffect= "Bombardment_SM";
+                    soundEffect = "Bombardment_SM";
                     break;
                 case InvasionAction.UnloadAllOrdinance:
                     playbackDuration = settings.UnloadAllOrdinanceReplayDuration;

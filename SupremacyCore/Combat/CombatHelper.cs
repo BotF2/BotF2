@@ -90,8 +90,8 @@ namespace Supremacy.Combat
                     if (sector.System != null && ship.Owner != sector.Owner && sector.Owner != null && sector.System.Colony != null && GameContext.Current.Universe.HomeColonyLookup[sector.Owner] == sector.System.Colony && !DiplomacyHelper.AreAtWar(ship.Owner, sector.Owner))
                     {
                         //GameLog.Core.Combat.DebugFormat("Home Colony = {0}, Not at war ={1}",
-                            //GameContext.Current.Universe.HomeColonyLookup[sector.Owner] == sector.System.Colony, !DiplomacyHelper.AreAtWar(ship.Owner, sector.Owner));
-                        
+                        //GameContext.Current.Universe.HomeColonyLookup[sector.Owner] == sector.System.Colony, !DiplomacyHelper.AreAtWar(ship.Owner, sector.Owner));
+
                         continue; // for home worlds you need to declare war to get combat
                     }
                     if (!assets.ContainsKey(ship.Owner))
@@ -147,7 +147,7 @@ namespace Supremacy.Combat
 
                 assets[owner].Station = new CombatUnit(sector.Station);
 
-                DoNotIncludeStationsNotFullyBuilded:;
+            DoNotIncludeStationsNotFullyBuilded:;
             }
 
             results.AddRange(assets.Values);
@@ -518,7 +518,7 @@ namespace Supremacy.Combat
 
         public static Civilization GetDefaultHoldFireCiv()
         {
-             // The 'never clicked a target button' target civilizaiton for a human player so was it a hail order or an engage order?
+            // The 'never clicked a target button' target civilizaiton for a human player so was it a hail order or an engage order?
 
             return new Civilization
             {

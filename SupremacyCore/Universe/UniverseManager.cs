@@ -141,8 +141,8 @@ namespace Supremacy.Universe
             if (civilization == null)
                 throw new ArgumentNullException("civilization");
             IEnumerable<UniverseObject> items = from item in _objects
-                        where (item.OwnerID == civilization.CivID)
-                        select item;
+                                                where (item.OwnerID == civilization.CivID)
+                                                select item;
             return items.OfType<T>().ToHashSet();
         }
 
@@ -155,9 +155,9 @@ namespace Supremacy.Universe
                 throw new ArgumentNullException("startype");
             }
             IEnumerable<UniverseObject> items = from item in _objects
-                        where (item != null && item.Sector != null && item.Sector.System != null && item.Sector.System.StarType == starType)
-                        select item;
-            return items.OfType<T>().ToHashSet(); 
+                                                where (item != null && item.Sector != null && item.Sector.System != null && item.Sector.System.StarType == starType)
+                                                select item;
+            return items.OfType<T>().ToHashSet();
         }
 
         /// <summary>
@@ -170,8 +170,8 @@ namespace Supremacy.Universe
             where T : UniverseObject
         {
             IEnumerable<UniverseObject> items = from item in _objects
-                        where (item.OwnerID == civilizationId)
-                        select item;
+                                                where (item.OwnerID == civilizationId)
+                                                select item;
             return items.OfType<T>().ToHashSet();
         }
 
@@ -185,8 +185,8 @@ namespace Supremacy.Universe
             where T : UniverseObject
         {
             IEnumerable<UniverseObject> items = from item in _objects
-                        where (item.Location == location)
-                        select item;
+                                                where (item.Location == location)
+                                                select item;
             return items.OfType<T>().ToHashSet();
         }
 
@@ -269,7 +269,7 @@ namespace Supremacy.Universe
             where T : UniverseObject
         {
             int ownerId = (owner != null) ? owner.CivID : Civilization.InvalidID;
-           // GameLog.Core.AI.DebugFormat("Find Nearist Location {0}, Owner {1}", source, owner);
+            // GameLog.Core.AI.DebugFormat("Find Nearist Location {0}, Owner {1}", source, owner);
             T result = _objects
                 .Where(o => o.OwnerID == ownerId)
                 .OfType<T>()
@@ -344,7 +344,7 @@ namespace Supremacy.Universe
                     resources[resource] = Math.Min(
                         design.BuildResourceCosts[resource],
                         (int)Math.Floor(modifier * resources[resource]));
-                        civManager.Resources[resource].AdjustCurrent(resources[resource]);
+                    civManager.Resources[resource].AdjustCurrent(resources[resource]);
                 }
                 civManager.Credits.AdjustCurrent(credits);
             }
@@ -374,7 +374,7 @@ namespace Supremacy.Universe
             target.Design.GetScrapReturn(out int credits, out ResourceValueCollection resources);
 
             StarSystem targetSystem = target.Sector.System;
-            
+
             if (targetSystem != null &&
                 targetSystem.HasColony)
             {
@@ -390,14 +390,14 @@ namespace Supremacy.Universe
                 totalReclaim = Math.Min(totalReclaim, 1.0);
 
                 credits = Math.Min(target.Design.BuildCost, (int)Math.Floor(totalReclaim * credits));
-                
+
                 foreach (ResourceType resource in EnumHelper.GetValues<ResourceType>())
                 {
                     resources[resource] = Math.Min(
                         target.Design.BuildResourceCosts[resource],
                         (int)Math.Floor(totalReclaim * resources[resource]));
                 }
-                
+
                 civManager.Credits.AdjustCurrent(credits);
             }
 
@@ -407,7 +407,7 @@ namespace Supremacy.Universe
                 {
                     civManager.Resources[resource].AdjustCurrent(resources[resource]);
                 }
-            
+
                 return true;
             }
 
@@ -458,7 +458,8 @@ namespace Supremacy.Universe
                     // destroyer
                     //
                     // Instead, spin each ship out to it's own fleet, and let the ship destroyer take care of it
-                    for (int i = 0; i < fleet.Ships.Count; i++) {
+                    for (int i = 0; i < fleet.Ships.Count; i++)
+                    {
                         Fleet newFleet = fleet.Ships[i].CreateFleet();
                         Destroy(newFleet.Ships[0]);
                     }
@@ -512,7 +513,7 @@ namespace Supremacy.Universe
 
                 colony.BuildQueue.Clear();
                 colony.BuildSlots.ForEach(o => o.Project = null);
-                
+
                 colony.TradeRoutes.ForEach(o => o.TargetColony = null);
 
                 if (colony.Shipyard != null)
@@ -622,7 +623,7 @@ namespace Supremacy.Universe
         {
             _map.Reset();
 
-                GameLog.Core.SaveLoad.DebugFormat("Deserializing stations...");
+            GameLog.Core.SaveLoad.DebugFormat("Deserializing stations...");
             foreach (Station station in Find<Station>())
             {
                 _map[station.Location].Station = station;
@@ -637,7 +638,7 @@ namespace Supremacy.Universe
         }
 
         public void SerializeOwnedData(SerializationWriter writer, object context)
-    	{
+        {
             writer.Write((byte)_map.Width);
             writer.Write((byte)_map.Height);
             _objects.SerializeOwnedData(writer, context);
@@ -647,8 +648,8 @@ namespace Supremacy.Universe
             GameLog.Core.SaveLoad.DebugFormat("Serializing _homeColonyLookup...");
         }
 
-    	public void DeserializeOwnedData(SerializationReader reader, object context)
-    	{
+        public void DeserializeOwnedData(SerializationReader reader, object context)
+        {
             _objects = new UniverseObjectSet();
             _map = new SectorMap(reader.ReadByte(), reader.ReadByte());
             _homeColonyLookup = new GameObjectLookupCollection<Civilization, Colony>(
@@ -656,7 +657,7 @@ namespace Supremacy.Universe
                 colony => colony.OriginalOwner,
                 colony => colony.ObjectID,
                 id => _objects[id] as Colony);
-    	    _objects.DeserializeOwnedData(reader, context);
+            _objects.DeserializeOwnedData(reader, context);
             _homeColonyLookup.DeserializeOwnedData(reader, context);
 
             GameLog.Core.SaveLoad.DebugFormat("Deserializing _objects...");

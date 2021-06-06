@@ -108,7 +108,7 @@ namespace Supremacy.Client.Dialogs
         {
             get
             {
-                if ((_modalDialogsRegion == null) && 
+                if ((_modalDialogsRegion == null) &&
                     (_rootRegionManager != null) &&
                     _rootRegionManager.Regions.ContainsRegionWithName(ClientRegions.ModalDialogs))
                 {

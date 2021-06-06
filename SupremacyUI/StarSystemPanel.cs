@@ -258,7 +258,7 @@ namespace Supremacy.UI
             }
             //GameLog.Client.UI.DebugFormat("refreshing StarSystemPanel");
             if ((system != null) && IsScanned(system.Sector) && StarHelper.SupportsPlanets(system)) // && IsScanned(system.Sector) && StarHelper.SupportsPlanets(system))
-                {
+            {
                 //GameLog.Client.UI.DebugFormat("refreshing PlanetView");
                 DisplayVisuals(system);
             }

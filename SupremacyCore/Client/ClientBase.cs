@@ -338,7 +338,7 @@ namespace Supremacy.Client
         public abstract void SendCombatTarget1(CombatTargetPrimaries target1);
         public abstract void SendCombatTarget2(CombatTargetSecondaries target2);
 
-      //  public abstract void SendIntelOrders(IntelOrders orders);
+        //  public abstract void SendIntelOrders(IntelOrders orders);
         public abstract void UpdateGameOptions(GameOptions options);
         public abstract void UpdateEmpireSelection(int playerId, int empireId);
 

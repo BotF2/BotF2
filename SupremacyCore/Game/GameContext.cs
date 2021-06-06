@@ -209,16 +209,16 @@ namespace Supremacy.Game
                 GameLog.Core.SaveLoad.DebugFormat("IsMultiplayerGame = {0}", IsMultiplayerGame);
                 _nextObjectId = reader.ReadOptimizedInt32();
                 _turnNumber = reader.ReadOptimizedUInt16();
-                        GameLog.Core.SaveLoad.DebugFormat("_turnNumber = {0}", _turnNumber);
+                GameLog.Core.SaveLoad.DebugFormat("_turnNumber = {0}", _turnNumber);
                 _options = reader.Read<GameOptions>();
                 _gameMod = reader.Read<GameMod>();
                 _civilizations = reader.Read<CivDatabase>();
-                        // CivDatabase = basic Civs (like ShortName etc)
+                // CivDatabase = basic Civs (like ShortName etc)
                 _civManagers = reader.Read<CivilizationManagerMap>();
-                        // _civManagers = basic Civs (like ShortName etc)
+                // _civManagers = basic Civs (like ShortName etc)
                 _races = reader.Read<RaceDatabase>();
                 _universe = reader.Read<UniverseManager>();
-                        GameLog.Core.SaveLoad.DebugFormat("reading _universe.....");
+                GameLog.Core.SaveLoad.DebugFormat("reading _universe.....");
                 _techDatabase = reader.Read<TechDatabase>();
                 _researchMatrix = reader.Read<ResearchMatrix>();
                 _sectorClaims = reader.Read<SectorClaimGrid>();
@@ -230,7 +230,7 @@ namespace Supremacy.Game
                 _scriptedEvents = reader.Read<ICollection<ScriptedEvent>>();
                 _diplomacyDatabase = reader.Read<DiplomacyDatabase>();
 
-                
+
                 FixupDiplomacyData();
             }
             finally
@@ -601,39 +601,39 @@ namespace Supremacy.Game
                 if (gameContext != null)
                 {
                     // keep this for next time we have to check Game Context
-                        //foreach (var civManager in gameContext.CivilizationManagers)
-                        //{
-                        //    //    if (civManager.Civilization.IsEmpire)
-                        //    //        continue;
-                        //    if (civManager.CivilizationID != 4) // only Cardassians
-                        //        continue;
+                    //foreach (var civManager in gameContext.CivilizationManagers)
+                    //{
+                    //    //    if (civManager.Civilization.IsEmpire)
+                    //    //        continue;
+                    //    if (civManager.CivilizationID != 4) // only Cardassians
+                    //        continue;
 
-                        //bool output = false;
+                    //bool output = false;
 
-                        //    string _gameLogText = "Civ= " + civManager.CivilizationID +"  :";//  .Civilization.Key;
-                        //                                                                     //string _gameLogText = "Hello";
-                        //if (civManager.IntelOrdersGoingToHost != null)
-                        //{
-                        //    _gameLogText += civManager.IntelOrdersGoingToHost.Count + " for civManager.IntelOrdersGoingToHost,  ";
-                        //    if (civManager.IntelOrdersGoingToHost.Count > 0)
-                        //        output = true;
-                        //}
-                        //if (civManager.IntelOrdersIncomingToHost != null)
-                        //{
-                        //    _gameLogText += civManager.IntelOrdersIncomingToHost.Count + " for civManager.IntelOrdersIncomingToHost";
-                        //    if(civManager.IntelOrdersIncomingToHost.Count > 0)
-                        //        output = true;
-                        //}
-                        ////    // same for civ, not for CivManager
-                        ////    if (civManager.Civilization.IntelOrdersGoingToHost != null)
-                        ////        _gameLogText += "civ.IntelOrdersGoingToHost={1} , " + civManager.Civilization.IntelOrdersIncomingToHost.Count;
-                        ////    if (civManager.Civilization.IntelOrdersIncomingToHost != null)
-                        ////        _gameLogText += "civ.IntelOrdersIncomingToHost={1} , " + civManager.Civilization.IntelOrdersIncomingToHost.Count;
+                    //    string _gameLogText = "Civ= " + civManager.CivilizationID +"  :";//  .Civilization.Key;
+                    //                                                                     //string _gameLogText = "Hello";
+                    //if (civManager.IntelOrdersGoingToHost != null)
+                    //{
+                    //    _gameLogText += civManager.IntelOrdersGoingToHost.Count + " for civManager.IntelOrdersGoingToHost,  ";
+                    //    if (civManager.IntelOrdersGoingToHost.Count > 0)
+                    //        output = true;
+                    //}
+                    //if (civManager.IntelOrdersIncomingToHost != null)
+                    //{
+                    //    _gameLogText += civManager.IntelOrdersIncomingToHost.Count + " for civManager.IntelOrdersIncomingToHost";
+                    //    if(civManager.IntelOrdersIncomingToHost.Count > 0)
+                    //        output = true;
+                    //}
+                    ////    // same for civ, not for CivManager
+                    ////    if (civManager.Civilization.IntelOrdersGoingToHost != null)
+                    ////        _gameLogText += "civ.IntelOrdersGoingToHost={1} , " + civManager.Civilization.IntelOrdersIncomingToHost.Count;
+                    ////    if (civManager.Civilization.IntelOrdersIncomingToHost != null)
+                    ////        _gameLogText += "civ.IntelOrdersIncomingToHost={1} , " + civManager.Civilization.IntelOrdersIncomingToHost.Count;
 
-                        //if (output == true)
-                        //GameLog.Core.Test.DebugFormat(_gameLogText);
+                    //if (output == true)
+                    //GameLog.Core.Test.DebugFormat(_gameLogText);
 
-                        //}
+                    //}
 
 
                     return gameContext;

@@ -454,11 +454,11 @@ namespace Supremacy.Client.Controls
         {
             // Override default properties
             BorderThicknessProperty.OverrideMetadata(
-                typeof(InlineWindow), 
+                typeof(InlineWindow),
                 new FrameworkPropertyMetadata(new Thickness(4)));
 
             IsTabStopProperty.OverrideMetadata(
-                typeof(InlineWindow), 
+                typeof(InlineWindow),
                 new FrameworkPropertyMetadata(false));
 
             KeyboardNavigation.TabNavigationProperty.OverrideMetadata(
@@ -877,10 +877,10 @@ namespace Supremacy.Client.Controls
                             {
                                 return ResizeOperation.NorthEast;
                             }
-                            
+
                             if ((point.Y >= ActualHeight - borderThickness.Bottom) && (point.Y < ActualHeight))
                                 return ResizeOperation.SouthEast;
-                            
+
                             return ResizeOperation.East;
                         }
                         if ((point.Y >= 0) && (point.Y < borderThickness.Top))
@@ -1035,32 +1035,32 @@ namespace Supremacy.Client.Controls
                         }
                         break;
                     case 2:
-                    {
+                        {
                             // Raise an event
                             CancelRoutedEventArgs eventArgs = new CancelRoutedEventArgs(TitleBarDoubleClickEvent, this);
-                        RaiseEvent(eventArgs);
-                        if (eventArgs.Cancel)
-                            break;
+                            RaiseEvent(eventArgs);
+                            if (eventArgs.Cancel)
+                                break;
 
-                        // Toggle the state of the window
-                        if (WindowStyle != WindowStyle.ToolWindow)
-                        {
-                            switch (ResizeMode)
+                            // Toggle the state of the window
+                            if (WindowStyle != WindowStyle.ToolWindow)
                             {
-                                case ResizeMode.CanMinimize:
-                                    if (WindowState != WindowState.Normal)
+                                switch (ResizeMode)
+                                {
+                                    case ResizeMode.CanMinimize:
+                                        if (WindowState != WindowState.Normal)
+                                            ToggleWindowState();
+                                        break;
+                                    case ResizeMode.NoResize:
+                                        // Do nothing
+                                        break;
+                                    default:
                                         ToggleWindowState();
-                                    break;
-                                case ResizeMode.NoResize:
-                                    // Do nothing
-                                    break;
-                                default:
-                                    ToggleWindowState();
-                                    break;
+                                        break;
+                                }
                             }
+                            break;
                         }
-                        break;
-                    }
                 }
             }
         }

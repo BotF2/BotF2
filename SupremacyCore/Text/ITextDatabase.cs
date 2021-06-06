@@ -467,7 +467,7 @@ namespace Supremacy.Text
                 add { }
                 remove { }
             }
-            
+
             public void BeginEdit() { throw new NotSupportedException(); }
             public void EndEdit() { throw new NotSupportedException(); }
             public void CancelEdit() { throw new NotSupportedException(); }
@@ -476,7 +476,7 @@ namespace Supremacy.Text
             {
                 add { }
                 remove { }
-            } 
+            }
         }
         #endregion
 

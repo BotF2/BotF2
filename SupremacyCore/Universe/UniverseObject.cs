@@ -25,7 +25,7 @@ namespace Supremacy.Universe
     /// </summary>
     [Serializable]
     [DebuggerDisplay("{ToString() + \" (ID=\" + ObjectID + \")\"}")]
-    public abstract class UniverseObject : 
+    public abstract class UniverseObject :
         DynamicObject,
         IUniverseObject,
         IEffectTarget,
@@ -108,7 +108,7 @@ namespace Supremacy.Universe
             {
                 if (value == Owner)
                     return;
-                
+
                 OwnerID = (value != null)
                     ? (short)value.CivID
                     : (short)Civilization.InvalidID;
@@ -256,7 +256,7 @@ namespace Supremacy.Universe
         public override void SerializeOwnedData(SerializationWriter writer, object context)
         {
             base.SerializeOwnedData(writer, context);
-            
+
             writer.Write((byte)_location.X);
             writer.Write((byte)_location.Y);
             writer.WriteOptimized(_name);
@@ -284,11 +284,11 @@ namespace Supremacy.Universe
             if (hasEffectBindings)
                 _effectBindings.Value.SerializeOwnedData(writer, context);
         }
-        
+
         private void DeserializeEffectData([NotNull] SerializationReader reader, object context)
         {
             bool hasEffectBindings = reader.ReadBoolean();
-            
+
             if (!hasEffectBindings)
                 return;
 

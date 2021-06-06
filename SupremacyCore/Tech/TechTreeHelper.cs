@@ -92,7 +92,7 @@ namespace Supremacy.Tech
 
             TechTree techTree = civManager.TechTree;
             List<TechObjectDesign> results = new List<TechObjectDesign>();
-            
+
             switch (type)
             {
                 case TechObjectType.Batteries:
@@ -270,14 +270,14 @@ namespace Supremacy.Tech
                         .ToList();
 
                     ProductionFacilityDesign bestUpgrade = GetBestFacilityDesign(
-                        colony, 
+                        colony,
                         design.Category,
                         upgrades);
 
                     if (bestUpgrade != null)
                         results.Add(new ProductionFacilityUpgradeProject(colony, bestUpgrade));
 
-                NextCategory:
+                    NextCategory:
                     continue;
                 }
 
@@ -387,10 +387,10 @@ namespace Supremacy.Tech
                                  .OfType<BuildingDesign>()
                                  .Select(
                                      ud => new
-                                           {
-                                               BaseDesign = b,
-                                               UpgradeDesign = ud
-                                           }))
+                                     {
+                                         BaseDesign = b,
+                                         UpgradeDesign = ud
+                                     }))
                     .Where(
                         o => !colony.HasBuilding(o.UpgradeDesign) &&
                              !colony.IsBuilding(o.UpgradeDesign) &&
@@ -452,10 +452,10 @@ namespace Supremacy.Tech
                                      .OfType<ShipyardDesign>()
                                      .Select(
                                          ud => new
-                                               {
-                                                   UpgradeTarget = colony.Shipyard,
-                                                   UpgradeDesign = ud
-                                               })
+                                         {
+                                             UpgradeTarget = colony.Shipyard,
+                                             UpgradeDesign = ud
+                                         })
                         .Where(
                             o => !colony.HasShipyard(o.UpgradeDesign) &&
                                  !colony.IsBuilding(o.UpgradeDesign) &&
@@ -506,7 +506,7 @@ namespace Supremacy.Tech
             BuildingDesign design
             /* ReSharper restore SuggestBaseTypeForParameter */)
         {
-            CivilizationManager civManager =  GameContext.Current.CivilizationManagers[colony.OwnerID];
+            CivilizationManager civManager = GameContext.Current.CivilizationManagers[colony.OwnerID];
 
             return civManager.TechTree.BuildingDesigns.Any(
                 otherDesign => colony.HasBuilding(otherDesign) &&
@@ -528,7 +528,7 @@ namespace Supremacy.Tech
             ShipyardDesign design
             /* ReSharper restore SuggestBaseTypeForParameter */)
         {
-            CivilizationManager civManager =  GameContext.Current.CivilizationManagers[colony.OwnerID];
+            CivilizationManager civManager = GameContext.Current.CivilizationManagers[colony.OwnerID];
 
             return civManager.TechTree.ShipyardDesigns.Any(
                 otherDesign => colony.HasShipyard(otherDesign) &&
@@ -727,14 +727,14 @@ namespace Supremacy.Tech
         /// <param name="category">The production category.</param>
         /// <returns>The facility design.</returns>
         public static ProductionFacilityDesign GetBestFacilityDesign(
-            [NotNull] Colony colony, 
+            [NotNull] Colony colony,
             ProductionCategory category)
         {
             if (colony == null)
                 throw new ArgumentNullException("colony");
 
             return GetBestFacilityDesign(
-                colony, 
+                colony,
                 category,
                 GameContext.Current.TechTrees[colony.OwnerID].ProductionFacilityDesigns);
         }
@@ -927,11 +927,11 @@ namespace Supremacy.Tech
                 if (system.StarType != StarType.Nebula)
                     return false;
             }
-			
+
             //
             // POPULATION RESTRICTIONS
             //
-            
+
             if ((design.Restriction & BuildRestriction.ConqueredSystem) == BuildRestriction.ConqueredSystem)
             {
                 if (colony.OriginalOwner == colony.Owner || DiplomacyHelper.IsMember(colony.OriginalOwner, colony.Owner))
@@ -955,13 +955,13 @@ namespace Supremacy.Tech
                 if (!memberTechTree.BuildingDesigns.Contains(design))
                     return false;
             }
-            
+
             if ((design.Restriction & BuildRestriction.NativeSystem) == BuildRestriction.NativeSystem)
             {
                 if (colony.OriginalOwner != colony.Owner || colony.Inhabitants != colony.Owner.Race)
                     return false;
             }
-            
+
             if ((design.Restriction & BuildRestriction.NonNativeSystem) == BuildRestriction.NonNativeSystem)
             {
                 //

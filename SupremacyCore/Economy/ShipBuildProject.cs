@@ -242,7 +242,7 @@ namespace Supremacy.Economy
             _resourcesRequired = new ResourceValueCollection();
             if (repairTarget.FuelReserve.CurrentValue < repairTarget.FuelReserve.Maximum)
             {
-                _resourcesRequired[ResourceType.Deuterium] = 
+                _resourcesRequired[ResourceType.Deuterium] =
                     (repairTarget.FuelReserve.Maximum - repairTarget.FuelReserve.CurrentValue);
             }
 

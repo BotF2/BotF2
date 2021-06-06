@@ -99,7 +99,7 @@ namespace Supremacy.Game
                 foreach (Scripting.ScriptedEvent scriptedEvent in game.ScriptedEvents)
                 {
                     //if (GameContext.Current.TurnNumber >= 1)
-                        scriptedEvent.OnTurnPhaseStarted(game, phase);
+                    scriptedEvent.OnTurnPhaseStarted(game, phase);
                 }
             }
 
@@ -180,7 +180,7 @@ namespace Supremacy.Game
 
             OnTurnPhaseChanged(game, TurnPhase.PreTurnOperations);
             GameContext.PushThreadContext(game);
-            try { DoPreTurnOperations(game); }       
+            try { DoPreTurnOperations(game); }
             finally { GameContext.PopThreadContext(); }
             OnTurnPhaseFinished(game, TurnPhase.PreTurnOperations);
 
@@ -316,9 +316,9 @@ namespace Supremacy.Game
                 foreach (Scripting.ScriptedEvent scriptedEvent in game.ScriptedEvents)
                 {
                     //if (GameContext.Current.TurnNumber >= 50)
-                        scriptedEvent.OnTurnFinished(game);
+                    scriptedEvent.OnTurnFinished(game);
                 }
-                   
+
             }
             finally { GameContext.PopThreadContext(); }
 
@@ -487,9 +487,9 @@ namespace Supremacy.Game
             AAASpecialWidth1 = (int)Number.ParseSingle(ToolTipImageSizeTable["Width"][0]);
             AAASpecialHeight1 = (int)Number.ParseSingle(ToolTipImageSizeTable["Height"][0]);
             string _text = "AAASpecialWidth1=" + AAASpecialWidth1 + " x " + "AAASpecialHeight1=" + AAASpecialHeight1;
-            Console.WriteLine(_text);            
+            Console.WriteLine(_text);
             GameLog.Core.GeneralDetails.DebugFormat(_text);
-            
+
 
 
 
@@ -518,13 +518,13 @@ namespace Supremacy.Game
             string newline = Environment.NewLine;
             GameLog.Core.GameInitDataDetails.DebugFormat("StrengthModifier: " + newline +
                 "EspionageMod = {0}" + newline +
-                "SabotageMod = {1}" + newline + 
+                "SabotageMod = {1}" + newline +
                 "InternalSecurityMod = {2}" + newline +
                 "ShipProductionMod = {3}" + newline +
                 "ScienceSpeedMod = {4}" + newline +
                 "MinorPowerMod = {5}" + newline +
                 "MiningMod = {6}" + newline +
-                "CreditsMod = {7}" + newline + 
+                "CreditsMod = {7}" + newline +
                 "DiplomacyTrustMod = {8}" + newline +
                 "DiplomacyRegardMod = {9}" + newline +
                 "FoodProductionMod = {10}" + newline +
@@ -533,7 +533,7 @@ namespace Supremacy.Game
                 "StationsStrenghtMod = {13}" + newline +
                 "OrbitalBatteryStrenghtMod = {14}" + newline +
                 "TroopTransportStrenghtMod = {15}" + newline +
-                "ColonyTroopStrenghtMod = {16}" + newline 
+                "ColonyTroopStrenghtMod = {16}" + newline
                 , EspionageMod
                 , SabotageMod
                 , InternalSecurityMod
@@ -557,7 +557,7 @@ namespace Supremacy.Game
 
             game.TurnNumber = 1;
             _gameTurnNumber = 1;
-            
+
         }
         #endregion
 
@@ -575,7 +575,7 @@ namespace Supremacy.Game
                 if (fleet.UnitAIType == UnitAIType.Reserve)
                     GameLog.Client.AI.DebugFormat("*** Reserve, Turn# = {0} Owner = {1} Fleet location ={2}, UnitAIType ={3}, UnitActivity ={4} Actibvity Duration ={5} Activity Start ={6}",
                         GameContext.Current.TurnNumber, fleet.Owner.Name, fleet.Location, fleet.UnitAIType, fleet.Activity, fleet.ActivityDuration, fleet.ActivityStart);
-                if (shipNum >=5 && fleet.UnitAIType != UnitAIType.SystemDefense)
+                if (shipNum >= 5 && fleet.UnitAIType != UnitAIType.SystemDefense)
                     GameLog.Client.AI.DebugFormat("*** >5 and Not SystemDefence, Turn# = {0} Owner = {1} Fleet location ={2}, UnitAIType ={3}, UnitActivity ={4} Actibvity Duration ={5} Activity Start ={6}",
                         GameContext.Current.TurnNumber, fleet.Owner.Name, fleet.Location, fleet.UnitAIType, fleet.Activity, fleet.ActivityDuration, fleet.ActivityStart);
                 if (fleet.Route.Steps.Count() > 0 && shipNum >= 5)
@@ -602,7 +602,7 @@ namespace Supremacy.Game
                 CivilizationManager civManager = GameContext.Current.CivilizationManagers[fleet.Owner];
                 int fuelNeeded;
                 int fuelRange = civManager.MapData.GetFuelRange(fleet.Location);
-                
+
                 /*
                  * If the fleet is within fueling range, then try to top off the reserves of
                  * each ship in the fleet.  We do this now in case a ship is out of fuel, but
@@ -660,7 +660,7 @@ namespace Supremacy.Game
 
                     if (fleet.Ships != null) // Update FixBlackholeCrash (hopefully) 2 March 2019
                     {
-                        
+
                         foreach (Ship ship in fleet.Ships)
                         {
                             int damage = RandomHelper.Roll(ship.HullStrength.CurrentValue);
@@ -679,11 +679,11 @@ namespace Supremacy.Game
                         }
 
                     }
-                
+
 
                     if ((shipsDamaged > 0) || (shipsDestroyed > 0))
                     {
-                        GameLog.Client.AI.DebugFormat("shipDestroyed {0} Ship(s) went down a Black hole {1} {2}",shipsDestroyed, fleet.Owner.Key, fleet.Location);
+                        GameLog.Client.AI.DebugFormat("shipDestroyed {0} Ship(s) went down a Black hole {1} {2}", shipsDestroyed, fleet.Owner.Key, fleet.Location);
                         civManager.SitRepEntries.Add(new BlackHoleEncounterSitRepEntry(fleet.Owner, fleet.Location, shipsDamaged, shipsDestroyed));
                     }
                 }
@@ -703,7 +703,7 @@ namespace Supremacy.Game
                 if (civ1.IsHuman)
                     DiplomacyHelper.AcceptingRejecting(civ1);
                 foreach (Civilization civ2 in GameContext.Current.Civilizations)
-                {                
+                {
                     if (civ1 == civ2)
                         continue;
                     bool _itIsBorg = false;
@@ -722,10 +722,10 @@ namespace Supremacy.Game
                     Diplomat diplomat2 = Diplomat.Get(civ2);
                     if (diplomat1.GetForeignPower(civ2).DiplomacyData.Status == Diplomacy.ForeignPowerStatus.NoContact ||
                         diplomat2.GetForeignPower(civ1).DiplomacyData.Status == Diplomacy.ForeignPowerStatus.NoContact)
-                        {
+                    {
                         //GameLog.Core.Diplomacy.DebugFormat("DiplomacyData.Status = NoContact for {0} vs {1}", civ1, civ2);
                         continue;
-                        }
+                    }
 
                     ForeignPower foreignPower = diplomat1.GetForeignPower(civ2);
                     ForeignPowerStatus foreignPowerStatus = diplomat1.GetForeignPower(civ2).DiplomacyData.Status;
@@ -755,41 +755,41 @@ namespace Supremacy.Game
 
                     switch (foreignPower.PendingAction)
                     {
-                    case PendingDiplomacyAction.AcceptProposal:
-                        {
-                            GameLog.Core.Diplomacy.DebugFormat("$$ Accept Status = {2} for {0} vs {1}"
-                                , civ1
-                                , civ2
-                                , foreignPower.PendingAction.ToString());
+                        case PendingDiplomacyAction.AcceptProposal:
+                            {
+                                GameLog.Core.Diplomacy.DebugFormat("$$ Accept Status = {2} for {0} vs {1}"
+                                    , civ1
+                                    , civ2
+                                    , foreignPower.PendingAction.ToString());
 
-                            if (foreignPower.ProposalReceived != null)
-                            AcceptProposalVisitor.Visit(foreignPower.ProposalReceived);
-                                   
-                            foreignPower.LastProposalReceived = foreignPower.ProposalReceived;
-                            foreignPower.ProposalReceived = null;
+                                if (foreignPower.ProposalReceived != null)
+                                    AcceptProposalVisitor.Visit(foreignPower.ProposalReceived);
+
+                                foreignPower.LastProposalReceived = foreignPower.ProposalReceived;
+                                foreignPower.ProposalReceived = null;
+                                break;
+                            }
+
+                        case PendingDiplomacyAction.RejectProposal:
+                            {
+                                GameLog.Core.Diplomacy.DebugFormat("$$ Reject Status = {2} for {0} vs {1}"
+                                    , civ1
+                                    , civ2
+                                    , foreignPower.PendingAction.ToString());
+
+                                if (foreignPower.ProposalReceived != null)
+                                    RejectProposalVisitor.Visit(foreignPower.ProposalReceived);
+
+                                foreignPower.LastProposalReceived = foreignPower.ProposalReceived;
+                                foreignPower.ProposalReceived = null;
+                                break;
+                            }
+                        default:
                             break;
-                        }
-
-                    case PendingDiplomacyAction.RejectProposal:
-                        {
-                            GameLog.Core.Diplomacy.DebugFormat("$$ Reject Status = {2} for {0} vs {1}"
-                                , civ1
-                                , civ2
-                                , foreignPower.PendingAction.ToString());
-
-                            if (foreignPower.ProposalReceived != null)
-                                RejectProposalVisitor.Visit(foreignPower.ProposalReceived);
-
-                            foreignPower.LastProposalReceived = foreignPower.ProposalReceived;
-                            foreignPower.ProposalReceived = null;
-                            break;
-                        }
-                    default:
-                        break;
                     }
                     //GameLog.Core.Diplomacy.DebugFormat("Next: foreignPower.PendingAction = NONE for {0} vs {1}, status {2}, pending {3}", foreignPower.Owner, foreignPower.Counterparty, foreignPowerStatus.ToString(), foreignPower.PendingAction.ToString());
                     foreignPower.PendingAction = PendingDiplomacyAction.None;
-                 
+
                     // Ships gets new owner on joining empire - colonies are done in AccpetPropsalVisitor
                     if (civ1.IsEmpire && !civ2.IsEmpire && civ1.Key != "Borg")
                     {
@@ -797,7 +797,7 @@ namespace Supremacy.Game
                         if (currentDiplomat.GetForeignPower(civ2).DiplomacyData.Status == Diplomacy.ForeignPowerStatus.CounterpartyIsMember)
                         {
                             List<UniverseObject> _objectsCiv2 = GameContext.Current.Universe.Objects.Where(s => s.Owner == civ2)
-                                    .Where(s =>s.ObjectType == UniverseObjectType.Ship).ToList();
+                                    .Where(s => s.ObjectType == UniverseObjectType.Ship).ToList();
                             foreach (UniverseObject minorsObject in _objectsCiv2)
                             {
                                 if (minorsObject.Owner == civ2)
@@ -845,60 +845,60 @@ namespace Supremacy.Game
                     // just for testing especially generating break point
                     //if (civ1.CivID == 1 && civ2.CivID == 4 || civ1.CivID == 4 && civ2.CivID == 1)  // Terrans, incoming from Cardassians
                     //{
-                        //_gameLog = "### Checking ForeignerPower - see next line";
+                    //_gameLog = "### Checking ForeignerPower - see next line";
 
                     #region Gamelogs
                     if (foreignPower.ProposalReceived != null)
-                            _gameLog += Environment.NewLine + "ProposalReceived: "
-                                      + foreignPower.ProposalReceived.Sender + " to "
-                                      + foreignPower.ProposalReceived.Recipient + ": > "
-                                      + foreignPower.ProposalReceived.Clauses.ToString()
-                                      + Environment.NewLine;
-                        if (foreignPower.ProposalSent != null)
-                            _gameLog += Environment.NewLine + "ProposalSent: "
-                                      + foreignPower.ProposalSent.Sender + " to "
-                                      + foreignPower.ProposalSent.Recipient + ": > "
-                                      + foreignPower.ProposalSent.Clauses.ToString()
-                                      + Environment.NewLine;
-                        if (foreignPower.ResponseReceived != null)
-                            _gameLog += Environment.NewLine + "ResponseReceived: "
-                                      + foreignPower.ResponseReceived.Sender + " to "
-                                      + foreignPower.ResponseReceived.Recipient + ": > "
-                                      + foreignPower.ResponseReceived.ResponseType.ToString()
-                                      + Environment.NewLine;
-                        if (foreignPower.ResponseSent != null)
-                            _gameLog += Environment.NewLine + "ResponseSent: "
-                                      + foreignPower.ResponseSent.Sender + " to "
-                                      + foreignPower.ResponseSent.Recipient + ": > "
-                                      + foreignPower.ResponseSent.ResponseType.ToString()
-                                      + Environment.NewLine;
-                        if (foreignPower.StatementReceived != null)  // in SinglePlayer you'll never get this "received" because you are always the playing SENDER unitl AI sends
-                        {
+                        _gameLog += Environment.NewLine + "ProposalReceived: "
+                                  + foreignPower.ProposalReceived.Sender + " to "
+                                  + foreignPower.ProposalReceived.Recipient + ": > "
+                                  + foreignPower.ProposalReceived.Clauses.ToString()
+                                  + Environment.NewLine;
+                    if (foreignPower.ProposalSent != null)
+                        _gameLog += Environment.NewLine + "ProposalSent: "
+                                  + foreignPower.ProposalSent.Sender + " to "
+                                  + foreignPower.ProposalSent.Recipient + ": > "
+                                  + foreignPower.ProposalSent.Clauses.ToString()
+                                  + Environment.NewLine;
+                    if (foreignPower.ResponseReceived != null)
+                        _gameLog += Environment.NewLine + "ResponseReceived: "
+                                  + foreignPower.ResponseReceived.Sender + " to "
+                                  + foreignPower.ResponseReceived.Recipient + ": > "
+                                  + foreignPower.ResponseReceived.ResponseType.ToString()
+                                  + Environment.NewLine;
+                    if (foreignPower.ResponseSent != null)
+                        _gameLog += Environment.NewLine + "ResponseSent: "
+                                  + foreignPower.ResponseSent.Sender + " to "
+                                  + foreignPower.ResponseSent.Recipient + ": > "
+                                  + foreignPower.ResponseSent.ResponseType.ToString()
+                                  + Environment.NewLine;
+                    if (foreignPower.StatementReceived != null)  // in SinglePlayer you'll never get this "received" because you are always the playing SENDER unitl AI sends
+                    {
 
-                            //string parameterString = foreignPower.StatementSent.Parameter.ToString() ?? "";
+                        //string parameterString = foreignPower.StatementSent.Parameter.ToString() ?? "";
 
-                            _gameLog += Environment.NewLine + "StatementReceived: "
-                                      + foreignPower.StatementReceived.Sender + " to "
-                                      + foreignPower.StatementReceived.Recipient + ": > "
-                                      + ", Parameter = " //+ parameterString
-                                      + Enum.GetName(typeof(StatementType), foreignPower.StatementReceived.StatementType)
-                                      + Environment.NewLine
-                                      ;
-                        }
-                        if (foreignPower.StatementSent != null)  // in SinglePlayer you'll never get this "received" because you are always the playing SENDER unitl AI sends
-                        {
+                        _gameLog += Environment.NewLine + "StatementReceived: "
+                                  + foreignPower.StatementReceived.Sender + " to "
+                                  + foreignPower.StatementReceived.Recipient + ": > "
+                                  + ", Parameter = " //+ parameterString
+                                  + Enum.GetName(typeof(StatementType), foreignPower.StatementReceived.StatementType)
+                                  + Environment.NewLine
+                                  ;
+                    }
+                    if (foreignPower.StatementSent != null)  // in SinglePlayer you'll never get this "received" because you are always the playing SENDER unitl AI sends
+                    {
 
-                            //string parameterString = foreignPower.StatementSent.Parameter.ToString() ?? "";
+                        //string parameterString = foreignPower.StatementSent.Parameter.ToString() ?? "";
 
-                            _gameLog += Environment.NewLine + "StatementSent: "
-                                      + foreignPower.StatementSent.Sender + " to "
-                                      + foreignPower.StatementSent.Recipient + ": > "
-                                      + ", Parameter = " //+ parameterString
-                                      + Environment.NewLine
-                                      ;
-                        }
+                        _gameLog += Environment.NewLine + "StatementSent: "
+                                  + foreignPower.StatementSent.Sender + " to "
+                                  + foreignPower.StatementSent.Recipient + ": > "
+                                  + ", Parameter = " //+ parameterString
+                                  + Environment.NewLine
+                                  ;
+                    }
 
-                   // GameLog.Core.Diplomacy.DebugFormat("------------------------------------------");
+                    // GameLog.Core.Diplomacy.DebugFormat("------------------------------------------");
                     //GameLog.Core.Diplomacy.DebugFormat("received a 'Sabotage'-Diplomacy-Statement, Tone = {0}", foreignPower.StatementReceived.Tone.ToString());
 
                     if (_gameLog.Length > 44)  // not only the entry phrase...
@@ -950,17 +950,17 @@ namespace Supremacy.Game
                             case StatementType.T30:
                             case StatementType.T31:
                             case StatementType.T32:
-                            case StatementType.T34: 
-                            case StatementType.T35: 
-                            case StatementType.T40: 
-                            case StatementType.T41: 
-                            case StatementType.T42: 
-                            case StatementType.T43: 
-                            case StatementType.T45: 
-                            case StatementType.T50: 
-                            case StatementType.T51: 
-                            case StatementType.T52: 
-                            case StatementType.T53: 
+                            case StatementType.T34:
+                            case StatementType.T35:
+                            case StatementType.T40:
+                            case StatementType.T41:
+                            case StatementType.T42:
+                            case StatementType.T43:
+                            case StatementType.T45:
+                            case StatementType.T50:
+                            case StatementType.T51:
+                            case StatementType.T52:
+                            case StatementType.T53:
                             case StatementType.T54:
                             case StatementType.F01:
                             case StatementType.F02:
@@ -1055,7 +1055,7 @@ namespace Supremacy.Game
 
                     _gameLog = "what's next + ";
 
-                        if (foreignPower.StatementSent != null)
+                    if (foreignPower.StatementSent != null)
                         _gameLog += Environment.NewLine + "(relevant is just the receive on HOSTING side.... StatementSent: "
                                     + foreignPower.StatementSent.Sender + " vs "
                                     + foreignPower.StatementSent.Recipient + ": > "
@@ -1082,7 +1082,7 @@ namespace Supremacy.Game
                         foreignPower.ProposalSent = null;
                         GameLog.Client.Diplomacy.DebugFormat("** ProposalSent becomes Counterparty ProposalReceived [{0}], Counterparty = {1}, Owner = {2}"
                             , foreignPower.LastProposalSent.Clauses[0].ClauseType.ToString(), foreignPower.Counterparty.ToString(), foreignPower.Owner.ToString()); ;
-                        
+
                         if (civ1.IsEmpire)
                             civManagers[civ1].SitRepEntries.Add(new DiplomaticSitRepEntry(civ1, proposalSent));
 
@@ -1098,7 +1098,7 @@ namespace Supremacy.Game
 
                     Statement statementSent = foreignPower.StatementSent;
                     if (statementSent != null)
-                    {                       
+                    {
                         // StatementSent becomes counterparty StatementReceived
                         foreignPower.CounterpartyForeignPower.StatementReceived = statementSent;
                         GameLog.Client.Diplomacy.DebugFormat("foreignPower.Owner {0} got StatementReceived {1} from {2}"
@@ -1107,7 +1107,7 @@ namespace Supremacy.Game
                             , statementSent.Sender.Key);
                         foreignPower.LastStatementSent = statementSent;
                         foreignPower.StatementSent = null;
-                        
+
                         //GameLog.Core.Diplomacy.DebugFormat("foreignPower.Owner = {0}", foreignPower.Owner.Key);
                         //GameLog.Core.Diplomacy.DebugFormat("CounterpartyForeignPower.Owner = {0}", foreignPower.CounterpartyForeignPower.Owner.Key);
 
@@ -1161,7 +1161,7 @@ namespace Supremacy.Game
              */
             foreach (IAgreement agreement in GameContext.Current.AgreementMatrix)
                 AgreementFulfillmentVisitor.Visit(agreement);
-          
+
         }
 
         #endregion
@@ -1174,7 +1174,7 @@ namespace Supremacy.Game
             List<List<CombatAssets>> combats = new List<List<CombatAssets>>();
             List<InvasionArena> invasions = new List<InvasionArena>();
             List<Fleet> fleetsAtLocation = new List<Fleet>(GameContext.Current.Universe.Find<Fleet>(UniverseObjectType.Fleet)).ToList();
-  
+
             foreach (Fleet fleet in fleetsAtLocation)
             {
                 if (!combatLocations.Contains(fleet.Location))
@@ -1193,7 +1193,7 @@ namespace Supremacy.Game
                                 !CombatHelper.WillEngage(fleet.Owner, nextFleet.Owner))
                                 continue;
                         combats.Add(assets); // we add all the ships at this location if there is any combat. Combat decides who is in and on what side
-                        combatLocations.Add(fleet.Location);                     
+                        combatLocations.Add(fleet.Location);
                     }
                 }
                 if (!invasionLocations.Contains(fleet.Location))
@@ -1247,7 +1247,7 @@ namespace Supremacy.Game
             });
         }
         #endregion
-    
+
         #region DoPopulation() Method
         void DoPopulation(GameContext game)
         {
@@ -1290,7 +1290,7 @@ namespace Supremacy.Game
                             civManager.SitRepEntries.Add(new StarvationSitRepEntry(civ, colony));
                         }
                         else
-                        {                         
+                        {
                             popChange = (int)Math.Ceiling(growthRate * colony.Population.CurrentValue);
                         }
 
@@ -1399,15 +1399,15 @@ namespace Supremacy.Game
 
                         case StarType.Wormhole:
                             researchGained *= 30;
-                            break; 
+                            break;
 
                         default:
                             researchGained = 1;
                             break;
                     }
 
-                    
-                    
+
+
 
                     GameContext.Current.CivilizationManagers[scienceShip.Owner].Research.UpdateResearch(researchGained);
 
@@ -1479,8 +1479,8 @@ namespace Supremacy.Game
             });
 
             interference.Start();
-            
-            ParallelForEach(game.Civilizations, civ => 
+
+            ParallelForEach(game.Civilizations, civ =>
             {
                 GameContext.PushThreadContext(game);
                 try
@@ -1530,7 +1530,7 @@ namespace Supremacy.Game
                                     foreach (Station anotherSation in game.Universe.FindOwned<Station>(who))
                                     {
                                         if (anotherSation != null)
-                                        fuelLocations.Add(anotherSation.Location);
+                                            fuelLocations.Add(anotherSation.Location);
                                     }
                                 }
                             }
@@ -1570,7 +1570,7 @@ namespace Supremacy.Game
                             Sector sector = map[x, y];
 
                             foreach (MapLocation fuelLocation in fuelLocations)
-                            {    
+                            {
                                 mapData.UpgradeFuelRange(
                                     sector.Location,
                                     MapLocation.GetDistance(fuelLocation, sector.Location));
@@ -1580,7 +1580,7 @@ namespace Supremacy.Game
 
                     mapData.ApplyScanInterference(interference.Result);
                 }
-                catch(Exception e)
+                catch (Exception e)
                 {
                     GameLog.Core.General.ErrorFormat(string.Format("DoMapUpdate failed for {0}",
                         civ.Name),
@@ -1602,10 +1602,11 @@ namespace Supremacy.Game
 
             sectorClaims.ClearClaims();
 
-            ParallelForEach(GameContext.Current.Civilizations.Where(o => o.IsEmpire).ToList(), civ => {
-            GameContext.PushThreadContext(game);
-            try
+            ParallelForEach(GameContext.Current.Civilizations.Where(o => o.IsEmpire).ToList(), civ =>
             {
+                GameContext.PushThreadContext(game);
+                try
+                {
                     CivilizationManager civManager = GameContext.Current.CivilizationManagers[civ];
 
                     foreach (Colony colony in civManager.Colonies)
@@ -1755,7 +1756,7 @@ namespace Supremacy.Game
 
                 foreach (TechObject item in GameContext.Current.Universe.FindOwned<TechObject>(civ))
                 {
-                    _civMaintance  += item.Design.MaintenanceCost;
+                    _civMaintance += item.Design.MaintenanceCost;
 
                     // works
                     //if (item.Design.MaintenanceCost > 0)
@@ -1770,9 +1771,9 @@ namespace Supremacy.Game
                     //    );
                 }
 
-                civManager.Credits.AdjustCurrent(_civMaintance *-1);
+                civManager.Credits.AdjustCurrent(_civMaintance * -1);
                 civManager.MaintenanceCostLastTurn = _civMaintance;
-                
+
                 // works, values part of Log of CivsAndRaces
                 //GameLog.Core.Credits.DebugFormat("Turn {0}: {3} _civMaintenanceCost for civ {1} {2} "
                 //    , GameContext.Current.TurnNumber
@@ -1825,7 +1826,7 @@ namespace Supremacy.Game
                     int newRawMaterials = colonies.Sum(c => c.NetRawMaterials);
 
                     civManager.Credits.AdjustCurrent(newCredits);
-                    civManager.TotalIntelligenceDefenseAccumulated.AdjustCurrent(newIntelligenceDefense); 
+                    civManager.TotalIntelligenceDefenseAccumulated.AdjustCurrent(newIntelligenceDefense);
                     civManager.TotalIntelligenceAttackingAccumulated.AdjustCurrent(newIntelligenceAttacking);
                     civManager.Resources.Deuterium.AdjustCurrent(newDeuterium);
                     civManager.Resources.Dilithium.AdjustCurrent(newDilithium);
@@ -1874,7 +1875,7 @@ namespace Supremacy.Game
                         GameLog.Core.Production.DebugFormat("--------------------------------------------------------------");
                         GameLog.Core.Production.DebugFormat("Turn {0}: {1} undone colonies = {5}, Credits = {2}, Health = {4} - DoProduction for Colony {3}"
                             , GameContext.Current.TurnNumber
-                            , civ.Key 
+                            , civ.Key
                             , civManager.Credits
                             , colony.Name
                             , colony.Health
@@ -1933,7 +1934,7 @@ namespace Supremacy.Game
                             }
 
                             if (colony.BuildSlots[0].Project.IsPaused) { }
-                                //TODO: Not sure how to handle this
+                            //TODO: Not sure how to handle this
 
                             GameLog.Core.Production.DebugFormat(Environment.NewLine + "       Turn {8}: Income TradeRoute={4}, Tax={3}, Deuterium={5}, Dilithium={6}, RawMaterials={7} available for {0} before construction of {1} on {2}" + Environment.NewLine,
                                 civ.Name,
@@ -2028,11 +2029,11 @@ namespace Supremacy.Game
                         if (!colony.BuildSlots[0].HasProject && colony.BuildQueue.IsEmpty())
                         {
                             civManager.SitRepEntries.Add(new BuildQueueEmptySitRepEntry(civ, colony, false));
-                    }
+                        }
                         else
                             //go on 
                             GameLog.Core.ProductionDetails.DebugFormat(string.Format("Turn {0}: DoProduction - BuildQueue*s* not empty for {1} ({2})" + Environment.NewLine + "-----",
-                            GameContext.Current.TurnNumber, colony.Name, civ.Name)); 
+                            GameContext.Current.TurnNumber, colony.Name, civ.Name));
                         // above SitRep added if colony is finished and empty
 
                         GameLog.Core.ProductionDetails.DebugFormat(string.Format("Turn {0}: DoProduction DONE for {1} ({2})" + Environment.NewLine + "-----",
@@ -2050,7 +2051,7 @@ namespace Supremacy.Game
                     GameContext.PopThreadContext();
                 }
             }
-            
+
         }
         #endregion
 
@@ -2163,7 +2164,7 @@ namespace Supremacy.Game
                             }
                         }
                     }
-                }        
+                }
                 catch (Exception e)
                 {
                     GameLog.Core.ShipProduction.Error(string.Format("DoShipProduction failed for {0}", civ.Name), e);
@@ -2204,10 +2205,10 @@ namespace Supremacy.Game
 
                         /* Add any morale bonuses from active buildings at the colony. */
                         int colonyBonus = (from building in colony.Buildings
-                                            where building.IsActive
-                                            from bonus in building.BuildingDesign.Bonuses
-                                            where bonus.BonusType == BonusType.Morale
-                                            select bonus.Amount).Sum();
+                                           where building.IsActive
+                                           from bonus in building.BuildingDesign.Bonuses
+                                           where bonus.BonusType == BonusType.Morale
+                                           select bonus.Amount).Sum();
 
                         colony.Morale.AdjustCurrent(colonyBonus);
 
@@ -2270,10 +2271,10 @@ namespace Supremacy.Game
                     int popForTradeRoute;
                     CivilizationManager civManager = GameContext.Current.CivilizationManagers[civ.CivID];
 
-                            /*
-                             * See what the minimum population level is for a new trade route for the
-                             * current civilization.  If one is not specified, use the default.
-                             */
+                    /*
+                     * See what the minimum population level is for a new trade route for the
+                     * current civilization.  If one is not specified, use the default.
+                     */
                     if (popReqTable[civManager.Civilization.Key] != null)
                         popForTradeRoute = Number.ParseInt32(popReqTable[civManager.Civilization.Key][0]);
                     else
@@ -2281,19 +2282,19 @@ namespace Supremacy.Game
 
                     HashSet<Colony> colonies = GameContext.Current.Universe.FindOwned<Colony>(civ);
 
-                            /* Iterate through each colony... */
+                    /* Iterate through each colony... */
                     foreach (Colony colony in colonies)
                     {
-                                /*
-                                 * For each established trade route, ensure that the target colony is
-                                 * a valid choice.  If it isn't, break it.  Otherwise, calculate the
-                                 * revised credit total.
-                                 */
+                        /*
+                         * For each established trade route, ensure that the target colony is
+                         * a valid choice.  If it isn't, break it.  Otherwise, calculate the
+                         * revised credit total.
+                         */
                         foreach (TradeRoute route in colony.TradeRoutes)
                         {
                             if (!route.IsValidTargetColony(route.TargetColony))
                                 route.TargetColony = null;
-                            /* do not appear to need this as treaties are already checked some place else? */  
+                            /* do not appear to need this as treaties are already checked some place else? */
                             //if (route.TargetColony != null && route.TargetColony.Owner != null)
                             //{
                             //    var targetCiv = route.TargetColony.Owner;
@@ -2309,17 +2310,17 @@ namespace Supremacy.Game
                             if (route.TargetColony != null)
                             {
                                 int sourceIndustry = route.SourceColony.NetIndustry + 1;  // avoiding a zero
-                                        int targetIndustry = route.TargetColony.NetIndustry + 1;
+                                int targetIndustry = route.TargetColony.NetIndustry + 1;
 
                                 route.Credits = 10 * (int)((sourceMod * sourceIndustry) + (targetMod * targetIndustry));
 
                             }
                         }
 
-                                /*
-                                 * Calculate how many trade routes the colony is allowed to have.
-                                 * Take into consideration any routes added by building bonuses.
-                                 */
+                        /*
+                         * Calculate how many trade routes the colony is allowed to have.
+                         * Take into consideration any routes added by building bonuses.
+                         */
                         int tradeRoutes = colony.Population.CurrentValue / popForTradeRoute;
 
                         tradeRoutes += colony.Buildings
@@ -2328,10 +2329,10 @@ namespace Supremacy.Game
                             .Where(o => o.BonusType == BonusType.TradeRoutes)
                             .Sum(o => o.Amount);
 
-                                /*
-                                 * If the colony doesn't have as many trade routes as it should, then
-                                 * we need to add some more.
-                                 */
+                        /*
+                         * If the colony doesn't have as many trade routes as it should, then
+                         * we need to add some more.
+                         */
                         if (tradeRoutes > colony.TradeRoutes.Count)
                         {
                             int tradeRouteDeficit = tradeRoutes - colony.TradeRoutes.Count;
@@ -2339,11 +2340,11 @@ namespace Supremacy.Game
                                 colony.TradeRoutes.Add(new TradeRoute(colony));
                         }
 
-                                /*
-                                 * If the colony has too many trade routes, we need to remove some.
-                                 * To be generous, we sort them in order of credits generated so that
-                                 * we remove the least valuable routes.
-                                 */
+                        /*
+                         * If the colony has too many trade routes, we need to remove some.
+                         * To be generous, we sort them in order of credits generated so that
+                         * we remove the least valuable routes.
+                         */
                         else if (tradeRoutes < colony.TradeRoutes.Count)
                         {
                             TradeRoute[] extraTradeRoutes = colony.TradeRoutes
@@ -2354,16 +2355,16 @@ namespace Supremacy.Game
                                 colony.TradeRoutes.Remove(extraTradeRoute);
                         }
 
-                                /*
-                                 * Iterate through the remaining trade routes and deposit the credit
-                                 * income into the civilization's treasury.
-                                 */
+                        /*
+                         * Iterate through the remaining trade routes and deposit the credit
+                         * income into the civilization's treasury.
+                         */
                         foreach (TradeRoute route in colony.TradeRoutes)
                         {
                             colony.CreditsFromTrade.AdjustCurrent(route.Credits);
                             //GameLog.Core.TradeRoutes.DebugFormat("trade route {0}, route is assigned ={1}", route.SourceColony.Owner, route.IsAssigned);
                             if (!route.IsAssigned) // && civManager.SitRepEntries.Any(s=>s.Categories.ToString() == "SpecialEvent"))
-                                    {
+                            {
                                 //works   GameLog.Core.TradeRoutes.DebugFormat("trade route for {0}, credit {1}=0 should add sitRep", route.SourceColony.Owner, route.SourceColony.CreditsFromTrade.BaseValue);
                                 civManager.SitRepEntries.Add(new UnassignedTradeRoute(route));
                             }
@@ -2391,8 +2392,8 @@ namespace Supremacy.Game
                         .Sum(o => o.Amount));
                     civManager.Credits.AdjustCurrent(globalBonusAdjustment);
 
-                            //theCatch:;
-                        }
+                    //theCatch:;
+                }
                 catch (Exception e)
                 {
 
@@ -2575,8 +2576,8 @@ namespace Supremacy.Game
                 civManager.SitRepEntries.Add(new ShipSummarySitRepEntry(civManager.Civilization, civValueShipSummary2));
             }
 
-                foreach (CivValue civ in CivValueList)
-                {
+            foreach (CivValue civ in CivValueList)
+            {
                 string _text = newline + "   CivValueList: " /*+ civ.AA_CIV_ID*/;
                 //_text += civ.CIV_KEY;
                 _text += ";Pop;" + civ.CIV_TOT_POP;
@@ -2607,7 +2608,7 @@ namespace Supremacy.Game
                     string _rep = "Ship ";
 
 
-                    _rep += ship.ObjectID + " at " + ship.Location + ": " /*+ " < " */+ ship.DesignName + " (Maint.="+ ship.Design.MaintenanceCost + ") >" + blank + ship.Name + " > ";
+                    _rep += ship.ObjectID + " at " + ship.Location + ": " /*+ " < " */+ ship.DesignName + " (Maint.=" + ship.Design.MaintenanceCost + ") >" + blank + ship.Name + " > ";
                     _rep += blank + fleet.Order;
                     if (!fleet.Route.IsEmpty)
                     {
@@ -2629,7 +2630,7 @@ namespace Supremacy.Game
             }
 
 
- 
+
             //var allCivs = GameContext.Current.Universe.Find<Fleet>(UniverseObjectType.Fleet);
             foreach (CivilizationManager civManager in GameContext.Current.CivilizationManagers)
             {
@@ -2668,7 +2669,7 @@ namespace Supremacy.Game
                     );
                 // works - just for DEBUG  // optimized for CSV-Export (CopyPaste)
                 GameLog.Core.CivsAndRaces.DebugFormat(Environment.NewLine + "   Turn {0};Col:;{1};Pop:;{2};Morale:;{3};IntelProd;{9};IDef;{11};IAtt;{12};Maint;{10};Credits;{4};Change;{5};Research;{6};Dil;{14};Deut;{15};Dur;{16};{7};for;{8};{13};Owner;{17}" + Environment.NewLine
-                    , GameContext.Current.TurnNumber                    
+                    , GameContext.Current.TurnNumber
 
                     , civManager.Colonies.Count
                     , civManager.TotalPopulation
@@ -2702,7 +2703,7 @@ namespace Supremacy.Game
         #endregion
 
         #region DoAIPlayers() Method
-        public void DoAIPlayers(object gameContext, List<Civilization> autoTurnCiv) 
+        public void DoAIPlayers(object gameContext, List<Civilization> autoTurnCiv)
         {
             ConcurrentStack<Exception> errors = new System.Collections.Concurrent.ConcurrentStack<Exception>();
             if (!(gameContext is GameContext game))
@@ -2778,7 +2779,7 @@ namespace Supremacy.Game
             {
                 string _report = "Combat: ";
                 CivilizationManager civManager = GameContext.Current.CivilizationManagers[combat[i].OwnerID];
-                civManager.SitRepEntries.Add(new CombatSummarySitRepEntry(combat[i].Owner, combat[i].Location, _report)); 
+                civManager.SitRepEntries.Add(new CombatSummarySitRepEntry(combat[i].Owner, combat[i].Location, _report));
             }
 
             CombatOccurring?.Invoke(combat);
@@ -2823,37 +2824,37 @@ namespace Supremacy.Game
                 body);
         }
 
-    //    civManager.AddCivHist(civManager.CivilizationID
-    //, civManager.Civilization.Key
-    //, civManager.Credits.CurrentValue
-    //, civManager.Colonies.Count
-    //, _totalPopulation
-    //, civManager.MaintenanceCostLastTurn
-    //, _totalResearch
-    //);
-    //            // works - just for DEBUG  // optimized for CSV-Export (CopyPaste)
-    //            GameLog.Core.CivsAndRaces.DebugFormat(Environment.NewLine + "   Turn {0};Col:;{1};Pop:;{2};Morale:;{3};IntelProd;{9};IDef;{11};IAtt;{12};Maint;{10};Credits;{4};Change;{5};Research;{6};Dil;{14};Deut;{15};Dur;{16};{7};for;{8};{13};Owner;{17}" + Environment.NewLine
-    //                , GameContext.Current.TurnNumber                    
+        //    civManager.AddCivHist(civManager.CivilizationID
+        //, civManager.Civilization.Key
+        //, civManager.Credits.CurrentValue
+        //, civManager.Colonies.Count
+        //, _totalPopulation
+        //, civManager.MaintenanceCostLastTurn
+        //, _totalResearch
+        //);
+        //            // works - just for DEBUG  // optimized for CSV-Export (CopyPaste)
+        //            GameLog.Core.CivsAndRaces.DebugFormat(Environment.NewLine + "   Turn {0};Col:;{1};Pop:;{2};Morale:;{3};IntelProd;{9};IDef;{11};IAtt;{12};Maint;{10};Credits;{4};Change;{5};Research;{6};Dil;{14};Deut;{15};Dur;{16};{7};for;{8};{13};Owner;{17}" + Environment.NewLine
+        //                , GameContext.Current.TurnNumber                    
 
-    //                , civManager.Colonies.Count
-    //                , civManager.TotalPopulation
-    //                , civManager.AverageMorale
-    //                , civManager.Credits.CurrentValue
-    //                , civManager.Credits.CurrentChange
-    //                , civManager.Credits.LastChange
+        //                , civManager.Colonies.Count
+        //                , civManager.TotalPopulation
+        //                , civManager.AverageMorale
+        //                , civManager.Credits.CurrentValue
+        //                , civManager.Credits.CurrentChange
+        //                , civManager.Credits.LastChange
 
-    //                , civManager.Research.CumulativePoints
-    //                , civManager.Civilization.CivilizationType
-    //                , civManager.Civilization.Key
-    //                , civManager.TotalIntelligenceProduction
-    //                , civManager.MaintenanceCostLastTurn
-    //                , civManager.TotalIntelligenceDefenseAccumulated
-    //                , civManager.TotalIntelligenceAttackingAccumulated
-    //                , civManager.CivilizationID
-    //                , civManager.Resources.Dilithium.CurrentValue
-    //                , civManager.Resources.Deuterium.CurrentValue
-    //                , civManager.Resources.RawMaterials.CurrentValue
-    //                , civManager.HomeSystem.Owner.Key
+        //                , civManager.Research.CumulativePoints
+        //                , civManager.Civilization.CivilizationType
+        //                , civManager.Civilization.Key
+        //                , civManager.TotalIntelligenceProduction
+        //                , civManager.MaintenanceCostLastTurn
+        //                , civManager.TotalIntelligenceDefenseAccumulated
+        //                , civManager.TotalIntelligenceAttackingAccumulated
+        //                , civManager.CivilizationID
+        //                , civManager.Resources.Dilithium.CurrentValue
+        //                , civManager.Resources.Deuterium.CurrentValue
+        //                , civManager.Resources.RawMaterials.CurrentValue
+        //                , civManager.HomeSystem.Owner.Key
 
 
 
@@ -2863,9 +2864,9 @@ namespace Supremacy.Game
             public int AA_CIV_ID;
             public string CIV_KEY;
             public Meter CIV_TOT_POP;
-   
+
             public int CIV_TOT_INT;
-     
+
 
             public CivValue(
                 int aa_civ_ID

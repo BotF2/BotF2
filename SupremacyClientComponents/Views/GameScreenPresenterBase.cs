@@ -106,7 +106,7 @@ namespace Supremacy.Client.Views
             SetInteractionNode();
 
             View.OnCreated();
-            
+
             IsRunning = true;
             View.IsActiveChanged += OnViewIsActiveChanged;
 

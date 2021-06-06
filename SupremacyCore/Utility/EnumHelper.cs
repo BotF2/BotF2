@@ -16,7 +16,8 @@ namespace Supremacy.Utility
             return (T[])Enum.GetValues(typeof(T));
         }
 
-        public static string[] GetNames<T>() where T : struct {
+        public static string[] GetNames<T>() where T : struct
+        {
             return Enum.GetNames(typeof(T));
         }
 
@@ -73,7 +74,7 @@ namespace Supremacy.Utility
 
                 attributes = new AttributeCollection(
                     Enumerable.ToArray(
-                        Enumerable.Cast<Attribute> (
+                        Enumerable.Cast<Attribute>(
                             field.GetCustomAttributes(false))));
 
                 attributes = EnumValueAttributeCache.GetOldest(enumValue as Enum, attributes);
@@ -120,7 +121,8 @@ namespace Supremacy.Utility
             try
             {
                 ulong resultValue = 0;
-                if ((char.IsDigit(value[0]) || (value[0] == '-')) || (value[0] == '+')) {
+                if ((char.IsDigit(value[0]) || (value[0] == '-')) || (value[0] == '+'))
+                {
                     Type underlyingType = Enum.GetUnderlyingType(typeof(T));
                     try
                     {
@@ -153,7 +155,8 @@ namespace Supremacy.Utility
                                 continue;
                             }
                         }
-                        else if (!string.Equals(names[j], flagsArray[i], StringComparison.Ordinal)) {
+                        else if (!string.Equals(names[j], flagsArray[i], StringComparison.Ordinal))
+                        {
                             continue;
                         }
 
@@ -198,10 +201,11 @@ namespace Supremacy.Utility
 
         internal class HashEntry
         {
-            public readonly string[]  Names;
+            public readonly string[] Names;
             public readonly ulong[] Values;
 
-            public HashEntry(string[] names, ulong[] values) {
+            public HashEntry(string[] names, ulong[] values)
+            {
                 Names = names;
                 Values = values;
             }
@@ -297,7 +301,7 @@ namespace Supremacy.Utility
 
         static EnumHelper()
         {
-            EnumAttributeMatchCache = new Dictionary <Tuple<Enum, Attribute>, bool>();
+            EnumAttributeMatchCache = new Dictionary<Tuple<Enum, Attribute>, bool>();
             EnumValueAttributeCache = new Cache<Enum, AttributeCollection>();
             FieldInfoHash = Hashtable.Synchronized(new Hashtable());
             EnumSeparators = new char[] { ',' };

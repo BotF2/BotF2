@@ -177,7 +177,7 @@ namespace Supremacy.Economy
             }
 
             // next is to scrap Upgrade target which might not be available any more
-            string _scrapped = UpgradeTarget.Name;            
+            string _scrapped = UpgradeTarget.Name;
             GameContext.Current.Universe.Destroy(UpgradeTarget);
             base.Finish();
         }

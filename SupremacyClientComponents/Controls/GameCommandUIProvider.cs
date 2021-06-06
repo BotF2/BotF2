@@ -21,7 +21,8 @@ namespace Supremacy.Client.Controls
         public GameCommandUIProvider(string label, string imageSourceLarge, string imageSourceSmall) :
             this(label,
                 (!String.IsNullOrEmpty(imageSourceLarge) ? new BitmapImage(new Uri(imageSourceLarge, UriKind.RelativeOrAbsolute)) : null),
-                (!String.IsNullOrEmpty(imageSourceSmall) ? new BitmapImage(new Uri(imageSourceSmall, UriKind.RelativeOrAbsolute)) : null)) { }
+                (!String.IsNullOrEmpty(imageSourceSmall) ? new BitmapImage(new Uri(imageSourceSmall, UriKind.RelativeOrAbsolute)) : null))
+        { }
 
         public GameCommandUIProvider(string label, ImageSource imageSourceLarge, ImageSource imageSourceSmall)
         {

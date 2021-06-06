@@ -10,7 +10,7 @@ namespace Supremacy.Types
         private readonly Func<T, T, bool> _equalityComparison;
         private readonly Func<T, int> _hashCodeResolver;
 
-        public DelegatingEqualityComparer([NotNull] Func<T, T, bool> equalityComparison, [NotNull] Func<T,int> hashCodeResolver)
+        public DelegatingEqualityComparer([NotNull] Func<T, T, bool> equalityComparison, [NotNull] Func<T, int> hashCodeResolver)
         {
             if (equalityComparison == null)
                 throw new ArgumentNullException("equalityComparison");

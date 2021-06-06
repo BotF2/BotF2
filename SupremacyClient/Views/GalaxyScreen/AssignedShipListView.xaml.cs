@@ -49,7 +49,7 @@ namespace Supremacy.Client.Views
             if (!(DataContext is GalaxyScreenPresentationModel presentationModel))
                 return;
 
-            presentationModel.SelectedShipsInTaskForce = ShipList.SelectedItems.OfType<ShipView>();          
+            presentationModel.SelectedShipsInTaskForce = ShipList.SelectedItems.OfType<ShipView>();
         }
 
         protected override void OnContextMenuOpening(ContextMenuEventArgs e)

@@ -514,7 +514,7 @@ namespace Supremacy.Client.Controls
             if (_popupRoot != null)
             {
                 _popupRoot.SetPosition(Placement, GetTarget(), new Point(0, 0));
-                
+
                 if (IsOpen && RegisteredPopupSite != null)
                     RegisteredPopupSite.InvalidateArrange();
             }
@@ -657,7 +657,7 @@ namespace Supremacy.Client.Controls
             if (contentElement != null)
             {
                 o = ContentOperations.GetParent(contentElement);
-                
+
                 if (o != null)
                     return o;
 
@@ -667,7 +667,7 @@ namespace Supremacy.Client.Controls
 
                 return null;
             }
-            
+
             if (visual != null)
                 return VisualTreeHelper.GetParent(visual);
 

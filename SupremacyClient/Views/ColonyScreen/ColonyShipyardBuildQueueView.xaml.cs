@@ -14,7 +14,7 @@ namespace Supremacy.Client.Views
             InitializeComponent();
         }
 
-        private void OnShipyardBuildQueueItemClicked(object sender, object clickedItem) 
+        private void OnShipyardBuildQueueItemClicked(object sender, object clickedItem)
         {
             BuildQueueItem buildQueueItem = clickedItem as BuildQueueItem;
             if (buildQueueItem == null)

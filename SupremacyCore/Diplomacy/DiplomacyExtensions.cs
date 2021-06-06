@@ -48,8 +48,8 @@ namespace Supremacy.Diplomacy
                 case ClauseType.TreatyAffiliation:
                 case ClauseType.TreatyNonAggression:
                 case ClauseType.TreatyOpenBorders:
-                //case ClauseType.TreatyResearchPact:
-                //case ClauseType.TreatyTradePact:
+                    //case ClauseType.TreatyResearchPact:
+                    //case ClauseType.TreatyTradePact:
                     return true;
             }
             return false;
@@ -137,7 +137,7 @@ namespace Supremacy.Diplomacy
         }
 
         public static IProposal GetLastProposalSent(this Diplomat source, ICivIdentity civ)
-        {            
+        {
             if (source == null)
                 return null;
             ForeignPower envoy = source.GetForeignPower(civ);
@@ -292,7 +292,7 @@ namespace Supremacy.Diplomacy
                     continue;
 
                 if (DiplomacyHelper.IsContactMade(sender, otherCiv) &&
-//                    DiplomacyHelper.IsContactMade(recipient, otherCiv) &&
+                    //                    DiplomacyHelper.IsContactMade(recipient, otherCiv) &&
                     !DiplomacyHelper.AreAtWar(recipient, otherCiv) &&
                     DiplomacyHelper.IsIndependent(otherCiv) &&
                     (existingWarPacts == null || !existingWarPacts.Contains(otherCiv)))

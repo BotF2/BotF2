@@ -48,7 +48,7 @@ namespace Supremacy.Client.Controls
                 typeof(InfoCardSite),
                 InfoCardOpenedEvent,
                 (EventHandler<InfoCardEventArgs>)OnInfoCardOpenedEvent);
-            
+
             EventManager.RegisterClassHandler(
                 typeof(InfoCardSite),
                 InfoCardOpeningEvent,
@@ -373,7 +373,7 @@ namespace Supremacy.Client.Controls
 
         private static void OnUseHostedInfoCardWindowsPropertyValueChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            ((InfoCardSite)d).CloseInfoCardWindows(InfoCardCloseReason.InfoCardWindowClosed);			
+            ((InfoCardSite)d).CloseInfoCardWindows(InfoCardCloseReason.InfoCardWindowClosed);
         }
 
         public bool UseHostedInfoCardWindows
@@ -551,7 +551,7 @@ namespace Supremacy.Client.Controls
         internal void BringToFront(UIElement element)
         {
             int zIndex = 0;
-            
+
             foreach (UIElement child in _canvas.Children.OfType<UIElement>())
             {
                 if (child is IInfoCardWindow)
@@ -597,7 +597,7 @@ namespace Supremacy.Client.Controls
         {
             ((InfoCardSite)sender).OnInfoCardClosing(e);
         }
-        
+
         private static void OnInfoCardDeactivatedEvent(object sender, InfoCardEventArgs e)
         {
             ((InfoCardSite)sender).OnInfoCardDeactivated(e);
@@ -737,7 +737,7 @@ namespace Supremacy.Client.Controls
                     infoCardWindow.Close(closeReason);
             }
         }
-        
+
         internal InfoCardHost CreateInfoCardHost()
         {
             return new InfoCardHost { InfoCardSite = this };
@@ -757,11 +757,11 @@ namespace Supremacy.Client.Controls
             window.SetBinding(
                 CanInfoCardsPinProperty,
                 InfoCardHelper.CreateBinding(this, CanInfoCardsPinProperty));
-            
+
             window.SetBinding(
                 DataContextProperty,
                 InfoCardHelper.CreateBinding(this, DataContextProperty));
-         
+
             return window;
         }
 
@@ -830,7 +830,7 @@ namespace Supremacy.Client.Controls
             RaiseEvent(new InfoCardEventArgs(infoCard, InfoCardOpenedEvent, this));
             infoCard.RaiseOpenedEvent();
         }
-        
+
         internal void RaiseOpeningEvent(InfoCard infoCard)
         {
             RaiseEvent(new InfoCardEventArgs(infoCard, InfoCardOpeningEvent, this));
@@ -865,7 +865,7 @@ namespace Supremacy.Client.Controls
             _canvas.Arrange(new Rect(new Point(), finalSize));
             return base.ArrangeOverride(finalSize);
         }
-        
+
         protected override Size MeasureOverride(Size constraint)
         {
             _canvas.Measure(constraint);
@@ -873,4 +873,4 @@ namespace Supremacy.Client.Controls
         }
         #endregion
     }
-}   
+}

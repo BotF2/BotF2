@@ -20,7 +20,7 @@ namespace Supremacy.Client
         public F06_Dialog()
         {
             GameLog.Client.UIDetails.DebugFormat("Initialize Dialog...");
-                
+
             InitializeComponent();
 
             InputBindings.Add(

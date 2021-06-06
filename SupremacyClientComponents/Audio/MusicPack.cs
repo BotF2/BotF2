@@ -57,7 +57,7 @@ namespace Supremacy.Client.Audio
                 Load(xmlPack);
             }
         }
-        
+
         public void Load(XmlElement xmlNode)
         {
             Name = xmlNode.GetAttribute("Name");

@@ -456,9 +456,9 @@ namespace Supremacy.Data
                         {
                             Debug.Assert(table != null);
                             row = new TableRow<TRowKey>(tokens[0])
-                                  {
-                                      Owner = table
-                                  };
+                            {
+                                Owner = table
+                            };
                             table.RowsInternal.Add(row);
                         }
                         else

@@ -92,14 +92,14 @@ namespace Supremacy.AI
             return element == null
                 ? null
                 : new StrategyGoalEntry((string)element.Element("Goal"))
-                   {
-                       Priority = (int?)element.Element("Priority"),
-                       MaxEvaluations = (int?)element.Element("MaxEvaluations"),
-                       MaxExecutions = (int?)element.Element("MaxExecutions"),
-                       ExecutionsPerColony = (int?)element.Element("ExecutionsPerColony"),
-                       EvaluationsPerColony = (int?)element.Element("EvaluationsPerColony"),
-                       PerColony = (int?)element.Element("PerCity")
-                   };
+                {
+                    Priority = (int?)element.Element("Priority"),
+                    MaxEvaluations = (int?)element.Element("MaxEvaluations"),
+                    MaxExecutions = (int?)element.Element("MaxExecutions"),
+                    ExecutionsPerColony = (int?)element.Element("ExecutionsPerColony"),
+                    EvaluationsPerColony = (int?)element.Element("EvaluationsPerColony"),
+                    PerColony = (int?)element.Element("PerCity")
+                };
         }
 
         private static ForceMatch ParseForceMatch(XContainer element)

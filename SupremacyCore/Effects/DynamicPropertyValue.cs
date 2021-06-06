@@ -326,9 +326,9 @@ namespace Supremacy.Effects
         internal void SetCoercedValue(TValue value, bool skipBaseValueChecks, bool coerceWithComputedValue)
         {
             EnsureModifiedValue().CoercedValue = value;
-            
+
             IsCoerced = true;
-            
+
             if (coerceWithComputedValue)
                 IsCoercedWithComputedValue = true;
         }
@@ -364,7 +364,7 @@ namespace Supremacy.Effects
                     Debug.Assert(ModifiedValue != null);
                     return ModifiedValue.CoercedValue;
                 }
-                
+
                 if (IsComputed)
                 {
                     Debug.Assert(ModifiedValue != null);

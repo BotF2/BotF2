@@ -80,8 +80,8 @@ namespace Supremacy.Combat
                                 * (1 + (Convert.ToDouble(cs.Source.OrbitalDesign.Maneuverability) / 0.24 / 100)))
                                 );
 
-                       GameLog.Core.CombatDetails.DebugFormat("adding _friendlyEmpireStrength for {0} {1} ({2}) = {3} - in total now {4}",
-                            cs.Source.ObjectID, cs.Source.Name, cs.Source.Design, cs.Firepower, _friendlyEmpireStrength);
+                        GameLog.Core.CombatDetails.DebugFormat("adding _friendlyEmpireStrength for {0} {1} ({2}) = {3} - in total now {4}",
+                             cs.Source.ObjectID, cs.Source.Name, cs.Source.Design, cs.Firepower, _friendlyEmpireStrength);
                     }
 
                     // Update X 25 june 2019 Added this foreach for noncombatships because other empires has it too, i considered the noncombatships weapons to be missing, so i inserted them
@@ -191,7 +191,7 @@ namespace Supremacy.Combat
             {
                 object civ = _civList.FirstOrDefault();
                 _ = _civList.Remove(civ);
-                Civilization aCiv =(Civilization)civ;
+                Civilization aCiv = (Civilization)civ;
                 return aCiv.Key;
             }
             return "BlackInsignia";

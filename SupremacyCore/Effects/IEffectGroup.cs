@@ -132,19 +132,19 @@ namespace Supremacy.Effects
                 return null;
 
             return new ScriptExpression
-                   {
-                       ScriptCode = _activation.ValueExpression,
-                       Parameters = new ScriptParameters(SourceScriptParameter)
-                   };
+            {
+                ScriptCode = _activation.ValueExpression,
+                Parameters = new ScriptParameters(SourceScriptParameter)
+            };
         }
 
         private ScriptExpression EvaluateScope()
         {
             return new ScriptExpression
-                   {
-                       ScriptCode = _scope.ValueExpression,
-                       Parameters = new ScriptParameters(_sourceScriptParameter.Value)
-                   };
+            {
+                ScriptCode = _scope.ValueExpression,
+                Parameters = new ScriptParameters(_sourceScriptParameter.Value)
+            };
         }
 
         private string EvaluateActivationDescription()

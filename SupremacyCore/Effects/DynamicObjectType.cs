@@ -57,15 +57,15 @@ namespace Supremacy.Effects
             return result;
         }
 
-         /*
-          * The caller must wrap this routine inside a locked block.  This recursive routine manipulates
-          * the static hashtable DTypeFromCLRTypeand it must not be allowed to do this across multiple
-          * threads  simultaneously.
-          */
+        /*
+         * The caller must wrap this routine inside a locked block.  This recursive routine manipulates
+         * the static hashtable DTypeFromCLRTypeand it must not be allowed to do this across multiple
+         * threads  simultaneously.
+         */
         private static DynamicObjectType FromSystemTypeRecursive(Type systemType)
         {
             DynamicObjectType dType = (DynamicObjectType)ClrTypeMappings[systemType];
-            
+
             if (dType != null)
                 return dType;
 

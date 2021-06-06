@@ -41,7 +41,7 @@ namespace Supremacy.Effects
                 throw new ArgumentNullException("scriptParameters");
 
             RuntimeScriptParameters runtimeParameters = new RuntimeScriptParameters();
-            
+
             runtimeParameters.AddRange(effectParameters.Select(o => o.ToRuntimeScriptParameter(scriptParameters)));
 
             return runtimeParameters;

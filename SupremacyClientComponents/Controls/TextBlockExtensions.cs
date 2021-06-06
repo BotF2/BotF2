@@ -144,5 +144,5 @@ namespace Supremacy.Client.Controls
                 inlines.AddRange(formattedInlines);
         }
         #endregion
-        }
+    }
 }

@@ -152,7 +152,7 @@ namespace Supremacy.Utility
                         constraintType.Name),
                     argumentName);
             }
-            
+
             if (collection.Cast<object>().All(o => o is TElement))
                 return collection;
 

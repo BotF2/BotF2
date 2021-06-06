@@ -200,7 +200,7 @@ namespace Supremacy.Client.Interop
         }
 
         public delegate IntPtr WndProc(IntPtr hWnd, int msg, IntPtr wParam, IntPtr lParam);
- 
+
         // ReSharper disable InconsistentNaming
         [SecurityCritical, SuppressUnmanagedCodeSecurity, DllImport("gdi32.dll", CharSet = CharSet.Auto, SetLastError = true, ExactSpelling = true)]
         public static extern int GetDeviceCaps(HandleRef hDC, int nIndex);
@@ -318,7 +318,7 @@ namespace Supremacy.Client.Interop
                             return;
                         }
                     }
-                    
+
                     GC.Collect();
                     int millisecondsTimeout = (100 - _deltaPercent) / 4;
                     Thread.Sleep(millisecondsTimeout);

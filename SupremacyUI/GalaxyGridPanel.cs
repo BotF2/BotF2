@@ -274,7 +274,7 @@ namespace Supremacy.UI
                     ? LoadFleetIcon(ResourceManager.GetResourceUri(iconPath))
                     : s_defaultFleetIcon;
             }
-            
+
             //Disputed
             s_disputedSectorFill = new LinearGradientBrush
             {
@@ -301,8 +301,8 @@ namespace Supremacy.UI
             {
                 s_starImages[type] = new BitmapImage(
                     ResourceManager.GetResourceUri(string.Format("Resources/Images/UI/Stars/Map/{0}.png", type)));
-                
-                   
+
+
             }
             GameLog.Client.GeneralDetails.DebugFormat("Images for Stars loaded...");
 
@@ -920,28 +920,28 @@ namespace Supremacy.UI
                 s_textTypeface,
                 StarNameFontSize,
                 brush)
-                {
-                    MaxTextWidth = SectorSize - 6,
-                    TextAlignment = TextAlignment.Center,
-                    MaxLineCount = 2,
-                    Trimming = TextTrimming.CharacterEllipsis,
-                    LineHeight = StarNameFontSize
-                };
-    //        //var starName = new FormattedText(
-                //nameText,
-                //CultureInfo.CurrentCulture,
-                //FlowDirection.LeftToRight,
-                //s_textTypeface,
-                //StarNameFontSize,
-                //brush,
-                //VisualTreeHelper.GetDpi(brush).PixelsPerDip)    <- this line or "this" doesn't work. Without this line there is a warning (nothing more)
-                //        {
-                //            MaxTextWidth = (SectorSize - 6),
-                //            TextAlignment = TextAlignment.Center,
-                //            MaxLineCount = 2,
-                //            Trimming = TextTrimming.CharacterEllipsis,
-                //            LineHeight = StarNameFontSize
-                //        };
+            {
+                MaxTextWidth = SectorSize - 6,
+                TextAlignment = TextAlignment.Center,
+                MaxLineCount = 2,
+                Trimming = TextTrimming.CharacterEllipsis,
+                LineHeight = StarNameFontSize
+            };
+            //        //var starName = new FormattedText(
+            //nameText,
+            //CultureInfo.CurrentCulture,
+            //FlowDirection.LeftToRight,
+            //s_textTypeface,
+            //StarNameFontSize,
+            //brush,
+            //VisualTreeHelper.GetDpi(brush).PixelsPerDip)    <- this line or "this" doesn't work. Without this line there is a warning (nothing more)
+            //        {
+            //            MaxTextWidth = (SectorSize - 6),
+            //            TextAlignment = TextAlignment.Center,
+            //            MaxLineCount = 2,
+            //            Trimming = TextTrimming.CharacterEllipsis,
+            //            LineHeight = StarNameFontSize
+            //        };
             return starName;
         }
 
@@ -998,7 +998,7 @@ namespace Supremacy.UI
 
         private static bool IsStarNameVisible(StarSystem starSystem)
         {
-            return ((starSystem != null) && 
+            return ((starSystem != null) &&
                     IsExplored(starSystem.Location) &&
                     starSystem.StarType <= StarType.Wormhole);
         }
@@ -1371,17 +1371,17 @@ namespace Supremacy.UI
             _children.Clear();
 
             ClearRouteData();
-            
+
             if (updateSectors)
             {
                 UpdateSectors();
                 UpdateBorders();
             }
-            
+
             UpdateRoutes();
             UpdateTradeLines();
             UpdateSelection();
-            
+
             if (updateSectors)
             {
                 Composite();
@@ -1760,15 +1760,15 @@ namespace Supremacy.UI
         {
             SectorMap galaxy = GameContext.Current.Universe.Map;
             DrawingContext dc = _borderLines.RenderOpen();
-            
+
             dc.PushGuidelineSet(_guides);
-            
+
             for (int x = 0; x < galaxy.Width; x++)
             {
                 for (int y = 0; y < galaxy.Height; y++)
                 {
                     Sector sector = galaxy[x, y];
-                    
+
                     if (!IsScanned(sector.Location))
                     {
                         continue;
@@ -1920,7 +1920,7 @@ namespace Supremacy.UI
                 SpreadMethod = GradientSpreadMethod.Reflect,
                 MappingMode = BrushMappingMode.Absolute,
                 GradientStops =
-                    {                                        
+                    {
                         new GradientStop(SetAlpha(color, 0x66), 0.0),
                         new GradientStop(SetAlpha(color, 0x33), 0.2),
                         new GradientStop(SetAlpha(color, 0x66), 0.3),
@@ -2895,20 +2895,20 @@ namespace Supremacy.UI
                     -_scrollData.Offset.X,
                     new Duration(new TimeSpan(0, 0, 0, 0, 500)),
                     FillBehavior.Stop)
-                                        {
-                                            AccelerationRatio = 0.5,
-                                            DecelerationRatio = 0.5
-                                        };
+                {
+                    AccelerationRatio = 0.5,
+                    DecelerationRatio = 0.5
+                };
 
                 DoubleAnimation yAnim = new DoubleAnimation(
                     _translation.Y,
                     -_scrollData.Offset.Y,
                     new Duration(new TimeSpan(0, 0, 0, 0, 500)),
                     FillBehavior.Stop)
-                                        {
-                                            AccelerationRatio = 0.5,
-                                            DecelerationRatio = 0.5
-                                        };
+                {
+                    AccelerationRatio = 0.5,
+                    DecelerationRatio = 0.5
+                };
 
                 _translation.BeginAnimation(TranslateTransform.XProperty, xAnim);
                 _translation.BeginAnimation(TranslateTransform.YProperty, yAnim);

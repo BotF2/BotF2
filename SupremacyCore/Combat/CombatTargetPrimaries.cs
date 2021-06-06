@@ -43,10 +43,10 @@ namespace Supremacy.Combat
         {
             if (source == null)
                 //.Core.Test.DebugFormat("Orbital source = null (!!!)");
-            if (targetOne == null)
-                //GameLog.Core.Test.DebugFormat("target one Civ = null(!!!)");
+                if (targetOne == null)
+                    //GameLog.Core.Test.DebugFormat("target one Civ = null(!!!)");
 
-            GameLog.Core.CombatDetails.DebugFormat("Dictionary attacker = {0} {1} Target = {2}",source.Owner.Key, source.Name, targetOne.Key);
+                    GameLog.Core.CombatDetails.DebugFormat("Dictionary attacker = {0} {1} Target = {2}", source.Owner.Key, source.Name, targetOne.Key);
             _targetPrimaries[source.ObjectID] = targetOne;   // Ditctionary of orbital shooter object id and its civ target          
         }
 

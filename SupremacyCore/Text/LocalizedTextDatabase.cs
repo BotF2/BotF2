@@ -152,7 +152,7 @@ namespace Supremacy.Text
                         "Could not determine the content type of text file '{0}'.  " +
                         "The file will be ignored for LocalizedText tasks.",
                         file);
-                        
+
                 }
                 catch (Exception e)
                 {
@@ -244,10 +244,10 @@ namespace Supremacy.Text
                         }
                     }
                     return new StaticExtension
-                           {
-                               MemberType = typeof(LocalizedTextGroups),
-                               Member = standardKey.Name
-                           };
+                    {
+                        MemberType = typeof(LocalizedTextGroups),
+                        Member = standardKey.Name
+                    };
                 }
                 return base.ConvertTo(context, culture, value, destinationType);
             }
@@ -434,7 +434,7 @@ namespace Supremacy.Text
         }
         #endregion
     }
-    
+
     public sealed class NameTypeTextGroupKey
     {
         private readonly Type _type;

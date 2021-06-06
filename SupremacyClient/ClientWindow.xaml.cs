@@ -91,8 +91,8 @@ namespace Supremacy.Client
             _waitCursorLock = new object();
             _settingsChangeScope = new StateScope();
 
-            _defaultCursor = new Cursor(Path.Combine(Environment.CurrentDirectory,@"Resources\Images\UI\Shell\cursor.cur"));
-                
+            _defaultCursor = new Cursor(Path.Combine(Environment.CurrentDirectory, @"Resources\Images\UI\Shell\cursor.cur"));
+
 
             InitializeComponent();
 
@@ -131,7 +131,7 @@ namespace Supremacy.Client
 
             ApplyAntiAliasingSettings();
 
-            _ = InputBindings.Add(new KeyBinding(CollectGarbageCommand,new KeyGesture(Key.G, ModifierKeys.Control)));
+            _ = InputBindings.Add(new KeyBinding(CollectGarbageCommand, new KeyGesture(Key.G, ModifierKeys.Control)));
             _ = InputBindings.Add(new KeyBinding(ToggleFullScreenModeCommand, Key.Enter, ModifierKeys.Alt));
 
 
@@ -146,8 +146,8 @@ namespace Supremacy.Client
             { CommandParameter = StandardGameScreens.DiplomacyScreen });
             _ = InputBindings.Add(new KeyBinding(_navigationCommands.ActivateScreen, new KeyGesture(Key.F4, ModifierKeys.None))
             { CommandParameter = StandardGameScreens.ScienceScreen });
-            _ = InputBindings.Add(new KeyBinding(_navigationCommands.ActivateScreen,new KeyGesture(Key.F5, ModifierKeys.None))
-            { CommandParameter = StandardGameScreens.IntelScreen});
+            _ = InputBindings.Add(new KeyBinding(_navigationCommands.ActivateScreen, new KeyGesture(Key.F5, ModifierKeys.None))
+            { CommandParameter = StandardGameScreens.IntelScreen });
 
             _ = InputBindings.Add(new KeyBinding(ClientCommands.F06_Command, Key.F6, ModifierKeys.None));
             _ = InputBindings.Add(new KeyBinding(ClientCommands.F07_Command, Key.F7, ModifierKeys.None));

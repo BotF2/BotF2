@@ -17,14 +17,14 @@ namespace Supremacy.AI
 {
 
     public static class DiplomatAI
-    {      
+    {
         public static void DoTurn([NotNull] ICivIdentity civ) // pass in all civs to process Diplomacy
         {
-   
+
             if (civ == null)
                 throw new ArgumentNullException("civ");
 
-            Civilization aCiv = (Civilization) civ;
+            Civilization aCiv = (Civilization)civ;
 
             Diplomat diplomat = Diplomat.Get(civ);
 
@@ -32,7 +32,7 @@ namespace Supremacy.AI
              * Process messages which have already been delivered
              */
             foreach (Civilization otherCiv in GameContext.Current.Civilizations)
-             // we can control regard and trust for both human otherCivs and AI otherCivs
+            // we can control regard and trust for both human otherCivs and AI otherCivs
             {
                 if (otherCiv.CivID == civ.CivID)
                     continue;
@@ -69,12 +69,12 @@ namespace Supremacy.AI
                     countCommon++;
                 }
 
-                int[] countArray = new int[] {foreignTraits.Length, theCivTraits.Length};
-                int fewestTotalTraits = countArray.Min();    
+                int[] countArray = new int[] { foreignTraits.Length, theCivTraits.Length };
+                int fewestTotalTraits = countArray.Min();
 
-                int similarTraits = (countCommon *10 / fewestTotalTraits); // (a double from 1 to 0) * 10 
-               // GameLog.Client.Diplomacy.DebugFormat("## similar traits ={0} counterparty ={1} traits ={2} owner ={3} traits ={4}",
-                    //similarTraits, foreignPower.Counterparty.Key,foreignPower.Counterparty.Traits, foreignPower.Owner.Key, foreignPower.Owner.Traits );
+                int similarTraits = (countCommon * 10 / fewestTotalTraits); // (a double from 1 to 0) * 10 
+                                                                            // GameLog.Client.Diplomacy.DebugFormat("## similar traits ={0} counterparty ={1} traits ={2} owner ={3} traits ={4}",
+                                                                            //similarTraits, foreignPower.Counterparty.Key,foreignPower.Counterparty.Traits, foreignPower.Owner.Key, foreignPower.Owner.Traits );
 
                 /*
                  * look for human to human proposals
@@ -133,7 +133,7 @@ namespace Supremacy.AI
                             default:
                                 break;
                         }
-                 
+
                         GameLog.Client.Diplomacy.DebugFormat("## To = {0} regard ={2} trust ={3} Before First Impression fropm {1}",
                             foreignPower.Counterparty.Key,
                               foreignPower.Owner.Key,
@@ -167,7 +167,7 @@ namespace Supremacy.AI
 
                     // if no other changes some variation over time
                     DiplomacyHelper.ApplyTrustChange(foreignPower.Counterparty, foreignPower.Owner, GetRandomNumber(-3, 3));
-                    DiplomacyHelper.ApplyRegardChange(foreignPower.Counterparty, foreignPower.Owner, GetRandomNumber(-3, 3));                    
+                    DiplomacyHelper.ApplyRegardChange(foreignPower.Counterparty, foreignPower.Owner, GetRandomNumber(-3, 3));
 
                     if ((5 - foreignPower.DiplomacyData.LastColdWarAttack) < 0 || 4 - foreignPower.DiplomacyData.LastIncursion < 0 || 6 - foreignPower.DiplomacyData.LastTotalWarAttack < 0)
                     {
@@ -328,7 +328,7 @@ namespace Supremacy.AI
                                 //    foreignPower.Owner.ShortName);
                             }
                         }
-                       // foreignPower.UpdateRegardAndTrustMeters();
+                        // foreignPower.UpdateRegardAndTrustMeters();
 
                         GameLog.Client.Diplomacy.DebugFormat("## To = {0} regard ={2} trust ={3} After Treaties from {1}",
                             foreignPower.Counterparty.Key,
@@ -453,7 +453,7 @@ namespace Supremacy.AI
                                             DiplomacyHelper.ApplyRegardChange(owner, anotherCiv, +50);
                                             DiplomacyHelper.ApplyTrustChange(owner, anotherCiv, +70);
                                         }
-                                    }                                
+                                    }
                                 }
                             }
                             int impact = -175;
@@ -575,7 +575,7 @@ namespace Supremacy.AI
         }
         #region methods
 
-        public static void TrustAndRegardByTraits( ForeignPower foreignP, int impact, int similarTraits)
+        public static void TrustAndRegardByTraits(ForeignPower foreignP, int impact, int similarTraits)
         {
             if (similarTraits == 10)
             {
@@ -607,8 +607,8 @@ namespace Supremacy.AI
             }
             else if (similarTraits == 0)
             {
-            //    foreignP.AddRegardEvent(new RegardEvent(5, RegardEventType.TraitsInCommon,
-            //        -90 + impact));
+                //    foreignP.AddRegardEvent(new RegardEvent(5, RegardEventType.TraitsInCommon,
+                //        -90 + impact));
                 DiplomacyHelper.ApplyTrustChange(foreignP.Counterparty, foreignP.Owner, -95 + impact);
                 DiplomacyHelper.ApplyRegardChange(foreignP.Counterparty, foreignP.Owner, -90 + impact);
             }
@@ -624,7 +624,7 @@ namespace Supremacy.AI
                 DiplomacyHelper.ApplyRegardChange(foreignPow.Counterparty, foreignPow.Owner, degree);
                 DiplomacyHelper.ApplyTrustChange(foreignPow.Counterparty, foreignPow.Owner, degree);
             }
-            else if(traits.Contains("Peaceful"))
+            else if (traits.Contains("Peaceful"))
             {
                 if (otherTraits.Contains("Peaceful"))
                     degree = -25;

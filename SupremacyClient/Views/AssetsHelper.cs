@@ -38,7 +38,7 @@ namespace Supremacy.Intelligence
             {
                 List<Civilization> civList = GameContext.Current.CivilizationManagers[localCivFromScreen].SpiedCivList;
                 if (civList.Contains(CivZero))
-                        return true;
+                    return true;
                 else { return false; }
             }
         }
@@ -57,7 +57,7 @@ namespace Supremacy.Intelligence
         public static bool IsSpiedTwo(Civilization localCivFromScreen)
         {
             if (DesignTimeObjects.SubedTwo)
-                    return false;
+                return false;
             else
             {
                 List<Civilization> civList = GameContext.Current.CivilizationManagers[localCivFromScreen].SpiedCivList;
@@ -69,7 +69,7 @@ namespace Supremacy.Intelligence
         public static bool IsSpiedThree(Civilization localCivFromScreen)
         {
             if (DesignTimeObjects.SubedThree)
-                    return false;
+                return false;
             else
             {
                 List<Civilization> civList = GameContext.Current.CivilizationManagers[localCivFromScreen].SpiedCivList;
@@ -81,7 +81,7 @@ namespace Supremacy.Intelligence
         public static bool IsSpiedFour(Civilization localCivFromScreen)
         {
             if (DesignTimeObjects.SubedFour)
-                    return false;
+                return false;
             else
             {
                 List<Civilization> civList = GameContext.Current.CivilizationManagers[localCivFromScreen].SpiedCivList;
@@ -105,7 +105,7 @@ namespace Supremacy.Intelligence
         public static bool IsSpiedSix(Civilization localCivFromScreen)
         {
             if (DesignTimeObjects.SubedSix)
-                    return false;
+                return false;
             else
             {
                 List<Civilization> civList = GameContext.Current.CivilizationManagers[localCivFromScreen].SpiedCivList;

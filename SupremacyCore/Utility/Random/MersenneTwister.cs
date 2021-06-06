@@ -483,7 +483,7 @@ namespace Supremacy.Utility
                 for (; k > 0; k--)
                 {
                     _mt[i] = (uint)((_mt[i] ^ ((_mt[i - 1] ^ (_mt[i - 1] >> 30)) * 1664525U)) + key[j] + j);
-                        /* non linear */
+                    /* non linear */
                     _mt[i] &= 0xffffffffU; // for WORDSIZE > 32 machines
                     i++;
                     j++;

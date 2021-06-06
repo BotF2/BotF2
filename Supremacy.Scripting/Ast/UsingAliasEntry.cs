@@ -69,7 +69,7 @@ namespace Supremacy.Scripting.Ast
             }
 
             base.Resolve(rc);
-            
+
             if (Resolved == null)
             {
                 Name = null;

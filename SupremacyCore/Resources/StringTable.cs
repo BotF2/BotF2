@@ -56,10 +56,10 @@ namespace Supremacy.Resources
                 Console.WriteLine(_text);
 
                 throw new FileNotFoundException(
-                    "String table file could not be located: " 
+                    "String table file could not be located: "
                     + fileName);
             }
-            
+
             String key = null;
             StringTable result = new StringTable();
             StringBuilder buffer = new StringBuilder();

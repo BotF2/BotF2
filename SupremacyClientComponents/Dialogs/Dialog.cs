@@ -276,7 +276,7 @@ namespace Supremacy.Client.Dialogs
         {
             if (!IsOpen)
             {
-                base.OnLostKeyboardFocus(e); 
+                base.OnLostKeyboardFocus(e);
                 return;
             }
 

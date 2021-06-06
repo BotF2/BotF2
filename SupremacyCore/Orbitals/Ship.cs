@@ -49,7 +49,7 @@ namespace Supremacy.Orbitals
         /// <value>The name.</value>
         public override string Name
         {
-            get 
+            get
             {
                 string _nameString = base.Name;
                 //Int32.TryParse(base.ExperiencePercent.ToString(), out int exp);
@@ -58,7 +58,7 @@ namespace Supremacy.Orbitals
                     _nameString += "*";
                 }
 
-                return _nameString; 
+                return _nameString;
             }
             set { base.Name = value; }
         }
@@ -337,10 +337,10 @@ namespace Supremacy.Orbitals
             if ((Fleet == null) || !Fleet.AreShipsLocked)
             {
                 Fleet newFleet = new Fleet(fleetId)
-                               {
-                                   OwnerID = OwnerID,
-                                   Location = Location
-                               };
+                {
+                    OwnerID = OwnerID,
+                    Location = Location
+                };
                 GameContext.Current.Universe.Objects.Add(newFleet);
                 Fleet = newFleet;
                 //newFleet.Order = newFleet.GetDefaultOrder();
@@ -370,34 +370,34 @@ namespace Supremacy.Orbitals
             _fuelReserve.UpdateAndReset();
         }
 
-		public override void SerializeOwnedData(SerializationWriter writer, object context)
-		{
-			base.SerializeOwnedData(writer, context);
-			//writer.Write(_cloakStrength);
+        public override void SerializeOwnedData(SerializationWriter writer, object context)
+        {
+            base.SerializeOwnedData(writer, context);
+            //writer.Write(_cloakStrength);
             //writer.Write(_camouflagedStrength);
             writer.Write(_fleetId);
-			writer.WriteObject(_fuelReserve);
-			writer.Write(_isCloaked);
+            writer.WriteObject(_fuelReserve);
+            writer.Write(_isCloaked);
             writer.Write(_isCamouflaged);
             writer.Write(_isAssimilated);
             writer.Write(_range);
-			writer.Write(_speed);
+            writer.Write(_speed);
             writer.Write((byte)_shipType);
-		}
+        }
 
-		public override void DeserializeOwnedData(SerializationReader reader, object context)
-		{
-			base.DeserializeOwnedData(reader, context);
-			//_cloakStrength = reader.ReadByte();
+        public override void DeserializeOwnedData(SerializationReader reader, object context)
+        {
+            base.DeserializeOwnedData(reader, context);
+            //_cloakStrength = reader.ReadByte();
             //_camouflagedStrength = reader.ReadByte();
             _fleetId = reader.ReadInt32();
-			_fuelReserve = (Meter)reader.ReadObject();
-			_isCloaked = reader.ReadBoolean();
+            _fuelReserve = (Meter)reader.ReadObject();
+            _isCloaked = reader.ReadBoolean();
             _isCamouflaged = reader.ReadBoolean();
             _isAssimilated = reader.ReadBoolean();
             _range = reader.ReadByte();
-			_speed = reader.ReadByte();
+            _speed = reader.ReadByte();
             _shipType = (ShipType)reader.ReadByte();
-		}
+        }
     }
 }

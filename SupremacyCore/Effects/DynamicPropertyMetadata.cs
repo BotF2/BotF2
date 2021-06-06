@@ -136,7 +136,7 @@ namespace Supremacy.Effects
 
             if (!IsDefaultValueModified)
                 _defaultValue = baseMetadata.DefaultValue;
-            
+
             if (baseMetadata.PropertyChangedCallback != null)
             {
                 Delegate[] invocationList = baseMetadata.PropertyChangedCallback.GetInvocationList();
@@ -149,7 +149,7 @@ namespace Supremacy.Effects
                     _propertyChangedCallback = target;
                 }
             }
-            
+
             if (_coerceValueCallback == null)
                 _coerceValueCallback = baseMetadata.CoerceValueCallback;
         }

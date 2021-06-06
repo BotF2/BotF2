@@ -775,7 +775,7 @@ namespace Supremacy.Xna
                 case SwapEffect.Discard:
                 case SwapEffect.Flip:
                 case SwapEffect.Copy:
-                {
+                    {
                         if (!adapter.CheckDeviceMultiSampleType(
                             deviceType,
                             acceptedBackBufferFormat,
@@ -790,29 +790,29 @@ namespace Supremacy.Xna
                         }
 
                         if (presentationParameters.MultiSampleQuality >= qualityLevels)
-                    {
+                        {
                             throw new ArgumentException(
                             "The selected MultiSampleQualityLevel value is invalid for the " +
                             "selected MultiSampleType.");
-                    }
+                        }
 
                         if (presentationParameters.MultiSampleType != MultiSampleType.None &&
                         presentationParameters.SwapEffect != SwapEffect.Discard)
-                    {
+                        {
                             throw new ArgumentException(
                             "Must use SwapEffect.Discard when enabling multisampling.");
-                    }
+                        }
 
                         if ((presentationParameters.PresentOptions & PresentOptions.DiscardDepthStencil) != PresentOptions.None &&
                         !presentationParameters.EnableAutoDepthStencil)
-                    {
+                        {
                             throw new ArgumentException(
                             "When PresentOptions.DiscardDepthStencil is set, " +
                             "EnabledAutoDepthStencil must be true.");
-                    }
+                        }
 
                         if (presentationParameters.EnableAutoDepthStencil)
-                    {
+                        {
                             if (!adapter.CheckDeviceFormat(
                             deviceType,
                             deviceFormat,
@@ -820,47 +820,47 @@ namespace Supremacy.Xna
                             QueryUsages.None,
                             ResourceType.DepthStencilBuffer,
                             presentationParameters.AutoDepthStencilFormat))
-                        {
+                            {
                                 throw new ArgumentException(
                                 "The specified DepthStencilFormat is not supported as " +
                                 "a depth/stencil format for the selected adapter.");
-                        }
+                            }
 
                             if (!adapter.CheckDepthStencilMatch(
                             deviceType,
                             deviceFormat,
                             acceptedBackBufferFormat,
                             presentationParameters.AutoDepthStencilFormat))
-                        {
+                            {
                                 throw new ArgumentException(
                                 "The specified DepthStencilFormat is not supported as " +
                                 "a depth/stencil format when using the selected BackBufferFormat.");
+                            }
                         }
-                    }
 
                         if (!presentationParameters.IsFullScreen)
-                    {
-                            switch (presentationParameters.PresentationInterval)
                         {
+                            switch (presentationParameters.PresentationInterval)
+                            {
                                 case PresentInterval.Default:
                                 case PresentInterval.One:
                                 case PresentInterval.Immediate:
                                     return;
-                        }
+                            }
 
                             throw new ArgumentException(
                             "When IsFullScreen is false, PresentationInterval must be " +
                             "one of the following: Default, Immediate, or One.");
-                    }
+                        }
 
                         break;
-                }
+                    }
                 default:
-                {
+                    {
                         throw new ArgumentException(
                         "SwapEffect must be one of the following: SwapEffect.Copy, " +
                         "SwapEffect.Discard, or SwapEffect.Flip.");
-                }
+                    }
             }
         }
 

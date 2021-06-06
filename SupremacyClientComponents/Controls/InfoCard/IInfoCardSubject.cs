@@ -44,7 +44,7 @@ namespace Supremacy.Client.Controls
         #endregion
 
         #region Properties
-        
+
         #region DataResolver Property
         protected Func<object> DataResolver
         {

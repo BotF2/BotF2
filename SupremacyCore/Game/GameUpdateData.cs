@@ -123,7 +123,7 @@ namespace Supremacy.Game
                 data._diplomats = game.Diplomats.ToArray();//new[] { Diplomat.Get(player) }; //game.Diplomats.ToArray();
 
                 //var _diplomat = data._diplomats;  // just for have a look
-                
+
                 //GameLog.Core.Intel.DebugFormat("", _diplomat.);
 
                 data._civManagers.ForEach(o => o.Compact());

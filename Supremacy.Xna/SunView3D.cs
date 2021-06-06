@@ -97,7 +97,7 @@ namespace Supremacy.Xna
         protected override void UnloadContent()
         {
             base.UnloadContent();
-            
+
             if (_sun != null)
             {
                 _sun.Dispose();

@@ -66,8 +66,8 @@ namespace Supremacy.Client
     {
         #region Extension Methods
         public static void Connect(
-            [NotNull] this IGameClient self, 
-            [NotNull] string playerName, 
+            [NotNull] this IGameClient self,
+            [NotNull] string playerName,
             [NotNull] string remoteServerHostName)
         {
             if (self == null)

@@ -55,7 +55,7 @@ namespace Supremacy.Resources
 
         public CivString(string category, string key) : this(null, category, key) { }
 
-        public CivString([CanBeNull] Civilization civilization, [CanBeNull] Civilization civilization2, [NotNull] string category, [NotNull] string key) :this(civilization, civilization2, category, key, null) {}
+        public CivString([CanBeNull] Civilization civilization, [CanBeNull] Civilization civilization2, [NotNull] string category, [NotNull] string key) : this(civilization, civilization2, category, key, null) { }
 
         public CivString([CanBeNull] Civilization civilization, [NotNull] string category, [NotNull] string key) : this(civilization, null, category, key, null) { }
 
@@ -229,7 +229,7 @@ namespace Supremacy.Resources
                                              .Elements(ns + "Category")
                                              .Where(o => string.Equals(category, (string)o.Attribute("Name"), StringComparison.OrdinalIgnoreCase))
                                              .Elements(ns + "CivString")
-                                             .Where(o => string.Equals(key, (string)o.Attribute("Key"), StringComparison.OrdinalIgnoreCase) && 
+                                             .Where(o => string.Equals(key, (string)o.Attribute("Key"), StringComparison.OrdinalIgnoreCase) &&
                                                          string.Equals(demeanor.HasValue ? demeanor.ToString() : null, (string)o.Attribute("Tone"), StringComparison.OrdinalIgnoreCase))
                                              .Elements(ns + "Value")
                                              .Where(o => IsNeutralLanguage((string)o.Attribute("Language")))
@@ -251,7 +251,7 @@ namespace Supremacy.Resources
                                              .Elements(ns + "Category")
                                              .Where(o => string.Equals(category, (string)o.Attribute("Name"), StringComparison.OrdinalIgnoreCase))
                                              .Elements(ns + "CivString")
-                                             .Where(o => string.Equals(key, (string)o.Attribute("Key"), StringComparison.OrdinalIgnoreCase) && 
+                                             .Where(o => string.Equals(key, (string)o.Attribute("Key"), StringComparison.OrdinalIgnoreCase) &&
                                                          string.Equals(demeanor.HasValue ? demeanor.ToString() : null, (string)o.Attribute("Tone"), StringComparison.OrdinalIgnoreCase))
                                              .Elements(ns + "Value")
                                              .Where(o => IsNeutralLanguage((string)o.Attribute("Language")))
@@ -319,7 +319,7 @@ namespace Supremacy.Resources
             {
                 specifiedCulture = CultureInfo.GetCultureInfo(language);
             }
-            catch (Exception e) 
+            catch (Exception e)
             {
                 GameLog.Core.GameData.Error(e);
                 return false;
@@ -331,7 +331,7 @@ namespace Supremacy.Resources
 
             CultureInfo currentNeutralCulture = currentCulture;
             CultureInfo specifiedNeutralCulture = specifiedCulture;
-            
+
             while (!currentNeutralCulture.IsNeutralCulture &&
                    (currentNeutralCulture.Parent != currentNeutralCulture))
             {
@@ -374,7 +374,7 @@ namespace Supremacy.Resources
 
             if (result != null)
                 return result.ElementAt(randomIndex % result.Count());
-            
+
             return key;
         }
         #endregion

@@ -47,7 +47,7 @@ namespace Supremacy.Client
         private Civilization _theTargeted1Civ;
         private Civilization _theTargeted2Civ;
         private IAppContext _appContext;
-       
+
 
         public CombatWindow()
         {
@@ -89,11 +89,11 @@ namespace Supremacy.Client
                 ShortName = ResourceManager.GetString("ONLY_RETURN_FIRE"),
                 CivID = 888,
                 Key = "Only Return Fire"
-            }; 
+            };
             // The click of "Only Return Fire" radio button by human player
-               // _theTargeted1Civ = new Civilization();
+            // _theTargeted1Civ = new Civilization();
             _theTargeted1Civ = _onlyFireIfFiredAppone;
-           // _theTargeted2Civ = new Civilization();
+            // _theTargeted2Civ = new Civilization();
             _theTargeted2Civ = _onlyFireIfFiredAppone;
 
         }
@@ -106,8 +106,8 @@ namespace Supremacy.Client
         private void HandleCombatUpdate(CombatUpdate update)
         {
             _update = update;
-            string _report = _update.CombatID + ": " + "Combat at " + _update.Location 
-                + " > " + _update.FriendlyAssets.Count() + " on our side - " 
+            string _report = _update.CombatID + ": " + "Combat at " + _update.Location
+                + " > " + _update.FriendlyAssets.Count() + " on our side - "
                 + _update.HostileAssets.Count() + " hostile "
                 ;
 
@@ -156,8 +156,8 @@ namespace Supremacy.Client
                     playerCivManager.SitRepEntries.Add(new CombatSummarySitRepEntry(playerCivManager.Civilization, _update.Sector.Location, _report));
 
                     playerCivManager.SitRepEntries.Add(new CombatSummarySitRepEntry(playerCivManager.Civilization, _update.Sector.Location,
-                        String.Format(ResourceManager.GetString("COMBAT_TEXT_STANDOFF"), _update.Sector.Name))); 
-                       
+                        String.Format(ResourceManager.GetString("COMBAT_TEXT_STANDOFF"), _update.Sector.Name)));
+
                 }
                 else if (_playerAssets.HasSurvivingAssets)
                 {
@@ -277,7 +277,7 @@ namespace Supremacy.Client
                     FriendlyDestroyedItems.Items.Add(shipStats);
 
                 }
-                
+
                 foreach (CombatUnit shipStats in friendlyAssets.AssimilatedShips)
                 {
                     FriendlyAssimilatedItems.Items.Add(shipStats);

@@ -13,15 +13,15 @@ namespace Supremacy.Client.Controls
             Control.IsTabStopProperty.OverrideMetadata(
                 typeof(GamePopupContentPresenter),
                 new FrameworkPropertyMetadata(false));
-            
+
             KeyboardNavigation.DirectionalNavigationProperty.OverrideMetadata(
                 typeof(GamePopupContentPresenter),
                 new FrameworkPropertyMetadata(KeyboardNavigationMode.Cycle));
-            
+
             KeyboardNavigation.TabNavigationProperty.OverrideMetadata(
                 typeof(GamePopupContentPresenter),
                 new FrameworkPropertyMetadata(KeyboardNavigationMode.Cycle));
-         
+
             FocusableProperty.OverrideMetadata(
                 typeof(GamePopupContentPresenter),
                 new FrameworkPropertyMetadata(true));

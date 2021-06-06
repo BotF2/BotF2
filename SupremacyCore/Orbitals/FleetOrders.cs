@@ -36,9 +36,9 @@ namespace Supremacy.Orbitals
         public static readonly EngageOrder EngageOrder;
         public static readonly AvoidOrder AvoidOrder;
         public static readonly ColonizeOrder ColonizeOrder;
-       // public static readonly RaidOrder RaidOrder;
+        // public static readonly RaidOrder RaidOrder;
         public static readonly SabotageOrder SabotageOrder;
-		public static readonly InfluenceOrder InfluenceOrder;
+        public static readonly InfluenceOrder InfluenceOrder;
         public static readonly MedicalOrder MedicalOrder;
         public static readonly SpyOnOrder SpyOnOrder; // install spy network
         public static readonly TowOrder TowOrder;
@@ -249,7 +249,7 @@ namespace Supremacy.Orbitals
                 return false;
             if (!fleet.Ships.Any(s => s.ShipType == ShipType.Colony))
                 return false;
-            
+
             return true;
         }
 
@@ -354,14 +354,14 @@ namespace Supremacy.Orbitals
             //healthAdjustment = helpByShip / 10;
             if (healthAdjustment > 1.24f) healthAdjustment = 1.24f;
             if (Fleet.Sector.System.Colony is null)
-                { /*do nothing*/ }
-            else if(Fleet.Ships.Any(s => s.ShipType == ShipType.Medical))
-                {
+            { /*do nothing*/ }
+            else if (Fleet.Ships.Any(s => s.ShipType == ShipType.Medical))
+            {
                 Fleet.Sector.System.Colony.Health.AdjustCurrent(healthAdjustment);
                 Fleet.Sector.System.Colony.Health.UpdateAndReset();
 
 
-                string _report = Fleet.ObjectID 
+                string _report = Fleet.ObjectID
                     + blank + Fleet.Name + " (" + Fleet.ClassName + ") doing Medical help at"
                     + blank + Fleet.Sector.System.Colony.Name
                     //+ blank + Fleet.Sector.System.Colony.ObjectID 
@@ -389,7 +389,7 @@ namespace Supremacy.Orbitals
             {
                 //do nothing
             }
-            else if(Fleet.Sector.System.Owner != null && Fleet.Sector.System.Colony.Owner != null && Fleet.Sector.System.Owner != Fleet.Owner )
+            else if (Fleet.Sector.System.Owner != null && Fleet.Sector.System.Colony.Owner != null && Fleet.Sector.System.Owner != Fleet.Owner)
             {
                 ForeignPower foreignPower = Diplomat.Get(Fleet.Sector.System.Owner).GetForeignPower(Fleet.Owner);
                 healthAdjustment = ((healthAdjustment - 1) / 3) + 1;
@@ -486,8 +486,8 @@ namespace Supremacy.Orbitals
             //var civManager = GameContext.Current.CivilizationManagers[fleet.Owner];
             if (!base.IsValidOrder(fleet))
                 return false;
-           // if (civManager.SpiedCivList.Where(S => S.CivID == fleet.Sector.System.Colony.OwnerID).Any()) // only install spy network once per empire
-                   // return false;
+            // if (civManager.SpiedCivList.Where(S => S.CivID == fleet.Sector.System.Colony.OwnerID).Any()) // only install spy network once per empire
+            // return false;
             if (fleet.Sector.System == null)
                 return false;
             if (fleet.Sector.System.Colony == null)
@@ -506,7 +506,7 @@ namespace Supremacy.Orbitals
                 {
                     return true;
                 }
-                    
+
             }
             return false;
         }
@@ -536,7 +536,7 @@ namespace Supremacy.Orbitals
 
         private static void CreateSpyOn(Civilization civ, StarSystem system)
         {
-            UniverseObjectList<Colony> colonies =  GameContext.Current.CivilizationManagers[system.Owner].Colonies; //IntelHelper.NewSpiedColonies; ???????
+            UniverseObjectList<Colony> colonies = GameContext.Current.CivilizationManagers[system.Owner].Colonies; //IntelHelper.NewSpiedColonies; ???????
             //var civManager = GameContext.Current.CivilizationManagers[civ];
 
             //int defenseIntelligence = GameContext.Current.CivilizationManagers[system.Owner].TotalIntelligence + 1;  // TotalIntelligence of attacked civ
@@ -552,7 +552,7 @@ namespace Supremacy.Orbitals
             //if (ratio > 10)
             //    ratio = 10;
 
-            IntelHelper.SendXSpiedY(civ, system.Owner, colonies);          
+            IntelHelper.SendXSpiedY(civ, system.Owner, colonies);
             GameLog.Client.Test.DebugFormat("CreateSpyOn calls IntelHelper SendTargetOne for system ={0} owner ={1}", system, system.Owner);
         }
     }
@@ -872,7 +872,7 @@ namespace Supremacy.Orbitals
     // positive: ...increasing Regard + Trust
     // negative: ...exit membership from foreign empire
     // positive to your systems, colonies: increasing morale earth first
-    public sealed class InfluenceOrder : FleetOrder  
+    public sealed class InfluenceOrder : FleetOrder
     {
         private readonly bool _isComplete;
 
@@ -903,7 +903,7 @@ namespace Supremacy.Orbitals
             Ship bestShip = null;
             foreach (Ship ship in Fleet.Ships)
             {
-                if (ship.ShipType == ShipType.Diplomatic)  
+                if (ship.ShipType == ShipType.Diplomatic)
                 {
                     if ((bestShip == null)
                         || (ship.ShipDesign.WorkCapacity > bestShip.ShipDesign.WorkCapacity))
@@ -961,7 +961,7 @@ namespace Supremacy.Orbitals
                 return;
             }
             // part 2: to AI race
-            if (!Fleet.Sector.System.Owner.IsHuman) 
+            if (!Fleet.Sector.System.Owner.IsHuman)
             {
                 Diplomat diplomat = Diplomat.Get(Fleet.Sector.System.Owner);
                 ForeignPower foreignPower = diplomat.GetForeignPower(Fleet.Owner);
@@ -1551,7 +1551,7 @@ namespace Supremacy.Orbitals
             GameLog.Core.Production.DebugFormat("project: Builder = {0}, BuildDesign = {1}, Duranium before {2}, AdjustValue = {3}", project.Builder
                 , project.BuildDesign, civManager.Resources[ResourceType.RawMaterials].CurrentValue
                 , usedResources[ResourceType.RawMaterials] - resources[ResourceType.RawMaterials]);
-            
+
             civManager.Resources[ResourceType.RawMaterials].AdjustCurrent(
                 usedResources[ResourceType.RawMaterials] - resources[ResourceType.RawMaterials]);
 

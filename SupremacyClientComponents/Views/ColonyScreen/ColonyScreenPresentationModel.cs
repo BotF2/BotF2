@@ -33,9 +33,9 @@ namespace Supremacy.Client.Views
                 if (_designInstance == null)
                 {
                     _designInstance = new ColonyScreenPresentationModel(DesignTimeAppContext.Instance)
-                                      {
-                                          SelectedColony = DesignTimeObjects.Colony
-                                      };
+                    {
+                        SelectedColony = DesignTimeObjects.Colony
+                    };
                 }
                 return _designInstance;
             }

@@ -571,7 +571,7 @@ namespace Supremacy.VFS
             private void OnStreamClosed(object sender, EventArgs args)
             {
                 IVirtualFileStream virtualFileStream = sender as IVirtualFileStream;
-                
+
                 if (virtualFileStream != null)
                     virtualFileStream.Closed -= OnStreamClosed;
 
@@ -689,9 +689,9 @@ namespace Supremacy.VFS
             {
                 if (!IsReadOnly)
                     return;
-             
+
                 Refresh();
-                
+
                 if (IsReadOnly)
                     throw new NotSupportedException("This virtual file is read-only.");
             }

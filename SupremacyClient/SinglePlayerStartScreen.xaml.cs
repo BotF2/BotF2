@@ -27,7 +27,7 @@ namespace Supremacy.Client
     {
         #region Field
         ISoundPlayer _soundPlayer = null;
-        
+
         Boolean _startAudio = false;
         #endregion
 
@@ -66,7 +66,7 @@ namespace Supremacy.Client
             }
             if (CivSelector.SelectedIndex >= 0)
             {
-                switch(CivSelector.SelectedValue.ToString())
+                switch (CivSelector.SelectedValue.ToString())
                 {
                     case "Federation":
                         _soundPlayer.Play("Menu", "FedSelection");

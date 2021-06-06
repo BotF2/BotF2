@@ -78,7 +78,7 @@ namespace Supremacy.Orbitals
 
         public String BuildSlotOutputString
         {
-            get 
+            get
             {
                 String slotOutputString = "UNDETERMINED SHIPYARD OUTPUT TYPE";
                 switch (BuildSlotOutputType)
@@ -93,7 +93,7 @@ namespace Supremacy.Orbitals
                         slotOutputString = BuildSlotOutput.ToString() + "% Industry";
                         break;
                 }
-                return slotOutputString; 
+                return slotOutputString;
             }
         }
 
@@ -152,7 +152,7 @@ namespace Supremacy.Orbitals
             if (element["BuildSlotOutputType"] != null)
             {
                 String outputType = element["BuildSlotOutputType"].InnerText.Trim().ToUpperInvariant();
-                if(outputType.Equals(ShipyardOutputType.Static.ToString().ToUpperInvariant()))
+                if (outputType.Equals(ShipyardOutputType.Static.ToString().ToUpperInvariant()))
                     _buildSlotOutputType = ShipyardOutputType.Static;
                 else if (outputType.Equals(ShipyardOutputType.PopulationRatio.ToString().ToUpperInvariant()))
                     _buildSlotOutputType = ShipyardOutputType.PopulationRatio;
@@ -239,7 +239,7 @@ namespace Supremacy.Orbitals
             shipyard.Reset();
             shipyard.Owner = system.Colony.Owner;
             shipyard.Location = system.Colony.Location;
-            
+
             GameContext.Current.Universe.Objects.Add(shipyard);
 
             system.Colony.Shipyard = shipyard;

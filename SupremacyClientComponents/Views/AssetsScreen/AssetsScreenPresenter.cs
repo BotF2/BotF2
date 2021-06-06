@@ -58,7 +58,7 @@ namespace Supremacy.Client.Views
         private void Update()
         {
             //GameLog.Core.Test.DebugFormat("Update on Turn Started at line 61");
-            Model.Colonies = IntelHelper.LocalCivManager.Colonies; 
+            Model.Colonies = IntelHelper.LocalCivManager.Colonies;
             Model.SpiedZeroColonies = DesignTimeObjects.SpiedCivZero.Colonies;
             Model.SpiedOneColonies = DesignTimeObjects.SpiedCivOne.Colonies;
             Model.SpiedTwoColonies = DesignTimeObjects.SpiedCivTwo.Colonies;

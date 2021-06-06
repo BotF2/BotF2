@@ -116,9 +116,9 @@ namespace Supremacy.Orbitals
         /// <c>int</c>  <see cref="OrbitalDesign"/> ; Transport =2 <c>int</c>.
         /// </value>
         public string ShipType
-        { 
+        {
             get { return _shipType; }
-            set { _shipType = value; } 
+            set { _shipType = value; }
         }
         /// <summary>
         /// Gets or sets the scan strength.
@@ -297,7 +297,7 @@ namespace Supremacy.Orbitals
             {
                 _hullStrength = Number.ParseUInt16(element["HullStrength"].InnerText.Trim());
                 if (_hullStrength != 0)
-                    if (_hullStrength < 1 )   // atm all values > 0
+                    if (_hullStrength < 1)   // atm all values > 0
                         GameLog.Core.GameData.WarnFormat("In TechObjectDatabase.xml for {0}: _hullStrength should not be {1}", Name, _hullStrength);
             }
             if (element["ShieldStrength"] != null)
@@ -335,21 +335,21 @@ namespace Supremacy.Orbitals
                 Percentage beamRefire = Number.ParsePercentage(element["BeamType"].GetAttribute("Refire").Trim());
 
                 if (beamCount == 0)
-                { 
+                {
                     beamDamage = 0;
                     beamRefire = 0;
                 }
                 if (beamDamage == 0)
-                { 
+                {
                     beamCount = 0;
                 }
 
                 _primaryWeapon = new WeaponType
-                                 {
-                                     DeliveryType = WeaponDeliveryType.Beam,
-                                     Count = beamCount,
-                                     Damage = beamDamage,
-                                     Refire = beamRefire
+                {
+                    DeliveryType = WeaponDeliveryType.Beam,
+                    Count = beamCount,
+                    Damage = beamDamage,
+                    Refire = beamRefire
                 };
                 if (_primaryWeapon.Damage > 0 && _primaryWeapon.Count < 1)   // atm all values between x and x (or 0 for not having this ability)
                     GameLog.Core.GameData.WarnFormat("In TechObjectDatabase.xml for a beam: Damage = {0}, but Count = {1}", _primaryWeapon.Damage, _primaryWeapon.Count);
@@ -363,18 +363,18 @@ namespace Supremacy.Orbitals
                 if (torpedoCount == 0) torpedoDamage = 0;
                 if (torpedoDamage == 0) torpedoCount = 0;
 
-                    _secondaryWeapon = new WeaponType
-                                   {
-                                       DeliveryType = WeaponDeliveryType.Torpedo,
-                                        Count = torpedoCount,
-                                        Damage = torpedoDamage
-                                   };
+                _secondaryWeapon = new WeaponType
+                {
+                    DeliveryType = WeaponDeliveryType.Torpedo,
+                    Count = torpedoCount,
+                    Damage = torpedoDamage
+                };
                 if (_secondaryWeapon.Damage > 0 && _secondaryWeapon.Count < 1)   // atm all values between x and x (or 0 for not having this ability)
                 {
                     GameLog.Core.GameData.WarnFormat("In TechObjectDatabase.xml for a torpedo: Damage = {0}, but Count = {1}", _secondaryWeapon.Damage, _secondaryWeapon.Count);
-                
+
                 }
-                
+
                 //_secondaryWeaponName = element["TorpedoType"].GetAttribute("Name").Trim();
             }
 
@@ -525,10 +525,10 @@ namespace Supremacy.Orbitals
                     }
                 }
                 return new StaticExtension
-                       {
-                           MemberType = typeof(OrbitalStringKeys),
-                           Member = orbitalKey.Name
-                       };
+                {
+                    MemberType = typeof(OrbitalStringKeys),
+                    Member = orbitalKey.Name
+                };
             }
             return base.ConvertTo(context, culture, value, destinationType);
         }

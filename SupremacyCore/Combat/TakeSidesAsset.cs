@@ -44,7 +44,7 @@ namespace Supremacy.Combat
                             if (OppositionFleets.Contains(fleetsAtLocation[j]))
                                 continue;
                             else
-                            OppositionFleets.Add(fleetsAtLocation[j]);
+                                OppositionFleets.Add(fleetsAtLocation[j]);
                             //_ = OppositionFleets.Distinct();
                         }
 

@@ -496,7 +496,7 @@ namespace Supremacy.VFS
                 throw new ArgumentNullException("self");
             if (bytes == null)
                 throw new ArgumentNullException("bytes");
-            
+
             Stream writeStream;
             if (!self.TryCreate(out writeStream))
                 return false;

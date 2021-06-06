@@ -61,7 +61,7 @@ namespace Supremacy.VFS
                 WebRequest.RegisterPrefix(Scheme, new VfsWebRequestFactory());
             }
         }
-        
+
         #region Implementation of IWebRequestCreate
         public WebRequest Create(Uri uri)
         {

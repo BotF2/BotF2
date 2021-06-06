@@ -118,7 +118,7 @@ namespace Supremacy.Game
         #endregion
 
         #region INotifyPropertyChanged Implementation
-        [field : NonSerialized]
+        [field: NonSerialized]
         public event PropertyChangedEventHandler PropertyChanged;
         #endregion
 

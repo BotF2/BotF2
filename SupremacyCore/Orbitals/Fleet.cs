@@ -67,7 +67,7 @@ namespace Supremacy.Orbitals
                         _NameString = _ships[0].Name + " " + ResourceManager.GetString("CLOAKED");
                     else
                     if (_ships[0].IsCamouflaged == true)
-                        _NameString = _ships[0].Name +  " " + ResourceManager.GetString("CAMOUFLAGED");
+                        _NameString = _ships[0].Name + " " + ResourceManager.GetString("CAMOUFLAGED");
                     else
                         _NameString = _ships[0].Name;
                 }
@@ -103,7 +103,7 @@ namespace Supremacy.Orbitals
                     {
                         _NameString = String.Format(ResourceManager.GetString("MULTI_SHIP_FLEET_FORMAT"), _ships.Count);
                     }
-                        //ToDo: After a changed (Cloaked/Camouflaged) a 'RefreshTaskListView' has to be done, but didn't found a way to do it directly
+                    //ToDo: After a changed (Cloaked/Camouflaged) a 'RefreshTaskListView' has to be done, but didn't found a way to do it directly
                 }
 
                 return _NameString;
@@ -114,7 +114,7 @@ namespace Supremacy.Orbitals
         /// Gets or sets the ClassName of this <see cref="Fleet"/>.
         /// </summary>
         /// <value>The name.</value>
-        public string ClassName   
+        public string ClassName
         {
             get
             {
@@ -689,7 +689,7 @@ namespace Supremacy.Orbitals
         /// is not valid, then the default order is assigned.
         /// </summary>
         private void EnsureValidOrder()
-        { 
+        {
             if ((Order == null) || (!Order.IsValidOrder(this)))
                 Order = GetDefaultOrder();
         }
@@ -760,7 +760,7 @@ namespace Supremacy.Orbitals
             //GameLog.Core.Combat.DebugFormat("SetRoute begins...");
             if (IsRouteLocked)
                 return;
-            
+
             if (route == null)
                 route = TravelRoute.Empty;
 
@@ -799,13 +799,13 @@ namespace Supremacy.Orbitals
         internal bool MoveAlongRoute()
         {
             TravelRoute route = _route;
-            
+
             if (IsStranded)
             {
                 SetRoute(TravelRoute.Empty);
                 return false;
             }
-            
+
             if (route.IsEmpty)
                 return false;
 
@@ -829,7 +829,7 @@ namespace Supremacy.Orbitals
         {
             //if (amount < 0)
             //    throw new ArgumentOutOfRangeException("amount", "Value must be non-negative.");
-            
+
             _ships.ForEach(o => o.ExperienceLevel += amount);
         }
 
@@ -882,7 +882,7 @@ namespace Supremacy.Orbitals
         /// <returns>The default order.</returns>
         protected internal virtual FleetOrder GetDefaultOrder()
         {
-            return IsCombatant 
+            return IsCombatant
                 ? FleetOrders.EngageOrder.Create()
                 : FleetOrders.AvoidOrder.Create();
         }

@@ -41,7 +41,7 @@ namespace Supremacy.Resources
         {
             get
             {
-                
+
                 if (_commandLineMod != null)
                     return _commandLineMod;
                 GameContext gameContext = GameContext.Peek();
@@ -64,9 +64,9 @@ namespace Supremacy.Resources
                 _workingDirectory);
 
             ReadOnlyHardDiskSource modSource = new ReadOnlyHardDiskSource("CurrentMod", null)
-                            {
-                                PathResolver = ResolveModVfsRoot
-                            };
+            {
+                PathResolver = ResolveModVfsRoot
+            };
 
             /*
              * We want to probe the currently loaded mod's directory structure before the
@@ -74,7 +74,7 @@ namespace Supremacy.Resources
              */
             _vfsService.AddSource(modSource);
             _vfsService.AddSource(defaultSource);
-            
+
             AppDomain.CurrentDomain.SetData("DataDirectory", _workingDirectory);
 
             NeutralCulture = CultureInfo.GetCultureInfo("en");
@@ -179,7 +179,7 @@ namespace Supremacy.Resources
         {
             if (path == null)
                 return null;
-            
+
             Uri uri;
             if (Uri.TryCreate(path, UriKind.Absolute, out uri))
                 path = uri.GetComponents(UriComponents.Path, UriFormat.Unescaped);
@@ -192,7 +192,7 @@ namespace Supremacy.Resources
             if (CurrentMod != null)
             {
                 string modPath = GetSystemPathFormat(CurrentMod.RootPath);
-                
+
                 if (!Path.IsPathRooted(modPath))
                     modPath = Path.Combine(_workingDirectory, modPath);
 
@@ -218,7 +218,7 @@ namespace Supremacy.Resources
         {
             if (string.IsNullOrWhiteSpace(path))
                 return null;
-            
+
             Uri uri;
             if (Uri.TryCreate(path, UriKind.Absolute, out uri))
             {
@@ -231,11 +231,11 @@ namespace Supremacy.Resources
                 path = '/' + path;
 
             return new UriBuilder
-                   {
-                       Scheme = "vfs",
-                       Path = path,
-                       Host = null
-                   }.Uri;
+            {
+                Scheme = "vfs",
+                Path = path,
+                Host = null
+            }.Uri;
         }
 
         private static string GetInternalPathFormat(string path)

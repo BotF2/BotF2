@@ -163,10 +163,10 @@ namespace Supremacy.Tech
         {
             TechDatabase techDatabase = GameContext.Current.TechDatabase;
             ILookup<Tuple<ProductionCategory, int>, IGrouping<Tuple<ProductionCategory, int>, ProductionFacilityDesign>> nativeFacilities = (from id in _productionFacilityDesigns
-                                    let design = techDatabase.ProductionFacilityDesigns[id]
-                                    group design by new Tuple<ProductionCategory, int>(
-                                        design.Category,
-                                        GetMaxTechLevel(design))).ToLookup(o => o.Key, o => o);
+                                                                                                                                             let design = techDatabase.ProductionFacilityDesigns[id]
+                                                                                                                                             group design by new Tuple<ProductionCategory, int>(
+                                                                                                                                                 design.Category,
+                                                                                                                                                 GetMaxTechLevel(design))).ToLookup(o => o.Key, o => o);
 
             _productionFacilityDesigns.UnionWith(
                 tree.ProductionFacilityDesigns
@@ -503,7 +503,7 @@ namespace Supremacy.Tech
                             techTree.Merge(defaultTechTree);
                             civManager.TechTree = techTree;
                         }
-                        catch (Exception e) 
+                        catch (Exception e)
                         {
                             GameLog.Core.GameData.DebugFormat("TechTree exception {0} {1}", e.Message, e.StackTrace);
                         }

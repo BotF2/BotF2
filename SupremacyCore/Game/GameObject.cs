@@ -33,8 +33,8 @@ namespace Supremacy.Game
     // ReSharper restore RedundantExtendsListEntry
     {
         private int _objectId;
-        
-        [field:NonSerialized]
+
+        [field: NonSerialized]
         public event EventHandler ObjectIDChanged;
 
         protected GameObject()
@@ -114,17 +114,17 @@ namespace Supremacy.Game
         /// <summary>
         /// Occurs when a property value changes.
         /// </summary>
-        [field:NonSerialized]
+        [field: NonSerialized]
         public event PropertyChangedEventHandler PropertyChanged;
         #endregion
 
-    	public virtual void SerializeOwnedData([NotNull] SerializationWriter writer, [CanBeNull] object context)
-    	{
-    	    if (writer == null)
-    	        throw new ArgumentNullException("writer");
+        public virtual void SerializeOwnedData([NotNull] SerializationWriter writer, [CanBeNull] object context)
+        {
+            if (writer == null)
+                throw new ArgumentNullException("writer");
 
-    	    writer.WriteOptimized(_objectId);
-    	}
+            writer.WriteOptimized(_objectId);
+        }
 
         public virtual void DeserializeOwnedData([NotNull] SerializationReader reader, [CanBeNull] object context)
         {

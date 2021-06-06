@@ -130,7 +130,7 @@ namespace Supremacy.UI
             _animationClock = _animation.CreateClock();
 
             Loaded += OnLoaded;
-            
+
             Unloaded += OnUnloaded;
         }
         #endregion

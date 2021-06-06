@@ -51,7 +51,7 @@ namespace Supremacy.Combat
 
                 foreach (Tuple<CombatUnit, CombatWeapon[]> ship in easyRetreatShips)
                 {
-                    if (!RandomHelper.Chance(5) && (ship.Item1 != null)) 
+                    if (!RandomHelper.Chance(5) && (ship.Item1 != null))
                     {
                         CombatAssets ownerAssets = GetAssets(ship.Item1.Owner);
                         if (!ownerAssets.EscapedShips.Contains(ship.Item1)) // escaped ships cannot escape again
@@ -137,13 +137,13 @@ namespace Supremacy.Combat
 
             #region Construct empires (civs) in battle and Ships per empires arrays
             int[,] empiresInBattle = new int[12, 3]; // An Array of who is in the battle with what targets.
-                                                    // an Array with 2 Dimensions. First with up to 12 elements, 2nd with up to 3 elements.
-                                                    // 12 Elements can hold 12 participating empires (civilizations CivID OwnerID). 
-                                                    //empiresInBattle[0, 0] contains the CivID of the FirstPlayer
-                                                    //empiresInBattle[0, 1] contains the Target1 of that empire (civ As CivID as well)
-                                                    //empiresInBattle[0, 2] contains the Target2 of that empire.
-                                                    // Re-Start Array with 999 everywhere
-                                                    // Initialize first Array  // UPDATE X 25 june 2019 changed 11 to 12  
+                                                     // an Array with 2 Dimensions. First with up to 12 elements, 2nd with up to 3 elements.
+                                                     // 12 Elements can hold 12 participating empires (civilizations CivID OwnerID). 
+                                                     //empiresInBattle[0, 0] contains the CivID of the FirstPlayer
+                                                     //empiresInBattle[0, 1] contains the Target1 of that empire (civ As CivID as well)
+                                                     //empiresInBattle[0, 2] contains the Target2 of that empire.
+                                                     // Re-Start Array with 999 everywhere
+                                                     // Initialize first Array  // UPDATE X 25 june 2019 changed 11 to 12  
             for (int i = 0; i < 12; i++)
             {
                 for (int i2 = 0; i2 < 3; i2++)

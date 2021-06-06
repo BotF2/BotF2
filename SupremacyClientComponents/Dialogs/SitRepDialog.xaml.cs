@@ -39,11 +39,11 @@ namespace Supremacy.Client.Dialogs
             {
                 System.Windows.Controls.MenuItem menuItem = new System.Windows.Controls.MenuItem
                 {
-                                   StaysOpenOnClick = true,
-                                   IsCheckable = true,
-                                   IsChecked = (visibleCategories & category) == category,
-                                   Tag = category
-                               };
+                    StaysOpenOnClick = true,
+                    IsCheckable = true,
+                    IsChecked = (visibleCategories & category) == category,
+                    Tag = category
+                };
 
                 menuItem.SetBinding(
                     HeaderedItemsControl.HeaderProperty,
@@ -172,7 +172,7 @@ namespace Supremacy.Client.Dialogs
 
         public IEnumerable<SitRepEntry> SitRepEntries
         {
-            get 
+            get
             {
                 //_sitRepEntries.OrderBy(_sitRepEntries, SitRepPriority);
 
@@ -181,7 +181,7 @@ namespace Supremacy.Client.Dialogs
                 //{
                 //    item.
                 //}
-                return _sitRepEntries; 
+                return _sitRepEntries;
             }
             set
             {

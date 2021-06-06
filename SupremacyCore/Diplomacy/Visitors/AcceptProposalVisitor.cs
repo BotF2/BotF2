@@ -39,7 +39,7 @@ namespace Supremacy.Diplomacy.Visitors
                 , proposal.Sender.Key
                 , proposal.Recipient.Key
                 , proposal.Clauses[0].ClauseType
-                
+
                 );
 
             AcceptProposalVisitor visitor = new AcceptProposalVisitor(proposal);
@@ -120,7 +120,7 @@ namespace Supremacy.Diplomacy.Visitors
         protected override void VisitRequestHonorMilitaryAgreementClause(IClause clause) { /* TODO */ }
         //protected override void VisitOfferEndEmbargoClause(IClause clause) { /* TODO */ }
         //protected override void VisitRequestEndEmbargoClause(IClause clause) { /* TODO */ }
-        
+
         protected override void VisitWarPactClause(IClause clause)
         {
             Diplomat senderDiplomat = Diplomat.Get(Proposal.Sender);
@@ -133,7 +133,7 @@ namespace Supremacy.Diplomacy.Visitors
                     "Civilization {0} sent a war pact proposal to {1} without a valid target.",
                     senderDiplomat.Owner.ShortName,
                     recipientDiplomat.Owner.ShortName);
-                
+
                 return;
             }
 
@@ -147,7 +147,7 @@ namespace Supremacy.Diplomacy.Visitors
         }
 
         protected override void VisitTreatyCeaseFireClause(IClause clause) { /* TODO */ }
-        
+
         protected override void VisitTreatyNonAggressionClause(IClause clause)
         {
             /*
@@ -161,7 +161,7 @@ namespace Supremacy.Diplomacy.Visitors
 
         protected override void VisitTreatyOpenBordersClause(IClause clause)
         {
-            /* TODO */ 
+            /* TODO */
         }
         protected override void VisitTreatyTradePactClause(IClause clause) { /* TODO */ }
         protected override void VisitTreatyResearchPactClause(IClause clause) { /* TODO */ }

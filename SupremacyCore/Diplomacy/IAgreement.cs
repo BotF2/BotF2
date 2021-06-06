@@ -30,7 +30,7 @@ namespace Supremacy.Diplomacy
         int StartTurn { get; }
         int EndTurn { get; }
         IProposal Proposal { get; }
-        IDictionary<object, object> Data { get; } 
+        IDictionary<object, object> Data { get; }
     }
 
     [Serializable]

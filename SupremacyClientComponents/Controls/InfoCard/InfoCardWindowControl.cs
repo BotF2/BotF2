@@ -21,19 +21,19 @@ namespace Supremacy.Client.Controls
             DefaultStyleKeyProperty.OverrideMetadata(
                 typeof(InfoCardWindowControl),
                 new FrameworkPropertyMetadata(typeof(InfoCardWindowControl)));
-            
+
             VisibilityProperty.OverrideMetadata(
                 typeof(InfoCardWindowControl),
                 new FrameworkPropertyMetadata(Visibility.Collapsed));
-            
+
             DropShadowColorProperty.OverrideMetadata(
                 typeof(InfoCardWindowControl),
                 new FrameworkPropertyMetadata(Color.FromArgb(0x38, 0, 0, 0)));
-            
+
             HasDropShadowProperty.OverrideMetadata(
                 typeof(InfoCardWindowControl),
                 new FrameworkPropertyMetadata(true));
-            
+
             WindowStyleProperty.OverrideMetadata(
                 typeof(InfoCardWindowControl),
                 new FrameworkPropertyMetadata(WindowStyle.None));
@@ -43,12 +43,13 @@ namespace Supremacy.Client.Controls
                 new FrameworkPropertyMetadata(ResizeMode.NoResize));
         }
 
-        public InfoCardWindowControl(InfoCardHost container) {
+        public InfoCardWindowControl(InfoCardHost container)
+        {
             if (container == null)
                 throw new ArgumentNullException("container");
 
             InfoCardHost = container;
-            
+
             InfoCardHost.SetInfoCardWindow(this, this);
 
             Setup(container.Location);
@@ -134,7 +135,7 @@ namespace Supremacy.Client.Controls
 
         bool IInfoCardWindow.Activate()
         {
-            return (bool) Dispatcher.Invoke(
+            return (bool)Dispatcher.Invoke(
                 (Func<bool>)base.Activate,
                 DispatcherPriority.Input);
         }
@@ -222,7 +223,7 @@ namespace Supremacy.Client.Controls
 
             _isClosing = false;
         }
-        
+
         protected override void OnClosing(CancelRoutedEventArgs e)
         {
             base.OnClosing(e);

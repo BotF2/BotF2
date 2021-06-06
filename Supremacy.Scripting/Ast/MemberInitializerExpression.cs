@@ -26,7 +26,7 @@ namespace Supremacy.Scripting.Ast
             string memberName = MemberName;
             MemberInfo memberInfo = (MemberInfo)leftSide.Type.GetProperty(memberName) ??
                              leftSide.Type.GetField(memberName);
-            
+
             return new NewInitMemberBinding(
                 memberInfo,
                 _value).Resolve(parseContext);

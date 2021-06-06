@@ -248,12 +248,12 @@ namespace Supremacy.Intelligence
                 if (nextCiv == localCivAttacker)
                 {
                     if (RandomHelper.Chance(2))
-                        blamed = ResourceManager.GetString("SITREP_SABOTAGE_TERRORISTS"); 
-                    else blamed = ResourceManager.GetString("SITREP_SABOTAGE_NO_ONE"); 
+                        blamed = ResourceManager.GetString("SITREP_SABOTAGE_TERRORISTS");
+                    else blamed = ResourceManager.GetString("SITREP_SABOTAGE_NO_ONE");
                 }
                 else
-                    blamed = nextCiv.ShortName;                
-            }        
+                    blamed = nextCiv.ShortName;
+            }
             return blamed;
         }
 
@@ -264,7 +264,7 @@ namespace Supremacy.Intelligence
             CivilizationManager attackingCivManager = GameContext.Current.CivilizationManagers[attackingCiv];
             SendStatementOrder _sendOrder = new SendStatementOrder(new Statement(attackingCiv, attackedCiv, StatementType.StealCredits, Tone.Enraged, blamed, GameContext.Current.TurnNumber));
             _sendOrder.Owner = attackingCiv;
-            GameLog.Core.Diplomacy.DebugFormat("Create Statement for StealCredits: "+ Environment.NewLine 
+            GameLog.Core.Diplomacy.DebugFormat("Create Statement for StealCredits: " + Environment.NewLine
                 + "sender = {0} *vs* Recipient = {1}:   StatementType = {2} Tone ={3}, blamed = {4}"
                                 , attackingCiv, attackedCiv, _sendOrder.Statement.ToString(), _sendOrder.Statement.Tone.ToString(), blamed + Environment.NewLine);
             ServiceLocator.Current.GetInstance<IPlayerOrderService>().AddOrder(_sendOrder);
@@ -367,9 +367,9 @@ namespace Supremacy.Intelligence
 
 
 
-            //  ATTACKING CIV - Intel Points
+        //  ATTACKING CIV - Intel Points
 
-            stolenCreditsIsMinusOne:;   // pushing buttons makes always 'intel costs'
+        stolenCreditsIsMinusOne:;   // pushing buttons makes always 'intel costs'
 
             Attack_ING_IntelPoints_before = attackMeter.CurrentValue.ToString();
             attackMeter.AdjustCurrent(defenseIntelligence / 2 * -1); // divided by two, it's more than on defense side
@@ -385,7 +385,7 @@ namespace Supremacy.Intelligence
             string attack_ING_before = "attackING = " + attackingCiv.Key + " BEFORE: Credits: " + Attack_ING_stuff_before + " stolen= " + stolenCredits + " - IP: "
                 + Attack_ING_IntelPoints_before;
             string attack_ING_after = "attackING = " + attackingCiv.Key + " AFTER : Credits: " + Attack_ING_stuff_after + " stolen= " + stolenCredits + " - IP: "
-                + Attack_ING_IntelPoints_after + " IPcosts= " + Attack_ING_IntelPointCosts; 
+                + Attack_ING_IntelPoints_after + " IPcosts= " + Attack_ING_IntelPointCosts;
 
             GameLog.Core.Intel.DebugFormat(attack_ED_before);
             GameLog.Core.Intel.DebugFormat(attack_ED_after);
@@ -403,7 +403,7 @@ namespace Supremacy.Intelligence
             // Sitreps   attack*ed* and attack*ing*
             attackedCivManager.SitRepEntries.Add(new NewSabotagedSitRepEntry(
                    attackingCiv, attackedCiv, colony, affectedField, stolenCredits, newCreditsAttacked, blamed, ratioLevel));
-            
+
             attackingCivManager.SitRepEntries.Add(new NewSabotagingSitRepEntry(
                     attackedCiv, attackingCiv, colony, affectedField, stolenCredits, newCreditsAttacked, blamed, ratioLevel));
         }
@@ -519,9 +519,9 @@ namespace Supremacy.Intelligence
 
 
 
-            //  ATTACKING CIV - Intel Points
+        //  ATTACKING CIV - Intel Points
 
-            stolenResearchPointsIsMinusOne:;   // pushing buttons makes always 'intel costs'
+        stolenResearchPointsIsMinusOne:;   // pushing buttons makes always 'intel costs'
 
             Attack_ING_IntelPoints_before = attackMeter.CurrentValue.ToString();
             attackMeter.AdjustCurrent(defenseIntelligence / 2 * -1); // divided by two, it's more than on defense side
@@ -666,9 +666,9 @@ namespace Supremacy.Intelligence
 
 
 
-            //  ATTACKING CIV - Intel Points
+        //  ATTACKING CIV - Intel Points
 
-            NoActionFood:;   // pushing buttons makes always 'intel costs'
+        NoActionFood:;   // pushing buttons makes always 'intel costs'
 
             Attack_ING_IntelPoints_before = attackMeter.CurrentValue.ToString();
             attackMeter.AdjustCurrent(defenseIntelligence / 2 * -1); // divided by two, it's more than on defense side
@@ -791,9 +791,9 @@ namespace Supremacy.Intelligence
 
 
 
-            //  ATTACKING CIV - Intel Points
+        //  ATTACKING CIV - Intel Points
 
-            NoActionEnergy:;   // pushing buttons makes always 'intel costs'
+        NoActionEnergy:;   // pushing buttons makes always 'intel costs'
 
             Attack_ING_IntelPoints_before = attackMeter.CurrentValue.ToString();
             attackMeter.AdjustCurrent(defenseIntelligence / 2 * -1); // divided by two, it's more than on defense side
@@ -915,9 +915,9 @@ namespace Supremacy.Intelligence
 
 
 
-            //  ATTACKING CIV - Intel Points
+        //  ATTACKING CIV - Intel Points
 
-            NoActionIndustry:;   // pushing buttons makes always 'intel costs'
+        NoActionIndustry:;   // pushing buttons makes always 'intel costs'
 
             Attack_ING_IntelPoints_before = attackMeter.CurrentValue.ToString();
             attackMeter.AdjustCurrent(defenseIntelligence / 2 * -1); // divided by two, it's more than on defense side
@@ -988,7 +988,7 @@ namespace Supremacy.Intelligence
             Colony attackedHomeSystemLocation = attackedCivManager.SeatOfGovernment;
             IEnumerable<Fleet> fleetsAtSetOfGovernment = attackedHomeSystemLocation.Sector.GetFleets();
             int attackingSpyShips = fleetsAtSetOfGovernment.Where(s => s.IsSpy && s.Owner == attackingCivManager.Civilization).ToList().Count();//Where(x => x.ShipType.ToString() == "Spy")).ToList();
-                 
+
             if (attackingSpyShips > 0)
             {
                 return true;

@@ -25,7 +25,7 @@ using Supremacy.Collections;
 using Supremacy.Utility;
 
 namespace Supremacy.Effects
-{       
+{
     public static class EffectSystem
     {
         private static readonly StateScope SuspendEffectsScope;
@@ -33,7 +33,7 @@ namespace Supremacy.Effects
         private static CompositeDisposer SuspendedEffectsHandle;
 
         public static object SyncRoot { get; private set; }
-        
+
         static EffectSystem()
         {
             SyncRoot = new object();
@@ -61,7 +61,7 @@ namespace Supremacy.Effects
                     if (disposer != null)
                         disposer.Dispose();
                 }
-                
+
             }
         }
 
@@ -69,7 +69,7 @@ namespace Supremacy.Effects
         {
             if (effectSource == null)
                 throw new ArgumentNullException("effectSource");
-            
+
             lock (SyncRoot)
             {
                 if (RegisteredSources.ContainsKey(effectSource))
@@ -279,27 +279,27 @@ namespace Supremacy.Effects
                     case NotifyCollectionChangedAction.Add:
                     case NotifyCollectionChangedAction.Remove:
                     case NotifyCollectionChangedAction.Replace:
-                    {
-                        newItems = e.NewItems;
-                        oldItems = e.OldItems;
-                        break;
-                    }
-                
+                        {
+                            newItems = e.NewItems;
+                            oldItems = e.OldItems;
+                            break;
+                        }
+
                     case NotifyCollectionChangedAction.Reset:
-                    {
+                        {
                             HashSet<object> currentItems = scope.OfType<object>().ToHashSet();
-                        
-                        currentItems.ExceptWith(_attachedTargets);
-                        newItems = currentItems;
 
-                        currentItems = scope.OfType<object>().ToHashSet();
-                        _attachedTargets.ExceptWith(currentItems);
-                        oldItems = _attachedTargets;
+                            currentItems.ExceptWith(_attachedTargets);
+                            newItems = currentItems;
 
-                        _attachedTargets.Clear();
+                            currentItems = scope.OfType<object>().ToHashSet();
+                            _attachedTargets.ExceptWith(currentItems);
+                            oldItems = _attachedTargets;
 
-                        break;
-                    }
+                            _attachedTargets.Clear();
+
+                            break;
+                        }
 
                     default:
                     case NotifyCollectionChangedAction.Move:
@@ -324,7 +324,7 @@ namespace Supremacy.Effects
                     _activationTest = null;
                     _scope = null;
                     _lastScopeValue = null;
-                    
+
                 }
                 finally
                 {

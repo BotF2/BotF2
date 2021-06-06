@@ -18,7 +18,7 @@ namespace Supremacy.Universe
     /// on <see cref="Supremacy.Universe.UniverseObject.ObjectID"/>.
     /// </summary>
     [Serializable]
-    public class UniverseObjectSet : 
+    public class UniverseObjectSet :
         IndexedCollection<UniverseObject>,
         IKeyedCollection<int, UniverseObject>,
         IOwnedDataSerializableAndRecreatable
@@ -26,7 +26,7 @@ namespace Supremacy.Universe
         [NonSerialized]
         private Index _objectIdIndex;
 
-        public UniverseObjectSet() 
+        public UniverseObjectSet()
             : base(InfiniteMaxKeyCount)
         {
             IsChangeNotificationEnabled = true;

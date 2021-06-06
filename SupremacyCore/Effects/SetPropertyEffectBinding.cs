@@ -90,7 +90,7 @@ namespace Supremacy.Effects
         private class EffectPropertyModifier : DynamicPropertyModifier<TValue>
         {
             private readonly SetPropertyEffectBinding<TValue> _effectBinding;
-            
+
             private IValueProvider<TValue> _currentValueProvider;
 
             internal EffectPropertyModifier([NotNull] SetPropertyEffectBinding<TValue> effectBinding)

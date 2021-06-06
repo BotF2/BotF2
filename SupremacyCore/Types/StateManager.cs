@@ -218,7 +218,7 @@ namespace Supremacy.Types
 
             if (TryParse(type, value, out result))
                 return result;
-            
+
             throw new InvalidOperationException(
                 string.Format(
                     CultureInfo.InvariantCulture,
@@ -428,10 +428,10 @@ namespace Supremacy.Types
                     }
 
                     return new StaticExtension
-                           {
-                               MemberType = state.GetType(),
-                               Member = state.Name
-                           };
+                    {
+                        MemberType = state.GetType(),
+                        Member = state.Name
+                    };
                 }
 
                 if (destinationType == typeof(int))

@@ -192,7 +192,7 @@ namespace Supremacy.Client.Controls
         #endregion
 
         #region CustomPlacementCallback Property
-        public static readonly DependencyProperty CustomPlacementCallbackProperty = 
+        public static readonly DependencyProperty CustomPlacementCallbackProperty =
             InfoCardService.CustomInfoCardPlacementCallbackProperty.AddOwner(typeof(InfoCard));
 
         public CustomInfoCardPlacementCallback CustomPlacementCallback
@@ -378,7 +378,7 @@ namespace Supremacy.Client.Controls
                 throw new ArgumentNullException("d");
             return (bool)d.GetValue(IsCurrentlyOpenProperty);
         }
-        
+
         internal static void SetIsCurrentlyOpen(DependencyObject d, bool value)
         {
             if (d == null)
@@ -795,7 +795,7 @@ namespace Supremacy.Client.Controls
         protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e)
         {
             base.OnMouseLeftButtonDown(e);
-            
+
             if (e.Handled)
                 return;
 

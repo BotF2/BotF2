@@ -162,7 +162,7 @@ namespace Supremacy.VFS
         public IFilesSource GetSource(string sourceName)
         {
             IFilesSource source;
-            
+
             if (_sources.TryGetValue(sourceName, out source))
                 return source;
 
@@ -243,7 +243,7 @@ namespace Supremacy.VFS
             IEnumerable<IVirtualFileInfo> fileInfos = _sources
                 .Select(o => o.GetFileInfo(path, recurse))
                 .Where(o => (o != null));
-            
+
             switch (FileResolutionMode)
             {
                 case VfsFileResolutionMode.ReturnNewestMatch:
@@ -283,7 +283,7 @@ namespace Supremacy.VFS
             IEnumerable<IVirtualFileInfo> fileInfos = _sources
                 .Select(o => o.GetFileInfo(path, recurse))
                 .Where(o => (o != null) && o.Exists);
-            
+
             switch (FileResolutionMode)
             {
                 case VfsFileResolutionMode.ReturnNewestMatch:

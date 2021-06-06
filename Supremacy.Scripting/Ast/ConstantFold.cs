@@ -77,7 +77,7 @@ namespace Supremacy.Scripting.Ast
         internal static void Error_CompileTimeOverflow(ParseContext rc, SourceSpan loc)
         {
             rc.ReportError(
-                220, 
+                220,
                 "The operation overflows at compile time in checked mode.",
                 loc);
         }
@@ -851,7 +851,8 @@ namespace Supremacy.Scripting.Ast
 
                         return left is ConstantExpression<string> && right is ConstantExpression<string>
                             ? new ConstantExpression<bool>(
-                                ((ConstantExpression<string>)left).Value == ((ConstantExpression<string>)right).Value) { Span = left.Span }
+                                ((ConstantExpression<string>)left).Value == ((ConstantExpression<string>)right).Value)
+                            { Span = left.Span }
                             : null;
                     }
 
@@ -907,7 +908,8 @@ namespace Supremacy.Scripting.Ast
 
                         return left is ConstantExpression<string> && right is ConstantExpression<string>
                             ? new ConstantExpression<bool>(
-                                ((ConstantExpression<string>)left).Value != ((ConstantExpression<string>)right).Value) { Span = left.Span }
+                                ((ConstantExpression<string>)left).Value != ((ConstantExpression<string>)right).Value)
+                            { Span = left.Span }
                             : null;
                     }
 

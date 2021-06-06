@@ -150,7 +150,7 @@ namespace Supremacy.Entities
             }
             else
             {
-                _habitablePlanetTypes = PlanetTypeFlags.StandardHabitablePlanets;                
+                _habitablePlanetTypes = PlanetTypeFlags.StandardHabitablePlanets;
             }
 
             HomePlanetType = homePlanetType.Value;

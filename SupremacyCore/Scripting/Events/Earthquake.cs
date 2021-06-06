@@ -22,7 +22,7 @@ namespace Supremacy.Scripting.Events
         private bool _productionFinished;
         private bool _shipProductionFinished;
         private int _occurrenceChance = 100000;
-        
+
         [NonSerialized]
         private List<BuildProject> _affectedProjects;
 

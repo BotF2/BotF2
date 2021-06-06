@@ -97,15 +97,15 @@ namespace Supremacy.UI
         public Star2D(StarType starType)
         {
             _grid = new Grid
-                    {
-                        Width = 128,
-                        Height = 128,
-                        Background = Brushes.Transparent,
-                        Clip = new EllipseGeometry(
+            {
+                Width = 128,
+                Height = 128,
+                Background = Brushes.Transparent,
+                Clip = new EllipseGeometry(
                             new Point(63, 63),
                             56,
                             56)
-                    };
+            };
 
             Initialize(starType);
 
@@ -201,7 +201,7 @@ namespace Supremacy.UI
                 {
                     animations[i].KeyFrames.Add(
                         new DiscreteDoubleKeyFrame(
-                            0.0, 
+                            0.0,
                             KeyTime.FromTimeSpan(new TimeSpan(0, 0, secondsPerTransition * (i - 1)))));
                     animations[i].KeyFrames.Add(
                         new LinearDoubleKeyFrame(

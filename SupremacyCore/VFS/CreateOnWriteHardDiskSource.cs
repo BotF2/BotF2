@@ -63,7 +63,7 @@ namespace Supremacy.VFS
 
         private void OnCreateStreamClosed(object sender, EventArgs args)
         {
-            EndCreateStreamTracking((CreateOnWriteStream) sender);
+            EndCreateStreamTracking((CreateOnWriteStream)sender);
         }
 
         private void EndCreateStreamTracking([NotNull] CreateOnWriteStream stream)

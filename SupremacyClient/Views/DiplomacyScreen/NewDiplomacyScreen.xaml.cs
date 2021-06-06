@@ -52,7 +52,7 @@ namespace Supremacy.Client.Views.DiplomacyScreen
                     return;
 
                 _isActive = value;
-                
+
                 IsActiveChanged.Raise(this);
             }
         }
@@ -143,8 +143,8 @@ namespace Supremacy.Client.Views.DiplomacyScreen
             }
         }
 
-    #region INodeGraphPenSelector Members
-    public Pen GetPen(object parentNode, object childNode)
+        #region INodeGraphPenSelector Members
+        public Pen GetPen(object parentNode, object childNode)
         {
             DiplomacyGraphNode node1 = parentNode as DiplomacyGraphNode;
             DiplomacyGraphNode node2 = childNode as DiplomacyGraphNode;

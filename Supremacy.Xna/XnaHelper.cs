@@ -160,19 +160,19 @@ namespace Supremacy.Xna
             }
 
             PresentationParameters presentationParameters = new PresentationParameters
-                                         {
-                                             AutoDepthStencilFormat = depthFormat,
-                                             BackBufferCount = 1,
-                                             BackBufferFormat = backBufferFormat,
-                                             BackBufferWidth = backBufferSize.Width,
-                                             BackBufferHeight = backBufferSize.Height,
-                                             EnableAutoDepthStencil = enableDepthStencil,
-                                             IsFullScreen = false,
-                                             SwapEffect = SwapEffect.Discard,
-                                             MultiSampleType = MultiSampleType.None,
-                                             MultiSampleQuality = 0,
-                                             PresentOptions = PresentOptions.None
-                                         };
+            {
+                AutoDepthStencilFormat = depthFormat,
+                BackBufferCount = 1,
+                BackBufferFormat = backBufferFormat,
+                BackBufferWidth = backBufferSize.Width,
+                BackBufferHeight = backBufferSize.Height,
+                EnableAutoDepthStencil = enableDepthStencil,
+                IsFullScreen = false,
+                SwapEffect = SwapEffect.Discard,
+                MultiSampleType = MultiSampleType.None,
+                MultiSampleQuality = 0,
+                PresentOptions = PresentOptions.None
+            };
 
             if (preferMultiSampling &&
                 deviceType == DeviceType.Hardware)
@@ -218,7 +218,7 @@ namespace Supremacy.Xna
                     device.SamplerStates[0].MinFilter = TextureFilter.Anisotropic;
                     device.SamplerStates[0].MagFilter = TextureFilter.Anisotropic;
                     device.SamplerStates[0].MaxAnisotropy = Math.Min(
-                        graphicsCapabilities.MaxAnisotropy, 
+                        graphicsCapabilities.MaxAnisotropy,
                         DesiredMaxAnisotropy);
                 }
             }

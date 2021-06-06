@@ -143,7 +143,7 @@ namespace Supremacy.Scripting.Ast
             }
 
             Arguments.Resolve(parseContext);
-            
+
             return this;
         }
 
@@ -174,7 +174,7 @@ namespace Supremacy.Scripting.Ast
                 if (i != 0)
                 {
                     sw.Write(",");
-                    
+
                     if (argument.Span.Start.Line != lastStartLine)
                     {
                         sw.WriteLine();

@@ -14,7 +14,7 @@ using Microsoft.Practices.Unity;
 using Supremacy.Annotations;
 using Supremacy.Client.Commands;
 using Supremacy.Client.Events;
-using NavigationCommands=Supremacy.Client.Commands.NavigationCommands;
+using NavigationCommands = Supremacy.Client.Commands.NavigationCommands;
 using Supremacy.UI;
 using Supremacy.Utility;
 
@@ -64,7 +64,7 @@ namespace Supremacy.Client
             IsActiveChanged += OnIsActiveChanged;
 
             //this.IsActive = true;
-            
+
             //ClientCommands.ShowSaveGameDialog.RegisterCommand(SaveGameCommand);
 
             CommandBindings.Add(
@@ -76,7 +76,7 @@ namespace Supremacy.Client
                         ServiceLocator.Current.GetInstance<LoadGameDialog>().ShowDialog();
                     },
                     (s, e) => e.CanExecute = ClientCommands.LoadGame.CanExecute(null)));
- 
+
             CommandBindings.Add(
                 new CommandBinding(
                     SaveGameCommand,

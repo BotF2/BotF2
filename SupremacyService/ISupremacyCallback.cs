@@ -13,7 +13,7 @@ using Supremacy.Combat;
 using Supremacy.Game;
 
 namespace Supremacy.WCF
-{   
+{
     public interface ISupremacyCallback
     {
         [OperationContract(IsOneWay = true)]

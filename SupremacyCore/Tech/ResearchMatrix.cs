@@ -298,7 +298,7 @@ namespace Supremacy.Tech
                     string.Format(
                         @"vfs:///Resources/Images/Research/Fields/{0}.png",
                         ResourceManager.GetString(_name)));
-                
+
                 if (File.Exists(imagePath))
                     return ResourceManager.GetResourceUri(imagePath).ToString();
 
@@ -340,7 +340,7 @@ namespace Supremacy.Tech
         {
             if (element == null)
                 throw new ArgumentNullException("element");
-            
+
             if (element["Name"] != null)
             {
                 _name = element["Name"].InnerText.Trim();
@@ -363,7 +363,7 @@ namespace Supremacy.Tech
                     _applications.Add(new ResearchApplication(appElement));
                 }
                 _applications.Sort(
-                    delegate(ResearchApplication left, ResearchApplication right)
+                    delegate (ResearchApplication left, ResearchApplication right)
                     {
                         if (left == null)
                             return -1;

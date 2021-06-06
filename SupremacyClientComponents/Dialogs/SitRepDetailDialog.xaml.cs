@@ -27,7 +27,7 @@ namespace Supremacy.Client.Dialogs
                 , sitRepEntry.HasSoundEffect
                 , GameContext.Current.TurnNumber
                 );
-            
+
             DataContext = sitRepEntry;
             InitializeComponent();
 

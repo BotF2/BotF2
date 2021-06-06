@@ -45,12 +45,12 @@ namespace Supremacy.Client.Behaviors
                     return;
 
                 Rect rect = new Rect
-                           {
-                               X = StartPoint.X + Math.Min(0, EndPoint.Value.X - StartPoint.X),
-                               Y = StartPoint.Y + Math.Min(0, EndPoint.Value.Y - StartPoint.Y),
-                               Width = Math.Abs(EndPoint.Value.X - StartPoint.X),
-                               Height = Math.Abs(EndPoint.Value.Y - StartPoint.Y)
-                           };
+                {
+                    X = StartPoint.X + Math.Min(0, EndPoint.Value.X - StartPoint.X),
+                    Y = StartPoint.Y + Math.Min(0, EndPoint.Value.Y - StartPoint.Y),
+                    Width = Math.Abs(EndPoint.Value.X - StartPoint.X),
+                    Height = Math.Abs(EndPoint.Value.Y - StartPoint.Y)
+                };
 
                 drawingContext.PushGuidelineSet(
                     new GuidelineSet(

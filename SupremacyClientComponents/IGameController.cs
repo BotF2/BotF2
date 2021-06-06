@@ -309,9 +309,9 @@ namespace Supremacy.Client
             IGameContext currentGame = _appContext.CurrentGame;
             if (currentGame == null)
                 return;
-            
+
             ClientEvents.ScreenRefreshRequired.Publish(ClientEventArgs.Default);
-            
+
             if (!_firstTurnStarted)
             {
                 _firstTurnStarted = true;
@@ -458,7 +458,7 @@ namespace Supremacy.Client
                 foreach (IPresenter presenter in _screenPresenters)
                 {
                     try
-                    { 
+                    {
                         presenter.Run();
                         initializedPresenters.Add(presenter);
                         GameLog.Client.UI.DebugFormat("DONE: {0}", presenter.ToString());

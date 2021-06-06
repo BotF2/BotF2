@@ -93,7 +93,7 @@ namespace Supremacy.Client
         private void ClassText_OnGotFocus(object sender, RoutedEventArgs e)
         {
             TextBox classText = e.Source as TextBox;
-            if (classText== null)
+            if (classText == null)
                 return;
             _previousClassText = classText.Text;
         }
@@ -125,7 +125,7 @@ namespace Supremacy.Client
                 return;
             //if (String.IsNullOrEmpty(classText.Text.Trim()) || String.Equals(ship.ClassName, ship.ShipDesign.ClassName))
             //    ship.Class = null;
-                ServiceLocator.Current.GetInstance<IPlayerOrderService>().AddOrder(new SetObjectNameOrder(ship, ship.ClassName));
+            ServiceLocator.Current.GetInstance<IPlayerOrderService>().AddOrder(new SetObjectNameOrder(ship, ship.ClassName));
         }
 
     }

@@ -169,7 +169,7 @@ namespace Supremacy.Text
                         }
 
                         string tag = sb.ToString();
-                       
+
                         if (tag.Length > 0)
                         {
                             string parameter = (string)null;
@@ -256,49 +256,49 @@ namespace Supremacy.Text
             switch (inlineType)
             {
                 case InlineType.Hyperlink:
-                {
-                    if (!Uri.TryCreate(param, UriKind.Absolute, out navigateUri))
-                        navigateUri = EmptyLinkUri;
-                    break;
-                }
+                    {
+                        if (!Uri.TryCreate(param, UriKind.Absolute, out navigateUri))
+                            navigateUri = EmptyLinkUri;
+                        break;
+                    }
 
                 case InlineType.Bold:
-                {
-                    currentStyle.FontWeight = FontWeights.Bold;
-                    break;
-                }
+                    {
+                        currentStyle.FontWeight = FontWeights.Bold;
+                        break;
+                    }
 
                 case InlineType.Italic:
-                {
-                    currentStyle.FontStyle = FontStyles.Italic;
-                    break;
-                }
+                    {
+                        currentStyle.FontStyle = FontStyles.Italic;
+                        break;
+                    }
 
                 case InlineType.Underline:
-                {
-                    currentStyle.Effect = TextEffectStyle.StraightUnderline;
-                    break;
-                }
+                    {
+                        currentStyle.Effect = TextEffectStyle.StraightUnderline;
+                        break;
+                    }
 
                 case InlineType.Colored:
-                {
-                    currentStyle.Foreground = (Brush)_brushConverter.ConvertFromInvariantString(param);
+                    {
+                        currentStyle.Foreground = (Brush)_brushConverter.ConvertFromInvariantString(param);
 
-                    if (currentStyle.Foreground != null && currentStyle.Foreground.CanFreeze)
-                        currentStyle.Foreground.Freeze();
+                        if (currentStyle.Foreground != null && currentStyle.Foreground.CanFreeze)
+                            currentStyle.Foreground.Freeze();
 
-                    break;
-                }
+                        break;
+                    }
 
                 case InlineType.Foreground:
-                {
+                    {
                         Match match = _resourceReferenceRegex.Match(param);
-                    if (match.Success)
-                        currentStyle.Foreground = Application.Current != null ? Application.Current.TryFindResource(match.Groups["ResourceKey"].Value) as Brush : null;
-                    else
-                        currentStyle.Foreground = (Brush)_brushConverter.ConvertFromInvariantString(param);
-                    break;
-                }
+                        if (match.Success)
+                            currentStyle.Foreground = Application.Current != null ? Application.Current.TryFindResource(match.Groups["ResourceKey"].Value) as Brush : null;
+                        else
+                            currentStyle.Foreground = (Brush)_brushConverter.ConvertFromInvariantString(param);
+                        break;
+                    }
             }
         }
 
