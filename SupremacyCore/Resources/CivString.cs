@@ -130,7 +130,7 @@ namespace Supremacy.Resources
         #region Methods
         protected void LookupValue()
         {
-            var civ = Civilization;
+            Civilization civ = Civilization;
             if ((civ == null) && (ClientContext != null) && (ClientContext.LocalPlayer != null))
                 civ = ClientContext.LocalPlayer.Empire;
             _cachedValue = CivStringDatabase.GetString(civ, Category, _stringKey, _demeanor, _randomIndex);
@@ -166,7 +166,7 @@ namespace Supremacy.Resources
         {
             try
             {
-                var ns = XNamespace.Get("Supremacy:CivStringDatabase.xsd");
+                XNamespace ns = XNamespace.Get("Supremacy:CivStringDatabase.xsd");
 
                 s_databaseXml = XDocument.Load(
                     ResourceManager.GetResourcePath("vfs:///Resources/Data/CivStringDatabase.xml"),
@@ -298,7 +298,7 @@ namespace Supremacy.Resources
             if (Equals(specifiedCulture, ResourceManager.NeutralCulture))
                 return true;
 
-            var specifiedNeutralCulture = specifiedCulture;
+            CultureInfo specifiedNeutralCulture = specifiedCulture;
             while (!specifiedNeutralCulture.IsNeutralCulture)
                 specifiedNeutralCulture = specifiedNeutralCulture.Parent;
 
@@ -324,13 +324,13 @@ namespace Supremacy.Resources
                 GameLog.Core.GameData.Error(e);
                 return false;
             }
-            
-            var currentCulture = ResourceManager.CurrentCulture;
+
+            CultureInfo currentCulture = ResourceManager.CurrentCulture;
             if (Equals(currentCulture, specifiedCulture))
                 return true;
 
-            var currentNeutralCulture = currentCulture;
-            var specifiedNeutralCulture = specifiedCulture;
+            CultureInfo currentNeutralCulture = currentCulture;
+            CultureInfo specifiedNeutralCulture = specifiedCulture;
             
             while (!currentNeutralCulture.IsNeutralCulture &&
                    (currentNeutralCulture.Parent != currentNeutralCulture))
@@ -367,7 +367,7 @@ namespace Supremacy.Resources
             if (key == null)
                 throw new ArgumentNullException("key");
 
-            var result = s_searchFunctions
+            IEnumerable<string> result = s_searchFunctions
                 .Select(searchFunction => searchFunction(civKey, category, key, demeanor))
                 .Where(results => results.Any())
                 .FirstOrDefault();

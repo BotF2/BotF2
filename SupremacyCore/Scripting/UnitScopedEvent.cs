@@ -78,7 +78,7 @@ namespace Supremacy.Scripting
             if (unit == null)
                 throw new ArgumentNullException("unit");
 
-            var owner = unit.Owner;
+            Civilization owner = unit.Owner;
             if (owner != null && !CanTargetCivilization(owner))
                 return false;
 
@@ -98,7 +98,7 @@ namespace Supremacy.Scripting
             if (unit == null)
                 throw new ArgumentNullException("unit");
 
-            var owner = unit.Owner;
+            Civilization owner = unit.Owner;
             if (owner != null)
                 OnCivilizationTargeted(owner);
 
@@ -115,7 +115,7 @@ namespace Supremacy.Scripting
 
             HashSet<int> removedItems = null;
 
-            foreach (var entry in _unitTargetHistory)
+            foreach (UnitTargetHistoryEntry entry in _unitTargetHistory)
             {
                 if ((GameContext.Current.TurnNumber - entry.TurnNumber) > UnitRecurrencePeriod)
                 {
@@ -128,7 +128,7 @@ namespace Supremacy.Scripting
             if (removedItems == null)
                 return;
 
-            foreach (var civId in removedItems)
+            foreach (int civId in removedItems)
                 _unitTargetHistory.Remove(civId);
         }
 

@@ -323,7 +323,7 @@ namespace Supremacy.Scripting.Ast
             SourceSpan loc,
             bool silent = false)
         {
-            var checker = new MethodConstraintChecker(
+            MethodConstraintChecker checker = new MethodConstraintChecker(
                 definition,
                 instantiated.DeclaringType,
                 definition.GetGenericArguments(),

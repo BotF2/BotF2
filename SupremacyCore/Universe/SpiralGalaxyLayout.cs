@@ -60,8 +60,8 @@ namespace Supremacy.Universe
                     continue;
                 }
 
-                var newNode = new MapLocationQuadtreeNode(position);
-                var nearest = FindNearestNeighborDistance(newNode, positions);
+                MapLocationQuadtreeNode newNode = new MapLocationQuadtreeNode(position);
+                double nearest = FindNearestNeighborDistance(newNode, positions);
                 if (nearest < GalaxyGenerator.MinDistanceBetweenStars)
                 {
                     if (attempts < (MaxStarPlacementAttempts - 1))

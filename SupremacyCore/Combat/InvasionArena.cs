@@ -661,7 +661,7 @@ namespace Supremacy.Combat
                 }
                 if (!invasionArena.Invader.IsHuman)
                 {
-                    var transports = invasionArena.InvadingUnits.Where(n => n.Design.Key.Contains("TRANSPORT")).ToArray();
+                    InvasionUnit[] transports = invasionArena.InvadingUnits.Where(n => n.Design.Key.Contains("TRANSPORT")).ToArray();
 
                     if (invasionArena.HasOrbitalDefenses)
                     {

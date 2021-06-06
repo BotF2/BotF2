@@ -47,13 +47,13 @@ namespace Supremacy.Universe
 
             xmlRoot = xmlDoc.DocumentElement;
 
-            var separator = ";";
+            string separator = ";";
             //var line = "";
             StreamWriter streamWriter;
             StreamWriter streamWriter2;
-            var pathOutputFile = "./Resources/Data/";  // instead of ./Resources/Data/
-            var file = "./lib/test-FromHomeSystems.txt";
-            var file2 = "./lib/test2-FromHomeSystems.txt";
+            string pathOutputFile = "./Resources/Data/";  // instead of ./Resources/Data/
+            string file = "./lib/test-FromHomeSystems.txt";
+            string file2 = "./lib/test2-FromHomeSystems.txt";
             streamWriter = new StreamWriter(file);
             streamWriter2 = new StreamWriter(file2);
             streamWriter.Close();
@@ -556,7 +556,7 @@ namespace Supremacy.Universe
             if (xmlNode["Inhabitants"] != null)
                 Inhabitants = xmlNode["Inhabitants"].InnerText.Trim().ToUpperInvariant();
 
-            var bonusElements = xmlNode.GetElementsByTagName("Bonus");
+            XmlNodeList bonusElements = xmlNode.GetElementsByTagName("Bonus");
             if (bonusElements.Count > 0)
             {
                 _bonuses = SystemBonus.NoBonus;
@@ -574,21 +574,21 @@ namespace Supremacy.Universe
                     Planets.Add(new PlanetDescriptor(planetElement));
             }
 
-            var startingLevelTech = xmlNode.GetElementsByTagName("TechLevel");
+            XmlNodeList startingLevelTech = xmlNode.GetElementsByTagName("TechLevel");
             if (startingLevelTech.Count > 0)
             {
-                var curStartingLevel = GameContext.Current.Options.StartingTechLevel.ToString().ToUpperInvariant();
+                string curStartingLevel = GameContext.Current.Options.StartingTechLevel.ToString().ToUpperInvariant();
                 foreach (XmlElement techLevel in startingLevelTech)
                 {
                     if (techLevel.HasAttribute("Name"))
                     {
-                        var techLevelName = techLevel.GetAttribute("Name").Trim().ToUpperInvariant();
+                        string techLevelName = techLevel.GetAttribute("Name").Trim().ToUpperInvariant();
                         if (techLevelName.Equals(curStartingLevel))
                         {
                             // population ratio
                             if (techLevel.HasAttribute("PopulationRatio"))
                             {
-                                var popRatio = techLevel.GetAttribute("PopulationRatio").Trim().ToUpperInvariant();
+                                string popRatio = techLevel.GetAttribute("PopulationRatio").Trim().ToUpperInvariant();
                                 try
                                 {
                                     _populationRatio = float.Parse(popRatio, System.Globalization.CultureInfo.InvariantCulture) / 100.0f;
@@ -602,7 +602,7 @@ namespace Supremacy.Universe
                             // credits
                             if (techLevel.HasAttribute("Credits"))
                             {
-                                var credits = techLevel.GetAttribute("Credits").Trim().ToUpperInvariant();
+                                string credits = techLevel.GetAttribute("Credits").Trim().ToUpperInvariant();
                                 try
                                 {
                                     _credits = float.Parse(credits, System.Globalization.CultureInfo.InvariantCulture);
@@ -616,7 +616,7 @@ namespace Supremacy.Universe
                             // Resources
                             if (techLevel.HasAttribute("Deuterium"))
                             {
-                                var res = techLevel.GetAttribute("Deuterium").Trim().ToUpperInvariant();
+                                string res = techLevel.GetAttribute("Deuterium").Trim().ToUpperInvariant();
                                 try
                                 {
                                     _deuterium = float.Parse(res, System.Globalization.CultureInfo.InvariantCulture);
@@ -629,7 +629,7 @@ namespace Supremacy.Universe
 
                             if (techLevel.HasAttribute("Dilithium"))
                             {
-                                var res = techLevel.GetAttribute("Dilithium").Trim().ToUpperInvariant();
+                                string res = techLevel.GetAttribute("Dilithium").Trim().ToUpperInvariant();
                                 try
                                 {
                                     _dilithium = float.Parse(res, System.Globalization.CultureInfo.InvariantCulture);
@@ -642,7 +642,7 @@ namespace Supremacy.Universe
 
                             if (techLevel.HasAttribute("RawMaterials"))
                             {
-                                var res = techLevel.GetAttribute("RawMaterials").Trim().ToUpperInvariant();
+                                string res = techLevel.GetAttribute("RawMaterials").Trim().ToUpperInvariant();
                                 try
                                 {
                                     _rawMaterials = float.Parse(res, System.Globalization.CultureInfo.InvariantCulture);
@@ -655,7 +655,7 @@ namespace Supremacy.Universe
 
                             if (techLevel.HasAttribute("Food"))
                             {
-                                var res = techLevel.GetAttribute("Food").Trim().ToUpperInvariant();
+                                string res = techLevel.GetAttribute("Food").Trim().ToUpperInvariant();
                                 try
                                 {
                                     _food = float.Parse(res, System.Globalization.CultureInfo.InvariantCulture);
@@ -669,7 +669,7 @@ namespace Supremacy.Universe
                             // morale
                             if (techLevel.HasAttribute("Morale"))
                             {
-                                var res = techLevel.GetAttribute("Morale").Trim().ToUpperInvariant();
+                                string res = techLevel.GetAttribute("Morale").Trim().ToUpperInvariant();
                                 try
                                 {
                                     _morale = float.Parse(res, System.Globalization.CultureInfo.InvariantCulture);
@@ -688,7 +688,7 @@ namespace Supremacy.Universe
 
                                 if (pf.HasAttribute("Count"))
                                 {
-                                    var val = pf.GetAttribute("Count").Trim().ToUpperInvariant();
+                                    string val = pf.GetAttribute("Count").Trim().ToUpperInvariant();
                                     try
                                     {
                                         _foodPF.Count = float.Parse(val, System.Globalization.CultureInfo.InvariantCulture);
@@ -700,7 +700,7 @@ namespace Supremacy.Universe
                                 }
                                 if (pf.HasAttribute("Active"))
                                 {
-                                    var val = pf.GetAttribute("Active").Trim().ToUpperInvariant();
+                                    string val = pf.GetAttribute("Active").Trim().ToUpperInvariant();
                                     try
                                     {
                                         _foodPF.Active = float.Parse(val, System.Globalization.CultureInfo.InvariantCulture);
@@ -720,7 +720,7 @@ namespace Supremacy.Universe
 
                                 if (pf.HasAttribute("Count"))
                                 {
-                                    var val = pf.GetAttribute("Count").Trim().ToUpperInvariant();
+                                    string val = pf.GetAttribute("Count").Trim().ToUpperInvariant();
                                     try
                                     {
                                         _industryPF.Count = float.Parse(val, System.Globalization.CultureInfo.InvariantCulture);
@@ -732,7 +732,7 @@ namespace Supremacy.Universe
                                 }
                                 if (pf.HasAttribute("Active"))
                                 {
-                                    var val = pf.GetAttribute("Active").Trim().ToUpperInvariant();
+                                    string val = pf.GetAttribute("Active").Trim().ToUpperInvariant();
                                     try
                                     {
                                         _industryPF.Active = float.Parse(val, System.Globalization.CultureInfo.InvariantCulture);
@@ -753,7 +753,7 @@ namespace Supremacy.Universe
 
                                 if (pf.HasAttribute("Count"))
                                 {
-                                    var val = pf.GetAttribute("Count").Trim().ToUpperInvariant();
+                                    string val = pf.GetAttribute("Count").Trim().ToUpperInvariant();
                                     try
                                     {
                                         _energyPF.Count = float.Parse(val, System.Globalization.CultureInfo.InvariantCulture);
@@ -765,7 +765,7 @@ namespace Supremacy.Universe
                                 }
                                 if (pf.HasAttribute("Active"))
                                 {
-                                    var val = pf.GetAttribute("Active").Trim().ToUpperInvariant();
+                                    string val = pf.GetAttribute("Active").Trim().ToUpperInvariant();
                                     try
                                     {
                                         _energyPF.Active = float.Parse(val, System.Globalization.CultureInfo.InvariantCulture);
@@ -785,7 +785,7 @@ namespace Supremacy.Universe
 
                                 if (pf.HasAttribute("Count"))
                                 {
-                                    var val = pf.GetAttribute("Count").Trim().ToUpperInvariant();
+                                    string val = pf.GetAttribute("Count").Trim().ToUpperInvariant();
                                     try
                                     {
                                         _researchPF.Count = float.Parse(val, System.Globalization.CultureInfo.InvariantCulture);
@@ -797,7 +797,7 @@ namespace Supremacy.Universe
                                 }
                                 if (pf.HasAttribute("Active"))
                                 {
-                                    var val = pf.GetAttribute("Active").Trim().ToUpperInvariant();
+                                    string val = pf.GetAttribute("Active").Trim().ToUpperInvariant();
                                     try
                                     {
                                         _researchPF.Active = float.Parse(val, System.Globalization.CultureInfo.InvariantCulture);
@@ -817,7 +817,7 @@ namespace Supremacy.Universe
 
                                 if (pf.HasAttribute("Count"))
                                 {
-                                    var val = pf.GetAttribute("Count").Trim().ToUpperInvariant();
+                                    string val = pf.GetAttribute("Count").Trim().ToUpperInvariant();
                                     try
                                     {
                                         _intelligencePF.Count = float.Parse(val, System.Globalization.CultureInfo.InvariantCulture);
@@ -829,7 +829,7 @@ namespace Supremacy.Universe
                                 }
                                 if (pf.HasAttribute("Active"))
                                 {
-                                    var val = pf.GetAttribute("Active").Trim().ToUpperInvariant();
+                                    string val = pf.GetAttribute("Active").Trim().ToUpperInvariant();
                                     try
                                     {
                                         _intelligencePF.Active = float.Parse(val, System.Globalization.CultureInfo.InvariantCulture);
@@ -842,7 +842,7 @@ namespace Supremacy.Universe
                             }
 
                             // ships to be spawned
-                            var startingShips = techLevel.GetElementsByTagName("Ship");
+                            XmlNodeList startingShips = techLevel.GetElementsByTagName("Ship");
                             if (startingShips.Count > 0)
                             {
                                 foreach (XmlElement ship in startingShips)
@@ -850,7 +850,7 @@ namespace Supremacy.Universe
                                     int shipCount = 1;
                                     if (ship.HasAttribute("Count"))
                                     {
-                                        var val = ship.GetAttribute("Count").Trim().ToUpperInvariant();
+                                        string val = ship.GetAttribute("Count").Trim().ToUpperInvariant();
                                         try
                                         {
                                             shipCount = int.Parse(val, System.Globalization.CultureInfo.InvariantCulture);
@@ -869,7 +869,7 @@ namespace Supremacy.Universe
                             }
 
                             // shipyards to be spawned
-                            var startingShipyards = techLevel.GetElementsByTagName("Shipyard");
+                            XmlNodeList startingShipyards = techLevel.GetElementsByTagName("Shipyard");
                             if (startingShipyards.Count > 0)
                             {
                                 foreach (XmlElement shipyard in startingShipyards)
@@ -879,7 +879,7 @@ namespace Supremacy.Universe
                             }
 
                             // buildings to be spawned
-                            var startingBuildings = techLevel.GetElementsByTagName("Building");
+                            XmlNodeList startingBuildings = techLevel.GetElementsByTagName("Building");
                             if (startingBuildings.Count > 0)
                             {
                                 foreach (XmlElement building in startingBuildings)
@@ -889,7 +889,7 @@ namespace Supremacy.Universe
                             }
 
                             // outposts to be spawned
-                            var startingOutposts = techLevel.GetElementsByTagName("SpaceStation");
+                            XmlNodeList startingOutposts = techLevel.GetElementsByTagName("SpaceStation");
                             if (startingOutposts.Count > 0)
                             {
                                 foreach (XmlElement outpost in startingOutposts)
@@ -899,7 +899,7 @@ namespace Supremacy.Universe
                             }
 
                             // OBs to be spawned
-                            var startingOBs = techLevel.GetElementsByTagName("OrbitalBattery");
+                            XmlNodeList startingOBs = techLevel.GetElementsByTagName("OrbitalBattery");
                             if (startingOBs.Count > 0)
                             {
                                 foreach (XmlElement OB in startingOBs)
@@ -907,7 +907,7 @@ namespace Supremacy.Universe
                                     int OBCount = 1;
                                     if (OB.HasAttribute("Count"))
                                     {
-                                        var val = OB.GetAttribute("Count").Trim().ToUpperInvariant();
+                                        string val = OB.GetAttribute("Count").Trim().ToUpperInvariant();
                                         try
                                         {
                                             OBCount = int.Parse(val, System.Globalization.CultureInfo.InvariantCulture);
@@ -933,7 +933,7 @@ namespace Supremacy.Universe
 
         public void AppendXml(XmlElement baseElement)
         {
-            var systemElement = baseElement.OwnerDocument.CreateElement("StarSystem");
+            XmlElement systemElement = baseElement.OwnerDocument.CreateElement("StarSystem");
 
             if (IsNameDefined)
                 systemElement.SetAttribute("Name", Name);
@@ -942,15 +942,15 @@ namespace Supremacy.Universe
 
             if (IsInhabitantsDefined)
             {
-                var inhabitantsElement = systemElement.OwnerDocument.CreateElement("Inhabitants");
+                XmlElement inhabitantsElement = systemElement.OwnerDocument.CreateElement("Inhabitants");
                 inhabitantsElement.InnerText = Inhabitants;
                 systemElement.AppendChild(inhabitantsElement);
             }
 
-            var bonusesElement = systemElement.OwnerDocument.CreateElement("Bonuses");
+            XmlElement bonusesElement = systemElement.OwnerDocument.CreateElement("Bonuses");
             if (Bonuses == SystemBonus.NoBonus)
             {
-                var bonusElement = systemElement.OwnerDocument.CreateElement("Bonus");
+                XmlElement bonusElement = systemElement.OwnerDocument.CreateElement("Bonus");
                 bonusElement.SetAttribute("Type", SystemBonus.NoBonus.ToString());
                 bonusesElement.AppendChild(bonusElement);
             }
@@ -960,7 +960,7 @@ namespace Supremacy.Universe
                 {
                     if ((bonus != SystemBonus.NoBonus) && HasBonus(bonus))
                     {
-                        var bonusElement = systemElement.OwnerDocument.CreateElement("Bonus");
+                        XmlElement bonusElement = systemElement.OwnerDocument.CreateElement("Bonus");
                         bonusElement.SetAttribute("Type", bonus.ToString());
                         bonusesElement.AppendChild(bonusElement);
                     }
@@ -970,10 +970,10 @@ namespace Supremacy.Universe
 
             if (Planets.Count > 0)
             {
-                var planetsElement = systemElement.OwnerDocument.CreateElement("Planets");
-                foreach (var planet in Planets)
+                XmlElement planetsElement = systemElement.OwnerDocument.CreateElement("Planets");
+                foreach (PlanetDescriptor planet in Planets)
                 {
-                    var planetElement = systemElement.OwnerDocument.CreateElement("Planet");
+                    XmlElement planetElement = systemElement.OwnerDocument.CreateElement("Planet");
                     planet.AppendXml(planetElement);
                     planetsElement.AppendChild(planetElement);
                 }
@@ -1166,7 +1166,7 @@ namespace Supremacy.Universe
             if ((xmlNode.HasAttribute("MinNumberOfPlanets")) && int.TryParse(xmlNode.GetAttribute("MinNumberOfPlanets").Trim(), out tempInteger))
                 MinNumberOfPlanets = tempInteger;
 
-            var bonusElements = xmlNode.GetElementsByTagName("Bonus");
+            XmlNodeList bonusElements = xmlNode.GetElementsByTagName("Bonus");
             if (bonusElements.Count > 0)
             {
                 _bonuses = PlanetBonus.NoBonus;

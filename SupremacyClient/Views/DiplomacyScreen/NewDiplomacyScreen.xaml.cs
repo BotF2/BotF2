@@ -79,16 +79,16 @@ namespace Supremacy.Client.Views.DiplomacyScreen
 
         private void OnMessageParameterLinkClick(object sender, HyperlinkClickedEventArgs e)
         {
-            var hyperlink = e.OriginalSource as Hyperlink;
+            Hyperlink hyperlink = e.OriginalSource as Hyperlink;
             if (hyperlink == null)
                 return;
 
-            var element = hyperlink.DataContext as DiplomacyMessageElement;
+            DiplomacyMessageElement element = hyperlink.DataContext as DiplomacyMessageElement;
             if (element == null)
                 return;
 
-            var parameter = element.SelectedParameter;
-            var contentTemplate = parameter != null ? TryFindResource(parameter.GetType()) as DataTemplate : null;
+            object parameter = element.SelectedParameter;
+            DataTemplate contentTemplate = parameter != null ? TryFindResource(parameter.GetType()) as DataTemplate : null;
 
             if (element.EditParameterCommand.CanExecute(contentTemplate))
                 element.EditParameterCommand.Execute(contentTemplate);
@@ -121,7 +121,7 @@ namespace Supremacy.Client.Views.DiplomacyScreen
 
         static DiplomacyGraphPenSelector()
         {
-            var converter = new RelationshipStatusBrushConverter();
+            RelationshipStatusBrushConverter converter = new RelationshipStatusBrushConverter();
 
             _pens = new Dictionary<ForeignPowerStatus, Pen>();
             _fallbackPen = new Pen(Brushes.Gainsboro, PenThickness);
@@ -129,9 +129,9 @@ namespace Supremacy.Client.Views.DiplomacyScreen
             if (_fallbackPen.CanFreeze)
                 _fallbackPen.Freeze();
 
-            foreach (var status in EnumHelper.GetValues<ForeignPowerStatus>())
+            foreach (ForeignPowerStatus status in EnumHelper.GetValues<ForeignPowerStatus>())
             {
-                var brush = converter.Convert(status, null, null, null) as Brush;
+                Brush brush = converter.Convert(status, null, null, null) as Brush;
                 if (brush == null)
                     continue;
 
@@ -146,8 +146,8 @@ namespace Supremacy.Client.Views.DiplomacyScreen
     #region INodeGraphPenSelector Members
     public Pen GetPen(object parentNode, object childNode)
         {
-            var node1 = parentNode as DiplomacyGraphNode;
-            var node2 = childNode as DiplomacyGraphNode;
+            DiplomacyGraphNode node1 = parentNode as DiplomacyGraphNode;
+            DiplomacyGraphNode node2 = childNode as DiplomacyGraphNode;
 
             if (node1 == null || node2 == null)
                 return _fallbackPen;

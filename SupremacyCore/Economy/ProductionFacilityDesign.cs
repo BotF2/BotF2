@@ -132,8 +132,8 @@ namespace Supremacy.Economy
                 return false;
             }
 
-            var sector = GameContext.Current.Universe.Map[location];
-            var system = sector.System;
+            Sector sector = GameContext.Current.Universe.Map[location];
+            StarSystem system = sector.System;
             
             system.Colony.SetFacilityType(Category, this);
             system.Colony.AddFacility(Category);

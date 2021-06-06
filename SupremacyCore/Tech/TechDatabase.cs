@@ -152,10 +152,10 @@ namespace Supremacy.Tech
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0054:Use '++' operator", Justification = "<Pending>")]
         public static TechDatabase Load()
         {
-            var schemas = new XmlSchemaSet();
-            var db = new TechDatabase();
-            var xmlDoc = new XmlDocument();
-            var designIdMap = new Dictionary<string, int>();
+            XmlSchemaSet schemas = new XmlSchemaSet();
+            TechDatabase db = new TechDatabase();
+            XmlDocument xmlDoc = new XmlDocument();
+            Dictionary<string, int> designIdMap = new Dictionary<string, int>();
 
             schemas.Add(
                 "Supremacy:Supremacy.xsd",
@@ -203,7 +203,7 @@ namespace Supremacy.Tech
                     foreach (XmlElement xmlEquivPrereq in
                         xmlFacility["Prerequisites"].GetElementsByTagName("EquivalentPrerequisites"))
                     {
-                        var equivPrereqs = new PrerequisiteGroup();
+                        PrerequisiteGroup equivPrereqs = new PrerequisiteGroup();
                         foreach (XmlElement xmlPrereq in xmlEquivPrereq.GetElementsByTagName("Prerequisite"))
                         {
                             string prereqKey = xmlPrereq.InnerText.Trim();
@@ -235,11 +235,11 @@ namespace Supremacy.Tech
 
             // OrbitalBatteries
             // w00t
-            var xmlBatteries = xmlDoc.DocumentElement["OrbitalBatteries"];
+            XmlElement xmlBatteries = xmlDoc.DocumentElement["OrbitalBatteries"];
 
             foreach (XmlElement xmlBattery in xmlBatteries.GetElementsByTagName("OrbitalBattery"))
             {
-                var battery = new OrbitalBatteryDesign(xmlBattery) { DesignID = db.GetNewDesignID() };
+                OrbitalBatteryDesign battery = new OrbitalBatteryDesign(xmlBattery) { DesignID = db.GetNewDesignID() };
                 designIdMap[battery.Key] = battery.DesignID;
                 //GameLog works
                 //GameLog.Client.GameData.DebugFormat("TechDatabase.cs: battery.DesignID={0}, {1}", battery.DesignID, battery.LocalizedName);
@@ -248,7 +248,7 @@ namespace Supremacy.Tech
 
             foreach (XmlElement xmlBattery in xmlBatteries.GetElementsByTagName("OrbitalBattery"))
             {
-                var sourceKey = xmlBattery.GetAttribute("Key");
+                string sourceKey = xmlBattery.GetAttribute("Key");
                 if (xmlBattery["ObsoletedItems"] != null)
                 {
                     foreach (XmlElement xmlObsoleted in
@@ -268,7 +268,7 @@ namespace Supremacy.Tech
                     foreach (XmlElement xmlEquivPrereq in
                         xmlBattery["Prerequisites"].GetElementsByTagName("EquivalentPrerequisites"))
                     {
-                        var equivPrereqs = new PrerequisiteGroup();
+                        PrerequisiteGroup equivPrereqs = new PrerequisiteGroup();
                         foreach (XmlElement xmlPrereq in xmlEquivPrereq.GetElementsByTagName("Prerequisite"))
                         {
                             string prereqKey = xmlPrereq.InnerText.Trim();
@@ -335,7 +335,7 @@ namespace Supremacy.Tech
                     foreach (XmlElement xmlEquivPrereq in
                         xmlBuilding["Prerequisites"].GetElementsByTagName("EquivalentPrerequisites"))
                     {
-                        var equivPrereqs = new PrerequisiteGroup();
+                        PrerequisiteGroup equivPrereqs = new PrerequisiteGroup();
                         foreach (XmlElement xmlPrereq in xmlEquivPrereq.GetElementsByTagName("Prerequisite"))
                         {
                             string prereqKey = xmlPrereq.InnerText.Trim();
@@ -401,7 +401,7 @@ namespace Supremacy.Tech
                     foreach (XmlElement xmlEquivPrereq in
                         xmlShipyard["Prerequisites"].GetElementsByTagName("EquivalentPrerequisites"))
                     {
-                        var equivPrereqs = new PrerequisiteGroup();
+                        PrerequisiteGroup equivPrereqs = new PrerequisiteGroup();
                         foreach (XmlElement xmlPrereq in xmlEquivPrereq.GetElementsByTagName("Prerequisite"))
                         {
                             string prereqKey = xmlPrereq.InnerText.Trim();
@@ -472,7 +472,7 @@ namespace Supremacy.Tech
                     foreach (XmlElement xmlEquivPrereq in
                         xmlShip["Prerequisites"].GetElementsByTagName("EquivalentPrerequisites"))
                     {
-                        var equivPrereqs = new PrerequisiteGroup();
+                        PrerequisiteGroup equivPrereqs = new PrerequisiteGroup();
                         foreach (XmlElement xmlPrereq in xmlEquivPrereq.GetElementsByTagName("Prerequisite"))
                         {
                             string prereqKey = xmlPrereq.InnerText.Trim();
@@ -539,7 +539,7 @@ namespace Supremacy.Tech
                     foreach (XmlElement xmlEquivPrereq in
                         xmlStation["Prerequisites"].GetElementsByTagName("EquivalentPrerequisites"))
                     {
-                        var equivPrereqs = new PrerequisiteGroup();
+                        PrerequisiteGroup equivPrereqs = new PrerequisiteGroup();
                         foreach (XmlElement xmlPrereq in xmlEquivPrereq.GetElementsByTagName("Prerequisite"))
                         {
                             string prereqKey = xmlPrereq.InnerText.Trim();
@@ -576,11 +576,11 @@ namespace Supremacy.Tech
 
             if (_traceTechObjectDatabase == true)
             {
-                var pathOutputFile = "./Resources/Data/";  // instead of ./Resources/Data/
-                var separator = ";";
-                var line = "";
+                string pathOutputFile = "./Resources/Data/";  // instead of ./Resources/Data/
+                string separator = ";";
+                string line = "";
                 StreamWriter streamWriter;
-                var file = "./lib/test-ProdFac.txt";
+                string file = "./lib/test-ProdFac.txt";
                 streamWriter = new StreamWriter(file);
                 String strHeader = "";  // first line of output files
 
@@ -628,7 +628,7 @@ namespace Supremacy.Tech
                     // End of head line
 
                     string category = "";
-                    foreach (var PF in db.ProductionFacilityDesigns)   // each shipyard
+                    foreach (ProductionFacilityDesign PF in db.ProductionFacilityDesigns)   // each shipyard
                     {
                         //App.DoEvents();  // for avoid error after 60 seconds
 
@@ -654,7 +654,7 @@ namespace Supremacy.Tech
                         //    }
 
                         string obsDesign = "";
-                        foreach (var obsolete in PF.ObsoletedDesigns)
+                        foreach (TechObjectDesign obsolete in PF.ObsoletedDesigns)
                         {
                             obsDesign += obsolete.Key + ",";
                         }
@@ -662,9 +662,9 @@ namespace Supremacy.Tech
 
 
                         string prerequisitesCollection = "";
-                        foreach (var prereq in PF.Prerequisites)
+                        foreach (PrerequisiteGroup prereq in PF.Prerequisites)
                         {
-                            foreach (var item in prereq)
+                            foreach (TechObjectDesign item in prereq)
                             {
                                 prerequisitesCollection += prereq.FirstOrDefault().Key + ",";
                             }
@@ -673,7 +673,7 @@ namespace Supremacy.Tech
 
 
                         string upgradeDesign = "";
-                        foreach (var upgrade in PF.UpgradableDesigns)
+                        foreach (TechObjectDesign upgrade in PF.UpgradableDesigns)
                         {
                             upgradeDesign += upgrade.Key + ",";
                         }
@@ -857,13 +857,13 @@ namespace Supremacy.Tech
                     //string bonusAmount5 = "";
 
 
-                    foreach (var B in db.BuildingDesigns)   // each shipyard
+                    foreach (BuildingDesign B in db.BuildingDesigns)   // each shipyard
                     {
                         //App.DoEvents();  // for avoid error after 60 seconds
 
                         int i = 0;
 
-                        foreach (var bonus in B.Bonuses)
+                        foreach (Bonus bonus in B.Bonuses)
                         {
                             i = i + 1;  // first "bonus 1" then bonus 2
 
@@ -1040,7 +1040,7 @@ namespace Supremacy.Tech
                     streamWriter.WriteLine(strHeader);
                     // End of head line
 
-                    foreach (var item in db.ShipDesigns)   // each item
+                    foreach (ShipDesign item in db.ShipDesigns)   // each item
                     {
                         //item.Name._po
                         //private Dictionary<string, int> _possibleNames;
@@ -1138,7 +1138,7 @@ namespace Supremacy.Tech
                     streamWriter.WriteLine(strHeader);
                     // End of head line
 
-                    foreach (var item in db.ShipDesigns)   // each item
+                    foreach (ShipDesign item in db.ShipDesigns)   // each item
                     {
                         int _firepower = (item.PrimaryWeapon.Count * item.PrimaryWeapon.Damage)
                                             + (item.SecondaryWeapon.Count * item.SecondaryWeapon.Damage);
@@ -1300,10 +1300,10 @@ namespace Supremacy.Tech
                     streamWriter.WriteLine(strHeader);
                     // End of head line
 
-                    foreach (var shipyard in db.ShipyardDesigns)   // each shipyard
+                    foreach (ShipyardDesign shipyard in db.ShipyardDesigns)   // each shipyard
                     {
                         string obsDesign = "";
-                        foreach (var obsolete in shipyard.ObsoletedDesigns)
+                        foreach (TechObjectDesign obsolete in shipyard.ObsoletedDesigns)
                         {
                             obsDesign += obsolete.Key + ",";
                         }
@@ -1311,9 +1311,9 @@ namespace Supremacy.Tech
 
 
                         string prerequisitesCollection = "";
-                        foreach (var prereq in shipyard.Prerequisites)
+                        foreach (PrerequisiteGroup prereq in shipyard.Prerequisites)
                         {
-                            foreach (var item in prereq)
+                            foreach (TechObjectDesign item in prereq)
                             {
                                 prerequisitesCollection += prereq.FirstOrDefault().Key + ",";
                             }
@@ -1322,7 +1322,7 @@ namespace Supremacy.Tech
 
 
                         string upgradeDesign = "";
-                        foreach (var upgrade in shipyard.UpgradableDesigns)
+                        foreach (TechObjectDesign upgrade in shipyard.UpgradableDesigns)
                         {
                             upgradeDesign += upgrade.Key + ",";
                         }
@@ -1456,13 +1456,13 @@ namespace Supremacy.Tech
                     streamWriter.WriteLine(strHeader);
                     // End of head line
 
-                    foreach (var station in db.StationDesigns)   // each shipyard
+                    foreach (StationDesign station in db.StationDesigns)   // each shipyard
                     {
                         if (station.Key == "ROM_STARBASE_I")  // just for testing - any problems for ROM_I or II ??
                             GameLog.Core.GameData.DebugFormat("{0} testing ", station.Key);
 
                         string obsDesign = "";
-                        foreach (var obsolete in station.ObsoletedDesigns)
+                        foreach (TechObjectDesign obsolete in station.ObsoletedDesigns)
                         {
                             obsDesign += obsolete.Key + ",";
                         }
@@ -1470,9 +1470,9 @@ namespace Supremacy.Tech
 
 
                         string prerequisitesCollection = "";
-                        foreach (var prereq in station.Prerequisites)
+                        foreach (PrerequisiteGroup prereq in station.Prerequisites)
                         {
-                            foreach (var item in prereq)
+                            foreach (TechObjectDesign item in prereq)
                             {
                                 prerequisitesCollection += prereq.FirstOrDefault().Key + ",";
                             }
@@ -1481,7 +1481,7 @@ namespace Supremacy.Tech
 
 
                         string upgradeDesign = "";
-                        foreach (var upgrade in station.UpgradableDesigns)
+                        foreach (TechObjectDesign upgrade in station.UpgradableDesigns)
                         {
                             upgradeDesign += upgrade.Key + ",";
                         }
@@ -1645,10 +1645,10 @@ namespace Supremacy.Tech
                     streamWriter.WriteLine(strHeader);
                     // End of head line
 
-                    foreach (var ob in db.OrbitalBatteryDesigns)   // each shipyard
+                    foreach (OrbitalBatteryDesign ob in db.OrbitalBatteryDesigns)   // each shipyard
                     {
                         string obsDesign = "";
-                        foreach (var obsolete in ob.ObsoletedDesigns)
+                        foreach (TechObjectDesign obsolete in ob.ObsoletedDesigns)
                         {
                             obsDesign += obsolete.Key + ",";
                         }
@@ -1667,7 +1667,7 @@ namespace Supremacy.Tech
 
 
                         string upgradeDesign = "";
-                        foreach (var upgrade in ob.UpgradableDesigns)
+                        foreach (TechObjectDesign upgrade in ob.UpgradableDesigns)
                         {
                             upgradeDesign += upgrade.Key + ",";
                         }
@@ -1858,7 +1858,7 @@ namespace Supremacy.Tech
                 if (_orbitalBatteryDesigns.Count > 0)
                 {
                     XmlElement groupElement = xmlDoc.CreateElement("OrbitalBatteries");
-                    foreach (var design in _orbitalBatteryDesigns)
+                    foreach (OrbitalBatteryDesign design in _orbitalBatteryDesigns)
                     {
                         XmlElement designElement = xmlDoc.CreateElement("OrbitalBattery");
                         design.AppendXml(designElement);
@@ -1937,17 +1937,17 @@ namespace Supremacy.Tech
         /// <returns>The enumerator.</returns>
         public IEnumerator<TechObjectDesign> GetEnumerator()
         {
-            foreach (var design in _productionFacilityDesigns)
+            foreach (ProductionFacilityDesign design in _productionFacilityDesigns)
                 yield return design;
-            foreach (var design in _buildingDesigns)
+            foreach (BuildingDesign design in _buildingDesigns)
                 yield return design;
-            foreach (var design in _shipyardDesigns)
+            foreach (ShipyardDesign design in _shipyardDesigns)
                 yield return design;
-            foreach (var design in _shipDesigns)
+            foreach (ShipDesign design in _shipDesigns)
                 yield return design;
-            foreach (var design in _stationDesigns)
+            foreach (StationDesign design in _stationDesigns)
                 yield return design;
-            foreach (var design in _orbitalBatteryDesigns)
+            foreach (OrbitalBatteryDesign design in _orbitalBatteryDesigns)
                 yield return design;
         }
         #endregion

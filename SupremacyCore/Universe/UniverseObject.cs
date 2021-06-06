@@ -44,7 +44,7 @@ namespace Supremacy.Universe
 
         public override void CloneFrom(Cloneable source, ICloneContext context)
         {
-            var typedSource = (UniverseObject)source;
+            UniverseObject typedSource = (UniverseObject)source;
 
             base.CloneFrom(source, context);
 
@@ -276,7 +276,7 @@ namespace Supremacy.Universe
 
         private void SerializeEffectData([NotNull] SerializationWriter writer, object context)
         {
-            var hasEffectBindings = _effectBindings != null &&
+            bool hasEffectBindings = _effectBindings != null &&
                                     _effectBindings.IsValueCreated;
 
             writer.Write(hasEffectBindings);
@@ -287,7 +287,7 @@ namespace Supremacy.Universe
         
         private void DeserializeEffectData([NotNull] SerializationReader reader, object context)
         {
-            var hasEffectBindings = reader.ReadBoolean();
+            bool hasEffectBindings = reader.ReadBoolean();
             
             if (!hasEffectBindings)
                 return;

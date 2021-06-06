@@ -24,19 +24,19 @@ namespace Supremacy.Client.Views
         #region Private Methods
         private void OnShipListMouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            var presentationModel = DataContext as GalaxyScreenPresentationModel;
+            GalaxyScreenPresentationModel presentationModel = DataContext as GalaxyScreenPresentationModel;
             if ((presentationModel == null) || (presentationModel.InputMode != GalaxyScreenInputMode.RedeployShips))
                 return;
 
-            var originalSource = e.OriginalSource as DependencyObject;
+            DependencyObject originalSource = e.OriginalSource as DependencyObject;
             if (originalSource == null)
                 return;
 
-            var container = originalSource.FindVisualAncestorByType<ListViewItem>();
+            ListViewItem container = originalSource.FindVisualAncestorByType<ListViewItem>();
             if (container == null)
                 return;
 
-            var selectedShip = container.DataContext as ShipView;
+            ShipView selectedShip = container.DataContext as ShipView;
             if (selectedShip == null)
                 return;
 
@@ -54,21 +54,21 @@ namespace Supremacy.Client.Views
 
         protected override void OnContextMenuOpening(ContextMenuEventArgs e)
         {
-            var presentationModel = DataContext as GalaxyScreenPresentationModel;
+            GalaxyScreenPresentationModel presentationModel = DataContext as GalaxyScreenPresentationModel;
             if (presentationModel == null)
             {
                 e.Handled = true;
                 return;
             }
 
-            var selectedTaskForce = presentationModel.SelectedTaskForce.View;
+            FleetView selectedTaskForce = presentationModel.SelectedTaskForce.View;
             if ((selectedTaskForce == null) || !selectedTaskForce.IsOwned)
             {
                 e.Handled = true;
                 return;
             }
 
-            var selectedShips = ShipList.SelectedItems.OfType<ShipView>().Select(o => o.Source);
+            System.Collections.Generic.IEnumerable<Ship> selectedShips = ShipList.SelectedItems.OfType<ShipView>().Select(o => o.Source);
             if (!selectedShips.Any())
             {
                 e.Handled = true;
@@ -79,7 +79,7 @@ namespace Supremacy.Client.Views
 
             ScrapMenuItem.CommandParameter = new ScrapCommandArgs(selectedShips);
 
-            foreach (var ship in selectedShips)
+            foreach (Ship ship in selectedShips)
             {
                 if (ship.OwnerID == presentationModel.AppContext.LocalPlayer.CivID)
                 {

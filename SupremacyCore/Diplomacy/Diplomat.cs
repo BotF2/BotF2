@@ -53,7 +53,7 @@ namespace Supremacy.Diplomacy
             if (civilization == null)
                 throw new ArgumentNullException("civilization");
 
-            var extendedData = GetExtendedData(civilization);
+            IDiplomacyDataExtended extendedData = GetExtendedData(civilization);
             if (extendedData == null)
                 return null;
 
@@ -64,8 +64,8 @@ namespace Supremacy.Diplomacy
         {
             if (civilization == null)
                 throw new ArgumentNullException("civilization");
-            
-            var foreignPower = EnsureForeignPower(civilization);
+
+            ForeignPower foreignPower = EnsureForeignPower(civilization);
             if (foreignPower == null)
                 return null;
 
@@ -110,7 +110,7 @@ namespace Supremacy.Diplomacy
 
         public void EnsureForeignPowers()
         {
-            foreach (var civ in GameContext.Current.Civilizations)
+            foreach (Civilization civ in GameContext.Current.Civilizations)
             {
                 if (civ.CivID == _ownerId)
                     continue;
@@ -123,10 +123,10 @@ namespace Supremacy.Diplomacy
             if (proposal == null)
                 throw new ArgumentNullException("proposal");
 
-            foreach (var clause in proposal.Clauses)
+            foreach (IClause clause in proposal.Clauses)
             {
-                var ownerTreasury = OwnerTreasury;
-                var ownerResources = OwnerResources;
+                Treasury ownerTreasury = OwnerTreasury;
+                ResourcePool ownerResources = OwnerResources;
 
                 switch (clause.ClauseType)
                 {

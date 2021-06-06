@@ -39,7 +39,7 @@ namespace Supremacy.Client
 
             try
             {
-                var enumTables = GameTables.Load().EnumTables;
+                TableMap enumTables = GameTables.Load().EnumTables;
                 if (enumTables != null)
                     _turnStrings = enumTables["TurnPhase"];
             }

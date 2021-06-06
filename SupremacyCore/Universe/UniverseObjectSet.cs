@@ -58,7 +58,7 @@ namespace Supremacy.Universe
 
             try
             {
-                var itemIndex = ((IList<UniverseObject>)this).IndexOf(item);
+                int itemIndex = ((IList<UniverseObject>)this).IndexOf(item);
                 if (itemIndex >= 0)
                     ReplaceItem(itemIndex, item, true);
                 else
@@ -79,7 +79,7 @@ namespace Supremacy.Universe
                 int hashCode = GetIndexableHashCode(objectId);
                 if (_objectIdIndex.LookupTable.ContainsKey(hashCode))
                 {
-                    foreach (var item in _objectIdIndex.LookupTable[hashCode])
+                    foreach (UniverseObject item in _objectIdIndex.LookupTable[hashCode])
                     {
                         if (item.ObjectID == objectId)
                             return item;
@@ -114,11 +114,11 @@ namespace Supremacy.Universe
 
             try
             {
-                var count = Count;
-                var internalCollection = InternalCollection;
-                var cloneInternalCollection = new List<UniverseObject>(count);
+                int count = Count;
+                IList<UniverseObject> internalCollection = InternalCollection;
+                List<UniverseObject> cloneInternalCollection = new List<UniverseObject>(count);
 
-                for (var i = 0; i < count; i++)
+                for (int i = 0; i < count; i++)
                     cloneInternalCollection[i] = internalCollection[i];
 
                 return new UniverseObjectSet(cloneInternalCollection);
@@ -138,7 +138,7 @@ namespace Supremacy.Universe
             SyncLock.EnterReadLock();
             try
             {
-                var array = new UniverseObject[Count];
+                UniverseObject[] array = new UniverseObject[Count];
                 CopyTo(array, 0);
                 return array;
             }
@@ -170,7 +170,7 @@ namespace Supremacy.Universe
 
         bool IKeyedLookup<int, UniverseObject>.Contains(int key)
         {
-            var @this = (IKeyedCollection<int, UniverseObject>)this;
+            IKeyedCollection<int, UniverseObject> @this = (IKeyedCollection<int, UniverseObject>)this;
 
             return @this.TryGetValue(key, out UniverseObject item);
         }

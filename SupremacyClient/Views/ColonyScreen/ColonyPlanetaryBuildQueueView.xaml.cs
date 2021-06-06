@@ -17,15 +17,15 @@ namespace Supremacy.Client.Views
 
         private void OnBuildQueueItemClicked(object sender, object clickedItem)
         {
-            var buildQueueItem = clickedItem as BuildQueueItem;
+            BuildQueueItem buildQueueItem = clickedItem as BuildQueueItem;
             if (buildQueueItem == null)
                 return;
 
-            var presentationModel = PresentationModel;
+            ColonyScreenPresentationModel presentationModel = PresentationModel;
             if (presentationModel == null)
                 return;
 
-            var command = presentationModel.RemoveFromPlanetaryBuildQueueCommand;
+            ICommand command = presentationModel.RemoveFromPlanetaryBuildQueueCommand;
             if ((command != null) && command.CanExecute(buildQueueItem))
                 command.Execute(buildQueueItem);
         }
@@ -34,15 +34,15 @@ namespace Supremacy.Client.Views
 
         bool IsCurrentBuildProjectValid()
         {
-            var presentationModel = PresentationModel;
+            ColonyScreenPresentationModel presentationModel = PresentationModel;
             if (presentationModel == null)
                 return false;
 
-            var colony = presentationModel.SelectedColony;
+            Universe.Colony colony = presentationModel.SelectedColony;
             if (colony == null)
                 return false;
 
-            var project = colony.BuildSlots[0].Project;
+            BuildProject project = colony.BuildSlots[0].Project;
             if (project == null)
                 return false;
 
@@ -53,10 +53,10 @@ namespace Supremacy.Client.Views
         {
             if (IsCurrentBuildProjectValid())
             {
-                var presentationModel = PresentationModel;
-                var project = presentationModel.SelectedColony.BuildSlots[0].Project;
+                ColonyScreenPresentationModel presentationModel = PresentationModel;
+                BuildProject project = presentationModel.SelectedColony.BuildSlots[0].Project;
 
-                var command = presentationModel.CancelBuildProjectCommand;
+                ICommand command = presentationModel.CancelBuildProjectCommand;
                 if ((command != null) && command.CanExecute(project))
                     command.Execute(project);
             }
@@ -66,10 +66,10 @@ namespace Supremacy.Client.Views
         {
             if (IsCurrentBuildProjectValid())
             {
-                var presentationModel = PresentationModel;
-                var project = presentationModel.SelectedColony.BuildSlots[0].Project;
+                ColonyScreenPresentationModel presentationModel = PresentationModel;
+                BuildProject project = presentationModel.SelectedColony.BuildSlots[0].Project;
 
-                var command = presentationModel.BuyBuildProjectCommand;
+                ICommand command = presentationModel.BuyBuildProjectCommand;
                 if ((command != null) && command.CanExecute(project))
                     command.Execute(project);
             }

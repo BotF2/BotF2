@@ -96,7 +96,7 @@ namespace Supremacy.Game
         {
             if (phase != TurnPhase.SendUpdates)
             {
-                foreach (var scriptedEvent in game.ScriptedEvents)
+                foreach (Scripting.ScriptedEvent scriptedEvent in game.ScriptedEvents)
                 {
                     //if (GameContext.Current.TurnNumber >= 1)
                         scriptedEvent.OnTurnPhaseStarted(game, phase);
@@ -117,7 +117,7 @@ namespace Supremacy.Game
         {
             if (phase != TurnPhase.SendUpdates)
             {
-                foreach (var scriptedEvent in game.ScriptedEvents)
+                foreach (Scripting.ScriptedEvent scriptedEvent in game.ScriptedEvents)
                 {
                     if (GameContext.Current.TurnNumber > 2)
                         scriptedEvent.OnTurnPhaseFinished(game, phase);
@@ -156,14 +156,14 @@ namespace Supremacy.Game
             GameContext.PushThreadContext(game);
             try
             {
-                var eventsToRemove = game.ScriptedEvents.Where(o => !o.CanExecute).ToList();
-                foreach (var eventToRemove in eventsToRemove)
+                List<Scripting.ScriptedEvent> eventsToRemove = game.ScriptedEvents.Where(o => !o.CanExecute).ToList();
+                foreach (Scripting.ScriptedEvent eventToRemove in eventsToRemove)
                     game.ScriptedEvents.Remove(eventToRemove);
 
                 //Update If we've reached turn x, start running scripted events
                 if (GameContext.Current.TurnNumber >= 1)
                 {
-                    foreach (var scriptedEvent in game.ScriptedEvents)
+                    foreach (Scripting.ScriptedEvent scriptedEvent in game.ScriptedEvents)
                     {
                         scriptedEvent.OnTurnStarted(game);
                     }
@@ -171,7 +171,7 @@ namespace Supremacy.Game
 
                 fleets = game.Universe.Find<Fleet>();
 
-                foreach (var fleet in fleets)
+                foreach (Fleet fleet in fleets)
                     fleet.LocationChanged += HandleFleetLocationChanged;
             }
             finally { GameContext.PopThreadContext(); }
@@ -313,7 +313,7 @@ namespace Supremacy.Game
             GameContext.PushThreadContext(game);
             try
             {
-                foreach (var scriptedEvent in game.ScriptedEvents)
+                foreach (Scripting.ScriptedEvent scriptedEvent in game.ScriptedEvents)
                 {
                     //if (GameContext.Current.TurnNumber >= 50)
                         scriptedEvent.OnTurnFinished(game);
@@ -326,7 +326,7 @@ namespace Supremacy.Game
             GameLog.Core.Events.DebugFormat("...HandleFleetLocationChanged...");
 
 
-            foreach (var fleet in fleets)
+            foreach (Fleet fleet in fleets)
                 fleet.LocationChanged -= HandleFleetLocationChanged;
         }
         #endregion DoTurn
@@ -334,7 +334,7 @@ namespace Supremacy.Game
         #region HandleFleetLocationChanged() Method
         private void HandleFleetLocationChanged(object sender, EventArgs e)
         {
-            var fleet = sender as Fleet;
+            Fleet fleet = sender as Fleet;
             if (fleet != null)
                 OnFleetLocationChanged(fleet);
         }
@@ -342,13 +342,13 @@ namespace Supremacy.Game
 
         #region DoPreTurnOperations() Method
         private void DoPreTurnOperations(GameContext game)
-        {           
-            var objects = GameContext.Current.Universe.Objects.ToHashSet();
-            var civManagers = GameContext.Current.CivilizationManagers.ToHashSet();
-            var fleets = objects.OfType<Fleet>().ToHashSet();
-            var errors = new System.Collections.Concurrent.ConcurrentStack<Exception>();
+        {
+            HashSet<UniverseObject> objects = GameContext.Current.Universe.Objects.ToHashSet();
+            HashSet<CivilizationManager> civManagers = GameContext.Current.CivilizationManagers.ToHashSet();
+            HashSet<Fleet> fleets = objects.OfType<Fleet>().ToHashSet();
+            ConcurrentStack<Exception> errors = new System.Collections.Concurrent.ConcurrentStack<Exception>();
 
-            var diplomatCheck = game.Diplomats;
+            CivilizationKeyedMap<Diplomat> diplomatCheck = game.Diplomats;
 
             GameLog.Core.General.DebugFormat("resetting items...");
             ParallelForEach(objects, item =>
@@ -388,8 +388,8 @@ namespace Supremacy.Game
 
                     try
                     {
-                        var civSitReps = IntelHelper.SitReps_Temp.Where(o => o.Owner == civManager.Civilization).ToList();
-                        foreach (var entry in civSitReps)
+                        List<SitRepEntry> civSitReps = IntelHelper.SitReps_Temp.Where(o => o.Owner == civManager.Civilization).ToList();
+                        foreach (SitRepEntry entry in civSitReps)
                         {
                             civManager.SitRepEntries.Add(entry);
                         }
@@ -427,7 +427,7 @@ namespace Supremacy.Game
         #region DoPreGameSetup() Method
         public void DoPreGameSetup(GameContext game)
         {
-            var errors = new ConcurrentStack<Exception>();
+            ConcurrentStack<Exception> errors = new ConcurrentStack<Exception>();
 
             ParallelForEach(GameContext.Current.Civilizations, civ =>
             {
@@ -515,7 +515,7 @@ namespace Supremacy.Game
             float TroopTransportStrenghtMod = Number.ParseSingle(strengthTable["TroopTransportStrenghtMod"][0]);
             float ColonyTroopStrenghtMod = Number.ParseSingle(strengthTable["ColonyTroopStrenghtMod"][0]);
 
-            var newline = Environment.NewLine;
+            string newline = Environment.NewLine;
             GameLog.Core.GameInitDataDetails.DebugFormat("StrengthModifier: " + newline +
                 "EspionageMod = {0}" + newline +
                 "SabotageMod = {1}" + newline + 
@@ -564,10 +564,10 @@ namespace Supremacy.Game
         #region DoFleetMovement() Method
         private void DoFleetMovement(GameContext game)
         {
-            var allFleets = GameContext.Current.Universe.Find<Fleet>().ToList();
+            List<Fleet> allFleets = GameContext.Current.Universe.Find<Fleet>().ToList();
 
 
-            foreach (var fleet in allFleets)
+            foreach (Fleet fleet in allFleets)
             {
                 string _text;
                 int shipNum = fleet.Ships.Count();
@@ -599,9 +599,9 @@ namespace Supremacy.Game
                     fleet.SetRoute(TravelRoute.Empty);
                 }
 
-                var civManager = GameContext.Current.CivilizationManagers[fleet.Owner];
+                CivilizationManager civManager = GameContext.Current.CivilizationManagers[fleet.Owner];
                 int fuelNeeded;
-                var fuelRange = civManager.MapData.GetFuelRange(fleet.Location);
+                int fuelRange = civManager.MapData.GetFuelRange(fleet.Location);
                 
                 /*
                  * If the fleet is within fueling range, then try to top off the reserves of
@@ -610,7 +610,7 @@ namespace Supremacy.Game
                  */
                 if (!fleet.IsInTow && (fleet.Range >= fuelRange))
                 {
-                    foreach (var ship in fleet.Ships)
+                    foreach (Ship ship in fleet.Ships)
                     {
                         fuelNeeded = ship.FuelReserve.Maximum - ship.FuelReserve.CurrentValue;
 
@@ -620,7 +620,7 @@ namespace Supremacy.Game
                 }
 
                 //Move the ships along their route
-                for (var i = 0; i < fleet.Speed; i++)
+                for (int i = 0; i < fleet.Speed; i++)
                 {
                     if (fleet.MoveAlongRoute())
                     {
@@ -635,7 +635,7 @@ namespace Supremacy.Game
 
                     fuelRange = civManager.MapData.GetFuelRange(fleet.Location);
 
-                    foreach (var ship in fleet.Ships)
+                    foreach (Ship ship in fleet.Ships)
                     {
                         /*
                          * For each ship in the fleet, deplete the fuel reserves by a 1 unit
@@ -661,7 +661,7 @@ namespace Supremacy.Game
                     if (fleet.Ships != null) // Update FixBlackholeCrash (hopefully) 2 March 2019
                     {
                         
-                        foreach (var ship in fleet.Ships)
+                        foreach (Ship ship in fleet.Ships)
                         {
                             int damage = RandomHelper.Roll(ship.HullStrength.CurrentValue);
                             if (damage >= ship.HullStrength.CurrentValue)
@@ -695,14 +695,14 @@ namespace Supremacy.Game
         private void DoDiplomacy()
         {
             //DiplomacyHelper.ClearAcceptRejectDictionary();
-            var civManagers = GameContext.Current.CivilizationManagers;
+            CivilizationManagerMap civManagers = GameContext.Current.CivilizationManagers;
 
             // FIRST: Pending Actions
-            foreach (var civ1 in GameContext.Current.Civilizations)
+            foreach (Civilization civ1 in GameContext.Current.Civilizations)
             {
                 if (civ1.IsHuman)
                     DiplomacyHelper.AcceptingRejecting(civ1);
-                foreach (var civ2 in GameContext.Current.Civilizations)
+                foreach (Civilization civ2 in GameContext.Current.Civilizations)
                 {                
                     if (civ1 == civ2)
                         continue;
@@ -717,9 +717,9 @@ namespace Supremacy.Game
                         _itIsBorg = true;
 
                     }
-                    var diplomat1 = Diplomat.Get(civ1);
+                    Diplomat diplomat1 = Diplomat.Get(civ1);
 
-                    var diplomat2 = Diplomat.Get(civ2);
+                    Diplomat diplomat2 = Diplomat.Get(civ2);
                     if (diplomat1.GetForeignPower(civ2).DiplomacyData.Status == Diplomacy.ForeignPowerStatus.NoContact ||
                         diplomat2.GetForeignPower(civ1).DiplomacyData.Status == Diplomacy.ForeignPowerStatus.NoContact)
                         {
@@ -727,8 +727,8 @@ namespace Supremacy.Game
                         continue;
                         }
 
-                    var foreignPower = diplomat1.GetForeignPower(civ2);
-                    var foreignPowerStatus = diplomat1.GetForeignPower(civ2).DiplomacyData.Status;
+                    ForeignPower foreignPower = diplomat1.GetForeignPower(civ2);
+                    ForeignPowerStatus foreignPowerStatus = diplomat1.GetForeignPower(civ2).DiplomacyData.Status;
                     if (_itIsBorg == true)
                     {
                         if (civ1.CivID == 6 || civ1.Key == "BORG")
@@ -793,21 +793,21 @@ namespace Supremacy.Game
                     // Ships gets new owner on joining empire - colonies are done in AccpetPropsalVisitor
                     if (civ1.IsEmpire && !civ2.IsEmpire && civ1.Key != "Borg")
                     {
-                        var currentDiplomat = Diplomat.Get(civ1);
+                        Diplomat currentDiplomat = Diplomat.Get(civ1);
                         if (currentDiplomat.GetForeignPower(civ2).DiplomacyData.Status == Diplomacy.ForeignPowerStatus.CounterpartyIsMember)
                         {
-                            var _objectsCiv2 = GameContext.Current.Universe.Objects.Where(s => s.Owner == civ2)
+                            List<UniverseObject> _objectsCiv2 = GameContext.Current.Universe.Objects.Where(s => s.Owner == civ2)
                                     .Where(s =>s.ObjectType == UniverseObjectType.Ship).ToList();
-                            foreach (var minorsObject in _objectsCiv2)
+                            foreach (UniverseObject minorsObject in _objectsCiv2)
                             {
                                 if (minorsObject.Owner == civ2)
                                 {
                                     CivilizationManager targetMinor = GameContext.Current.CivilizationManagers[civ2];
-                                    var minorCivHome = targetMinor.HomeColony;
-                                    int gainedResearchPoints = minorCivHome.NetResearch;                                      
-                                    var ship = (Ship)minorsObject;
-                                    ship.Owner = civ1; 
-                                    var newfleet = ship.CreateFleet();
+                                    Colony minorCivHome = targetMinor.HomeColony;
+                                    int gainedResearchPoints = minorCivHome.NetResearch;
+                                    Ship ship = (Ship)minorsObject;
+                                    ship.Owner = civ1;
+                                    Fleet newfleet = ship.CreateFleet();
                                     newfleet.Owner = civ1;
                                     newfleet.SetOrder(FleetOrders.EngageOrder.Create());
                                     if (newfleet.Order == null)
@@ -830,16 +830,16 @@ namespace Supremacy.Game
             // Second: Schedule delivery of outbound messages  Including Statementreceived
              */
             GameLog.Core.Diplomacy.DebugFormat("NEXT: *Second* Outgoing");
-            foreach (var civ1 in GameContext.Current.Civilizations)
+            foreach (Civilization civ1 in GameContext.Current.Civilizations)
             {
-                var diplomat = Diplomat.Get(civ1);
+                Diplomat diplomat = Diplomat.Get(civ1);
 
-                foreach (var civ2 in GameContext.Current.Civilizations)
+                foreach (Civilization civ2 in GameContext.Current.Civilizations)
                 {
                     if (civ1 == civ2)
                         continue;
 
-                    var foreignPower = diplomat.GetForeignPower(civ2);
+                    ForeignPower foreignPower = diplomat.GetForeignPower(civ2);
                     string _gameLog = "";
 
                     // just for testing especially generating break point
@@ -1071,10 +1071,10 @@ namespace Supremacy.Game
                                     + Environment.NewLine;
 
                     if (_gameLog != "what's next + ")
-                        GameLog.Core.Diplomacy.DebugFormat(_gameLog); 
+                        GameLog.Core.Diplomacy.DebugFormat(_gameLog);
 
                     //  Second.2 = proposalSent
-                    var proposalSent = foreignPower.ProposalSent;
+                    IProposal proposalSent = foreignPower.ProposalSent;
                     if (proposalSent != null)
                     {
                         foreignPower.CounterpartyForeignPower.ProposalReceived = proposalSent;
@@ -1095,8 +1095,8 @@ namespace Supremacy.Game
                     }
 
                     //  Second.3 = statementSent
-                    
-                    var statementSent = foreignPower.StatementSent;
+
+                    Statement statementSent = foreignPower.StatementSent;
                     if (statementSent != null)
                     {                       
                         // StatementSent becomes counterparty StatementReceived
@@ -1121,7 +1121,7 @@ namespace Supremacy.Game
                     }
 
                     //  Second.4 = responseSent
-                    var responseSent = foreignPower.ResponseSent;
+                    IResponse responseSent = foreignPower.ResponseSent;
                     if (responseSent != null)
                     {
                         foreignPower.CounterpartyForeignPower.ResponseReceived = responseSent; // cross over response sent to response received
@@ -1159,7 +1159,7 @@ namespace Supremacy.Game
             /*
             // Third: Fulfill agreement obligations
              */
-            foreach (var agreement in GameContext.Current.AgreementMatrix)
+            foreach (IAgreement agreement in GameContext.Current.AgreementMatrix)
                 AgreementFulfillmentVisitor.Visit(agreement);
           
         }
@@ -1169,25 +1169,25 @@ namespace Supremacy.Game
         #region DoCombat() Method
         void DoCombat(GameContext game)
         {
-            var combatLocations = new HashSet<MapLocation>();
-            var invasionLocations = new HashSet<MapLocation>();
-            var combats = new List<List<CombatAssets>>();
-            var invasions = new List<InvasionArena>();
-            var fleetsAtLocation = new List<Fleet>(GameContext.Current.Universe.Find<Fleet>(UniverseObjectType.Fleet)).ToList();
+            HashSet<MapLocation> combatLocations = new HashSet<MapLocation>();
+            HashSet<MapLocation> invasionLocations = new HashSet<MapLocation>();
+            List<List<CombatAssets>> combats = new List<List<CombatAssets>>();
+            List<InvasionArena> invasions = new List<InvasionArena>();
+            List<Fleet> fleetsAtLocation = new List<Fleet>(GameContext.Current.Universe.Find<Fleet>(UniverseObjectType.Fleet)).ToList();
   
-            foreach (var fleet in fleetsAtLocation)
+            foreach (Fleet fleet in fleetsAtLocation)
             {
                 if (!combatLocations.Contains(fleet.Location))
                 {
-                        var assets = CombatHelper.GetCombatAssets(fleet.Location); // part of altering collection while using from GameEngine 216 and CombatHelper.cs line 58
-                        var fleetsOwners = fleetsAtLocation
+                    List<CombatAssets> assets = CombatHelper.GetCombatAssets(fleet.Location); // part of altering collection while using from GameEngine 216 and CombatHelper.cs line 58
+                    List<Civilization> fleetsOwners = fleetsAtLocation
                             .Select(o => o.Owner)
                             .Distinct()
                             .ToList();
 
                     if (assets.Count > 1 && fleetsOwners.Count > 1)
                     {
-                        foreach (var nextFleet in fleetsAtLocation)
+                        foreach (Fleet nextFleet in fleetsAtLocation)
                             if (fleet.Owner == nextFleet.Owner ||
                                 CombatHelper.WillFightAlongside(fleet.Owner, nextFleet.Owner) ||
                                 !CombatHelper.WillEngage(fleet.Owner, nextFleet.Owner))
@@ -1206,7 +1206,7 @@ namespace Supremacy.Game
                 }
             }
 
-            foreach (var combat in combats)
+            foreach (List<CombatAssets> combat in combats)
             {
                 CombatReset.Reset();
                 GameLog.Core.Combat.DebugFormat("---- COMBAT OCCURED GameEngine --------------------");
@@ -1215,7 +1215,7 @@ namespace Supremacy.Game
 
             }
 
-            foreach (var invasion in invasions)
+            foreach (InvasionArena invasion in invasions)
             {
                 CombatReset.Reset();
                 OnInvasionOccurring(invasion);
@@ -1223,7 +1223,7 @@ namespace Supremacy.Game
                     CombatReset.WaitOne();
             }
 
-            var invadingFleets = invasions
+            List<Fleet> invadingFleets = invasions
                 .SelectMany(o => o.InvadingUnits)
                 .OfType<InvasionOrbital>()
                 .Where(o => !o.IsDestroyed)
@@ -1233,7 +1233,7 @@ namespace Supremacy.Game
                 .Distinct()
                 .ToList();
 
-            foreach (var invadingFleet in invadingFleets)
+            foreach (Fleet invadingFleet in invadingFleets)
             {
                 if (invadingFleet.Order is AssaultSystemOrder assaultOrder && !assaultOrder.IsValidOrder(invadingFleet))
                     invadingFleet.SetOrder(invadingFleet.GetDefaultOrder());
@@ -1281,7 +1281,7 @@ namespace Supremacy.Game
                         //if (colony.Name == "Ledos")
                         //    ; // ddd;
 
-                        var growthRate = colony.GrowthRate;
+                        Percentage growthRate = colony.GrowthRate;
 
 
                         if (foodDeficit < 0)
@@ -1315,7 +1315,7 @@ namespace Supremacy.Game
 
                         if (newPopulation < colony.Population.Maximum)
                         {
-                            var foodFacilityType = colony.GetFacilityType(ProductionCategory.Food);
+                            ProductionFacilityDesign foodFacilityType = colony.GetFacilityType(ProductionCategory.Food);
                             if ((foodFacilityType != null) && (colony.GetAvailableLabor() >= foodFacilityType.LaborCost))
                             {
                                 int popInThreeTurns = Math.Min(colony.Population.Maximum,
@@ -1349,7 +1349,7 @@ namespace Supremacy.Game
         #region DoResearch() Method
         private void DoResearch(GameContext game)
         {
-            var scienceShips = game.Universe.Find<Ship>(UniverseObjectType.Ship).Where(s => s.ShipType == ShipType.Science);
+            IEnumerable<Ship> scienceShips = game.Universe.Find<Ship>(UniverseObjectType.Ship).Where(s => s.ShipType == ShipType.Science);
             ParallelForEach(scienceShips, scienceShip =>
             {
                 GameContext.PushThreadContext(game);
@@ -1362,8 +1362,8 @@ namespace Supremacy.Game
 
                 try
                 {
-                    var owner = GameContext.Current.CivilizationManagers[scienceShip.Owner];
-                    var starType = scienceShip.Sector.System.StarType;
+                    CivilizationManager owner = GameContext.Current.CivilizationManagers[scienceShip.Owner];
+                    StarType starType = scienceShip.Sector.System.StarType;
                     if (scienceShip.Location == owner.HomeSystem.Location)
                         return;
 
@@ -1435,7 +1435,7 @@ namespace Supremacy.Game
                 GameContext.PushThreadContext(game);
                 try
                 {
-                    var civManager = GameContext.Current.CivilizationManagers[civ.CivID];
+                    CivilizationManager civManager = GameContext.Current.CivilizationManagers[civ.CivID];
                     civManager.Research.UpdateResearch(
                         civManager.Colonies.Sum(c => c.GetProductionOutput(ProductionCategory.Research)));
                 }
@@ -1458,11 +1458,11 @@ namespace Supremacy.Game
 
             GameContext.PushThreadContext(game);
 
-            var map = game.Universe.Map;
-            
-            var interference = new Task<int[,]>(() =>
+            SectorMap map = game.Universe.Map;
+
+            Task<int[,]> interference = new Task<int[,]>(() =>
             {
-                var array = new int[map.Width, map.Height];
+                int[,] array = new int[map.Width, map.Height];
 
                 GameContext.PushThreadContext(game);
                 try
@@ -1485,13 +1485,13 @@ namespace Supremacy.Game
                 GameContext.PushThreadContext(game);
                 try
                 {
-                    var fuelLocations = new HashSet<MapLocation>();
-                    var civManager = game.CivilizationManagers[civ];
-                    var mapData = civManager.MapData;
+                    HashSet<MapLocation> fuelLocations = new HashSet<MapLocation>();
+                    CivilizationManager civManager = game.CivilizationManagers[civ];
+                    CivilizationMapData mapData = civManager.MapData;
 
                     mapData.ResetScanStrengthAndFuelRange();
                     //fleets
-                    foreach (var fleet in game.Universe.FindOwned<Fleet>(civ))
+                    foreach (Fleet fleet in game.Universe.FindOwned<Fleet>(civ))
                     {
                         //GameLog.Core.MapData.DebugFormat("UpgradeScanStrength from FLEET {0} {1} ({2}) at {3}, ScanStrength = {4}, Range = {5}", fleet.ObjectID, fleet.Name, 
                         //    fleet.Owner, fleet.Location, fleet.ScanStrength, fleet.SensorRange);
@@ -1503,7 +1503,7 @@ namespace Supremacy.Game
                             1);
                     }
                     /*stations */
-                    foreach (var station in game.Universe.FindOwned<Station>(civ))
+                    foreach (Station station in game.Universe.FindOwned<Station>(civ))
                     {
                         //GameLog.Core.MapData.DebugFormat("UpgradeScanStrength from STATION {0} {1} ({2}) at {3}, ScanStrength = {4}, Range = {5}", station.ObjectID, station.Name, 
                         //    station.Owner, station.Location, station.StationDesign.ScanStrength, station.StationDesign.SensorRange);
@@ -1516,7 +1516,7 @@ namespace Supremacy.Game
 
                         fuelLocations.Add(station.Location);
                         /* stations of other civs we can use to travel */
-                        foreach (var whoElse in game.Civilizations)
+                        foreach (Civilization whoElse in game.Civilizations)
                         {
                             List<Civilization> aggreableCivs = (from Civilization in GameContext.Current.Civilizations
                                                                 where GameContext.Current.AgreementMatrix.IsAgreementActive(civ, whoElse, ClauseType.TreatyDefensiveAlliance) ||
@@ -1527,7 +1527,7 @@ namespace Supremacy.Game
                             {
                                 foreach (Civilization who in aggreableCivs)
                                 {
-                                    foreach (var anotherSation in game.Universe.FindOwned<Station>(who))
+                                    foreach (Station anotherSation in game.Universe.FindOwned<Station>(who))
                                     {
                                         if (anotherSation != null)
                                         fuelLocations.Add(anotherSation.Location);
@@ -1537,11 +1537,11 @@ namespace Supremacy.Game
                         }
                     }
 
-                    foreach (var colony in civManager.Colonies)
+                    foreach (Colony colony in civManager.Colonies)
                     {
                         int scanModifier = 0;
-                            
-                        var scanBonuses = colony.Buildings
+
+                        IEnumerable<int> scanBonuses = colony.Buildings
                             .Where(o => o.IsActive)
                             .SelectMany(o => o.BuildingDesign.Bonuses)
                             .Where(o => o.BonusType == BonusType.ScanRange)
@@ -1563,13 +1563,13 @@ namespace Supremacy.Game
                             fuelLocations.Add(colony.Location);
                     }
 
-                    for (var x = 0; x < map.Width; x++)
+                    for (int x = 0; x < map.Width; x++)
                     {
-                        for (var y = 0; y < map.Height; y++)
+                        for (int y = 0; y < map.Height; y++)
                         {
-                            var sector = map[x, y];
+                            Sector sector = map[x, y];
 
-                            foreach (var fuelLocation in fuelLocations)
+                            foreach (MapLocation fuelLocation in fuelLocations)
                             {    
                                 mapData.UpgradeFuelRange(
                                     sector.Location,
@@ -1597,8 +1597,8 @@ namespace Supremacy.Game
         #region DoSectorClaims() Method
         private void DoSectorClaims(GameContext game)
         {
-            var map = game.Universe.Map;
-            var sectorClaims = game.SectorClaims;
+            SectorMap map = game.Universe.Map;
+            SectorClaimGrid sectorClaims = game.SectorClaims;
 
             sectorClaims.ClearClaims();
 
@@ -1606,28 +1606,28 @@ namespace Supremacy.Game
             GameContext.PushThreadContext(game);
             try
             {
-                var civManager = GameContext.Current.CivilizationManagers[civ];
+                    CivilizationManager civManager = GameContext.Current.CivilizationManagers[civ];
 
-                    foreach (var colony in civManager.Colonies)
+                    foreach (Colony colony in civManager.Colonies)
                     {
-                        var minX = colony.Location.X;
-                        var minY = colony.Location.Y;
-                        var maxX = colony.Location.X;
-                        var maxY = colony.Location.Y;
-                        var radius = Math.Min(colony.Population.CurrentValue / 100, 3);
+                        int minX = colony.Location.X;
+                        int minY = colony.Location.Y;
+                        int maxX = colony.Location.X;
+                        int maxY = colony.Location.Y;
+                        int radius = Math.Min(colony.Population.CurrentValue / 100, 3);
 
                         minX = Math.Max(0, minX - radius);
                         minY = Math.Max(0, minY - radius);
                         maxX = Math.Min(map.Width - 1, maxX + radius);
                         maxY = Math.Min(map.Height - 1, maxY + radius);
 
-                        for (var x = minX; x <= maxX; x++)
+                        for (int x = minX; x <= maxX; x++)
                         {
-                            for (var y = minY; y <= maxY; y++)
+                            for (int y = minY; y <= maxY; y++)
                             {
-                                var location = new MapLocation(x, y);
+                                MapLocation location = new MapLocation(x, y);
 
-                                var claimWeight = colony.Population.CurrentValue / (MapLocation.GetDistance(location, colony.Location) + 1);
+                                int claimWeight = colony.Population.CurrentValue / (MapLocation.GetDistance(location, colony.Location) + 1);
 
                                 if (claimWeight <= 0)
                                     continue;
@@ -1644,7 +1644,7 @@ namespace Supremacy.Game
                                     if (GameContext.Current.AgreementMatrix.IsAgreementActive(civ, whoElse, ClauseType.TreatyNonAggression))
                                     {
                                         GameLog.Core.Diplomacy.DebugFormat("*******Looking for NonAggression Treaties*******");
-                                        var whosFleets = GameContext.Current.Universe.Find<Fleet>().Where(o => o.Owner == whoElse).ToList();
+                                        List<Fleet> whosFleets = GameContext.Current.Universe.Find<Fleet>().Where(o => o.Owner == whoElse).ToList();
                                         foreach (Fleet fleet in whosFleets)
                                         {
                                             if (sectorClaims.GetOwner(fleet.Location) == civ)
@@ -1699,18 +1699,18 @@ namespace Supremacy.Game
         #region DoScrapping() Method
         void DoScrapping(GameContext game)
         {
-            var priorThreadContext = GameContext.ThreadContext;
+            GameContext priorThreadContext = GameContext.ThreadContext;
             GameContext.PushThreadContext(game);
             try
             {
-                foreach (var scrappedObject in game.Universe.Find<TechObject>().Where(o => o.Scrap))
+                foreach (TechObject scrappedObject in game.Universe.Find<TechObject>().Where(o => o.Scrap))
                     game.Universe.Scrap(scrappedObject);
 
-                var colonies = game.Civilizations
+                IEnumerable<Colony> colonies = game.Civilizations
                     .Select(o => game.CivilizationManagers[o.CivID])
                     .SelectMany(o => o.Colonies);
 
-                foreach (var colony in colonies)
+                foreach (Colony colony in colonies)
                     game.Universe.ScrapNonStructures(colony);
             }
             finally
@@ -1796,7 +1796,7 @@ namespace Supremacy.Game
             int _civsToDo = 0; // for Debug
             _civsToDo = GameContext.Current.Civilizations.Count;
 
-            foreach (var civ in GameContext.Current.Civilizations)
+            foreach (Civilization civ in GameContext.Current.Civilizations)
             {
                 GameContext.PushThreadContext(game);
 
@@ -1810,7 +1810,7 @@ namespace Supremacy.Game
                 try
                 {
                     CivilizationManager civManager = GameContext.Current.CivilizationManagers[civ.CivID];
-                    var colonies = new List<Colony>(civManager.Colonies);
+                    List<Colony> colonies = new List<Colony>(civManager.Colonies);
 
                     /*
                      * Update the civilization's treasury and resource stockpile to include anything that was
@@ -2067,9 +2067,9 @@ namespace Supremacy.Game
                 GameContext.PushThreadContext(game);
                 try
                 {
-                    var civManager = GameContext.Current.CivilizationManagers[civ.CivID];
+                    CivilizationManager civManager = GameContext.Current.CivilizationManagers[civ.CivID];
                     //Get all colonies with a shipyard
-                    var colonies = civManager.Colonies.Where(c => c.Shipyard != null).ToList();
+                    List<Colony> colonies = civManager.Colonies.Where(c => c.Shipyard != null).ToList();
                     /* 
                      * Shuffle the colonies so they are processed in random order. This
                      * will help prevent the same colonies from getting priority when
@@ -2085,10 +2085,10 @@ namespace Supremacy.Game
                         [ResourceType.RawMaterials] = civManager.Resources.RawMaterials.CurrentValue
                     };
 
-                    foreach (var colony in colonies)
+                    foreach (Colony colony in colonies)
                     {
-                        var shipyard = colony.Shipyard;
-                        var queue = shipyard.BuildQueue;
+                        Shipyard shipyard = colony.Shipyard;
+                        IList<BuildQueueItem> queue = shipyard.BuildQueue;
 
                         //int colonyHealth = Int32.TryParse(colony.Health.ToString(), out int _health);
 
@@ -2179,31 +2179,31 @@ namespace Supremacy.Game
         #region DoMorale() Method
         void DoMorale(GameContext game)
         {
-            var errors = new System.Collections.Concurrent.ConcurrentStack<Exception>();
+            ConcurrentStack<Exception> errors = new System.Collections.Concurrent.ConcurrentStack<Exception>();
 
             ParallelForEach(GameContext.Current.Civilizations, civ =>
             {
                 GameContext.PushThreadContext(game);
                 try
                 {
-                    var globalMorale = 0;
-                    var civManager = GameContext.Current.CivilizationManagers[civ.CivID];
+                    int globalMorale = 0;
+                    CivilizationManager civManager = GameContext.Current.CivilizationManagers[civ.CivID];
 
                     /* Calculate any empire-wide morale bonuses */
-                    foreach (var bonus in civManager.GlobalBonuses)
+                    foreach (Bonus bonus in civManager.GlobalBonuses)
                     {
                         if (bonus.BonusType == BonusType.MoraleEmpireWide)
                             globalMorale += bonus.Amount;
                     }
 
                     /* Iterate through each colony. */
-                    foreach (var colony in civManager.Colonies)
+                    foreach (Colony colony in civManager.Colonies)
                     {
                         /* Add the empire-wide morale adjustments. */
                         colony.Morale.AdjustCurrent(globalMorale);
 
                         /* Add any morale bonuses from active buildings at the colony. */
-                        var colonyBonus = (from building in colony.Buildings
+                        int colonyBonus = (from building in colony.Buildings
                                             where building.IsActive
                                             from bonus in building.BuildingDesign.Bonuses
                                             where bonus.BonusType == BonusType.Morale
@@ -2219,7 +2219,7 @@ namespace Supremacy.Game
                         if (colony.Morale.CurrentChange == 0)
                         {
                             int drift = 0;
-                            var originalCiv = colony.OriginalOwner;
+                            Civilization originalCiv = colony.OriginalOwner;
 
                             //We're below the base, so drift up to it
                             if (colony.Morale.CurrentValue < originalCiv.BaseMoraleLevel)
@@ -2268,7 +2268,7 @@ namespace Supremacy.Game
                 try
                 {
                     int popForTradeRoute;
-                    var civManager = GameContext.Current.CivilizationManagers[civ.CivID];
+                    CivilizationManager civManager = GameContext.Current.CivilizationManagers[civ.CivID];
 
                             /*
                              * See what the minimum population level is for a new trade route for the
@@ -2279,17 +2279,17 @@ namespace Supremacy.Game
                     else
                         popForTradeRoute = Number.ParseInt32(popReqTable[0][0]);
 
-                    var colonies = GameContext.Current.Universe.FindOwned<Colony>(civ);
+                    HashSet<Colony> colonies = GameContext.Current.Universe.FindOwned<Colony>(civ);
 
                             /* Iterate through each colony... */
-                    foreach (var colony in colonies)
+                    foreach (Colony colony in colonies)
                     {
                                 /*
                                  * For each established trade route, ensure that the target colony is
                                  * a valid choice.  If it isn't, break it.  Otherwise, calculate the
                                  * revised credit total.
                                  */
-                        foreach (var route in colony.TradeRoutes)
+                        foreach (TradeRoute route in colony.TradeRoutes)
                         {
                             if (!route.IsValidTargetColony(route.TargetColony))
                                 route.TargetColony = null;
@@ -2346,11 +2346,11 @@ namespace Supremacy.Game
                                  */
                         else if (tradeRoutes < colony.TradeRoutes.Count)
                         {
-                            var extraTradeRoutes = colony.TradeRoutes
+                            TradeRoute[] extraTradeRoutes = colony.TradeRoutes
                                 .OrderByDescending(o => o.Credits)
                                 .SkipWhile((o, i) => i < tradeRoutes)
                                 .ToArray();
-                            foreach (var extraTradeRoute in extraTradeRoutes)
+                            foreach (TradeRoute extraTradeRoute in extraTradeRoutes)
                                 colony.TradeRoutes.Remove(extraTradeRoute);
                         }
 
@@ -2358,7 +2358,7 @@ namespace Supremacy.Game
                                  * Iterate through the remaining trade routes and deposit the credit
                                  * income into the civilization's treasury.
                                  */
-                        foreach (var route in colony.TradeRoutes)
+                        foreach (TradeRoute route in colony.TradeRoutes)
                         {
                             colony.CreditsFromTrade.AdjustCurrent(route.Credits);
                             //GameLog.Core.TradeRoutes.DebugFormat("trade route {0}, route is assigned ={1}", route.SourceColony.Owner, route.IsAssigned);
@@ -2368,10 +2368,10 @@ namespace Supremacy.Game
                                 civManager.SitRepEntries.Add(new UnassignedTradeRoute(route));
                             }
                         }
-                                /*
-                                 * Apply all "+% Trade Income" and "+% Credits" bonuses at this colony.
-                                 */
-                        var tradeBonuses = (int)colony.ActiveBuildings
+                        /*
+                         * Apply all "+% Trade Income" and "+% Credits" bonuses at this colony.
+                         */
+                        int tradeBonuses = (int)colony.ActiveBuildings
                             .SelectMany(o => o.BuildingDesign.Bonuses)
                             .Where(o => ((o.BonusType == BonusType.PercentTradeIncome) || (o.BonusType == BonusType.PercentCredits)))
                             .Sum(o => 0.01f * o.Amount);
@@ -2381,12 +2381,12 @@ namespace Supremacy.Game
                         colony.ResetCreditsFromTrade();
                     }
 
-                            /* 
-                             * Apply all global "+% Total Credits" bonuses for the civilization.  At present, we have now
-                             * completed all adjustments to the civilization's treasury for this turn.  If that changes in
-                             * the future, we may need to move this operation.
-                             */
-                    var globalBonusAdjustment = (int)(0.01f * civManager.GlobalBonuses
+                    /* 
+                     * Apply all global "+% Total Credits" bonuses for the civilization.  At present, we have now
+                     * completed all adjustments to the civilization's treasury for this turn.  If that changes in
+                     * the future, we may need to move this operation.
+                     */
+                    int globalBonusAdjustment = (int)(0.01f * civManager.GlobalBonuses
                         .Where(o => o.BonusType == BonusType.PercentTotalCredits)
                         .Sum(o => o.Amount));
                     civManager.Credits.AdjustCurrent(globalBonusAdjustment);
@@ -2417,17 +2417,17 @@ namespace Supremacy.Game
 
             //GameContext.Current.CivilizationManagers[attackedCiv].Credits.AdjustCurrent(stolenCredits * -1);
             //GameContext.Current.CivilizationManagers[attackedCiv].Credits.UpdateAndReset();
-            var destroyedOrbitals = GameContext.Current.Universe.Find<Orbital>(o => o.HullStrength.IsMinimized);
-            var allFleets = GameContext.Current.Universe.Find<Fleet>(UniverseObjectType.Fleet);
+            HashSet<Orbital> destroyedOrbitals = GameContext.Current.Universe.Find<Orbital>(o => o.HullStrength.IsMinimized);
+            HashSet<Fleet> allFleets = GameContext.Current.Universe.Find<Fleet>(UniverseObjectType.Fleet);
 
-            foreach (var orbital in destroyedOrbitals)
+            foreach (Orbital orbital in destroyedOrbitals)
             {
                 GameContext.Current.CivilizationManagers[orbital.OwnerID].SitRepEntries.Add(
                     new OrbitalDestroyedSitRepEntry(orbital));
                 GameContext.Current.Universe.Destroy(orbital);
             }
 
-            foreach (var fleet in allFleets)
+            foreach (Fleet fleet in allFleets)
             {
                 if (fleet.Ships.Count == 0)
                 {
@@ -2444,10 +2444,10 @@ namespace Supremacy.Game
 
 
 
-            foreach (var civManager in GameContext.Current.CivilizationManagers)
+            foreach (CivilizationManager civManager in GameContext.Current.CivilizationManagers)
             {
 
-                var allCivShips = GameContext.Current.Universe.Find<Ship>(UniverseObjectType.Ship).Where(o => o.OwnerID == civManager.CivilizationID);
+                IEnumerable<Ship> allCivShips = GameContext.Current.Universe.Find<Ship>(UniverseObjectType.Ship).Where(o => o.OwnerID == civManager.CivilizationID);
 
                 string civValueShipSummary = /*"(" + civManager.CivilizationID + "> */"LT-ShipSum1: "; //All;" + allCivShips.Count();
                 string civValueShipSummary2 = /*"(" + civManager.CivilizationID + "> */"LT-ShipSum2: "; //All;" + allCivShips.Count();  // more civil ships
@@ -2456,7 +2456,7 @@ namespace Supremacy.Game
                 int _fpAll = 0;
 
 
-                var commandShips = allCivShips.Where(o => o.ShipType == ShipType.Command);
+                IEnumerable<Ship> commandShips = allCivShips.Where(o => o.ShipType == ShipType.Command);
                 _count = commandShips.Count();
                 if (_count > 0)
                 {
@@ -2465,7 +2465,7 @@ namespace Supremacy.Game
                 }
 
 
-                var cruiserShips = allCivShips.Where(o => o.ShipType == ShipType.Cruiser || o.ShipType == ShipType.HeavyCruiser || o.ShipType == ShipType.StrikeCruiser);
+                IEnumerable<Ship> cruiserShips = allCivShips.Where(o => o.ShipType == ShipType.Cruiser || o.ShipType == ShipType.HeavyCruiser || o.ShipType == ShipType.StrikeCruiser);
                 //civValueShipSummary += ";Cru;" + _count = cruiserShips.Count();
                 _count = cruiserShips.Count();
                 _fp = 0;
@@ -2476,7 +2476,7 @@ namespace Supremacy.Game
                 civValueShipSummary += "Cruiser " + _count + "x (FP:" + _fp + ")"; _fpAll += _fp; // if _count = 0 >>> show 0 
 
 
-                var fastAttackShips = allCivShips.Where(o => o.ShipType == ShipType.FastAttack);
+                IEnumerable<Ship> fastAttackShips = allCivShips.Where(o => o.ShipType == ShipType.FastAttack);
                 //civValueShipSummary += ";Att;" + _count = fastAttackShips.Count();
                 _count = fastAttackShips.Count();
                 _fp = 0;
@@ -2486,7 +2486,7 @@ namespace Supremacy.Game
                 }
                 civValueShipSummary += "; Attack " + _count + "x (FP:" + _fp + ")"; _fpAll += _fp;
 
-                var scoutShips = allCivShips.Where(o => o.ShipType == ShipType.Scout);
+                IEnumerable<Ship> scoutShips = allCivShips.Where(o => o.ShipType == ShipType.Scout);
                 //civValueShipSummary += ";Sco;" + _count = scoutShips.Count();
                 _count = scoutShips.Count();
                 _fp = 0;
@@ -2496,7 +2496,7 @@ namespace Supremacy.Game
                 }
                 civValueShipSummary += "; Scouts " + _count + "x (FP:" + _fp + ")"; _fpAll += _fp;
 
-                var scienceShips = allCivShips.Where(o => o.ShipType == ShipType.Science);
+                IEnumerable<Ship> scienceShips = allCivShips.Where(o => o.ShipType == ShipType.Science);
                 //civValueShipSummary += ";Sci;" + _count = scienceShips.Count();
                 _count = scienceShips.Count();
                 _fp = 0;
@@ -2507,7 +2507,7 @@ namespace Supremacy.Game
                 // civValueShipSummary2 ... frist line, no semi colon 
                 if (_count > 0) civValueShipSummary2 += "Science " + _count + "x (FP:" + _fp + ")"; _fpAll += _fp;
 
-                var spyShips = allCivShips.Where(o => o.ShipType == ShipType.Spy);
+                IEnumerable<Ship> spyShips = allCivShips.Where(o => o.ShipType == ShipType.Spy);
                 //civValueShipSummary += ";Spy;" + _count = spyShips.Count();
                 _count = spyShips.Count();
                 _fp = 0;
@@ -2517,7 +2517,7 @@ namespace Supremacy.Game
                 }
                 civValueShipSummary2 += "; Spy " + _count + "x ";// (FP:" + _fp + ")";
 
-                var diplomaticShips = allCivShips.Where(o => o.ShipType == ShipType.Diplomatic);
+                IEnumerable<Ship> diplomaticShips = allCivShips.Where(o => o.ShipType == ShipType.Diplomatic);
                 //civValueShipSummary += ";Dip;" + _count = diplomaticShips.Count();
                 _count = diplomaticShips.Count();
                 _fp = 0;
@@ -2527,7 +2527,7 @@ namespace Supremacy.Game
                 }
                 civValueShipSummary2 += "; Diplo " + _count + "x ";// (FP: " + _fp + ")";
 
-                var medicalShips = allCivShips.Where(o => o.ShipType == ShipType.Medical);
+                IEnumerable<Ship> medicalShips = allCivShips.Where(o => o.ShipType == ShipType.Medical);
                 //civValueShipSummary += ";Med;" + _count = medicalShips.Count();
                 _count = medicalShips.Count();
                 _fp = 0;
@@ -2537,7 +2537,7 @@ namespace Supremacy.Game
                 }
                 civValueShipSummary2 += "; Medical " + _count + "x ";// (FP: " + _fp + ")";
 
-                var transportShips = allCivShips.Where(o => o.ShipType == ShipType.Transport);
+                IEnumerable<Ship> transportShips = allCivShips.Where(o => o.ShipType == ShipType.Transport);
                 //civValueShipSummary += ";Tra;" + _count = transportShips.Count();
                 _count = transportShips.Count();
                 _fp = 0;
@@ -2547,7 +2547,7 @@ namespace Supremacy.Game
                 }
                 if (_count > 0) civValueShipSummary2 += "; Transport " + _count + "x ";// (FP: " + _fp + ")";
 
-                var constructionShips = allCivShips.Where(o => o.ShipType == ShipType.Construction);
+                IEnumerable<Ship> constructionShips = allCivShips.Where(o => o.ShipType == ShipType.Construction);
                 //civValueShipSummary += ";Con;" + _count = constructionShips.Count();
                 _count = constructionShips.Count();
                 _fp = 0;
@@ -2557,7 +2557,7 @@ namespace Supremacy.Game
                 }
                 if (_count > 0) civValueShipSummary2 += "; Construction " + _count + "x ";// (FP: " + _fp + ")"; 
 
-                var colonyShips = allCivShips.Where(o => o.ShipType == ShipType.Colony);
+                IEnumerable<Ship> colonyShips = allCivShips.Where(o => o.ShipType == ShipType.Colony);
                 //civValueShipSummary += ";Col;" + _count = colonyShips.Count();
                 _count = colonyShips.Count();
                 _fp = 0;
@@ -2575,7 +2575,7 @@ namespace Supremacy.Game
                 civManager.SitRepEntries.Add(new ShipSummarySitRepEntry(civManager.Civilization, civValueShipSummary2));
             }
 
-                foreach (var civ in CivValueList)
+                foreach (CivValue civ in CivValueList)
                 {
                 string _text = newline + "   CivValueList: " /*+ civ.AA_CIV_ID*/;
                 //_text += civ.CIV_KEY;
@@ -2589,13 +2589,13 @@ namespace Supremacy.Game
                 Console.WriteLine(_text);
             }
 
-            var allStations = GameContext.Current.Universe.Find<Station>(UniverseObjectType.Station);
-            foreach (var station in allStations)
+            HashSet<Station> allStations = GameContext.Current.Universe.Find<Station>(UniverseObjectType.Station);
+            foreach (Station station in allStations)
             {
                 string _rep = "Station " + station.ObjectID + " at ";
                 _rep += station.Location + ": " + blank + station.ObjectID + blank + station.Name + " (Maint.=" + station.Design.MaintenanceCost + ")";
 
-                var civManager = GameContext.Current.CivilizationManagers[station.OwnerID];
+                CivilizationManager civManager = GameContext.Current.CivilizationManagers[station.OwnerID];
                 civManager.SitRepEntries.Add(new ShipStatusSitRepEntry(civManager.Civilization, station.Location, _rep));
             }
 
@@ -2631,7 +2631,7 @@ namespace Supremacy.Game
 
  
             //var allCivs = GameContext.Current.Universe.Find<Fleet>(UniverseObjectType.Fleet);
-            foreach (var civManager in GameContext.Current.CivilizationManagers)
+            foreach (CivilizationManager civManager in GameContext.Current.CivilizationManagers)
             {
                 /*
                  * Reset the resource stockpile meters now that we have finished
@@ -2704,7 +2704,7 @@ namespace Supremacy.Game
         #region DoAIPlayers() Method
         public void DoAIPlayers(object gameContext, List<Civilization> autoTurnCiv) 
         {
-            var errors = new System.Collections.Concurrent.ConcurrentStack<Exception>();
+            ConcurrentStack<Exception> errors = new System.Collections.Concurrent.ConcurrentStack<Exception>();
             if (!(gameContext is GameContext game))
                 throw new ArgumentException("gameContext must be a valid GameContext instance");
 
@@ -2723,7 +2723,7 @@ namespace Supremacy.Game
                         if (civ.IsHuman && !autoTurnCiv.Contains(civ))
                             return;
 
-                        var civManager = GameContext.Current.CivilizationManagers[civ];
+                        CivilizationManager civManager = GameContext.Current.CivilizationManagers[civ];
                         civManager.DesiredBorders = PlayerAI.CreateDesiredBorders(civ);
 
                         DiplomatAI.DoTurn(civ);
@@ -2777,7 +2777,7 @@ namespace Supremacy.Game
             for (int i = 0; i < combat.Count(); i++)
             {
                 string _report = "Combat: ";
-                var civManager = GameContext.Current.CivilizationManagers[combat[i].OwnerID];
+                CivilizationManager civManager = GameContext.Current.CivilizationManagers[combat[i].OwnerID];
                 civManager.SitRepEntries.Add(new CombatSummarySitRepEntry(combat[i].Owner, combat[i].Location, _report)); 
             }
 

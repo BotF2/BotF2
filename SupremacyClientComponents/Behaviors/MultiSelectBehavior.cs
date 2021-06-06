@@ -56,12 +56,12 @@ namespace Supremacy.Client.Behaviors
         {
             if (!_isSelectionInProgress)
                 return;
-            
-            var endPoint = e.GetPosition(_selector);
+
+            Point endPoint = e.GetPosition(_selector);
             
             if (!_selectionAdorner.EndPoint.HasValue)
             {
-                var dragDistance = endPoint - _selectionAdorner.StartPoint;
+                Vector dragDistance = endPoint - _selectionAdorner.StartPoint;
                 if ((Math.Abs(dragDistance.X) < SystemParameters.MinimumHorizontalDragDistance) &&
                     (Math.Abs(dragDistance.Y) < SystemParameters.MinimumVerticalDragDistance))
                 {
@@ -72,9 +72,9 @@ namespace Supremacy.Client.Behaviors
             
             _selectionAdorner.EndPoint = endPoint;
 
-            var itemsInSelectionRectangle = FindItemsInSelectionRectangle().ToList();
+            List<KeyValuePair<object, UIElement>> itemsInSelectionRectangle = FindItemsInSelectionRectangle().ToList();
 
-            foreach (var valuePair in itemsInSelectionRectangle)
+            foreach (KeyValuePair<object, UIElement> valuePair in itemsInSelectionRectangle)
             {
                 if (Selector.GetIsSelected(valuePair.Value))
                     continue;
@@ -82,7 +82,7 @@ namespace Supremacy.Client.Behaviors
                 AddSelection(valuePair.Key, valuePair.Value);
             }
 
-            foreach (var unselectedItem in _newlySelectedItems.Except(itemsInSelectionRectangle).ToList())
+            foreach (KeyValuePair<object, UIElement> unselectedItem in _newlySelectedItems.Except(itemsInSelectionRectangle).ToList())
             {
                 RemoveSelection(unselectedItem.Key, unselectedItem.Value);
                 _newlySelectedItems.Remove(unselectedItem.Key);
@@ -95,7 +95,7 @@ namespace Supremacy.Client.Behaviors
 
         private IEnumerable<KeyValuePair<object, UIElement>> FindItemsInSelectionRectangle()
         {
-            var rect = new Rect
+            Rect rect = new Rect
                        {
                            X = Math.Min(
                                _selectionAdorner.StartPoint.X,
@@ -139,15 +139,15 @@ namespace Supremacy.Client.Behaviors
 
         private void OnSelectorPreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-            var originalSource = e.OriginalSource as DependencyObject;
+            DependencyObject originalSource = e.OriginalSource as DependencyObject;
             if (originalSource == null)
                 return;
 
-            var scrollBar = originalSource.FindVisualAncestorByType<ScrollBar>();
+            ScrollBar scrollBar = originalSource.FindVisualAncestorByType<ScrollBar>();
             if (scrollBar != null)
                 return;
 
-            var hitTestResults = from object item in _selector.Items
+            IEnumerable<HitTestResult> hitTestResults = from object item in _selector.Items
                                  select item as UIElement ?? _selector.ItemContainerGenerator.ContainerFromItem(item) as UIElement
                                  into container
                                  where container != null
@@ -194,13 +194,13 @@ namespace Supremacy.Client.Behaviors
 
         private void ClearSelection()
         {
-            var containers = from object item in _selector.Items
+            IEnumerable<DependencyObject> containers = from object item in _selector.Items
                              let container = item as UIElement ??
                                              _selector.ItemContainerGenerator.ContainerFromItem(item)
                              where container != null
                              select container;
 
-            foreach (var container in containers)
+            foreach (DependencyObject container in containers)
                 Selector.SetIsSelected(container, false);
         }
 

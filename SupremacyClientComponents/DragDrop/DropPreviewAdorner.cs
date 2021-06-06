@@ -77,7 +77,7 @@ namespace Supremacy.Client.DragDrop
 
         private void UpdatePosition()
 		{
-			var layer = Parent as AdornerLayer;
+            AdornerLayer layer = Parent as AdornerLayer;
 		    if (layer != null)
 		        layer.Update(AdornedElement);
 		}
@@ -101,7 +101,7 @@ namespace Supremacy.Client.DragDrop
 
 		public override GeneralTransform GetDesiredTransform(GeneralTransform transform)
 		{
-			var result = new GeneralTransformGroup();
+            GeneralTransformGroup result = new GeneralTransformGroup();
 
 			result.Children.Add(new TranslateTransform(Left, Top));
             result.Children.Add(base.GetDesiredTransform(transform));

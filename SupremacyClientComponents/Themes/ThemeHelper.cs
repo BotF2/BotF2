@@ -15,17 +15,17 @@ namespace Supremacy.Client.Themes
         {
             resources = null;
 
-            var appContext = ServiceLocator.Current.GetInstance<IAppContext>();
-            var clientApplication = ServiceLocator.Current.GetInstance<IClientApplication>();
+            IAppContext appContext = ServiceLocator.Current.GetInstance<IAppContext>();
+            IClientApplication clientApplication = ServiceLocator.Current.GetInstance<IClientApplication>();
 
             if (clientApplication?.IsShuttingDown != false)
                 return false;
 
-            var theme = appContext?.LocalPlayer?.Empire?.Key;
+            string theme = appContext?.LocalPlayer?.Empire?.Key;
             if (theme == null)
                 return false;
 
-            var themeUri = new Uri(
+            Uri themeUri = new Uri(
                 $"/SupremacyClient;Component/themes/{theme}/Theme.xaml",
                 UriKind.RelativeOrAbsolute);
 
@@ -35,7 +35,7 @@ namespace Supremacy.Client.Themes
 
             try
             {
-                var sharedResources = new SharedResourceDictionary();
+                SharedResourceDictionary sharedResources = new SharedResourceDictionary();
 
                 sharedResources.BeginInit();
 

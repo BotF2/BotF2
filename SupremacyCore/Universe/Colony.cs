@@ -173,7 +173,7 @@ namespace Supremacy.Universe
             {
                 _baseRawMaterials = (byte)(RandomHelper.Random(25) + 14);  // UPDATE X 31 july 2019. Adjust base duranium generation   // base value just in case its not customized
 
-                var baseResProdTable = GameContext.Current.Tables.UniverseTables["BaseResourceProduction"];
+                Data.Table baseResProdTable = GameContext.Current.Tables.UniverseTables["BaseResourceProduction"];
                 if (baseResProdTable != null)
                 {
                     string random = "NO";
@@ -216,7 +216,7 @@ namespace Supremacy.Universe
             {
                 byte baseValuePerGG = 10;
 
-                var baseResProdTable = GameContext.Current.Tables.UniverseTables["BaseResourceProduction"];
+                Data.Table baseResProdTable = GameContext.Current.Tables.UniverseTables["BaseResourceProduction"];
                 if (baseResProdTable != null)
                 {
                     string random = "NO";
@@ -337,16 +337,16 @@ namespace Supremacy.Universe
         {
             get
             {
-                var baseGrowthRate = (decimal)System.GetGrowthRate(Inhabitants) * (((decimal)-0.8 + (decimal)_health.PercentFilled) * 5) * 100;
+                decimal baseGrowthRate = (decimal)System.GetGrowthRate(Inhabitants) * (((decimal)-0.8 + (decimal)_health.PercentFilled) * 5) * 100;
                 //baseGrowthRate += 0.01m;
-                var modifier = new ValueModifier<decimal>
+                ValueModifier<decimal> modifier = new ValueModifier<decimal>
                                {
                                    IsOffsetAppliedFirst = false,
                                    HasCompoundMultiplier = false
                                };
-                foreach (var building in Buildings.Where(b => b.IsActive))
+                foreach (Building building in Buildings.Where(b => b.IsActive))
                 {
-                    foreach (var bonus in building.BuildingDesign.Bonuses)
+                    foreach (Bonus bonus in building.BuildingDesign.Bonuses)
                     {
                         if (bonus.BonusType == BonusType.GrowthRate)
                         {
@@ -372,13 +372,13 @@ namespace Supremacy.Universe
             get
             {
                 int totalMoonSizes = 0;
-                var baseValue = System.GetMaxPopulation(Inhabitants);
+                int baseValue = System.GetMaxPopulation(Inhabitants);
 
                 totalMoonSizes += System.Planets.SelectMany(p => p.Moons.Where(m => m.GetSize() == MoonSize.Small)).Sum(m => 1);
                 totalMoonSizes += System.Planets.SelectMany(p => p.Moons.Where(m => m.GetSize() == MoonSize.Medium)).Sum(m => 2);
                 totalMoonSizes += System.Planets.SelectMany(p => p.Moons.Where(m => m.GetSize() == MoonSize.Large)).Sum(m => 3);
 
-                var maxPopPerMoonSize = (
+                int maxPopPerMoonSize = (
                                             from building in Buildings
                                             where building.IsActive
                                             select building.BuildingDesign.GetBonuses(BonusType.MaxPopulationPerMoonSize).Sum(o => o.Amount)
@@ -460,7 +460,7 @@ namespace Supremacy.Universe
                 if (buildSlot == null)
                     return "not available";
 
-                var shipyard = Shipyard;
+            Shipyard shipyard = Shipyard;
                 if (shipyard == null || !Equals(shipyard, buildSlot.Shipyard))
                     return "error";
 
@@ -562,16 +562,16 @@ namespace Supremacy.Universe
         {
             get
             {
-                var modifier = new OutputModifier(0, 1.0f);
-                var moraleMod = _morale.CurrentValue / (0.5f * MoraleHelper.MaxValue);
-                var adjustedPop = Population.CurrentValue * moraleMod;
+                OutputModifier modifier = new OutputModifier(0, 1.0f);
+                float moraleMod = _morale.CurrentValue / (0.5f * MoraleHelper.MaxValue);
+                float adjustedPop = Population.CurrentValue * moraleMod;
 
-                foreach (var building in Buildings) // bonus from special structures
+                foreach (Building building in Buildings) // bonus from special structures
                 {
                     if (!building.IsActive)
                         continue;
 
-                    foreach (var bonus in building.BuildingDesign.Bonuses)
+                    foreach (Bonus bonus in building.BuildingDesign.Bonuses)
                     {
                         if (bonus.BonusType == BonusType.Credits)
                         {
@@ -683,11 +683,11 @@ namespace Supremacy.Universe
         {
             get
             {
-                var energyUsed = Buildings
+                int energyUsed = Buildings
                     .Where(building => building.IsActive)
                     .Sum(building => building.BuildingDesign.EnergyCost);
 
-                var shipyard = Shipyard;
+                Shipyard shipyard = Shipyard;
                 if (shipyard != null)
                 {
                     energyUsed += shipyard.BuildSlots
@@ -695,7 +695,7 @@ namespace Supremacy.Universe
                         .Sum(o => shipyard.ShipyardDesign.BuildSlotEnergyCost);
                 }
 
-                var orbitalBatteryDesign = OrbitalBatteryDesign;
+                OrbitalBatteryDesign orbitalBatteryDesign = OrbitalBatteryDesign;
                 if (orbitalBatteryDesign != null)
                     energyUsed += (orbitalBatteryDesign.UnitEnergyCost * _activeOrbitalBatteries.Value);
 
@@ -751,11 +751,11 @@ namespace Supremacy.Universe
 
                 if (value != -1)
                 {
-                    var system = System;
+                    StarSystem system = System;
                     if (system != null)
                         system.OwnerID = value;
 
-                    foreach (var building in Buildings)
+                    foreach (Building building in Buildings)
                         building.OwnerID = value;
                 }
 
@@ -803,12 +803,12 @@ namespace Supremacy.Universe
         public void ProcessQueue()
         {
             int count = 0;
-            foreach (var buildQueueItem in BuildQueue)
+            foreach (BuildQueueItem buildQueueItem in BuildQueue)
             {
                 GameLog.Client.ShipProduction.DebugFormat("Colony BuildQueueItem = {0}, index {1}", buildQueueItem.Description, count);
                 count++;
             }
-            foreach (var slot in BuildSlots)
+            foreach (BuildSlot slot in BuildSlots)
             {
                 if (slot.HasProject && slot.Project.IsCancelled)
                     slot.Project = null;
@@ -816,7 +816,7 @@ namespace Supremacy.Universe
                 if (slot.Project != null)
                     continue;
 
-                var queueItem = BuildQueue.FirstOrDefault(); // queue of colony non-ship build projects to construct
+                BuildQueueItem queueItem = BuildQueue.FirstOrDefault(); // queue of colony non-ship build projects to construct
                 if (queueItem == null)
                     continue;
 
@@ -885,7 +885,7 @@ namespace Supremacy.Universe
             get 
             {
                 int tradeRouteAssigned = 0;
-                foreach (var tr in TradeRoutes)
+                foreach (TradeRoute tr in TradeRoutes)
                 {
                     if (tr.IsAssigned)
                     {
@@ -910,13 +910,13 @@ namespace Supremacy.Universe
 
         private void Initialize()
         {
-            var categories = EnumUtilities.GetValues<ProductionCategory>();
+            EnumValueCollection<ProductionCategory> categories = EnumUtilities.GetValues<ProductionCategory>();
 
             EnsureValueProviders();
 
             _facilityTypes = new int[categories.Count];
 
-            for (var i = 0; i < _facilityTypes.Length; i++)
+            for (int i = 0; i < _facilityTypes.Length; i++)
                 _facilityTypes[i] = TechObjectDesign.InvalidDesignID;
 
             _orbitalBatteryDesign = TechObjectDesign.InvalidDesignID;
@@ -968,8 +968,8 @@ namespace Supremacy.Universe
             if (newOwner == null)
                 return;
 
-            var currentOwnerManager = CivilizationManager.For(OwnerID);
-            var newOwnerManager = CivilizationManager.For(newOwner);
+            CivilizationManager currentOwnerManager = CivilizationManager.For(OwnerID);
+            CivilizationManager newOwnerManager = CivilizationManager.For(newOwner);
 
             Owner = newOwner;
 
@@ -994,7 +994,7 @@ namespace Supremacy.Universe
             if (!newOwner.IsHuman)
                 return;
 
-            var diplomat = Diplomat.Get(newOwner);
+            Diplomat diplomat = Diplomat.Get(newOwner);
             diplomat.GetForeignPower(currentOwnerManager.Civilization).UpdateStatus();
         }
 
@@ -1108,7 +1108,7 @@ namespace Supremacy.Universe
         /// </summary>
         public void ScrapNonStructures()
         {
-            foreach (var category in EnumHelper.GetValues<ProductionCategory>())
+            foreach (ProductionCategory category in EnumHelper.GetValues<ProductionCategory>())
             {
                 while (_scrappedFacilities[(int)category].Value > 0)
                 {
@@ -1163,7 +1163,7 @@ namespace Supremacy.Universe
         {
             int unitOutput = GetFacilityType(category).UnitOutput;
             int activeUnits = GetActiveFacilities(category);
-            var modifier = GetProductionModifier(category);
+            OutputModifier modifier = GetProductionModifier(category);
             int baseOutput = unitOutput * activeUnits;
 
 #pragma warning disable IDE0059 // Unnecessary assignment of a value
@@ -1283,8 +1283,8 @@ namespace Supremacy.Universe
         /// <returns>The estimated resource production levels for the next turn.</returns>
         public ResourceValueCollection GetEstimatedResourcesProduction()
         {
-            var values = new ResourceValueCollection();
-            foreach (var resourceType in EnumHelper.GetValues<ResourceType>())
+            ResourceValueCollection values = new ResourceValueCollection();
+            foreach (ResourceType resourceType in EnumHelper.GetValues<ResourceType>())
                 values[resourceType] = GetResourceProduction(resourceType);
             return values;
         }
@@ -1297,7 +1297,7 @@ namespace Supremacy.Universe
         public int GetResourceProduction(ResourceType resource)
         {
             int baseValue = 0;
-            var modifier = GetResourceModifier(resource);
+            OutputModifier modifier = GetResourceModifier(resource);
             if (resource == ResourceType.RawMaterials)
             {
                 baseValue = GetBaseResourceProduction(resource);
@@ -1316,13 +1316,13 @@ namespace Supremacy.Universe
         /// <returns>The resource production modifier.</returns>
         public OutputModifier GetResourceModifier(ResourceType resource)
         {
-            var modifier = new OutputModifier(0, 0.0f);
+            OutputModifier modifier = new OutputModifier(0, 0.0f);
 
-            foreach (var building in Buildings)
+            foreach (Building building in Buildings)
             {
                 if (!building.IsActive)
                     continue;
-                foreach (var bonus in building.BuildingDesign.Bonuses)
+                foreach (Bonus bonus in building.BuildingDesign.Bonuses)
                 {
                     switch (resource)
                     {
@@ -1356,12 +1356,12 @@ namespace Supremacy.Universe
         /// <returns>The production output modifier.</returns>
         public OutputModifier GetProductionModifier(ProductionCategory category)
         {
-            var modifier = new OutputModifier(0, 0.0f);
+            OutputModifier modifier = new OutputModifier(0, 0.0f);
             Percentage moraleMod = _morale.CurrentValue / (0.5f * MoraleHelper.MaxValue);
 
             if (category == ProductionCategory.Food)
             {
-                foreach (var planet in System.Planets)
+                foreach (Planet planet in System.Planets)
                 {
                     if (planet.HasFoodBonus)
                         modifier.Efficiency += 0.15f;
@@ -1369,18 +1369,18 @@ namespace Supremacy.Universe
             }
             else if (category == ProductionCategory.Energy)
             {
-                foreach (var planet in System.Planets)
+                foreach (Planet planet in System.Planets)
                 {
                     if (planet.HasEnergyBonus)
                         modifier.Efficiency += 0.15f;
                 }
             }
 
-            foreach (var building in Buildings)
+            foreach (Building building in Buildings)
             {
                 if (!building.IsActive)
                     continue;
-                foreach (var bonus in building.BuildingDesign.Bonuses)
+                foreach (Bonus bonus in building.BuildingDesign.Bonuses)
                 {
                     switch (category)
                     {
@@ -1448,7 +1448,7 @@ namespace Supremacy.Universe
         /// <returns>The production facility design.</returns>
         public ProductionFacilityDesign GetFacilityType(ProductionCategory category)
         {
-            var facilityId = _facilityTypes[(int)category];
+            int facilityId = _facilityTypes[(int)category];
             if (facilityId == TechObjectDesign.InvalidDesignID)
                 return null;
             return GameContext.Current.TechDatabase.ProductionFacilityDesigns[facilityId];
@@ -1484,7 +1484,7 @@ namespace Supremacy.Universe
             {
                 if (_activeFacilities[(int)category].Value >= _totalFacilities[(int)category].Value)
                     return false;
-                var facilityType = GetFacilityType(category);
+                ProductionFacilityDesign facilityType = GetFacilityType(category);
                 if (facilityType == null)
                     return false;
                 if (facilityType.LaborCost > GetAvailableLabor())
@@ -1561,7 +1561,7 @@ namespace Supremacy.Universe
             int laborUsed = 0;
             for (int i = 0; i < _activeFacilities.Length; i++)
             {
-                var facilityType = GetFacilityType((ProductionCategory)i);
+                ProductionFacilityDesign facilityType = GetFacilityType((ProductionCategory)i);
                 if (facilityType != null)
                     laborUsed += (_activeFacilities[i].Value * facilityType.LaborCost);
             }
@@ -1585,7 +1585,7 @@ namespace Supremacy.Universe
         /// <returns><c>true</c> if a shipyard of the specified design exists; otherwise, <c>false</c>.</returns>
         internal bool HasShipyard(ShipyardDesign design)
         {
-            var shipyard = Shipyard;
+            Shipyard shipyard = Shipyard;
 
             return shipyard != null &&
                    shipyard.ShipyardDesign == design;
@@ -1635,12 +1635,12 @@ namespace Supremacy.Universe
             Report();
 
 
-            var shutDown = 0;
-            var shipyard = Shipyard;
+            int shutDown = 0;
+            Shipyard shipyard = Shipyard;
 
             while (true)
             {
-                var netEnergy = NetEnergy;
+                int netEnergy = NetEnergy;
                 if (netEnergy >= 0)  // no energy shortage !
                     break;
 
@@ -1650,7 +1650,7 @@ namespace Supremacy.Universe
                  */
                 if (shipyard != null)
                 {
-                    var deactivatedBuildSlot = shipyard.BuildSlots
+                    ShipyardBuildSlot deactivatedBuildSlot = shipyard.BuildSlots
                         .Where(o => o.IsActive && !o.HasProject)
                         .Where(DeactivateShipyardBuildSlot)
                         .FirstOrDefault();
@@ -1667,7 +1667,7 @@ namespace Supremacy.Universe
                  * down just one building.  If not, start with the most expensive active building in hopes of
                  * minimizing the number we have to shut down.
                  */
-                var mostCostlyBuilding = Buildings
+                Building mostCostlyBuilding = Buildings
                     .Where(o => o.IsActive && !o.BuildingDesign.AlwaysOnline)
                     .OrderBy(o => o.BuildingDesign.EnergyCost)
                     .FirstOrDefault(o => o.BuildingDesign.EnergyCost >= -netEnergy);
@@ -1687,7 +1687,7 @@ namespace Supremacy.Universe
                     goto Next;
                 }
 
-                foreach (var building in Buildings.Where(o => o.IsActive && !o.BuildingDesign.AlwaysOnline).OrderByDescending(o => o.BuildingDesign.EnergyCost))
+                foreach (Building building in Buildings.Where(o => o.IsActive && !o.BuildingDesign.AlwaysOnline).OrderByDescending(o => o.BuildingDesign.EnergyCost))
                 {
                     if (DeactivateBuilding(building))
                     {
@@ -1702,7 +1702,7 @@ namespace Supremacy.Universe
                  */
                 if (shipyard != null)
                 {
-                    var deactivatedBuildSlot = shipyard.BuildSlots
+                    ShipyardBuildSlot deactivatedBuildSlot = shipyard.BuildSlots
                         .Where(o => o.IsActive && !o.HasProject)
                         .Where(DeactivateShipyardBuildSlot)
                         .FirstOrDefault();
@@ -1744,23 +1744,23 @@ namespace Supremacy.Universe
                 + _researchPF_unused
                 + _intelPF_unused;
 
-            var dummy2 = _activeFoodFacilities;
-            var dummy3 = _activeIndustryFacilities;
-            var dummy4 = _activeEnergyFacilities;
-            var dummy5 = _activeResearchFacilities;
-            var dummy6 =  _activeIntelligenceFacilities;
+            IValueProvider<int> dummy2 = _activeFoodFacilities;
+            IValueProvider<int> dummy3 = _activeIndustryFacilities;
+            IValueProvider<int> dummy4 = _activeEnergyFacilities;
+            IValueProvider<int> dummy5 = _activeResearchFacilities;
+            IValueProvider<int> dummy6 =  _activeIntelligenceFacilities;
 
-            var dummy11 = _totalFoodFacilities;
-            var dummy12 = _totalIndustryFacilities;
-            var dummy13 = _totalEnergyFacilities;
-            var dummy14 = _totalResearchFacilities;
-            var dummy15 = _totalIntelligenceFacilities;
+            IValueProvider<int> dummy11 = _totalFoodFacilities;
+            IValueProvider<int> dummy12 = _totalIndustryFacilities;
+            IValueProvider<int> dummy13 = _totalEnergyFacilities;
+            IValueProvider<int> dummy14 = _totalResearchFacilities;
+            IValueProvider<int> dummy15 = _totalIntelligenceFacilities;
 
-            var dummy21 = _foodPF_unused;
-            var dummy22 = _industryPF_unused;
-            var dummy23 = _energyPF_unused;
-            var dummy24 = _researchPF_unused;
-            var dummy25 = _intelPF_unused;
+            int dummy21 = _foodPF_unused;
+            int dummy22 = _industryPF_unused;
+            int dummy23 = _energyPF_unused;
+            int dummy24 = _researchPF_unused;
+            int dummy25 = _intelPF_unused;
 #pragma warning restore IDE0059 // Unnecessary assignment of a value
 
         }
@@ -1773,12 +1773,12 @@ namespace Supremacy.Universe
         /// <returns>The number of buildings that were shut down.</returns>
         public int EnsureEnergyForBuildings()
         {
-            var shutDown = 0;
-            var shipyard = Shipyard;
+            int shutDown = 0;
+            Shipyard shipyard = Shipyard;
 
             while (true)
             {
-                var netEnergy = NetEnergy;
+                int netEnergy = NetEnergy;
                 if (netEnergy >= 0)  // no energy shortage !
                     break;
 
@@ -1788,7 +1788,7 @@ namespace Supremacy.Universe
                  */
                 if (shipyard != null)
                 {
-                    var deactivatedBuildSlot = shipyard.BuildSlots
+                    ShipyardBuildSlot deactivatedBuildSlot = shipyard.BuildSlots
                         .Where(o => o.IsActive && !o.HasProject)
                         .Where(DeactivateShipyardBuildSlot)
                         .FirstOrDefault();
@@ -1805,7 +1805,7 @@ namespace Supremacy.Universe
                  * down just one building.  If not, start with the most expensive active building in hopes of
                  * minimizing the number we have to shut down.
                  */
-                var mostCostlyBuilding = Buildings
+                Building mostCostlyBuilding = Buildings
                     .Where(o => o.IsActive && !o.BuildingDesign.AlwaysOnline)
                     .OrderBy(o => o.BuildingDesign.EnergyCost)
                     .FirstOrDefault(o => o.BuildingDesign.EnergyCost >= -netEnergy);
@@ -1825,7 +1825,7 @@ namespace Supremacy.Universe
                     goto Next;
                 }
 
-                foreach (var building in Buildings.Where(o => o.IsActive && !o.BuildingDesign.AlwaysOnline).OrderByDescending(o => o.BuildingDesign.EnergyCost))
+                foreach (Building building in Buildings.Where(o => o.IsActive && !o.BuildingDesign.AlwaysOnline).OrderByDescending(o => o.BuildingDesign.EnergyCost))
                 {
                     if (DeactivateBuilding(building))
                     {
@@ -1840,7 +1840,7 @@ namespace Supremacy.Universe
                  */
                 if (shipyard != null)
                 {
-                    var deactivatedBuildSlot = shipyard.BuildSlots
+                    ShipyardBuildSlot deactivatedBuildSlot = shipyard.BuildSlots
                         .Where(o => o.IsActive && !o.HasProject)
                         .Where(DeactivateShipyardBuildSlot)
                         .FirstOrDefault();
@@ -1934,7 +1934,7 @@ namespace Supremacy.Universe
 
         public bool ActivateOrbitalBattery()
         {
-            var design = OrbitalBatteryDesign;
+            OrbitalBatteryDesign design = OrbitalBatteryDesign;
             if (design == null)
                 return false;
 
@@ -1945,14 +1945,14 @@ namespace Supremacy.Universe
 
                 if (design.UnitEnergyCost > 0)
                 {
-                    var netEnergy = NetEnergy;
+                    int netEnergy = NetEnergy;
                     if (netEnergy - design.UnitEnergyCost < 0)
                         return false;
                 }
 
                 ++_activeOrbitalBatteries.Value;
 
-                var strongestBattery = OrbitalHelper.FindStrongestOrbitalBattery(_orbitalBatteries, o => !o.IsActive);
+                OrbitalBattery strongestBattery = OrbitalHelper.FindStrongestOrbitalBattery(_orbitalBatteries, o => !o.IsActive);
                 if (strongestBattery != null)
                     strongestBattery.IsActive = true;
             }
@@ -1967,7 +1967,7 @@ namespace Supremacy.Universe
 
         public bool DeactivateOrbitalBattery()
         {
-            var design = OrbitalBatteryDesign;
+            OrbitalBatteryDesign design = OrbitalBatteryDesign;
             if (design == null)
                 return false;
 
@@ -1978,7 +1978,7 @@ namespace Supremacy.Universe
 
                 --_activeOrbitalBatteries.Value;
 
-                var weakestBattery = OrbitalHelper.FindWeakestOrbitalBattery(_orbitalBatteries, o => o.IsActive);
+                OrbitalBattery weakestBattery = OrbitalHelper.FindWeakestOrbitalBattery(_orbitalBatteries, o => o.IsActive);
                 if (weakestBattery != null)
                     weakestBattery.IsActive = false;
             }
@@ -2005,16 +2005,16 @@ namespace Supremacy.Universe
             if (count > TotalOrbitalBatteries)
                 count = TotalOrbitalBatteries;
 
-            var toDeactivate = -(_totalOrbitalBatteries.Value - _activeOrbitalBatteries.Value - count);
+            int toDeactivate = -(_totalOrbitalBatteries.Value - _activeOrbitalBatteries.Value - count);
 
-            for (var i = 0; i < toDeactivate; i++)
+            for (int i = 0; i < toDeactivate; i++)
                 DeactivateOrbitalBattery();
 
             _totalOrbitalBatteries.Value = (byte)(_totalOrbitalBatteries.Value - count);
 
-            for (var i = 0; i < count; i++)
+            for (int i = 0; i < count; i++)
             {
-                var weakestBattery = OrbitalHelper.FindWeakestOrbitalBattery(_orbitalBatteries);
+                OrbitalBattery weakestBattery = OrbitalHelper.FindWeakestOrbitalBattery(_orbitalBatteries);
                 if (weakestBattery == null)
                     break;
 
@@ -2036,7 +2036,7 @@ namespace Supremacy.Universe
 
             if (battery.IsActive)
             {
-                var strongestBattery = OrbitalHelper.FindStrongestOrbitalBattery(_orbitalBatteries, o => !o.IsActive);
+                OrbitalBattery strongestBattery = OrbitalHelper.FindStrongestOrbitalBattery(_orbitalBatteries, o => !o.IsActive);
                 if (strongestBattery != null)
                     strongestBattery.IsActive = true;
                 else
@@ -2056,9 +2056,9 @@ namespace Supremacy.Universe
 
             _totalOrbitalBatteries.Value = (byte)(_totalOrbitalBatteries.Value + count);
 
-            for (var i = 0; i < count; i++)
+            for (int i = 0; i < count; i++)
             {
-                var battery = new OrbitalBattery(OrbitalBatteryDesign)
+                OrbitalBattery battery = new OrbitalBattery(OrbitalBatteryDesign)
                               {
                                   OwnerID = OwnerID,
                                   Location = Location
@@ -2107,7 +2107,7 @@ namespace Supremacy.Universe
             if (buildSlot == null)
                 return false;
 
-            var shipyard = Shipyard;
+            Shipyard shipyard = Shipyard;
             if (shipyard == null || !Equals(shipyard, buildSlot.Shipyard))
                 return false;
 
@@ -2129,7 +2129,7 @@ namespace Supremacy.Universe
             if (buildSlot == null)
                 return false;
 
-            var shipyard = Shipyard;
+            Shipyard shipyard = Shipyard;
             if (shipyard == null || !Equals(shipyard, buildSlot.Shipyard))
                 return false;
 
@@ -2155,8 +2155,8 @@ namespace Supremacy.Universe
                 return false;
 
             bool result = true;
-            var propertyChanges = new HashSet<string>();
-            var energyCost = building.BuildingDesign.EnergyCost;
+            HashSet<string> propertyChanges = new HashSet<string>();
+            int energyCost = building.BuildingDesign.EnergyCost;
 
             if (value && energyCost > 0)
                 result = (energyCost <= NetEnergy);
@@ -2165,11 +2165,11 @@ namespace Supremacy.Universe
             {
                 building.IsActive = value;
                 propertyChanges.Add("NetEnergy");
-                foreach (var bonus in building.BuildingDesign.Bonuses)
+                foreach (Bonus bonus in building.BuildingDesign.Bonuses)
                 {
                     if (BonusHelper.IsGlobalBonus(bonus.BonusType))
                     {
-                        var civManager = GameContext.Current.CivilizationManagers[OwnerID];
+                        CivilizationManager civManager = GameContext.Current.CivilizationManagers[OwnerID];
                         if (value)
                             civManager.GlobalBonuses.Add(bonus);
                         else
@@ -2187,7 +2187,7 @@ namespace Supremacy.Universe
                                 break;
                             case BonusType.PercentTradeIncome:
                                 propertyChanges.Add("Credits");
-                                foreach (var tradeRoute in _tradeRoutes)
+                                foreach (TradeRoute tradeRoute in _tradeRoutes)
                                     tradeRoute.NotifyLocalPlayerCreditsChanged();
                                 break;
                             case BonusType.Food:
@@ -2234,7 +2234,7 @@ namespace Supremacy.Universe
                         }
                     }
                 }
-                foreach (var propertyChange in propertyChanges)
+                foreach (string propertyChange in propertyChanges)
                 {
                     OnPropertyChanged(propertyChange);
                 }
@@ -2245,15 +2245,15 @@ namespace Supremacy.Universe
 
         public void RefreshShielding(bool regenerate)
         {
-            var civManager = CivilizationManager.For(OwnerID);
-            var energyTechLevel = civManager.Research.GetTechLevel(TechCategory.Energy);
+            CivilizationManager civManager = CivilizationManager.For(OwnerID);
+            int energyTechLevel = civManager.Research.GetTechLevel(TechCategory.Energy);
 
-            var maxShielding = 0;
-            var replenishRate = 0;
+            int maxShielding = 0;
+            int replenishRate = 0;
 
-            foreach (var building in _buildings.Where(o => o.IsActive))
+            foreach (Building building in _buildings.Where(o => o.IsActive))
             {
-                var shielding = building.BuildingDesign.GetBonuses(BonusType.PlanetaryShielding).Sum(o => o.Amount) +
+                int shielding = building.BuildingDesign.GetBonuses(BonusType.PlanetaryShielding).Sum(o => o.Amount) +
                                 building.BuildingDesign.GetBonuses(BonusType.ShieldPerEnergyTech).Sum(o => o.Amount) * energyTechLevel;
 
                 if (shielding == 0)
@@ -2261,20 +2261,20 @@ namespace Supremacy.Universe
 
                 maxShielding += shielding;
 
-                var energyCost = building.BuildingDesign.EnergyCost * energyTechLevel;
+                int energyCost = building.BuildingDesign.EnergyCost * energyTechLevel;
                 if (energyCost == 0)
                     replenishRate += shielding;
                 else
                     replenishRate += Math.Min(energyCost, shielding);
             }
 
-            var baseShielding = maxShielding;
+            int baseShielding = maxShielding;
 
-            foreach (var building in _buildings.Where(o => o.IsActive))
+            foreach (Building building in _buildings.Where(o => o.IsActive))
             {
-                var percentBonus = 0.01 * building.BuildingDesign.GetBonuses(BonusType.PercentPlanetaryShielding).Sum(o => o.Amount);
+                double percentBonus = 0.01 * building.BuildingDesign.GetBonuses(BonusType.PercentPlanetaryShielding).Sum(o => o.Amount);
 
-                var shielding = (int)(baseShielding * percentBonus);
+                int shielding = (int)(baseShielding * percentBonus);
                 if (shielding == 0)
                     continue;
 
@@ -2384,14 +2384,14 @@ namespace Supremacy.Universe
 
         private void EnsureValueProviders()
         {
-            var categories = EnumUtilities.GetValues<ProductionCategory>();
-            var categoryCount = categories.Count;
+            EnumValueCollection<ProductionCategory> categories = EnumUtilities.GetValues<ProductionCategory>();
+            int categoryCount = categories.Count;
 
             _activeFacilities = new IValueProvider<int>[categoryCount];
             _totalFacilities = new IValueProvider<int>[categoryCount];
             _scrappedFacilities = new IValueProvider<int>[categoryCount];
 
-            for (var i = 0; i < categoryCount; i++)
+            for (int i = 0; i < categoryCount; i++)
             {
                 _activeFacilities[i] = new ObservableValueProvider<int>();
                 _totalFacilities[i] = new ObservableValueProvider<int>();
@@ -2463,7 +2463,7 @@ namespace Supremacy.Universe
 
         public override void CloneFrom(Cloneable source, ICloneContext context)
         {
-            var typedSource = (Colony)source;
+            Colony typedSource = (Colony)source;
 
             base.CloneFrom(source, context);
 
@@ -2529,14 +2529,14 @@ namespace Supremacy.Universe
             /*
              * Remove buildings that are not at the source.
              */
-            var removedKeys = _buildings.Keys.ToHashSet();
+            HashSet<int> removedKeys = _buildings.Keys.ToHashSet();
             removedKeys.ExceptWith(sourceBuildings.Keys);
             _buildings.RemoveRange(removedKeys);
 
             /*
              * Add or update buildings from the source.
              */
-            foreach (var sourceBuilding in sourceBuildings)
+            foreach (Building sourceBuilding in sourceBuildings)
             {
 
                 if (context.TryRemap(sourceBuilding, out Building cloneTarget))

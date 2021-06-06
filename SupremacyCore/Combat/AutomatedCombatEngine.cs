@@ -1993,7 +1993,7 @@ namespace Supremacy.Combat
             if (_combatShipsTempNotDestroyed.Count() > 0)
             {
 
-                var theSector = _combatShipsTempNotDestroyed.FirstOrDefault().Item1.Source.Sector;
+                Sector theSector = _combatShipsTempNotDestroyed.FirstOrDefault().Item1.Source.Sector;
                 String systemName = "";
                 if (theSector.System != null)
                 {

@@ -49,13 +49,13 @@ namespace Supremacy.Economy
             if (resources == null)
                 throw new ArgumentNullException("resources");
 
-            foreach (var resource in EnumHelper.GetValues<ResourceType>())
+            foreach (ResourceType resource in EnumHelper.GetValues<ResourceType>())
                 this[resource] += resources[resource];
         }
 
         public ResourceValueCollection Clone()
         {
-            var clone = new ResourceValueCollection();
+            ResourceValueCollection clone = new ResourceValueCollection();
             EnumHelper.GetValues<ResourceType>().ForEach(r => clone[r] = this[r]);
             return clone;
         }
@@ -72,7 +72,7 @@ namespace Supremacy.Economy
 
         public void DeserializeOwnedData(SerializationReader reader, object context)
         {
-            var data = reader.ReadDictionary<ResourceType, int>();
+            Dictionary<ResourceType, int> data = reader.ReadDictionary<ResourceType, int>();
             EnumHelper.GetValues<ResourceType>().ForEach(r => this[r] = data[r]);
         }
 

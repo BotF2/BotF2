@@ -190,7 +190,7 @@ namespace Supremacy.Orbitals
             {
                 if (LocalizedText != null)
                 {
-                    var value = LocalizedText.GetString(OrbitalStringKeys.PrimaryWeaponName);
+                    string value = LocalizedText.GetString(OrbitalStringKeys.PrimaryWeaponName);
                     if (value == null)
                         GameLog.Core.XMLCheck.WarnFormat("PrimaryWeaponName is missing... (ship/station is unknown here");
                     if (value != null)
@@ -225,7 +225,7 @@ namespace Supremacy.Orbitals
             {
                 if (LocalizedText != null)
                 {
-                    var value = LocalizedText.GetString(OrbitalStringKeys.SecondaryWeaponName);
+                    string value = LocalizedText.GetString(OrbitalStringKeys.SecondaryWeaponName);
                     if (value == null)
                         GameLog.Core.XMLCheck.WarnFormat("SecondaryWeaponName is missing... (ship/station is unknown here");
                     if (value != null)
@@ -508,14 +508,14 @@ namespace Supremacy.Orbitals
 
         public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
         {
-            var orbitalKey = value as OrbitalStringKey;
+            OrbitalStringKey orbitalKey = value as OrbitalStringKey;
             if (orbitalKey != null &&
                 destinationType == typeof(MarkupExtension))
             {
-                var serializerContext = context as IValueSerializerContext;
+                IValueSerializerContext serializerContext = context as IValueSerializerContext;
                 if (serializerContext != null)
                 {
-                    var typeSerializer = serializerContext.GetValueSerializerFor(typeof(Type));
+                    ValueSerializer typeSerializer = serializerContext.GetValueSerializerFor(typeof(Type));
                     if (typeSerializer != null)
                     {
                         return new StaticExtension(

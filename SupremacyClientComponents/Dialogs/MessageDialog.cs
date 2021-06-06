@@ -70,11 +70,11 @@ namespace Supremacy.Client.Dialogs
 
         private static object CoerceResult(DependencyObject d, object value)
         {
-            var messageDialog = d as MessageDialog;
+            MessageDialog messageDialog = d as MessageDialog;
             if (messageDialog == null)
                 return value;
 
-            var result = (MessageDialogResult)value;
+            MessageDialogResult result = (MessageDialogResult)value;
             if ((result == MessageDialogResult.None) &&
                 Equals(messageDialog.ReadLocalValue(ResultProperty), MessageDialogResult.None) &&
                 ((messageDialog.Buttons & MessageDialogButtons.Cancel) == MessageDialogButtons.Cancel))
@@ -87,7 +87,7 @@ namespace Supremacy.Client.Dialogs
 
         private static void OnResultChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            var messageDialog = d as MessageDialog;
+            MessageDialog messageDialog = d as MessageDialog;
             if (messageDialog == null)
                 return;
 
@@ -131,11 +131,11 @@ namespace Supremacy.Client.Dialogs
 
         private void ExecuteSetMessageDialogResultCommand(object sender, ExecutedRoutedEventArgs args)
         {
-            var parameter = args.Parameter;
+            object parameter = args.Parameter;
             if (!(parameter is MessageDialogButtons))
                 return;
 
-            var button = (MessageDialogButtons)parameter;
+            MessageDialogButtons button = (MessageDialogButtons)parameter;
             switch (button)
             {
                 case MessageDialogButtons.Ok:
@@ -166,8 +166,8 @@ namespace Supremacy.Client.Dialogs
 
         public static MessageDialogResult Show(string header, object content, MessageDialogButtons buttons)
         {
-            var dialog = new MessageDialog { Header = header, Content = content, Buttons = buttons };
-            var dialogResult = dialog.ShowDialog();
+            MessageDialog dialog = new MessageDialog { Header = header, Content = content, Buttons = buttons };
+            bool? dialogResult = dialog.ShowDialog();
             if (!dialogResult.HasValue)
             {
                 if ((buttons & MessageDialogButtons.Cancel) == MessageDialogButtons.Cancel)

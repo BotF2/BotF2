@@ -31,7 +31,7 @@ namespace Supremacy.Utility
             return _baseScheduler.Schedule(
                 () =>
                 {
-                    var gameContext = _gameContextCallback();
+                    GameContext gameContext = _gameContextCallback();
                     if (gameContext != null)
                         GameContext.PushThreadContext(gameContext);
 
@@ -52,7 +52,7 @@ namespace Supremacy.Utility
             return _baseScheduler.Schedule(
                 () =>
                 {
-                    var gameContext = _gameContextCallback();
+                    GameContext gameContext = _gameContextCallback();
                     if (gameContext != null)
                         GameContext.PushThreadContext(gameContext);
 

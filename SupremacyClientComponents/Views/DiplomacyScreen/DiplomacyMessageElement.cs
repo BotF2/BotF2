@@ -53,9 +53,9 @@ namespace Supremacy.Client.Views
                 ExecuteEditParameterCommand,
                 CanExecuteEditParameterCommand);
 
-            var parameterType = GetViewModelParameterTypeForElementType(elementType);
+            Type parameterType = GetViewModelParameterTypeForElementType(elementType);
 
-            var scriptParameters = new ScriptParameters(
+            ScriptParameters scriptParameters = new ScriptParameters(
                 new ScriptParameter("$sender", typeof(Civilization)),
                 new ScriptParameter("$recipient", typeof(Civilization)));
                 //new ScriptParameter("$target", typeof(Civilization)));
@@ -80,8 +80,8 @@ namespace Supremacy.Client.Views
             if (!CanExecuteEditParameterCommand(contentTemplate))
                 return;
 
-            var parameterType = GetViewModelParameterTypeForElementType(_elementType);
-            var displayMemberPath = (string)null;
+            Type parameterType = GetViewModelParameterTypeForElementType(_elementType);
+            string displayMemberPath = (string)null;
 
             if (HasFixedParameter)
             {
@@ -98,7 +98,7 @@ namespace Supremacy.Client.Views
                 if (parameterType == typeof(Civilization))
                     displayMemberPath = "ShortName";
 
-                var parameter = TargetSelectionDialog.Show(
+                object parameter = TargetSelectionDialog.Show(
                     _parametersCallback().Cast<object>(),
                     displayMemberPath,
                     "SELECT PARAMETER");
@@ -345,8 +345,8 @@ namespace Supremacy.Client.Views
             {
                 while (true)
                 {
-                    var oldHandler = _propertyChanged;
-                    var newHandler = (PropertyChangedEventHandler)Delegate.Combine(oldHandler, value);
+                    PropertyChangedEventHandler oldHandler = _propertyChanged;
+                    PropertyChangedEventHandler newHandler = (PropertyChangedEventHandler)Delegate.Combine(oldHandler, value);
 
                     if (Interlocked.CompareExchange(ref _propertyChanged, newHandler, oldHandler) == oldHandler)
                         return;
@@ -356,8 +356,8 @@ namespace Supremacy.Client.Views
             {
                 while (true)
                 {
-                    var oldHandler = _propertyChanged;
-                    var newHandler = (PropertyChangedEventHandler)Delegate.Remove(oldHandler, value);
+                    PropertyChangedEventHandler oldHandler = _propertyChanged;
+                    PropertyChangedEventHandler newHandler = (PropertyChangedEventHandler)Delegate.Remove(oldHandler, value);
 
                     if (Interlocked.CompareExchange(ref _propertyChanged, newHandler, oldHandler) == oldHandler)
                         return;
@@ -451,11 +451,11 @@ namespace Supremacy.Client.Views
 
         private string GetDescription()
         {
-            var text = DiplomacyMessageViewModel.LookupDiplomacyText(ResolveStringID(), _tone, _sender) ?? string.Empty;
+            string text = DiplomacyMessageViewModel.LookupDiplomacyText(ResolveStringID(), _tone, _sender) ?? string.Empty;
 
             _scriptExpression.ScriptCode = DiplomacyMessageViewModel.QuoteString(text);
 
-            var parameters = new RuntimeScriptParameters
+            RuntimeScriptParameters parameters = new RuntimeScriptParameters
                              {
                                  new RuntimeScriptParameter(_scriptExpression.Parameters[0], _sender),
                                  new RuntimeScriptParameter(_scriptExpression.Parameters[1], _recipient)
@@ -504,7 +504,7 @@ namespace Supremacy.Client.Views
                 case DiplomacyMessageElementType.RequestBreakAgreementClause:
                     break;
                 case DiplomacyMessageElementType.OfferGiveCreditsClause:
-                    var offerCreditsData = SelectedParameter as CreditsDataViewModel;
+                    CreditsDataViewModel offerCreditsData = SelectedParameter as CreditsDataViewModel;
                     if (offerCreditsData != null)
                     {
                         if (offerCreditsData.RecurringAmount > 0 && offerCreditsData.ImmediateAmount > 0)
@@ -515,7 +515,7 @@ namespace Supremacy.Client.Views
                     return DiplomacyStringID.CreditsOfferImmediate;
 
                 case DiplomacyMessageElementType.RequestGiveCreditsClause:
-                    var requestCreditsData = SelectedParameter as CreditsDataViewModel;
+                    CreditsDataViewModel requestCreditsData = SelectedParameter as CreditsDataViewModel;
                     if (requestCreditsData != null)
                     {
                         if (requestCreditsData.RecurringAmount > 0 && requestCreditsData.ImmediateAmount > 0)

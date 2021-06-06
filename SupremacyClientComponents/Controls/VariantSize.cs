@@ -20,7 +20,7 @@ namespace Supremacy.Client.Controls
 
         public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
         {
-            var variantSize = value as VariantSize?;
+            VariantSize? variantSize = value as VariantSize?;
             if (!variantSize.HasValue)
                 return 0d;
 

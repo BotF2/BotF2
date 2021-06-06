@@ -23,12 +23,12 @@ namespace Supremacy.Scripting
         {
             get
             {
-                var description = _description;
+                string description = _description;
                 if (!string.IsNullOrWhiteSpace(description))
                     return description;
 
-                var eventId = EventID;
-                var eventType = EventType;
+                string eventId = EventID;
+                Type eventType = EventType;
 
                 if (eventType != null)
                 {
@@ -52,7 +52,7 @@ namespace Supremacy.Scripting
         {
             if (string.IsNullOrWhiteSpace(EventID))
             {
-                var description = _description;
+                string description = _description;
                 if (string.IsNullOrEmpty(description))
                     GameLog.Client.GameData.Error("Error in ScriptedEventDatabase: Event must specify a unique event ID.");
                 else
@@ -61,7 +61,7 @@ namespace Supremacy.Scripting
 
             if (EventType == null)
             {
-                var description = _description;
+                string description = _description;
 
                 GameLog.Client.GameData.ErrorFormat(
                     "Error in ScriptedEventDatabase: Event \"{0}\" must declare an EventType.",

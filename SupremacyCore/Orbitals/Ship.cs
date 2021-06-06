@@ -250,7 +250,7 @@ namespace Supremacy.Orbitals
             get { return GameContext.Current.Universe.Objects[_fleetId] as Fleet; }
             set
             {
-                var oldFleet = Fleet;
+                Fleet oldFleet = Fleet;
                 if ((oldFleet != null) && oldFleet.AreShipsLocked)
                 {
                     return;
@@ -336,7 +336,7 @@ namespace Supremacy.Orbitals
         {
             if ((Fleet == null) || !Fleet.AreShipsLocked)
             {
-                var newFleet = new Fleet(fleetId)
+                Fleet newFleet = new Fleet(fleetId)
                                {
                                    OwnerID = OwnerID,
                                    Location = Location
@@ -358,7 +358,7 @@ namespace Supremacy.Orbitals
         protected internal override void Reset()
         {
             base.Reset();
-            var design = ShipDesign;
+            ShipDesign design = ShipDesign;
             if (design != null)
             {
                 _speed = (byte)design.Speed;

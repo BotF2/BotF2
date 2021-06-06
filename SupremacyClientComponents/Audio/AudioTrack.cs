@@ -63,7 +63,7 @@ namespace Supremacy.Client.Audio
         {
             get
             {
-                var paused = false;
+                bool paused = false;
                 FMODErr.Check(_channel.getPaused(ref paused));
                 return paused;
             }

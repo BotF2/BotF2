@@ -34,23 +34,23 @@ namespace Supremacy.Diplomacy.Visitors
                 throw new ArgumentNullException("proposal");
 
 
-            var visitor = new RejectProposalVisitor(proposal);
+            RejectProposalVisitor visitor = new RejectProposalVisitor(proposal);
 
             turnAccepted = GameContext.Current.TurnNumber;
 
             //proposal.Accept(visitor);
 
-            var agreement = new NewAgreement(
+            NewAgreement agreement = new NewAgreement(
                 proposal,
                 turnAccepted,
                 visitor._agreementData);
 
-            var diplomat = Diplomat.Get(proposal.Recipient);
-            var foreignPower = diplomat.GetForeignPower(proposal.Sender);
+            Diplomat diplomat = Diplomat.Get(proposal.Recipient);
+            ForeignPower foreignPower = diplomat.GetForeignPower(proposal.Sender);
 
             //GameContext.Current.AgreementMatrix.AddAgreement(agreement);
 
-            var response = new Response(ResponseType.Reject, proposal);
+            Response response = new Response(ResponseType.Reject, proposal);
             GameLog.Core.Diplomacy.DebugFormat("RejectProposal from {1} to {0}", diplomat, foreignPower, agreement.Data.ToString());
 
             foreignPower.ResponseSent = response;

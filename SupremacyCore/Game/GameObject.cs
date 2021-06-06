@@ -52,7 +52,7 @@ namespace Supremacy.Game
 
         public override void CloneFrom(Cloneable source, ICloneContext context)
         {
-            var typedSource = (GameObject)source;
+            GameObject typedSource = (GameObject)source;
 
             base.CloneFrom(typedSource, context);
 
@@ -79,7 +79,7 @@ namespace Supremacy.Game
 
         private void OnObjectIDChanged()
         {
-            var handler = ObjectIDChanged;
+            EventHandler handler = ObjectIDChanged;
             if (handler != null)
                 handler(this, EventArgs.Empty);
         }
@@ -90,7 +90,7 @@ namespace Supremacy.Game
         /// <param name="propertyName">Name of the property that changed.</param>
         protected void OnPropertyChanged(string propertyName)
         {
-            var handler = PropertyChanged;
+            PropertyChangedEventHandler handler = PropertyChanged;
             if (handler != null)
                 handler(this, new PropertyChangedEventArgs(propertyName));
         }

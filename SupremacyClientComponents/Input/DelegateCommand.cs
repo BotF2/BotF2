@@ -76,7 +76,7 @@ namespace Supremacy.Client.Input
 
         protected virtual void OnIsActiveChanged()
         {
-            var eventHandler = IsActiveChanged;
+            EventHandler eventHandler = IsActiveChanged;
             if (eventHandler == null)
                 return;
             eventHandler(this, EventArgs.Empty);
@@ -84,12 +84,12 @@ namespace Supremacy.Client.Input
 
         protected virtual void OnCanExecuteChanged()
         {
-            var dispatcher = (Dispatcher)null;
+            Dispatcher dispatcher = (Dispatcher)null;
 
             if (Application.Current != null)
                 dispatcher = Application.Current.Dispatcher;
-           
-            var eventHandler = CanExecuteChanged;
+
+            EventHandler eventHandler = CanExecuteChanged;
             if (eventHandler == null)
                 return;
 
@@ -169,7 +169,7 @@ namespace Supremacy.Client.Input
 
         protected virtual void OnIsActiveChanged()
         {
-            var eventHandler = IsActiveChanged;
+            EventHandler eventHandler = IsActiveChanged;
             if (eventHandler == null)
                 return;
             eventHandler(this, EventArgs.Empty);
@@ -177,12 +177,12 @@ namespace Supremacy.Client.Input
 
         protected virtual void OnCanExecuteChanged()
         {
-            var dispatcher = (Dispatcher)null;
+            Dispatcher dispatcher = (Dispatcher)null;
 
             if (Application.Current != null)
                 dispatcher = Application.Current.Dispatcher;
-           
-            var eventHandler = CanExecuteChanged;
+
+            EventHandler eventHandler = CanExecuteChanged;
             if (eventHandler == null)
                 return;
 

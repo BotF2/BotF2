@@ -63,7 +63,7 @@ namespace Supremacy.Text
             if (length < 0)
                 throw new ArgumentOutOfRangeException("length", length, "Length must be non-negative.");
 
-            var parentLength = richtext.Length;
+            int parentLength = richtext.Length;
 
             if (offset < 0 || offset > parentLength)
             {
@@ -104,7 +104,7 @@ namespace Supremacy.Text
             if (_length < 0)
                 throw new ArgumentOutOfRangeException(string.Format("Length {0} must be non-negative.", _length));
 
-            var parentLength = _richText.Length;
+            int parentLength = _richText.Length;
 
             if (_offset < 0 || _offset > parentLength)
             {
@@ -155,8 +155,8 @@ namespace Supremacy.Text
 
         public override string ToString()
         {
-            var output = new StringBuilder();
-            using (var writer = XmlWriter.Create(output, XmlWriterEx.WriterSettings))
+            StringBuilder output = new StringBuilder();
+            using (XmlWriter writer = XmlWriter.Create(output, XmlWriterEx.WriterSettings))
                 Dump(writer);
             return output.ToString();
         }

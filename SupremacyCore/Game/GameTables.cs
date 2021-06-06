@@ -93,7 +93,7 @@ namespace Supremacy.Game
 
             GameLog.Client.GameInitData.DebugFormat("... no Output for often used Tables: MessageDialogButtons, TechCategory, SitRepCategory");
 
-            var tables = new GameTables
+            GameTables tables = new GameTables
                          {
                              _resourceTables = TableMap.ReadFromFile(
                                  ResourceManager.GetResourcePath(tablesPath + "ResourceTables.txt")),

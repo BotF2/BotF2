@@ -55,19 +55,19 @@ namespace Supremacy.Client.Controls
 
         protected override void OnRender(DrawingContext drawingContext)
         {
-            var halfHeight = ActualHeight / 2;
+            double halfHeight = ActualHeight / 2;
 
-            var topLeft = new Point(0, 0);
-            var middleLeft = new Point(halfHeight, halfHeight);
-            var bottomLeft = new Point(0, halfHeight * 2);
+            Point topLeft = new Point(0, 0);
+            Point middleLeft = new Point(halfHeight, halfHeight);
+            Point bottomLeft = new Point(0, halfHeight * 2);
 
-            var bottomRight = new Point(IsOutsetOnRight ? ActualWidth - halfHeight : ActualWidth, halfHeight * 2);
-            var middleRight = new Point(ActualWidth, halfHeight);
-            var topRight = new Point(IsOutsetOnRight ? ActualWidth - halfHeight : ActualWidth, 0);
+            Point bottomRight = new Point(IsOutsetOnRight ? ActualWidth - halfHeight : ActualWidth, halfHeight * 2);
+            Point middleRight = new Point(ActualWidth, halfHeight);
+            Point topRight = new Point(IsOutsetOnRight ? ActualWidth - halfHeight : ActualWidth, 0);
 
-            var geometry = new StreamGeometry();
+            StreamGeometry geometry = new StreamGeometry();
 
-            using (var c = geometry.Open())
+            using (StreamGeometryContext c = geometry.Open())
             {
                 c.BeginFigure(topLeft, true, true);
 

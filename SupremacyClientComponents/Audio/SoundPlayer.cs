@@ -58,7 +58,7 @@ namespace Supremacy.Client.Audio
 
             lock(_updateLock)
             {
-                foreach (var track in _audioTracks)
+                foreach (IAudioTrack track in _audioTracks)
                 {
                     try
                     {
@@ -107,7 +107,7 @@ namespace Supremacy.Client.Audio
 
             if (musicPack != null)
             {
-                var track = musicPack.Random();
+                KeyValuePair<int, MusicEntry> track = musicPack.Random();
                 PlayFile(track.Value.FileName);
                 GameLog.Client.Audio.DebugFormat("PlayAny musicPack={0}, Filename={1}", musicPack.Name, track.Value.FileName);
             }
@@ -122,7 +122,7 @@ namespace Supremacy.Client.Audio
             if (fileName == null)
                 throw new ArgumentNullException("fileName");
 
-            var resourcePath = ResourceManager.GetResourcePath(fileName);
+            string resourcePath = ResourceManager.GetResourcePath(fileName);
 
             if (!File.Exists(resourcePath))
             {
@@ -132,7 +132,7 @@ namespace Supremacy.Client.Audio
 
             lock (_updateLock)
             {
-                var audioTrack = _engine.CreateTrack(resourcePath);
+                IAudioTrack audioTrack = _engine.CreateTrack(resourcePath);
                 if (audioTrack != null)
                 {
                     audioTrack.Group = _channelGroup;

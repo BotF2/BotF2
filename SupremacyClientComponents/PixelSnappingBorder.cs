@@ -17,7 +17,7 @@ namespace Supremacy.Client
     {
         protected override Size MeasureOverride(Size constraint)
         {
-            var desiredSize = base.MeasureOverride(constraint);
+            Size desiredSize = base.MeasureOverride(constraint);
             return new Size(Math.Ceiling(desiredSize.Width), Math.Ceiling(desiredSize.Height));
         }
     }

@@ -255,7 +255,7 @@ namespace Supremacy.Client.Events
 
         static ClientEvents()
         {
-            var eventAggregator = Designer.IsInDesignMode ? new EventAggregator() : ServiceLocator.Current.GetInstance<IEventAggregator>();
+            IEventAggregator eventAggregator = Designer.IsInDesignMode ? new EventAggregator() : ServiceLocator.Current.GetInstance<IEventAggregator>();
 
             ServerInitializationFailed = eventAggregator.GetEvent<ServerInitializationFailedEvent>();
             ClientInitializationFailed = eventAggregator.GetEvent<ClientInitializationFailedEvent>();

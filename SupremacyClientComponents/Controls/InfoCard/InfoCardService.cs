@@ -431,8 +431,8 @@ namespace Supremacy.Client.Controls
 
         private static Visual FindContentElementParent(ContentElement ce)
         {
-            var visual = (Visual)null;
-            var parent = (DependencyObject)ce;
+            Visual visual = (Visual)null;
+            DependencyObject parent = (DependencyObject)ce;
 
             while (parent != null)
             {
@@ -449,7 +449,7 @@ namespace Supremacy.Client.Controls
                 if (parent != null)
                     continue;
 
-                var element = ce as FrameworkContentElement;
+                FrameworkContentElement element = ce as FrameworkContentElement;
                 if (element != null)
                     parent = element.Parent;
             }
@@ -464,7 +464,7 @@ namespace Supremacy.Client.Controls
 
         private void InspectElementForInfoCard(DependencyObject obj)
         {
-            var objectToInspect = obj;
+            DependencyObject objectToInspect = obj;
 
             if (!IsOnContextMenu(obj) &&
                 (LocateNearestInfoCard(ref obj)))
@@ -477,7 +477,7 @@ namespace Supremacy.Client.Controls
                     LastChecked = objectToInspect;
                     LastMouseOverWithInfoCard = obj;
 
-                    var lastQuickShow = _quickShow;
+                    bool lastQuickShow = _quickShow;
 
                     ResetInfoCardTimer();
 
@@ -532,7 +532,7 @@ namespace Supremacy.Client.Controls
         {
             if (obj != null)
             {
-                var infoCard = obj.FindVisualAncestorByType<InfoCardWindow>();
+                InfoCardWindow infoCard = obj.FindVisualAncestorByType<InfoCardWindow>();
                 if (infoCard == null)
                     return false;
                 return (infoCard == InfoCardHost.GetInfoCardWindow(Current._currentInfoCard));
@@ -546,7 +546,7 @@ namespace Supremacy.Client.Controls
             {
                 if (_lastChecked != null)
                 {
-                    var target = (DependencyObject)_lastChecked.Target;
+                    DependencyObject target = (DependencyObject)_lastChecked.Target;
                     if (target != null)
                         return target;
                     _lastChecked = null;
@@ -570,7 +570,7 @@ namespace Supremacy.Client.Controls
             {
                 if (_lastMouseDirectlyOver != null)
                 {
-                    var target = (IInputElement)_lastMouseDirectlyOver.Target;
+                    IInputElement target = (IInputElement)_lastMouseDirectlyOver.Target;
                     if (target != null)
                         return target;
                     _lastMouseDirectlyOver = null;
@@ -594,7 +594,7 @@ namespace Supremacy.Client.Controls
             {
                 if (_lastMouseOverWithInfoCard != null)
                 {
-                    var target = (DependencyObject)_lastMouseOverWithInfoCard.Target;
+                    DependencyObject target = (DependencyObject)_lastMouseOverWithInfoCard.Target;
                     if (target != null)
                         return target;
                     _lastMouseOverWithInfoCard = null;
@@ -622,10 +622,10 @@ namespace Supremacy.Client.Controls
 
         private static bool LocateNearestInfoCard(ref DependencyObject obj)
         {
-            var element = obj as IInputElement;
+            IInputElement element = obj as IInputElement;
             if (element != null)
             {
-                var e = new FindInfoCardEventArgs();
+                FindInfoCardEventArgs e = new FindInfoCardEventArgs();
                 element.RaiseEvent(e);
                 if (e.TargetElement != null)
                 {
@@ -646,7 +646,7 @@ namespace Supremacy.Client.Controls
             if (e.TargetElement != null)
                 return;
 
-            var obj = sender as DependencyObject;
+            DependencyObject obj = sender as DependencyObject;
             if (obj == null)
                 return;
 
@@ -672,7 +672,7 @@ namespace Supremacy.Client.Controls
             if ((_currentInfoCard != null) && (_currentInfoCard.IsPinned || _currentInfoCard.IsKeyboardFocusWithin))
                 return;
 
-            var directlyOver = Mouse.DirectlyOver as DependencyObject;
+            DependencyObject directlyOver = Mouse.DirectlyOver as DependencyObject;
             if ((directlyOver != null) && (directlyOver.FindVisualAncestorByType<InfoCard>() == _currentInfoCard))
                 return;
 
@@ -682,7 +682,7 @@ namespace Supremacy.Client.Controls
 
         private void OnMouseMove(IInputElement directlyOver)
         {
-            var directlyOverObj = directlyOver as DependencyObject;
+            DependencyObject directlyOverObj = directlyOver as DependencyObject;
             if ((directlyOverObj != null) && (directlyOverObj.FindVisualAncestorByType<InfoCard>() != null))
                 return;
             if (directlyOver != LastMouseDirectlyOver)
@@ -706,15 +706,15 @@ namespace Supremacy.Client.Controls
         internal void ProcessPreviewMouseMoveForInfoCard(MouseEventArgs e)
         {
             // Get the element that the mouse is directly over
-            var directlyOver = Mouse.PrimaryDevice.DirectlyOver;
-            var position = e.GetPosition(directlyOver);
+            IInputElement directlyOver = Mouse.PrimaryDevice.DirectlyOver;
+            Point position = e.GetPosition(directlyOver);
 
             // If the mouse is over a disabled element, it won't be returned by DirectlyOver (only the internal RawDirectlyOver gives that)
             //   so search on our own
-            var directlyOverVisual = directlyOver as Visual;
+            Visual directlyOverVisual = directlyOver as Visual;
             if (directlyOverVisual != null)
             {
-                var result = VisualTreeHelper.HitTest(directlyOverVisual, position);
+                HitTestResult result = VisualTreeHelper.HitTest(directlyOverVisual, position);
                 if (result != null)
                 {
                     directlyOverVisual = result.VisualHit as Visual;
@@ -726,7 +726,7 @@ namespace Supremacy.Client.Controls
                 }
             }
 
-            var element = directlyOver as UIElement;
+            UIElement element = directlyOver as UIElement;
             if ((element == null) ||
                 (((position.X >= 0) && (position.X < element.RenderSize.Width)) &&
                  ((position.Y >= 0) && (position.Y < element.RenderSize.Height))))
@@ -742,10 +742,10 @@ namespace Supremacy.Client.Controls
             {
                 LastChecked = null;
             }
-            var lastMouseOver = LastMouseOverWithInfoCard;
+            DependencyObject lastMouseOver = LastMouseOverWithInfoCard;
             if ((lastMouseOver != null) && (_currentInfoCard != null))
             {
-                var isOpen = _currentInfoCard.IsOpen;
+                bool isOpen = _currentInfoCard.IsOpen;
 
                 if (_currentInfoCard.IsPinned)
                     return;
@@ -754,7 +754,7 @@ namespace Supremacy.Client.Controls
                 {
                     if (isOpen)
                     {
-                        var element = lastMouseOver as IInputElement;
+                        IInputElement element = lastMouseOver as IInputElement;
                         if (element != null)
                             element.RaiseEvent(new RoutedEventArgs(InfoCardClosingEvent, this));
                     }
@@ -763,7 +763,7 @@ namespace Supremacy.Client.Controls
                 {
                     if (isOpen)
                     {
-                        var infoCardSite = _currentInfoCard.RegisteredInfoCardSite;
+                        InfoCardSite infoCardSite = _currentInfoCard.RegisteredInfoCardSite;
                         if (infoCardSite != null)
                             infoCardSite.InfoCards.Remove(_currentInfoCard);
 
@@ -786,15 +786,15 @@ namespace Supremacy.Client.Controls
         {
             ResetInfoCardTimer();
 
-            var lastMouseOver = LastMouseOverWithInfoCard;
+            DependencyObject lastMouseOver = LastMouseOverWithInfoCard;
             if (lastMouseOver != null)
             {
-                var showInfoCard = true;
-                var inputElement = lastMouseOver as IInputElement;
+                bool showInfoCard = true;
+                IInputElement inputElement = lastMouseOver as IInputElement;
                 if (inputElement != null)
                 {
                     // Raise the screen tip opening event
-                    var e = new RoutedEventArgs(InfoCardOpeningEvent, this);
+                    RoutedEventArgs e = new RoutedEventArgs(InfoCardOpeningEvent, this);
                     inputElement.RaiseEvent(e);
                     showInfoCard = !e.Handled;
                 }
@@ -807,17 +807,17 @@ namespace Supremacy.Client.Controls
 
                     if (_currentInfoCard != null)
                     {
-                        var targetElement = lastMouseOver as UIElement;
+                        UIElement targetElement = lastMouseOver as UIElement;
 
                         _currentInfoCard.TargetElement = targetElement;
 
-                        var infoCardPosition = Mouse.GetPosition(inputElement);
-                        var infoCardSite = _currentInfoCard.RegisteredInfoCardSite ??
+                        Point infoCardPosition = Mouse.GetPosition(inputElement);
+                        InfoCardSite infoCardSite = _currentInfoCard.RegisteredInfoCardSite ??
                                            lastMouseOver.FindVisualAncestorByType<InfoCardSite>();
 
                         if (infoCardSite == null)
                         {
-                            var window = Window.GetWindow(lastMouseOver);
+                            Window window = Window.GetWindow(lastMouseOver);
                             if (window != null)
                             {
                                 if (!_generatedSites.TryGetValue(window, out infoCardSite))
@@ -845,10 +845,10 @@ namespace Supremacy.Client.Controls
 
                         if (infoCardSite.IsLoaded)
                         {
-                            var targetVisual = targetElement;
+                            UIElement targetVisual = targetElement;
                             if (targetVisual != null)
                             {
-                                var transformToVisual = targetVisual.TransformToVisual(infoCardSite);
+                                GeneralTransform transformToVisual = targetVisual.TransformToVisual(infoCardSite);
                                 if (transformToVisual != null)
                                     infoCardPosition = transformToVisual.Transform(infoCardPosition);
                             }
@@ -856,7 +856,7 @@ namespace Supremacy.Client.Controls
 
                         if (targetElement != null)
                         {
-                            var customPlacementCallback = _currentInfoCard.CustomPlacementCallback ??
+                            CustomInfoCardPlacementCallback customPlacementCallback = _currentInfoCard.CustomPlacementCallback ??
                                                           GetCustomInfoCardPlacementCallback(targetElement);
                             if (customPlacementCallback != null)
                             {
@@ -874,7 +874,7 @@ namespace Supremacy.Client.Controls
 
                         if (_currentInfoCard.IsOpen)
                         {
-                            var infoCardWindow = InfoCardHost.GetInfoCardWindow(_currentInfoCard);
+                            IInfoCardWindow infoCardWindow = InfoCardHost.GetInfoCardWindow(_currentInfoCard);
                             if (infoCardWindow != null)
                             {
                                 infoCardWindow.Setup(_currentInfoCard.Location);
@@ -931,7 +931,7 @@ namespace Supremacy.Client.Controls
             if (obj == null)
                 return false;
 
-            var infoCardSubject = GetInfoCardSubject(obj);
+            IInfoCardSubject infoCardSubject = GetInfoCardSubject(obj);
             if (infoCardSubject == null)
                 return false;
 
@@ -944,10 +944,10 @@ namespace Supremacy.Client.Controls
         {
             if (_currentInfoCard != null)
             {
-                var visual = obj as Visual;
+                Visual visual = obj as Visual;
                 if (visual == null)
                 {
-                    var element = obj as ContentElement;
+                    ContentElement element = obj as ContentElement;
                     if (element != null)
                         visual = FindContentElementParent(element);
                 }
@@ -964,7 +964,7 @@ namespace Supremacy.Client.Controls
 
         private InfoCard CreateInfoCard(DependencyObject obj)
         {
-            var infoCardSubject = GetInfoCardSubject(obj);
+            IInfoCardSubject infoCardSubject = GetInfoCardSubject(obj);
             if (infoCardSubject == null)
                 return null;
 
@@ -982,7 +982,7 @@ namespace Supremacy.Client.Controls
 
         private void OnInfoCardSubjectChanged(object sender, PropertyChangedRoutedEventArgs<IInfoCardSubject> e)
         {
-            var oldSubject = e.OldValue;
+            IInfoCardSubject oldSubject = e.OldValue;
             if (oldSubject == null)
                 return;
 
@@ -992,7 +992,7 @@ namespace Supremacy.Client.Controls
 
             _infoCardCache.Remove(oldSubject);
 
-            var newSubject = e.NewValue;
+            IInfoCardSubject newSubject = e.NewValue;
             if (newSubject != null)
                 _infoCardCache[newSubject] = infoCard;
             else if (infoCard.IsOpen)
@@ -1003,7 +1003,7 @@ namespace Supremacy.Client.Controls
 
         private void OnInfoCardClosed(object sender, RoutedEventArgs e)
         {
-            var infoCard = sender as InfoCard;
+            InfoCard infoCard = sender as InfoCard;
             if (infoCard == null)
                 return;
 
@@ -1018,7 +1018,7 @@ namespace Supremacy.Client.Controls
             infoCard.Closed -= OnInfoCardClosed;
             infoCard.SubjectChanged -= OnInfoCardSubjectChanged;
 
-            var infoCardSubject = infoCard.Subject;
+            IInfoCardSubject infoCardSubject = infoCard.Subject;
             if (infoCardSubject != null)
                 _infoCardCache.Remove(infoCard.Subject);
 

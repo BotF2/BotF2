@@ -76,7 +76,7 @@ namespace Supremacy.Universe
                     float baseModSource = 0.025f;
                     float baseModTarget = 0.05f;
 
-                    var baseResProdTable = GameContext.Current.Tables.ResourceTables["TradeRoutePopMultipliers"];
+                    Data.Table baseResProdTable = GameContext.Current.Tables.ResourceTables["TradeRoutePopMultipliers"];
                     if (baseResProdTable != null)
                     {
                         try
@@ -135,14 +135,14 @@ namespace Supremacy.Universe
                 //var clientContext = ServiceLocator.Current.GetInstance<IClientContext>();
                 try
                 {
-                    var clientContext = ServiceLocator.Current.GetInstance<IPlayer>();
+                    IPlayer clientContext = ServiceLocator.Current.GetInstance<IPlayer>();
                     //var clientContext = Game.IPlayer.
                     if (clientContext == null)
                     {
                         GameLog.Core.General.DebugFormat("clientContext is null, TurnNumber={0}, Credits by TradeRoute={1}", GameContext.Current.TurnNumber, Credits);
                         return Credits;
                     }
-                    var empire = clientContext.Empire;//.LocalPlayer.Empire;
+                    Civilization empire = clientContext.Empire;//.LocalPlayer.Empire;
                     if (empire == null)
                     {
                         GameLog.Core.General.DebugFormat("empire is null, TurnNumber={0}, Credits by TradeRoute={1}", GameContext.Current.TurnNumber, Credits);
@@ -164,7 +164,7 @@ namespace Supremacy.Universe
                         return Credits;
                     }
 
-                    var bonus = colony.Buildings
+                    double bonus = colony.Buildings
                                       .Where(o => o.IsActive)
                                       .SelectMany(o => o.BuildingDesign.Bonuses)
                                       .Where(o => o.BonusType == BonusType.PercentTradeIncome)
@@ -296,7 +296,7 @@ namespace Supremacy.Universe
 
         public override void CloneFrom(Cloneable original, ICloneContext context)
         {
-            var source = (TradeRoute)original;
+            TradeRoute source = (TradeRoute)original;
             _targetColonyId = source._targetColonyId;
             _credits = source._credits;
         }

@@ -131,7 +131,7 @@ namespace Supremacy.AI
         }
         public static void FindTargetCiv(Civilization daCiv)
         {
-            var possibleCivs = GameContext.Current.Civilizations.ToList();
+            IList<Civilization> possibleCivs = GameContext.Current.Civilizations.ToList();
 
             foreach (Civilization invasionCiv in possibleCivs)
             {
@@ -165,7 +165,7 @@ namespace Supremacy.AI
                                 if (!DiplomacyHelper.AreAtWar(daCiv, daCiv.TargetCivilization))
                                 {
                                     GameLog.Core.AI.DebugFormat("Declare War {0} on {1}", daCiv.Name, daCiv.TargetCivilization.Name);
-                                    var diplomat = Diplomat.Get(daCiv);
+                                    Diplomat diplomat = Diplomat.Get(daCiv);
                                     ForeignPower foreignPower = diplomat.GetForeignPower(daCiv.TargetCivilization);
                                     foreignPower.DeclareWar();
                                 }
@@ -354,7 +354,7 @@ namespace Supremacy.AI
                         continue;
                     }
 
-                    var distance = MapLocation.GetDistance(sector.Location, loopSector.Location);
+                    int distance = MapLocation.GetDistance(sector.Location, loopSector.Location);
 
                     if (DiplomacyHelper.AreAtWar(who, loopSector.Owner) && distance <= 2)
                     {
@@ -363,7 +363,7 @@ namespace Supremacy.AI
 
                     foreach (Fleet fleet in GameContext.Current.Universe.FindAt<Fleet>(loopSector.Location))
                     {
-                        foreach (var ship in fleet.Ships)
+                        foreach (Ship ship in fleet.Ships)
                         {
                             if (ship.Owner != null)
                                 fleet.Owner = ship.Owner;

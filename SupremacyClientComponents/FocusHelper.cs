@@ -60,7 +60,7 @@ namespace Supremacy.Client
         {
             get
             {
-                var foregroundWindow = NativeMethods.GetForegroundWindow();
+                IntPtr foregroundWindow = NativeMethods.GetForegroundWindow();
                 if (foregroundWindow == IntPtr.Zero)
                     return false;
 

@@ -23,7 +23,7 @@ namespace Supremacy.Messaging
             get 
             {
                 if (_subscriber == null || !_subscriber.IsAlive) return null;
-                var subscriberObj = _subscriber.Target as IObserver<T>;
+                IObserver<T> subscriberObj = _subscriber.Target as IObserver<T>;
                 return subscriberObj;
             }
         }

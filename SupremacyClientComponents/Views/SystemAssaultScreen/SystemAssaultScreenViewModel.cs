@@ -595,11 +595,11 @@ namespace Supremacy.Client.Views
             if (p == null || State != SystemAssaultScreenState.AwaitingPlayerOrders)
                 return false;
 
-            var action = p.InnerParameter as InvasionAction?;
+            InvasionAction? action = p.InnerParameter as InvasionAction?;
             if (action == null)
                 return true;
 
-            var canExecute = true;
+            bool canExecute = true;
 
             switch (action.Value)
             {
@@ -634,7 +634,7 @@ namespace Supremacy.Client.Views
             if (p == null || State != SystemAssaultScreenState.AwaitingPlayerOrders)
                 return false;
 
-            var targetingStrategy = p.InnerParameter as InvasionTargetingStrategy?;
+            InvasionTargetingStrategy? targetingStrategy = p.InnerParameter as InvasionTargetingStrategy?;
             if (targetingStrategy == null)
                 return false;
 
@@ -718,7 +718,7 @@ namespace Supremacy.Client.Views
 
         protected override void RunOverride()
         {
-            var dialog = View as IDialog;
+            IDialog dialog = View as IDialog;
             if (dialog != null && !dialog.IsOpen)
                 dialog.Show();
         }
@@ -756,7 +756,7 @@ namespace Supremacy.Client.Views
 
         private void OnClose()
         {
-            var dialog = View as IDialog;
+            IDialog dialog = View as IDialog;
             if (dialog != null)
                 dialog.Close();
 
@@ -781,8 +781,8 @@ namespace Supremacy.Client.Views
 
         private void OnInvasionUpdateReceived(ClientDataEventArgs<InvasionArena> e)
         {
-            
-            var newUpdate = e.Value;
+
+            InvasionArena newUpdate = e.Value;
 
             if (_currentUpdate != null &&
                 _currentUpdate.InvasionID != newUpdate.InvasionID)
@@ -800,7 +800,7 @@ namespace Supremacy.Client.Views
 
         private void PlaybackResults([NotNull] InvasionArena update)
         {
-            var settings = AssaultScreenSettings.Instance;
+            AssaultScreenSettings settings = AssaultScreenSettings.Instance;
 
             _stateManager.TryChange(SystemAssaultScreenState.ReplayingResults);
             
@@ -826,7 +826,7 @@ namespace Supremacy.Client.Views
             }
 
             string soundEffect = null;
-            var playbackDuration = TimeSpan.Zero;
+            TimeSpan playbackDuration = TimeSpan.Zero;
 
             switch (SelectedAction)
             {
@@ -875,7 +875,7 @@ namespace Supremacy.Client.Views
             if (update == null)
                 throw new ArgumentNullException("update");
 
-            var newInvasion = (_currentUpdate == null || _currentUpdate.InvasionID != update.InvasionID);
+            bool newInvasion = (_currentUpdate == null || _currentUpdate.InvasionID != update.InvasionID);
             if (newInvasion ||
                 SelectedAction == InvasionAction.StandDown)
             {
@@ -895,7 +895,7 @@ namespace Supremacy.Client.Views
         {
             _currentUpdate = update;
 
-            var colony = update.Colony;
+            Colony colony = update.Colony;
 
             RoundNumber = update.RoundNumber;
             OnInvasionStatusChanged();
@@ -945,9 +945,9 @@ namespace Supremacy.Client.Views
             else
             {
                 //works   GameLog.Print("Proceeding Invasion on {0} at {1}, Round={2}", GameContext.Current.Universe.Map[colony.Location].System, GameContext.Current.Universe.Map[colony.Location], RoundNumber);
-                foreach (var invadingUnit in update.InvadingUnits)
+                foreach (InvasionUnit invadingUnit in update.InvadingUnits)
                 {
-                    var model = _invadingUnits.FirstOrDefault(o => Equals(o.Unit, invadingUnit));
+                    AssaultUnitViewModel model = _invadingUnits.FirstOrDefault(o => Equals(o.Unit, invadingUnit));
                     if (model == null)
                         continue;
 
@@ -962,9 +962,9 @@ namespace Supremacy.Client.Views
                     }
                 }
 
-                foreach (var defendingUnit in update.DefendingUnits)
+                foreach (InvasionUnit defendingUnit in update.DefendingUnits)
                 {
-                    var model = _defendingUnits.FirstOrDefault(o => Equals(o.Unit, defendingUnit));
+                    AssaultUnitViewModel model = _defendingUnits.FirstOrDefault(o => Equals(o.Unit, defendingUnit));
                     if (model == null)
                         continue;
 
@@ -996,7 +996,7 @@ namespace Supremacy.Client.Views
             }
             else
             {
-                var nextState = update.IsFinished ? SystemAssaultScreenState.Finished : SystemAssaultScreenState.AwaitingPlayerOrders;
+                SystemAssaultScreenState nextState = update.IsFinished ? SystemAssaultScreenState.Finished : SystemAssaultScreenState.AwaitingPlayerOrders;
                 _stateManager.TryChange(nextState);
             }
         }
@@ -1040,11 +1040,11 @@ namespace Supremacy.Client.Views
             if (unit is InvasionFacility)
                 return AssaultUnitCategory.ProductionFacility;
 
-            var structure = unit as InvasionStructure;
+            InvasionStructure structure = unit as InvasionStructure;
             if (structure != null)
             {
-                var design = (BuildingDesign)structure.Design;
-                var militaryBonuses = design.GetBonuses(
+                BuildingDesign design = (BuildingDesign)structure.Design;
+                IEnumerable<Bonus> militaryBonuses = design.GetBonuses(
                     BonusType.PercentGroundCombat,
                     BonusType.PercentGroundDefense,
                     BonusType.PlanetaryShielding,
@@ -1060,7 +1060,7 @@ namespace Supremacy.Client.Views
             if (unit.Source is OrbitalBattery)
                 return AssaultUnitCategory.OrbitalBattery;
 
-            var orbital = unit as InvasionOrbital;
+            InvasionOrbital orbital = unit as InvasionOrbital;
             if (orbital != null &&
                 ((Ship)orbital.Source).ShipType == ShipType.Transport)
             {
@@ -1092,7 +1092,7 @@ namespace Supremacy.Client.Views
         {
             get
             {
-                var orbital = _unit as InvasionOrbital;
+                InvasionOrbital orbital = _unit as InvasionOrbital;
                 if (orbital == null)
                     return null;
                 return orbital.ShieldStrength;
@@ -1116,7 +1116,7 @@ namespace Supremacy.Client.Views
         {
             get
             {
-                var orbital = _unit as InvasionOrbital;
+                InvasionOrbital orbital = _unit as InvasionOrbital;
                 if (orbital == null)
                     return _unit.Health;
                 return orbital.HullStrength;
@@ -1140,7 +1140,7 @@ namespace Supremacy.Client.Views
         {
             get
             {
-                var orbital = _unit as InvasionOrbital;
+                InvasionOrbital orbital = _unit as InvasionOrbital;
 
                 return orbital != null &&
                        orbital.Source.ShieldStrength.Maximum > 0;
@@ -1227,8 +1227,8 @@ namespace Supremacy.Client.Views
             {
                 while (true)
                 {
-                    var oldHandler = _propertyChanged;
-                    var newHandler = (PropertyChangedEventHandler)Delegate.Combine(oldHandler, value);
+                    PropertyChangedEventHandler oldHandler = _propertyChanged;
+                    PropertyChangedEventHandler newHandler = (PropertyChangedEventHandler)Delegate.Combine(oldHandler, value);
 
                     if (Interlocked.CompareExchange(ref _propertyChanged, newHandler, oldHandler) == oldHandler)
                         return;
@@ -1238,8 +1238,8 @@ namespace Supremacy.Client.Views
             {
                 while (true)
                 {
-                    var oldHandler = _propertyChanged;
-                    var newHandler = (PropertyChangedEventHandler)Delegate.Remove(oldHandler, value);
+                    PropertyChangedEventHandler oldHandler = _propertyChanged;
+                    PropertyChangedEventHandler newHandler = (PropertyChangedEventHandler)Delegate.Remove(oldHandler, value);
 
                     if (Interlocked.CompareExchange(ref _propertyChanged, newHandler, oldHandler) == oldHandler)
                         return;
@@ -1394,7 +1394,7 @@ namespace Supremacy.Client.Views
                     return;
                 }
 
-                using (var stream = dataFile.OpenRead())
+                using (System.IO.Stream stream = dataFile.OpenRead())
                 {
                     XamlHelper.LoadInto(this, stream);
                 }
@@ -1422,8 +1422,8 @@ namespace Supremacy.Client.Views
             {
                 while (true)
                 {
-                    var oldHandler = _propertyChanged;
-                    var newHandler = (PropertyChangedEventHandler)Delegate.Combine(oldHandler, value);
+                    PropertyChangedEventHandler oldHandler = _propertyChanged;
+                    PropertyChangedEventHandler newHandler = (PropertyChangedEventHandler)Delegate.Combine(oldHandler, value);
 
                     if (Interlocked.CompareExchange(ref _propertyChanged, newHandler, oldHandler) == oldHandler)
                         return;
@@ -1433,8 +1433,8 @@ namespace Supremacy.Client.Views
             {
                 while (true)
                 {
-                    var oldHandler = _propertyChanged;
-                    var newHandler = (PropertyChangedEventHandler)Delegate.Remove(oldHandler, value);
+                    PropertyChangedEventHandler oldHandler = _propertyChanged;
+                    PropertyChangedEventHandler newHandler = (PropertyChangedEventHandler)Delegate.Remove(oldHandler, value);
 
                     if (Interlocked.CompareExchange(ref _propertyChanged, newHandler, oldHandler) == oldHandler)
                         return;

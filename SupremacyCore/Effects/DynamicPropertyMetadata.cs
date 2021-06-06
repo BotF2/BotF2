@@ -139,11 +139,11 @@ namespace Supremacy.Effects
             
             if (baseMetadata.PropertyChangedCallback != null)
             {
-                var invocationList = baseMetadata.PropertyChangedCallback.GetInvocationList();
+                Delegate[] invocationList = baseMetadata.PropertyChangedCallback.GetInvocationList();
                 if (invocationList.Length > 0)
                 {
-                    var target = (DynamicPropertyChangedCallback<TValue>)invocationList[0];
-                    for (var i = 1; i < invocationList.Length; i++)
+                    DynamicPropertyChangedCallback<TValue> target = (DynamicPropertyChangedCallback<TValue>)invocationList[0];
+                    for (int i = 1; i < invocationList.Length; i++)
                         target = (DynamicPropertyChangedCallback<TValue>)Delegate.Combine(target, invocationList[i]);
                     target = (DynamicPropertyChangedCallback<TValue>)Delegate.Combine(target, _propertyChangedCallback);
                     _propertyChangedCallback = target;

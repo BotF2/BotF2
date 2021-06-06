@@ -37,8 +37,8 @@ namespace Supremacy.Pathfinding
         public TValue Dequeue()
         {
             // will throw if there isn’t any first element!
-            var pair = _list.First();
-            var v = pair.Value.Dequeue();
+            KeyValuePair<TPriority, Queue<TValue>> pair = _list.First();
+            TValue v = pair.Value.Dequeue();
             if (pair.Value.Count == 0) // nothing left of the top priority.
                 _list.Remove(pair.Key);
             return v;

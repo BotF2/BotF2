@@ -44,7 +44,7 @@ namespace Supremacy.Resources
                 
                 if (_commandLineMod != null)
                     return _commandLineMod;
-                var gameContext = GameContext.Peek();
+                GameContext gameContext = GameContext.Peek();
                 if (gameContext != null)
                     return gameContext.GameMod;
                 //GameLog.Print("GameMod CurrentMod is null");
@@ -59,11 +59,11 @@ namespace Supremacy.Resources
             _workingDirectory = PathHelper.GetWorkingDirectory();
             _vfsService = new VfsService();
 
-            var defaultSource = new ReadOnlyHardDiskSource(
+            ReadOnlyHardDiskSource defaultSource = new ReadOnlyHardDiskSource(
                 "Default",
                 _workingDirectory);
 
-            var modSource = new ReadOnlyHardDiskSource("CurrentMod", null)
+            ReadOnlyHardDiskSource modSource = new ReadOnlyHardDiskSource("CurrentMod", null)
                             {
                                 PathResolver = ResolveModVfsRoot
                             };
@@ -118,11 +118,11 @@ namespace Supremacy.Resources
 
         private static string ResolveModVfsRoot()
         {
-            var currentMod = CurrentMod;
+            GameMod currentMod = CurrentMod;
             if (currentMod == null)
                 return null;
 
-            var rootPath = currentMod.RootPath;
+            string rootPath = currentMod.RootPath;
             if (Directory.Exists(rootPath))
                 return rootPath;
 
@@ -191,14 +191,14 @@ namespace Supremacy.Resources
 
             if (CurrentMod != null)
             {
-                var modPath = GetSystemPathFormat(CurrentMod.RootPath);
+                string modPath = GetSystemPathFormat(CurrentMod.RootPath);
                 
                 if (!Path.IsPathRooted(modPath))
                     modPath = Path.Combine(_workingDirectory, modPath);
 
                 if (Directory.Exists(modPath))
                 {
-                    var modFile = EvaluateRelativePath(_workingDirectory, Path.Combine(modPath, path));
+                    string modFile = EvaluateRelativePath(_workingDirectory, Path.Combine(modPath, path));
                     if (File.Exists(modFile))
                         return modFile;
                 }

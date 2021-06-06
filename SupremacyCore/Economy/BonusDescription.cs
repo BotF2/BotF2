@@ -33,7 +33,7 @@ namespace Supremacy.Economy
         /// </summary>
         static BonusDescriptions()
         {
-            var path = ResourceManager.GetResourcePath(@"Resources\Data\BonusDescriptions.txt");
+            string path = ResourceManager.GetResourcePath(@"Resources\Data\BonusDescriptions.txt");
             _descriptions = new Table(Table<string>.ReadFromStream(new StreamReader(path)));
         }
 

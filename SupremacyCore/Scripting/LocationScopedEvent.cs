@@ -89,7 +89,7 @@ namespace Supremacy.Scripting
 
             HashSet<MapLocation> removedItems = null;
 
-            foreach (var entry in _locationTargetHistory)
+            foreach (LocationTargetHistoryEntry entry in _locationTargetHistory)
             {
                 if ((GameContext.Current.TurnNumber - entry.TurnNumber) > LocationRecurrencePeriod)
                 {
@@ -102,7 +102,7 @@ namespace Supremacy.Scripting
             if (removedItems == null)
                 return;
 
-            foreach (var civId in removedItems)
+            foreach (MapLocation civId in removedItems)
                 _locationTargetHistory.Remove(civId);
         }
 

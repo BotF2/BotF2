@@ -95,7 +95,7 @@ namespace Supremacy.Diplomacy
             if (proposal == null)
                 return false;
             bool isGift = false;
-            foreach (var clause in proposal.Clauses)
+            foreach (IClause clause in proposal.Clauses)
             {
                 switch (clause.ClauseType)
                 {
@@ -131,7 +131,7 @@ namespace Supremacy.Diplomacy
             if (proposal == null)
                 return false;
             bool isDemand = false;
-            foreach (var clause in proposal.Clauses)
+            foreach (IClause clause in proposal.Clauses)
             {
                 switch (clause.ClauseType)
                 {
@@ -169,7 +169,7 @@ namespace Supremacy.Diplomacy
 
             // GameLog.Core.Diplomacy.DebugFormat("hasTreaty: null or clause = {0}", proposal.Clauses.ToString()/*, proposal.ToString()*/);
 
-            foreach (var clause in proposal.Clauses)
+            foreach (IClause clause in proposal.Clauses)
             {
                 switch (clause.ClauseType)
                 {

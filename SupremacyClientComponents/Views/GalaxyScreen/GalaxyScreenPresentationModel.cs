@@ -377,7 +377,7 @@ namespace Supremacy.Client.Views
                     if (_selectedTaskForce.View != null && _selectedTaskForce.View.Ships != null && _selectedTaskForce.View.Ships.FirstOrDefault().Source != null)
                     {
                         Civilization localPlayer = AppContext.LocalPlayerEmpire.Civilization;
-                        var owner = _selectedTaskForce.View.Ships.FirstOrDefault().Source.Owner;
+                        Civilization owner = _selectedTaskForce.View.Ships.FirstOrDefault().Source.Owner;
                         if (owner != localPlayer && DiplomacyHelper.IsScanBlocked(localPlayer, _selectedSector))
                         {
                             _selectedTaskForce = null;
@@ -462,7 +462,7 @@ namespace Supremacy.Client.Views
         
         public void GeneratePlayerTaskForces(Civilization playerCiv)
         {
-            var mapData = AppContext.LocalPlayerEmpire.MapData;
+            CivilizationMapData mapData = AppContext.LocalPlayerEmpire.MapData;
             List<FleetViewWrapper> playerList = new List<FleetViewWrapper>();
             List<FleetViewWrapper> otherVisibleList = new List<FleetViewWrapper>();
             List<FleetViewWrapper> iSpyList = new List<FleetViewWrapper>();

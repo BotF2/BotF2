@@ -14,7 +14,7 @@ namespace Supremacy.Economy
         {
             int baseValue;
 
-            var table = GameContext.Current.Tables.ResourceTables["BaseCreditValues"];
+            Data.Table table = GameContext.Current.Tables.ResourceTables["BaseCreditValues"];
             if (table == null || !int.TryParse(table[resourceType.ToString()][0], out baseValue))
                 return amount;
 

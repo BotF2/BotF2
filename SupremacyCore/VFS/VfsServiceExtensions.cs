@@ -16,13 +16,13 @@ namespace Supremacy.VFS
 
             VfsUriHelper.ValidateAndGetVfsUriComponents(uri, out sourceUri, out resourceUri);
 
-            var virtualPath = resourceUri.ToString().Substring(1);
+            string virtualPath = resourceUri.ToString().Substring(1);
 
             if (sourceUri != null)
             {
-                var sourceName = sourceUri.Scheme;
+                string sourceName = sourceUri.Scheme;
 
-                var source = vfsService.GetSource(sourceName);
+                IFilesSource source = vfsService.GetSource(sourceName);
                 if (source == null)
                 {
                     throw new ArgumentException(

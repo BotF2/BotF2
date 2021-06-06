@@ -183,7 +183,7 @@ namespace Supremacy.Client
                 SubHeaderText.Text = String.Format(
                     ResourceManager.GetString("COMBAT_TEXT_ENCOUNTER"),
                     _update.Sector.Name);
-                var soundPlayer = new SoundPlayer("Resources/SoundFX/REDALERT.wav");
+                SoundPlayer soundPlayer = new SoundPlayer("Resources/SoundFX/REDALERT.wav");
                 {
                     if (File.Exists("Resources/SoundFX/REDALERT.wav"))
                         soundPlayer.Play();
@@ -246,7 +246,7 @@ namespace Supremacy.Client
             foreach (CombatAssets friendlyAssets in _update.FriendlyAssets)
             {
 
-                var shootingPlayerCivs = new List<Civilization>();
+                List<Civilization> shootingPlayerCivs = new List<Civilization>();
 
                 if (friendlyAssets.Station != null)
                 {
@@ -304,7 +304,7 @@ namespace Supremacy.Client
             foreach (CombatAssets hostileAssets in _update.HostileAssets)
             {
 
-                var otherCivs = new List<Civilization>();
+                List<Civilization> otherCivs = new List<Civilization>();
 
                 if (hostileAssets.Station != null)
                 {

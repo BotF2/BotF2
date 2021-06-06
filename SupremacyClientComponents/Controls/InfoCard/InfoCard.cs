@@ -61,7 +61,7 @@ namespace Supremacy.Client.Controls
 
         private static void ExecuteCloseCommand(object sender, ExecutedRoutedEventArgs e)
         {
-            var infoCard = (InfoCard)sender;
+            InfoCard infoCard = (InfoCard)sender;
             if (!infoCard.IsOpen)
                 return;
             infoCard.Close();
@@ -69,7 +69,7 @@ namespace Supremacy.Client.Controls
 
         private static void ExecutePinCommand(object sender, ExecutedRoutedEventArgs e)
         {
-            var infoCard = (InfoCard)sender;
+            InfoCard infoCard = (InfoCard)sender;
             if (!infoCard.CanPin)
                 return;
             infoCard.IsPinned = true;
@@ -77,14 +77,14 @@ namespace Supremacy.Client.Controls
 
         private static void CanExecutePinCommand(object sender, CanExecuteRoutedEventArgs e)
         {
-            var infoCard = (InfoCard)sender;
+            InfoCard infoCard = (InfoCard)sender;
             e.CanExecute = infoCard.CanPin && !infoCard.IsPinned;
             e.Handled = true;
         }
 
         private static void ExecuteUnpinCommand(object sender, ExecutedRoutedEventArgs e)
         {
-            var infoCard = (InfoCard)sender;
+            InfoCard infoCard = (InfoCard)sender;
             if (!infoCard.IsPinned)
                 return;
             infoCard.IsPinned = false;
@@ -367,7 +367,7 @@ namespace Supremacy.Client.Controls
 
         private static void OnIsCurrentlyOpenPropertyValueChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            var infoCard = d as InfoCard;
+            InfoCard infoCard = d as InfoCard;
             if (infoCard != null)
                 infoCard.IsOpen = (bool)e.NewValue;
         }
@@ -433,18 +433,18 @@ namespace Supremacy.Client.Controls
 
         private static void OnCanPinPropertyValueChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            var infoCard = (InfoCard)d;
+            InfoCard infoCard = (InfoCard)d;
             if (infoCard.IsPinned && !(bool)e.NewValue)
                 infoCard.CoerceValue(IsPinnedProperty);
         }
 
         private static object CoerceCanPinPropertyValue(DependencyObject d, object baseValue)
         {
-            var localValue = (bool?)baseValue;
+            bool? localValue = (bool?)baseValue;
             if (localValue.HasValue)
                 return localValue.Value;
 
-            var infoCardSite = ((InfoCard)d).InfoCardSite;
+            InfoCardSite infoCardSite = ((InfoCard)d).InfoCardSite;
             if (infoCardSite != null)
                 return infoCardSite.CanInfoCardsPin;
 
@@ -471,7 +471,7 @@ namespace Supremacy.Client.Controls
 
         private static object CoerceIsPinnedProperty(DependencyObject d, object baseValue)
         {
-            var infoCard = (InfoCard)d;
+            InfoCard infoCard = (InfoCard)d;
             if (!infoCard.CanPin)
                 return false;
             return baseValue;
@@ -479,7 +479,7 @@ namespace Supremacy.Client.Controls
 
         private static void OnIsPinnedPropertyValueChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            var infoCard = (InfoCard)d;
+            InfoCard infoCard = (InfoCard)d;
 
             if ((bool)e.NewValue)
             {
@@ -520,11 +520,11 @@ namespace Supremacy.Client.Controls
 
         private static void OnLocationPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            var newValue = (Point?)e.NewValue;
+            Point? newValue = (Point?)e.NewValue;
             if (!newValue.HasValue)
                 return;
 
-            var infoCardHost = InfoCardHost.GetInfoCardHost(d);
+            InfoCardHost infoCardHost = InfoCardHost.GetInfoCardHost(d);
             if (infoCardHost != null)
                 infoCardHost.Location = newValue;
         }
@@ -550,7 +550,7 @@ namespace Supremacy.Client.Controls
 
             int IComparer.Compare(object x, object y)
             {
-                var result = ((InfoCard)y).LastFocusedDateTime.CompareTo(((InfoCard)x).LastFocusedDateTime);
+                int result = ((InfoCard)y).LastFocusedDateTime.CompareTo(((InfoCard)x).LastFocusedDateTime);
                 if (result != 0)
                     return result;
                 return _collection.IndexOf(x).CompareTo(_collection.IndexOf(y));
@@ -653,13 +653,13 @@ namespace Supremacy.Client.Controls
 
         private static void OnSubjectChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            var infoCard = (InfoCard)d;
+            InfoCard infoCard = (InfoCard)d;
 
-            var oldValue = e.OldValue as IInfoCardSubject;
+            IInfoCardSubject oldValue = e.OldValue as IInfoCardSubject;
             if (oldValue != null)
                 oldValue.DataChanged -= infoCard.OnSubjectDataChanged;
 
-            var newValue = e.NewValue as IInfoCardSubject;
+            IInfoCardSubject newValue = e.NewValue as IInfoCardSubject;
             if (newValue != null)
             {
                 newValue.DataChanged += infoCard.OnSubjectDataChanged;
@@ -671,8 +671,8 @@ namespace Supremacy.Client.Controls
 
         private void UpdateInfoCardBindings()
         {
-            var targetElement = TargetElement;
-            var infoCardSubject = Subject;
+            UIElement targetElement = TargetElement;
+            IInfoCardSubject infoCardSubject = Subject;
 
             if ((infoCardSubject == null) || (targetElement == null))
             {
@@ -776,7 +776,7 @@ namespace Supremacy.Client.Controls
 
         private void OnSubjectDataChanged(object sender, EventArgs e)
         {
-            var subject = sender as IInfoCardSubject;
+            IInfoCardSubject subject = sender as IInfoCardSubject;
             if ((subject == null) || (subject.Data == null))
             {
                 if (IsOpen)
@@ -799,7 +799,7 @@ namespace Supremacy.Client.Controls
             if (e.Handled)
                 return;
 
-            var window = InfoCardHost.GetInfoCardWindow(this);
+            IInfoCardWindow window = InfoCardHost.GetInfoCardWindow(this);
             if (window != null)
             {
                 window.Activate();
@@ -824,7 +824,7 @@ namespace Supremacy.Client.Controls
             // HACK: Use DragMoving and DragMoved events to inform an InfoCard that it
             //       is being dragged.
             //
-            var infoCardWindow = InfoCardHost.GetInfoCardWindow(this);
+            IInfoCardWindow infoCardWindow = InfoCardHost.GetInfoCardWindow(this);
             if (infoCardWindow != null && infoCardWindow == Mouse.Captured)
                 return;
 
@@ -836,7 +836,7 @@ namespace Supremacy.Client.Controls
 
         public void Open()
         {
-            var infoCardSite = InfoCardSite;
+            InfoCardSite infoCardSite = InfoCardSite;
             if (infoCardSite == null)
                 throw new InvalidOperationException(SR.InfoCardNotRegistered);
             infoCardSite.OpenInfoCard(this);
@@ -844,7 +844,7 @@ namespace Supremacy.Client.Controls
 
         public bool Close()
         {
-            var infoCardSite = InfoCardSite;
+            InfoCardSite infoCardSite = InfoCardSite;
             if (infoCardSite != null)
                 return infoCardSite.Close(this, InfoCardCloseReason.Other, false);
             return false;

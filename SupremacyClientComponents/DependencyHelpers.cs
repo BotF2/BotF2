@@ -26,7 +26,7 @@ namespace Supremacy.Client
             if (propertyName == null)
                 throw new ArgumentNullException("propertyName");
 
-            var propertyDescriptor = DependencyPropertyDescriptor.FromName(
+            DependencyPropertyDescriptor propertyDescriptor = DependencyPropertyDescriptor.FromName(
                 propertyName,
                 targetType,
                 targetType);

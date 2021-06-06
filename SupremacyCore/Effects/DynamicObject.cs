@@ -42,7 +42,7 @@ namespace Supremacy.Effects
             if (property == null)
                 throw new ArgumentNullException("property");
 
-            var value = GetValueInternal(property, false);
+            DynamicPropertyValue<TValue> value = GetValueInternal(property, false);
             if (value == null)
                 return;
 
@@ -63,11 +63,11 @@ namespace Supremacy.Effects
                 throw new ArgumentNullException("property");
 
             DynamicPropertyValue<TValue> value;
-            var globalIndex = property.GlobalIndex;
+            int globalIndex = property.GlobalIndex;
 
             lock (DynamicProperty.Synchronized)
             {
-                var mapItem = _dynamicPropertyValues[globalIndex];
+                object mapItem = _dynamicPropertyValues[globalIndex];
                 if (mapItem == DynamicProperty.UnsetValue)
                 {
                     if (!createIfMissing)
@@ -89,11 +89,11 @@ namespace Supremacy.Effects
     	{
     	    base.SerializeOwnedData(writer, context);
 
-            var propertyCount = _dynamicPropertyValues.Count;
+            int propertyCount = _dynamicPropertyValues.Count;
 
             writer.Write(propertyCount);
 
-            for (var i = 0; i < propertyCount; i++)
+            for (int i = 0; i < propertyCount; i++)
             {
                 object value;
 
@@ -160,7 +160,7 @@ namespace Supremacy.Effects
 
         private void DeserializeBaseValue(DynamicPropertyKey propertyKey, object baseValue)
         {
-            var property = DynamicProperty.PropertyFromKey(propertyKey);
+            DynamicProperty property = DynamicProperty.PropertyFromKey(propertyKey);
             if (property == null)
                 return;
 
@@ -184,12 +184,12 @@ namespace Supremacy.Effects
 		{
             base.DeserializeOwnedData(reader, context);
 
-            var count = reader.ReadInt32();
+            int count = reader.ReadInt32();
 
-            for (var i = 0; i < count; i++)
+            for (int i = 0; i < count; i++)
             {
-                var key = (DynamicPropertyKey)reader.ReadTokenizedObject();
-                var baseValue = reader.ReadObject();
+                DynamicPropertyKey key = (DynamicPropertyKey)reader.ReadTokenizedObject();
+                object baseValue = reader.ReadObject();
 
                 DeserializeBaseValue(key, baseValue);
             }
@@ -205,13 +205,13 @@ namespace Supremacy.Effects
 
         public override void CloneFrom(Cloneable original, ICloneContext context)
         {
-            var source = (DynamicObject)original;
+            DynamicObject source = (DynamicObject)original;
 
             lock (DynamicProperty.Synchronized)
             {
-                var propertyCount = source._dynamicPropertyValues.Count;
+                int propertyCount = source._dynamicPropertyValues.Count;
 
-                for (var i = 0; i < propertyCount; i++)
+                for (int i = 0; i < propertyCount; i++)
                 {
                     source._dynamicPropertyValues.GetKeyValuePair(i, out int key, out object value);
 

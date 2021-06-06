@@ -140,11 +140,11 @@ namespace Supremacy.Client
             Observable.ToAsync(
                 () =>
                 {
-                    var sender = GetPlayerFromID(senderId);
+                    IPlayer sender = GetPlayerFromID(senderId);
                     if (sender == null)
                         return;
-                    
-                    var recipient = GetPlayerFromID(recipientId);
+
+                    IPlayer recipient = GetPlayerFromID(recipientId);
                     
                     ClientEvents.ChatMessageReceived.Publish(
                         new ClientDataEventArgs<ChatMessage>(
@@ -155,7 +155,7 @@ namespace Supremacy.Client
 
         private IPlayer GetPlayerFromID(int senderId)
         {
-            var localPlayer = _appContext.LocalPlayer;
+            IPlayer localPlayer = _appContext.LocalPlayer;
             if ((localPlayer != null) && (localPlayer.PlayerID == senderId))
                 return localPlayer;
             return _appContext.RemotePlayers.FirstOrDefault(o => o.PlayerID == senderId);
@@ -173,7 +173,7 @@ namespace Supremacy.Client
             Observable.ToAsync(
                 () =>
                 {
-                    var client = Client;
+                    IGameClient client = Client;
                     if (client != null)
                         client.Disconnect();
                 },
@@ -206,7 +206,7 @@ namespace Supremacy.Client
             Observable.ToAsync(
                 () =>
                 {
-                    var player = _appContext.Players.FirstOrDefault(o => o.EmpireID == empireId);
+                    IPlayer player = _appContext.Players.FirstOrDefault(o => o.EmpireID == empireId);
                     if (player == null)
                         return;
                     Channel.Publish(new PlayerTurnFinishedMessage(player), true);
@@ -393,9 +393,9 @@ namespace Supremacy.Client
 
                 OnConnected();
 
-                var operationFailed = false;
+                bool operationFailed = false;
 
-                var joinGameResult = _serviceClient.JoinGame(playerName, out Player localPlayer, out LobbyData lobbyData);
+                JoinGameResult joinGameResult = _serviceClient.JoinGame(playerName, out Player localPlayer, out LobbyData lobbyData);
                 switch (joinGameResult)
                 {
                     case JoinGameResult.Success:
@@ -482,7 +482,7 @@ namespace Supremacy.Client
 
                 bool operationFailed = false;
 
-                var hostGameResult = _serviceClient.HostGame(initData, out Player localPlayer, out LobbyData lobbyData);
+                HostGameResult hostGameResult = _serviceClient.HostGame(initData, out Player localPlayer, out LobbyData lobbyData);
 
                 switch (hostGameResult)
                 {
@@ -598,7 +598,7 @@ namespace Supremacy.Client
         {
             HookCommandAndEventHandlers();
 
-            var handler = Connected;
+            Action<ClientEventArgs> handler = Connected;
             if (handler != null)
                 handler(ClientEventArgs.Default);
         }
@@ -715,7 +715,7 @@ namespace Supremacy.Client
 
             try
             {
-                var messageOrder = new PlayerOrdersMessage(_playerOrderService.Orders, _playerOrderService.AutoTurn);
+                PlayerOrdersMessage messageOrder = new PlayerOrdersMessage(_playerOrderService.Orders, _playerOrderService.AutoTurn);
                 serviceClient.EndTurn(messageOrder);
             }
             catch (Exception e)
@@ -797,7 +797,7 @@ namespace Supremacy.Client
                 _disconnectReason = ClientDisconnectReason.ConnectionBroken;
             }
 
-            var handler = Disconnected;
+            Action<ClientDataEventArgs<ClientDisconnectReason>> handler = Disconnected;
             if (handler != null)
                 handler(new ClientDataEventArgs<ClientDisconnectReason>(_disconnectReason.Value));
         }

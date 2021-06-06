@@ -62,7 +62,7 @@ namespace Supremacy.Client
 
         private void SaveGameListSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            var header = SaveGameList.SelectedItem as SavedGameHeader;
+            SavedGameHeader header = SaveGameList.SelectedItem as SavedGameHeader;
             if (header != null)
             {
                 SaveGameFilename.Text = header.FileName;
@@ -108,7 +108,7 @@ namespace Supremacy.Client
                 {
                     if (File.Exists(SaveGameFilename.Text + ".sav"))
                     {
-                        var overwriteResponse = MessageDialog.Show(
+                        MessageDialogResult overwriteResponse = MessageDialog.Show(
                             ResourceManager.GetString("SAVE_OVERWRITE_CONFIRM_HEADER"),
                             ResourceManager.GetString("SAVE_OVERWRITE_CONFIRM_MESSAGE"),
                             MessageDialogButtons.YesNo);
@@ -149,14 +149,14 @@ namespace Supremacy.Client
 
         private string GenerateFileName(GameContext game)
         {
-            var sb = new StringBuilder();
+            StringBuilder sb = new StringBuilder();
 
             if (game.IsMultiplayerGame)
                 sb.Append("MP ");
             else
                 sb.Append("SP ");
 
-            var appContext = ServiceLocator.Current.GetInstance<IAppContext>();
+            IAppContext appContext = ServiceLocator.Current.GetInstance<IAppContext>();
             if (appContext != null)
                 sb.Append(appContext.LocalPlayer.Empire.ShortName).Append(' ');
 

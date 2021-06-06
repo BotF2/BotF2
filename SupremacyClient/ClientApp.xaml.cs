@@ -109,7 +109,7 @@ namespace Supremacy.Client
         public void DoEvents()
         {
             // Create new nested message pump.
-            var nestedFrame = new DispatcherFrame();
+            DispatcherFrame nestedFrame = new DispatcherFrame();
 
             // Dispatch a callback to the current message queue, when getting called, 
             // this callback will end the nested message loop.
@@ -149,13 +149,13 @@ namespace Supremacy.Client
                 int _allValue = 0;
                 string _text0 = Current.Resources.MergedDictionaries[0].Source.ToString();
 
-                foreach (var item in Current.Resources.MergedDictionaries)
+                foreach (ResourceDictionary item in Current.Resources.MergedDictionaries)
                 {
                     string _text1 = item.Source.ToString(); 
                     //Console.WriteLine(_text1);  // Output of all keys of MergedDictionaries
                     _allValue += 1000;  // 1.000 step each file
 
-                    foreach (var key in item.Keys)
+                    foreach (object key in item.Keys)
                     {
                         string _text2 = key.ToString(); 
                         //Console.WriteLine(_text1 + "-" + _text2);
@@ -181,7 +181,7 @@ namespace Supremacy.Client
             ResourceDictionary themeDictionary = null;
             try
             {
-                var themeUri = new Uri(
+                Uri themeUri = new Uri(
                     "/SupremacyClient;Component/themes/Generic/Theme.xaml",
                     UriKind.RelativeOrAbsolute);
                 themeDictionary = LoadComponent(themeUri) as ResourceDictionary;
@@ -209,7 +209,7 @@ namespace Supremacy.Client
                 return false;
 
             // individual UI
-            var themeUri = new Uri(
+            Uri themeUri = new Uri(
                 string.Format(
                     "/SupremacyClient;Component/themes/{0}/Theme.xaml",
                     theme),
@@ -274,7 +274,7 @@ namespace Supremacy.Client
 
                 if (entry.Value.GetType() == typeof(Style))
                 {
-                    var style = (Style)entry.Value;
+                    Style style = (Style)entry.Value;
 
                     foreach (DictionaryEntry resourceEntry in style.Resources)
                     {
@@ -299,7 +299,7 @@ namespace Supremacy.Client
                 return false;
 
             // individual UI
-            var themeUriShipyard = new Uri(
+            Uri themeUriShipyard = new Uri(
                 string.Format(
                     "/SupremacyClientComponents;Component/Themes/{0}/ShipyardDockView.xaml",
                     themeShipyard),
@@ -336,7 +336,7 @@ namespace Supremacy.Client
         {
             base.OnStartup(e);
 
-            var schedulerDispatcher = Scheduler.Dispatcher.Dispatcher;
+            Dispatcher schedulerDispatcher = Scheduler.Dispatcher.Dispatcher;
             if (schedulerDispatcher != Dispatcher)
                 throw new InvalidOperationException("DispatcherScheduler is not bound to the main application Dispatcher.");
 
@@ -349,7 +349,7 @@ namespace Supremacy.Client
 
             LoadDefaultResources();
 
-            var bootstrapper = new Bootstrapper();
+            Bootstrapper bootstrapper = new Bootstrapper();
             bootstrapper.Run();
         }
 
@@ -385,7 +385,7 @@ namespace Supremacy.Client
                 GameLog.Initialize();
 
                 //Add dll subdirectories to current process PATH variable
-                var appDir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+                string appDir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
                 Environment.SetEnvironmentVariable("PATH", Environment.GetEnvironmentVariable("PATH") + ";" + appDir + "\\lib");
 
                 if (!CheckNetFxVersion())
@@ -479,7 +479,7 @@ namespace Supremacy.Client
                 {
                     ShowSplashScreen();
 
-                    var _soundfileSplashScreen = "Resources\\SoundFX\\Menu\\LoadingSplash.wav";
+                    string _soundfileSplashScreen = "Resources\\SoundFX\\Menu\\LoadingSplash.wav";
 
 
                     if (File.Exists(_soundfileSplashScreen))
@@ -537,8 +537,8 @@ namespace Supremacy.Client
             //}
             //_workingDirectory = PathHelper.GetWorkingDirectory();
 
-            var xna_check = PathHelper.GetWorkingDirectory() + "\\Resources\\XNA31_ok.info";
-            var xna_copy = PathHelper.GetWorkingDirectory() + "\\Resources\\XNA31_check.bat";
+            string xna_check = PathHelper.GetWorkingDirectory() + "\\Resources\\XNA31_ok.info";
+            string xna_copy = PathHelper.GetWorkingDirectory() + "\\Resources\\XNA31_check.bat";
 
             if (File.Exists(xna_check))
             {
@@ -667,7 +667,7 @@ namespace Supremacy.Client
                 //var file = "Error.txt";
                 //StreamWriter errorFile = new StreamWriter(file);
 
-                var errorFile = File.Open("Error.txt", FileMode.Create, FileAccess.Write, FileShare.ReadWrite);
+                FileStream errorFile = File.Open("Error.txt", FileMode.Create, FileAccess.Write, FileShare.ReadWrite);
                 Console.SetError(new StreamWriter(errorFile));
                 //Console.SetError(errorFile);
 
@@ -727,7 +727,7 @@ namespace Supremacy.Client
 
             Console.WriteLine(DateTime.Now.ToString());
 
-            var app = new ClientApp();
+            ClientApp app = new ClientApp();
             app.DispatcherUnhandledException += Current_DispatcherUnhandledException;
             app.InitializeComponent();
             _ = app.Run();
@@ -761,7 +761,7 @@ namespace Supremacy.Client
 
             protected override RegionAdapterMappings ConfigureRegionAdapterMappings()
             {
-                var baseMappings = base.ConfigureRegionAdapterMappings();
+                RegionAdapterMappings baseMappings = base.ConfigureRegionAdapterMappings();
                 baseMappings.RegisterMapping(
                     typeof(GameScreenStack),
                     Container.Resolve<GameScreenStackRegionAdapter>());

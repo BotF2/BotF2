@@ -28,7 +28,7 @@ namespace Supremacy.VFS
         {
             lock (_createStreamsLock)
             {
-                var openCreateStream = _createStreams.FirstOrDefault(o => StringComparer.Equals(o.VirtualPath, path));
+                CreateOnWriteStream openCreateStream = _createStreams.FirstOrDefault(o => StringComparer.Equals(o.VirtualPath, path));
                 if (openCreateStream != null)
                     return false;
                 return base.CanAccessFile(path, minimumShareLevel);
@@ -143,7 +143,7 @@ namespace Supremacy.VFS
                     BaseStream = File.Open(ResolvedPath, FileMode.Create, Access, Share);
                     _isStreamCreated = true;
 
-                    var handler = BaseStreamCreated;
+                    EventHandler handler = BaseStreamCreated;
                     if (handler != null)
                         handler(this, EventArgs.Empty);
                 }

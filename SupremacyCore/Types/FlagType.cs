@@ -78,7 +78,7 @@ namespace Supremacy.Types
             if (names.Length == 1)
                 return ParseSingleValue<T>(names[0]);
 
-            var result = CreateEmptyValue<T>();
+            T result = CreateEmptyValue<T>();
 
             foreach (string name in names)
             {
@@ -93,7 +93,7 @@ namespace Supremacy.Types
             if (IsEmpty)
                 return EmptyName;
 
-            var names = new StringCollection();
+            StringCollection names = new StringCollection();
 
             foreach (
                 FieldInfo fieldInfo in
@@ -106,7 +106,7 @@ namespace Supremacy.Types
             if (names.Count == 0)
                 names.Add(String.Format("0x{0:x8}", _value));
 
-            var sb = new StringBuilder();
+            StringBuilder sb = new StringBuilder();
 
             sb.Append(names[0]);
 
@@ -132,14 +132,14 @@ namespace Supremacy.Types
         protected internal static string[] GetNamesCore<T>() where T : FlagType
         {
             IDictionary<string, T> nameValuePaurs = GetNameValuePairs<T>();
-            var names = new string[nameValuePaurs.Keys.Count];
+            string[] names = new string[nameValuePaurs.Keys.Count];
             nameValuePaurs.Keys.CopyTo(names, 0);
             return names;
         }
 
         protected internal static IDictionary<string, T> GetNameValuePairs<T>() where T : FlagType
         {
-            var nameValuePairs = new Dictionary<string, T>();
+            Dictionary<string, T> nameValuePairs = new Dictionary<string, T>();
             foreach (FieldInfo fieldInfo in typeof(T).GetFields(
                 BindingFlags.Public | BindingFlags.Static | BindingFlags.DeclaredOnly))
             {
@@ -154,7 +154,7 @@ namespace Supremacy.Types
 
         protected internal static T[] GetValuesCore<T>() where T : FlagType
         {
-            var values = new List<T>(GetNameValuePairs<T>().Values);
+            List<T> values = new List<T>(GetNameValuePairs<T>().Values);
             values.Sort();
             return values.ToArray();
         }

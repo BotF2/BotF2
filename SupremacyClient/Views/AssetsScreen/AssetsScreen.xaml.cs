@@ -74,7 +74,7 @@ namespace Supremacy.Client.Views
         }
         protected virtual void FillUpDefense()
         {
-            var civ = GameContext.Current.CivilizationManagers[DesignTimeObjects.CivilizationManager.Civilization];
+            CivilizationManager civ = GameContext.Current.CivilizationManagers[DesignTimeObjects.CivilizationManager.Civilization];
             civ.TotalIntelligenceAttackingAccumulated.AdjustCurrent(civ.TotalIntelligenceAttackingAccumulated.CurrentValue * -1); // remove from Attacking
             civ.TotalIntelligenceAttackingAccumulated.UpdateAndReset();
             civ.TotalIntelligenceDefenseAccumulated.AdjustCurrent(civ.TotalIntelligenceDefenseAccumulated.CurrentValue); // add to Defense
@@ -240,7 +240,7 @@ namespace Supremacy.Client.Views
             if (!_appContext.IsGameInPlay || _appContext.IsGameEnding)
                 return;
 
-            var localPlayerEmpire = _appContext.LocalPlayerEmpire;
+            CivilizationManager localPlayerEmpire = _appContext.LocalPlayerEmpire;
             //works  GameLog.Client.UI.DebugFormat("AssetsScreen local player ={0}", localPlayerEmpire.Civilization.Key);
             if (localPlayerEmpire == null)
                 return;
@@ -248,7 +248,7 @@ namespace Supremacy.Client.Views
         private void OnIsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
 
-            var _civLocalPlayer = _appContext.LocalPlayer.Empire;
+            Civilization _civLocalPlayer = _appContext.LocalPlayer.Empire;
 
             if (IsVisible)
             {
@@ -330,22 +330,22 @@ namespace Supremacy.Client.Views
                 // GameLog.Client.UI.DebugFormat("_civLocalPlayer = {0}", _civLocalPlayer.Key);
 
                 Diplomat diplomat1 = Diplomat.Get(GameContext.Current.CivilizationManagers[_civLocalPlayer.CivID]);
-                var empireCount = GameContext.Current.Civilizations.Where(o => o.IsEmpire).Count();
-                var empireCivsList = GameContext.Current.Civilizations.Where(o => o.IsEmpire).ToList();
+                int empireCount = GameContext.Current.Civilizations.Where(o => o.IsEmpire).Count();
+                List<Civilization> empireCivsList = GameContext.Current.Civilizations.Where(o => o.IsEmpire).ToList();
                 List<int> empireIdList = new List<int>();
-                foreach (var empireCiv in empireCivsList)
+                foreach (Civilization empireCiv in empireCivsList)
                 {
                     empireIdList.Add(empireCiv.CivID);
                 }
 
                 //for (int i = 0; i < empireCount; i++)
-                foreach (var empireID in empireIdList)
+                foreach (int empireID in empireIdList)
 
                 {
                     if (empireID == _civLocalPlayer.CivID)
                         continue;
 
-                    var ForeignPower = diplomat1.GetForeignPower(GameContext.Current.CivilizationManagers[empireID]);
+                    ForeignPower ForeignPower = diplomat1.GetForeignPower(GameContext.Current.CivilizationManagers[empireID]);
                     bool _checkedVisibleForSabotagePending = true;
 
                     //_checkedVisibleForSabotagePending = CheckingVisibityForSabotagePending(diplomat1, ForeignPower);
@@ -410,7 +410,7 @@ namespace Supremacy.Client.Views
 
                 Dictionary<int, Civilization> empireCivsDictionary = new Dictionary<int, Civilization>();
 
-                foreach (var civ in empireCivsList)
+                foreach (Civilization civ in empireCivsList)
                 {
                     empireCivsDictionary.Add(civ.CivID, civ); //dictionary of civs that can be spied on with key set to CivID
                     //GameLog.Client.UI.DebugFormat("Add civ = {0} to blame dictionary at key ={1}", civManager.Civilization.Key, civManager.CivilizationID);
@@ -531,7 +531,7 @@ namespace Supremacy.Client.Views
 
         protected void PauseAnimations()
         {
-            foreach (var animationsHost in this.FindVisualDescendantsByType<DependencyObject>().OfType<IAnimationsHost>())
+            foreach (IAnimationsHost animationsHost in this.FindVisualDescendantsByType<DependencyObject>().OfType<IAnimationsHost>())
             {
                 try
                 {
@@ -546,7 +546,7 @@ namespace Supremacy.Client.Views
         // do we need this in the AssetsScreen???  we should keep it, if we bring back suns and planets
         protected void ResumeAnimations()
         {
-            foreach (var animationsHost in this.FindVisualDescendantsByType<DependencyObject>().OfType<IAnimationsHost>())
+            foreach (IAnimationsHost animationsHost in this.FindVisualDescendantsByType<DependencyObject>().OfType<IAnimationsHost>())
             {
                 try
                 {
@@ -561,7 +561,7 @@ namespace Supremacy.Client.Views
 
         protected void StopAnimations()
         {
-            foreach (var animationsHost in this.FindVisualDescendantsByType<DependencyObject>().OfType<IAnimationsHost>())
+            foreach (IAnimationsHost animationsHost in this.FindVisualDescendantsByType<DependencyObject>().OfType<IAnimationsHost>())
             {
                 try
                 {
@@ -1169,12 +1169,12 @@ namespace Supremacy.Client.Views
         #endregion
         public bool ReceiveWeakEvent(Type managerType, object sender, EventArgs e)
         {
-            var appContext = sender as IAppContext;
+            IAppContext appContext = sender as IAppContext;
 
             if (appContext == null)
                 return false;
 
-            var propertyChangedEventArgs = e as PropertyChangedEventArgs;
+            PropertyChangedEventArgs propertyChangedEventArgs = e as PropertyChangedEventArgs;
             if (propertyChangedEventArgs == null)
                 return false;
 

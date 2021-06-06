@@ -28,9 +28,9 @@ namespace Supremacy.Client
 
         public override object ProvideValue(IServiceProvider serviceProvider)
         {
-            var accessText = new AccessText();
+            AccessText accessText = new AccessText();
 
-            var markupExtension = Text as MarkupExtension;
+            MarkupExtension markupExtension = Text as MarkupExtension;
             if (markupExtension != null)
                 accessText.SetValue(AccessText.TextProperty, markupExtension.ProvideValue(serviceProvider));
             else

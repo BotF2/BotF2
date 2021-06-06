@@ -90,7 +90,7 @@ namespace Supremacy.VFS
 
         public override Stream GetResponseStream()
         {
-            var vfsService = VfsService;
+            IVfsService vfsService = VfsService;
             if (vfsService == null)
                 throw new InvalidOperationException("Could not resolve VFS service.");
 

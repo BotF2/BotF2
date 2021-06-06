@@ -58,7 +58,7 @@ namespace Supremacy.Client.Audio
             _musicPacks.Clear();
             foreach (XmlElement xmlPack in xmlNode.GetElementsByTagName(PackDefName))
             {
-                var musicPack = new MusicPack();
+                MusicPack musicPack = new MusicPack();
                 musicPack.Load(xmlPack);
                 _musicPacks.Add(musicPack.Name, musicPack);
 

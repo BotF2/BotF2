@@ -41,15 +41,15 @@ namespace Supremacy.Utility
             if (value == null)
                 return null;
 
-            var sb = new StringBuilder(value.Length + 2);
-            var bracketDepth = 0;
+            StringBuilder sb = new StringBuilder(value.Length + 2);
+            int bracketDepth = 0;
 
             sb.Append('"');
 
-            for (var i = 0; i < value.Length; i++)
+            for (int i = 0; i < value.Length; i++)
             {
-                var c = value[i];
-                var last = i == 0 ? '\0' : value[i - 1];
+                char c = value[i];
+                char last = i == 0 ? '\0' : value[i - 1];
                 if (c == '{' && last != '\\')
                     ++bracketDepth;
                 else if (c == '}' && last != '\\')

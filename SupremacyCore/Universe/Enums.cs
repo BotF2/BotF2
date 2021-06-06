@@ -65,7 +65,7 @@ namespace Supremacy.Universe
         {
             if (typeof(ImageSource).IsAssignableFrom(destinationType))
             {
-                var starType = value as StarType?;
+                StarType? starType = value as StarType?;
                 if (starType.HasValue)
                     return ResourceManager.GetResourceUri(string.Format("Resources/Images/UI/Stars/Map/{0}.png", starType.Value));
             }

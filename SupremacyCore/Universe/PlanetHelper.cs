@@ -18,16 +18,16 @@ namespace Supremacy.Universe
 
         static PlanetHelper()
         {
-            var habitableTypes = 0;
-            var habitableSizes = 0;
+            int habitableTypes = 0;
+            int habitableSizes = 0;
 
-            foreach (var planetType in EnumHelper.GetValues<PlanetType>())
+            foreach (PlanetType planetType in EnumHelper.GetValues<PlanetType>())
             {
                 if (!planetType.MatchAttribute(UninhabitableAttribute.Default))
                     habitableTypes |= 1 << (int)planetType;
             }
 
-            foreach (var planetSize in EnumHelper.GetValues<PlanetSize>())
+            foreach (PlanetSize planetSize in EnumHelper.GetValues<PlanetSize>())
             {
                 if (!planetSize.MatchAttribute(UninhabitableAttribute.Default))
                     habitableSizes |= 1 << (int)planetSize;
@@ -51,13 +51,13 @@ namespace Supremacy.Universe
 
         public static bool IsHabitable(this PlanetType planetType)
         {
-            var mask = 1 << (int)planetType;
+            int mask = 1 << (int)planetType;
             return (HabitablePlanetTypesMask & mask) == mask;
         }
 
         public static bool IsHabitable(this PlanetSize planetSize)
         {
-            var mask = 1 << (int)planetSize;
+            int mask = 1 << (int)planetSize;
             return (HabitablePlanetSizesMask & mask) == mask;
         }
 

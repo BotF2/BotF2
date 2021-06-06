@@ -235,7 +235,7 @@ namespace Supremacy.Client.Audio
                     _updateTimerSubscription = null;
                 }
 
-                foreach (var track in _tracks)
+                foreach (FMODAudioTrack track in _tracks)
                 {
                     try
                     {

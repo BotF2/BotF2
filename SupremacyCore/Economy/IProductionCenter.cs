@@ -52,13 +52,13 @@ namespace Supremacy.Economy
     {
         public static void InvalidateBuildTimes(this IProductionCenter source)
         {
-            foreach (var buildSlot in source.BuildSlots)
+            foreach (BuildSlot buildSlot in source.BuildSlots)
             {
-                var project = buildSlot.Project;
+                BuildProject project = buildSlot.Project;
                 if (project != null)
                     project.InvalidateTurnsRemaining();
             }
-            foreach (var project in source.BuildQueue.Where(o => o.Project != null).Select(o => o.Project))
+            foreach (BuildProject project in source.BuildQueue.Where(o => o.Project != null).Select(o => o.Project))
             {
                 project.InvalidateTurnsRemaining();
             }
@@ -94,7 +94,7 @@ namespace Supremacy.Economy
 
             if (suspendActiveProjects)
             {
-                foreach (var slot in source.BuildSlots.Where(slot => slot.HasProject))
+                foreach (BuildSlot slot in source.BuildSlots.Where(slot => slot.HasProject))
                 {
                     source.BuildQueue.Add(new BuildQueueItem(slot.Project));
                     slot.Project = null;
@@ -105,7 +105,7 @@ namespace Supremacy.Economy
             source.BuildQueue.Sort(
                 (a, b) => priorityFunc(b.Project).CompareTo(priorityFunc(a.Project)));
 
-            for (var i = 0; (i < source.BuildSlots.Count) && (source.BuildQueue.Count > 0); i++)
+            for (int i = 0; (i < source.BuildSlots.Count) && (source.BuildQueue.Count > 0); i++)
             {
                 if (source.BuildSlots[i].HasProject)
                     continue;

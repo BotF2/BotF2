@@ -50,23 +50,23 @@ namespace Supremacy.Game
         /// <returns></returns>
         public static SavedGameHeader[] FindSavedGames(bool includeAutoSave = true)
         {
-            var savedGames = new List<SavedGameHeader>();
-            var path = SavedGameDirectory;
+            List<SavedGameHeader> savedGames = new List<SavedGameHeader>();
+            string path = SavedGameDirectory;
 
             if (!Directory.Exists(path))
             {
                 Directory.CreateDirectory(path);
             }
 
-            var fileNames = Directory.GetFiles(path, "*.sav", SearchOption.TopDirectoryOnly);
+            string[] fileNames = Directory.GetFiles(path, "*.sav", SearchOption.TopDirectoryOnly);
 
             if (includeAutoSave)
             {
-                var autoSaveFileName = Path.Combine(path, AutoSaveFileName);
+                string autoSaveFileName = Path.Combine(path, AutoSaveFileName);
 
                 if (File.Exists(autoSaveFileName))
                 {
-                    var header = LoadSavedGameHeader(AutoSaveFileName);
+                    SavedGameHeader header = LoadSavedGameHeader(AutoSaveFileName);
                     if (header != null)
                     {
                         if (header.GameVersion == Assembly.GetExecutingAssembly().GetName().Version.ToString())
@@ -77,9 +77,9 @@ namespace Supremacy.Game
                 }
             }
 
-            foreach (var fileName in fileNames)
+            foreach (string fileName in fileNames)
             {
-                var header = LoadSavedGameHeader(fileName);
+                SavedGameHeader header = LoadSavedGameHeader(fileName);
                 string _currentGameVersionString = Assembly.GetExecutingAssembly().GetName().Version.ToString();
                 if (header != null)
                 {
@@ -134,7 +134,7 @@ namespace Supremacy.Game
                 // works but doubled     GameLog.Client.SaveLoad.DebugFormat(_text);
 
                 SavedGameHeader header;
-                using (var fileStream = File.Open(fullPath, FileMode.Open, FileAccess.Read, FileShare.Read))
+                using (FileStream fileStream = File.Open(fullPath, FileMode.Open, FileAccess.Read, FileShare.Read))
                 {
                     GameLog.Client.SaveLoad.DebugFormat(/*Environment.NewLine + "                       */"reading HEADER of {0}"/* + Environment.NewLine*/
                         , fileName
@@ -180,17 +180,17 @@ namespace Supremacy.Game
                 }
                 GameLog.Core.General.InfoFormat("Loading saved game {0}", fileName);
 
-                using (var fileStream = File.Open(fileName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+                using (FileStream fileStream = File.Open(fileName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
                 {
                     GameLog.Core.SaveLoad.DebugFormat("beginning loading {0} ...", fileName);
                     header = SavedGameHeader.Read(fileStream);
-                    var thisGameVersion = Assembly.GetExecutingAssembly().GetName().Version.ToString();
+                    string thisGameVersion = Assembly.GetExecutingAssembly().GetName().Version.ToString();
                     if (header.GameVersion != thisGameVersion)
                     {
                         throw new Exception(string.Format("Incompatible game save - {0} vs {1}", header.GameVersion, thisGameVersion));
                     }
                     GameLog.Core.SaveLoad.DebugFormat("loading SavedGameHeader of {0}", fileName);
-                    using (var memoryStream = new MemoryStream())
+                    using (MemoryStream memoryStream = new MemoryStream())
                     {
                         int value;
                         while (fileStream.CanRead && ((value = fileStream.ReadByte()) != -1))
@@ -305,9 +305,9 @@ namespace Supremacy.Game
                     header.IsAutoSave = true;
                 }
 
-                var buffer = StreamUtility.Write(game);
+                byte[] buffer = StreamUtility.Write(game);
 
-                using (var fileStream = File.Open(fileName, FileMode.Create, FileAccess.Write, FileShare.ReadWrite))
+                using (FileStream fileStream = File.Open(fileName, FileMode.Create, FileAccess.Write, FileShare.ReadWrite))
                 {
                     header.Write(fileStream);
                     fileStream.Write(buffer, 0, buffer.Length);
@@ -356,7 +356,7 @@ namespace Supremacy.Game
         /// <returns><c>true</c> if successful; otherwise, <c>false</c>.</returns>
         public static bool AutoSave(Player localPlayer, LobbyData lobbyData)
         {
-            var game = GameContext.Current;
+            GameContext game = GameContext.Current;
             if (game == null)
                 return false;
 

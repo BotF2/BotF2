@@ -114,7 +114,7 @@ namespace Supremacy.Tech
 
         public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
         {
-            var key = value as TechObjectTextGroupKey;
+            TechObjectTextGroupKey key = value as TechObjectTextGroupKey;
             if (key != null && destinationType == typeof(MarkupExtension))
                 return new TechObjectTextGroupKey(key.DesignKey);
             return base.ConvertTo(context, culture, value, destinationType);
@@ -175,14 +175,14 @@ namespace Supremacy.Tech
 
         public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
         {
-            var techObjectKey = value as TechObjectStringKey;
+            TechObjectStringKey techObjectKey = value as TechObjectStringKey;
             if (techObjectKey != null &&
                 destinationType == typeof(MarkupExtension))
             {
-                var serializerContext = context as IValueSerializerContext;
+                IValueSerializerContext serializerContext = context as IValueSerializerContext;
                 if (serializerContext != null)
                 {
-                    var typeSerializer = serializerContext.GetValueSerializerFor(typeof(Type));
+                    ValueSerializer typeSerializer = serializerContext.GetValueSerializerFor(typeof(Type));
                     if (typeSerializer != null)
                     {
                         return new StaticExtension(
@@ -274,7 +274,7 @@ namespace Supremacy.Tech
             {
                 if (_localizedText != null)
                 {
-                    var name = _localizedText.GetString(TechObjectStringKeys.Name);
+                    string name = _localizedText.GetString(TechObjectStringKeys.Name);
                     if (name != null)
                         return name;
                 }
@@ -300,7 +300,7 @@ namespace Supremacy.Tech
             {
                 if (_localizedText != null)
                 {
-                    var description = _localizedText.GetString(TechObjectStringKeys.Description);
+                    string description = _localizedText.GetString(TechObjectStringKeys.Description);
                     if (description != null)
                         return description;
                 }
@@ -387,7 +387,7 @@ namespace Supremacy.Tech
                 {
                     if (IsImageLinked)
                     {
-                        var linkSource = ImageLinkSource;
+                        TechObjectDesign linkSource = ImageLinkSource;
                         if (linkSource != null)
                             return linkSource.Image;
                     }
@@ -397,7 +397,7 @@ namespace Supremacy.Tech
                     }
                 }
 
-                var localPath = ResourceManager.GetResourcePath(
+                string localPath = ResourceManager.GetResourcePath(
                     string.Format(
                         "vfs:///Resources/Images/{0}{1}.png",
                         DefaultImageSubFolder,
@@ -440,7 +440,7 @@ namespace Supremacy.Tech
                 {
                     if (IsImageLinked)
                     {
-                        var linkSource = ImageLinkSource;
+                        TechObjectDesign linkSource = ImageLinkSource;
                         if (linkSource != null)
                             return linkSource.Image;
                     }
@@ -450,7 +450,7 @@ namespace Supremacy.Tech
                     }
                 }
 
-                var localPath = ResourceManager.GetResourcePath(
+                string localPath = ResourceManager.GetResourcePath(
                     string.Format(
                         "vfs:///Resources/Images/{0}{1}_uc.png",
                         DefaultShipsUnderConstructionSubFolder,
@@ -628,10 +628,10 @@ namespace Supremacy.Tech
             {
                 foreach (XmlNode xmlTechReqNode in element["TechRequirements"].ChildNodes)
                 {
-                    var xmlTechReq = xmlTechReqNode as XmlElement;
+                    XmlElement xmlTechReq = xmlTechReqNode as XmlElement;
                     if (xmlTechReq != null)
                     {
-                        var category = (TechCategory)Enum.Parse(
+                        TechCategory category = (TechCategory)Enum.Parse(
                             typeof(TechCategory),
                             xmlTechReq.Name);
                         _techRequirements[category] = Number.ParseInt32(xmlTechReq.InnerText.Trim());
@@ -689,7 +689,7 @@ namespace Supremacy.Tech
         {
             _obsoletedDesigns.TrimExcess();
             _upgradableDesigns.TrimExcess();
-            foreach (var prerequisite in _prerequisites)
+            foreach (PrerequisiteGroup prerequisite in _prerequisites)
                 prerequisite.TrimExcess();
             _prerequisites.TrimExcess();
             _effects.TrimExcess();
@@ -770,7 +770,7 @@ namespace Supremacy.Tech
             if (_prerequisites.Count > 0)
             {
                 newElement = doc.CreateElement("Prerequisites");
-                foreach (var prereqList in _prerequisites)
+                foreach (PrerequisiteGroup prereqList in _prerequisites)
                 {
                     XmlElement subElement = doc.CreateElement("EquivalentPrerequisites");
                     foreach (TechObjectDesign prereq in prereqList)
@@ -823,7 +823,7 @@ namespace Supremacy.Tech
         /// <param name="resources">The resources.</param>
         protected internal virtual void GetScrapReturn(out int credits, out ResourceValueCollection resources)
         {
-            var returnsTable = GameContext.Current.Tables.ResourceTables["ScrapReturns"];
+            Data.Table returnsTable = GameContext.Current.Tables.ResourceTables["ScrapReturns"];
             double multiplier = Number.ParseDouble(returnsTable[0][0]);
             credits = (int)Math.Floor(multiplier * BuildCost);
             resources = new ResourceValueCollection();
@@ -850,7 +850,7 @@ namespace Supremacy.Tech
             bool requireStarSystem = false,
             bool requireColony = false)
         {
-            var civManager = GameContext.Current.CivilizationManagers[owner];
+            CivilizationManager civManager = GameContext.Current.CivilizationManagers[owner];
             if (civManager == null)
             {
                 GameLog.Core.General.DebugFormat("Cannot spawn {0} at location {1} because owner {2} is not active in this game.",
@@ -859,7 +859,7 @@ namespace Supremacy.Tech
                 return false;
             }
 
-            var sector = GameContext.Current.Universe.Map[location];
+            Sector sector = GameContext.Current.Universe.Map[location];
 
             if (requireSectorOwned &&
                 !Equals(sector.Owner, owner))
@@ -872,7 +872,7 @@ namespace Supremacy.Tech
 
             if (requireStarSystem || requireColony)
             {
-                var system = sector.System;
+                StarSystem system = sector.System;
                 if (system == null)
                 {
                     GameLog.Core.General.DebugFormat("Cannot spawn {0} at location {1} because there is no star system at that location.",

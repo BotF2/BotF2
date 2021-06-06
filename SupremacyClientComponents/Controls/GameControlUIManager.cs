@@ -12,7 +12,7 @@ namespace Supremacy.Client.Controls
             if (command == null)
                 return null;
 
-            var uiProvider = command as IGameCommandUIProvider;
+            IGameCommandUIProvider uiProvider = command as IGameCommandUIProvider;
             if (uiProvider != null)
                 return uiProvider;
 
@@ -42,8 +42,8 @@ namespace Supremacy.Client.Controls
 
         public static void Register(ICommand command, IGameCommandUIProvider uiProvider)
         {
-            var routedCommand = command as RoutedUICommand;
-            var provider = uiProvider as GameCommandUIProvider;
+            RoutedUICommand routedCommand = command as RoutedUICommand;
+            GameCommandUIProvider provider = uiProvider as GameCommandUIProvider;
             
             if ((uiProvider.Label == null) && (routedCommand != null) && (provider != null))
                 provider.Label = routedCommand.Text;

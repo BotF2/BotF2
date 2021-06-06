@@ -219,7 +219,7 @@ namespace Supremacy.Effects
 
         private ModifiedValue<TValue> EnsureModifiedValue()
         {
-            var modifiedValue = _value as ModifiedValue<TValue>;
+            ModifiedValue<TValue> modifiedValue = _value as ModifiedValue<TValue>;
             if (modifiedValue == null)
             {
                 if (_value == null)
@@ -285,7 +285,7 @@ namespace Supremacy.Effects
                 if (_isValid)
                     return;
 
-                var lastCurrentValue = (_currentValue == DynamicProperty.UnsetValue) ? _metadata.DefaultValue : _currentValue;
+                object lastCurrentValue = (_currentValue == DynamicProperty.UnsetValue) ? _metadata.DefaultValue : _currentValue;
 
                 _currentValue = EnsureValue();
                 _isValid = true;
@@ -295,7 +295,7 @@ namespace Supremacy.Effects
 
                 OnComputedValueChanged();
 
-                var changeNotificationArgs = new DynamicPropertyChangedEventArgs<TValue>(
+                DynamicPropertyChangedEventArgs<TValue> changeNotificationArgs = new DynamicPropertyChangedEventArgs<TValue>(
                     _property,
                     (TValue)lastCurrentValue,
                     (TValue)_currentValue);
@@ -308,7 +308,7 @@ namespace Supremacy.Effects
 
         private void PublishChangeNotifications(DynamicPropertyChangedEventArgs<TValue> args)
         {
-            var propertyChangedCallback = _metadata.PropertyChangedCallback;
+            DynamicPropertyChangedCallback<TValue> propertyChangedCallback = _metadata.PropertyChangedCallback;
             if (propertyChangedCallback == null)
                 return;
 
@@ -347,7 +347,7 @@ namespace Supremacy.Effects
                 return baseValue;
 
             bool revertToBaseValue;
-            var newValue = _metadata.CoerceValueCallback(_sourceObject, baseValue, out revertToBaseValue);
+            TValue newValue = _metadata.CoerceValueCallback(_sourceObject, baseValue, out revertToBaseValue);
 
             if (revertToBaseValue)
                 return baseValue;
@@ -374,7 +374,7 @@ namespace Supremacy.Effects
                 return BaseValue;
             }
 
-            var effectiveValue = BaseValue;
+            TValue effectiveValue = BaseValue;
 
             IsUpdating = true;
 
@@ -387,10 +387,10 @@ namespace Supremacy.Effects
                         IsCoerced = false;
                         IsCoercedWithComputedValue = false;
 
-                        var baseValue = BaseValue;
-                        var computedValue = baseValue;
+                        TValue baseValue = BaseValue;
+                        TValue computedValue = baseValue;
 
-                        for (var originalModifiers = new HashSet<DynamicPropertyModifier<TValue>>(_modifiers);
+                        for (HashSet<DynamicPropertyModifier<TValue>> originalModifiers = new HashSet<DynamicPropertyModifier<TValue>>(_modifiers);
                              /*!_modifiers.SetEquals(originalModifiers)*/;
                              originalModifiers = new HashSet<DynamicPropertyModifier<TValue>>(_modifiers),
                              computedValue = baseValue)
@@ -443,7 +443,7 @@ namespace Supremacy.Effects
                     if (_value == DynamicProperty.UnsetValue)
                         return _metadata.DefaultValue;
 
-                    var modifiedValue = _value as ModifiedValue<TValue>;
+                    ModifiedValue<TValue> modifiedValue = _value as ModifiedValue<TValue>;
                     if (modifiedValue != null)
                         return modifiedValue.BaseValue;
 
@@ -461,7 +461,7 @@ namespace Supremacy.Effects
 
         protected void OnBaseValueChanged()
         {
-            var handler = BaseValueChanged;
+            EventHandler handler = BaseValueChanged;
             if (handler != null)
                 handler(this, EventArgs.Empty);
 
@@ -489,7 +489,7 @@ namespace Supremacy.Effects
 
         protected void OnComputedValueChanged()
         {
-            var handler = CurrentValueChanged;
+            EventHandler handler = CurrentValueChanged;
             if (handler != null)
                 handler(this, EventArgs.Empty);
 
@@ -506,13 +506,13 @@ namespace Supremacy.Effects
         {
             add
             {
-                var previousValue = _propertyChanged;
+                PropertyChangedEventHandler previousValue = _propertyChanged;
 
                 while (true)
                 {
-                    var combinedValue = (PropertyChangedEventHandler)Delegate.Combine(previousValue, value);
+                    PropertyChangedEventHandler combinedValue = (PropertyChangedEventHandler)Delegate.Combine(previousValue, value);
 
-                    var valueBeforeCombine = System.Threading.Interlocked.CompareExchange(
+                    PropertyChangedEventHandler valueBeforeCombine = System.Threading.Interlocked.CompareExchange(
                         ref _propertyChanged,
                         combinedValue,
                         previousValue);
@@ -523,13 +523,13 @@ namespace Supremacy.Effects
             }
             remove
             {
-                var previousValue = _propertyChanged;
+                PropertyChangedEventHandler previousValue = _propertyChanged;
 
                 while (true)
                 {
-                    var removedValue = (PropertyChangedEventHandler)Delegate.Remove(previousValue, value);
+                    PropertyChangedEventHandler removedValue = (PropertyChangedEventHandler)Delegate.Remove(previousValue, value);
 
-                    var valueBeforeRemove = System.Threading.Interlocked.CompareExchange(
+                    PropertyChangedEventHandler valueBeforeRemove = System.Threading.Interlocked.CompareExchange(
                         ref _propertyChanged,
                         removedValue,
                         previousValue);
@@ -542,7 +542,7 @@ namespace Supremacy.Effects
 
         protected void OnPropertyChanged(string propertyName)
         {
-            var handler = _propertyChanged;
+            PropertyChangedEventHandler handler = _propertyChanged;
             if (handler != null)
                 handler(this, new PropertyChangedEventArgs(propertyName));
         }

@@ -101,7 +101,7 @@ namespace Supremacy.Entities
 
         public IEnumerable<TValue> GetValuesForOwner(Civilization ownerCiv)
         {
-            foreach (var otherCiv in GameContext.Current.Civilizations)
+            foreach (Civilization otherCiv in GameContext.Current.Civilizations)
             {
                 if (otherCiv == ownerCiv)
                     continue;
@@ -134,7 +134,7 @@ namespace Supremacy.Entities
         public void SerializeOwnedData(SerializationWriter writer, object context)
         {
             writer.Write(_map.Count);
-            foreach (var key in _map.Keys)
+            foreach (int key in _map.Keys)
             {
                 writer.Write(key);
                 writer.WriteObject(_map[key]);
@@ -145,8 +145,8 @@ namespace Supremacy.Entities
         {
             Initialize();
 
-            var count = reader.ReadInt32();
-            for (var i = 0; i < count; i++)
+            int count = reader.ReadInt32();
+            for (int i = 0; i < count; i++)
                 _map.Add(reader.ReadInt32(), reader.Read<TValue>());
         }
 
@@ -156,7 +156,7 @@ namespace Supremacy.Entities
 
         public IEnumerator<TValue> GetEnumerator()
         {
-            foreach (var pair in _map)
+            foreach (KeyValuePair<int, TValue> pair in _map)
                 yield return pair.Value;
         }
 

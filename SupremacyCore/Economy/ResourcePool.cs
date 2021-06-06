@@ -67,11 +67,11 @@ namespace Supremacy.Economy
         /// </summary>
         public ResourcePool()
         {
-            var resources = EnumUtilities.GetValues<ResourceType>();
+            Collections.EnumValueCollection<ResourceType> resources = EnumUtilities.GetValues<ResourceType>();
 
             _values = new Meter[resources.Count];
 
-            for (var i = 0; i < _values.Length; i++)
+            for (int i = 0; i < _values.Length; i++)
             {
                 _values[i] = new Meter(0, 0, Meter.MaxValue);
                 _values[i].PropertyChanged += OnMeterChanged;

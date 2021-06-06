@@ -70,11 +70,11 @@ namespace Supremacy.Client.Views
 
         private void UpdateActiveAgreements()
         {
-            var agreements = GameContext.Current.AgreementMatrix[_foreignPower.OwnerID, _foreignPower.CounterpartyID];
+            Collections.IIndexedCollection<IAgreement> agreements = GameContext.Current.AgreementMatrix[_foreignPower.OwnerID, _foreignPower.CounterpartyID];
             if (agreements == null)
                 return;
 
-            foreach (var agreement in agreements.OrderByDescending(o => (int)o.StartTurn))
+            foreach (IAgreement agreement in agreements.OrderByDescending(o => (int)o.StartTurn))
             {
                 _activeAgreements.Add(new ActiveAgreementViewModel(agreement));
                 GameLog.Client.Diplomacy.DebugFormat(Environment.NewLine + "                                                      Turn {3};added;sender=; {1};recipient=; {2};agreement=;{0}"
@@ -341,8 +341,8 @@ namespace Supremacy.Client.Views
             {
                 while (true)
                 {
-                    var oldHandler = _propertyChanged;
-                    var newHandler = (PropertyChangedEventHandler)Delegate.Combine(oldHandler, value);
+                    PropertyChangedEventHandler oldHandler = _propertyChanged;
+                    PropertyChangedEventHandler newHandler = (PropertyChangedEventHandler)Delegate.Combine(oldHandler, value);
 
                     if (Interlocked.CompareExchange(ref _propertyChanged, newHandler, oldHandler) == oldHandler)
                         return;
@@ -352,8 +352,8 @@ namespace Supremacy.Client.Views
             {
                 while (true)
                 {
-                    var oldHandler = _propertyChanged;
-                    var newHandler = (PropertyChangedEventHandler)Delegate.Remove(oldHandler, value);
+                    PropertyChangedEventHandler oldHandler = _propertyChanged;
+                    PropertyChangedEventHandler newHandler = (PropertyChangedEventHandler)Delegate.Remove(oldHandler, value);
 
                     if (Interlocked.CompareExchange(ref _propertyChanged, newHandler, oldHandler) == oldHandler)
                         return;
@@ -373,9 +373,9 @@ namespace Supremacy.Client.Views
         {
             //GameLog.Client.Diplomacy.DebugFormat("ResolveMessageCategory beginning...");
 
-            var viewModel = message as DiplomacyMessageViewModel;
+            DiplomacyMessageViewModel viewModel = message as DiplomacyMessageViewModel;
 
-            var proposal = message as IProposal;
+            IProposal proposal = message as IProposal;
 
             if (viewModel != null)
             {
@@ -400,7 +400,7 @@ namespace Supremacy.Client.Views
                     //GameLog.Client.Diplomacy.DebugFormat("Message Category Gift");
                     return DiplomaticMessageCategory.Gift;
                 }
-                foreach (var clause in proposal.Clauses)
+                foreach (IClause clause in proposal.Clauses)
                 {
                     if (!clause.ClauseType.IsTreatyClause())
                         continue;
@@ -416,7 +416,7 @@ namespace Supremacy.Client.Views
                 return DiplomaticMessageCategory.Exchange;
             }
 
-            var response = message as IResponse;
+            IResponse response = message as IResponse;
             
             if (response != null)
             {

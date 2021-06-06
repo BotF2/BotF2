@@ -157,12 +157,12 @@ namespace Supremacy.Diplomacy
 
         public static RegardLevel CalculateRegardLevel(int regard)
         {
-            var regardLevel = RegardLevel.Detested;
-            var regardLevelsTable = DiplomacyTables["RegardLevels"];
+            RegardLevel regardLevel = RegardLevel.Detested;
+            Table regardLevelsTable = DiplomacyTables["RegardLevels"];
 
-            foreach (var enumValue in EnumHelper.GetValues<RegardLevel>())
+            foreach (RegardLevel enumValue in EnumHelper.GetValues<RegardLevel>())
             {
-                var lowerBound = (int?)regardLevelsTable.GetValue(enumValue.ToString(), 0);
+                int? lowerBound = (int?)regardLevelsTable.GetValue(enumValue.ToString(), 0);
                 if (lowerBound == null)
                     continue;
 
@@ -192,8 +192,8 @@ namespace Supremacy.Diplomacy
             {
                 while (true)
                 {
-                    var oldHandler = _propertyChanged;
-                    var newHandler = (PropertyChangedEventHandler)Delegate.Combine(oldHandler, value);
+                    PropertyChangedEventHandler oldHandler = _propertyChanged;
+                    PropertyChangedEventHandler newHandler = (PropertyChangedEventHandler)Delegate.Combine(oldHandler, value);
 
                     if (Interlocked.CompareExchange(ref _propertyChanged, newHandler, oldHandler) == oldHandler)
                         return;
@@ -203,8 +203,8 @@ namespace Supremacy.Diplomacy
             {
                 while (true)
                 {
-                    var oldHandler = _propertyChanged;
-                    var newHandler = (PropertyChangedEventHandler)Delegate.Remove(oldHandler, value);
+                    PropertyChangedEventHandler oldHandler = _propertyChanged;
+                    PropertyChangedEventHandler newHandler = (PropertyChangedEventHandler)Delegate.Remove(oldHandler, value);
 
                     if (Interlocked.CompareExchange(ref _propertyChanged, newHandler, oldHandler) == oldHandler)
                         return;

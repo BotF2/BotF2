@@ -162,7 +162,7 @@ namespace Supremacy.Entities
         /// <param name="element">The XML element.</param>
         public Civilization(XElement element)
         {
-            var ns = element.Document.Root.Name.Namespace;
+            XNamespace ns = element.Document.Root.Name.Namespace;
 
             _key = (string)element.Attribute("Key");
             _raceId = (string)element.Element(ns + "Race");
@@ -194,7 +194,7 @@ namespace Supremacy.Entities
             string indConvRation = (string)element.Element(ns + "IndustryToCreditsConversionRatio");
             if (!string.IsNullOrEmpty(indConvRation))
             {
-                var convRatio = Number.ParseUInt16(indConvRation);
+                ushort convRatio = Number.ParseUInt16(indConvRation);
                 if (convRatio > 0)
                     _industryToCreditsConversionRatio = (float)convRatio / 100.0f;
             }
@@ -409,15 +409,15 @@ namespace Supremacy.Entities
         {
             get
             {
-                var searchPaths = new[]
+                string[] searchPaths = new[]
                                   {
                                       "vfs:///Resources/Images/Civilizations/{0}.png",
                                       "vfs:///Resources/Images/Civilizations/{0}.jpg"
                                   };
 
-                foreach (var searchPath in searchPaths)
+                foreach (string searchPath in searchPaths)
                 {
-                    var imagePath = ResourceManager.GetResourcePath(string.Format(searchPath, Key));
+                    string imagePath = ResourceManager.GetResourcePath(string.Format(searchPath, Key));
                     if (File.Exists(imagePath))
                         return ResourceManager.GetResourceUri(imagePath).ToString();
                 }
@@ -430,15 +430,15 @@ namespace Supremacy.Entities
         {
             get
             {
-                var searchPaths = new[]
+                string[] searchPaths = new[]
                                   {
                                       "vfs:///Resources/Images/Insignias/{0}.png",
                                       "vfs:///Resources/Images/Insignias/{0}.jpg"
                                   };
-                foreach (var searchPath in searchPaths)
+                foreach (string searchPath in searchPaths)
                 {
-                    var imageUri = string.Format(searchPath, Key);
-                    var imagePath = ResourceManager.GetResourcePath(imageUri);
+                    string imageUri = string.Format(searchPath, Key);
+                    string imagePath = ResourceManager.GetResourcePath(imageUri);
 
                     if (File.Exists(imagePath))
                         return imageUri;
@@ -709,7 +709,7 @@ namespace Supremacy.Entities
 
         public XContainer AppendXml(XContainer parentElement)
         {
-            var ns = parentElement.Document.Root.Name.Namespace;
+            XNamespace ns = parentElement.Document.Root.Name.Namespace;
 
             parentElement.Add(
                 new XElement(

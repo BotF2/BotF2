@@ -71,42 +71,42 @@ namespace Supremacy.Scripting.Events
         {
             if (phase == TurnPhase.PreTurnOperations && GameContext.Current.TurnNumber >=80)
             {
-                var affectedCivs = game.Civilizations
+                IEnumerable<Entities.Civilization> affectedCivs = game.Civilizations
                     .Where(
                         o => o.IsEmpire &&
                              o.IsHuman &&
                              RandomHelper.Chance(_occurrenceChance));
-                    //.ToList();
+                //.ToList();
 
-                var targetGroups = affectedCivs
+                IEnumerable<IGrouping<int, Colony>> targetGroups = affectedCivs
                     .Where(CanTargetCivilization)
                     .SelectMany(c => game.Universe.FindOwned<Colony>(c)) // finds colony to affect in the civiliation's empire
                     .Where(CanTargetUnit)
                     .GroupBy(o => o.OwnerID);
 
-                foreach (var group in targetGroups) 
+                foreach (IGrouping<int, Colony> group in targetGroups) 
                 {
-                    var productionCenters = group.ToList();
+                    List<Colony> productionCenters = group.ToList();
 
-                    var target = productionCenters[RandomProvider.Next(productionCenters.Count)];
+                    Colony target = productionCenters[RandomProvider.Next(productionCenters.Count)];
                     GameLog.Client.GameData.DebugFormat("target.Name: {0}", target.Name);
 
-                    var _affectedProjects = target.BuildSlots
+                    List<BuildProject> _affectedProjects = target.BuildSlots
                         .Concat((target.Shipyard != null) ? target.Shipyard.BuildSlots : Enumerable.Empty<BuildSlot>())
                         .Where(o => o.HasProject && !o.Project.IsPaused && !o.Project.IsCancelled)
                         .Select(o => o.Project)
                         .ToList();
                         //;
 
-                    foreach (var affectedProject in _affectedProjects)
+                    foreach (BuildProject affectedProject in _affectedProjects)
                     {
                         GameLog.Client.GameData.DebugFormat("affectedProject: {0}", affectedProject.Description);
                     }
 
-                    var targetCiv = target.Owner;
+                    Entities.Civilization targetCiv = target.Owner;
                     int targetColonyId = target.ObjectID;
-                    var population = target.Population.CurrentValue;
-                    var health = target.Health.CurrentValue;
+                    int population = target.Population.CurrentValue;
+                    int health = target.Health.CurrentValue;
 
                     List<Building> tmpBuildings = new List<Building>(target.Buildings.Count);
                     tmpBuildings.AddRange(target.Buildings.ToList());

@@ -45,7 +45,7 @@ namespace Supremacy.Client.Controls
 
         private string GetAccessKey(string text)
         {
-            var num = text.IndexOf('_');
+            int num = text.IndexOf('_');
             if (num == -1 || num == text.Length - 1)
                 return null;
             return text.Substring(num + 1, 1);
@@ -59,7 +59,7 @@ namespace Supremacy.Client.Controls
                 _registeredAccessKey = null;
             }
 
-            var accessKey = GetAccessKey();
+            string accessKey = GetAccessKey();
             
             if (string.IsNullOrEmpty(accessKey))
                 return;

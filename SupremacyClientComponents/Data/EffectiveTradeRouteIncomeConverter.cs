@@ -31,7 +31,7 @@ namespace Supremacy.Client.Data
         {
             get
             {
-                var appContext = ServiceLocator.Current.GetInstance<IAppContext>();
+                IAppContext appContext = ServiceLocator.Current.GetInstance<IAppContext>();
                 if (appContext == null)
                     return null;
                 return appContext.LocalPlayer.Empire;
@@ -40,7 +40,7 @@ namespace Supremacy.Client.Data
 
         public override object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            var tradeRoute = value as TradeRoute;
+            TradeRoute tradeRoute = value as TradeRoute;
             if (tradeRoute == null || !tradeRoute.IsAssigned)
                 return 0;
 
@@ -49,7 +49,7 @@ namespace Supremacy.Client.Data
 
         private int GetCreditsForTradeRoute(TradeRoute tradeRoute)
         {
-            var empire = LocalPlayerEmpire;
+            Civilization empire = LocalPlayerEmpire;
             if (empire == null)
                 return tradeRoute.Credits;
 
@@ -65,7 +65,7 @@ namespace Supremacy.Client.Data
             if (colony == null)
                 return tradeRoute.Credits;
 
-            var bonus = colony.Buildings
+            double bonus = colony.Buildings
                               .Where(o => o.IsActive)
                               .SelectMany(o => o.BuildingDesign.Bonuses)
                               .Where(o => o.BonusType == BonusType.PercentTradeIncome)
@@ -84,11 +84,11 @@ namespace Supremacy.Client.Data
             if (values == null)
                 return null;
 
-            var total = 0;
+            int total = 0;
 
-            for (var i = 0; i < values.Length; i++)
+            for (int i = 0; i < values.Length; i++)
             {
-                var tradeRoute = values[i] as TradeRoute;
+                TradeRoute tradeRoute = values[i] as TradeRoute;
                 if (tradeRoute != null && tradeRoute.IsAssigned)
                     total += GetCreditsForTradeRoute(tradeRoute);
             }

@@ -32,7 +32,7 @@ namespace Supremacy.Client.Controls
         /// <returns>The <see cref="Binding"/> that was created.</returns>
         internal static Binding CreateBinding(object source, DependencyProperty dp, BindingMode mode)
         {
-            var binding = new Binding { Source = source };
+            Binding binding = new Binding { Source = source };
             if (dp != null)
                 binding.Path = new PropertyPath(dp);
             binding.Mode = mode;
@@ -118,7 +118,7 @@ namespace Supremacy.Client.Controls
             if (BrowserInteropHelper.IsBrowserHosted)
                 return true;
 
-            var window = Window.GetWindow(obj);
+            Window window = Window.GetWindow(obj);
             return (window == null) || (window.IsActive);
         }
 
@@ -134,7 +134,7 @@ namespace Supremacy.Client.Controls
             if (BrowserInteropHelper.IsBrowserHosted)
                 return true;
 
-            var window = Window.GetWindow(obj);
+            Window window = Window.GetWindow(obj);
             return (window == null) || (window.IsVisible);
         }
 
@@ -175,7 +175,7 @@ namespace Supremacy.Client.Controls
             if (!((bool)control.GetValue(UIElement.IsKeyboardFocusWithinProperty)))
                 return;
 
-            var window = Window.GetWindow(control);
+            Window window = Window.GetWindow(control);
             if (window != null)
                 FocusManager.SetFocusedElement(window, null);
 

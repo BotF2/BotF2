@@ -105,7 +105,7 @@ namespace Supremacy.Game
             Timestamp = DateTimeOffset.Now;
             GameVersion = Assembly.GetExecutingAssembly().GetName().Version.ToString();
 
-            var empires = game.Civilizations.Where(o => o.IsEmpire).ToArray();
+            Entities.Civilization[] empires = game.Civilizations.Where(o => o.IsEmpire).ToArray();
 
             EmpireIDs = new int[empires.Length];
             EmpireNames = new string[empires.Length];
@@ -132,7 +132,7 @@ namespace Supremacy.Game
                 throw new InvalidOperationException("Cannot write to stream");
             }
 
-            var writer = new BinaryWriter(output);
+            BinaryWriter writer = new BinaryWriter(output);
             Options.Write(writer);
             writer.Write(IsMultiplayerGame);
             writer.Write(LocalPlayerName);
@@ -142,7 +142,7 @@ namespace Supremacy.Game
             writer.Write(Timestamp.Offset.Ticks);
             writer.Write(GameVersion);
 
-            var empireCount = (byte)EmpireIDs.Length;
+            byte empireCount = (byte)EmpireIDs.Length;
 
             writer.Write(empireCount);
 
@@ -168,12 +168,12 @@ namespace Supremacy.Game
                 throw new InvalidOperationException("Cannot read from stream");
             }
 
-            var reader = new BinaryReader(input);
-            var options = new GameOptions();
+            BinaryReader reader = new BinaryReader(input);
+            GameOptions options = new GameOptions();
 
             options.Read(reader);
 
-            var header = new SavedGameHeader
+            SavedGameHeader header = new SavedGameHeader
             {
                 Options = options,
                 IsMultiplayerGame = reader.ReadBoolean(),
@@ -184,7 +184,7 @@ namespace Supremacy.Game
                 GameVersion = reader.ReadString()
             };
 
-            var empireCount = reader.ReadByte();
+            byte empireCount = reader.ReadByte();
 
             header.EmpireIDs = new int[empireCount];
             header.EmpireNames = new string[empireCount];

@@ -46,36 +46,36 @@ namespace Supremacy.Scripting.Events
             if (phase == TurnPhase.PreTurnOperations)
             {
 
-                var affectedCivs = game.Civilizations
+                IEnumerable<Entities.Civilization> affectedCivs = game.Civilizations
                     .Where(o =>
                         o.IsEmpire &&
                         o.IsHuman &&
                         RandomHelper.Chance(_occurrenceChance));
 
-                var targetGroups = affectedCivs
+                IEnumerable<IGrouping<int, Colony>> targetGroups = affectedCivs
                     .Where(CanTargetCivilization)
                     .SelectMany(c => game.Universe.FindOwned<Colony>(c))
                     .Where(CanTargetUnit)
                     .GroupBy(o => o.OwnerID);
 
-                foreach (var group in targetGroups)
+                foreach (IGrouping<int, Colony> group in targetGroups)
                 {
 
-                    var productionCenters = group.ToList();
+                    List<Colony> productionCenters = group.ToList();
 
-                    var target = productionCenters[RandomProvider.Next(productionCenters.Count)];
+                    Colony target = productionCenters[RandomProvider.Next(productionCenters.Count)];
 
                     if (target.Owner.Name == "Borg") // Borg do not have terrorists
                         return;
 
-                    var targetCiv = target.Owner;
+                    Entities.Civilization targetCiv = target.Owner;
                     int targetColonyId = target.ObjectID;
                     OnUnitTargeted(target);
 
                     target.Morale.AdjustCurrent(+3);
                     target.Morale.UpdateAndReset();
 
-                    var civManager = GameContext.Current.CivilizationManagers[targetCiv.CivID];
+                    CivilizationManager civManager = GameContext.Current.CivilizationManagers[targetCiv.CivID];
                     if (civManager != null)
                     {
                         civManager.SitRepEntries.Add(new TerroristsCapturedSitRepEntry(civManager.Civilization, target));

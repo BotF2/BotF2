@@ -160,15 +160,15 @@ namespace Supremacy.Text
 
         public override string ToString()
         {
-            var output = new StringBuilder();
-            using (var writer = XmlWriter.Create(output, XmlWriterEx.WriterSettings))
+            StringBuilder output = new StringBuilder();
+            using (XmlWriter writer = XmlWriter.Create(output, XmlWriterEx.WriterSettings))
                 Dump(writer);
             return (output).ToString();
         }
 
         public override bool Equals(object obj)
         {
-            var other = obj as TextStyle?;
+            TextStyle? other = obj as TextStyle?;
             return other.HasValue && Equals(other.Value);
         }
 

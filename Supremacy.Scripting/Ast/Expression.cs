@@ -802,7 +802,7 @@ namespace Supremacy.Scripting.Ast
                 return;
             }
 
-            var explicitConversionExists = (CompilerHelpers.GetExplicitConverter(sourceType, target) != null);
+            bool explicitConversionExists = (CompilerHelpers.GetExplicitConverter(sourceType, target) != null);
             if (explicitConversionExists)
             {
                 ec.ReportError(

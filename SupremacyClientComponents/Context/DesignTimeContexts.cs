@@ -170,7 +170,7 @@ namespace Supremacy.Client.Context
         {
             get
             {
-                var isZeroNull = GameContext.Current.CivilizationManagers.Where(s => s.CivilizationID == 0).FirstOrDefault();
+                CivilizationManager isZeroNull = GameContext.Current.CivilizationManagers.Where(s => s.CivilizationID == 0).FirstOrDefault();
                 if (isZeroNull != null)
                 {
                     _spiedCivDummy = GameContext.Current.CivilizationManagers.Where(s => s.CivilizationID == 0).FirstOrDefault();
@@ -189,7 +189,7 @@ namespace Supremacy.Client.Context
         {
             get
             {
-                var isOneNull = GameContext.Current.CivilizationManagers.Where(s => s.CivilizationID == 1).FirstOrDefault();
+                CivilizationManager isOneNull = GameContext.Current.CivilizationManagers.Where(s => s.CivilizationID == 1).FirstOrDefault();
                 if (isOneNull != null)
                 {
                     _spiedCivDummy = GameContext.Current.CivilizationManagers.Where(s => s.CivilizationID == 1).FirstOrDefault();
@@ -209,7 +209,7 @@ namespace Supremacy.Client.Context
         {
             get
             {
-                var isTwoNull = GameContext.Current.CivilizationManagers.Where(s => s.CivilizationID == 2).FirstOrDefault();
+                CivilizationManager isTwoNull = GameContext.Current.CivilizationManagers.Where(s => s.CivilizationID == 2).FirstOrDefault();
                 if (isTwoNull != null)
                 {
                     _spiedCivDummy = GameContext.Current.CivilizationManagers.Where(s => s.CivilizationID == 2).FirstOrDefault();
@@ -228,7 +228,7 @@ namespace Supremacy.Client.Context
         {
             get
             {
-                var isThreeNull = GameContext.Current.CivilizationManagers.Where(s => s.CivilizationID == 3).FirstOrDefault();
+                CivilizationManager isThreeNull = GameContext.Current.CivilizationManagers.Where(s => s.CivilizationID == 3).FirstOrDefault();
                 if (isThreeNull != null)
                 {
                     _spiedCivDummy = GameContext.Current.CivilizationManagers.Where(s => s.CivilizationID == 3).FirstOrDefault();
@@ -247,7 +247,7 @@ namespace Supremacy.Client.Context
         {
             get
             {
-                var isFourNull = GameContext.Current.CivilizationManagers.Where(s => s.CivilizationID == 4).FirstOrDefault();
+                CivilizationManager isFourNull = GameContext.Current.CivilizationManagers.Where(s => s.CivilizationID == 4).FirstOrDefault();
                 if (isFourNull != null)
                 {
                     _spiedCivDummy = GameContext.Current.CivilizationManagers.Where(s => s.CivilizationID == 4).FirstOrDefault();
@@ -266,7 +266,7 @@ namespace Supremacy.Client.Context
         {
             get
             {
-                var isFiveNull = GameContext.Current.CivilizationManagers.Where(s => s.CivilizationID == 5).FirstOrDefault();
+                CivilizationManager isFiveNull = GameContext.Current.CivilizationManagers.Where(s => s.CivilizationID == 5).FirstOrDefault();
                 if (isFiveNull != null)
                 {
                     _spiedCivDummy = GameContext.Current.CivilizationManagers.Where(s => s.CivilizationID == 5).FirstOrDefault();
@@ -285,7 +285,7 @@ namespace Supremacy.Client.Context
         {
             get
             {
-                var isSixNull = GameContext.Current.CivilizationManagers.Where(s => s.CivilizationID == 6).FirstOrDefault();
+                CivilizationManager isSixNull = GameContext.Current.CivilizationManagers.Where(s => s.CivilizationID == 6).FirstOrDefault();
                 if (isSixNull != null)
                 {
                     _spiedCivDummy = GameContext.Current.CivilizationManagers.Where(s => s.CivilizationID == 6).FirstOrDefault();
@@ -329,8 +329,8 @@ namespace Supremacy.Client.Context
         {
             get
             {
-                var claims = GameContext.Current.SectorClaims;
-                var owner = CivilizationManager.Civilization;
+                SectorClaimGrid claims = GameContext.Current.SectorClaims;
+                Civilization owner = CivilizationManager.Civilization;
                 return GameContext.Current.Universe.Find(UniverseObjectType.StarSystem).Cast<StarSystem>().Where(s => claims.GetPerceivedOwner(s.Location, owner) == owner);
             }
         }

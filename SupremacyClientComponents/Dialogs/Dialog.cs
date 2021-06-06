@@ -144,7 +144,7 @@ namespace Supremacy.Client.Dialogs
                 AccessKeyManager.AccessKeyPressedEvent,
                 new AccessKeyPressedEventHandler(OnAccessKeyPressed));
 
-            var dialogCancelCommand = GetDialogCancelCommand();
+            RoutedCommand dialogCancelCommand = GetDialogCancelCommand();
             if (dialogCancelCommand != null)
             {
                 CommandManager.RegisterClassCommandBinding(
@@ -169,7 +169,7 @@ namespace Supremacy.Client.Dialogs
             {
                 RuntimeHelpers.RunClassConstructor(typeof(Window).TypeHandle);
 
-                var windowDialogCancelCommandField = typeof(Window).GetField(
+                FieldInfo windowDialogCancelCommandField = typeof(Window).GetField(
                     "DialogCancelCommand",
                     BindingFlags.Static | BindingFlags.NonPublic);
 
@@ -229,14 +229,14 @@ namespace Supremacy.Client.Dialogs
             if (e.Handled || (e.Scope != null))
                 return;
 
-            var dialog = sender as Dialog;
+            Dialog dialog = sender as Dialog;
 
             if (dialog == null)
             {
-                var senderElement = sender as DependencyObject;
+                DependencyObject senderElement = sender as DependencyObject;
                 if (senderElement != null)
                 {
-                    var target = _rootRegionManager.Regions[ClientRegions.ModalDialogs].ActiveViews.OfType<Dialog>().FirstOrDefault()
+                    Dialog target = _rootRegionManager.Regions[ClientRegions.ModalDialogs].ActiveViews.OfType<Dialog>().FirstOrDefault()
                                  ?? _rootRegionManager.Regions[ClientRegions.ModelessDialogs].ActiveViews.OfType<Dialog>().FirstOrDefault();
                     if (target == null)
                         return;
@@ -280,14 +280,14 @@ namespace Supremacy.Client.Dialogs
                 return;
             }
 
-            var dialogManager = ParentDialogManager;
+            DialogManager dialogManager = ParentDialogManager;
             if ((dialogManager != null) && (dialogManager.ActiveDialog != this))
             {
                 base.OnLostKeyboardFocus(e);
                 return;
             }
 
-            var newFocus = e.NewFocus as DependencyObject;
+            DependencyObject newFocus = e.NewFocus as DependencyObject;
             if (newFocus != null)
             {
                 if (newFocus == this ||
@@ -303,7 +303,7 @@ namespace Supremacy.Client.Dialogs
                  * dialog is presented over a non-modal dialog.  If focus was transferred
                  * into a modal dialog, then that's fine.
                  */
-                var parentDialog = newFocus.FindVisualAncestorByType<Dialog>();
+                Dialog parentDialog = newFocus.FindVisualAncestorByType<Dialog>();
                 if (parentDialog != null &&
                     parentDialog.IsActive &&
                     parentDialog.IsModal)
@@ -312,7 +312,7 @@ namespace Supremacy.Client.Dialogs
                     return;
                 }
 
-                var contextMenu = newFocus.FindLogicalAncestorByType<ContextMenu>();
+                ContextMenu contextMenu = newFocus.FindLogicalAncestorByType<ContextMenu>();
                 if (contextMenu != null &&
                     contextMenu.PlacementTarget != null &&
                     (contextMenu.PlacementTarget.IsVisualDescendantOf(this) ||
@@ -325,7 +325,7 @@ namespace Supremacy.Client.Dialogs
 
             e.Handled = true;
 
-            var oldFocus = e.OldFocus as UIElement;
+            UIElement oldFocus = e.OldFocus as UIElement;
             if ((oldFocus != null) && oldFocus.IsVisualDescendantOf(this) && oldFocus.IsVisible)
             {
                 Keyboard.Focus(e.OldFocus);
@@ -334,7 +334,7 @@ namespace Supremacy.Client.Dialogs
             {
                 Keyboard.Focus(this);
 
-                var firstFocusableDescendant = this.FindFirstFocusableDescendant(false) as IInputElement;
+                IInputElement firstFocusableDescendant = this.FindFirstFocusableDescendant(false) as IInputElement;
                 if (firstFocusableDescendant != null)
                     Keyboard.Focus(firstFocusableDescendant);
             }
@@ -430,8 +430,8 @@ namespace Supremacy.Client.Dialogs
             if (!IsModal && _rootRegionManager.Regions[ClientRegions.ModalDialogs].ActiveViews.Any())
                 return false;
 
-            var focusedElement = Keyboard.FocusedElement as Dialog;
-            var setFocusOnContent = ((focusedElement == this) || (focusedElement == null)) ||
+            Dialog focusedElement = Keyboard.FocusedElement as Dialog;
+            bool setFocusOnContent = ((focusedElement == this) || (focusedElement == null)) ||
                                     (focusedElement.ParentDialogManager != ParentDialogManager);
 
             _settingFocus = true;
@@ -480,7 +480,7 @@ namespace Supremacy.Client.Dialogs
                 }
                 else if (_setFocusOnContent)
                 {
-                    var activeDialogPresenter = ParentDialogManager.ActiveDialogPresenter;
+                    ContentPresenter activeDialogPresenter = ParentDialogManager.ActiveDialogPresenter;
                     if (activeDialogPresenter != null)
                     {
                         ParentDialogManager.UpdateLayout();
@@ -552,9 +552,9 @@ namespace Supremacy.Client.Dialogs
 
         private void ShowInternal()
         {
-            var regionName = IsModal ? ClientRegions.ModalDialogs : ClientRegions.ModelessDialogs;
-            var dialogRegion = _rootRegionManager.Regions[regionName];
-            var regionManager = dialogRegion.Add(this, null, true);
+            string regionName = IsModal ? ClientRegions.ModalDialogs : ClientRegions.ModelessDialogs;
+            IRegion dialogRegion = _rootRegionManager.Regions[regionName];
+            IRegionManager regionManager = dialogRegion.Add(this, null, true);
 
             DialogRegion = dialogRegion;
             DialogRegionManager = regionManager;
@@ -648,7 +648,7 @@ namespace Supremacy.Client.Dialogs
 
         protected bool OnClosing()
         {
-            var cancelArgs = new CancelRoutedEventArgs(ClosingEvent, this);
+            CancelRoutedEventArgs cancelArgs = new CancelRoutedEventArgs(ClosingEvent, this);
             RaiseEvent(cancelArgs);
             return !cancelArgs.Cancel;
         }
@@ -713,7 +713,7 @@ namespace Supremacy.Client.Dialogs
 
         private static void OnIsActiveChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            var dialog = d as Dialog;
+            Dialog dialog = d as Dialog;
 
             if (dialog == null)
                 return;
@@ -786,7 +786,7 @@ namespace Supremacy.Client.Dialogs
             if (!IsOpen)
                 return true;
 
-            var dialogRegion = DialogRegion;
+            IRegion dialogRegion = DialogRegion;
             if (dialogRegion == null)
                 return true;
 

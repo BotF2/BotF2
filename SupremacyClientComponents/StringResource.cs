@@ -53,7 +53,7 @@ namespace Supremacy.Client
 
         public override object ProvideValue(IServiceProvider serviceProvider)
         {
-            var text = ResourceManager.GetString(_key);
+            string text = ResourceManager.GetString(_key);
             
             switch (Case)
             {
@@ -64,12 +64,12 @@ namespace Supremacy.Client
                     text = text.ToUpper();
                     break;
             }
-            
-            var provideValueTarget = serviceProvider.GetService(typeof(IProvideValueTarget)) as IProvideValueTarget;
+
+            IProvideValueTarget provideValueTarget = serviceProvider.GetService(typeof(IProvideValueTarget)) as IProvideValueTarget;
             
             if (provideValueTarget != null)
             {
-                var property = provideValueTarget.TargetProperty;
+                object property = provideValueTarget.TargetProperty;
                 
                 if (!(property is DependencyProperty) &&
                     !(property is PropertyInfo) &&

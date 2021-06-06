@@ -28,7 +28,7 @@ namespace Supremacy.Economy
         {
             get
             {
-                var fleet = GameContext.Current.Universe.Objects[_productionCenterId] as Fleet;
+                Fleet fleet = GameContext.Current.Universe.Objects[_productionCenterId] as Fleet;
                 if (fleet != null)
                     return new BuildStationOrder.FleetProductionCenter(fleet);
                 return default;

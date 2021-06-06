@@ -76,7 +76,7 @@ namespace Supremacy.Messaging
                             key));
                 }
 
-                var channel = new Channel<T>();
+                Channel<T> channel = new Channel<T>();
                 _privateChannels.Add(key, channel);
                 return channel;
             }
@@ -130,9 +130,9 @@ namespace Supremacy.Messaging
 
             lock (_instanceLock)
             {
-                var subscribers = _subscriptions.ToArray();
+                ChannelSubscriptionBase<T>[] subscribers = _subscriptions.ToArray();
 
-                foreach (var subscriber in subscribers)
+                foreach (ChannelSubscriptionBase<T> subscriber in subscribers)
                 {
                     if (subscriber.Subscriber == null)
                         _subscriptions.Remove(subscriber);
@@ -207,13 +207,13 @@ namespace Supremacy.Messaging
 
         private void PublishInternal(T value, ChannelSubscriptionBase<T>[] subscriptionsList)
         {
-            var deadSubscriptions = new Lazy<List<ChannelSubscriptionBase<T>>>(false);
+            Lazy<List<ChannelSubscriptionBase<T>>> deadSubscriptions = new Lazy<List<ChannelSubscriptionBase<T>>>(false);
 
             Array.Sort(subscriptionsList, (a, b) => a.ThreadOption.CompareTo(b.ThreadOption));
 
-            foreach (var subscription in subscriptionsList)
+            foreach (ChannelSubscriptionBase<T> subscription in subscriptionsList)
             {
-                var subscriber = subscription.Subscriber;
+                IObserver<T> subscriber = subscription.Subscriber;
 
                 if (subscriber == null)
                 {
@@ -243,7 +243,7 @@ namespace Supremacy.Messaging
                             throw new NotSupportedException();
                     }
 
-                    var waitEvent = new ChannelEvent();
+                    ChannelEvent waitEvent = new ChannelEvent();
 
                     scheduler.Schedule(
                         () =>
@@ -271,11 +271,11 @@ namespace Supremacy.Messaging
 
         private void PublishErrorInternal(Exception error, IEnumerable<ChannelSubscriptionBase<T>> subscriptionsList)
         {
-            var deadSubscriptions = new Lazy<List<ChannelSubscriptionBase<T>>>();
+            Lazy<List<ChannelSubscriptionBase<T>>> deadSubscriptions = new Lazy<List<ChannelSubscriptionBase<T>>>();
 
-            foreach (var subscription in subscriptionsList)
+            foreach (ChannelSubscriptionBase<T> subscription in subscriptionsList)
             {
-                var subscriber = subscription.Subscriber;
+                IObserver<T> subscriber = subscription.Subscriber;
 
                 if (subscriber == null)
                 {
@@ -305,7 +305,7 @@ namespace Supremacy.Messaging
                             throw new NotSupportedException();
                     }
 
-                    var waitEvent = new ChannelEvent();
+                    ChannelEvent waitEvent = new ChannelEvent();
 
                     scheduler.Schedule(
                         () =>
@@ -335,7 +335,7 @@ namespace Supremacy.Messaging
         {
             lock (_instanceLock)
             {
-                foreach (var subscription in subscriptions)
+                foreach (ChannelSubscriptionBase<T> subscription in subscriptions)
                     _subscriptions.Remove(subscription);
             }
         }

@@ -133,7 +133,7 @@ namespace Supremacy.Client.Audio
                     }
                 }
 
-                foreach (var track in _endingTracks)
+                foreach (IAudioTrack track in _endingTracks)
                 {
                     try
                     {
@@ -255,7 +255,7 @@ namespace Supremacy.Client.Audio
                         return true;
                     }
 
-                    var newTrack = _musicPack.FindByName(trackName);
+                    KeyValuePair<int, MusicEntry> newTrack = _musicPack.FindByName(trackName);
                     if (newTrack.Value == null)
                         return false;
 
@@ -413,7 +413,7 @@ namespace Supremacy.Client.Audio
 
                     for (int i = _endingTracks.Count - 1; i >= 0; --i)
                     {
-                        var track = _endingTracks[i];
+                        IAudioTrack track = _endingTracks[i];
                         track.FadeOut(FadeFactor / _fadeTime);
                         if (track.Volume <= 0.0f)
                         {

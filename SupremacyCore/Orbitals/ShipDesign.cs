@@ -402,7 +402,7 @@ namespace Supremacy.Orbitals
             if (_possibleNames.Count > 0)
             {
                 newElement = doc.CreateElement("ShipNames");
-                foreach (var shipName in _possibleNames)
+                foreach (KeyValuePair<string, int> shipName in _possibleNames)
                 {
                     XmlElement nameElement = doc.CreateElement("ShipName");
                     nameElement.InnerText = shipName.Key;
@@ -426,10 +426,10 @@ namespace Supremacy.Orbitals
                 return false;
             }
 
-            var civManager = GameContext.Current.CivilizationManagers[owner];
-            var ship = new Ship(this);
+            CivilizationManager civManager = GameContext.Current.CivilizationManagers[owner];
+            Ship ship = new Ship(this);
 
-            var shipDesign = ship.ShipDesign.Name;
+            string shipDesign = ship.ShipDesign.Name;
 
 
             if (TechTreeHelper.MeetsTechLevels(civManager, ship.ShipDesign) != true && civManager.Civilization.IsEmpire)  // minors > MeetsTechLevel doesn't work fine
@@ -454,7 +454,7 @@ namespace Supremacy.Orbitals
                 //Set this to -1 so we can check if we've checked any yet
                 int timesUsed = -1;
                 string leastUsedName = "";
-                foreach (var shipName in _possibleNames)
+                foreach (KeyValuePair<string, int> shipName in _possibleNames)
                 {
                     //If we haven't checked, assign this straight to the variables
                     if (timesUsed == -1)
@@ -496,7 +496,7 @@ namespace Supremacy.Orbitals
             ship.Location = location;
             ship.CreateFleet();
 
-            var fuelNeeded = ship.FuelReserve.Maximum - ship.FuelReserve.CurrentValue;
+            int fuelNeeded = ship.FuelReserve.Maximum - ship.FuelReserve.CurrentValue;
             if (fuelNeeded > 0)
                 ship.FuelReserve.AdjustCurrent(civManager.Resources[ResourceType.Deuterium].AdjustCurrent(-fuelNeeded));
 

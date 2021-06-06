@@ -89,7 +89,7 @@ namespace Supremacy.Client
 
         private void ChatPanel_Loaded(object sender, RoutedEventArgs e)
         {
-            var appContext = ServiceLocator.Current.GetInstance<IAppContext>();
+            IAppContext appContext = ServiceLocator.Current.GetInstance<IAppContext>();
             _isLoaded = true;
             RecipientBox.Items.Add(_globalPlayer);
 
@@ -111,17 +111,17 @@ namespace Supremacy.Client
 
         private void OnPlayerExited(DataEventArgs<IPlayer> args)
         {
-            var player = args.Value;
+            IPlayer player = args.Value;
             if (player == null)
                 return;
-            var item = RecipientBox.Items.OfType<Player>().FirstOrDefault(o => o.PlayerID == player.PlayerID);
+            Player item = RecipientBox.Items.OfType<Player>().FirstOrDefault(o => o.PlayerID == player.PlayerID);
             if (item != null)
                 RecipientBox.Items.Remove(item);
         }
 
         private void OnChatMessageReceived(DataEventArgs<ChatMessage> args)
         {
-            var message = args.Value;
+            ChatMessage message = args.Value;
             if (message == null)
                 return;
             DisplayChatMessage(message);
@@ -144,7 +144,7 @@ namespace Supremacy.Client
                 string messageText = InputText.Text.Trim();
                 if (messageText.Length > 0)
                 {
-                    var appContext = ServiceLocator.Current.GetInstance<IAppContext>();
+                    IAppContext appContext = ServiceLocator.Current.GetInstance<IAppContext>();
                     Player recipient = RecipientBox.SelectedItem as Player;
                     if (recipient == _globalPlayer)
                         recipient = null;

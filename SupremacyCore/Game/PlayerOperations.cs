@@ -168,7 +168,7 @@ namespace Supremacy.Game
             if (items == null)
                 throw new ArgumentNullException("items");
 
-            foreach (var item in items)
+            foreach (TechObject item in items)
             {
                 PlayerOrderService.AddOrder(new ScrapOrder(scrap, item));
                 item.Scrap = scrap;

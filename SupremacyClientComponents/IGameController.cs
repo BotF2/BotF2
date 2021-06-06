@@ -163,7 +163,7 @@ namespace Supremacy.Client
 
         private void SetConnectWaitCursor()
         {
-            var handle = _gameWindow.EnterWaitCursorScope();
+            IDisposable handle = _gameWindow.EnterWaitCursorScope();
 
             if (Interlocked.CompareExchange(ref _connectWaitCursorHandle, handle, null) != null)
                 handle.Dispose();
@@ -178,7 +178,7 @@ namespace Supremacy.Client
 
             lock (_eventSubscriptionTokens)
             {
-                foreach (var subscribedEvent in _eventSubscriptionTokens.Keys)
+                foreach (EventBase subscribedEvent in _eventSubscriptionTokens.Keys)
                     subscribedEvent.Unsubscribe(_eventSubscriptionTokens[subscribedEvent]);
 
                 _eventSubscriptionTokens.Clear();
@@ -216,7 +216,7 @@ namespace Supremacy.Client
 
             lock (_eventSubscriptionTokens)
             {
-                var subscriptionToken = ClientEvents.LocalPlayerJoined.Subscribe(
+                SubscriptionToken subscriptionToken = ClientEvents.LocalPlayerJoined.Subscribe(
                     OnLocalPlayerJoined,
                     ThreadOption.UIThread);
 
@@ -262,7 +262,7 @@ namespace Supremacy.Client
 
         private void OnInvasionUpdateReceived(ClientDataEventArgs<InvasionArena> e)
         {
-            var presenter = _container.Resolve<ViewModelPresenter<SystemAssaultScreenViewModel, ISystemAssaultScreenView>>();
+            ViewModelPresenter<SystemAssaultScreenViewModel, ISystemAssaultScreenView> presenter = _container.Resolve<ViewModelPresenter<SystemAssaultScreenViewModel, ISystemAssaultScreenView>>();
             if (presenter.Model.IsRunning)
                 return;
 
@@ -292,21 +292,21 @@ namespace Supremacy.Client
 
         private void SetGameStartWaitCursor()
         {
-            var handle = _gameWindow.EnterWaitCursorScope();
+            IDisposable handle = _gameWindow.EnterWaitCursorScope();
             if (Interlocked.CompareExchange(ref _gameStartWaitCursorHandle, handle, null) != null)
                 handle.Dispose();
         }
 
         private void SetTurnWaitCursor()
         {
-            var handle = _gameWindow.EnterWaitCursorScope();
+            IDisposable handle = _gameWindow.EnterWaitCursorScope();
             if (Interlocked.CompareExchange(ref _turnWaitCursorHandle, handle, null) != null)
                 handle.Dispose();
         }
 
         private void OnTurnStarted(EventArgs args)
         {
-            var currentGame = _appContext.CurrentGame;
+            IGameContext currentGame = _appContext.CurrentGame;
             if (currentGame == null)
                 return;
             
@@ -319,7 +319,7 @@ namespace Supremacy.Client
                 ClearGameStartWaitCursor();
             }
 
-            foreach (var infoCardSubject in InfoCardService.Current.InfoCards.Select(o => o.Subject).Where(o => o != null))
+            foreach (IInfoCardSubject infoCardSubject in InfoCardService.Current.InfoCards.Select(o => o.Subject).Where(o => o != null))
                 infoCardSubject.RefreshData();
 
             ClearTurnWaitCursor();
@@ -334,7 +334,7 @@ namespace Supremacy.Client
             if (_appContext.LocalPlayerEmpire.SitRepEntries.Count <= 0) // || _appContext.LocalPlayerEmpire.SitRepEntries.Count > 7)
                 return;
 
-            foreach (var sitRepEntry in _appContext.LocalPlayerEmpire.SitRepEntries) // getting an out of range for this collection
+            foreach (SitRepEntry sitRepEntry in _appContext.LocalPlayerEmpire.SitRepEntries) // getting an out of range for this collection
             {
                 if (sitRepEntry != null)
                 {
@@ -358,7 +358,7 @@ namespace Supremacy.Client
 
             _sitRepDialog.SitRepEntries = _appContext.LocalPlayerEmpire.SitRepEntries;
 
-            var service = ServiceLocator.Current.GetInstance<IPlayerOrderService>();
+            IPlayerOrderService service = ServiceLocator.Current.GetInstance<IPlayerOrderService>();
 
             if (showIfEmpty)
                 _sitRepDialog.Show();
@@ -380,7 +380,7 @@ namespace Supremacy.Client
 
             _shipOverview.SitRepEntries = _appContext.LocalPlayerEmpire.SitRepEntries;
 
-            var service = ServiceLocator.Current.GetInstance<IPlayerOrderService>();
+            IPlayerOrderService service = ServiceLocator.Current.GetInstance<IPlayerOrderService>();
 
             if (showIfEmpty)
                 _shipOverview.Show();
@@ -397,7 +397,7 @@ namespace Supremacy.Client
 
         private void ClearTurnWaitCursor()
         {
-            var handle = Interlocked.Exchange(ref _turnWaitCursorHandle, null);
+            IDisposable handle = Interlocked.Exchange(ref _turnWaitCursorHandle, null);
             if (handle != null)
                 handle.Dispose();
         }
@@ -411,14 +411,14 @@ namespace Supremacy.Client
 
         private void ClearConnectWaitCursor()
         {
-            var handle = Interlocked.Exchange(ref _connectWaitCursorHandle, null);
+            IDisposable handle = Interlocked.Exchange(ref _connectWaitCursorHandle, null);
             if (handle != null)
                 handle.Dispose();
         }
 
         private void ClearGameStartWaitCursor()
         {
-            var handle = Interlocked.Exchange(ref _gameStartWaitCursorHandle, null);
+            IDisposable handle = Interlocked.Exchange(ref _gameStartWaitCursorHandle, null);
             if (handle != null)
                 handle.Dispose();
         }
@@ -430,7 +430,7 @@ namespace Supremacy.Client
 
         private void CreatePresenters()
         {
-            var initializedPresenters = new List<IPresenter>();
+            List<IPresenter> initializedPresenters = new List<IPresenter>();
 
             GameLog.Client.UI.DebugFormat("BEGINNING: CreatePresenters");
 
@@ -455,7 +455,7 @@ namespace Supremacy.Client
                 //_screenPresenters.Add(_container.Resolve<IEncyclopediaScreenPresenter>());
                 //GameLog.Client.UI.DebugFormat("DONE: IEncyclopediaScreenPresenter");    // F7-Screen
 
-                foreach (var presenter in _screenPresenters)
+                foreach (IPresenter presenter in _screenPresenters)
                 {
                     try
                     { 
@@ -475,7 +475,7 @@ namespace Supremacy.Client
             catch
             {
                 _screenPresenters.Clear();
-                foreach (var presenter in initializedPresenters)
+                foreach (IPresenter presenter in initializedPresenters)
                 {
                     try
                     {
@@ -538,7 +538,7 @@ namespace Supremacy.Client
 
         protected void StopServer()
         {
-            var server = Interlocked.Exchange(ref _server, null);
+            IGameServer server = Interlocked.Exchange(ref _server, null);
             if (server == null)
                 return;
             server.Faulted -= OnServerFaulted;
@@ -569,7 +569,7 @@ namespace Supremacy.Client
             if (connectAction == null)
                 throw new ArgumentNullException("connectAction");
 
-            var client = Interlocked.CompareExchange(ref _client, null, null);
+            IGameClient client = Interlocked.CompareExchange(ref _client, null, null);
             if (client == null)
                 return;
 
@@ -627,7 +627,7 @@ namespace Supremacy.Client
 
         private void Disconnect()
         {
-            var client = Interlocked.Exchange(ref _client, null);
+            IGameClient client = Interlocked.Exchange(ref _client, null);
             if (client == null)
                 return;
 
@@ -738,7 +738,7 @@ namespace Supremacy.Client
 
         private void ClearScreenViews()
         {
-            foreach (var presenter in _screenPresenters)
+            foreach (IPresenter presenter in _screenPresenters)
             {
                 try
                 {

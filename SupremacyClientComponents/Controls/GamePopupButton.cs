@@ -195,7 +195,7 @@ namespace Supremacy.Client.Controls
             {
                 IList children = new List<object>();
 
-                var enumerator = base.LogicalChildren;
+                IEnumerator enumerator = base.LogicalChildren;
                 if (enumerator != null)
                 {
                     enumerator.Reset();
@@ -221,10 +221,10 @@ namespace Supremacy.Client.Controls
             // But there were problems with SplitButtons retaining focus when clicked discovered in later builds, so further conditions added in build 485
             if ((IsKeyboardFocusWithin) && (IsPopupOpen))
             {
-                var popup = ((IGamePopupAnchor)this).Popup;
+                GamePopup popup = ((IGamePopupAnchor)this).Popup;
                 if (popup != null && popup.Child != null)
                 {
-                    var hitTarget = popup.Child.InputHitTest(e.GetPosition(popup.Child));
+                    IInputElement hitTarget = popup.Child.InputHitTest(e.GetPosition(popup.Child));
                     // If the mouse is over the popup's child control, don't call the base method
                     if (hitTarget != null)
                         return;
@@ -247,7 +247,7 @@ namespace Supremacy.Client.Controls
 
         protected virtual bool OnPopupOpening()
         {
-            var e = new CancelRoutedEventArgs(PopupOpeningEvent, this);
+            CancelRoutedEventArgs e = new CancelRoutedEventArgs(PopupOpeningEvent, this);
             RaiseEvent(e);
             return !e.Cancel;
         }
@@ -372,7 +372,7 @@ namespace Supremacy.Client.Controls
 
         private static object CoerceStaysOpenOnClickPropertyValue(DependencyObject obj, object value)
         {
-            var control = (GamePopupButton)obj;
+            GamePopupButton control = (GamePopupButton)obj;
             if (control._flags.GetFlag(Flags.ForceStaysOpenOnClick))
                 return true;
             return value;
@@ -422,7 +422,7 @@ namespace Supremacy.Client.Controls
                 throw new ArgumentNullException("e");
 
             // If ignoring the next mouse down, eat the mouse down
-            var ignoreMouseDown = _flags.GetFlag(Flags.IgnoreNextMouseDown);
+            bool ignoreMouseDown = _flags.GetFlag(Flags.IgnoreNextMouseDown);
             _flags.SetFlag(Flags.IgnoreNextMouseDown, false);
 
             if (!e.Handled && IsMouseOver)
@@ -430,10 +430,10 @@ namespace Supremacy.Client.Controls
                 // If there is a popup open, see if the click was on a disabled menu item and if so, handle the mouse down
                 if (!ignoreMouseDown && IsPopupOpen && !IsMouseDirectlyOver && e.Source is GameMenu)
                 {
-                    var presenter = e.OriginalSource as ContentPresenter;
+                    ContentPresenter presenter = e.OriginalSource as ContentPresenter;
                     if (presenter != null && VisualTreeHelper.GetChildrenCount(presenter) > 0)
                     {
-                        var presenterContent = VisualTreeHelper.GetChild(presenter, 0) as UIElement;
+                        UIElement presenterContent = VisualTreeHelper.GetChild(presenter, 0) as UIElement;
                         if (presenterContent != null && !presenterContent.IsEnabled)
                             ignoreMouseDown = true;
                     }
@@ -487,7 +487,7 @@ namespace Supremacy.Client.Controls
 
         protected override void UpdateCanExecute()
         {
-            var commandCanExecute = Command == null || Command == ApplicationCommands.NotACommand || GameCommand.CanExecuteCommandSource(this);
+            bool commandCanExecute = Command == null || Command == ApplicationCommands.NotACommand || GameCommand.CanExecuteCommandSource(this);
             CanExecute = commandCanExecute && (!AutoDisableWhenPopupContentIsDisabled || (PopupControlService.IsPopupAnchorPopupEnabled(this)));
         }
     }

@@ -41,7 +41,7 @@ namespace Supremacy.Orbitals
             if (fleet == null)
                 throw new ArgumentNullException("fleet");
 
-            var civManager = GameContext.Current.CivilizationManagers[fleet.Owner];
+            CivilizationManager civManager = GameContext.Current.CivilizationManagers[fleet.Owner];
             if (civManager == null)
                 return false;
 
@@ -67,7 +67,7 @@ namespace Supremacy.Orbitals
             if (!fleet.IsOwned)
                 return false;
 
-            var mapData = GameContext.Current.CivilizationManagers[fleet.Owner].MapData;
+            CivilizationMapData mapData = GameContext.Current.CivilizationManagers[fleet.Owner].MapData;
 
             return (mapData.GetFuelRange(sector.Location) <= fleet.Range);
         }

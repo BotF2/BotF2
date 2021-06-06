@@ -9,7 +9,7 @@ namespace Supremacy.Client.Data
     {
         public override object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            var type = parameter as Type;
+            Type type = parameter as Type;
             if (type == null)
                 return false;
 

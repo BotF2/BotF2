@@ -109,12 +109,12 @@ namespace Supremacy.Client.Controls
 
         public void SnapToScreen()
         {
-            var popupSite = InfoCardSite;
+            InfoCardSite popupSite = InfoCardSite;
             if (popupSite == null)
                 return;
 
-            var bounds = new Rect(Left, Top, Width, Height);
-            var workingArea = new Rect(new Point(), popupSite.RenderSize);
+            Rect bounds = new Rect(Left, Top, Width, Height);
+            Rect workingArea = new Rect(new Point(), popupSite.RenderSize);
 
             if (bounds.Right > workingArea.Right)
                 bounds.Offset(workingArea.Right - bounds.Right, 0);
@@ -149,16 +149,16 @@ namespace Supremacy.Client.Controls
         {
             base.OnActivated(e);
 
-            var handler = PopupWindowActivatedEvent;
+            EventHandler handler = PopupWindowActivatedEvent;
             if (handler != null)
                 handler(this, EventArgs.Empty);
 
-            var dropShadowColor = DropShadowColor;
+            Color dropShadowColor = DropShadowColor;
             dropShadowColor.A *= 2;
             DropShadowColor = dropShadowColor;
 
             // Bring this window to the front
-            var popupSite = InfoCardSite;
+            InfoCardSite popupSite = InfoCardSite;
             if (popupSite != null)
                 popupSite.BringToFront(this);
         }
@@ -167,7 +167,7 @@ namespace Supremacy.Client.Controls
         {
             base.OnOpened(e);
 
-            var popupSite = InfoCardSite;
+            InfoCardSite popupSite = InfoCardSite;
             if (popupSite != null)
             {
                 popupSite.AddCanvasChild(this);
@@ -183,15 +183,15 @@ namespace Supremacy.Client.Controls
 
         private void OnPopupSitePreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-            var popupSite = InfoCardSite;
+            InfoCardSite popupSite = InfoCardSite;
             if (popupSite == null)
                 return;
 
-            var popup = popupSite.GetInfoCardFromHost(InfoCardHost);
+            InfoCard popup = popupSite.GetInfoCardFromHost(InfoCardHost);
             if ((popup == null) || popup.IsPinned)
                 return;
 
-            var hitTestResult = popupSite.InputHitTest(e.GetPosition(popupSite)) as DependencyObject;
+            DependencyObject hitTestResult = popupSite.InputHitTest(e.GetPosition(popupSite)) as DependencyObject;
             if ((hitTestResult != null) && this.IsVisualAncestorOf(hitTestResult))
                 return;
 
@@ -208,7 +208,7 @@ namespace Supremacy.Client.Controls
 
             Visibility = Visibility.Collapsed;
 
-            var popupSite = InfoCardSite;
+            InfoCardSite popupSite = InfoCardSite;
             if (popupSite != null)
                 popupSite.RemoveCanvasChild(this);
 
@@ -216,7 +216,7 @@ namespace Supremacy.Client.Controls
 
             base.OnClosed(e);
 
-            var handler = PopupWindowClosedEvent;
+            EventHandler handler = PopupWindowClosedEvent;
             if (handler != null)
                 handler(this, EventArgs.Empty);
 
@@ -235,12 +235,12 @@ namespace Supremacy.Client.Controls
 
             _isClosing = true;
 
-            var cancel = false;
+            bool cancel = false;
 
-            var popupSite = InfoCardSite;
+            InfoCardSite popupSite = InfoCardSite;
             if (popupSite != null)
             {
-                var popup = popupSite.GetInfoCardFromHost(InfoCardHost);
+                InfoCard popup = popupSite.GetInfoCardFromHost(InfoCardHost);
                 if (popup != null)
                     cancel |= (!popupSite.Close(popup, _closeReason, false));
             }
@@ -265,7 +265,7 @@ namespace Supremacy.Client.Controls
             if (!IsVisible)
                 return;
 
-            var popup = InfoCardSite.GetInfoCardFromHost(InfoCardHost);
+            InfoCard popup = InfoCardSite.GetInfoCardFromHost(InfoCardHost);
             if ((popup != null) && !popup.IsPinned)
                 popup.Close();
         }
@@ -278,7 +278,7 @@ namespace Supremacy.Client.Controls
         {
             base.OnLocationChanged(e);
 
-            var handler = PopupWindowLocationChangedEvent;
+            EventHandler handler = PopupWindowLocationChangedEvent;
             if (handler != null)
                 handler(this, EventArgs.Empty);
 

@@ -97,7 +97,7 @@ namespace Supremacy.Client.Views
             if (!_appContext.IsGameInPlay || _appContext.IsGameEnding)
                 return;
 
-            var localPlayerEmpire = _appContext.LocalPlayerEmpire;
+            CivilizationManager localPlayerEmpire = _appContext.LocalPlayerEmpire;
             if (localPlayerEmpire == null)
                 return;
         }
@@ -107,7 +107,7 @@ namespace Supremacy.Client.Views
             if ((sector == null) || (sector.System == null))
                 return;
 
-            var colony = sector.System.Colony;
+            Colony colony = sector.System.Colony;
             if (colony == null)
                 return;
 
@@ -119,9 +119,9 @@ namespace Supremacy.Client.Views
             if (!_appContext.IsSinglePlayerGame)
                 return;
 
-            var map = _appContext.CurrentGame.Universe.Map;
-            var playerCiv = _appContext.LocalPlayer.Empire;
-            var mapData = _appContext.LocalPlayerEmpire.MapData;
+            SectorMap map = _appContext.CurrentGame.Universe.Map;
+            Entities.Civilization playerCiv = _appContext.LocalPlayer.Empire;
+            CivilizationMapData mapData = _appContext.LocalPlayerEmpire.MapData;
 
             for (int x = 0; x < map.Width; x++)
             {
@@ -133,9 +133,9 @@ namespace Supremacy.Client.Views
                 }
             }
 
-            var diplomat = Diplomat.Get(playerCiv);
+            Diplomat diplomat = Diplomat.Get(playerCiv);
 
-            foreach (var civ in GameContext.Current.Civilizations)
+            foreach (Entities.Civilization civ in GameContext.Current.Civilizations)
             {
                 if (civ == playerCiv)
                     continue;
@@ -157,7 +157,7 @@ namespace Supremacy.Client.Views
                 return;
             }
 
-            var cheatMenu = new CheatMenu(_appContext);
+            CheatMenu cheatMenu = new CheatMenu(_appContext);
             cheatMenu.ShowDialog();
         }
 
@@ -166,7 +166,7 @@ namespace Supremacy.Client.Views
             //if (!_appContext.IsSinglePlayerGame)
             //    return;
 
-            var _f12_Screen = new GameInfoScreen(_appContext);
+            GameInfoScreen _f12_Screen = new GameInfoScreen(_appContext);
             _f12_Screen.ShowDialog();
         }
         private void Execute_f11_ScreenCommand(object t)
@@ -174,7 +174,7 @@ namespace Supremacy.Client.Views
             //if (!_appContext.IsSinglePlayerGame)
             //    return;
 
-            var _f11_Screen = new GameInfoScreen(_appContext);
+            GameInfoScreen _f11_Screen = new GameInfoScreen(_appContext);
             _f11_Screen.ShowDialog();
         }
         private void Execute_f10_ScreenCommand(object t)
@@ -182,7 +182,7 @@ namespace Supremacy.Client.Views
             //if (!_appContext.IsSinglePlayerGame)
             //    return;
 
-            var _f10_Screen = new GameInfoScreen(_appContext);
+            GameInfoScreen _f10_Screen = new GameInfoScreen(_appContext);
             _f10_Screen.ShowDialog();
         }
 
@@ -193,7 +193,7 @@ namespace Supremacy.Client.Views
 
             //var _f09_Screen = new GameInfoScreen(_appContext);
             //_f09_Screen.ShowDialog();
-            var GameInfoScreen = new GameInfoScreen(_appContext);
+            GameInfoScreen GameInfoScreen = new GameInfoScreen(_appContext);
             GameInfoScreen.ShowDialog();
         }
 
@@ -202,7 +202,7 @@ namespace Supremacy.Client.Views
             //if (!_appContext.IsSinglePlayerGame)
             //    return;
 
-            var _f08_Screen = new ColonyInfoScreen(_appContext);
+            ColonyInfoScreen _f08_Screen = new ColonyInfoScreen(_appContext);
             _f08_Screen.ShowDialog();
         }
 
@@ -211,7 +211,7 @@ namespace Supremacy.Client.Views
             //if (!_appContext.IsSinglePlayerGame)
             //    return;
 
-            var _f07_Screen = new GameInfoScreen(_appContext);
+            GameInfoScreen _f07_Screen = new GameInfoScreen(_appContext);
             _f07_Screen.ShowDialog();
         }
 
@@ -220,7 +220,7 @@ namespace Supremacy.Client.Views
             //if (!_appContext.IsSinglePlayerGame)
             //    return;
 
-            var _f06_Screen = new ColorInfoScreen(_appContext);
+            ColorInfoScreen _f06_Screen = new ColorInfoScreen(_appContext);
             _f06_Screen.ShowDialog();
         }
         #endregion

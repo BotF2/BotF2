@@ -42,7 +42,7 @@ namespace Supremacy.Scripting.Ast
 
         public override void Dump(SourceWriter sw, int indentChange)
         {
-            var name = Name;
+            string name = Name;
 
             if (IsBuiltinType)
             {

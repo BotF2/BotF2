@@ -40,7 +40,7 @@ namespace Supremacy.Client
         {
             base.OnApplyTemplate();
 
-            var nameText = GetTemplateChild("NameText") as TextBox;
+            TextBox nameText = GetTemplateChild("NameText") as TextBox;
 
             if (nameText == null)
                 return;
@@ -48,7 +48,7 @@ namespace Supremacy.Client
             nameText.GotFocus += NameText_OnGotFocus;
             nameText.TextChanged += NameText_OnTextChanged;
 
-            var classText = GetTemplateChild("ClassText") as TextBox;
+            TextBox classText = GetTemplateChild("ClassText") as TextBox;
 
             if (classText == null)
                 return;
@@ -60,10 +60,10 @@ namespace Supremacy.Client
 
         private static void NameText_OnTextChanged(object sender, TextChangedEventArgs e)
         {
-            var nameText = e.Source as TextBox;
+            TextBox nameText = e.Source as TextBox;
             if (nameText == null)
                 return;
-            var bindingExpression = nameText.GetBindingExpression(TextBox.TextProperty);
+            System.Windows.Data.BindingExpression bindingExpression = nameText.GetBindingExpression(TextBox.TextProperty);
             if (bindingExpression == null)
                 return;
             if (!String.IsNullOrEmpty(nameText.Text))
@@ -72,10 +72,10 @@ namespace Supremacy.Client
 
         private static void ClassText_OnTextChanged(object sender, TextChangedEventArgs e)
         {
-            var classText = e.Source as TextBox;
+            TextBox classText = e.Source as TextBox;
             if (classText == null)
                 return;
-            var bindingExpression = classText.GetBindingExpression(TextBox.TextProperty);
+            System.Windows.Data.BindingExpression bindingExpression = classText.GetBindingExpression(TextBox.TextProperty);
             if (bindingExpression == null)
                 return;
             if (!String.IsNullOrEmpty(classText.Text))
@@ -84,7 +84,7 @@ namespace Supremacy.Client
 
         private void NameText_OnGotFocus(object sender, RoutedEventArgs e)
         {
-            var nameText = e.Source as TextBox;
+            TextBox nameText = e.Source as TextBox;
             if (nameText == null)
                 return;
             _previousText = nameText.Text;
@@ -92,7 +92,7 @@ namespace Supremacy.Client
 
         private void ClassText_OnGotFocus(object sender, RoutedEventArgs e)
         {
-            var classText= e.Source as TextBox;
+            TextBox classText = e.Source as TextBox;
             if (classText== null)
                 return;
             _previousClassText = classText.Text;
@@ -100,12 +100,12 @@ namespace Supremacy.Client
 
         private void NameText_OnLostFocus(object sender, RoutedEventArgs e)
         {
-            var nameText = e.Source as TextBox;
-            var previousText = _previousText;
+            TextBox nameText = e.Source as TextBox;
+            string previousText = _previousText;
             _previousText = null;
             if ((nameText == null) || String.Equals(nameText.Text, previousText))
                 return;
-            var ship = DataContext as Ship;
+            Ship ship = DataContext as Ship;
             if (ship == null)
                 return;
             if (String.IsNullOrEmpty(nameText.Text.Trim()) || String.Equals(ship.Name, ship.ShipDesign.Name))
@@ -115,12 +115,12 @@ namespace Supremacy.Client
 
         private void ClassText_OnLostFocus(object sender, RoutedEventArgs e)
         {
-            var classText = e.Source as TextBox;
-            var previousText = _previousClassText;
+            TextBox classText = e.Source as TextBox;
+            string previousText = _previousClassText;
             _previousClassText = null;
             if ((classText == null) || String.Equals(classText.Text, previousText))
                 return;
-            var ship = DataContext as Ship;
+            Ship ship = DataContext as Ship;
             if (ship == null)
                 return;
             //if (String.IsNullOrEmpty(classText.Text.Trim()) || String.Equals(ship.ClassName, ship.ShipDesign.ClassName))

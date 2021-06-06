@@ -8,7 +8,7 @@ namespace Supremacy.Utility
         {
             const string letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
-            var suffix = "";
+            string suffix = "";
 
             if (number >= letters.Length)
                 suffix += letters[number/ letters.Length - 1];

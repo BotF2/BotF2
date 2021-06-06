@@ -36,7 +36,7 @@ namespace Supremacy.Intelligence
                 return false;
             else
             {
-                var civList = GameContext.Current.CivilizationManagers[localCivFromScreen].SpiedCivList;
+                List<Civilization> civList = GameContext.Current.CivilizationManagers[localCivFromScreen].SpiedCivList;
                 if (civList.Contains(CivZero))
                         return true;
                 else { return false; }
@@ -48,7 +48,7 @@ namespace Supremacy.Intelligence
                 return false;
             else
             {
-                var civList = GameContext.Current.CivilizationManagers[localCivFromScreen].SpiedCivList;
+                List<Civilization> civList = GameContext.Current.CivilizationManagers[localCivFromScreen].SpiedCivList;
                 if (civList.Contains(CivOne))
                     return true;
                 else { return false; }
@@ -60,7 +60,7 @@ namespace Supremacy.Intelligence
                     return false;
             else
             {
-                var civList = GameContext.Current.CivilizationManagers[localCivFromScreen].SpiedCivList;
+                List<Civilization> civList = GameContext.Current.CivilizationManagers[localCivFromScreen].SpiedCivList;
                 if (civList.Contains(CivTwo))
                     return true;
                 else { return false; }
@@ -72,7 +72,7 @@ namespace Supremacy.Intelligence
                     return false;
             else
             {
-                var civList = GameContext.Current.CivilizationManagers[localCivFromScreen].SpiedCivList;
+                List<Civilization> civList = GameContext.Current.CivilizationManagers[localCivFromScreen].SpiedCivList;
                 if (civList.Contains(CivThree))
                     return true;
                 else { return false; }
@@ -84,7 +84,7 @@ namespace Supremacy.Intelligence
                     return false;
             else
             {
-                var civList = GameContext.Current.CivilizationManagers[localCivFromScreen].SpiedCivList;
+                List<Civilization> civList = GameContext.Current.CivilizationManagers[localCivFromScreen].SpiedCivList;
                 if (civList.Contains(CivFour))
                     return true;
                 else { return false; }
@@ -96,7 +96,7 @@ namespace Supremacy.Intelligence
                 return false;
             else
             {
-                var civList = GameContext.Current.CivilizationManagers[localCivFromScreen].SpiedCivList;
+                List<Civilization> civList = GameContext.Current.CivilizationManagers[localCivFromScreen].SpiedCivList;
                 if (civList.Contains(CivFive))
                     return true;
                 else { return false; }
@@ -108,7 +108,7 @@ namespace Supremacy.Intelligence
                     return false;
             else
             {
-                var civList = GameContext.Current.CivilizationManagers[localCivFromScreen].SpiedCivList;
+                List<Civilization> civList = GameContext.Current.CivilizationManagers[localCivFromScreen].SpiedCivList;
                 if (civList.Contains(CivSix))
                     return true;
                 else { return false; }

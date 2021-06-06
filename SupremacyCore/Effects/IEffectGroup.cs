@@ -189,18 +189,18 @@ namespace Supremacy.Effects
 
         private EffectParameter CreateTargetParameter()
         {
-            var targetType = ScopeScript.ReturnType;
+            Type targetType = ScopeScript.ReturnType;
 
             if (targetType.IsGenericType)
             {
-                var openType = TypeManager.DropGenericTypeArguments(targetType);
+                Type openType = TypeManager.DropGenericTypeArguments(targetType);
                 if (typeof(IValueProvider<>).IsAssignableFrom(openType))
                     targetType = targetType.GetGenericArguments()[0];
             }
 
             if (targetType.IsGenericType)
             {
-                var openType = TypeManager.DropGenericTypeArguments(targetType);
+                Type openType = TypeManager.DropGenericTypeArguments(targetType);
                 if (typeof(IEnumerable<>).IsAssignableFrom(openType))
                     targetType = targetType.GetGenericArguments()[0];
             }

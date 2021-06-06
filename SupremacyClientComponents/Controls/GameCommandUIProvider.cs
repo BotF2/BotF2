@@ -69,7 +69,7 @@ namespace Supremacy.Client.Controls
 
         protected void NotifyPropertyChanged(string name)
         {
-            var handler = PropertyChanged;
+            PropertyChangedEventHandler handler = PropertyChanged;
             if (handler != null)
                 handler(this, new PropertyChangedEventArgs(name));
         }

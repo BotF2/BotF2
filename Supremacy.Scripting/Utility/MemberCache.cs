@@ -837,7 +837,7 @@ namespace Supremacy.Scripting.Utility
             foreach (DictionaryEntry entry in MemberHash)
             {
                 ArrayList members = (ArrayList)entry.Value;
-                foreach (var t in members)
+                foreach (object t in members)
                 {
                     CacheEntry memberEntry = (CacheEntry)t;
 

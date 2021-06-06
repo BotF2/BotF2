@@ -104,7 +104,7 @@ namespace Supremacy.Universe
 
                 int popForTradeRoute;
 
-                var civManager = GameContext.Current.CivilizationManagers[Owner.CivID];
+                CivilizationManager civManager = GameContext.Current.CivilizationManagers[Owner.CivID];
 
                 /*
                  * See what the minimum population level is for a new trade route for the
@@ -130,7 +130,7 @@ namespace Supremacy.Universe
         {
             get
             {
-                var system = System;
+                StarSystem system = System;
                 if (system != null)
                     return system.Name;
 
@@ -189,10 +189,10 @@ namespace Supremacy.Universe
         /// <returns>The neighboring <see cref="Sector"/>s.</returns>
         public IIndexedEnumerable<Sector> GetNeighbors()
         {
-            var mapDirections = EnumHelper.GetValues<MapDirection>();
-            var neighbors = new Sector[mapDirections.Length];
-            
-            var count = 0;
+            MapDirection[] mapDirections = EnumHelper.GetValues<MapDirection>();
+            Sector[] neighbors = new Sector[mapDirections.Length];
+
+            int count = 0;
 
             mapDirections
                 .Select(GetNeighbor)
@@ -260,7 +260,7 @@ namespace Supremacy.Universe
                 return null;
             }
 
-            var location = new MapLocation(
+            MapLocation location = new MapLocation(
                 _location.X + dx,
                 _location.Y + dy);
 
@@ -379,15 +379,15 @@ namespace Supremacy.Universe
             if (sector == null)
                 throw new ArgumentNullException("sector");
 
-            var system = sector.System;
+            StarSystem system = sector.System;
             if (system != null)
             {
-                var colony = system.Colony;
+                Colony colony = system.Colony;
                 if (colony != null)
                     return colony.Owner;
             }
 
-            var station = sector.Station;
+            Station station = sector.Station;
             if (station != null)
                 return station.Owner;
 

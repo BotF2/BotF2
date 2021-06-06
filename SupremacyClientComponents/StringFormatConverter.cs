@@ -17,8 +17,8 @@ namespace Supremacy.Client
             if (value == null)
                 return null;
 
-            var format = parameter as string;
-            var result = format == null ? value.ToString() : string.Format(format, value);
+            string format = parameter as string;
+            string result = format == null ? value.ToString() : string.Format(format, value);
 
             if (CharacterCasing == CharacterCasing.Upper)
                 return result.ToUpper();
@@ -41,7 +41,7 @@ namespace Supremacy.Client
 
         public override object MultiConvert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
-            var formatString = parameter as string;
+            string formatString = parameter as string;
             if (formatString == null)
                 return null;
 

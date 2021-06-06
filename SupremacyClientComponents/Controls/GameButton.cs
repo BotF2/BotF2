@@ -274,7 +274,7 @@ namespace Supremacy.Client.Controls
 
         internal static void BindToValue(DependencyObject obj, DependencyProperty property, object value)
         {
-            var binding = new Binding { BindsDirectlyToSource = true, Source = value };
+            Binding binding = new Binding { BindsDirectlyToSource = true, Source = value };
             BindingOperations.SetBinding(obj, property, binding);
         }
     }

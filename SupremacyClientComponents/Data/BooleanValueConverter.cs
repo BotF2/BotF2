@@ -29,7 +29,7 @@ namespace Supremacy.Client.Data
 
         public override object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            var convertedCondition = ValueConversionHelper.Convert(value, typeof(bool), culture: culture);
+            object convertedCondition = ValueConversionHelper.Convert(value, typeof(bool), culture: culture);
             if (convertedCondition == DependencyProperty.UnsetValue || !Equals(convertedCondition, True))
                 return ValueConversionHelper.Convert(_falseValue, targetType, parameter, culture);
             return ValueConversionHelper.Convert(_trueValue, targetType, parameter, culture);
@@ -37,9 +37,9 @@ namespace Supremacy.Client.Data
 
         public override object MultiConvert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
-            foreach (var value in values)
+            foreach (object value in values)
             {
-                var convertedCondition = ValueConversionHelper.Convert(value, typeof(bool), culture: culture);
+                object convertedCondition = ValueConversionHelper.Convert(value, typeof(bool), culture: culture);
                 if (convertedCondition == DependencyProperty.UnsetValue || !Equals(convertedCondition, True))
                     return ValueConversionHelper.Convert(_falseValue, targetType, parameter, culture);
             }

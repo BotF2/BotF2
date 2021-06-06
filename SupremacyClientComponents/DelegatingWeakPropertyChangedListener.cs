@@ -18,7 +18,7 @@ namespace Supremacy.Client
         #region Implementation of IWeakEventListener
         bool IWeakEventListener.ReceiveWeakEvent(Type managerType, object sender, EventArgs e)
         {
-            var args = e as PropertyChangedEventArgs;
+            PropertyChangedEventArgs args = e as PropertyChangedEventArgs;
             if (args == null)
                 return false;
             _handler(sender, args);

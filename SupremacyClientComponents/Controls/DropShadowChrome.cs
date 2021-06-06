@@ -80,12 +80,12 @@ namespace Supremacy.Client.Controls
 
         private GradientStopCollection CreateStops(double offsetPercentage)
         {
-            var color = Color;
-            var alpha = color.A;
+            Color color = Color;
+            byte alpha = color.A;
 
-            var gradientAmount = 1.0 - offsetPercentage;
+            double gradientAmount = 1.0 - offsetPercentage;
 
-            var stops = new GradientStopCollection
+            GradientStopCollection stops = new GradientStopCollection
                         {
                             new GradientStop(
                                 color, 
@@ -120,7 +120,7 @@ namespace Supremacy.Client.Controls
             if ((width <= 0) || (height <= 0))
                 return;
 
-            var bounds = new Rect(left, top, width, height);
+            Rect bounds = new Rect(left, top, width, height);
 
             Point startPoint;
             Point endPoint;
@@ -145,7 +145,7 @@ namespace Supremacy.Client.Controls
                     break;
             }
 
-            var brush = new LinearGradientBrush(CreateStops(0.0), startPoint, endPoint);
+            LinearGradientBrush brush = new LinearGradientBrush(CreateStops(0.0), startPoint, endPoint);
             brush.Freeze();
 
             drawingContext.DrawRectangle(brush, null, bounds);
@@ -162,8 +162,8 @@ namespace Supremacy.Client.Controls
             if ((width <= 0) || (height <= 0))
                 return;
 
-            var bounds = new Rect(left, top, width, height);
-            var offsetPercentage = 0.0;
+            Rect bounds = new Rect(left, top, width, height);
+            double offsetPercentage = 0.0;
 
             switch (corner)
             {
@@ -185,7 +185,7 @@ namespace Supremacy.Client.Controls
                     break;
             }
 
-            var brush = new RadialGradientBrush(CreateStops(offsetPercentage));
+            RadialGradientBrush brush = new RadialGradientBrush(CreateStops(offsetPercentage));
             
             switch (corner)
             {
@@ -234,30 +234,30 @@ namespace Supremacy.Client.Controls
             if (Color.A == 0.0)
                 return;
 
-            var bounds = new Rect(new Point(XOffset, YOffset), RenderSize);
+            Rect bounds = new Rect(new Point(XOffset, YOffset), RenderSize);
 
             bounds.Inflate(ZOffset, ZOffset);
 
             if ((bounds.Width <= 0) || (bounds.Height <= 0))
                 return;
 
-            var innerBounds = new Rect(
+            Rect innerBounds = new Rect(
                 bounds.Left + BorderThickness.Left,
                 bounds.Top + BorderThickness.Top,
                 Math.Max(0, bounds.Width - BorderThickness.Left - BorderThickness.Right),
                 Math.Max(0, bounds.Height - BorderThickness.Top - BorderThickness.Bottom));
 
-            var guidelinesX = new[] { bounds.Left, innerBounds.Left, innerBounds.Right, bounds.Right };
-            var guidelinesY = new[] { bounds.Top, innerBounds.Top, innerBounds.Bottom, bounds.Bottom };
+            double[] guidelinesX = new[] { bounds.Left, innerBounds.Left, innerBounds.Right, bounds.Right };
+            double[] guidelinesY = new[] { bounds.Top, innerBounds.Top, innerBounds.Bottom, bounds.Bottom };
 
             drawingContext.PushGuidelineSet(new GuidelineSet(guidelinesX, guidelinesY));
 
             if ((innerBounds.Width > 0) && (innerBounds.Height > 0))
             {
-                var brush = new SolidColorBrush(Color);
+                SolidColorBrush brush = new SolidColorBrush(Color);
                 brush.Freeze();
 
-                var figure = new PathFigure
+                PathFigure figure = new PathFigure
                              {
                                  StartPoint = new Point(innerBounds.Left + CornerRadius.TopLeft, innerBounds.Top)
                              };
@@ -329,7 +329,7 @@ namespace Supremacy.Client.Controls
                         true));
                 figure.IsClosed = true;
 
-                var path = new PathGeometry();
+                PathGeometry path = new PathGeometry();
                 path.Figures.Add(figure);
                 path.Freeze();
                 drawingContext.DrawGeometry(brush, null, path);

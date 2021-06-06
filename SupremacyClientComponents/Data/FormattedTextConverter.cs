@@ -81,27 +81,27 @@ namespace Supremacy.Client.Data
         /// </returns>
         public override object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            var source = (string)value;
+            string source = (string)value;
 
             if (string.IsNullOrWhiteSpace(source))
                 return Binding.DoNothing;
 
-            var inlines = new List<Inline>();
-            var lines = source.Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
+            List<Inline> inlines = new List<Inline>();
+            string[] lines = source.Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
 
-            foreach (var line in lines)
+            foreach (string line in lines)
             {
-                var sb = new StringBuilder();
-                var parentSpan = new Span();
+                StringBuilder sb = new StringBuilder();
+                Span parentSpan = new Span();
 
-                for (var i = 0; i < line.Length; ++i)
+                for (int i = 0; i < line.Length; ++i)
                 {
-                    var current = line[i];
-                    var next = (i + 1 < line.Length) ? line[i + 1] : (char?)null;
+                    char current = line[i];
+                    char? next = (i + 1 < line.Length) ? line[i + 1] : (char?)null;
 
                     if (current == '[' && next != '[')
                     {
-                        var text = sb.ToString();
+                        string text = sb.ToString();
                         
                         sb.Length = 0;
                         i += (next == '/') ? 2 : 1;
@@ -124,18 +124,18 @@ namespace Supremacy.Client.Data
                         }
                         else
                         {
-                            var tag = sb.ToString().Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                            string[] tag = sb.ToString().Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
                             if (tag.Length > 0)
                             {
-                                var inlineType = GetInlineType(tag[0].TrimEnd('/'));
+                                InlineType inlineType = GetInlineType(tag[0].TrimEnd('/'));
                                 if (inlineType == InlineType.LineBreak)
                                 {
                                     parentSpan.Inlines.Add(new LineBreak());
                                 }
                                 else if (inlineType != InlineType.Run)
                                 {
-                                    var tagParam = (tag.Length > 1) ? tag[1] : null;
-                                    var newParentSpan = CreateSpan(inlineType, tagParam);
+                                    string tagParam = (tag.Length > 1) ? tag[1] : null;
+                                    Span newParentSpan = CreateSpan(inlineType, tagParam);
 
                                     parentSpan.Inlines.Add(newParentSpan);
                                     parentSpan = newParentSpan;
@@ -199,7 +199,7 @@ namespace Supremacy.Client.Data
                     if (!Uri.TryCreate(param, UriKind.Absolute, out uri))
                         uri = null;
 
-                    var link = new Hyperlink();
+                        Hyperlink link = new Hyperlink();
                     link.NavigateUri = uri;
 
                     GenericWeakEventManager.AddListener(
@@ -243,7 +243,7 @@ namespace Supremacy.Client.Data
                 {
                     span = new Span();
 
-                    var match = _resourceReferenceRegex.Match(param);
+                        Match match = _resourceReferenceRegex.Match(param);
                     if (!match.Success)
                     {
                         span.Foreground = (Brush) _brushConverter.ConvertFromInvariantString(param);
@@ -268,7 +268,7 @@ namespace Supremacy.Client.Data
 
         private static void OnHyperlinkClick(object sender, RoutedEventArgs e)
         {
-            var link = sender as Hyperlink;
+            Hyperlink link = sender as Hyperlink;
             if (link == null)
                 return;
 

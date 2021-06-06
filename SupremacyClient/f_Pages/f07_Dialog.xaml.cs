@@ -76,7 +76,7 @@ namespace Supremacy.Client
             InitializeComponent();
             //LoadEncyclopediaEntries();
             OnApplyTemplate();
-            var appContext = ServiceLocator.Current.GetInstance<IAppContext>();
+            IAppContext appContext = ServiceLocator.Current.GetInstance<IAppContext>();
 
             InputBindings.Add(
                 new KeyBinding(
@@ -145,18 +145,18 @@ namespace Supremacy.Client
         {
             //int playerCivId = 0;
             //var playerCiv = GameContext.Current.CivilizationManagers[playerCivId].Civilization;
-            var civManager = GameContext.Current.CivilizationManagers[0];
-            var techTree = new TechTree();
+            CivilizationManager civManager = GameContext.Current.CivilizationManagers[0];
+            TechTree techTree = new TechTree();
 
             techTree.Merge(civManager.TechTree);
 
-            foreach (var civ in GameContext.Current.Civilizations)
+            foreach (Entities.Civilization civ in GameContext.Current.Civilizations)
             {
                 //if (DiplomacyHelper.IsMember(civ, playerCiv))
                     techTree.Merge(GameContext.Current.TechTrees[civ]);
             }
 
-            var groups = (
+            IOrderedEnumerable<IGrouping<EncyclopediaCategory, IEncyclopediaEntry>> groups = (
                              from civ in GameContext.Current.Civilizations
                              //let diplomacyStatus = DiplomacyHelper.GetForeignPowerStatus(playerCiv, civ)
                              //where (diplomacyStatus != ForeignPowerStatus.NoContact) || (civ.CivID == playerCivId)
@@ -176,10 +176,10 @@ namespace Supremacy.Client
                 .GroupBy(o => o.EncyclopediaCategory)
                 .OrderBy(o => o.Key);
 
-            var groupStyle = new Style(
+            Style groupStyle = new Style(
                 typeof(TreeViewItem),
                 Application.Current.FindResource(typeof(TreeViewItem)) as Style);
-            var itemStyle = new Style(
+            Style itemStyle = new Style(
                 typeof(TreeViewItem),
                 Application.Current.FindResource(typeof(TreeViewItem)) as Style);
 
@@ -207,16 +207,16 @@ namespace Supremacy.Client
 
             _encyclopediaEntryListView.Items.Clear();
 
-            foreach (var item in groups)
+            foreach (IGrouping<EncyclopediaCategory, IEncyclopediaEntry> item in groups)
             {
                 //item.Key
                 GameLog.Client.Research.DebugFormat("F07_Tree Item = {0}", item.Key);
             }
 
-            foreach (var group in groups)
+            foreach (IGrouping<EncyclopediaCategory, IEncyclopediaEntry> group in groups)
             {
-                var groupItem = new TreeViewItem();
-                var entriesView = CollectionViewSource.GetDefaultView(group);
+                TreeViewItem groupItem = new TreeViewItem();
+                ICollectionView entriesView = CollectionViewSource.GetDefaultView(group);
                 entriesView.Filter = FilterEncyclopediaEntry;
                 groupItem.Style = groupStyle;
                 groupItem.SetResourceReference(
@@ -233,7 +233,7 @@ namespace Supremacy.Client
 
         private bool FilterEncyclopediaEntry(object value)
         {
-            var searchText = String.Empty;
+            string searchText = String.Empty;
 
             if (!(value is IEncyclopediaEntry entry))
                 return false;
@@ -244,13 +244,13 @@ namespace Supremacy.Client
             if (searchText == String.Empty)
                 return true;
 
-            var words = searchText.Split(
+            string[] words = searchText.Split(
                 new[] { ' ', ',', ';' },
                 StringSplitOptions.RemoveEmptyEntries);
 
-            foreach (var word in words)
+            foreach (string word in words)
             {
-                var lcWord = word.ToLowerInvariant();
+                string lcWord = word.ToLowerInvariant();
                 return (entry.EncyclopediaHeading.ToLowerInvariant().Contains(lcWord)
                         || entry.EncyclopediaText.ToLowerInvariant().Contains(lcWord));
             }
@@ -270,10 +270,10 @@ namespace Supremacy.Client
             if (_encyclopediaEntryListView == null)
                 return;
 
-            var groupViews = (from groupItem in _encyclopediaEntryListView.Items.OfType<TreeViewItem>()
+            System.Collections.Generic.IEnumerable<ICollectionView> groupViews = (from groupItem in _encyclopediaEntryListView.Items.OfType<TreeViewItem>()
                               select groupItem.ItemsSource).OfType<ICollectionView>();
 
-            foreach (var groupView in groupViews)
+            foreach (ICollectionView groupView in groupViews)
                 groupView.Refresh();
         }
 
@@ -294,13 +294,13 @@ namespace Supremacy.Client
             if (entry == null)
                 return new FlowDocument();
 
-            var design = entry as TechObjectDesign;
-            var doc = new FlowDocument();
-            var imageConverter = new EncyclopediaImageConverter();
-            var fiendImageConverter = new ResearchFieldImageConverter();
+            TechObjectDesign design = entry as TechObjectDesign;
+            FlowDocument doc = new FlowDocument();
+            EncyclopediaImageConverter imageConverter = new EncyclopediaImageConverter();
+            ResearchFieldImageConverter fiendImageConverter = new ResearchFieldImageConverter();
 
-            var headerRun = new Run(entry.EncyclopediaHeading);
-            var headerBlock = new Paragraph(headerRun)
+            Run headerRun = new Run(entry.EncyclopediaHeading);
+            Paragraph headerBlock = new Paragraph(headerRun)
             {
                 FontFamily = FindResource(ClientResources.DefaultFontFamilyKey) as FontFamily,
                 FontSize = 16d * 96d / 72d,
@@ -315,13 +315,13 @@ namespace Supremacy.Client
             doc.TextAlignment = TextAlignment.Left;
 
             // EncyclopediaImage
-            var image = new Border();
+            Border image = new Border();
 
-            var paragraphs = TextHelper.TrimParagraphs(entry.EncyclopediaText).Split(
+            System.Collections.Generic.List<Paragraph> paragraphs = TextHelper.TrimParagraphs(entry.EncyclopediaText).Split(
                 new[] { Environment.NewLine },
                 StringSplitOptions.RemoveEmptyEntries).Select(o => new Paragraph(new Run(o))).ToList();
 
-            var firstParagraph = paragraphs.FirstOrDefault();
+            Paragraph firstParagraph = paragraphs.FirstOrDefault();
             if (firstParagraph == null)
             {
                 firstParagraph = new Paragraph();
@@ -334,10 +334,10 @@ namespace Supremacy.Client
                 null,
                 null) is BitmapImage imageSource)
             {
-                var imageWidth = imageSource.Width;
-                var imageHeight = imageSource.Height;
+                double imageWidth = imageSource.Width;
+                double imageHeight = imageSource.Height;
 
-                var imageRatio = imageWidth / imageHeight;
+                double imageRatio = imageWidth / imageHeight;
                 if (imageRatio >= 1.0)
                 {
                     imageWidth = Math.Max(200, Math.Min(imageWidth, 270));
@@ -356,8 +356,8 @@ namespace Supremacy.Client
                 image.CornerRadius = new CornerRadius(14.0);
                 image.Background = new ImageBrush(imageSource) { Stretch = Stretch.UniformToFill };
 
-                var imageMargin = new Thickness(14, 0, 0, 14);
-                var imageFloater = new Floater
+                Thickness imageMargin = new Thickness(14, 0, 0, 14);
+                Floater imageFloater = new Floater
                 {
                     Blocks = { new BlockUIContainer(image) },
                     Margin = imageMargin,
@@ -376,7 +376,7 @@ namespace Supremacy.Client
 
             if (design != null)
             {
-                var statsControl = new ContentControl
+                ContentControl statsControl = new ContentControl
                 {
                     Margin = new Thickness(0, 14, 0, 0),
                     Width = 320,
@@ -390,7 +390,7 @@ namespace Supremacy.Client
 
 
 
-        var statsBlock = new Paragraph(new InlineUIContainer(statsControl))
+                Paragraph statsBlock = new Paragraph(new InlineUIContainer(statsControl))
                 {
                     TextAlignment = TextAlignment.Center,
                     Margin = new Thickness(0)
@@ -398,21 +398,21 @@ namespace Supremacy.Client
 
                 doc.Blocks.Add(statsBlock);
 
-                var techTable = new Table();
+                Table techTable = new Table();
                 techTable.RowGroups.Add(new TableRowGroup());
                 techTable.RowGroups[0].Rows.Add(new TableRow());
-                foreach (var field in GameContext.Current.ResearchMatrix.Fields)
+                foreach (ResearchField field in GameContext.Current.ResearchMatrix.Fields)
                 {
-                    var techCategory = field.TechCategory;
-                    var column = new TableColumn();
-                    var techIcon = new Border();
-                    var techTextShadow = new TextBlock { Effect = new BlurEffect { Radius = 6 } };
-                    var techText = new TextBlock();
+                    TechCategory techCategory = field.TechCategory;
+                    TableColumn column = new TableColumn();
+                    Border techIcon = new Border();
+                    TextBlock techTextShadow = new TextBlock { Effect = new BlurEffect { Radius = 6 } };
+                    TextBlock techText = new TextBlock();
 
                     if (design.TechRequirements[techCategory] < 1)
                         techIcon.Opacity = 0.25;
 
-                    var imageBrush = new ImageBrush(
+                    ImageBrush imageBrush = new ImageBrush(
                         fiendImageConverter.Convert(field, typeof(BitmapImage), null, null)
                         as ImageSource)
                     { Stretch = Stretch.Uniform };
@@ -463,7 +463,7 @@ namespace Supremacy.Client
                             Mode = BindingMode.OneWay
                         });
 
-                    var techIconContainer = new BlockUIContainer(techIcon);
+                    BlockUIContainer techIconContainer = new BlockUIContainer(techIcon);
 
                     techTable.Columns.Add(column);
                     techTable.RowGroups[0].Rows[0].Cells.Add(new TableCell(techIconContainer));

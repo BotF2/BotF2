@@ -44,14 +44,14 @@ namespace Supremacy.Client.Data
                 return NullValueForType(targetType);
 
             // If direct assignment is possible, the value is valid.
-            var sourceType = value.GetType();
+            Type sourceType = value.GetType();
             if (targetType.IsAssignableFrom(sourceType))
                 return value;
 
             if (culture == null)
                 culture = CultureInfo.InvariantCulture;
 
-            var converter = _converterTable[sourceType, targetType, false];
+            IValueConverter converter = _converterTable[sourceType, targetType, false];
             if (converter == null)
             {
                 converter = DefaultValueConverter.Create(sourceType, targetType, false);
@@ -65,7 +65,7 @@ namespace Supremacy.Client.Data
                 _converterTable.Add(sourceType, targetType, false, converter);
             }
 
-            var result = converter.Convert(value, targetType, parameter, culture);
+            object result = converter.Convert(value, targetType, parameter, culture);
 
             if (!CoerceValidValue(ref result, targetType) || result == Binding.DoNothing || result == DependencyProperty.UnsetValue)
                 return DependencyProperty.UnsetValue;
@@ -225,8 +225,8 @@ namespace Supremacy.Client.Data
                 Type targetType,
                 bool targetToSource)
             {
-                var sourceIsNullable = false;
-                var targetIsNullable = false;
+                bool sourceIsNullable = false;
+                bool targetIsNullable = false;
 
                 // Sometimes no conversion is necessary.
                 if (sourceType == targetType || (!targetToSource && targetType.IsAssignableFrom(sourceType)))
@@ -247,14 +247,14 @@ namespace Supremacy.Client.Data
                 // Need to check for nullable types first, since NullableConverter is a bit over-eager;
                 // TypeConverter for Nullable can convert, e.g., Nullable<DateTime> to string, but it ends
                 // up doing a different conversion than the TypeConverter for the generic's inner type.
-                var underlyingSourceType = Nullable.GetUnderlyingType(sourceType);
+                Type underlyingSourceType = Nullable.GetUnderlyingType(sourceType);
                 if (underlyingSourceType != null)
                 {
                     sourceType = underlyingSourceType;
                     sourceIsNullable = true;
                 }
 
-                var underlyingTargetType = Nullable.GetUnderlyingType(targetType);
+                Type underlyingTargetType = Nullable.GetUnderlyingType(targetType);
                 if (underlyingTargetType != null)
                 {
                     targetType = underlyingTargetType;
@@ -278,9 +278,9 @@ namespace Supremacy.Client.Data
                     return new InterfaceConverter(sourceType, targetType);
 
                 // Try using the source's type converter.
-                var typeConverter = GetConverter(sourceType);
-                var canConvertTo = typeConverter != null && typeConverter.CanConvertTo(targetType);
-                var canConvertFrom = typeConverter != null && typeConverter.CanConvertFrom(targetType);
+                TypeConverter typeConverter = GetConverter(sourceType);
+                bool canConvertTo = typeConverter != null && typeConverter.CanConvertTo(targetType);
+                bool canConvertFrom = typeConverter != null && typeConverter.CanConvertFrom(targetType);
 
                 if ((canConvertTo || targetType.IsAssignableFrom(sourceType)) &&
                     (!targetToSource || canConvertFrom || sourceType.IsAssignableFrom(targetType)))
@@ -317,7 +317,7 @@ namespace Supremacy.Client.Data
             {
                 TypeConverter typeConverter = null;
 
-                var knownType = XamlReader.GetWpfSchemaContext().GetXamlType(type);
+                System.Xaml.XamlType knownType = XamlReader.GetWpfSchemaContext().GetXamlType(type);
                 
                 if (knownType != null && knownType.TypeConverter != null)
                     typeConverter = knownType.TypeConverter.ConverterInstance;
@@ -333,9 +333,9 @@ namespace Supremacy.Client.Data
                 // Some types have Parse methods that are more successful than their type converters
                 // at converting strings.
 
-                var result = DependencyProperty.UnsetValue;
+                object result = DependencyProperty.UnsetValue;
 
-                var stringValue = o as string;
+                string stringValue = o as string;
                 if (stringValue != null)
                 {
                     try
@@ -394,8 +394,8 @@ namespace Supremacy.Client.Data
 
             private object ConvertHelper(object o, Type destinationType, DependencyObject targetElement, CultureInfo culture, bool isForward)
             {
-                var value = DependencyProperty.UnsetValue;
-                var needAssignment = (isForward ? !_shouldConvertTo : !_shouldConvertFrom);
+                object value = DependencyProperty.UnsetValue;
+                bool needAssignment = (isForward ? !_shouldConvertTo : !_shouldConvertFrom);
 
                 NotSupportedException savedException = null;
 
@@ -405,7 +405,7 @@ namespace Supremacy.Client.Data
 
                     if (value == DependencyProperty.UnsetValue)
                     {
-                        var context = new ValueConverterContext();
+                        ValueConverterContext context = new ValueConverterContext();
 
                         try
                         {
@@ -591,7 +591,7 @@ namespace Supremacy.Client.Data
 
             public object ConvertBack(object o, Type type, object parameter, CultureInfo culture)
             {
-                var parsedValue = DefaultValueConverter.TryParse(o, _sourceType, culture);
+                object parsedValue = DefaultValueConverter.TryParse(o, _sourceType, culture);
 
                 return parsedValue != DependencyProperty.UnsetValue
                            ? parsedValue
@@ -617,7 +617,7 @@ namespace Supremacy.Client.Data
                     return CanConvertChar(sourceType);
 
                 // Using nested loops is up to 40% more efficient than using one loop
-                for (var i = 0; i < SupportedTypes.Length; ++i)
+                for (int i = 0; i < SupportedTypes.Length; ++i)
                 {
                     if (sourceType == SupportedTypes[i])
                     {
@@ -644,7 +644,7 @@ namespace Supremacy.Client.Data
 
             private static bool CanConvertChar(Type type)
             {
-                for (var i = 0; i < CharSupportedTypes.Length; ++i)
+                for (int i = 0; i < CharSupportedTypes.Length; ++i)
                 {
                     if (type == CharSupportedTypes[i])
                         return true;
@@ -661,7 +661,7 @@ namespace Supremacy.Client.Data
         {
             object IValueConverter.Convert(object o, Type type, object parameter, CultureInfo culture)
             {
-                var listSource = o as IListSource;
+                IListSource listSource = o as IListSource;
                 return listSource != null ? listSource.GetList() : null;
             }
 
@@ -750,7 +750,7 @@ namespace Supremacy.Client.Data
 
                 public override bool Equals(object o)
                 {
-                    var key = o as Key?;
+                    Key? key = o as Key?;
                     return key.HasValue && this == key.Value;
                 }
             }

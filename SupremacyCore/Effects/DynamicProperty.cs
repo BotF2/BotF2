@@ -176,7 +176,7 @@ namespace Supremacy.Effects
             string name,
             Type ownerType)
         {
-            var defaultValue = default(TValue);
+            TValue defaultValue = default(TValue);
             ValidateDefaultValue(defaultValue, validateValueCallback, name, ownerType);
             return defaultValue;
         }
@@ -202,7 +202,7 @@ namespace Supremacy.Effects
             string name,
             Type ownerType)
         {
-            var defaultValue = default(TValue);
+            TValue defaultValue = default(TValue);
             if ((validateValueCallback != null) && !validateValueCallback(defaultValue))
             {
                 throw new ArgumentException(
@@ -237,7 +237,7 @@ namespace Supremacy.Effects
             if ((typeMetadata != null) && typeMetadata.IsDefaultValueModified)
                 defaultMetadata = new DynamicPropertyMetadata<TValue>(typeMetadata.DefaultValue);
 
-            var property = RegisterCommon(name, ownerType, defaultMetadata, validateValueCallback);
+            DynamicProperty<TValue> property = RegisterCommon(name, ownerType, defaultMetadata, validateValueCallback);
             if (typeMetadata != null)
                 property.OverrideMetadata(ownerType, typeMetadata);
 
@@ -426,7 +426,7 @@ namespace Supremacy.Effects
             DynamicPropertyMetadata<TValue> defaultMetadata,
             ValidateValueCallback<TValue> validateValueCallback)
         {
-            var key = new FromNameKey(name, ownerType);
+            FromNameKey key = new FromNameKey(name, ownerType);
 
             lock (Synchronized)
             {
@@ -453,7 +453,7 @@ namespace Supremacy.Effects
                 }
             }
 
-            var property = new DynamicProperty<TValue>(name, ownerType, defaultMetadata, validateValueCallback);
+            DynamicProperty<TValue> property = new DynamicProperty<TValue>(name, ownerType, defaultMetadata, validateValueCallback);
 
             defaultMetadata.Seal(property, null);
 

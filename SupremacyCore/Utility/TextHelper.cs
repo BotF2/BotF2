@@ -21,8 +21,8 @@ namespace Supremacy.Utility
             if (text.Length == 0)
                 return text;
 
-            var result = new StringBuilder(text.Length);
-            var reader = new StringReader(text);
+            StringBuilder result = new StringBuilder(text.Length);
+            StringReader reader = new StringReader(text);
 
             string line;
             while ((line = reader.ReadLine()) != null)

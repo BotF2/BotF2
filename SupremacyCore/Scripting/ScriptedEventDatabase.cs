@@ -27,7 +27,7 @@ namespace Supremacy.Scripting
 
         public static ScriptedEventDatabase Load()
         {
-            var gameContext = GameContext.Current;
+            GameContext gameContext = GameContext.Current;
             if (gameContext == null)
                 gameContext = GameContext.Create(GameOptionsManager.LoadDefaults(), false);
 
@@ -43,7 +43,7 @@ namespace Supremacy.Scripting
                 if (!fileInfo.Exists)
                     return null;
 
-                using (var stream = fileInfo.OpenRead())
+                using (System.IO.Stream stream = fileInfo.OpenRead())
                 {
                     return (ScriptedEventDatabase)XamlServices.Load(stream);
                 }

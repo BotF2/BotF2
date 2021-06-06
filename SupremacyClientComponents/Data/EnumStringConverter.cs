@@ -13,7 +13,7 @@ namespace Supremacy.Client.Data
 
         public override object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            var stringValue = ConvertToString(value);
+            string stringValue = ConvertToString(value);
             if (stringValue == null || CharacterCasing == CharacterCasing.Normal)
                 return stringValue;
 
@@ -25,11 +25,11 @@ namespace Supremacy.Client.Data
 
         private static string ConvertToString(object value)
         {
-            var enumValue = value as Enum;
+            Enum enumValue = value as Enum;
             if (enumValue == null)
                 return (value != null) ? value.ToString() : string.Empty;
 
-            var textDatabase = LocalizedTextDatabase.Instance;
+            LocalizedTextDatabase textDatabase = LocalizedTextDatabase.Instance;
 
             LocalizedTextGroup group;
 
@@ -38,7 +38,7 @@ namespace Supremacy.Client.Data
 
             LocalizedString localizedString;
 
-            var entryName = enumValue.ToString();
+            string entryName = enumValue.ToString();
 
             if (!@group.Entries.TryGetValue(entryName, out localizedString))
                 return entryName;

@@ -41,7 +41,7 @@ namespace Supremacy.Client
                 string errors = "";
                 lock (_syncLock)
                 {
-                    var innerException = exception;
+                    Exception innerException = exception;
 
                     while (innerException != null)
                     {
@@ -76,9 +76,9 @@ namespace Supremacy.Client
         /// </summary>
         public void ReportError(string stackTrace)
         {
-            using (var client = new WebClient())
+            using (WebClient client = new WebClient())
             {
-                var values = new NameValueCollection
+                NameValueCollection values = new NameValueCollection
                 {
                     ["Version"] = ClientApp.ClientVersion.ToString(),
                     ["Title"] = stackTrace.Split('\n')[0],

@@ -111,11 +111,11 @@ namespace Supremacy.Client.Views
             _selectSectorCommand = new DelegateCommand<Sector>(
                 sector =>
                 {
-                    var system = sector.System;
+                    StarSystem system = sector.System;
                     if (system == null)
                         return;
 
-                    var colony = system.Colony;
+                    Colony colony = system.Colony;
                     if (colony == null || colony.OwnerID != AppContext.LocalPlayer.EmpireID)
                         return;
 
@@ -128,10 +128,10 @@ namespace Supremacy.Client.Views
 
         private void ExecutePreviousColonyCommand(object _)
         {
-            var colonies = Model.Colonies.ToList();
-            var currentColony = Model.SelectedColony;
+            List<Colony> colonies = Model.Colonies.ToList();
+            Colony currentColony = Model.SelectedColony;
 
-            var currentColonyIndex = colonies.IndexOf(currentColony);
+            int currentColonyIndex = colonies.IndexOf(currentColony);
             if (currentColonyIndex <= 0)
             {
                 if (colonies.Count == 0)
@@ -147,10 +147,10 @@ namespace Supremacy.Client.Views
 
         private void ExecuteNextColonyCommand(object _)
         {
-            var colonies = Model.Colonies.ToList();
-            var currentColony = Model.SelectedColony;
+            List<Colony> colonies = Model.Colonies.ToList();
+            Colony currentColony = Model.SelectedColony;
 
-            var currentColonyIndex = colonies.IndexOf(currentColony);
+            int currentColonyIndex = colonies.IndexOf(currentColony);
             if ((currentColonyIndex == (colonies.Count - 1)) || (currentColonyIndex < 0))
                 Model.SelectedColony = colonies[0];
             else
@@ -159,7 +159,7 @@ namespace Supremacy.Client.Views
 
         protected override void OnViewActivating()
         {
-            var newColonySelection = _newColonySelection;
+            int newColonySelection = _newColonySelection;
             if (newColonySelection == -1)
             {
                 Model.SelectedColony = AppContext.LocalPlayerEmpire.SeatOfGovernment;
@@ -175,7 +175,7 @@ namespace Supremacy.Client.Views
 
         private void ExecuteToggleBuildingIsActiveCommand(Building building)
         {
-            var colony = Model.SelectedColony;
+            Colony colony = Model.SelectedColony;
             if (colony == null)
                 return;
 
@@ -192,7 +192,7 @@ namespace Supremacy.Client.Views
             if (buildSlot == null)
                 return false;
 
-            var colony = Model.SelectedColony;
+            Colony colony = Model.SelectedColony;
             if (colony == null || colony.Shipyard != buildSlot.Shipyard)
                 return false;
 
@@ -204,7 +204,7 @@ namespace Supremacy.Client.Views
             if (buildSlot == null)
                 return;
 
-            var colony = Model.SelectedColony;
+            Colony colony = Model.SelectedColony;
             if (colony == null || colony.Shipyard != buildSlot.Shipyard)
                 return;
 
@@ -223,7 +223,7 @@ namespace Supremacy.Client.Views
             if (buildSlot == null)
                 return false;
 
-            var colony = Model.SelectedColony;
+            Colony colony = Model.SelectedColony;
             if (colony == null || colony.Shipyard != buildSlot.Shipyard)
                 return false;
 
@@ -235,15 +235,15 @@ namespace Supremacy.Client.Views
             if (buildSlot == null)
                 return;
 
-            var colony = Model.SelectedColony;
+            Colony colony = Model.SelectedColony;
             if (colony == null || colony.Shipyard != buildSlot.Shipyard)
                 return;
 
             //if (!buildSlot.IsActive || buildSlot.HasProject)
             //    return;
 
-            var view = new NewShipSelectionView(buildSlot);
-            var statsViewModel = new TechObjectDesignViewModel();
+            NewShipSelectionView view = new NewShipSelectionView(buildSlot);
+            TechObjectDesignViewModel statsViewModel = new TechObjectDesignViewModel();
 
             BindingOperations.SetBinding(
                 statsViewModel,
@@ -256,12 +256,12 @@ namespace Supremacy.Client.Views
 
             view.AdditionalContent = statsViewModel;
 
-            var result = view.ShowDialog();
+            bool? result = view.ShowDialog();
 
             if (!result.HasValue || !result.Value)
                 return;
 
-            var project = view.SelectedBuildProject;
+            ShipBuildProject project = view.SelectedBuildProject;
             if (project == null)
                 return;
             //var _buildQueueItem = new BuildQueueItem(project);
@@ -278,7 +278,7 @@ namespace Supremacy.Client.Views
         {
             if (parameter is ICheckableCommandParameter checkableParameter)
             {
-                var building = checkableParameter.InnerParameter as Building;
+                Building building = checkableParameter.InnerParameter as Building;
                 if (building == null)
                 {
                     checkableParameter.IsChecked = false;
@@ -296,7 +296,7 @@ namespace Supremacy.Client.Views
 
         private void ExecuteToggleBuildingScrapCommand(object parameter)
         {
-            var building = parameter as Building;
+            Building building = parameter as Building;
             if (building != null)
             {
                 building.Scrap = !building.Scrap;
@@ -324,11 +324,11 @@ namespace Supremacy.Client.Views
 
         private void ExecuteUnscrapFacilityCommand(ProductionCategory category)
         {
-            var colony = Model.SelectedColony;
+            Colony colony = Model.SelectedColony;
             if (colony == null)
                 return;
 
-            var facilitiesToScrap = colony.GetScrappedFacilities(category);
+            int facilitiesToScrap = colony.GetScrappedFacilities(category);
             if (facilitiesToScrap == 0)
                 return;
 
@@ -344,11 +344,11 @@ namespace Supremacy.Client.Views
 
         private void ExecuteScrapFacilityCommand(ProductionCategory category)
         {
-            var colony = Model.SelectedColony;
+            Colony colony = Model.SelectedColony;
             if (colony == null)
                 return;
 
-            var facilitiesToScrap = colony.GetScrappedFacilities(category);
+            int facilitiesToScrap = colony.GetScrappedFacilities(category);
             if (facilitiesToScrap >= colony.GetTotalFacilities(category))
                 return;
 
@@ -364,7 +364,7 @@ namespace Supremacy.Client.Views
 
         private void ExecuteDeactivateFacilityCommand(ProductionCategory category)
         {
-            var colony = Model.SelectedColony;
+            Colony colony = Model.SelectedColony;
             if (colony == null)
                 return;
 
@@ -380,7 +380,7 @@ namespace Supremacy.Client.Views
 
         private void ExecuteActivateFacilityCommand(ProductionCategory category)
         {
-            var colony = Model.SelectedColony;
+            Colony colony = Model.SelectedColony;
             if (colony == null)
                 return;
 
@@ -393,14 +393,14 @@ namespace Supremacy.Client.Views
         {
             Model.Colonies = AppContext.LocalPlayerEmpire.Colonies;
 
-            var selectedColony = Model.SelectedColony;
+            Colony selectedColony = Model.SelectedColony;
             if (selectedColony == null)
                 Model.SelectedColony = AppContext.LocalPlayerEmpire.SeatOfGovernment;
         }
 
         protected override void TerminateOverride()
         {
-            var selectedColony = Model.SelectedColony;
+            Colony selectedColony = Model.SelectedColony;
             if (selectedColony != null)
                 selectedColony.PropertyChanged -= OnSelectedColonyPropertyChanged;
 
@@ -421,7 +421,7 @@ namespace Supremacy.Client.Views
                 UpdateBuildLists();
 
                 // Update buildItems in colony queue
-                var colony = Model.SelectedColony;
+                Colony colony = Model.SelectedColony;
                 if (colony == null)
                     return;
 
@@ -432,7 +432,7 @@ namespace Supremacy.Client.Views
 
         private void OnSelectedColonyChanged(object sender, EventArgs args)
         {
-            var e = (PropertyChangedRoutedEventArgs<Colony>)args;
+            PropertyChangedRoutedEventArgs<Colony> e = (PropertyChangedRoutedEventArgs<Colony>)args;
 
             //GameLog.Core.UI.DebugFormat("OnSelectedColonyChanged -> Step 1");
 
@@ -458,19 +458,19 @@ namespace Supremacy.Client.Views
 
             //GameLog.Core.UI.DebugFormat("OnSelectedColonyChanged -> Step 3");
 
-            var selectedColony = Model.SelectedColony;
+            Colony selectedColony = Model.SelectedColony;
             GameLog.Core.UI.DebugFormat("OnSelectedColonyChanged: selectedColony = {0}", selectedColony);  // Colony changes...
                  // ..."in the background", in F2 = System Screen (only own colonies), not in Galaxy View showing planets of foreign colonies
             if (selectedColony != null)
             {
-                var regionManager = CompositeRegionManager.GetRegionManager((DependencyObject)View);
+                Microsoft.Practices.Composite.Regions.IRegionManager regionManager = CompositeRegionManager.GetRegionManager((DependencyObject)View);
 
                 if (!regionManager.Regions.ContainsRegionWithName(CommonGameScreenRegions.PlanetsView))
                     CompositeRegionManager.UpdateRegions();
 
                 if (regionManager.Regions.ContainsRegionWithName(CommonGameScreenRegions.PlanetsView))
                 {
-                    var planetsViewRegion = regionManager.Regions[CommonGameScreenRegions.PlanetsView];
+                    Microsoft.Practices.Composite.Regions.IRegion planetsViewRegion = regionManager.Regions[CommonGameScreenRegions.PlanetsView];
                     planetsViewRegion.Context = selectedColony.Sector;
                     //GameLog.Core.UI.DebugFormat("OnSelectedColonyChanged: NEW value selectedColony.Sector = {0}", selectedColony.Sector);
                 }
@@ -495,7 +495,7 @@ namespace Supremacy.Client.Views
 
             try
             {
-                var selectedColony = Model.SelectedColony;
+                Colony selectedColony = Model.SelectedColony;
                 if (selectedColony == null || selectedColony.OrbitalBatteryDesign == null)
                 {
                     Model.ActiveOrbitalBatteries = 0;
@@ -503,7 +503,7 @@ namespace Supremacy.Client.Views
                     return;
                 }
 
-                var activeCountDifference = Model.ActiveOrbitalBatteries - selectedColony.ActiveOrbitalBatteries;
+                int activeCountDifference = Model.ActiveOrbitalBatteries - selectedColony.ActiveOrbitalBatteries;
                 if (activeCountDifference != 0)
                 {
                     do
@@ -528,10 +528,10 @@ namespace Supremacy.Client.Views
                     PlayerOrderService.AddOrder(new UpdateOrbitalBatteriesOrder(selectedColony));
                 }
 
-                var maxActiveOrbitalBatteries = selectedColony.ActiveOrbitalBatteries;
+                int maxActiveOrbitalBatteries = selectedColony.ActiveOrbitalBatteries;
                 if (selectedColony.NetEnergy > 0)
                 {
-                    var possibleActivations = selectedColony.NetEnergy / selectedColony.OrbitalBatteryDesign.UnitEnergyCost;
+                    int possibleActivations = selectedColony.NetEnergy / selectedColony.OrbitalBatteryDesign.UnitEnergyCost;
                     if (possibleActivations > 0)
                         maxActiveOrbitalBatteries += possibleActivations;
                 }
@@ -547,7 +547,7 @@ namespace Supremacy.Client.Views
 
         private void UpdateBuildLists()
         {
-            var selectedColony = Model.SelectedColony;
+            Colony selectedColony = Model.SelectedColony;
             if (selectedColony != null)
             {
                 Model.PlanetaryBuildProjects = TechTreeHelper.GetBuildProjects(Model.SelectedColony);
@@ -623,7 +623,7 @@ namespace Supremacy.Client.Views
 
         private void OnTurnStarted(GameContextEventArgs args)
         {
-            var selectedColony = Model.SelectedColony;
+            Colony selectedColony = Model.SelectedColony;
             if (selectedColony == null)
                 Model.SelectedColony = AppContext.LocalPlayerEmpire.SeatOfGovernment;
 
@@ -646,17 +646,17 @@ namespace Supremacy.Client.Views
             if (project == null)
                 throw new ArgumentNullException("project");
 
-            var productionCenter = project.ProductionCenter;
+            IProductionCenter productionCenter = project.ProductionCenter;
             if (productionCenter == null)
                 return;
 
-            var buildSlot = productionCenter.BuildSlots.FirstOrDefault(o => o.Project == project);
+            BuildSlot buildSlot = productionCenter.BuildSlots.FirstOrDefault(o => o.Project == project);
             if (buildSlot == null)
                 return;
 
             if (project.IsPartiallyComplete || project.IsRushed)
             {
-                var confirmResult = MessageDialog.Show(
+                MessageDialogResult confirmResult = MessageDialog.Show(
                     ResourceManager.GetString("CONFIRM_CANCEL_BUILD_HEADER"),
                     ResourceManager.GetString("CONFIRM_CANCEL_BUILD_MESSAGE"),
                     MessageDialogButtons.YesNo);
@@ -667,7 +667,7 @@ namespace Supremacy.Client.Views
 
             if (project.IsRushed)
             {
-                var civMan = CivilizationManager.For(productionCenter.Owner);
+                CivilizationManager civMan = CivilizationManager.For(productionCenter.Owner);
                 civMan.Credits.AdjustCurrent(project.GetTotalCreditsCost());
             }
 
@@ -699,7 +699,7 @@ namespace Supremacy.Client.Views
             if (Model.SelectedColony == null)
                 return false;
 
-            var civMan = CivilizationManager.For(Model.SelectedColony.Owner);
+            CivilizationManager civMan = CivilizationManager.For(Model.SelectedColony.Owner);
 
             if (civMan.Credits.CurrentValue < project.GetTotalCreditsCost())
             {
@@ -717,19 +717,19 @@ namespace Supremacy.Client.Views
             if (project == null)
                 throw new ArgumentNullException("project");
 
-            var productionCenter = project.ProductionCenter;
+            IProductionCenter productionCenter = project.ProductionCenter;
             if (productionCenter == null)
                 return;
 
-            var buildSlot = productionCenter.BuildSlots.FirstOrDefault(o => o.Project == project);
+            BuildSlot buildSlot = productionCenter.BuildSlots.FirstOrDefault(o => o.Project == project);
             if (buildSlot == null)
                 return;
 
-            var civMan = CivilizationManager.For(Model.SelectedColony.Owner);
+            CivilizationManager civMan = CivilizationManager.For(Model.SelectedColony.Owner);
 
             string confirmationMessage = string.Format(ResourceManager.GetString("CONFIRM_RUSH_BUILDING_MESSAGE"),
                 project.GetTotalCreditsCost(), civMan.Credits.CurrentValue);
-            var confirmResult = MessageDialog.Show(
+            MessageDialogResult confirmResult = MessageDialog.Show(
                 ResourceManager.GetString("CONFIRM_RUSH_BUILDING_HEADER"),
                 confirmationMessage,
                 MessageDialogButtons.YesNo);
@@ -760,7 +760,7 @@ namespace Supremacy.Client.Views
 
         private void ExecuteRemoveFromPlanetaryBuildQueueCommand(BuildQueueItem item)
         {
-            var colony = Model.SelectedColony;
+            Colony colony = Model.SelectedColony;
             if (colony == null)
                 return;
 
@@ -769,7 +769,7 @@ namespace Supremacy.Client.Views
 
         private void ExecuteRemoveFromShipyardBuildQueueCommand(BuildQueueItem item)
         {
-            var colony = Model.SelectedColony;
+            Colony colony = Model.SelectedColony;
             if (colony == null)
                 return;
 
@@ -791,7 +791,7 @@ namespace Supremacy.Client.Views
 
         private void ExecuteAddToShipyardBuildQueueCommand(BuildProject project)
         {
-            var colony = Model.SelectedColony;
+            Colony colony = Model.SelectedColony;
             if (colony == null)
                 return;
 
@@ -838,8 +838,8 @@ namespace Supremacy.Client.Views
             if (productionCenter == null)
                 throw new ArgumentNullException("productionCenter");
 
-            var newItemAdded = true;
-            var lastItemInQueue = productionCenter.BuildQueue.LastOrDefault();
+            bool newItemAdded = true;
+            BuildQueueItem lastItemInQueue = productionCenter.BuildQueue.LastOrDefault();
 
             if ((lastItemInQueue != null) && project.IsEquivalent(lastItemInQueue.Project))
             {
@@ -869,8 +869,8 @@ namespace Supremacy.Client.Views
             if (shipyard == null)
                 throw new ArgumentNullException("buildSlot");
 
-            var newItemAdded = true;
-            var lastItemInQueue = shipyard.BuildQueue.LastOrDefault();
+            bool newItemAdded = true;
+            BuildQueueItem lastItemInQueue = shipyard.BuildQueue.LastOrDefault();
 
             if ((lastItemInQueue != null) && project.IsEquivalent(lastItemInQueue.Project))
             {
@@ -933,7 +933,7 @@ namespace Supremacy.Client.Views
             if (project == null)
                 throw new ArgumentNullException("project");
 
-            var colony = Model.SelectedColony;
+            Colony colony = Model.SelectedColony;
             if (colony == null)
                 return;
 

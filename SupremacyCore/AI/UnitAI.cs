@@ -718,7 +718,7 @@ namespace Supremacy.AI
             
             List<Fleet> colonizerFleets = GameContext.Current.Universe.FindOwned<Fleet>(fleet.Owner)
                 .Where(o => o.IsColonizer || o.MultiFleetHasAColonizer).ToList();
-            var otherFleets = colonizerFleets.Where(o => o != fleet).ToList(); // other colony ships
+            List<Fleet> otherFleets = colonizerFleets.Where(o => o != fleet).ToList(); // other colony ships
 
             CivilizationManager civManager = GameContext.Current.CivilizationManagers[fleet.Owner];
             CivilizationMapData mapData = civManager.MapData;
@@ -773,7 +773,7 @@ namespace Supremacy.AI
                 return false;
             }
 
-            var sortResults = from system in systems
+            IOrderedEnumerable<StarSystem> sortResults = from system in systems
                               orderby GetColonizeValue(system, fleet.Owner)
                               select system;
 
@@ -792,7 +792,7 @@ namespace Supremacy.AI
 
             List<Fleet> colonizerFleets = GameContext.Current.Universe.FindOwned<Fleet>(fleet.Owner)
                 .Where(o => o.IsColonizer || o.MultiFleetHasAColonizer).ToList();
-            var otherFleets = colonizerFleets.Where(o => o != fleet).ToList(); // other colony ships
+            List<Fleet> otherFleets = colonizerFleets.Where(o => o != fleet).ToList(); // other colony ships
             otherFleets.Remove(fleet);
             if (otherFleets.Count != 0)
             {
@@ -871,7 +871,7 @@ namespace Supremacy.AI
             List<Fleet> escortFleets = GameContext.Current.Universe.HomeColonyLookup[fleetToFollow.Owner].Sector.GetOwnedFleets(fleetToFollow.Owner)
                 .Where(b => b.Sector == GameContext.Current.Universe.HomeColonyLookup[fleetToFollow.Owner].Sector).ToList();
             
-            foreach (var aFeet in escortFleets)
+            foreach (Fleet aFeet in escortFleets)
             {
                 if (aFeet.Ships.Where(o => o.ShipType == ShipType.Cruiser || o.ShipType == ShipType.HeavyCruiser || o.ShipType == ShipType.FastAttack
                     && aFeet.Ships.Count() > 0
@@ -884,7 +884,7 @@ namespace Supremacy.AI
                     if (aFeet.Ships.Count() >= 1)
                     {
                         Ship ship = aFeet.Ships.Last();
-                        var location = ship.Location;
+                        MapLocation location = ship.Location;
                         aFeet.RemoveShip(ship);
                         fleetToFollow.AddShip(ship);
                         fleetToFollow.Location = location;
@@ -1240,8 +1240,8 @@ namespace Supremacy.AI
                         int borgY = GameContext.Current.Universe.HomeColonyLookup[fleet.Owner].Location.Y;
                         int borgYDelta = Math.Abs(halfMapHeightY - GameContext.Current.Universe.HomeColonyLookup[fleet.Owner].Location.Y)/4;
 
-                        var borgHomeLocation = GameContext.Current.Universe.HomeColonyLookup[fleet.Owner].Location;
-                        var objectsAlongCenterAxis = GameContext.Current.Universe.Objects
+                        MapLocation borgHomeLocation = GameContext.Current.Universe.HomeColonyLookup[fleet.Owner].Location;
+                        List<UniverseObject> objectsAlongCenterAxis = GameContext.Current.Universe.Objects
                             .Where(s => s.Location != null
                             && s.Sector.Station == null
                             && (s.Location.X >= halfMapWidthX + borgXDelta && s.Location.X <= borgX )
@@ -1272,11 +1272,11 @@ namespace Supremacy.AI
                         List<Fleet> otherConstructors = GameContext.Current.Universe.Find<Fleet>()
                                 .Where(o => o.Owner != fleet.Owner && o.IsConstructor || o.MultiFleetHasAConstructor).ToList();
                         List<Sector> _sectors = new List<Sector>();
-                        foreach (var anObject in objectsAlongCenterAxis)
+                        foreach (UniverseObject anObject in objectsAlongCenterAxis)
                         {
                             _sectors.Add(anObject.Sector);
                         }
-                        foreach (var aFleet in otherConstructors)
+                        foreach (Fleet aFleet in otherConstructors)
                         {
                             if(_sectors.Any(o => o == aFleet.Sector))
                             _sectors.Remove(aFleet.Sector);
@@ -1303,7 +1303,7 @@ namespace Supremacy.AI
                         int domY = GameContext.Current.Universe.HomeColonyLookup[fleet.Owner].Location.Y;
                         int domYDelta = Math.Abs(halfMapHeightY - GameContext.Current.Universe.HomeColonyLookup[fleet.Owner].Location.Y) / 4;
 
-                        var objectsAlongCenterAxis = GameContext.Current.Universe.Objects
+                        List<UniverseObject> objectsAlongCenterAxis = GameContext.Current.Universe.Objects
                            // .Where(c => !FleetHelper.IsSectorWithinFuelRange(c.Sector, fleet))
                             .Where(s => s.Location != null
                             && s.Sector.Station == null
@@ -1353,7 +1353,7 @@ namespace Supremacy.AI
                         //var furthestObject = GameContext.Current.Universe.FindFurthestObject<UniverseObject>(homeSector.Location, fleet.Owner);
                         Sector homeSector = GameContext.Current.Universe.HomeColonyLookup[fleet.Owner].Sector;
 
-                        var objectsAroundHome = GameContext.Current.Universe.Objects
+                        List<UniverseObject> objectsAroundHome = GameContext.Current.Universe.Objects
                             .Where(s => s.Location != null
                             && s.Sector.Station == null
                             && s.Sector.Owner == null
@@ -1466,7 +1466,7 @@ namespace Supremacy.AI
 
             List<Fleet> medFleets = GameContext.Current.Universe.FindOwned<Fleet>(fleet.Owner)
                 .Where(o => o.IsMedical).ToList();
-            var otherFleets = medFleets.Where(o => o != fleet).ToList();
+            List<Fleet> otherFleets = medFleets.Where(o => o != fleet).ToList();
 
             CivilizationManager civManager = GameContext.Current.CivilizationManagers[fleet.Owner];
             CivilizationMapData mapData = civManager.MapData;
@@ -1533,15 +1533,15 @@ namespace Supremacy.AI
             Civilization otherCiv = colony.Owner;
             if (colony.System.Name != otherCiv.HomeSystemName)
                 return 0;
-            var diplomat = Diplomat.Get(civ);
+            Diplomat diplomat = Diplomat.Get(civ);
 
             if (otherCiv.CivID == civ.CivID)
                 return 0;
             if (!DiplomacyHelper.IsContactMade(civ.CivID, otherCiv.CivID))
                 return 0;
 
-            var foreignPower = diplomat.GetForeignPower(otherCiv);
-            var otherdiplomat = Diplomat.Get(otherCiv);
+            ForeignPower foreignPower = diplomat.GetForeignPower(otherCiv);
+            Diplomat otherdiplomat = Diplomat.Get(otherCiv);
             ForeignPower otherForeignPower = otherdiplomat.GetForeignPower(civ);
             if (foreignPower.DiplomacyData.Status == ForeignPowerStatus.OwnerIsMember || otherForeignPower.DiplomacyData.Status == ForeignPowerStatus.OwnerIsMember)
                 return 0;
@@ -1561,7 +1561,7 @@ namespace Supremacy.AI
             #endregion
 
             // traits in common relative to the number of triats a civilization has
-            var commonTraitItems = foreignTraits.Intersect(theCivTraits);
+            IEnumerable<string> commonTraitItems = foreignTraits.Intersect(theCivTraits);
 
             int countCommon = 0;
             foreach (string aString in commonTraitItems)
@@ -1618,7 +1618,7 @@ namespace Supremacy.AI
 
             List<Fleet> diplomacyFleets = GameContext.Current.Universe.FindOwned<Fleet>(fleet.Owner)
                 .Where(o => o.IsDiplomatic).ToList();
-            var otherFleets = diplomacyFleets.Where(o => o != fleet).ToList();
+            List<Fleet> otherFleets = diplomacyFleets.Where(o => o != fleet).ToList();
 
             CivilizationManager civManager = GameContext.Current.CivilizationManagers[fleet.Owner];
             CivilizationMapData mapData = civManager.MapData;
@@ -1800,7 +1800,7 @@ namespace Supremacy.AI
 
             List<Fleet> spyFleets = GameContext.Current.Universe.FindOwned<Fleet>(fleet.Owner)
                 .Where(o => o.IsSpy).ToList();
-            var otherFleets = spyFleets.Where(o => o != fleet).ToList();
+            List<Fleet> otherFleets = spyFleets.Where(o => o != fleet).ToList();
 
             CivilizationManager civManager = GameContext.Current.CivilizationManagers[fleet.Owner];
             CivilizationMapData mapData = civManager.MapData;
@@ -1857,7 +1857,7 @@ namespace Supremacy.AI
 
             List<Fleet> scienceFleets = GameContext.Current.Universe.FindOwned<Fleet>(fleet.Owner)
                 .Where(o => o.IsScience).ToList();
-            var otherFleets = scienceFleets.Where(o => o != fleet).ToList();
+            List<Fleet> otherFleets = scienceFleets.Where(o => o != fleet).ToList();
 
             CivilizationManager civManager = GameContext.Current.CivilizationManagers[fleet.Owner];
             CivilizationMapData mapData = civManager.MapData;
@@ -1976,7 +1976,7 @@ namespace Supremacy.AI
         }
         private static void GetFleetOwner(Fleet fleet)
         {
-            foreach (var ship in fleet.Ships)
+            foreach (Ship ship in fleet.Ships)
             {
                 if (fleet.Owner != null)
                     break;

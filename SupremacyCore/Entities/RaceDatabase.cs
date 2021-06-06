@@ -55,18 +55,18 @@ namespace Supremacy.Entities
         /// <param name="fileName">Name of the output file.</param>
         public void Save(string fileName)
         {
-            var ns = XNamespace.Get("Supremacy:Races.xsd");
-            var supremacyNamespace = XNamespace.Get("Supremacy:Supremacy.xsd");
+            XNamespace ns = XNamespace.Get("Supremacy:Races.xsd");
+            XNamespace supremacyNamespace = XNamespace.Get("Supremacy:Supremacy.xsd");
 
-            var rootElement = new XElement(
+            XElement rootElement = new XElement(
                 ns + "Races",
                 new XAttribute(
                     XNamespace.Xmlns + "s",
                     supremacyNamespace));
 
-            var xmlDoc = new XDocument(rootElement);
+            XDocument xmlDoc = new XDocument(rootElement);
 
-            foreach (var race in this)
+            foreach (Race race in this)
                 race.AppendXml(rootElement);
 
             xmlDoc.Save(fileName, SaveOptions.None);
@@ -104,17 +104,17 @@ namespace Supremacy.Entities
         {
             try
             {
-                var raceDatabase = new RaceDatabase();
+                RaceDatabase raceDatabase = new RaceDatabase();
 
-                var ns = XNamespace.Get("Supremacy:Races.xsd");
-                var xmlDoc = XDocument.Load(ResourceManager.GetResourcePath(DefaultDatabasePath));
+                XNamespace ns = XNamespace.Get("Supremacy:Races.xsd");
+                XDocument xmlDoc = XDocument.Load(ResourceManager.GetResourcePath(DefaultDatabasePath));
 
                 if (_xmlSchemas == null)
                     LoadSchemas();
 
                 xmlDoc.Validate(_xmlSchemas, ValidateXml, true);
 
-                foreach (var raceElement in xmlDoc.Root.Elements(ns + "Race"))
+                foreach (XElement raceElement in xmlDoc.Root.Elements(ns + "Race"))
                     raceDatabase.Add(new Race(raceElement));
 
 
@@ -124,11 +124,11 @@ namespace Supremacy.Entities
 
                 if (_traceRacesXML == true)
                 {
-                    var pathOutputFile = "./Resources/Data/";  // instead of ./Resources/Data/
-                    var separator = ";";
-                    var line = "";
+                    string pathOutputFile = "./Resources/Data/";  // instead of ./Resources/Data/
+                    string separator = ";";
+                    string line = "";
                     StreamWriter streamWriter;
-                    var file = "./lib/test-FromRaces.txt";
+                    string file = "./lib/test-FromRaces.txt";
                     streamWriter = new StreamWriter(file);
                     String strHeader = "";  // first line of output files
 
@@ -167,7 +167,7 @@ namespace Supremacy.Entities
 
                         GameLog.Core.GameData.DebugFormat("begin writing z_FromRacesXML_(autoCreated).csv ... beware of NO dismatch of Keys between Civ..xml and Races.xml");
                         string RaceName = "";
-                        foreach (var race in raceDatabase)   // each race
+                        foreach (Race race in raceDatabase)   // each race
                         {
                             //App.DoEvents();  // for avoid error after 60 seconds
 

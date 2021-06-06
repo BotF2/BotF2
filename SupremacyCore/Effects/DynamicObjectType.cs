@@ -64,7 +64,7 @@ namespace Supremacy.Effects
           */
         private static DynamicObjectType FromSystemTypeRecursive(Type systemType)
         {
-            var dType = (DynamicObjectType)ClrTypeMappings[systemType];
+            DynamicObjectType dType = (DynamicObjectType)ClrTypeMappings[systemType];
             
             if (dType != null)
                 return dType;
@@ -116,7 +116,7 @@ namespace Supremacy.Effects
         {
             if (dependencyObject != null)
             {
-                var dynamicObjectType = dependencyObject.DynamicObjectType;
+                DynamicObjectType dynamicObjectType = dependencyObject.DynamicObjectType;
                 do
                 {
                     if (dynamicObjectType.Id == Id)
@@ -148,7 +148,7 @@ namespace Supremacy.Effects
             if (dynamicObjectType != null)
             {
                 // A DynamicObjectType isn't considered a subclass of itself, so start with base type 
-                var dynamicObjectType1 = _baseDType;
+                DynamicObjectType dynamicObjectType1 = _baseDType;
 
                 while (dynamicObjectType1 != null)
                 {

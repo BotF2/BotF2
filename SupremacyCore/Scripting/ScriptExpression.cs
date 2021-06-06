@@ -155,7 +155,7 @@ namespace Supremacy.Scripting
 
         private IEnumerable<object> ResolveParameterValues(RuntimeScriptParameters parameters)
         {
-            foreach (var parameter in Parameters)
+            foreach (ScriptParameter parameter in Parameters)
             {
                 if (parameters.TryGetValue(parameter, out RuntimeScriptParameter runtimeParameter))
                     yield return runtimeParameter.Value;

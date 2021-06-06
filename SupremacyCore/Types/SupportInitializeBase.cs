@@ -134,7 +134,7 @@ namespace Supremacy.Types
 
         private void OnInitialized()
         {
-            var handler = Initialized;
+            EventHandler handler = Initialized;
             if (handler != null)
                 handler(this, EventArgs.Empty);
         }
@@ -149,13 +149,13 @@ namespace Supremacy.Types
         {
             add
             {
-                var previousValue = _propertyChanged;
+                PropertyChangedEventHandler previousValue = _propertyChanged;
 
                 while (true)
                 {
-                    var combinedValue = (PropertyChangedEventHandler)Delegate.Combine(previousValue, value);
+                    PropertyChangedEventHandler combinedValue = (PropertyChangedEventHandler)Delegate.Combine(previousValue, value);
 
-                    var valueBeforeCombine = System.Threading.Interlocked.CompareExchange(
+                    PropertyChangedEventHandler valueBeforeCombine = System.Threading.Interlocked.CompareExchange(
                         ref _propertyChanged,
                         combinedValue,
                         previousValue);
@@ -166,13 +166,13 @@ namespace Supremacy.Types
             }
             remove
             {
-                var previousValue = _propertyChanged;
+                PropertyChangedEventHandler previousValue = _propertyChanged;
 
                 while (true)
                 {
-                    var removedValue = (PropertyChangedEventHandler)Delegate.Remove(previousValue, value);
+                    PropertyChangedEventHandler removedValue = (PropertyChangedEventHandler)Delegate.Remove(previousValue, value);
 
-                    var valueBeforeRemove = System.Threading.Interlocked.CompareExchange(
+                    PropertyChangedEventHandler valueBeforeRemove = System.Threading.Interlocked.CompareExchange(
                         ref _propertyChanged,
                         removedValue,
                         previousValue);
@@ -185,7 +185,7 @@ namespace Supremacy.Types
 
         protected void OnPropertyChanged(string propertyName)
         {
-            var handler = _propertyChanged;
+            PropertyChangedEventHandler handler = _propertyChanged;
             if (handler != null)
                 handler(this, new PropertyChangedEventArgs(propertyName));
         }

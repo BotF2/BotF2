@@ -40,7 +40,7 @@ namespace Supremacy.Markup
         {
             culture = ResourceManager.NeutralCulture;
 
-            var textDatabase = LocalizedTextDatabase.Instance;
+            LocalizedTextDatabase textDatabase = LocalizedTextDatabase.Instance;
 
             if (Group == null)
             {

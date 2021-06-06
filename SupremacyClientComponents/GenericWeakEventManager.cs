@@ -80,7 +80,7 @@ namespace Supremacy.Client
         {
             using (WriteLock)
             {
-                var dictionary = base[source] as Dictionary<EventDescriptor, WeakEventListenerRecord>;
+                Dictionary<EventDescriptor, WeakEventListenerRecord> dictionary = base[source] as Dictionary<EventDescriptor, WeakEventListenerRecord>;
                 if (dictionary == null)
                 {
                     dictionary = new Dictionary<EventDescriptor, WeakEventListenerRecord>();
@@ -105,7 +105,7 @@ namespace Supremacy.Client
         {
             using (WriteLock)
             {
-                var dictionary = base[source] as Dictionary<EventDescriptor, WeakEventListenerRecord>;
+                Dictionary<EventDescriptor, WeakEventListenerRecord> dictionary = base[source] as Dictionary<EventDescriptor, WeakEventListenerRecord>;
                 if (dictionary == null)
                     return;
 
@@ -126,13 +126,13 @@ namespace Supremacy.Client
 
         protected override bool Purge(object source, object data, bool purgeAll)
         {
-            var removedAnyEntries = false;
-            var dictionary = (Dictionary<EventDescriptor, WeakEventListenerRecord>)data;
-            var keys = dictionary.Keys.ToList();
+            bool removedAnyEntries = false;
+            Dictionary<EventDescriptor, WeakEventListenerRecord> dictionary = (Dictionary<EventDescriptor, WeakEventListenerRecord>)data;
+            List<EventDescriptor> keys = dictionary.Keys.ToList();
 
-            foreach (var key in keys)
+            foreach (EventDescriptor key in keys)
             {
-                var isEmpty = (purgeAll || (source == null));
+                bool isEmpty = (purgeAll || (source == null));
 
                 WeakEventListenerRecord record;
                 if (!dictionary.TryGetValue(key, out record))
@@ -177,8 +177,8 @@ namespace Supremacy.Client
         {
             get
             {
-                var managerType = typeof(GenericWeakEventManager);
-                var manager = (GenericWeakEventManager)GetCurrentManager(managerType);
+                Type managerType = typeof(GenericWeakEventManager);
+                GenericWeakEventManager manager = (GenericWeakEventManager)GetCurrentManager(managerType);
                 if (manager == null)
                 {
                     manager = new GenericWeakEventManager();
@@ -221,7 +221,7 @@ namespace Supremacy.Client
                 _source.Target = source;
                 _eventDescriptor = eventDescriptor;
 
-                var eventType = eventDescriptor.EventType;
+                Type eventType = eventDescriptor.EventType;
 
                 _handlerDelegate = Delegate.CreateDelegate(eventType, this, HandlerMethod.Value);
 
@@ -273,7 +273,7 @@ namespace Supremacy.Client
 
             internal void StopListening()
             {
-                var target = _source.Target;
+                object target = _source.Target;
                 if (target == null)
                     return;
 

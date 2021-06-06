@@ -30,7 +30,7 @@ namespace Supremacy.Client.Views
             if (lobbyData == null)
                 throw new ArgumentNullException("lobbyData");
 
-            foreach (var player in lobbyData.Players)
+            foreach (Player player in lobbyData.Players)
             { 
                 this[player.Empire].Player = player;
                 GameLog.Client.General.DebugFormat("PlayerID = {0}, Name = {1}, EmpireID = {2}, Empire = {3}", player.PlayerID, player.Name, player.EmpireID, player.Empire );
@@ -56,7 +56,7 @@ namespace Supremacy.Client.Views
         
         public void ClearPlayerReadiness()
         {
-            foreach (var status in this)
+            foreach (EmpirePlayerStatus status in this)
                 status.IsReady = false;
         }
 
@@ -159,7 +159,7 @@ namespace Supremacy.Client.Views
 
         public void UpdateRelationshipStatus()
         {
-            var localPlayer = _appContext.LocalPlayer;
+            IPlayer localPlayer = _appContext.LocalPlayer;
             DiplomacyStatus = DiplomacyHelper.GetForeignPowerStatus(localPlayer.Empire, Empire);
         }
 
@@ -168,7 +168,7 @@ namespace Supremacy.Client.Views
 
         protected void OnPropertyChanged(string propertyName)
         {
-            var handler = PropertyChanged;
+            PropertyChangedEventHandler handler = PropertyChanged;
             if (handler != null)
                 handler(this, new PropertyChangedEventArgs(propertyName));
         }

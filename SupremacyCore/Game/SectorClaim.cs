@@ -71,7 +71,7 @@ namespace Supremacy.Game
 
         private static Civilization ExtractOwner(uint claim)
         {
-            var ownerId = ExtractOwnerID(claim);
+            int ownerId = ExtractOwnerID(claim);
 
             if (ownerId == -1)
                 return null;
@@ -114,7 +114,7 @@ namespace Supremacy.Game
 
         public override bool Equals(object obj)
         {
-            var other = obj as SectorClaim?;
+            SectorClaim? other = obj as SectorClaim?;
             return other.HasValue && Equals(other);
         }
 

@@ -152,12 +152,12 @@ namespace Supremacy.Types
             float delta = (change > 0) ? 0.01f : -0.01f;
             Percentage originalValue = Value;
 
-            var changeRounded = (float)Math.Round(change, 2);
+            float changeRounded = (float)Math.Round(change, 2);
             if (FloatUtil.AreClose(change, changeRounded))
                 change = changeRounded;
 
-            var otherValues = new List<Distribution<TKey>>(_group.Children);
-            var changedChildren = new HashSet<Distribution<TKey>>();
+            List<Distribution<TKey>> otherValues = new List<Distribution<TKey>>(_group.Children);
+            HashSet<Distribution<TKey>> changedChildren = new HashSet<Distribution<TKey>>();
 
             using (SuppressValueChangedScope.Enter())
             {
@@ -204,7 +204,7 @@ namespace Supremacy.Types
                         }
                         SetValueInternal(Value + delta);
                         change -= delta;
-                        var ceiling = (float)Math.Round(change, 2);
+                        float ceiling = (float)Math.Round(change, 2);
                         if (FloatUtil.AreClose(change, ceiling))
                             change = ceiling;
                         _group._lastChangeIndex = i + 1;
@@ -225,7 +225,7 @@ namespace Supremacy.Types
             if (Value != originalValue)
                 OnValueChanged();
 
-            foreach (var changedChild in changedChildren)
+            foreach (Distribution<TKey> changedChild in changedChildren)
             {
                 changedChild.OnValueChanged();
             }
@@ -316,13 +316,13 @@ namespace Supremacy.Types
             if ((unitValue * _children.Count) > totalValue)
                 unitValue -= 0.01f;
             Percentage remainder = totalValue - (unitValue * _children.Count);
-            foreach (var child in _children.Values)
+            foreach (Distribution<TKey> child in _children.Values)
             {
                 child.SetValueInternal(unitValue);
             }
             if (remainder >= 0.01f)
             {
-                foreach (var child in _children.Values)
+                foreach (Distribution<TKey> child in _children.Values)
                 {
                     child.SetValueInternal(child.Value + 0.01f);
                     remainder -= 0.01f;

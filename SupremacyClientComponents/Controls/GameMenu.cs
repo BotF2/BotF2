@@ -72,7 +72,7 @@ namespace Supremacy.Client.Controls
             get { return _currentSelection; }
             set
             {
-                var isKeyboardFocused = false;
+                bool isKeyboardFocused = false;
 
                 if (_currentSelection != null)
                 {
@@ -112,11 +112,11 @@ namespace Supremacy.Client.Controls
 
         private static void OnItemVariantSizePropertyValueChanged(DependencyObject obj, DependencyPropertyChangedEventArgs e)
         {
-            var control = (GameMenu)obj;
+            GameMenu control = (GameMenu)obj;
 
-            foreach (var item in control.Items)
+            foreach (object item in control.Items)
             {
-                var childControl = item as IVariantControl;
+                IVariantControl childControl = item as IVariantControl;
                 if (childControl == null)
                     childControl = control.ItemContainerGenerator.ContainerFromItem(item) as IVariantControl;
                 if (childControl != null)
@@ -126,11 +126,11 @@ namespace Supremacy.Client.Controls
 
         private static void OnMenuItemIsSelectedChangedEvent(object sender, RoutedPropertyChangedEventArgs<bool> e)
         {
-            var originalSource = e.OriginalSource as GameMenuItem;
+            GameMenuItem originalSource = e.OriginalSource as GameMenuItem;
             if (originalSource == null)
                 return;
 
-            var control = (GameMenu)sender;
+            GameMenu control = (GameMenu)sender;
 
             if (e.NewValue)
             {
@@ -160,7 +160,7 @@ namespace Supremacy.Client.Controls
                 return;
 
             // Select the menu item under the mouse and show its popup if it has one
-            var highlightedMenuItem = HighlightedMenuItem;
+            GameMenuItem highlightedMenuItem = HighlightedMenuItem;
             if (highlightedMenuItem == null)
                 return;
 
@@ -226,7 +226,7 @@ namespace Supremacy.Client.Controls
 
             if (!e.Handled)
             {
-                var key = e.Key;
+                Key key = e.Key;
                 if (FlowDirection == FlowDirection.RightToLeft)
                 {
                     switch (key)
@@ -251,7 +251,7 @@ namespace Supremacy.Client.Controls
                         }
                         else
                         {
-                            var popupAnchor = PopupControlService.GetParentPopupAnchor(this);
+                            IGamePopupAnchor popupAnchor = PopupControlService.GetParentPopupAnchor(this);
                             if (popupAnchor != null && popupAnchor.IsPopupOpen && !PopupControlService.IsTopLevel(popupAnchor))
                             {
                                 // Close the parent popup
@@ -274,7 +274,7 @@ namespace Supremacy.Client.Controls
                                 (Action)
                                 (() =>
                                  {
-                                     var menu = Keyboard.FocusedElement as GameMenu;
+                                     GameMenu menu = Keyboard.FocusedElement as GameMenu;
                                      if (menu != null)
                                          menu.MoveFocus(new TraversalRequest(FocusNavigationDirection.First));
                                  }));
@@ -302,7 +302,7 @@ namespace Supremacy.Client.Controls
                     (Action)
                     (() =>
                      {
-                         var contextMenuParent = Keyboard.FocusedElement as ContextMenu;
+                         ContextMenu contextMenuParent = Keyboard.FocusedElement as ContextMenu;
                          if (contextMenuParent != null &&
                              VisualTreeHelperExtended.GetAncestor(this, typeof(ContextMenu)) == contextMenuParent)
                          {
@@ -326,9 +326,9 @@ namespace Supremacy.Client.Controls
             {
                 case NotifyCollectionChangedAction.Add:
                 case NotifyCollectionChangedAction.Replace:
-                    foreach (var item in e.NewItems)
+                    foreach (object item in e.NewItems)
                     {
-                        var control = item as IVariantControl ??
+                        IVariantControl control = item as IVariantControl ??
                                       ItemContainerGenerator.ContainerFromItem(item) as IVariantControl;
                         if (control == null)
                             continue;
@@ -338,9 +338,9 @@ namespace Supremacy.Client.Controls
                     break;
 
                 case NotifyCollectionChangedAction.Reset:
-                    foreach (var item in Items)
+                    foreach (object item in Items)
                     {
-                        var control = item as IVariantControl ??
+                        IVariantControl control = item as IVariantControl ??
                                       ItemContainerGenerator.ContainerFromItem(item) as IVariantControl;
                         if (control == null)
                             continue;

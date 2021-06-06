@@ -38,8 +38,8 @@ namespace Supremacy.Utility
             /*
              * This computes (|value1-value2| / (|value1| + |value2| + 10.0)) < Epsilon
              */
-            var epsilon = (Math.Abs(value1) + Math.Abs(value2) + 10.0) * Epsilon;
-            var delta = value1 - value2;
+            double epsilon = (Math.Abs(value1) + Math.Abs(value2) + 10.0) * Epsilon;
+            double delta = value1 - value2;
 
             return (-epsilon < delta) && (epsilon > delta);
         }
@@ -279,10 +279,10 @@ namespace Supremacy.Utility
         /// </remarks>
         public static bool IsNaN(double value)
         {
-            var nanUnion = new NanUnion { DoubleValue = value };
+            NanUnion nanUnion = new NanUnion { DoubleValue = value };
 
-            var exponent = nanUnion.UintValue & 0xfff0000000000000;
-            var mantissa = nanUnion.UintValue & 0x000fffffffffffff;
+            ulong exponent = nanUnion.UintValue & 0xfff0000000000000;
+            ulong mantissa = nanUnion.UintValue & 0x000fffffffffffff;
 
             return ((exponent == 0x7ff0000000000000) || (exponent == 0xfff0000000000000)) &&
                    (mantissa != 0);

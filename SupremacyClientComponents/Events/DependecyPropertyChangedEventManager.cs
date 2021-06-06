@@ -42,7 +42,7 @@ namespace Supremacy.Client.Events
         {
             using (WriteLock)
             {
-                var dictionary = base[source] as Dictionary<DependencyProperty, DependencyPropertyChangedWeakEventListenerRecord>;
+                Dictionary<DependencyProperty, DependencyPropertyChangedWeakEventListenerRecord> dictionary = base[source] as Dictionary<DependencyProperty, DependencyPropertyChangedWeakEventListenerRecord>;
                 if (dictionary == null)
                 {
                     dictionary = new Dictionary<DependencyProperty, DependencyPropertyChangedWeakEventListenerRecord>();
@@ -67,7 +67,7 @@ namespace Supremacy.Client.Events
         {
             using (WriteLock)
             {
-                var dictionary = base[source] as Dictionary<DependencyProperty, DependencyPropertyChangedWeakEventListenerRecord>;
+                Dictionary<DependencyProperty, DependencyPropertyChangedWeakEventListenerRecord> dictionary = base[source] as Dictionary<DependencyProperty, DependencyPropertyChangedWeakEventListenerRecord>;
                 if (dictionary == null)
                     return;
 
@@ -88,13 +88,13 @@ namespace Supremacy.Client.Events
 
         protected override bool Purge(object source, object data, bool purgeAll)
         {
-            var removedAnyEntries = false;
-            var dictionary = (Dictionary<DependencyProperty, DependencyPropertyChangedWeakEventListenerRecord>)data;
-            var keys = dictionary.Keys.ToList();
+            bool removedAnyEntries = false;
+            Dictionary<DependencyProperty, DependencyPropertyChangedWeakEventListenerRecord> dictionary = (Dictionary<DependencyProperty, DependencyPropertyChangedWeakEventListenerRecord>)data;
+            List<DependencyProperty> keys = dictionary.Keys.ToList();
 
-            foreach (var key in keys)
+            foreach (DependencyProperty key in keys)
             {
-                var isEmpty = (purgeAll || (source == null));
+                bool isEmpty = (purgeAll || (source == null));
 
                 DependencyPropertyChangedWeakEventListenerRecord record;
 
@@ -142,8 +142,8 @@ namespace Supremacy.Client.Events
         {
             get
             {
-                var managerType = typeof(DependecyPropertyChangedEventManager);
-                var manager = (DependecyPropertyChangedEventManager)GetCurrentManager(managerType);
+                Type managerType = typeof(DependecyPropertyChangedEventManager);
+                DependecyPropertyChangedEventManager manager = (DependecyPropertyChangedEventManager)GetCurrentManager(managerType);
                 if (manager == null)
                 {
                     manager = new DependecyPropertyChangedEventManager();
@@ -170,7 +170,7 @@ namespace Supremacy.Client.Events
                 if (!_source.IsAlive)
                     return;
 
-                var source = _source.Target;
+                object source = _source.Target;
                 if (source == null)
                     return;
 
@@ -271,7 +271,7 @@ namespace Supremacy.Client.Events
 
             internal void StopListening()
             {
-                var target = _source.Target;
+                object target = _source.Target;
                 if (target == null)
                     return;
 

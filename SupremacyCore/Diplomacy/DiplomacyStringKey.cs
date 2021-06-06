@@ -153,7 +153,7 @@ namespace Supremacy.Diplomacy
 
         public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
         {
-            var key = value as DiplomacyStringKey;
+            DiplomacyStringKey key = value as DiplomacyStringKey;
             if (key != null &&
                 destinationType == typeof(MarkupExtension))
             {

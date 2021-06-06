@@ -65,7 +65,7 @@ namespace Supremacy.Client.Audio
 
             foreach (XmlElement track in xmlNode.GetElementsByTagName(TrackDefName))
             {
-                var filename = track.InnerText.Trim();
+                string filename = track.InnerText.Trim();
                 if (!string.IsNullOrEmpty(filename))
                 {
                     // TODO: what sense does it have to have a different fading each track?
@@ -78,7 +78,7 @@ namespace Supremacy.Client.Audio
                     //}
 
                     string trackName = track.GetAttribute("Name");
-                    var entry = new MusicEntry(trackName, System.IO.Path.Combine(Path, filename));
+                    MusicEntry entry = new MusicEntry(trackName, System.IO.Path.Combine(Path, filename));
                     _musicList.Add(entry);
                     if (!String.IsNullOrEmpty(trackName)) _musicDict.Add(trackName, entry);
                 }

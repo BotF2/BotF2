@@ -196,7 +196,7 @@ namespace Supremacy.Effects
 
         private void DetachDescription()
         {
-            var observableDescription = _description as INotifyPropertyChanged;
+            INotifyPropertyChanged observableDescription = _description as INotifyPropertyChanged;
             if (observableDescription == null)
                 return;
 
@@ -241,13 +241,13 @@ namespace Supremacy.Effects
         {
             add
             {
-                var previousValue = _propertyChanged;
+                PropertyChangedEventHandler previousValue = _propertyChanged;
 
                 while (true)
                 {
-                    var combinedValue = (PropertyChangedEventHandler)Delegate.Combine(previousValue, value);
+                    PropertyChangedEventHandler combinedValue = (PropertyChangedEventHandler)Delegate.Combine(previousValue, value);
 
-                    var valueBeforeCombine = System.Threading.Interlocked.CompareExchange(
+                    PropertyChangedEventHandler valueBeforeCombine = System.Threading.Interlocked.CompareExchange(
                         ref _propertyChanged,
                         combinedValue,
                         previousValue);
@@ -258,13 +258,13 @@ namespace Supremacy.Effects
             }
             remove
             {
-                var previousValue = _propertyChanged;
+                PropertyChangedEventHandler previousValue = _propertyChanged;
 
                 while (true)
                 {
-                    var removedValue = (PropertyChangedEventHandler)Delegate.Remove(previousValue, value);
+                    PropertyChangedEventHandler removedValue = (PropertyChangedEventHandler)Delegate.Remove(previousValue, value);
 
-                    var valueBeforeRemove = System.Threading.Interlocked.CompareExchange(
+                    PropertyChangedEventHandler valueBeforeRemove = System.Threading.Interlocked.CompareExchange(
                         ref _propertyChanged,
                         removedValue,
                         previousValue);
@@ -277,7 +277,7 @@ namespace Supremacy.Effects
 
         protected void OnPropertyChanged(string propertyName)
         {
-            var handler = _propertyChanged;
+            PropertyChangedEventHandler handler = _propertyChanged;
             if (handler != null)
                 handler(this, new PropertyChangedEventArgs(propertyName));
         }

@@ -206,7 +206,7 @@ namespace Supremacy.Utility
                 return 0;
             }
 
-            var result = (int)(NextDouble() * maxValue);
+            int result = (int)(NextDouble() * maxValue);
             Debug.Assert(result < maxValue);
             return result;
         }

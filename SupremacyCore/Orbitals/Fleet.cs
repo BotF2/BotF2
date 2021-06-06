@@ -76,7 +76,7 @@ namespace Supremacy.Orbitals
                 {
                     ShipDesign design = null;
 
-                    foreach (var ship in _ships)
+                    foreach (Ship ship in _ships)
                     {
                         if (design == null)
                         {
@@ -126,7 +126,7 @@ namespace Supremacy.Orbitals
 
                 ShipDesign design = null;
 
-                foreach (var ship in _ships)
+                foreach (Ship ship in _ships)
                 {
                     if (design == null)
                         design = ship.ShipDesign;
@@ -597,12 +597,12 @@ namespace Supremacy.Orbitals
             if (GameContext.Current.TurnNumber < 1)
                 return;
 
-            foreach (var ship in Ships)
+            foreach (Ship ship in Ships)
                 ship.Location = Location;
 
             base.OnLocationChanged();
 
-            var civManager = GameContext.Current.CivilizationManagers[OwnerID];
+            CivilizationManager civManager = GameContext.Current.CivilizationManagers[OwnerID];
             if (civManager != null)
             {
                 civManager.MapData.SetExplored(Location, true);
@@ -763,8 +763,8 @@ namespace Supremacy.Orbitals
             
             if (route == null)
                 route = TravelRoute.Empty;
-            
-            var lastRoute = _route;
+
+            TravelRoute lastRoute = _route;
 
             SetRouteInternal(route);
             OnPropertyChanged("Route");
@@ -798,7 +798,7 @@ namespace Supremacy.Orbitals
         /// <returns><c>true</c> if successful; otherwise, <c>false</c>.</returns>
         internal bool MoveAlongRoute()
         {
-            var route = _route;
+            TravelRoute route = _route;
             
             if (IsStranded)
             {
@@ -809,7 +809,7 @@ namespace Supremacy.Orbitals
             if (route.IsEmpty)
                 return false;
 
-            var nextSector = GameContext.Current.Universe.Map[route.Pop()];
+            Sector nextSector = GameContext.Current.Universe.Map[route.Pop()];
             if (nextSector == null)
                 return false;
 
@@ -848,8 +848,8 @@ namespace Supremacy.Orbitals
                 if (order == null)
                     throw new Exception("Could not set default order for fleet");
             }
-            
-            var lastOrder = _order;
+
+            FleetOrder lastOrder = _order;
             if (lastOrder == order)
                 return;
 
@@ -900,7 +900,7 @@ namespace Supremacy.Orbitals
             {
                 if (!_order.IsValidOrder(this))
                 {
-                    var cancelledOrder = _order;
+                    FleetOrder cancelledOrder = _order;
                     _order.OnOrderCancelled();
                     if (_order == cancelledOrder)
                         SetOrder(GetDefaultOrder());

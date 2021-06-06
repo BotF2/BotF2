@@ -15,7 +15,7 @@ namespace Supremacy.Client.Controls
 
         internal void RaiseEvents()
         {
-            foreach (var container in _popupHosts.Values)
+            foreach (InfoCardHost container in _popupHosts.Values)
                 container.RaiseEvent(new RoutedEventArgs(InfoCardHost.LayoutChangedEvent, container));
         }
 
@@ -24,7 +24,7 @@ namespace Supremacy.Client.Controls
             if (o == null)
                 return;
 
-            var infoCardHost = InfoCardHost.GetInfoCardHost(o);
+            InfoCardHost infoCardHost = InfoCardHost.GetInfoCardHost(o);
             if (infoCardHost != null)
                 _popupHosts[infoCardHost.UniqueId] = infoCardHost;
         }

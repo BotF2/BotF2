@@ -233,14 +233,14 @@ namespace Supremacy.Client
                 if (type == null)
                 {
                     // resolve using type name
-                    var typeResolver = serviceProvider.GetService(typeof(IXamlTypeResolver)) as IXamlTypeResolver;
+                    IXamlTypeResolver typeResolver = serviceProvider.GetService(typeof(IXamlTypeResolver)) as IXamlTypeResolver;
                     if (typeResolver == null)
                     {
                         throw new InvalidOperationException("Cannot retrieve IXamlTypeResolver.");
                     }
 
                     // check that the number of generic arguments match
-                    var typeName = _typeName;
+                    string typeName = _typeName;
                     if (typeArguments.Length > 0)
                     {
                         int genericsMarkerIndex = typeName.LastIndexOf('`');
@@ -358,18 +358,18 @@ namespace Supremacy.Client
                     throw new InvalidOperationException("Type was not specified.");
                 }
 
-                var value = Activator.CreateInstance(_type);
+                object value = Activator.CreateInstance(_type);
 
-                var properties = TypeDescriptor.GetProperties(_type);
-                foreach (var propertyValue in _propertyValues)
+                PropertyDescriptorCollection properties = TypeDescriptor.GetProperties(_type);
+                foreach (ActivatorSetter propertyValue in _propertyValues)
                 {
-                    var property = properties[propertyValue.Name];
+                    PropertyDescriptor property = properties[propertyValue.Name];
                     if (property == null)
                     {
                         throw new XamlParseException(string.Format("Invalid property name '{0}'.", propertyValue.Name));
                     }
-                    var dpDescriptor = DependencyPropertyDescriptor.FromProperty(property);
-                    var binding = BindingOperations.GetBindingBase(
+                    DependencyPropertyDescriptor dpDescriptor = DependencyPropertyDescriptor.FromProperty(property);
+                    BindingBase binding = BindingOperations.GetBindingBase(
                         propertyValue, ActivatorSetter.ValueProperty);
 
                     // if the property is data-bound, transfer the binding
@@ -381,7 +381,7 @@ namespace Supremacy.Client
                     }
                     else if (propertyValue.Value != null)
                     {
-                        var propertyValueType = propertyValue.Value.GetType();
+                        Type propertyValueType = propertyValue.Value.GetType();
                         // if the value is assignable, assign it
                         if (property.PropertyType.IsAssignableFrom(propertyValueType))
                         {

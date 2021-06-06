@@ -53,10 +53,10 @@ namespace Supremacy.Pathfinding
         #region IEnumerable<TNode> Members
         public IEnumerator<TNode> GetEnumerator()
         {
-            var buffer = new List<TNode>();
-            for (var path = this; path != null; path = path.PreviousSteps)
+            List<TNode> buffer = new List<TNode>();
+            for (Path<TNode> path = this; path != null; path = path.PreviousSteps)
                 buffer.Insert(0, path.LastStep);
-            foreach (var node in buffer)
+            foreach (TNode node in buffer)
                 yield return node;
         }
 
@@ -84,7 +84,7 @@ namespace Supremacy.Pathfinding
         {
             if (waypoint == null)
                 throw new ArgumentNullException("waypoint");
-            var waypointsList = new List<Sector>(((waypoints == null) ? 0 : waypoints.Length) + 1)
+            List<Sector> waypointsList = new List<Sector>(((waypoints == null) ? 0 : waypoints.Length) + 1)
                                 {
                                     waypoint
                                 };
@@ -97,7 +97,7 @@ namespace Supremacy.Pathfinding
         {
             if (waypoint == null)
                 throw new ArgumentNullException("waypoint");
-            var waypointsList = new List<Sector>(((waypoints == null) ? 0 : waypoints.Length) + 1)
+            List<Sector> waypointsList = new List<Sector>(((waypoints == null) ? 0 : waypoints.Length) + 1)
                                 {
                                     waypoint
                                 };
@@ -128,7 +128,7 @@ namespace Supremacy.Pathfinding
                 //GameLog.Client.AI.DebugFormat("TravelRout waypoints is null");
                 throw new ArgumentNullException("waypoints");
             }
-            foreach (var ship in fleet.Ships)
+            foreach (Ship ship in fleet.Ships)
             {
                 if (fleet.Owner != null)
                     break;
@@ -146,14 +146,14 @@ namespace Supremacy.Pathfinding
             else
                 forbiddenSectorSet = null;
 
-            var route = new TravelRoute(waypoints);
-            var start = fleet.Sector;
+            TravelRoute route = new TravelRoute(waypoints);
+            Sector start = fleet.Sector;
 
-            foreach (var waypoint in waypoints)
+            foreach (Sector waypoint in waypoints)
             {
-                var waypointLocation = waypoint.Location;
+                MapLocation waypointLocation = waypoint.Location;
 
-                var segment = FindPath(
+                Path<Sector> segment = FindPath(
                     start,
                     s => s.Location == waypointLocation,
                     s => true,
@@ -170,7 +170,7 @@ namespace Supremacy.Pathfinding
                 if (segment == null || !segment.Any())
                     continue;
 
-                foreach (var step in segment.Skip(1))
+                foreach (Sector step in segment.Skip(1))
                 {
                     route.Push(step.Location);
                     // GameLog.Core.Diplomacy.DebugFormat("start ={0} path step ={1}", start, step);
@@ -190,14 +190,14 @@ namespace Supremacy.Pathfinding
             Func<TNode, TNode, double> distance,
             Func<TNode, double> estimate)
         {
-            var closed = new HashSet<TNode>();
-            var queue = new PriorityQueue<double, Path<TNode>>();
+            HashSet<TNode> closed = new HashSet<TNode>();
+            PriorityQueue<double, Path<TNode>> queue = new PriorityQueue<double, Path<TNode>>();
 
             queue.Enqueue(0, new Path<TNode>(start));
 
             while (!queue.IsEmpty)
             {
-                var path = queue.Dequeue();
+                Path<TNode> path = queue.Dequeue();
 
                 if (closed.Contains(path.LastStep))
                     continue;
@@ -210,10 +210,10 @@ namespace Supremacy.Pathfinding
 
                 closed.Add(path.LastStep);
 
-                foreach (var neighbor in getNeighbors(path.LastStep))
+                foreach (TNode neighbor in getNeighbors(path.LastStep))
                 {
-                    var d = distance(path.LastStep, neighbor);
-                    var newPath = path.AddStep(neighbor, d);
+                    double d = distance(path.LastStep, neighbor);
+                    Path<TNode> newPath = path.AddStep(neighbor, d);
 
                     queue.Enqueue(newPath.TotalCost + estimate(neighbor), newPath);
                 }

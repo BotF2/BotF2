@@ -56,7 +56,7 @@ namespace Supremacy.Client
 
         private void OnLobbyUpdated(ClientDataEventArgs<ILobbyData> args)
         {
-            var lobbyData = args.Value;
+            ILobbyData lobbyData = args.Value;
             if (lobbyData == null)
             {
                 OptionsPanel.IsEnabled = false;
@@ -102,7 +102,7 @@ namespace Supremacy.Client
 
         private void AppendNoticeToChatPanel(string message)
         {
-            var text = new TextBlock
+            TextBlock text = new TextBlock
                        {
                            Foreground = Brushes.Yellow,
                            TextWrapping = TextWrapping.Wrap,
@@ -181,7 +181,7 @@ namespace Supremacy.Client
 
             if (AppContext.LobbyData.UnassignedPlayers.Any())
             {
-                var result = MessageDialog.Show(
+                MessageDialogResult result = MessageDialog.Show(
                     _resourceManager.GetString("MP_LOBBY_WARN_UNASSIGNED_PLAYERS_HEADER"),
                     _resourceManager.GetString("MP_LOBBY_WARN_UNASSIGNED_PLAYERS_MESSAGE"),
                     MessageDialogButtons.YesNo);
@@ -190,7 +190,7 @@ namespace Supremacy.Client
             }
             if (OptionsPanel.Options.GalaxySize > GalaxySize.Small)
             {
-                var result = MessageDialog.Show(
+                MessageDialogResult result = MessageDialog.Show(
                     "Warning",
                     "For performance reasons, it is highly recommended that the galaxy size"
                     + " be restricted to 'Tiny' or 'Small' for multiplayer games."
@@ -230,9 +230,9 @@ namespace Supremacy.Client
 
             ClearSlots();
 
-            foreach (var slot in lobbyData.Slots)
+            foreach (PlayerSlot slot in lobbyData.Slots)
             {
-                var slotView = new PlayerSlotView { Slot = slot };
+                PlayerSlotView slotView = new PlayerSlotView { Slot = slot };
                 slotView.AssignedPlayerChanged += OnSlotViewAssignedPlayerChanged;
                 slotView.SlotClosed += OnSlotViewSlotClosed;
                 slotView.SlotOpened += OnSlotViewSlotOpened;
@@ -244,7 +244,7 @@ namespace Supremacy.Client
 
         private void ClearSlots()
         {
-            foreach (var slotView in PlayerInfoPanel.Children.OfType<PlayerSlotView>())
+            foreach (PlayerSlotView slotView in PlayerInfoPanel.Children.OfType<PlayerSlotView>())
             {
                 slotView.AssignedPlayerChanged -= OnSlotViewAssignedPlayerChanged;
                 slotView.SlotClosed -= OnSlotViewSlotClosed;
@@ -275,8 +275,8 @@ namespace Supremacy.Client
             if (!(sender is PlayerSlotView slotView))
                 return;
 
-            var playerId = Player.UnassignedPlayerID;
-            var player = slotView.AssignedPlayer;
+            int playerId = Player.UnassignedPlayerID;
+            Player player = slotView.AssignedPlayer;
             if (player != null)
                 playerId = player.PlayerID;
 
@@ -298,7 +298,7 @@ namespace Supremacy.Client
             if ((lobbyData == null) || (lobbyData.Slots == null) || (lobbyData.Players == null))
                 return;
 
-            var localPlayer = AppContext.LocalPlayer;
+            IPlayer localPlayer = AppContext.LocalPlayer;
 
 
             if (AppContext.IsSinglePlayerGame)
@@ -307,10 +307,10 @@ namespace Supremacy.Client
                 return;
             }
 
-            foreach (var slotView in PlayerInfoPanel.Children.OfType<PlayerSlotView>())
+            foreach (PlayerSlotView slotView in PlayerInfoPanel.Children.OfType<PlayerSlotView>())
             {
-                var playerSlot = lobbyData.Slots[slotView.Slot.SlotID];
-                var assignablePlayers = lobbyData.Players.ToList();
+                PlayerSlot playerSlot = lobbyData.Slots[slotView.Slot.SlotID];
+                System.Collections.Generic.List<Player> assignablePlayers = lobbyData.Players.ToList();
 
                 if (localPlayer.IsGameHost)
                 {
@@ -354,7 +354,7 @@ namespace Supremacy.Client
         {
             if (e.Key != Key.Enter)
                 return;
-            var message = ChatOutbox.Text.Trim();
+            string message = ChatOutbox.Text.Trim();
             ChatOutbox.Text = "";
             if (String.Equals(message, String.Empty))
                 return;
@@ -366,8 +366,8 @@ namespace Supremacy.Client
 
         public void PushChatMessage(ChatMessage message)
         {
-            var messageHost = new ContentControl();
-            var widthBinding = new Binding { Source = ChatPanel, Path = new PropertyPath(ActualWidthProperty) };
+            ContentControl messageHost = new ContentControl();
+            Binding widthBinding = new Binding { Source = ChatPanel, Path = new PropertyPath(ActualWidthProperty) };
 
             messageHost.Content = message;
             messageHost.SetBinding(WidthProperty, widthBinding);

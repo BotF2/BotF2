@@ -109,9 +109,9 @@ namespace Supremacy.Utility
         {
             if (value == null)
                 return null;
-    
-            var convertible = value as IConvertible;
-            var typeCode = (convertible != null) ? convertible.GetTypeCode() : Type.GetTypeCode(value.GetType());
+
+            IConvertible convertible = value as IConvertible;
+            TypeCode typeCode = (convertible != null) ? convertible.GetTypeCode() : Type.GetTypeCode(value.GetType());
     
             switch (typeCode)
             {
@@ -256,9 +256,9 @@ namespace Supremacy.Utility
         {
             if (value == null)
                 return null;
-    
-            var convertible = value as IConvertible;
-            var typeCode = (convertible != null) ? convertible.GetTypeCode() : Type.GetTypeCode(value.GetType());
+
+            IConvertible convertible = value as IConvertible;
+            TypeCode typeCode = (convertible != null) ? convertible.GetTypeCode() : Type.GetTypeCode(value.GetType());
     
             switch (typeCode)
             {
@@ -403,9 +403,9 @@ namespace Supremacy.Utility
         {
             if (value == null)
                 return null;
-    
-            var convertible = value as IConvertible;
-            var typeCode = (convertible != null) ? convertible.GetTypeCode() : Type.GetTypeCode(value.GetType());
+
+            IConvertible convertible = value as IConvertible;
+            TypeCode typeCode = (convertible != null) ? convertible.GetTypeCode() : Type.GetTypeCode(value.GetType());
     
             switch (typeCode)
             {
@@ -550,9 +550,9 @@ namespace Supremacy.Utility
         {
             if (value == null)
                 return null;
-    
-            var convertible = value as IConvertible;
-            var typeCode = (convertible != null) ? convertible.GetTypeCode() : Type.GetTypeCode(value.GetType());
+
+            IConvertible convertible = value as IConvertible;
+            TypeCode typeCode = (convertible != null) ? convertible.GetTypeCode() : Type.GetTypeCode(value.GetType());
     
             switch (typeCode)
             {
@@ -697,9 +697,9 @@ namespace Supremacy.Utility
         {
             if (value == null)
                 return null;
-    
-            var convertible = value as IConvertible;
-            var typeCode = (convertible != null) ? convertible.GetTypeCode() : Type.GetTypeCode(value.GetType());
+
+            IConvertible convertible = value as IConvertible;
+            TypeCode typeCode = (convertible != null) ? convertible.GetTypeCode() : Type.GetTypeCode(value.GetType());
     
             switch (typeCode)
             {
@@ -844,9 +844,9 @@ namespace Supremacy.Utility
         {
             if (value == null)
                 return null;
-    
-            var convertible = value as IConvertible;
-            var typeCode = (convertible != null) ? convertible.GetTypeCode() : Type.GetTypeCode(value.GetType());
+
+            IConvertible convertible = value as IConvertible;
+            TypeCode typeCode = (convertible != null) ? convertible.GetTypeCode() : Type.GetTypeCode(value.GetType());
     
             switch (typeCode)
             {
@@ -991,9 +991,9 @@ namespace Supremacy.Utility
         {
             if (value == null)
                 return null;
-    
-            var convertible = value as IConvertible;
-            var typeCode = (convertible != null) ? convertible.GetTypeCode() : Type.GetTypeCode(value.GetType());
+
+            IConvertible convertible = value as IConvertible;
+            TypeCode typeCode = (convertible != null) ? convertible.GetTypeCode() : Type.GetTypeCode(value.GetType());
     
             switch (typeCode)
             {
@@ -1138,9 +1138,9 @@ namespace Supremacy.Utility
         {
             if (value == null)
                 return null;
-    
-            var convertible = value as IConvertible;
-            var typeCode = (convertible != null) ? convertible.GetTypeCode() : Type.GetTypeCode(value.GetType());
+
+            IConvertible convertible = value as IConvertible;
+            TypeCode typeCode = (convertible != null) ? convertible.GetTypeCode() : Type.GetTypeCode(value.GetType());
     
             switch (typeCode)
             {
@@ -1287,9 +1287,9 @@ namespace Supremacy.Utility
         {
             if (value == null)
                 return null;
-    
-            var convertible = value as IConvertible;
-            var typeCode = (convertible != null) ? convertible.GetTypeCode() : Type.GetTypeCode(value.GetType());
+
+            IConvertible convertible = value as IConvertible;
+            TypeCode typeCode = (convertible != null) ? convertible.GetTypeCode() : Type.GetTypeCode(value.GetType());
     
             switch (typeCode)
             {
@@ -1434,9 +1434,9 @@ namespace Supremacy.Utility
         {
             if (value == null)
                 return null;
-    
-            var convertible = value as IConvertible;
-            var typeCode = (convertible != null) ? convertible.GetTypeCode() : Type.GetTypeCode(value.GetType());
+
+            IConvertible convertible = value as IConvertible;
+            TypeCode typeCode = (convertible != null) ? convertible.GetTypeCode() : Type.GetTypeCode(value.GetType());
     
             switch (typeCode)
             {
@@ -1581,9 +1581,9 @@ namespace Supremacy.Utility
         {
             if (value == null)
                 return null;
-    
-            var convertible = value as IConvertible;
-            var typeCode = (convertible != null) ? convertible.GetTypeCode() : Type.GetTypeCode(value.GetType());
+
+            IConvertible convertible = value as IConvertible;
+            TypeCode typeCode = (convertible != null) ? convertible.GetTypeCode() : Type.GetTypeCode(value.GetType());
     
             switch (typeCode)
             {
@@ -1728,9 +1728,9 @@ namespace Supremacy.Utility
         {
             if (value == null)
                 return null;
-    
-            var convertible = value as IConvertible;
-            var typeCode = (convertible != null) ? convertible.GetTypeCode() : Type.GetTypeCode(value.GetType());
+
+            IConvertible convertible = value as IConvertible;
+            TypeCode typeCode = (convertible != null) ? convertible.GetTypeCode() : Type.GetTypeCode(value.GetType());
     
             switch (typeCode)
             {
@@ -1882,9 +1882,9 @@ namespace Supremacy.Utility
         {
             if (value == null)
                 return null;
-    
-            var convertible = value as IConvertible;
-            var typeCode = (convertible != null) ? convertible.GetTypeCode() : Type.GetTypeCode(value.GetType());
+
+            IConvertible convertible = value as IConvertible;
+            TypeCode typeCode = (convertible != null) ? convertible.GetTypeCode() : Type.GetTypeCode(value.GetType());
     
             switch (typeCode)
             {
@@ -2029,9 +2029,9 @@ namespace Supremacy.Utility
         {
             if (value == null)
                 return null;
-    
-            var convertible = value as IConvertible;
-            var typeCode = (convertible != null) ? convertible.GetTypeCode() : Type.GetTypeCode(value.GetType());
+
+            IConvertible convertible = value as IConvertible;
+            TypeCode typeCode = (convertible != null) ? convertible.GetTypeCode() : Type.GetTypeCode(value.GetType());
     
             switch (typeCode)
             {
@@ -2240,11 +2240,11 @@ namespace Supremacy.Utility
             if (value == null)
                 return string.Empty;
 
-            var convertible = value as IConvertible;
+            IConvertible convertible = value as IConvertible;
             if (convertible != null)
                 return convertible.ToString(provider);
-            
-            var formattable = value as IFormattable;
+
+            IFormattable formattable = value as IFormattable;
             if (formattable != null)
                 return formattable.ToString(null, provider);
 
@@ -2265,7 +2265,7 @@ namespace Supremacy.Utility
             if (conversionType == null)
                 return null;
 
-            var convertible = value as IConvertible;
+            IConvertible convertible = value as IConvertible;
             if (convertible == null)
             {
                 if (value != null && value.GetType() == conversionType)
@@ -2273,7 +2273,7 @@ namespace Supremacy.Utility
                 return null;
             }
 
-            var typeCode = Type.GetTypeCode(conversionType);
+            TypeCode typeCode = Type.GetTypeCode(conversionType);
 
             switch (typeCode)
             {
@@ -2319,7 +2319,7 @@ namespace Supremacy.Utility
 
         public static object ChangeType(object value, TypeCode typeCode, IFormatProvider provider)
         {
-            var convertible = value as IConvertible;
+            IConvertible convertible = value as IConvertible;
             if (convertible == null)
                 return null;
 

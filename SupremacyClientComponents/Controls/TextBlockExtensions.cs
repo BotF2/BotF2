@@ -106,21 +106,21 @@ namespace Supremacy.Client.Controls
         {
             InlineCollection inlines = null;
 
-            var textBlock = o as TextBlock;
+            TextBlock textBlock = o as TextBlock;
             if (textBlock != null)
             {
                 inlines = textBlock.Inlines;
             }
             else
             {
-                var paragraph = o as Paragraph;
+                Paragraph paragraph = o as Paragraph;
                 if (paragraph != null)
                 {
                     inlines = paragraph.Inlines;
                 }
                 else
                 {
-                    var span = o as Span;
+                    Span span = o as Span;
                     if (span != null)
                         inlines = span.Inlines;
                 }
@@ -134,7 +134,7 @@ namespace Supremacy.Client.Controls
             if (e.NewValue == null)
                 return;
 
-            var formattedInlines = FormattedTextConverter.Instance.Convert(
+            IEnumerable<Inline> formattedInlines = FormattedTextConverter.Instance.Convert(
                 e.NewValue,
                 typeof(IEnumerable<Inline>),
                 null,

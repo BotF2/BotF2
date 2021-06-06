@@ -66,19 +66,19 @@ namespace Supremacy.Game
 
                 if (_diplomats != null)
                 {
-                    foreach (var diplomat in _diplomats)
+                    foreach (Diplomat diplomat in _diplomats)
                     {
-                        var ownerId = diplomat.OwnerID;
+                        int ownerId = diplomat.OwnerID;
 
                         //game.Diplomats.Add(diplomat);
                         //diplomat.IntelOrdersGoingToHost.AddRange(_ListofIntelOrders);
                         game.Diplomats.Add(diplomat);
 
-                        foreach (var civ in game.Civilizations)
+                        foreach (Civilization civ in game.Civilizations)
                         {
                             if (civ.CivID == ownerId)
                                 continue;
-                            var foreignPower = diplomat.GetForeignPower(civ);
+                            ForeignPower foreignPower = diplomat.GetForeignPower(civ);
                             _diplomacyData[ownerId, civ.CivID] = foreignPower.DiplomacyData;
                         }
                     }
@@ -106,7 +106,7 @@ namespace Supremacy.Game
             if (player == null)
                 throw new ArgumentNullException("player");
 
-            var data = new GameUpdateData();
+            GameUpdateData data = new GameUpdateData();
 
             GameLog.Server.GameData.DebugFormat("try to Create GameUpdateData for {0}", player.Empire.Key);
 

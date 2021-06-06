@@ -42,21 +42,21 @@ namespace Supremacy.Diplomacy.Visitors
                 
                 );
 
-            var visitor = new AcceptProposalVisitor(proposal);
+            AcceptProposalVisitor visitor = new AcceptProposalVisitor(proposal);
 
             proposal.Accept(visitor);
 
-            var agreement = new NewAgreement(
+            NewAgreement agreement = new NewAgreement(
                 proposal,
                 turnAccepted == 0 ? GameContext.Current.TurnNumber : turnAccepted,
                 visitor._agreementData);
 
-            var diplomat = Diplomat.Get(proposal.Recipient);
-            var foreignPower = diplomat.GetForeignPower(proposal.Sender);
+            Diplomat diplomat = Diplomat.Get(proposal.Recipient);
+            ForeignPower foreignPower = diplomat.GetForeignPower(proposal.Sender);
 
             GameContext.Current.AgreementMatrix.AddAgreement(agreement);
 
-            var response = new Response(ResponseType.Accept, proposal);
+            Response response = new Response(ResponseType.Accept, proposal);
 
             GameLog.Core.Diplomacy.DebugFormat("Agreement recipient={0} sender ={1}, turn sent ={2}, clauses ={3} response ={4}",
                 agreement.Recipient, agreement.Sender, agreement.Proposal.TurnSent, proposal.Clauses.Count, response.ResponseType.ToString());
@@ -69,16 +69,16 @@ namespace Supremacy.Diplomacy.Visitors
 
         protected void MoveTrappedShips(Civilization owner)
         {
-            var universe = GameContext.Current.Universe;
-            var fleets = universe.FindOwned<Fleet>(owner);
-            var spaceOwner = owner == Proposal.Sender ? Proposal.Recipient : Proposal.Sender;
-            var sectorClaims = GameContext.Current.SectorClaims;
+            UniverseManager universe = GameContext.Current.Universe;
+            HashSet<Fleet> fleets = universe.FindOwned<Fleet>(owner);
+            Civilization spaceOwner = owner == Proposal.Sender ? Proposal.Recipient : Proposal.Sender;
+            SectorClaimGrid sectorClaims = GameContext.Current.SectorClaims;
 
-            var fleetsToMove = new List<Fleet>();
+            List<Fleet> fleetsToMove = new List<Fleet>();
 
-            foreach (var fleet in fleets)
+            foreach (Fleet fleet in fleets)
             {
-                var sectorOwner = fleet.Sector.Owner;
+                Civilization sectorOwner = fleet.Sector.Owner;
                 if (sectorOwner == null)
                     sectorOwner = sectorClaims.GetOwner(fleet.Location);
 
@@ -86,9 +86,9 @@ namespace Supremacy.Diplomacy.Visitors
                     fleetsToMove.Add(fleet);
             }
 
-            foreach (var fleet in fleetsToMove)
+            foreach (Fleet fleet in fleetsToMove)
             {
-                var destination = universe.FindNearestOwned<Colony>(fleet.Location, owner);
+                Colony destination = universe.FindNearestOwned<Colony>(fleet.Location, owner);
                 if (destination == null)
                     continue;
 
@@ -123,10 +123,10 @@ namespace Supremacy.Diplomacy.Visitors
         
         protected override void VisitWarPactClause(IClause clause)
         {
-            var senderDiplomat = Diplomat.Get(Proposal.Sender);
-            var recipientDiplomat = Diplomat.Get(Proposal.Recipient);
+            Diplomat senderDiplomat = Diplomat.Get(Proposal.Sender);
+            Diplomat recipientDiplomat = Diplomat.Get(Proposal.Recipient);
 
-            var target = clause.Data as Civilization; // target civilization of war pact
+            Civilization target = clause.Data as Civilization; // target civilization of war pact
             if (target == null)
             {
                 GameLog.Client.Diplomacy.ErrorFormat(
@@ -136,12 +136,12 @@ namespace Supremacy.Diplomacy.Visitors
                 
                 return;
             }
-          
-            var senderForeignPower = senderDiplomat.GetForeignPower(target);
+
+            ForeignPower senderForeignPower = senderDiplomat.GetForeignPower(target);
             if (senderForeignPower.DiplomacyData.Status != ForeignPowerStatus.AtWar)
                 senderForeignPower.DeclareWar();
 
-            var recipientForeignPower = recipientDiplomat.GetForeignPower(target);
+            ForeignPower recipientForeignPower = recipientDiplomat.GetForeignPower(target);
             if (recipientForeignPower.DiplomacyData.Status != ForeignPowerStatus.AtWar)
                 recipientForeignPower.DeclareWar();
         }
@@ -185,9 +185,9 @@ namespace Supremacy.Diplomacy.Visitors
                 member = Proposal.Sender;
             }
 
-            var transferredColonyIds = new List<int>();
+            List<int> transferredColonyIds = new List<int>();
             // Transferr Ship Owner in GameEngine DoDiplomacy
-            foreach (var colony in GameContext.Current.Universe.FindOwned<Colony>(member))
+            foreach (Colony colony in GameContext.Current.Universe.FindOwned<Colony>(member))
             {
                 colony.TakeOwnership(empire, false);
                 transferredColonyIds.Add(colony.ObjectID);

@@ -27,13 +27,13 @@ namespace Supremacy.Client.Controls
 
         public void AddRange(T[] items)
         {
-            foreach (var item in items)
+            foreach (T item in items)
                 Add(item);
         }
 
         protected override void ClearItems()
         {
-            var itemArray = new T[Count];
+            T[] itemArray = new T[Count];
 
             Items.CopyTo(itemArray, 0);
             base.ClearItems();
@@ -53,7 +53,7 @@ namespace Supremacy.Client.Controls
 
         public int IndexOf(string label)
         {
-            for (var index = 0; index < Count; index++)
+            for (int index = 0; index < Count; index++)
             {
                 if (GameControlService.GetLabel(this[index]) == label)
                     return index;
@@ -63,16 +63,16 @@ namespace Supremacy.Client.Controls
 
         protected override void OnCollectionChanged(NotifyCollectionChangedEventArgs e)
         {
-            var logicalParent = _owner as ILogicalParent;
+            ILogicalParent logicalParent = _owner as ILogicalParent;
 
             switch (e.Action)
             {
                 case NotifyCollectionChangedAction.Add:
                 case NotifyCollectionChangedAction.Replace:
                 {
-                    foreach (var newItem in e.NewItems)
+                    foreach (object newItem in e.NewItems)
                     {
-                        var variantControl = newItem as IVariantControl;
+                            IVariantControl variantControl = newItem as IVariantControl;
                         if (variantControl != null)
                         {
                             if (_context != GameControlContext.None)
@@ -94,7 +94,7 @@ namespace Supremacy.Client.Controls
                 {
                     if (logicalParent != null)
                     {
-                        foreach (var oldItem in e.OldItems)
+                        foreach (object oldItem in e.OldItems)
                             logicalParent.RemoveLogicalChild(oldItem);
                     }
                     break;
@@ -114,7 +114,7 @@ namespace Supremacy.Client.Controls
         {
             get
             {
-                var index = IndexOf(label);
+                int index = IndexOf(label);
                 return (index != -1) ? this[index] : null;
             }
         }

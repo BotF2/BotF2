@@ -150,7 +150,7 @@ namespace Supremacy.VFS
 				stream.Write(fileData, bytesCopied, fileData.Length - bytesCopied);
 			}
 
-            var memoryStream = new MemoryFileStream(this, resolvedName, stream, access, share);
+            MemoryFileStream memoryStream = new MemoryFileStream(this, resolvedName, stream, access, share);
 
 			if (access == FileAccess.Read)
 			{
@@ -168,8 +168,8 @@ namespace Supremacy.VFS
 		{
 			_files.Add(resolvedName, null);
 
-			var stream = new MemoryStream(_defaultFilesSize * 1024);
-			var memoryStream = new MemoryFileStream(this, resolvedName, stream, FileAccess.ReadWrite, FileShare.None);
+            MemoryStream stream = new MemoryStream(_defaultFilesSize * 1024);
+            MemoryFileStream memoryStream = new MemoryFileStream(this, resolvedName, stream, FileAccess.ReadWrite, FileShare.None);
 
 			memoryStream.SetCompression(_compressionAlgorithm, CompressionMode.Compress);
 
@@ -187,7 +187,7 @@ namespace Supremacy.VFS
 
 		public override ReadOnlyCollection<string> GetFiles(string path, bool recurse, string searchPattern)
 		{
-			var results = new List<string>();
+            List<string> results = new List<string>();
 
             foreach (string key in _files.Keys)
             {

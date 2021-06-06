@@ -24,7 +24,7 @@ namespace Supremacy.Client.Controls
             if (e.Handled)
                 return;
 
-            var direction = FocusNavigationDirection.Next;
+            FocusNavigationDirection direction = FocusNavigationDirection.Next;
             switch (e.Key)
             {
                 case Key.Down:
@@ -48,11 +48,11 @@ namespace Supremacy.Client.Controls
             if (direction == FocusNavigationDirection.Next)
                 return;
 
-            var focusedElement = Keyboard.FocusedElement as UIElement;
+            UIElement focusedElement = Keyboard.FocusedElement as UIElement;
             if (focusedElement == null)
                 return;
 
-            var predictedFocus = focusedElement.PredictFocus(direction) as IInputElement;
+            IInputElement predictedFocus = focusedElement.PredictFocus(direction) as IInputElement;
             if (predictedFocus == null)
                 return;
 

@@ -19,11 +19,11 @@ namespace Supremacy.Orbitals
         public OrbitalBatteryDesign(XmlElement element)
             : base(element)
         {
-            var currentElement = element["UnitEnergyCost"];
+            XmlElement currentElement = element["UnitEnergyCost"];
             if (currentElement != null)
             {
                 int unitEnergyCost;
-                var unitEnergyCostText = currentElement.InnerText.Trim();
+                string unitEnergyCostText = currentElement.InnerText.Trim();
 
                 if (int.TryParse(unitEnergyCostText, out unitEnergyCost))
                 {
@@ -53,8 +53,8 @@ namespace Supremacy.Orbitals
         {
             base.AppendXml(baseElement);
 
-            var doc = baseElement.OwnerDocument;
-            var newElement = doc.CreateElement("UnitEnergyCost");
+            XmlDocument doc = baseElement.OwnerDocument;
+            XmlElement newElement = doc.CreateElement("UnitEnergyCost");
 
             newElement.InnerText = UnitEnergyCost.ToString();
             baseElement.AppendChild(newElement);
@@ -73,8 +73,8 @@ namespace Supremacy.Orbitals
                 return false;
             }
 
-            var sector = GameContext.Current.Universe.Map[location];
-            var system = sector.System;
+            Sector sector = GameContext.Current.Universe.Map[location];
+            StarSystem system = sector.System;
 
             system.Colony.OrbitalBatteryDesign = this;
             system.Colony.AddOrbitalBatteries(1);

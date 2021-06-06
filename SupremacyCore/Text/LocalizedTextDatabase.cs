@@ -43,7 +43,7 @@ namespace Supremacy.Text
             if (database == null)
                 throw new ArgumentNullException("database");
 
-            foreach (var group in database.Groups)
+            foreach (LocalizedTextGroup group in database.Groups)
                 Merge(group, overwrite);
         }
 
@@ -56,7 +56,7 @@ namespace Supremacy.Text
 
             if (_groups.TryGetValue(group.Key, out existingGroup))
             {
-                foreach (var entry in group.Entries)
+                foreach (LocalizedString entry in group.Entries)
                 {
                     LocalizedString existingEntry;
 
@@ -74,7 +74,7 @@ namespace Supremacy.Text
 
         public static IEnumerable<Uri> LocateTextFiles()
         {
-            var vfsService = ResourceManager.VfsService;
+            IVfsService vfsService = ResourceManager.VfsService;
             if (vfsService == null)
                 return Enumerable.Empty<Uri>();
 
@@ -83,9 +83,9 @@ namespace Supremacy.Text
 
         private static IEnumerable<Uri> LocateTextFiles(IVfsService vfsService)
         {
-            var files = new List<Uri>();
-            
-            var fileNames =
+            List<Uri> files = new List<Uri>();
+
+            IEnumerable<string> fileNames =
                 (
                     from source in vfsService.Sources
                     from fileName in source.GetFiles(@"Resources\Data", true, "*.xaml")
@@ -103,12 +103,12 @@ namespace Supremacy.Text
 
         public static LocalizedTextDatabase Load()
         {
-            var vfsService = ResourceManager.VfsService;
+            IVfsService vfsService = ResourceManager.VfsService;
 
-            var files = LocateTextFiles(vfsService);
-            var database = new LocalizedTextDatabase();
+            IEnumerable<Uri> files = LocateTextFiles(vfsService);
+            LocalizedTextDatabase database = new LocalizedTextDatabase();
 
-            foreach (var file in files)
+            foreach (Uri file in files)
             {
                 try
                 {
@@ -119,19 +119,19 @@ namespace Supremacy.Text
 
                     object content;
 
-                    using (var stream = fileInfo.OpenRead())
+                    using (System.IO.Stream stream = fileInfo.OpenRead())
                     {
                         content = XamlServices.Load(stream);
                     }
 
-                    var databaseContent = content as LocalizedTextDatabase;
+                    LocalizedTextDatabase databaseContent = content as LocalizedTextDatabase;
                     if (databaseContent != null)
                     {
                         database.Merge(databaseContent);
                         continue;
                     }
 
-                    var textGroup = content as LocalizedTextGroup;
+                    LocalizedTextGroup textGroup = content as LocalizedTextGroup;
                     if (textGroup != null)
                     {
                         database.Merge(textGroup);
@@ -227,14 +227,14 @@ namespace Supremacy.Text
 
             public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
             {
-                var standardKey = value as StandardLocalizedTextGroupKey;
+                StandardLocalizedTextGroupKey standardKey = value as StandardLocalizedTextGroupKey;
                 if (standardKey != null &&
                     destinationType == typeof(MarkupExtension))
                 {
-                    var serializerContext = context as IValueSerializerContext;
+                    IValueSerializerContext serializerContext = context as IValueSerializerContext;
                     if (serializerContext != null)
                     {
-                        var typeSerializer = serializerContext.GetValueSerializerFor(typeof(Type));
+                        ValueSerializer typeSerializer = serializerContext.GetValueSerializerFor(typeof(Type));
                         if (typeSerializer != null)
                         {
                             return new StaticExtension(
@@ -294,7 +294,7 @@ namespace Supremacy.Text
         {
             get
             {
-                var defaultEntry = DefaultEntry;
+                LocalizedString defaultEntry = DefaultEntry;
                 if (defaultEntry == null)
                     return null;
 
@@ -362,15 +362,15 @@ namespace Supremacy.Text
 
         private string FormatGroupKey()
         {
-            var groupKey = GroupKey;
+            object groupKey = GroupKey;
             if (groupKey == null)
                 return string.Empty;
 
-            var typeKey = groupKey as Type;
+            Type typeKey = groupKey as Type;
             if (typeKey != null)
                 return string.Format("{{{0}}}", typeKey.Name);
 
-            var nameTypeKey = groupKey as NameTypeTextGroupKey;
+            NameTypeTextGroupKey nameTypeKey = groupKey as NameTypeTextGroupKey;
             if (nameTypeKey != null)
                 return string.Format("{{{0}, {1}}}", nameTypeKey.Type.Name, nameTypeKey.Name);
 

@@ -83,11 +83,11 @@ namespace Supremacy.VFS
             if (_disposed)
                 return;
 
-            var exceptions = new List<Exception>(_sources.Count);
+            List<Exception> exceptions = new List<Exception>(_sources.Count);
 
             if (disposing)
             {
-                foreach (var source in _sources)
+                foreach (IFilesSource source in _sources)
                 {
                     try
                     {
@@ -178,12 +178,12 @@ namespace Supremacy.VFS
         /// </returns>
         public IWritableFilesSource GetWritableSource(string sourceName)
         {
-            foreach (var source in _sources)
+            foreach (IFilesSource source in _sources)
             {
                 if (!string.Equals(source.Name, sourceName, StringComparison.Ordinal))
                     continue;
-                
-                var writableSource = source as IWritableFilesSource;
+
+                IWritableFilesSource writableSource = source as IWritableFilesSource;
                 if (writableSource != null)
                     return writableSource;
 
@@ -240,7 +240,7 @@ namespace Supremacy.VFS
         /// </returns>
         public IVirtualFileInfo GetFileInfo(string path, bool recurse)
         {
-            var fileInfos = _sources
+            IEnumerable<IVirtualFileInfo> fileInfos = _sources
                 .Select(o => o.GetFileInfo(path, recurse))
                 .Where(o => (o != null));
             
@@ -257,7 +257,7 @@ namespace Supremacy.VFS
 
         public IVirtualFileInfo GetFileInfo(string definedPathAlias, string path, bool recurse)
         {
-            var fileInfos = _sources
+            IEnumerable<IVirtualFileInfo> fileInfos = _sources
                 .Select(o => o.GetFileInfo(definedPathAlias, path, recurse))
                 .Where(o => (o != null));
 
@@ -280,7 +280,7 @@ namespace Supremacy.VFS
         /// <returns>A stream to the file.</returns>
         public Stream GetFile(string path, bool recurse)
         {
-            var fileInfos = _sources
+            IEnumerable<IVirtualFileInfo> fileInfos = _sources
                 .Select(o => o.GetFileInfo(path, recurse))
                 .Where(o => (o != null) && o.Exists);
             
@@ -303,7 +303,7 @@ namespace Supremacy.VFS
         /// <returns>A stream to the file.</returns>
         public Stream GetFile(string definedPathAlias, string path, bool recurse)
         {
-            var fileInfos = _sources
+            IEnumerable<IVirtualFileInfo> fileInfos = _sources
                             .Select(o => o.GetFileInfo(definedPathAlias, path, recurse))
                             .Where(o => (o != null) && o.Exists);
 

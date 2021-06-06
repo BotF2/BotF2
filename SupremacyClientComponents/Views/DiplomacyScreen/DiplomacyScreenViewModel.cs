@@ -246,11 +246,11 @@ namespace Supremacy.Client.Views
             AreOutgoingMessageCommandsVisibleChanged.Raise(this);
             OnPropertyChanged("AreOutgoingMessageCommandsVisible");
 
-            var message = new DiplomacyMessageViewModel(_playerCivilization, _selectedForeignPower.Counterparty);
+            DiplomacyMessageViewModel message = new DiplomacyMessageViewModel(_playerCivilization, _selectedForeignPower.Counterparty);
 
             message.Edit();
 
-            var declareWarElement = message.AvailableElements.FirstOrDefault(o => o.ElementType == DiplomacyMessageElementType.WarDeclaration);
+            DiplomacyMessageAvailableElement declareWarElement = message.AvailableElements.FirstOrDefault(o => o.ElementType == DiplomacyMessageElementType.WarDeclaration);
             if (declareWarElement == null || !declareWarElement.AddCommand.CanExecute(null))
                 return;
 
@@ -290,11 +290,11 @@ namespace Supremacy.Client.Views
             AreOutgoingMessageCommandsVisibleChanged.Raise(this);
             OnPropertyChanged("AreOutgoingMessageCommandsVisible");
 
-            var message = new DiplomacyMessageViewModel(_playerCivilization, _selectedForeignPower.Counterparty);
+            DiplomacyMessageViewModel message = new DiplomacyMessageViewModel(_playerCivilization, _selectedForeignPower.Counterparty);
 
             message.Edit();
 
-            var endWarElement = message.AvailableElements.FirstOrDefault(o => o.ElementType == DiplomacyMessageElementType.TreatyCeaseFireClause); // CeaseFire = endWar
+            DiplomacyMessageAvailableElement endWarElement = message.AvailableElements.FirstOrDefault(o => o.ElementType == DiplomacyMessageElementType.TreatyCeaseFireClause); // CeaseFire = endWar
             if (endWarElement == null || !endWarElement.AddCommand.CanExecute(null))
                 return;
 
@@ -342,11 +342,11 @@ namespace Supremacy.Client.Views
             AreOutgoingMessageCommandsVisibleChanged.Raise(this);
             OnPropertyChanged("AreOutgoingMessageCommandsVisible");
 
-            var message = new DiplomacyMessageViewModel(_playerCivilization, _selectedForeignPower.Counterparty);
+            DiplomacyMessageViewModel message = new DiplomacyMessageViewModel(_playerCivilization, _selectedForeignPower.Counterparty);
 
             message.Edit();
 
-            var openBordersElement = message.AvailableElements.FirstOrDefault(o => o.ElementType == DiplomacyMessageElementType.TreatyOpenBordersClause);
+            DiplomacyMessageAvailableElement openBordersElement = message.AvailableElements.FirstOrDefault(o => o.ElementType == DiplomacyMessageElementType.TreatyOpenBordersClause);
             if (openBordersElement == null || !openBordersElement.AddCommand.CanExecute(null))
                 return;
 
@@ -418,11 +418,11 @@ namespace Supremacy.Client.Views
             AreOutgoingMessageCommandsVisibleChanged.Raise(this);
             OnPropertyChanged("AreOutgoingMessageCommandsVisible");
 
-            var message = new DiplomacyMessageViewModel(_playerCivilization, _selectedForeignPower.Counterparty);
+            DiplomacyMessageViewModel message = new DiplomacyMessageViewModel(_playerCivilization, _selectedForeignPower.Counterparty);
 
             message.Edit();
 
-            var nonAgressionElement = message.AvailableElements.FirstOrDefault(o => o.ElementType == DiplomacyMessageElementType.TreatyNonAggressionClause);
+            DiplomacyMessageAvailableElement nonAgressionElement = message.AvailableElements.FirstOrDefault(o => o.ElementType == DiplomacyMessageElementType.TreatyNonAggressionClause);
             if (nonAgressionElement == null || !nonAgressionElement.AddCommand.CanExecute(null))
                 return;
 
@@ -469,11 +469,11 @@ namespace Supremacy.Client.Views
             AreOutgoingMessageCommandsVisibleChanged.Raise(this);
             OnPropertyChanged("AreOutgoingMessageCommandsVisible");
 
-            var message = new DiplomacyMessageViewModel(_playerCivilization, _selectedForeignPower.Counterparty);
+            DiplomacyMessageViewModel message = new DiplomacyMessageViewModel(_playerCivilization, _selectedForeignPower.Counterparty);
 
             message.Edit();
 
-            var affiliationElement = message.AvailableElements.FirstOrDefault(o => o.ElementType == DiplomacyMessageElementType.TreatyOpenBordersClause);
+            DiplomacyMessageAvailableElement affiliationElement = message.AvailableElements.FirstOrDefault(o => o.ElementType == DiplomacyMessageElementType.TreatyOpenBordersClause);
             if (affiliationElement == null || !affiliationElement.AddCommand.CanExecute(null))
                 return;
 
@@ -522,11 +522,11 @@ namespace Supremacy.Client.Views
             AreOutgoingMessageCommandsVisibleChanged.Raise(this);
             OnPropertyChanged("AreOutgoingMessageCommandsVisible");
 
-            var message = new DiplomacyMessageViewModel(_playerCivilization, _selectedForeignPower.Counterparty);
+            DiplomacyMessageViewModel message = new DiplomacyMessageViewModel(_playerCivilization, _selectedForeignPower.Counterparty);
 
             message.Edit();
 
-            var defenceAllianceElement = message.AvailableElements.FirstOrDefault(o => o.ElementType == DiplomacyMessageElementType.TreatyDefensiveAllianceClause);
+            DiplomacyMessageAvailableElement defenceAllianceElement = message.AvailableElements.FirstOrDefault(o => o.ElementType == DiplomacyMessageElementType.TreatyDefensiveAllianceClause);
             if (defenceAllianceElement == null || !defenceAllianceElement.AddCommand.CanExecute(null))
                 return;
 
@@ -567,11 +567,11 @@ namespace Supremacy.Client.Views
             AreOutgoingMessageCommandsVisibleChanged.Raise(this);
             OnPropertyChanged("AreOutgoingMessageCommandsVisible");
 
-            var message = new DiplomacyMessageViewModel(_playerCivilization, _selectedForeignPower.Counterparty);
+            DiplomacyMessageViewModel message = new DiplomacyMessageViewModel(_playerCivilization, _selectedForeignPower.Counterparty);
 
             message.Edit();
 
-            var fullAllianceElement = message.AvailableElements.FirstOrDefault(o => o.ElementType == DiplomacyMessageElementType.TreatyFullAllianceClause);
+            DiplomacyMessageAvailableElement fullAllianceElement = message.AvailableElements.FirstOrDefault(o => o.ElementType == DiplomacyMessageElementType.TreatyFullAllianceClause);
             if (fullAllianceElement == null || !fullAllianceElement.AddCommand.CanExecute(null))
                 return;
 
@@ -612,11 +612,11 @@ namespace Supremacy.Client.Views
             AreOutgoingMessageCommandsVisibleChanged.Raise(this);
             OnPropertyChanged("AreOutgoingMessageCommandsVisible");
 
-            var message = new DiplomacyMessageViewModel(_playerCivilization, _selectedForeignPower.Counterparty);
+            DiplomacyMessageViewModel message = new DiplomacyMessageViewModel(_playerCivilization, _selectedForeignPower.Counterparty);
 
             message.Edit();
 
-            var membershipElement = message.AvailableElements.FirstOrDefault(o => o.ElementType == DiplomacyMessageElementType.TreatyMembershipClause);
+            DiplomacyMessageAvailableElement membershipElement = message.AvailableElements.FirstOrDefault(o => o.ElementType == DiplomacyMessageElementType.TreatyMembershipClause);
             if (membershipElement == null || !membershipElement.AddCommand.CanExecute(null))
                 return;
 
@@ -672,7 +672,7 @@ namespace Supremacy.Client.Views
             {
                 int _selectedID = SelectedForeignPower.Counterparty.CivID;
 
-                foreach (var element in SelectedForeignPower.OutgoingMessage.StatementElements)
+                foreach (DiplomacyMessageElement element in SelectedForeignPower.OutgoingMessage.StatementElements)
                 {
                     //GameLog.Client.Diplomacy.DebugFormat("!@^% element = {0} ", element.Description);
                     if (element.ElementType == DiplomacyMessageElementType.WarDeclaration)
@@ -719,7 +719,7 @@ namespace Supremacy.Client.Views
                 return;
             int _selectedID = SelectedForeignPower.Counterparty.CivID;
 
-            foreach (var element in SelectedForeignPower.OutgoingMessage.StatementElements)
+            foreach (DiplomacyMessageElement element in SelectedForeignPower.OutgoingMessage.StatementElements)
             {
                 //GameLog.Client.Diplomacy.DebugFormat("!@^% element = {0} ", element.Description);
                 if (element.ElementType == DiplomacyMessageElementType.WarDeclaration)
@@ -756,7 +756,7 @@ namespace Supremacy.Client.Views
             if (p == null)
                 return false;
 
-            var displayMode = p.InnerParameter as DiplomacyScreenDisplayMode?;
+            DiplomacyScreenDisplayMode? displayMode = p.InnerParameter as DiplomacyScreenDisplayMode?;
             if (displayMode == null)
             {
                 p.IsChecked = false;
@@ -1029,7 +1029,7 @@ namespace Supremacy.Client.Views
                 //if (DisplayMode != DiplomacyScreenDisplayMode.Outbox)
                 //    return false;
 
-                var selectedForeignPower = SelectedForeignPower;  // if one is selected in the screen
+                ForeignPowerViewModel selectedForeignPower = SelectedForeignPower;  // if one is selected in the screen
 
                 // works, mostly not needed
                 //if (selectedForeignPower != null)
@@ -1063,7 +1063,7 @@ namespace Supremacy.Client.Views
                     return false;
                 }
 
-                var selectedForeignPower = SelectedForeignPower;
+                ForeignPowerViewModel selectedForeignPower = SelectedForeignPower;
 
                 //works, mostly not needed
                 //if (selectedForeignPower != null)
@@ -1091,7 +1091,7 @@ namespace Supremacy.Client.Views
         {
             get
             {
-                var selectedForeignPower = SelectedForeignPower;
+                ForeignPowerViewModel selectedForeignPower = SelectedForeignPower;
 
                 return selectedForeignPower != null &&
                        selectedForeignPower.OutgoingMessage == null;
@@ -1116,7 +1116,7 @@ namespace Supremacy.Client.Views
         {
             get
             {
-                var selectedForeignPower = SelectedForeignPower;
+                ForeignPowerViewModel selectedForeignPower = SelectedForeignPower;
                 _isMembershipButtonVisible = (selectedForeignPower != null && !selectedForeignPower.Counterparty.IsEmpire);
                 return _isMembershipButtonVisible;
             }
@@ -1136,7 +1136,7 @@ namespace Supremacy.Client.Views
         {
             get
             {
-                var selectedForeignPower = SelectedForeignPower;
+                ForeignPowerViewModel selectedForeignPower = SelectedForeignPower;
                 _isFullAllianceButtonVisible = (selectedForeignPower != null && selectedForeignPower.Counterparty.IsEmpire);
                 return _isFullAllianceButtonVisible;
             }
@@ -1212,22 +1212,22 @@ namespace Supremacy.Client.Views
 
         private void RefreshForeignPowers()
         {
-            var selectedForeignPower = (SelectedForeignPower != null) ? SelectedForeignPower.Counterparty : null;
+            Civilization selectedForeignPower = (SelectedForeignPower != null) ? SelectedForeignPower.Counterparty : null;
 
             SelectedForeignPower = null;
 
             _foreignPowers.Clear();
 
-            var playerEmpireId = ServiceLocator.Current.GetInstance<IAppContext>().LocalPlayer.EmpireID; // local player
-            var playerDiplomat = Diplomat.Get(playerEmpireId);
+            int playerEmpireId = ServiceLocator.Current.GetInstance<IAppContext>().LocalPlayer.EmpireID; // local player
+            Diplomat playerDiplomat = Diplomat.Get(playerEmpireId);
 
-            foreach (var civ in GameContext.Current.Civilizations)
+            foreach (Civilization civ in GameContext.Current.Civilizations)
             {
                 if (civ.CivID == playerEmpireId || !DiplomacyHelper.IsContactMade(playerEmpireId, civ.CivID) || DiplomacyHelper.GetForeignPowerStatus(civ, playerDiplomat.Owner) == ForeignPowerStatus.OwnerIsSubjugated)
                     continue;
 
-                var foreignPower = playerDiplomat.GetForeignPower(civ);
-                var foreignPowerViewModel = new ForeignPowerViewModel(foreignPower);
+                ForeignPower foreignPower = playerDiplomat.GetForeignPower(civ);
+                ForeignPowerViewModel foreignPowerViewModel = new ForeignPowerViewModel(foreignPower);
 
                 _foreignPowers.Add(foreignPowerViewModel);
                // GameLog.Client.Diplomacy.DebugFormat("!!! View of local player {1} for {0}: {2} ({3}/{4})", civ.ShortName, AppContext.LocalPlayer.Empire.Name
@@ -1244,15 +1244,15 @@ namespace Supremacy.Client.Views
 
         private void RefreshRelationshipGraph()
         {
-            var count = GameContext.Current.Civilizations.Count;
-            var nodes = new List<DiplomacyGraphNode>(count);
-            var localPlayerEmpire = ServiceLocator.Current.GetInstance<IAppContext>().LocalPlayer.Empire;
+            int count = GameContext.Current.Civilizations.Count;
+            List<DiplomacyGraphNode> nodes = new List<DiplomacyGraphNode>(count);
+            Civilization localPlayerEmpire = ServiceLocator.Current.GetInstance<IAppContext>().LocalPlayer.Empire;
 
             DiplomacyGraphNode localPlayerNode = null;
 
-            foreach (var civ in GameContext.Current.Civilizations)
+            foreach (Civilization civ in GameContext.Current.Civilizations)
             {
-                var node = new DiplomacyGraphNode(civ, _setSelectedGraphNodeCommand);
+                DiplomacyGraphNode node = new DiplomacyGraphNode(civ, _setSelectedGraphNodeCommand);
                 
                 nodes.Add(node);
 
@@ -1260,9 +1260,9 @@ namespace Supremacy.Client.Views
                     localPlayerNode = node;
             }
             
-            for (var i = 0; i < count; i++)
+            for (int i = 0; i < count; i++)
             {
-                for (var j = 0; j < count; j++)
+                for (int j = 0; j < count; j++)
                 {
                     if (i != j &&
                         DiplomacyHelper.IsContactMade(nodes[i].Civilization, nodes[j].Civilization) &&

@@ -153,7 +153,7 @@ namespace Supremacy.Economy
         {
             get
             {
-                var shipyard = Colony.Shipyard;
+                Shipyard shipyard = Colony.Shipyard;
                 if (shipyard == null || shipyard.ObjectID != _upgradeTargetId)
                     return null;
                 return shipyard;
@@ -165,9 +165,9 @@ namespace Supremacy.Economy
         /// </summary>
         public override void Finish()
         {
-            for (var i = 0; i < UpgradeTarget.BuildSlots.Count; i++)
+            for (int i = 0; i < UpgradeTarget.BuildSlots.Count; i++)
             {
-                var slot = UpgradeTarget.BuildSlots[i];
+                ShipyardBuildSlot slot = UpgradeTarget.BuildSlots[i];
 
                 if (slot.HasProject && slot.Project.IsPartiallyComplete)
                 {
@@ -177,7 +177,7 @@ namespace Supremacy.Economy
             }
 
             // next is to scrap Upgrade target which might not be available any more
-            var _scrapped = UpgradeTarget.Name;            
+            string _scrapped = UpgradeTarget.Name;            
             GameContext.Current.Universe.Destroy(UpgradeTarget);
             base.Finish();
         }

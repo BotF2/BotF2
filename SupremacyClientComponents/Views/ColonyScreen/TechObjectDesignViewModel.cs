@@ -89,9 +89,9 @@ namespace Supremacy.Client.Views
 
         private static object CoerceUpgradeableDesignsResolved(DependencyObject d, object baseValue)
         {
-            var viewModel = (TechObjectDesignViewModel)d;
+            TechObjectDesignViewModel viewModel = (TechObjectDesignViewModel)d;
 
-            var design = viewModel.Design;
+            TechObjectDesign design = viewModel.Design;
             if (design == null)
                 return baseValue;
 
@@ -126,9 +126,9 @@ namespace Supremacy.Client.Views
 
         private static object CoerceObsoletedDesignsResolved(DependencyObject d, object baseValue)
         {
-            var viewModel = (TechObjectDesignViewModel)d;
+            TechObjectDesignViewModel viewModel = (TechObjectDesignViewModel)d;
 
-            var design = viewModel.Design;
+            TechObjectDesign design = viewModel.Design;
             if (design == null)
                 return baseValue;
 
@@ -152,22 +152,22 @@ namespace Supremacy.Client.Views
             primaryTechTree = null;
             secondaryTechTree = null;
 
-            var appContext = ServiceLocator.Current.GetInstance<IAppContext>();
+            IAppContext appContext = ServiceLocator.Current.GetInstance<IAppContext>();
             if (appContext == null)
                 return;
 
-            var gameContext = appContext.CurrentGame;
+            Game.IGameContext gameContext = appContext.CurrentGame;
             if (gameContext == null)
                 return;
 
-            var design = Design;
+            TechObjectDesign design = Design;
             if (design == null)
                 return;
 
-            var civilization = Civilization;
+            Civilization civilization = Civilization;
             if (civilization == null)
             {
-                var localPlayerEmpire = appContext.LocalPlayerEmpire;
+                Game.CivilizationManager localPlayerEmpire = appContext.LocalPlayerEmpire;
                 if (localPlayerEmpire == null)
                     return;
                 civilization = localPlayerEmpire.Civilization;
@@ -175,19 +175,19 @@ namespace Supremacy.Client.Views
 
             primaryTechTree = gameContext.TechTrees[civilization];
 
-            var location = Location;
+            MapLocation? location = Location;
             if ((!(design is BuildingDesign)) || !location.HasValue)
                 return;
 
-            var system = gameContext.Universe.Map[location.Value].System;
+            StarSystem system = gameContext.Universe.Map[location.Value].System;
             if (system == null)
                 return;
 
-            var colony = system.Colony;
+            Colony colony = system.Colony;
             if (colony == null)
                 return;
 
-            var originalOwner = colony.OriginalOwner;
+            Civilization originalOwner = colony.OriginalOwner;
             if (originalOwner != civilization)
                 secondaryTechTree = gameContext.TechTrees[civilization];
         }

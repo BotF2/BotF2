@@ -165,10 +165,10 @@ namespace Supremacy.VFS
 
 					if (disposing)
 					{
-						foreach (var stream in _usedFiles.SelectMany(o => o.Value))
+						foreach (StreamDecorator<T> stream in _usedFiles.SelectMany(o => o.Value))
 							stream.Closed -= StreamClosed;
 
-                        foreach (var openCopyCollection in _usedFiles.Values)
+                        foreach (ICollection<StreamDecorator<T>> openCopyCollection in _usedFiles.Values)
                             openCopyCollection.Clear();
 
 						_usedFiles.Clear();
@@ -243,8 +243,8 @@ namespace Supremacy.VFS
 					    // Source specific get operation
                         T stream = InternalGetFile(resolvedName, access, fileShare);
 
-						// Wrap the stream in a decorator
-                        var decorator = new StreamDecorator<T>(resolvedName, stream, access, fileShare)
+                        // Wrap the stream in a decorator
+                        StreamDecorator<T> decorator = new StreamDecorator<T>(resolvedName, stream, access, fileShare)
 					                    {
 					                        VirtualPath = path,
 					                        SourceName = _name
@@ -348,8 +348,8 @@ namespace Supremacy.VFS
 
 					if (stream != null)
 					{
-						// Wrap the stream in a decorator
-                        var decorator = new StreamDecorator<T>(resolvedName, stream, FileAccess.ReadWrite, FileShare.None)
+                        // Wrap the stream in a decorator
+                        StreamDecorator<T> decorator = new StreamDecorator<T>(resolvedName, stream, FileAccess.ReadWrite, FileShare.None)
 					                    {
 					                        VirtualPath = path,
 					                        SourceName = _name
@@ -454,7 +454,7 @@ namespace Supremacy.VFS
 		//General code for when a stream is closed
 		private void StreamClosed(object sender, EventArgs e)
 		{
-			var stream = (StreamDecorator<T>) sender;
+            StreamDecorator<T> stream = (StreamDecorator<T>) sender;
 
 			lock (_lockInstance)
 			{

@@ -60,7 +60,7 @@ namespace Supremacy.Effects
 
         private void OnInvalidated()
         {
-            var handler = Invalidated;
+            EventHandler handler = Invalidated;
             if (handler != null)
                 handler(this, EventArgs.Empty);
         }

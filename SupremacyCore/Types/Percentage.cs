@@ -267,12 +267,12 @@ namespace Supremacy.Types
         {
             float floatResult;
 
-            var applyScaling = false;
+            bool applyScaling = false;
 
             if (value == null)
                 throw new ArgumentNullException("value");
 
-            var valueString = value.Trim();
+            string valueString = value.Trim();
             if (valueString.EndsWith("%"))
             {
                 valueString = valueString.Substring(0, valueString.Length - 1);
@@ -309,14 +309,14 @@ namespace Supremacy.Types
         /// </remarks>
         private static void ApplyErrorCorrectionAndLimitPrecision(ref float value)
         {
-            var nearestWholePercentage = (float)Math.Round(value, 2);
+            float nearestWholePercentage = (float)Math.Round(value, 2);
             if (FloatUtil.AreClose(value, nearestWholePercentage))
             {
                 value = nearestWholePercentage;
                 return;
             }
 
-            var nearestTenthPercentage = (float)Math.Round(value, 3);
+            float nearestTenthPercentage = (float)Math.Round(value, 3);
             if (FloatUtil.AreClose(value, nearestTenthPercentage))
             {
                 value = nearestTenthPercentage;
@@ -381,8 +381,8 @@ namespace Supremacy.Types
             if (a == b)
                 return true;
 
-            var epsilon = ((Math.Abs(a) + Math.Abs(b)) + 10f) * Epsilon;
-            var delta = a - b;
+            float epsilon = ((Math.Abs(a) + Math.Abs(b)) + 10f) * Epsilon;
+            float delta = a - b;
 
             return (-epsilon < delta) && (epsilon > delta);
         }

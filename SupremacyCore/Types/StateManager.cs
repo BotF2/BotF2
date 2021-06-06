@@ -38,13 +38,13 @@ namespace Supremacy.Types
 
         public bool TryChange(TStateEnum desiredState)
         {
-            var currentState = _currentState;
-            var desiredStateValue = desiredState.Value;
+            int currentState = _currentState;
+            int desiredStateValue = desiredState.Value;
 
             if (currentState == desiredStateValue)
                 return true;
 
-            foreach (var transition in _transitionMap.Where(t => t.From == currentState && t.To == desiredStateValue))
+            foreach (StateTransition<TStateEnum> transition in _transitionMap.Where(t => t.From == currentState && t.To == desiredStateValue))
             {
                 if (Interlocked.CompareExchange(ref _currentState, transition.To, currentState) == currentState)
                 {
@@ -110,7 +110,7 @@ namespace Supremacy.Types
 
         public override bool Equals(object obj)
         {
-            var other = obj as StateTransition<TStateEnum>?;
+            StateTransition<TStateEnum>? other = obj as StateTransition<TStateEnum>?;
             if (other.HasValue)
                 return Equals(other);
             return false;
@@ -160,7 +160,7 @@ namespace Supremacy.Types
 
         public override string ToString()
         {
-            var field = GetFieldInfo();
+            FieldInfo field = GetFieldInfo();
             if (field != null)
                 return field.Name;
 
@@ -375,7 +375,7 @@ namespace Supremacy.Types
 
         public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
         {
-            var type = typeof(TStateEnum);
+            Type type = typeof(TStateEnum);
 
             // ReSharper disable ConditionIsAlwaysTrueOrFalse
             if (context != null &&
@@ -388,7 +388,7 @@ namespace Supremacy.Types
 
             State state;
 
-            var intValue = TryConvert.ToInt32(value);
+            int? intValue = TryConvert.ToInt32(value);
             if (intValue.HasValue)
             {
                 if (State.TryGet(type, intValue.Value, out state))
@@ -396,7 +396,7 @@ namespace Supremacy.Types
                 return null;
             }
 
-            var stringValue = value as string;
+            string stringValue = value as string;
             if (stringValue != null)
             {
                 if (State.TryParse(type, stringValue, out state))
@@ -409,15 +409,15 @@ namespace Supremacy.Types
 
         public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
         {
-            var state = value as State;
+            State state = value as State;
             if (state != null)
             {
                 if (destinationType == typeof(MarkupExtension))
                 {
-                    var serializerContext = context as IValueSerializerContext;
+                    IValueSerializerContext serializerContext = context as IValueSerializerContext;
                     if (serializerContext != null)
                     {
-                        var typeSerializer = serializerContext.GetValueSerializerFor(typeof(Type));
+                        ValueSerializer typeSerializer = serializerContext.GetValueSerializerFor(typeof(Type));
                         if (typeSerializer != null)
                         {
                             return new StaticExtension(

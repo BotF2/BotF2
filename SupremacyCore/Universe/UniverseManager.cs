@@ -140,7 +140,7 @@ namespace Supremacy.Universe
         {
             if (civilization == null)
                 throw new ArgumentNullException("civilization");
-            var items = from item in _objects
+            IEnumerable<UniverseObject> items = from item in _objects
                         where (item.OwnerID == civilization.CivID)
                         select item;
             return items.OfType<T>().ToHashSet();
@@ -154,7 +154,7 @@ namespace Supremacy.Universe
             {
                 throw new ArgumentNullException("startype");
             }
-            var items = from item in _objects
+            IEnumerable<UniverseObject> items = from item in _objects
                         where (item != null && item.Sector != null && item.Sector.System != null && item.Sector.System.StarType == starType)
                         select item;
             return items.OfType<T>().ToHashSet(); 
@@ -169,7 +169,7 @@ namespace Supremacy.Universe
         public HashSet<T> FindOwned<T>(int civilizationId)
             where T : UniverseObject
         {
-            var items = from item in _objects
+            IEnumerable<UniverseObject> items = from item in _objects
                         where (item.OwnerID == civilizationId)
                         select item;
             return items.OfType<T>().ToHashSet();
@@ -184,7 +184,7 @@ namespace Supremacy.Universe
         public HashSet<T> FindAt<T>(MapLocation location)
             where T : UniverseObject
         {
-            var items = from item in _objects
+            IEnumerable<UniverseObject> items = from item in _objects
                         where (item.Location == location)
                         select item;
             return items.OfType<T>().ToHashSet();
@@ -251,7 +251,7 @@ namespace Supremacy.Universe
         public T FindFurthestObject<T>(MapLocation source, Civilization owner, List<T> _objects)
             where T : UniverseObject
         {
-            var ownerId = (owner != null) ? owner.CivID : Civilization.InvalidID;
+            int ownerId = (owner != null) ? owner.CivID : Civilization.InvalidID;
             return _objects
                 .Where(o => o.OwnerID != ownerId)
                 .OfType<T>()
@@ -268,9 +268,9 @@ namespace Supremacy.Universe
         public T FindNearestOwned<T>(MapLocation source, Civilization owner, Expression<Func<T, bool>> predicate, bool includeSource = true)
             where T : UniverseObject
         {
-            var ownerId = (owner != null) ? owner.CivID : Civilization.InvalidID;
+            int ownerId = (owner != null) ? owner.CivID : Civilization.InvalidID;
            // GameLog.Core.AI.DebugFormat("Find Nearist Location {0}, Owner {1}", source, owner);
-            var result = _objects
+            T result = _objects
                 .Where(o => o.OwnerID == ownerId)
                 .OfType<T>()
                 .Where(o => includeSource || o.Location != source)
@@ -324,7 +324,7 @@ namespace Supremacy.Universe
             if (colony == null)
                 return false;
 
-            var civManager = GameContext.Current.CivilizationManagers[colony.OwnerID];
+            CivilizationManager civManager = GameContext.Current.CivilizationManagers[colony.OwnerID];
             if (civManager == null)
                 return false;
 
@@ -367,20 +367,20 @@ namespace Supremacy.Universe
             if (!target.IsOwned)
                 return Destroy(target);
 
-            var civManager = GameContext.Current.CivilizationManagers[target.OwnerID];
+            CivilizationManager civManager = GameContext.Current.CivilizationManagers[target.OwnerID];
             if (civManager == null)
                 return Destroy(target);
 
             target.Design.GetScrapReturn(out int credits, out ResourceValueCollection resources);
 
-            var targetSystem = target.Sector.System;
+            StarSystem targetSystem = target.Sector.System;
             
             if (targetSystem != null &&
                 targetSystem.HasColony)
             {
-                var baseReclaim = (double)credits / target.Design.BuildCost;
-                
-                var totalReclaim = (
+                double baseReclaim = (double)credits / target.Design.BuildCost;
+
+                double totalReclaim = (
                                        from bonus in civManager.GlobalBonuses
                                        where bonus.BonusType == BonusType.PercentScrapping
                                        select bonus
@@ -391,7 +391,7 @@ namespace Supremacy.Universe
 
                 credits = Math.Min(target.Design.BuildCost, (int)Math.Floor(totalReclaim * credits));
                 
-                foreach (var resource in EnumHelper.GetValues<ResourceType>())
+                foreach (ResourceType resource in EnumHelper.GetValues<ResourceType>())
                 {
                     resources[resource] = Math.Min(
                         target.Design.BuildResourceCosts[resource],
@@ -436,8 +436,8 @@ namespace Supremacy.Universe
 
             if (item is Ship)
             {
-                var ship = item as Ship;
-                var fleet = ship.Fleet;
+                Ship ship = item as Ship;
+                Fleet fleet = ship.Fleet;
 
                 fleet.RemoveShip(ship);
 
@@ -449,7 +449,7 @@ namespace Supremacy.Universe
 
             else if (item is Fleet)
             {
-                var fleet = item as Fleet;
+                Fleet fleet = item as Fleet;
                 if (fleet.Ships.Count > 0)
                 {
                     // I'll admit, this is a stupid way of doing this, but I've done it this way
@@ -459,15 +459,15 @@ namespace Supremacy.Universe
                     //
                     // Instead, spin each ship out to it's own fleet, and let the ship destroyer take care of it
                     for (int i = 0; i < fleet.Ships.Count; i++) {
-                        var newFleet = fleet.Ships[i].CreateFleet();
+                        Fleet newFleet = fleet.Ships[i].CreateFleet();
                         Destroy(newFleet.Ships[0]);
                     }
                 }
             }
 
             else if (item is StarSystem)
-            { 
-                var system = item as StarSystem;
+            {
+                StarSystem system = item as StarSystem;
                 if (system.IsInhabited)
                 {
                     Destroy(system.Colony);
@@ -476,11 +476,11 @@ namespace Supremacy.Universe
 
             else if (item is Colony)
             {
-                var colony = item as Colony;
-                var colonyOwner = colony.Owner;
+                Colony colony = item as Colony;
+                Civilization colonyOwner = colony.Owner;
                 if (colonyOwner != null)
                 {
-                    var civManager = GameContext.Current.CivilizationManagers[colonyOwner];
+                    CivilizationManager civManager = GameContext.Current.CivilizationManagers[colonyOwner];
                     if (civManager != null)
                     {
                         if (civManager.HomeColony == colony)
@@ -490,7 +490,7 @@ namespace Supremacy.Universe
                         civManager.Colonies.Remove(colony);
                     }
 
-                    var ownerHomeColony = _homeColonyLookup[colonyOwner];
+                    Colony ownerHomeColony = _homeColonyLookup[colonyOwner];
                     if (ownerHomeColony == colony)
                     {
                         _homeColonyLookup.Remove(ownerHomeColony);
@@ -523,13 +523,13 @@ namespace Supremacy.Universe
 
             else if (item is Building)
             {
-                var building = item as Building;
+                Building building = item as Building;
                 building.Sector.System.Colony.RemoveBuilding(building);
             }
 
             else if (item is Shipyard)
             {
-                var shipyard = item as Shipyard;
+                Shipyard shipyard = item as Shipyard;
                 if (Equals(shipyard.Sector.System.Colony.Shipyard, shipyard))
                 {
                     shipyard.Sector.System.Colony.Shipyard = null;
@@ -538,13 +538,13 @@ namespace Supremacy.Universe
 
             else if (item is Station)
             {
-                var station = item as Station;
+                Station station = item as Station;
                 station.Sector.Station = null;
             }
 
             else if (item is OrbitalBattery)
             {
-                var orbitalBattery = item as OrbitalBattery;
+                OrbitalBattery orbitalBattery = item as OrbitalBattery;
                 orbitalBattery.Sector.System.Colony.OnOrbitalBatteryDestroyed(orbitalBattery);
             }
 
@@ -561,15 +561,15 @@ namespace Supremacy.Universe
             UpdateSectors();
 
             GameLog.Core.SaveLoad.DebugFormat("Deserializing ships and fleets...");
-            foreach (var item in _objects)
+            foreach (UniverseObject item in _objects)
             {
                 item.OnDeserialized();
 
-                var ship = item as Ship;
+                Ship ship = item as Ship;
                 if (ship == null)
                     continue;
 
-                var fleet = ship.Fleet;
+                Fleet fleet = ship.Fleet;
                 if ((fleet != null) && !fleet.Ships.Contains(ship))
                     fleet.AddShipInternal(ship);
 
@@ -596,21 +596,21 @@ namespace Supremacy.Universe
                 }
             }
 
-            var colonies = _objects.OfType<Colony>();
-            var systemLocationLookup = _objects.OfType<StarSystem>().ToLookup(o => o.Location);
-            var buildingLocationLookup = _objects.OfType<Building>().ToLookup(o => o.Location);
+            IEnumerable<Colony> colonies = _objects.OfType<Colony>();
+            ILookup<MapLocation, StarSystem> systemLocationLookup = _objects.OfType<StarSystem>().ToLookup(o => o.Location);
+            ILookup<MapLocation, Building> buildingLocationLookup = _objects.OfType<Building>().ToLookup(o => o.Location);
 
             GameLog.Core.SaveLoad.DebugFormat("Deserialized: item=Colony;Location;Owner;Name;Population");
-            foreach (var colony in colonies)
+            foreach (Colony colony in colonies)
             {
-                var system = systemLocationLookup[colony.Location].FirstOrDefault();
+                StarSystem system = systemLocationLookup[colony.Location].FirstOrDefault();
                 if (system == null)
                     continue;
 
                 system.Colony = colony;
                 colony.BuildingsInternal.Clear();
 
-                foreach (var building in buildingLocationLookup[colony.Location])
+                foreach (Building building in buildingLocationLookup[colony.Location])
                     colony.BuildingsInternal.Add(building);
             }
         }
@@ -623,13 +623,13 @@ namespace Supremacy.Universe
             _map.Reset();
 
                 GameLog.Core.SaveLoad.DebugFormat("Deserializing stations...");
-            foreach (var station in Find<Station>())
+            foreach (Station station in Find<Station>())
             {
                 _map[station.Location].Station = station;
             }
 
             GameLog.Core.SaveLoad.DebugFormat("Deserializing systems...");
-            foreach (var system in Find<StarSystem>())
+            foreach (StarSystem system in Find<StarSystem>())
             {
 
                 _map[system.Location].System = system;

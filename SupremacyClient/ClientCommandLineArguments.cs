@@ -87,7 +87,7 @@ namespace Supremacy.Client
         #region Methods
         public static ClientCommandLineArguments Parse(string[] args)
         {
-            var options = new ClientCommandLineArguments();
+            ClientCommandLineArguments options = new ClientCommandLineArguments();
             Parse(options, args);
             return options;
         }

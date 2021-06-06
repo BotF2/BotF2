@@ -129,7 +129,7 @@ namespace Supremacy.Orbitals
         {
             get
             {
-                var statusFormat = LocalizedTextDatabase.Instance.GetString(typeof(AssaultSystemOrder), "StatusFormat");
+                string statusFormat = LocalizedTextDatabase.Instance.GetString(typeof(AssaultSystemOrder), "StatusFormat");
 
                 //GameLog.Core.Combat.DebugFormat("getting Status of Assault System");
 
@@ -137,8 +137,8 @@ namespace Supremacy.Orbitals
                 if (statusFormat == null)
                     return OrderName;
 
-                var fleet = Fleet;
-                var sector = fleet?.Sector.Name;  // checking for Sector existing and Name
+                Fleet fleet = Fleet;
+                string sector = fleet?.Sector.Name;  // checking for Sector existing and Name
 
                 //GameLog.Core.Combat.DebugFormat("getting Status of Assault System...returning {0}", string.Format(statusFormat, sector));
                 return string.Format(statusFormat, sector);
@@ -154,7 +154,7 @@ namespace Supremacy.Orbitals
             if (!fleet.HasTroopTransports)
                 return false;
 
-            var system = GameContext.Current.Universe.Map[fleet.Location].System;
+            StarSystem system = GameContext.Current.Universe.Map[fleet.Location].System;
             if (system == null || !system.IsInhabited)
                 return false;
             //GameLog.Core.Combat.DebugFormat("Is AssaultSystem a valid order - check mostly done...");
@@ -258,12 +258,12 @@ namespace Supremacy.Orbitals
             base.OnTurnBeginning();
             if (_isComplete)
                 return;
-            var colonyShip = FindBestColonyShip();
+            Ship colonyShip = FindBestColonyShip();
             if (colonyShip == null)
                 return;
-            
-            var colony = new Colony(Fleet.Sector.System, Fleet.Owner.Race);
-            var civManager = GameContext.Current.CivilizationManagers[Fleet.Owner];
+
+            Colony colony = new Colony(Fleet.Sector.System, Fleet.Owner.Race);
+            CivilizationManager civManager = GameContext.Current.CivilizationManagers[Fleet.Owner];
 
             colony.ObjectID = GameContext.Current.GenerateID();
             colony.Population.BaseValue = colonyShip.ShipDesign.WorkCapacity;
@@ -350,7 +350,7 @@ namespace Supremacy.Orbitals
             //int helpByShip = Fleet.Ships.Where(s => s.ShipType == ShipType.Medical).Sum(s => s.ShipDesign.PopulationHealth);
             Colony colony = Fleet.Sector.System.Colony;
             int oldHealth = colony.Health.CurrentValue;
-            var healthAdjustment = 1.01f + (Fleet.Ships.Where(s => s.ShipType == ShipType.Medical).Sum(s => s.ShipDesign.PopulationHealth) / 2);
+            float healthAdjustment = 1.01f + (Fleet.Ships.Where(s => s.ShipType == ShipType.Medical).Sum(s => s.ShipDesign.PopulationHealth) / 2);
             //healthAdjustment = helpByShip / 10;
             if (healthAdjustment > 1.24f) healthAdjustment = 1.24f;
             if (Fleet.Sector.System.Colony is null)
@@ -391,7 +391,7 @@ namespace Supremacy.Orbitals
             }
             else if(Fleet.Sector.System.Owner != null && Fleet.Sector.System.Colony.Owner != null && Fleet.Sector.System.Owner != Fleet.Owner )
             {
-                var foreignPower = Diplomat.Get(Fleet.Sector.System.Owner).GetForeignPower(Fleet.Owner);
+                ForeignPower foreignPower = Diplomat.Get(Fleet.Sector.System.Owner).GetForeignPower(Fleet.Owner);
                 healthAdjustment = ((healthAdjustment - 1) / 3) + 1;
 
                 // only small medical help = +1
@@ -500,7 +500,7 @@ namespace Supremacy.Orbitals
                 return false;
             if (fleet.Sector.System.Colony.Name != fleet.Sector.Owner.HomeSystemName)
                 return false;
-            foreach (var ship in fleet.Ships)
+            foreach (Ship ship in fleet.Ships)
             {
                 if (ship.ShipType == ShipType.Spy)
                 {
@@ -518,7 +518,7 @@ namespace Supremacy.Orbitals
                 return;
             if (_isComplete)
                 return;
-            var spyOnShip = FindBestSpyOnShip();
+            Ship spyOnShip = FindBestSpyOnShip();
             if (spyOnShip == null)
                 return;
             CreateSpyOn(
@@ -536,7 +536,7 @@ namespace Supremacy.Orbitals
 
         private static void CreateSpyOn(Civilization civ, StarSystem system)
         {
-            var colonies =  GameContext.Current.CivilizationManagers[system.Owner].Colonies; //IntelHelper.NewSpiedColonies; ???????
+            UniverseObjectList<Colony> colonies =  GameContext.Current.CivilizationManagers[system.Owner].Colonies; //IntelHelper.NewSpiedColonies; ???????
             //var civManager = GameContext.Current.CivilizationManagers[civ];
 
             //int defenseIntelligence = GameContext.Current.CivilizationManagers[system.Owner].TotalIntelligence + 1;  // TotalIntelligence of attacked civ
@@ -761,7 +761,7 @@ namespace Supremacy.Orbitals
             {
                 if (fleet.Sector.Owner != null && fleet.Sector.Owner.Key == "BORG")
                 {
-                    foreach (var ship in fleet.Ships)
+                    foreach (Ship ship in fleet.Ships)
                     {
                         if (ship.ShipType == ShipType.Spy)
                             return true;
@@ -777,7 +777,7 @@ namespace Supremacy.Orbitals
             base.OnTurnBeginning();
             if (_isComplete)
                 return;
-            var sabotageShip = FindBestSabotageShip();
+            Ship sabotageShip = FindBestSabotageShip();
             if (sabotageShip == null)
                 return;
             CreateSabotage(
@@ -796,7 +796,7 @@ namespace Supremacy.Orbitals
         private static void CreateSabotage(Civilization civ, StarSystem system)
         {
             //var sabotagedCiv = GameContext.Current.CivilizationManagers[system.Owner].Colonies;
-            var civManager = GameContext.Current.CivilizationManagers[civ.Key];
+            CivilizationManager civManager = GameContext.Current.CivilizationManagers[civ.Key];
             int ratioLevel = 1;
 
             int defenseIntelligence = GameContext.Current.CivilizationManagers[system.Owner].TotalIntelligenceProduction + 1;  // TotalIntelligence of attacked civ
@@ -850,7 +850,7 @@ namespace Supremacy.Orbitals
 
             if (system.Colony.GetTotalFacilities(ProductionCategory.Energy) > 0)
             {
-                var attackedCivManager = GameContext.Current.CivilizationManagers[system.Owner];
+                CivilizationManager attackedCivManager = GameContext.Current.CivilizationManagers[system.Owner];
                 attackedCivManager.SitRepEntries.Add(new NewSabotagedSitRepEntry(
                        system.Owner, civ, system.Colony, ProductionCategory.Energy.ToString(), removeEnergyFacilities, system.Colony.GetTotalFacilities(ProductionCategory.Energy), civ.ShortName, ratioLevel));
 
@@ -935,12 +935,12 @@ namespace Supremacy.Orbitals
             base.OnTurnBeginning();
             if (_isComplete)
                 return;
-            var _influenceShip = FindBestInfluenceShip();
+            Ship _influenceShip = FindBestInfluenceShip();
             if (_influenceShip == null)
                 return;
 
-            var influencedCiv = GameContext.Current.CivilizationManagers[Fleet.Sector.System.Owner];
-            var influencerCiv = GameContext.Current.CivilizationManagers[Fleet.Owner];
+            CivilizationManager influencedCiv = GameContext.Current.CivilizationManagers[Fleet.Sector.System.Owner];
+            CivilizationManager influencerCiv = GameContext.Current.CivilizationManagers[Fleet.Owner];
 
             // plan is: 
             // - maxValue for Trust = 1000 .... increasing a little bit quicker than Regard
@@ -963,8 +963,8 @@ namespace Supremacy.Orbitals
             // part 2: to AI race
             if (!Fleet.Sector.System.Owner.IsHuman) 
             {
-                var diplomat = Diplomat.Get(Fleet.Sector.System.Owner);
-                var foreignPower = diplomat.GetForeignPower(Fleet.Owner);
+                Diplomat diplomat = Diplomat.Get(Fleet.Sector.System.Owner);
+                ForeignPower foreignPower = diplomat.GetForeignPower(Fleet.Owner);
                 DiplomacyHelper.ApplyRegardChange(influencerCiv.Civilization, influencedCiv.Civilization, +55);
                 //foreignPower.AddRegardEvent(new RegardEvent(30, RegardEventType.DiplomaticShip, +50));
                 DiplomacyHelper.ApplyTrustChange(influencerCiv.Civilization, influencedCiv.Civilization, +50);
@@ -1015,7 +1015,7 @@ namespace Supremacy.Orbitals
             get { return GameContext.Current.Universe.Objects[_targetFleetId] as Fleet; }
             private set
             {
-                var currentTarget = TargetFleet;
+                Fleet currentTarget = TargetFleet;
                 if (currentTarget != null)
                     EndTow();
                 if (value == null)
@@ -1058,7 +1058,7 @@ namespace Supremacy.Orbitals
         {
             get
             {
-                var targetFleet = TargetFleet;
+                Fleet targetFleet = TargetFleet;
                 return (targetFleet != null) && targetFleet.IsInTow && !targetFleet.IsStranded && Fleet.Route.IsEmpty;
             }
         }
@@ -1153,7 +1153,7 @@ namespace Supremacy.Orbitals
         {
             base.OnTurnBeginning();
 
-            var targetFleet = TargetFleet;
+            Fleet targetFleet = TargetFleet;
             if ((targetFleet != null) && targetFleet.IsInTow)
                 TargetFleet.SetRoute(TravelRoute.Empty);
         }
@@ -1162,12 +1162,12 @@ namespace Supremacy.Orbitals
         {
             base.OnTurnEnding();
 
-            var targetFleet = TargetFleet;
-            var civManager = GameContext.Current.CivilizationManagers[Fleet.OwnerID];
+            Fleet targetFleet = TargetFleet;
+            CivilizationManager civManager = GameContext.Current.CivilizationManagers[Fleet.OwnerID];
 
             if (targetFleet != null)
             {
-                var ship = targetFleet.Ships.SingleOrDefault();
+                Ship ship = targetFleet.Ships.SingleOrDefault();
                 if ((ship != null) && (!FleetHelper.IsFleetInFuelRange(targetFleet)))
                 {
                     int fuelNeeded = ship.FuelReserve.Maximum - ship.FuelReserve.CurrentValue;
@@ -1199,8 +1199,8 @@ namespace Supremacy.Orbitals
 
         public override IEnumerable<object> FindTargets(Fleet source)
         {
-            var targets = new List<Object>();
-            foreach (var targetFleet in GameContext.Current.Universe.FindAt<Fleet>(source.Location))
+            List<object> targets = new List<Object>();
+            foreach (Fleet targetFleet in GameContext.Current.Universe.FindAt<Fleet>(source.Location))
             {
                 if ((targetFleet != source)
                     && (targetFleet.Owner == source.Owner)
@@ -1264,7 +1264,7 @@ namespace Supremacy.Orbitals
                 //Wormhole leads nowhere so destroy the fleet
                 if (Fleet.Sector.System.WormholeDestination == null)
                 {
-                    var civManager = GameContext.Current.CivilizationManagers[Fleet.OwnerID];
+                    CivilizationManager civManager = GameContext.Current.CivilizationManagers[Fleet.OwnerID];
                     GameLog.Core.General.DebugFormat("Fleet {0} destroyed by wormhole at {1}", Fleet.ObjectID, Fleet.Location);
                     civManager.SitRepEntries.Add(new ShipDestroyedInWormholeSitRepEntry(Fleet.Owner, Fleet.Location));
                     Fleet.Destroy();
@@ -1324,7 +1324,7 @@ namespace Supremacy.Orbitals
             if (!FleetHelper.IsFleetInFuelRange(fleet))
             {
                 bool needsFuel = false;
-                foreach (var ship in fleet.Ships)
+                foreach (Ship ship in fleet.Ships)
                 {
                     if (ship.FuelReserve.IsMaximized)
                         continue;
@@ -1333,7 +1333,7 @@ namespace Supremacy.Orbitals
                 }
                 if (needsFuel)
                 {
-                    var system = fleet.Sector.System;
+                    StarSystem system = fleet.Sector.System;
                     if (system != null)
                         return ((system.StarType == StarType.Nebula) || system.ContainsPlanetType(PlanetType.GasGiant));
                 }
@@ -1348,7 +1348,7 @@ namespace Supremacy.Orbitals
             if ((++_turnsCollecting % 2) != 0)
                 return;
 
-            foreach (var ship in Fleet.Ships)
+            foreach (Ship ship in Fleet.Ships)
                 ship.FuelReserve.AdjustCurrent(1);
         }
     }
@@ -1419,9 +1419,9 @@ namespace Supremacy.Orbitals
             if (source == null)
                 throw new ArgumentNullException("source");
 
-            var designs = new List<StationDesign>();
-            var targets = new List<object>();
-            var civManager = GameContext.Current.CivilizationManagers[source.Owner];
+            List<StationDesign> designs = new List<StationDesign>();
+            List<object> targets = new List<object>();
+            CivilizationManager civManager = GameContext.Current.CivilizationManagers[source.Owner];
 
             if (civManager == null)
             {
@@ -1432,7 +1432,7 @@ namespace Supremacy.Orbitals
                 return targets;
             }
 
-            foreach (var stationDesign in civManager.TechTree.StationDesigns)
+            foreach (StationDesign stationDesign in civManager.TechTree.StationDesigns)
             {
                 if (TechTreeHelper.MeetsTechLevels(civManager, stationDesign))
                     designs.Add(stationDesign);
@@ -1444,7 +1444,7 @@ namespace Supremacy.Orbitals
                 {
                     if (i == j)
                         continue;
-                    foreach (var obsoleteDesign in designs[i].ObsoletedDesigns)
+                    foreach (TechObjectDesign obsoleteDesign in designs[i].ObsoletedDesigns)
                     {
                         if (obsoleteDesign != designs[j])
                             continue;
@@ -1456,7 +1456,7 @@ namespace Supremacy.Orbitals
                 }
             }
 
-            foreach (var design in designs)
+            foreach (StationDesign design in designs)
             {
                 targets.Add(new StationBuildProject(new FleetProductionCenter(source), design));
                 //GameLog.Core.Stations.DebugFormat("{0} {1} at {2} is building a {3}", source.ObjectID, source.Name, source.Location, design);
@@ -1471,7 +1471,7 @@ namespace Supremacy.Orbitals
                 return false;
             if (fleet.Sector.IsOwned && (fleet.Sector.Owner != fleet.Owner))
                 return false;
-            foreach (var ship in fleet.Ships)
+            foreach (Ship ship in fleet.Ships)
             {
                 if (ship.ShipType == ShipType.Construction)
                 {
@@ -1492,14 +1492,14 @@ namespace Supremacy.Orbitals
                 return false;
 
             // can't start building if any other ship is already building an outpost
-            foreach (var otherFleet in GameContext.Current.Universe.FindAt<Fleet>(fleet.Location))
+            foreach (Fleet otherFleet in GameContext.Current.Universe.FindAt<Fleet>(fleet.Location))
             {
                 if ((otherFleet != fleet) && (otherFleet.Order is BuildStationOrder))
                     return false;
             }
 
             // needs to be a construction ship
-            foreach (var ship in fleet.Ships)
+            foreach (Ship ship in fleet.Ships)
             {
                 if (ship.ShipType == ShipType.Construction)
                     return true;
@@ -1520,15 +1520,15 @@ namespace Supremacy.Orbitals
             if (!IsAssigned)
                 return;
 
-            var project = _buildProject;
+            StationBuildProject project = _buildProject;
             GameLog.Core.Production.DebugFormat("project: Builder = {2}, BuildDesign = {1}, Description = {0} ", project.Description, project.BuildDesign, project.Builder);
             if ((project == null) || (project.ProductionCenter == null) || project.IsCompleted)
                 return;
 
-            var civManager = GameContext.Current.CivilizationManagers[project.Builder];
+            CivilizationManager civManager = GameContext.Current.CivilizationManagers[project.Builder];
             if (civManager == null)
             {
-                var owner = project.ProductionCenter.Owner;
+                Civilization owner = project.ProductionCenter.Owner;
                 GameLog.Core.General.WarnFormat(
                     "Failed to load CivilizationManager for build project owner (build project ID = {0}, owner ID = {1})",
                     project.ProductionCenter.ObjectID,
@@ -1536,13 +1536,13 @@ namespace Supremacy.Orbitals
                 return;
             }
 
-            var buildOutput = project.ProductionCenter.GetBuildOutput(0);
-            var resources = new ResourceValueCollection
+            int buildOutput = project.ProductionCenter.GetBuildOutput(0);
+            ResourceValueCollection resources = new ResourceValueCollection
             {
                 [ResourceType.RawMaterials] = civManager.Resources[ResourceType.RawMaterials].CurrentValue
             };
 
-            var usedResources = resources.Clone();
+            ResourceValueCollection usedResources = resources.Clone();
 
             project.Advance(ref buildOutput, usedResources);
 
@@ -1567,7 +1567,7 @@ namespace Supremacy.Orbitals
                 _finished = true;
             }
            ;
-            var destroyedShip = Fleet.Ships.FirstOrDefault(o => o.ShipType == ShipType.Construction);
+            Ship destroyedShip = Fleet.Ships.FirstOrDefault(o => o.ShipType == ShipType.Construction);
             if (destroyedShip != null)
                 GameContext.Current.Universe.Destroy(destroyedShip);
             GameLog.Core.Stations.DebugFormat("Destroyed = {0}", destroyedShip);

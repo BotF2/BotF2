@@ -61,7 +61,7 @@ namespace Supremacy.Client.Controls
             switch (e.Action)
             {
                 case NotifyCollectionChangedAction.Add:
-                    foreach (var item in e.NewItems)
+                    foreach (object item in e.NewItems)
                     {
                         if (item is GamePopup gamePopup)
                             UpdateRegisteredPopupSite(gamePopup, true);
@@ -74,7 +74,7 @@ namespace Supremacy.Client.Controls
                     break;
 
                 case NotifyCollectionChangedAction.Remove:
-                    foreach (var item in e.OldItems)
+                    foreach (object item in e.OldItems)
                     {
                         if (!(item is GamePopup gamePopup))
                             continue;
@@ -169,7 +169,7 @@ namespace Supremacy.Client.Controls
 
         protected override Visual GetVisualChild(int index)
         {
-            var baseCount = base.VisualChildrenCount;
+            int baseCount = base.VisualChildrenCount;
             if (index < baseCount)
                 return base.GetVisualChild(index);
             return _openPopupRoots[index - baseCount];
@@ -183,17 +183,17 @@ namespace Supremacy.Client.Controls
         {
             foreach (GamePopupRoot child in _openPopupRoots)
             {
-                var x = 0d;
-                var y = 0d;
+                double x = 0d;
+                double y = 0d;
 
-                var left = Canvas.GetLeft(child);
+                double left = Canvas.GetLeft(child);
                 if (!DoubleUtil.IsNaN(left))
                 {
                     x = left;
                 }
                 else
                 {
-                    var right = Canvas.GetRight(child);
+                    double right = Canvas.GetRight(child);
 
                     if (!DoubleUtil.IsNaN(right))
                     {
@@ -201,14 +201,14 @@ namespace Supremacy.Client.Controls
                     }
                 }
 
-                var top = Canvas.GetTop(child);
+                double top = Canvas.GetTop(child);
                 if (!DoubleUtil.IsNaN(top))
                 {
                     y = top;
                 }
                 else
                 {
-                    var bottom = Canvas.GetBottom(child);
+                    double bottom = Canvas.GetBottom(child);
 
                     if (!DoubleUtil.IsNaN(bottom))
                         y = arrangeSize.Height - child.DesiredSize.Height - bottom;
@@ -222,7 +222,7 @@ namespace Supremacy.Client.Controls
 
         protected override Size MeasureOverride(Size constraint)
         {
-            var childConstraint = new Size(double.PositiveInfinity, double.PositiveInfinity);
+            Size childConstraint = new Size(double.PositiveInfinity, double.PositiveInfinity);
 
             foreach (GamePopupRoot popupRoot in _openPopupRoots)
                 popupRoot.Measure(childConstraint);

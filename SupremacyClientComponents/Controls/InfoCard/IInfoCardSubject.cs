@@ -79,7 +79,7 @@ namespace Supremacy.Client.Controls
 
         private object CoerceData()
         {
-            var dataResolver = DataResolver;
+            Func<object> dataResolver = DataResolver;
             if (dataResolver == null)
                 return null;
             return dataResolver();
@@ -94,7 +94,7 @@ namespace Supremacy.Client.Controls
 
         private void OnDataChanged()
         {
-            var handler = DataChanged;
+            EventHandler handler = DataChanged;
             if (handler != null)
                 handler(this, EventArgs.Empty);
         }

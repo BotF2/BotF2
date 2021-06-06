@@ -69,7 +69,7 @@ namespace Supremacy.WCF
         {
             lock (SyncRoot)
             {
-                var item = this[index];
+                ServerPlayerInfo item = this[index];
                 
                 _sessionIdLookup.Remove(item.Session.SessionId);
                 _playerIdLookup.Remove(item.Player.PlayerID);
@@ -110,7 +110,7 @@ namespace Supremacy.WCF
             {
                 array = new Player[Count];
 
-                for (var i = 0; i < Count; i++)
+                for (int i = 0; i < Count; i++)
                     array[i] = Items[i].Player;
             }
 

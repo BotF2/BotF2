@@ -30,14 +30,14 @@ namespace Supremacy.Client.Data
 
         public override object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            var bonuses = value as SystemBonus?;
+            SystemBonus? bonuses = value as SystemBonus?;
             if (!bonuses.HasValue)
                 return FalseValue;
 
-            var comparand = parameter as SystemBonus?;
+            SystemBonus? comparand = parameter as SystemBonus?;
             if (!comparand.HasValue)
             {
-                var comparandString = parameter as string;
+                string comparandString = parameter as string;
                 if (comparandString == null)
                     return FalseValue;
 

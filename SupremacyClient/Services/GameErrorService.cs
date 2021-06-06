@@ -41,8 +41,8 @@ namespace Supremacy.Client.Services
 
         protected static string BuildErrorMessage(Exception exception)
         {
-            var innerException = exception;
-            var errorMessage = new StringBuilder();
+            Exception innerException = exception;
+            StringBuilder errorMessage = new StringBuilder();
 
             while (innerException != null)
             {
@@ -68,7 +68,7 @@ namespace Supremacy.Client.Services
             string header;
             string message;
 
-            var gameDataException = exception as GameDataException;
+            GameDataException gameDataException = exception as GameDataException;
             if (gameDataException != null)
             {
                 header = _resourceManager.GetString("GAME_DATA_ERROR_HEADER");
@@ -89,8 +89,8 @@ namespace Supremacy.Client.Services
                 (Action)
                 (() =>
                  {
-                     var formattedTextConverter = new FormattedTextConverter();
-                     var messageText = new TextBlock { TextWrapping = TextWrapping.Wrap };
+                     FormattedTextConverter formattedTextConverter = new FormattedTextConverter();
+                     TextBlock messageText = new TextBlock { TextWrapping = TextWrapping.Wrap };
 
                      BindingHelpers.SetInlines(
                          messageText,
@@ -101,7 +101,7 @@ namespace Supremacy.Client.Services
                          messageText,
                          MessageDialogButtons.Ok);
 
-                     var supremacyException = exception as SupremacyException;
+                     SupremacyException supremacyException = exception as SupremacyException;
                      if (supremacyException == null)
                      {
                          ClientCommands.Exit.Execute(false);

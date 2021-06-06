@@ -29,19 +29,19 @@ namespace Supremacy.Client.Views
 
         private void OnShipListMouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            var presentationModel = DataContext as GalaxyScreenPresentationModel;
+            GalaxyScreenPresentationModel presentationModel = DataContext as GalaxyScreenPresentationModel;
             if ((presentationModel == null) || (presentationModel.InputMode != GalaxyScreenInputMode.RedeployShips))
                 return;
 
-            var originalSource = e.OriginalSource as DependencyObject;
+            DependencyObject originalSource = e.OriginalSource as DependencyObject;
             if (originalSource == null)
                 return;
 
-            var container = originalSource.FindVisualAncestorByType<ListViewItem>();
+            ListViewItem container = originalSource.FindVisualAncestorByType<ListViewItem>();
             if (container == null)
                 return;
 
-            var selectedShip = container.DataContext as ShipView;
+            ShipView selectedShip = container.DataContext as ShipView;
             if (selectedShip == null)
                 return;
 
@@ -62,7 +62,7 @@ namespace Supremacy.Client.Views
 
         public virtual void OnDropCompleted(IDataObject obj, Point dropPoint)
         {
-            var targetElement = TargetElement as FrameworkElement;
+            FrameworkElement targetElement = TargetElement as FrameworkElement;
             if (targetElement == null)
                 return;
 
@@ -70,8 +70,8 @@ namespace Supremacy.Client.Views
 
             ListView targetItemsControl = null;
 
-            var sourceElement = ExtractElement(obj);
-            var sourceListView = sourceElement as ListView;
+            FrameworkElement sourceElement = ExtractElement(obj);
+            ListView sourceListView = sourceElement as ListView;
             if (sourceListView != null)
             {
                 targetItemsControl = TargetElement as ListView;
@@ -88,28 +88,28 @@ namespace Supremacy.Client.Views
             }
             else
             {
-                var sourceFleetWrapper = sourceElement.DataContext as FleetViewWrapper;
+                FleetViewWrapper sourceFleetWrapper = sourceElement.DataContext as FleetViewWrapper;
                 if (sourceFleetWrapper != null)
                 {
                     ships = sourceFleetWrapper.View.Ships.Select(o => o.Source).ToList();
                 }
                 else
                 {
-                    var shipView = sourceElement.DataContext as ShipView;
+                    ShipView shipView = sourceElement.DataContext as ShipView;
                     if (shipView == null)
                         return;
                     ships = new List<Ship> { shipView.Source };
                 }
             }
 
-            var targetFleetWrapper = targetElement.DataContext as FleetViewWrapper;
+            FleetViewWrapper targetFleetWrapper = targetElement.DataContext as FleetViewWrapper;
             if (targetFleetWrapper == null)
                 return;
 
             if (targetItemsControl != null)
                 targetItemsControl.SelectedItems.Clear();
 
-            foreach (var ship in ships)
+            foreach (Ship ship in ships)
             {
                 // works    GameLog.Print("ship.Name = {0}", ship.Name);
                 GalaxyScreenCommands.AddShipToTaskForce.Execute(
@@ -128,14 +128,14 @@ namespace Supremacy.Client.Views
 
         public UIElement GetVisualFeedback(IDataObject obj)
         {
-            var element = ExtractElement(obj);
-            var listView = element as ListView;
+            FrameworkElement element = ExtractElement(obj);
+            ListView listView = element as ListView;
 
             UIElement visual;
 
             if (listView != null)
             {
-                var selectedItems = listView.Items
+                List<FrameworkElement> selectedItems = listView.Items
                     .OfType<object>()
                     .Select(o => listView.ItemContainerGenerator.ContainerFromItem(o))
                     .Where(Selector.GetIsSelected)
@@ -144,7 +144,7 @@ namespace Supremacy.Client.Views
 
                 if (selectedItems.Count == 1)
                 {
-                    var selectedItem = selectedItems[0];
+                    FrameworkElement selectedItem = selectedItems[0];
                     visual = new Rectangle
                     {
                         Height = selectedItem.ActualHeight,
@@ -162,15 +162,15 @@ namespace Supremacy.Client.Views
                 }
                 else
                 {
-                    var canvas = new Canvas
+                    Canvas canvas = new Canvas
                     {
                         Width = selectedItems[0].ActualWidth + ((selectedItems.Count - 1) * 4),
                         Height = selectedItems[0].ActualHeight + ((selectedItems.Count - 1) * 4)
                     };
                     for (int i = selectedItems.Count - 1; i >= 0; i--)
                     {
-                        var selectedItem = selectedItems[i];
-                        var rect = new Rectangle
+                        FrameworkElement selectedItem = selectedItems[i];
+                        Rectangle rect = new Rectangle
                         {
                             Height = selectedItem.ActualHeight,
                             Width = selectedItem.ActualWidth,
@@ -229,13 +229,13 @@ namespace Supremacy.Client.Views
     {
         public override void OnDropCompleted(IDataObject obj, Point dropPoint)
         {
-            var element = ExtractElement(obj);
+            FrameworkElement element = ExtractElement(obj);
             if (element == null)
                 return;
 
             List<Ship> ships;
 
-            var listView = element as ListView;
+            ListView listView = element as ListView;
             if (listView != null)
             {
                 ships = listView.SelectedItems.OfType<Ship>().ToList();
@@ -243,7 +243,7 @@ namespace Supremacy.Client.Views
             }
             else
             {
-                var fleetViewWrapper = element.DataContext as FleetViewWrapper;
+                FleetViewWrapper fleetViewWrapper = element.DataContext as FleetViewWrapper;
                 if (fleetViewWrapper != null)
                 {
                     ships = fleetViewWrapper.View.Ships.Select(o => o.Source).ToList();
@@ -251,7 +251,7 @@ namespace Supremacy.Client.Views
                 }
                 else
                 {
-                    var shipView = element.DataContext as ShipView;
+                    ShipView shipView = element.DataContext as ShipView;
                     if (shipView == null)
                         return;
                     ships = new List<Ship> { shipView.Source };
@@ -265,7 +265,7 @@ namespace Supremacy.Client.Views
             GalaxyScreenCommands.RemoveShipFromTaskForce.Execute(
                 new RedeployShipCommandArgs(ships[0]));
 
-            for (var i = 1; i < ships.Count; i++)
+            for (int i = 1; i < ships.Count; i++)
             {
                 //GameLog.Print("ships[i] = {0}, ships[0].Fleet = {1}", ships[i].Name, ships[0].Fleet.Name);
                 GalaxyScreenCommands.AddShipToTaskForce.Execute(
@@ -289,7 +289,7 @@ namespace Supremacy.Client.Views
 
         public DataObject GetDataObject(UIElement draggedElement)
         {
-            var data = new DataObject(SupportedFormat.Name, draggedElement);
+            DataObject data = new DataObject(SupportedFormat.Name, draggedElement);
             return data;
         }
 
@@ -297,34 +297,34 @@ namespace Supremacy.Client.Views
 
         public bool IsDraggable(UIElement draggedElement)
         {
-            var draggedFrameworkElement = draggedElement as FrameworkElement;
+            FrameworkElement draggedFrameworkElement = draggedElement as FrameworkElement;
             if (draggedFrameworkElement == null)
                 return false;
 
-            var draggedListBox = draggedFrameworkElement.FindVisualAncestorByType<ListBox>();
+            ListBox draggedListBox = draggedFrameworkElement.FindVisualAncestorByType<ListBox>();
             if (draggedListBox != null)
             {
-                var sourceItem = Mouse.DirectlyOver as UIElement;
+                UIElement sourceItem = Mouse.DirectlyOver as UIElement;
                 if (sourceItem == null)
                     return false;
-                var listBoxItem = sourceItem.FindVisualAncestorByType<ListBoxItem>();
+                ListBoxItem listBoxItem = sourceItem.FindVisualAncestorByType<ListBoxItem>();
                 if (listBoxItem == null)
                     return false;
             }
 
-            var appContext = ServiceLocator.Current.GetInstance<IAppContext>();
+            IAppContext appContext = ServiceLocator.Current.GetInstance<IAppContext>();
             if (appContext == null)
                 return false;
 
-            var localPlayerEmpire = appContext.LocalPlayerEmpire;
+            Game.CivilizationManager localPlayerEmpire = appContext.LocalPlayerEmpire;
             if (localPlayerEmpire == null)
                 return false;
 
-            var fleetViewWrapper = draggedFrameworkElement.DataContext as FleetViewWrapper;
+            FleetViewWrapper fleetViewWrapper = draggedFrameworkElement.DataContext as FleetViewWrapper;
             if (fleetViewWrapper != null)
                 return (fleetViewWrapper.View.Source.OwnerID == localPlayerEmpire.CivilizationID);
 
-            var shipView = draggedFrameworkElement.DataContext as ShipView;
+            ShipView shipView = draggedFrameworkElement.DataContext as ShipView;
             if (shipView != null)
                 return (shipView.Source.OwnerID == localPlayerEmpire.CivilizationID);
 

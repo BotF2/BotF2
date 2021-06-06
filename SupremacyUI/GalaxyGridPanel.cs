@@ -1584,7 +1584,7 @@ namespace Supremacy.UI
             gridPen.Freeze();
             Pen axisPen = new Pen(Brushes.White, 1.0);
             axisPen.Freeze();
-            using (var dc = _backdrop.RenderOpen())
+            using (DrawingContext dc = _backdrop.RenderOpen())
             {
                 dc.DrawRectangle(
                     Brushes.Transparent,
@@ -1600,7 +1600,7 @@ namespace Supremacy.UI
                         new Point(x * SectorSize,
                                   map.Height * SectorSize));
                 }
-                for (var y = 0; y < map.Height; y++)
+                for (int y = 0; y < map.Height; y++)
                 {
                     dc.DrawLine(
                         gridPen,
@@ -1636,7 +1636,7 @@ namespace Supremacy.UI
                 _guides.GuidelinesX.Add((x * SectorSize) - 0.5);
                 _halfGuides.GuidelinesX.Add(x * SectorSize - (SectorSize / 2) - 0.5);
             }
-            for (var y = SectorMap.MaxHeight; y >= 0; y--)
+            for (int y = SectorMap.MaxHeight; y >= 0; y--)
             {
                 _guides.GuidelinesY.Add((y * SectorSize) - 0.5);
                 _halfGuides.GuidelinesY.Add(y * SectorSize - SectorSize / 2 - 0.5);

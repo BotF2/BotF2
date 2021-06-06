@@ -36,14 +36,14 @@ namespace Supremacy.Client.Controls
 
         private static void OnSelectAll(object target, ExecutedRoutedEventArgs args)
         {
-            var listBox = target as CheckedListBox;
+            CheckedListBox listBox = target as CheckedListBox;
             if (listBox != null)
                 listBox.SelectAll();
         }
 
         private static void OnUnselectAll(object target, ExecutedRoutedEventArgs args)
         {
-            var listBox = target as CheckedListBox;
+            CheckedListBox listBox = target as CheckedListBox;
             if (listBox != null)
                 listBox.UnselectAll();
         }
@@ -67,10 +67,10 @@ namespace Supremacy.Client.Controls
         {
             if (o != null && ItemGetIsSelectable(o))
             {
-                var itemsControl = ItemsControlFromItemContainer(o);
+                ItemsControl itemsControl = ItemsControlFromItemContainer(o);
                 if (itemsControl != null)
                 {
-                    var item = itemsControl.ItemContainerGenerator.ItemFromContainer(o);
+                    object item = itemsControl.ItemContainerGenerator.ItemFromContainer(o);
                     return item == o || ItemGetIsSelectable(item);
                 }
             }
@@ -150,7 +150,7 @@ namespace Supremacy.Client.Controls
 
         protected override void OnVisualParentChanged(DependencyObject oldParent)
         {
-            var itemsControl = (ItemsControl)null;
+            ItemsControl itemsControl = (ItemsControl)null;
 
             if (VisualTreeHelper.GetParent(this) == null)
             {
@@ -159,10 +159,10 @@ namespace Supremacy.Client.Controls
             }
             else
             {
-                var parentSelector = ParentSelector;
+                MultiSelector parentSelector = ParentSelector;
                 if (parentSelector != null && parentSelector.GroupStyle != null && !IsSelected)
                 {
-                    var t = parentSelector.ItemContainerGenerator.ItemFromContainer(this);
+                    object t = parentSelector.ItemContainerGenerator.ItemFromContainer(this);
                     if (t != null && parentSelector.SelectedItems.Contains(t))
                         SetCurrentValue(IsSelectedProperty, true);
                 }
@@ -176,8 +176,8 @@ namespace Supremacy.Client.Controls
 
         private static void OnIsSelectedChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            var checkedListBoxItem = (CheckedListBoxItem)d;
-            var isSelected = (bool)e.NewValue;
+            CheckedListBoxItem checkedListBoxItem = (CheckedListBoxItem)d;
+            bool isSelected = (bool)e.NewValue;
 
             if (isSelected)
                 checkedListBoxItem.OnSelected(new RoutedEventArgs(Selector.SelectedEvent, checkedListBoxItem));

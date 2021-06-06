@@ -105,30 +105,30 @@ namespace Supremacy.Entities
                 element.Document != null &&
                 element.Document.Root != null);
 
-            var ns = element.Document.Root.Name.Namespace;
+            XNamespace ns = element.Document.Root.Name.Namespace;
 
             Key = (string)element.Attribute("Key");
             SingularName = (string)element.Element(ns + "SingularName");
             PluralName = (string)element.Element(ns + "PluralName");
 
-            var description = (string)element.Element(ns + "Description");
+            string description = (string)element.Element(ns + "Description");
             if (!string.IsNullOrEmpty(description))
                 description = TextHelper.TrimParagraphs(description);
 
             Description = description ?? string.Empty;
             CombatEffectiveness = (double?)element.Element(ns + "CombatEffectiveness") ?? 1.0;
 
-            var homePlanetType = EnumHelper.Parse<PlanetType>((string)element.Element(ns + "HomePlanetType"));
+            PlanetType? homePlanetType = EnumHelper.Parse<PlanetType>((string)element.Element(ns + "HomePlanetType"));
             if (!homePlanetType.HasValue)
                 homePlanetType = PlanetType.Terran;
 
-            var habitablePlanetTypes = (string)element.Element(ns + "HabitablePlanetTypes");
+            string habitablePlanetTypes = (string)element.Element(ns + "HabitablePlanetTypes");
             if (habitablePlanetTypes != null)
             {
-                var planetTypeNames = habitablePlanetTypes.Split(new[] { ',', '|' }, StringSplitOptions.RemoveEmptyEntries);
-                var planetTypes = new List<PlanetType>();
+                string[] planetTypeNames = habitablePlanetTypes.Split(new[] { ',', '|' }, StringSplitOptions.RemoveEmptyEntries);
+                List<PlanetType> planetTypes = new List<PlanetType>();
 
-                foreach (var name in planetTypeNames)
+                foreach (string name in planetTypeNames)
                 {
 
                     if (EnumHelper.TryParse(name.Trim(), out PlanetType planetType))
@@ -162,7 +162,7 @@ namespace Supremacy.Entities
         /// <param name="parentElement">The parent element.</param>
         public XContainer AppendXml(XElement parentElement)
         {
-            var ns = parentElement.Name.Namespace;
+            XNamespace ns = parentElement.Name.Namespace;
 
             parentElement.Add(
                 new XElement(
@@ -210,7 +210,7 @@ namespace Supremacy.Entities
         {
             get
             {
-                var description = Description;
+                string description = Description;
 
                 /*
                    No sense in doing a potentially long string comparison to look up the description text
@@ -234,15 +234,15 @@ namespace Supremacy.Entities
         {
             get
             {
-                var searchPaths = new[]
+                string[] searchPaths = new[]
                                   {
                                       "vfs:///Resources/Images/Races/{0}.png",
                                       "vfs:///Resources/Images/Races/{0}.jpg"
                                   };
 
-                foreach (var searchPath in searchPaths)
+                foreach (string searchPath in searchPaths)
                 {
-                    var imagePath = ResourceManager.GetResourcePath(string.Format(searchPath, Key));
+                    string imagePath = ResourceManager.GetResourcePath(string.Format(searchPath, Key));
                     if (File.Exists(imagePath))
                         return ResourceManager.GetResourceUri(imagePath).ToString();
                 }

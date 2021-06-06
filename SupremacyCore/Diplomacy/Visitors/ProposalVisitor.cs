@@ -4,31 +4,31 @@ namespace Supremacy.Diplomacy.Visitors
     {
         protected virtual void VisitGift(IProposal proposal)
         {
-            foreach (var clause in proposal.Clauses)
+            foreach (IClause clause in proposal.Clauses)
                 clause.Accept(this);
         }
 
         protected virtual void VisitDemand(IProposal proposal)
         {
-            foreach (var clause in proposal.Clauses)
+            foreach (IClause clause in proposal.Clauses)
                 clause.Accept(this);
         }
 
         protected virtual void VisitExchange(IProposal proposal)
         {
-            foreach (var clause in proposal.Clauses)
+            foreach (IClause clause in proposal.Clauses)
                 clause.Accept(this);
         }
 
         protected virtual void VisitWarPact(IProposal proposal)
         {
-            foreach (var clause in proposal.Clauses)
+            foreach (IClause clause in proposal.Clauses)
                 clause.Accept(this);
         }
 
         protected virtual void VisitTreatyProposal(IProposal proposal)
         {
-            foreach (var clause in proposal.Clauses)
+            foreach (IClause clause in proposal.Clauses)
                 clause.Accept(this);
         }
 

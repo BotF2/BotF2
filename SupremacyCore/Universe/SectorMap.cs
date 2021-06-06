@@ -91,12 +91,12 @@ namespace Supremacy.Universe
 
         public void Reset()
         {
-            var width = _sectors.GetLength(0);
-            var height = _sectors.GetLength(1);
+            int width = _sectors.GetLength(0);
+            int height = _sectors.GetLength(1);
             
-            for (var x = 0; x < width; x++)
+            for (int x = 0; x < width; x++)
             {
-                for (var y = 0; y < height; y++)
+                for (int y = 0; y < height; y++)
                     _sectors[x, y].Reset();
             }
         }

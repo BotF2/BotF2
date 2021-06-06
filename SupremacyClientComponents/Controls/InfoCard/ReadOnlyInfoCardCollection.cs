@@ -17,7 +17,7 @@ namespace Supremacy.Client.Controls
 
         public int IndexOf(string name)
         {
-            for (var index = 0; index < Count; index++)
+            for (int index = 0; index < Count; index++)
             {
                 if (this[index].Name == name)
                     return index;
@@ -27,7 +27,7 @@ namespace Supremacy.Client.Controls
         
         public int IndexOf(Guid uniqueId)
         {
-            for (var index = 0; index < Count; index++)
+            for (int index = 0; index < Count; index++)
             {
                 if (this[index].UniqueId == uniqueId)
                     return index;
@@ -39,7 +39,7 @@ namespace Supremacy.Client.Controls
         {
             get
             {
-                var index = IndexOf(name);
+                int index = IndexOf(name);
                 if (index != InvalidIndex)
                     return this[index];
                 return null;
@@ -51,7 +51,7 @@ namespace Supremacy.Client.Controls
         {
             get
             {
-                var index = IndexOf(uniqueId);
+                int index = IndexOf(uniqueId);
                 if (index != InvalidIndex)
                     return this[index];
                 return null;
@@ -60,14 +60,14 @@ namespace Supremacy.Client.Controls
 
         public InfoCard[] ToArray()
         {
-            var result = new InfoCard[Count];
+            InfoCard[] result = new InfoCard[Count];
             CopyTo(result, 0);
             return result;
         }
 
         public InfoCard[] ToArray(bool sortByLastFocusedDateTime)
         {
-            var result = new InfoCard[Count];
+            InfoCard[] result = new InfoCard[Count];
 
             CopyTo(result, 0);
 

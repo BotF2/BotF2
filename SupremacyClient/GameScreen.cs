@@ -97,7 +97,7 @@ namespace Supremacy.Client
 
         protected void PauseAnimations()
         {
-            foreach (var animationsHost in this.FindVisualDescendantsByType<DependencyObject>().OfType<IAnimationsHost>())
+            foreach (IAnimationsHost animationsHost in this.FindVisualDescendantsByType<DependencyObject>().OfType<IAnimationsHost>())
             {
                 try
                 {
@@ -112,7 +112,7 @@ namespace Supremacy.Client
 
         protected void ResumeAnimations()
         {
-            foreach (var animationsHost in this.FindVisualDescendantsByType<DependencyObject>().OfType<IAnimationsHost>())
+            foreach (IAnimationsHost animationsHost in this.FindVisualDescendantsByType<DependencyObject>().OfType<IAnimationsHost>())
             {
                 try
                 {
@@ -142,7 +142,7 @@ namespace Supremacy.Client
 
         private void HandleIsActiveChanged(object sender, EventArgs args)
         {
-            var region = RegionManager.Regions[ClientRegions.GameScreens];
+            IRegion region = RegionManager.Regions[ClientRegions.GameScreens];
             if (!region.Views.Contains(this))
                 return;
 
@@ -154,7 +154,7 @@ namespace Supremacy.Client
 
         public void BringDescendantIntoView(DependencyObject descendant)
         {
-            var target = descendant;
+            DependencyObject target = descendant;
 
             while (target != null && target != this)
             {
@@ -193,7 +193,7 @@ namespace Supremacy.Client
 
         private void StopDescendantAnimations()
         {
-            foreach (var animationsHost in this.FindVisualDescendantsByType<DependencyObject>().OfType<IAnimationsHost>())
+            foreach (IAnimationsHost animationsHost in this.FindVisualDescendantsByType<DependencyObject>().OfType<IAnimationsHost>())
             {
                 try
                 {
@@ -218,7 +218,7 @@ namespace Supremacy.Client
 
         private void OnChatMessageReceived(DataEventArgs<ChatMessage> args)
         {
-            var chatMessage = args.Value;
+            ChatMessage chatMessage = args.Value;
             if (chatMessage != null)
                 ProcessChatMessage(chatMessage);
         }

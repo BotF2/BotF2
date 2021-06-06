@@ -239,9 +239,9 @@ namespace Supremacy.Client.Controls
 
         private static void OnPlacementTargetChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            var popup = (GamePopup)d;
-            var oldValue = (UIElement)e.OldValue;
-            var newValue = (UIElement)e.NewValue;
+            GamePopup popup = (GamePopup)d;
+            UIElement oldValue = (UIElement)e.OldValue;
+            UIElement newValue = (UIElement)e.NewValue;
 
             if (popup.IsOpen)
             {
@@ -260,7 +260,7 @@ namespace Supremacy.Client.Controls
         {
             base.OnVisualParentChanged(oldParent);
 
-            var registeredPopupSite = RegisteredPopupSite;
+            GamePopupSite registeredPopupSite = RegisteredPopupSite;
             if (registeredPopupSite != null)
                 registeredPopupSite.Popups.Remove(this);
         }
@@ -275,7 +275,7 @@ namespace Supremacy.Client.Controls
 
         private static void UnregisterPopupFromPlacementTarget(GamePopup popup, UIElement placementTarget)
         {
-            var popupSite = placementTarget.FindVisualAncestorByType<GamePopupSite>();
+            GamePopupSite popupSite = placementTarget.FindVisualAncestorByType<GamePopupSite>();
             if (popupSite == null)
                 return;
 
@@ -285,7 +285,7 @@ namespace Supremacy.Client.Controls
 
         private static void RegisterPopupWithPlacementTarget(GamePopup popup, UIElement placementTarget)
         {
-            var popupSite = placementTarget.FindVisualAncestorByType<GamePopupSite>();
+            GamePopupSite popupSite = placementTarget.FindVisualAncestorByType<GamePopupSite>();
             if (popupSite == null)
                 return;
 
@@ -300,7 +300,7 @@ namespace Supremacy.Client.Controls
 
         private static void OnStaysOpenChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            var popup = (GamePopup)d;
+            GamePopup popup = (GamePopup)d;
 
             if (!popup.IsOpen)
                 return;
@@ -342,7 +342,7 @@ namespace Supremacy.Client.Controls
 
         private static bool IsValidPlacementMode(object o)
         {
-            var mode = (PlacementMode)o;
+            PlacementMode mode = (PlacementMode)o;
             if (((((mode != PlacementMode.Absolute) && (mode != PlacementMode.AbsolutePoint)) &&
                   ((mode != PlacementMode.Bottom) && (mode != PlacementMode.Center))) &&
                  (((mode != PlacementMode.Mouse) && (mode != PlacementMode.MousePoint)) &&
@@ -358,7 +358,7 @@ namespace Supremacy.Client.Controls
         {
             if ((bool)value)
             {
-                var popup = (GamePopup)d;
+                GamePopup popup = (GamePopup)d;
 
                 if (popup.RegisteredPopupSite == null)
                 {
@@ -392,9 +392,9 @@ namespace Supremacy.Client.Controls
 
         private static void OnIsOpenChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            var popup = (GamePopup)d;
-            var newValue = (bool)e.NewValue;
-            var popupSite = popup.RegisteredPopupSite;
+            GamePopup popup = (GamePopup)d;
+            bool newValue = (bool)e.NewValue;
+            GamePopupSite popupSite = popup.RegisteredPopupSite;
 
             if (popupSite == null)
             {
@@ -462,7 +462,7 @@ namespace Supremacy.Client.Controls
             if (_popupRoot == null || Child == null)
                 return;
 
-            var vs = DependencyPropertyHelper.GetValueSource(Child, TextOptions.TextRenderingModeProperty);
+            ValueSource vs = DependencyPropertyHelper.GetValueSource(Child, TextOptions.TextRenderingModeProperty);
             if (vs.BaseValueSource <= BaseValueSource.Inherited)
                 TextOptions.SetTextRenderingMode(_popupRoot, TextOptions.GetTextRenderingMode(this));
         }
@@ -474,10 +474,10 @@ namespace Supremacy.Client.Controls
 
         private static void OnChildChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            var popup = (GamePopup)d;
+            GamePopup popup = (GamePopup)d;
 
-            var oldValue = (UIElement)e.OldValue;
-            var newValue = (UIElement)e.NewValue;
+            UIElement oldValue = (UIElement)e.OldValue;
+            UIElement newValue = (UIElement)e.NewValue;
 
             if (popup._popupRoot != null && popup.IsOpen)
                 popup._popupRoot.Child = newValue;
@@ -533,7 +533,7 @@ namespace Supremacy.Client.Controls
             if (Parent == null)
             {
                 // Use the placement target as the logical parent while the popup is open
-                var placementTarget = PlacementTarget;
+                UIElement placementTarget = PlacementTarget;
                 if (placementTarget != null && IsOpen)
                     return placementTarget;
             }
@@ -566,7 +566,7 @@ namespace Supremacy.Client.Controls
 
         private void OnPopupRootLostMouseCapture(object sender, MouseEventArgs e)
         {
-            var root = (GamePopupRoot)sender;
+            GamePopupRoot root = (GamePopupRoot)sender;
 
             // Try to accomplish "subcapture" -- allowing elements within our
             // subtree to take mouse capture and reclaim it when they lose capture. 
@@ -575,7 +575,7 @@ namespace Supremacy.Client.Controls
 
             // Use the same technique employed in ComoboBox.OnLostMouseCapture to allow another control in the
             // application to temporarily take capture and then take it back afterwards. 
-            var captured = Mouse.Captured as DependencyObject;
+            DependencyObject captured = Mouse.Captured as DependencyObject;
             if (captured == root)
                 return;
 
@@ -608,8 +608,8 @@ namespace Supremacy.Client.Controls
 
         internal static bool IsDescendant(DependencyObject reference, DependencyObject node)
         {
-            var success = false;
-            var current = node;
+            bool success = false;
+            DependencyObject current = node;
 
             while (current != null)
             {
@@ -620,13 +620,13 @@ namespace Supremacy.Client.Controls
                 }
 
                 // Find popup if current is a GamePopupRoot 
-                var popupRoot = current as GamePopupRoot;
+                GamePopupRoot popupRoot = current as GamePopupRoot;
                 if (popupRoot != null)
                 {
                     //Now Popup does not have a visual link to its parent (for context menu) 
                     //it is stored in its parent's arraylist (DP)
                     //so we get its parent by looking at PlacementTarget 
-                    var popup = popupRoot.Parent as Popup;
+                    Popup popup = popupRoot.Parent as Popup;
 
                     current = popup;
 
@@ -651,8 +651,8 @@ namespace Supremacy.Client.Controls
 
         internal static DependencyObject FindParent(DependencyObject o)
         {
-            var visual = (DependencyObject)(o as Visual) ?? o as Visual3D;
-            var contentElement = visual == null ? o as ContentElement : null;
+            DependencyObject visual = (DependencyObject)(o as Visual) ?? o as Visual3D;
+            ContentElement contentElement = visual == null ? o as ContentElement : null;
 
             if (contentElement != null)
             {
@@ -660,8 +660,8 @@ namespace Supremacy.Client.Controls
                 
                 if (o != null)
                     return o;
-                
-                var frameworkContentElement = contentElement as FrameworkContentElement;
+
+                FrameworkContentElement frameworkContentElement = contentElement as FrameworkContentElement;
                 if (frameworkContentElement != null)
                     return frameworkContentElement.Parent;
 

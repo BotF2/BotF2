@@ -35,10 +35,10 @@ namespace Supremacy.Client.Views
 
         private void OnItemContainerGeneratorStatusChanged(object sender, EventArgs e)
         {
-            foreach (var item in TaskForceList.Items)
+            foreach (object item in TaskForceList.Items)
             {
 
-                var container = TaskForceList.ItemContainerGenerator.ContainerFromItem(item);
+                DependencyObject container = TaskForceList.ItemContainerGenerator.ContainerFromItem(item);
                 if (container == null)
                     continue;
                 // doesn't work fine        GameLog.Print("container = {0}, item = {1}", container.ToString(), item.ToString());
@@ -55,15 +55,15 @@ namespace Supremacy.Client.Views
 
         protected override void OnContextMenuOpening(ContextMenuEventArgs e)
         {
-            var mouseTarget = InputHitTest(Mouse.GetPosition(this)) as DependencyObject;
-            var targetListViewItem = mouseTarget.FindVisualAncestorByType<ListBoxItem>();
+            DependencyObject mouseTarget = InputHitTest(Mouse.GetPosition(this)) as DependencyObject;
+            ListBoxItem targetListViewItem = mouseTarget.FindVisualAncestorByType<ListBoxItem>();
             if (targetListViewItem == null)
             {
                 e.Handled = true;
                 return;
             }
 
-            var fleetView = targetListViewItem.DataContext as FleetViewWrapper;
+            FleetViewWrapper fleetView = targetListViewItem.DataContext as FleetViewWrapper;
             if (fleetView == null)
             {
                 e.Handled = true;
@@ -82,8 +82,8 @@ namespace Supremacy.Client.Views
 
         protected override void OnMouseRightButtonDown(MouseButtonEventArgs e)
         {
-            var mouseTarget = InputHitTest(Mouse.GetPosition(this)) as DependencyObject;
-            var targetListViewItem = mouseTarget.FindVisualAncestorByType<ListBoxItem>();
+            DependencyObject mouseTarget = InputHitTest(Mouse.GetPosition(this)) as DependencyObject;
+            ListBoxItem targetListViewItem = mouseTarget.FindVisualAncestorByType<ListBoxItem>();
             if (targetListViewItem != null)
             {
                 e.Handled = true;
@@ -97,7 +97,7 @@ namespace Supremacy.Client.Views
             if (fleetView == null)
                 throw new ArgumentNullException("fleetView");
 
-            var orderMenu = ContextMenu;
+            ContextMenu orderMenu = ContextMenu;
             if (orderMenu != null)
                 orderMenu.Items.Clear();
 
@@ -112,7 +112,7 @@ namespace Supremacy.Client.Views
 
             if (fleetView.Source.CanCloak)
             {
-                var cloakItem = new MenuItem
+                MenuItem cloakItem = new MenuItem
                                 {
                                     IsCheckable = true,
                                     Header = "Cloak",
@@ -120,7 +120,7 @@ namespace Supremacy.Client.Views
                                     CommandParameter = fleetView
                                 };
 
-                var cloakBinding = new Binding
+                Binding cloakBinding = new Binding
                                    {
                                        Source = fleetView.Source,
                                        Path = new PropertyPath("IsCloaked", new object[0]),
@@ -134,7 +134,7 @@ namespace Supremacy.Client.Views
 
             if (fleetView.Source.CanCamouflage)
             {
-                var camouflagedItem = new MenuItem
+                MenuItem camouflagedItem = new MenuItem
                 {
                     IsCheckable = true,
                     Header = "Camouflage",
@@ -142,7 +142,7 @@ namespace Supremacy.Client.Views
                     CommandParameter = fleetView
                 };
 
-                var camouflageBinding = new Binding
+                Binding camouflageBinding = new Binding
                 {
                     Source = fleetView.Source,
                     Path = new PropertyPath("IsCamouflaged", new object[0]),
@@ -154,9 +154,9 @@ namespace Supremacy.Client.Views
                 orderMenu.Items.Add(new Separator());
             }
 
-            foreach (var order in FleetOrders.GetAvailableOrders(fleetView.Source))
+            foreach (FleetOrder order in FleetOrders.GetAvailableOrders(fleetView.Source))
             {
-                var orderItem = new MenuItem
+                MenuItem orderItem = new MenuItem
                                 {
                                     Header = order,
                                     Command = GalaxyScreenCommands.IssueTaskForceOrder,
@@ -170,7 +170,7 @@ namespace Supremacy.Client.Views
 
         private void OnOrderMenuClosed(object sender, RoutedEventArgs args)
         {
-            var sourceMenu = (ContextMenu)args.Source;
+            ContextMenu sourceMenu = (ContextMenu)args.Source;
             sourceMenu.Closed -= OnOrderMenuClosed;
             if (_orderMenuTargetItem == null)
                 return;

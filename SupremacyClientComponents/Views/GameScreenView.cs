@@ -77,7 +77,7 @@ namespace Supremacy.Client.Views
 
         protected void PauseAnimations()
         {
-            foreach (var animationsHost in this.FindVisualDescendantsByType<DependencyObject>().OfType<IAnimationsHost>())
+            foreach (IAnimationsHost animationsHost in this.FindVisualDescendantsByType<DependencyObject>().OfType<IAnimationsHost>())
             {
                 try
                 {
@@ -111,7 +111,7 @@ namespace Supremacy.Client.Views
 
         protected void ResumeAnimations()
         {
-            foreach (var animationsHost in this.FindVisualDescendantsByType<DependencyObject>().OfType<IAnimationsHost>())
+            foreach (IAnimationsHost animationsHost in this.FindVisualDescendantsByType<DependencyObject>().OfType<IAnimationsHost>())
             {
                 try
                 {
@@ -126,7 +126,7 @@ namespace Supremacy.Client.Views
 
         protected void StopAnimations()
         {
-            foreach (var animationsHost in this.FindVisualDescendantsByType<DependencyObject>().OfType<IAnimationsHost>())
+            foreach (IAnimationsHost animationsHost in this.FindVisualDescendantsByType<DependencyObject>().OfType<IAnimationsHost>())
             {
                 try
                 {
@@ -180,7 +180,7 @@ namespace Supremacy.Client.Views
 
         protected virtual void OnIsActiveChanged()
         {
-            var handler = IsActiveChanged;
+            EventHandler handler = IsActiveChanged;
             if (handler != null)
                 handler(this, EventArgs.Empty);
         }

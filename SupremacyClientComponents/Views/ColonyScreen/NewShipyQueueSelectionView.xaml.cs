@@ -86,11 +86,11 @@ namespace Supremacy.Client.Views
 
         private void OnBuildProjectListMouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            var source = e.OriginalSource as DependencyObject;
+            DependencyObject source = e.OriginalSource as DependencyObject;
             if (source == null)
                 return;
 
-            var contanier = source.FindVisualAncestorByType<ListBoxItem>();
+            ListBoxItem contanier = source.FindVisualAncestorByType<ListBoxItem>();
             if (contanier == null)
                 return;
 

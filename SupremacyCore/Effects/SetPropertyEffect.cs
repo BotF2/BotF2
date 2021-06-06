@@ -28,7 +28,7 @@ namespace Supremacy.Effects
 
         private ScriptExpression CreateValueScript()
         {
-            var mergedParameters = SystemScriptParameters.Merge(EffectGroup.CustomScriptParameters);
+            ScriptParameters mergedParameters = SystemScriptParameters.Merge(EffectGroup.CustomScriptParameters);
 
             return new ScriptExpression
                    {
@@ -43,8 +43,8 @@ namespace Supremacy.Effects
 
         protected override EffectBinding BindCore(EffectGroupBinding effectGroupBinding, IEffectTarget effectTarget)
         {
-            var propertyType = _targetProperty.PropertyType;
-            var bindingType = typeof(SetPropertyEffectBinding<>).MakeGenericType(propertyType);
+            Type propertyType = _targetProperty.PropertyType;
+            Type bindingType = typeof(SetPropertyEffectBinding<>).MakeGenericType(propertyType);
 
             return (EffectBinding)Activator.CreateInstance(
                 bindingType,
@@ -55,7 +55,7 @@ namespace Supremacy.Effects
 
         protected override EffectParameterCollection CreateSystemParameters()
         {
-            var baseParameters = base.CreateSystemParameters();
+            EffectParameterCollection baseParameters = base.CreateSystemParameters();
 
             baseParameters.Add(new EffectParameter(ParameterNameBaseValue, _targetProperty.PropertyType));
             baseParameters.Add(new EffectParameter(ParameterNameCurrentValue, _targetProperty.PropertyType));

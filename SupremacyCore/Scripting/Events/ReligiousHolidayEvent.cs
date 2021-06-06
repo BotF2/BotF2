@@ -62,22 +62,22 @@ namespace Supremacy.Scripting.Events
         {
             if (phase == TurnPhase.PreTurnOperations && GameContext.Current.TurnNumber >= 30)
             {
-                var affectedCivs = game.Civilizations
+                IEnumerable<Entities.Civilization> affectedCivs = game.Civilizations
                     .Where(c => c.IsEmpire &&
                         c.IsHuman &&
                         RandomHelper.Chance(_occurrenceChance));
 
-                var targetGroups = affectedCivs
+                IEnumerable<IGrouping<int, Colony>> targetGroups = affectedCivs
                     .Where(CanTargetCivilization)
                     .SelectMany(c => game.Universe.FindOwned<Colony>(c))
                     .Where(CanTargetUnit)
                     .GroupBy(o => o.OwnerID);
 
-                foreach (var group in targetGroups)
+                foreach (IGrouping<int, Colony> group in targetGroups)
                 {
-                    var productionCenters = group.ToList();
+                    List<Colony> productionCenters = group.ToList();
 
-                    var target = productionCenters[RandomProvider.Next(productionCenters.Count)];
+                    Colony target = productionCenters[RandomProvider.Next(productionCenters.Count)];
 
                     // Borg do not have religious holidays
                     if (target.Owner.Name == "Borg")
@@ -94,7 +94,7 @@ namespace Supremacy.Scripting.Events
 
                     _affectedProjects.ForEach(p => p.IsPaused = true);
 
-                    var targetCiv = target.Owner;
+                    Entities.Civilization targetCiv = target.Owner;
                     int targetColonyId = target.ObjectID;
 
                     OnUnitTargeted(target);
@@ -102,7 +102,7 @@ namespace Supremacy.Scripting.Events
                     target.Morale.AdjustCurrent(+5);
                     target.Morale.UpdateAndReset();
 
-                    var civManager = GameContext.Current.CivilizationManagers[targetCiv.CivID];
+                    CivilizationManager civManager = GameContext.Current.CivilizationManagers[targetCiv.CivID];
 
                     if (civManager != null)
                     {

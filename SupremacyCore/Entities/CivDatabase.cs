@@ -173,7 +173,7 @@ namespace Supremacy.Entities
                     GameLog.Core.CivsAndRaces.DebugFormat("OnDeserialized: civ.Key = {0}", civ.Key);
                     if (civ.SpiedCivList != null)
                     {
-                        foreach (var spiedCiv in civ.SpiedCivList)
+                        foreach (Civilization spiedCiv in civ.SpiedCivList)
                         {
                             GameLog.Core.CivsAndRaces.DebugFormat("OnDeserialized: civ.Key = {0} spying on {1}", civ.Key, spiedCiv.Key);
                         }
@@ -191,7 +191,7 @@ namespace Supremacy.Entities
             
             lock (_reverseLookup)
             {
-                foreach (var civ in Items)
+                foreach (Civilization civ in Items)
                 {
                     _reverseLookup[civ.Key] = civ;
 
@@ -199,7 +199,7 @@ namespace Supremacy.Entities
                     GameLog.Core.CivsAndRaces.DebugFormat("deserialize {0}", civ.Key);
                     if (civ.SpiedCivList != null)
                     {
-                        foreach (var spiedCiv in civ.SpiedCivList)
+                        foreach (Civilization spiedCiv in civ.SpiedCivList)
                         {
                             GameLog.Core.CivsAndRaces.DebugFormat("DeserializeOwnedData: civ.Key = {0} spying on {1}", civ.Key, spiedCiv.Key);
                         }
@@ -224,18 +224,18 @@ namespace Supremacy.Entities
         /// <param name="fileName">Name of the output file.</param>
         public void Save(string fileName)
         {
-            var ns = XNamespace.Get("Supremacy:Civilizations.xsd");
-            var supremacyNamespace = XNamespace.Get("Supremacy:Supremacy.xsd");
+            XNamespace ns = XNamespace.Get("Supremacy:Civilizations.xsd");
+            XNamespace supremacyNamespace = XNamespace.Get("Supremacy:Supremacy.xsd");
 
-            var rootElement = new XElement(
+            XElement rootElement = new XElement(
                 ns + "Civilizations",
                 new XAttribute(
                     XNamespace.Xmlns + "s",
                     supremacyNamespace));
 
-            var xmlDoc = new XDocument(rootElement);
+            XDocument xmlDoc = new XDocument(rootElement);
 
-            foreach (var civilization in this)
+            foreach (Civilization civilization in this)
                 civilization.AppendXml(rootElement);
 
             xmlDoc.Save(fileName, SaveOptions.None);
@@ -279,9 +279,9 @@ namespace Supremacy.Entities
             GameLog.Core.GameData.Debug("Loading civilization database....");
             try
             {
-                var civDatabase = new CivDatabase();
-                var ns = XNamespace.Get("Supremacy:Civilizations.xsd");
-                var xmlDoc = XDocument.Load(ResourceManager.GetResourcePath(DefaultDatabasePath));
+                CivDatabase civDatabase = new CivDatabase();
+                XNamespace ns = XNamespace.Get("Supremacy:Civilizations.xsd");
+                XDocument xmlDoc = XDocument.Load(ResourceManager.GetResourcePath(DefaultDatabasePath));
 
                 if (_xmlSchemas == null)
                     LoadSchemas();
@@ -290,7 +290,7 @@ namespace Supremacy.Entities
 
 
 
-                foreach (var civElement in xmlDoc.Root.Elements(ns + "Civilization"))
+                foreach (XElement civElement in xmlDoc.Root.Elements(ns + "Civilization"))
                 {
                     try
                     {

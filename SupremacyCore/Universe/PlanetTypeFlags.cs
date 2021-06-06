@@ -36,7 +36,7 @@ namespace Supremacy.Universe
 
             _flags = 0;
 
-            foreach (var planetType in planetTypes)
+            foreach (PlanetType planetType in planetTypes)
                 _flags |= 1 << (int)planetType;
         }
 
@@ -44,7 +44,7 @@ namespace Supremacy.Universe
         {
             _flags = 0;
 
-            foreach (var planetType in planetTypes)
+            foreach (PlanetType planetType in planetTypes)
                 _flags |= 1 << (int)planetType;
         }
 
@@ -52,7 +52,7 @@ namespace Supremacy.Universe
         {
             get
             {
-                var mask = 1 << (int)planetType;
+                int mask = 1 << (int)planetType;
                 return (_flags & mask) == mask;
             }
         }
@@ -67,7 +67,7 @@ namespace Supremacy.Universe
             if (ReferenceEquals(null, obj))
                 return false;
 
-            var other = obj as PlanetTypeFlags?;
+            PlanetTypeFlags? other = obj as PlanetTypeFlags?;
             return other.HasValue && Equals(other.GetValueOrDefault());
         }
 

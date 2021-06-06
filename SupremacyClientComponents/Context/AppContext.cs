@@ -179,7 +179,7 @@ namespace Supremacy.Client.Context
 
         private void OnLocalPlayerJoined(LocalPlayerJoinedEventArgs args)
         {
-            var localPlayer = args.Player;
+            IPlayer localPlayer = args.Player;
 
             if (localPlayer == null)
                 return;
@@ -319,7 +319,7 @@ namespace Supremacy.Client.Context
 
         private void OnLobbyUpdated(DataEventArgs<ILobbyData> args)
         {
-            var lobbyData = args.Value;
+            ILobbyData lobbyData = args.Value;
             if (lobbyData != null)
             {
                 _accessLock.EnterUpgradeableReadLock();

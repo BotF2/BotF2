@@ -64,23 +64,23 @@ namespace Supremacy.Scripting.Events
         {
             if (phase == TurnPhase.PreTurnOperations)
             {
-                var affectedCivs = game.Civilizations
+                IEnumerable<Entities.Civilization> affectedCivs = game.Civilizations
                     .Where(c =>
                         c.IsEmpire &&
                         c.IsHuman &&
                         RandomHelper.Chance(_occurrenceChance));
 
-                var targetGroups = affectedCivs
+                IEnumerable<IGrouping<int, Colony>> targetGroups = affectedCivs
                     .Where(CanTargetCivilization)
                     .SelectMany(c => game.Universe.FindOwned<Colony>(c))
                     .Where(CanTargetUnit)
                     .GroupBy(c => c.OwnerID);
 
-                foreach (var group in targetGroups)
+                foreach (IGrouping<int, Colony> group in targetGroups)
                 {
-                    var productionCenters = group.ToList();
+                    List<Colony> productionCenters = group.ToList();
 
-                    var target = productionCenters[RandomProvider.Next(productionCenters.Count)];
+                    Colony target = productionCenters[RandomProvider.Next(productionCenters.Count)];
 
                     if ((target.Owner.Name == "Borg") || target.Owner.Name == "Dominion") // Borg and Dominion don't have strikes
                         return;
@@ -91,14 +91,14 @@ namespace Supremacy.Scripting.Events
                         .Select(o => o.Project)
                         .ToList();
 
-                    foreach (var affectedProject in _affectedProjects)
+                    foreach (BuildProject affectedProject in _affectedProjects)
                     {
                         affectedProject.IsPaused = true;
                         Console.WriteLine("affectedProject: {0}", affectedProject);
                         GameLog.Client.EventsDetails.DebugFormat("affectedProject: {0}", affectedProject);
                     }
 
-                    var targetCiv = target.Owner;
+                    Entities.Civilization targetCiv = target.Owner;
                     Console.WriteLine("target.OwnerID: {0}", target.OwnerID);
                     GameLog.Client.EventsDetails.DebugFormat("target.OwnerID: {0}", target.OwnerID);
                     int targetColonyId = target.ObjectID;

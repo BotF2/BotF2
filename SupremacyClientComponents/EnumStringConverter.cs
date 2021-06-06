@@ -47,11 +47,11 @@ namespace Supremacy.Client
             if (value == null)
                 return null;
 
-            var enumValue = value as Enum;
-            var parameterIsTypeName = false;
+            Enum enumValue = value as Enum;
+            bool parameterIsTypeName = false;
 
-            var typeName = (string)null;
-            var valueName = (string)null;
+            string typeName = (string)null;
+            string valueName = (string)null;
 
             if (enumValue != null)
             {
@@ -63,12 +63,12 @@ namespace Supremacy.Client
 
             if (typeName == null)
             {
-                var stringValue = value as string;
+                string stringValue = value as string;
                 if (stringValue != null)
                 {
                     try
                     {
-                        var parts = value.ToString().Split(new[] {'.'}, StringSplitOptions.RemoveEmptyEntries);
+                        string[] parts = value.ToString().Split(new[] {'.'}, StringSplitOptions.RemoveEmptyEntries);
                         if (parts.Length < 2)
                         {
                             typeName = parameter as string;
@@ -127,7 +127,7 @@ namespace Supremacy.Client
         {
             try
             {
-                var enumType = value as Type ?? Type.GetType(value.ToString());
+                Type enumType = value as Type ?? Type.GetType(value.ToString());
                 if (enumType != null)
                     return Enum.GetValues(enumType);
             }

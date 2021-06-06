@@ -175,10 +175,10 @@ namespace Supremacy.Client.Data
         /// </returns>
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            var mapping = FindMapping(value, false);
+            Mapping mapping = FindMapping(value, false);
             if (mapping != null)
             {
-                var convertedValue = ValueConversionHelper.Convert(mapping.To, targetType, parameter, culture);
+                object convertedValue = ValueConversionHelper.Convert(mapping.To, targetType, parameter, culture);
                 if (convertedValue != DependencyProperty.UnsetValue)
                     return convertedValue;
             }
@@ -212,10 +212,10 @@ namespace Supremacy.Client.Data
         /// </returns>
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            var mapping = FindMapping(value, true);
+            Mapping mapping = FindMapping(value, true);
             if (mapping != null)
             {
-                var convertedValue = ValueConversionHelper.Convert(mapping.From, targetType, parameter, culture);
+                object convertedValue = ValueConversionHelper.Convert(mapping.From, targetType, parameter, culture);
                 if (convertedValue != DependencyProperty.UnsetValue)
                     return convertedValue;
             }
@@ -228,9 +228,9 @@ namespace Supremacy.Client.Data
 
         private Mapping FindMapping(object value, bool reverse)
         {
-            foreach (var mapping in Mappings)
+            foreach (Mapping mapping in Mappings)
             {
-                var comparand = reverse ? mapping.To : mapping.From;
+                object comparand = reverse ? mapping.To : mapping.From;
                 if (comparand == null)
                 {
                     if (value == null)
@@ -243,10 +243,10 @@ namespace Supremacy.Client.Data
 
                 if (reverse)
                 {
-                    var convertedValue = ValueConversionHelper.Convert(value, comparand.GetType());
+                    object convertedValue = ValueConversionHelper.Convert(value, comparand.GetType());
                     if (convertedValue == DependencyProperty.UnsetValue)
                     {
-                        var convertedComparand = ValueConversionHelper.Convert(comparand, value.GetType());
+                        object convertedComparand = ValueConversionHelper.Convert(comparand, value.GetType());
                         if (convertedComparand != DependencyProperty.UnsetValue && Equals(convertedComparand, value))
                             return mapping;
                         continue;
@@ -257,10 +257,10 @@ namespace Supremacy.Client.Data
                 }
                 else
                 {
-                    var convertedComparand = ValueConversionHelper.Convert(comparand, value.GetType());
+                    object convertedComparand = ValueConversionHelper.Convert(comparand, value.GetType());
                     if (convertedComparand == DependencyProperty.UnsetValue)
                     {
-                        var convertedValue = ValueConversionHelper.Convert(value, comparand.GetType());
+                        object convertedValue = ValueConversionHelper.Convert(value, comparand.GetType());
                         if (convertedValue != DependencyProperty.UnsetValue && Equals(convertedValue, value))
                             return mapping;
                         continue;

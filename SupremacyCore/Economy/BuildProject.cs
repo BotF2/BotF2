@@ -409,7 +409,7 @@ namespace Supremacy.Economy
         /// </summary>
         public virtual void Finish()
         {
-            var civManager = GameContext.Current.CivilizationManagers[Builder];
+            CivilizationManager civManager = GameContext.Current.CivilizationManagers[Builder];
 
             //if(BuildDesign == StationDes)
             GameLog.Core.ProductionDetails.DebugFormat(" Turn {3}: Trying to finish BuildProject ##########  {0} by {1} at {2}", BuildDesign, Builder, Location, GameContext.Current.TurnNumber);
@@ -445,12 +445,12 @@ namespace Supremacy.Economy
         /// <returns>The time estimate.</returns>
         public virtual int GetTimeEstimate()
         {
-            var industryAvailable = GetIndustryAvailable();
+            int industryAvailable = GetIndustryAvailable();
             if (industryAvailable == 0)
                 industryAvailable = 1;
-            var industryRemaining = IndustryRequired - IndustryInvested;
+            int industryRemaining = IndustryRequired - IndustryInvested;
 
-            var turns = industryRemaining / industryAvailable;
+            int turns = industryRemaining / industryAvailable;
 
             if (industryRemaining % industryAvailable > 0)
                 ++turns;
@@ -512,13 +512,13 @@ namespace Supremacy.Economy
         protected virtual void AdvanceOverride(ref int industry, ResourceValueCollection resources)
         {
 
-            var civManager = GameContext.Current.CivilizationManagers[0];  // ToDo - not always Federation
-            var civ = civManager.Civilization;
-            var timeEstimate = GetTimeEstimate();
+            CivilizationManager civManager = GameContext.Current.CivilizationManagers[0];  // ToDo - not always Federation
+            Civilization civ = civManager.Civilization;
+            int timeEstimate = GetTimeEstimate();
             if (timeEstimate <= 0)
                 return;
 
-            var deltaIndustry = Math.Min(
+            int deltaIndustry = Math.Min(
                 industry,
                 Math.Max(0, IndustryRequired - _industryInvested));
 
@@ -535,13 +535,13 @@ namespace Supremacy.Economy
                 BuildProjectFlags.DilithiumShortage |
                 BuildProjectFlags.RawMaterialsShortage);
 
-            var resourceTypes = EnumHelper.GetValues<ResourceType>();
+            ResourceType[] resourceTypes = EnumHelper.GetValues<ResourceType>();
 
-            for (var i = 0; i < resourceTypes.Length; i++)
+            for (int i = 0; i < resourceTypes.Length; i++)
             {
-                var resource = resourceTypes[i];
+                ResourceType resource = resourceTypes[i];
 
-                var delta = ResourcesRequired[resource] - _resourcesInvested[resource];
+                int delta = ResourcesRequired[resource] - _resourcesInvested[resource];
 
                 if (delta <= 0)
                     continue;

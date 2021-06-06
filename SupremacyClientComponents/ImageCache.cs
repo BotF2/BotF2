@@ -34,7 +34,7 @@ namespace Supremacy.Client
 
         private BitmapImage Load(string uri)
         {
-            var image = new BitmapImage();
+            BitmapImage image = new BitmapImage();
             image.BeginInit();
             if (ForceCaching)
                 image.CacheOption = BitmapCacheOption.OnLoad;

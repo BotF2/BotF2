@@ -183,8 +183,8 @@ namespace Supremacy.Economy
         /// <returns>The tech level.</returns>
         public int GetTechLevel(TechCategory category)
         {
-            var levels = new List<int>();
-            foreach (var field in GameContext.Current.ResearchMatrix.Fields.Where(o => o.TechCategory == category))
+            List<int> levels = new List<int>();
+            foreach (ResearchField field in GameContext.Current.ResearchMatrix.Fields.Where(o => o.TechCategory == category))
             {
                 levels.Add(GetTechLevel(field));
             }
@@ -229,8 +229,8 @@ namespace Supremacy.Economy
                 throw new ArgumentNullException("owner");
             if (matrix == null)
                 throw new ArgumentNullException("matrix");
-            
-            var fieldIds = new List<int>();
+
+            List<int> fieldIds = new List<int>();
 
             _ownerId = owner.CivID;
             _values = new ResearchPoolValueCollection();
@@ -240,12 +240,12 @@ namespace Supremacy.Economy
             _queue = new List<ResearchProject>[matrix.Fields.Count];
             _cumulativePoints = new Meter(0, int.MaxValue);
 
-            var startingTechLevelsTable = GameContext.Current.Tables.GameOptionTables["StartingTechLevels"];
-            var startingTechLevel = GameContext.Current.Options.StartingTechLevel;
+            Data.Table startingTechLevelsTable = GameContext.Current.Tables.GameOptionTables["StartingTechLevels"];
+            StartingTechLevel startingTechLevel = GameContext.Current.Options.StartingTechLevel;
 
             Dictionary<TechCategory, int> initialFieldLevelValues = null;
 
-            var ownerIsEmpire = owner.IsEmpire;
+            bool ownerIsEmpire = owner.IsEmpire;
             if (ownerIsEmpire)
             {
                 initialFieldLevelValues = EnumHelper.GetValues<TechCategory>().ToDictionary(
@@ -254,12 +254,12 @@ namespace Supremacy.Economy
                     Number.ParseInt32(startingTechLevelsTable[startingTechLevel.ToString()][techCategory.ToString()]));
             }
 
-            foreach (var field in matrix.Fields)
+            foreach (ResearchField field in matrix.Fields)
             {
                 fieldIds.Add(field.FieldID);
                 _techLevels[field.FieldID] = ownerIsEmpire ? initialFieldLevelValues[field.TechCategory] : 1;
                 _queue[field.FieldID] = new List<ResearchProject>();
-                foreach (var application in field.Applications)
+                foreach (ResearchApplication application in field.Applications)
                 {
                     if (application.Level > GetTechLevel(field))
                         _queue[field.FieldID].Add(new ResearchProject(application));
@@ -317,7 +317,7 @@ namespace Supremacy.Economy
 
             string researchSummary = "";
             string distributionSummary = "";
-            var civManager = GameContext.Current.CivilizationManagers[_ownerId];
+            CivilizationManager civManager = GameContext.Current.CivilizationManagers[_ownerId];
             researchSummary += "Progress: ";// + "Gained P. = " + researchPoints + " Progress: "; 
             distributionSummary += "Research Distrib. ";
 
@@ -387,15 +387,15 @@ namespace Supremacy.Economy
         /// <param name="queueIndex">The index in the queue.</param>
         private void FinishProject(int fieldId, int queueIndex)
         {
-            var finishedApp = _queue[fieldId][queueIndex].Application;
-            var civManager = GameContext.Current.CivilizationManagers[Owner];
-            var designsBefore = TechTreeHelper.GetDesignsForCurrentTechLevels(Owner);
+            ResearchApplication finishedApp = _queue[fieldId][queueIndex].Application;
+            CivilizationManager civManager = GameContext.Current.CivilizationManagers[Owner];
+            ICollection<TechObjectDesign> designsBefore = TechTreeHelper.GetDesignsForCurrentTechLevels(Owner);
 
             _queue[fieldId].RemoveAt(queueIndex);
             UpdateTechLevels();
 
-            var designsAfter = TechTreeHelper.GetDesignsForCurrentTechLevels(Owner);
-            var newDesigns = designsAfter.Except(designsBefore).ToList();
+            ICollection<TechObjectDesign> designsAfter = TechTreeHelper.GetDesignsForCurrentTechLevels(Owner);
+            List<TechObjectDesign> newDesigns = designsAfter.Except(designsBefore).ToList();
             
             if (civManager != null)
                 civManager.SitRepEntries.Add(new ResearchCompleteSitRepEntry(Owner, finishedApp, newDesigns));
@@ -468,8 +468,8 @@ namespace Supremacy.Economy
 
         public ResearchPoolValueCollection Clone()
         {
-            var clone = new ResearchPoolValueCollection();
-            foreach (var entry in this)
+            ResearchPoolValueCollection clone = new ResearchPoolValueCollection();
+            foreach (KeyValuePair<TechCategory, Meter> entry in this)
             {
                 clone.Add(entry.Key, entry.Value.Clone());
             }
@@ -483,7 +483,7 @@ namespace Supremacy.Economy
 
         public void DeserializeOwnedData(SerializationReader reader, object context)
         {
-            var data = reader.ReadDictionary<TechCategory, Meter>();
+            Dictionary<TechCategory, Meter> data = reader.ReadDictionary<TechCategory, Meter>();
             EnumHelper.GetValues<TechCategory>().ForEach(r => this[r] = data[r].Clone());
         }
     }
@@ -505,7 +505,7 @@ namespace Supremacy.Economy
         {
             get
             {
-                var civManager = GameContext.Current.CivilizationManagers[_ownerId];
+                CivilizationManager civManager = GameContext.Current.CivilizationManagers[_ownerId];
                 switch (field)
                 {
                     case TechCategory.BioTech:

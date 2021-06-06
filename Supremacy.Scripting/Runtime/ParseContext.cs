@@ -289,7 +289,7 @@ namespace Supremacy.Scripting.Runtime
                 if ((memberTracker is TypeGroup typeGroup) && typeGroup.Types.Contains(type))
                     return true;
 
-                var typeTracker = memberTracker as TypeTracker;
+                TypeTracker typeTracker = memberTracker as TypeTracker;
                 if (typeTracker.Type == type)
                     return true;
             }

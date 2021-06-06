@@ -90,7 +90,7 @@ namespace Supremacy.Text
 
         public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
         {
-            var stringValue = value as string;
+            string stringValue = value as string;
             if (stringValue != null)
             {
                 try
@@ -107,7 +107,7 @@ namespace Supremacy.Text
 
         public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
         {
-            var richText = value as RichText;
+            RichText richText = value as RichText;
             if (richText != null && destinationType == typeof(string))
                 return richText.Text;
             return base.ConvertTo(context, culture, value, destinationType);
@@ -118,26 +118,26 @@ namespace Supremacy.Text
             if (string.IsNullOrWhiteSpace(source))
                 return RichText.Empty;
 
-            var richText = new RichText();
-            var lines = source.Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
-            var stack = new Stack<InlineType>();
-            var links = new Stack<RichTextLinkData>();
-            var styles = new Stack<TextStyle>();
-            var currentStyle = new TextStyle();
+            RichText richText = new RichText();
+            string[] lines = source.Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
+            Stack<InlineType> stack = new Stack<InlineType>();
+            Stack<RichTextLinkData> links = new Stack<RichTextLinkData>();
+            Stack<TextStyle> styles = new Stack<TextStyle>();
+            TextStyle currentStyle = new TextStyle();
 
-            foreach (var line in lines)
+            foreach (string line in lines)
             {
-                var sb = new StringBuilder();
+                StringBuilder sb = new StringBuilder();
 
-                for (var i = 0; i < line.Length; ++i)
+                for (int i = 0; i < line.Length; ++i)
                 {
-                    var current = line[i];
-                    var next = (i + 1 < line.Length) ? line[i + 1] : (char?)null;
+                    char current = line[i];
+                    char? next = (i + 1 < line.Length) ? line[i + 1] : (char?)null;
 
                     if (current == '[' && next != '[')
                     {
-                        var text = sb.ToString();
-                        var endOfPart = next == '/';
+                        string text = sb.ToString();
+                        bool endOfPart = next == '/';
 
                         sb.Length = 0;
                         i += endOfPart ? 2 : 1;
@@ -151,16 +151,16 @@ namespace Supremacy.Text
                                 current = line[i];
                         }
 
-                        var partLength = text.Length;
+                        int partLength = text.Length;
                         if (partLength > 0)
                             richText.Append(text, currentStyle);
 
                         if (endOfPart && stack.Count != 0)
                         {
-                            var currentInlineType = stack.Pop();
+                            InlineType currentInlineType = stack.Pop();
                             if (currentInlineType == InlineType.Hyperlink)
                             {
-                                var linkData = links.Pop();
+                                RichTextLinkData linkData = links.Pop();
                                 if (richText.Length - linkData.StartOffset > 0)
                                     richText.PutUserData(linkData.StartOffset, richText.Length, linkData.NavigateUri);
                             }
@@ -168,20 +168,20 @@ namespace Supremacy.Text
                                 currentStyle = styles.Pop();
                         }
 
-                        var tag = sb.ToString();
+                        string tag = sb.ToString();
                        
                         if (tag.Length > 0)
                         {
-                            var parameter = (string)null;
+                            string parameter = (string)null;
 
-                            var parameterDelimiter = tag.IndexOf(' ');
+                            int parameterDelimiter = tag.IndexOf(' ');
                             if (parameterDelimiter > 0)
                             {
                                 parameter = tag.Substring(parameterDelimiter + 1);
                                 tag = tag.Substring(0, parameterDelimiter);
                             }
 
-                            var inlineType = GetInlineType(tag.TrimEnd('/'));
+                            InlineType inlineType = GetInlineType(tag.TrimEnd('/'));
                             if (inlineType == InlineType.LineBreak)
                             {
                                 richText.Append(Environment.NewLine);
@@ -219,7 +219,7 @@ namespace Supremacy.Text
 
             while (links.Count != 0)
             {
-                var linkData = links.Pop();
+                RichTextLinkData linkData = links.Pop();
                 richText.PutUserData(linkData.StartOffset, richText.Length, linkData);
             }
 
@@ -292,7 +292,7 @@ namespace Supremacy.Text
 
                 case InlineType.Foreground:
                 {
-                    var match = _resourceReferenceRegex.Match(param);
+                        Match match = _resourceReferenceRegex.Match(param);
                     if (match.Success)
                         currentStyle.Foreground = Application.Current != null ? Application.Current.TryFindResource(match.Groups["ResourceKey"].Value) as Brush : null;
                     else

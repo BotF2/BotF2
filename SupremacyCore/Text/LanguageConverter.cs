@@ -34,7 +34,7 @@ namespace Supremacy.Text
 
         public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
         {
-            var stringValue = value as string;
+            string stringValue = value as string;
             
             if (string.IsNullOrWhiteSpace(stringValue))
                 return null;
@@ -55,7 +55,7 @@ namespace Supremacy.Text
 
         public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
         {
-            var language = value as CultureInfo;
+            CultureInfo language = value as CultureInfo;
             if (language == null)
                 return null;
 

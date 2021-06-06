@@ -109,7 +109,7 @@ namespace Supremacy.Scripting
 
             HashSet<int> removedItems = null;
 
-            foreach (var entry in _civilizationTargetHistory)
+            foreach (CivTargetHistoryEntry entry in _civilizationTargetHistory)
             {
                 if ((GameContext.Current.TurnNumber - entry.TurnNumber) > CivilizationRecurrencePeriod)
                 {
@@ -122,7 +122,7 @@ namespace Supremacy.Scripting
             if (removedItems == null)
                 return;
 
-            foreach (var civId in removedItems)
+            foreach (int civId in removedItems)
                 _civilizationTargetHistory.Remove(civId);
         }
 

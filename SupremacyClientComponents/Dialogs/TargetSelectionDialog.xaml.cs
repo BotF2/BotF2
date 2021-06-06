@@ -81,7 +81,7 @@ namespace Supremacy.Client.Dialogs
 
         private static object CoerceSelectedTarget(DependencyObject o, object value)
         {
-            var targets = o.GetValue(TargetsProperty) as IEnumerable;
+            IEnumerable targets = o.GetValue(TargetsProperty) as IEnumerable;
 
             if ((targets != null) && targets.OfType<object>().Contains(value))
                 return value;
@@ -111,14 +111,14 @@ namespace Supremacy.Client.Dialogs
 
         public static TTarget Show<TTarget>(IEnumerable<TTarget> targets, string displayMember, string title) where TTarget : class
         {
-            var dialog = new TargetSelectionDialog
+            TargetSelectionDialog dialog = new TargetSelectionDialog
                          {
                              Targets = targets,
                              TargetDisplayMember = displayMember,
                              Header = title
                          };
 
-            var dialogResult = dialog.ShowDialog();
+            bool? dialogResult = dialog.ShowDialog();
             if (!dialogResult.HasValue || !dialogResult.Value)
                 return null;
 
@@ -127,11 +127,11 @@ namespace Supremacy.Client.Dialogs
 
         private void OnTargetsListMouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            var source = e.OriginalSource as DependencyObject;
+            DependencyObject source = e.OriginalSource as DependencyObject;
             if (source == null)
                 return;
 
-            var contanier = source.FindVisualAncestorByType<ListBoxItem>();
+            ListBoxItem contanier = source.FindVisualAncestorByType<ListBoxItem>();
             if (contanier == null)
                 return;
 

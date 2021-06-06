@@ -29,7 +29,7 @@ namespace Supremacy.Client.Controls
 
         protected override Size MeasureOverride(Size constraint)
         {
-            var scrollViewer = this.FindVisualAncestorByType<GamePopupScrollViewer>();
+            GamePopupScrollViewer scrollViewer = this.FindVisualAncestorByType<GamePopupScrollViewer>();
             if (scrollViewer != null)
                 constraint.Width = scrollViewer.MeasureConstraint.Width;
             return base.MeasureOverride(constraint);

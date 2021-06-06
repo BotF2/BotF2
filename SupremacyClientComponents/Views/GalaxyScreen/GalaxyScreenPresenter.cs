@@ -99,7 +99,7 @@ namespace Supremacy.Client.Views
 
             _soundPlayer = soundPlayer ?? throw new ArgumentNullException("soundPlayer");
 
-            var dummy = _soundPlayer;
+            ISoundPlayer dummy = _soundPlayer;
         }
         #endregion
 
@@ -190,7 +190,7 @@ namespace Supremacy.Client.Views
             GameEvents.TradeRouteEstablished.Unsubscribe(OnTradeRouteChanged);
             GameEvents.TradeRouteCancelled.Unsubscribe(OnTradeRouteChanged);
 
-            foreach (var subscription in _channelSubscriptions)
+            foreach (IDisposable subscription in _channelSubscriptions)
                 subscription.Dispose();
 
             _channelSubscriptions.Clear();
@@ -242,7 +242,7 @@ namespace Supremacy.Client.Views
 
         private void ExecuteRemoveShipFromTaskForceCommand(RedeployShipCommandArgs args)
         {
-            var selectedTaskForce = args.Ship.Fleet;
+            Fleet selectedTaskForce = args.Ship.Fleet;
             if (selectedTaskForce == null)
                 return;
 
@@ -285,7 +285,7 @@ namespace Supremacy.Client.Views
             if (args is ScrapCommandArgs scrapCommandArgs)
                 return scrapCommandArgs.Objects.Any();
 
-            var techObject = args.InnerParameter as TechObject;
+            TechObject techObject = args.InnerParameter as TechObject;
             if (techObject != null)
                 return true;
 
@@ -300,9 +300,9 @@ namespace Supremacy.Client.Views
             if (args == null)
                 return;
 
-            var scrap = !args.IsChecked.HasValue || args.IsChecked.Value;
+            bool scrap = !args.IsChecked.HasValue || args.IsChecked.Value;
 
-            var techObjects = args.InnerParameter as IEnumerable<TechObject>;
+            IEnumerable<TechObject> techObjects = args.InnerParameter as IEnumerable<TechObject>;
             if (techObjects == null)
             {
                 if (args is ScrapCommandArgs scrapCommandArgs)
@@ -311,7 +311,7 @@ namespace Supremacy.Client.Views
                 }
                 else
                 {
-                    var techObject = args.InnerParameter as TechObject;
+                    TechObject techObject = args.InnerParameter as TechObject;
                     if (techObject != null)
                         techObjects = new[] { techObject };
                 }
@@ -327,26 +327,26 @@ namespace Supremacy.Client.Views
 
         private void ExecuteIssueTaskForceOrderCommand(Pair<FleetView, FleetOrder> p)
         {
-            var order = p.Second;
+            FleetOrder order = p.Second;
             if (order == null)
                 return;
 
-            var fleetView = p.First;
-            var updateTaskForces = false;
+            FleetView fleetView = p.First;
+            bool updateTaskForces = false;
             if (fleetView == null)
                 return;
             if ((fleetView != null) && (fleetView.Source != null))
             {
                 if (order.IsTargetRequired(fleetView.Source))
                 {
-                    var target = TargetSelectionDialog.Show(
+                    object target = TargetSelectionDialog.Show(
                         order.FindTargets(fleetView.Source),
                         order.TargetDisplayMember,
                         order.OrderName);
 
                     if (target != null)
                     {
-                        var currentOrder = fleetView.Source.Order;
+                        FleetOrder currentOrder = fleetView.Source.Order;
                         if (currentOrder != null && currentOrder is TowOrder)
                             updateTaskForces = true;
 
@@ -359,7 +359,7 @@ namespace Supremacy.Client.Views
                 }
                 else
                 {
-                    var currentOrder = fleetView.Source.Order;
+                    FleetOrder currentOrder = fleetView.Source.Order;
                     if (currentOrder != null && currentOrder is TowOrder)
                         updateTaskForces = true;
 
@@ -372,9 +372,9 @@ namespace Supremacy.Client.Views
                     if (order != null && order is AssaultSystemOrder)
                     {
 
-                        var fleet = fleetView.Source;
+                        Fleet fleet = fleetView.Source;
 
-                        var system = GameContext.Current.Universe.Map[fleet.Location].System;
+                        StarSystem system = GameContext.Current.Universe.Map[fleet.Location].System;
 
                         if (!DiplomacyHelper.AreAtWar(system.Colony.Owner, fleet.Owner))
                         {
@@ -441,8 +441,8 @@ namespace Supremacy.Client.Views
 
         private void OnAvailableShipsChanged(object sender, EventArgs e)
         {
-            var availableShips = Model.AvailableShips;
-            var selectedShip = Model.SelectedShip;
+            IEnumerable<Ship> availableShips = Model.AvailableShips;
+            Ship selectedShip = Model.SelectedShip;
             if ((availableShips == null) ||
                 ((selectedShip != null) && !availableShips.Any(o => Equals(o.ObjectID, selectedShip.ObjectID))))
             {
@@ -497,7 +497,7 @@ namespace Supremacy.Client.Views
 
         private void OnSelectedSectorChanged(object sender, EventArgs e)
         {
-            var selectedSector = Model.SelectedSector;
+            Sector selectedSector = Model.SelectedSector;
             if (selectedSector == null)
             {
                 Model.TaskForces = Enumerable.Empty<FleetViewWrapper>();
@@ -507,8 +507,8 @@ namespace Supremacy.Client.Views
             }
             else
             {
-                var starSystem = selectedSector.System;
-                var playerEmpire = AppContext.LocalPlayerEmpire;
+                StarSystem starSystem = selectedSector.System;
+                CivilizationManager playerEmpire = AppContext.LocalPlayerEmpire;
                 Colony colony = null;
                 string selectedSectorAllegiance = null;
                 string selectedSectorInhabitants = null;
@@ -524,7 +524,7 @@ namespace Supremacy.Client.Views
                 if (tradeRoutes == null)
                     tradeRoutes = Enumerable.Empty<TradeRoute>();
 
-                var owner = GetPerceivedSectorOwner(selectedSector);
+                Civilization owner = GetPerceivedSectorOwner(selectedSector);
                 if (owner != null)
                 {
                     if (playerEmpire.MapData.IsExplored(selectedSector.Location))
@@ -538,7 +538,7 @@ namespace Supremacy.Client.Views
                 Model.SelectedSectorAllegiance = selectedSectorAllegiance;
                 Model.SelectedSectorInhabitants = selectedSectorInhabitants;
 
-                var planetsViewRegion = CompositeRegionManager.GetRegionManager((DependencyObject)View).Regions[CommonGameScreenRegions.PlanetsView];
+                Microsoft.Practices.Composite.Regions.IRegion planetsViewRegion = CompositeRegionManager.GetRegionManager((DependencyObject)View).Regions[CommonGameScreenRegions.PlanetsView];
                 planetsViewRegion.Context = selectedSector;
 
                 if ((colony != null) && Equals(colony.OwnerID, playerEmpire.CivilizationID))
@@ -550,18 +550,18 @@ namespace Supremacy.Client.Views
 
         private Civilization GetPerceivedSectorOwner(Sector sector)
         {
-            var owner = (Civilization)null;
-            var localPlayerEmpire = AppContext.LocalPlayer.Empire;
-            var localPlayerEmpireManager = AppContext.LocalPlayerEmpire;
+            Civilization owner = (Civilization)null;
+            Civilization localPlayerEmpire = AppContext.LocalPlayer.Empire;
+            CivilizationManager localPlayerEmpireManager = AppContext.LocalPlayerEmpire;
 
-            var system = sector.System;
+            StarSystem system = sector.System;
             if ((system != null) && system.IsOwned)
             {
                 owner = system.Owner;
             }
             else
             {
-                var station = sector.Station;
+                Station station = sector.Station;
                 if ((station != null) && station.IsOwned)
                     owner = station.Owner;
             }
@@ -574,7 +574,7 @@ namespace Supremacy.Client.Views
                 return owner;
             }
 
-            var claims = AppContext.CurrentGame.SectorClaims;
+            SectorClaimGrid claims = AppContext.CurrentGame.SectorClaims;
             return claims.GetPerceivedOwner(sector.Location, localPlayerEmpire);
         }
 
@@ -591,7 +591,7 @@ namespace Supremacy.Client.Views
 
         private void UpdateShipViews()
         {
-            var selectedTaskForce = Model.SelectedTaskForce;
+            FleetViewWrapper selectedTaskForce = Model.SelectedTaskForce;
             IEnumerable<Ship> availableShips;
             ShipView selectedShipInTaskForce = null;
 
@@ -609,7 +609,7 @@ namespace Supremacy.Client.Views
             }
             else
             {
-                var sector = Model.SelectedSector;
+                Sector sector = Model.SelectedSector;
 
                 if (sector == null)
                 {
@@ -617,7 +617,7 @@ namespace Supremacy.Client.Views
                 }
                 else
                 {
-                    var ownedShipsAtLocation = AppContext.CurrentGame.Universe.FindAt<Ship>(Model.SelectedSector.Location)
+                    IEnumerable<Ship> ownedShipsAtLocation = AppContext.CurrentGame.Universe.FindAt<Ship>(Model.SelectedSector.Location)
                         .Where(s => s.OwnerID == AppContext.LocalPlayer.EmpireID);
 
                     //foreach (var ownedShip in ownedShipsAtLocation)
@@ -630,7 +630,7 @@ namespace Supremacy.Client.Views
                         //GameLog.Client.Intel.DebugFormat("availableShip.Name = {0}", availableShip.Name);
                 }
 
-                var selectedShip = Model.SelectedShip;
+                Ship selectedShip = Model.SelectedShip;
 
                 if ((selectedShip != null) && selectedTaskForce.View.Ships.Select(o => o.Source).Contains(selectedShip))
                 {
@@ -669,8 +669,8 @@ namespace Supremacy.Client.Views
 
         private void OnTaskForcesChanged(object sender, EventArgs e)
         {
-            var taskForces = Model.TaskForces;
-            var selectedTaskForce = Model.SelectedTaskForce;
+            IEnumerable<FleetViewWrapper> taskForces = Model.TaskForces;
+            FleetViewWrapper selectedTaskForce = Model.SelectedTaskForce;
             Model.SelectedTaskForce = taskForces?.FirstOrDefault(o => Equals(o, selectedTaskForce));
 
             Model.GeneratePlayerTaskForces(AppContext.LocalPlayerEmpire.Civilization);
@@ -683,8 +683,8 @@ namespace Supremacy.Client.Views
 
         private void OnTradeRoutesChanged(object sender, EventArgs e)
         {
-            var tradeRoutes = Model.TradeRoutes;
-            var selectedTradeRoute = Model.SelectedTradeRoute;
+            IEnumerable<TradeRoute> tradeRoutes = Model.TradeRoutes;
+            TradeRoute selectedTradeRoute = Model.SelectedTradeRoute;
             Model.SelectedTradeRoute = tradeRoutes?.FirstOrDefault(o => Equals(o, selectedTradeRoute));
         }
 
@@ -696,7 +696,7 @@ namespace Supremacy.Client.Views
             }
             else
             {
-                var currentLocation = Model.SelectedSector.Location;
+                MapLocation currentLocation = Model.SelectedSector.Location;
                 Model.SelectedSectorInternal = null;
                 Model.SelectedSectorInternal = AppContext.CurrentGame.Universe.Map[currentLocation];
             }
@@ -731,7 +731,7 @@ namespace Supremacy.Client.Views
 
         private void RefreshTaskForceList()
         {
-            var selectedSector = Model.SelectedSector;
+            Sector selectedSector = Model.SelectedSector;
             if (selectedSector == null)
             {
                 Model.TaskForces = Enumerable.Empty<FleetViewWrapper>();

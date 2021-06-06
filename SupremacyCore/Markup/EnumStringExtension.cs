@@ -20,7 +20,7 @@ namespace Supremacy.Markup
         #region Overrides of MarkupExtension
         public override object ProvideValue(IServiceProvider serviceProvider)
         {
-            var textDatabase = LocalizedTextDatabase.Instance;
+            LocalizedTextDatabase textDatabase = LocalizedTextDatabase.Instance;
 
             LocalizedTextGroup group;
 
@@ -29,7 +29,7 @@ namespace Supremacy.Markup
 
             LocalizedString value;
 
-            var entryName = _enumValue.ToString();
+            string entryName = _enumValue.ToString();
 
             if (!group.Entries.TryGetValue(entryName, out value))
                 return entryName;

@@ -84,11 +84,11 @@ namespace Supremacy.Client
             }
             else
             {
-                var hostEntry = NetUtility.Resolve(remoteServerHostName);
+                IPHostEntry hostEntry = NetUtility.Resolve(remoteServerHostName);
                 bool succeeded = false;
                 if (hostEntry != null)
                 {
-                    foreach (var address in hostEntry.AddressList.Where(o => o.AddressFamily == AddressFamily.InterNetwork))
+                    foreach (IPAddress address in hostEntry.AddressList.Where(o => o.AddressFamily == AddressFamily.InterNetwork))
                     {
                         try
                         {
@@ -129,11 +129,11 @@ namespace Supremacy.Client
             }
             else
             {
-                var hostEntry = NetUtility.Resolve(remoteServerHostName);
-                var succeeded = false;
+                IPHostEntry hostEntry = NetUtility.Resolve(remoteServerHostName);
+                bool succeeded = false;
                 if (hostEntry != null)
                 {
-                    foreach (var address in hostEntry.AddressList)
+                    foreach (IPAddress address in hostEntry.AddressList)
                     {
                         try
                         {

@@ -25,7 +25,7 @@ namespace Supremacy.Messaging
         {
             Guard.ArgumentNotNull(channelType, "channelType");
 
-            var invoker = GetChannelInvoker(channelType);
+            ChannelInvoker invoker = GetChannelInvoker(channelType);
             invoker.Publish(payload, false);
         }
 
@@ -33,7 +33,7 @@ namespace Supremacy.Messaging
         {
             Guard.ArgumentNotNull(channelType, "channelType");
 
-            var invoker = GetChannelInvoker(channelType);
+            ChannelInvoker invoker = GetChannelInvoker(channelType);
             invoker.Publish(key, payload, false);
         }
 
@@ -41,7 +41,7 @@ namespace Supremacy.Messaging
         {
             Guard.ArgumentNotNull(channelType, "channelType");
 
-            var invoker = GetChannelInvoker(channelType);
+            ChannelInvoker invoker = GetChannelInvoker(channelType);
             invoker.Publish(payload, asynchronously);
         }
 
@@ -49,7 +49,7 @@ namespace Supremacy.Messaging
         {
             Guard.ArgumentNotNull(channelType, "channelType");
 
-            var invoker = GetChannelInvoker(channelType);
+            ChannelInvoker invoker = GetChannelInvoker(channelType);
             invoker.Publish(key, payload, asynchronously);
         }
 
@@ -79,7 +79,7 @@ namespace Supremacy.Messaging
         {
             Guard.ArgumentNotNull(channelType, "channelType");
 
-            var invoker = GetChannelInvoker(channelType);
+            ChannelInvoker invoker = GetChannelInvoker(channelType);
             invoker.PublishError(error, false);
         }
 
@@ -87,7 +87,7 @@ namespace Supremacy.Messaging
         {
             Guard.ArgumentNotNull(channelType, "channelType");
 
-            var invoker = GetChannelInvoker(channelType);
+            ChannelInvoker invoker = GetChannelInvoker(channelType);
             invoker.PublishError(key, error, false);
         }
 
@@ -95,7 +95,7 @@ namespace Supremacy.Messaging
         {
             Guard.ArgumentNotNull(channelType, "channelType");
 
-            var invoker = GetChannelInvoker(channelType);
+            ChannelInvoker invoker = GetChannelInvoker(channelType);
             invoker.PublishError(error, asynchronously);
         }
 
@@ -103,7 +103,7 @@ namespace Supremacy.Messaging
         {
             Guard.ArgumentNotNull(channelType, "channelType");
 
-            var invoker = GetChannelInvoker(channelType);
+            ChannelInvoker invoker = GetChannelInvoker(channelType);
             invoker.PublishError(key, error, asynchronously);
         }
 
@@ -166,7 +166,7 @@ namespace Supremacy.Messaging
             Guard.ArgumentNotNull(channelType, "channelType");
             Guard.ArgumentNotNull(subscriber, "subscriber");
 
-            var invoker = GetChannelInvoker(channelType);
+            ChannelInvoker invoker = GetChannelInvoker(channelType);
             return invoker.Subscribe(subscriber, threadOption, useWeakReference);
         }
 
@@ -177,7 +177,7 @@ namespace Supremacy.Messaging
             Guard.ArgumentNotNull(subscriber, "subscriber");
             Guard.ArgumentNotNullOrWhiteSpace(key, "key");
 
-            var invoker = GetChannelInvoker(channelType);
+            ChannelInvoker invoker = GetChannelInvoker(channelType);
             return invoker.Subscribe(key, subscriber, threadOption, useWeakReference);
         }
 
@@ -230,7 +230,7 @@ namespace Supremacy.Messaging
         {
             Guard.ArgumentNotNull(channelType, "channelType");
 
-            var invoker = GetChannelInvoker(channelType);
+            ChannelInvoker invoker = GetChannelInvoker(channelType);
             return invoker.GetChannel();
         }
 
@@ -238,7 +238,7 @@ namespace Supremacy.Messaging
         {
             Guard.ArgumentNotNull(channelType, "channelType");
 
-            var invoker = GetChannelInvoker(channelType);
+            ChannelInvoker invoker = GetChannelInvoker(channelType);
             return invoker.GetChannel(key);
         }
 
@@ -339,7 +339,7 @@ namespace Supremacy.Messaging
             {
                 if (!_invokers.TryGetValue(channelType, out invoker))
                 {
-                    var channelInvokerType = _invokerGenericType.MakeGenericType(channelType);
+                    Type channelInvokerType = _invokerGenericType.MakeGenericType(channelType);
                     invoker = (ChannelInvoker)Activator.CreateInstance(channelInvokerType);
                     _invokers.Add(channelType, invoker);
                 }

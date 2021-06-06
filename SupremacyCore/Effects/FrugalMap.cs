@@ -1080,7 +1080,7 @@ namespace Supremacy.Effects
         public override FrugalMapStoreState InsertEntry(int key, Object value)
         {
             // Check to see if we are updating an existing entry
-            for (var index = 0; index < _count; ++index)
+            for (int index = 0; index < _count; ++index)
             {
                 Debug.Assert(InvalidKey != key);
 
@@ -1106,7 +1106,7 @@ namespace Supremacy.Effects
                     }
                     else
                     {
-                        var destEntries = new Entry[_entries.Length + Growth];
+                        Entry[] destEntries = new Entry[_entries.Length + Growth];
 
                         // Copy old array 
                         Array.Copy(_entries, 0, destEntries, 0, _entries.Length);
@@ -1137,12 +1137,12 @@ namespace Supremacy.Effects
 
         public override void RemoveEntry(int key)
         {
-            for (var index = 0; index < _count; ++index)
+            for (int index = 0; index < _count; ++index)
             {
                 if (_entries[index].Key == key)
                 {
                     // Shift entries down 
-                    var numToCopy = (_count - index) - 1;
+                    int numToCopy = (_count - index) - 1;
                     if (numToCopy > 0)
                     {
                         Array.Copy(_entries, index + 1, _entries, index, numToCopy);
@@ -1159,7 +1159,7 @@ namespace Supremacy.Effects
 
         public override Object Search(int key)
         {
-            for (var index = 0; index < _count; ++index)
+            for (int index = 0; index < _count; ++index)
             {
                 if (key == _entries[index].Key)
                 {
@@ -1197,7 +1197,7 @@ namespace Supremacy.Effects
         {
             if (_count > 0)
             {
-                for (var i = 0; i < _count; i++)
+                for (int i = 0; i < _count; i++)
                 {
                     callback(list, _entries[i].Key, _entries[i].Value);
                 }
@@ -1206,7 +1206,7 @@ namespace Supremacy.Effects
 
         public override void Promote(FrugalMapBase newMap)
         {
-            for (var index = 0; index < _entries.Length; ++index)
+            for (int index = 0; index < _entries.Length; ++index)
             {
                 if (FrugalMapStoreState.Success == newMap.InsertEntry(_entries[index].Key, _entries[index].Value))
                     continue;
@@ -1226,9 +1226,9 @@ namespace Supremacy.Effects
         // Partition the _entries array for QuickSort 
         private int Partition(int left, int right)
         {
-            var pivot = right;
-            var i = left - 1;
-            var j = right;
+            int pivot = right;
+            int i = left - 1;
+            int j = right;
             Entry temp;
 
             for (; ; )
@@ -1262,7 +1262,7 @@ namespace Supremacy.Effects
         {
             if (left < right)
             {
-                var pivot = Partition(left, right);
+                int pivot = Partition(left, right);
                 QSort(left, pivot - 1);
                 QSort(pivot + 1, right);
             }
@@ -1291,7 +1291,7 @@ namespace Supremacy.Effects
             Debug.Assert(InvalidKey != key);
 
             // Check to see if we are updating an existing entry 
-            var index = FindInsertIndex(key, out found);
+            int index = FindInsertIndex(key, out found);
             if (found)
             {
                 _entries[index].Value = value;
@@ -1309,7 +1309,7 @@ namespace Supremacy.Effects
                     }
                     else
                     {
-                        var destEntries = new Entry[_entries.Length + Growth];
+                        Entry[] destEntries = new Entry[_entries.Length + Growth];
 
                         // Copy old array
                         Array.Copy(_entries, 0, destEntries, 0, _entries.Length);
@@ -1349,12 +1349,12 @@ namespace Supremacy.Effects
 
             Debug.Assert(InvalidKey != key);
 
-            var index = FindInsertIndex(key, out found);
+            int index = FindInsertIndex(key, out found);
 
             if (found)
             {
                 // Shift entries down
-                var numToCopy = (_count - index) - 1;
+                int numToCopy = (_count - index) - 1;
                 if (numToCopy > 0)
                 {
                     Array.Copy(_entries, index + 1, _entries, index, numToCopy);
@@ -1389,7 +1389,7 @@ namespace Supremacy.Effects
         {
             bool found;
 
-            var index = FindInsertIndex(key, out found);
+            int index = FindInsertIndex(key, out found);
             if (found)
             {
                 return _entries[index].Value;
@@ -1421,7 +1421,7 @@ namespace Supremacy.Effects
         {
             if (_count > 0)
             {
-                for (var i = 0; i < _count; i++)
+                for (int i = 0; i < _count; i++)
                 {
                     callback(list, _entries[i].Key, _entries[i].Value);
                 }
@@ -1430,7 +1430,7 @@ namespace Supremacy.Effects
 
         public override void Promote(FrugalMapBase newMap)
         {
-            for (var index = 0; index < _entries.Length; ++index)
+            for (int index = 0; index < _entries.Length; ++index)
             {
                 if (FrugalMapStoreState.Success == newMap.InsertEntry(_entries[index].Key, _entries[index].Value))
                     continue;
@@ -1440,7 +1440,7 @@ namespace Supremacy.Effects
 
         private int FindInsertIndex(int key, out bool found)
         {
-            var iLo = 0;
+            int iLo = 0;
 
             // Only do the binary search if there is a chance of finding the key 
             // This also speeds insertion because we tend to insert at the end.
@@ -1448,12 +1448,12 @@ namespace Supremacy.Effects
             {
                 // The array index used for insertion is somewhere between 0
                 //  and _count-1 inclusive
-                var iHi = _count - 1;
+                int iHi = _count - 1;
 
                 // Do a binary search to find the insertion point 
                 do
                 {
-                    var iPv = (iHi + iLo) / 2;
+                    int iPv = (iHi + iLo) / 2;
                     if (key <= _entries[iPv].Key)
                     {
                         iHi = iPv;
@@ -1519,7 +1519,7 @@ namespace Supremacy.Effects
 
         public override Object Search(int key)
         {
-            var value = _entries[key];
+            object value = _entries[key];
 
             return ((value != NullValue) && (value != null)) ? value : DynamicProperty.UnsetValue;
         }
@@ -1533,12 +1533,12 @@ namespace Supremacy.Effects
         {
             if (index < _entries.Count)
             {
-                var enumerator = _entries.GetEnumerator();
+                IDictionaryEnumerator enumerator = _entries.GetEnumerator();
 
                 // Move to first valid value 
                 enumerator.MoveNext();
 
-                for (var i = 0; i < index; ++i)
+                for (int i = 0; i < index; ++i)
                     enumerator.MoveNext();
 
                 key = (int)enumerator.Key;
@@ -1564,11 +1564,11 @@ namespace Supremacy.Effects
 
         public override void Iterate(ArrayList list, FrugalMapIterationCallback callback)
         {
-            var enumerator = _entries.GetEnumerator();
+            IDictionaryEnumerator enumerator = _entries.GetEnumerator();
 
             while (enumerator.MoveNext())
             {
-                var key = (int)enumerator.Key;
+                int key = (int)enumerator.Key;
                 object value;
 
                 if (enumerator.Value != NullValue &&
@@ -1634,7 +1634,7 @@ namespace Supremacy.Effects
                         _mapStore = new SingleObjectMap();
                     }
 
-                    var myState = _mapStore.InsertEntry(key, value);
+                    FrugalMapStoreState myState = _mapStore.InsertEntry(key, value);
                     if (FrugalMapStoreState.Success == myState)
                         return;
 
@@ -1744,7 +1744,7 @@ namespace Supremacy.Effects
             Debug.Assert(InvalidKey != key);
 
             // Check to see if we are updating an existing entry
-            var index = FindInsertIndex(key, out found);
+            int index = FindInsertIndex(key, out found);
             if (found)
             {
                 _entries[index].Value = value;
@@ -1759,8 +1759,8 @@ namespace Supremacy.Effects
                 }
                 else
                 {
-                    var size = _entries.Length;
-                    var destEntries = new Entry[size + (size >> 1)];
+                    int size = _entries.Length;
+                    Entry[] destEntries = new Entry[size + (size >> 1)];
 
                     // Copy old array 
                     Array.Copy(_entries, 0, destEntries, 0, _entries.Length);
@@ -1796,12 +1796,12 @@ namespace Supremacy.Effects
 
             Debug.Assert(InvalidKey != key);
 
-            var index = FindInsertIndex(key, out found);
+            int index = FindInsertIndex(key, out found);
 
             if (found)
             {
                 // Shift entries down 
-                var numToCopy = (_count - index) - 1;
+                int numToCopy = (_count - index) - 1;
                 if (numToCopy > 0)
                 {
                     Array.Copy(_entries, index + 1, _entries, index, numToCopy);
@@ -1836,7 +1836,7 @@ namespace Supremacy.Effects
         {
             bool found;
 
-            var index = FindInsertIndex(key, out found);
+            int index = FindInsertIndex(key, out found);
             if (found)
             {
                 return _entries[index].Value;
@@ -1868,7 +1868,7 @@ namespace Supremacy.Effects
         {
             if (_count > 0)
             {
-                for (var i = 0; i < _count; i++)
+                for (int i = 0; i < _count; i++)
                 {
                     callback(list, _entries[i].Key, _entries[i].Value);
                 }
@@ -1877,7 +1877,7 @@ namespace Supremacy.Effects
 
         public override void Promote(FrugalMapBase newMap)
         {
-            for (var index = 0; index < _entries.Length; ++index)
+            for (int index = 0; index < _entries.Length; ++index)
             {
                 if (FrugalMapStoreState.Success == newMap.InsertEntry(_entries[index].Key, _entries[index].Value))
                     continue;
@@ -1887,7 +1887,7 @@ namespace Supremacy.Effects
 
         private int FindInsertIndex(int key, out bool found)
         {
-            var iLo = 0;
+            int iLo = 0;
 
             // Only do the binary search if there is a chance of finding the key
             // This also speeds insertion because we tend to insert at the end.
@@ -1895,12 +1895,12 @@ namespace Supremacy.Effects
             {
                 // The array index used for insertion is somewhere between 0 
                 //  and _count-1 inclusive 
-                var iHi = _count - 1;
+                int iHi = _count - 1;
 
                 // Do a binary search to find the insertion point
                 do
                 {
-                    var iPv = (iHi + iLo) / 2;
+                    int iPv = (iHi + iLo) / 2;
                     if (key <= _entries[iPv].Key)
                     {
                         iHi = iPv;
@@ -1970,7 +1970,7 @@ namespace Supremacy.Effects
                         _mapStore = new LargeSortedObjectMap();
                     }
 
-                    var myState = _mapStore.InsertEntry(key, value);
+                    FrugalMapStoreState myState = _mapStore.InsertEntry(key, value);
                     if (FrugalMapStoreState.Success == myState)
                     {
                         return;

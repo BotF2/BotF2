@@ -61,14 +61,14 @@ namespace Supremacy.Resources
             }
             
             String key = null;
-            var result = new StringTable();
-            var buffer = new StringBuilder();
-            var state = ReadState.ReadKey;
-            var lines = new List<string>(File.ReadAllLines(fileName).Select(o => o.Trim()));
+            StringTable result = new StringTable();
+            StringBuilder buffer = new StringBuilder();
+            ReadState state = ReadState.ReadKey;
+            List<string> lines = new List<string>(File.ReadAllLines(fileName).Select(o => o.Trim()));
 
             for (int i = 0; i < lines.Count; i++)
             {
-                var line = lines[i];
+                string line = lines[i];
 
                 if ((line.Length == 0) || line.StartsWith("#"))
                     continue;

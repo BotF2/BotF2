@@ -193,7 +193,7 @@ namespace Supremacy.Game
         {
             if (!(e.Source is TextBox SitRepCommentText))
                 return;
-            var bindingExpression = SitRepCommentText.GetBindingExpression(TextBox.TextProperty);
+            System.Windows.Data.BindingExpression bindingExpression = SitRepCommentText.GetBindingExpression(TextBox.TextProperty);
             if (bindingExpression == null)
                 return;
             if (!String.IsNullOrEmpty(SitRepCommentText.Text))
@@ -536,7 +536,7 @@ namespace Supremacy.Game
             if (resolved)
                 return text;
 
-            var key = ResolveTextKey(detailed);
+            DiplomacySitRepStringKey? key = ResolveTextKey(detailed);
             if (key == null)
             {
                 resolved = true;
@@ -555,11 +555,11 @@ namespace Supremacy.Game
 
             //GameLog.Client.Diplomacy.DebugFormat("LocalizedText localString ={0}", localizedString.ToString());
 
-            var scriptParameters = new ScriptParameters(
+            ScriptParameters scriptParameters = new ScriptParameters(
                 new ScriptParameter("$sender", typeof(Civilization)),
                 new ScriptParameter("$recipient", typeof(Civilization)));
 
-            var scriptExpression = new ScriptExpression(returnObservableResult: false)
+            ScriptExpression scriptExpression = new ScriptExpression(returnObservableResult: false)
             {
                 Parameters = scriptParameters,
                 ScriptCode = StringHelper.QuoteString(localizedString.LocalText)
@@ -593,7 +593,7 @@ namespace Supremacy.Game
                 recipient = _exchange.Recipient;
             }
 
-            var parameters = new RuntimeScriptParameters
+            RuntimeScriptParameters parameters = new RuntimeScriptParameters
                              {
                                  new RuntimeScriptParameter(scriptParameters[0], sender),
                                  new RuntimeScriptParameter(scriptParameters[1], recipient)
@@ -604,8 +604,8 @@ namespace Supremacy.Game
 
         private DiplomacySitRepStringKey? ResolveTextKey(bool detailed)
         {
-            var proposal = _exchange as IProposal;
-            var response = _exchange as IResponse;
+            IProposal proposal = _exchange as IProposal;
+            IResponse response = _exchange as IResponse;
 
             if (proposal == null && response != null && response.ResponseType == ResponseType.Counter)
                 proposal = response.CounterProposal;
@@ -864,7 +864,7 @@ namespace Supremacy.Game
         //private readonly string _researchNote;
 
         public GrowthByHealthSitRepEntry(Civilization owner, Colony colony)
-                : base(owner, SitRepPriority.Orange)
+                : base(owner, SitRepPriority.Brown)
         {
             if (colony == null)
                 throw new ArgumentNullException("colony");
@@ -1913,7 +1913,7 @@ namespace Supremacy.Game
                     sb.Append("[nl/]" + ResourceManager.GetString("SITREP_TECHS_NOW_AVAILABLE") + "[nl/]");
                     for (int i = 0; i < _newDesignIds.Length; i++)
                     {
-                        var design = GameContext.Current.TechDatabase[_newDesignIds[i]];
+                        TechObjectDesign design = GameContext.Current.TechDatabase[_newDesignIds[i]];
                         if (design == null)
                             continue;
                         sb.Append("[nl/]");
@@ -1929,7 +1929,7 @@ namespace Supremacy.Game
         {
             get
             {
-                var field = Application.Field;
+                ResearchField field = Application.Field;
                 if (field != null)
                     return field.Image;
                 return base.DetailImage;
@@ -2094,7 +2094,7 @@ namespace Supremacy.Game
         private readonly string _note;
         //private readonly MapLocation _loc;
 
-        public ShipSummarySitRepEntry(Civilization owner, string Note) : base(owner, SitRepPriority.Gray)
+        public ShipSummarySitRepEntry(Civilization owner, string Note) : base(owner, SitRepPriority.Aqua)
         { /*_loc = loc;*/ _note = Note; }
 
         public string Note => _note;

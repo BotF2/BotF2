@@ -197,10 +197,10 @@ namespace Supremacy.Client.Controls
 
             public void Add(IGameControl control)
             {
-                var wasFound = false;
-                for (var index = _controls.Count - 1; index >= 0; index--)
+                bool wasFound = false;
+                for (int index = _controls.Count - 1; index >= 0; index--)
                 {
-                    var controlRef = _controls[index];
+                    WeakReference controlRef = _controls[index];
                     if (controlRef.IsAlive)
                     {
                         if (controlRef.Target == control)
@@ -222,10 +222,10 @@ namespace Supremacy.Client.Controls
             {
                 for (int index = _controls.Count - 1; index >= 0; index--)
                 {
-                    var controlReference = _controls[index];
+                    WeakReference controlReference = _controls[index];
                     if (controlReference.IsAlive)
                     {
-                        var control = controlReference.Target as IGameControl;
+                        IGameControl control = controlReference.Target as IGameControl;
                         if (control != null)
                             control.OnCommandUIProviderPropertyChanged(sender, e);
                     }
@@ -238,9 +238,9 @@ namespace Supremacy.Client.Controls
 
             public void Remove(IGameControl control)
             {
-                for (var index = _controls.Count - 1; index >= 0; index--)
+                for (int index = _controls.Count - 1; index >= 0; index--)
                 {
-                    var controlReference = _controls[index];
+                    WeakReference controlReference = _controls[index];
                     if (controlReference.IsAlive)
                     {
                         if (controlReference.Target == control)
@@ -258,7 +258,7 @@ namespace Supremacy.Client.Controls
 
         private static object CoerceCommandParameterPropertyValue(DependencyObject obj, object value)
         {
-            var control = obj as IGameControl;
+            IGameControl control = obj as IGameControl;
             if (control != null)
                 return control.CoerceCommandParameter(obj, value);
             return value;
@@ -268,10 +268,10 @@ namespace Supremacy.Client.Controls
         {
             if (value == null)
             {
-                var control = obj as IGameControl;
+                IGameControl control = obj as IGameControl;
                 if ((control != null) && (control.Command != null))
                 {
-                    var commandUIProvider = GameCommandUIManager.GetUIProviderResolved(control.Command);
+                    IGameCommandUIProvider commandUIProvider = GameCommandUIManager.GetUIProviderResolved(control.Command);
                     if (commandUIProvider != null)
                         return commandUIProvider.ImageSourceLarge;
                 }
@@ -283,10 +283,10 @@ namespace Supremacy.Client.Controls
         {
             if (value == null)
             {
-                var control = obj as IGameControl;
+                IGameControl control = obj as IGameControl;
                 if ((control != null) && (control.Command != null))
                 {
-                    var commandUIProvider = GameCommandUIManager.GetUIProviderResolved(control.Command);
+                    IGameCommandUIProvider commandUIProvider = GameCommandUIManager.GetUIProviderResolved(control.Command);
                     if (commandUIProvider != null)
                         return commandUIProvider.ImageSourceSmall;
                 }
@@ -298,10 +298,10 @@ namespace Supremacy.Client.Controls
         {
             if (value == null)
             {
-                var control = obj as IGameControl;
+                IGameControl control = obj as IGameControl;
                 if ((control != null) && (control.Command != null))
                 {
-                    var commandUIProvider = GameCommandUIManager.GetUIProviderResolved(control.Command);
+                    IGameCommandUIProvider commandUIProvider = GameCommandUIManager.GetUIProviderResolved(control.Command);
                     if (commandUIProvider != null)
                         return commandUIProvider.Label;
                 }
@@ -311,9 +311,9 @@ namespace Supremacy.Client.Controls
 
         internal static void OnCommandParameterPropertyValueChanged(DependencyObject obj, DependencyPropertyChangedEventArgs e)
         {
-            var control = obj as IGameControl;
-            var oldCommand = e.OldValue;
-            var newCommand = e.NewValue;
+            IGameControl control = obj as IGameControl;
+            object oldCommand = e.OldValue;
+            object newCommand = e.NewValue;
 
             if (control == null)
                 return;
@@ -323,9 +323,9 @@ namespace Supremacy.Client.Controls
 
         internal static void OnCommandPropertyValueChanged(DependencyObject obj, DependencyPropertyChangedEventArgs e)
         {
-            var control = obj as IGameControl;
-            var oldCommand = (ICommand)e.OldValue;
-            var newCommand = (ICommand)e.NewValue;
+            IGameControl control = obj as IGameControl;
+            ICommand oldCommand = (ICommand)e.OldValue;
+            ICommand newCommand = (ICommand)e.NewValue;
 
             if (control == null)
                 return;
@@ -340,7 +340,7 @@ namespace Supremacy.Client.Controls
             if (e.OldValue == e.NewValue)
                 return;
 
-            var control = obj as IGameControl;
+            IGameControl control = obj as IGameControl;
             if (control != null)
                 control.HasImage = (e.NewValue != null) || (control.ImageSourceSmall != null);
         }
@@ -350,7 +350,7 @@ namespace Supremacy.Client.Controls
             if (e.OldValue == e.NewValue)
                 return;
 
-            var control = obj as IGameControl;
+            IGameControl control = obj as IGameControl;
             if (control != null)
                 control.HasImage = (e.NewValue != null) || (control.ImageSourceLarge != null);
         }
@@ -360,14 +360,14 @@ namespace Supremacy.Client.Controls
             if (e.OldValue == e.NewValue)
                 return;
 
-            var control = obj as IGameControl;
+            IGameControl control = obj as IGameControl;
             if (control != null)
                 control.HasLabel = !string.IsNullOrEmpty((string)e.NewValue);
         }
 
         internal static void HookCommands(IGameControl control, ICommand oldCommand, ICommand newCommand)
         {
-            var wasAttached = control.Flags.GetFlag(GameControlFlags.IsAttachedToCommandCanExecuteChanged);
+            bool wasAttached = control.Flags.GetFlag(GameControlFlags.IsAttachedToCommandCanExecuteChanged);
             if ((wasAttached) && (oldCommand != null))
             {
                 control.Flags.SetFlag(GameControlFlags.IsAttachedToCommandCanExecuteChanged, false);
@@ -398,7 +398,7 @@ namespace Supremacy.Client.Controls
             wasAttached = control.Flags.GetFlag(GameControlFlags.IsAttachedToCommandUIProvider);
             if ((wasAttached) && (oldCommand != null))
             {
-                var commandUIProvider = GameCommandUIManager.GetUIProviderResolved(oldCommand);
+                IGameCommandUIProvider commandUIProvider = GameCommandUIManager.GetUIProviderResolved(oldCommand);
                 if (commandUIProvider != null)
                 {
                     control.Flags.SetFlag(GameControlFlags.IsAttachedToCommandUIProvider, false);
@@ -421,7 +421,7 @@ namespace Supremacy.Client.Controls
                 ((control.CanUpdateCanExecuteWhenHidden) || (control.IsVisible)))
             {
 
-                var commandUIProvider = GameCommandUIManager.GetUIProviderResolved(newCommand);
+                IGameCommandUIProvider commandUIProvider = GameCommandUIManager.GetUIProviderResolved(newCommand);
                 if (commandUIProvider != null)
                 {
                     control.Flags.SetFlag(GameControlFlags.IsAttachedToCommandUIProvider, true);
@@ -470,20 +470,20 @@ namespace Supremacy.Client.Controls
                 return;
 
             // Get the variant size
-            var variantSize = VariantSize.Medium;
+            VariantSize variantSize = VariantSize.Medium;
 
-            var gameControl = element as IGameControl;
+            IGameControl gameControl = element as IGameControl;
             if (gameControl != null)
                 variantSize = gameControl.VariantSize;
 
-            var x = bounds.Left;
+            double x = bounds.Left;
 
             switch (variantSize)
             {
                 case VariantSize.Large:
                 case VariantSize.Medium:
                 {
-                    var imageSource = GetImageSourceSmall(element) ?? GetImageSourceLarge(element);
+                        ImageSource imageSource = GetImageSourceSmall(element) ?? GetImageSourceLarge(element);
                     if (imageSource != null)
                     {
                         UpdateBaseUri(element, imageSource);
@@ -508,26 +508,26 @@ namespace Supremacy.Client.Controls
                         x += 22; // 3 pixels padding on each side of image
                     }
 
-                    // Draw the label
-                    var label = GetLabel(element);
+                        // Draw the label
+                        string label = GetLabel(element);
                     if (!string.IsNullOrEmpty(label))
                     {
-                        var oldForeground = (object)TextElement.GetForeground(element);
-                        var frameworkElement = element as FrameworkElement;
+                            object oldForeground = (object)TextElement.GetForeground(element);
+                            FrameworkElement frameworkElement = element as FrameworkElement;
                         if ((!element.IsEnabled) && (frameworkElement != null))
                         {
                             if (element.GetBaseValueSource(TextElement.ForegroundProperty) != BaseValueSource.Local)
                                 oldForeground = DependencyProperty.UnsetValue;
 
-                            // Set the disabled brush
-                            var foreground = (Brush)frameworkElement.GetValue(ForegroundDisabledProperty);
+                                // Set the disabled brush
+                                Brush foreground = (Brush)frameworkElement.GetValue(ForegroundDisabledProperty);
                             if (foreground != null)
                                 TextElement.SetForeground(element, foreground);
                         }
 
                         try
                         {
-                            var text = CreateFormattedTextForLabel(element);
+                                FormattedText text = CreateFormattedTextForLabel(element);
                             DrawText(
                                 drawingContext,
                                 FrameworkElement.GetFlowDirection(element),
@@ -555,7 +555,7 @@ namespace Supremacy.Client.Controls
         internal static void DrawImage(DrawingContext drawingContext, FlowDirection flowDirection, ImageSource imageSource, Rect bounds)
         {
             // If in RTL, un-mirror the glyph shapes (since the drawing canvas is mirrored)
-            var antiMirror = (flowDirection == FlowDirection.RightToLeft ? new ScaleTransform(-1, 1) : null);
+            ScaleTransform antiMirror = (flowDirection == FlowDirection.RightToLeft ? new ScaleTransform(-1, 1) : null);
             
             if (flowDirection == FlowDirection.RightToLeft)
                 bounds.X = -bounds.X - bounds.Width;
@@ -575,7 +575,7 @@ namespace Supremacy.Client.Controls
         internal static void DrawText(DrawingContext drawingContext, FlowDirection flowDirection, FormattedText text, Point point)
         {
             // If in RTL, un-mirror the glyph shapes (since the drawing canvas is mirrored)
-            var antiMirror = (flowDirection == FlowDirection.RightToLeft ? new ScaleTransform(-1, 1) : null);
+            ScaleTransform antiMirror = (flowDirection == FlowDirection.RightToLeft ? new ScaleTransform(-1, 1) : null);
             
             if (text.FlowDirection == FlowDirection.RightToLeft)
                 point.X = -point.X;
@@ -599,9 +599,9 @@ namespace Supremacy.Client.Controls
                 return new Size(0, 0);
 
             // Get the variant size
-            var variantSize = VariantSize.Medium;
-            
-            var gameControl = element as IGameControl;
+            VariantSize variantSize = VariantSize.Medium;
+
+            IGameControl gameControl = element as IGameControl;
             if (gameControl != null)
                 variantSize = gameControl.VariantSize;
 
@@ -610,10 +610,10 @@ namespace Supremacy.Client.Controls
                 case VariantSize.Large:
                 case VariantSize.Medium:
                 {
-                    var size = new Size();
+                        Size size = new Size();
 
-                    // Add space for the 16z16 image
-                    var imageSource = GetImageSourceSmall(element) ?? GetImageSourceLarge(element);
+                        // Add space for the 16z16 image
+                        ImageSource imageSource = GetImageSourceSmall(element) ?? GetImageSourceLarge(element);
                     if (imageSource != null)
                     {
                         UpdateBaseUri(element, imageSource);
@@ -621,11 +621,11 @@ namespace Supremacy.Client.Controls
                         size.Height = Math.Max(size.Height, 16);
                     }
 
-                    // Add space for the label
-                    var label = GetLabel(element);
+                        // Add space for the label
+                        string label = GetLabel(element);
                     if (!string.IsNullOrEmpty(label))
                     {
-                        var text = CreateFormattedTextForLabel(element);
+                            FormattedText text = CreateFormattedTextForLabel(element);
                         size.Width += text.Width + 5; // 5 pixels padding on right side of label
                         size.Height = Math.Max(size.Height, text.Height);
                     }
@@ -649,7 +649,7 @@ namespace Supremacy.Client.Controls
 
         private static void UpdateBaseUri(DependencyObject obj, ImageSource source)
         {
-            var uriContext = source as IUriContext;
+            IUriContext uriContext = source as IUriContext;
             if ((uriContext != null) && 
                 !source.IsFrozen && 
                 (uriContext.BaseUri == null) && 

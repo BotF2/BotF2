@@ -173,7 +173,7 @@ namespace Supremacy.UI
                 freePoolSize = NewMethod(freePoolSize);
             }
 
-            foreach (var child in _children)
+            foreach (UnitActivationBar child in _children)
             {
                 child.MaxActiveUnits = Math.Min(
                     child.ActiveUnits + (freePoolSize / child.UnitCost),

@@ -126,8 +126,8 @@ namespace Supremacy.Client.Dialogs
 
         private static void OnActiveDialogChanged(DependencyObject o, DependencyPropertyChangedEventArgs args)
         {
-            var oldDialog = args.OldValue as Dialog;
-            var newDialog = args.NewValue as Dialog;
+            Dialog oldDialog = args.OldValue as Dialog;
+            Dialog newDialog = args.NewValue as Dialog;
 
             if (oldDialog != null)
                 oldDialog.IsActive = false;
@@ -167,7 +167,7 @@ namespace Supremacy.Client.Dialogs
             if ((e.Action != NotifyCollectionChangedAction.Remove) || (SelectedIndex != -1))
                 return;
 
-            var nextDialog = FindNextDialog();
+            Dialog nextDialog = FindNextDialog();
             if (nextDialog != null)
                 SelectedItem = nextDialog;
         }
@@ -176,7 +176,7 @@ namespace Supremacy.Client.Dialogs
         {
             UpdateActiveDialog();
 
-            var activeDialog = ActiveDialog;
+            Dialog activeDialog = ActiveDialog;
             if (activeDialog != null)
                 activeDialog.Loaded += OnActiveDialogLoaded;
 
@@ -185,22 +185,22 @@ namespace Supremacy.Client.Dialogs
 
         private void OnActiveDialogLoaded(object sender, RoutedEventArgs args)
         {
-            var sourceDialog = (Dialog)args.Source;
-            var activeDialog = ActiveDialog;
+            Dialog sourceDialog = (Dialog)args.Source;
+            Dialog activeDialog = ActiveDialog;
 
             sourceDialog.Loaded -= OnActiveDialogLoaded;
 
             if (sourceDialog != activeDialog)
                 return;
 
-            var setFocus = IsKeyboardFocusWithin;
+            bool setFocus = IsKeyboardFocusWithin;
             if (!setFocus)
             {
                 if (Equals(RegionManager.GetRegionName(this), ClientRegions.ModalDialogs))
                     setFocus = true;
                 else if (Equals(RegionManager.GetRegionName(this), ClientRegions.ModelessDialogs))
                 {
-                    var modalDialogRegion = ModalDialogsRegion;
+                    IRegion modalDialogRegion = ModalDialogsRegion;
                     if ((modalDialogRegion != null) &&
                         !modalDialogRegion.ActiveViews.Any())
                     {
@@ -217,11 +217,11 @@ namespace Supremacy.Client.Dialogs
 
         private Dialog GetActiveDialog()
         {
-            var selectedItem = SelectedItem;
+            object selectedItem = SelectedItem;
             if (selectedItem == null)
                 return null;
 
-            var activeDialog = selectedItem as Dialog;
+            Dialog activeDialog = selectedItem as Dialog;
             if (activeDialog == null)
                 activeDialog = ItemContainerGenerator.ContainerFromIndex(SelectedIndex) as Dialog;
 
@@ -237,11 +237,11 @@ namespace Supremacy.Client.Dialogs
                 return;
             }
 
-            var activeDialog = GetActiveDialog();
+            Dialog activeDialog = GetActiveDialog();
             if (activeDialog == null)
                 return;
 
-            var parent = VisualTreeHelper.GetParent(activeDialog) as FrameworkElement;
+            FrameworkElement parent = VisualTreeHelper.GetParent(activeDialog) as FrameworkElement;
             if ((parent != null) && (TabOnceActiveElementPropertyDescriptor != null))
             {
                 TabOnceActiveElementPropertyDescriptor.SetValue(parent, activeDialog);
@@ -265,7 +265,7 @@ namespace Supremacy.Client.Dialogs
 
         private Dialog FindNextDialog()
         {
-            var dialogs = Items.OfType<Dialog>();
+            System.Collections.Generic.IEnumerable<Dialog> dialogs = Items.OfType<Dialog>();
             if (OrderingMode == DialogOrderingMode.Stack)
                 dialogs = dialogs.Reverse();
             return dialogs.FirstOrDefault();

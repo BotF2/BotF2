@@ -210,7 +210,7 @@ namespace Supremacy.Game
             if (!_claims.TryGetValue(location, out claims))
                 return false;
 
-            var knownClaims = (
+            IEnumerable<Civilization> knownClaims = (
                                   from owner in claims.Select(o => o.Owner)
                                   where Equals(owner, accordingTo) ||
                                         DiplomacyHelper.IsContactMade(owner, accordingTo)
@@ -240,8 +240,8 @@ namespace Supremacy.Game
             CollectionBase<SectorClaim> claims;
             CollectionBase<SectorClaim> ownerClaims;
 
-            var addedToClaimList = false;
-            var addedToOwnerClaimList = false;
+            bool addedToClaimList = false;
+            bool addedToOwnerClaimList = false;
 
             if (!_claims.TryGetValue(location, out claims))
             {
@@ -259,9 +259,9 @@ namespace Supremacy.Game
 
             if (!addedToClaimList)
             {
-                for (var i = 0; i < claims.Count; i++)
+                for (int i = 0; i < claims.Count; i++)
                 {
-                    var claim = claims[i];
+                    SectorClaim claim = claims[i];
                     if (claim.OwnerID != owner.CivID)
                         continue;
 
@@ -277,9 +277,9 @@ namespace Supremacy.Game
             if (addedToOwnerClaimList)
                 return;
 
-            for (var i = 0; i < claims.Count; i++)
+            for (int i = 0; i < claims.Count; i++)
             {
-                var claim = ownerClaims[i];
+                SectorClaim claim = ownerClaims[i];
                 if (claim.OwnerID != owner.CivID)
                     continue;
 

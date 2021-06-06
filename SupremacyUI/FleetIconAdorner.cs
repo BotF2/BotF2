@@ -197,7 +197,7 @@ namespace Supremacy.UI
                 new Rect(new Size(GalaxyGridPanel.FleetIconSize, GalaxyGridPanel.FleetIconSize)));
             if (_owners.Length == 1)
             {
-                var s_textTypeface = new Typeface(
+                Typeface s_textTypeface = new Typeface(
                         new FontFamily("#Resources/Fonts/Calibri"),
                         FontStyles.Normal,
                         FontWeights.Normal,
@@ -218,9 +218,9 @@ namespace Supremacy.UI
                     }
                     else _countString = "";
                 }
-                var _mapData = GameContext.Current.CivilizationManagers[_owners.First()].MapData;
-                var _fleetView = _fleets.First();
-                var _fleetCiv = _fleetView.Source.Owner;
+                CivilizationMapData _mapData = GameContext.Current.CivilizationManagers[_owners.First()].MapData;
+                FleetView _fleetView = _fleets.First();
+                Civilization _fleetCiv = _fleetView.Source.Owner;
                 if (_mapData.GetScanStrength(_location) > 0 || _playerCiv == _fleetCiv)
                 {
                     if (_playerCiv == _fleetCiv || DiplomacyHelper.IsContactMade(_playerCiv, _fleetCiv) && !DiplomacyHelper.IsScanBlocked(_playerCiv, _fleetView.Source.Sector))

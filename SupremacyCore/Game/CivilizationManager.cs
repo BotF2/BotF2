@@ -113,7 +113,7 @@ namespace Supremacy.Game
             if (_civHist_List != null)
             {
                 _civHist_List.Add(civHist_New);
-                foreach (var item in _civHist_List)
+                foreach (CivHistory item in _civHist_List)
                 {
                     GameLog.Core.CivsAndRaces.DebugFormat("Turn;{0};CivID+Turn;{1};{2};{3};Research;{8};Col;{5};Pop;{6};Credits;{4};Maint;{7}"
                         , _tn
@@ -283,7 +283,7 @@ namespace Supremacy.Game
         {
             get
             {
-                foreach (var rep in _sitRepEntries)
+                foreach (SitRepEntry rep in _sitRepEntries)
                 {
                     //var playerID = Player.GameHostID;
                     //if (GameContext.Current.IsMultiplayerGame == false)
@@ -309,8 +309,8 @@ namespace Supremacy.Game
         {
             get
             {
-                var totalPopulation = _totalPopulation.CurrentValue;
-                var totalMorale = Colonies.Sum(colony => colony.Morale.CurrentValue * ((1d / totalPopulation) * colony.Population.CurrentValue));
+                int totalPopulation = _totalPopulation.CurrentValue;
+                double totalMorale = Colonies.Sum(colony => colony.Morale.CurrentValue * ((1d / totalPopulation) * colony.Population.CurrentValue));
                 return (int)totalMorale;
             }
         }
@@ -324,7 +324,7 @@ namespace Supremacy.Game
             get
             {
                 int baseIntel = Colonies.Sum(colony => colony.NetIntelligence) + _globalBonuses.Where(b => b.BonusType == BonusType.Intelligence).Sum(b => b.Amount);
-                foreach (var bonus in _globalBonuses.Where(b => b.BonusType == BonusType.PercentTotalIntelligence))
+                foreach (Bonus bonus in _globalBonuses.Where(b => b.BonusType == BonusType.PercentTotalIntelligence))
                 {
                     baseIntel *= bonus.Amount;
                 }
@@ -336,7 +336,7 @@ namespace Supremacy.Game
         {
             get
             {
-                var updateMeter = _totalIntelligenceAttackingAccumulated;
+                Meter updateMeter = _totalIntelligenceAttackingAccumulated;
 
                 if (_totalIntelligenceAttackingAccumulated.CurrentValue == 0)
                 {
@@ -351,7 +351,7 @@ namespace Supremacy.Game
         {
             get
             {
-                var updateMeter = _totalIntelligenceDefenseAccumulated;
+                Meter updateMeter = _totalIntelligenceDefenseAccumulated;
                 //works   GameLog.Client.Intel.DebugFormat("TotalIntelDefenseAccumulated = {0}", updateMeter.CurrentValue);
                 if (_totalIntelligenceDefenseAccumulated.CurrentValue == 0)
                 {
@@ -365,7 +365,7 @@ namespace Supremacy.Game
         {
             get
             {
-                var homeSystem = HomeSystem;
+                StarSystem homeSystem = HomeSystem;
                 if (homeSystem == null)
                     return false;
                 return homeSystem.OwnerID == CivilizationID;
@@ -376,11 +376,11 @@ namespace Supremacy.Game
         {
             get
             {
-                var homeSystem = HomeSystem;
+                StarSystem homeSystem = HomeSystem;
                 if (homeSystem == null)
                     return false;
 
-                var colony = homeSystem.Colony;
+                Colony colony = homeSystem.Colony;
                 return colony == null ||
                        colony.ObjectID != _homeColonyId;
             }
@@ -472,13 +472,13 @@ namespace Supremacy.Game
         /// <param name="location">The location at which the event occurred.</param>
         public void ApplyMoraleEvent(MoraleEvent eventType, MapLocation location)
         {
-            var moraleTable = GameContext.Current.Tables.MoraleTables["MoraleEventResults"];
+            Data.Table moraleTable = GameContext.Current.Tables.MoraleTables["MoraleEventResults"];
             if (moraleTable == null)
                 return;
 
             const float multiplier = 1.0f;
 
-            var tableValue = moraleTable[eventType.ToString()][_civId] ??
+            string tableValue = moraleTable[eventType.ToString()][_civId] ??
                              moraleTable[eventType.ToString()][0];
 
             if (tableValue == null)
@@ -488,7 +488,7 @@ namespace Supremacy.Game
             if (!int.TryParse(tableValue, out int change))
                 return;
 
-            foreach (var colony in Colonies)
+            foreach (Colony colony in Colonies)
             {
                 colony.Morale.AdjustCurrent((int)(multiplier * change));
             }
@@ -514,18 +514,18 @@ namespace Supremacy.Game
 
         public void EnsureSeatOfGovernment()
         {
-            var seatOfGovernment = SeatOfGovernment;
+            Colony seatOfGovernment = SeatOfGovernment;
             if (seatOfGovernment == null || seatOfGovernment.OwnerID != CivilizationID)
             {
-                var homeColonyLocation = _homeColonyLocation;
+                MapLocation? homeColonyLocation = _homeColonyLocation;
 
-                var rankHueristic = (Func<Colony, double>)
+                Func<Colony, double> rankHueristic = (Func<Colony, double>)
                                     (c =>
                                      {
                                          if (!homeColonyLocation.HasValue)
                                              return 1d;
 
-                                         var distanceFactor = Math.Min(
+                                         double distanceFactor = Math.Min(
                                              0.2,
                                              Math.Max(
                                                  1d,
@@ -547,7 +547,7 @@ namespace Supremacy.Game
                     _seatOfGovernmentId = -1;
             }
 
-            var diplomat = GameContext.Current.Diplomats[_civId];
+            Diplomacy.Diplomat diplomat = GameContext.Current.Diplomats[_civId];
             if (diplomat != null)
                 diplomat.SeatOfGovernment = seatOfGovernment;
         }
@@ -558,7 +558,7 @@ namespace Supremacy.Game
         /// <param name="propertyName">Name of the property that changed.</param>
         protected void OnPropertyChanged(string propertyName)
         {
-            var handler = PropertyChanged;
+            PropertyChangedEventHandler handler = PropertyChanged;
             if (handler != null)
                 handler(this, new PropertyChangedEventArgs(propertyName));
         }

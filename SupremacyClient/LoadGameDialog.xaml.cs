@@ -62,7 +62,7 @@ namespace Supremacy.Client
 
         private void GenericCommandsAcceptCommandExecuted(object source, ExecutedRoutedEventArgs e)
         {
-            var saveGameHeader = SaveGameList.SelectedItem as SavedGameHeader;
+            SavedGameHeader saveGameHeader = SaveGameList.SelectedItem as SavedGameHeader;
             if (saveGameHeader == null)
                 return;
             Close();

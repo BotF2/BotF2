@@ -67,7 +67,7 @@ namespace Supremacy.VFS
         {
             get
             {
-                var path = _pathResolver();
+                string path = _pathResolver();
                 VerifySecure(path);
                 return path;
             }
@@ -115,15 +115,15 @@ namespace Supremacy.VFS
 
         public override ReadOnlyCollection<string> GetFiles(string path, bool recurse, string searchPattern)
         {
-            var files = new List<String>();
+            List<string> files = new List<String>();
 
             if (string.IsNullOrEmpty(Path))
                 return files.AsReadOnly();
 
             VerifySecure(path);
 
-            var sourcePath = Path;
-            var fullPath = IOPath.Combine(sourcePath, path);
+            string sourcePath = Path;
+            string fullPath = IOPath.Combine(sourcePath, path);
 
             if (!Directory.Exists(fullPath))
                 return files.AsReadOnly();
@@ -259,7 +259,7 @@ namespace Supremacy.VFS
         {
             if (path == null)
                 throw new ArgumentNullException("path");
-            var directoryName = IOPath.GetDirectoryName(path);
+            string directoryName = IOPath.GetDirectoryName(path);
             if (!Directory.Exists(directoryName))
                 Directory.CreateDirectory(directoryName);
         }
@@ -298,8 +298,8 @@ namespace Supremacy.VFS
 
             if (string.IsNullOrEmpty(Path) || !CheckPathValid(path))
                 return null;
-            
-            var resolvedName = ResolveFileName(path, recurse);
+
+            string resolvedName = ResolveFileName(path, recurse);
 
             if (string.IsNullOrEmpty(resolvedName))
                 fileInfo = new FileInfo(TranslatePath(path));
@@ -347,7 +347,7 @@ namespace Supremacy.VFS
                 if (!Directory.Exists(dir))
                     return string.Empty;
 
-                var info = new DirectoryInfo(dir);
+                DirectoryInfo info = new DirectoryInfo(dir);
                 FileInfo[] files = info.GetFiles(IOPath.GetFileName(path), SearchOption.AllDirectories);
 
                 if (files.Length > 0)
@@ -553,10 +553,10 @@ namespace Supremacy.VFS
             /// </returns>
             public Stream Open(FileAccess access, FileShare share)
             {
-                var stream = _source.InternalGetFile(_physicalFileInfo.FullName, access, share);
+                Stream stream = _source.InternalGetFile(_physicalFileInfo.FullName, access, share);
                 if ((access & FileAccess.Write) == FileAccess.Write)
                 {
-                    var virtualFileStream = new StreamDecorator<Stream>(
+                    StreamDecorator<Stream> virtualFileStream = new StreamDecorator<Stream>(
                         _physicalFileInfo.FullName,
                         _source.InternalGetFile(_physicalFileInfo.FullName, access, share),
                         access,
@@ -570,7 +570,7 @@ namespace Supremacy.VFS
 
             private void OnStreamClosed(object sender, EventArgs args)
             {
-                var virtualFileStream = sender as IVirtualFileStream;
+                IVirtualFileStream virtualFileStream = sender as IVirtualFileStream;
                 
                 if (virtualFileStream != null)
                     virtualFileStream.Closed -= OnStreamClosed;
@@ -635,9 +635,9 @@ namespace Supremacy.VFS
             /// <returns>The newly created file.</returns>
             public Stream Create()
             {
-                var stream = _source.InternalCreateFile(_physicalFileInfo.FullName);
+                Stream stream = _source.InternalCreateFile(_physicalFileInfo.FullName);
 
-                var createOnWriteStream = stream as CreateOnWriteHardDiskSource.CreateOnWriteStream;
+                CreateOnWriteHardDiskSource.CreateOnWriteStream createOnWriteStream = stream as CreateOnWriteHardDiskSource.CreateOnWriteStream;
                 if (createOnWriteStream != null)
                 {
                     createOnWriteStream.BaseStreamCreated += OnCreateOnWriteStreamOnBaseStreamCreated;
@@ -651,7 +651,7 @@ namespace Supremacy.VFS
 
             private void OnCreateOnWriteStreamOnBaseStreamCreated(object sender, EventArgs args)
             {
-                var createOnWriteStream = sender as CreateOnWriteHardDiskSource.CreateOnWriteStream;
+                CreateOnWriteHardDiskSource.CreateOnWriteStream createOnWriteStream = sender as CreateOnWriteHardDiskSource.CreateOnWriteStream;
                 if (createOnWriteStream == null)
                     return;
 
@@ -701,7 +701,7 @@ namespace Supremacy.VFS
                 if (ReferenceEquals(other, this))
                     return true;
 
-                var otherInfo = other as HardDiskVirtualFileInfo;
+                HardDiskVirtualFileInfo otherInfo = other as HardDiskVirtualFileInfo;
                 if (ReferenceEquals(otherInfo, null))
                     return false;
 

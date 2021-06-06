@@ -124,7 +124,7 @@ namespace Supremacy.Orbitals
         {
             get
             {
-                var rankTable = GameContext.Current.Tables.ShipTables["ExperienceRanks"];
+                Data.Table rankTable = GameContext.Current.Tables.ShipTables["ExperienceRanks"];
                 for (int i = 0; i < rankTable.Rows.Count; i++)
                 {
                     if (int.TryParse(rankTable[i][0], out int minimum))

@@ -83,7 +83,7 @@ namespace Supremacy.Client.Views
 
         private void OnModelSelectedActionChanged(object sender, EventArgs e)
         {
-            var action = Model.SelectedAction;
+            InvasionAction? action = Model.SelectedAction;
             if (action == null)
                 return;
 
@@ -111,7 +111,7 @@ namespace Supremacy.Client.Views
 
         private void OnModelStateChanged(object sender, EventArgs eventArgs)
         {
-            var state = Model.State;
+            SystemAssaultScreenState state = Model.State;
             if (state == null)
                 return;
 
@@ -255,20 +255,20 @@ namespace Supremacy.Client.Views
 
         public override Transition SelectTransition(TransitionPresenter presenter, object fromContent, object toContent)
         {
-            var fromIndex = _itemsControl.Items.IndexOf(fromContent);
-            var toIndex = _itemsControl.Items.IndexOf(toContent);
+            int fromIndex = _itemsControl.Items.IndexOf(fromContent);
+            int toIndex = _itemsControl.Items.IndexOf(toContent);
 
             if (fromIndex < 0)
             {
                 if (fromContent is DependencyObject fromElement)
                 {
-                    var fromContainer = _itemsControl.ContainerFromElement(fromElement);
+                    DependencyObject fromContainer = _itemsControl.ContainerFromElement(fromElement);
                     if (fromContainer == null)
                     {
                         fromContainer = fromElement.FindLogicalAncestor(
                             o =>
                             {
-                                var itemsControl = ItemsControl.ItemsControlFromItemContainer(o);
+                                ItemsControl itemsControl = ItemsControl.ItemsControlFromItemContainer(o);
                                 return itemsControl == _itemsControl;
                             });
                     }
@@ -287,13 +287,13 @@ namespace Supremacy.Client.Views
             {
                 if (toContent is DependencyObject toElement)
                 {
-                    var toContainer = _itemsControl.ContainerFromElement(toElement);
+                    DependencyObject toContainer = _itemsControl.ContainerFromElement(toElement);
                     if (toContainer == null)
                     {
                         toContainer = toElement.FindLogicalAncestor(
                             o =>
                             {
-                                var itemsControl = ItemsControl.ItemsControlFromItemContainer(o);
+                                ItemsControl itemsControl = ItemsControl.ItemsControlFromItemContainer(o);
                                 return itemsControl == _itemsControl;
                             });
                     }
@@ -340,18 +340,18 @@ namespace Supremacy.Client.Views
             if (!(TargetElement is FrameworkElement targetElement))
                 return false;
 
-            var targetListBox = targetElement.FindLogicalAncestorByType<ListBox>();
+            ListBox targetListBox = targetElement.FindLogicalAncestorByType<ListBox>();
             if (targetListBox == null)
                 return false;
 
-            var view = targetElement.FindLogicalAncestorByType<SystemAssaultScreen>();
+            SystemAssaultScreen view = targetElement.FindLogicalAncestorByType<SystemAssaultScreen>();
             if (view == null || view.Model == null)
                 return false;
 
             if (!(ExtractElement(obj) is DependencyObject sourceElement))
                 return false;
 
-            var assaultGroup = SystemAssaultScreen.GetAssaultGroup(targetListBox);
+            AssaultGroup assaultGroup = SystemAssaultScreen.GetAssaultGroup(targetListBox);
 
             if (!(sourceElement is ListBox sourceListBox))
             {
@@ -364,7 +364,7 @@ namespace Supremacy.Client.Views
             }
             else
             {
-                var combatUnit = sourceElement.GetValue(FrameworkElement.DataContextProperty) as CombatUnit;
+                CombatUnit combatUnit = sourceElement.GetValue(FrameworkElement.DataContextProperty) as CombatUnit;
                 if (combatUnit == null || combatUnit.IsDestroyed)
                     return false;
 
@@ -401,11 +401,11 @@ namespace Supremacy.Client.Views
             if (!(TargetElement is FrameworkElement targetElement))
                 return;
 
-            var targetListBox = targetElement.FindLogicalAncestorByType<ListBox>();
+            ListBox targetListBox = targetElement.FindLogicalAncestorByType<ListBox>();
             if (targetListBox == null)
                 return;
 
-            var targetGroup = SystemAssaultScreen.GetAssaultGroup(targetListBox);
+            AssaultGroup targetGroup = SystemAssaultScreen.GetAssaultGroup(targetListBox);
             if (targetGroup == AssaultGroup.Invalid || targetGroup == AssaultGroup.Destroyed)
                 return;
 
@@ -425,13 +425,13 @@ namespace Supremacy.Client.Views
 
         public UIElement GetVisualFeedback(IDataObject obj)
         {
-            var element = ExtractElement(obj);
+            FrameworkElement element = ExtractElement(obj);
 
             UIElement visual;
 
             if (element is ListBox listBox)
             {
-                var selectedItems = listBox.Items
+                List<FrameworkElement> selectedItems = listBox.Items
                     .OfType<object>()
                     .Select(o => listBox.ItemContainerGenerator.ContainerFromItem(o))
                     .Where(Selector.GetIsSelected)
@@ -440,7 +440,7 @@ namespace Supremacy.Client.Views
 
                 if (selectedItems.Count == 1)
                 {
-                    var selectedItem = selectedItems[0];
+                    FrameworkElement selectedItem = selectedItems[0];
 
                     visual = new Rectangle
                              {
@@ -459,17 +459,17 @@ namespace Supremacy.Client.Views
                 }
                 else
                 {
-                    var canvas = new Canvas
+                    Canvas canvas = new Canvas
                                  {
                                      Width = selectedItems[0].ActualWidth + ((selectedItems.Count - 1) * 4),
                                      Height = selectedItems[0].ActualHeight + ((selectedItems.Count - 1) * 4)
                                  };
 
-                    for (var i = selectedItems.Count - 1; i >= 0; i--)
+                    for (int i = selectedItems.Count - 1; i >= 0; i--)
                     {
-                        var selectedItem = selectedItems[i];
+                        FrameworkElement selectedItem = selectedItems[i];
 
-                        var rectangle = new Rectangle
+                        Rectangle rectangle = new Rectangle
                                         {
                                             Height = selectedItem.ActualHeight,
                                             Width = selectedItem.ActualWidth,
@@ -537,7 +537,7 @@ namespace Supremacy.Client.Views
 
         public DataObject GetDataObject(UIElement draggedElement)
         {
-            var data = new DataObject(AssaultGroupDropTargetAdvisor.CombatUnitUIContainerFormat.Name, draggedElement);
+            DataObject data = new DataObject(AssaultGroupDropTargetAdvisor.CombatUnitUIContainerFormat.Name, draggedElement);
             return data;
         }
 
@@ -548,26 +548,26 @@ namespace Supremacy.Client.Views
             if (!(draggedElement is FrameworkElement draggedFrameworkElement))
                 return false;
 
-            var draggedListBox = draggedFrameworkElement.FindVisualAncestorByType<ListBox>();
+            ListBox draggedListBox = draggedFrameworkElement.FindVisualAncestorByType<ListBox>();
             if (draggedListBox != null)
             {
                 if (!(Mouse.DirectlyOver is UIElement sourceItem))
                     return false;
 
-                var listBoxItem = sourceItem.FindVisualAncestorByType<ListBoxItem>();
+                ListBoxItem listBoxItem = sourceItem.FindVisualAncestorByType<ListBoxItem>();
                 if (listBoxItem == null)
                     return false;
             }
 
-            var view = draggedListBox.FindLogicalAncestorByType<SystemAssaultScreen>();
+            SystemAssaultScreen view = draggedListBox.FindLogicalAncestorByType<SystemAssaultScreen>();
             if (view == null || view.Model == null || view.AppContext == null)
                 return false;
 
-            var localPlayerEmpire = view.AppContext.LocalPlayerEmpire;
+            Game.CivilizationManager localPlayerEmpire = view.AppContext.LocalPlayerEmpire;
             if (localPlayerEmpire == null)
                 return false;
 
-            var combatUnit = draggedFrameworkElement.DataContext as CombatUnit;
+            CombatUnit combatUnit = draggedFrameworkElement.DataContext as CombatUnit;
             if (combatUnit == null)
                 return false;
 

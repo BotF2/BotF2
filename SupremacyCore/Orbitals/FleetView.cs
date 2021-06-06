@@ -146,8 +146,8 @@ namespace Supremacy.Orbitals
             if (fleet == null)
                 throw new ArgumentNullException("fleet");
 
-            var ships = new List<ShipView>();
-            var fleetView = new FleetView
+            List<ShipView> ships = new List<ShipView>();
+            FleetView fleetView = new FleetView
                 {
                     _sourceId = fleet.ObjectID,
                     _isOwned = (fleet.OwnerID == owner.CivID)

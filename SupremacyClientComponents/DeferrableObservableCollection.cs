@@ -54,19 +54,19 @@ namespace Supremacy.Client
         {
             if (null != _sortComparer)
             {
-                var count = Count;
+                int count = Count;
                 if (count > 0)
                 {
                     // Find a new index which sorts the item correctly
-                    var newIndex = -1;
+                    int newIndex = -1;
 
                     // Use a different algorithm depending on whether the insertion order should be preserved, both
                     //   for readability and performance
                     if (_useStableSort)
                     {
-                        for (var i = 0; i < count; i++)
+                        for (int i = 0; i < count; i++)
                         {
-                            var compare = _sortComparer.Compare(item, this[i]);
+                            int compare = _sortComparer.Compare(item, this[i]);
                             
                             if (compare > 0)
                                 continue;
@@ -93,17 +93,17 @@ namespace Supremacy.Client
                         //   and determine if we can insert the new item at that location. If not, then we can use
                         //   the compare results to disregard the items to the left (if compare > 0) or right
                         //   (if compare < 0).
-                        var startIndex = 0;
-                        var endIndex = count - 1;
+                        int startIndex = 0;
+                        int endIndex = count - 1;
                         while (true)
                         {
                             if (startIndex > endIndex)
                                 break;
 
                             // Test index will be the middle slot
-                            var testIndex = startIndex + (endIndex - startIndex) / 2;
+                            int testIndex = startIndex + (endIndex - startIndex) / 2;
 
-                            var compare = _sortComparer.Compare(item, this[testIndex]);
+                            int compare = _sortComparer.Compare(item, this[testIndex]);
                             if (compare < 0)
                             {
                                 // New item was less than the Test item. Therefore, it is possible to insert the New item
@@ -145,7 +145,7 @@ namespace Supremacy.Client
         {
             if (items != null)
             {
-                foreach (var item in items)
+                foreach (T item in items)
                     Add(item);
             }
         }
@@ -249,7 +249,7 @@ namespace Supremacy.Client
         /// <returns>A strongly-typed array containing the items in this collection.</returns>
         public T[] ToArray()
         {
-            var result = new T[Count];
+            T[] result = new T[Count];
             CopyTo(result, 0);
             return result;
         }

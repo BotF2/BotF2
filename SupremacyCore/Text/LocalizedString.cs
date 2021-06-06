@@ -52,7 +52,7 @@ namespace Supremacy.Text
             if (other == null)
                 throw new ArgumentNullException("other");
 
-            foreach (var value in other._values)
+            foreach (LocalizedStringValue value in other._values)
             {
                 if (_values.Contains(value.Language))
                 {

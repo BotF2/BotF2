@@ -32,15 +32,15 @@ namespace Supremacy.Resources
             {
                 if (_isInDesignMode.Value)
                 {
-                    var homePath = Environment.GetEnvironmentVariable(
+                    string homePath = Environment.GetEnvironmentVariable(
                         "SupremacyRoot",
                         EnvironmentVariableTarget.User);
 
                     if (!string.IsNullOrWhiteSpace(homePath))
                         return homePath;
 
-                    var currentDirectory = Path.GetDirectoryName(new Uri(Assembly.GetExecutingAssembly().CodeBase).LocalPath);
-                    var workingDirectory = Path.Combine(
+                    string currentDirectory = Path.GetDirectoryName(new Uri(Assembly.GetExecutingAssembly().CodeBase).LocalPath);
+                    string workingDirectory = Path.Combine(
                         currentDirectory,
                         "..",
                         "..",
@@ -49,7 +49,7 @@ namespace Supremacy.Resources
                         "bin",
                         "debug");
 
-                    var workingDirectoryInfo = new DirectoryInfo(workingDirectory);
+                    DirectoryInfo workingDirectoryInfo = new DirectoryInfo(workingDirectory);
                     if (workingDirectoryInfo.Exists)
                         return workingDirectoryInfo.FullName;
                 }

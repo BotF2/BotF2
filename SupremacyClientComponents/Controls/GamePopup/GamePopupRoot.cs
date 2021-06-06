@@ -38,13 +38,13 @@ namespace Supremacy.Client.Controls
                     GamePopup.ClosePopupCommand,
                     (sender, args) =>
                     {
-                        var popup = (GamePopupRoot)sender;
+                        GamePopupRoot popup = (GamePopupRoot)sender;
                         popup._popup.IsOpen = false;
                         args.Handled = true;
                     },
                     (sender, args) =>
                     {
-                        var popup = (GamePopupRoot)sender;
+                        GamePopupRoot popup = (GamePopupRoot)sender;
                         args.CanExecute = popup._popup.IsOpen;
                         args.Handled = true;
                     }));
@@ -108,14 +108,14 @@ namespace Supremacy.Client.Controls
                     double.PositiveInfinity,
                     double.PositiveInfinity));
 
-            var desiredSize = _transformDecorator.DesiredSize;
+            Size desiredSize = _transformDecorator.DesiredSize;
 
             return desiredSize;
         }
 
         internal void SetupFadeAnimation(Duration duration, bool visible)
         {
-            var animation = new DoubleAnimation(
+            DoubleAnimation animation = new DoubleAnimation(
                 visible ? 0.0 : 1.0,
                 visible ? 1.0 : 0.0,
                 duration,
@@ -192,11 +192,11 @@ namespace Supremacy.Client.Controls
 
         internal void SetupTranslateAnimations(PopupAnimation animationType, Duration duration, bool animateFromRight, bool animateFromBottom)
         {
-            var child = Child;
+            UIElement child = Child;
             if (child == null)
                 return;
 
-            var renderTransform = _adornerDecorator.RenderTransform as TranslateTransform;
+            TranslateTransform renderTransform = _adornerDecorator.RenderTransform as TranslateTransform;
             if (renderTransform == null)
             {
                 renderTransform = new TranslateTransform();
@@ -205,14 +205,14 @@ namespace Supremacy.Client.Controls
 
             if (animationType == PopupAnimation.Scroll)
             {
-                var direction = (FlowDirection)child.GetValue(FlowDirectionProperty);
-                var flowDirection = FlowDirection;
+                FlowDirection direction = (FlowDirection)child.GetValue(FlowDirectionProperty);
+                FlowDirection flowDirection = FlowDirection;
                 
                 if (direction != flowDirection)
                     animateFromRight = !animateFromRight;
 
-                var width = _adornerDecorator.RenderSize.Width;
-                var horizontalAnimation = new DoubleAnimation(
+                double width = _adornerDecorator.RenderSize.Width;
+                DoubleAnimation horizontalAnimation = new DoubleAnimation(
                     animateFromRight ? width : -width,
                     0.0,
                     duration,
@@ -221,8 +221,8 @@ namespace Supremacy.Client.Controls
                 renderTransform.BeginAnimation(TranslateTransform.XProperty, horizontalAnimation);
             }
 
-            var height = _adornerDecorator.RenderSize.Height;
-            var verticalAnimation = new DoubleAnimation(
+            double height = _adornerDecorator.RenderSize.Height;
+            DoubleAnimation verticalAnimation = new DoubleAnimation(
                 animateFromBottom ? height : -height,
                 0.0,
                 duration,
@@ -234,8 +234,8 @@ namespace Supremacy.Client.Controls
         internal void StopAnimations()
         {
             BeginAnimation(OpacityProperty, null);
-            
-            var renderTransform = _adornerDecorator.RenderTransform as TranslateTransform;
+
+            TranslateTransform renderTransform = _adornerDecorator.RenderTransform as TranslateTransform;
             if (renderTransform == null)
                 return;
 
@@ -247,7 +247,7 @@ namespace Supremacy.Client.Controls
         {
             get
             {
-                var renderTransform = _adornerDecorator.RenderTransform as TranslateTransform;
+                TranslateTransform renderTransform = _adornerDecorator.RenderTransform as TranslateTransform;
                 if (renderTransform != null)
                     return new Vector(renderTransform.X, renderTransform.Y);
                 return new Vector();
@@ -278,11 +278,11 @@ namespace Supremacy.Client.Controls
 
         internal void SetPosition(PlacementMode preferedPlacement, UIElement placementTarget, Point mousePosition, bool secondSetPositionCall = false)
         {
-            var visualRoot = this.FindVisualRoot() as UIElement;
+            UIElement visualRoot = this.FindVisualRoot() as UIElement;
             if (visualRoot == null)
                 return;
 
-            var screenBounds = new Rect(visualRoot.RenderSize);
+            Rect screenBounds = new Rect(visualRoot.RenderSize);
 
             _relativeToTargetPoint = placementTarget == null
                                          ? mousePosition
@@ -290,10 +290,10 @@ namespace Supremacy.Client.Controls
 
             _relativeToTargetPoint.Offset(_popup.HorizontalOffset, _popup.VerticalOffset);
 
-            var arrowWidth = _arrow != null ? _arrow.ActualWidth : 0d;
-            var arrowMargin = _arrow != null ? _arrow.Margin : ZeroThickness;
+            double arrowWidth = _arrow != null ? _arrow.ActualWidth : 0d;
+            Thickness arrowMargin = _arrow != null ? _arrow.Margin : ZeroThickness;
 
-            var horizontalOffset = placementTarget != null
+            double horizontalOffset = placementTarget != null
                                        ? placementTarget.RenderSize.Width / 2.0 - arrowWidth / 2.0 + MainContainerMargin.Left * 0.5
                                        : arrowWidth / 2.0;
 
@@ -407,7 +407,7 @@ namespace Supremacy.Client.Controls
 
         private void PositionTop(Point relativePoint, bool ignoreArrowPlacement)
         {
-            var y = relativePoint.Y - ActualHeight * _dpiYfactor;
+            double y = relativePoint.Y - ActualHeight * _dpiYfactor;
             if (!ignoreArrowPlacement && _arrow != null)
             {
                 DockPanel.SetDock(_arrow, Dock.Bottom);
@@ -418,7 +418,7 @@ namespace Supremacy.Client.Controls
 
         private void PositionBottom(Point relativePoint, bool ignoreArrowPlacement)
         {
-            var y = relativePoint.Y;
+            double y = relativePoint.Y;
             if (!ignoreArrowPlacement && _arrow != null)
             {
                 DockPanel.SetDock(_arrow, Dock.Top);
@@ -429,7 +429,7 @@ namespace Supremacy.Client.Controls
 
         private void PositionLeft(Point relativePoint, bool ignoreArrowPlacement)
         {
-            var x = relativePoint.X - ActualWidth * _dpiXfactor;
+            double x = relativePoint.X - ActualWidth * _dpiXfactor;
             if (!ignoreArrowPlacement && _arrow != null)
             {
                 DockPanel.SetDock(_arrow, Dock.Right);
@@ -440,7 +440,7 @@ namespace Supremacy.Client.Controls
 
         private void PositionRight(Point relativePoint, bool ignoreArrowPlacement)
         {
-            var x = relativePoint.X;
+            double x = relativePoint.X;
             if (!ignoreArrowPlacement && _arrow != null)
             {
                 DockPanel.SetDock(_arrow, Dock.Left);

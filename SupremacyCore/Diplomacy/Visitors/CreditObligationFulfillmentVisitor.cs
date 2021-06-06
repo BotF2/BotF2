@@ -25,7 +25,7 @@ namespace Supremacy.Diplomacy.Visitors
 
         protected override void VisitOfferGiveCreditsClause(IClause clause)
         {
-            var creditsData = clause.GetData<CreditsClauseData>();
+            CreditsClauseData creditsData = clause.GetData<CreditsClauseData>();
             if (creditsData == null)
                 return;
 
@@ -34,7 +34,7 @@ namespace Supremacy.Diplomacy.Visitors
 
         protected override void VisitRequestGiveCreditsClause(IClause clause)
         {
-            var creditsData = clause.GetData<CreditsClauseData>();
+            CreditsClauseData creditsData = clause.GetData<CreditsClauseData>();
             if (creditsData == null)
                 return;
 
@@ -43,10 +43,10 @@ namespace Supremacy.Diplomacy.Visitors
 
         private void TransferCredits(CreditsClauseData creditsData, Civilization sender, Civilization recipient)
         {
-            var senderDiplomat = Diplomat.Get(sender);
-            var recipientDiplomat = Diplomat.Get(recipient);
+            Diplomat senderDiplomat = Diplomat.Get(sender);
+            Diplomat recipientDiplomat = Diplomat.Get(recipient);
 
-            var creditsToTransfer = creditsData.RecurringAmount;
+            int creditsToTransfer = creditsData.RecurringAmount;
 
             if (GameContext.Current.TurnNumber == _agreement.StartTurn)
                 creditsToTransfer += creditsData.ImmediateAmount;

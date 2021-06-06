@@ -19,15 +19,15 @@ namespace Supremacy.Client.Views
             if (e.ClickCount < 2)
                 return;
 
-            var selectedProject = BuildList.SelectedItem as BuildProject;
+            BuildProject selectedProject = BuildList.SelectedItem as BuildProject;
             if (selectedProject == null)
                 return;
 
-            var presentationModel = PresentationModel;
+            ColonyScreenPresentationModel presentationModel = PresentationModel;
             if (presentationModel == null)
                 return;
 
-            var command = presentationModel.AddToPlanetaryBuildQueueCommand;
+            ICommand command = presentationModel.AddToPlanetaryBuildQueueCommand;
             if (command != null && command.CanExecute(selectedProject))
                 command.Execute(selectedProject);
         }

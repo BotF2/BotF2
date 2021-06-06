@@ -32,7 +32,7 @@ namespace Supremacy.IO
 
         public static T Read<T>(byte[] buffer) where T : class
         {
-            using (var sin = new SerializationReader(MiniLZO.Decompress(buffer)))
+            using (SerializationReader sin = new SerializationReader(MiniLZO.Decompress(buffer)))
             {
                 return sin.ReadObject() as T;
             }
@@ -40,13 +40,13 @@ namespace Supremacy.IO
 
         public static byte[] Write(object value)
         {
-            using (var sout = new SerializationWriter())
+            using (SerializationWriter sout = new SerializationWriter())
             {
                 sout.OptimizeForSize = true;
                 sout.WriteObject(value);
                 sout.AppendTokenTables();
                 sout.Flush();
-                var results = MiniLZO.Compress((MemoryStream)sout.BaseStream);
+                byte[] results = MiniLZO.Compress((MemoryStream)sout.BaseStream);
                 return results;
             }
         }

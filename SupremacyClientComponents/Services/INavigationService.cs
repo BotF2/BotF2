@@ -57,11 +57,11 @@ namespace Supremacy.Client.Services
 
         public bool ActivateScreen(string screenName)
         {
-            var view = _regionManager.Regions[ClientRegions.GameScreens].GetView(screenName);
+            object view = _regionManager.Regions[ClientRegions.GameScreens].GetView(screenName);
             if (view == null)
                 return false;
 
-            var activatingArgs = new ViewActivatingEventArgs(view);
+            ViewActivatingEventArgs activatingArgs = new ViewActivatingEventArgs(view);
 
             ClientEvents.ViewActivating.Publish(activatingArgs);
 
@@ -82,7 +82,7 @@ namespace Supremacy.Client.Services
             if (!_appContext.IsGameInPlay)
                 return;
 
-            var playerEmpire = _appContext.LocalPlayerEmpire;
+            CivilizationManager playerEmpire = _appContext.LocalPlayerEmpire;
             if (playerEmpire == null)
                 return;
 
@@ -91,7 +91,7 @@ namespace Supremacy.Client.Services
 
             GameLog.Client.UI.DebugFormat("[INavigationService] Navigating to Colony: {0}", colony.Name);
 
-            var ownedByPlayer = (colony.OwnerID == playerEmpire.CivilizationID);
+            bool ownedByPlayer = (colony.OwnerID == playerEmpire.CivilizationID);
 
             ActivateScreen(StandardGameScreens.GalaxyScreen);
 
@@ -104,14 +104,14 @@ namespace Supremacy.Client.Services
 
         public void RushColonyProduction(Colony colony)
         {
-            var playerEmpire = _appContext.LocalPlayerEmpire;
+            CivilizationManager playerEmpire = _appContext.LocalPlayerEmpire;
             if (playerEmpire == null)
                 return;
 
             if (colony == null)
                 return;
 
-            var ownedByPlayer = (colony.OwnerID == playerEmpire.CivilizationID);
+            bool ownedByPlayer = (colony.OwnerID == playerEmpire.CivilizationID);
             if (!ownedByPlayer)
                 return;
 
@@ -130,7 +130,7 @@ namespace Supremacy.Client.Services
             string confirmationMessage = string.Format(ResourceManager.GetString("CONFIRM_RUSH_BUILDING_MESSAGE"),
                 creditsNeeded, playerEmpire.Credits.CurrentValue);
 
-            var confirmResult = MessageDialog.Show(
+            MessageDialogResult confirmResult = MessageDialog.Show(
                 ResourceManager.GetString("CONFIRM_RUSH_BUILDING_HEADER"),
                 confirmationMessage,
                 MessageDialogButtons.YesNo);

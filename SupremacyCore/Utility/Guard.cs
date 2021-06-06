@@ -105,7 +105,7 @@ namespace Supremacy.Utility
 
         public static TEnum ArgumentIsEnum<TEnum>(TEnum value, [InvokerParameterName] string argumentName, bool mustBeDefined = false, bool allowNullable = true)
         {
-            var type = typeof(TEnum);
+            Type type = typeof(TEnum);
             if (type.IsEnum)
             {
                 if (!mustBeDefined || Enum.IsDefined(type, value))
@@ -138,7 +138,7 @@ namespace Supremacy.Utility
             if (collection == null && !allowNull)
                 throw new ArgumentNullException("collection");
 
-            var constraintType = typeof(TElement);
+            Type constraintType = typeof(TElement);
 
             if (exactMatch)
             {

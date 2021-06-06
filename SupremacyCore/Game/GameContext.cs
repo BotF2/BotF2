@@ -241,17 +241,17 @@ namespace Supremacy.Game
 
         private void FixupDiplomacyData()
         {
-            var diplomacyData = new CivilizationPairedMap<IDiplomacyData>();
+            CivilizationPairedMap<IDiplomacyData> diplomacyData = new CivilizationPairedMap<IDiplomacyData>();
 
             // going through civ managers better reflects which civ got spawned
-            foreach (var civMgr1 in _civManagers)
+            foreach (CivilizationManager civMgr1 in _civManagers)
             {
-                var civ1 = civMgr1.Civilization;
-                var diplomat = _diplomats[civ1];
+                Civilization civ1 = civMgr1.Civilization;
+                Diplomat diplomat = _diplomats[civ1];
 
-                foreach (var civMgr2 in _civManagers)
+                foreach (CivilizationManager civMgr2 in _civManagers)
                 {
-                    var civ2 = civMgr2.Civilization;
+                    Civilization civ2 = civMgr2.Civilization;
                     if (civ1 == civ2)
                         continue;
 
@@ -269,9 +269,9 @@ namespace Supremacy.Game
             if (textDatabase == null)
                 throw new ArgumentNullException("textDatabase");
 
-            var techObjectTable = textDatabase.GetTable<ITechObjectTextDatabaseEntry>(); //Does this every get any data?????
+            ITextDatabaseTable<ITechObjectTextDatabaseEntry> techObjectTable = textDatabase.GetTable<ITechObjectTextDatabaseEntry>(); //Does this every get any data?????
 
-            foreach (var design in _techDatabase)
+            foreach (TechObjectDesign design in _techDatabase)
             {
                 ///GameLog.Client.GameInitData.DebugFormat("THE design Key ={0}; Name ={1}; Description ={2}", design.Key, design.Name, design.Description);
                         // This is Orbital Batteries Only!!! 
@@ -597,7 +597,7 @@ namespace Supremacy.Game
         {
             get
             {
-                var gameContext = ThreadContext ?? Peek();
+                GameContext gameContext = ThreadContext ?? Peek();
                 if (gameContext != null)
                 {
                     // keep this for next time we have to check Game Context
@@ -648,7 +648,7 @@ namespace Supremacy.Game
 
         private static GameContext CreateDesignTimeGameContext()
         {
-            var gameContext = Create(
+            GameContext gameContext = Create(
                 new GameOptions
                 {
                     GalaxySize = GalaxySize.Tiny,
@@ -682,22 +682,22 @@ namespace Supremacy.Game
             _stack.Push(gameContext);
 
             gameContext.TurnNumber = 1;
-            var civ = gameContext.Civilizations["FEDERATION"] ?? gameContext.Civilizations.FirstOrDefault(o => o.IsEmpire);
+            Civilization civ = gameContext.Civilizations["FEDERATION"] ?? gameContext.Civilizations.FirstOrDefault(o => o.IsEmpire);
             GameLog.Client.GameData.DebugFormat("civ={0}, type={1}", civ.Name, civ.CivilizationType);
 
-            var civManager = gameContext.CivilizationManagers[civ];
-            var homeColony = civManager.HomeColony;
+            CivilizationManager civManager = gameContext.CivilizationManagers[civ];
+            Colony homeColony = civManager.HomeColony;
 
-            var shipyardDesign = TechTreeHelper.GetBuildProjects(homeColony).Select(o => o.BuildDesign).OfType<ShipyardDesign>().FirstOrDefault();
+            ShipyardDesign shipyardDesign = TechTreeHelper.GetBuildProjects(homeColony).Select(o => o.BuildDesign).OfType<ShipyardDesign>().FirstOrDefault();
 
             if (shipyardDesign != null)
             {
                 if (shipyardDesign.TrySpawn(homeColony.Location, civ, out TechObject spawnedInstance))
                 {
-                    var shipyard = homeColony.Shipyard;
-                    var shipBuildProjects = TechTreeHelper.GetShipyardBuildProjects(shipyard);
+                    Shipyard shipyard = homeColony.Shipyard;
+                    IList<BuildProject> shipBuildProjects = TechTreeHelper.GetShipyardBuildProjects(shipyard);
 
-                    for (var i = 0; i <= shipyard.BuildSlots.Count && shipBuildProjects.Count != 0; i++)
+                    for (int i = 0; i <= shipyard.BuildSlots.Count && shipBuildProjects.Count != 0; i++)
                     {
                         GameLog.Core.ShipProduction.DebugFormat("shipBuildProjects[0].Description = {0}", shipBuildProjects[0].Description);
                         shipyard.BuildQueue.Add(new BuildQueueItem(shipBuildProjects[0]));
@@ -708,15 +708,15 @@ namespace Supremacy.Game
                 }
             }
 
-            var windTurbines = gameContext.TechDatabase["WIND_TURBINES"] as BuildingDesign;
+            BuildingDesign windTurbines = gameContext.TechDatabase["WIND_TURBINES"] as BuildingDesign;
             if (windTurbines != null)
                 windTurbines.TrySpawn(homeColony.Location, homeColony.Owner, out TechObject spawnedInstance);
 
-            var chargeCollectors = gameContext.TechDatabase["CHARGE_COLLECTORS"] as BuildingDesign;
+            BuildingDesign chargeCollectors = gameContext.TechDatabase["CHARGE_COLLECTORS"] as BuildingDesign;
             if (chargeCollectors != null)
                 chargeCollectors.TrySpawn(homeColony.Location, homeColony.Owner, out TechObject spawnedInstance);
 
-            var batteryDesign = gameContext.TechDatabase["FED_ORBITAL_BATTERY_I"] as OrbitalBatteryDesign;
+            OrbitalBatteryDesign batteryDesign = gameContext.TechDatabase["FED_ORBITAL_BATTERY_I"] as OrbitalBatteryDesign;
             if (batteryDesign != null)
             {
                 homeColony.OrbitalBatteryDesign = batteryDesign;
@@ -732,9 +732,9 @@ namespace Supremacy.Game
                     continue;
             }
 
-            var buildProjects = TechTreeHelper.GetBuildProjects(homeColony).Take(3);
+            IEnumerable<BuildProject> buildProjects = TechTreeHelper.GetBuildProjects(homeColony).Take(3);
 
-            foreach (var buildProject in buildProjects)
+            foreach (BuildProject buildProject in buildProjects)
                 homeColony.BuildQueue.Add(new BuildQueueItem(buildProject));
 
             homeColony.ProcessQueue();
@@ -742,7 +742,7 @@ namespace Supremacy.Game
             gameContext._diplomacyData.GetValuesForOwner(civ).ForEach(
                 o =>
                 {
-                    var counterparty = gameContext.Civilizations[o.CounterpartyID];
+                    Civilization counterparty = gameContext.Civilizations[o.CounterpartyID];
 
                     DiplomacyHelper.EnsureContact(
                         civ,
@@ -825,29 +825,29 @@ namespace Supremacy.Game
                 _diplomacyDatabase = DiplomacyDatabase.Load();
                 _agreementMatrix = new AgreementMatrix();
 
-                var scriptedEventDatabase = ScriptedEventDatabase.Load();
+                ScriptedEventDatabase scriptedEventDatabase = ScriptedEventDatabase.Load();
 
                 string _eventOptionsGameLogText = "";
                 string _scriptedEventGameLogText = "";
 
-                foreach (var eventDefinition in scriptedEventDatabase)
+                foreach (EventDefinition eventDefinition in scriptedEventDatabase)
                 {
 
-                    var eventId = eventDefinition.EventID;
-                    var eventType = eventDefinition.EventType;
+                    string eventId = eventDefinition.EventID;
+                    Type eventType = eventDefinition.EventType;
 
                     if (string.IsNullOrWhiteSpace(eventId) || eventType == null)
                         continue;
 
                     try
                     {
-                        var scriptedEvent = (ScriptedEvent)Activator.CreateInstance(eventType);
+                        ScriptedEvent scriptedEvent = (ScriptedEvent)Activator.CreateInstance(eventType);
 
                         scriptedEvent.Initialize(eventId, eventDefinition.Options);
 
                         _scriptedEvents.Add(scriptedEvent);
 
-                        foreach (var _eventOption in eventDefinition.Options)
+                        foreach (KeyValuePair<string, object> _eventOption in eventDefinition.Options)
                         {
                             _eventOptionsGameLogText += _eventOption.Key + "=" + _eventOption.Value + ",";
                         }
@@ -879,16 +879,16 @@ namespace Supremacy.Game
                 TechTree.LoadTechTrees(this);
 
                 // Prep up the settings for initial homeworlds
-                var homeSystemDatabase = HomeSystemsDatabase.Load();
+                HomeSystemsDatabase homeSystemDatabase = HomeSystemsDatabase.Load();
 
-                foreach (var civManager in _civManagers)
+                foreach (CivilizationManager civManager in _civManagers)
                 {
-                    foreach (var colony in civManager.Colonies)
+                    foreach (Colony colony in civManager.Colonies)
                     {
                         // get the home system settings
-                        var civ = colony.Owner;
+                        Civilization civ = colony.Owner;
 
-                        var homeSystemDescriptor = (homeSystemDatabase.ContainsKey(civ.Key))
+                        StarSystemDescriptor homeSystemDescriptor = (homeSystemDatabase.ContainsKey(civ.Key))
                                                        ? homeSystemDatabase[civ.Key]
                                                        : GalaxyGenerator.GenerateHomeSystem(civ);
 
@@ -946,7 +946,7 @@ namespace Supremacy.Game
                         // readjust production facilities if needed
                         if (homeSystemDescriptor.FoodPF != null)
                         {
-                            var db = Current.TechDatabase;
+                            TechDatabase db = Current.TechDatabase;
 
                             //foreach (var item in db)
                             //{
@@ -987,7 +987,7 @@ namespace Supremacy.Game
 
                         if (homeSystemDescriptor.IndustryPF != null)
                         {
-                            var db = Current.TechDatabase;
+                            TechDatabase db = Current.TechDatabase;
                             ProductionFacilityDesign industryFacility = db.ProductionFacilityDesigns[db.DesignIdMap[homeSystemDescriptor.IndustryPF.DesignType]];
                             if (industryFacility != null)
                             {
@@ -1013,7 +1013,7 @@ namespace Supremacy.Game
 
                         if (homeSystemDescriptor.EnergyPF != null)
                         {
-                            var db = Current.TechDatabase;
+                            TechDatabase db = Current.TechDatabase;
                             ProductionFacilityDesign energyFacility = db.ProductionFacilityDesigns[db.DesignIdMap[homeSystemDescriptor.EnergyPF.DesignType]];
                             if (energyFacility != null)
                             {
@@ -1039,7 +1039,7 @@ namespace Supremacy.Game
 
                         if (homeSystemDescriptor.ResearchPF != null)
                         {
-                            var db = Current.TechDatabase;
+                            TechDatabase db = Current.TechDatabase;
                             ProductionFacilityDesign researchFacility = db.ProductionFacilityDesigns[db.DesignIdMap[homeSystemDescriptor.ResearchPF.DesignType]];
                             if (researchFacility != null)
                             {
@@ -1065,7 +1065,7 @@ namespace Supremacy.Game
 
                         if (homeSystemDescriptor.IntelligencePF != null)
                         {
-                            var db = Current.TechDatabase;
+                            TechDatabase db = Current.TechDatabase;
                             ProductionFacilityDesign intelligenceFacility = db.ProductionFacilityDesigns[db.DesignIdMap[homeSystemDescriptor.IntelligencePF.DesignType]];
                             if (intelligenceFacility != null)
                             {
@@ -1096,7 +1096,7 @@ namespace Supremacy.Game
                         {
                             if (Current.TechDatabase.DesignIdMap.ContainsKey(building))
                             {
-                                var buildingDesign = Current.TechDatabase.DesignIdMap[building];
+                                int buildingDesign = Current.TechDatabase.DesignIdMap[building];
 
                                 Current.TechDatabase.BuildingDesigns[buildingDesign].TrySpawn(colony.Location, colony.Owner, out TechObject instance);
                                 //GameLog.Client.GameData.DebugFormat("Starting Buildings: buildingDesign={0}, {1}", buildingDesign, building);
@@ -1110,7 +1110,7 @@ namespace Supremacy.Game
                         {
                             if (Current.TechDatabase.DesignIdMap.ContainsKey(shipyard))
                             {
-                                var shipyardDesign = Current.TechDatabase.DesignIdMap[shipyard];
+                                int shipyardDesign = Current.TechDatabase.DesignIdMap[shipyard];
 
                                 Current.TechDatabase.ShipyardDesigns[shipyardDesign].TrySpawn(colony.Location, colony.Owner, out TechObject instance);
                                 //GameLog.Client.GameData.DebugFormat("Starting Shipyards: shipyardDesign={0}, {1}", shipyardDesign, shipyard);
@@ -1128,7 +1128,7 @@ namespace Supremacy.Game
                         {
                             if (Current.TechDatabase.DesignIdMap.ContainsKey(ship))
                             {
-                                var shipDesign = Current.TechDatabase.DesignIdMap[ship];
+                                int shipDesign = Current.TechDatabase.DesignIdMap[ship];
 
                                 Current.TechDatabase.ShipDesigns[shipDesign].TrySpawn(colony.Location, colony.Owner, out TechObject instance);
                             }
@@ -1139,7 +1139,7 @@ namespace Supremacy.Game
                         {
                             if (Current.TechDatabase.DesignIdMap.ContainsKey(outpost))
                             {
-                                var outpostDesign = Current.TechDatabase.DesignIdMap[outpost];
+                                int outpostDesign = Current.TechDatabase.DesignIdMap[outpost];
                                 //GameLog.Client.GameData.DebugFormat("Starting Outposts: outpostDesign={0}, {1}", outpostDesign, outpost);
                                 Current.TechDatabase.StationDesigns[outpostDesign].TrySpawn(colony.Location, colony.Owner, out TechObject instance);
                             }
@@ -1150,7 +1150,7 @@ namespace Supremacy.Game
                         {
                             if (Current.TechDatabase.DesignIdMap.ContainsKey(OB))
                             {
-                                var OBDesign = Current.TechDatabase.DesignIdMap[OB];
+                                int OBDesign = Current.TechDatabase.DesignIdMap[OB];
 
                                 Current.TechDatabase.OrbitalBatteryDesigns[OBDesign].TrySpawn(colony.Location, colony.Owner, out TechObject instance);
                                 if (instance != null)
@@ -1165,7 +1165,7 @@ namespace Supremacy.Game
                 _sectorClaims = new SectorClaimGrid();
                 _diplomats = new CivilizationKeyedMap<Diplomat>(o => o.OwnerID);
 
-                foreach (var civManager in _civManagers)
+                foreach (CivilizationManager civManager in _civManagers)
                 {
                     if (civManager.Civilization.CivilizationType != CivilizationType.NotInGameRace)
                     {
@@ -1192,7 +1192,7 @@ namespace Supremacy.Game
         /// </summary>
         internal void OnDeserialized()
         {
-            var needsPush = !ReferenceEquals(Current, this);
+            bool needsPush = !ReferenceEquals(Current, this);
             if (needsPush)
                 PushThreadContext(this);
 

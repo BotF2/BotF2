@@ -274,9 +274,9 @@ namespace Supremacy.Universe
         /// <returns></returns>
         public MapRectangle[,] Quarter()
         {
-            var result = new MapRectangle[2, 2];
-            var hMiddle = (MaxY + MinY) / 2;
-            var vMiddle = (MaxX + MinX) / 2;
+            MapRectangle[,] result = new MapRectangle[2, 2];
+            int hMiddle = (MaxY + MinY) / 2;
+            int vMiddle = (MaxX + MinX) / 2;
             result[0, 0] = new MapRectangle(MinX, MinY, hMiddle, vMiddle);
             result[0, 1] = new MapRectangle(MinX, vMiddle, hMiddle, MaxY);
             result[1, 0] = new MapRectangle(hMiddle, MinY, MaxX, vMiddle);
@@ -305,7 +305,7 @@ namespace Supremacy.Universe
             {
                 unchecked
                 {
-                    var hashCode = _x1.GetHashCode();
+                    int hashCode = _x1.GetHashCode();
                     hashCode = (hashCode * 397) ^ _x2.GetHashCode();
                     hashCode = (hashCode * 397) ^ _y1.GetHashCode();
                     hashCode = (hashCode * 397) ^ _y2.GetHashCode();

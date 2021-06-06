@@ -30,7 +30,7 @@ namespace Supremacy.Tech
         /// <param name="element">The XML data.</param>
         protected PlanetaryTechObjectDesign(XmlElement element) : base(element)
         {
-            var propertyElement = element["BuildLimit"];
+            XmlElement propertyElement = element["BuildLimit"];
 
             if (propertyElement != null)
             {
@@ -50,7 +50,7 @@ namespace Supremacy.Tech
                 {
                     BuildRestriction restriction;
 
-                    var restrictionText = xmlRestriction.InnerText.Trim();
+                    string restrictionText = xmlRestriction.InnerText.Trim();
 
                     if (!EnumHelper.TryParse(restrictionText, out restriction))
                     {
@@ -76,7 +76,7 @@ namespace Supremacy.Tech
         {
             base.AppendXml(baseElement);
 
-            var doc = baseElement.OwnerDocument;
+            XmlDocument doc = baseElement.OwnerDocument;
 
             Debug.Assert(doc != null);
 
@@ -99,7 +99,7 @@ namespace Supremacy.Tech
                     if ((_restriction & restriction) != restriction)
                         continue;
 
-                    var subElement = doc.CreateElement("Restriction");
+                    XmlElement subElement = doc.CreateElement("Restriction");
                     subElement.InnerText = restriction.ToString();
                     newElement.AppendChild(subElement);
                 }

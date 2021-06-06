@@ -59,7 +59,7 @@ namespace Supremacy.Universe
                     xLoc,
                     yLoc);
 
-                var newNode = new MapLocationQuadtreeNode(location);
+                MapLocationQuadtreeNode newNode = new MapLocationQuadtreeNode(location);
 
                 double lowestDist = FindNearestNeighborDistance(newNode, positions);
                 if ((lowestDist < GalaxyGenerator.MinDistanceBetweenStars)
@@ -69,14 +69,14 @@ namespace Supremacy.Universe
                     continue;
                 }
 
-                var dominionLocation = new MapLocation(3, 3);
-                var dominionNode = new MapLocationQuadtreeNode(dominionLocation);
+                MapLocation dominionLocation = new MapLocation(3, 3);
+                MapLocationQuadtreeNode dominionNode = new MapLocationQuadtreeNode(dominionLocation);
                 positions.Add(dominionNode);
 
                 int borgX = width - (width / 8);
                 int borgY = (height / 8);
-                var borgLocation = new MapLocation(borgX, borgY);
-                var borgNode = new MapLocationQuadtreeNode(borgLocation);
+                MapLocation borgLocation = new MapLocation(borgX, borgY);
+                MapLocationQuadtreeNode borgNode = new MapLocationQuadtreeNode(borgLocation);
 
                 positions.Add(borgNode);
 

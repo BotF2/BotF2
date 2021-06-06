@@ -13,11 +13,11 @@ namespace Supremacy.Scripting
         {
             _parameter = parameter;
 
-            var valueIsNull = (value == null);
+            bool valueIsNull = (value == null);
 
             if (!_parameter.IsValidValue(ref value))
             {
-                var parameterTypeName = _parameter.Type.Name;
+                string parameterTypeName = _parameter.Type.Name;
 
                 if (valueIsNull)
                 {

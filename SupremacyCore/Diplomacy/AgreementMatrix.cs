@@ -35,12 +35,12 @@ namespace Supremacy.Diplomacy
             if (agreement == null)
                 throw new ArgumentNullException("agreement");
 
-            var firstCivId = agreement.SenderID;
-            var secondCivId = agreement.RecipientID;
+            int firstCivId = agreement.SenderID;
+            int secondCivId = agreement.RecipientID;
 
             ReorderCivIds(ref firstCivId, ref secondCivId);
 
-            var activeAgreements = _map[firstCivId, secondCivId] as CollectionBase<IAgreement>;
+            CollectionBase<IAgreement> activeAgreements = _map[firstCivId, secondCivId] as CollectionBase<IAgreement>;
             if (activeAgreements == null)
             {
                 activeAgreements = new CollectionBase<IAgreement>();
@@ -120,7 +120,7 @@ namespace Supremacy.Diplomacy
 
             ReorderCivIds(ref firstCivId, ref secondCivId);
 
-            var agreements = _map[firstCivId, secondCivId] as CollectionBase<IAgreement>;
+            CollectionBase<IAgreement> agreements = _map[firstCivId, secondCivId] as CollectionBase<IAgreement>;
             if (agreements != null)
                 agreements.RemoveWhere(predicate);
         }
@@ -158,7 +158,7 @@ namespace Supremacy.Diplomacy
             if (secondCivId >= firstCivId)
                 return;
 
-            var temp = firstCivId;
+            int temp = firstCivId;
             firstCivId = secondCivId;
             secondCivId = temp;
         }

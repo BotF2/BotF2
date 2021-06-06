@@ -32,15 +32,15 @@ namespace Supremacy.Client.Views
 
         protected override void OnContextMenuOpening(ContextMenuEventArgs e)
         {
-            var mouseTarget = InputHitTest(Mouse.GetPosition(this)) as DependencyObject;
-            var targetListViewItem = UIHelpers.FindVisualAncestorByType<ListBoxItem>(mouseTarget);
+            DependencyObject mouseTarget = InputHitTest(Mouse.GetPosition(this)) as DependencyObject;
+            ListBoxItem targetListViewItem = UIHelpers.FindVisualAncestorByType<ListBoxItem>(mouseTarget);
             if (targetListViewItem == null)
             {
                 e.Handled = true;
                 return;
             }
 
-            var tradeRoute = targetListViewItem.DataContext as TradeRoute;
+            TradeRoute tradeRoute = targetListViewItem.DataContext as TradeRoute;
             if (tradeRoute == null)
             {
                 e.Handled = true;
@@ -54,8 +54,8 @@ namespace Supremacy.Client.Views
 
         protected override void OnMouseRightButtonDown(MouseButtonEventArgs e)
         {
-            var mouseTarget = InputHitTest(Mouse.GetPosition(this)) as DependencyObject;
-            var targetListViewItem = UIHelpers.FindVisualAncestorByType<ListBoxItem>(mouseTarget);
+            DependencyObject mouseTarget = InputHitTest(Mouse.GetPosition(this)) as DependencyObject;
+            ListBoxItem targetListViewItem = UIHelpers.FindVisualAncestorByType<ListBoxItem>(mouseTarget);
             if (targetListViewItem != null)
             {
                 e.Handled = true;
@@ -69,7 +69,7 @@ namespace Supremacy.Client.Views
             if (tradeRoute == null)
                 throw new ArgumentNullException("tradeRoute");
 
-            var contextMenu = ContextMenu;
+            ContextMenu contextMenu = ContextMenu;
             if (contextMenu != null)
                 contextMenu.Items.Clear();
 

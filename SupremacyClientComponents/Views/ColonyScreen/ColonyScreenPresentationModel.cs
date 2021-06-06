@@ -52,7 +52,7 @@ namespace Supremacy.Client.Views
 
         private void OnSelectedColonyChanged(Colony oldValue, Colony newValue)
         {
-            var handler = SelectedColonyChanged;
+            EventHandler handler = SelectedColonyChanged;
             if (handler != null)
                 handler(this, new PropertyChangedRoutedEventArgs<Colony>(oldValue, newValue));
             OnPropertyChanged("SelectedColony");
@@ -65,7 +65,7 @@ namespace Supremacy.Client.Views
             get { return _selectedColony; }
             set
             {
-                var oldValue = _selectedColony;
+                Colony oldValue = _selectedColony;
                 _selectedColony = value;
                 OnSelectedColonyChanged(oldValue, value);
             }
@@ -79,7 +79,7 @@ namespace Supremacy.Client.Views
 
         private void OnColoniesChanged()
         {
-            var handler = ColoniesChanged;
+            EventHandler handler = ColoniesChanged;
             if (handler != null)
                 handler(this, EventArgs.Empty);
             OnPropertyChanged("Colonies");
@@ -105,7 +105,7 @@ namespace Supremacy.Client.Views
 
         private void OnSelectedPlanetaryBuildProjectChanged()
         {
-            var handler = SelectedPlanetaryBuildProjectChanged;
+            EventHandler handler = SelectedPlanetaryBuildProjectChanged;
             if (handler != null)
                 handler(this, EventArgs.Empty);
             OnPropertyChanged("SelectedPlanetaryBuildProject");
@@ -131,7 +131,7 @@ namespace Supremacy.Client.Views
 
         private void OnSelectedShipyardBuildProjectChanged()
         {
-            var handler = SelectedShipyardBuildProjectChanged;
+            EventHandler handler = SelectedShipyardBuildProjectChanged;
             if (handler != null)
                 handler(this, EventArgs.Empty);
             OnPropertyChanged("SelectedShipyardBuildProject");
@@ -183,7 +183,7 @@ namespace Supremacy.Client.Views
 
         private void OnSelectedShipyardBuildSlotChanged()
         {
-            var handler = SelectedShipyardBuildSlotChanged;
+            EventHandler handler = SelectedShipyardBuildSlotChanged;
             if (handler != null)
                 handler(this, EventArgs.Empty);
             OnPropertyChanged("SelectedShipyardBuildSlot");
@@ -209,7 +209,7 @@ namespace Supremacy.Client.Views
 
         private void OnPlanetaryBuildProjectsChanged()
         {
-            var handler = PlanetaryBuildProjectsChanged;
+            EventHandler handler = PlanetaryBuildProjectsChanged;
             if (handler != null)
                 handler(this, EventArgs.Empty);
             OnPropertyChanged("PlanetaryBuildProjects");
@@ -235,7 +235,7 @@ namespace Supremacy.Client.Views
 
         private void OnShipyardBuildProjectsChanged()
         {
-            var handler = ShipyardBuildProjectsChanged;
+            EventHandler handler = ShipyardBuildProjectsChanged;
             if (handler != null)
                 handler(this, EventArgs.Empty);
             OnPropertyChanged("ShipyardBuildProjects");
@@ -287,7 +287,7 @@ namespace Supremacy.Client.Views
 
         private void OnAddToPlanetaryBuildQueueCommandChanged()
         {
-            var handler = AddToPlanetaryBuildQueueCommandChanged;
+            EventHandler handler = AddToPlanetaryBuildQueueCommandChanged;
             if (handler != null)
                 handler(this, EventArgs.Empty);
             OnPropertyChanged("AddToPlanetaryBuildQueueCommand");
@@ -313,7 +313,7 @@ namespace Supremacy.Client.Views
 
         private void OnRemoveFromPlanetaryBuildQueueCommandChanged()
         {
-            var handler = RemoveFromPlanetaryBuildQueueCommandChanged;
+            EventHandler handler = RemoveFromPlanetaryBuildQueueCommandChanged;
             if (handler != null)
                 handler(this, EventArgs.Empty);
             OnPropertyChanged("RemoveFromPlanetaryBuildQueueCommand");
@@ -339,7 +339,7 @@ namespace Supremacy.Client.Views
 
         private void OnAddToShipyardBuildQueueCommandChanged()
         {
-            var handler = AddToShipyardBuildQueueCommandChanged;
+            EventHandler handler = AddToShipyardBuildQueueCommandChanged;
             if (handler != null)
                 handler(this, EventArgs.Empty);
             OnPropertyChanged("AddToShipyardBuildQueueCommand");
@@ -365,7 +365,7 @@ namespace Supremacy.Client.Views
 
         private void OnRemoveFromShipyardBuildQueueCommandChanged()
         {
-            var handler = RemoveFromShipyardBuildQueueCommandChanged;
+            EventHandler handler = RemoveFromShipyardBuildQueueCommandChanged;
             if (handler != null)
                 handler(this, EventArgs.Empty);
             OnPropertyChanged("RemoveFromShipyardBuildQueueCommand");
@@ -393,7 +393,7 @@ namespace Supremacy.Client.Views
 
         private void OnCancelBuildProjectCommandChanged()
         {
-            var handler = CancelBuildProjectCommandChanged;
+            EventHandler handler = CancelBuildProjectCommandChanged;
             if (handler != null)
                 handler(this, EventArgs.Empty);
             OnPropertyChanged("CancelBuildProjectCommand");
@@ -401,7 +401,7 @@ namespace Supremacy.Client.Views
 
         private void OnBuyBuildProjectCommandChanged()
         {
-            var handler = BuyBuildProjectCommandChanged;
+            EventHandler handler = BuyBuildProjectCommandChanged;
             if (handler != null)
                 handler(this, EventArgs.Empty);
             OnPropertyChanged("BuyBuildProjectCommand");
@@ -439,7 +439,7 @@ namespace Supremacy.Client.Views
 
         private void OnActivateFacilityCommandChanged()
         {
-            var handler = ActivateFacilityCommandChanged;
+            EventHandler handler = ActivateFacilityCommandChanged;
             if (handler != null)
                 handler(this, EventArgs.Empty);
             OnPropertyChanged("ActivateFacilityCommand");
@@ -465,7 +465,7 @@ namespace Supremacy.Client.Views
 
         private void OnDeactivateFacilityCommandChanged()
         {
-            var handler = DeactivateFacilityCommandChanged;
+            EventHandler handler = DeactivateFacilityCommandChanged;
             if (handler != null)
                 handler(this, EventArgs.Empty);
             OnPropertyChanged("DeactivateFacilityCommand");
@@ -491,7 +491,7 @@ namespace Supremacy.Client.Views
 
         private void OnScrapFacilityCommandChanged()
         {
-            var handler = ScrapFacilityCommandChanged;
+            EventHandler handler = ScrapFacilityCommandChanged;
             if (handler != null)
                 handler(this, EventArgs.Empty);
             OnPropertyChanged("ScrapFacilityCommand");
@@ -517,7 +517,7 @@ namespace Supremacy.Client.Views
 
         private void OnUnscrapFacilityCommandChanged()
         {
-            var handler = UnscrapFacilityCommandChanged;
+            EventHandler handler = UnscrapFacilityCommandChanged;
             if (handler != null)
                 handler(this, EventArgs.Empty);
             OnPropertyChanged("UnscrapFacilityCommand");
@@ -543,7 +543,7 @@ namespace Supremacy.Client.Views
 
         private void OnToggleBuildingScrapCommandChanged()
         {
-            var handler = ToggleBuildingScrapCommandChanged;
+            EventHandler handler = ToggleBuildingScrapCommandChanged;
             if (handler != null)
                 handler(this, EventArgs.Empty);
             OnPropertyChanged("ToggleBuildingScrapCommand");
@@ -569,7 +569,7 @@ namespace Supremacy.Client.Views
 
         private void OnToggleBuildingIsActiveCommandChanged()
         {
-            var handler = ToggleBuildingIsActiveCommandChanged;
+            EventHandler handler = ToggleBuildingIsActiveCommandChanged;
             if (handler != null)
                 handler(this, EventArgs.Empty);
             OnPropertyChanged("ToggleBuildingIsActiveCommand");
@@ -595,7 +595,7 @@ namespace Supremacy.Client.Views
 
         private void OnToggleShipyardBuildSlotCommandChanged()
         {
-            var handler = ToggleShipyardBuildSlotCommandChanged;
+            EventHandler handler = ToggleShipyardBuildSlotCommandChanged;
             if (handler != null)
                 handler(this, EventArgs.Empty);
             OnPropertyChanged("ToggleShipyardBuildSlotCommand");
@@ -621,7 +621,7 @@ namespace Supremacy.Client.Views
 
         private void OnSelectShipBuildProjectCommandChanged()
         {
-            var handler = SelectShipBuildProjectCommandChanged;
+            EventHandler handler = SelectShipBuildProjectCommandChanged;
             if (handler != null)
                 handler(this, EventArgs.Empty);
             OnPropertyChanged("SelectShipBuildProjectCommand");
@@ -647,7 +647,7 @@ namespace Supremacy.Client.Views
 
         private void OnActivateOrbitalBatteryCommandChanged()
         {
-            var handler = ActivateOrbitalBatteryCommandChanged;
+            EventHandler handler = ActivateOrbitalBatteryCommandChanged;
             if (handler != null)
                 handler(this, EventArgs.Empty);
             OnPropertyChanged("ActivateOrbitalBatteryCommand");
@@ -673,7 +673,7 @@ namespace Supremacy.Client.Views
 
         private void OnDedeactivateOrbitalBatteryCommandChanged()
         {
-            var handler = DedeactivateOrbitalBatteryCommandChanged;
+            EventHandler handler = DedeactivateOrbitalBatteryCommandChanged;
             if (handler != null)
                 handler(this, EventArgs.Empty);
             OnPropertyChanged("DedeactivateOrbitalBatteryCommand");
@@ -905,8 +905,8 @@ namespace Supremacy.Client.Views
             {
                 while (true)
                 {
-                    var oldHandler = _propertyChanged;
-                    var newHandler = (PropertyChangedEventHandler)Delegate.Combine(oldHandler, value);
+                    PropertyChangedEventHandler oldHandler = _propertyChanged;
+                    PropertyChangedEventHandler newHandler = (PropertyChangedEventHandler)Delegate.Combine(oldHandler, value);
 
                     if (Interlocked.CompareExchange(ref _propertyChanged, newHandler, oldHandler) == oldHandler)
                         return;
@@ -916,8 +916,8 @@ namespace Supremacy.Client.Views
             {
                 while (true)
                 {
-                    var oldHandler = _propertyChanged;
-                    var newHandler = (PropertyChangedEventHandler)Delegate.Remove(oldHandler, value);
+                    PropertyChangedEventHandler oldHandler = _propertyChanged;
+                    PropertyChangedEventHandler newHandler = (PropertyChangedEventHandler)Delegate.Remove(oldHandler, value);
 
                     if (Interlocked.CompareExchange(ref _propertyChanged, newHandler, oldHandler) == oldHandler)
                         return;

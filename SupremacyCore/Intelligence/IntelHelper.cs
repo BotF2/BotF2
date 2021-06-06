@@ -150,7 +150,7 @@ namespace Supremacy.Intelligence
             _newSpyCiv = spyCiv;
             _newTargetCiv = spiedCiv;
             _newSpiedColonies = colonies;
-            var newList = new List<Civilization> { spiedCiv };
+            List<Civilization> newList = new List<Civilization> { spiedCiv };
             switch (spyCiv.CivID)
             {
                 case 0:
@@ -227,21 +227,21 @@ namespace Supremacy.Intelligence
             if (RandomHelper.Chance(chance))
             {
 
-                var allContacts = DiplomacyHelper.GetCivilizationsHavingContact(localCivAttacker);
+                IList<Civilization> allContacts = DiplomacyHelper.GetCivilizationsHavingContact(localCivAttacker);
                 allContacts.Remove(Attacked);   // attacked civ itself
 
                 List<Civilization> minors = new List<Civilization>();
-                foreach (var civ in allContacts)
+                foreach (Civilization civ in allContacts)
                 {
                     if (!civ.IsEmpire)
                         minors.Add(civ);
                 }
-                foreach (var civ in minors)
+                foreach (Civilization civ in minors)
                 {
                     allContacts.Remove(civ);
                 }
 
-                var otherCivs = allContacts;
+                IList<Civilization> otherCivs = allContacts;
 
                 Civilization oneCiv = otherCivs.RandomElementOrDefault();
                 Civilization nextCiv = oneCiv ?? localCivAttacker;
@@ -260,25 +260,25 @@ namespace Supremacy.Intelligence
         public static void SabotageStealCredits(Civilization attackingCiv, Civilization attackedCiv, string blamed)
         {
             // coming from Buttons in each of the six expanders
-            var attackedCivManager = GameContext.Current.CivilizationManagers[attackedCiv];
-            var attackingCivManager = GameContext.Current.CivilizationManagers[attackingCiv];          
-            var _sendOrder = new SendStatementOrder(new Statement(attackingCiv, attackedCiv, StatementType.StealCredits, Tone.Enraged, blamed, GameContext.Current.TurnNumber));
+            CivilizationManager attackedCivManager = GameContext.Current.CivilizationManagers[attackedCiv];
+            CivilizationManager attackingCivManager = GameContext.Current.CivilizationManagers[attackingCiv];
+            SendStatementOrder _sendOrder = new SendStatementOrder(new Statement(attackingCiv, attackedCiv, StatementType.StealCredits, Tone.Enraged, blamed, GameContext.Current.TurnNumber));
             _sendOrder.Owner = attackingCiv;
             GameLog.Core.Diplomacy.DebugFormat("Create Statement for StealCredits: "+ Environment.NewLine 
                 + "sender = {0} *vs* Recipient = {1}:   StatementType = {2} Tone ={3}, blamed = {4}"
                                 , attackingCiv, attackedCiv, _sendOrder.Statement.ToString(), _sendOrder.Statement.Tone.ToString(), blamed + Environment.NewLine);
             ServiceLocator.Current.GetInstance<IPlayerOrderService>().AddOrder(_sendOrder);
 
-            var diploOrders = ServiceLocator.Current.GetInstance<IPlayerOrderService>().Orders;  // just for Break point controlling
+            System.Collections.ObjectModel.ReadOnlyCollection<Order> diploOrders = ServiceLocator.Current.GetInstance<IPlayerOrderService>().Orders;  // just for Break point controlling
         }
 
 
         public static void SabotageStealCreditsExecute(Civilization attackingCiv, Civilization attackedCiv, string blamed, int ratio)
         {
-            
-            var attackedCivManager = GameContext.Current.CivilizationManagers[attackedCiv];
-            var attackingCivManager = GameContext.Current.CivilizationManagers[attackingCiv];
-            var colony = attackedCivManager.SeatOfGovernment.Sector.System.Colony;
+
+            CivilizationManager attackedCivManager = GameContext.Current.CivilizationManagers[attackedCiv];
+            CivilizationManager attackingCivManager = GameContext.Current.CivilizationManagers[attackingCiv];
+            Colony colony = attackedCivManager.SeatOfGovernment.Sector.System.Colony;
 
             Meter defenseMeter = GameContext.Current.CivilizationManagers[attackedCiv].TotalIntelligenceDefenseAccumulated;
             Meter attackMeter = GameContext.Current.CivilizationManagers[attackingCiv].TotalIntelligenceAttackingAccumulated;
@@ -410,10 +410,10 @@ namespace Supremacy.Intelligence
 
         public static void SabotageStealResearch(Civilization attackingCiv, Civilization attackedCiv, string blamed)
         {
-        // coming from Buttons in each of the six expanders
-            var attackedCivManager = GameContext.Current.CivilizationManagers[attackedCiv];
-            var attackingCivManager = GameContext.Current.CivilizationManagers[attackingCiv];
-            var _sendOrder = new SendStatementOrder(new Statement(attackingCiv, attackedCiv, StatementType.StealResearch, Tone.Enraged, blamed, GameContext.Current.TurnNumber));
+            // coming from Buttons in each of the six expanders
+            CivilizationManager attackedCivManager = GameContext.Current.CivilizationManagers[attackedCiv];
+            CivilizationManager attackingCivManager = GameContext.Current.CivilizationManagers[attackingCiv];
+            SendStatementOrder _sendOrder = new SendStatementOrder(new Statement(attackingCiv, attackedCiv, StatementType.StealResearch, Tone.Enraged, blamed, GameContext.Current.TurnNumber));
             _sendOrder.Owner = attackingCiv;
 
             GameLog.Core.Diplomacy.DebugFormat("Create Statement for StealResearch: " + Environment.NewLine
@@ -422,14 +422,14 @@ namespace Supremacy.Intelligence
 
             ServiceLocator.Current.GetInstance<IPlayerOrderService>().AddOrder(_sendOrder);
 
-            var diploOrders = ServiceLocator.Current.GetInstance<IPlayerOrderService>().Orders;  // just for Break point controlling
+            System.Collections.ObjectModel.ReadOnlyCollection<Order> diploOrders = ServiceLocator.Current.GetInstance<IPlayerOrderService>().Orders;  // just for Break point controlling
         }
 
         public static void SabotageStealResearchExecute(Civilization attackingCiv, Civilization attackedCiv, string blamed, int ratio)
         {
-            var attackedCivManager = GameContext.Current.CivilizationManagers[attackedCiv];
-            var attackingCivManager = GameContext.Current.CivilizationManagers[attackingCiv];
-            var colony = attackedCivManager.SeatOfGovernment.Sector.System.Colony;
+            CivilizationManager attackedCivManager = GameContext.Current.CivilizationManagers[attackedCiv];
+            CivilizationManager attackingCivManager = GameContext.Current.CivilizationManagers[attackingCiv];
+            Colony colony = attackedCivManager.SeatOfGovernment.Sector.System.Colony;
             //GameContext.Current.CivilizationManagers[attackedCiv].UpDateBlamedCiv(_blamedCiv);
 
             Meter defenseMeter = GameContext.Current.CivilizationManagers[attackedCiv].TotalIntelligenceDefenseAccumulated;
@@ -495,7 +495,7 @@ namespace Supremacy.Intelligence
 
             // stuff 
 
-            var stuff = GameContext.Current.CivilizationManagers[attackedCiv].Research.CumulativePoints;
+            Meter stuff = GameContext.Current.CivilizationManagers[attackedCiv].Research.CumulativePoints;
 
             Attack_ED_stuff_before = stuff.CurrentValue.ToString();
             stuff.AdjustCurrent(stolenResearchPoints * -1);
@@ -560,9 +560,9 @@ namespace Supremacy.Intelligence
         public static void SabotageFood(Civilization attackingCiv, Civilization attackedCiv, string blamed)
         {
             // coming from Buttons in each of the six expanders
-            var attackedCivManager = GameContext.Current.CivilizationManagers[attackedCiv];
-            var attackingCivManager = GameContext.Current.CivilizationManagers[attackingCiv];
-            var _sendOrder = new SendStatementOrder(new Statement(attackingCiv, attackedCiv, StatementType.SabotageFood, Tone.Enraged, blamed, GameContext.Current.TurnNumber));
+            CivilizationManager attackedCivManager = GameContext.Current.CivilizationManagers[attackedCiv];
+            CivilizationManager attackingCivManager = GameContext.Current.CivilizationManagers[attackingCiv];
+            SendStatementOrder _sendOrder = new SendStatementOrder(new Statement(attackingCiv, attackedCiv, StatementType.SabotageFood, Tone.Enraged, blamed, GameContext.Current.TurnNumber));
             _sendOrder.Owner = attackingCiv;
 
             GameLog.Core.Diplomacy.DebugFormat("Create Statement for SabotageFood: " + Environment.NewLine
@@ -574,9 +574,9 @@ namespace Supremacy.Intelligence
 
         public static void SabotageFoodExecute(Civilization attackingCiv, Civilization attackedCiv, string blamed, int ratio)
         {
-            var attackedCivManager = GameContext.Current.CivilizationManagers[attackedCiv];
-            var attackingCivManager = GameContext.Current.CivilizationManagers[attackingCiv];
-            var colony = attackedCivManager.SeatOfGovernment.Sector.System.Colony;
+            CivilizationManager attackedCivManager = GameContext.Current.CivilizationManagers[attackedCiv];
+            CivilizationManager attackingCivManager = GameContext.Current.CivilizationManagers[attackingCiv];
+            Colony colony = attackedCivManager.SeatOfGovernment.Sector.System.Colony;
 
             Meter defenseMeter = attackedCivManager.TotalIntelligenceDefenseAccumulated;
             Meter attackMeter = GameContext.Current.CivilizationManagers[attackingCiv].TotalIntelligenceAttackingAccumulated;
@@ -708,9 +708,9 @@ namespace Supremacy.Intelligence
         public static void SabotageEnergy(Civilization attackingCiv, Civilization attackedCiv, string blamed)
         {
             // coming from Buttons in each of the six expanders
-            var attackedCivManager = GameContext.Current.CivilizationManagers[attackedCiv];
-            var attackingCivManager = GameContext.Current.CivilizationManagers[attackingCiv];
-            var _sendOrder = new SendStatementOrder(new Statement(attackingCiv, attackedCiv, StatementType.SabotageEnergy, Tone.Enraged, blamed, GameContext.Current.TurnNumber));
+            CivilizationManager attackedCivManager = GameContext.Current.CivilizationManagers[attackedCiv];
+            CivilizationManager attackingCivManager = GameContext.Current.CivilizationManagers[attackingCiv];
+            SendStatementOrder _sendOrder = new SendStatementOrder(new Statement(attackingCiv, attackedCiv, StatementType.SabotageEnergy, Tone.Enraged, blamed, GameContext.Current.TurnNumber));
             _sendOrder.Owner = attackingCiv;
             GameLog.Core.Diplomacy.DebugFormat("Create Statement for SabotageEnergy: " + Environment.NewLine
                 + "sender = {0} *vs* Recipient = {1}: StatementType = {2}, blamed = {3} tone ={4}"
@@ -721,9 +721,9 @@ namespace Supremacy.Intelligence
 
         public static void SabotageEnergyExecute(Civilization attackingCiv, Civilization attackedCiv, string blamed, int ratio)
         {
-            var attackedCivManager = GameContext.Current.CivilizationManagers[attackedCiv];
-            var attackingCivManager = GameContext.Current.CivilizationManagers[attackingCiv];
-            var colony = attackedCivManager.SeatOfGovernment.Sector.System.Colony;
+            CivilizationManager attackedCivManager = GameContext.Current.CivilizationManagers[attackedCiv];
+            CivilizationManager attackingCivManager = GameContext.Current.CivilizationManagers[attackingCiv];
+            Colony colony = attackedCivManager.SeatOfGovernment.Sector.System.Colony;
             Meter defenseMeter = GameContext.Current.CivilizationManagers[colony.Owner].TotalIntelligenceDefenseAccumulated;
             Meter attackMeter = GameContext.Current.CivilizationManagers[attackingCiv].TotalIntelligenceAttackingAccumulated;
             int ratioLevel = -1;
@@ -833,9 +833,9 @@ namespace Supremacy.Intelligence
         public static void SabotageIndustry(Civilization attackingCiv, Civilization attackedCiv, string blamed)
         {
             // coming from Buttons in each of the six expanders
-            var attackedCivManager = GameContext.Current.CivilizationManagers[attackedCiv];
-            var attackingCivManager = GameContext.Current.CivilizationManagers[attackingCiv];
-            var _sendOrder = new SendStatementOrder(new Statement(attackingCiv, attackedCiv, StatementType.SabotageIndustry, Tone.Enraged, blamed, GameContext.Current.TurnNumber));
+            CivilizationManager attackedCivManager = GameContext.Current.CivilizationManagers[attackedCiv];
+            CivilizationManager attackingCivManager = GameContext.Current.CivilizationManagers[attackingCiv];
+            SendStatementOrder _sendOrder = new SendStatementOrder(new Statement(attackingCiv, attackedCiv, StatementType.SabotageIndustry, Tone.Enraged, blamed, GameContext.Current.TurnNumber));
             _sendOrder.Owner = attackingCiv;
             GameLog.Core.Diplomacy.DebugFormat("Create Statement for SabotageIndustry: " + Environment.NewLine
                 + "sender = {0} *vs* Recipient = {1}: StatementType = {2}, Tone ={3}, blamed = {4}"
@@ -845,10 +845,10 @@ namespace Supremacy.Intelligence
 
         public static void SabotageIndustryExecute(Civilization attackingCiv, Civilization attackedCiv, string blamed, int ratio)
         {
-            
-            var attackedCivManager = GameContext.Current.CivilizationManagers[attackedCiv];
-            var attackingCivManager = GameContext.Current.CivilizationManagers[attackingCiv];
-            var colony = attackedCivManager.SeatOfGovernment.Sector.System.Colony;
+
+            CivilizationManager attackedCivManager = GameContext.Current.CivilizationManagers[attackedCiv];
+            CivilizationManager attackingCivManager = GameContext.Current.CivilizationManagers[attackingCiv];
+            Colony colony = attackedCivManager.SeatOfGovernment.Sector.System.Colony;
             //GameContext.Current.CivilizationManagers[attackedCiv].UpDateBlamedCiv(_blamedCiv);
 
             Meter defenseMeter = GameContext.Current.CivilizationManagers[attackedCiv].TotalIntelligenceDefenseAccumulated;
@@ -985,9 +985,9 @@ namespace Supremacy.Intelligence
 
         public static bool IsSpyShipInHomeSystem(CivilizationManager attackedCivManager, CivilizationManager attackingCivManager)
         {
-            var attackedHomeSystemLocation = attackedCivManager.SeatOfGovernment;
-            var fleetsAtSetOfGovernment = attackedHomeSystemLocation.Sector.GetFleets();
-            var attackingSpyShips = fleetsAtSetOfGovernment.Where(s => s.IsSpy && s.Owner == attackingCivManager.Civilization).ToList().Count();//Where(x => x.ShipType.ToString() == "Spy")).ToList();
+            Colony attackedHomeSystemLocation = attackedCivManager.SeatOfGovernment;
+            IEnumerable<Fleet> fleetsAtSetOfGovernment = attackedHomeSystemLocation.Sector.GetFleets();
+            int attackingSpyShips = fleetsAtSetOfGovernment.Where(s => s.IsSpy && s.Owner == attackingCivManager.Civilization).ToList().Count();//Where(x => x.ShipType.ToString() == "Spy")).ToList();
                  
             if (attackingSpyShips > 0)
             {

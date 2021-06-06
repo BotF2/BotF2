@@ -682,7 +682,7 @@ namespace Supremacy.Scripting.Ast
                 {
                     argumentCount = arguments.Count;
 
-                    for (var i = 0; i < argumentCount; ++i)
+                    for (int i = 0; i < argumentCount; ++i)
                     {
                         bool argMoved = false;
                         while (true)

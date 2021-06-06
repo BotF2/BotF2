@@ -49,7 +49,7 @@ namespace Supremacy.Effects
             {
                 if (SuspendEffectsScope.IsWithin)
                 {
-                    var suspendHandles = RegisteredSources
+                    IEnumerable<IDisposable> suspendHandles = RegisteredSources
                         .SelectMany(o => o.Key.EffectGroupBindings)
                         .SelectMany(g => g.EffectBindings)
                         .Select(e => e.Suspend());
@@ -57,7 +57,7 @@ namespace Supremacy.Effects
                 }
                 else
                 {
-                    var disposer = Interlocked.Exchange(ref SuspendedEffectsHandle, null);
+                    CompositeDisposer disposer = Interlocked.Exchange(ref SuspendedEffectsHandle, null);
                     if (disposer != null)
                         disposer.Dispose();
                 }
@@ -75,7 +75,7 @@ namespace Supremacy.Effects
                 if (RegisteredSources.ContainsKey(effectSource))
                     return;
 
-                var effectGroups = effectSource.EffectGroupBindings;
+                IEffectGroupBindingCollection effectGroups = effectSource.EffectGroupBindings;
 
                 if (SuspendEffectsScope.IsWithin)
                 {
@@ -85,7 +85,7 @@ namespace Supremacy.Effects
                         .ForEach(o => SuspendedEffectsHandle.AddChild(o));
                 }
 
-                var workers = new EffectGroupWorker[effectGroups.Count];
+                EffectGroupWorker[] workers = new EffectGroupWorker[effectGroups.Count];
 
                 for (int i = 0; i < workers.Length; i++)
                 {
@@ -115,7 +115,7 @@ namespace Supremacy.Effects
                 if (!IsEnabled)
                     return;
 
-                foreach (var effectGroupWorker in workers)
+                foreach (EffectGroupWorker effectGroupWorker in workers)
                     effectGroupWorker.Deactivate();
             }
         }
@@ -189,7 +189,7 @@ namespace Supremacy.Effects
 
             private void SetScopeObservation(object scope, bool enableObservation)
             {
-                var observableScope = scope as INotifyCollectionChanged;
+                INotifyCollectionChanged observableScope = scope as INotifyCollectionChanged;
                 if (observableScope == null)
                     return;
 
@@ -208,7 +208,7 @@ namespace Supremacy.Effects
 
                 try
                 {
-                    var runtimeScriptParameters = _effectGroupBinding.BindActivationScriptRuntimeParameters();
+                    Scripting.RuntimeScriptParameters runtimeScriptParameters = _effectGroupBinding.BindActivationScriptRuntimeParameters();
 
                     _activationTest = _effectGroupBinding.EffectGroup.ActivationScript.Evaluate<IValueProvider<bool>>(runtimeScriptParameters);
                     _scope = _effectGroupBinding.EffectGroup.ScopeScript.Evaluate<IValueProvider>(runtimeScriptParameters);
@@ -226,14 +226,14 @@ namespace Supremacy.Effects
 
             private void ChangeScope()
             {
-                var oldScope = _lastScopeValue;
+                object oldScope = _lastScopeValue;
                 if (oldScope != null)
                     SetScopeObservation(oldScope, false);
 
-                var scopeValue = _lastScopeValue = _scope.Value;
+                object scopeValue = _lastScopeValue = _scope.Value;
 
-                var oldItems = _attachedTargets.ToList();
-                var newItems = scopeValue as IEnumerable ??
+                List<object> oldItems = _attachedTargets.ToList();
+                IEnumerable newItems = scopeValue as IEnumerable ??
                                ((scopeValue == null) ? null : new[] { scopeValue });
                 if (_isActive)
                     SetScopeObservation(_scope.Value, true);
@@ -250,7 +250,7 @@ namespace Supremacy.Effects
             {
                 if (oldItems != null)
                 {
-                    foreach (var oldItem in oldItems.OfType<IEffectTarget>())
+                    foreach (IEffectTarget oldItem in oldItems.OfType<IEffectTarget>())
                     {
                         _effectGroupBinding.DetachTarget(oldItem);
                         _attachedTargets.Remove(oldItem);
@@ -259,7 +259,7 @@ namespace Supremacy.Effects
 
                 if (newItems != null)
                 {
-                    foreach (var newItem in newItems.OfType<IEffectTarget>())
+                    foreach (IEffectTarget newItem in newItems.OfType<IEffectTarget>())
                     {
                         _effectGroupBinding.AttachTarget(newItem);
                         _attachedTargets.Add(newItem);
@@ -272,7 +272,7 @@ namespace Supremacy.Effects
                 IEnumerable oldItems;
                 IEnumerable newItems;
 
-                var scope = (IEnumerable)sender;
+                IEnumerable scope = (IEnumerable)sender;
 
                 switch (e.Action)
                 {
@@ -287,7 +287,7 @@ namespace Supremacy.Effects
                 
                     case NotifyCollectionChangedAction.Reset:
                     {
-                        var currentItems = scope.OfType<object>().ToHashSet();
+                            HashSet<object> currentItems = scope.OfType<object>().ToHashSet();
                         
                         currentItems.ExceptWith(_attachedTargets);
                         newItems = currentItems;

@@ -168,18 +168,18 @@ namespace Supremacy.Client.Controls
 
         private static object CoerceInputGestureTextPropertyValue(DependencyObject o, object value)
         {
-            var control = (GameButtonBase)o;
-            var stringValue = value as string;
+            GameButtonBase control = (GameButtonBase)o;
+            string stringValue = value as string;
 
             RoutedCommand command;
             if ((string.IsNullOrEmpty(stringValue)) && ((command = control.Command as RoutedCommand) != null))
             {
                 if (o.HasDefaultValue(InputGestureTextProperty))
                 {
-                    var inputGestures = command.InputGestures;
+                    InputGestureCollection inputGestures = command.InputGestures;
                     if (inputGestures != null)
                     {
-                        var keyGesture = inputGestures.OfType<KeyGesture>().FirstOrDefault();
+                        KeyGesture keyGesture = inputGestures.OfType<KeyGesture>().FirstOrDefault();
                         if (keyGesture != null)
                             return keyGesture.GetDisplayStringForCulture(CultureInfo.CurrentCulture);
                     }
@@ -209,7 +209,7 @@ namespace Supremacy.Client.Controls
 
         internal static bool IsInMainFocusScope(DependencyObject o)
         {
-            var focusScope = FocusManager.GetFocusScope(o);
+            DependencyObject focusScope = FocusManager.GetFocusScope(o);
             if (focusScope != null)
                 return (focusScope.GetVisualParent() == null);
             return true;
@@ -217,16 +217,16 @@ namespace Supremacy.Client.Controls
 
         internal bool IsMouseOverBounds(MouseEventArgs e)
         {
-            var bounds = new Rect(new Point(0, 0), RenderSize);
+            Rect bounds = new Rect(new Point(0, 0), RenderSize);
             return bounds.Contains(e.GetPosition(this));
         }
 
         private static void OnIsCheckedPropertyValueChanged(DependencyObject o, DependencyPropertyChangedEventArgs e)
         {
-            var control = (GameButtonBase)o;
-            var newValue = (bool?)e.NewValue;
+            GameButtonBase control = (GameButtonBase)o;
+            bool? newValue = (bool?)e.NewValue;
 
-            var parameter = control.CommandParameter as ICheckableCommandParameter;
+            ICheckableCommandParameter parameter = control.CommandParameter as ICheckableCommandParameter;
             if (parameter != null)
                 parameter.IsChecked = newValue;
 
@@ -240,7 +240,7 @@ namespace Supremacy.Client.Controls
 
         private void UpdateIsPressed()
         {
-            var point = Mouse.PrimaryDevice.GetPosition(this);
+            Point point = Mouse.PrimaryDevice.GetPosition(this);
             if (((point.X >= 0) && (point.X <= ActualWidth)) && ((point.Y >= 0) && (point.Y <= ActualHeight)))
             {
                 if (!IsPressed)
@@ -295,7 +295,7 @@ namespace Supremacy.Client.Controls
 
         protected override Size MeasureOverride(Size constraint)
         {
-            var desiredSize = base.MeasureOverride(constraint);
+            Size desiredSize = base.MeasureOverride(constraint);
 
             if (VariantSize == VariantSize.Large)
             {
@@ -380,7 +380,7 @@ namespace Supremacy.Client.Controls
 
                     if ((IsKeyboardFocused) && !IsInMainFocusScope(this))
                     {
-                        var popupAnchor = PopupControlService.GetParentPopupAnchor(this);
+                        IGamePopupAnchor popupAnchor = PopupControlService.GetParentPopupAnchor(this);
                         if ((popupAnchor == null) || 
                             (popupAnchor == this) ||
                             !popupAnchor.IsPopupOpen || 
@@ -419,7 +419,7 @@ namespace Supremacy.Client.Controls
 
                 if (Mouse.PrimaryDevice.LeftButton == MouseButtonState.Released)
                 {
-                    var isReleaseClick = (IsPressed && (ClickMode == ClickMode.Release));
+                    bool isReleaseClick = (IsPressed && (ClickMode == ClickMode.Release));
                     if (IsMouseCaptured)
                         ReleaseMouseCapture();
                     if (isReleaseClick)
@@ -458,7 +458,7 @@ namespace Supremacy.Client.Controls
             {
                 if ((IsKeyboardFocused) && (!IsInMainFocusScope(this)))
                 {
-                    var popupAnchor = PopupControlService.GetParentPopupAnchor(this);
+                    IGamePopupAnchor popupAnchor = PopupControlService.GetParentPopupAnchor(this);
                     if ((popupAnchor == null) || 
                         (popupAnchor == this) ||
                         !popupAnchor.IsPopupOpen ||
@@ -515,7 +515,7 @@ namespace Supremacy.Client.Controls
 
                 if ((ClickMode == ClickMode.Press) && (IsMouseOverBounds(e)))
                 {
-                    var onClickFailed = true;
+                    bool onClickFailed = true;
                     try
                     {
                         RaiseClickEvent(new ExecuteRoutedEventArgs(ExecuteReason.Mouse));
@@ -541,7 +541,7 @@ namespace Supremacy.Client.Controls
             {
                 e.Handled = true;
 
-                var isReleaseClick = !_flags.GetFlag(Flags.IsSpaceKeyDown) &&
+                bool isReleaseClick = !_flags.GetFlag(Flags.IsSpaceKeyDown) &&
                                      IsPressed &&
                                      (ClickMode == ClickMode.Release);
 
@@ -572,7 +572,7 @@ namespace Supremacy.Client.Controls
 
         protected override void OnPreviewClick(ExecuteRoutedEventArgs e)
         {
-            var popupAnchor = PopupControlService.GetParentPopupAnchor(this);
+            IGamePopupAnchor popupAnchor = PopupControlService.GetParentPopupAnchor(this);
 
             if ((popupAnchor != null) && (popupAnchor.IsPopupOpen && !StaysOpenOnClick))
                 PopupControlService.CloseAllPopups(GamePopupCloseReason.ControlClick);
@@ -610,7 +610,7 @@ namespace Supremacy.Client.Controls
             else
                 CanExecute = true;
 
-            var checkableParameter = CommandParameter as ICheckableCommandParameter;
+            ICheckableCommandParameter checkableParameter = CommandParameter as ICheckableCommandParameter;
             if ((checkableParameter == null) || !checkableParameter.Handled)
                 return;
 

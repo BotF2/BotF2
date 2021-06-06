@@ -35,14 +35,14 @@ namespace Supremacy.Client.Services
         #region Implementation of IGameObjectIDService
         public int? GetNewObjectID()
         {
-            var args = new GameObjectIDRequestEventArgs(
+            GameObjectIDRequestEventArgs args = new GameObjectIDRequestEventArgs(
                 _appContext,
                 _appContext.CurrentGame);
 
             ClientEvents.GameObjectIDRequested.Publish(args);
 
-            var waitStart = DateTime.Now;
-            var timeout = TimeSpan.FromSeconds(5);
+            DateTime waitStart = DateTime.Now;
+            TimeSpan timeout = TimeSpan.FromSeconds(5);
             while (!args.WaitHandle.WaitOne(timeout))
             {
                 if ((DateTime.Now - waitStart) > timeout)

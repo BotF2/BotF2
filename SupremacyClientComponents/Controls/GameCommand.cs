@@ -73,12 +73,12 @@ namespace Supremacy.Client.Controls
 
         internal static bool CanExecuteCommandSource(ICommandSource commandSource, IInputElement alternateTarget)
         {
-            var command = commandSource.Command;
+            ICommand command = commandSource.Command;
             if (command == null)
                 return true;
 
-            var parameter = commandSource.CommandParameter;
-            var routedCommand = command as RoutedCommand;
+            object parameter = commandSource.CommandParameter;
+            RoutedCommand routedCommand = command as RoutedCommand;
 
             if (routedCommand == null)
                 return command.CanExecute(parameter);
@@ -93,8 +93,8 @@ namespace Supremacy.Client.Controls
             if (alternateCommand == null)
                 return true;
 
-            var parameter = commandSource.CommandParameter;
-            var routedCommand = alternateCommand as RoutedCommand;
+            object parameter = commandSource.CommandParameter;
+            RoutedCommand routedCommand = alternateCommand as RoutedCommand;
             
             if (routedCommand == null)
                 return alternateCommand.CanExecute(parameter);
@@ -106,16 +106,16 @@ namespace Supremacy.Client.Controls
 
         internal static void ExecuteCommandSource(ICommandSource commandSource)
         {
-            var command = commandSource.Command;
+            ICommand command = commandSource.Command;
             if (command == null)
                 return;
 
-            var parameter = commandSource.CommandParameter;
-            var routedCommand = command as RoutedCommand;
+            object parameter = commandSource.CommandParameter;
+            RoutedCommand routedCommand = command as RoutedCommand;
             
             if (routedCommand != null)
             {
-                var commandTarget = commandSource.CommandTarget ?? commandSource as IInputElement;
+                IInputElement commandTarget = commandSource.CommandTarget ?? commandSource as IInputElement;
                 if (routedCommand.CanExecute(parameter, commandTarget))
                     routedCommand.Execute(parameter, commandTarget);
             }
@@ -130,11 +130,11 @@ namespace Supremacy.Client.Controls
             if (alternateCommand == null)
                 return;
 
-            var parameter = commandSource.CommandParameter;
-            var routedCommand = alternateCommand as RoutedCommand;
+            object parameter = commandSource.CommandParameter;
+            RoutedCommand routedCommand = alternateCommand as RoutedCommand;
             if (routedCommand != null)
             {
-                var commandTarget = commandSource.CommandTarget ?? commandSource as IInputElement;
+                IInputElement commandTarget = commandSource.CommandTarget ?? commandSource as IInputElement;
                 if (routedCommand.CanExecute(parameter, commandTarget))
                     routedCommand.Execute(parameter, commandTarget);
             }
@@ -183,7 +183,7 @@ namespace Supremacy.Client.Controls
 
         protected void NotifyPropertyChanged(string name)
         {
-            var handler = PropertyChanged;
+            PropertyChangedEventHandler handler = PropertyChanged;
             if (handler != null)
                 handler(this, new PropertyChangedEventArgs(name));
         }

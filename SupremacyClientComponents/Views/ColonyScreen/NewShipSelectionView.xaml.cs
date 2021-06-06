@@ -92,7 +92,7 @@ namespace Supremacy.Client.Views
             if (!(e.OriginalSource is DependencyObject source))
                 return;
 
-            var contanier = source.FindVisualAncestorByType<ListBoxItem>();
+            ListBoxItem contanier = source.FindVisualAncestorByType<ListBoxItem>();
             if (contanier == null)
                 return;
 

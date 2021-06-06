@@ -203,7 +203,7 @@ namespace Supremacy.Universe
             PlanetType planetType,
             PlanetSize planetSize)
         {
-            var attribute = Attribute.GetCustomAttribute(
+            SupportsPlanetsAttribute attribute = Attribute.GetCustomAttribute(
                 typeof(StarType).GetField(starType.ToString()),
                 typeof(SupportsPlanetsAttribute)) as SupportsPlanetsAttribute;
 
@@ -212,21 +212,21 @@ namespace Supremacy.Universe
 
             if (attribute.IsAllowedTypesDefined)
             {
-                var isPlanetTypeAllowed = attribute.AllowedTypes.Any(allowedType => allowedType == planetType);
+                bool isPlanetTypeAllowed = attribute.AllowedTypes.Any(allowedType => allowedType == planetType);
                 if (!isPlanetTypeAllowed)
                     return false;
             }
 
             if (attribute.IsAllowedSizesDefined)
             {
-                var isPlanetSizeAllowed = attribute.AllowedSizes.Any(allowedSize => allowedSize == planetSize);
+                bool isPlanetSizeAllowed = attribute.AllowedSizes.Any(allowedSize => allowedSize == planetSize);
                 if (!isPlanetSizeAllowed)
                     return false;
             }
 
             if (existingPlanets != null)
             {
-                var currentPlanetCount = existingPlanets.Count();
+                int currentPlanetCount = existingPlanets.Count();
                 if (currentPlanetCount > attribute.MaxNumberOfPlanets)
                     return false;
             }
@@ -236,7 +236,7 @@ namespace Supremacy.Universe
 
         public static int MaxNumberOfPlanets(StarType starType)
         {
-            var supportsPlanetsAttribute = starType.GetAttribute<StarType, SupportsPlanetsAttribute>();
+            SupportsPlanetsAttribute supportsPlanetsAttribute = starType.GetAttribute<StarType, SupportsPlanetsAttribute>();
             if (supportsPlanetsAttribute != null)
                 return supportsPlanetsAttribute.MaxNumberOfPlanets;
 
@@ -285,7 +285,7 @@ namespace Supremacy.Universe
             if (!InterferenceFrames.TryGetValue(starType, out int[,,] interferenceFrames))
                 return true;
 
-            var minDistance = GalaxyGenerator.MinHomeworldDistanceFromInterference;
+            int minDistance = GalaxyGenerator.MinHomeworldDistanceFromInterference;
             if (minDistance > 0)
             {
                 // TODO
@@ -318,41 +318,41 @@ namespace Supremacy.Universe
             if (!InterferenceFrames.TryGetValue(starSystem.StarType, out interferenceFrames))
                 return;
 
-            var frameCount = interferenceFrames.GetLength(0);
+            int frameCount = interferenceFrames.GetLength(0);
 
             /*
              * Rather than deriving the frame number directly from the turn number, we mix things up
              * a bit and base it off the turn number and the star's object ID.  We do this to avoid,
              * for example, the rotation of every pulsar in the galaxy being in sync.
              */
-            var i = (GameContext.Current.TurnNumber + (starSystem.ObjectID % frameCount)) % frameCount;
+            int i = (GameContext.Current.TurnNumber + (starSystem.ObjectID % frameCount)) % frameCount;
 
-            var origin = starSystem.Location;
-            var map = GameContext.Current.Universe.Map;
+            MapLocation origin = starSystem.Location;
+            SectorMap map = GameContext.Current.Universe.Map;
 
-            var maxX = map.Width - 1;
-            var maxY = map.Height - 1;
+            int maxX = map.Width - 1;
+            int maxY = map.Height - 1;
 
-            var startX = origin.X - interferenceFrames.GetLength(2) / 2;
-            var endX = Math.Min(origin.X + interferenceFrames.GetLength(2) / 2, maxX);
-            var startY = origin.Y - interferenceFrames.GetLength(2) / 2;
-            var endY = Math.Min(origin.Y + interferenceFrames.GetLength(2) / 2, maxY);
+            int startX = origin.X - interferenceFrames.GetLength(2) / 2;
+            int endX = Math.Min(origin.X + interferenceFrames.GetLength(2) / 2, maxX);
+            int startY = origin.Y - interferenceFrames.GetLength(2) / 2;
+            int endY = Math.Min(origin.Y + interferenceFrames.GetLength(2) / 2, maxY);
 
-            for (var y = startY; y <= endY; y++)
+            for (int y = startY; y <= endY; y++)
             {
                 if (y < 0)
                     continue;
 
-                for (var x = startX; x <= endX; x++)
+                for (int x = startX; x <= endX; x++)
                 {
                     if (x < 0)
                         continue;
 
-                    var value = interferenceFrames[i, y - startY, x - startX];
+                    int value = interferenceFrames[i, y - startY, x - startX];
                     if (value >= 0)
                         continue;
 
-                    var current = interference[x, y];
+                    int current = interference[x, y];
                     if (value < current)
                         interference[x, y] = value;
                 }

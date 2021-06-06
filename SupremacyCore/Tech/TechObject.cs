@@ -124,7 +124,7 @@ namespace Supremacy.Tech
 
         public override void CloneFrom(Cloneable source, ICloneContext context)
         {
-            var typedSource = (TechObject)source;
+            TechObject typedSource = (TechObject)source;
 
             base.CloneFrom(typedSource, context);
 

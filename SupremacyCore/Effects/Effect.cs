@@ -40,9 +40,9 @@ namespace Supremacy.Effects
         public EffectBinding Bind([NotNull] EffectGroupBinding effectGroupBinding, [NotNull] IEffectTarget effectTarget)
         {
             Guard.ArgumentNotNull(effectGroupBinding, "effectGroupBinding");
-            Guard.ArgumentNotNull(effectTarget, "effectTarget"); 
+            Guard.ArgumentNotNull(effectTarget, "effectTarget");
 
-            var binding = BindCore(effectGroupBinding, effectTarget);
+            EffectBinding binding = BindCore(effectGroupBinding, effectTarget);
 
             return binding;
         }

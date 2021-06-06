@@ -26,7 +26,7 @@ namespace Supremacy.Diplomacy.Visitors
             if (agreement == null)
                 throw new ArgumentNullException("agreement");
 
-            var visitor = new BreakAgreementVisitor(agreement);
+            BreakAgreementVisitor visitor = new BreakAgreementVisitor(agreement);
 
             // TODO: Process penalties for breaking agreements
             visitor.Visit(agreement);
@@ -38,21 +38,21 @@ namespace Supremacy.Diplomacy.Visitors
         {
             object dataEntry;
 
-            var data = Agreement.Data;
+            IDictionary<object, object> data = Agreement.Data;
             if (data == null || !data.TryGetValue(AcceptProposalVisitor.TransferredColoniesDataKey, out dataEntry))
                 return;
 
-            var transferredColonyIds = dataEntry as List<int>;
+            List<int> transferredColonyIds = dataEntry as List<int>;
             if (transferredColonyIds == null)
                 return;
 
-            var sender = Agreement.Proposal.Sender;
-            var empire = sender.IsEmpire ? sender : Agreement.Proposal.Recipient;
-            var minorRace = sender.IsEmpire ? Agreement.Proposal.Recipient : sender;
+            Entities.Civilization sender = Agreement.Proposal.Sender;
+            Entities.Civilization empire = sender.IsEmpire ? sender : Agreement.Proposal.Recipient;
+            Entities.Civilization minorRace = sender.IsEmpire ? Agreement.Proposal.Recipient : sender;
 
-            foreach (var transferredColonyId in transferredColonyIds)
+            foreach (int transferredColonyId in transferredColonyIds)
             {
-                var colony = GameContext.Current.Universe.Get<Colony>(transferredColonyId);
+                Colony colony = GameContext.Current.Universe.Get<Colony>(transferredColonyId);
                 if (colony != null &&
                     colony.Owner == empire &&
                     colony.LastOwnershipChange == Agreement.StartTurn)

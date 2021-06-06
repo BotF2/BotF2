@@ -59,11 +59,11 @@ namespace Supremacy.Client
 
         static ClientWindow()
         {
-            var convertPixelMethod = typeof(SystemParameters).GetMethod(
+            MethodInfo convertPixelMethod = typeof(SystemParameters).GetMethod(
                 "ConvertPixel",
                 BindingFlags.Static | BindingFlags.NonPublic);
 
-            var pixelParameter = Expression.Parameter(typeof(double), "pixel");
+            System.Linq.Expressions.ParameterExpression pixelParameter = Expression.Parameter(typeof(double), "pixel");
 
             PixelToPoint = Expression.Lambda<Func<double, double>>(
                 Expression.Call(
@@ -197,9 +197,9 @@ namespace Supremacy.Client
                     CollectGarbageCommand,
                     (s, e) =>
                     {
-                        var process = Process.GetCurrentProcess();
-                        var workingSet = process.WorkingSet64;
-                        var heapSize = GC.GetTotalMemory(false);
+                        Process process = Process.GetCurrentProcess();
+                        long workingSet = process.WorkingSet64;
+                        long heapSize = GC.GetTotalMemory(false);
 
                         string _text = ("Forcing garbage collection...");
                         //Console.WriteLine(_text); GameLog.Client.General.Info(_text);
@@ -244,7 +244,7 @@ namespace Supremacy.Client
                     ClientCommands.AutoTurnCommand,
                     (s, e) =>
                     {
-                        var service = ServiceLocator.Current.GetInstance<IPlayerOrderService>();
+                        IPlayerOrderService service = ServiceLocator.Current.GetInstance<IPlayerOrderService>();
                         service.AutoTurn = !service.AutoTurn;
                         if (service.AutoTurn)
                         {
@@ -348,7 +348,7 @@ namespace Supremacy.Client
         {
             if (IsDialogOpen())
                 return;
-            var currentScreen = GameScreensRegion.CurrentScreen;
+            Control currentScreen = GameScreensRegion.CurrentScreen;
             if (currentScreen != null)
                 currentScreen.Focus();
             else
@@ -419,8 +419,8 @@ namespace Supremacy.Client
 
         protected void CenterToScreen()
         {
-            var workArea = SystemParameters.WorkArea;
-            var windowSize = RestoreBounds;
+            Rect workArea = SystemParameters.WorkArea;
+            Rect windowSize = RestoreBounds;
 
             if (double.IsInfinity(windowSize.Width) || double.IsInfinity(windowSize.Height))
                 windowSize = new Rect(0, 0, Width, Height);
@@ -454,7 +454,7 @@ namespace Supremacy.Client
 
         private void OnModalDialogsRegionSelectionChanged(object sender, SelectionChangedEventArgs args)
         {
-            var enableShaders = RenderCapability.IsPixelShaderVersionSupported(2, 0);
+            bool enableShaders = RenderCapability.IsPixelShaderVersionSupported(2, 0);
 
             if (ModalDialogsRegion.ActiveDialog == null)
             {
@@ -567,15 +567,15 @@ namespace Supremacy.Client
             // ReSharper restore RedundantAssignment
             Point offset)
         {
-            var dpiConversion = PixelToPoint(1.0);
-            var mouse = Mouse.GetPosition(this);
+            double dpiConversion = PixelToPoint(1.0);
+            Point mouse = Mouse.GetPosition(this);
 
             if (ContextMenu != null)
                 popupSize = (Size)((Vector)ContextMenu.RenderSize * _scaleFactor);
 
             targetSize = (Size)((Vector)ContentPanel.RenderSize * _scaleFactor);
 
-            var point = new Point(
+            Point point = new Point(
                 Math.Max(
                     0,
                     Math.Min(

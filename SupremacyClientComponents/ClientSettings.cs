@@ -69,8 +69,8 @@ namespace Supremacy.Client
         {
             Saved?.Invoke(null, EventArgs.Empty);
 
-            var settingsDirectory = ResourceManager.GetResourcePath("");
-            var filePath = Path.Combine(
+            string settingsDirectory = ResourceManager.GetResourcePath("");
+            string filePath = Path.Combine(
                 settingsDirectory,
                 ClientSettingsFileName);
 
@@ -89,12 +89,12 @@ namespace Supremacy.Client
         {
             try
             {
-                var savedOrDefaultSettings = LoadCore();
-                var localValueEnumerator = savedOrDefaultSettings.GetLocalValueEnumerator();
+                ClientSettings savedOrDefaultSettings = LoadCore();
+                LocalValueEnumerator localValueEnumerator = savedOrDefaultSettings.GetLocalValueEnumerator();
 
                 while (localValueEnumerator.MoveNext())
                 {
-                    var currentEntry = localValueEnumerator.Current;
+                    LocalValueEntry currentEntry = localValueEnumerator.Current;
                     GameLog.Client.GeneralDetails.DebugFormat("RELOAD: Property {0} = {1}",
                         currentEntry.Property, currentEntry.Value);
                     SetValue(
@@ -102,18 +102,18 @@ namespace Supremacy.Client
                         currentEntry.Value);
                 }
 
-                var removedMembers = _attachedValues.Keys
+                List<AttachableMemberIdentifier> removedMembers = _attachedValues.Keys
                     .Where(o => !savedOrDefaultSettings._attachedValues.ContainsKey(o))
                     .ToList();
 
-                foreach (var attachableMemberIdentifier in removedMembers)
+                foreach (AttachableMemberIdentifier attachableMemberIdentifier in removedMembers)
                 {
                     AttachablePropertyServices.RemoveProperty(this, attachableMemberIdentifier);
                     GameLog.Client.GeneralDetails.DebugFormat("RELOAD: REMOVED entry: {0} = {1}",
                         attachableMemberIdentifier);
                 }
 
-                foreach (var key in _attachedValues.Keys)
+                foreach (AttachableMemberIdentifier key in _attachedValues.Keys)
                 { 
                     AttachablePropertyServices.SetProperty(this, key, _attachedValues[key]);
                     GameLog.Client.GeneralDetails.DebugFormat("RELOAD: ADDED entry: {0} = {1}",
@@ -132,16 +132,16 @@ namespace Supremacy.Client
         {
             try
             {
-                var settingsDirectory = ResourceManager.GetResourcePath("");
+                string settingsDirectory = ResourceManager.GetResourcePath("");
 
-                var filePath = Path.Combine(
+                string filePath = Path.Combine(
                     settingsDirectory,
                     ClientSettingsFileName);
 
                 if (!Directory.Exists(settingsDirectory))
                     Directory.CreateDirectory(settingsDirectory);
 
-                using (var fileWriter = File.Create(filePath))
+                using (FileStream fileWriter = File.Create(filePath))
                 {
                     XamlWriter.Save(this, fileWriter);
                 }
@@ -158,9 +158,9 @@ namespace Supremacy.Client
         {
             try
             {
-                var settingsDirectory = ResourceManager.GetResourcePath("");
+                string settingsDirectory = ResourceManager.GetResourcePath("");
 
-                var filePath = Path.Combine(
+                string filePath = Path.Combine(
                     settingsDirectory,
                     ClientSettingsFileName);
 
@@ -169,7 +169,7 @@ namespace Supremacy.Client
                
                 if (File.Exists(filePath))
                 {
-                    using (var fileReader = File.OpenRead(filePath))
+                    using (FileStream fileReader = File.OpenRead(filePath))
                     {
                         settings = new ClientSettings();
                         try

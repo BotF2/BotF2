@@ -57,7 +57,7 @@ namespace Supremacy.Scripting.Ast
 
         public override FullNamedExpression ResolveAsTypeStep(ParseContext ec, bool silent)
         {
-            var resolvedType = DoResolveAsTypeStep(ec);
+            TypeExpression resolvedType = DoResolveAsTypeStep(ec);
             if (resolvedType == null)
             {
                 return null;

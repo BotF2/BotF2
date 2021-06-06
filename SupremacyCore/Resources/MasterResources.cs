@@ -26,11 +26,11 @@ namespace Supremacy.Resources
                     GameLog.Core.XML2CSVOutput.DebugFormat("{0} for writing z_FromCivilizationsXML_(autoCreated).csv - may hang up a start of the game", _traceCivilizationsXML);
                     if (_traceCivilizationsXML == true)
                     {
-                        var pathOutputFile = "./Resources/Data/";  // instead of ./Resources/Data/
-                        var separator = ";";
-                        var line = "";
+                        string pathOutputFile = "./Resources/Data/";  // instead of ./Resources/Data/
+                        string separator = ";";
+                        string line = "";
                         StreamWriter streamWriter;
-                        var file = "./lib/testCiv.txt";
+                        string file = "./lib/testCiv.txt";
                         streamWriter = new StreamWriter(file);
                         String strHeader;  // first line of output files
 
@@ -67,7 +67,7 @@ namespace Supremacy.Resources
 
                             GameLog.Core.GameData.InfoFormat("begin writing z_FromCivilizationsXML_(autoCreated).csv ... would breaks if dismatch of Keys between Civ..xml and Races.xml");
                             string RaceName = "";
-                            foreach (var civ in m_CivDatabase)   // each civ
+                            foreach (Civilization civ in m_CivDatabase)   // each civ
                             {
                                 //App.DoEvents();  // for avoid error after 60 seconds
 

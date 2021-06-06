@@ -52,16 +52,16 @@ namespace Supremacy.Universe
             PlanetTypeModToMoonSizeDist = new Dictionary<Tuple<PlanetType, MoonSize>, int>();
 
 
-            foreach (var starType in EnumHelper.GetValues<StarType>())
+            foreach (StarType starType in EnumHelper.GetValues<StarType>())
             {
                 StarTypeDist[starType] = Number.ParseInt32(UniverseTables["StarTypeDist"][starType.ToString()][0]);
-                foreach (var planetSize in EnumHelper.GetValues<PlanetSize>())
+                foreach (PlanetSize planetSize in EnumHelper.GetValues<PlanetSize>())
                 {
                     StarTypeModToPlanetSizeDist[new Tuple<StarType, PlanetSize>(starType, planetSize)] =
                         Number.ParseInt32(
                             UniverseTables["StarTypeModToPlanetSizeDist"][starType.ToString()][planetSize.ToString()]);
                 }
-                foreach (var planetType in EnumHelper.GetValues<PlanetType>())
+                foreach (PlanetType planetType in EnumHelper.GetValues<PlanetType>())
                 {
                     StarTypeModToPlanetTypeDist[new Tuple<StarType, PlanetType>(starType, planetType)] =
                         Number.ParseInt32(
@@ -69,23 +69,23 @@ namespace Supremacy.Universe
                 }
             }
 
-            for (var i = 0; i < StarSystem.MaxPlanetsPerSystem; i++)
+            for (int i = 0; i < StarSystem.MaxPlanetsPerSystem; i++)
             {
-                foreach (var planetSize in EnumHelper.GetValues<PlanetSize>())
+                foreach (PlanetSize planetSize in EnumHelper.GetValues<PlanetSize>())
                 {
                     SlotModToPlanetSizeDist[new Tuple<int, PlanetSize>(i, planetSize)] =
                         Number.ParseInt32(UniverseTables["SlotModToPlanetSizeDist"][i][planetSize.ToString()]);
                 }
-                foreach (var planetType in EnumHelper.GetValues<PlanetType>())
+                foreach (PlanetType planetType in EnumHelper.GetValues<PlanetType>())
                 {
                     SlotModToPlanetTypeDist[new Tuple<int, PlanetType>(i, planetType)] =
                         Number.ParseInt32(UniverseTables["SlotModToPlanetTypeDist"][i][planetType.ToString()]);
                 }
             }
 
-            foreach (var planetSize in EnumHelper.GetValues<PlanetSize>())
+            foreach (PlanetSize planetSize in EnumHelper.GetValues<PlanetSize>())
             {
-                foreach (var planetType in EnumHelper.GetValues<PlanetType>())
+                foreach (PlanetType planetType in EnumHelper.GetValues<PlanetType>())
                 {
                     PlanetSizeModToPlanetTypeDist[new Tuple<PlanetSize, PlanetType>(planetSize, planetType)] =
                         Number.ParseInt32(
@@ -94,15 +94,15 @@ namespace Supremacy.Universe
                 }
             }
 
-            foreach (var moonSize in EnumHelper.GetValues<MoonSize>())
+            foreach (MoonSize moonSize in EnumHelper.GetValues<MoonSize>())
             {
-                foreach (var planetSize in EnumHelper.GetValues<PlanetSize>())
+                foreach (PlanetSize planetSize in EnumHelper.GetValues<PlanetSize>())
                 {
                     PlanetSizeModToMoonSizeDist[new Tuple<PlanetSize, MoonSize>(planetSize, moonSize)] =
                         Number.ParseInt32(
                             UniverseTables["PlanetSizeModToMoonSizeDist"][planetSize.ToString()][moonSize.ToString()]);
                 }
-                foreach (var planetType in EnumHelper.GetValues<PlanetType>())
+                foreach (PlanetType planetType in EnumHelper.GetValues<PlanetType>())
                 {
                     PlanetTypeModToMoonSizeDist[new Tuple<PlanetType, MoonSize>(planetType, moonSize)] =
                         Number.ParseInt32(
@@ -113,18 +113,18 @@ namespace Supremacy.Universe
 
         private static CollectionBase<string> GetStarNames()
         {
-            var file = new FileStream(
+            FileStream file = new FileStream(
                 ResourceManager.GetResourcePath("Resources/Data/StarNames.txt"),
                 FileMode.Open,
                 FileAccess.Read);
 
-            var names = new CollectionBase<string>();
+            CollectionBase<string> names = new CollectionBase<string>();
 
-            using (var reader = new StreamReader(file))
+            using (StreamReader reader = new StreamReader(file))
             {
                 while (!reader.EndOfStream)
                 {
-                    var line = reader.ReadLine();
+                    string line = reader.ReadLine();
                     if (line == null)
                         break;
                     names.Add(line.Trim());
@@ -154,18 +154,18 @@ namespace Supremacy.Universe
 
         private static IList<string> GetNebulaNames()
         {
-            var file = new FileStream(
+            FileStream file = new FileStream(
                 ResourceManager.GetResourcePath("Resources/Data/NebulaNames.txt"),
                 FileMode.Open,
                 FileAccess.Read);
 
-            var names = new List<string>();
+            List<string> names = new List<string>();
 
-            using (var reader = new StreamReader(file))
+            using (StreamReader reader = new StreamReader(file))
             {
                 while (!reader.EndOfStream)
                 {
-                    var line = reader.ReadLine();
+                    string line = reader.ReadLine();
                     if (line == null)
                         break;
                     //GameLog.Core.GalaxyGenerator.DebugFormat("Nebula Name = {0}", line);
@@ -195,7 +195,7 @@ namespace Supremacy.Universe
 
         private static int GetMinDistanceBetweenHomeworlds()
         {
-            var size = Math.Min(GameContext.Current.Universe.Map.Width, GameContext.Current.Universe.Map.Height);
+            int size = Math.Min(GameContext.Current.Universe.Map.Width, GameContext.Current.Universe.Map.Height);
 
             // If its an MP game, we want the different Empires to be sufficiently far away from each others
             // TODO Disabled this for now as it turns out that it is still able to fail to place homeworlds.
@@ -207,10 +207,10 @@ namespace Supremacy.Universe
             }*/
 
             // Ensure empireCount has a positive value to avoid a divide-by-zero error.
-            var empireCount = Math.Max(1, GameContext.Current.Civilizations.Count(o => o.IsEmpire));
+            int empireCount = Math.Max(1, GameContext.Current.Civilizations.Count(o => o.IsEmpire));
 
             // new 2019-09-28: try to avoid crashes at TINY galaxies
-            var minDistance = size / empireCount;
+            int minDistance = size / empireCount;
 
             if (GameContext.Current.Options.GalaxyShape == GalaxyShape.Elliptical || GameContext.Current.Options.GalaxyShape == GalaxyShape.Cluster)
             {
@@ -236,16 +236,16 @@ namespace Supremacy.Universe
                     UniverseTables = TableMap.ReadFromFile(
                         ResourceManager.GetResourcePath("Resources/Data/UniverseTables.txt"));
 
-                    var galaxySizes = UniverseTables["GalaxySizes"];
+                    Table galaxySizes = UniverseTables["GalaxySizes"];
 
-                    var mapSize = new Dimension(
+                    Dimension mapSize = new Dimension(
                         Number.ParseInt32(galaxySizes[game.Options.GalaxySize.ToString()]["Width"]),
                         Number.ParseInt32(galaxySizes[game.Options.GalaxySize.ToString()]["Height"]));
 
                     GameContext.Current.Universe = new UniverseManager(mapSize);
 
-                    var starPositions = GetStarPositions().ToList();
-                    var starNames = GetStarNames();
+                    List<MapLocation> starPositions = GetStarPositions().ToList();
+                    CollectionBase<string> starNames = GetStarNames();
 
                     starNames.RandomizeInPlace();
 
@@ -262,7 +262,7 @@ namespace Supremacy.Universe
                     MapLocation? bajoranWormholeLocation = null;
                     if (GameContext.Current.Universe.Find<StarSystem>().TryFindFirstItem(s => s.Name == "Bajor", out StarSystem bajoranSystem))
                     {
-                        foreach (var sector in bajoranSystem.Sector.GetNeighbors())
+                        foreach (Sector sector in bajoranSystem.Sector.GetNeighbors())
                         {
                             if ((sector.System == null) && (GameContext.Current.Universe.Map.GetQuadrant(sector) == Quadrant.Alpha))
                             {
@@ -278,7 +278,7 @@ namespace Supremacy.Universe
                     MapLocation desiredLocation = new MapLocation(GameContext.Current.Universe.Map.Width / 4, GameContext.Current.Universe.Map.Height / 4);
                     if (GameContext.Current.Universe.Map[desiredLocation].System != null)
                     {
-                        foreach (var sector in GameContext.Current.Universe.Map[desiredLocation].GetNeighbors())
+                        foreach (Sector sector in GameContext.Current.Universe.Map[desiredLocation].GetNeighbors())
                         {
                             if (sector.System == null)
                             {
@@ -337,9 +337,9 @@ namespace Supremacy.Universe
         {
             IGalaxyLayout layout;
 
-            var width = GameContext.Current.Universe.Map.Width;
-            var height = GameContext.Current.Universe.Map.Height;
-            var number = width * height;
+            int width = GameContext.Current.Universe.Map.Width;
+            int height = GameContext.Current.Universe.Map.Height;
+            int number = width * height;
 
             switch (GameContext.Current.Options.StarDensity)
             {
@@ -378,7 +378,7 @@ namespace Supremacy.Universe
 
             layout.GetStarPositions(out ICollection<MapLocation> positions, number, width, height);
 
-            var result = new CollectionBase<MapLocation>(positions.Count);
+            CollectionBase<MapLocation> result = new CollectionBase<MapLocation>(positions.Count);
 
             positions.CopyTo(result);
 
@@ -387,7 +387,7 @@ namespace Supremacy.Universe
 
         public static StarSystemDescriptor GenerateHomeSystem(Civilization civ)
         {
-            var system = new StarSystemDescriptor
+            StarSystemDescriptor system = new StarSystemDescriptor
             {
                 StarType = GetStarType(true),
                 Name = civ.HomeSystemName,
@@ -406,7 +406,7 @@ namespace Supremacy.Universe
         {
             if (system == null)
                 throw new ArgumentNullException("system");
-            for (var i = 0; i < system.Planets.Count; i++)
+            for (int i = 0; i < system.Planets.Count; i++)
             {
                 if (string.IsNullOrEmpty(system.Planets[i].Name))
                 {
@@ -419,14 +419,14 @@ namespace Supremacy.Universe
 
         private static int GetIdealSlot(StarSystemDescriptor system, PlanetDescriptor planet)
         {
-            var bestScore = 0;
-            var bestSlot = 0;
+            int bestScore = 0;
+            int bestSlot = 0;
 
             // ReSharper disable PossibleInvalidOperationException
 
-            for (var iSlot = 0; iSlot <= system.Planets.Count; iSlot++)
+            for (int iSlot = 0; iSlot <= system.Planets.Count; iSlot++)
             {
-                var score = GetPlanetSizeScore(system.StarType.Value, planet.Size.Value, iSlot) +
+                int score = GetPlanetSizeScore(system.StarType.Value, planet.Size.Value, iSlot) +
                             GetPlanetTypeScore(system.StarType.Value, planet.Size.Value, planet.Type.Value, iSlot);
 
                 if (score > bestScore)
@@ -446,17 +446,17 @@ namespace Supremacy.Universe
             Civilization civ,
             MapLocation location)
         {
-            var civManager = new CivilizationManager(GameContext.Current, civ);
+            CivilizationManager civManager = new CivilizationManager(GameContext.Current, civ);
 
             GameContext.Current.CivilizationManagers.Add(civManager);
 
-            var homeSystemDescriptor = homeSystemDatabase.ContainsKey(civ.Key)
+            StarSystemDescriptor homeSystemDescriptor = homeSystemDatabase.ContainsKey(civ.Key)
                                         ? homeSystemDatabase[civ.Key]
                                         : GenerateHomeSystem(civ);
 
-            var planets = new List<Planet>();
-            var race = civ.Race;
-            var homeSystem = new StarSystem();
+            List<Planet> planets = new List<Planet>();
+            Race race = civ.Race;
+            StarSystem homeSystem = new StarSystem();
 
             if (!homeSystemDescriptor.IsNameDefined)
             {
@@ -494,7 +494,7 @@ namespace Supremacy.Universe
             else
                 GenerateUnspecifiedPlanets(homeSystemDescriptor);
 
-            foreach (var planetDescriptor in homeSystemDescriptor.Planets)
+            foreach (PlanetDescriptor planetDescriptor in homeSystemDescriptor.Planets)
             {
                 if (planets.Count >= StarHelper.MaxNumberOfPlanets(homeSystem.StarType))
                     break;
@@ -502,7 +502,7 @@ namespace Supremacy.Universe
                 if (!planetDescriptor.IsSinglePlanet)
                     continue;
 
-                var planet = new Planet();
+                Planet planet = new Planet();
 
                 if (planetDescriptor.IsNameDefined)
                     planet.Name = planetDescriptor.Name;
@@ -562,10 +562,10 @@ namespace Supremacy.Universe
             bool mustRespectQuadrants)
 
         {
-            var minHomeDistance = GetMinDistanceBetweenHomeworlds();
+            int minHomeDistance = GetMinDistanceBetweenHomeworlds();
 
             //Go through all of the empires
-            for (var index = 0; index < empireCivs.Count; index++)
+            for (int index = 0; index < empireCivs.Count; index++)
             {
                 int iPosition;
                 //If we are respecting quadrants
@@ -658,16 +658,16 @@ namespace Supremacy.Universe
             bool mustRespectQuadrants)
         {
             //Firstly, we need to find out how many minor races that we need
-            var minorRaceFrequency = GameContext.Current.Options.MinorRaceFrequency.ToString();
+            string minorRaceFrequency = GameContext.Current.Options.MinorRaceFrequency.ToString();
             float minorRacePercentage = 0.25f;
             int minorRaceLimit = 9999;
 
-            var minorRaceTable = GameContext.Current.Tables.UniverseTables["MinorRaceFrequency"];
+            Table minorRaceTable = GameContext.Current.Tables.UniverseTables["MinorRaceFrequency"];
             if (minorRaceTable != null)
             {
                 try
                 {
-                    var divisor = (double?)minorRaceTable.GetValue(minorRaceFrequency, "AvailableSystemsDivisor");
+                    double? divisor = (double?)minorRaceTable.GetValue(minorRaceFrequency, "AvailableSystemsDivisor");
                     if (divisor.HasValue)
                     {
                         minorRacePercentage = (float)(1d / divisor.Value);
@@ -680,7 +680,7 @@ namespace Supremacy.Universe
 
                 try
                 {
-                    var limit = (int?)minorRaceTable.GetValue(minorRaceFrequency, "MaxCount");
+                    int? limit = (int?)minorRaceTable.GetValue(minorRaceFrequency, "MaxCount");
                     if (limit.HasValue)
                     {
                         minorRaceLimit = limit.Value;
@@ -701,7 +701,7 @@ namespace Supremacy.Universe
                 minorRacePercentage = Math.Min(1.0f, minorRacePercentage);
             }
 
-            var wantedMinorRaceCount = positions.Count * minorRacePercentage;
+            float wantedMinorRaceCount = positions.Count * minorRacePercentage;
             wantedMinorRaceCount = Math.Min(wantedMinorRaceCount, minorRaceLimit);
 
             //We now know how many minor races we need. Check whether there are enough
@@ -712,7 +712,7 @@ namespace Supremacy.Universe
             }
                 
             //There are enough. Find their homes
-            for (var index = 0; index < wantedMinorRaceCount; index++)
+            for (int index = 0; index < wantedMinorRaceCount; index++)
             {
                 int iPosition;
                 //If we are respecting the quadrants
@@ -768,12 +768,12 @@ namespace Supremacy.Universe
             IList<string> starNames,
             out CollectionBase<MapLocation> homeLocations)
         {
-            var homeSystemDatabase = HomeSystemsDatabase.Load();
-            var minorRaceFrequency = GameContext.Current.Options.MinorRaceFrequency;
-            var empires = new List<Civilization>();
-            var minorRaces = new List<Civilization>();
+            HomeSystemsDatabase homeSystemDatabase = HomeSystemsDatabase.Load();
+            MinorRaceFrequency minorRaceFrequency = GameContext.Current.Options.MinorRaceFrequency;
+            List<Civilization> empires = new List<Civilization>();
+            List<Civilization> minorRaces = new List<Civilization>();
 
-            foreach (var civ in GameContext.Current.Civilizations)
+            foreach (Civilization civ in GameContext.Current.Civilizations)
             {
                 if (civ.IsEmpire)
                 {
@@ -792,13 +792,13 @@ namespace Supremacy.Universe
             //move it forward in the randomized minorRaces list
 
             homeLocations = new CollectionBase<MapLocation>();
-            var chosenCivs = new List<Civilization>();
+            List<Civilization> chosenCivs = new List<Civilization>();
 
             bool result = PlaceEmpireHomeworlds(positions, starNames, homeSystemDatabase, empires, homeLocations, chosenCivs, GameContext.Current.Options.GalaxyCanon == GalaxyCanon.Canon);
             if (minorRaceFrequency != MinorRaceFrequency.None)
                 PlaceMinorRaceHomeworlds(positions, starNames, homeSystemDatabase, minorRaces, homeLocations, chosenCivs, GameContext.Current.Options.GalaxyCanon == GalaxyCanon.Canon);
 
-            var unusedCivs = GameContext.Current.Civilizations.Except(chosenCivs).Select(o => o.CivID).ToHashSet();
+            HashSet<int> unusedCivs = GameContext.Current.Civilizations.Except(chosenCivs).Select(o => o.CivID).ToHashSet();
 
             GameContext.Current.Civilizations.RemoveRange(unusedCivs);
             GameContext.Current.CivilizationManagers.RemoveRange(unusedCivs);
@@ -832,10 +832,10 @@ namespace Supremacy.Universe
 
             system.RemoveBonus(SystemBonus.Random);
 
-            var foodPlacementCount = 0;
-            var energyPlacementCount = 0;
+            int foodPlacementCount = 0;
+            int energyPlacementCount = 0;
 
-            foreach (var planet in system.Planets)
+            foreach (Planet planet in system.Planets)
             {
                 if (planet.HasFoodBonus)
                     ++foodPlacementCount;
@@ -847,7 +847,7 @@ namespace Supremacy.Universe
             /*
              * Energy and Food Planet Bonus
              */
-            foreach (var planet in system.Planets)
+            foreach (Planet planet in system.Planets)
             {
                 if (planet.HasBonus(PlanetBonus.Random))
                 {
@@ -879,7 +879,7 @@ namespace Supremacy.Universe
 
         private static void GeneratePlanetsWithHomeworld(StarSystemDescriptor system, Civilization civ)
         {
-            var homePlanet = new PlanetDescriptor();
+            PlanetDescriptor homePlanet = new PlanetDescriptor();
             PlanetSize planetSize;
             homePlanet.Type = civ.Race.HomePlanetType;
             while (!(planetSize = EnumUtilities.NextEnum<PlanetSize>()).IsHabitable())
@@ -909,8 +909,8 @@ namespace Supremacy.Universe
 
         private static int GetDefinedPlanetCount(StarSystemDescriptor system)
         {
-            var result = 0;
-            foreach (var planetDescriptor in system.Planets)
+            int result = 0;
+            foreach (PlanetDescriptor planetDescriptor in system.Planets)
             {
                 if (planetDescriptor.IsSinglePlanet)
                     result++;
@@ -925,13 +925,13 @@ namespace Supremacy.Universe
             {
                 system.StarType = GetStarType(true);
             }
-            for (var i = 0; i < system.Planets.Count; i++)
+            for (int i = 0; i < system.Planets.Count; i++)
             {
                 if (!system.Planets[i].IsSinglePlanet)
                 {
-                    var attemptNumber = 0;
-                    var newPlanets = 0;
-                    var planetDescriptor = system.Planets[i];
+                    int attemptNumber = 0;
+                    int newPlanets = 0;
+                    PlanetDescriptor planetDescriptor = system.Planets[i];
 
                     initialCount = GetDefinedPlanetCount(system);
                     system.Planets.RemoveAt(i--);
@@ -941,10 +941,10 @@ namespace Supremacy.Universe
                     while ((newPlanets < planetDescriptor.MinNumberOfPlanets || attemptNumber < planetDescriptor.MaxNumberOfPlanets) &&
                            initialCount + attemptNumber < StarHelper.MaxNumberOfPlanets(system.StarType.Value))
                     {
-                        var planetSize = GetPlanetSize(system.StarType.Value, initialCount);
+                        PlanetSize planetSize = GetPlanetSize(system.StarType.Value, initialCount);
                         if (planetSize != PlanetSize.NoWorld)
                         {
-                            var planet = new PlanetDescriptor
+                            PlanetDescriptor planet = new PlanetDescriptor
                             {
                                 Size = planetSize,
                                 Type = GetPlanetType(
@@ -965,9 +965,9 @@ namespace Supremacy.Universe
 
             // ReSharper disable PossibleInvalidOperationException
 
-            for (var i = 0; i < system.Planets.Count; i++)
+            for (int i = 0; i < system.Planets.Count; i++)
             {
-                var planetDescriptor = system.Planets[i];
+                PlanetDescriptor planetDescriptor = system.Planets[i];
                 if (planetDescriptor.IsSinglePlanet)
                 {
                     if (!planetDescriptor.IsSizeDefined)
@@ -983,15 +983,15 @@ namespace Supremacy.Universe
 
             initialCount = GetDefinedPlanetCount(system);
 
-            for (var i = 0;
+            for (int i = 0;
                  (i < maxNewPlanets) &&
                  ((initialCount + i) < StarHelper.MaxNumberOfPlanets(system.StarType.Value));
                  i++)
             {
-                var planetSize = GetPlanetSize(system.StarType.Value, initialCount + i);
+                PlanetSize planetSize = GetPlanetSize(system.StarType.Value, initialCount + i);
                 if (planetSize != PlanetSize.NoWorld)
                 {
-                    var planet = new PlanetDescriptor
+                    PlanetDescriptor planet = new PlanetDescriptor
                     {
                         Size = planetSize,
                         Type = GetPlanetType(system.StarType.Value, planetSize, initialCount + i)
@@ -1005,8 +1005,8 @@ namespace Supremacy.Universe
 
         private static void CreateHomeColony(Civilization civ, StarSystem system, Race inhabitants)
         {
-            var civManager = GameContext.Current.CivilizationManagers[civ];
-            var colony = new Colony(system, inhabitants);
+            CivilizationManager civManager = GameContext.Current.CivilizationManagers[civ];
+            Colony colony = new Colony(system, inhabitants);
 
             colony.Population.BaseValue = (int)(0.6f * system.GetMaxPopulation(inhabitants));
             colony.Population.Reset();
@@ -1029,7 +1029,7 @@ namespace Supremacy.Universe
             IIndexedCollection<MapLocation> homeLocations)
         {
             int maxPlanets;
-            var nebulaNames = GetNebulaNames();
+            IList<string> nebulaNames = GetNebulaNames();
 
             switch (GameContext.Current.Options.PlanetDensity)
             {
@@ -1046,7 +1046,7 @@ namespace Supremacy.Universe
 
             nebulaNames.RandomizeInPlace();
 
-            var gameContext = GameContext.Current;
+            GameContext gameContext = GameContext.Current;
 
             Parallel.ForEach(
                 positions,
@@ -1056,8 +1056,8 @@ namespace Supremacy.Universe
 
                     try
                     {
-                        var system = new StarSystem();
-                        var planets = new List<Planet>();
+                        StarSystem system = new StarSystem();
+                        List<Planet> planets = new List<Planet>();
 
                         StarType starType;
 
@@ -1135,12 +1135,12 @@ namespace Supremacy.Universe
                         //doesn't work atm:   if (starType.SupportsPlanets())
                         if (_supportPlanets == true)
                         {
-                            for (var i = 0; i < maxPlanets - 1; i++)
+                            for (int i = 0; i < maxPlanets - 1; i++)
                             {
-                                var planetSize = GetPlanetSize(system.StarType, i);
+                                PlanetSize planetSize = GetPlanetSize(system.StarType, i);
                                 if (planetSize != PlanetSize.NoWorld)
                                 {
-                                    var planet = new Planet
+                                    Planet planet = new Planet
                                                  {
                                                      PlanetSize = planetSize,
                                                      PlanetType = GetPlanetType(system.StarType, planetSize, i),
@@ -1156,7 +1156,7 @@ namespace Supremacy.Universe
 
                             if (planets.Count > 0)
                             {
-                                var rndSystemBonusType = RandomHelper.Random(8);
+                                int rndSystemBonusType = RandomHelper.Random(8);
                                 switch (rndSystemBonusType)
                                 {
                                     case 1:
@@ -1184,7 +1184,7 @@ namespace Supremacy.Universe
                         GameContext.Current.Universe.Objects.Add(system);
                         GameContext.Current.Universe.Map[position].System = system;
 
-                        var systemNamesList = GameContext.Current.Universe.Objects.Where(o => o.ObjectType == UniverseObjectType.StarSystem);
+                        IEnumerable<UniverseObject> systemNamesList = GameContext.Current.Universe.Objects.Where(o => o.ObjectType == UniverseObjectType.StarSystem);
 
                         //foreach (var pos in positions)
                         //{
@@ -1223,18 +1223,18 @@ namespace Supremacy.Universe
 
         private static void LinkWormholes()
         {
-            var wormholes = GameContext.Current.Universe.Find<StarSystem>(s => s.StarType == StarType.Wormhole).ToList();
+            List<StarSystem> wormholes = GameContext.Current.Universe.Find<StarSystem>(s => s.StarType == StarType.Wormhole).ToList();
 
-            foreach (var wormhole in wormholes)
+            foreach (StarSystem wormhole in wormholes)
             {
                 //Everything less than Nebula is a proper star
 
                 string notFinalName = GameContext.Current.Universe.FindNearest<StarSystem>(wormhole.Location,
                     s => s.StarType < StarType.Nebula, false).Name;
 
-                var emp = GameContext.Current.CivilizationManagers.Where(c => c.CivilizationID < 7);
+                IEnumerable<CivilizationManager> emp = GameContext.Current.CivilizationManagers.Where(c => c.CivilizationID < 7);
 
-                foreach (var cID in emp)
+                foreach (CivilizationManager cID in emp)
                 {
                     if (notFinalName == cID.HomeColony.Name)
                         notFinalName = "Wormhole";
@@ -1262,12 +1262,12 @@ namespace Supremacy.Universe
         /// <returns></returns>
         private static StarType GetStarType(bool supportsPlanets)
         {
-            var result = StarType.White;
-            var maxRoll = 0;
+            StarType result = StarType.White;
+            int maxRoll = 0;
 
-            foreach (var type in EnumUtilities.GetValues<StarType>().Where(s => s.SupportsPlanets() == supportsPlanets))
+            foreach (StarType type in EnumUtilities.GetValues<StarType>().Where(s => s.SupportsPlanets() == supportsPlanets))
             {
-                var currentRoll = RandomHelper.Roll(100 + StarTypeDist[type]);
+                int currentRoll = RandomHelper.Roll(100 + StarTypeDist[type]);
                 if (currentRoll > maxRoll)
                 {
                     result = type;
@@ -1287,11 +1287,11 @@ namespace Supremacy.Universe
 
         private static PlanetSize GetPlanetSize(StarType starType, int slot)
         {
-            var result = PlanetSize.NoWorld;
-            var maxRoll = 0;
-            foreach (var size in EnumUtilities.GetValues<PlanetSize>())
+            PlanetSize result = PlanetSize.NoWorld;
+            int maxRoll = 0;
+            foreach (PlanetSize size in EnumUtilities.GetValues<PlanetSize>())
             {
-                var currentRoll = GetPlanetSizeScore(starType, size, slot);
+                int currentRoll = GetPlanetSizeScore(starType, size, slot);
                 if (currentRoll > maxRoll)
                 {
                     result = size;
@@ -1308,12 +1308,12 @@ namespace Supremacy.Universe
                 return PlanetType.Asteroids;
             }
 
-            var result = PlanetType.Barren;
-            var maxRoll = 0;
+            PlanetType result = PlanetType.Barren;
+            int maxRoll = 0;
 
-            foreach (var type in EnumUtilities.GetValues<PlanetType>())
+            foreach (PlanetType type in EnumUtilities.GetValues<PlanetType>())
             {
-                var currentRoll = GetPlanetTypeScore(starType, size, type, slot);
+                int currentRoll = GetPlanetTypeScore(starType, size, type, slot);
                 if (currentRoll > maxRoll)
                 {
                     result = type;
@@ -1334,12 +1334,12 @@ namespace Supremacy.Universe
 
         private static void PlaceMoons()
         {
-            var moons = new List<MoonType>(Planet.MaxMoonsPerPlanet);
-            foreach (var system in GameContext.Current.Universe.Find<StarSystem>())
+            List<MoonType> moons = new List<MoonType>(Planet.MaxMoonsPerPlanet);
+            foreach (StarSystem system in GameContext.Current.Universe.Find<StarSystem>())
             {
-                foreach (var planet in system.Planets)
+                foreach (Planet planet in system.Planets)
                 {
-                    var handicap = 0;
+                    int handicap = 0;
 
                     moons.Clear();
 
@@ -1348,14 +1348,14 @@ namespace Supremacy.Universe
                         continue;
                     }
 
-                    for (var i = 0; i < Planet.MaxMoonsPerPlanet; i++)
+                    for (int i = 0; i < Planet.MaxMoonsPerPlanet; i++)
                     {
-                        var maxRoll = handicap;
-                        var moonSize = MoonSize.NoMoon;
+                        int maxRoll = handicap;
+                        MoonSize moonSize = MoonSize.NoMoon;
 
-                        foreach (var moon in EnumUtilities.GetValues<MoonSize>())
+                        foreach (MoonSize moon in EnumUtilities.GetValues<MoonSize>())
                         {
-                            var currentRoll = RandomHelper.Roll(100)
+                            int currentRoll = RandomHelper.Roll(100)
                                               + PlanetSizeModToMoonSizeDist[new Tuple<PlanetSize, MoonSize>(planet.PlanetSize, moon)]
                                               + PlanetTypeModToMoonSizeDist[new Tuple<PlanetType, MoonSize>(planet.PlanetType, moon)]
                                               - handicap;

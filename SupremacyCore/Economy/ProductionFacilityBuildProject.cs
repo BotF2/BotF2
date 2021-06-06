@@ -121,8 +121,8 @@ namespace Supremacy.Economy
         {
             get
             {
-                var count = Source.GetTotalFacilities(BaseFacilityType.Category);
-                var unitCost = (int)(0.50 * base.IndustryRequired);
+                int count = Source.GetTotalFacilities(BaseFacilityType.Category);
+                int unitCost = (int)(0.50 * base.IndustryRequired);
                 return (count * unitCost);
             }
         }
@@ -135,7 +135,7 @@ namespace Supremacy.Economy
         {
             Source.SetFacilityType(FacilityDesign.Category, FacilityDesign);
 
-            var civManager = GameContext.Current.CivilizationManagers[Builder];
+            CivilizationManager civManager = GameContext.Current.CivilizationManagers[Builder];
             if (civManager == null)
                 return;
 
@@ -170,8 +170,8 @@ namespace Supremacy.Economy
         {
             get
             {
-                var count = Source.TotalOrbitalBatteries;
-                var unitCost = (int)(0.50 * base.IndustryRequired);
+                int count = Source.TotalOrbitalBatteries;
+                int unitCost = (int)(0.50 * base.IndustryRequired);
                 return (count * unitCost);
             }
         }
@@ -182,7 +182,7 @@ namespace Supremacy.Economy
 
         public override void Finish()
         {
-            var civManager = GameContext.Current.CivilizationManagers[Builder];
+            CivilizationManager civManager = GameContext.Current.CivilizationManagers[Builder];
 
             Source.OrbitalBatteryDesign = OrbitalBatteryDesign;
 
@@ -198,9 +198,9 @@ namespace Supremacy.Economy
         {
             _baseTypeId = colony.OrbitalBatteryDesign.DesignID;
 
-            var resourcesRequired = new ResourceValueCollection();
+            ResourceValueCollection resourcesRequired = new ResourceValueCollection();
 
-            foreach (var resourceType in EnumHelper.GetValues<ResourceType>())
+            foreach (ResourceType resourceType in EnumHelper.GetValues<ResourceType>())
                 resourcesRequired[resourceType] = (int)Math.Ceiling(base.ResourcesRequired[resourceType] / 2d);
             _resourcesRequired = resourcesRequired;
         }

@@ -53,7 +53,7 @@ namespace Supremacy.Effects
 
         protected override IEffectParameterBindingCollection BindSystemParameters(ParameterBindingContext bindingContext)
         {
-            var additionalBindings = new[]
+            EffectParameterBinding[] additionalBindings = new[]
                                      {
                                          new EffectParameterBinding(
                                              Effect.SystemParameters[SetPropertyEffect.ParameterNameBaseValue],
@@ -118,9 +118,9 @@ namespace Supremacy.Effects
             {
                 if (_currentValueProvider != null)
                     ((INotifyPropertyChanged)_currentValueProvider).PropertyChanged -= OnObservableValueChanged;
-                
-                var context = new ParameterBindingContext(baseValue, currentValue);
-                var mergedRuntimeScriptParameters = _effectBinding.GetMergedRuntimeScriptParameters(context);
+
+                ParameterBindingContext context = new ParameterBindingContext(baseValue, currentValue);
+                Scripting.RuntimeScriptParameters mergedRuntimeScriptParameters = _effectBinding.GetMergedRuntimeScriptParameters(context);
 
                 _currentValueProvider = _effectBinding.Effect.ValueScript.Evaluate<IValueProvider<TValue>>(
                     mergedRuntimeScriptParameters);

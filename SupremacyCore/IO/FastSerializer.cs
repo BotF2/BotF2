@@ -751,10 +751,10 @@ namespace Supremacy.IO.Serialization
         /// <param name="value">The generic dictionary.</param>
         public void Write<K, V>(IDictionary<K, V> value)
         {
-            var keys = new K[value.Count];
+            K[] keys = new K[value.Count];
             value.Keys.CopyTo(keys, 0);
 
-            var values = new V[value.Count];
+            V[] values = new V[value.Count];
             value.Values.CopyTo(values, 0);
 
             writeTypedArray(keys, false);
@@ -871,7 +871,7 @@ namespace Supremacy.IO.Serialization
 
             else if (value is Int32)
             {
-                var int32Value = (int)value;
+                int int32Value = (int)value;
                 if (int32Value == 0)
                     writeTypeCode(SerializedType.ZeroInt32Type);
                 else if (int32Value == (-1))
@@ -918,7 +918,7 @@ namespace Supremacy.IO.Serialization
 
             else if (value is Decimal)
             {
-                var decimalValue = (Decimal)value;
+                decimal decimalValue = (Decimal)value;
                 if (decimalValue == 0)
                     writeTypeCode(SerializedType.ZeroDecimalType);
                 else if (decimalValue == 1)
@@ -932,7 +932,7 @@ namespace Supremacy.IO.Serialization
 
             else if (value is DateTime)
             {
-                var dateTimeValue = (DateTime)value;
+                DateTime dateTimeValue = (DateTime)value;
                 if (dateTimeValue == DateTime.MinValue)
                     writeTypeCode(SerializedType.MinDateTimeType);
                 else if (dateTimeValue == DateTime.MaxValue)
@@ -951,7 +951,7 @@ namespace Supremacy.IO.Serialization
 
             else if (value is Double)
             {
-                var doubleValue = (Double)value;
+                double doubleValue = (Double)value;
                 if (doubleValue == 0)
                     writeTypeCode(SerializedType.ZeroDoubleType);
                 else if (doubleValue == 1)
@@ -965,7 +965,7 @@ namespace Supremacy.IO.Serialization
 
             else if (value is Single)
             {
-                var singleValue = (Single)value;
+                float singleValue = (Single)value;
                 if (singleValue == 0)
                     writeTypeCode(SerializedType.ZeroSingleType);
                 else if (singleValue == 1)
@@ -979,7 +979,7 @@ namespace Supremacy.IO.Serialization
 
             else if (value is Int16)
             {
-                var int16Value = (Int16)value;
+                short int16Value = (Int16)value;
                 if (int16Value == 0)
                     writeTypeCode(SerializedType.ZeroInt16Type);
                 else if (int16Value == (-1))
@@ -1018,7 +1018,7 @@ namespace Supremacy.IO.Serialization
 
             else if (value is Guid)
             {
-                var guidValue = (Guid)value;
+                Guid guidValue = (Guid)value;
                 if (guidValue == Guid.Empty)
                     writeTypeCode(SerializedType.EmptyGuidType);
                 else
@@ -1030,7 +1030,7 @@ namespace Supremacy.IO.Serialization
 
             else if (value is Int64)
             {
-                var int64Value = (Int64)value;
+                long int64Value = (Int64)value;
                 if (int64Value == 0)
                     writeTypeCode(SerializedType.ZeroInt64Type);
                 else if (int64Value == (-1))
@@ -1069,7 +1069,7 @@ namespace Supremacy.IO.Serialization
 
             else if (value is Byte)
             {
-                var byteValue = (Byte)value;
+                byte byteValue = (Byte)value;
                 if (byteValue == 0)
                     writeTypeCode(SerializedType.ZeroByteType);
                 else if (byteValue == 1)
@@ -1083,7 +1083,7 @@ namespace Supremacy.IO.Serialization
 
             else if (value is Char)
             {
-                var charValue = (Char)value;
+                char charValue = (Char)value;
                 if (charValue == (Char)0)
                     writeTypeCode(SerializedType.ZeroCharType);
                 else if (charValue == (Char)1)
@@ -1097,7 +1097,7 @@ namespace Supremacy.IO.Serialization
 
             else if (value is SByte)
             {
-                var sbyteValue = (SByte)value;
+                sbyte sbyteValue = (SByte)value;
                 if (sbyteValue == 0)
                     writeTypeCode(SerializedType.ZeroSByteType);
                 else if (sbyteValue == 1)
@@ -1111,7 +1111,7 @@ namespace Supremacy.IO.Serialization
 
             else if (value is UInt32)
             {
-                var uint32Value = (UInt32)value;
+                uint uint32Value = (UInt32)value;
                 if (uint32Value == 0)
                     writeTypeCode(SerializedType.ZeroUInt32Type);
                 else if (uint32Value == 1)
@@ -1130,7 +1130,7 @@ namespace Supremacy.IO.Serialization
 
             else if (value is UInt16)
             {
-                var uint16Value = (UInt16)value;
+                ushort uint16Value = (UInt16)value;
                 if (uint16Value == 0)
                     writeTypeCode(SerializedType.ZeroUInt16Type);
                 else if (uint16Value == 1)
@@ -1149,7 +1149,7 @@ namespace Supremacy.IO.Serialization
 
             else if (value is UInt64)
             {
-                var uint64Value = (UInt64)value;
+                ulong uint64Value = (UInt64)value;
                 if (uint64Value == 0)
                     writeTypeCode(SerializedType.ZeroUInt64Type);
                 else if (uint64Value == 1)
@@ -1168,7 +1168,7 @@ namespace Supremacy.IO.Serialization
 
             else if (value is TimeSpan)
             {
-                var timeSpanValue = (TimeSpan)value;
+                TimeSpan timeSpanValue = (TimeSpan)value;
                 if (timeSpanValue == TimeSpan.Zero)
                     writeTypeCode(SerializedType.ZeroTimeSpanType);
                 else if (_optimizeForSize && (timeSpanValue.Ticks % TimeSpan.TicksPerMillisecond) == 0)
@@ -1344,7 +1344,7 @@ namespace Supremacy.IO.Serialization
 
             if (value.Length > 0)
             {
-                var data = new byte[(value.Length + 7) / 8];
+                byte[] data = new byte[(value.Length + 7) / 8];
                 value.CopyTo(data, 0);
                 base.Write(data, 0, data.Length);
             }
@@ -1391,7 +1391,7 @@ namespace Supremacy.IO.Serialization
                 (value.Ticks % TimeSpan.TicksPerMillisecond) == 0,
                 "Cannot optimize a DateTime with sub-millisecond accuracy");
 
-            var dateMask = new BitVector32();
+            BitVector32 dateMask = new BitVector32();
             dateMask[DateYearMask] = value.Year;
             dateMask[DateMonthMask] = value.Month;
             dateMask[DateDayMask] = value.Day;
@@ -1427,7 +1427,7 @@ namespace Supremacy.IO.Serialization
         public void WriteOptimized(Decimal value)
         {
             int[] data = Decimal.GetBits(value);
-            var scale = (byte)(data[3] >> 16);
+            byte scale = (byte)(data[3] >> 16);
             byte flags = 0;
             if (scale != 0 && !_preserveDecimalScale && _optimizeForSize)
             {
@@ -2303,7 +2303,7 @@ namespace Supremacy.IO.Serialization
         /// <param name="initialData">The intial data for the BitVector32 - contains DateTimeKind or 0</param>
         private void encodeTimeSpan(TimeSpan value, bool partOfDateTime, int initialData)
         {
-            var packedData = new BitVector32(initialData);
+            BitVector32 packedData = new BitVector32(initialData);
             int days;
             int hours = Math.Abs(value.Hours);
             int minutes = Math.Abs(value.Minutes);
@@ -2390,7 +2390,7 @@ namespace Supremacy.IO.Serialization
         /// <param name="value">The Int32 value to encode.</param>
         private void write7bitEncodedSigned32BitValue(int value)
         {
-            var unsignedValue = unchecked((uint)value);
+            uint unsignedValue = unchecked((uint)value);
             while (unsignedValue >= 0x80)
             {
                 Write((byte)(unsignedValue | 0x80));
@@ -2410,7 +2410,7 @@ namespace Supremacy.IO.Serialization
         /// <param name="value">The Int64 value to encode.</param>
         private void write7bitEncodedSigned64BitValue(long value)
         {
-            var unsignedValue = unchecked((ulong)value);
+            ulong unsignedValue = unchecked((ulong)value);
             while (unsignedValue >= 0x80)
             {
                 Write((byte)(unsignedValue | 0x80));
@@ -3123,7 +3123,7 @@ namespace Supremacy.IO.Serialization
         [Conditional("DEBUG")]
         public void DumpTypeUsage()
         {
-            var sb = new StringBuilder("Type Usage Dump\r\n---------------\r\n");
+            StringBuilder sb = new StringBuilder("Type Usage Dump\r\n---------------\r\n");
             for (int i = 0; i < 256; i++)
             {
 #if DEBUG
@@ -3217,7 +3217,7 @@ namespace Supremacy.IO.Serialization
             {
                 _bucketListCapacity = s_primeNumberList[_primeNumberListIndex++];
                 _buckets = new int[_bucketListCapacity];
-                var newStringlist = new string[_bucketListCapacity];
+                string[] newStringlist = new string[_bucketListCapacity];
                 _stringList.CopyTo(newStringlist, 0);
                 _stringList = newStringlist;
                 reindex();
@@ -3442,7 +3442,7 @@ namespace Supremacy.IO.Serialization
                 default:
                 {
                     BitArray optimizeFlags = readTypedArrayOptimizeFlags(t);
-                    var result = new DateTime[ReadOptimizedInt32()];
+                        DateTime[] result = new DateTime[ReadOptimizedInt32()];
                     for (int i = 0; i < result.Length; i++)
                     {
                         if (optimizeFlags == null || (optimizeFlags != s_fullyOptimizableTypedArray && !optimizeFlags[i]))
@@ -3483,7 +3483,7 @@ namespace Supremacy.IO.Serialization
         /// <returns>A new, simple, populated generic Dictionary.</returns>
         public Dictionary<K, V> ReadDictionary<K, V>()
         {
-            var result = new Dictionary<K, V>();
+            Dictionary<K, V> result = new Dictionary<K, V>();
             ReadDictionary(result);
             return result;
         }
@@ -3496,8 +3496,8 @@ namespace Supremacy.IO.Serialization
         /// <typeparam name="V">The value Type.</typeparam>
         public void ReadDictionary<K, V>(Dictionary<K, V> dictionary)
         {
-            var keys = (K[])processArrayTypes(readTypeCode(), typeof(K));
-            var values = (V[])processArrayTypes(readTypeCode(), typeof(V));
+            K[] keys = (K[])processArrayTypes(readTypeCode(), typeof(K));
+            V[] values = (V[])processArrayTypes(readTypeCode(), typeof(V));
 
             if (dictionary == null)
                 dictionary = new Dictionary<K, V>(keys.Length);
@@ -3568,7 +3568,7 @@ namespace Supremacy.IO.Serialization
                 default:
                 {
                     BitArray optimizeFlags = readTypedArrayOptimizeFlags(t);
-                    var result = new short[ReadOptimizedInt32()];
+                        short[] result = new short[ReadOptimizedInt32()];
                     for (int i = 0; i < result.Length; i++)
                     {
                         if (optimizeFlags == null || (optimizeFlags != s_fullyOptimizableTypedArray && !optimizeFlags[i]))
@@ -3599,7 +3599,7 @@ namespace Supremacy.IO.Serialization
                 default:
                 {
                     BitArray optimizeFlags = readTypedArrayOptimizeFlags(t);
-                    var result = new int[ReadOptimizedInt32()];
+                        int[] result = new int[ReadOptimizedInt32()];
                     for (int i = 0; i < result.Length; i++)
                     {
                         if (optimizeFlags == null || (optimizeFlags != s_fullyOptimizableTypedArray && !optimizeFlags[i]))
@@ -3630,7 +3630,7 @@ namespace Supremacy.IO.Serialization
                 default:
                 {
                     BitArray optimizeFlags = readTypedArrayOptimizeFlags(t);
-                    var result = new long[ReadOptimizedInt64()];
+                        long[] result = new long[ReadOptimizedInt64()];
                     for (int i = 0; i < result.Length; i++)
                     {
                         if (optimizeFlags == null || (optimizeFlags != s_fullyOptimizableTypedArray && !optimizeFlags[i]))
@@ -3662,8 +3662,8 @@ namespace Supremacy.IO.Serialization
         /// <returns>A new generic List.</returns>
         public CollectionBase<T> ReadIndexedCollection<T>()
         {
-            var array = (T[])processArrayTypes(readTypeCode(), typeof(T));
-            var collection = new CollectionBase<T>(array.Length);
+            T[] array = (T[])processArrayTypes(readTypeCode(), typeof(T));
+            CollectionBase<T> collection = new CollectionBase<T>(array.Length);
             array.CopyTo(0, collection, 0, array.Length);
             return collection;
         }
@@ -3880,7 +3880,7 @@ namespace Supremacy.IO.Serialization
         /// <returns>An object[] instance.</returns>
         public T[] ReadArray<T>()
         {
-            var serializedType = readTypeCode();
+            SerializedType serializedType = readTypeCode();
             switch (serializedType)
             {
                 case SerializedType.NullType:
@@ -3916,7 +3916,7 @@ namespace Supremacy.IO.Serialization
                     return s_fullyOptimizableTypedArray;
                 default:
                 {
-                    var result = new BitArray(ReadBytes((length + 7) / 8))
+                        BitArray result = new BitArray(ReadBytes((length + 7) / 8))
                                  {
                                      Length = length
                                  };
@@ -3950,8 +3950,8 @@ namespace Supremacy.IO.Serialization
         public DateTime ReadOptimizedDateTime()
         {
             // Read date information from first three bytes
-            var dateMask = new BitVector32(ReadByte() | (ReadByte() << 8) | (ReadByte() << 16));
-            var result = new DateTime(
+            BitVector32 dateMask = new BitVector32(ReadByte() | (ReadByte() << 8) | (ReadByte() << 16));
+            DateTime result = new DateTime(
                 dateMask[SerializationWriter.DateYearMask],
                 dateMask[SerializationWriter.DateMonthMask],
                 dateMask[SerializationWriter.DateDayMask]
@@ -3960,7 +3960,7 @@ namespace Supremacy.IO.Serialization
             if (dateMask[SerializationWriter.DateHasTimeOrKindMask] == 1)
             {
                 byte initialByte = ReadByte();
-                var dateTimeKind = (DateTimeKind)(initialByte & 0x03);
+                DateTimeKind dateTimeKind = (DateTimeKind)(initialByte & 0x03);
                 initialByte &= 0xfc; // Remove the IsNegative and HasDays flags which are never true for a DateTime
                 if (dateTimeKind != DateTimeKind.Unspecified)
                     result = DateTime.SpecifyKind(result, dateTimeKind);
@@ -4123,11 +4123,11 @@ namespace Supremacy.IO.Serialization
         public object[] ReadOptimizedObjectArray(Type elementType)
         {
             int length = ReadOptimizedInt32();
-            var result =
+            object[] result =
                 (object[])(elementType == null ? new object[length] : Array.CreateInstance(elementType, length));
             for (int i = 0; i < result.Length; i++)
             {
-                var t = (SerializedType)ReadByte();
+                SerializedType t = (SerializedType)ReadByte();
 
                 if (t == SerializedType.NullSequenceType)
                     i += ReadOptimizedInt32();
@@ -4168,7 +4168,7 @@ namespace Supremacy.IO.Serialization
 
             for (int i = 0; i < values2.Length; i++)
             {
-                var t = (SerializedType)ReadByte();
+                SerializedType t = (SerializedType)ReadByte();
 
                 if (t == SerializedType.DuplicateValueSequenceType)
                 {
@@ -4461,7 +4461,7 @@ namespace Supremacy.IO.Serialization
                 default:
                 {
                     BitArray optimizeFlags = readTypedArrayOptimizeFlags(t);
-                    var result = new TimeSpan[ReadOptimizedInt32()];
+                        TimeSpan[] result = new TimeSpan[ReadOptimizedInt32()];
                     for (int i = 0; i < result.Length; i++)
                     {
                         if (optimizeFlags == null || (optimizeFlags != s_fullyOptimizableTypedArray && !optimizeFlags[i]))
@@ -4543,7 +4543,7 @@ namespace Supremacy.IO.Serialization
                 default:
                 {
                     BitArray optimizeFlags = readTypedArrayOptimizeFlags(t);
-                    var result = new ushort[ReadOptimizedUInt32()];
+                        ushort[] result = new ushort[ReadOptimizedUInt32()];
                     for (int i = 0; i < result.Length; i++)
                     {
                         if (optimizeFlags == null || (optimizeFlags != s_fullyOptimizableTypedArray && !optimizeFlags[i]))
@@ -4575,7 +4575,7 @@ namespace Supremacy.IO.Serialization
                 default:
                 {
                     BitArray optimizeFlags = readTypedArrayOptimizeFlags(t);
-                    var result = new uint[ReadOptimizedUInt32()];
+                        uint[] result = new uint[ReadOptimizedUInt32()];
                     for (int i = 0; i < result.Length; i++)
                     {
                         if (optimizeFlags == null || (optimizeFlags != s_fullyOptimizableTypedArray && !optimizeFlags[i]))
@@ -4607,7 +4607,7 @@ namespace Supremacy.IO.Serialization
                 default:
                 {
                     BitArray optimizeFlags = readTypedArrayOptimizeFlags(t);
-                    var result = new ulong[ReadOptimizedInt64()];
+                        ulong[] result = new ulong[ReadOptimizedInt64()];
                     for (int i = 0; i < result.Length; i++)
                     {
                         if (optimizeFlags == null || (optimizeFlags != s_fullyOptimizableTypedArray && !optimizeFlags[i]))
@@ -4637,7 +4637,7 @@ namespace Supremacy.IO.Serialization
         {
             long ticks = 0;
 
-            var packedData = new BitVector32(initialByte | (ReadByte() << 8)); // Read first two bytes
+            BitVector32 packedData = new BitVector32(initialByte | (ReadByte() << 8)); // Read first two bytes
             bool hasTime = packedData[SerializationWriter.HasTimeSection] == 1;
             bool hasSeconds = packedData[SerializationWriter.HasSecondsSection] == 1;
             bool hasMilliseconds = packedData[SerializationWriter.HasMillisecondsSection] == 1;
@@ -4749,7 +4749,7 @@ namespace Supremacy.IO.Serialization
                             result.SetValue(ReadObject(), i);
                         else if (optimizeFlags == s_fullyOptimizableTypedArray || !optimizeFlags[i])
                         {
-                            var value = (IOwnedDataSerializable)FormatterServices.GetSafeUninitializedObject(defaultElementType);
+                                IOwnedDataSerializable value = (IOwnedDataSerializable)FormatterServices.GetSafeUninitializedObject(defaultElementType);
                             ReadOwnedData(value, null);
                             result.SetValue(value, i);
                         }
@@ -4935,8 +4935,8 @@ namespace Supremacy.IO.Serialization
                             }
                         case SerializedType.OwnedDataSerializableAndRecreatableType:
                         {
-                            var structType = ReadOptimizedType();
-                            var result = PrepareNewObject(structType);
+                                Type structType = ReadOptimizedType();
+                                object result = PrepareNewObject(structType);
                             ReadOwnedData((IOwnedDataSerializable)result, null);
                             return result;
                         }
@@ -5001,7 +5001,7 @@ namespace Supremacy.IO.Serialization
         private bool[] readBooleanArray()
         {
             BitArray bitArray = ReadOptimizedBitArray();
-            var result = new bool[bitArray.Count];
+            bool[] result = new bool[bitArray.Count];
             for (int i = 0; i < result.Length; i++)
             {
                 result[i] = bitArray[i];
@@ -5034,7 +5034,7 @@ namespace Supremacy.IO.Serialization
         /// <returns>A Decimal[].</returns>
         private decimal[] readDecimalArray()
         {
-            var result = new decimal[ReadOptimizedInt32()];
+            decimal[] result = new decimal[ReadOptimizedInt32()];
             for (int i = 0; i < result.Length; i++)
             {
                 result[i] = ReadOptimizedDecimal();
@@ -5049,7 +5049,7 @@ namespace Supremacy.IO.Serialization
         /// <returns>A Double[].</returns>
         private double[] readDoubleArray()
         {
-            var result = new double[ReadOptimizedInt32()];
+            double[] result = new double[ReadOptimizedInt32()];
             for (int i = 0; i < result.Length; i++)
             {
                 result[i] = ReadDouble();
@@ -5064,7 +5064,7 @@ namespace Supremacy.IO.Serialization
         /// <returns>A Guid[].</returns>
         private Guid[] readGuidArray()
         {
-            var result = new Guid[ReadOptimizedInt32()];
+            Guid[] result = new Guid[ReadOptimizedInt32()];
             for (int i = 0; i < result.Length; i++)
             {
                 result[i] = ReadGuid();
@@ -5079,7 +5079,7 @@ namespace Supremacy.IO.Serialization
         /// <returns>An SByte[].</returns>
         private sbyte[] readSByteArray()
         {
-            var result = new sbyte[ReadOptimizedInt32()];
+            sbyte[] result = new sbyte[ReadOptimizedInt32()];
             for (int i = 0; i < result.Length; i++)
             {
                 result[i] = ReadSByte();
@@ -5094,7 +5094,7 @@ namespace Supremacy.IO.Serialization
         /// <returns>A Single[].</returns>
         private float[] readSingleArray()
         {
-            var result = new float[ReadOptimizedInt32()];
+            float[] result = new float[ReadOptimizedInt32()];
             for (int i = 0; i < result.Length; i++)
             {
                 result[i] = ReadSingle();

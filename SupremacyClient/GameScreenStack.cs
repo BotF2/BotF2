@@ -97,7 +97,7 @@ namespace Supremacy.Client
                 _updating = true;
                 if (e.Action == NotifyCollectionChangedAction.Add)
                 {
-                    foreach (var childItem in e.NewItems.OfType<Control>())
+                    foreach (Control childItem in e.NewItems.OfType<Control>())
                     {
                         if (_hostControl.Screens.Contains(childItem))
                             continue;
@@ -110,7 +110,7 @@ namespace Supremacy.Client
                 }
                 else if (e.Action == NotifyCollectionChangedAction.Remove)
                 {
-                    foreach (var childItem in e.OldItems.OfType<Control>())
+                    foreach (Control childItem in e.OldItems.OfType<Control>())
                     {
                         if (_hostControl.Screens.Contains(childItem))
                         {
@@ -135,7 +135,7 @@ namespace Supremacy.Client
                 _updating = true;
                 if (e.Action == NotifyCollectionChangedAction.Add)
                 {
-                    foreach (var childItem in e.NewItems)
+                    foreach (object childItem in e.NewItems)
                     {
                         if (Region.Views.Contains(childItem))
                             continue;
@@ -144,7 +144,7 @@ namespace Supremacy.Client
                 }
                 else if (e.Action == NotifyCollectionChangedAction.Remove)
                 {
-                    foreach (var childItem in e.OldItems)
+                    foreach (object childItem in e.OldItems)
                     {
                         if (Region.Views.Contains(childItem))
                             Region.Remove(childItem);
@@ -159,7 +159,7 @@ namespace Supremacy.Client
 
         private void AddItemsToRegionViews()
         {
-            foreach (var childItem in _hostControl.Screens)
+            foreach (Control childItem in _hostControl.Screens)
             {
                 Region.Add(childItem);
             }
@@ -200,7 +200,7 @@ namespace Supremacy.Client
             try
             {
                 _updating = true;
-                var currentScreen = _hostControl.CurrentScreen;
+                Control currentScreen = _hostControl.CurrentScreen;
                 if ((currentScreen != null) && !Region.ActiveViews.Contains(currentScreen))
                 {
                     Region.Activate(currentScreen);
@@ -243,7 +243,7 @@ namespace Supremacy.Client
         {
             lock (_screens)
             {
-                foreach (var screen in _screens)
+                foreach (Control screen in _screens)
                 {
                     screen.Measure(RenderSize);
                     screen.Arrange(new Rect(RenderSize));
@@ -263,7 +263,7 @@ namespace Supremacy.Client
             {
                 if (_screens.Contains(screen))
                     return;
-                var wasEmpty = (_screens.Count == 0);
+                bool wasEmpty = (_screens.Count == 0);
                 _screens.Add(screen);
                 _itemsContainer.Children.Add(screen);
                 if (IsVisible)
@@ -316,7 +316,7 @@ namespace Supremacy.Client
                     return;
                 lock (_screens)
                 {
-                    var lastScreen = _currentScreen;
+                    Control lastScreen = _currentScreen;
                     if (value != null && !_screens.Contains(value))
                         AddScreen(value);
                     if (lastScreen != null)

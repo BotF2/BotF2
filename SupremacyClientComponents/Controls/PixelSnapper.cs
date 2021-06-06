@@ -45,7 +45,7 @@ namespace Supremacy.Client.Controls
 
         protected override Size MeasureOverride(Size constraint)
         {
-            var child = Child;
+            UIElement child = Child;
             if (child == null)
                 return new Size();
 

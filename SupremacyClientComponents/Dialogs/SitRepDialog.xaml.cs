@@ -31,13 +31,13 @@ namespace Supremacy.Client.Dialogs
         {
             InitializeComponent();
 
-            var visibleCategories = SitRepDialogSettings.GetVisibleCategories(ClientSettings.Current);
+            SitRepCategory visibleCategories = SitRepDialogSettings.GetVisibleCategories(ClientSettings.Current);
 
-            var enumStringConverter = new EnumStringConverter();
+            EnumStringConverter enumStringConverter = new EnumStringConverter();
 
-            foreach (var category in EnumHelper.GetValues<SitRepCategory>())
+            foreach (SitRepCategory category in EnumHelper.GetValues<SitRepCategory>())
             {
-                var menuItem = new System.Windows.Controls.MenuItem
+                System.Windows.Controls.MenuItem menuItem = new System.Windows.Controls.MenuItem
                 {
                                    StaysOpenOnClick = true,
                                    IsCheckable = true,
@@ -99,7 +99,7 @@ namespace Supremacy.Client.Dialogs
         }
         private void SitRepCommentText_OnLostFocus(object sender, RoutedEventArgs e)
         {
-            var previousText = _previousSitRepCommentText;
+            string previousText = _previousSitRepCommentText;
             _previousSitRepCommentText = null;
             if ((!(e.Source is System.Windows.Controls.TextBox sitRepCommentText)) || String.Equals(sitRepCommentText.Text, previousText))
                 return;
@@ -143,12 +143,12 @@ namespace Supremacy.Client.Dialogs
                 return;
 
             // deactivated - normally not used by Players   
-            var visibleCategories = FilterMenu.Items
+            SitRepCategory visibleCategories = FilterMenu.Items
                 .OfType<System.Windows.Controls.MenuItem>()
                 .Where(menuItem => menuItem.IsChecked)
                 .Aggregate<System.Windows.Controls.MenuItem, SitRepCategory>(0, (current, menuItem) => current | (SitRepCategory)menuItem.Tag);
 
-            var visiblePriorities = new List<SitRepPriority>();
+            List<SitRepPriority> visiblePriorities = new List<SitRepPriority>();
 
             if (GreenCheck.IsChecked.HasValue && GreenCheck.IsChecked.Value)
                 visiblePriorities.Add(SitRepPriority.Green);
@@ -203,7 +203,7 @@ namespace Supremacy.Client.Dialogs
         private void UpdateCategoryFilter()
         {
             // deactivated - normally not used by Players   
-            var visibleCategories = FilterMenu.Items
+            SitRepCategory visibleCategories = FilterMenu.Items
                 .OfType<System.Windows.Controls.MenuItem>()
                 .Where(menuItem => menuItem.IsChecked)
                 .Aggregate<System.Windows.Controls.MenuItem, SitRepCategory>(0, (current, menuItem) => current | (SitRepCategory)menuItem.Tag);
@@ -248,14 +248,14 @@ namespace Supremacy.Client.Dialogs
 
                     case SitRepAction.CenterOnSector:
                         Close();
-                        var sector = selection.ActionTarget as Sector;
+                        Sector sector = selection.ActionTarget as Sector;
                         GalaxyScreenCommands.SelectSector.Execute(sector);
                         GalaxyScreenCommands.CenterOnSector.Execute(sector);
                         break;
 
                     case SitRepAction.SelectTaskForce:
                         Close();
-                        var fleet = selection.ActionTarget as Fleet;
+                        Fleet fleet = selection.ActionTarget as Fleet;
                         GalaxyScreenCommands.SelectSector.Execute(fleet.Sector);
                         GalaxyScreenCommands.CenterOnSector.Execute(fleet.Sector);
                         GalaxyScreenCommands.SelectTaskForce.Execute(fleet);

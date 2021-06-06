@@ -24,11 +24,11 @@ namespace Supremacy.Universe
                  (i < number) && (attempts < MaxStarPlacementAttempts);
                  i++, attempts++)
             {
-                var location = new MapLocation(
+                MapLocation location = new MapLocation(
                     RandomHelper.Random(width),
                     RandomHelper.Random(height));
-                var newNode = new MapLocationQuadtreeNode(location);
-                var lowestDist = FindNearestNeighborDistance(newNode, positions);
+                MapLocationQuadtreeNode newNode = new MapLocationQuadtreeNode(location);
+                double lowestDist = FindNearestNeighborDistance(newNode, positions);
                 if ((lowestDist < GalaxyGenerator.MinDistanceBetweenStars)
                     && (attempts < MaxStarPlacementAttempts))
                 {

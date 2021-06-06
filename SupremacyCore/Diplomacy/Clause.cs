@@ -36,7 +36,7 @@ namespace Supremacy.Diplomacy
             if (clause == null)
                 throw new ArgumentNullException("clause");
 
-            var clone = clause.IsDataInitialized ? new Clause(clause.ClauseType, clause.Data) : new Clause(clause.ClauseType);
+            Clause clone = clause.IsDataInitialized ? new Clause(clause.ClauseType, clause.Data) : new Clause(clause.ClauseType);
 
             clone.Duration = clause.Duration;
 
@@ -71,7 +71,7 @@ namespace Supremacy.Diplomacy
             if (clause.IsDataInitialized)
                 return;
 
-            var clauseInternal = clause as IClauseInternal;
+            IClauseInternal clauseInternal = clause as IClauseInternal;
 
             switch (clause.ClauseType)
             {

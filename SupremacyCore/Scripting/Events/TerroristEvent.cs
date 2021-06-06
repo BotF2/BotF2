@@ -63,32 +63,32 @@ namespace Supremacy.Scripting.Events
         {
             if (phase == TurnPhase.PreTurnOperations && GameContext.Current.TurnNumber > 55)
             {
-                var affectedCivs = game.Civilizations
+                IEnumerable<Entities.Civilization> affectedCivs = game.Civilizations
                     .Where(c =>
                         c.IsEmpire &&
                         //c.IsHuman &&
                         RandomHelper.Chance(_occurrenceChance));
 
-                var targetGroups = affectedCivs
+                IEnumerable<IGrouping<int, Colony>> targetGroups = affectedCivs
                     .Where(CanTargetCivilization)
                     .SelectMany(c => game.Universe.FindOwned<Colony>(c)) // finds colony to affect in the civiliation's empire
                     .Where(CanTargetUnit)
                     .GroupBy(c => c.OwnerID);
 
-                foreach (var group in targetGroups)
+                foreach (IGrouping<int, Colony> group in targetGroups)
                 {
-                    var colonyList = group.ToList();
+                    List<Colony> colonyList = group.ToList();
 
-                    var theMark = colonyList[RandomProvider.Next(colonyList.Count)];
+                    Colony theMark = colonyList[RandomProvider.Next(colonyList.Count)];
                     GameLog.Client.GameData.DebugFormat("theMark.Name: {0}", theMark.Name);
                     if (theMark.Name == "Sol" || theMark.Name == "Terra" || theMark.Name == "Cardassia" || theMark.Name == "Qo'nos" || theMark.Name == "Omarion" || theMark.Name == "Romulus" || theMark.Name == "Borg")
                     {
                         return;
                     }
 
-                    var productionCenters = group.ToList();
+                    List<Colony> productionCenters = group.ToList();
 
-                    var target = productionCenters[RandomProvider.Next(productionCenters.Count)];
+                    Colony target = productionCenters[RandomProvider.Next(productionCenters.Count)];
                     GameLog.Client.GameData.DebugFormat("target.Name: {0}", target.Name);
 
                     //Don't target home systems
@@ -103,14 +103,14 @@ namespace Supremacy.Scripting.Events
                         .Select(o => o.Project)
                         .ToList();
 
-                    foreach (var affectedProject in _affectedProjects)
+                    foreach (BuildProject affectedProject in _affectedProjects)
                     {
                         GameLog.Client.GameData.DebugFormat("affectedProject: {0}", affectedProject.Description);
                     }
 
-                    var targetCiv = target.Owner;
+                    Entities.Civilization targetCiv = target.Owner;
                     int targetColonyId = target.ObjectID;
-                    var population = target.Population.CurrentValue;
+                    int population = target.Population.CurrentValue;
 
                     if (target.Shipyard != null)
                     {

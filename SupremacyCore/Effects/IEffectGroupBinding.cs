@@ -71,18 +71,18 @@ namespace Supremacy.Effects
                             effectTarget));
                 }
 
-                var effects = EffectGroup.Effects;
-                var effectBindings = new EffectBinding[effects.Count];
+                IIndexedCollection<Effect> effects = EffectGroup.Effects;
+                EffectBinding[] effectBindings = new EffectBinding[effects.Count];
 
                 effects.Select(o => o.Bind(this, effectTarget)).CopyTo(effectBindings);
 
-                var targetBindings = new TargetEffectBinding(
+                TargetEffectBinding targetBindings = new TargetEffectBinding(
                     effectTarget,
                     new ArrayWrapper<EffectBinding>(effectBindings));
 
                 _targetEffectBindings.Add(targetBindings);
 
-                var internalTarget = effectTarget as IEffectTargetInternal;
+                IEffectTargetInternal internalTarget = effectTarget as IEffectTargetInternal;
                 if (internalTarget != null)
                     internalTarget.EffectBindingsInternal.AddRange(effectBindings);
 
@@ -95,14 +95,14 @@ namespace Supremacy.Effects
             if (effectTarget == null)
                 throw new ArgumentNullException("effectTarget");
 
-            var internalTarget = effectTarget as IEffectTargetInternal;
+            IEffectTargetInternal internalTarget = effectTarget as IEffectTargetInternal;
 
             lock (EffectSystem.SyncRoot)
             {
                 if (!_targetEffectBindings.TryGetValue(effectTarget, out TargetEffectBinding targetEffectBinding))
                     return;
 
-                foreach (var effectBinding in targetEffectBinding.EffectBindings)
+                foreach (EffectBinding effectBinding in targetEffectBinding.EffectBindings)
                 {
                     try
                     {
@@ -123,7 +123,7 @@ namespace Supremacy.Effects
 
         internal RuntimeScriptParameters BindActivationScriptRuntimeParameters()
         {
-            var parameters = new RuntimeScriptParameters
+            RuntimeScriptParameters parameters = new RuntimeScriptParameters
                              {
                                  new RuntimeScriptParameter(EffectGroup.SourceScriptParameter, Source)
                              };
@@ -142,13 +142,13 @@ namespace Supremacy.Effects
         {
             add
             {
-                var previousValue = _propertyChanged;
+                PropertyChangedEventHandler previousValue = _propertyChanged;
 
                 while (true)
                 {
-                    var combinedValue = (PropertyChangedEventHandler)Delegate.Combine(previousValue, value);
+                    PropertyChangedEventHandler combinedValue = (PropertyChangedEventHandler)Delegate.Combine(previousValue, value);
 
-                    var valueBeforeCombine = System.Threading.Interlocked.CompareExchange(
+                    PropertyChangedEventHandler valueBeforeCombine = System.Threading.Interlocked.CompareExchange(
                         ref _propertyChanged,
                         combinedValue,
                         previousValue);
@@ -159,13 +159,13 @@ namespace Supremacy.Effects
             }
             remove
             {
-                var previousValue = _propertyChanged;
+                PropertyChangedEventHandler previousValue = _propertyChanged;
 
                 while (true)
                 {
-                    var removedValue = (PropertyChangedEventHandler)Delegate.Remove(previousValue, value);
+                    PropertyChangedEventHandler removedValue = (PropertyChangedEventHandler)Delegate.Remove(previousValue, value);
 
-                    var valueBeforeRemove = System.Threading.Interlocked.CompareExchange(
+                    PropertyChangedEventHandler valueBeforeRemove = System.Threading.Interlocked.CompareExchange(
                         ref _propertyChanged,
                         removedValue,
                         previousValue);
@@ -179,7 +179,7 @@ namespace Supremacy.Effects
         [UsedImplicitly]
         private void OnPropertyChanged(string propertyName)
         {
-            var handler = _propertyChanged;
+            PropertyChangedEventHandler handler = _propertyChanged;
             if (handler != null)
                 handler(this, new PropertyChangedEventArgs(propertyName));
         }

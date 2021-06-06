@@ -82,7 +82,7 @@ namespace Supremacy.Client.Views
             {
                 if (View is DependencyObject view)
                 {
-                    var regionManager = CompositeRegionManager.GetRegionManager(view);
+                    IRegionManager regionManager = CompositeRegionManager.GetRegionManager(view);
                     if (regionManager != null)
                         return regionManager;
                 }
@@ -196,13 +196,13 @@ namespace Supremacy.Client.Views
 
         protected virtual void RemoveNestedViews()
         {
-            var scopedRegionManager = CompositeRegionManager.GetRegionManager(View as DependencyObject);
+            IRegionManager scopedRegionManager = CompositeRegionManager.GetRegionManager(View as DependencyObject);
             if (scopedRegionManager == null)
                 return;
 
-            foreach (var nestedRegion in scopedRegionManager.Regions.ToList())
+            foreach (IRegion nestedRegion in scopedRegionManager.Regions.ToList())
             {
-                foreach (var nestedView in nestedRegion.Views.ToList())
+                foreach (object nestedView in nestedRegion.Views.ToList())
                 {
                     if (nestedView is IAnimationsHost animationsHost)
                         animationsHost.StopAnimations();

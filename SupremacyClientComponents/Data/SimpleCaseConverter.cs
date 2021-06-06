@@ -59,25 +59,25 @@ namespace Supremacy.Client.Data
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            var comparand = Case;
-            var isMatch = Equals(value, comparand);
+            object comparand = Case;
+            bool isMatch = Equals(value, comparand);
 
             if (!isMatch && comparand != null && value != null)
             {
-                var convertedComparand = ValueConversionHelper.Convert(comparand, value.GetType(), null, culture);
+                object convertedComparand = ValueConversionHelper.Convert(comparand, value.GetType(), null, culture);
                 if (convertedComparand != DependencyProperty.UnsetValue)
                 {
                     isMatch = Equals(value, convertedComparand);
                 }
                 else
                 {
-                    var convertedValue = ValueConversionHelper.Convert(value, comparand.GetType(), null, culture);
+                    object convertedValue = ValueConversionHelper.Convert(value, comparand.GetType(), null, culture);
                     if (convertedValue != DependencyProperty.UnsetValue)
                         isMatch = Equals(convertedValue, comparand);
                 }
             }
 
-            var convertedResult = ValueConversionHelper.Convert(
+            object convertedResult = ValueConversionHelper.Convert(
                 isMatch ? IfMatch : Else,
                 targetType,
                 parameter,

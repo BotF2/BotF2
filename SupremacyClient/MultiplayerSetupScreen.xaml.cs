@@ -138,7 +138,7 @@ namespace Supremacy.Client
 
         void CanExecuteDirectConnectCommand(object sender, CanExecuteRoutedEventArgs e)
         {
-            var regex = new Regex(
+            Regex regex = new Regex(
                 @"(([a-zA-Z][-a-zA-Z0-9]*(.[a-zA-Z][-a-zA-Z0-9]*)*)"
                 + @"|([0-9]{1,3}(.[0-9]{1,3}){3}))");
             e.CanExecute = (PlayerName.Text.Trim().Length > 0)
@@ -147,7 +147,7 @@ namespace Supremacy.Client
 
         void CanExecuteJoinGameCommand(object sender, CanExecuteRoutedEventArgs e)
         {
-            var regex = new Regex(@"\w+");
+            Regex regex = new Regex(@"\w+");
             if (!regex.IsMatch(PlayerName.Text))
             {
                 e.CanExecute = false;
@@ -158,7 +158,7 @@ namespace Supremacy.Client
 
         void CanExecuteHostGameCommand(object sender, CanExecuteRoutedEventArgs e)
         {
-            var regex = new Regex(@"\w+");
+            Regex regex = new Regex(@"\w+");
             if (!regex.IsMatch(PlayerName.Text))
             {
                 e.CanExecute = false;

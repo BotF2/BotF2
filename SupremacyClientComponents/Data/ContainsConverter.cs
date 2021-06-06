@@ -14,7 +14,7 @@ namespace Supremacy.Client.Data
             if (parameter == null)
                 return false;
 
-            var collection = value as IEnumerable;
+            IEnumerable collection = value as IEnumerable;
             if (collection != null)
                 return collection.Cast<object>().Contains(parameter);
 

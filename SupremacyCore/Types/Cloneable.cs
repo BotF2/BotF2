@@ -57,17 +57,17 @@ namespace Supremacy.Types
         /// <returns></returns>
         public static T Clone<T>(T source, ICloneContext context) where T : Cloneable
         {
-            var clone = source.CreateInstance(context);
+            Cloneable clone = source.CreateInstance(context);
             clone.CloneFrom(source, context);
             return (T)clone;
         }
 
         public static IEnumerable<T> CloneAll<T>(IEnumerable<T> sourceObjects, ICloneContext context) where T : Cloneable
         {
-            var indexedEnumerable = sourceObjects as IIndexedEnumerable<T>;
+            IIndexedEnumerable<T> indexedEnumerable = sourceObjects as IIndexedEnumerable<T>;
             if (indexedEnumerable != null)
             {
-                var resultArray = new ArrayWrapper<T>(indexedEnumerable.Count);
+                ArrayWrapper<T> resultArray = new ArrayWrapper<T>(indexedEnumerable.Count);
                 sourceObjects.SelectInto(o => Clone(o, context), resultArray);
                 return resultArray;
             }
@@ -298,7 +298,7 @@ namespace Supremacy.Types
         {
             T clone;
 
-            var cloneable = source as Cloneable;
+            Cloneable cloneable = source as Cloneable;
             if (cloneable != null)
                 clone = Cloneable.Clone(cloneable, this) as T;
             else

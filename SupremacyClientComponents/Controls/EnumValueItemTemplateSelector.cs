@@ -10,7 +10,7 @@ namespace Supremacy.Client.Controls
 
         public override DataTemplate SelectTemplate(object item, DependencyObject container)
         {
-            var frameworkElement = container as FrameworkElement;
+            FrameworkElement frameworkElement = container as FrameworkElement;
             if (frameworkElement != null && item is Enum)
                 return frameworkElement.TryFindResource(item) as DataTemplate;
             return null;

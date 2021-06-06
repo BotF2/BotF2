@@ -48,7 +48,7 @@ namespace Supremacy.Client.Data
                     break;
                 case RoundMode.RoundToEven:
                 {
-                    var roundedValue = Math.Round(value);
+                        double roundedValue = Math.Round(value);
                     if (roundedValue % 2 == 0)
                     {
                         value = roundedValue;
@@ -65,7 +65,7 @@ namespace Supremacy.Client.Data
                 }
                 case RoundMode.RoundToOdd:
                 {
-                    var roundedValue = Math.Round(value);
+                        double roundedValue = Math.Round(value);
                     if (roundedValue % 2 == 1)
                     {
                         value = roundedValue;

@@ -57,11 +57,11 @@ namespace Supremacy.Client.Controls
 
         private static void OnInfoCardPinned(object sender, RoutedEventArgs e)
         {
-            var infoCard = (InfoCard)sender;
+            InfoCard infoCard = (InfoCard)sender;
             if (infoCard == null)
                 return;
 
-            var window = InfoCardHost.GetInfoCardWindow(infoCard) as InfoCardWindow;
+            InfoCardWindow window = InfoCardHost.GetInfoCardWindow(infoCard) as InfoCardWindow;
             if (window == null)
                 return;
             window.ShowInTaskbar = true;
@@ -70,11 +70,11 @@ namespace Supremacy.Client.Controls
 
         private static void OnInfoCardUnpinned(object sender, RoutedEventArgs e)
         {
-            var infoCard = (InfoCard)sender;
+            InfoCard infoCard = (InfoCard)sender;
             if (infoCard == null)
                 return;
 
-            var window = InfoCardHost.GetInfoCardWindow(infoCard) as InfoCardWindow;
+            InfoCardWindow window = InfoCardHost.GetInfoCardWindow(infoCard) as InfoCardWindow;
             if (window == null)
                 return;
 
@@ -98,17 +98,17 @@ namespace Supremacy.Client.Controls
             SizeToContent = SizeToContent.WidthAndHeight;
 
 			InfoCardHost = container;
-		    
-            var ownerWindow = GetWindow(InfoCardSite);
+
+            Window ownerWindow = GetWindow(InfoCardSite);
             if (ownerWindow != null)
                 Owner = ownerWindow;
 
-            var infoCard = (InfoCard)container.Content;
-            var location = container.Location ?? new Point(0, 0);
+            InfoCard infoCard = (InfoCard)container.Content;
+            Point location = container.Location ?? new Point(0, 0);
 
             _transformToDevice = Matrix.Identity;
 
-            var targetWindow = GetWindow(infoCard.TargetElement);
+            Window targetWindow = GetWindow(infoCard.TargetElement);
             if (targetWindow != null)
             {
                 _transformToDevice.OffsetX = targetWindow.Left;
@@ -167,11 +167,11 @@ namespace Supremacy.Client.Controls
         {
             get
             {
-                var location = new Point(Left, Top);
-                var infoCard = InfoCardHost.Content as InfoCard;
+                Point location = new Point(Left, Top);
+                InfoCard infoCard = InfoCardHost.Content as InfoCard;
                 if (infoCard != null)
                 {
-                    var targetWindow = GetWindow(infoCard.TargetElement);
+                    Window targetWindow = GetWindow(infoCard.TargetElement);
                     if (targetWindow != null)
                     {
                         _transformToDevice = Matrix.Identity;
@@ -200,7 +200,7 @@ namespace Supremacy.Client.Controls
 
         public void SnapToScreen()
         {
-            var bounds = NativeMethods.EnsureBoundsOnScreen(
+            Rect bounds = NativeMethods.EnsureBoundsOnScreen(
                 new Rect(
                     Left,
                     Top,
@@ -224,17 +224,17 @@ namespace Supremacy.Client.Controls
         {
             base.OnDeactivated(e);
 
-            var popup = InfoCardSite.GetInfoCardFromHost(InfoCardHost);
+            InfoCard popup = InfoCardSite.GetInfoCardFromHost(InfoCardHost);
             if ((popup != null) && !popup.IsPinned)
                 popup.Close();
         }
 
         protected override void OnClosed(EventArgs e)
         {
-            var popupSite = InfoCardSite;
+            InfoCardSite popupSite = InfoCardSite;
             if (popupSite != null)
             {
-                var window = GetWindow(popupSite);
+                Window window = GetWindow(popupSite);
                 if ((window != null) && !window.IsActive)
                     window.Activate();
             }
@@ -260,12 +260,12 @@ namespace Supremacy.Client.Controls
 
             IsClosing = true;
 
-            var cancel = false;
+            bool cancel = false;
 
-            var infoCardSite = InfoCardSite;
+            InfoCardSite infoCardSite = InfoCardSite;
             if (infoCardSite != null)
             {
-                var popup = infoCardSite.GetInfoCardFromHost(InfoCardHost);
+                InfoCard popup = infoCardSite.GetInfoCardFromHost(InfoCardHost);
                 if (popup != null)
                     cancel |= !infoCardSite.Close(popup, _closeReason, false);
             }

@@ -90,7 +90,7 @@ namespace Supremacy.Client.Controls
 
         private static object CoerceVisibility(DependencyObject d, object baseValue)
         {
-            var gameControl = d as GameControlBase;
+            GameControlBase gameControl = d as GameControlBase;
             if (gameControl != null &&
                 gameControl.VariantSize == VariantSize.Collapsed)
             {
@@ -263,9 +263,9 @@ namespace Supremacy.Client.Controls
             DependencyObject obj,
             DependencyPropertyChangedEventArgs e)
         {
-            var control = (GameControlBase)obj;
-            var oldVariantSize = (VariantSize)e.OldValue;
-            var newVariantSize = (VariantSize)e.NewValue;
+            GameControlBase control = (GameControlBase)obj;
+            VariantSize oldVariantSize = (VariantSize)e.OldValue;
+            VariantSize newVariantSize = (VariantSize)e.NewValue;
 
             control.OnVariantSizeChanged(oldVariantSize, newVariantSize);
             control.CoerceValue(VisibilityProperty);
@@ -275,9 +275,9 @@ namespace Supremacy.Client.Controls
             DependencyObject obj,
             DependencyPropertyChangedEventArgs e)
         {
-            var control = (GameControlBase)obj;
-            var oldContext = (GameControlContext)e.OldValue;
-            var newContext = (GameControlContext)e.NewValue;
+            GameControlBase control = (GameControlBase)obj;
+            GameControlContext oldContext = (GameControlContext)e.OldValue;
+            GameControlContext newContext = (GameControlContext)e.NewValue;
 
             control.OnContextChanged(oldContext, newContext);
         }
@@ -312,11 +312,11 @@ namespace Supremacy.Client.Controls
             if (ReferenceEquals(oldValue, newValue))
                 return;
 
-            var oldCheckableCommandParameter = oldValue as ICheckableCommandParameter;
+            ICheckableCommandParameter oldCheckableCommandParameter = oldValue as ICheckableCommandParameter;
             if (oldCheckableCommandParameter != null)
                 oldCheckableCommandParameter.InnerParameterChanged -= OnInnerCommandParameterChanged;
 
-            var newCheckableCommandParameter = newValue as ICheckableCommandParameter;
+            ICheckableCommandParameter newCheckableCommandParameter = newValue as ICheckableCommandParameter;
             if (newCheckableCommandParameter != null)
                 newCheckableCommandParameter.InnerParameterChanged += OnInnerCommandParameterChanged;
 

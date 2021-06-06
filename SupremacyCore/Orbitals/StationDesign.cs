@@ -113,7 +113,7 @@ namespace Supremacy.Orbitals
             if (_possibleStationNames.Count > 0)
             {
                 newElement = doc.CreateElement("SationNames");
-                foreach (var stationName in _possibleStationNames)
+                foreach (KeyValuePair<string, int> stationName in _possibleStationNames)
                 {
                     XmlElement nameElement = doc.CreateElement("StationName");
                     nameElement.InnerText = stationName.Key;
@@ -137,16 +137,16 @@ namespace Supremacy.Orbitals
                 spawnedInstance = null;
                 return false;
             }
-            var station = new Station(this);
-            var sector = GameContext.Current.Universe.Map[location];
-            var sectorOwner = sector.Owner;
+            Station station = new Station(this);
+            Sector sector = GameContext.Current.Universe.Map[location];
+            Civilization sectorOwner = sector.Owner;
 
             if (_possibleStationNames.Count > 0)
             {
                 //Set this to -1 so we can check if we've checked any yet
                 int timesUsed = -1;
                 string leastUsedName = "";
-                foreach (var stationName in _possibleStationNames)
+                foreach (KeyValuePair<string, int> stationName in _possibleStationNames)
                 {
                     //If we haven't checked, assign this straight to the variables
                     if (timesUsed == -1)
@@ -203,7 +203,7 @@ namespace Supremacy.Orbitals
                 return false;
             }
 
-            var existingStation = sector.Station;
+            Station existingStation = sector.Station;
             if (existingStation != null)
             {
                 //GameLog.Print(
@@ -216,7 +216,7 @@ namespace Supremacy.Orbitals
             }
 
             //var station = new Station(this);
-            var civManager = GameContext.Current.CivilizationManagers[owner];
+            CivilizationManager civManager = GameContext.Current.CivilizationManagers[owner];
 
             station.Reset();
             station.Owner = owner;

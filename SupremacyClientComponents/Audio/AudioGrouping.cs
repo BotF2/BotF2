@@ -56,7 +56,7 @@ namespace Supremacy.Client.Audio
                     _parent = value;
                     if (_channelGroup != null)
                     {
-                        var parent = (_parent as FMODGrouping);
+                        FMODGrouping parent = (_parent as FMODGrouping);
                         if (parent != null && parent._channelGroup != null)
                             parent._channelGroup.addGroup(_channelGroup);
                         else

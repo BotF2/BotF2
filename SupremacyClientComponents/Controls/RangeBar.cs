@@ -197,7 +197,7 @@ namespace Supremacy.Client.Controls
             if (!BindingOperations.IsDataBound(this, ValueProperty))
                 return;
 
-            var bindingExpression = BindingOperations.GetBindingExpression(this, ValueProperty);
+            BindingExpression bindingExpression = BindingOperations.GetBindingExpression(this, ValueProperty);
             if (bindingExpression != null)
                 bindingExpression.UpdateTarget();
         }
@@ -218,7 +218,7 @@ namespace Supremacy.Client.Controls
 
         private static object CoerceValueProperty(DependencyObject d, object baseValue)
         {
-            var rangeBar = (RangeBar)d;
+            RangeBar rangeBar = (RangeBar)d;
             if (rangeBar.IsSnappingEnabled)
                 return rangeBar.ComputeSnapValue((double)baseValue);
             return baseValue;
@@ -226,11 +226,11 @@ namespace Supremacy.Client.Controls
 
         private double ComputeSnapValue(double d)
         {
-            var dMin = d - Minimum;
-            var low = Minimum + (dMin - (dMin % SmallChange));
-            var high = Minimum + dMin + (SmallChange - (dMin % SmallChange));
+            double dMin = d - Minimum;
+            double low = Minimum + (dMin - (dMin % SmallChange));
+            double high = Minimum + dMin + (SmallChange - (dMin % SmallChange));
 
-            var snapped = Math.Abs(d - low) < Math.Abs(high - d) ? low : high;
+            double snapped = Math.Abs(d - low) < Math.Abs(high - d) ? low : high;
             
             if (snapped < Minimum)
                 return Minimum;
@@ -255,7 +255,7 @@ namespace Supremacy.Client.Controls
             if (blockCount < 1)
                 throw new ArgumentOutOfRangeException("blockCount");
 
-            var blockNumber = (int)Math.Min(((value - Minimum) / (Maximum - Minimum)) * blockCount, blockCount);
+            int blockNumber = (int)Math.Min(((value - Minimum) / (Maximum - Minimum)) * blockCount, blockCount);
 
             return blockNumber;
         }

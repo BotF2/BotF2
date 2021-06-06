@@ -69,7 +69,7 @@ namespace Supremacy.Client.Controls
             {
                 GameMenuItem currentSelection = null;
 
-                var parentMenu = LogicalParent as GameMenu;
+                GameMenu parentMenu = LogicalParent as GameMenu;
                 if (parentMenu != null)
                     currentSelection = parentMenu.CurrentSelection;
 
@@ -102,7 +102,7 @@ namespace Supremacy.Client.Controls
             else if (VisualTreeHelper.GetChildrenCount(this) > 0)
             {
                 // Look for a UIElement that is the child of the ContentPresenter (this will normally be a Button)
-                var presenter = VisualTreeHelper.GetChild(this, 0) as ContentPresenter;
+                ContentPresenter presenter = VisualTreeHelper.GetChild(this, 0) as ContentPresenter;
                 if (presenter != null && VisualTreeHelper.GetChildrenCount(presenter) > 0)
                     element = VisualTreeHelper.GetChild(presenter, 0) as UIElement;
             }
@@ -113,7 +113,7 @@ namespace Supremacy.Client.Controls
         {
             get
             {
-                var element = GetTargetElement();
+                UIElement element = GetTargetElement();
                 return PopupControlService.GetHasPopup(element);
             }
         }
@@ -122,12 +122,12 @@ namespace Supremacy.Client.Controls
         {
             get
             {
-                var element = GetTargetElement();
+                UIElement element = GetTargetElement();
                 return GameControlService.GetIsHighlighted(element);
             }
             set
             {
-                var element = GetTargetElement();
+                UIElement element = GetTargetElement();
                 if (value)
                     GameControlService.SetIsHighlighted(element, true);
                 else
@@ -154,7 +154,7 @@ namespace Supremacy.Client.Controls
 
         private static void OnIsSelectedPropertyValueChanged(DependencyObject obj, DependencyPropertyChangedEventArgs e)
         {
-            var control = (GameMenuItem)obj;
+            GameMenuItem control = (GameMenuItem)obj;
 
             control.IsHighlighted = (bool)e.NewValue;
 
@@ -202,14 +202,14 @@ namespace Supremacy.Client.Controls
                 }
             }
 
-            var newContentObj = newContent as DependencyObject;
+            DependencyObject newContentObj = newContent as DependencyObject;
             if (newContentObj != null)
             {
                 // Update the IsTabStop property based on whether the child item keeps highlighted when focused
                 IsTabStop = !CanUnhighlightWhenFocused(newContentObj);
 
                 // Bind to IsPopupOpen
-                var binding = new Binding
+                Binding binding = new Binding
                               {
                                   Mode = BindingMode.TwoWay,
                                   Source = newContent,
@@ -240,7 +240,7 @@ namespace Supremacy.Client.Controls
                 }
 
                 // Tell the menu item whether external content is supported based on the content's settings
-                var isExternalContentSupported = GameControlService.GetIsExternalContentSupported(newContentObj);
+                bool isExternalContentSupported = GameControlService.GetIsExternalContentSupported(newContentObj);
 
                 GameControlService.SetIsExternalContentSupported(this, isExternalContentSupported);
 
@@ -314,14 +314,14 @@ namespace Supremacy.Client.Controls
         {
             base.OnMouseEnter(e);
 
-            var focusedElement = Keyboard.FocusedElement as UIElement;
+            UIElement focusedElement = Keyboard.FocusedElement as UIElement;
             if (focusedElement != null && !CanUnhighlightWhenFocused(focusedElement))
             {
                 // Quit since the currently focused element doesn't allow highlight changes while focused
                 return;
             }
 
-            var currentSibling = CurrentSibling;
+            GameMenuItem currentSibling = CurrentSibling;
             if (currentSibling != null && currentSibling.IsPopupOpen)
             {
                 currentSibling.IsHighlighted = false;
@@ -343,7 +343,7 @@ namespace Supremacy.Client.Controls
             base.OnMouseLeave(e);
 
             // If the focused element can lose menu item highlight...
-            var focusedElement = Keyboard.FocusedElement as UIElement;
+            UIElement focusedElement = Keyboard.FocusedElement as UIElement;
             if (focusedElement == null || CanUnhighlightWhenFocused(focusedElement))
             {
                 // If no popup is open
@@ -356,7 +356,7 @@ namespace Supremacy.Client.Controls
 
                     if (IsKeyboardFocusWithin)
                     {
-                        var control = ItemsControl.ItemsControlFromItemContainer(this);
+                        ItemsControl control = ItemsControl.ItemsControlFromItemContainer(this);
                         if (control != null)
                             control.Focus();
                     }

@@ -43,12 +43,12 @@ namespace Supremacy.Client.Markup
                         int _allValue = 0;
                         string _text0 = MergedDictionaries[0].Source.ToString();
 
-                        foreach (var item in MergedDictionaries[0].MergedDictionaries)
+                        foreach (ResourceDictionary item in MergedDictionaries[0].MergedDictionaries)
                         {
                             string _text1 = item.Source.ToString(); Console.WriteLine(_text1);
                             _allValue += 10000;  // 10.000 step each file
 
-                            foreach (var key in item.Keys)
+                            foreach (object key in item.Keys)
                             {
                                 string _text2 = key.ToString();
                                 //Console.WriteLine(_text1 + "-" +_text2);   // MergedDictionaries

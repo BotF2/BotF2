@@ -21,7 +21,7 @@ namespace Supremacy.Entities
 
         public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
         {
-            var stringValue = value as string;
+            string stringValue = value as string;
 
             if (string.IsNullOrWhiteSpace(stringValue))
                 return null;
@@ -42,7 +42,7 @@ namespace Supremacy.Entities
 
         public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
         {
-            var civilization = value as Civilization;
+            Civilization civilization = value as Civilization;
             if (civilization == null)
                 return null;
 

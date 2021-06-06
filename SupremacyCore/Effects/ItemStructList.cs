@@ -32,7 +32,7 @@ namespace Supremacy.Effects
 
         public void EnsureIndex(int index)
         {
-            var delta = (index + 1) - Count;
+            int delta = (index + 1) - Count;
             if (delta > 0)
             {
                 Add(delta);
@@ -46,9 +46,9 @@ namespace Supremacy.Effects
 
         public int IndexOf(T value)
         {
-            var index = -1;
+            int index = -1;
 
-            for (var i = 0; i < Count; i++)
+            for (int i = 0; i < Count; i++)
             {
                 if (List[i].Equals(value))
                 {
@@ -74,7 +74,7 @@ namespace Supremacy.Effects
         public void Add(T item)
         {
             // Add without Count adjustment (incr Count after valid item added)
-            var index = Add(1, false);
+            int index = Add(1, false);
             List[index] = item;
             Count++;
         }
@@ -83,7 +83,7 @@ namespace Supremacy.Effects
         public void Add(ref T item)
         {
             // Add without Count adjustment (incr Count after valid item added)
-            var index = Add(1, false);
+            int index = Add(1, false);
             List[index] = item;
             Count++;
         }
@@ -111,7 +111,7 @@ namespace Supremacy.Effects
             {
                 if ((Count + delta) > List.Length)
                 {
-                    var newList = new T[Math.Max(List.Length * 2, Count + delta)];
+                    T[] newList = new T[Math.Max(List.Length * 2, Count + delta)];
                     List.CopyTo(newList, 0);
                     List = newList;
                 }
@@ -124,7 +124,7 @@ namespace Supremacy.Effects
             // New arrays auto-initialized to default entry values
             // Any resued entried have already been cleared out by Remove or Clear
 
-            var index = Count;
+            int index = Count;
 
             // Optional adjustment of Count 
             if (incrCount)
@@ -147,7 +147,7 @@ namespace Supremacy.Effects
 
         public void AppendTo(ref ItemStructList<T> destinationList)
         {
-            for (var i = 0; i < Count; i++)
+            for (int i = 0; i < Count; i++)
             {
                 destinationList.Add(ref List[i]);
             }
@@ -155,7 +155,7 @@ namespace Supremacy.Effects
 
         public T[] ToArray()
         {
-            var array = new T[Count];
+            T[] array = new T[Count];
             Array.Copy(List, 0, array, 0, Count);
 
             return array;
@@ -180,7 +180,7 @@ namespace Supremacy.Effects
 
         public void Remove(T value)
         {
-            var index = IndexOf(value);
+            int index = IndexOf(value);
             if (index != -1)
             {
                 // Shift entries down

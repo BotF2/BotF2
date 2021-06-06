@@ -33,10 +33,10 @@ namespace Supremacy.Types
 
         static ValueModifier()
         {
-            var originalValue = Expression.Parameter(typeof(T), "originalValue");
-            var currentValue = Expression.Parameter(typeof(T), "currentValue");
-            var multiplier = Expression.Parameter(typeof(Percentage), "multiplier");
-            var offset = Expression.Parameter(typeof(int), "offset");
+            ParameterExpression originalValue = Expression.Parameter(typeof(T), "originalValue");
+            ParameterExpression currentValue = Expression.Parameter(typeof(T), "currentValue");
+            ParameterExpression multiplier = Expression.Parameter(typeof(Percentage), "multiplier");
+            ParameterExpression offset = Expression.Parameter(typeof(int), "offset");
 
             _compoundMultiplyExpression = Expression.Lambda<Func<T, T, Percentage, T>>(
                 Expression.Convert(

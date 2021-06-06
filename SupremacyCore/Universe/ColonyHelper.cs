@@ -13,12 +13,12 @@ namespace Supremacy.Universe
             if (colony == null)
                 return 0;
 
-            var total = 0;
+            int total = 0;
 
             /*
              * Include the value of all buildings.
              */
-            foreach (var building in colony.Buildings)
+            foreach (Buildings.Building building in colony.Buildings)
             {
                 total += building.Design.BuildCost;
                 total += EnumHelper.GetValues<ResourceType>().Sum(r => EconomyHelper.ComputeResourceValue(r, building.Design.BuildResourceCosts[r]));
@@ -27,7 +27,7 @@ namespace Supremacy.Universe
             /*
              * Include the value of the shipyard, but not the ships under construction within (see below).
              */
-            var shipyard = colony.Shipyard;
+            Orbitals.Shipyard shipyard = colony.Shipyard;
             int shipyardBuildSlotsCount = 0;
 
             if (shipyard != null)
@@ -37,7 +37,7 @@ namespace Supremacy.Universe
                 shipyardBuildSlotsCount = shipyard.BuildSlots.Count;
             }
 
-            var buildSlots = colony.BuildSlots.Concat(shipyard != null ? shipyard.BuildSlots : IndexedEnumerable.Empty<BuildSlot>());
+            IIndexedEnumerable<BuildSlot> buildSlots = colony.BuildSlots.Concat(shipyard != null ? shipyard.BuildSlots : IndexedEnumerable.Empty<BuildSlot>());
 
             /*
              * Include the resources invested in partially completed construction.

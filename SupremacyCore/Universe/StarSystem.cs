@@ -222,9 +222,9 @@ namespace Supremacy.Universe
         /// </returns>
         public bool IsHabitable(Race race)
         {
-            var habitablePlanetTypes = race.HabitablePlanetTypes;
+            PlanetTypeFlags habitablePlanetTypes = race.HabitablePlanetTypes;
 
-            foreach (var planet in _planets)
+            foreach (Planet planet in _planets)
             {
                 if (habitablePlanetTypes[planet.PlanetType] && planet.IsHabitable(race.HomePlanetType))
                     return true;
@@ -242,7 +242,7 @@ namespace Supremacy.Universe
         /// </returns>
         public bool IsHabitable(PlanetType homePlanetType)
         {
-            foreach (var planet in _planets)
+            foreach (Planet planet in _planets)
             {
                 if (planet.IsHabitable(homePlanetType))
                     return true;
@@ -268,7 +268,7 @@ namespace Supremacy.Universe
             if (_planets.Contains(planet))
                 return;
 
-            var planets = new Planet[_planets.Count + 1];
+            Planet[] planets = new Planet[_planets.Count + 1];
 
             _planets.CopyTo(planets);
             planets[planets.Length - 1] = planet;
@@ -284,7 +284,7 @@ namespace Supremacy.Universe
             if (planets == null)
                 throw new ArgumentNullException("planets");
 
-            var allPlanets = new List<Planet>(_planets);
+            List<Planet> allPlanets = new List<Planet>(_planets);
 
             allPlanets.AddRange(planets);
             _planets = new ArrayWrapper<Planet>(allPlanets.ToArray());
@@ -313,7 +313,7 @@ namespace Supremacy.Universe
             if (!_planets.Contains(planet))
                 return;
 
-            var planetList = new List<Planet>(_planets);
+            List<Planet> planetList = new List<Planet>(_planets);
             planetList.Remove(planet);
             _planets = new ArrayWrapper<Planet>(planetList.ToArray());
         }

@@ -294,7 +294,7 @@ namespace Supremacy.Tech
         {
             get
             {
-                var imagePath = ResourceManager.GetResourcePath(
+                string imagePath = ResourceManager.GetResourcePath(
                     string.Format(
                         @"vfs:///Resources/Images/Research/Fields/{0}.png",
                         ResourceManager.GetString(_name)));

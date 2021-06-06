@@ -310,7 +310,7 @@ namespace Supremacy.Scripting.Runtime.Binders
         /// <summary>Checks if there's an implicit numeric conversion for primitive data types.</summary>
         private static MSAst TryImplicitNumericConversion(Type toType, Type type, MSAst arg)
         {
-            var checkType = type;
+            Type checkType = type;
             if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Extensible<>))
             {
                 checkType = type.GetGenericArguments()[0];

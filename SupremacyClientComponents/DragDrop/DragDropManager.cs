@@ -99,7 +99,7 @@ namespace Supremacy.Client.DragDrop
             DependencyObject d,
             DependencyPropertyChangedEventArgs e)
 		{
-			var sourceElement = d as UIElement;
+            UIElement sourceElement = d as UIElement;
             if (sourceElement == null)
                 return;
             if (e.NewValue != null && e.OldValue == null)
@@ -108,8 +108,8 @@ namespace Supremacy.Client.DragDrop
 				sourceElement.PreviewMouseMove += OnDragSourcePreviewMouseMove;
 				sourceElement.PreviewMouseUp += OnDragSourcePreviewMouseUp;
 
-				// Set the Drag source UI
-				var advisor = e.NewValue as IDragSourceAdvisor;
+                // Set the Drag source UI
+                IDragSourceAdvisor advisor = e.NewValue as IDragSourceAdvisor;
 			    if (advisor != null)
 			        advisor.SourceElement = sourceElement;
 			}
@@ -125,7 +125,7 @@ namespace Supremacy.Client.DragDrop
             DependencyObject d,
             DependencyPropertyChangedEventArgs e)
 		{
-			var targetElement = d as UIElement;
+            UIElement targetElement = d as UIElement;
             if (targetElement == null)
                 return;
 			if (e.NewValue != null && e.OldValue == null)
@@ -136,8 +136,8 @@ namespace Supremacy.Client.DragDrop
 				targetElement.PreviewDrop += OnDropTargetPreviewDrop;
 				targetElement.AllowDrop = true;
 
-				// Set the Drag source UI
-				var advisor = e.NewValue as IDropTargetAdvisor;
+                // Set the Drag source UI
+                IDropTargetAdvisor advisor = e.NewValue as IDropTargetAdvisor;
 			    if (advisor != null)
 			        advisor.TargetElement = targetElement;
 			}
@@ -157,10 +157,10 @@ namespace Supremacy.Client.DragDrop
 		{
 			UpdateEffects(e);
 
-			var dropPoint = e.GetPosition(sender as UIElement);
+            Point dropPoint = e.GetPosition(sender as UIElement);
 
-			// Calculate displacement for (Left, Top)
-			var offset = e.GetPosition(_overlayElement);
+            // Calculate displacement for (Left, Top)
+            Point offset = e.GetPosition(_overlayElement);
 			dropPoint.X = dropPoint.X - offset.X;
 			dropPoint.Y = dropPoint.Y - offset.Y;
 
@@ -235,11 +235,11 @@ namespace Supremacy.Client.DragDrop
             if (e.Handled)
                 return;
 
-            var scrollBar = ((DependencyObject)e.OriginalSource).FindVisualAncestorByType<ScrollBar>();
+            ScrollBar scrollBar = ((DependencyObject)e.OriginalSource).FindVisualAncestorByType<ScrollBar>();
             if (scrollBar != null)
                 return;
 
-            var source = ((DependencyObject)e.OriginalSource).FindVisualAncestor(o => GetDragSourceAdvisor(o) != null);
+            DependencyObject source = ((DependencyObject)e.OriginalSource).FindVisualAncestor(o => GetDragSourceAdvisor(o) != null);
             if (source == null)
                 return;
 
@@ -272,14 +272,14 @@ namespace Supremacy.Client.DragDrop
 			_isMouseDown = false;
 			Mouse.Capture(uiElt);
 
-			var data = CurrentDragSourceAdvisor.GetDataObject(_draggedElement);
+            DataObject data = CurrentDragSourceAdvisor.GetDataObject(_draggedElement);
 
 			data.SetData(DragOffsetFormat, _offsetPoint);
-			var supportedEffects = CurrentDragSourceAdvisor.SupportedEffects;
+            DragDropEffects supportedEffects = CurrentDragSourceAdvisor.SupportedEffects;
 
-			// Perform DragDrop
+            // Perform DragDrop
 
-			var effects = System.Windows.DragDrop.DoDragDrop(_draggedElement, data, supportedEffects);
+            DragDropEffects effects = System.Windows.DragDrop.DoDragDrop(_draggedElement, data, supportedEffects);
 			CurrentDragSourceAdvisor.FinishDrag(_draggedElement, effects);
 
 			// Clean up
@@ -290,8 +290,8 @@ namespace Supremacy.Client.DragDrop
 
 		private static bool IsDragGesture(Point point)
 		{
-			var hGesture = Math.Abs(point.X - _dragStartPoint.X) > SystemParameters.MinimumHorizontalDragDistance;
-			var vGesture = Math.Abs(point.Y - _dragStartPoint.Y) > SystemParameters.MinimumVerticalDragDistance;
+            bool hGesture = Math.Abs(point.X - _dragStartPoint.X) > SystemParameters.MinimumHorizontalDragDistance;
+            bool vGesture = Math.Abs(point.Y - _dragStartPoint.Y) > SystemParameters.MinimumVerticalDragDistance;
 
 			return (hGesture | vGesture);
 		}
@@ -301,8 +301,8 @@ namespace Supremacy.Client.DragDrop
 		    if (_overlayElement != null)
 		        return;
 
-            var layer = AdornerLayer.GetAdornerLayer(CurrentDropTargetAdvisor.GetTopContainer());
-			var feedbackElement = CurrentDropTargetAdvisor.GetVisualFeedback(data);
+            AdornerLayer layer = AdornerLayer.GetAdornerLayer(CurrentDropTargetAdvisor.GetTopContainer());
+            UIElement feedbackElement = CurrentDropTargetAdvisor.GetVisualFeedback(data);
 
 			_overlayElement = new DropPreviewAdorner(feedbackElement, adornedElt);
 

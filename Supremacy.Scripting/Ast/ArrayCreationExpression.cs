@@ -516,7 +516,7 @@ namespace Supremacy.Scripting.Ast
         {
             sw.Write("{");
 
-            var i = 0;
+            int i = 0;
             foreach (Expression value in _values)
             {
                 if (i++ != 0)

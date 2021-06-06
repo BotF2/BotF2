@@ -144,7 +144,7 @@ namespace Supremacy.VFS
                 GameLog.Core.General.Error(e);
             }
 
-            var baseStream = _baseStream;
+            T baseStream = _baseStream;
             if (baseStream != null)
             {
                 if (disposing)

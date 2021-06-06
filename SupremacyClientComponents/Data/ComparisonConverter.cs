@@ -28,8 +28,8 @@ namespace Supremacy.Client.Data
             if (ComparisonType == ComparisonType.NotEqual)
                 return !Equals(value, parameter) ? TrueValue : FalseValue;
 
-            var left = System.Convert.ToDouble(value);
-            var right = System.Convert.ToDouble(parameter);
+            double left = System.Convert.ToDouble(value);
+            double right = System.Convert.ToDouble(parameter);
 
             switch (ComparisonType)
             {

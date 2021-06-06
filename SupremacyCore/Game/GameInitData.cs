@@ -46,7 +46,7 @@ namespace Supremacy.Game
             GameLog.Client.GameData.DebugFormat("CreateSinglePlayerGame: SP-GameName={0}, SP-Name={2}, localPlayerEmpireID={1}", 
                                                         SinglePlayerGameName, localPlayerEmpireID, SinglePlayerName);
 
-            var initData = new GameInitData
+            GameInitData initData = new GameInitData
                            {
                                GameName = SinglePlayerGameName,
                                Options = options,
@@ -57,7 +57,7 @@ namespace Supremacy.Game
 
             initData.PopulateEmpires();
 
-            var empireCount = initData.EmpireIDs.Length;  // does not count Empires turned into ExpandingPower, but we need that amount too. 
+            int empireCount = initData.EmpireIDs.Length;  // does not count Empires turned into ExpandingPower, but we need that amount too. 
 
             //maybe works now......empireCount = 8; // hardcoded value, depending on defined empires in Civilizations.xaml
 
@@ -88,7 +88,7 @@ namespace Supremacy.Game
             if (localPlayerName == null)
                 throw new ArgumentNullException("localPlayerName");
 
-            var initData = new GameInitData
+            GameInitData initData = new GameInitData
                            {
                                Options = options,
                                GameType = GameType.MultiplayerNew,
@@ -98,7 +98,7 @@ namespace Supremacy.Game
 
             initData.PopulateEmpires();
 
-            var empireCount = initData.EmpireIDs.Length;
+            int empireCount = initData.EmpireIDs.Length;
 
             initData.SlotClaims = new SlotClaim[empireCount];
             initData.SlotStatus = new SlotStatus[empireCount];
@@ -126,11 +126,11 @@ namespace Supremacy.Game
             GameLog.Core.General.InfoFormat("Deserialized: savedGameHeader;FileName;{0}", savedGameHeader.FileName);
             GameLog.Core.GeneralDetails.DebugFormat("Deserialized: savedGameHeader;LocalPlayerEmpireID;{0}", savedGameHeader.LocalPlayerEmpireID);
             GameLog.Core.GeneralDetails.DebugFormat("Deserialized: savedGameHeader;LocalPlayerName;{0}", savedGameHeader.LocalPlayerName);
-            foreach (var empire in savedGameHeader.EmpireIDs)
+            foreach (int empire in savedGameHeader.EmpireIDs)
             {
                 GameLog.Core.GeneralDetails.DebugFormat("Deserialized: savedGameHeader;EmpireNames;{0}", empire);
             }
-            foreach (var empireName in savedGameHeader.EmpireNames)
+            foreach (string empireName in savedGameHeader.EmpireNames)
             {
                 GameLog.Core.GeneralDetails.DebugFormat("Deserialized: savedGameHeader;EmpireNames;{0}", empireName);
             }
@@ -169,11 +169,11 @@ namespace Supremacy.Game
             GameLog.Core.GeneralDetails.DebugFormat("Deserialized: savedGameHeader;Options - AITakeover;{0}", savedGameHeader.Options.AITakeover);
             // not useful GameLog.Core.General.InfoFormat("Deserialized: savedGameHeader;Options - ModID     ;{0}", savedGameHeader.Options.ModID);
 
-            foreach (var slotClaim in savedGameHeader.SlotClaims)
+            foreach (SlotClaim slotClaim in savedGameHeader.SlotClaims)
             {
                 GameLog.Core.GeneralDetails.DebugFormat("Deserialized: savedGameHeader;SlotClaims;{0}", slotClaim);
             }
-            foreach (var slotStatus in savedGameHeader.SlotStatus)
+            foreach (SlotStatus slotStatus in savedGameHeader.SlotStatus)
             {
                 GameLog.Core.GeneralDetails.DebugFormat("Deserialized: savedGameHeader;SlotClaims;{0}", slotStatus);
             }

@@ -25,9 +25,9 @@ namespace Supremacy.Scripting
 
         public ScriptService()
         {
-            var languageName = typeof(ScriptLanguageContext).AssemblyQualifiedName;
-            var scriptRuntimeSetup = new ScriptRuntimeSetup { LanguageSetups = { new LanguageSetup(languageName, "Q#") } };
-            var scriptEngine = ScriptRuntime.CreateRemote(AppDomain.CurrentDomain, scriptRuntimeSetup).GetEngineByTypeName(languageName);
+            string languageName = typeof(ScriptLanguageContext).AssemblyQualifiedName;
+            ScriptRuntimeSetup scriptRuntimeSetup = new ScriptRuntimeSetup { LanguageSetups = { new LanguageSetup(languageName, "Q#") } };
+            ScriptEngine scriptEngine = ScriptRuntime.CreateRemote(AppDomain.CurrentDomain, scriptRuntimeSetup).GetEngineByTypeName(languageName);
 
             _context = (ScriptLanguageContext)HostingHelpers.GetLanguageContext(scriptEngine);
             _context.DomainManager.LoadAssembly(typeof(Game.GameContext).Assembly);

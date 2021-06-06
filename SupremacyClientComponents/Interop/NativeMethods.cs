@@ -86,7 +86,7 @@ namespace Supremacy.Client.Interop
             [SecurityCritical]
             public static bool DeleteObject(IntPtr hObject)
             {
-                var result = UnsafeNativeMethods.DeleteObject(hObject);
+                bool result = UnsafeNativeMethods.DeleteObject(hObject);
                 Marshal.GetLastWin32Error();
                 return result;
             }
@@ -174,15 +174,15 @@ namespace Supremacy.Client.Interop
         {
             const int MONITOR_DEFAULTTONEAREST = 0x00000002;
 
-            var monitorInfo = new MONITORINFO();
-            var rect = new RECT(bounds);
-            var monitor = MonitorFromRect(ref rect, MONITOR_DEFAULTTONEAREST);
+            MONITORINFO monitorInfo = new MONITORINFO();
+            RECT rect = new RECT(bounds);
+            IntPtr monitor = MonitorFromRect(ref rect, MONITOR_DEFAULTTONEAREST);
 
             if (monitor != IntPtr.Zero)
             {
                 if (GetMonitorInfo(monitor, monitorInfo))
                 {
-                    var workingArea = monitorInfo.rcWork.ToRect();
+                    Rect workingArea = monitorInfo.rcWork.ToRect();
 
                     if (bounds.Right > workingArea.Right)
                         bounds.Offset(workingArea.Right - bounds.Right, 0);
@@ -320,7 +320,7 @@ namespace Supremacy.Client.Interop
                     }
                     
                     GC.Collect();
-                    var millisecondsTimeout = (100 - _deltaPercent) / 4;
+                    int millisecondsTimeout = (100 - _deltaPercent) / 4;
                     Thread.Sleep(millisecondsTimeout);
                 }
 

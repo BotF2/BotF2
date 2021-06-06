@@ -16,15 +16,15 @@ namespace Supremacy.Client.Views
 
         private void OnShipyardBuildQueueItemClicked(object sender, object clickedItem) 
         {
-            var buildQueueItem = clickedItem as BuildQueueItem;
+            BuildQueueItem buildQueueItem = clickedItem as BuildQueueItem;
             if (buildQueueItem == null)
                 return;
 
-            var presentationModel = PresentationModel;
+            ColonyScreenPresentationModel presentationModel = PresentationModel;
             if (presentationModel == null)
                 return;
 
-            var command = presentationModel.RemoveFromShipyardBuildQueueCommand;
+            ICommand command = presentationModel.RemoveFromShipyardBuildQueueCommand;
             if ((command != null) && command.CanExecute(buildQueueItem))
                 command.Execute(buildQueueItem);
         }

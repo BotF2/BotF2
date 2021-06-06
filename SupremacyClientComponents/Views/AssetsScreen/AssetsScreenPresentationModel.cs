@@ -180,7 +180,7 @@ namespace Supremacy.Client.Views
         }
         protected virtual void FillUpDefense()
         {
-            var civ = GameContext.Current.CivilizationManagers[MyLocalCivManager.Civilization];
+            CivilizationManager civ = GameContext.Current.CivilizationManagers[MyLocalCivManager.Civilization];
             civ.TotalIntelligenceAttackingAccumulated.AdjustCurrent(civ.TotalIntelligenceAttackingAccumulated.CurrentValue * -1); // remove from Attacking
             civ.TotalIntelligenceAttackingAccumulated.UpdateAndReset();
             civ.TotalIntelligenceDefenseAccumulated.AdjustCurrent(civ.TotalIntelligenceDefenseAccumulated.CurrentValue); // add to Defense
@@ -543,7 +543,7 @@ namespace Supremacy.Client.Views
         {
             get
             {
-                var civManager = MyLocalCivManager; // not this DesignTimeObjects.LocalCivManager.Civilization
+                CivilizationManager civManager = MyLocalCivManager; // not this DesignTimeObjects.LocalCivManager.Civilization
                 try
                 {
                     //GameLog.Core.Intel.DebugFormat("TotalPopulation ={0}", civManager.TotalPopulation);
@@ -564,7 +564,7 @@ namespace Supremacy.Client.Views
         {
             get
             {
-                var civManager = MyLocalCivManager; // not this DesignTimeObjects.LocalCivManager.Civilization
+                CivilizationManager civManager = MyLocalCivManager; // not this DesignTimeObjects.LocalCivManager.Civilization
                 try
                 {
                     //GameLog.Core.Intel.DebugFormat("TotalPopulation ={0}", civManager.TotalPopulation);
@@ -587,7 +587,7 @@ namespace Supremacy.Client.Views
         {
             get
             {
-                var civManager = MyLocalCivManager; // not this DesignTimeObjects.LocalCivManager.Civilization
+                CivilizationManager civManager = MyLocalCivManager; // not this DesignTimeObjects.LocalCivManager.Civilization
                 try
                 {
                     //GameLog.Core.Intel.DebugFormat("TotalPopulation ={0}", civManager.TotalPopulation);
@@ -607,7 +607,7 @@ namespace Supremacy.Client.Views
         {
             get
             {
-                var civManager = MyLocalCivManager; // not this DesignTimeObjects.LocalCivManager.Civilization
+                CivilizationManager civManager = MyLocalCivManager; // not this DesignTimeObjects.LocalCivManager.Civilization
                 try
                 {
                     //GameLog.Core.Intel.DebugFormat("TotalPopulation ={0}", civManager.TotalPopulation);
@@ -627,7 +627,7 @@ namespace Supremacy.Client.Views
         {
             get
             {
-                var civManager = MyLocalCivManager; // not this DesignTimeObjects.LocalCivManager.Civilization
+                CivilizationManager civManager = MyLocalCivManager; // not this DesignTimeObjects.LocalCivManager.Civilization
                 try
                 {
                     //GameLog.Core.Intel.DebugFormat("TotalPopulation ={0}", civManager.TotalPopulation);
@@ -651,7 +651,7 @@ namespace Supremacy.Client.Views
         {
             get
             {
-                var SpiedCiv = DesignTimeObjects.SpiedCivZero;
+                CivilizationManager SpiedCiv = DesignTimeObjects.SpiedCivZero;
                // GameLog.Client.Test.DebugFormat("##### trying to return SpiedCiv.Civilization = {0}", SpiedCiv.Civilization.Key);
                 return SpiedCiv.Civilization;
             }
@@ -660,8 +660,8 @@ namespace Supremacy.Client.Views
         {
             get
             {
-                var SpiedCiv = DesignTimeObjects.SpiedCivZero;
-                var SeatOfGovernment = GameContext.Current.CivilizationManagers[SpiedCiv].SeatOfGovernment;
+                CivilizationManager SpiedCiv = DesignTimeObjects.SpiedCivZero;
+                Colony SeatOfGovernment = GameContext.Current.CivilizationManagers[SpiedCiv].SeatOfGovernment;
                // GameLog.Client.Test.DebugFormat("##### trying to return SpiedCivZero SeatOfGovernment = {0}", SeatOfGovernment);
                 return SeatOfGovernment;
             }
@@ -670,7 +670,7 @@ namespace Supremacy.Client.Views
         {
             get
             {
-                var civManager = DesignTimeObjects.SpiedCivZero;
+                CivilizationManager civManager = DesignTimeObjects.SpiedCivZero;
                 try
                 {
                     GameLog.Core.Test.DebugFormat("SpiedZeroTotalPopulation ={0}", civManager.TotalPopulation);
@@ -691,7 +691,7 @@ namespace Supremacy.Client.Views
         {
             get
             {
-                var SpiedCiv = DesignTimeObjects.SpiedCivOne;
+                CivilizationManager SpiedCiv = DesignTimeObjects.SpiedCivOne;
                 GameLog.Client.Intel.DebugFormat("##### trying to return SpiedOneCiv.Civilization = {0}", SpiedCiv.Civilization.Key);
                 return SpiedCiv.Civilization;
             }
@@ -700,8 +700,8 @@ namespace Supremacy.Client.Views
         {
             get
             {
-                var SpiedCiv = DesignTimeObjects.SpiedCivOne;
-                var SeatOfGovernment = GameContext.Current.CivilizationManagers[SpiedCiv].SeatOfGovernment;
+                CivilizationManager SpiedCiv = DesignTimeObjects.SpiedCivOne;
+                Colony SeatOfGovernment = GameContext.Current.CivilizationManagers[SpiedCiv].SeatOfGovernment;
                 GameLog.Client.Test.DebugFormat("##### trying to return SpiedCivOne SeatOfGovernment = {0}", SeatOfGovernment);
                 return SeatOfGovernment;
             }
@@ -710,7 +710,7 @@ namespace Supremacy.Client.Views
         {
             get
             {
-                var civManager = DesignTimeObjects.SpiedCivOne;
+                CivilizationManager civManager = DesignTimeObjects.SpiedCivOne;
                 try
                 {
                     GameLog.Core.Intel.DebugFormat("SpiedOneTotalPopulation ={0}", civManager.TotalPopulation);
@@ -731,7 +731,7 @@ namespace Supremacy.Client.Views
         {
             get
             {
-                var SpiedCiv = DesignTimeObjects.SpiedCivTwo;
+                CivilizationManager SpiedCiv = DesignTimeObjects.SpiedCivTwo;
                 return SpiedCiv.Civilization;
             }
         }
@@ -739,8 +739,8 @@ namespace Supremacy.Client.Views
         {
             get
             {
-                var SpiedCiv = DesignTimeObjects.SpiedCivTwo;
-                var SeatOfGovernment = GameContext.Current.CivilizationManagers[SpiedCiv].SeatOfGovernment;
+                CivilizationManager SpiedCiv = DesignTimeObjects.SpiedCivTwo;
+                Colony SeatOfGovernment = GameContext.Current.CivilizationManagers[SpiedCiv].SeatOfGovernment;
                 GameLog.Client.Test.DebugFormat("##### trying to return SpiedCivTwo SeatOfGovernment = {0}", SeatOfGovernment);
                 return SeatOfGovernment;
             }
@@ -749,7 +749,7 @@ namespace Supremacy.Client.Views
         {
             get
             {
-                var civManager = DesignTimeObjects.SpiedCivTwo;
+                CivilizationManager civManager = DesignTimeObjects.SpiedCivTwo;
                 try
                 {
                     GameLog.Core.Intel.DebugFormat("SpiedTwoTotalPopulation ={0}", civManager.TotalPopulation);
@@ -770,7 +770,7 @@ namespace Supremacy.Client.Views
         {
             get
             {
-                var SpiedCiv = DesignTimeObjects.SpiedCivThree;
+                CivilizationManager SpiedCiv = DesignTimeObjects.SpiedCivThree;
                 return SpiedCiv.Civilization;
             }
         }
@@ -778,8 +778,8 @@ namespace Supremacy.Client.Views
         {
             get
             {
-                var SpiedCiv = DesignTimeObjects.SpiedCivThree;
-                var SeatOfGovernment = GameContext.Current.CivilizationManagers[SpiedCiv].SeatOfGovernment;
+                CivilizationManager SpiedCiv = DesignTimeObjects.SpiedCivThree;
+                Colony SeatOfGovernment = GameContext.Current.CivilizationManagers[SpiedCiv].SeatOfGovernment;
                 GameLog.Client.Intel.DebugFormat("##### trying to return SpiedCivThree SeatOfGovernment = {0}", SeatOfGovernment);
                 return SeatOfGovernment;
             }
@@ -788,7 +788,7 @@ namespace Supremacy.Client.Views
         {
             get
             {
-                var civManager = DesignTimeObjects.SpiedCivThree;
+                CivilizationManager civManager = DesignTimeObjects.SpiedCivThree;
                 try
                 {
                     GameLog.Core.Intel.DebugFormat("SpiedThreeTotalPopulation ={0}", civManager.TotalPopulation);
@@ -809,7 +809,7 @@ namespace Supremacy.Client.Views
         {
             get
             {
-                var SpiedCiv = DesignTimeObjects.SpiedCivFour;
+                CivilizationManager SpiedCiv = DesignTimeObjects.SpiedCivFour;
                 return SpiedCiv.Civilization;
             }
         }
@@ -817,8 +817,8 @@ namespace Supremacy.Client.Views
         {
             get
             {
-                var SpiedCiv = DesignTimeObjects.SpiedCivFour;
-                var SeatOfGovernment = GameContext.Current.CivilizationManagers[SpiedCiv].SeatOfGovernment;
+                CivilizationManager SpiedCiv = DesignTimeObjects.SpiedCivFour;
+                Colony SeatOfGovernment = GameContext.Current.CivilizationManagers[SpiedCiv].SeatOfGovernment;
                 GameLog.Client.Intel.DebugFormat("##### trying to return SpiedCivFour SeatOfGovernment = {0}", SeatOfGovernment);
                 return SeatOfGovernment;
             }
@@ -827,7 +827,7 @@ namespace Supremacy.Client.Views
         {
             get
             {
-                var civManager = DesignTimeObjects.SpiedCivFour;
+                CivilizationManager civManager = DesignTimeObjects.SpiedCivFour;
                 try
                 {
                     GameLog.Core.Intel.DebugFormat("SpiedFourTotalPopulation ={0}", civManager.TotalPopulation);
@@ -848,7 +848,7 @@ namespace Supremacy.Client.Views
         {
             get
             {
-                var SpiedCiv = DesignTimeObjects.SpiedCivFive;
+                CivilizationManager SpiedCiv = DesignTimeObjects.SpiedCivFive;
                 return SpiedCiv.Civilization;
             }
         }
@@ -856,8 +856,8 @@ namespace Supremacy.Client.Views
         {
             get
             {
-                var SpiedCiv = DesignTimeObjects.SpiedCivFive;
-                var SeatOfGovernment = GameContext.Current.CivilizationManagers[SpiedCiv].SeatOfGovernment;
+                CivilizationManager SpiedCiv = DesignTimeObjects.SpiedCivFive;
+                Colony SeatOfGovernment = GameContext.Current.CivilizationManagers[SpiedCiv].SeatOfGovernment;
                 GameLog.Client.Intel.DebugFormat("##### trying to return SpiedCivFive SeatOfGovernment = {0}", SeatOfGovernment);
                 return SeatOfGovernment;
             }
@@ -866,7 +866,7 @@ namespace Supremacy.Client.Views
         {
             get
             {
-                var civManager = DesignTimeObjects.SpiedCivFive;
+                CivilizationManager civManager = DesignTimeObjects.SpiedCivFive;
                 try
                 {
                     GameLog.Core.Intel.DebugFormat("SpiedFiveTotalPopulation ={0}", civManager.TotalPopulation);
@@ -887,7 +887,7 @@ namespace Supremacy.Client.Views
         {
             get
             {
-                var SpiedCiv = DesignTimeObjects.SpiedCivSix;
+                CivilizationManager SpiedCiv = DesignTimeObjects.SpiedCivSix;
                 return SpiedCiv.Civilization;
             }
         }
@@ -895,8 +895,8 @@ namespace Supremacy.Client.Views
         {
             get
             {
-                var SpiedCiv = DesignTimeObjects.SpiedCivSix;
-                var SeatOfGovernment = GameContext.Current.CivilizationManagers[SpiedCiv].SeatOfGovernment;
+                CivilizationManager SpiedCiv = DesignTimeObjects.SpiedCivSix;
+                Colony SeatOfGovernment = GameContext.Current.CivilizationManagers[SpiedCiv].SeatOfGovernment;
                 GameLog.Client.Intel.DebugFormat("##### trying to return SpiedCivSix SeatOfGovernment = {0}", SeatOfGovernment);
                 return SeatOfGovernment;
             }
@@ -905,7 +905,7 @@ namespace Supremacy.Client.Views
         {
             get
             {
-                var civManager = DesignTimeObjects.SpiedCivSix;
+                CivilizationManager civManager = DesignTimeObjects.SpiedCivSix;
                 try
                 {
                     GameLog.Core.Intel.DebugFormat("SpiedSixTotalPopulation ={0}", civManager.TotalPopulation);
@@ -932,7 +932,7 @@ namespace Supremacy.Client.Views
             {
                 try
                 {
-                    var civManager = GameContext.Current.CivilizationManagers[DesignTimeObjects.CivilizationManager.Civilization];
+                    CivilizationManager civManager = GameContext.Current.CivilizationManagers[DesignTimeObjects.CivilizationManager.Civilization];
                     return civManager.Credits;
                 }
                 catch (Exception e)
@@ -969,8 +969,8 @@ namespace Supremacy.Client.Views
             {
                 while (true)
                 {
-                    var oldHandler = _propertyChanged;
-                    var newHandler = (PropertyChangedEventHandler)Delegate.Combine(oldHandler, value);
+                    PropertyChangedEventHandler oldHandler = _propertyChanged;
+                    PropertyChangedEventHandler newHandler = (PropertyChangedEventHandler)Delegate.Combine(oldHandler, value);
 
                     if (Interlocked.CompareExchange(ref _propertyChanged, newHandler, oldHandler) == oldHandler)
                         return;
@@ -980,8 +980,8 @@ namespace Supremacy.Client.Views
             {
                 while (true)
                 {
-                    var oldHandler = _propertyChanged;
-                    var newHandler = (PropertyChangedEventHandler)Delegate.Remove(oldHandler, value);
+                    PropertyChangedEventHandler oldHandler = _propertyChanged;
+                    PropertyChangedEventHandler newHandler = (PropertyChangedEventHandler)Delegate.Remove(oldHandler, value);
 
                     if (Interlocked.CompareExchange(ref _propertyChanged, newHandler, oldHandler) == oldHandler)
                         return;

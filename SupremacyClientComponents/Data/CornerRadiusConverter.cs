@@ -15,11 +15,11 @@ namespace Supremacy.Client.Data
 
         public override object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            var doubleValue = value as double?;
+            double? doubleValue = value as double?;
             if (doubleValue.HasValue)
                 value = new CornerRadius(doubleValue.Value);
 
-            var cornerRadius = value as CornerRadius?;
+            CornerRadius? cornerRadius = value as CornerRadius?;
             if (!cornerRadius.HasValue)
                 return base.Convert(value, targetType, parameter, culture);
 

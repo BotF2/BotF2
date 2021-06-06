@@ -63,7 +63,7 @@ namespace Supremacy.Orbitals
             _buildSlots = new ArrayWrapper<ShipyardBuildSlot>(new ShipyardBuildSlot[design.BuildSlots]);
            // _buildSlotQueues = new ArrayWrapper<BuildProject>(new BuildProject[design.BuildSlotQueues]);
             
-            for (var i = 0; i < _buildSlots.Count; i++)
+            for (int i = 0; i < _buildSlots.Count; i++)
                 _buildSlots[i] = new ShipyardBuildSlot { Shipyard = this, SlotID = i};
 
             _buildQueue = new ObservableCollection<BuildQueueItem>();
@@ -90,7 +90,7 @@ namespace Supremacy.Orbitals
         /// <returns>The build output.</returns>
         public int GetBuildOutput(int slot)
         {
-            var output = (float)ShipyardDesign.BuildSlotOutput;
+            float output = (float)ShipyardDesign.BuildSlotOutput;
             switch (ShipyardDesign.BuildSlotOutputType)
             {
                 case ShipyardOutputType.PopulationRatio:
@@ -107,7 +107,7 @@ namespace Supremacy.Orbitals
             if(ShipyardDesign.BuildSlotMaxOutput > 0)
                 output = Math.Min(output, ShipyardDesign.BuildSlotMaxOutput);
 
-            var shipBuildingBonus = Sector.System.Colony.Buildings
+            float shipBuildingBonus = Sector.System.Colony.Buildings
                 .Where(o => o.IsActive)
                 .SelectMany(o => o.BuildingDesign.Bonuses)
                 .Where(o => o.BonusType == BonusType.PercentShipBuilding)
@@ -132,20 +132,20 @@ namespace Supremacy.Orbitals
         public void ProcessQueue()
         {
            int count = 0;
-            foreach (var buildQueueItem in BuildQueue)
+            foreach (BuildQueueItem buildQueueItem in BuildQueue)
             {
                 GameLog.Client.ShipProduction.DebugFormat("Shipyard before BuildQueueItem = {0}, index {1}", buildQueueItem.Description, count);
                 count++;
             }
             //int bays = BuildSlots.Count();
             int baysWithProjects = 0;
-            foreach (var slot in BuildSlots)
+            foreach (ShipyardBuildSlot slot in BuildSlots)
             {
                 if (slot.HasProject && slot.Project.IsCancelled)
                     slot.Project = null;
                 if (slot.HasProject)
                     baysWithProjects++;
-                var queueItem = BuildQueue.FirstOrDefault();
+                BuildQueueItem queueItem = BuildQueue.FirstOrDefault();
                 if (queueItem == null)
                     continue;
                 if (slot.Project != null || slot.IsActive == false)
@@ -162,7 +162,7 @@ namespace Supremacy.Orbitals
                 }
             }
             int afterCount = 0;
-            foreach (var buildQueueItem in BuildQueue)
+            foreach (BuildQueueItem buildQueueItem in BuildQueue)
             {
                 GameLog.Client.ShipProduction.DebugFormat("Shipyard After BuildQueueItem = {0}, index {1}", buildQueueItem.Description, afterCount);
                 afterCount++;
@@ -184,7 +184,7 @@ namespace Supremacy.Orbitals
             
             try
             {
-                foreach (var slot in _buildSlots)
+                foreach (ShipyardBuildSlot slot in _buildSlots)
                 {
                     string _design = "nothing";
                     string _percent = "0 %";
@@ -221,9 +221,9 @@ namespace Supremacy.Orbitals
             if (_buildSlots == null)
                 return;
 
-            for (var i = 0; i < _buildSlots.Count; i++)
+            for (int i = 0; i < _buildSlots.Count; i++)
             {
-                var buildSlot = _buildSlots[i];
+                ShipyardBuildSlot buildSlot = _buildSlots[i];
                 buildSlot.Shipyard = this;
                 buildSlot.SlotID = i;
             }

@@ -44,8 +44,8 @@ namespace Supremacy.Universe
         #region Constructors
         static Planet()
         {
-            var sizes = EnumUtilities.GetValues<PlanetSize>();
-            var types = EnumUtilities.GetValues<PlanetType>();
+            Collections.EnumValueCollection<PlanetSize> sizes = EnumUtilities.GetValues<PlanetSize>();
+            Collections.EnumValueCollection<PlanetType> types = EnumUtilities.GetValues<PlanetType>();
             MoonShapeSections = new BitVector32.Section[MaxMoonsPerPlanet];
             MoonSizeSections = new BitVector32.Section[MaxMoonsPerPlanet];
 
@@ -254,7 +254,7 @@ namespace Supremacy.Universe
         /// <returns>The growth rate.</returns>
         public Percentage GetGrowthRate(PlanetType homePlanetType)
         {
-            var table = GameContext.Current.Tables.UniverseTables["PlanetGrowthRate"];
+            Data.Table table = GameContext.Current.Tables.UniverseTables["PlanetGrowthRate"];
             return Percentage.Parse(table[GetEnvironment(homePlanetType).ToString()][0]);
         }
 
@@ -266,7 +266,7 @@ namespace Supremacy.Universe
         /// <returns>The growth rate.</returns>
         public Percentage GetGrowthRate(Race race)
         {
-            var table = GameContext.Current.Tables.UniverseTables["PlanetGrowthRate"];
+            Data.Table table = GameContext.Current.Tables.UniverseTables["PlanetGrowthRate"];
             return Percentage.Parse(table[GetEnvironment(race).ToString()][0]);
         }
 
@@ -278,7 +278,7 @@ namespace Supremacy.Universe
         /// <returns>The maximum population.</returns>
         public int GetMaxPopulation(PlanetType homePlanetType)
         {
-            var table = GameContext.Current.Tables.UniverseTables["PlanetMaxPop"];
+            Data.Table table = GameContext.Current.Tables.UniverseTables["PlanetMaxPop"];
 
             // OK to return null here! Do not need to fix
             // 2021-02-21 reg: well, making trouble time by time - we should keep this coding
@@ -313,7 +313,7 @@ namespace Supremacy.Universe
         /// <returns>The maximum population.</returns>
         public int GetMaxPopulation(Race race)
         {
-            var table = GameContext.Current.Tables.UniverseTables["PlanetMaxPop"];
+            Data.Table table = GameContext.Current.Tables.UniverseTables["PlanetMaxPop"];
             return Number.ParseInt32(table[PlanetSize.ToString()]
                 [GetEnvironment(race).ToString()]);
         }

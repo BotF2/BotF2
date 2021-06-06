@@ -42,7 +42,7 @@ namespace Supremacy.Utility
         {
             try
             {
-                var callbackData = (AsyncCallbackData)state;
+                AsyncCallbackData callbackData = (AsyncCallbackData)state;
                 callbackData.Target.DynamicInvoke(callbackData.Args);
             }
             catch (ThreadAbortException) { }

@@ -77,7 +77,7 @@ namespace Supremacy.Client.Controls
 
         private static void OnInfoCardWindowPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            var container = d as InfoCardHost;
+            InfoCardHost container = d as InfoCardHost;
             if (container != null)
                 container.OnInfoCardWindowChanged(e.OldValue as IInfoCardWindow, e.NewValue as IInfoCardWindow);
         }
@@ -114,7 +114,7 @@ namespace Supremacy.Client.Controls
             Location = InfoCardWindow.Location;
             UpdateToolWindowInfoCardLocations();
 
-            var handler = Activated;
+            EventHandler handler = Activated;
             if (handler != null)
                 handler(this, e);
         }
@@ -142,7 +142,7 @@ namespace Supremacy.Client.Controls
 
         private void UpdateToolWindowInfoCardLocations()
         {
-            var infoCard = InfoCardSite.GetInfoCardFromHost(this);
+            InfoCard infoCard = InfoCardSite.GetInfoCardFromHost(this);
             if (infoCard != null)
                 infoCard.Location = Location;
         }

@@ -35,11 +35,11 @@ namespace Supremacy.Client.Services
             if (order == null)
                 return;
 
-            var localPlayer = _appContext.LocalPlayer;
+            IPlayer localPlayer = _appContext.LocalPlayer;
             if (localPlayer == null)
                 return;
 
-            var owner = localPlayer.Empire;
+            Entities.Civilization owner = localPlayer.Empire;
             if (owner == null)
                 return;
 

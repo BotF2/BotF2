@@ -185,11 +185,11 @@ namespace Supremacy.Client.Views
 
         private void PopulateElements()
         {
-            var proposal = _agreement.Proposal;
+            IProposal proposal = _agreement.Proposal;
 
-            foreach (var clause in proposal.Clauses)
+            foreach (IClause clause in proposal.Clauses)
             {
-                var element = new DiplomacyMessageElement(
+                DiplomacyMessageElement element = new DiplomacyMessageElement(
                     proposal.Sender,
                     proposal.Recipient,
                     DiplomacyMessageElementActionCategory.Propose,
@@ -202,7 +202,7 @@ namespace Supremacy.Client.Views
                 if (clause.ClauseType == ClauseType.OfferGiveCredits ||
                     clause.ClauseType == ClauseType.RequestGiveCredits)
                 {
-                    var data = clause.GetData<CreditsClauseData>();
+                    CreditsClauseData data = clause.GetData<CreditsClauseData>();
                     if (data != null)
                     {
                         element.HasFixedParameter = true;
@@ -228,8 +228,8 @@ namespace Supremacy.Client.Views
         {
             DiplomacyStringID leadInId;
 
-            var hasDuration = _agreement.EndTurn != 0;
-            var proposal = _agreement.Proposal;
+            bool hasDuration = _agreement.EndTurn != 0;
+            IProposal proposal = _agreement.Proposal;
 
             if (proposal.IsGift())
                 leadInId = hasDuration ? DiplomacyStringID.ActiveAgreementDescriptionGift : DiplomacyStringID.ActiveAgreementDescriptionGiftNoDuration;
@@ -259,8 +259,8 @@ namespace Supremacy.Client.Views
             {
                 while (true)
                 {
-                    var oldHandler = _propertyChanged;
-                    var newHandler = (PropertyChangedEventHandler)Delegate.Combine(oldHandler, value);
+                    PropertyChangedEventHandler oldHandler = _propertyChanged;
+                    PropertyChangedEventHandler newHandler = (PropertyChangedEventHandler)Delegate.Combine(oldHandler, value);
 
                     if (Interlocked.CompareExchange(ref _propertyChanged, newHandler, oldHandler) == oldHandler)
                         return;
@@ -270,8 +270,8 @@ namespace Supremacy.Client.Views
             {
                 while (true)
                 {
-                    var oldHandler = _propertyChanged;
-                    var newHandler = (PropertyChangedEventHandler)Delegate.Remove(oldHandler, value);
+                    PropertyChangedEventHandler oldHandler = _propertyChanged;
+                    PropertyChangedEventHandler newHandler = (PropertyChangedEventHandler)Delegate.Remove(oldHandler, value);
 
                     if (Interlocked.CompareExchange(ref _propertyChanged, newHandler, oldHandler) == oldHandler)
                         return;

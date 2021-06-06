@@ -91,17 +91,17 @@ namespace Supremacy.Game
 
                 if (_diplomats != null)
                 {
-                    foreach (var diplomat in _diplomats)
+                    foreach (Diplomat diplomat in _diplomats)
                     {
-                        var ownerId = diplomat.OwnerID;
+                        int ownerId = diplomat.OwnerID;
 
                         _localGame.Diplomats.Add(diplomat);
 
-                        foreach (var civ in _localGame.Civilizations)
+                        foreach (Civilization civ in _localGame.Civilizations)
                         {
                             if (civ.CivID == ownerId)
                                 continue;
-                            var foreignPower = diplomat.GetForeignPower(civ);
+                            ForeignPower foreignPower = diplomat.GetForeignPower(civ);
                             _diplomacyData[ownerId, civ.CivID] = foreignPower.DiplomacyData;
                         }
                     }
@@ -133,7 +133,7 @@ namespace Supremacy.Game
             if (player == null)
                 throw new ArgumentNullException("player");
 
-            var data = new GameStartData();
+            GameStartData data = new GameStartData();
 
             GameContext.PushThreadContext(game);
 
@@ -200,17 +200,17 @@ namespace Supremacy.Game
 
                 if (_diplomats != null)
                 {
-                    foreach (var diplomat in _diplomats)
+                    foreach (Diplomat diplomat in _diplomats)
                     {
-                        var ownerId = diplomat.OwnerID;
+                        int ownerId = diplomat.OwnerID;
 
                         _localGame.Diplomats.Add(diplomat);
 
-                        foreach (var civ in _localGame.Civilizations)
+                        foreach (Civilization civ in _localGame.Civilizations)
                         {
                             if (civ.CivID == ownerId)
                                 continue;
-                            var foreignPower = diplomat.GetForeignPower(civ);
+                            ForeignPower foreignPower = diplomat.GetForeignPower(civ);
                             _diplomacyData[ownerId, civ.CivID] = foreignPower.DiplomacyData;
                         }
                     }

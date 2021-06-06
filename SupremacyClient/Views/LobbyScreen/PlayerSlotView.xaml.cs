@@ -53,12 +53,12 @@ namespace Supremacy.Client.Views.LobbyScreen
 
         private static void OnSlotPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            var view = d as PlayerSlotView;
+            PlayerSlotView view = d as PlayerSlotView;
             if (view == null)
                 return;
             if (e.OldValue != null)
                 ((PlayerSlot)e.OldValue).PropertyChanged -= view.OnSlotSubPropertyChanged;
-            var newValue = e.NewValue as PlayerSlot;
+            PlayerSlot newValue = e.NewValue as PlayerSlot;
             if (newValue == null)
                 return;
             newValue.PropertyChanged += view.OnSlotSubPropertyChanged;
@@ -85,7 +85,7 @@ namespace Supremacy.Client.Views.LobbyScreen
 
         private static void OnAssignedPlayerPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            var view = d as PlayerSlotView;
+            PlayerSlotView view = d as PlayerSlotView;
             if (view == null)
                 return;
             if (view._updateScope.IsWithin)
@@ -95,7 +95,7 @@ namespace Supremacy.Client.Views.LobbyScreen
 
         private static void OnAssignablePlayersPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            var view = d as PlayerSlotView;
+            PlayerSlotView view = d as PlayerSlotView;
             if (view == null)
                 return;
             if (view._updateScope.IsWithin)
@@ -115,28 +115,28 @@ namespace Supremacy.Client.Views.LobbyScreen
 
         protected void OnSlotClosed()
         {
-            var handler = SlotClosed;
+            EventHandler handler = SlotClosed;
             if (handler != null)
                 handler(this, EventArgs.Empty);
         }
 
         protected void OnSlotOpened()
         {
-            var handler = SlotOpened;
+            EventHandler handler = SlotOpened;
             if (handler != null)
                 handler(this, EventArgs.Empty);
         }
 
         protected void OnAssignablePlayersChanged()
         {
-            var handler = AssignablePlayersChanged;
+            EventHandler handler = AssignablePlayersChanged;
             if (handler != null)
                 handler(this, EventArgs.Empty);
         }
 
         protected void OnAssignedPlayerChanged()
         {
-            var handler = AssignedPlayerChanged;
+            EventHandler handler = AssignedPlayerChanged;
             if (handler != null)
                 handler(this, EventArgs.Empty);
         }

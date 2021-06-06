@@ -142,7 +142,7 @@ namespace Supremacy.Diplomacy
 
         public static DiplomacyDatabase Load()
         {
-            var gameContext = GameContext.Current;
+            GameContext gameContext = GameContext.Current;
             if (gameContext == null)
                 gameContext = GameContext.Create(GameOptionsManager.LoadDefaults(), false);
 
@@ -158,7 +158,7 @@ namespace Supremacy.Diplomacy
                 if (!fileInfo.Exists)
                     return null;
 
-                using (var stream = fileInfo.OpenRead())
+                using (System.IO.Stream stream = fileInfo.OpenRead())
                 {
                     return (DiplomacyDatabase)XamlServices.Load(stream);
                 }

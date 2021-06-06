@@ -233,8 +233,8 @@ namespace Supremacy.Orbitals
                 return false;
             }
 
-            var system = GameContext.Current.Universe.Map[location].System;
-            var shipyard = new Shipyard(this);
+            StarSystem system = GameContext.Current.Universe.Map[location].System;
+            Shipyard shipyard = new Shipyard(this);
 
             shipyard.Reset();
             shipyard.Owner = system.Colony.Owner;

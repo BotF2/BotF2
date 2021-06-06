@@ -17,7 +17,7 @@ namespace Supremacy.Client.Behaviors
                 : base(adornedElement)
             {
                 StartPoint = startPoint;
-                var fill = Colors.DodgerBlue;
+                Color fill = Colors.DodgerBlue;
                 fill.A = 31;
                 _fillBrush = new SolidColorBrush(fill);
                 _fillBrush.Freeze();
@@ -44,7 +44,7 @@ namespace Supremacy.Client.Behaviors
                 if (!EndPoint.HasValue)
                     return;
 
-                var rect = new Rect
+                Rect rect = new Rect
                            {
                                X = StartPoint.X + Math.Min(0, EndPoint.Value.X - StartPoint.X),
                                Y = StartPoint.Y + Math.Min(0, EndPoint.Value.Y - StartPoint.Y),

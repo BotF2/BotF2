@@ -92,8 +92,8 @@ namespace Supremacy.Diplomacy
 
                 if (DiplomacyData.Status != ForeignPowerStatus.AtWar)
                     return true;
- 
-                var turnsSinceWarDeclaration = GameContext.Current.TurnNumber - LastStatusChange;
+
+                int turnsSinceWarDeclaration = GameContext.Current.TurnNumber - LastStatusChange;
                 if (turnsSinceWarDeclaration <= 3)
                     return false;
 
@@ -140,10 +140,10 @@ namespace Supremacy.Diplomacy
 
         private void EnsureCounterpartyTerritoryVisible()
         {
-            var claims = GameContext.Current.SectorClaims.GetClaims(CounterpartyID);
-            var mapData = CivilizationManager.For(OwnerID).MapData;
+            IIndexedCollection<SectorClaim> claims = GameContext.Current.SectorClaims.GetClaims(CounterpartyID);
+            CivilizationMapData mapData = CivilizationManager.For(OwnerID).MapData;
 
-            foreach (var claim in claims)
+            foreach (SectorClaim claim in claims)
             {
                 //GameLog.Core.MapData.DebugFormat("{0}: SetScanned to -> True  for EnsureCounterpartyTerritoryVisible()", claim.Location.ToString());
                 mapData.SetScanned(claim.Location, true);
@@ -207,7 +207,7 @@ namespace Supremacy.Diplomacy
             if (!IsContactMade)
                 MakeContact();
 
-            var activeAgreements = GameContext.Current.AgreementMatrix[OwnerID, CounterpartyID];
+            IIndexedCollection<IAgreement> activeAgreements = GameContext.Current.AgreementMatrix[OwnerID, CounterpartyID];
             while (activeAgreements.Count > 0)
                 BreakAgreementVisitor.BreakAgreement(activeAgreements[0]);
 
@@ -220,10 +220,10 @@ namespace Supremacy.Diplomacy
             if (Counterparty.Key == "BORG")   // lines above:  Status for Borg is set to AtWar   // every turn, also if Borg make a proposal for friendship
                 return; // War is declared at FirstContact, always from the Borg, no option to be declared for the other party
 
-            var owner = Owner;
-            var counterparty = Counterparty;
+            Civilization owner = Owner;
+            Civilization counterparty = Counterparty;
 
-            foreach (var civ in GameContext.Current.Civilizations)
+            foreach (Civilization civ in GameContext.Current.Civilizations)
             {
                 if (civ == owner ||
                     DiplomacyHelper.IsContactMade(civ, owner) && DiplomacyHelper.IsContactMade(civ, counterparty))
@@ -239,9 +239,9 @@ namespace Supremacy.Diplomacy
 
         public void DenounceWar(Civilization victim)
         {
-            var owner = Owner;
-            var counterparty = Counterparty;
-            foreach (var civ in GameContext.Current.Civilizations)
+            Civilization owner = Owner;
+            Civilization counterparty = Counterparty;
+            foreach (Civilization civ in GameContext.Current.Civilizations)
             {
                 if (civ.IsHuman && (civ == counterparty ||
                     DiplomacyHelper.IsContactMade(civ, owner) && DiplomacyHelper.IsContactMade(civ, counterparty) && DiplomacyHelper.IsContactMade(civ, victim)))
@@ -256,9 +256,9 @@ namespace Supremacy.Diplomacy
         }
         public void CommendWar(Civilization victim)
         {
-            var owner = Owner;
-            var counterparty = Counterparty;
-            foreach (var civ in GameContext.Current.Civilizations)
+            Civilization owner = Owner;
+            Civilization counterparty = Counterparty;
+            foreach (Civilization civ in GameContext.Current.Civilizations)
             {
                 if (civ.IsHuman && (civ == counterparty ||
                     DiplomacyHelper.IsContactMade(civ, owner) && DiplomacyHelper.IsContactMade(civ, counterparty) && DiplomacyHelper.IsContactMade(civ, victim)))
@@ -283,7 +283,7 @@ namespace Supremacy.Diplomacy
             if (!IsContactMade)
                 MakeContact();
 
-            var activeAgreements = GameContext.Current.AgreementMatrix[OwnerID, CounterpartyID];
+            IIndexedCollection<IAgreement> activeAgreements = GameContext.Current.AgreementMatrix[OwnerID, CounterpartyID];
             while (activeAgreements.Count > 0)
                 BreakAgreementVisitor.BreakAgreement(activeAgreements[0]);
 
@@ -291,10 +291,10 @@ namespace Supremacy.Diplomacy
             CounterpartyForeignPower.DiplomacyData.Status = ForeignPowerStatus.Hostile;
 
 
-            var owner = Owner;
-            var counterparty = Counterparty;
+            Civilization owner = Owner;
+            Civilization counterparty = Counterparty;
 
-            foreach (var civ in GameContext.Current.Civilizations)
+            foreach (Civilization civ in GameContext.Current.Civilizations)
             {
                 if (civ == owner ||
                     DiplomacyHelper.IsContactMade(civ, owner) && DiplomacyHelper.IsContactMade(civ, counterparty))
@@ -313,15 +313,15 @@ namespace Supremacy.Diplomacy
             if (DiplomacyData.Status == ForeignPowerStatus.Neutral)
                 return;
 
-            var activeAgreements = GameContext.Current.AgreementMatrix[OwnerID, CounterpartyID];
+            IIndexedCollection<IAgreement> activeAgreements = GameContext.Current.AgreementMatrix[OwnerID, CounterpartyID];
             while (activeAgreements.Count > 0)
                 BreakAgreementVisitor.BreakAgreement(activeAgreements[0]);
 
             DiplomacyData.Status = ForeignPowerStatus.Neutral;
             CounterpartyForeignPower.DiplomacyData.Status = ForeignPowerStatus.Neutral;
 
-            var owner = Owner;
-            var counterparty = Counterparty;
+            Civilization owner = Owner;
+            Civilization counterparty = Counterparty;
 
             //ToDo sit rep for canceling treaty
 
@@ -357,15 +357,15 @@ namespace Supremacy.Diplomacy
 
         public void ApplyRegardDecay(RegardEventCategories category, RegardDecay decay)
         {
-            for (var i = 0; i < _regardEvents.Count; i++)
+            for (int i = 0; i < _regardEvents.Count; i++)
             {
-                var regardEvent = _regardEvents[i];
+                RegardEvent regardEvent = _regardEvents[i];
 
                 // Regard events with a fixed duration do not decay.
                 if (regardEvent.Duration > 0)
                     continue;
 
-                var regard = regardEvent.Regard;
+                int regard = regardEvent.Regard;
                 if (regard == 0)
                 {
                     _regardEvents.RemoveAt(i--);
@@ -389,7 +389,7 @@ namespace Supremacy.Diplomacy
 
         public void PurgeOldRegardEvents()
         {
-            var currentTurn = GameContext.Current.TurnNumber;
+            int currentTurn = GameContext.Current.TurnNumber;
 
             _regardEvents.RemoveWhere(
                 e => e.Duration > 0 &&
@@ -400,11 +400,11 @@ namespace Supremacy.Diplomacy
         {
             PurgeOldRegardEvents();
 
-            var regardMeter = DiplomacyData.Regard;
+            Types.Meter regardMeter = DiplomacyData.Regard;
             
             regardMeter.SaveCurrentAndResetToBase();
 
-            foreach (var regardEvent in _regardEvents)
+            foreach (RegardEvent regardEvent in _regardEvents)
             {
                 //GameLog.Client.Diplomacy.DebugFormat("### regardEvent regard ={0}, turn ={1} Type ={2} duration ={3}",
                 //    regardEvent.Regard, regardEvent.Turn, regardEvent.Type.ToString(), regardEvent.Duration);
@@ -428,9 +428,9 @@ namespace Supremacy.Diplomacy
                 return;
             }
 
-            var owner = Owner;
-            var counterparty = Counterparty;
-            var agreementMatrix = GameContext.Current.AgreementMatrix;
+            Civilization owner = Owner;
+            Civilization counterparty = Counterparty;
+            AgreementMatrix agreementMatrix = GameContext.Current.AgreementMatrix;
             
             if (agreementMatrix.IsAgreementActive(owner, counterparty, ClauseType.TreatyMembership))
             {
@@ -478,10 +478,10 @@ namespace Supremacy.Diplomacy
                 return;
             }
 
-            var ownerColonies = GameContext.Current.CivilizationManagers[owner].Colonies;
+            UniverseObjectList<Colony> ownerColonies = GameContext.Current.CivilizationManagers[owner].Colonies;
             if (ownerColonies.Count == 0)
             {
-                var anySubjugatedColonies = GameContext.Current.Universe.FindOwned<Colony>(counterparty).Any(o => o.OriginalOwner == owner);
+                bool anySubjugatedColonies = GameContext.Current.Universe.FindOwned<Colony>(counterparty).Any(o => o.OriginalOwner == owner);
                 if (anySubjugatedColonies)
                 {
                     ownerStatus = ForeignPowerStatus.OwnerIsSubjugated;
@@ -493,10 +493,10 @@ namespace Supremacy.Diplomacy
                 return;
             }
 
-            var counterpartyColonies = GameContext.Current.CivilizationManagers[counterparty].Colonies;
+            UniverseObjectList<Colony> counterpartyColonies = GameContext.Current.CivilizationManagers[counterparty].Colonies;
             if (counterpartyColonies.Count == 0)
             {
-                var anySubjugatedColonies = GameContext.Current.Universe.FindOwned<Colony>(owner).Any(o => o.OriginalOwner == counterparty);
+                bool anySubjugatedColonies = GameContext.Current.Universe.FindOwned<Colony>(owner).Any(o => o.OriginalOwner == counterparty);
                 if (anySubjugatedColonies)
                 {
                     ownerStatus = ForeignPowerStatus.CounterpartyIsSubjugated;
@@ -532,7 +532,7 @@ namespace Supremacy.Diplomacy
                 DiplomacyData.Status = ownerStatus;
             }
 
-            var counterpartyForeignPower = CounterpartyForeignPower;
+            ForeignPower counterpartyForeignPower = CounterpartyForeignPower;
             if (counterpartyForeignPower.DiplomacyData.Status != counterpartyStatus)
             {
                 counterpartyForeignPower.DiplomacyData.LastStatusChange = GameContext.Current.TurnNumber;

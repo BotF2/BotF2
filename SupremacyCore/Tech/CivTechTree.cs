@@ -111,27 +111,27 @@ namespace Supremacy.Tech
             if (design == null)
                 return false;
 
-            var pfDesign = design as ProductionFacilityDesign;
+            ProductionFacilityDesign pfDesign = design as ProductionFacilityDesign;
             if (pfDesign != null && _productionFacilityDesigns.Contains(pfDesign.DesignID))
                 return true;
 
-            var bDesign = design as BuildingDesign;
+            BuildingDesign bDesign = design as BuildingDesign;
             if (bDesign != null && _buildingDesigns.Contains(bDesign.DesignID))
                 return true;
 
-            var syDesign = design as ShipyardDesign;
+            ShipyardDesign syDesign = design as ShipyardDesign;
             if (syDesign != null && _shipyardDesigns.Contains(syDesign.DesignID))
                 return true;
 
-            var shDesign = design as ShipDesign;
+            ShipDesign shDesign = design as ShipDesign;
             if (shDesign != null && _shipDesigns.Contains(shDesign.DesignID))
                 return true;
 
-            var stDesign = design as StationDesign;
+            StationDesign stDesign = design as StationDesign;
             if (stDesign != null && _stationDesigns.Contains(stDesign.DesignID))
                 return true;
 
-            var obDesign = design as OrbitalBatteryDesign;
+            OrbitalBatteryDesign obDesign = design as OrbitalBatteryDesign;
             if (obDesign != null && _orbitalBatteryDesigns.Contains(obDesign.DesignID))
                 return true;
 
@@ -161,8 +161,8 @@ namespace Supremacy.Tech
         /// </remarks>
         public void Merge(TechTree tree)
         {
-            var techDatabase = GameContext.Current.TechDatabase;
-            var nativeFacilities = (from id in _productionFacilityDesigns
+            TechDatabase techDatabase = GameContext.Current.TechDatabase;
+            ILookup<Tuple<ProductionCategory, int>, IGrouping<Tuple<ProductionCategory, int>, ProductionFacilityDesign>> nativeFacilities = (from id in _productionFacilityDesigns
                                     let design = techDatabase.ProductionFacilityDesigns[id]
                                     group design by new Tuple<ProductionCategory, int>(
                                         design.Category,
@@ -191,17 +191,17 @@ namespace Supremacy.Tech
         /// <param name="xmlElement">The XML element.</param>
         internal TechTree(XmlNode xmlElement) : this()
         {
-            var db = GameContext.Current.TechDatabase;
+            TechDatabase db = GameContext.Current.TechDatabase;
 
-            var xmlRoot = xmlElement["ProductionFacilities"];
+            XmlElement xmlRoot = xmlElement["ProductionFacilities"];
             if (xmlRoot != null)
             {
-                foreach (var xmlFacility in xmlRoot.GetElementsByTagName("ProductionFacility").Cast<XmlElement>())
+                foreach (XmlElement xmlFacility in xmlRoot.GetElementsByTagName("ProductionFacility").Cast<XmlElement>())
                 {
                     string designKey = xmlFacility.InnerText.Trim();
                     if (!db.DesignIdMap.ContainsKey(designKey))
                         continue;
-                    var design = db.ProductionFacilityDesigns[db.DesignIdMap[designKey]];
+                    ProductionFacilityDesign design = db.ProductionFacilityDesigns[db.DesignIdMap[designKey]];
                     if ((design != null) && !design.IsUniversallyAvailable)
                         _productionFacilityDesigns.Add(design.DesignID);
                 }
@@ -210,12 +210,12 @@ namespace Supremacy.Tech
             xmlRoot = xmlElement["Buildings"];
             if (xmlRoot != null)
             {
-                foreach (var xmlBuilding in xmlRoot.GetElementsByTagName("Building").Cast<XmlElement>())
+                foreach (XmlElement xmlBuilding in xmlRoot.GetElementsByTagName("Building").Cast<XmlElement>())
                 {
                     string designKey = xmlBuilding.InnerText.Trim();
                     if (!db.DesignIdMap.ContainsKey(designKey))
                         continue;
-                    var design = db.BuildingDesigns[db.DesignIdMap[designKey]];
+                    BuildingDesign design = db.BuildingDesigns[db.DesignIdMap[designKey]];
                     if ((design != null) && !design.IsUniversallyAvailable)
                         _buildingDesigns.Add(design.DesignID);
                 }
@@ -224,12 +224,12 @@ namespace Supremacy.Tech
             xmlRoot = xmlElement["Shipyards"];
             if (xmlRoot != null)
             {
-                foreach (var xmlShipyard in xmlRoot.GetElementsByTagName("Shipyard").Cast<XmlElement>())
+                foreach (XmlElement xmlShipyard in xmlRoot.GetElementsByTagName("Shipyard").Cast<XmlElement>())
                 {
                     string designKey = xmlShipyard.InnerText.Trim();
                     if (!db.DesignIdMap.ContainsKey(designKey))
                         continue;
-                    var design = db.ShipyardDesigns[db.DesignIdMap[designKey]];
+                    ShipyardDesign design = db.ShipyardDesigns[db.DesignIdMap[designKey]];
                     if ((design != null) && !design.IsUniversallyAvailable)
                         _shipyardDesigns.Add(design.DesignID);
                 }
@@ -238,12 +238,12 @@ namespace Supremacy.Tech
             xmlRoot = xmlElement["Ships"];
             if (xmlRoot != null)
             {
-                foreach (var xmlShip in xmlRoot.GetElementsByTagName("Ship").Cast<XmlElement>())
+                foreach (XmlElement xmlShip in xmlRoot.GetElementsByTagName("Ship").Cast<XmlElement>())
                 {
                     string designKey = xmlShip.InnerText.Trim();
                     if (!db.DesignIdMap.ContainsKey(designKey))
                         continue;
-                    var design = db.ShipDesigns[db.DesignIdMap[designKey]];
+                    ShipDesign design = db.ShipDesigns[db.DesignIdMap[designKey]];
                     if ((design != null) && !design.IsUniversallyAvailable)
                         _shipDesigns.Add(design.DesignID);
                 }
@@ -252,12 +252,12 @@ namespace Supremacy.Tech
             xmlRoot = xmlElement["SpaceStations"];
             if (xmlRoot != null)
             {
-                foreach (var xmlStation in xmlRoot.GetElementsByTagName("SpaceStation").Cast<XmlElement>())
+                foreach (XmlElement xmlStation in xmlRoot.GetElementsByTagName("SpaceStation").Cast<XmlElement>())
                 {
                     string designKey = xmlStation.InnerText.Trim();
                     if (!db.DesignIdMap.ContainsKey(designKey))
                         continue;
-                    var design = db.StationDesigns[db.DesignIdMap[designKey]];
+                    StationDesign design = db.StationDesigns[db.DesignIdMap[designKey]];
                     if ((design != null) && !design.IsUniversallyAvailable)
                         _stationDesigns.Add(design.DesignID);
                 }
@@ -266,12 +266,12 @@ namespace Supremacy.Tech
             xmlRoot = xmlElement["OrbitalBatteries"];
             if (xmlRoot != null)
             {
-                foreach (var xmlBattery in xmlRoot.GetElementsByTagName("OrbitalBattery").Cast<XmlElement>())
+                foreach (XmlElement xmlBattery in xmlRoot.GetElementsByTagName("OrbitalBattery").Cast<XmlElement>())
                 {
-                    var designKey = xmlBattery.InnerText.Trim();
+                    string designKey = xmlBattery.InnerText.Trim();
                     if (!db.DesignIdMap.ContainsKey(designKey))
                         continue;
-                    var design = db.OrbitalBatteryDesigns[db.DesignIdMap[designKey]];
+                    OrbitalBatteryDesign design = db.OrbitalBatteryDesigns[db.DesignIdMap[designKey]];
                     if ((design != null) && !design.IsUniversallyAvailable)
                         _orbitalBatteryDesigns.Add(design.DesignID);
                 }
@@ -284,13 +284,13 @@ namespace Supremacy.Tech
         /// <param name="game">The game context.</param>
         public static void LoadTechTrees(GameContext game)
         {
-            var oldThreadContext = GameContext.ThreadContext;
+            GameContext oldThreadContext = GameContext.ThreadContext;
             GameContext.PushThreadContext(game);
             try
             {
-                var db = game.TechDatabase;
-                var xmlDoc = new XmlDocument();
-                var schemas = new XmlSchemaSet();
+                TechDatabase db = game.TechDatabase;
+                XmlDocument xmlDoc = new XmlDocument();
+                XmlSchemaSet schemas = new XmlSchemaSet();
 
                 schemas.Add("Supremacy:Supremacy.xsd",
                             ResourceManager.GetResourcePath("Resources/Data/Supremacy.xsd"));
@@ -301,7 +301,7 @@ namespace Supremacy.Tech
                 xmlDoc.Schemas.Add(schemas);
                 xmlDoc.Validate(ValidateXml);
 
-                var defaultTechTree = new TechTree();
+                TechTree defaultTechTree = new TechTree();
                 foreach (TechObjectDesign design in db)
                 {
                     if (design.IsUniversallyAvailable)
@@ -313,11 +313,11 @@ namespace Supremacy.Tech
 
                 // CSV_Output
 
-                var pathOutputFile = "./Resources/Data/";  // instead of ./Resources/Data/
-                var separator = ";";
-                var line = "";
+                string pathOutputFile = "./Resources/Data/";  // instead of ./Resources/Data/
+                string separator = ";";
+                string line = "";
                 StreamWriter streamWriter;
-                var file = "./lib/testz_FromTechTrees.txt";
+                string file = "./lib/testz_FromTechTrees.txt";
                 streamWriter = new StreamWriter(file);
                 String strHeader = "";  // first line of output files
 
@@ -397,7 +397,7 @@ namespace Supremacy.Tech
                 {
 
 
-                    foreach (var xmlTree in xmlDoc.DocumentElement.GetElementsByTagName("TechTree").Cast<XmlElement>())
+                    foreach (XmlElement xmlTree in xmlDoc.DocumentElement.GetElementsByTagName("TechTree").Cast<XmlElement>())
                     {
                         // first CSV_Output ... necessary to get all races incl. minors
 
@@ -410,7 +410,7 @@ namespace Supremacy.Tech
                             //var civManager = game.CivilizationManagers[xmlTree.GetAttribute("Civilization")];
                             //if (civManager == null)
                             //    continue;
-                            var techTree = new TechTree(xmlTree);
+                            TechTree techTree = new TechTree(xmlTree);
 
                             bool _traceTechTrees = true;
                             if (_traceTechTrees == true)
@@ -418,7 +418,7 @@ namespace Supremacy.Tech
                                 string owner = xmlTree.GetAttribute("Civilization");
                                 string category = "";
 
-                                foreach (var item in techTree.ProductionFacilityDesigns)
+                                foreach (ProductionFacilityDesign item in techTree.ProductionFacilityDesigns)
                                 {
                                     category = "ProdFac";
                                     string isUniversal = item.IsUniversallyAvailable.ToString();
@@ -429,7 +429,7 @@ namespace Supremacy.Tech
                                     streamWriter.WriteLine(line);
                                 }
 
-                                foreach (var item in techTree.BuildingDesigns)
+                                foreach (BuildingDesign item in techTree.BuildingDesigns)
                                 {
                                     category = "Building";
                                     string isUniversal = item.IsUniversallyAvailable.ToString();
@@ -439,7 +439,7 @@ namespace Supremacy.Tech
                                     //Console.WriteLine("{0}", line);
                                     streamWriter.WriteLine(line);
                                 }
-                                foreach (var item in techTree.ShipDesigns)
+                                foreach (ShipDesign item in techTree.ShipDesigns)
                                 {
                                     category = "Ship";
                                     string isUniversal = item.IsUniversallyAvailable.ToString();
@@ -449,7 +449,7 @@ namespace Supremacy.Tech
                                     //Console.WriteLine("{0}", line);
                                     streamWriter.WriteLine(line);
                                 }
-                                foreach (var item in techTree.ShipyardDesigns)
+                                foreach (ShipyardDesign item in techTree.ShipyardDesigns)
                                 {
                                     category = "Shipyards";
                                     string isUniversal = item.IsUniversallyAvailable.ToString();
@@ -459,7 +459,7 @@ namespace Supremacy.Tech
                                     //Console.WriteLine("{0}", line);
                                     streamWriter.WriteLine(line);
                                 }
-                                foreach (var item in techTree.StationDesigns)
+                                foreach (StationDesign item in techTree.StationDesigns)
                                 {
                                     category = "Station";
                                     string isUniversal = item.IsUniversallyAvailable.ToString();
@@ -469,7 +469,7 @@ namespace Supremacy.Tech
                                     //Console.WriteLine("{0}", line);
                                     streamWriter.WriteLine(line);
                                 }
-                                foreach (var item in techTree.OrbitalBatteryDesigns)
+                                foreach (OrbitalBatteryDesign item in techTree.OrbitalBatteryDesigns)
                                 {
                                     category = "OrbitalBattery";
                                     string isUniversal = item.IsUniversallyAvailable.ToString();
@@ -496,10 +496,10 @@ namespace Supremacy.Tech
                         // If the civilization is not part of the current game, then we don't need it's data
                         try
                         {
-                            var civManager = game.CivilizationManagers[xmlTree.GetAttribute("Civilization")];
+                            CivilizationManager civManager = game.CivilizationManagers[xmlTree.GetAttribute("Civilization")];
                             if (civManager == null)
                                 continue;
-                            var techTree = new TechTree(xmlTree);
+                            TechTree techTree = new TechTree(xmlTree);
                             techTree.Merge(defaultTechTree);
                             civManager.TechTree = techTree;
                         }
@@ -597,17 +597,17 @@ namespace Supremacy.Tech
         /// <returns>The enumerator.</returns>
         public IEnumerator<TechObjectDesign> GetEnumerator()
         {
-            foreach (var design in _productionFacilityDesigns.Select(i => GameContext.Current.TechDatabase[i] as ProductionFacilityDesign))
+            foreach (ProductionFacilityDesign design in _productionFacilityDesigns.Select(i => GameContext.Current.TechDatabase[i] as ProductionFacilityDesign))
                 yield return design;
-            foreach (var design in _buildingDesigns.Select(i => GameContext.Current.TechDatabase[i] as BuildingDesign))
+            foreach (BuildingDesign design in _buildingDesigns.Select(i => GameContext.Current.TechDatabase[i] as BuildingDesign))
                 yield return design;
-            foreach (var design in _shipyardDesigns.Select(i => GameContext.Current.TechDatabase[i] as ShipyardDesign))
+            foreach (ShipyardDesign design in _shipyardDesigns.Select(i => GameContext.Current.TechDatabase[i] as ShipyardDesign))
                 yield return design;
-            foreach (var design in _shipDesigns.Select(i => GameContext.Current.TechDatabase[i] as ShipDesign))
+            foreach (ShipDesign design in _shipDesigns.Select(i => GameContext.Current.TechDatabase[i] as ShipDesign))
                 yield return design;
-            foreach (var design in _stationDesigns.Select(i => GameContext.Current.TechDatabase[i] as StationDesign))
+            foreach (StationDesign design in _stationDesigns.Select(i => GameContext.Current.TechDatabase[i] as StationDesign))
                 yield return design;
-            foreach (var design in _orbitalBatteryDesigns.Select(i => GameContext.Current.TechDatabase[i] as OrbitalBatteryDesign))
+            foreach (OrbitalBatteryDesign design in _orbitalBatteryDesigns.Select(i => GameContext.Current.TechDatabase[i] as OrbitalBatteryDesign))
                 yield return design;
         }
         #endregion

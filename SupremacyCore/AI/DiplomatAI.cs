@@ -24,14 +24,14 @@ namespace Supremacy.AI
             if (civ == null)
                 throw new ArgumentNullException("civ");
 
-            var aCiv = (Civilization) civ;
+            Civilization aCiv = (Civilization) civ;
 
-            var diplomat = Diplomat.Get(civ);
+            Diplomat diplomat = Diplomat.Get(civ);
 
             /*
              * Process messages which have already been delivered
              */
-            foreach (var otherCiv in GameContext.Current.Civilizations)
+            foreach (Civilization otherCiv in GameContext.Current.Civilizations)
              // we can control regard and trust for both human otherCivs and AI otherCivs
             {
                 if (otherCiv.CivID == civ.CivID)
@@ -40,8 +40,8 @@ namespace Supremacy.AI
                     continue;
                 if (!otherCiv.IsEmpire && !aCiv.IsEmpire)
                     continue;
-                var foreignPower = diplomat.GetForeignPower(otherCiv);
-                var otherdiplomat = Diplomat.Get(otherCiv);
+                ForeignPower foreignPower = diplomat.GetForeignPower(otherCiv);
+                Diplomat otherdiplomat = Diplomat.Get(otherCiv);
                 ForeignPower otherForeignPower = otherdiplomat.GetForeignPower(civ);
                 if (foreignPower.DiplomacyData.Status == ForeignPowerStatus.OwnerIsMember || otherForeignPower.DiplomacyData.Status == ForeignPowerStatus.OwnerIsMember)
                     continue;
@@ -61,7 +61,7 @@ namespace Supremacy.AI
                 #endregion
 
                 // traits in common relative to the number of triats a civilization has
-                var commonTraitItems = foreignTraits.Intersect(theCivTraits);
+                IEnumerable<string> commonTraitItems = foreignTraits.Intersect(theCivTraits);
 
                 int countCommon = 0;
                 foreach (string aString in commonTraitItems)
@@ -107,7 +107,7 @@ namespace Supremacy.AI
                     {
                         foreignPower.DiplomacyData.FirstDiplomaticAction = true;
                         int impact = 75;
-                        var coutnerParty = foreignPower.Counterparty.CivID;
+                        int coutnerParty = foreignPower.Counterparty.CivID;
                         switch (coutnerParty)
                         {
                             case 0: //fed
@@ -201,10 +201,10 @@ namespace Supremacy.AI
 
                     if (foreignPower.DiplomacyData.Status == ForeignPowerStatus.Hostile && DiplomacyHelper.ShouldTheyGoToWar(foreignPower.Owner, foreignPower.Counterparty)) //foreignPower.DiplomacyData.Status == ForeignPowerStatus.Hostile &&
                     {
-                        var firstCiv = foreignPower.Owner;
-                        var secondCiv = foreignPower.Counterparty;
-                        var firstManager = GameContext.Current.CivilizationManagers[firstCiv];
-                        var secondManager = GameContext.Current.CivilizationManagers[secondCiv];
+                        Civilization firstCiv = foreignPower.Owner;
+                        Civilization secondCiv = foreignPower.Counterparty;
+                        CivilizationManager firstManager = GameContext.Current.CivilizationManagers[firstCiv];
+                        CivilizationManager secondManager = GameContext.Current.CivilizationManagers[secondCiv];
                         foreignPower.DeclareWar();
                         firstManager.SitRepEntries.Add(new WarDeclaredSitRepEntry(firstCiv, secondCiv));
                         secondManager.SitRepEntries.Add(new WarDeclaredSitRepEntry(firstCiv, secondCiv));
@@ -220,7 +220,7 @@ namespace Supremacy.AI
                     {
                         if (aCiv == foreignPower.ProposalReceived.Recipient)
                         {// give credit regard and trust
-                            foreach (var clause in foreignPower.ProposalReceived.Clauses)
+                            foreach (IClause clause in foreignPower.ProposalReceived.Clauses)
                             {
                                 if (clause.ClauseType == ClauseType.OfferGiveCredits)
                                 {
@@ -264,7 +264,7 @@ namespace Supremacy.AI
                             int trust = foreignPower.DiplomacyData.Regard.CurrentValue;
                             //bool traits = RandomHelper.Chance(similarTraits);
 
-                            foreach (var clause in foreignPower.ProposalReceived.Clauses)
+                            foreach (IClause clause in foreignPower.ProposalReceived.Clauses)
                             {
                                 switch (clause.ClauseType)
                                 {
@@ -376,12 +376,12 @@ namespace Supremacy.AI
                             {
                                 foreach (Civilization anotherCiv in otherReactors)
                                 {
-                                    var counterparty = foreignPower.Counterparty;
-                                    var owner = foreignPower.Owner;
+                                    Civilization counterparty = foreignPower.Counterparty;
+                                    Civilization owner = foreignPower.Owner;
                                     Statement denounceStatement = new Statement(anotherCiv, foreignPower.Counterparty, StatementType.DenounceWar, Tone.Enraged, GameContext.Current.TurnNumber);
                                     Statement commendStatement = new Statement(anotherCiv, foreignPower.Counterparty, StatementType.CommendWar, Tone.Enthusiastic, GameContext.Current.TurnNumber);
-                                    var anotherDiplomat = Diplomat.Get(anotherCiv);
-                                    var anotherForeignPower = anotherDiplomat.GetForeignPower(counterparty);
+                                    Diplomat anotherDiplomat = Diplomat.Get(anotherCiv);
+                                    ForeignPower anotherForeignPower = anotherDiplomat.GetForeignPower(counterparty);
                                     if (DiplomacyHelper.IsAlliedWithWorstEnemy(counterparty, anotherCiv))
                                     {
                                         if (!anotherCiv.IsHuman)

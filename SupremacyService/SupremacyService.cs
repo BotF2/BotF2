@@ -106,7 +106,7 @@ namespace Supremacy.WCF
         {
             get
             {
-                var playerInfo = _playerInfo.FromSessionId(OperationContext.Current.SessionId);
+                ServerPlayerInfo playerInfo = _playerInfo.FromSessionId(OperationContext.Current.SessionId);
                 if (playerInfo != null)
                     return playerInfo.Player;
                 return null;
@@ -117,7 +117,7 @@ namespace Supremacy.WCF
         {
             get
             {
-                var operationContext = OperationContext.Current;
+                OperationContext operationContext = OperationContext.Current;
                 if (operationContext == null)
                     return null;
 
@@ -145,9 +145,9 @@ namespace Supremacy.WCF
 
                 lock (_playerInfo.SyncRoot)
                 {
-                    foreach (var playerInfo in _playerInfo)
+                    foreach (ServerPlayerInfo playerInfo in _playerInfo)
                     {
-                        var player = playerInfo.Player;
+                        Player player = playerInfo.Player;
 
                         ((Action)playerInfo.Callback.NotifyGameStarting)
                             .ToAsync(playerInfo.Scheduler)()
@@ -190,20 +190,20 @@ namespace Supremacy.WCF
                     }
                 }
 
-                var textDatabase = ClientTextDatabase.Load(
+                ClientTextDatabase textDatabase = ClientTextDatabase.Load(
                     ResourceManager.GetResourcePath("Resources\\Data\\TextDatabase.xml"));
 
                 lock (_playerInfo.SyncRoot)
                 {
-                    foreach (var playerInfo in Enumerable.ToArray(_playerInfo))
+                    foreach (ServerPlayerInfo playerInfo in Enumerable.ToArray(_playerInfo))
                     {
                         try
                         {
                             if (playerInfo.Callback == null)
                                 continue;
 
-                            var player = playerInfo.Player;
-                            var message = new GameStartMessage(GameStartData.Create(_game, player, textDatabase));
+                            Player player = playerInfo.Player;
+                            GameStartMessage message = new GameStartMessage(GameStartData.Create(_game, player, textDatabase));
 
                             ((Action<GameStartMessage>)playerInfo.Callback.NotifyGameStarted)
                                 .ToAsync(_scheduler)(message)
@@ -247,7 +247,7 @@ namespace Supremacy.WCF
 
         internal void DropPlayer()
         {
-            var player = CurrentPlayerInfo;
+            ServerPlayerInfo player = CurrentPlayerInfo;
             if (player == null)
                 return;
             DropPlayer(player);
@@ -263,7 +263,7 @@ namespace Supremacy.WCF
 
         internal void DropPlayer(ServerPlayerInfo playerInfo)
         {
-            var player = playerInfo.Player;
+            Player player = playerInfo.Player;
 
             lock (_playerInfo.SyncRoot)
             {
@@ -385,9 +385,9 @@ namespace Supremacy.WCF
                 else
                     player.Name = "Player " + player.PlayerID;
 
-                var session = OperationContext.Current;
+                OperationContext session = OperationContext.Current;
 
-                var playerInfo = new ServerPlayerInfo(
+                ServerPlayerInfo playerInfo = new ServerPlayerInfo(
                     player,
                     session.GetCallbackChannel<ISupremacyCallback>(),
                     session,
@@ -422,7 +422,7 @@ namespace Supremacy.WCF
 
         internal Player GetPlayerById(int playerId)
         {
-            var playerInfo = _playerInfo.FromPlayerId(playerId);
+            ServerPlayerInfo playerInfo = _playerInfo.FromPlayerId(playerId);
             if (playerInfo != null)
                 return playerInfo.Player;
             return null;
@@ -460,19 +460,19 @@ namespace Supremacy.WCF
                     _playerOrders.Clear();
                 }
 
-                foreach (var order in orders)
+                foreach (Order order in orders)
                 {
                     //GameLog.Core.Test.DebugFormat("", order.);
                     order.Execute(_game);
                 }
 
-                var stopwatch = Stopwatch.StartNew();
+                Stopwatch stopwatch = Stopwatch.StartNew();
 
                 OnTurnPhaseChanged(TurnPhase.WaitOnAIPlayers);
 
                 lock (_aiAsyncLock)
                 {
-                    var doAiPlayers = (Action<GameContext, List<Civilization>>)_gameEngine.DoAIPlayers;
+                    Action<GameContext, List<Civilization>> doAiPlayers = (Action<GameContext, List<Civilization>>)_gameEngine.DoAIPlayers;
                     _aiAsyncResult = doAiPlayers.BeginInvoke(
                         _game, autoTurnCivs,
                         delegate (IAsyncResult result)
@@ -519,7 +519,7 @@ namespace Supremacy.WCF
                     autoSaveTask = Task.Run(
                         () =>
                         {
-                            var autoSaveStopwatch = Stopwatch.StartNew();
+                            Stopwatch autoSaveStopwatch = Stopwatch.StartNew();
 
                             GameContext.PushThreadContext(_game);
 
@@ -557,11 +557,11 @@ namespace Supremacy.WCF
 
         private async Task DoTurnCore()
         {
-            var tcs = new TaskCompletionSource<Unit>();
+            TaskCompletionSource<Unit> tcs = new TaskCompletionSource<Unit>();
 
             _gameEngine.TurnPhaseChanged += OnGameEngineTurnPhaseChanged;
 
-            var gameContext = _game;
+            GameContext gameContext = _game;
 
             Observable
                 .ToAsync(() => _gameEngine.DoTurn(gameContext), _threadPoolScheduler)()
@@ -574,17 +574,17 @@ namespace Supremacy.WCF
 
         private async Task SendEndOfTurnUpdateAsync(ServerPlayerInfo playerInfo)
         {
-            var callback = playerInfo.Callback;
+            ISupremacyCallback callback = playerInfo.Callback;
             if (callback == null)
                 return;
 
-            var player = playerInfo.Player;
-            var message = new GameUpdateMessage(GameUpdateData.Create(_game, player));
-            var tcs = new TaskCompletionSource<Unit>();
+            Player player = playerInfo.Player;
+            GameUpdateMessage message = new GameUpdateMessage(GameUpdateData.Create(_game, player));
+            TaskCompletionSource<Unit> tcs = new TaskCompletionSource<Unit>();
 
             GameLog.Server.GameData.DebugFormat("doing SendEndOfTurnUpdateAsync for {0}", player.Empire.Key);
 
-            var subscription = Observable
+            IDisposable subscription = Observable
                 .ToAsync(() => callback.NotifyGameDataUpdated(message), _scheduler)()
                 .Subscribe(tcs.SetResult, tcs.SetException);
 
@@ -608,19 +608,19 @@ namespace Supremacy.WCF
 
         private async Task SendTurnFinishedNotificationsAsync()
         {
-            var subTasks = new List<Task>();
+            List<Task> subTasks = new List<Task>();
 
             lock (_playerInfo.SyncRoot)
             {
-                for (var i = 0; i < _playerInfo.Count; i++)
+                for (int i = 0; i < _playerInfo.Count; i++)
                 {
-                    var playerInfo = _playerInfo[i];
+                    ServerPlayerInfo playerInfo = _playerInfo[i];
 
-                    var callback = playerInfo.Callback;
+                    ISupremacyCallback callback = playerInfo.Callback;
                     if (callback == null)
                         continue;
 
-                    var tcs = new TaskCompletionSource<Unit>();
+                    TaskCompletionSource<Unit> tcs = new TaskCompletionSource<Unit>();
 
                     Observable
                         .ToAsync(callback.NotifyTurnFinished, _scheduler)()
@@ -641,17 +641,17 @@ namespace Supremacy.WCF
 
         private async Task SendAllTurnEndedNotificationsAsync()
         {
-            var subTasks = new List<Task>();
+            List<Task> subTasks = new List<Task>();
 
             lock (_playerInfo.SyncRoot)
             {
-                foreach (var playerInfo in _playerInfo)
+                foreach (ServerPlayerInfo playerInfo in _playerInfo)
                 {
-                    var callback = playerInfo.Callback;
+                    ISupremacyCallback callback = playerInfo.Callback;
                     if (callback == null)
                         continue;
 
-                    var tcs = new TaskCompletionSource<Unit>();
+                    TaskCompletionSource<Unit> tcs = new TaskCompletionSource<Unit>();
 
                     ServerPlayerInfo info = playerInfo;
                     Observable
@@ -675,10 +675,10 @@ namespace Supremacy.WCF
         {
             lock (_playerInfo.SyncRoot)
             {
-                foreach (var playerInfo in _playerInfo)
+                foreach (ServerPlayerInfo playerInfo in _playerInfo)
                 {
-                    var player = playerInfo.Player;
-                    var lobbyData = LobbyData;
+                    Player player = playerInfo.Player;
+                    LobbyData lobbyData = LobbyData;
 
                     ((Action<LobbyData>)playerInfo.Callback.NotifyLobbyUpdated)
                         .ToAsync(playerInfo.Scheduler)(lobbyData)
@@ -713,7 +713,7 @@ namespace Supremacy.WCF
 
                 try
                 {
-                    var anyOutstandingOrders = _playerInfo
+                    bool anyOutstandingOrders = _playerInfo
                         .Select(playerInfo => playerInfo.Player)
                         .Any(player => !_playerOrders.ContainsKey(player) || _playerOrders[player] == null);
 
@@ -784,7 +784,7 @@ namespace Supremacy.WCF
 
             ClearChannelClosingHandling(channel);
 
-            var playerInfo = _playerInfo.FromSessionId(channel.InputSession.Id);
+            ServerPlayerInfo playerInfo = _playerInfo.FromSessionId(channel.InputSession.Id);
             if (playerInfo == null)
                 return;
 
@@ -795,19 +795,19 @@ namespace Supremacy.WCF
         {
             lock (_playerInfo.SyncRoot)
             {
-                var currentInvasion = _invasionEngine?.InvasionArena;
+                InvasionArena currentInvasion = _invasionEngine?.InvasionArena;
                 if (currentInvasion != null &&
                     currentInvasion.InvaderID == player.EmpireID)
                 {
                     // TODO: Deal with players who drop in the middle of combat or invasions.
                 }
-                foreach (var otherPlayerInfo in _playerInfo)
+                foreach (ServerPlayerInfo otherPlayerInfo in _playerInfo)
                 {
-                    var otherPlayer = otherPlayerInfo.Player;
+                    Player otherPlayer = otherPlayerInfo.Player;
                     if (otherPlayer == player)
                         continue;
 
-                    var callback = otherPlayerInfo.Callback;
+                    ISupremacyCallback callback = otherPlayerInfo.Callback;
                     if (callback == null)
                         continue;
 
@@ -830,8 +830,8 @@ namespace Supremacy.WCF
             if (player == null)
                 throw new ArgumentNullException("player");
 
-            var callback = GetPlayerCallback(player);
-            var lobbyData = LobbyData;
+            ISupremacyCallback callback = GetPlayerCallback(player);
+            LobbyData lobbyData = LobbyData;
 
             if (callback != null)
             {
@@ -848,9 +848,9 @@ namespace Supremacy.WCF
 
             lock (_playerInfo.SyncRoot)
             {
-                foreach (var otherPlayer in _playerInfo.Where(o => o.Player != player))
+                foreach (ServerPlayerInfo otherPlayer in _playerInfo.Where(o => o.Player != player))
                 {
-                    var otherPlayerCopy = otherPlayer;
+                    ServerPlayerInfo otherPlayerCopy = otherPlayer;
                     if (otherPlayerCopy.Callback == null)
                         continue;
 
@@ -870,7 +870,7 @@ namespace Supremacy.WCF
 
         private void SendChatMessageCallback(int senderId, string message, int recipientId)
         {
-            var sender = _playerInfo.FromPlayerId(senderId);
+            ServerPlayerInfo sender = _playerInfo.FromPlayerId(senderId);
             if (sender == null)
                 return;
 
@@ -886,16 +886,16 @@ namespace Supremacy.WCF
             }
             else
             {
-                var recipient = _playerInfo.FromPlayerId(recipientId);
+                ServerPlayerInfo recipient = _playerInfo.FromPlayerId(recipientId);
                 if (recipient != null)
                     recipients = new[] { recipient, sender };
                 else
                     recipients = new[] { sender };
             }
 
-            foreach (var recipient in recipients)
+            foreach (ServerPlayerInfo recipient in recipients)
             {
-                var recipientCopy = recipient;
+                ServerPlayerInfo recipientCopy = recipient;
 
                 ((Action<int, string, int>)recipient.Callback.NotifyChatMessageReceived)
                     .ToAsync(recipient.Scheduler)(senderId, message, recipientId)
@@ -909,13 +909,13 @@ namespace Supremacy.WCF
         {
             lock (_playerInfo.SyncRoot)
             {
-                foreach (var playerInfo in _playerInfo)
+                foreach (ServerPlayerInfo playerInfo in _playerInfo)
                 {
-                    var callback = playerInfo.Callback;
+                    ISupremacyCallback callback = playerInfo.Callback;
                     if (callback == null)
                         continue;
 
-                    var playerInfoCopy = playerInfo;
+                    ServerPlayerInfo playerInfoCopy = playerInfo;
 
                     ((Action<TurnPhase>)playerInfoCopy.Callback.NotifyTurnProgressChanged)
                         .ToAsync(playerInfo.Scheduler)(phase)
@@ -939,7 +939,7 @@ namespace Supremacy.WCF
 
             lock (_playerInfo.SyncRoot)
             {
-                var slot = _lobbyData.Slots[slotId];
+                PlayerSlot slot = _lobbyData.Slots[slotId];
                 if (slot.IsFrozen)
                     return;
 
@@ -970,7 +970,7 @@ namespace Supremacy.WCF
                 }
                 else
                 {
-                    var assignedPlayer = GetPlayerById(playerId);
+                    Player assignedPlayer = GetPlayerById(playerId);
 
                     assignedPlayer.EmpireID = slot.EmpireID;
 
@@ -978,7 +978,7 @@ namespace Supremacy.WCF
                     slot.Status = SlotStatus.Taken;
                     slot.Claim = SlotClaim.Assigned;
 
-                    var oldSlot = _lobbyData.Slots
+                    PlayerSlot oldSlot = _lobbyData.Slots
                         .Where(o => o != slot)
                         .Where(otherSlot => otherSlot.Player == assignedPlayer)
                         .FirstOrDefault();
@@ -1005,7 +1005,7 @@ namespace Supremacy.WCF
         {
             EnsurePlayer();
 
-            var currentPlayerInfo = CurrentPlayerInfo;
+            ServerPlayerInfo currentPlayerInfo = CurrentPlayerInfo;
             if (currentPlayerInfo == null || !currentPlayerInfo.Player.IsGameHost)
                 return;
 
@@ -1032,13 +1032,13 @@ namespace Supremacy.WCF
             {
                 _lobbyData.Players = _playerInfo.ToPlayerArray();
 
-                var playerAssignmentsChanged = false;
-                var unassignedPlayers = _lobbyData.Players.Except(_lobbyData.Slots.Select(o => o.Player)).ToList();
+                bool playerAssignmentsChanged = false;
+                List<Player> unassignedPlayers = _lobbyData.Players.Except(_lobbyData.Slots.Select(o => o.Player)).ToList();
                 if (unassignedPlayers.Count != 0)
                 {
-                    var vacantSlots = _lobbyData.Slots.Where(o => o.IsVacant).ToList();
+                    List<PlayerSlot> vacantSlots = _lobbyData.Slots.Where(o => o.IsVacant).ToList();
 
-                    foreach (var unassignedPlayer in unassignedPlayers)
+                    foreach (Player unassignedPlayer in unassignedPlayers)
                     {
                         if (vacantSlots.Count == 0)
                             DropPlayer(unassignedPlayer);
@@ -1052,7 +1052,7 @@ namespace Supremacy.WCF
                     }
                 }
 
-                foreach (var slot in _lobbyData.Slots.Where(
+                foreach (PlayerSlot slot in _lobbyData.Slots.Where(
                     slot => slot.Status == SlotStatus.Open &&
                             slot.Claim == SlotClaim.Unassigned))
                 {
@@ -1080,14 +1080,14 @@ namespace Supremacy.WCF
 
             if ((initData.GameType == GameType.SinglePlayerLoad) || (initData.GameType == GameType.MultiplayerLoad))
             {
-                var header = SavedGameManager.LoadSavedGameHeader(initData.SaveGameFileName);
+                SavedGameHeader header = SavedGameManager.LoadSavedGameHeader(initData.SaveGameFileName);
                 if (header == null)
                     return HostGameResult.LoadGameFailure;
                 initData.Options.Freeze();
             }
             else
             {
-                var modId = initData.Options.ModID;
+                Guid modId = initData.Options.ModID;
                 if (!Equals(modId, Guid.Empty))
                     mod = GameModLoader.FindMods().Where(o => o.UniqueIdentifier == modId).FirstOrDefault();
             }
@@ -1100,7 +1100,7 @@ namespace Supremacy.WCF
 
             localPlayer = EstablishPlayer(initData.LocalPlayerName);
 
-            var empireCount = initData.EmpireIDs.Length;
+            int empireCount = initData.EmpireIDs.Length;
 
             _lobbyData.Players = new[] { localPlayer };
             _lobbyData.Slots = new PlayerSlot[empireCount];
@@ -1109,7 +1109,7 @@ namespace Supremacy.WCF
 
             for (int i = 0; i < empireCount; i++)
             {
-                var slot = new PlayerSlot
+                PlayerSlot slot = new PlayerSlot
                 {
 
                     SlotID = i,
@@ -1131,7 +1131,7 @@ namespace Supremacy.WCF
 
             if (initData.GameType != GameType.MultiplayerNew)
             {
-                var playerSlot = _lobbyData.Slots.FirstOrDefault(o => o.EmpireID == initData.LocalPlayerEmpireID) ??
+                PlayerSlot playerSlot = _lobbyData.Slots.FirstOrDefault(o => o.EmpireID == initData.LocalPlayerEmpireID) ??
                                  _lobbyData.Slots[0];
                 AssignPlayerSlot(playerSlot.SlotID, localPlayer.PlayerID);
             }
@@ -1201,20 +1201,20 @@ namespace Supremacy.WCF
         {
             EnsurePlayer();
 
-            var currentPlayer = CurrentPlayer;
+            Player currentPlayer = CurrentPlayer;
 
             _playerOrders[currentPlayer] = orders;
 
 
             lock (_playerInfo.SyncRoot)
             {
-                foreach (var playerInfo in _playerInfo)
+                foreach (ServerPlayerInfo playerInfo in _playerInfo)
                 {
-                    var callback = playerInfo.Callback;
+                    ISupremacyCallback callback = playerInfo.Callback;
                     if (callback == null)
                         continue;
 
-                    var playerInfoCopy = playerInfo;
+                    ServerPlayerInfo playerInfoCopy = playerInfo;
 
                     ((Action<int>)callback.NotifyPlayerFinishedTurn)
                         .ToAsync(_scheduler)(currentPlayer.EmpireID)
@@ -1246,7 +1246,7 @@ namespace Supremacy.WCF
             {
                 EnsurePlayer();
 
-                var currentPlayerInfo = CurrentPlayerInfo;
+                ServerPlayerInfo currentPlayerInfo = CurrentPlayerInfo;
 
                 if (!currentPlayerInfo.Player.IsGameHost &&
                     playerId != currentPlayerInfo.Player.PlayerID)
@@ -1259,7 +1259,7 @@ namespace Supremacy.WCF
 
                 currentPlayerInfo.Player.EmpireID = empireId;
 
-                foreach (var playerInfo in _playerInfo)
+                foreach (ServerPlayerInfo playerInfo in _playerInfo)
                 {
                     if (playerInfo != currentPlayerInfo &&
                         playerInfo.Player.EmpireID == empireId)
@@ -1278,11 +1278,11 @@ namespace Supremacy.WCF
             {
                 EnsurePlayer();
 
-                var slot = _lobbyData.Slots[slotId];
+                PlayerSlot slot = _lobbyData.Slots[slotId];
                 if (slot.IsFrozen)
                     return;
 
-                var currentPlayer = CurrentPlayer;
+                Player currentPlayer = CurrentPlayer;
                 if (slot.IsClosed)
                 {
                     if (!currentPlayer.IsGameHost)
@@ -1307,11 +1307,11 @@ namespace Supremacy.WCF
             {
                 EnsurePlayer();
 
-                var slot = _lobbyData.Slots[slotId];
+                PlayerSlot slot = _lobbyData.Slots[slotId];
                 if (slot.IsFrozen || slot.IsClosed)
                     return;
 
-                var currentPlayer = CurrentPlayer;
+                Player currentPlayer = CurrentPlayer;
                 if (!currentPlayer.IsGameHost)
                     return;
 
@@ -1436,10 +1436,10 @@ namespace Supremacy.WCF
 
             GameContext.PushThreadContext(_game);
 
-            var player = _playerInfo.FromEmpireId(update.OwnerID);
+            ServerPlayerInfo player = _playerInfo.FromEmpireId(update.OwnerID);
             if (player != null)
             {
-                var callback = player.Callback;
+                ISupremacyCallback callback = player.Callback;
                 if (callback != null)
                 {
                     callback.NotifyCombatUpdate(update);
@@ -1449,8 +1449,8 @@ namespace Supremacy.WCF
             else if (!engine.IsCombatOver && !update.Owner.IsHuman)
             {
                 // works   GameLog.Server.Combat.DebugFormat("Generating fake order for {0}", update.Owner.Name);
-                var ownerAssets = update.FriendlyAssets.FirstOrDefault(friendlyAssets => friendlyAssets.Owner == update.Owner);
-                var enemyAssets = update.HostileAssets.FirstOrDefault(hostileAssets => hostileAssets.Owner != update.Owner);
+                CombatAssets ownerAssets = update.FriendlyAssets.FirstOrDefault(friendlyAssets => friendlyAssets.Owner == update.Owner);
+                CombatAssets enemyAssets = update.HostileAssets.FirstOrDefault(hostileAssets => hostileAssets.Owner != update.Owner);
 
                 if (ownerAssets == null)
                 {
@@ -1464,9 +1464,9 @@ namespace Supremacy.WCF
                     Key = "Only Return Fire"
                 }; // The AI generates a dummy target for non-human player civ
 
-                var blanketOrder = CombatOrder.Engage;
-                var blanketTargetOne = _target;
-                var blanketTargetTwo = _target;
+                CombatOrder blanketOrder = CombatOrder.Engage;
+                Civilization blanketTargetOne = _target;
+                Civilization blanketTargetTwo = _target;
 
                 //int countStation = 0;
                 //if (enemyAssets != null)
@@ -1540,17 +1540,17 @@ namespace Supremacy.WCF
 
         public void NotifyInvasionScreenReady()
         {
-            var invasionEngine = _invasionEngine;
+            InvasionEngine invasionEngine = _invasionEngine;
             if (invasionEngine == null)
                 return;
 
-            var game = _game;
+            GameContext game = _game;
             if (game != null)
                 GameContext.PushThreadContext(game);
 
             try
             {
-                var player = GetPlayerByEmpire(invasionEngine.InvasionArena.Invader);
+                Player player = GetPlayerByEmpire(invasionEngine.InvasionArena.Invader);
 
                 if (Equals(player, CurrentPlayer))
                 {
@@ -1602,16 +1602,16 @@ namespace Supremacy.WCF
 
         private void SendInvasionUpdateCallback(InvasionEngine engine, InvasionArena update)
         {
-            var player = _playerInfo.FromEmpireId(update.InvaderID);
+            ServerPlayerInfo player = _playerInfo.FromEmpireId(update.InvaderID);
             if (player != null)
             {
-                var callback = player.Callback;
+                ISupremacyCallback callback = player.Callback;
                 if (callback != null)
                     callback.NotifyInvasionUpdate(update);
             }
             else if (update.Status == InvasionStatus.InProgress)
             {
-                var transports =
+                List<InvasionOrbital> transports =
                     (
                         from o in update.InvadingUnits.OfType<InvasionOrbital>()
                         where !o.IsDestroyed
@@ -1631,11 +1631,11 @@ namespace Supremacy.WCF
         #region Ping
         private void PingClients()
         {
-            var players = _playerInfo.ToArray();
+            ServerPlayerInfo[] players = _playerInfo.ToArray();
 
-            foreach (var player in players)
+            foreach (ServerPlayerInfo player in players)
             {
-                var playerCopy = player;
+                ServerPlayerInfo playerCopy = player;
 
                 ((Action<ServerPlayerInfo>)PingPlayer)
                     .ToAsync(player.Scheduler)(player)
@@ -1665,7 +1665,7 @@ namespace Supremacy.WCF
 
         internal void StopHeartbeat()
         {
-            var heartbeat = Interlocked.Exchange(ref _heartbeat, null);
+            IDisposable heartbeat = Interlocked.Exchange(ref _heartbeat, null);
             if (heartbeat != null)
                 heartbeat.Dispose();
         }

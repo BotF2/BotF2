@@ -62,7 +62,7 @@ namespace Supremacy.Client
                     return;
                 try
                 {
-                    var serviceHost = new SupremacyServiceHost();
+                    SupremacyServiceHost serviceHost = new SupremacyServiceHost();
                     HookServiceHostEventHandlers(serviceHost);
                     Interlocked.CompareExchange(ref _serviceHost, serviceHost, null);
                     _isServiceLoaded = true;
@@ -92,7 +92,7 @@ namespace Supremacy.Client
                 if (!_isServiceLoaded)
                     return;
 
-                var serviceHost = Interlocked.Exchange(ref _serviceHost, null);
+                SupremacyServiceHost serviceHost = Interlocked.Exchange(ref _serviceHost, null);
                 try
                 {
                     if (serviceHost != null)
@@ -110,7 +110,7 @@ namespace Supremacy.Client
                     _isServiceLoaded = false;
                 }
 
-                var serviceDomain = Interlocked.CompareExchange(ref _serviceDomain, null, null);
+                AppDomain serviceDomain = Interlocked.CompareExchange(ref _serviceDomain, null, null);
                 if (serviceDomain == null)
                     return;
 
@@ -149,7 +149,7 @@ namespace Supremacy.Client
                     return;
             }
 
-            var handler = Started;
+            Action<EventArgs> handler = Started;
             if (handler != null)
                 handler(EventArgs.Empty);
         }
@@ -241,7 +241,7 @@ namespace Supremacy.Client
             if (!raiseStopped)
                 return;
 
-            var handler = Stopped;
+            Action<EventArgs> handler = Stopped;
             if (handler != null)
                 handler(EventArgs.Empty);
         }
@@ -264,7 +264,7 @@ namespace Supremacy.Client
                 _isServiceRunning = false;
             }
 
-            var handler = Faulted;
+            Action<EventArgs> handler = Faulted;
             if (handler != null)
                 handler(EventArgs.Empty);
         }

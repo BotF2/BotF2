@@ -236,7 +236,7 @@ namespace Supremacy.Client
 
         private void ExecuteHostMultiplayerGameCommand(string playerName)
         {
-            var initData = GameInitData.CreateMultiplayerGame(GameOptionsManager.LoadDefaults(), playerName);
+            GameInitData initData = GameInitData.CreateMultiplayerGame(GameOptionsManager.LoadDefaults(), playerName);
             RunGameController(gameController => gameController.RunLocal(initData), true);
         }
 
@@ -283,7 +283,7 @@ namespace Supremacy.Client
         private void ExecuteFakeCommand(object obj) { _fakeDialog.ShowDialog(); }
         private void ExecuteLogTxtCommand(object obj)
         {
-            var logFile = Path.Combine(
+            string logFile = Path.Combine(
                 ResourceManager.GetResourcePath(""),
                 "Log.txt");
 
@@ -308,7 +308,7 @@ namespace Supremacy.Client
 
         private void ExecuteErrorTxtCommand(object obj)
         {
-            var errorFile = Path.Combine(ResourceManager.GetResourcePath(""),"Error.txt");
+            string errorFile = Path.Combine(ResourceManager.GetResourcePath(""),"Error.txt");
 
             if (!string.IsNullOrEmpty(errorFile) && File.Exists(errorFile))
             {
@@ -340,7 +340,7 @@ namespace Supremacy.Client
 
         private void ExecuteShowSettingsFileCommand(object obj)
         {
-            var file = Path.Combine(
+            string file = Path.Combine(
                 ResourceManager.GetResourcePath(""),
                 "SupremacyClient..Settings.xaml");
             file = file.Replace(".\\", "");
@@ -348,20 +348,20 @@ namespace Supremacy.Client
 
             if (!string.IsNullOrEmpty(file) && File.Exists(file))
             {
-                var stream = new FileStream(
+                FileStream stream = new FileStream(
                     file,
                     FileMode.Open,
                     FileAccess.Read);
 
                 _text = "";
 
-                using (var reader = new StreamReader(stream))
+                using (StreamReader reader = new StreamReader(stream))
                 {
                     Console.WriteLine("---------------");
 
                     while (!reader.EndOfStream)
                     {
-                        var line = reader.ReadLine();
+                        string line = reader.ReadLine();
                         if (line == null)
                             break;
                         //Console.WriteLine(line);
@@ -372,13 +372,13 @@ namespace Supremacy.Client
                 //stream.Close;
             }
 
-            var coll = _text.Split(' ');
-            var _trues = new List<String>(); /*_trues.Clear();*/
-            var _false = new List<String>(); /*_false.Clear();*/
-            var _rest = new List<String>(); /*_rest.Clear();*/
+            string[] coll = _text.Split(' ');
+            List<string> _trues = new List<String>(); /*_trues.Clear();*/
+            List<string> _false = new List<String>(); /*_false.Clear();*/
+            List<string> _rest = new List<String>(); /*_rest.Clear();*/
             //_array = new Dictionary<int, string, string, string>();
 
-            foreach (var item in coll)
+            foreach (string item in coll)
                 {
                     Console.WriteLine(item);
                     if (item.Contains("True")) { _trues.Add(item); }// += item + newline;}
@@ -414,13 +414,13 @@ namespace Supremacy.Client
             _resultText = "CONTENT OF SupremacyClient..Settings.xaml "  + DateTime.Now + newline;
 
             _resultText += newline + "VALUES" + newline + "======" + newline;
-            foreach (var item in _rest) { _resultText += item + newline; }
+            foreach (string item in _rest) { _resultText += item + newline; }
 
             _resultText += newline + "TRUE" + newline + "====" + newline;
-            foreach (var item in _trues) { _resultText += item + newline; }
+            foreach (string item in _trues) { _resultText += item + newline; }
 
             _resultText += newline + "FALSE" + newline + "=====" + newline;
-            foreach (var item in _false) { _resultText += item + newline; }
+            foreach (string item in _false) { _resultText += item + newline; }
 
             //_resultText += newline + "REST" + newline + "====" + newline;
             //foreach (var item in _rest) { _resultText += item + newline; }
@@ -431,7 +431,7 @@ namespace Supremacy.Client
                 streamWriter.Write(_resultText);
                 streamWriter.Close();
 
-                var _file = Path.Combine(ResourceManager.GetResourcePath(""), file+ ".txt");
+            string _file = Path.Combine(ResourceManager.GetResourcePath(""), file+ ".txt");
                 if (!string.IsNullOrEmpty(_file) && File.Exists(_file))
                 {
                     ProcessStartInfo processStartInfo = new ProcessStartInfo { UseShellExecute = true, FileName = _file };
@@ -473,7 +473,7 @@ namespace Supremacy.Client
         {
             if (showConfirmation && (_appContext.IsGameInPlay || _appContext.IsGameInPlay))
             {
-                var result = MessageDialog.Show(
+                MessageDialogResult result = MessageDialog.Show(
                     _isExiting ? "Confirm Exit" : "Confirm Quit",
                     "Are you sure you want to " + (_isExiting ? "exit?" : "quit?"),
                     MessageDialogButtons.YesNo);
@@ -481,7 +481,7 @@ namespace Supremacy.Client
                     return false;
             }
 
-            var gameController = Interlocked.CompareExchange(ref _gameController, null, null);
+            IGameController gameController = Interlocked.CompareExchange(ref _gameController, null, null);
 
             if (gameController == null)
                 return true;
@@ -520,14 +520,14 @@ namespace Supremacy.Client
 
         private bool AutoLoadSavedGame()
         {
-            var savedGameFile = _app.CommandLineArguments.SavedGame;
+            string savedGameFile = _app.CommandLineArguments.SavedGame;
 
             if (string.IsNullOrWhiteSpace(savedGameFile))
                 return false;
 
             try
             {
-                var header = SavedGameManager.LoadSavedGameHeader(savedGameFile);
+                SavedGameHeader header = SavedGameManager.LoadSavedGameHeader(savedGameFile);
                 if (header != null)
                 {
                     ClientCommands.LoadGame.Execute(header);
@@ -679,7 +679,7 @@ namespace Supremacy.Client
 
         private void OnPlayerExited(ClientDataEventArgs<IPlayer> args)
         {
-            var player = args.Value;
+            IPlayer player = args.Value;
 
             if (!_appContext.IsGameInPlay)
                 return;
@@ -687,10 +687,10 @@ namespace Supremacy.Client
             if (Equals(player, _appContext.LocalPlayer))
                 return;
 
-            var remainingPlayers = _appContext.RemotePlayers.Where(o => !Equals(o, player));
+            IEnumerable<IPlayer> remainingPlayers = _appContext.RemotePlayers.Where(o => !Equals(o, player));
             if (!remainingPlayers.Any())
             {
-                var result = MessageDialog.Show(
+                MessageDialogResult result = MessageDialog.Show(
                     _resourceManager.GetString("PLAYER_EXITED_MESSAGE_HEADER"),
                     _resourceManager.GetStringFormat("LAST_PLAYER_EXITED_MESSAGE_CONTENT", player.Name),
                     MessageDialogButtons.YesNo);
@@ -720,7 +720,7 @@ namespace Supremacy.Client
 
         private void ShowLoadingScreen()
         {
-            var statusWindow = _container.Resolve<StatusWindow>();
+            StatusWindow statusWindow = _container.Resolve<StatusWindow>();
             //statusWindow.Header = _resourceManager.GetString("LOADING_GAME_MESSAGE");
             statusWindow.Header = " ***     Loading Game . . .      ***  "; // +Environment.NewLine;
 
@@ -786,7 +786,7 @@ namespace Supremacy.Client
 
             //if (_appContext.IsSinglePlayerGame == false)   // see below, depending on Length out of en.txt or later on OPTION
             {
-                var _hints = _resourceManager.GetString("LOADING_GAME_HINTS");
+                string _hints = _resourceManager.GetString("LOADING_GAME_HINTS");
                 
                 if (_hints.Length > 0)   // later: make additional OPTION to show hints or not
                 {
@@ -803,7 +803,7 @@ namespace Supremacy.Client
             //statusWindow.Content = null;
             statusWindow.Show();
 
-            var gameScreensRegion = _container.Resolve<IRegionManager>().Regions[ClientRegions.GameScreens];
+            IRegion gameScreensRegion = _container.Resolve<IRegionManager>().Regions[ClientRegions.GameScreens];
             gameScreensRegion.Deactivate(gameScreensRegion.GetView(StandardGameScreens.MenuScreen));
             gameScreensRegion.Deactivate(gameScreensRegion.GetView(StandardGameScreens.MultiplayerLobby));
         }
@@ -914,7 +914,7 @@ namespace Supremacy.Client
                 _resourceManager.GetString("CLIENT_CONNECTION_FAILURE_MESSAGE"),
                 MessageDialogButtons.Ok);
 
-            var gameController = Interlocked.Exchange(ref _gameController, null);
+            IGameController gameController = Interlocked.Exchange(ref _gameController, null);
             if (gameController == null)
                 return;
 
@@ -932,7 +932,7 @@ namespace Supremacy.Client
 
         protected void ClearStatusWindow()
         {
-            var statusWindow = _container.Resolve<StatusWindow>();
+            StatusWindow statusWindow = _container.Resolve<StatusWindow>();
             if ((statusWindow != null) && statusWindow.IsOpen)
                 statusWindow.Close();
         }
@@ -941,7 +941,7 @@ namespace Supremacy.Client
         {
             ClearStatusWindow();
 
-            var gameController = Interlocked.Exchange(ref _gameController, null);
+            IGameController gameController = Interlocked.Exchange(ref _gameController, null);
             if (gameController == null)
                 return;
 
@@ -1043,8 +1043,8 @@ namespace Supremacy.Client
         {
             if (_appContext.IsGameInPlay) return;
 
-            var startScreen = new SinglePlayerStartScreen(_soundPlayer);
-            var options = startScreen.Options;
+            SinglePlayerStartScreen startScreen = new SinglePlayerStartScreen(_soundPlayer);
+            GameOptions options = startScreen.Options;
 
             switch (_id)
             {
@@ -1058,9 +1058,9 @@ namespace Supremacy.Client
                 default:
                     break;
             }
-            
 
-            var initData = GameInitData.CreateSinglePlayerGame(startScreen.Options, _id);
+
+            GameInitData initData = GameInitData.CreateSinglePlayerGame(startScreen.Options, _id);
             localEmpire = GetLocalEmpireShortage(_id, out string localempire);
             startTechLvl = GetStartTechLvl(startScreen.Options.StartingTechLevel.ToString());
 
@@ -1074,14 +1074,14 @@ namespace Supremacy.Client
 
             LoadDefaultTheme();
 
-            var startScreen = new SinglePlayerStartScreen(_soundPlayer);
-            var options = startScreen.Options;
+            SinglePlayerStartScreen startScreen = new SinglePlayerStartScreen(_soundPlayer);
+            GameOptions options = startScreen.Options;
 
-            var dialogResult = startScreen.ShowDialog();
+            bool? dialogResult = startScreen.ShowDialog();
             if (!dialogResult.HasValue || !dialogResult.Value)
                 return;
 
-            var initData = GameInitData.CreateSinglePlayerGame(options, startScreen.EmpireID);
+            GameInitData initData = GameInitData.CreateSinglePlayerGame(options, startScreen.EmpireID);
 
             localEmpire = GetLocalEmpireShortage(startScreen.EmpireID, out string localempire);
             startTechLvl = GetStartTechLvl(startScreen.Options.StartingTechLevel.ToString());
@@ -1176,7 +1176,7 @@ namespace Supremacy.Client
 
         private void ShowConnectingScreen()
         {
-            var statusWindow = _container.Resolve<StatusWindow>();
+            StatusWindow statusWindow = _container.Resolve<StatusWindow>();
             statusWindow.Header = "Connecting";
             statusWindow.Content = null;
             statusWindow.Show();
@@ -1185,11 +1185,11 @@ namespace Supremacy.Client
 
         protected void DeactivateMenuScreen()
         {
-            var region = _regionManager.Regions[ClientRegions.GameScreens];
+            IRegion region = _regionManager.Regions[ClientRegions.GameScreens];
             if (region == null)
                 return;
 
-            var menuScreen = region.GetView(StandardGameScreens.MenuScreen);
+            object menuScreen = region.GetView(StandardGameScreens.MenuScreen);
             if (menuScreen == null)
                 return;
 
@@ -1198,11 +1198,11 @@ namespace Supremacy.Client
 
         protected void ActivateMenuScreen()
         {
-            var region = _regionManager.Regions[ClientRegions.GameScreens];
+            IRegion region = _regionManager.Regions[ClientRegions.GameScreens];
             if (region == null)
                 return;
 
-            var menuScreen = region.GetView(StandardGameScreens.MenuScreen);
+            object menuScreen = region.GetView(StandardGameScreens.MenuScreen);
             if (menuScreen == null)
                 return;
 
@@ -1213,7 +1213,7 @@ namespace Supremacy.Client
         {
             GCHelper.Collect();
 
-            var gameController = _container.Resolve<IGameController>();
+            IGameController gameController = _container.Resolve<IGameController>();
             if (gameController == null)
                 throw new SupremacyException("A game controller could not be created.");
 

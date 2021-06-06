@@ -46,7 +46,7 @@ namespace Supremacy.VFS
                 if (_utf8NoBOM != null)
                     return _utf8NoBOM;
 
-                var encoding = new UTF8Encoding(false, true);
+                UTF8Encoding encoding = new UTF8Encoding(false, true);
                 Thread.MemoryBarrier();
                 _utf8NoBOM = encoding;
                 return _utf8NoBOM;
@@ -210,7 +210,7 @@ namespace Supremacy.VFS
                     text = null;
                     return false;
                 }
-                using (var textReader = new StreamReader(stream, encoding))
+                using (StreamReader textReader = new StreamReader(stream, encoding))
                 {
                     text = textReader.ReadToEnd();
                     return true;
@@ -245,7 +245,7 @@ namespace Supremacy.VFS
             if (encoding == null)
                 throw new ArgumentNullException("encoding");
 
-            using (var textReader = new StreamReader(self.OpenRead(), encoding))
+            using (StreamReader textReader = new StreamReader(self.OpenRead(), encoding))
             {
                 return textReader.ReadToEnd();
             }
@@ -269,8 +269,8 @@ namespace Supremacy.VFS
         /// <returns>A string array containing all lines of the file.</returns>
         public static string[] ReadAllLines([NotNull] this IVirtualFileInfo self, Encoding encoding)
         {
-            var list = new List<string>();
-            using (var textReader = new StreamReader(self.OpenRead(), encoding))
+            List<string> list = new List<string>();
+            using (StreamReader textReader = new StreamReader(self.OpenRead(), encoding))
             {
                 string line;
                 while ((line = textReader.ReadLine()) != null)
@@ -321,8 +321,8 @@ namespace Supremacy.VFS
                     lines = null;
                     return false;
                 }
-                var list = new List<string>();
-                using (var textReader = new StreamReader(stream, encoding))
+                List<string> list = new List<string>();
+                using (StreamReader textReader = new StreamReader(stream, encoding))
                 {
                     string line;
                     while ((line = textReader.ReadLine()) != null)
@@ -362,7 +362,7 @@ namespace Supremacy.VFS
         {
             if (self == null)
                 throw new ArgumentNullException("self");
-            using (var textWriter = new StreamWriter(self.Create(), encoding))
+            using (StreamWriter textWriter = new StreamWriter(self.Create(), encoding))
             {
                 textWriter.Write(text);
             }
@@ -379,9 +379,9 @@ namespace Supremacy.VFS
         {
             if (self == null)
                 throw new ArgumentNullException("self");
-            using (var textWriter = new StreamWriter(self.Create(), encoding))
+            using (StreamWriter textWriter = new StreamWriter(self.Create(), encoding))
             {
-                foreach (var line in lines)
+                foreach (string line in lines)
                 {
                     textWriter.WriteLine(line);
                 }
@@ -477,7 +477,7 @@ namespace Supremacy.VFS
                 throw new ArgumentNullException("self");
             if (bytes == null)
                 throw new ArgumentNullException("bytes");
-            using (var writeStream = self.Create())
+            using (Stream writeStream = self.Create())
             {
                 writeStream.Write(bytes, 0, bytes.Length);
             }
@@ -527,8 +527,8 @@ namespace Supremacy.VFS
         {
             if (self == null)
                 throw new ArgumentNullException("self");
-            var buffer = new byte[self.Length];
-            using (var readStream = self.OpenRead())
+            byte[] buffer = new byte[self.Length];
+            using (Stream readStream = self.OpenRead())
             {
                 readStream.Read(buffer, 0, buffer.Length);
             }

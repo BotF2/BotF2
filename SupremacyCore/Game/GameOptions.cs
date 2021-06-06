@@ -462,7 +462,7 @@ namespace Supremacy.Game
             // needs the same sorting as Reading
 
             writer.Write(IsFrozen);
-            var modIdBytes = ModID.ToByteArray();
+            byte[] modIdBytes = ModID.ToByteArray();
             writer.Write(modIdBytes.Length);
             writer.Write(modIdBytes, 0, modIdBytes.Length);
             writer.Write((byte)AIMode);
@@ -504,7 +504,7 @@ namespace Supremacy.Game
             // needs the same sorting as Writing
 
             IsFrozen = reader.ReadBoolean();
-            var modIdBytesLength = reader.ReadInt32();
+            int modIdBytesLength = reader.ReadInt32();
             ModID = new Guid(reader.ReadBytes(modIdBytesLength));
             AIMode = (AIMode)reader.ReadByte();
             GalaxyShape = (GalaxyShape)reader.ReadByte();
@@ -562,7 +562,7 @@ namespace Supremacy.Game
 
         public GameOptions Clone()
         {
-            var clone = (GameOptions)MemberwiseClone();
+            GameOptions clone = (GameOptions)MemberwiseClone();
             clone.IsFrozen = false;
             return clone;
         }
@@ -619,7 +619,7 @@ namespace Supremacy.Game
         /// <returns><c>true</c> if successful; otherwise, <c>false</c>.</returns>
         public static bool SaveDefaults(GameOptions defaults)
         {
-            var success = false;
+            bool success = false;
             try
             {
                 StorageManager.WriteSetting("DefaultGameOptions", defaults.Clone());

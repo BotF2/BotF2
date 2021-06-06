@@ -59,21 +59,21 @@ namespace Supremacy.WCF
 
         private void OnServiceFaulted(object sender, EventArgs e)
         {
-            var handler = ServiceFaulted;
+            Action<EventArgs> handler = ServiceFaulted;
             if (handler != null)
                 handler(EventArgs.Empty);
         }
 
         private void OnServiceOpened(object sender, EventArgs e)
         {
-            var handler = ServiceOpened;
+            Action<EventArgs> handler = ServiceOpened;
             if (handler != null)
                 handler(EventArgs.Empty);
         }
 
         private void OnServiceClosed(object sender, EventArgs e)
         {
-            var handler = ServiceClosed;
+            Action<EventArgs> handler = ServiceClosed;
             if (handler != null)
                 handler(EventArgs.Empty);
         }
