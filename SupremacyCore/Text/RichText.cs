@@ -12,7 +12,7 @@ using Supremacy.Annotations;
 using Supremacy.Collections;
 using Supremacy.Utility;
 
-// ReSharper disable InvocationIsSkipped
+
 
 namespace Supremacy.Text
 {
@@ -236,7 +236,7 @@ namespace Supremacy.Text
 
             int originalLength = _string.Length;
 
-            _string = _string + s;
+            _string += s;
             _parts.Add(new RichString(originalLength, s.Length, style, this));
 
             AssertValid();
@@ -260,7 +260,7 @@ namespace Supremacy.Text
 
             int originalLength = _string.Length;
 
-            _string = _string + richText._string;
+            _string += richText._string;
 
             foreach (RichString richString in richText._parts)
             {
@@ -943,24 +943,22 @@ namespace Supremacy.Text
 
         private class TextRangeDataRecord
         {
-            private readonly int _endOffset;
-            private readonly object _object;
             private readonly int _startOffset;
 
-            public int EndOffset => _endOffset;
+            public int EndOffset { get; }
 
-            public object Object => _object;
+            public object Object { get; }
 
             public int StartOffset => _startOffset;
 
             public TextRangeDataRecord(int startOffset, int endOffset, object @object)
             {
                 _startOffset = startOffset;
-                _endOffset = endOffset;
-                _object = @object;
+                EndOffset = endOffset;
+                Object = @object;
             }
         }
     }
 }
 
-// ReSharper restore InvocationIsSkipped
+

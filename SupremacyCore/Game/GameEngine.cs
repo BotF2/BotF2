@@ -865,7 +865,7 @@ namespace Supremacy.Game
             /*
             // Second: Schedule delivery of outbound messages  Including Statementreceived
              */
-            GameLog.Core.Diplomacy.DebugFormat("NEXT: *Second* Outgoing");
+            GameLog.Core.DiplomacyDetails.DebugFormat("NEXT: *Second* Outgoing");
             foreach (Civilization civ1 in GameContext.Current.Civilizations)
             {
                 Diplomat diplomat = Diplomat.Get(civ1);
@@ -1402,7 +1402,11 @@ namespace Supremacy.Game
                           // and no colony ships
                           if (colony.Population.CurrentValue == 0)
                           {
-                              civManager.SitRepEntries.Add(new PopulationDiedSitRepEntry(civ, colony));
+                              _note = colony.Location
+                              + " " + colony.Name
+                              + " > Population have died from illness, and the colony has been lost.";
+
+                              civManager.SitRepEntries.Add(new PopulationDiedSitRepEntry(civ, colony.Sector.Location, _note));
                               colony.Destroy();
                               civManager.EnsureSeatOfGovernment();
                               return;
@@ -2504,14 +2508,9 @@ namespace Supremacy.Game
                        * See what the minimum population level is for a new trade route for the
                        * current civilization.  If one is not specified, use the default.
                        */
-                      if (popReqTable[civManager.Civilization.Key] != null)
-                      {
-                          popForTradeRoute = Number.ParseInt32(popReqTable[civManager.Civilization.Key][0]);
-                      }
-                      else
-                      {
-                          popForTradeRoute = Number.ParseInt32(popReqTable[0][0]);
-                      }
+                      popForTradeRoute = popReqTable[civManager.Civilization.Key] != null
+                          ? Number.ParseInt32(popReqTable[civManager.Civilization.Key][0])
+                          : Number.ParseInt32(popReqTable[0][0]);
 
                       HashSet<Colony> colonies = GameContext.Current.Universe.FindOwned<Colony>(civ);
 
@@ -3151,7 +3150,7 @@ namespace Supremacy.Game
         #endregion
 
 
-        // ReSharper disable UnusedMethodReturnValue.Local
+
         private static ParallelLoopResult ParallelForEach<TSource>(
             [NotNull] IEnumerable<TSource> source,
             [NotNull] Action<TSource> body)
@@ -3230,7 +3229,7 @@ namespace Supremacy.Game
                 );
             CivValueList.Add(civValueNew);
         }
-        // ReSharper restore UnusedMethodReturnValue.Local
+
         //public void GetAcceptReject(ForeignPower foreignPower)
         //{
         //    if (foreignPower.PendingAction == PendingDiplomacyAction.AcceptProposal)

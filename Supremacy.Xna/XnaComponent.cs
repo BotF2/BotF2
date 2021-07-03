@@ -779,9 +779,9 @@ namespace Supremacy.Xna
 
             Environment.Exit(-1);
 
-            // ReSharper disable HeuristicUnreachableCode
+
             return true;
-            // ReSharper restore HeuristicUnreachableCode
+
         }
 
         private static string GetShaderProfileName(ShaderProfile shaderProfile)

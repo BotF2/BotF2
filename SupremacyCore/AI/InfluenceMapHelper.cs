@@ -75,7 +75,6 @@ namespace Supremacy.AI
 
             for (int x = startX; x <= endX; x++)
             {
-                // ReSharper disable once LoopVariableIsNeverChangedInsideLoop
                 for (int y = startY; x <= endY; y++)
                 {
                     yield return new ValueTuple<MapLocation, int>(

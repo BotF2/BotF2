@@ -347,17 +347,9 @@ namespace Supremacy.Scripting.Runtime
             MemberTracker tracker;
             FullNamedExpression fne = null;
 
-            bool found;
-
-            if (ns is NamespaceGroupTracker trackerGroup)
-            {
-                found = trackerGroup.TryGetValue((SymbolId)name, out tracker);
-            }
-            else
-            {
-                found = ns.TryGetValue((SymbolId)name, out tracker);
-            }
-
+            bool found = ns is NamespaceGroupTracker trackerGroup
+                ? trackerGroup.TryGetValue((SymbolId)name, out tracker)
+                : ns.TryGetValue((SymbolId)name, out tracker);
             if (found)
             {
                 if (tracker is NamespaceTracker namespaceTracker)
@@ -366,14 +358,9 @@ namespace Supremacy.Scripting.Runtime
                 }
                 else
                 {
-                    if (tracker is TypeGroup typeGroup)
-                    {
-                        fne = new TypeExpression(typeGroup.GetTypeForArity(genericArity).Type, location);
-                    }
-                    else
-                    {
-                        fne = new TypeExpression(((TypeTracker)tracker).Type);
-                    }
+                    fne = tracker is TypeGroup typeGroup
+                        ? new TypeExpression(typeGroup.GetTypeForArity(genericArity).Type, location)
+                        : new TypeExpression(((TypeTracker)tracker).Type);
                 }
             }
 

@@ -13,18 +13,16 @@ namespace Supremacy.Types
 {
     public class GameDataException : SupremacyException
     {
-        private readonly string _fileName;
-
         public GameDataException(string message, string fileName) : base(message, SupremacyExceptionAction.Disconnect)
         {
-            _fileName = fileName;
+            FileName = fileName;
         }
 
         public GameDataException(string message, string fileName, Exception innerException) : base(message, innerException, SupremacyExceptionAction.Disconnect)
         {
-            _fileName = fileName;
+            FileName = fileName;
         }
 
-        public string FileName => _fileName;
+        public string FileName { get; }
     }
 }

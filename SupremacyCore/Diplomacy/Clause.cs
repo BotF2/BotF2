@@ -46,9 +46,9 @@ namespace Supremacy.Diplomacy
 
         public static T GetData<T>(this IClause clause)
         {
-            if (clause.Data is T)
+            if (clause.Data is T t)
             {
-                return (T)clause.Data;
+                return t;
             }
 
             return default;
@@ -61,9 +61,9 @@ namespace Supremacy.Diplomacy
                 data = default;
                 return false;
             }
-            if (clause.Data is T)
+            if (clause.Data is T t)
             {
-                data = (T)clause.Data;
+                data = t;
                 return true;
             }
             data = default;
@@ -231,9 +231,9 @@ namespace Supremacy.Diplomacy
 
         protected internal void SetDataInitialized()
         {
-            // ReSharper disable ImpureMethodCallOnReadonlyValueField
+
             _isDataInitialized.Set();
-            // ReSharper restore ImpureMethodCallOnReadonlyValueField
+
         }
 
         #region IClauseInternal Members

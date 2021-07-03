@@ -89,7 +89,7 @@ namespace Supremacy.Resources
         #endregion
 
         #region Properties
-        // ReSharper disable MemberCanBeMadeStatic.Global
+
         protected IClientContext ClientContext
         {
             get
@@ -102,7 +102,7 @@ namespace Supremacy.Resources
                 return s_clientContext;
             }
         }
-        // ReSharper restore MemberCanBeMadeStatic.Global
+
 
         public Civilization Civilization
         {

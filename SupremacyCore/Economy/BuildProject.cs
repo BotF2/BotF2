@@ -62,9 +62,9 @@ namespace Supremacy.Economy
         /// <param name="buildType">The design of the item being constructed.</param>
         protected BuildProject(
             Civilization owner,
-            // ReSharper disable SuggestBaseTypeForParameter
+
             IProductionCenter productionCenter,
-            // ReSharper restore SuggestBaseTypeForParameter
+
             TechObjectDesign buildType)
         {
             if (owner == null)

@@ -6,17 +6,15 @@ namespace Supremacy.Client.Controls
 {
     public class GameControlCollection<T> : DeferrableObservableCollection<T> where T : DependencyObject
     {
-        private readonly GameControlContext _context;
         private VariantSize? _itemVariantSize;
-        private readonly object _owner;
 
         public GameControlCollection() { }
 
         public GameControlCollection(object owner, GameControlContext context)
             : this()
         {
-            _owner = owner;
-            _context = context;
+            Owner = owner;
+            Context = context;
         }
 
         public GameControlCollection(object owner, GameControlContext context, VariantSize? itemVariantSize)
@@ -51,7 +49,7 @@ namespace Supremacy.Client.Controls
             return IndexOf(label) != -1;
         }
 
-        public GameControlContext Context => _context;
+        public GameControlContext Context { get; }
 
         public int IndexOf(string label)
         {
@@ -67,7 +65,7 @@ namespace Supremacy.Client.Controls
 
         protected override void OnCollectionChanged(NotifyCollectionChangedEventArgs e)
         {
-            ILogicalParent logicalParent = _owner as ILogicalParent;
+            ILogicalParent logicalParent = Owner as ILogicalParent;
 
             switch (e.Action)
             {
@@ -78,9 +76,9 @@ namespace Supremacy.Client.Controls
                         {
                             if (newItem is IVariantControl variantControl)
                             {
-                                if (_context != GameControlContext.None)
+                                if (Context != GameControlContext.None)
                                 {
-                                    variantControl.Context = _context;
+                                    variantControl.Context = Context;
                                 }
 
                                 if (_itemVariantSize.HasValue)
@@ -120,7 +118,7 @@ namespace Supremacy.Client.Controls
             catch (ArgumentOutOfRangeException) { }
         }
 
-        public object Owner => _owner;
+        public object Owner { get; }
 
         public T this[string label]
         {

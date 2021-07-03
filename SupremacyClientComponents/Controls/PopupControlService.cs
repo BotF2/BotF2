@@ -20,7 +20,6 @@ namespace Supremacy.Client.Controls
 
     public class PopupControlService
     {
-        private WeakReference _ignoreNextMouseDownOver;
         private readonly List<IGamePopupAnchor> _popupAnchors; // Represents a stack with items on top of stack at index 0
 
         private static PopupControlService _current;
@@ -184,11 +183,7 @@ namespace Supremacy.Client.Controls
             }
         }
 
-        internal WeakReference IgnoreNextMouseDownOver
-        {
-            get => _ignoreNextMouseDownOver;
-            set => _ignoreNextMouseDownOver = value;
-        }
+        internal WeakReference IgnoreNextMouseDownOver { get; set; }
 
         private static void OnPostProcessInput(object sender, ProcessInputEventArgs e)
         {
@@ -264,14 +259,9 @@ namespace Supremacy.Client.Controls
             // Update the captured popup
             if ((popupHost != null) && (Mouse.Captured == popupHost))
             {
-                if (_popupAnchors.Count > 0)
-                {
-                    _ = Mouse.Capture(GetPopupHost(_popupAnchors[_popupAnchors.Count - 1]), CaptureMode.SubTree);
-                }
-                else
-                {
-                    _ = Mouse.Capture(null);
-                }
+                _ = _popupAnchors.Count > 0
+                    ? Mouse.Capture(GetPopupHost(_popupAnchors[_popupAnchors.Count - 1]), CaptureMode.SubTree)
+                    : Mouse.Capture(null);
             }
 
             if (popupAnchor.IsPopupOpen)
@@ -427,14 +417,9 @@ namespace Supremacy.Client.Controls
                     if (gameControl.Command != null)
                     {
                         // If using ItemsSource, the visual tree may not yet be built so force the parent element as the target
-                        if (VisualTreeHelper.GetParent(childElement) == null)
-                        {
-                            isEnabled = GameCommand.CanExecuteCommandSource(gameControl, element);
-                        }
-                        else
-                        {
-                            isEnabled = GameCommand.CanExecuteCommandSource(gameControl);
-                        }
+                        isEnabled = VisualTreeHelper.GetParent(childElement) == null
+                            ? GameCommand.CanExecuteCommandSource(gameControl, element)
+                            : GameCommand.CanExecuteCommandSource(gameControl);
                     }
                     else
                     {
@@ -460,14 +445,7 @@ namespace Supremacy.Client.Controls
 
                 if (childElement is IGameControl gameControl)
                 {
-                    if (gameControl.Command != null)
-                    {
-                        isEnabled = GameCommand.CanExecuteCommandSource(gameControl);
-                    }
-                    else
-                    {
-                        isEnabled = childElement.IsEnabled;
-                    }
+                    isEnabled = gameControl.Command != null ? GameCommand.CanExecuteCommandSource(gameControl) : childElement.IsEnabled;
 
                     validControlFound = true;
 
@@ -524,7 +502,7 @@ namespace Supremacy.Client.Controls
 
         private void OnClickThrough(object sender, MouseButtonEventArgs e)
         {
-            _ignoreNextMouseDownOver = null;
+            IgnoreNextMouseDownOver = null;
 
             if (!(sender is GamePopupRoot popupHost))
             {

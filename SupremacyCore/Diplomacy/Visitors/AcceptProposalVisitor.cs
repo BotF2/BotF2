@@ -15,18 +15,15 @@ namespace Supremacy.Diplomacy.Visitors
     {
         public static readonly object TransferredColoniesDataKey = new NamedGuid(new Guid("2BDDF322-714E-46AF-B7A1-6D337DE9956B"), "TransferredColonies");
 
-        private readonly IProposal _proposal;
-        private readonly Dictionary<object, object> _agreementData;
-
         private AcceptProposalVisitor([NotNull] IProposal proposal)
         {
-            _proposal = proposal ?? throw new ArgumentNullException("proposal");
-            _agreementData = new Dictionary<object, object>();
+            Proposal = proposal ?? throw new ArgumentNullException("proposal");
+            AgreementData = new Dictionary<object, object>();
         }
 
-        protected IProposal Proposal => _proposal;
+        protected IProposal Proposal { get; }
 
-        protected Dictionary<object, object> AgreementData => _agreementData;
+        protected Dictionary<object, object> AgreementData { get; }
 
         public static IAgreement Visit([NotNull] IProposal proposal, int turnAccepted = 0)
         {
@@ -49,7 +46,7 @@ namespace Supremacy.Diplomacy.Visitors
             NewAgreement agreement = new NewAgreement(
                 proposal,
                 turnAccepted == 0 ? GameContext.Current.TurnNumber : turnAccepted,
-                visitor._agreementData);
+                visitor.AgreementData);
 
             Diplomat diplomat = Diplomat.Get(proposal.Recipient);
             ForeignPower foreignPower = diplomat.GetForeignPower(proposal.Sender);

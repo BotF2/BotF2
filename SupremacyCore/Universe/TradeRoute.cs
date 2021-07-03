@@ -157,13 +157,9 @@ namespace Supremacy.Universe
                     {
                         colony = SourceColony;
                     }
-                    else if (TargetColony.OwnerID == empire.CivID)
-                    {
-                        colony = TargetColony;
-                    }
                     else
                     {
-                        colony = null;
+                        colony = TargetColony.OwnerID == empire.CivID ? TargetColony : null;
                     }
 
                     if (colony == null)

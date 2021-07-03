@@ -11,7 +11,6 @@ namespace Supremacy.Client.Controls
     {
         #region Fields
         private InfoCardCloseReason _closeReason = InfoCardCloseReason.InfoCardWindowClosed;
-        private bool _isClosing;
         private Window _popupSiteWindow;
         #endregion
 
@@ -81,7 +80,7 @@ namespace Supremacy.Client.Controls
 
         public InfoCardSite InfoCardSite => InfoCardHost.InfoCardSite;
 
-        public bool IsClosing => _isClosing;
+        public bool IsClosing { get; private set; }
 
         public Point Location => new Point(Left, Top);
 
@@ -243,7 +242,7 @@ namespace Supremacy.Client.Controls
 
             PopupWindowClosedEvent?.Invoke(this, EventArgs.Empty);
 
-            _isClosing = false;
+            IsClosing = false;
         }
 
         protected override void OnClosing(CancelRoutedEventArgs e)
@@ -256,7 +255,7 @@ namespace Supremacy.Client.Controls
                 return;
             }
 
-            _isClosing = true;
+            IsClosing = true;
 
             bool cancel = false;
 
@@ -273,7 +272,7 @@ namespace Supremacy.Client.Controls
             if (cancel)
             {
                 e.Cancel = true;
-                _isClosing = false;
+                IsClosing = false;
                 return;
             }
 

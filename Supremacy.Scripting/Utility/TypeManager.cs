@@ -601,14 +601,7 @@ namespace Supremacy.Scripting.Utility
 
                 case BuiltinType.Char:
                     bool parsedChar = text.Length == 3 && text[0] == '\'' && text[2] == '\'';
-                    if (parsedChar)
-                    {
-                        value = text[1];
-                    }
-                    else
-                    {
-                        value = null;
-                    }
+                    value = parsedChar ? text[1] : (object)null;
 
                     break;
 
@@ -1295,15 +1288,10 @@ namespace Supremacy.Scripting.Utility
                 //    public, private and protected (internal does not come into the
                 //    equation)
                 //
-                if (((invocationType != null) &&
-                    ((invocationType == currentType) || IsNestedChildOf(invocationType, currentType))) || alwaysOkFlag)
-                {
-                    bf = originalBf | BindingFlags.NonPublic;
-                }
-                else
-                {
-                    bf = originalBf;
-                }
+                bf = ((invocationType != null) &&
+                    ((invocationType == currentType) || IsNestedChildOf(invocationType, currentType))) || alwaysOkFlag
+                    ? originalBf | BindingFlags.NonPublic
+                    : originalBf;
 
                 closure.PrivateOk = (originalBf & BindingFlags.NonPublic) != 0;
 

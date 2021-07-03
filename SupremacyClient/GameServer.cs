@@ -29,7 +29,6 @@ namespace Supremacy.Client
 
         private bool _isDisposed;
         private bool _isServiceLoaded;
-        private bool _isServiceRunning;
         private AppDomain _serviceDomain;
         private SupremacyServiceHost _serviceHost;
         #endregion
@@ -154,7 +153,7 @@ namespace Supremacy.Client
 
             lock (_serviceLock)
             {
-                if (!_isServiceRunning)
+                if (!IsRunning)
                 {
                     return;
                 }
@@ -206,13 +205,13 @@ namespace Supremacy.Client
         public event Action<EventArgs> Started;
         public event Action<EventArgs> Stopped;
 
-        public bool IsRunning => _isServiceRunning;
+        public bool IsRunning { get; private set; }
 
         public void Start([CanBeNull] GameOptions gameOptions, bool allowRemoteConnections)
         {
             CheckDisposed();
 
-            if (_isServiceRunning)
+            if (IsRunning)
             {
                 return;
             }
@@ -240,12 +239,12 @@ namespace Supremacy.Client
                     return;
                 }
 
-                if (!_isServiceRunning)
+                if (!IsRunning)
                 {
                     raiseStopped = false;
                 }
 
-                _isServiceRunning = false;
+                IsRunning = false;
 
                 try
                 {
@@ -269,7 +268,7 @@ namespace Supremacy.Client
         #region Private Methods
         private void OnServiceClosed(EventArgs args)
         {
-            if (!_isServiceRunning)
+            if (!IsRunning)
             {
                 return;
             }
@@ -281,12 +280,12 @@ namespace Supremacy.Client
         {
             lock (_serviceLock)
             {
-                if (!_isServiceRunning)
+                if (!IsRunning)
                 {
                     return;
                 }
 
-                _isServiceRunning = false;
+                IsRunning = false;
             }
 
             Faulted?.Invoke(EventArgs.Empty);

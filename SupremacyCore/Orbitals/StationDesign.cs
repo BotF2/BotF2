@@ -170,7 +170,7 @@ namespace Supremacy.Orbitals
                     newStationName = owner.ShipPrefix + " ";
                 }
 
-                newStationName = newStationName + leastUsedName;
+                newStationName += leastUsedName;
                 //if (ship.Owner.Key == "BORG")
                 //{
                 //    newShipName = newShipName + " " + ShipSuffixes.Binary(timesUsed + 1).PadLeft(4, '0');

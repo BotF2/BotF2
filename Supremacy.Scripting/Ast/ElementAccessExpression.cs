@@ -63,12 +63,12 @@ namespace Supremacy.Scripting.Ast
                     instance = propertyExpression.InstanceExpression.TransformCore(generator);
                 }
 
-                // ReSharper disable AssignNullToNotNullAttribute
+
                 return MSAst.MakeIndex(
                     instance,
                     propertyExpression.PropertyInfo,
                     arguments);
-                // ReSharper restore AssignNullToNotNullAttribute
+
             }
 
             return MSAst.ArrayIndex(

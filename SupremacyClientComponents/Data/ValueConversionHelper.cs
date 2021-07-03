@@ -459,14 +459,7 @@ namespace Supremacy.Client.Data
                         {
                             context.SetTargetElement(targetElement);
 
-                            if (isForward)
-                            {
-                                value = _typeConverter.ConvertTo(context, culture, o, destinationType);
-                            }
-                            else
-                            {
-                                value = _typeConverter.ConvertFrom(context, culture, o);
-                            }
+                            value = isForward ? _typeConverter.ConvertTo(context, culture, o, destinationType) : _typeConverter.ConvertFrom(context, culture, o);
                         }
                         catch (NotSupportedException ex)
                         {

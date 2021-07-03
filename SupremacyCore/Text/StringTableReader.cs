@@ -151,14 +151,7 @@ namespace Supremacy.Text
                 /* Value nodes are the only design of nodes that are allowed to be empty. */
                 if (done && ((buffer.Length > 0) || (currentNode.NodeType == StringTableNodeType.Value)))
                 {
-                    if (currentNode.NodeType == StringTableNodeType.Value)
-                    {
-                        currentNode.Content = buffer.ToString().Trim();
-                    }
-                    else
-                    {
-                        currentNode.Content = buffer.ToString();
-                    }
+                    currentNode.Content = currentNode.NodeType == StringTableNodeType.Value ? buffer.ToString().Trim() : buffer.ToString();
                     doc.Nodes.Add(currentNode);
                     if (currentNode.NodeType == StringTableNodeType.Value)
                     {
@@ -179,14 +172,7 @@ namespace Supremacy.Text
 
             if (buffer.Length > 0)
             {
-                if (currentNode.NodeType == StringTableNodeType.Value)
-                {
-                    currentNode.Content = buffer.ToString().Trim();
-                }
-                else
-                {
-                    currentNode.Content = buffer.ToString();
-                }
+                currentNode.Content = currentNode.NodeType == StringTableNodeType.Value ? buffer.ToString().Trim() : buffer.ToString();
                 if ((currentNode.Content.Length > 0)
                     || (currentNode.NodeType == StringTableNodeType.Value))
                 {

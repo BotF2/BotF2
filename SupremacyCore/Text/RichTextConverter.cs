@@ -322,14 +322,9 @@ namespace Supremacy.Text
                 case InlineType.Foreground:
                     {
                         Match match = _resourceReferenceRegex.Match(param);
-                        if (match.Success)
-                        {
-                            currentStyle.Foreground = Application.Current != null ? Application.Current.TryFindResource(match.Groups["ResourceKey"].Value) as Brush : null;
-                        }
-                        else
-                        {
-                            currentStyle.Foreground = (Brush)_brushConverter.ConvertFromInvariantString(param);
-                        }
+                        currentStyle.Foreground = match.Success
+                            ? Application.Current != null ? Application.Current.TryFindResource(match.Groups["ResourceKey"].Value) as Brush : null
+                            : (Brush)_brushConverter.ConvertFromInvariantString(param);
 
                         break;
                     }

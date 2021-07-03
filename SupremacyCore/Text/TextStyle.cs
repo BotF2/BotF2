@@ -12,14 +12,11 @@ namespace Supremacy.Text
 {
     public struct TextStyle : IEquatable<TextStyle>
     {
-        private static readonly TextStyle _defaultStyle = new TextStyle(FontStyles.Normal, FontWeights.Normal, DefaultForeground, DefaultBackground);
         private static readonly TextStyle _hiddenStyle = new TextStyle(FontStyles.Normal, FontWeights.Normal, null, null, TextEffectStyle.None, null);
 
         private FontStyle _fontStyle;
         private FontWeight _fontWeight;
-        private Brush _foreground;
         private Brush _background;
-        private TextEffectStyle _effect;
         private Brush _effectBrush;
 
         public FontStyle FontStyle
@@ -35,11 +32,7 @@ namespace Supremacy.Text
         }
 
         [DefaultValue(null)]
-        public Brush Foreground
-        {
-            get => _foreground;
-            set => _foreground = value;
-        }
+        public Brush Foreground { get; set; }
 
         [DefaultValue(null)]
         public Brush Background
@@ -49,11 +42,7 @@ namespace Supremacy.Text
         }
 
         [DefaultValue(TextEffectStyle.None)]
-        public TextEffectStyle Effect
-        {
-            get => _effect;
-            set => _effect = value;
-        }
+        public TextEffectStyle Effect { get; set; }
 
         [DefaultValue(null)]
         public Brush EffectBrush
@@ -62,7 +51,7 @@ namespace Supremacy.Text
             set => _effectBrush = value;
         }
 
-        public static TextStyle Default => _defaultStyle;
+        public static TextStyle Default { get; } = new TextStyle(FontStyles.Normal, FontWeights.Normal, DefaultForeground, DefaultBackground);
 
         public static TextStyle Hidden => _hiddenStyle;
 
@@ -78,9 +67,9 @@ namespace Supremacy.Text
         {
             _fontStyle = fontStyle;
             _fontWeight = fontWeight;
-            _foreground = foreground;
+            Foreground = foreground;
             _background = background;
-            _effect = TextEffectStyle.None;
+            Effect = TextEffectStyle.None;
             _effectBrush = null;
         }
 
@@ -88,9 +77,9 @@ namespace Supremacy.Text
         {
             _fontStyle = fontStyle;
             _fontWeight = fontWeight;
-            _foreground = foreground;
+            Foreground = foreground;
             _background = null;
-            _effect = TextEffectStyle.None;
+            Effect = TextEffectStyle.None;
             _effectBrush = null;
         }
 
@@ -98,9 +87,9 @@ namespace Supremacy.Text
         {
             _fontStyle = fontStyle;
             _fontWeight = fontWeight;
-            _foreground = foreground;
+            Foreground = foreground;
             _background = background;
-            _effect = effect;
+            Effect = effect;
             _effectBrush = effectBrush;
         }
 
@@ -151,9 +140,9 @@ namespace Supremacy.Text
         {
             return _fontStyle == other._fontStyle &&
                    _fontWeight == other._fontWeight &&
-                   _foreground == other._foreground &&
+                   Foreground == other.Foreground &&
                    _background == other._background &&
-                   _effect == other._effect &&
+                   Effect == other.Effect &&
                    _effectBrush == other._effectBrush;
 
         }
@@ -177,18 +166,18 @@ namespace Supremacy.Text
 
         public override int GetHashCode()
         {
-            // ReSharper disable NonReadonlyFieldInGetHashCode
+
             return 29 *
                    (29 *
                     (29 *
                      (29 *
                       (29 * _fontStyle.GetHashCode()
                        + _fontWeight.GetHashCode())
-                      + _foreground.GetHashCode())
+                      + Foreground.GetHashCode())
                      + _background.GetHashCode())
-                    + _effect.GetHashCode())
+                    + Effect.GetHashCode())
                    + _effectBrush.GetHashCode();
-            // ReSharper restore NonReadonlyFieldInGetHashCode
+
         }
     }
 }

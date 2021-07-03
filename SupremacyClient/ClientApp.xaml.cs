@@ -96,7 +96,7 @@ namespace Supremacy.Client
                     _text2 += new FileInfo("SupremacyClient.exe").LastWriteTime.ToString();
                 }
                 _text = "Current Version = " + Current.Version + _text2;
-                Console.WriteLine(_text);
+                Console.WriteLine(_text);  // "Current Version = "
                 GameLog.Client.General.InfoFormat(_text);
 
                 _text = "Time running = " + (DateTime.Now - starttime).ToString();

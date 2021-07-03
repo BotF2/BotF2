@@ -31,10 +31,9 @@ namespace Supremacy.Resources
         private static readonly StringTable _localStrings;
         private static readonly StringTable _defaultStrings;
         private static readonly GameMod _commandLineMod;
-        private static readonly string _workingDirectory;
         private static readonly IVfsService _vfsService;
 
-        public static string WorkingDirectory => _workingDirectory;
+        public static string WorkingDirectory { get; private set; }
 
         // checks whether commandLineArguments are done and more
         public static GameMod CurrentMod
@@ -61,12 +60,12 @@ namespace Supremacy.Resources
 
         static ResourceManager()
         {
-            _workingDirectory = PathHelper.GetWorkingDirectory();
+            WorkingDirectory = PathHelper.GetWorkingDirectory();
             _vfsService = new VfsService();
 
             ReadOnlyHardDiskSource defaultSource = new ReadOnlyHardDiskSource(
                 "Default",
-                _workingDirectory);
+                WorkingDirectory);
 
             ReadOnlyHardDiskSource modSource = new ReadOnlyHardDiskSource("CurrentMod", null)
             {
@@ -80,7 +79,7 @@ namespace Supremacy.Resources
             _vfsService.AddSource(modSource);
             _vfsService.AddSource(defaultSource);
 
-            AppDomain.CurrentDomain.SetData("DataDirectory", _workingDirectory);
+            AppDomain.CurrentDomain.SetData("DataDirectory", WorkingDirectory);
 
             NeutralCulture = CultureInfo.GetCultureInfo("en");
             CurrentCulture = CultureInfo.CurrentCulture;
@@ -171,7 +170,7 @@ namespace Supremacy.Resources
                 return null;
             }
 
-            path = EvaluateRelativePath(_workingDirectory, GetSystemPathFormat(path));
+            path = EvaluateRelativePath(WorkingDirectory, GetSystemPathFormat(path));
             if (CurrentMod != null)
             {
                 string modRelativePath = GetSystemPathFormat(CurrentMod.RootPath);
@@ -179,18 +178,18 @@ namespace Supremacy.Resources
                 if (Path.IsPathRooted(modRelativePath))
                 {
                     modAbsolutePath = modRelativePath;
-                    modRelativePath = EvaluateRelativePath(_workingDirectory, modRelativePath);
+                    modRelativePath = EvaluateRelativePath(WorkingDirectory, modRelativePath);
                 }
                 else
                 {
-                    modAbsolutePath = Path.Combine(_workingDirectory, modRelativePath);
+                    modAbsolutePath = Path.Combine(WorkingDirectory, modRelativePath);
                 }
                 if (File.Exists(modAbsolutePath))
                 {
                     return GetInternalPathFormat(modRelativePath);
                 }
             }
-            return GetInternalPathFormat(Path.Combine(_workingDirectory, path));
+            return GetInternalPathFormat(Path.Combine(WorkingDirectory, path));
         }
 
         public static string GetSystemResourcePath(string path)
@@ -200,18 +199,13 @@ namespace Supremacy.Resources
                 return null;
             }
 
-            if (Uri.TryCreate(path, UriKind.Absolute, out Uri uri))
-            {
-                path = uri.GetComponents(UriComponents.Path, UriFormat.Unescaped);
-            }
-            else
-            {
-                path = GetSystemPathFormat(path);
-            }
+            path = Uri.TryCreate(path, UriKind.Absolute, out Uri uri)
+                ? uri.GetComponents(UriComponents.Path, UriFormat.Unescaped)
+                : GetSystemPathFormat(path);
 
             if (Path.IsPathRooted(path))
             {
-                path = EvaluateRelativePath(_workingDirectory, path);
+                path = EvaluateRelativePath(WorkingDirectory, path);
             }
 
             if (CurrentMod != null)
@@ -220,12 +214,12 @@ namespace Supremacy.Resources
 
                 if (!Path.IsPathRooted(modPath))
                 {
-                    modPath = Path.Combine(_workingDirectory, modPath);
+                    modPath = Path.Combine(WorkingDirectory, modPath);
                 }
 
                 if (Directory.Exists(modPath))
                 {
-                    string modFile = EvaluateRelativePath(_workingDirectory, Path.Combine(modPath, path));
+                    string modFile = EvaluateRelativePath(WorkingDirectory, Path.Combine(modPath, path));
                     if (File.Exists(modFile))
                     {
                         return modFile;
@@ -235,7 +229,7 @@ namespace Supremacy.Resources
 
             if (!Path.IsPathRooted(path))
             {
-                path = Path.Combine(_workingDirectory, path);
+                path = Path.Combine(WorkingDirectory, path);
             }
 
             path = EvaluateRelativePath(Environment.CurrentDirectory, path);

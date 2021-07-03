@@ -64,6 +64,14 @@ namespace Supremacy.Game
         /// Shutdowns due to Energy or something else
         /// </summary>
         Brown,
+        /// <summary>
+        /// Shutdowns due to Energy or something else
+        /// </summary>
+        Golden,
+        /// <summary>
+        /// Shutdowns due to Energy or something else
+        /// </summary>
+        Crimson,
 
         Yellow // Yellow is needed for old Saved Games
     }
@@ -563,14 +571,11 @@ namespace Supremacy.Game
     public class EnergyShutdownBuildingSitRepEntry : SitRepEntry
     {
         private readonly int _colonyID;
+        private readonly Colony _colony;
         public EnergyShutdownBuildingSitRepEntry(Civilization owner, Colony colony)
             : base(owner, SitRepPriority.Pink)
         {
-            if (colony == null)
-            {
-                throw new ArgumentNullException("colony");
-            }
-
+            _colony = colony ?? throw new ArgumentNullException("colony");
             _colonyID = colony.ObjectID;
         }
         public Colony Colony => GameContext.Current.Universe.Get<Colony>(_colonyID);
@@ -579,7 +584,7 @@ namespace Supremacy.Game
         public override object ActionTarget => Colony;
         public override string SitRepComment { get; set; }
         public override bool IsPriority => true;
-        public override string SummaryText => string.Format(ResourceManager.GetString("ENERGY_SHUTDOWN_BUILDING_SUMMARY_TEXT"), Colony.Name, Colony.Location);
+        public override string SummaryText => string.Format(ResourceManager.GetString("ENERGY_SHUTDOWN_BUILDING_SUMMARY_TEXT"), _colony.Name, _colony.Location);
 
     }
 
@@ -909,14 +914,7 @@ namespace Supremacy.Game
                     recipient = _exchange.Recipient;
                 }
 
-                if (Owner == sender)
-                {
-                    _image = recipient.InsigniaPath;
-                }
-                else
-                {
-                    _image = sender.InsigniaPath;
-                }
+                _image = Owner == sender ? recipient.InsigniaPath : sender.InsigniaPath;
 
                 return _image;
             }
@@ -1040,7 +1038,7 @@ namespace Supremacy.Game
         //private readonly string _researchNote;
 
         public GrowthByHealthSitRepEntry(Civilization owner, Colony colony)
-                : base(owner, SitRepPriority.Blue)
+                : base(owner, SitRepPriority.Crimson)
         {
             if (colony == null)
             {
@@ -1933,17 +1931,18 @@ namespace Supremacy.Game
     [Serializable]
     public class PopulationDiedSitRepEntry : SitRepEntry
     {
-        private readonly int _colonyID;
-        public PopulationDiedSitRepEntry(Civilization owner, Colony colony) : base(owner, SitRepPriority.Red)
+        private readonly MapLocation _loc;
+        private readonly string _note;
+        public PopulationDiedSitRepEntry(Civilization owner, MapLocation loc, string note) : base(owner, SitRepPriority.Red)
         {
-            _colonyID = colony.ObjectID;
+            _loc = loc; _note = note;
         }
-        public Colony Colony => GameContext.Current.Universe.Get<Colony>(_colonyID);
-        public override SitRepAction Action => SitRepAction.ViewColony;
-        public override object ActionTarget => Colony;
+
+        public override SitRepAction Action => SitRepAction.CenterOnSector;
+        public override object ActionTarget => GameContext.Current.Universe.Map[_loc];
         public override SitRepCategory Categories => SitRepCategory.ColonyStatus;
         public override string SitRepComment { get; set; }
-        public override string SummaryText => string.Format(ResourceManager.GetString("SITREP_POPULATION_DIED"), Colony.Name, Colony.Location);
+        public override string SummaryText => _note;
         public override bool IsPriority => true;
 
     }
@@ -2672,7 +2671,7 @@ namespace Supremacy.Game
     {
         private readonly TradeRoute _tradeRoute;
         private readonly int _systemId;
-        public UnassignedTradeRoute(TradeRoute route) : base(route.SourceColony.Owner, SitRepPriority.Brown)
+        public UnassignedTradeRoute(TradeRoute route) : base(route.SourceColony.Owner, SitRepPriority.Golden)
         {
             if (route == null)
             {

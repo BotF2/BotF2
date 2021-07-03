@@ -151,9 +151,6 @@ namespace Supremacy.Client.Views
         where TPresentationModel : class
     {
         #region Fields
-        private readonly IUnityContainer _container;
-        private readonly IPlayerOrderService _playerOrderService;
-        private readonly INavigationCommandsProxy _navigationCommands;
         private readonly IResourceManager _resourceManager;
 
         private bool _isActive;
@@ -162,19 +159,19 @@ namespace Supremacy.Client.Views
         #region Constructors and Finalizers
         protected GameScreenView([NotNull] IUnityContainer container)
         {
-            _container = container ?? throw new ArgumentNullException("container");
-            _playerOrderService = _container.Resolve<IPlayerOrderService>();
-            _navigationCommands = _container.Resolve<INavigationCommandsProxy>();
-            _resourceManager = _container.Resolve<IResourceManager>();
+            Container = container ?? throw new ArgumentNullException("container");
+            PlayerOrderService = Container.Resolve<IPlayerOrderService>();
+            NavigationCommands = Container.Resolve<INavigationCommandsProxy>();
+            _resourceManager = Container.Resolve<IResourceManager>();
 
             IsVisibleChanged += OnIsVisibleChanged;
         }
         #endregion
 
         #region Properties and Indexers
-        protected IUnityContainer Container => _container;
+        protected IUnityContainer Container { get; }
 
-        protected INavigationCommandsProxy NavigationCommands => _navigationCommands;
+        protected INavigationCommandsProxy NavigationCommands { get; }
 
         protected IResourceManager ResourceManager => _resourceManager;
         #endregion
@@ -217,7 +214,7 @@ namespace Supremacy.Client.Views
             set => DataContext = value;
         }
 
-        protected IPlayerOrderService PlayerOrderService => _playerOrderService;
+        protected IPlayerOrderService PlayerOrderService { get; }
 
         public virtual void OnCreated()
         {

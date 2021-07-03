@@ -14,8 +14,6 @@ namespace Supremacy.Messaging
         #region Declarations
         private const string ChannelCannotbeClosed = "Channel of type '{0}' cannot be closed (via OnCompleted)";
         private const string ChannelWithkeyExists = "Private Channel of '{0}' with key '{1}' already exists";
-
-        private static readonly Channel<T> _publicChannel;
         private static readonly Dictionary<string, IChannel<T>> _privateChannels;
         private static readonly object _channelsLock = new object();
 
@@ -27,7 +25,7 @@ namespace Supremacy.Messaging
         static Channel()
         {
             _privateChannels = new Dictionary<string, IChannel<T>>(StringComparer.InvariantCultureIgnoreCase);
-            _publicChannel = new Channel<T>();
+            Private = new Channel<T>();
         }
 
         private Channel()
@@ -37,9 +35,9 @@ namespace Supremacy.Messaging
         #endregion
 
         #region Public Properties
-        public static IChannel<T> Public => _publicChannel;
+        public static IChannel<T> Public => Private;
 
-        public static Channel<T> Private => _publicChannel;
+        public static Channel<T> Private { get; private set; }
 
         public IChannel<T> this[string key]
         {
@@ -156,17 +154,9 @@ namespace Supremacy.Messaging
         {
             Guard.ArgumentNotNull(subscriber, "subscriber");
 
-            ChannelSubscriptionBase<T> subscription;
-
-            if (useWeakReference)
-            {
-                subscription = new WeakChannelSubscription<T>(threadOption, subscriber);
-            }
-            else
-            {
-                subscription = new ChannelSubscription<T>(threadOption, subscriber);
-            }
-
+            ChannelSubscriptionBase<T> subscription = useWeakReference
+                ? new WeakChannelSubscription<T>(threadOption, subscriber)
+                : (ChannelSubscriptionBase<T>)new ChannelSubscription<T>(threadOption, subscriber);
             lock (_instanceLock)
             {
                 // we add it to our collection
@@ -390,7 +380,7 @@ namespace Supremacy.Messaging
         {
             public ChannelEvent(TimeSpan? timeout = null)
             {
-                _syncLock = new object();
+                SyncLock = new object();
                 _timeout = timeout;
                 _eventClosed = false;
 
@@ -453,7 +443,7 @@ namespace Supremacy.Messaging
                 else
                 {
                     _ = _event.WaitOne(
-                        _timeout.HasValue ? _timeout.Value : TimeSpan.FromMilliseconds(-1),
+                        _timeout ?? TimeSpan.FromMilliseconds(-1),
                         false);
                 }
 
@@ -477,9 +467,8 @@ namespace Supremacy.Messaging
                 }
             }
 
-            private object SyncLock => _syncLock;
+            private object SyncLock { get; }
 
-            private readonly object _syncLock;
             private readonly TimeSpan? _timeout;
             private readonly ManualResetEvent _event;
             private readonly DispatcherFrame _frame;

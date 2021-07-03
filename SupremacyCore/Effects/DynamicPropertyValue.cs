@@ -26,15 +26,12 @@ namespace Supremacy.Effects
 
         private bool _isValid;
         private Flags _flags;
-        private object _value;
         private object _currentValue = DynamicProperty.UnsetValue;
-
-        private readonly DynamicProperty<TValue> _property;
         private readonly DynamicObject _sourceObject;
         private readonly DynamicPropertyMetadata<TValue> _metadata;
         private List<DynamicPropertyModifier<TValue>> _modifiers;
 
-        public DynamicProperty<TValue> Property => _property;
+        public DynamicProperty<TValue> Property { get; }
 
         private void SetFlag(Flags flag, bool value)
         {
@@ -55,10 +52,10 @@ namespace Supremacy.Effects
 
         internal DynamicPropertyValue([NotNull] DynamicProperty<TValue> property, [NotNull] DynamicObject sourceObject)
         {
-            _property = property ?? throw new ArgumentNullException("property");
+            Property = property ?? throw new ArgumentNullException("property");
             _sourceObject = sourceObject ?? throw new ArgumentNullException("sourceObject");
             _metadata = property.GetMetadata(sourceObject.DynamicObjectType);
-            _value = _metadata.DefaultValue;
+            Value = _metadata.DefaultValue;
             _modifiers = EmptyModifiers;
 
             UsesCoercion = _metadata.CoerceValueCallback != null;
@@ -102,13 +99,9 @@ namespace Supremacy.Effects
             private set => SetFlag(Flags.UsesCoercion, value);
         }
 
-        internal object Value
-        {
-            get => _value;
-            private set => _value = value;
-        }
+        internal object Value { get; private set; }
 
-        internal ModifiedValue<TValue> ModifiedValue => _value as ModifiedValue<TValue>;
+        internal ModifiedValue<TValue> ModifiedValue => Value as ModifiedValue<TValue>;
 
         internal void ResetCoercedValue(bool updateValue)
         {
@@ -245,19 +238,19 @@ namespace Supremacy.Effects
 
         private ModifiedValue<TValue> EnsureModifiedValue()
         {
-            if (!(_value is ModifiedValue<TValue> modifiedValue))
+            if (!(Value is ModifiedValue<TValue> modifiedValue))
             {
-                if (_value == null)
+                if (Value == null)
                 {
-                    _value = modifiedValue = new ModifiedValue<TValue>();
+                    Value = modifiedValue = new ModifiedValue<TValue>();
                 }
                 else
                 {
-                    modifiedValue = _value as ModifiedValue<TValue>;
+                    modifiedValue = Value as ModifiedValue<TValue>;
                     if (modifiedValue == null)
                     {
-                        modifiedValue = new ModifiedValue<TValue> { BaseValue = (TValue)_value };
-                        _value = modifiedValue;
+                        modifiedValue = new ModifiedValue<TValue> { BaseValue = (TValue)Value };
+                        Value = modifiedValue;
                     }
                 }
             }
@@ -288,7 +281,7 @@ namespace Supremacy.Effects
             {
                 VerifyNotUpdating();
 
-                _value = baseValue;
+                Value = baseValue;
 
                 IsCoerced = false;
                 IsCoercedWithComputedValue = false;
@@ -327,7 +320,7 @@ namespace Supremacy.Effects
                 OnComputedValueChanged();
 
                 DynamicPropertyChangedEventArgs<TValue> changeNotificationArgs = new DynamicPropertyChangedEventArgs<TValue>(
-                    _property,
+                    Property,
                     (TValue)lastCurrentValue,
                     (TValue)_currentValue);
 
@@ -485,17 +478,17 @@ namespace Supremacy.Effects
             {
                 lock (DynamicProperty.Synchronized)
                 {
-                    if (_value == DynamicProperty.UnsetValue)
+                    if (Value == DynamicProperty.UnsetValue)
                     {
                         return _metadata.DefaultValue;
                     }
 
-                    if (_value is ModifiedValue<TValue> modifiedValue)
+                    if (Value is ModifiedValue<TValue> modifiedValue)
                     {
                         return modifiedValue.BaseValue;
                     }
 
-                    return (TValue)_value;
+                    return (TValue)Value;
                 }
             }
             set
@@ -526,7 +519,7 @@ namespace Supremacy.Effects
             {
                 lock (DynamicProperty.Synchronized)
                 {
-                    if (_value == DynamicProperty.UnsetValue)
+                    if (Value == DynamicProperty.UnsetValue)
                     {
                         return _metadata.DefaultValue;
                     }

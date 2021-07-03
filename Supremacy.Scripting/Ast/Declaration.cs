@@ -8,10 +8,10 @@ namespace Supremacy.Scripting.Ast
 
         public virtual FullNamedExpression ElementType
         {
-            // ReSharper disable ValueParameterNotUsed
+
             get => null;
             set { }
-            // ReSharper restore ValueParameterNotUsed
+
         }
 
         public bool HasExplicitType => ElementType != null;

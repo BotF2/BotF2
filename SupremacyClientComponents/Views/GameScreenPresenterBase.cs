@@ -20,14 +20,7 @@ namespace Supremacy.Client.Views
     {
         #region Fields
         private readonly IUnityContainer _container;
-        private readonly IAppContext _appContext;
-        private readonly IEventAggregator _eventAggregator;
-        private readonly TPresentationModel _model;
         private readonly IRegionManager _regionManager;
-        private readonly IResourceManager _resourceManager;
-        private readonly INavigationCommandsProxy _navigationCommands;
-        private readonly IPlayerOrderService _playerOrderService;
-        private readonly TView _view;
         private readonly EventHandler _commandManagerInvalidateRequeryHandler;
         #endregion
 
@@ -49,14 +42,14 @@ namespace Supremacy.Client.Views
 
             _container = container;
             _regionManager = _container.Resolve<IRegionManager>();
-            _resourceManager = _container.Resolve<IResourceManager>();
-            _eventAggregator = _container.Resolve<IEventAggregator>();
-            _appContext = _container.Resolve<IAppContext>();
-            _navigationCommands = _container.Resolve<INavigationCommandsProxy>();
-            _playerOrderService = _container.Resolve<IPlayerOrderService>();
+            ResourceManager = _container.Resolve<IResourceManager>();
+            EventAggregator = _container.Resolve<IEventAggregator>();
+            AppContext = _container.Resolve<IAppContext>();
+            NavigationCommands = _container.Resolve<INavigationCommandsProxy>();
+            PlayerOrderService = _container.Resolve<IPlayerOrderService>();
 
-            _model = model;
-            _view = view;
+            Model = model;
+            View = view;
 
             _commandManagerInvalidateRequeryHandler = OnCommandManagerRequerySuggested;
         }
@@ -66,19 +59,19 @@ namespace Supremacy.Client.Views
         protected bool IsRunning { get; private set; }
 
         [NotNull]
-        protected IPlayerOrderService PlayerOrderService => _playerOrderService;
+        protected IPlayerOrderService PlayerOrderService { get; }
 
         [NotNull]
-        protected INavigationCommandsProxy NavigationCommands => _navigationCommands;
+        protected INavigationCommandsProxy NavigationCommands { get; }
 
         [NotNull]
-        protected IAppContext AppContext => _appContext;
+        protected IAppContext AppContext { get; }
 
         [NotNull]
-        public TPresentationModel Model => _model;
+        public TPresentationModel Model { get; }
 
         [NotNull]
-        protected IResourceManager ResourceManager => _resourceManager;
+        protected IResourceManager ResourceManager { get; }
 
         [NotNull]
         protected IRegionManager RegionManager
@@ -98,7 +91,7 @@ namespace Supremacy.Client.Views
         }
 
         [NotNull]
-        protected IEventAggregator EventAggregator => _eventAggregator;
+        protected IEventAggregator EventAggregator { get; }
 
         [NotNull]
         protected abstract string ViewName { get; }
@@ -107,8 +100,8 @@ namespace Supremacy.Client.Views
         #region Implementation of IGameScreenPresenter
         public void Run()
         {
-            View.Model = _model;
-            View.AppContext = _appContext;
+            View.Model = Model;
+            View.AppContext = AppContext;
 
             SetInteractionNode();
 
@@ -130,11 +123,11 @@ namespace Supremacy.Client.Views
             _ = _regionManager.Regions[ClientRegions.GameScreens].Add(View, ViewName, true);
             string _text = "registering Screen " + ViewName;
             //Console.WriteLine(_text);
-            GameLog.Client.UIDetails.InfoFormat(_text);
-            if (ViewName == "ColonyScreen")
-            {
-                GameLog.Client.UI.InfoFormat(_text);
-            }
+            GameLog.Client.UIDetails.DebugFormat(_text);
+            //if (ViewName == "ColonyScreen")
+            //{
+            //    GameLog.Client.UI.InfoFormat(_text);
+            //}
         }
 
         protected virtual void UnregisterViewWithRegion()
@@ -235,7 +228,7 @@ namespace Supremacy.Client.Views
 
         #region IGameScreenPresenter<TPresentationModel,TView> Implementation
         [NotNull]
-        public TView View => _view;
+        public TView View { get; }
         #endregion
 
         #region Public and Protected Methods

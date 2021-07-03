@@ -277,14 +277,7 @@ namespace Supremacy.Client
                 }
 
                 // build closed type
-                if (typeArguments.Length > 0 && type.IsGenericTypeDefinition)
-                {
-                    _closedType = type.MakeGenericType(typeArguments);
-                }
-                else
-                {
-                    _closedType = type;
-                }
+                _closedType = typeArguments.Length > 0 && type.IsGenericTypeDefinition ? type.MakeGenericType(typeArguments) : type;
             }
 
             return _closedType;
@@ -305,7 +298,7 @@ namespace Supremacy.Client
         /// </summary>
         public ActivatorExtension()
         {
-            _propertyValues = new List<ActivatorSetter>();
+            PropertyValues = new List<ActivatorSetter>();
         }
 
         /// <summary>
@@ -315,26 +308,20 @@ namespace Supremacy.Client
         public ActivatorExtension(Type type)
             : this()
         {
-            _type = type;
+            Type = type;
         }
 
         #endregion
 
         #region Properties
 
-        private Type _type;
         /// <summary>
         /// Gets or sets the type to create.
         /// </summary>
         /// <value>The type to create.</value>
         [ConstructorArgument("type")]
-        public Type Type
-        {
-            get => _type;
-            set => _type = value;
-        }
+        public Type Type { get; set; }
 
-        private readonly List<ActivatorSetter> _propertyValues;
         /// <summary>
         /// Gets the property values.
         /// <remarks>
@@ -342,7 +329,7 @@ namespace Supremacy.Client
         /// </remarks>
         /// </summary>
         /// <value>The property values.</value>
-        public List<ActivatorSetter> PropertyValues => _propertyValues;
+        public List<ActivatorSetter> PropertyValues { get; }
 
         /// <summary>
         /// Gets the created object.
@@ -352,15 +339,15 @@ namespace Supremacy.Client
         {
             get
             {
-                if (_type == null)
+                if (Type == null)
                 {
                     throw new InvalidOperationException("Type was not specified.");
                 }
 
-                object value = Activator.CreateInstance(_type);
+                object value = Activator.CreateInstance(Type);
 
-                PropertyDescriptorCollection properties = TypeDescriptor.GetProperties(_type);
-                foreach (ActivatorSetter propertyValue in _propertyValues)
+                PropertyDescriptorCollection properties = TypeDescriptor.GetProperties(Type);
+                foreach (ActivatorSetter propertyValue in PropertyValues)
                 {
                     PropertyDescriptor property = properties[propertyValue.Name];
                     if (property == null)

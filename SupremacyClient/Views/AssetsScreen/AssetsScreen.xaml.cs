@@ -258,7 +258,7 @@ namespace Supremacy.Client.Views
             if (IsVisible)
             {
                 //ResumeAnimations();
-                GameLog.Client.UI.DebugFormat("*********** begin of checking visible ***********");
+                GameLog.Client.UIDetails.DebugFormat("*********** begin of checking visible ***********");
 
                 // GameLog.Client.UI.DebugFormat("SpiedZeroCiv checking visible .... _spiedOneCiv = {0}, _civLocalPlayer = {1}", _spiedZeroCiv, _civLocalPlayer);
                 if (AssetsHelper.IsSpiedZero(_civLocalPlayer) || IntelHelper.ShowNetwork_0)
@@ -1195,7 +1195,7 @@ namespace Supremacy.Client.Views
                     OnLocalPlayerEmpireChanged();
                     break;
             }
-            GameLog.Client.UI.DebugFormat("AssetsScreen receives sender=(whole GameContext)");  // sender.ToString doesn't work
+            GameLog.Client.UIDetails.DebugFormat("AssetsScreen receives sender=(whole GameContext)");  // sender.ToString doesn't work
             return true;
         }
     }

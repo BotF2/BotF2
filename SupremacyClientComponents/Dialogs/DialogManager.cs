@@ -37,12 +37,7 @@ namespace Supremacy.Client.Dialogs
 
         protected static readonly DependencyPropertyKey ActiveDialogPropertyKey;
         protected static readonly DependencyPropertyDescriptor TabOnceActiveElementPropertyDescriptor;
-
-        private readonly IRegionManager _rootRegionManager;
-
         private IRegion _modalDialogsRegion;
-
-        private ContentPresenter _activeDialogPresenter;
 
         static DialogManager()
         {
@@ -78,7 +73,7 @@ namespace Supremacy.Client.Dialogs
                 return;
             }
 
-            _rootRegionManager = ServiceLocator.Current.GetInstance<IRegionManager>();
+            RootRegionManager = ServiceLocator.Current.GetInstance<IRegionManager>();
         }
 
         private static DependencyPropertyDescriptor GetTabOnceActiveElementPropertyDescriptor()
@@ -102,19 +97,19 @@ namespace Supremacy.Client.Dialogs
             protected set => SetValue(ActiveDialogPropertyKey, value);
         }
 
-        internal ContentPresenter ActiveDialogPresenter => _activeDialogPresenter;
+        internal ContentPresenter ActiveDialogPresenter { get; private set; }
 
-        protected IRegionManager RootRegionManager => _rootRegionManager;
+        protected IRegionManager RootRegionManager { get; }
 
         private IRegion ModalDialogsRegion
         {
             get
             {
                 if ((_modalDialogsRegion == null) &&
-                    (_rootRegionManager != null) &&
-                    _rootRegionManager.Regions.ContainsRegionWithName(ClientRegions.ModalDialogs))
+                    (RootRegionManager != null) &&
+                    RootRegionManager.Regions.ContainsRegionWithName(ClientRegions.ModalDialogs))
                 {
-                    _modalDialogsRegion = _rootRegionManager.Regions[ClientRegions.ModalDialogs];
+                    _modalDialogsRegion = RootRegionManager.Regions[ClientRegions.ModalDialogs];
                 }
                 return _modalDialogsRegion;
             }
@@ -142,7 +137,7 @@ namespace Supremacy.Client.Dialogs
         public override void OnApplyTemplate()
         {
             base.OnApplyTemplate();
-            _activeDialogPresenter = GetTemplateChild("PART_ActiveDialogPresenter") as ContentPresenter;
+            ActiveDialogPresenter = GetTemplateChild("PART_ActiveDialogPresenter") as ContentPresenter;
             UpdateActiveDialog();
         }
 

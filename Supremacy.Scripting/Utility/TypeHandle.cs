@@ -96,18 +96,13 @@ namespace Supremacy.Scripting.Utility
 
             //_type = TypeManager.DropGenericTypeArguments(_type);
 
-            if (mt == MemberTypes.Event)
-            {
-                members = Type.GetEvents(bf | BindingFlags.DeclaredOnly);
-            }
-            else
-            {
-                members = Type.FindMembers(
+            members = mt == MemberTypes.Event
+                ? Type.GetEvents(bf | BindingFlags.DeclaredOnly)
+                : Type.FindMembers(
                     mt,
                     bf | BindingFlags.DeclaredOnly,
                     null,
                     null);
-            }
 
             if (members.Length == 0)
             {

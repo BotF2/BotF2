@@ -23,7 +23,7 @@ namespace Supremacy.Xna
         private const string ModelDirectory = @"Resources\Models";
         private const string XnaContentExtension = ".xnb";
 
-        // ReSharper disable InconsistentNaming
+
 
         private readonly object _modelLock = new object();
         private readonly string _workingDirectory;
@@ -37,14 +37,9 @@ namespace Supremacy.Xna
         private Point _lastMousePosition;
         private IDisposable _modelLoadRequest;
 
-        // TODO: Localize these status messages.
-        // ReSharper disable ConvertToConstant.Local
         private readonly string _loadFailureMessage = "Error Loading Model";
         private readonly string _modelUnavailableMessage = "No Model Available";
         private readonly string _loadingMessage = "Loading...";
-        // ReSharper restore ConvertToConstant.Local
-
-        // ReSharper restore InconsistentNaming
 
         public ShipModelViewer()
             : base(new XnaComponent(true, true, true))

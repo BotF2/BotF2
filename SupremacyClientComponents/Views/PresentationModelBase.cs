@@ -16,11 +16,9 @@ namespace Supremacy.Client.Views
 {
     public class PresentationModelBase : IPresentationModel
     {
-        private readonly IAppContext _appContext;
-
         public PresentationModelBase([NotNull] IAppContext appContext)
         {
-            _appContext = appContext ?? throw new ArgumentNullException("appContext");
+            AppContext = appContext ?? throw new ArgumentNullException("appContext");
         }
 
         protected virtual void OnLoaded() { }
@@ -28,7 +26,7 @@ namespace Supremacy.Client.Views
 
         #region Implementation of IPresentationModel
 
-        public IAppContext AppContext => _appContext;
+        public IAppContext AppContext { get; }
 
         public string TurnNumberText => "Turn " + GameContext.Current.TurnNumber;
 

@@ -29,7 +29,7 @@ namespace Supremacy.Client.Markup
                 _sourceUri = value;
 
                 //works 
-                GameLog.Client.UI.DebugFormat("SharedResourceDictionary.cs: _sourceUri={0}", value);
+                GameLog.Client.UIDetails.DebugFormat("SharedResourceDictionary.cs: _sourceUri={0}", value);
 
                 if (SharedDictionaries.TryGetValue(value, out ResourceDictionary sharedDictionary))
                 {
@@ -45,7 +45,8 @@ namespace Supremacy.Client.Markup
 
                         foreach (ResourceDictionary item in MergedDictionaries[0].MergedDictionaries)
                         {
-                            string _text1 = item.Source.ToString(); Console.WriteLine(_text1);
+                            string _text1 = "ResourceDictionary " + item.Source.ToString();
+                            //Console.WriteLine(_text1);
                             _allValue += 10000;  // 10.000 step each file
 
                             foreach (object key in item.Keys)
@@ -57,7 +58,7 @@ namespace Supremacy.Client.Markup
 
                             }
                         }
-                        GameLog.Client.UI.DebugFormat(_allText);
+                        GameLog.Client.UIDetails.DebugFormat(_allText);
                     }
                 }
                 else
@@ -69,7 +70,7 @@ namespace Supremacy.Client.Markup
                     // add it to the cache
                     SharedDictionaries.Add(value, this);
 
-                    GameLog.Client.UI.DebugFormat("SharedResourceDictionary.cs: Count={0}, Added to sharedDictionary={1}", SharedDictionaries.Count, value);
+                    GameLog.Client.UIDetails.DebugFormat("SharedResourceDictionary.cs: Count={0}, Added to sharedDictionary={1}", SharedDictionaries.Count, value);
                 }
             }
         }

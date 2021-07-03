@@ -13,9 +13,7 @@ namespace Supremacy.Client.Controls
     {
         #region Fields
 
-        private readonly GamePopupCollection _popups;
         private readonly GamePopupCollection _openPopupsCore;
-        private readonly ReadOnlyGamePopupCollection _openPopups;
         private readonly VisualCollection _openPopupRoots;
 
         #endregion
@@ -24,11 +22,11 @@ namespace Supremacy.Client.Controls
 
         public GamePopupSite()
         {
-            _popups = new GamePopupCollection();
-            _popups.CollectionChanged += OnPopupsCollectionChanged;
+            Popups = new GamePopupCollection();
+            Popups.CollectionChanged += OnPopupsCollectionChanged;
 
             _openPopupsCore = new GamePopupCollection();
-            _openPopups = new ReadOnlyGamePopupCollection(_popups);
+            OpenPopups = new ReadOnlyGamePopupCollection(Popups);
             _openPopupRoots = new VisualCollection(this);
 
             AddHandler(LoadedEvent, (RoutedEventHandler)OnLoaded);
@@ -114,19 +112,19 @@ namespace Supremacy.Client.Controls
 
         #region HasOpenPopups Property
 
-        public bool HasOpenPopups => _openPopups.Any();
+        public bool HasOpenPopups => OpenPopups.Any();
 
         #endregion
 
         #region OpenPopups Property
 
-        public ReadOnlyGamePopupCollection OpenPopups => _openPopups;
+        public ReadOnlyGamePopupCollection OpenPopups { get; }
 
         #endregion
 
         #region Popups Property
 
-        public GamePopupCollection Popups => _popups;
+        public GamePopupCollection Popups { get; }
 
         #endregion
 
@@ -164,7 +162,7 @@ namespace Supremacy.Client.Controls
             try
             {
                 _openPopupsCore.Clear();
-                _openPopupsCore.AddRange(_popups.Where(o => o.IsOpen));
+                _openPopupsCore.AddRange(Popups.Where(o => o.IsOpen));
             }
             finally
             {

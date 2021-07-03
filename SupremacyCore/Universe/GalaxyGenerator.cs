@@ -28,7 +28,7 @@ namespace Supremacy.Universe
         public const int MinHomeworldDistanceFromInterference = 2;
 
         private static TableMap UniverseTables;
-
+        private static string _text;
         private static readonly Dictionary<StarType, int> StarTypeDist;
         private static readonly Dictionary<Tuple<StarType, PlanetSize>, int> StarTypeModToPlanetSizeDist;
         private static readonly Dictionary<Tuple<int, PlanetSize>, int> SlotModToPlanetSizeDist;
@@ -435,8 +435,6 @@ namespace Supremacy.Universe
             int bestScore = 0;
             int bestSlot = 0;
 
-            // ReSharper disable PossibleInvalidOperationException
-
             for (int iSlot = 0; iSlot <= system.Planets.Count; iSlot++)
             {
                 int score = GetPlanetSizeScore(system.StarType.Value, planet.Size.Value, iSlot) +
@@ -448,8 +446,6 @@ namespace Supremacy.Universe
                     bestSlot = iSlot;
                 }
             }
-
-            // ReSharper restore PossibleInvalidOperationException
 
             return bestSlot;
         }
@@ -470,6 +466,12 @@ namespace Supremacy.Universe
             List<Planet> planets = new List<Planet>();
             Race race = civ.Race;
             StarSystem homeSystem = new StarSystem();
+
+            if (race.Key == "BORG")
+            {
+                // Breakpoint
+            }
+
 
             if (!homeSystemDescriptor.IsNameDefined)
             {
@@ -492,14 +494,7 @@ namespace Supremacy.Universe
                 race = GameContext.Current.Races[homeSystemDescriptor.Inhabitants];
             }
 
-            if (homeSystemDescriptor.StarType.HasValue)
-            {
-                homeSystem.StarType = homeSystemDescriptor.StarType.Value;
-            }
-            else
-            {
-                homeSystem.StarType = GetStarType(true);
-            }
+            homeSystem.StarType = homeSystemDescriptor.StarType ?? GetStarType(true);
 
             if (homeSystemDescriptor.HasBonuses)
             {
@@ -534,10 +529,8 @@ namespace Supremacy.Universe
                     planet.Name = planetDescriptor.Name;
                 }
 
-                if (planetDescriptor.Size.HasValue)
-                {
-                    planet.PlanetSize = planetDescriptor.Size.Value;
-                }
+                planet.PlanetSize = PlanetSize.Small;
+                planet.PlanetSize = planetDescriptor.Size ?? PlanetSize.Small;
 
                 if (planetDescriptor.Type.HasValue)
                 {
@@ -608,19 +601,14 @@ namespace Supremacy.Universe
                     if (empireCivs[index].Key == "DOMINION")
                     {
                         //GameLog.Core.GalaxyGenerator.DebugFormat("dom_Location-LIMITS are up to {0} and to {1}",
-                        if (GameContext.Current.Options.GalaxyShape == GalaxyShape.Elliptical || GameContext.Current.Options.GalaxyShape == GalaxyShape.Cluster)
-                        {
-                            iPosition = positions.FirstIndexWhere((d) => { return d.X <= 3 && d.Y <= 3; });
-                        }
-                        else
-                        {
-                            iPosition = positions.FirstIndexWhere((l) =>
+                        iPosition = GameContext.Current.Options.GalaxyShape == GalaxyShape.Elliptical || GameContext.Current.Options.GalaxyShape == GalaxyShape.Cluster
+                            ? positions.FirstIndexWhere((d) => { return d.X <= 3 && d.Y <= 3; })
+                            : positions.FirstIndexWhere((l) =>
                             {
                                 return (l.X < (GameContext.Current.Universe.Map.Width / 4)) &&
                                 (l.Y <= ((GameContext.Current.Universe.Map.Height / 2) - 3));
                             }
                             );
-                        }
                     }
                     //Ensure that The Borg is in the top right of the Delta quadrant
                     else if (empireCivs[index].Key == "BORG")
@@ -674,8 +662,8 @@ namespace Supremacy.Universe
 
                 empireHomeLocations.Add(positions[iPosition]);
                 chosenCivs.Add(empireCivs[index]);
-                GameLog.Core.GalaxyGenerator.DebugFormat("Civilization {0} placed at {1} as {2}", empireCivs[index].Name, positions[iPosition], empireCivs[index].CivilizationType);
                 FinalizaHomeworldPlacement(starNames, homeSystemDatabase, empireCivs[index], positions[iPosition]);
+                GameLog.Core.GalaxyGeneratorDetails.DebugFormat("Civilization {0} placed at {1} as {2}", empireCivs[index].Name, positions[iPosition], empireCivs[index].CivilizationType);
                 positions.RemoveAt(iPosition);
             }
 
@@ -725,14 +713,7 @@ namespace Supremacy.Universe
                 }
             }
 
-            if (minorRacePercentage <= 0.0f)
-            {
-                minorRacePercentage = 0.0f;
-            }
-            else
-            {
-                minorRacePercentage = Math.Min(1.0f, minorRacePercentage);
-            }
+            minorRacePercentage = minorRacePercentage <= 0.0f ? 0.0f : Math.Min(1.0f, minorRacePercentage);
 
             float wantedMinorRaceCount = positions.Count * minorRacePercentage;
             wantedMinorRaceCount = Math.Min(wantedMinorRaceCount, minorRaceLimit);
@@ -754,22 +735,16 @@ namespace Supremacy.Universe
                     //if (minorRaceCivs[index].CivID < 7)
                     //    continue;
                     //Ensure that the Bajorans are in the bottom left of the Alpha quadrant
-                    if (minorRaceCivs[index].Key == "BAJORANS")
-                    {
-                        iPosition = positions.FirstIndexWhere((l) =>
+                    iPosition = minorRaceCivs[index].Key == "BAJORANS"
+                        ? positions.FirstIndexWhere((l) =>
                         {
                             return (l.X < (GameContext.Current.Universe.Map.Width / 4)) &&
                                 (l.Y > GameContext.Current.Universe.Map.Height / 4 * 3);
-                        });
-                    }
-                    //Ensure that everybody else is in their correct quadrants
-                    else
-                    {
-                        iPosition = positions.FirstIndexWhere((l) =>
+                        })
+                        : positions.FirstIndexWhere((l) =>
                         {
                             return GameContext.Current.Universe.Map.GetQuadrant(l) == minorRaceCivs[index].HomeQuadrant;
                         });
-                    }
                 }
                 //If we're not respecting quadrants, it really doesn't matter
                 else
@@ -790,6 +765,10 @@ namespace Supremacy.Universe
                 minorHomeLocations.Add(positions[iPosition]);
                 chosenCivs.Add(minorRaceCivs[index]);
                 FinalizaHomeworldPlacement(starNames, homeSystemDatabase, minorRaceCivs[index], positions[iPosition]);
+
+                GameLog.Core.GalaxyGeneratorDetails.DebugFormat("Civilization {0} placed at {1} as {2}"
+                    , minorRaceCivs[index].Name, positions[iPosition], minorRaceCivs[index].CivilizationType);
+
                 minorRaceCivs.RemoveAt(index);
                 positions.RemoveAt(iPosition);
             }
@@ -940,9 +919,7 @@ namespace Supremacy.Universe
             homePlanet.Size = planetSize;
             homePlanet.Name = system.Name + " Prime";
 
-            // ReSharper disable PossibleInvalidOperationException
             GeneratePlanets(system, StarHelper.MaxNumberOfPlanets(system.StarType.Value) - 1);
-            // ReSharper restore PossibleInvalidOperationException
 
             system.Planets.Insert(
                 GetIdealSlot(system, homePlanet),
@@ -985,8 +962,6 @@ namespace Supremacy.Universe
                     initialCount = GetDefinedPlanetCount(system);
                     system.Planets.RemoveAt(i--);
 
-                    // ReSharper disable PossibleInvalidOperationException
-
                     while ((newPlanets < planetDescriptor.MinNumberOfPlanets || attemptNumber < planetDescriptor.MaxNumberOfPlanets) &&
                            initialCount + attemptNumber < StarHelper.MaxNumberOfPlanets(system.StarType.Value))
                     {
@@ -1004,15 +979,16 @@ namespace Supremacy.Universe
                             system.Planets.Insert(++i, planet);
                             newPlanets++;
                         }
+                        else
+                        {
+                            _text = "PlanetSize = " + planetSize + " at " + system.Name + " Number " + newPlanets;
+                            GameLog.Core.GalaxyGeneratorDetails.DebugFormat(_text);
+                        }
 
                         attemptNumber++;
                     }
-
-                    // ReSharper restore PossibleInvalidOperationException
                 }
             }
-
-            // ReSharper disable PossibleInvalidOperationException
 
             for (int i = 0; i < system.Planets.Count; i++)
             {
@@ -1052,8 +1028,6 @@ namespace Supremacy.Universe
                     system.Planets.Add(planet);
                 }
             }
-
-            // ReSharper restore PossibleInvalidOperationException        
         }
 
         private static void CreateHomeColony(Civilization civ, StarSystem system, Race inhabitants)

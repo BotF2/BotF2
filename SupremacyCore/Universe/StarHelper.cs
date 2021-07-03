@@ -245,12 +245,7 @@ namespace Supremacy.Universe
         public static int MaxNumberOfPlanets(StarType starType)
         {
             SupportsPlanetsAttribute supportsPlanetsAttribute = starType.GetAttribute<StarType, SupportsPlanetsAttribute>();
-            if (supportsPlanetsAttribute != null)
-            {
-                return supportsPlanetsAttribute.MaxNumberOfPlanets;
-            }
-
-            return StarSystem.MaxPlanetsPerSystem;
+            return supportsPlanetsAttribute != null ? supportsPlanetsAttribute.MaxNumberOfPlanets : StarSystem.MaxPlanetsPerSystem;
         }
 
         public static int MaxNumberOfPlanets(StarSystem starSystem)

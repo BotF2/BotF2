@@ -119,8 +119,6 @@ namespace Supremacy.Client.Controls
 
                 span.Inlines.Add(inline);
 
-                // ReSharper disable RedundantCheckBeforeAssignment
-
                 if (part.Style.FontWeight != inline.FontWeight)
                 {
                     inline.FontWeight = part.Style.FontWeight;
@@ -140,8 +138,6 @@ namespace Supremacy.Client.Controls
                 {
                     inline.Background = part.Style.Background;
                 }
-
-                // ReSharper restore RedundantCheckBeforeAssignment
 
                 Pen pen = (Pen)null;
 

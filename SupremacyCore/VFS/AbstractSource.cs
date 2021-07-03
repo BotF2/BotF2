@@ -45,16 +45,11 @@ namespace Supremacy.VFS
     {
         #region Fields and Properties
 
-        private string _name;
         /// <summary>
         /// Gets or sets the name of the source.
         /// </summary>
         /// <value>The name.</value>
-        public string Name
-        {
-            get => _name;
-            protected internal set => _name = value;
-        }
+        public string Name { get; protected internal set; }
 
         /// <summary>
         /// Gets a value indicating whether this file source is read only.
@@ -64,12 +59,11 @@ namespace Supremacy.VFS
         /// </value>
 	    public virtual bool IsReadOnly => true;
 
-        private readonly CaseCultureStringComparer _stringComparer;
         /// <summary>
         /// Gets or sets the string comparer helper.
         /// </summary>
         /// <value>The string comparer.</value>
-        protected CaseCultureStringComparer StringComparer => _stringComparer;
+        protected CaseCultureStringComparer StringComparer { get; }
 
         /// <summary>
         /// Gets or sets a value indicating whether this instance is case sensitive.
@@ -79,8 +73,8 @@ namespace Supremacy.VFS
         /// </value>
         public bool IsCaseSensitive
         {
-            get => _stringComparer.IsCaseSensitive;
-            set => _stringComparer.IsCaseSensitive = value;
+            get => StringComparer.IsCaseSensitive;
+            set => StringComparer.IsCaseSensitive = value;
         }
 
         /// <summary>
@@ -91,33 +85,27 @@ namespace Supremacy.VFS
         /// </value>
         public bool IsInvariantCulture
         {
-            get => _stringComparer.IsInvariantCulture;
-            set => _stringComparer.IsInvariantCulture = value;
+            get => StringComparer.IsInvariantCulture;
+            set => StringComparer.IsInvariantCulture = value;
         }
 
         /// <summary>
         /// Gets the current culture.
         /// </summary>
         /// <value>The current culture.</value>
-        public CultureInfo CultureInfo => _stringComparer.CultureInfo;
+        public CultureInfo CultureInfo => StringComparer.CultureInfo;
 
-        private readonly Dictionary<string, string> _definedPaths;
         /// <summary>
         /// Gets the defined paths inside the source.
         /// </summary>
         /// <value>The defined paths.</value>
-        protected Dictionary<string, string> DefinedPaths => _definedPaths;
+        protected Dictionary<string, string> DefinedPaths { get; }
 
-        private int _sleepTime = 10;
         /// <summary>
         /// Gets or sets the sleep time when a request is blocked.
         /// </summary>
         /// <value>The sleep time in milliseconds.</value>
-        protected internal int SleepTime
-        {
-            get => _sleepTime;
-            set => _sleepTime = value;
-        }
+        protected internal int SleepTime { get; set; } = 10;
 
         /// <summary>
         /// List of used files in a given moment.
@@ -138,9 +126,9 @@ namespace Supremacy.VFS
         /// </summary>
         protected AbstractSource()
         {
-            _stringComparer = new CaseCultureStringComparer(true, false, CultureInfo.CurrentCulture.Name);
-            _definedPaths = new Dictionary<string, string>(_stringComparer);
-            _usedFiles = new Dictionary<string, ICollection<StreamDecorator<T>>>(_stringComparer);
+            StringComparer = new CaseCultureStringComparer(true, false, CultureInfo.CurrentCulture.Name);
+            DefinedPaths = new Dictionary<string, string>(StringComparer);
+            _usedFiles = new Dictionary<string, ICollection<StreamDecorator<T>>>(StringComparer);
         }
 
         #endregion
@@ -238,7 +226,7 @@ namespace Supremacy.VFS
 
                     // Resolve the file name. If it's not found return
                     resolvedName = ResolveFileName(path, recurse);
-                    if (_stringComparer.Equals(resolvedName, string.Empty))
+                    if (StringComparer.Equals(resolvedName, string.Empty))
                     {
                         return null;
                     }
@@ -256,7 +244,7 @@ namespace Supremacy.VFS
                         StreamDecorator<T> decorator = new StreamDecorator<T>(resolvedName, stream, access, fileShare)
                         {
                             VirtualPath = path,
-                            SourceName = _name
+                            SourceName = Name
                         };
 
                         // Callback for when the stream closes
@@ -271,7 +259,7 @@ namespace Supremacy.VFS
                 if (block)
                 {
                     Debug.WriteLine("Blocked trying to get file {0}", resolvedName);
-                    Thread.Sleep(_sleepTime);
+                    Thread.Sleep(SleepTime);
                     continue;
                 }
 
@@ -344,7 +332,7 @@ namespace Supremacy.VFS
 
                     // Resolve the file name. If found the file exists
                     string resolvedName = ResolveFileName(path, false);
-                    bool fileExists = !_stringComparer.Equals(resolvedName, string.Empty);
+                    bool fileExists = !StringComparer.Equals(resolvedName, string.Empty);
 
                     T stream = null;
                     if (!fileExists) // Create the file
@@ -366,7 +354,7 @@ namespace Supremacy.VFS
                         StreamDecorator<T> decorator = new StreamDecorator<T>(resolvedName, stream, FileAccess.ReadWrite, FileShare.None)
                         {
                             VirtualPath = path,
-                            SourceName = _name
+                            SourceName = Name
                         };
 
                         // Callback for when the stream closes
@@ -380,7 +368,7 @@ namespace Supremacy.VFS
                 // If the search should block then sleep
                 if (block)
                 {
-                    Thread.Sleep(_sleepTime);
+                    Thread.Sleep(SleepTime);
                     continue;
                 }
 
@@ -405,7 +393,7 @@ namespace Supremacy.VFS
 
                     // Resolve the file name. If it's not found the file doesn't exist
                     string resolvedName = ResolveFileName(path, recurse);
-                    if (_stringComparer.Equals(resolvedName, string.Empty))
+                    if (StringComparer.Equals(resolvedName, string.Empty))
                     {
                         return false;
                     }
@@ -421,7 +409,7 @@ namespace Supremacy.VFS
                 // If the search should block then sleep
                 if (block)
                 {
-                    Thread.Sleep(_sleepTime);
+                    Thread.Sleep(SleepTime);
                     continue;
                 }
 
@@ -503,7 +491,7 @@ namespace Supremacy.VFS
 
         public void SetCultureName(string cultureName)
         {
-            _stringComparer.SetCultureName(cultureName);
+            StringComparer.SetCultureName(cultureName);
         }
 
         public virtual void AddDefinedPath(string definedPathAlias, string path)
@@ -517,7 +505,7 @@ namespace Supremacy.VFS
                     "definedPathAlias");
             }
 
-            _definedPaths.Add(definedPathAlias, path);
+            DefinedPaths.Add(definedPathAlias, path);
         }
 
         public virtual IVirtualFileInfo GetFileInfo(string path, bool recurse)
@@ -527,7 +515,7 @@ namespace Supremacy.VFS
 
         public virtual IVirtualFileInfo GetFileInfo(string definedPathAlias, string path, bool recurse)
         {
-            if (!_definedPaths.TryGetValue(definedPathAlias, out string aliasedPath))
+            if (!DefinedPaths.TryGetValue(definedPathAlias, out string aliasedPath))
             {
                 return null;
             }
@@ -544,7 +532,7 @@ namespace Supremacy.VFS
         {
 
             // If the path is not defined in this source, return
-            if (!_definedPaths.TryGetValue(definedPathAlias, out string aliasedPath))
+            if (!DefinedPaths.TryGetValue(definedPathAlias, out string aliasedPath))
             {
                 return null;
             }
@@ -563,7 +551,7 @@ namespace Supremacy.VFS
         {
 
             // If the path is not defined in this source, return
-            if (!_definedPaths.TryGetValue(definedPathAlias, out string dir))
+            if (!DefinedPaths.TryGetValue(definedPathAlias, out string dir))
             {
                 stream = null;
                 return false;
@@ -581,7 +569,7 @@ namespace Supremacy.VFS
         {
 
             // If the path is not defined in this source, return
-            if (!_definedPaths.TryGetValue(definedPathAlias, out string dir))
+            if (!DefinedPaths.TryGetValue(definedPathAlias, out string dir))
             {
                 return new List<string>(0).AsReadOnly();
             }

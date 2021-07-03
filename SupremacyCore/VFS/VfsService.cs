@@ -44,8 +44,6 @@ namespace Supremacy.VFS
 
         public const string UriScheme = "vfs";
 
-        private string _name = "Default";
-
         /// <summary>
         /// The list of registered <see cref="IFilesSource"/> of the <see cref="VfsService"/>.
         /// </summary>
@@ -124,11 +122,7 @@ namespace Supremacy.VFS
         /// <summary>
         /// Gets the name of the <see cref="VfsService"/>.
         /// </summary>
-        public string Name
-        {
-            get => _name;
-            set => _name = value;
-        }
+        public string Name { get; set; } = "Default";
 
         public virtual bool IsReadOnly => !_sources.Any(source => !source.IsReadOnly);
 
@@ -171,7 +165,7 @@ namespace Supremacy.VFS
                 return source;
             }
 
-            throw new IOException("The source \"" + sourceName + "\" doesn't exist in the VFS \"" + _name + "\".");
+            throw new IOException("The source \"" + sourceName + "\" doesn't exist in the VFS \"" + Name + "\".");
         }
 
         /// <summary>
@@ -196,10 +190,10 @@ namespace Supremacy.VFS
                 }
 
                 throw new IOException(
-                    "The source \"" + sourceName + "\" is not a IWritableFilesSource in the VFS \"" + _name + "\".");
+                    "The source \"" + sourceName + "\" is not a IWritableFilesSource in the VFS \"" + Name + "\".");
             }
 
-            throw new IOException("The source \"" + sourceName + "\" doesn't exist in the VFS \"" + _name + "\".");
+            throw new IOException("The source \"" + sourceName + "\" doesn't exist in the VFS \"" + Name + "\".");
         }
 
         public IVirtualFileInfo GetFile(string virtualPath)

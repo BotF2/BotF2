@@ -19,15 +19,11 @@ namespace Supremacy.Intelligence
 {
     public static class IntelHelper
     {
-        private static Civilization _newTargetCiv;
         private static Civilization _newSpyCiv;
-        private static UniverseObjectList<Colony> _newSpiedColonies;
         private static List<Civilization> _spiedList = new List<Civilization>();
         private static List<Civilization> _localSpiedList = new List<Civilization>();
-        private static List<SitRepEntry> _sitReps_Temp = new List<SitRepEntry>();
         private static int _defenseAccumulatedIntelInt;
         private static int _attackAccumulatedIntelInt;
-        private static CivilizationManager _localCivManager;
         public static List<Civilization> _spyingCiv_0_List;
         public static List<Civilization> _spyingCiv_1_List;
         public static List<Civilization> _spyingCiv_2_List;
@@ -56,21 +52,17 @@ namespace Supremacy.Intelligence
         public static string Attack_ED_IntelPointCosts = "";
         public static string Attack_ING_IntelPointCosts = "";
 
-        public static List<SitRepEntry> SitReps_Temp
-        {
-            get => _sitReps_Temp;
-            set => _sitReps_Temp = value;
-        }
-        public static UniverseObjectList<Colony> NewSpiedColonies => _newSpiedColonies;
+        public static List<SitRepEntry> SitReps_Temp { get; set; } = new List<SitRepEntry>();
+        public static UniverseObjectList<Colony> NewSpiedColonies { get; private set; }
         public static Civilization NewSpyCiv => _newSpyCiv;
-        public static Civilization NewTargetCiv => _newTargetCiv;
+        public static Civilization NewTargetCiv { get; private set; }
 
-        public static CivilizationManager LocalCivManager => _localCivManager;
+        public static CivilizationManager LocalCivManager { get; private set; }
         public static int DefenseAccumulatedInteInt
         {
             get
             {
-                _defenseAccumulatedIntelInt = GameContext.Current.CivilizationManagers[_localCivManager.Civilization].TotalIntelligenceDefenseAccumulated.CurrentValue;
+                _defenseAccumulatedIntelInt = GameContext.Current.CivilizationManagers[LocalCivManager.Civilization].TotalIntelligenceDefenseAccumulated.CurrentValue;
                 return _defenseAccumulatedIntelInt;
             }
         }
@@ -78,7 +70,7 @@ namespace Supremacy.Intelligence
         {
             get
             {
-                _attackAccumulatedIntelInt = GameContext.Current.CivilizationManagers[_localCivManager.Civilization].TotalIntelligenceAttackingAccumulated.CurrentValue;
+                _attackAccumulatedIntelInt = GameContext.Current.CivilizationManagers[LocalCivManager.Civilization].TotalIntelligenceAttackingAccumulated.CurrentValue;
                 return _attackAccumulatedIntelInt;
             }
         }
@@ -104,7 +96,7 @@ namespace Supremacy.Intelligence
         /// <returns></returns>
         public static CivilizationManager GetLocalCiv(CivilizationManager civManager)
         {
-            _localCivManager = civManager;
+            LocalCivManager = civManager;
             return civManager;
         }
 
@@ -148,15 +140,15 @@ namespace Supremacy.Intelligence
                 throw new ArgumentNullException("spiedCiv");
             }
 
-            if (_localCivManager.Civilization == spyCiv)
+            if (LocalCivManager.Civilization == spyCiv)
             {
                 ShowSpyNetwork(spiedCiv);
             }
 
             _spiedList.Clear();
             _newSpyCiv = spyCiv;
-            _newTargetCiv = spiedCiv;
-            _newSpiedColonies = colonies;
+            NewTargetCiv = spiedCiv;
+            NewSpiedColonies = colonies;
             List<Civilization> newList = new List<Civilization> { spiedCiv };
             switch (spyCiv.CivID)
             {
@@ -270,14 +262,9 @@ namespace Supremacy.Intelligence
                 Civilization nextCiv = oneCiv ?? localCivAttacker;
                 if (nextCiv == localCivAttacker)
                 {
-                    if (RandomHelper.Chance(2))
-                    {
-                        blamed = ResourceManager.GetString("SITREP_SABOTAGE_TERRORISTS");
-                    }
-                    else
-                    {
-                        blamed = ResourceManager.GetString("SITREP_SABOTAGE_NO_ONE");
-                    }
+                    blamed = RandomHelper.Chance(2)
+                        ? ResourceManager.GetString("SITREP_SABOTAGE_TERRORISTS")
+                        : ResourceManager.GetString("SITREP_SABOTAGE_NO_ONE");
                 }
                 else
                 {
@@ -358,7 +345,7 @@ namespace Supremacy.Intelligence
 
             if (!RandomHelper.Chance(2) && attackedCivManager.Treasury.CurrentLevel > 5)// Credit everything down to 1, for ratio: first value > 1 is 2, so ratio must be 2 or more
             {
-                stolenCredits = stolenCredits * 3; // 2 percent of their TOTAL Credits - not just income
+                stolenCredits *= 3; // 2 percent of their TOTAL Credits - not just income
                 blamed = IntelHelper.Blame(attackingCiv, attackedCiv, blamed, 4);
                 ratioLevel = 1;
             }
@@ -366,14 +353,14 @@ namespace Supremacy.Intelligence
             {
                 if (!RandomHelper.Chance(2))
                 {
-                    stolenCredits = stolenCredits * 3;
+                    stolenCredits *= 3;
                     blamed = IntelHelper.Blame(attackingCiv, attackedCiv, blamed, 6);
                     ratioLevel = 2;
                 }
             }
             if (ratio > 20 && !RandomHelper.Chance(2) && attackedCivManager.Treasury.CurrentLevel > 100) // Research: remaining everything down to 1, for ratio: first value > 1 is 2, so ratio must be 2 or more
             {
-                stolenCredits = stolenCredits * 2;
+                stolenCredits *= 2;
                 blamed = IntelHelper.Blame(attackingCiv, attackedCiv, blamed, 10);
                 ratioLevel = 3;
             }
@@ -523,19 +510,19 @@ namespace Supremacy.Intelligence
 
             if (ratio > 1 && !RandomHelper.Chance(2)) // (Cumulative is meter) && attackedCivManager.Research.CumulativePoints > 10)// Credit everything down to 1, for ratio: first value > 1 is 2, so ratio must be 2 or more
             {
-                stolenResearchPoints = stolenResearchPoints * 2;  // 2 percent, but base is CumulativePoints, so all research points ever yielded
+                stolenResearchPoints *= 2;  // 2 percent, but base is CumulativePoints, so all research points ever yielded
                 blamed = IntelHelper.Blame(attackingCiv, attackedCiv, blamed, 4);
                 ratioLevel = 1;
             }
             if (ratio > 10 && !RandomHelper.Chance(4))// && attackedCivManager.Treasury.CurrentLevel > 40) // Research: remaining everything down to 1, for ratio: first value > 1 is 2, so ratio must be 2 or more
             {
-                stolenResearchPoints = stolenResearchPoints * 3;
+                stolenResearchPoints *= 3;
                 blamed = IntelHelper.Blame(attackingCiv, attackedCiv, blamed, 6);
                 ratioLevel = 2;
             }
             if (ratio > 20 && !RandomHelper.Chance(8))// && attackedCivManager.Treasury.CurrentLevel > 100) // Research: remaining everything down to 1, for ratio: first value > 1 is 2, so ratio must be 2 or more
             {
-                stolenResearchPoints = stolenResearchPoints * 2;
+                stolenResearchPoints *= 2;
                 blamed = IntelHelper.Blame(attackingCiv, attackedCiv, blamed, 10);
                 ratioLevel = 3;
             }

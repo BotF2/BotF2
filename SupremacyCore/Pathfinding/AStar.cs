@@ -158,17 +158,7 @@ namespace Supremacy.Pathfinding
                 }
             }
 
-            ISet<Sector> forbiddenSectorSet;
-
-            if (forbiddenSectors != null)
-            {
-                forbiddenSectorSet = forbiddenSectors as ISet<Sector> ?? new HashSet<Sector>(forbiddenSectors);
-            }
-            else
-            {
-                forbiddenSectorSet = null;
-            }
-
+            ISet<Sector> forbiddenSectorSet = forbiddenSectors != null ? forbiddenSectors as ISet<Sector> ?? new HashSet<Sector>(forbiddenSectors) : null;
             TravelRoute route = new TravelRoute(waypoints);
             Sector start = fleet.Sector;
 

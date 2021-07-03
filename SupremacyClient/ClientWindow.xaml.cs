@@ -101,14 +101,14 @@ namespace Supremacy.Client
              * 1280x720 is one of the standard High Definition resolutions, we will adjust our minimum
              * size constraints to accomodate it.
              */
-            // ReSharper disable CompareOfFloatsByEqualityOperator
+
             if (SystemParameters.PrimaryScreenWidth != 1280d ||
                 (SystemParameters.PrimaryScreenHeight != 720d))
             {
                 MinHeight = 720;
                 Height = 720;
             }
-            // ReSharper restore CompareOfFloatsByEqualityOperator
+
 
             Cursor = _defaultCursor;
 
@@ -369,14 +369,7 @@ namespace Supremacy.Client
             }
 
             Control currentScreen = GameScreensRegion.CurrentScreen;
-            if (currentScreen != null)
-            {
-                _ = currentScreen.Focus();
-            }
-            else
-            {
-                _ = GameScreensRegion.Focus();
-            }
+            _ = currentScreen != null ? currentScreen.Focus() : GameScreensRegion.Focus();
         }
 
         private void ExecuteEscapeCommand(object sender, ExecutedRoutedEventArgs args)
@@ -621,9 +614,9 @@ namespace Supremacy.Client
 
         private CustomPopupPlacement[] ContextMenuPlacementCallback(
             Size popupSize,
-            // ReSharper disable RedundantAssignment
+
             Size targetSize,
-            // ReSharper restore RedundantAssignment
+
             Point offset)
         {
             double dpiConversion = PixelToPoint(1.0);

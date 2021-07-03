@@ -1574,15 +1574,10 @@ namespace Supremacy.Effects
 
                 key = (int)enumerator.Key;
 
-                if (enumerator.Value != NullValue &&
-                    enumerator.Value != null)
-                {
-                    value = enumerator.Value;
-                }
-                else
-                {
-                    value = DynamicProperty.UnsetValue;
-                }
+                value = enumerator.Value != NullValue &&
+                    enumerator.Value != null
+                    ? enumerator.Value
+                    : DynamicProperty.UnsetValue;
             }
             else
             {
@@ -1600,18 +1595,10 @@ namespace Supremacy.Effects
             while (enumerator.MoveNext())
             {
                 int key = (int)enumerator.Key;
-                object value;
-
-                if (enumerator.Value != NullValue &&
-                    enumerator.Value != null)
-                {
-                    value = enumerator.Value;
-                }
-                else
-                {
-                    value = DynamicProperty.UnsetValue;
-                }
-
+                object value = enumerator.Value != NullValue &&
+                    enumerator.Value != null
+                    ? enumerator.Value
+                    : DynamicProperty.UnsetValue;
                 callback(list, key, value);
             }
         }
@@ -2023,16 +2010,9 @@ namespace Supremacy.Effects
                         return;
                     }
                     // Need to move to a more complex storage 
-                    LargeSortedObjectMap newStore;
-
-                    if (FrugalMapStoreState.SortedArray == myState)
-                    {
-                        newStore = new LargeSortedObjectMap();
-                    }
-                    else
-                    {
-                        throw new InvalidOperationException("FrugalMap cannot promote beyond Hashtable.");
-                    }
+                    LargeSortedObjectMap newStore = FrugalMapStoreState.SortedArray == myState
+                        ? new LargeSortedObjectMap()
+                        : throw new InvalidOperationException("FrugalMap cannot promote beyond Hashtable.");
 
                     // Extract the values from the old store and insert them into the new store 
                     _mapStore.Promote(newStore);

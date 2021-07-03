@@ -754,10 +754,9 @@ namespace Supremacy.Client
 
     public class ResearchFieldData
     {
-        private readonly ResearchField _field;
         private readonly ResearchPool _pool;
 
-        public ResearchField Field => _field;
+        public ResearchField Field { get; }
 
         public Distribution<int> Distribution => _pool.Distributions[Field.FieldID];
 
@@ -771,14 +770,13 @@ namespace Supremacy.Client
 
         public ResearchFieldData(ResearchField field, ResearchPool pool)
         {
-            _field = field ?? throw new ArgumentNullException("field");
+            Field = field ?? throw new ArgumentNullException("field");
             _pool = pool ?? throw new ArgumentNullException("pool");
         }
     }
 
     public class ResearchApplicationData
     {
-        private readonly ResearchApplication _application;
         private readonly ResearchPool _pool;
 
         //var civManager = GameContext.Current.CivilizationManagers[Owner];
@@ -787,12 +785,12 @@ namespace Supremacy.Client
         {
             get
             {
-                StringBuilder result = new StringBuilder(_application.Level + " > " + ResourceManager.GetString(_application.Name));
+                StringBuilder result = new StringBuilder(Application.Level + " > " + ResourceManager.GetString(Application.Name));
                 if (IsResearching)
                 {
                     _ = result.AppendFormat(
                         " ( {0:0%} )",
-                        _pool.GetCurrentProject(_application.Field).Progress.PercentFilled);
+                        _pool.GetCurrentProject(Application.Field).Progress.PercentFilled);
 
                     // now in SitRep
                     //GameLog.Client.Research.DebugFormat("Turn {2}: {1} done to Research {0}", _application.Field.TechCategory.ToString()
@@ -808,19 +806,19 @@ namespace Supremacy.Client
             get
             {
                 StringBuilder result = new StringBuilder(
-                    _application.Field.TechCategory
+                    Application.Field.TechCategory
                     + " " + ResourceManager.GetString("LEVEL")
-                    + " " + _application.Level
-                    + " > " + _application.ResearchCost + " " + ResourceManager.GetString("POINTS")
+                    + " " + Application.Level
+                    + " > " + Application.ResearchCost + " " + ResourceManager.GetString("POINTS")
                     + " " + ResourceManager.GetString("FOR")
-                    + "  " + ResourceManager.GetString(_application.Name));
+                    + "  " + ResourceManager.GetString(Application.Name));
 
 
                 if (IsResearching)
                 {
                     _ = result.AppendFormat(
                         " ({0:0%})",
-                        _pool.GetCurrentProject(_application.Field).Progress.PercentFilled);
+                        _pool.GetCurrentProject(Application.Field).Progress.PercentFilled);
 
                     // now in SitRep
                     //GameLog.Client.Research.DebugFormat("Turn {2}: {1} done to Research {0}", _application.Field.TechCategory.ToString()
@@ -831,33 +829,32 @@ namespace Supremacy.Client
             }
         }
 
-        public ResearchApplication Application => _application;
+        public ResearchApplication Application { get; }
 
         public bool IsResearched => _pool.IsResearched(Application);
 
         public bool IsResearching => _pool.IsResearching(Application);
 
-        public int TechLevel => _application.Level;
+        public int TechLevel => Application.Level;
 
         public ResearchApplicationData(ResearchApplication application, ResearchPool pool)
         {
-            _application = application ?? throw new ArgumentNullException("application");
+            Application = application ?? throw new ArgumentNullException("application");
             _pool = pool ?? throw new ArgumentNullException("pool");
         }
     }
 
     public class ResearchApplicationDetails
     {
-        private readonly ResearchApplication _application;
         private readonly CivilizationManager _civManager;
 
-        public ResearchApplication Application => _application;
+        public ResearchApplication Application { get; }
 
         public bool IsResearched => _civManager.Research.IsResearched(Application);
 
         public bool IsResearching => _civManager.Research.IsResearching(Application);
 
-        public int TechLevel => _application.Level;
+        public int TechLevel => Application.Level;
 
         public ICollection<TechObjectDesign> DependentBuildings
         {
@@ -867,17 +864,17 @@ namespace Supremacy.Client
                 TechCategory techCategory = TechCategory.BioTech;
                 foreach (ResearchField field in GameContext.Current.ResearchMatrix.Fields)
                 {
-                    if (field.Applications.Contains(_application))
+                    if (field.Applications.Contains(Application))
                     {
                         techCategory = field.TechCategory;
                         break;
                     }
                 }
-                if (_application.Level > 0)
+                if (Application.Level > 0)
                 {
                     foreach (ProductionFacilityDesign design in _civManager.TechTree.ProductionFacilityDesigns)
                     {
-                        if ((design.TechRequirements[techCategory] == _application.Level)
+                        if ((design.TechRequirements[techCategory] == Application.Level)
                             && !results.Contains(design))
                         {
                             results.Add(design);
@@ -885,7 +882,7 @@ namespace Supremacy.Client
                     }
                     foreach (Buildings.BuildingDesign design in _civManager.TechTree.BuildingDesigns)
                     {
-                        if ((design.TechRequirements[techCategory] == _application.Level)
+                        if ((design.TechRequirements[techCategory] == Application.Level)
                             && !results.Contains(design))
                         {
                             results.Add(design);
@@ -893,7 +890,7 @@ namespace Supremacy.Client
                     }
                     foreach (OrbitalBatteryDesign design in _civManager.TechTree.OrbitalBatteryDesigns)
                     {
-                        if ((design.TechRequirements[techCategory] == _application.Level)
+                        if ((design.TechRequirements[techCategory] == Application.Level)
                             && !results.Contains(design))
                         {
                             results.Add(design);
@@ -901,7 +898,7 @@ namespace Supremacy.Client
                     }
                     foreach (ShipyardDesign design in _civManager.TechTree.ShipyardDesigns)
                     {
-                        if ((design.TechRequirements[techCategory] == _application.Level)
+                        if ((design.TechRequirements[techCategory] == Application.Level)
                             && !results.Contains(design))
                         {
                             results.Add(design);
@@ -909,7 +906,7 @@ namespace Supremacy.Client
                     }
                     foreach (StationDesign design in _civManager.TechTree.StationDesigns)
                     {
-                        if ((design.TechRequirements[techCategory] == _application.Level)
+                        if ((design.TechRequirements[techCategory] == Application.Level)
                             && !results.Contains(design))
                         {
                             results.Add(design);
@@ -928,7 +925,7 @@ namespace Supremacy.Client
                 TechCategory techCategory = TechCategory.BioTech;
                 foreach (ResearchField field in GameContext.Current.ResearchMatrix.Fields)
                 {
-                    if (field.Applications.Contains(_application))
+                    if (field.Applications.Contains(Application))
                     {
                         techCategory = field.TechCategory;
                         break;
@@ -936,8 +933,8 @@ namespace Supremacy.Client
                 }
                 foreach (ShipDesign design in _civManager.TechTree.ShipDesigns)
                 {
-                    if ((design.TechRequirements[techCategory] == _application.Level)
-                        && (_application.Level > 0) && !results.Contains(design))
+                    if ((design.TechRequirements[techCategory] == Application.Level)
+                        && (Application.Level > 0) && !results.Contains(design))
                     {
                         results.Add(design);
                     }
@@ -948,7 +945,7 @@ namespace Supremacy.Client
 
         public ResearchApplicationDetails(ResearchApplication application, CivilizationManager civManager)
         {
-            _application = application ?? throw new ArgumentNullException("application");
+            Application = application ?? throw new ArgumentNullException("application");
             _civManager = civManager ?? throw new ArgumentNullException("civManager");
         }
     }

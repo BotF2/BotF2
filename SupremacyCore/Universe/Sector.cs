@@ -112,14 +112,9 @@ namespace Supremacy.Universe
                  * See what the minimum population level is for a new trade route for the
                  * current civilization.  If one is not specified, use the default.
                  */
-                if (popReqTable[civManager.Civilization.Key] != null)
-                {
-                    popForTradeRoute = Number.ParseInt32(popReqTable[civManager.Civilization.Key][0]);
-                }
-                else
-                {
-                    popForTradeRoute = Number.ParseInt32(popReqTable[0][0]);
-                }
+                popForTradeRoute = popReqTable[civManager.Civilization.Key] != null
+                    ? Number.ParseInt32(popReqTable[civManager.Civilization.Key][0])
+                    : Number.ParseInt32(popReqTable[0][0]);
 
                 int possibleTradeRoutes = System.Colony.Population.CurrentValue / popForTradeRoute;
 

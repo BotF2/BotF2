@@ -315,7 +315,6 @@ namespace Supremacy.Combat
 
             _defendingUnits.AddRange(colony.Buildings.Select(b => new InvasionStructure(b)));
 
-            // ReSharper disable AccessToModifiedClosure
             foreach (ProductionCategory productionCategory in EnumHelper.GetValues<ProductionCategory>())
             {
                 ProductionFacilityDesign facilityDesign = colony.GetFacilityType(productionCategory);
@@ -328,7 +327,7 @@ namespace Supremacy.Combat
                     Enumerable.Range(0, colony.GetTotalFacilities(productionCategory))
                               .Select(i => new InvasionFacility(colony, productionCategory, i)));
             }
-            // ReSharper restore AccessToModifiedClosure
+
 
             IEnumerable<Ship> invadingUnits =
 
@@ -406,14 +405,7 @@ namespace Supremacy.Combat
             }
 
             // If any orbitals are left when retreating, then the invasion is a defeat, else it's a standoff, the invader being merciful
-            if (!_defendingUnits.OfType<InvasionOrbital>().All(o => o.IsDestroyed))
-            {
-                _status = InvasionStatus.Defeat;
-            }
-            else
-            {
-                _status = InvasionStatus.Stalemate;
-            }
+            _status = !_defendingUnits.OfType<InvasionOrbital>().All(o => o.IsDestroyed) ? InvasionStatus.Defeat : InvasionStatus.Stalemate;
         }
 
         public void Stalemate()
@@ -458,13 +450,11 @@ namespace Supremacy.Combat
             {
                 _status = InvasionStatus.Defeat;
             }
-            else if (Invader.IsHuman && IsMultiplayerGame && RoundNumber == 5 || RoundNumber > MaxRounds) // || _canLandTroops == false) // Change roundnumber in MP to 5 (was 3)
-            {
-                _status = InvasionStatus.Stalemate;
-            }
             else
             {
-                _status = InvasionStatus.InProgress;
+                _status = Invader.IsHuman && IsMultiplayerGame && RoundNumber == 5 || RoundNumber > MaxRounds
+                    ? InvasionStatus.Stalemate
+                    : InvasionStatus.InProgress;
             }
         }
 
@@ -650,14 +640,7 @@ namespace Supremacy.Combat
                 foreach (ExperienceRank rank in EnumHelper.GetValues<ExperienceRank>())
                 {
                     // _experienceAccuracy[rank] = Number.ParseDouble(accuracyTable[rank.ToString()][0]);
-                    if (double.TryParse(accuracyTable[rank.ToString()][0], out double modifier))
-                    {
-                        _experienceAccuracy[rank] = modifier;
-                    }
-                    else
-                    {
-                        _experienceAccuracy[rank] = 0.75;
-                    }
+                    _experienceAccuracy[rank] = double.TryParse(accuracyTable[rank.ToString()][0], out double modifier) ? modifier : 0.75;
                 }
                 if (!invasionArena.Invader.IsHuman)
                 {

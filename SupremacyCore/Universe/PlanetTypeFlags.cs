@@ -81,9 +81,9 @@ namespace Supremacy.Universe
 
         public override int GetHashCode()
         {
-            // ReSharper disable NonReadonlyFieldInGetHashCode
+
             return _flags;
-            // ReSharper restore NonReadonlyFieldInGetHashCode
+
         }
 
         public static bool operator ==(PlanetTypeFlags left, PlanetTypeFlags right)

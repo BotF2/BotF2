@@ -90,14 +90,7 @@ namespace Supremacy.Universe
                     double angle = random.NextDouble() * 2.0 * Math.PI;
                     double x1, y1;
 
-                    if (clustersPosition.Count == 0)
-                    {
-                        cluster = 0;
-                    }
-                    else
-                    {
-                        cluster = i % clustersPosition.Count;
-                    }
+                    cluster = clustersPosition.Count == 0 ? 0 : i % clustersPosition.Count;
 
                     x1 = radius * Math.Cos(angle);
                     y1 = radius * Math.Sign(angle) * ellipseWidthVsHeight;

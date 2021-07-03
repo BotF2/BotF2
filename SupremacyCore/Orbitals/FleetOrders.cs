@@ -1114,14 +1114,7 @@ namespace Supremacy.Orbitals
                     TargetFleet = null;
                 }
 
-                if (value is Fleet)
-                {
-                    TargetFleet = value as Fleet;
-                }
-                else
-                {
-                    throw new ArgumentException("Target must be of type Supremacy.Orbitals.Fleet");
-                }
+                TargetFleet = value is Fleet ? value as Fleet : throw new ArgumentException("Target must be of type Supremacy.Orbitals.Fleet");
 
                 OnPropertyChanged("Target");
             }
@@ -1138,14 +1131,7 @@ namespace Supremacy.Orbitals
                     EndTow();
                 }
 
-                if (value == null)
-                {
-                    _targetFleetId = -1;
-                }
-                else
-                {
-                    _targetFleetId = value.ObjectID;
-                }
+                _targetFleetId = value == null ? -1 : value.ObjectID;
 
                 OnPropertyChanged("TargetFleet");
             }
@@ -1170,14 +1156,7 @@ namespace Supremacy.Orbitals
                         turns++;
                     }
 
-                    if (turns == 1)
-                    {
-                        formatString = ResourceManager.GetString("ORDER_ETA_TURN_MULTILINE");
-                    }
-                    else
-                    {
-                        formatString = ResourceManager.GetString("ORDER_ETA_TURNS_MULTILINE");
-                    }
+                    formatString = turns == 1 ? ResourceManager.GetString("ORDER_ETA_TURN_MULTILINE") : ResourceManager.GetString("ORDER_ETA_TURNS_MULTILINE");
 
                     return string.Format(formatString, Status, turns);
                 }
@@ -1811,7 +1790,7 @@ namespace Supremacy.Orbitals
             private readonly int _fleetId;
             private readonly BuildSlot _buildSlot;
 
-            // ReSharper disable SuggestBaseTypeForParameter
+
             public FleetProductionCenter(Fleet fleet)
             {
                 if (fleet == null)
@@ -1823,7 +1802,7 @@ namespace Supremacy.Orbitals
                 _buildSlot = new BuildSlot();
             }
 
-            // ReSharper restore SuggestBaseTypeForParameter
+
 
             public Fleet Fleet => GameContext.Current.Universe.Objects[_fleetId] as Fleet;
 

@@ -44,14 +44,9 @@ namespace Supremacy.Markup
 
             if (Group == null)
             {
-                if (string.IsNullOrWhiteSpace(Entry))
-                {
-                    value = "{! Group and Key Required !}";
-                }
-                else
-                {
-                    value = string.Format("{{! Group Required for Entry {0} !}}", Entry);
-                }
+                value = string.IsNullOrWhiteSpace(Entry)
+                    ? "{! Group and Key Required !}"
+                    : string.Format("{{! Group Required for Entry {0} !}}", Entry);
 
                 return false;
             }
@@ -70,14 +65,9 @@ namespace Supremacy.Markup
 
                 if (entry == null)
                 {
-                    if (group.Entries.Count == 0)
-                    {
-                        value = string.Format("{{! Empty Text Group: {0} !}}", Group);
-                    }
-                    else
-                    {
-                        value = string.Format("{{! Missing Text Entry: {0} !}}", Entry);
-                    }
+                    value = group.Entries.Count == 0
+                        ? string.Format("{{! Empty Text Group: {0} !}}", Group)
+                        : string.Format("{{! Missing Text Entry: {0} !}}", Entry);
 
                     return false;
                 }

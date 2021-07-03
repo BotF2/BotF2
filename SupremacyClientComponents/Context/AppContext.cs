@@ -64,14 +64,13 @@ namespace Supremacy.Client.Context
         private IEnumerable<IPlayer> _remotePlayers;
         private ILobbyData _lobbyData;
 #pragma warning disable IDE0044 // Add readonly modifier
-        private MusicLibrary _defaultMusicLibrary = new MusicLibrary();
         private MusicLibrary _themeMusicLibrary = new MusicLibrary();
 #pragma warning restore IDE0044 // Add readonly modifier
 
         #endregion
 
         #region Properties
-        public MusicLibrary DefaultMusicLibrary => _defaultMusicLibrary;
+        public MusicLibrary DefaultMusicLibrary { get; } = new MusicLibrary();
 
         public MusicLibrary ThemeMusicLibrary => _themeMusicLibrary;
 
@@ -92,7 +91,7 @@ namespace Supremacy.Client.Context
             _accessLock = new ReaderWriterLockSlim(LockRecursionPolicy.SupportsRecursion);
             _dispatcher = Dispatcher.CurrentDispatcher;
             _allPlayers = new KeyedCollectionBase<int, IPlayer>(o => o.PlayerID);
-            _defaultMusicLibrary.Load(DefaultMusicLibraryPath);
+            DefaultMusicLibrary.Load(DefaultMusicLibraryPath);
             _audioTrace = false;    // just tracing audio into Log.txt
             HookEventHandlers();
         }

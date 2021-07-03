@@ -50,11 +50,7 @@ namespace Supremacy.Client.Audio
         private IAudioGrouping _channelGroup = null;
         private MusicPack _musicPack = null;
         private KeyValuePair<int, MusicEntry> _musicEntry;
-        private IAudioTrack _audioTrack = null;
         private List<IAudioTrack> _endingTracks = new List<IAudioTrack>();
-        private PlaybackMode _playMode = PlaybackMode.None;
-        private bool _isPlaying = false;
-
         private float _fadeTime = DefaultFadeTime;
         private readonly IObservable<long> _updateTimer = null;
         private IDisposable _updateTimerSubscription = null;
@@ -67,11 +63,7 @@ namespace Supremacy.Client.Audio
             set => _channelGroup.Volume = value;
         }
 
-        public PlaybackMode PlayMode
-        {
-            get => _playMode;
-            set => _playMode = value;
-        }
+        public PlaybackMode PlayMode { get; set; } = PlaybackMode.None;
 
         public float FadeTime
         {
@@ -85,9 +77,9 @@ namespace Supremacy.Client.Audio
             set => _fadeTime = UpdateInterval / (1000.0f * value);
         }
 
-        public bool IsPlaying => _isPlaying;
+        public bool IsPlaying { get; private set; } = false;
         public MusicEntry CurrentMusicEntry => _musicEntry.Value;
-        public IAudioTrack CurrentAudioTrack => _audioTrack;
+        public IAudioTrack CurrentAudioTrack { get; private set; } = null;
         #endregion
 
         #region Construction & Lifetime
@@ -116,13 +108,13 @@ namespace Supremacy.Client.Audio
                     _updateTimerSubscription = null;
                 }
 
-                if (_audioTrack != null)
+                if (CurrentAudioTrack != null)
                 {
                     try
                     {
-                        _audioTrack.Stop();
-                        _audioTrack.Dispose();
-                        _audioTrack = null;
+                        CurrentAudioTrack.Stop();
+                        CurrentAudioTrack.Dispose();
+                        CurrentAudioTrack = null;
                     }
                     catch (Exception e)
                     {
@@ -161,7 +153,7 @@ namespace Supremacy.Client.Audio
             {
                 lock (_updateLock)
                 {
-                    bool play = _isPlaying;
+                    bool play = IsPlaying;
                     Stop();
 
                     _musicPack = musicPack;
@@ -173,11 +165,11 @@ namespace Supremacy.Client.Audio
 
                     if (trackName == null || _musicEntry.Value == null)
                     {
-                        if (_playMode.HasFlag(PlaybackMode.Random))
+                        if (PlayMode.HasFlag(PlaybackMode.Random))
                         {
                             _musicEntry = _musicPack.Random();
                         }
-                        else if (_playMode.HasFlag(PlaybackMode.Sequential))
+                        else if (PlayMode.HasFlag(PlaybackMode.Sequential))
                         {
                             _musicEntry = _musicPack.Next();
                         }
@@ -185,7 +177,7 @@ namespace Supremacy.Client.Audio
 
                     if (play && _musicEntry.Value != null)
                     {
-                        GameLog.Client.Audio.DebugFormat("called! Trackname: {0}, {1}, playMode={2}", _musicPack.Name, _musicEntry.Value.FileName, _playMode.ToString());
+                        GameLog.Client.Audio.DebugFormat("called! Trackname: {0}, {1}, playMode={2}", _musicPack.Name, _musicEntry.Value.FileName, PlayMode.ToString());
                         Play();
                     }
                 }
@@ -219,19 +211,19 @@ namespace Supremacy.Client.Audio
                 lock (_updateLock)
                 {
                     Stop();
-                    _isPlaying = true;
+                    IsPlaying = true;
 
                     if (_musicEntry.Value != null)
                     {
-                        _audioTrack = _engine.CreateTrack(
+                        CurrentAudioTrack = _engine.CreateTrack(
                             ResourceManager.GetResourcePath(_musicEntry.Value.FileName));
 
                         GameLog.Client.Audio.DebugFormat("called! _musicEntry.Value.FileName: {0}", _musicEntry.Value.FileName);
 
-                        if (_audioTrack != null)
+                        if (CurrentAudioTrack != null)
                         {
-                            _audioTrack.Group = _channelGroup;
-                            _audioTrack.Play(OnTrackEnd);
+                            CurrentAudioTrack.Group = _channelGroup;
+                            CurrentAudioTrack.Play(OnTrackEnd);
 
                             if (_updateTimerSubscription == null)
                             {
@@ -267,7 +259,7 @@ namespace Supremacy.Client.Audio
                         return false;
                     }
 
-                    bool play = _isPlaying;
+                    bool play = IsPlaying;
                     Stop();
                     _musicEntry = newTrack;
 
@@ -295,21 +287,21 @@ namespace Supremacy.Client.Audio
             {
                 lock (_updateLock)
                 {
-                    _isPlaying = false;
+                    IsPlaying = false;
 
-                    if (_audioTrack == null)
+                    if (CurrentAudioTrack == null)
                     {
                         return;
                     }
 
-                    if (!_audioTrack.IsPlaying)
+                    if (!CurrentAudioTrack.IsPlaying)
                     {
                         try
                         {
-                            _audioTrack.Stop();
-                            GameLog.Client.Audio.DebugFormat("Stop - Group={0}, Track={1}", _audioTrack.Group.ToString(), _audioTrack);
-                            _audioTrack.Dispose();
-                            _audioTrack = null;
+                            CurrentAudioTrack.Stop();
+                            GameLog.Client.Audio.DebugFormat("Stop - Group={0}, Track={1}", CurrentAudioTrack.Group.ToString(), CurrentAudioTrack);
+                            CurrentAudioTrack.Dispose();
+                            CurrentAudioTrack = null;
                         }
                         catch (Exception e)
                         {
@@ -318,8 +310,8 @@ namespace Supremacy.Client.Audio
                     }
                     else
                     {
-                        _endingTracks.Add(_audioTrack);
-                        _audioTrack = null;
+                        _endingTracks.Add(CurrentAudioTrack);
+                        CurrentAudioTrack = null;
                     }
                 }
             }
@@ -340,11 +332,11 @@ namespace Supremacy.Client.Audio
                         return;
                     }
 
-                    if (_playMode.HasFlag(PlaybackMode.Random))
+                    if (PlayMode.HasFlag(PlaybackMode.Random))
                     {
                         _musicEntry = _musicPack.Random(_musicEntry.Key);
                     }
-                    else if (_playMode.HasFlag(PlaybackMode.Sequential))
+                    else if (PlayMode.HasFlag(PlaybackMode.Sequential))
                     {
                         _musicEntry = _musicPack.Next(_musicEntry.Key);
                     }
@@ -371,11 +363,11 @@ namespace Supremacy.Client.Audio
                         return;
                     }
 
-                    if (_playMode.HasFlag(PlaybackMode.Random))
+                    if (PlayMode.HasFlag(PlaybackMode.Random))
                     {
                         _musicEntry = _musicPack.Random(_musicEntry.Key);
                     }
-                    else if (_playMode.HasFlag(PlaybackMode.Sequential))
+                    else if (PlayMode.HasFlag(PlaybackMode.Sequential))
                     {
                         _musicEntry = _musicPack.Prev(_musicEntry.Key);
                     }
@@ -405,9 +397,9 @@ namespace Supremacy.Client.Audio
                         GameLog.Client.Audio.Error(e);
                     }
 
-                    if (track == _audioTrack)
+                    if (track == CurrentAudioTrack)
                     {
-                        _audioTrack = null;
+                        CurrentAudioTrack = null;
                         Next();
                     }
                     else
@@ -415,7 +407,7 @@ namespace Supremacy.Client.Audio
                         _ = _endingTracks.Remove(track);
                     }
 
-                    if (_audioTrack == null && _endingTracks.Count == 0)
+                    if (CurrentAudioTrack == null && _endingTracks.Count == 0)
                     {
                         if (_updateTimerSubscription != null)
                         {
@@ -437,9 +429,9 @@ namespace Supremacy.Client.Audio
             {
                 lock (_updateLock)
                 {
-                    if (_audioTrack != null && _audioTrack.IsPlaying && _audioTrack.Volume < 1.0f)
+                    if (CurrentAudioTrack != null && CurrentAudioTrack.IsPlaying && CurrentAudioTrack.Volume < 1.0f)
                     {
-                        _audioTrack.FadeIn(FadeFactor / _fadeTime);
+                        CurrentAudioTrack.FadeIn(FadeFactor / _fadeTime);
                     }
 
                     for (int i = _endingTracks.Count - 1; i >= 0; --i)

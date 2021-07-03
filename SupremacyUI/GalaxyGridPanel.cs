@@ -1620,7 +1620,7 @@ namespace Supremacy.UI
                         new Point(map.Width * SectorSize,
                                   y * SectorSize));
                 }
-                // ReSharper disable PossibleLossOfFraction
+
                 dc.DrawLine(
                     axisPen,
                     new Point(map.Width / 2 * SectorSize, 0),
@@ -1631,7 +1631,7 @@ namespace Supremacy.UI
                     new Point(0, map.Height / 2 * SectorSize),
                     new Point(map.Width * SectorSize,
                               map.Height / 2 * SectorSize));
-                // ReSharper restore PossibleLossOfFraction
+
             }
             if (_backdrop.Drawing != null)
             {

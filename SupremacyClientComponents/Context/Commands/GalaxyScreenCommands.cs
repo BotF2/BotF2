@@ -61,10 +61,9 @@ namespace Supremacy.Client.Commands
 
     public class RedeployShipCommandArgs
     {
-        private readonly Ship _ship;
         private readonly Fleet _targetFleet;
 
-        public Ship Ship => _ship;
+        public Ship Ship { get; }
 
         public Fleet TargetFleet => _targetFleet;
 
@@ -75,7 +74,7 @@ namespace Supremacy.Client.Commands
 
         public RedeployShipCommandArgs([NotNull] Ship ship, [CanBeNull] Fleet targetFleet)
         {
-            _ship = ship ?? throw new ArgumentNullException("ship");
+            Ship = ship ?? throw new ArgumentNullException("ship");
             _targetFleet = targetFleet;
         }
     }
@@ -115,13 +114,9 @@ namespace Supremacy.Client.Commands
             {
                 _scrap = true;
             }
-            else if (_objects.Any(o => o.Scrap))
-            {
-                _scrap = null;
-            }
             else
             {
-                _scrap = false;
+                _scrap = _objects.Any(o => o.Scrap) ? null : (bool?)false;
             }
         }
 

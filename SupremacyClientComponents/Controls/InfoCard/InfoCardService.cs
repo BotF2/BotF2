@@ -1064,7 +1064,7 @@ namespace Supremacy.Client.Controls
             return false;
         }
 
-        // ReSharper disable UnusedMember.Local
+
         private bool IsInfoCardOpen(DependencyObject obj)
         {
             if (obj == null)
@@ -1080,7 +1080,7 @@ namespace Supremacy.Client.Controls
 
             return _infoCardCache.TryGetValue(infoCardSubject, out InfoCard infoCard) && infoCard.IsOpen;
         }
-        // ReSharper restore UnusedMember.Local
+
 
         private bool WithinCurrentInfoCard(DependencyObject obj)
         {

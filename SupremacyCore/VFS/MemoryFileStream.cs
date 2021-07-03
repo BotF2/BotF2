@@ -40,14 +40,14 @@ namespace Supremacy.VFS
 
         #region Constructor
 
-        // ReSharper disable SuggestBaseTypeForParameter
+
         public MemoryFileStream(
             MemorySource parent,
             string resolvedPath,
             MemoryStream stream,
             FileAccess access,
             FileShare share)
-            // ReSharper restore SuggestBaseTypeForParameter
+
             : base(resolvedPath, stream, access, share)
         {
             _parent = parent;

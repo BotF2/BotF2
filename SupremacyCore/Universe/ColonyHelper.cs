@@ -83,7 +83,7 @@ namespace Supremacy.Universe
                 , total
                 );
 
-            // ReSharper restore AccessToModifiedClosure
+
 
             return total;
         }

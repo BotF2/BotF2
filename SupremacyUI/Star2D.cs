@@ -207,20 +207,15 @@ namespace Supremacy.UI
                         new LinearDoubleKeyFrame(
                             1.0,
                             KeyTime.FromTimeSpan(new TimeSpan(0, 0, secondsPerTransition * i))));
-                    if (i == (Frames.Length - 1))
-                    {
-                        _ = animations[i].KeyFrames.Add(
+                    _ = i == (Frames.Length - 1)
+                        ? animations[i].KeyFrames.Add(
                             new LinearDoubleKeyFrame(
                                 0.0,
-                                KeyTime.FromTimeSpan(new TimeSpan(0, 0, secondsPerTransition * Frames.Length))));
-                    }
-                    else
-                    {
-                        _ = animations[i].KeyFrames.Add(
+                                KeyTime.FromTimeSpan(new TimeSpan(0, 0, secondsPerTransition * Frames.Length))))
+                        : animations[i].KeyFrames.Add(
                             new DiscreteDoubleKeyFrame(
                                 0.0,
                                 KeyTime.FromTimeSpan(new TimeSpan(0, 0, secondsPerTransition * (i + 1)))));
-                    }
                 }
 
                 _parallelTimeline.Children.Add(animations[i]);

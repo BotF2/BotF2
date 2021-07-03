@@ -14,11 +14,9 @@ namespace Supremacy.Client.Controls
     public class InfoCardSite : Decorator
     {
         #region Fields
-        private readonly InfoCardCollection _infoCards;
         private readonly List<InfoCardHost> _infoCardHosts;
         private readonly Canvas _canvas;
         private readonly InfoCardCollection _openInfoCardsCore;
-        private readonly ReadOnlyInfoCardCollection _openInfoCards;
         #endregion
 
         #region Constructors and Finalizers
@@ -58,8 +56,8 @@ namespace Supremacy.Client.Controls
         public InfoCardSite()
         {
             _infoCardHosts = new List<InfoCardHost>();
-            _infoCards = new InfoCardCollection();
-            _infoCards.CollectionChanged += OnInfoCardsCollectionChanged;
+            InfoCards = new InfoCardCollection();
+            InfoCards.CollectionChanged += OnInfoCardsCollectionChanged;
 
             _canvas = new Canvas();
 
@@ -67,7 +65,7 @@ namespace Supremacy.Client.Controls
             AddLogicalChild(_canvas);
 
             _openInfoCardsCore = new InfoCardCollection();
-            _openInfoCards = new ReadOnlyInfoCardCollection(_infoCards);
+            OpenInfoCards = new ReadOnlyInfoCardCollection(InfoCards);
 
             AddHandler(LoadedEvent, (RoutedEventHandler)OnLoaded);
         }
@@ -132,7 +130,7 @@ namespace Supremacy.Client.Controls
         {
             Dictionary<Guid, bool> uniqueIds = new Dictionary<Guid, bool>();
 
-            foreach (InfoCard infoCard in _infoCards)
+            foreach (InfoCard infoCard in InfoCards)
             {
                 if (uniqueIds.ContainsKey(infoCard.UniqueId))
                 {
@@ -264,11 +262,11 @@ namespace Supremacy.Client.Controls
         #region Properties
 
         #region HasOpenInfoCards Property
-        public bool HasOpenInfoCards => _openInfoCards.Any();
+        public bool HasOpenInfoCards => OpenInfoCards.Any();
         #endregion
 
         #region OpenInfoCards Property
-        public ReadOnlyInfoCardCollection OpenInfoCards => _openInfoCards;
+        public ReadOnlyInfoCardCollection OpenInfoCards { get; }
         #endregion
 
         #region CanInfoCardsPin Property
@@ -339,7 +337,7 @@ namespace Supremacy.Client.Controls
         #endregion
 
         #region InfoCards Property
-        public InfoCardCollection InfoCards => _infoCards;
+        public InfoCardCollection InfoCards { get; }
         #endregion
 
         #region ActiveInfoCard Property
@@ -616,7 +614,7 @@ namespace Supremacy.Client.Controls
             try
             {
                 _openInfoCardsCore.Clear();
-                _openInfoCardsCore.AddRange(_openInfoCards.Where(o => o.IsOpen));
+                _openInfoCardsCore.AddRange(OpenInfoCards.Where(o => o.IsOpen));
             }
             finally
             {
@@ -686,9 +684,9 @@ namespace Supremacy.Client.Controls
         {
             UpdateRegisteredInfoCardSite(infoCard, true);
 
-            if (!_infoCards.Contains(infoCard))
+            if (!InfoCards.Contains(infoCard))
             {
-                _infoCards.Add(infoCard);
+                InfoCards.Add(infoCard);
             }
         }
 
@@ -868,7 +866,7 @@ namespace Supremacy.Client.Controls
         {
             if (isVisible)
             {
-                foreach (InfoCard infoCard in _infoCards)
+                foreach (InfoCard infoCard in InfoCards)
                 {
                     if ((infoCard.LastCloseReason == InfoCardCloseReason.InfoCardSiteUnloaded) && !infoCard.IsOpen)
                     {

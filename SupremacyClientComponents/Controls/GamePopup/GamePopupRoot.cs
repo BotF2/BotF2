@@ -14,9 +14,6 @@ namespace Supremacy.Client.Controls
     internal sealed class GamePopupRoot : FrameworkElement
     {
         private static readonly Thickness ZeroThickness = new Thickness(0);
-
-        private readonly GamePopup _popup;
-
         private AdornerDecorator _adornerDecorator;
         private Decorator _transformDecorator;
 
@@ -39,36 +36,36 @@ namespace Supremacy.Client.Controls
                     (sender, args) =>
                     {
                         GamePopupRoot popup = (GamePopupRoot)sender;
-                        popup._popup.IsOpen = false;
+                        popup.Popup.IsOpen = false;
                         args.Handled = true;
                     },
                     (sender, args) =>
                     {
                         GamePopupRoot popup = (GamePopupRoot)sender;
-                        args.CanExecute = popup._popup.IsOpen;
+                        args.CanExecute = popup.Popup.IsOpen;
                         args.Handled = true;
                     }));
         }
 
         internal GamePopupRoot(GamePopup popup)
         {
-            _popup = popup;
+            Popup = popup;
             Initialize();
         }
 
-        internal GamePopup Popup => _popup;
+        internal GamePopup Popup { get; }
 
         protected override void OnRenderSizeChanged(SizeChangedInfo sizeInfo)
         {
             base.OnRenderSizeChanged(sizeInfo);
-            _popup.Reposition();
+            Popup.Reposition();
         }
 
         protected override void OnKeyDown(KeyEventArgs e)
         {
-            if (e.Key == Key.Escape && _popup.IsOpen)
+            if (e.Key == Key.Escape && Popup.IsOpen)
             {
-                _popup.IsOpen = false;
+                Popup.IsOpen = false;
                 e.Handled = true;
                 return;
             }
@@ -98,7 +95,7 @@ namespace Supremacy.Client.Controls
 
         protected override DependencyObject GetUIParentCore()
         {
-            return _popup ?? base.GetUIParentCore();
+            return Popup ?? base.GetUIParentCore();
         }
 
         protected override Size MeasureOverride(Size constraint)
@@ -295,7 +292,7 @@ namespace Supremacy.Client.Controls
                                          ? mousePosition
                                          : placementTarget.TransformToVisual(visualRoot).Transform(new Point(0.0, 0.0));
 
-            _relativeToTargetPoint.Offset(_popup.HorizontalOffset, _popup.VerticalOffset);
+            _relativeToTargetPoint.Offset(Popup.HorizontalOffset, Popup.VerticalOffset);
 
             double arrowWidth = _arrow != null ? _arrow.ActualWidth : 0d;
             Thickness arrowMargin = _arrow != null ? _arrow.Margin : ZeroThickness;

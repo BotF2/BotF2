@@ -1165,7 +1165,8 @@ namespace Supremacy.AI
                         //GameLog.Client.AIDetails.DebugFormat("C");
                     }
                 }
-                Sector homeSector = GameContext.Current.Universe.HomeColonyLookup[fleet.Owner].Sector;
+                Sector homeSector = GameContext.Current.CivilizationManagers[fleet.OwnerID].HomeSystem.Sector;
+                //Sector homeSector = GameContext.Current.Universe.HomeColonyLookup[fleet.Owner].Sector; // crashes e.g. for Borg
 
                 try
                 {
@@ -1173,7 +1174,7 @@ namespace Supremacy.AI
 
                     value += DistanceFactor * distance;
                 }
-                catch { GameLog.Client.AIDetails.DebugFormat("unable to get furthest object form home world for station value"); }
+                catch { GameLog.Client.AIDetails.DebugFormat("unable to get furthest object from home world for station value"); }
 
                 List<Sector> strandedShipSectors = FindStrandedShipSectors(fleet.Owner); //altering collection while sorting it!!!!!!!!!!!!!!
                 if (strandedShipSectors.Count > 0)

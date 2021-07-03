@@ -13,7 +13,6 @@ namespace Supremacy.Scripting
     [DictionaryKeyProperty("EventID")]
     public sealed class EventDefinition : SupportInitializeBase
     {
-        private readonly Dictionary<string, object> _options = new Dictionary<string, object>();
         private string _description;
 
         public string EventID { get; set; }
@@ -52,7 +51,7 @@ namespace Supremacy.Scripting
             set => _description = value;
         }
 
-        public Dictionary<string, object> Options => _options;
+        public Dictionary<string, object> Options { get; } = new Dictionary<string, object>();
 
         protected override void EndInitCore()
         {

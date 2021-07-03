@@ -18,19 +18,18 @@ namespace Supremacy.Client.Views
         where TView : class, IGameScreenView<TViewModel>
         where TViewModel : ViewModelBase<TView, TViewModel>
     {
-        private readonly IRegionManager _regionManager;
         private readonly EventHandler _commandManagerInvalidateRequeryHandler;
 
         protected ViewModelBase([NotNull] IAppContext appContext, [NotNull] IRegionManager regionManager)
             : base(appContext)
         {
-            _regionManager = regionManager;
+            RegionManager = regionManager;
             _commandManagerInvalidateRequeryHandler = OnCommandManagerRequerySuggested;
         }
 
         public abstract string ViewName { get; }
 
-        protected IRegionManager RegionManager => _regionManager;
+        protected IRegionManager RegionManager { get; }
 
         internal GameScreenPresenterBase<TViewModel, TView> Presenter { get; set; }
 

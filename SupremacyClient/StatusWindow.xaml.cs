@@ -140,14 +140,7 @@ namespace Supremacy.Client
         {
             Header = ResourceManager.GetString("PROCESSING_TURN");
 
-            if (_turnStrings != null && _turnStrings[phase.ToString()] != null)
-            {
-                Content = _turnStrings[phase.ToString()][0] + "...";
-            }
-            else
-            {
-                Content = phase + "...";
-            }
+            Content = _turnStrings != null && _turnStrings[phase.ToString()] != null ? _turnStrings[phase.ToString()][0] + "..." : phase + "...";
         }
         #endregion
     }

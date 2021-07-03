@@ -1289,7 +1289,7 @@ namespace Supremacy.Utility
             return value != 0u;
         }
 
-        // ReSharper disable CompareOfFloatsByEqualityOperator
+
         public static bool? ToBoolean(float value)
         {
             return value != 0f;
@@ -1299,7 +1299,7 @@ namespace Supremacy.Utility
         {
             return value != 0d;
         }
-        // ReSharper restore CompareOfFloatsByEqualityOperator
+
 
         public static bool? ToBoolean(decimal value)
         {

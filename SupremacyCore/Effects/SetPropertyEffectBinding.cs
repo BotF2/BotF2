@@ -70,16 +70,15 @@ namespace Supremacy.Effects
 
         internal sealed class ParameterBindingContext
         {
-            private readonly TValue _baseValue;
             private readonly TValue _currentValue;
 
             public ParameterBindingContext(TValue baseValue, TValue currentValue)
             {
-                _baseValue = baseValue;
+                BaseValue = baseValue;
                 _currentValue = currentValue;
             }
 
-            public TValue BaseValue => _baseValue;
+            public TValue BaseValue { get; }
 
             public TValue CurrentValue => _currentValue;
         }

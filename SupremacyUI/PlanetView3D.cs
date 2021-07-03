@@ -560,7 +560,7 @@ namespace Supremacy.UI
             set => SetLightSourceDirection(this, value);
         }
 
-        // ReSharper disable MemberCanBeMadeStatic.Local
+
         private IAppContext AppContext
         {
             get
@@ -575,7 +575,6 @@ namespace Supremacy.UI
                 return appContext;
             }
         }
-        // ReSharper restore MemberCanBeMadeStatic.Local
 
         protected override int VisualChildrenCount => 1;
 

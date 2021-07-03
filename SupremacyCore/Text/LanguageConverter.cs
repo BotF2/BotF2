@@ -41,7 +41,7 @@ namespace Supremacy.Text
                 return null;
             }
 
-            // ReSharper disable AssignNullToNotNullAttribute
+
             try
             {
                 return CultureInfo.GetCultureInfo(stringValue);
@@ -52,7 +52,7 @@ namespace Supremacy.Text
             }
 
             return null;
-            // ReSharper restore AssignNullToNotNullAttribute
+
         }
 
         public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)

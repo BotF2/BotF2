@@ -11,21 +11,20 @@ namespace Supremacy.Client.Controls
 {
     public class HyperlinkClickedEventArgs : RoutedEventArgs
     {
-        private readonly Uri _navigateUri;
         private readonly object _dataContext;
 
         public HyperlinkClickedEventArgs(Uri navigateUri) : base(TextBlockExtensions.HyperlinkClickedEvent)
         {
-            _navigateUri = navigateUri;
+            NavigateUri = navigateUri;
         }
 
         public HyperlinkClickedEventArgs(Uri navigateUri, object source, object dataContext = null) : base(TextBlockExtensions.HyperlinkClickedEvent, source)
         {
-            _navigateUri = navigateUri;
+            NavigateUri = navigateUri;
             _dataContext = dataContext;
         }
 
-        public Uri NavigateUri => _navigateUri;
+        public Uri NavigateUri { get; }
 
         public object DataContext => _dataContext;
     }

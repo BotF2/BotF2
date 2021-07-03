@@ -23,7 +23,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-// ReSharper disable PossibleMultipleEnumeration
+
 
 namespace Supremacy.Tech
 {
@@ -759,9 +759,9 @@ namespace Supremacy.Tech
         /// <c>true</c> if the ship can be built at the shipyard; otherwise, <c>false</c>.
         /// </returns>
         private static bool IsShipDesignWithinShipyardCapabilities(
-            // ReSharper disable SuggestBaseTypeForParameter
+
             [NotNull] ShipDesign shipDesign,
-            // ReSharper restore SuggestBaseTypeForParameter
+
             [NotNull] ShipyardDesign shipyardDesign)
         {
             if (shipDesign == null)
@@ -1348,5 +1348,5 @@ namespace Supremacy.Tech
     }
 }
 
-// ReSharper restore PossibleMultipleEnumeration
+
 

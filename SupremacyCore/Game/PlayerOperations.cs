@@ -44,7 +44,7 @@ namespace Supremacy.Game
             }
         }
 
-        // ReSharper disable UnusedMember.Local
+
         private static IClientContext ClientContext
         {
             get
@@ -57,7 +57,7 @@ namespace Supremacy.Game
                 return _clientContext;
             }
         }
-        // ReSharper restore UnusedMember.Local
+
 
         private static IPlayerOrderService PlayerOrderService
         {

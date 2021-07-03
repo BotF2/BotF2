@@ -305,14 +305,7 @@ namespace Supremacy.Universe
             }
             set
             {
-                if (value == null)
-                {
-                    _orbitalBatteryDesign = TechObjectDesign.InvalidDesignID;
-                }
-                else
-                {
-                    _orbitalBatteryDesign = value.DesignID;
-                }
+                _orbitalBatteryDesign = value == null ? TechObjectDesign.InvalidDesignID : value.DesignID;
             }
         }
 
@@ -457,14 +450,7 @@ namespace Supremacy.Universe
             }
             set
             {
-                if (value == null)
-                {
-                    _shipyardId = -1;
-                }
-                else
-                {
-                    _shipyardId = value.ObjectID;
-                }
+                _shipyardId = value == null ? -1 : value.ObjectID;
 
                 OnPropertyChanged("Shipyard");
             }

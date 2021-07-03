@@ -156,14 +156,7 @@ namespace Supremacy.Client.Views
             Colony currentColony = Model.SelectedColony;
 
             int currentColonyIndex = colonies.IndexOf(currentColony);
-            if ((currentColonyIndex == (colonies.Count - 1)) || (currentColonyIndex < 0))
-            {
-                Model.SelectedColony = colonies[0];
-            }
-            else
-            {
-                Model.SelectedColony = colonies[currentColonyIndex + 1];
-            }
+            Model.SelectedColony = (currentColonyIndex == (colonies.Count - 1)) || (currentColonyIndex < 0) ? colonies[0] : colonies[currentColonyIndex + 1];
         }
 
         protected override void OnViewActivating()
@@ -190,14 +183,7 @@ namespace Supremacy.Client.Views
                 return;
             }
 
-            if (building.IsActive)
-            {
-                _ = colony.DeactivateBuilding(building);
-            }
-            else
-            {
-                _ = colony.ActivateBuilding(building);
-            }
+            _ = building.IsActive ? colony.DeactivateBuilding(building) : colony.ActivateBuilding(building);
 
             PlayerOrderService.AddOrder(new UpdateBuildingOrder(building));
         }
@@ -231,14 +217,7 @@ namespace Supremacy.Client.Views
                 return;
             }
 
-            if (buildSlot.IsActive)
-            {
-                _ = colony.DeactivateShipyardBuildSlot(buildSlot);
-            }
-            else
-            {
-                _ = colony.ActivateShipyardBuildSlot(buildSlot);
-            }
+            _ = buildSlot.IsActive ? colony.DeactivateShipyardBuildSlot(buildSlot) : colony.ActivateShipyardBuildSlot(buildSlot);
 
             PlayerOrderService.AddOrder(new ToggleShipyardBuildSlotOrder(buildSlot));
         }
@@ -526,8 +505,8 @@ namespace Supremacy.Client.Views
             //GameLog.Core.UI.DebugFormat("OnSelectedColonyChanged -> Step 3");
 
             Colony selectedColony = Model.SelectedColony;
-            GameLog.Core.UI.DebugFormat("OnSelectedColonyChanged: selectedColony = {0}", selectedColony);  // Colony changes...
-                                                                                                           // ..."in the background", in F2 = System Screen (only own colonies), not in Galaxy View showing planets of foreign colonies
+            GameLog.Core.UIDetails.DebugFormat("OnSelectedColonyChanged: selectedColony = {0}", selectedColony);  // Colony changes...
+                                                                                                                  // ..."in the background", in F2 = System Screen (only own colonies), not in Galaxy View showing planets of foreign colonies
             if (selectedColony != null)
             {
                 Microsoft.Practices.Composite.Regions.IRegionManager regionManager = CompositeRegionManager.GetRegionManager((DependencyObject)View);
@@ -541,7 +520,7 @@ namespace Supremacy.Client.Views
                 {
                     Microsoft.Practices.Composite.Regions.IRegion planetsViewRegion = regionManager.Regions[CommonGameScreenRegions.PlanetsView];
                     planetsViewRegion.Context = selectedColony.Sector;
-                    //GameLog.Core.UI.DebugFormat("OnSelectedColonyChanged: NEW value selectedColony.Sector = {0}", selectedColony.Sector);
+                    //GameLog.Core.UIDetails.DebugFormat("OnSelectedColonyChanged: NEW value selectedColony.Sector = {0}", selectedColony.Sector);
                 }
             }
 

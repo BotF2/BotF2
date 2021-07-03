@@ -39,9 +39,9 @@ namespace Supremacy.Universe
         [SupportsPlanets] Orange,
         [SupportsPlanets] Red,
 
-        [SupportsPlanets(AllowedTypes = new[] { PlanetType.Rogue },
-                            AllowedSizes = new[] { PlanetSize.Tiny },
-                            MaxNumberOfPlanets = 1)]
+        [SupportsPlanets(AllowedTypes = new[] { PlanetType.Rogue, PlanetType.Terran },
+                            AllowedSizes = new[] { PlanetSize.Tiny, PlanetSize.Giant },
+                            MaxNumberOfPlanets = 1)]  // PlanetSize Giant for Borg
         Nebula,  //  for nebula maximum ONE planet (Borg nebula, Dominion)
         Wormhole,
         NeutronStar,

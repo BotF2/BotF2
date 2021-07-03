@@ -77,14 +77,7 @@ namespace Supremacy.Client
                 {
                     if (i > 0)
                     {
-                        if (commaSeparated)
-                        {
-                            _ = sb.Append(", ");
-                        }
-                        else
-                        {
-                            _ = sb.Append("\n");
-                        }
+                        _ = commaSeparated ? sb.Append(", ") : sb.Append("\n");
                     }
                     _ = sb.Append(BonusDescriptions.GetDescription(bonuses[i]));
                 }
@@ -171,14 +164,7 @@ namespace Supremacy.Client
 
                 if (sb.Length != 0)
                 {
-                    if (commaSeparated)
-                    {
-                        _ = sb.Append(", ");
-                    }
-                    else
-                    {
-                        _ = sb.Append("\n");
-                    }
+                    _ = commaSeparated ? sb.Append(", ") : sb.Append("\n");
                 }
 
                 _ = sb.Append(BuildRestrictionDescriptions.GetDescription(restriction));

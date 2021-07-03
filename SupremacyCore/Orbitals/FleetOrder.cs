@@ -118,15 +118,13 @@ namespace Supremacy.Orbitals
                         ResourceManager.GetString("ORDER_IN_TOW"),
                         Status);
                 }
-                else if (Fleet.IsStranded)
-                {
-                    displayText = string.Format(
-                        ResourceManager.GetString("ORDER_STRANDED"),
-                        Status);
-                }
                 else
                 {
-                    displayText = Status;
+                    displayText = Fleet.IsStranded
+                        ? string.Format(
+                                            ResourceManager.GetString("ORDER_STRANDED"),
+                                            Status)
+                        : Status;
                 }
 
                 if (percentComplete.HasValue)
@@ -143,14 +141,7 @@ namespace Supremacy.Orbitals
                         turns++;
                     }
 
-                    if (turns == 1)
-                    {
-                        formatString = ResourceManager.GetString("ORDER_ETA_TURN");
-                    }
-                    else
-                    {
-                        formatString = ResourceManager.GetString("ORDER_ETA_TURNS");
-                    }
+                    formatString = turns == 1 ? ResourceManager.GetString("ORDER_ETA_TURN") : ResourceManager.GetString("ORDER_ETA_TURNS");
 
                     displayText = string.Format(formatString, displayText, turns);
                 }
@@ -200,9 +191,9 @@ namespace Supremacy.Orbitals
         public virtual object Target
         {
             get => null;
-            // ReSharper disable ValueParameterNotUsed
+
             set { }
-            // ReSharper restore ValueParameterNotUsed
+
         }
 
         /// <summary>

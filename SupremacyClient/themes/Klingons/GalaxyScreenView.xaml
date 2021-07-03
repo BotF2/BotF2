@@ -266,7 +266,7 @@
                          Padding="14,0,14,0">
                 <TextBlock FontFamily="{StaticResource {x:Static scc:ClientResources.HeaderFontFamilyKey}}"
                            FontSize="18pt"
-                           Foreground="{StaticResource {x:Static scc:ClientResources.DisabledTextForegroundBrushKey}}"
+                           Foreground="{StaticResource {x:Static scc:ClientResources.DefaultTextForegroundBrushKey}}"
                            HorizontalAlignment="Center"
                            Text="{s:StringResource KLINGON_SUBLINE}"
                                            />

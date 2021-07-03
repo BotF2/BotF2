@@ -660,7 +660,7 @@ namespace Supremacy.Tech
         protected internal TechObjectDesign(XmlElement element)
             : this()
         {
-            // ReSharper disable PossibleNullReferenceException
+
 
             _key = element.GetAttribute("Key");
             //_name = element["Name"].InnerText.Trim();
@@ -714,7 +714,7 @@ namespace Supremacy.Tech
                     ScriptCode = element["BuildCondition"].InnerText.Trim()
                 };
             }
-            // ReSharper restore PossibleNullReferenceException
+
         }
 
         public void LinkImageToDesign(TechObjectDesign design)

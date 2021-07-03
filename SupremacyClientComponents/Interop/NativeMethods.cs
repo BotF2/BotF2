@@ -70,9 +70,9 @@ namespace Supremacy.Client.Interop
             internal BitmapHandle(IntPtr ptr, bool fOwnsHandle)
                 : base(ptr, fOwnsHandle)
             {
-                // ReSharper disable DoNotCallOverridableMethodsInConstructor
+
                 _ = HandleCollector.Add(handle, HandleCollectorType);
-                // ReSharper restore DoNotCallOverridableMethodsInConstructor
+
             }
 
             public HandleRef MakeHandleRef(object wrapper)
@@ -205,7 +205,7 @@ namespace Supremacy.Client.Interop
 
         public delegate IntPtr WndProc(IntPtr hWnd, int msg, IntPtr wParam, IntPtr lParam);
 
-        // ReSharper disable InconsistentNaming
+
         [SecurityCritical, SuppressUnmanagedCodeSecurity, DllImport("gdi32.dll", CharSet = CharSet.Auto, SetLastError = true, ExactSpelling = true)]
         public static extern int GetDeviceCaps(HandleRef hDC, int nIndex);
 

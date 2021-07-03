@@ -73,17 +73,15 @@ namespace Supremacy.Xna
             {
                 depthFormat = DepthFormat.Depth24;
             }
-            else if (adapter.CheckDepthStencilMatch(
-                deviceType,
-                adapter.CurrentDisplayMode.Format,
-                backBufferFormat,
-                DepthFormat.Depth16))
-            {
-                depthFormat = DepthFormat.Depth16;
-            }
             else
             {
-                depthFormat = DepthFormat.Unknown;
+                depthFormat = adapter.CheckDepthStencilMatch(
+                                deviceType,
+                                adapter.CurrentDisplayMode.Format,
+                                backBufferFormat,
+                                DepthFormat.Depth16)
+                    ? DepthFormat.Depth16
+                    : DepthFormat.Unknown;
             }
         }
 

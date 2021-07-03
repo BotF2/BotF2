@@ -9,14 +9,12 @@ namespace Supremacy.Diplomacy.Visitors
 {
     public class BreakAgreementVisitor : AgreementVisitor
     {
-        private readonly IAgreement _agreement;
-
         private BreakAgreementVisitor([NotNull] IAgreement agreement)
         {
-            _agreement = agreement ?? throw new ArgumentNullException("agreement");
+            Agreement = agreement ?? throw new ArgumentNullException("agreement");
         }
 
-        protected IAgreement Agreement => _agreement;
+        protected IAgreement Agreement { get; }
 
         public static void BreakAgreement([NotNull] IAgreement agreement)
         {

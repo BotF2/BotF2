@@ -19,7 +19,7 @@ namespace Supremacy.Client.Views
     {
         private readonly ForeignPower _foreignPower;
         private readonly ObservableCollection<ActiveAgreementViewModel> _activeAgreements;
-        private readonly ReadOnlyObservableCollection<ActiveAgreementViewModel> _activeAgreementsView;
+
         public ForeignPowerViewModel([NotNull] ForeignPower foreignPower)
         {
             if (foreignPower == null)
@@ -30,7 +30,7 @@ namespace Supremacy.Client.Views
 
             _foreignPower = foreignPower;
             _activeAgreements = new ObservableCollection<ActiveAgreementViewModel>();
-            _activeAgreementsView = new ReadOnlyObservableCollection<ActiveAgreementViewModel>(_activeAgreements);
+            ActiveAgreements = new ReadOnlyObservableCollection<ActiveAgreementViewModel>(_activeAgreements);
 
             //GameLog.Client.Diplomacy.DebugFormat("foreignPower Owner = {0}", foreignPower.Owner.ShortName);
 
@@ -123,7 +123,7 @@ namespace Supremacy.Client.Views
                 //GameLog.Client.Diplomacy.DebugFormat("Is Diplomat Available ={0}, false if AtWar", _foreignPower.IsDiplomatAvailable);
                 _foreignPower.IsDiplomatAvailable;
 
-        public ReadOnlyObservableCollection<ActiveAgreementViewModel> ActiveAgreements => _activeAgreementsView;
+        public ReadOnlyObservableCollection<ActiveAgreementViewModel> ActiveAgreements { get; }
 
         #region IncomingMessage Property
 

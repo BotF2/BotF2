@@ -136,17 +136,12 @@ namespace Supremacy.Types
         /// </summary>
         public Percentage PercentFilled
         {
-            // ReSharper disable PossibleLossOfFraction
+
             get
             {
-                if (IsMinimized)
-                {
-                    return 0f;
-                }
-
-                return 0.01f * ((CurrentValue - Minimum) * 100 / (Maximum - Minimum));
+                return IsMinimized ? (Percentage)0f : (Percentage)(0.01f * ((CurrentValue - Minimum) * 100 / (Maximum - Minimum)));
             }
-            // ReSharper restore PossibleLossOfFraction
+
         }
 
         /// <summary>
@@ -155,17 +150,12 @@ namespace Supremacy.Types
         /// </summary>
         public Percentage PercentFilledLogarithmic
         {
-            // ReSharper disable PossibleLossOfFraction
+
             get
             {
-                if (IsMinimized)
-                {
-                    return 0f;
-                }
-
-                return (Percentage)(1d + Math.Log(PercentFilled, 10d));
+                return IsMinimized ? (Percentage)0f : (Percentage)(1d + Math.Log(PercentFilled, 10d));
             }
-            // ReSharper restore PossibleLossOfFraction
+
         }
 
         /// <summary>
@@ -390,13 +380,9 @@ namespace Supremacy.Types
                 {
                     CurrentValue = Maximum;
                 }
-                else if (value < _minimum)
-                {
-                    CurrentValue = Minimum;
-                }
                 else
                 {
-                    CurrentValue = value;
+                    CurrentValue = value < _minimum ? Minimum : value;
                 }
             }
             else

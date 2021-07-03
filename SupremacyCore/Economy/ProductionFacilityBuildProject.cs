@@ -38,9 +38,9 @@ namespace Supremacy.Economy
 
         public ProductionFacilityBuildProject(
             Colony colony,
-            // ReSharper disable SuggestBaseTypeForParameter
+
             ProductionFacilityDesign target)
-            // ReSharper restore SuggestBaseTypeForParameter
+
             : base(colony.Owner, colony, target)
         {
             if (colony == null)

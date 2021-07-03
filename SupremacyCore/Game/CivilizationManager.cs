@@ -8,7 +8,6 @@
 
 using Supremacy.AI;
 using Supremacy.Annotations;
-using Supremacy.Client;
 using Supremacy.Collections;
 using Supremacy.Economy;
 using Supremacy.Entities;
@@ -302,25 +301,28 @@ namespace Supremacy.Game
                         _player = LocalPlayer.CivID;
                     }
 
-                    CivilizationManager playerCivManager = GameContext.Current.CivilizationManagers[_player];
-                    if (playerCivManager != null && rep.Owner.ToString() == playerCivManager.ToString())
+                    if (_player != 789)
                     {
-                        _text = "SitRep Turn "
-                            + GameContext.Current.TurnNumber
-                            + " Cat= " + rep.Categories
-                            + " " + rep.Priority
-                            + " Action= " + rep.Action
-                            + " for " + rep.Owner
-                            + ":" + Environment.NewLine
-                            + "                    SitRep: " + rep.SummaryText
-                            + " Cat= " + rep.Categories
-                            + Environment.NewLine
-                            ;
+                        CivilizationManager playerCivManager = GameContext.Current.CivilizationManagers[_player];
+                        if (playerCivManager != null && rep.Owner.ToString() == playerCivManager.ToString())
+                        {
+                            _text = "SitRep Turn "
+                                + GameContext.Current.TurnNumber
+                                + " Cat= " + rep.Categories
+                                + " " + rep.Priority
+                                + " Action= " + rep.Action
+                                + " for " + rep.Owner
+                                + ":" + Environment.NewLine
+                                + "                    SitRep: " + rep.SummaryText
+                                + " Cat= " + rep.Categories
+                                + Environment.NewLine
+                                ;
 
-                        Console.WriteLine(_text);
-                        GameLog.Core.SitReps.DebugFormat("SitRep Turn {4} Cat={2} Action {3} for {1}:" + Environment.NewLine + // splitted in 2 lines for better reading
-                            "                    SitRep: {0}" + Environment.NewLine, rep.SummaryText, rep.Owner, rep.Categories, rep.Action, GameContext.Current.TurnNumber);
+                            Console.WriteLine(_text);
+                            GameLog.Core.SitReps.DebugFormat("SitRep Turn {4} Cat={2} Action {3} for {1}:" + Environment.NewLine + // splitted in 2 lines for better reading
+                                "                    SitRep: {0}" + Environment.NewLine, rep.SummaryText, rep.Owner, rep.Categories, rep.Action, GameContext.Current.TurnNumber);
 
+                        }
                     }
 
                 }
@@ -588,14 +590,7 @@ namespace Supremacy.Game
                                        select c
                                    ).FirstOrDefault();
 
-                if (seatOfGovernment != null)
-                {
-                    _seatOfGovernmentId = seatOfGovernment.ObjectID;
-                }
-                else
-                {
-                    _seatOfGovernmentId = -1;
-                }
+                _seatOfGovernmentId = seatOfGovernment != null ? seatOfGovernment.ObjectID : -1;
             }
 
             Diplomacy.Diplomat diplomat = GameContext.Current.Diplomats[_civId];

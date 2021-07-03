@@ -12,30 +12,19 @@ namespace Supremacy.Client.Data
         public static readonly object True = true;
         public static readonly object False = false;
 
-        private object _trueValue = True;
-        private object _falseValue = False;
+        public object TrueValue { get; set; } = True;
 
-        public object TrueValue
-        {
-            get => _trueValue;
-            set => _trueValue = value;
-        }
-
-        public object FalseValue
-        {
-            get => _falseValue;
-            set => _falseValue = value;
-        }
+        public object FalseValue { get; set; } = False;
 
         public override object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             object convertedCondition = ValueConversionHelper.Convert(value, typeof(bool), culture: culture);
             if (convertedCondition == DependencyProperty.UnsetValue || !Equals(convertedCondition, True))
             {
-                return ValueConversionHelper.Convert(_falseValue, targetType, parameter, culture);
+                return ValueConversionHelper.Convert(FalseValue, targetType, parameter, culture);
             }
 
-            return ValueConversionHelper.Convert(_trueValue, targetType, parameter, culture);
+            return ValueConversionHelper.Convert(TrueValue, targetType, parameter, culture);
         }
 
         public override object MultiConvert(object[] values, Type targetType, object parameter, CultureInfo culture)
@@ -45,10 +34,10 @@ namespace Supremacy.Client.Data
                 object convertedCondition = ValueConversionHelper.Convert(value, typeof(bool), culture: culture);
                 if (convertedCondition == DependencyProperty.UnsetValue || !Equals(convertedCondition, True))
                 {
-                    return ValueConversionHelper.Convert(_falseValue, targetType, parameter, culture);
+                    return ValueConversionHelper.Convert(FalseValue, targetType, parameter, culture);
                 }
             }
-            return ValueConversionHelper.Convert(_trueValue, targetType, parameter, culture);
+            return ValueConversionHelper.Convert(TrueValue, targetType, parameter, culture);
         }
 
         public override object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

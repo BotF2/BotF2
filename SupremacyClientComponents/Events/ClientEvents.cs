@@ -34,13 +34,11 @@ namespace Supremacy.Client.Events
 
     public class ScreenActivatedEventArgs : ClientEventArgs
     {
-        private readonly string _screenName;
-
-        public string ScreenName => _screenName;
+        public string ScreenName { get; }
 
         public ScreenActivatedEventArgs([NotNull] string screenName)
         {
-            _screenName = screenName ?? throw new ArgumentNullException("screenName");
+            ScreenName = screenName ?? throw new ArgumentNullException("screenName");
         }
     }
 
@@ -140,33 +138,29 @@ namespace Supremacy.Client.Events
 
     public class GameContextEventArgs : ClientEventArgs
     {
-        private readonly IGameContext _gameContext;
-
         public GameContextEventArgs(
             [NotNull] IAppContext appContext,
             [NotNull] IGameContext gameContext)
             : base(appContext)
         {
-            _gameContext = gameContext ?? throw new ArgumentNullException("gameContext");
+            GameContext = gameContext ?? throw new ArgumentNullException("gameContext");
         }
 
-        public IGameContext GameContext => _gameContext;
+        public IGameContext GameContext { get; }
     }
 
     public class GameContextEventArgs<TData> : ClientDataEventArgs<TData>
     {
-        private readonly IGameContext _gameContext;
-
         public GameContextEventArgs(
             [NotNull] IAppContext appContext,
             [NotNull] IGameContext gameContext,
             TData value)
             : base(appContext, value)
         {
-            _gameContext = gameContext ?? throw new ArgumentNullException("gameContext");
+            GameContext = gameContext ?? throw new ArgumentNullException("gameContext");
         }
 
-        public IGameContext GameContext => _gameContext;
+        public IGameContext GameContext { get; }
     }
 
     public sealed class ServerInitializationFailedEvent : CompositePresentationEvent<ClientEventArgs> { }

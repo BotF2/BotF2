@@ -74,14 +74,7 @@ namespace Supremacy.Utility
                     break;
                 }
 
-                if (current.Left.GrowthWeight > current.Right.GrowthWeight)
-                {
-                    current = current.Right;
-                }
-                else
-                {
-                    current = current.Left;
-                }
+                current = current.Left.GrowthWeight > current.Right.GrowthWeight ? current.Right : current.Left;
             }
         }
 

@@ -169,6 +169,60 @@ namespace Supremacy.Client.Dialogs
 
         #endregion ShowPurpleItems Attached Property
 
+        #region ShowGoldenItems Attached Property
+
+        public static readonly DependencyProperty ShowGoldenItemsProperty = DependencyProperty.RegisterAttached(
+            "ShowGoldenItems",
+            typeof(bool),
+            typeof(SitRepDialogSettings),
+            new FrameworkPropertyMetadata(
+                true,
+                FrameworkPropertyMetadataOptions.None));
+
+        public static bool GetShowGoldenItems(DependencyObject source)
+        {
+            return source == null ? throw new ArgumentNullException("source") : (bool)source.GetValue(ShowGoldenItemsProperty);
+        }
+
+        public static void SetShowGoldenItems(DependencyObject source, bool value)
+        {
+            if (source == null)
+            {
+                throw new ArgumentNullException("source");
+            }
+
+            source.SetValue(ShowGoldenItemsProperty, value);
+        }
+
+        #endregion ShowGoldenItems Attached Property
+
+        #region ShowCrimsonItems Attached Property
+
+        public static readonly DependencyProperty ShowCrimsonItemsProperty = DependencyProperty.RegisterAttached(
+            "ShowCrimsonItems",
+            typeof(bool),
+            typeof(SitRepDialogSettings),
+            new FrameworkPropertyMetadata(
+                true,
+                FrameworkPropertyMetadataOptions.None));
+
+        public static bool GetShowCrimsonItems(DependencyObject source)
+        {
+            return source == null ? throw new ArgumentNullException("source") : (bool)source.GetValue(ShowCrimsonItemsProperty);
+        }
+
+        public static void SetShowCrimsonItems(DependencyObject source, bool value)
+        {
+            if (source == null)
+            {
+                throw new ArgumentNullException("source");
+            }
+
+            source.SetValue(ShowCrimsonItemsProperty, value);
+        }
+
+        #endregion ShowCrimsonItems Attached Property
+
 
         #region ShowPinkItems Attached Property
 

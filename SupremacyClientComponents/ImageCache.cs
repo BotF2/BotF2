@@ -15,12 +15,11 @@ namespace Supremacy.Client
 {
     public sealed class ImageCache
     {
-        private static readonly ImageCache s_current;
         private readonly Cache<string, BitmapImage> _cache;
 
         static ImageCache()
         {
-            s_current = new ImageCache();
+            Current = new ImageCache();
         }
 
         public ImageCache()
@@ -28,7 +27,7 @@ namespace Supremacy.Client
             _cache = new Cache<string, BitmapImage>(StringComparer.OrdinalIgnoreCase);
         }
 
-        public static ImageCache Current => s_current;
+        public static ImageCache Current { get; private set; }
 
         public bool ForceCaching { get; set; }
 

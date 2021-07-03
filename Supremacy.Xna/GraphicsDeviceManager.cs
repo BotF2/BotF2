@@ -308,7 +308,7 @@ namespace Supremacy.Xna
             }
         }
 
-        // ReSharper disable UnusedMember.Local
+
         //private void CheckForAvailableSupportedHardware()
         //{
         //    var deviceFound = false;
@@ -356,7 +356,7 @@ namespace Supremacy.Xna
         //    }
         //}
 
-        // ReSharper restore UnusedMember.Local
+
 
         private DepthFormat ChooseDepthStencilFormat(GraphicsAdapter adapter, DeviceType deviceType, SurfaceFormat adapterFormat)
         {
@@ -508,7 +508,7 @@ namespace Supremacy.Xna
 
         private bool EnsureDevice()
         {
-            return GraphicsDevice == null ? false : EnsureDevicePlatform();
+            return GraphicsDevice != null && EnsureDevicePlatform();
         }
 
         private bool EnsureDevicePlatform()
@@ -611,9 +611,8 @@ namespace Supremacy.Xna
 
         private static bool IsValidShaderProfile(ShaderProfile capsShaderProfile, ShaderProfile minimumShaderProfile)
         {
-            return capsShaderProfile == ShaderProfile.PS_2_B && minimumShaderProfile == ShaderProfile.PS_2_A
-                ? false
-                : capsShaderProfile >= minimumShaderProfile;
+            return (capsShaderProfile != ShaderProfile.PS_2_B || minimumShaderProfile != ShaderProfile.PS_2_A)
+&& capsShaderProfile >= minimumShaderProfile;
         }
 
         private static void MassagePresentParameters(PresentationParameters pp)

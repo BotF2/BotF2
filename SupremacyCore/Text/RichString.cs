@@ -6,14 +6,12 @@ using System.Xml;
 
 using Supremacy.Utility;
 
-// ReSharper disable InvocationIsSkipped
+
 
 namespace Supremacy.Text
 {
     public class RichString : IComparable<RichString>, IComparable
     {
-        private readonly RichText _richText;
-
         private int _offset;
         private int _length;
         private TextStyle _style;
@@ -53,7 +51,7 @@ namespace Supremacy.Text
             }
         }
 
-        public RichText RichText => _richText;
+        public RichText RichText { get; }
 
         public RichString(int offset, int length, TextStyle style, RichText richtext)
         {
@@ -96,13 +94,13 @@ namespace Supremacy.Text
             _offset = offset;
             _length = length;
             _style = style;
-            _richText = richtext;
+            RichText = richtext;
         }
 
         [Conditional("JET_MODE_ASSERT")]
         public void AssertValid()
         {
-            if (_richText == null)
+            if (RichText == null)
             {
                 throw new InvalidOperationException("RichText is Null.");
             }
@@ -112,14 +110,14 @@ namespace Supremacy.Text
                 throw new ArgumentOutOfRangeException(string.Format("Length {0} must be non-negative.", _length));
             }
 
-            int parentLength = _richText.Length;
+            int parentLength = RichText.Length;
 
             if (_offset < 0 || _offset > parentLength)
             {
                 throw new InvalidOperationException(
                     string.Format(
                         "The offset {2} must be within the parent RichText string of length {1}, “{0}”.",
-                        _richText.Text,
+                        RichText.Text,
                         parentLength,
                         _offset));
             }
@@ -132,7 +130,7 @@ namespace Supremacy.Text
             throw new ArgumentOutOfRangeException(
                 string.Format(
                     "The substring (offset={2}, length={3}) must fall within the parent RichText string of length {1}, “{0}”.",
-                    (object)_richText.Text,
+                    (object)RichText.Text,
                     (object)parentLength,
                     (object)_offset,
                     (object)_length));
@@ -185,4 +183,4 @@ namespace Supremacy.Text
     }
 }
 
-// ReSharper restore InvocationIsSkipped
+

@@ -5,17 +5,15 @@ namespace Supremacy.Messaging
     public abstract class ChannelSubscriptionBase<T>
         : IDisposable
     {
-        private readonly ChannelThreadOption _threadOption;
-
         protected ChannelSubscriptionBase(ChannelThreadOption threadOption)
         {
-            _threadOption = threadOption;
+            ThreadOption = threadOption;
         }
 
         #region Properties
         public abstract IObserver<T> Subscriber { get; }
 
-        public ChannelThreadOption ThreadOption => _threadOption;
+        public ChannelThreadOption ThreadOption { get; }
         #endregion
 
         #region IDisposable Members

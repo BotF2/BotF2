@@ -357,24 +357,7 @@ namespace Supremacy.AI
                             /*
                             /switch in GameEngine picks up PendingAction on next turn and calls AcceptProposalVisitor.Visit(ForeignPower.LastProposalReceived); and Reject...
                             */
-                            if (accepted == true)
-                            {
-                                foreignPower.PendingAction = PendingDiplomacyAction.AcceptProposal;
-
-                                //GameLog.Client.Diplomacy.DebugFormat(
-                                //    "## PendingAction: ACCEPT ={0} reset by clause - regard value, Counterparty = {1} Onwer = {2}",
-                                //    foreignPower.PendingAction.ToString(), foreignPower.Counterparty.ShortName,
-                                //    foreignPower.Owner.ShortName);
-                            }
-                            else
-                            {
-                                foreignPower.PendingAction = PendingDiplomacyAction.RejectProposal;
-
-                                //GameLog.Client.Diplomacy.DebugFormat(
-                                //    "## PendingAction: REJECT ={0} reset by clause - regard value, Counterparty = {1} Onwer = {2}",
-                                //    foreignPower.PendingAction.ToString(), foreignPower.Counterparty.ShortName,
-                                //    foreignPower.Owner.ShortName);
-                            }
+                            foreignPower.PendingAction = accepted == true ? PendingDiplomacyAction.AcceptProposal : PendingDiplomacyAction.RejectProposal;
                         }
                         // foreignPower.UpdateRegardAndTrustMeters();
 

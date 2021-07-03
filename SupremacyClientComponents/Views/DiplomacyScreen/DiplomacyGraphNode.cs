@@ -11,24 +11,22 @@ namespace Supremacy.Client.Views
 {
     public class DiplomacyGraphNode : INotifyPropertyChanged
     {
-        private readonly Civilization _civilization;
-        private readonly ICommand _selectNodeCommand;
         private readonly ObservableCollection<DiplomacyGraphNode> _children;
 
         public DiplomacyGraphNode(Civilization civilization, ICommand selectNodeCommand)
         {
-            _civilization = civilization ?? throw new ArgumentNullException("civilization");
-            _selectNodeCommand = selectNodeCommand;
+            Civilization = civilization ?? throw new ArgumentNullException("civilization");
+            SelectNodeCommand = selectNodeCommand;
             _children = new ObservableCollection<DiplomacyGraphNode>();
         }
 
-        public Civilization Civilization => _civilization;
+        public Civilization Civilization { get; }
 
-        public ICommand SelectNodeCommand => _selectNodeCommand;
+        public ICommand SelectNodeCommand { get; }
 
         public ObservableCollection<DiplomacyGraphNode> Children => _children;
 
-        public string ToolTip => _civilization.ShortName;
+        public string ToolTip => Civilization.ShortName;
 
         #region Implementation of INotifyPropertyChanged
 

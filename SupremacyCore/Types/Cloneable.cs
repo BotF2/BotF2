@@ -311,17 +311,7 @@ namespace Supremacy.Types
         /// </remarks>
         protected T CloneAndMapCore<T>(T source) where T : class, ICloneable
         {
-            T clone;
-
-            if (source is Cloneable cloneable)
-            {
-                clone = Cloneable.Clone(cloneable, this) as T;
-            }
-            else
-            {
-                clone = (T)source.Clone();
-            }
-
+            T clone = source is Cloneable cloneable ? Cloneable.Clone(cloneable, this) as T : (T)source.Clone();
             _mappings[source] = clone;
 
             return clone;
@@ -350,8 +340,8 @@ namespace Supremacy.Types
                 return source;
             }
 
-            // ReSharper disable ConditionIsAlwaysTrueOrFalse
-            // ReSharper disable HeuristicUnreachableCode
+
+
             public T RemapOrClone<T>(T source) where T : class, ICloneable
             {
                 if (source == null)
@@ -371,8 +361,8 @@ namespace Supremacy.Types
 
                 return source.Clone() as T;
             }
-            // ReSharper restore HeuristicUnreachableCode
-            // ReSharper restore ConditionIsAlwaysTrueOrFalse
+
+
 
             #endregion
         }

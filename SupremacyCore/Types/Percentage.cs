@@ -11,7 +11,7 @@ using System;
 using System.ComponentModel;
 using System.Globalization;
 
-// ReSharper disable CompareOfFloatsByEqualityOperator
+
 
 namespace Supremacy.Types
 {
@@ -421,4 +421,4 @@ namespace Supremacy.Types
         }
     }
 }
-// ReSharper restore CompareOfFloatsByEqualityOperator
+

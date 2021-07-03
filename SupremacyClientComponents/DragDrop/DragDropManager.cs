@@ -167,8 +167,8 @@ namespace Supremacy.Client.DragDrop
 
             // Calculate displacement for (Left, Top)
             Point offset = e.GetPosition(_overlayElement);
-            dropPoint.X = dropPoint.X - offset.X;
-            dropPoint.Y = dropPoint.Y - offset.Y;
+            dropPoint.X -= offset.X;
+            dropPoint.Y -= offset.Y;
 
             RemovePreviewAdorner();
             _offsetPoint = new Point(0, 0);

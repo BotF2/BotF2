@@ -13,31 +13,25 @@ namespace Supremacy.Client
     [MarkupExtensionReturnType(typeof(string))]
     public sealed class EnumStringResourceExtension : MarkupExtension
     {
-        private string _key;
-
         [ConstructorArgument("key")]
-        public string Key
-        {
-            get => _key;
-            set => _key = value;
-        }
+        public string Key { get; set; }
 
         public StringCase Case { get; set; }
 
         public EnumStringResourceExtension()
         {
-            _key = string.Empty;
+            Key = string.Empty;
             Case = StringCase.Original;
         }
 
         public EnumStringResourceExtension(string key)
         {
-            _key = key;
+            Key = key;
         }
 
         public override object ProvideValue(IServiceProvider serviceProvider)
         {
-            string text = ResourceManager.GetString(_key);
+            string text = ResourceManager.GetString(Key);
 
             switch (Case)
             {

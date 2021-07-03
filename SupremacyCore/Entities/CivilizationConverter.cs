@@ -28,7 +28,7 @@ namespace Supremacy.Entities
                 return null;
             }
 
-            // ReSharper disable AssignNullToNotNullAttribute
+
             try
             {
                 return GameContext.Current.Civilizations[stringValue];
@@ -39,7 +39,7 @@ namespace Supremacy.Entities
             }
 
             return null;
-            // ReSharper restore AssignNullToNotNullAttribute
+
         }
 
         public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)

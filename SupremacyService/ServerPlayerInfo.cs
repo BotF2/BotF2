@@ -8,26 +8,23 @@ namespace Supremacy.WCF
 {
     internal sealed class ServerPlayerInfo
     {
-        private readonly Player _player;
-        private readonly ISupremacyCallback _callback;
-        private readonly OperationContext _session;
         private readonly Lazy<IScheduler> _scheduler;
 
         internal ServerPlayerInfo(Player player, ISupremacyCallback callback, OperationContext session, IScheduler scheduler)
         {
-            _player = player;
-            _callback = callback;
-            _session = session;
+            Player = player;
+            Callback = callback;
+            Session = session;
             _scheduler = new Lazy<IScheduler>(
                 () => scheduler ??
                       new EventLoopScheduler("ServerCallbackScheduler[" + player.Name + "]"));
         }
 
-        public Player Player => _player;
+        public Player Player { get; }
 
-        public ISupremacyCallback Callback => _callback;
+        public ISupremacyCallback Callback { get; }
 
-        public OperationContext Session => _session;
+        public OperationContext Session { get; }
 
         public IScheduler Scheduler => _scheduler.Value;
     }

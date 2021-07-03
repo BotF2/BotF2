@@ -19,7 +19,6 @@ namespace Supremacy.Client.Context
         private readonly KeyedCollectionBase<int, IPlayer> _players = null;
 
 #pragma warning disable IDE0044 // Add readonly modifier
-        private MusicLibrary _defaultMusicLibrary = new MusicLibrary();
         private MusicLibrary _themeMusicLibrary = new MusicLibrary();
 #pragma warning restore IDE0044 // Add readonly modifier
         #endregion
@@ -27,7 +26,7 @@ namespace Supremacy.Client.Context
         #region Properties
         public static DesignTimeAppContext Instance => _instance.Value;
 
-        public MusicLibrary DefaultMusicLibrary => _defaultMusicLibrary;
+        public MusicLibrary DefaultMusicLibrary { get; } = new MusicLibrary();
 
         public MusicLibrary ThemeMusicLibrary => _themeMusicLibrary;
         public int ASpecialWidth1 => 576;
@@ -135,32 +134,24 @@ namespace Supremacy.Client.Context
     }
     public static class DesignTimeObjects
     {
-        private static List<CivilizationManager> _availableCivManagers;
         private static CivilizationManager _spiedCivDummy;
-
-        private static bool _subedZero = false; // Is the race not in the game? We substitue the host civ for missing civ and then _subedZero is true and Federation not in game.
-        private static bool _subedOne = false;
-        private static bool _subedTwo = false;
-        private static bool _subedThree = false;
-        private static bool _subedFour = false;
-        private static bool _subedFive = false;
         private static bool _subedSix = false;
 
         /// <summary>
         /// Host Civilization Manager has been used as a substitute for a civ not in the game
         /// In this case Federation is not in game, CivID Zero
         /// </summary>
-        public static bool SubedZero => _subedZero;
-        public static bool SubedOne => _subedOne;
-        public static bool SubedTwo => _subedTwo;
-        public static bool SubedThree => _subedThree;
-        public static bool SubedFour => _subedFour;
-        public static bool SubedFive => _subedFive;
+        public static bool SubedZero { get; private set; } = false;
+        public static bool SubedOne { get; private set; } = false;
+        public static bool SubedTwo { get; private set; } = false;
+        public static bool SubedThree { get; private set; } = false;
+        public static bool SubedFour { get; private set; } = false;
+        public static bool SubedFive { get; private set; } = false;
         public static bool SubedSix => _subedSix;
         #region  Constuctor
         static DesignTimeObjects()
         {
-            _availableCivManagers = GameContext.Current.CivilizationManagers.Where(s => s.Civilization.IsEmpire).ToList();
+            AvailableCivManagers = GameContext.Current.CivilizationManagers.Where(s => s.Civilization.IsEmpire).ToList();
         }
         #endregion
         public static CivilizationManager SpiedCivZero
@@ -177,7 +168,7 @@ namespace Supremacy.Client.Context
                 {
                     _spiedCivDummy = CivilizationManager;
                     //GameLog.Client.Test.DebugFormat("## Substitution SpiedCivZero = {0}", _spiedCivDummy.Civilization.Key);
-                    _subedZero = true;
+                    SubedZero = true;
                 }
                 return _spiedCivDummy;
             }
@@ -196,7 +187,7 @@ namespace Supremacy.Client.Context
                 {
                     _spiedCivDummy = CivilizationManager;
                     //GameLog.Client.Test.DebugFormat("## Substitution SpiedCivOne = {0}", _spiedCivDummy.Civilization.Key);
-                    _subedOne = true;
+                    SubedOne = true;
                 }
                 return _spiedCivDummy;
             }
@@ -216,7 +207,7 @@ namespace Supremacy.Client.Context
                 {
                     _spiedCivDummy = CivilizationManager;
                     //  GameLog.Client.Test.DebugFormat("## Substitution SpiedCivTwo = {0}", _spiedCivDummy.Civilization.Key);
-                    _subedTwo = true;
+                    SubedTwo = true;
                 }
                 return _spiedCivDummy;
             }
@@ -235,7 +226,7 @@ namespace Supremacy.Client.Context
                 {
                     _spiedCivDummy = CivilizationManager;
                     // GameLog.Client.Test.DebugFormat("## Substitution SpiedCivThree = {0}", _spiedCivDummy.Civilization.Key);
-                    _subedThree = true;
+                    SubedThree = true;
                 }
                 return _spiedCivDummy;
             }
@@ -254,7 +245,7 @@ namespace Supremacy.Client.Context
                 {
                     _spiedCivDummy = CivilizationManager;
                     // GameLog.Client.Test.DebugFormat("## Substitution SpiedCivFour = {0}", _spiedCivDummy.Civilization.Key);
-                    _subedFour = true;
+                    SubedFour = true;
                 }
                 return _spiedCivDummy;
             }
@@ -273,7 +264,7 @@ namespace Supremacy.Client.Context
                 {
                     _spiedCivDummy = CivilizationManager;
                     // GameLog.Client.Test.DebugFormat("## Substitution SpiedCivFive = {0}", _spiedCivDummy.Civilization.Key);
-                    _subedFive = true;
+                    SubedFive = true;
                 }
                 return _spiedCivDummy;
             }
@@ -297,7 +288,7 @@ namespace Supremacy.Client.Context
                 return _spiedCivDummy;
             }
         }
-        public static List<CivilizationManager> AvailableCivManagers => _availableCivManagers;
+        public static List<CivilizationManager> AvailableCivManagers { get; private set; }
 
         /// <summary>
         /// This is the Host Civilization Manager, see IntelHelper.localCivManager for civ manager in multiplayer

@@ -154,14 +154,7 @@ namespace Supremacy.Client
         {
             StringBuilder sb = new StringBuilder();
 
-            if (game.IsMultiplayerGame)
-            {
-                _ = sb.Append("MP ");
-            }
-            else
-            {
-                _ = sb.Append("SP ");
-            }
+            _ = game.IsMultiplayerGame ? sb.Append("MP ") : sb.Append("SP ");
 
             IAppContext appContext = ServiceLocator.Current.GetInstance<IAppContext>();
             if (appContext != null)

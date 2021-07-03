@@ -79,8 +79,6 @@ namespace Supremacy.Types
 
     public struct StateTransition<TStateEnum> : IEquatable<StateTransition<TStateEnum>> where TStateEnum : State
     {
-        private readonly StateChangeDisposition _disposition;
-        private readonly int _from;
         private readonly int _to;
 
         public StateTransition([NotNull] TStateEnum from, [NotNull] TStateEnum to, StateChangeDisposition disposition)
@@ -95,24 +93,24 @@ namespace Supremacy.Types
                 throw new ArgumentNullException("to");
             }
 
-            _from = from.Value;
+            From = from.Value;
             _to = to.Value;
-            _disposition = disposition;
+            Disposition = disposition;
         }
 
-        public int From => _from;
+        public int From { get; }
 
         public int To => _to;
 
-        public StateChangeDisposition Disposition => _disposition;
+        public StateChangeDisposition Disposition { get; }
 
         #region IEquatable<StateTransition<TStateEnum>> Members
 
         public bool Equals(StateTransition<TStateEnum> other)
         {
-            return _from == other._from &&
+            return From == other.From &&
                    _to == other._to &&
-                   _disposition == other._disposition;
+                   Disposition == other.Disposition;
         }
 
         #endregion
@@ -140,7 +138,7 @@ namespace Supremacy.Types
 
         public override int GetHashCode()
         {
-            return _from | (_to << 16);
+            return From | (_to << 16);
         }
     }
 
@@ -149,16 +147,14 @@ namespace Supremacy.Types
     {
         private const BindingFlags ValueFieldFlags = BindingFlags.DeclaredOnly | BindingFlags.Public | BindingFlags.Static;
 
-        private readonly int _value;
-
         protected State(int value)
         {
-            _value = value;
+            Value = value;
         }
 
         public string Name => ToString();
 
-        public int Value => _value;
+        public int Value { get; }
 
         public int Toint()
         {
@@ -167,7 +163,7 @@ namespace Supremacy.Types
 
         public static implicit operator int(State state)
         {
-            return state._value;
+            return state.Value;
         }
 
         public override string ToString()
@@ -178,7 +174,7 @@ namespace Supremacy.Types
                 return field.Name;
             }
 
-            return _value.ToString();
+            return Value.ToString();
         }
 
         internal FieldInfo GetFieldInfo()
@@ -187,7 +183,7 @@ namespace Supremacy.Types
                        from f in GetType().GetFields(ValueFieldFlags)
                        where typeof(State).IsAssignableFrom(f.FieldType)
                        let value = (State)f.GetValue(null)
-                       where value == _value
+                       where value == Value
                        select f
                    ).FirstOrDefault();
         }
@@ -223,7 +219,7 @@ namespace Supremacy.Types
 
         internal static bool TryGet(Type type, int value, out State state)
         {
-            state = GetValues(type).FirstOrDefault(o => o._value == value);
+            state = GetValues(type).FirstOrDefault(o => o.Value == value);
             return state != null;
         }
 
@@ -271,7 +267,7 @@ namespace Supremacy.Types
                 return false;
             }
 
-            return other._value == _value;
+            return other.Value == Value;
         }
 
         public sealed override bool Equals(object obj)
@@ -281,7 +277,7 @@ namespace Supremacy.Types
 
         public override int GetHashCode()
         {
-            return _value;
+            return Value;
         }
 
         public static bool operator ==(State left, State right)
@@ -296,87 +292,87 @@ namespace Supremacy.Types
 
         TypeCode IConvertible.GetTypeCode()
         {
-            return _value.GetTypeCode();
+            return Value.GetTypeCode();
         }
 
         bool IConvertible.ToBoolean(IFormatProvider provider)
         {
-            return ((IConvertible)_value).ToBoolean(provider);
+            return ((IConvertible)Value).ToBoolean(provider);
         }
 
         char IConvertible.ToChar(IFormatProvider provider)
         {
-            return ((IConvertible)_value).ToChar(provider);
+            return ((IConvertible)Value).ToChar(provider);
         }
 
         sbyte IConvertible.ToSByte(IFormatProvider provider)
         {
-            return ((IConvertible)_value).ToSByte(provider);
+            return ((IConvertible)Value).ToSByte(provider);
         }
 
         byte IConvertible.ToByte(IFormatProvider provider)
         {
-            return ((IConvertible)_value).ToByte(provider);
+            return ((IConvertible)Value).ToByte(provider);
         }
 
         short IConvertible.ToInt16(IFormatProvider provider)
         {
-            return ((IConvertible)_value).ToInt16(provider);
+            return ((IConvertible)Value).ToInt16(provider);
         }
 
         ushort IConvertible.ToUInt16(IFormatProvider provider)
         {
-            return ((IConvertible)_value).ToUInt16(provider);
+            return ((IConvertible)Value).ToUInt16(provider);
         }
 
         int IConvertible.ToInt32(IFormatProvider provider)
         {
-            return ((IConvertible)_value).ToInt32(provider);
+            return ((IConvertible)Value).ToInt32(provider);
         }
 
         uint IConvertible.ToUInt32(IFormatProvider provider)
         {
-            return ((IConvertible)_value).ToUInt32(provider);
+            return ((IConvertible)Value).ToUInt32(provider);
         }
 
         long IConvertible.ToInt64(IFormatProvider provider)
         {
-            return ((IConvertible)_value).ToInt64(provider);
+            return ((IConvertible)Value).ToInt64(provider);
         }
 
         ulong IConvertible.ToUInt64(IFormatProvider provider)
         {
-            return ((IConvertible)_value).ToUInt64(provider);
+            return ((IConvertible)Value).ToUInt64(provider);
         }
 
         float IConvertible.ToSingle(IFormatProvider provider)
         {
-            return ((IConvertible)_value).ToSingle(provider);
+            return ((IConvertible)Value).ToSingle(provider);
         }
 
         double IConvertible.ToDouble(IFormatProvider provider)
         {
-            return ((IConvertible)_value).ToDouble(provider);
+            return ((IConvertible)Value).ToDouble(provider);
         }
 
         decimal IConvertible.ToDecimal(IFormatProvider provider)
         {
-            return ((IConvertible)_value).ToDecimal(provider);
+            return ((IConvertible)Value).ToDecimal(provider);
         }
 
         DateTime IConvertible.ToDateTime(IFormatProvider provider)
         {
-            return ((IConvertible)_value).ToDateTime(provider);
+            return ((IConvertible)Value).ToDateTime(provider);
         }
 
         string IConvertible.ToString(IFormatProvider provider)
         {
-            return ((IConvertible)_value).ToString(provider);
+            return ((IConvertible)Value).ToString(provider);
         }
 
         object IConvertible.ToType(Type conversionType, IFormatProvider provider)
         {
-            return ((IConvertible)_value).ToType(conversionType, provider);
+            return ((IConvertible)Value).ToType(conversionType, provider);
         }
     }
 
@@ -404,14 +400,14 @@ namespace Supremacy.Types
         {
             Type type = typeof(TStateEnum);
 
-            // ReSharper disable ConditionIsAlwaysTrueOrFalse
+
             if (context != null &&
                 context.PropertyDescriptor != null &&
                 context.PropertyDescriptor.PropertyType.IsSubclassOf(type))
             {
                 type = context.PropertyDescriptor.PropertyType;
             }
-            // ReSharper restore ConditionIsAlwaysTrueOrFalse
+
 
             State state;
 

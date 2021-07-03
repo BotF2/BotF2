@@ -86,19 +86,11 @@ namespace Supremacy.Scripting.Ast
                     .FirstOrDefault();
                 if (obsoleteAttribute != null)
                 {
-                    ErrorInfo error;
-
-                    if (obsoleteAttribute.IsError)
-                    {
-                        error = CompilerErrors.MemberIsObsolete;
-                    }
-                    else
-                    {
-                        error = string.IsNullOrEmpty(obsoleteAttribute.Message)
+                    ErrorInfo error = obsoleteAttribute.IsError
+                        ? CompilerErrors.MemberIsObsolete
+                        : string.IsNullOrEmpty(obsoleteAttribute.Message)
                         ? CompilerErrors.MemberIsObsoleteWarning
                         : CompilerErrors.MemberIsObsoleteWithMessageWarning;
-                    }
-
                     ec.ReportError(
                         error,
                         Span,

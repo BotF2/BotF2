@@ -146,7 +146,7 @@ namespace Supremacy.Orbitals
             set => _range = (byte)value;
         }
 
-        public Dictionary <string, int> PossibleNames
+        public Dictionary<string, int> PossibleNames
         {
             get => _possibleNames;
         }
@@ -342,7 +342,7 @@ namespace Supremacy.Orbitals
 
                 foreach (XmlElement name in element["ShipNames"])
                 {
-                    
+
                     _possibleNames.Add(name.InnerText.Trim(), 0);
                     //GameLog.Core.GameData.DebugFormat("ShipNames - Possible Name for {0} = {1}", Name, name.InnerText.Trim());
                 }
@@ -518,7 +518,7 @@ namespace Supremacy.Orbitals
                     newShipName = owner.ShipPrefix + " ";
                 }
 
-                newShipName = newShipName + leastUsedName;
+                newShipName += leastUsedName;
                 if (ship.Owner.Key == "BORG")
                 {
                     newShipName = newShipName + " " + ShipSuffixes.Binary(timesUsed + 1).PadLeft(4, '0');

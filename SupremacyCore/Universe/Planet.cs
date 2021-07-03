@@ -297,15 +297,10 @@ namespace Supremacy.Universe
             int maxPop = 99;
             try
             {
-                if (PlanetSize == PlanetSize.NoWorld)
-                {
-                    maxPop = 0;
-                }
-                else
-                {
-                    maxPop = Number.ParseInt32(table[PlanetSize.ToString()]
+                maxPop = PlanetSize == PlanetSize.NoWorld
+                    ? 0
+                    : Number.ParseInt32(table[PlanetSize.ToString()]
                     [GetEnvironment(homePlanetType).ToString()]);
-                }
             }
             catch (Exception ex)
             {

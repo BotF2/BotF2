@@ -129,9 +129,6 @@ namespace Supremacy.IO.Serialization
 
         // Marker to denote that all elements in a typed array are optimizable
         private static readonly BitArray s_fullyOptimizableTypedArray = new BitArray(0);
-
-        private static readonly List<IFastSerializationTypeSurrogate> s_typeSurrogates =
-            new List<IFastSerializationTypeSurrogate>();
         #endregion
 
         #region Properties and Indexers
@@ -142,7 +139,7 @@ namespace Supremacy.IO.Serialization
         /// It is important to use the same list on both client and server ends to ensure
         /// that the same surrogated-types are supported.
         /// </summary>
-        public static List<IFastSerializationTypeSurrogate> TypeSurrogates => s_typeSurrogates;
+        public static List<IFastSerializationTypeSurrogate> TypeSurrogates { get; } = new List<IFastSerializationTypeSurrogate>();
         #endregion
 
         #endregion Static
@@ -157,9 +154,6 @@ namespace Supremacy.IO.Serialization
         #region Properties
 
         #region Fields
-        private bool _optimizeForSize = DefaultOptimizeForSize;
-
-        private bool _preserveDecimalScale = DefaultPreserveDecimalScale;
         #endregion
 
         #region Properties and Indexers
@@ -172,11 +166,7 @@ namespace Supremacy.IO.Serialization
         /// and direct calls to the WriteOptimized methods will always pack data into
         /// the smallest space where possible.
         /// </summary>
-        public bool OptimizeForSize
-        {
-            get => _optimizeForSize;
-            set => _optimizeForSize = value;
-        }
+        public bool OptimizeForSize { get; set; } = DefaultOptimizeForSize;
 
         /// <summary>
         /// Gets or Sets a boolean flag to indicate whether to preserve the scale within
@@ -192,11 +182,7 @@ namespace Supremacy.IO.Serialization
         /// latter would take 4 bytes, therefore it is preferable to not save the scale where
         /// it doesn't affect the represented value.
         /// </summary>
-        public bool PreserveDecimalScale
-        {
-            get => _preserveDecimalScale;
-            set => _preserveDecimalScale = value;
-        }
+        public bool PreserveDecimalScale { get; set; } = DefaultPreserveDecimalScale;
         #endregion
 
         #endregion Properties
@@ -452,12 +438,12 @@ namespace Supremacy.IO.Serialization
         /// <param name="values">The Byte[] to store.</param>
         public override void Write(byte[] values)
         {
-            // ReSharper disable ConditionIsAlwaysTrueOrFalse
+
             if (values == null)
             {
                 writeTypeCode(SerializedType.NullType);
             }
-            // ReSharper restore ConditionIsAlwaysTrueOrFalse
+
             else if (values.Length == 0)
             {
                 writeTypeCode(SerializedType.EmptyTypedArrayType);
@@ -477,12 +463,12 @@ namespace Supremacy.IO.Serialization
         /// <param name="values">The Char[] to store.</param>
         public override void Write(char[] values)
         {
-            // ReSharper disable ConditionIsAlwaysTrueOrFalse
+
             if (values == null)
             {
                 writeTypeCode(SerializedType.NullType);
             }
-            // ReSharper restore ConditionIsAlwaysTrueOrFalse
+
             else if (values.Length == 0)
             {
                 writeTypeCode(SerializedType.EmptyTypedArrayType);
@@ -958,7 +944,7 @@ namespace Supremacy.IO.Serialization
                 }
                 else
                 {
-                    if (_optimizeForSize)
+                    if (OptimizeForSize)
                     {
                         if (int32Value > 0)
                         {
@@ -1024,7 +1010,7 @@ namespace Supremacy.IO.Serialization
                 {
                     writeTypeCode(SerializedType.MaxDateTimeType);
                 }
-                else if (_optimizeForSize && (dateTimeValue.Ticks % TimeSpan.TicksPerMillisecond) == 0)
+                else if (OptimizeForSize && (dateTimeValue.Ticks % TimeSpan.TicksPerMillisecond) == 0)
                 {
                     writeTypeCode(SerializedType.OptimizedDateTimeType);
                     WriteOptimized(dateTimeValue);
@@ -1089,7 +1075,7 @@ namespace Supremacy.IO.Serialization
                 }
                 else
                 {
-                    if (_optimizeForSize)
+                    if (OptimizeForSize)
                     {
                         if (int16Value > 0)
                         {
@@ -1148,7 +1134,7 @@ namespace Supremacy.IO.Serialization
                 }
                 else
                 {
-                    if (_optimizeForSize)
+                    if (OptimizeForSize)
                     {
                         if (int64Value > 0)
                         {
@@ -1241,7 +1227,7 @@ namespace Supremacy.IO.Serialization
                 {
                     writeTypeCode(SerializedType.OneUInt32Type);
                 }
-                else if (_optimizeForSize && uint32Value <= HighestOptimizable32BitValue)
+                else if (OptimizeForSize && uint32Value <= HighestOptimizable32BitValue)
                 {
                     writeTypeCode(SerializedType.OptimizedUInt32Type);
                     write7bitEncodedUnsigned32BitValue(uint32Value);
@@ -1264,7 +1250,7 @@ namespace Supremacy.IO.Serialization
                 {
                     writeTypeCode(SerializedType.OneUInt16Type);
                 }
-                else if (_optimizeForSize && uint16Value <= HighestOptimizable16BitValue)
+                else if (OptimizeForSize && uint16Value <= HighestOptimizable16BitValue)
                 {
                     writeTypeCode(SerializedType.OptimizedUInt16Type);
                     write7bitEncodedUnsigned32BitValue(uint16Value);
@@ -1287,7 +1273,7 @@ namespace Supremacy.IO.Serialization
                 {
                     writeTypeCode(SerializedType.OneUInt64Type);
                 }
-                else if (_optimizeForSize && uint64Value <= HighestOptimizable64BitValue)
+                else if (OptimizeForSize && uint64Value <= HighestOptimizable64BitValue)
                 {
                     writeTypeCode(SerializedType.OptimizedUInt64Type);
                     WriteOptimized(uint64Value);
@@ -1306,7 +1292,7 @@ namespace Supremacy.IO.Serialization
                 {
                     writeTypeCode(SerializedType.ZeroTimeSpanType);
                 }
-                else if (_optimizeForSize && (timeSpanValue.Ticks % TimeSpan.TicksPerMillisecond) == 0)
+                else if (OptimizeForSize && (timeSpanValue.Ticks % TimeSpan.TicksPerMillisecond) == 0)
                 {
                     writeTypeCode(SerializedType.OptimizedTimeSpanType);
                     WriteOptimized(timeSpanValue);
@@ -1576,7 +1562,7 @@ namespace Supremacy.IO.Serialization
             int[] data = decimal.GetBits(value);
             byte scale = (byte)(data[3] >> 16);
             byte flags = 0;
-            if (scale != 0 && !_preserveDecimalScale && _optimizeForSize)
+            if (scale != 0 && !PreserveDecimalScale && OptimizeForSize)
             {
                 decimal normalized = decimal.Truncate(value);
                 if (normalized == value)
@@ -1958,7 +1944,7 @@ namespace Supremacy.IO.Serialization
             {
                 BitArray optimizeFlags = null;
                 int notOptimizable = 0;
-                int notWorthOptimizingLimit = 1 + (int)(values.Length * (_optimizeForSize ? 0.8f : 0.6f));
+                int notWorthOptimizingLimit = 1 + (int)(values.Length * (OptimizeForSize ? 0.8f : 0.6f));
                 for (int i = 0; i < values.Length && notOptimizable < notWorthOptimizingLimit; i++)
                 {
                     if (values[i].Ticks % TimeSpan.TicksPerMillisecond != 0)
@@ -2131,7 +2117,7 @@ namespace Supremacy.IO.Serialization
             {
                 BitArray optimizeFlags = null;
                 int notOptimizable = 0;
-                int notWorthOptimizingLimit = 1 + (int)(values.Length * (_optimizeForSize ? 0.8f : 0.6f));
+                int notWorthOptimizingLimit = 1 + (int)(values.Length * (OptimizeForSize ? 0.8f : 0.6f));
                 for (int i = 0; i < values.Length && notOptimizable < notWorthOptimizingLimit; i++)
                 {
                     if (values[i] < 0 || values[i] > HighestOptimizable16BitValue)
@@ -2182,7 +2168,7 @@ namespace Supremacy.IO.Serialization
             {
                 BitArray optimizeFlags = null;
                 int notOptimizable = 0;
-                int notWorthOptimizingLimit = 1 + (int)(values.Length * (_optimizeForSize ? 0.8f : 0.6f));
+                int notWorthOptimizingLimit = 1 + (int)(values.Length * (OptimizeForSize ? 0.8f : 0.6f));
                 for (int i = 0; i < values.Length && notOptimizable < notWorthOptimizingLimit; i++)
                 {
                     if (values[i] < 0 || values[i] > HighestOptimizable32BitValue)
@@ -2233,7 +2219,7 @@ namespace Supremacy.IO.Serialization
             {
                 BitArray optimizeFlags = null;
                 int notOptimizable = 0;
-                int notWorthOptimizingLimit = 1 + (int)(values.Length * (_optimizeForSize ? 0.8f : 0.6f));
+                int notWorthOptimizingLimit = 1 + (int)(values.Length * (OptimizeForSize ? 0.8f : 0.6f));
 
                 for (int i = 0; i < values.Length && notOptimizable < notWorthOptimizingLimit; i++)
                 {
@@ -2285,7 +2271,7 @@ namespace Supremacy.IO.Serialization
             {
                 BitArray optimizeFlags = null;
                 int notOptimizable = 0;
-                int notWorthOptimizingLimit = 1 + (int)(values.Length * (_optimizeForSize ? 0.8f : 0.6f));
+                int notWorthOptimizingLimit = 1 + (int)(values.Length * (OptimizeForSize ? 0.8f : 0.6f));
                 for (int i = 0; i < values.Length && notOptimizable < notWorthOptimizingLimit; i++)
                 {
                     if (values[i].Ticks % TimeSpan.TicksPerMillisecond != 0)
@@ -2337,7 +2323,7 @@ namespace Supremacy.IO.Serialization
             {
                 BitArray optimizeFlags = null;
                 int notOptimizable = 0;
-                int notWorthOptimizingLimit = 1 + (int)(values.Length * (_optimizeForSize ? 0.8f : 0.6f));
+                int notWorthOptimizingLimit = 1 + (int)(values.Length * (OptimizeForSize ? 0.8f : 0.6f));
                 for (int i = 0; i < values.Length && notOptimizable < notWorthOptimizingLimit; i++)
                 {
                     if (values[i] > HighestOptimizable16BitValue)
@@ -2389,7 +2375,7 @@ namespace Supremacy.IO.Serialization
             {
                 BitArray optimizeFlags = null;
                 int notOptimizable = 0;
-                int notWorthOptimizingLimit = 1 + (int)(values.Length * (_optimizeForSize ? 0.8f : 0.6f));
+                int notWorthOptimizingLimit = 1 + (int)(values.Length * (OptimizeForSize ? 0.8f : 0.6f));
                 for (int i = 0; i < values.Length && notOptimizable < notWorthOptimizingLimit; i++)
                 {
                     if (values[i] > HighestOptimizable32BitValue)
@@ -2441,7 +2427,7 @@ namespace Supremacy.IO.Serialization
             {
                 BitArray optimizeFlags = null;
                 int notOptimizable = 0;
-                int notWorthOptimizingLimit = 1 + (int)(values.Length * (_optimizeForSize ? 0.8f : 0.6f));
+                int notWorthOptimizingLimit = 1 + (int)(values.Length * (OptimizeForSize ? 0.8f : 0.6f));
                 for (int i = 0; i < values.Length && notOptimizable < notWorthOptimizingLimit; i++)
                 {
                     if (values[i] > HighestOptimizable64BitValue)
@@ -3212,7 +3198,7 @@ namespace Supremacy.IO.Serialization
             else if (elementType == typeof(int))
             {
                 writeTypeCode(SerializedType.Int32ArrayType);
-                if (_optimizeForSize)
+                if (OptimizeForSize)
                 {
                     WriteOptimized((int[])value);
                 }
@@ -3225,7 +3211,7 @@ namespace Supremacy.IO.Serialization
             else if (elementType == typeof(short))
             {
                 writeTypeCode(SerializedType.Int16ArrayType);
-                if (_optimizeForSize)
+                if (OptimizeForSize)
                 {
                     WriteOptimized((short[])value);
                 }
@@ -3238,7 +3224,7 @@ namespace Supremacy.IO.Serialization
             else if (elementType == typeof(long))
             {
                 writeTypeCode(SerializedType.Int64ArrayType);
-                if (_optimizeForSize)
+                if (OptimizeForSize)
                 {
                     WriteOptimized((long[])value);
                 }
@@ -3251,7 +3237,7 @@ namespace Supremacy.IO.Serialization
             else if (elementType == typeof(uint))
             {
                 writeTypeCode(SerializedType.UInt32ArrayType);
-                if (_optimizeForSize)
+                if (OptimizeForSize)
                 {
                     WriteOptimized((uint[])value);
                 }
@@ -3264,7 +3250,7 @@ namespace Supremacy.IO.Serialization
             else if (elementType == typeof(ushort))
             {
                 writeTypeCode(SerializedType.UInt16ArrayType);
-                if (_optimizeForSize)
+                if (OptimizeForSize)
                 {
                     WriteOptimized((ushort[])value);
                 }
@@ -3277,7 +3263,7 @@ namespace Supremacy.IO.Serialization
             else if (elementType == typeof(ulong))
             {
                 writeTypeCode(SerializedType.UInt64ArrayType);
-                if (_optimizeForSize)
+                if (OptimizeForSize)
                 {
                     WriteOptimized((ulong[])value);
                 }
@@ -3308,7 +3294,7 @@ namespace Supremacy.IO.Serialization
             else if (elementType == typeof(DateTime))
             {
                 writeTypeCode(SerializedType.DateTimeArrayType);
-                if (_optimizeForSize)
+                if (OptimizeForSize)
                 {
                     WriteOptimized((DateTime[])value);
                 }
@@ -3321,7 +3307,7 @@ namespace Supremacy.IO.Serialization
             else if (elementType == typeof(TimeSpan))
             {
                 writeTypeCode(SerializedType.TimeSpanArrayType);
-                if (_optimizeForSize)
+                if (OptimizeForSize)
                 {
                     WriteOptimized((TimeSpan[])value);
                 }
@@ -3465,29 +3451,28 @@ namespace Supremacy.IO.Serialization
         private class SingletonTypeWrapper
         {
             #region Fields
-            private readonly Type _wrappedType;
             #endregion
 
             #region Constructors
             public SingletonTypeWrapper(object value)
             {
-                _wrappedType = value.GetType();
+                WrappedType = value.GetType();
             }
             #endregion
 
             #region Properties and Indexers
-            public Type WrappedType => _wrappedType;
+            public Type WrappedType { get; }
             #endregion
 
             #region Methods
             public override bool Equals(object obj)
             {
-                return _wrappedType.Equals(((SingletonTypeWrapper)obj)._wrappedType);
+                return WrappedType.Equals(((SingletonTypeWrapper)obj).WrappedType);
             }
 
             public override int GetHashCode()
             {
-                return _wrappedType.GetHashCode();
+                return WrappedType.GetHashCode();
             }
             #endregion
         }
@@ -3560,7 +3545,6 @@ namespace Supremacy.IO.Serialization
             private int _loadLimit;
             private int _primeNumberListIndex;
             private string[] _stringList;
-            private int _stringListIndex;
             #endregion
 
             #region Constructors
@@ -3579,7 +3563,7 @@ namespace Supremacy.IO.Serialization
                 get { return _stringList[index]; }
             }
 
-            public int Count => _stringListIndex;
+            public int Count { get; private set; }
             #endregion Properties
 
             #region Methods
@@ -3589,14 +3573,14 @@ namespace Supremacy.IO.Serialization
                 int index = _buckets[bucketIndex];
                 if (index == 0)
                 {
-                    _stringList[_stringListIndex++] = value;
-                    _buckets[bucketIndex] = _stringListIndex;
-                    if (_stringListIndex > _loadLimit)
+                    _stringList[Count++] = value;
+                    _buckets[bucketIndex] = Count;
+                    if (Count > _loadLimit)
                     {
                         expand();
                     }
 
-                    return _stringListIndex - 1;
+                    return Count - 1;
                 }
                 return index - 1;
             }
@@ -3638,7 +3622,7 @@ namespace Supremacy.IO.Serialization
             private void reindex()
             {
                 _loadLimit = (int)(_bucketListCapacity * LoadFactor);
-                for (int stringIndex = 0; stringIndex < _stringListIndex; stringIndex++)
+                for (int stringIndex = 0; stringIndex < Count; stringIndex++)
                 {
                     int index = getBucketIndex(_stringList[stringIndex]);
                     _buckets[index] = stringIndex + 1;
@@ -3848,14 +3832,9 @@ namespace Supremacy.IO.Serialization
                         DateTime[] result = new DateTime[ReadOptimizedInt32()];
                         for (int i = 0; i < result.Length; i++)
                         {
-                            if (optimizeFlags == null || (optimizeFlags != s_fullyOptimizableTypedArray && !optimizeFlags[i]))
-                            {
-                                result[i] = ReadDateTime();
-                            }
-                            else
-                            {
-                                result[i] = ReadOptimizedDateTime();
-                            }
+                            result[i] = optimizeFlags == null || (optimizeFlags != s_fullyOptimizableTypedArray && !optimizeFlags[i])
+                                ? ReadDateTime()
+                                : ReadOptimizedDateTime();
                         }
                         return result;
                     }
@@ -3979,14 +3958,9 @@ namespace Supremacy.IO.Serialization
                         short[] result = new short[ReadOptimizedInt32()];
                         for (int i = 0; i < result.Length; i++)
                         {
-                            if (optimizeFlags == null || (optimizeFlags != s_fullyOptimizableTypedArray && !optimizeFlags[i]))
-                            {
-                                result[i] = ReadInt16();
-                            }
-                            else
-                            {
-                                result[i] = ReadOptimizedInt16();
-                            }
+                            result[i] = optimizeFlags == null || (optimizeFlags != s_fullyOptimizableTypedArray && !optimizeFlags[i])
+                                ? ReadInt16()
+                                : ReadOptimizedInt16();
                         }
                         return result;
                     }
@@ -4012,14 +3986,9 @@ namespace Supremacy.IO.Serialization
                         int[] result = new int[ReadOptimizedInt32()];
                         for (int i = 0; i < result.Length; i++)
                         {
-                            if (optimizeFlags == null || (optimizeFlags != s_fullyOptimizableTypedArray && !optimizeFlags[i]))
-                            {
-                                result[i] = ReadInt32();
-                            }
-                            else
-                            {
-                                result[i] = ReadOptimizedInt32();
-                            }
+                            result[i] = optimizeFlags == null || (optimizeFlags != s_fullyOptimizableTypedArray && !optimizeFlags[i])
+                                ? ReadInt32()
+                                : ReadOptimizedInt32();
                         }
                         return result;
                     }
@@ -4045,14 +4014,9 @@ namespace Supremacy.IO.Serialization
                         long[] result = new long[ReadOptimizedInt64()];
                         for (int i = 0; i < result.Length; i++)
                         {
-                            if (optimizeFlags == null || (optimizeFlags != s_fullyOptimizableTypedArray && !optimizeFlags[i]))
-                            {
-                                result[i] = ReadInt64();
-                            }
-                            else
-                            {
-                                result[i] = ReadOptimizedInt64();
-                            }
+                            result[i] = optimizeFlags == null || (optimizeFlags != s_fullyOptimizableTypedArray && !optimizeFlags[i])
+                                ? ReadInt64()
+                                : ReadOptimizedInt64();
                         }
                         return result;
                     }
@@ -4421,38 +4385,17 @@ namespace Supremacy.IO.Serialization
 
             if ((flags & 4) == 0)
             {
-                if ((flags & 32) != 0)
-                {
-                    lo = ReadOptimizedInt32();
-                }
-                else
-                {
-                    lo = ReadInt32();
-                }
+                lo = (flags & 32) != 0 ? ReadOptimizedInt32() : ReadInt32();
             }
 
             if ((flags & 8) == 0)
             {
-                if ((flags & 64) != 0)
-                {
-                    mid = ReadOptimizedInt32();
-                }
-                else
-                {
-                    mid = ReadInt32();
-                }
+                mid = (flags & 64) != 0 ? ReadOptimizedInt32() : ReadInt32();
             }
 
             if ((flags & 16) == 0)
             {
-                if ((flags & 128) != 0)
-                {
-                    hi = ReadOptimizedInt32();
-                }
-                else
-                {
-                    hi = ReadInt32();
-                }
+                hi = (flags & 128) != 0 ? ReadOptimizedInt32() : ReadInt32();
             }
 
             return new decimal(lo, mid, hi, (flags & 0x01) != 0, scale);
@@ -4920,14 +4863,9 @@ namespace Supremacy.IO.Serialization
                         TimeSpan[] result = new TimeSpan[ReadOptimizedInt32()];
                         for (int i = 0; i < result.Length; i++)
                         {
-                            if (optimizeFlags == null || (optimizeFlags != s_fullyOptimizableTypedArray && !optimizeFlags[i]))
-                            {
-                                result[i] = ReadTimeSpan();
-                            }
-                            else
-                            {
-                                result[i] = ReadOptimizedTimeSpan();
-                            }
+                            result[i] = optimizeFlags == null || (optimizeFlags != s_fullyOptimizableTypedArray && !optimizeFlags[i])
+                                ? ReadTimeSpan()
+                                : ReadOptimizedTimeSpan();
                         }
                         return result;
                     }
@@ -5010,14 +4948,9 @@ namespace Supremacy.IO.Serialization
                         ushort[] result = new ushort[ReadOptimizedUInt32()];
                         for (int i = 0; i < result.Length; i++)
                         {
-                            if (optimizeFlags == null || (optimizeFlags != s_fullyOptimizableTypedArray && !optimizeFlags[i]))
-                            {
-                                result[i] = ReadUInt16();
-                            }
-                            else
-                            {
-                                result[i] = ReadOptimizedUInt16();
-                            }
+                            result[i] = optimizeFlags == null || (optimizeFlags != s_fullyOptimizableTypedArray && !optimizeFlags[i])
+                                ? ReadUInt16()
+                                : ReadOptimizedUInt16();
                         }
                         return result;
                     }
@@ -5044,14 +4977,9 @@ namespace Supremacy.IO.Serialization
                         uint[] result = new uint[ReadOptimizedUInt32()];
                         for (int i = 0; i < result.Length; i++)
                         {
-                            if (optimizeFlags == null || (optimizeFlags != s_fullyOptimizableTypedArray && !optimizeFlags[i]))
-                            {
-                                result[i] = ReadUInt32();
-                            }
-                            else
-                            {
-                                result[i] = ReadOptimizedUInt32();
-                            }
+                            result[i] = optimizeFlags == null || (optimizeFlags != s_fullyOptimizableTypedArray && !optimizeFlags[i])
+                                ? ReadUInt32()
+                                : ReadOptimizedUInt32();
                         }
                         return result;
                     }
@@ -5078,14 +5006,9 @@ namespace Supremacy.IO.Serialization
                         ulong[] result = new ulong[ReadOptimizedInt64()];
                         for (int i = 0; i < result.Length; i++)
                         {
-                            if (optimizeFlags == null || (optimizeFlags != s_fullyOptimizableTypedArray && !optimizeFlags[i]))
-                            {
-                                result[i] = ReadUInt64();
-                            }
-                            else
-                            {
-                                result[i] = ReadOptimizedUInt64();
-                            }
+                            result[i] = optimizeFlags == null || (optimizeFlags != s_fullyOptimizableTypedArray && !optimizeFlags[i])
+                                ? ReadUInt64()
+                                : ReadOptimizedUInt64();
                         }
                         return result;
                     }

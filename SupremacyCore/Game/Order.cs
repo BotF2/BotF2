@@ -607,14 +607,9 @@ namespace Supremacy.Game
 
             if (_isActive != building.IsActive)
             {
-                if (_isActive)
-                {
-                    _ = building.Sector.System.Colony.ActivateBuilding(building);
-                }
-                else
-                {
-                    _ = building.Sector.System.Colony.DeactivateBuilding(building);
-                }
+                _ = _isActive
+                    ? building.Sector.System.Colony.ActivateBuilding(building)
+                    : building.Sector.System.Colony.DeactivateBuilding(building);
             }
 
             return true;
@@ -969,14 +964,7 @@ namespace Supremacy.Game
 
             TradeRoute route = colony.TradeRoutes[_routeId];
 
-            if (_targetId == -1)
-            {
-                route.TargetColony = null;
-            }
-            else
-            {
-                route.TargetColony = GameContext.Current.Universe.Objects[_targetId] as Colony;
-            }
+            route.TargetColony = _targetId == -1 ? null : GameContext.Current.Universe.Objects[_targetId] as Colony;
 
             return true;
         }

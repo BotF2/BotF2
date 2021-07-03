@@ -296,14 +296,9 @@ namespace Supremacy.Client.Views
                 return;
             }
 
-            if (selectedTaskForce.Ships.Any())
-            {
-                Model.SelectedTaskForce = Model.TaskForces.FirstOrDefault(o => Equals(o.View.Source, selectedTaskForce));
-            }
-            else
-            {
-                Model.SelectedTaskForce = Model.TaskForces.FirstOrDefault(o => Equals(o.View.Source, args.Ship.Fleet));
-            }
+            Model.SelectedTaskForce = selectedTaskForce.Ships.Any()
+                ? Model.TaskForces.FirstOrDefault(o => Equals(o.View.Source, selectedTaskForce))
+                : Model.TaskForces.FirstOrDefault(o => Equals(o.View.Source, args.Ship.Fleet));
         }
 
         private void ExecuteCancelTradeRouteCommand(TradeRoute tradeRoute)

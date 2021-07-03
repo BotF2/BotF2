@@ -11,7 +11,6 @@ namespace Supremacy.Client.Controls
 {
     public class InfoCard : Expander
     {
-        private readonly bool _isContainerForItem;
         private readonly InfoCardFader _fader;
 
         public static readonly RoutedCommand CloseCommand = new RoutedCommand("Close", typeof(InfoCard));
@@ -115,7 +114,7 @@ namespace Supremacy.Client.Controls
         internal InfoCard(bool isContainerForItem)
         {
             _fader = new InfoCardFader();
-            _isContainerForItem = isContainerForItem;
+            IsContainerForItem = isContainerForItem;
 
             UniqueId = Guid.NewGuid();
             LastFocusedDateTime = DateTime.MinValue;
@@ -141,7 +140,7 @@ namespace Supremacy.Client.Controls
 
         internal InfoCardSite RegisteredInfoCardSite { get; set; }
 
-        internal bool IsContainerForItem => _isContainerForItem;
+        internal bool IsContainerForItem { get; }
 
         protected override void OnIsKeyboardFocusWithinChanged(DependencyPropertyChangedEventArgs e)
         {

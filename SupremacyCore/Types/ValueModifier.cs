@@ -21,11 +21,11 @@ namespace Supremacy.Types
         protected const byte CompoundMultiplierFlag = 1 << 0;
         protected const byte ApplyOffsetFirstFlag = 1 << 1;
 
-        // ReSharper disable StaticFieldInGenericType
+
         private static readonly Func<T, T, Percentage, T> _compoundMultiplyExpression;
         private static readonly Func<T, T, Percentage, T> _standardMultiplyExpression;
         private static readonly Func<T, T, int, T> _offsetExpression;
-        // ReSharper restore StaticFieldInGenericType
+
 
         private byte _flags;
         private int _offset;

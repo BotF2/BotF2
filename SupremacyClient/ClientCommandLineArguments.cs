@@ -17,18 +17,13 @@ namespace Supremacy.Client
     public class ClientCommandLineArguments : IClientCommandLineArguments, ICmdArgs
     {
         #region Fields
-        private PresentationTraceLevel _traceLevel = PresentationTraceLevel.None;
         #endregion
 
         #region Properties
         [CmdArg(
            RequiredValue = CmdArgRequiredValue.Yes,
            Description = "Sets the WPF presentation trace level.")]
-        public PresentationTraceLevel TraceLevel
-        {
-            get => _traceLevel;
-            set => _traceLevel = value;
-        }
+        public PresentationTraceLevel TraceLevel { get; set; } = PresentationTraceLevel.None;
 
         [CmdArg(
             RequiredValue = CmdArgRequiredValue.Yes,

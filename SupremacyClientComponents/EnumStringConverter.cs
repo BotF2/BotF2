@@ -169,19 +169,17 @@ namespace Supremacy.Client
             {
                 _enumTables = GameContext.Current.Tables.EnumTables;
             }
-            else if (Designer.IsInDesignMode)
-            {
-                _enumTables = TableMap.ReadFromFile(
-                    Path.Combine(
-                        PathHelper.GetWorkingDirectory(),
-                        @"Resources\Data\EnumStrings.txt"));
-            }
             else
             {
-                _enumTables = TableMap.ReadFromFile(
-                    Path.Combine(
-                        Environment.CurrentDirectory,
-                        @"Resources\Data\EnumStrings.txt"));
+                _enumTables = Designer.IsInDesignMode
+                    ? TableMap.ReadFromFile(
+                                    Path.Combine(
+                                        PathHelper.GetWorkingDirectory(),
+                                        @"Resources\Data\EnumStrings.txt"))
+                    : TableMap.ReadFromFile(
+                                    Path.Combine(
+                                        Environment.CurrentDirectory,
+                                        @"Resources\Data\EnumStrings.txt"));
             }
         }
         #endregion

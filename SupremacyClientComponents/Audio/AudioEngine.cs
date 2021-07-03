@@ -57,9 +57,6 @@ namespace Supremacy.Client.Audio
 
         private readonly List<FMODGrouping> _channelGroups = new List<FMODGrouping>();
         private readonly List<FMODAudioTrack> _tracks = new List<FMODAudioTrack>();
-
-        private readonly object _updateLock = new object();
-        private readonly IScheduler _scheduler = null;
         private readonly IObservable<long> _updateTimer = null;
         private IDisposable _updateTimerSubscription = null;
         #endregion
@@ -80,7 +77,7 @@ namespace Supremacy.Client.Audio
 
         public FMOD.System System => _system;
 
-        public IScheduler Scheduler => _scheduler;
+        public IScheduler Scheduler { get; } = null;
 
         public IAudioGrouping Master => _masterChannelGroup;
 
@@ -90,7 +87,7 @@ namespace Supremacy.Client.Audio
             set => _masterChannelGroup.Volume = value;
         }
 
-        public object Lock => _updateLock;
+        public object Lock { get; } = new object();
         #endregion
 
         #region Construction & Lifetime
@@ -114,8 +111,8 @@ namespace Supremacy.Client.Audio
             FMODErr.Check(_system.getMasterChannelGroup(ref channelGroup));
             _masterChannelGroup = new FMODGrouping(this, channelGroup);
 
-            _scheduler = new EventLoopScheduler("AudioEngine");
-            _updateTimer = Observable.Interval(TimeSpan.FromMilliseconds(UpdateInterval), _scheduler).Do(_ => Update());
+            Scheduler = new EventLoopScheduler("AudioEngine");
+            _updateTimer = Observable.Interval(TimeSpan.FromMilliseconds(UpdateInterval), Scheduler).Do(_ => Update());
         }
 
         public void Dispose()
@@ -127,7 +124,7 @@ namespace Supremacy.Client.Audio
 
             _isDisposed = true;
 
-            lock (_updateLock)
+            lock (Lock)
             {
                 try
                 {
@@ -187,7 +184,7 @@ namespace Supremacy.Client.Audio
         public IAudioGrouping CreateGrouping(string name)
         {
             FMODGrouping cg = null;
-            lock (_updateLock)
+            lock (Lock)
             {
                 cg = new FMODGrouping(this, name);
                 cg.Parent = Master;
@@ -201,7 +198,7 @@ namespace Supremacy.Client.Audio
             FMODAudioTrack track = null;
             if (File.Exists(fileName))
             {
-                lock (_updateLock)
+                lock (Lock)
                 {
                     track = new FMODAudioTrack(this, fileName);
                     _tracks.Add(track);
@@ -221,7 +218,7 @@ namespace Supremacy.Client.Audio
         {
             try
             {
-                lock (_updateLock)
+                lock (Lock)
                 {
                     if (_updateTimerSubscription == null)
                     {
@@ -239,7 +236,7 @@ namespace Supremacy.Client.Audio
 
         public void Stop()
         {
-            lock (_updateLock)
+            lock (Lock)
             {
                 if (_updateTimerSubscription != null)
                 {
@@ -264,7 +261,7 @@ namespace Supremacy.Client.Audio
 
         public void Update()
         {
-            lock (_updateLock)
+            lock (Lock)
             {
                 try
                 {

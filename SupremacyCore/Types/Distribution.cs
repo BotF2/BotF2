@@ -185,14 +185,7 @@ namespace Supremacy.Types
 
                 if (_group._lastChangeIndex == otherValues.IndexOf(this))
                 {
-                    if (this == otherValues[otherValues.Count - 1])
-                    {
-                        _group._lastChangeIndex = 0;
-                    }
-                    else
-                    {
-                        _group._lastChangeIndex = otherValues.IndexOf(this) + 1;
-                    }
+                    _group._lastChangeIndex = this == otherValues[otherValues.Count - 1] ? 0 : otherValues.IndexOf(this) + 1;
                 }
 
                 while (Math.Abs(change) >= 0.01f)

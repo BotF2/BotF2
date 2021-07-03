@@ -29,9 +29,7 @@ namespace Supremacy.Client.Views
     {
         private Sector _sector = null;
         private Civilization _playerCiv = null;
-        private string _stationName = "";
         private string _stationStatus = "";
-        private BitmapImage _stationImage = null;
         private bool _stationScrapVisibility;
 
         public Sector Sector
@@ -58,21 +56,17 @@ namespace Supremacy.Client.Views
             }
         }
 
-        public string StationName => _stationName;
+        public string StationName { get; private set; } = "";
 
         public string StationStatus => _stationStatus;
 
-        public BitmapImage StationImage => _stationImage;
+        public BitmapImage StationImage { get; private set; } = null;
 
         public bool StationScrapVisibility
         {
             get
             {
-                if (Sector != null && Sector.Owner == PlayerCiv)
-                {
-                    _stationScrapVisibility = true;
-                }
-                else { _stationScrapVisibility = false; }
+                _stationScrapVisibility = Sector != null && Sector.Owner == PlayerCiv;
                 return _stationScrapVisibility;
             }
         }
@@ -86,8 +80,8 @@ namespace Supremacy.Client.Views
 
         private void Update()
         {
-            _stationImage = null;
-            _stationName = "Unknown in station";
+            StationImage = null;
+            StationName = "Unknown in station";
             _stationStatus = "";
             if (Sector == null || PlayerCiv == null)
             {
@@ -103,7 +97,7 @@ namespace Supremacy.Client.Views
 
             if ((Sector.Station.Owner == PlayerCiv) || DiplomacyHelper.IsContactMade(PlayerCiv, Sector.Station.Owner))
             {
-                _stationName = Sector.Station.Name;
+                StationName = Sector.Station.Name;
                 _stationStatus = "Operational";
                 imagePath = Sector.Station.Design.Image;
             }
@@ -127,7 +121,7 @@ namespace Supremacy.Client.Views
 
                 uri = ResourceManager.GetResourceUri(tmpPath);
             }
-            _stationImage = ImageCache.Current.Get(uri);
+            StationImage = ImageCache.Current.Get(uri);
         }
 
         //#pragma warning disable IDE0051 // Remove unused private members
@@ -168,7 +162,6 @@ namespace Supremacy.Client.Views
         private IEnumerable<FleetViewWrapper> _iSpyTaskForces;
         private IEnumerable<TradeRoute> _tradeRoutes;
         private readonly EmpirePlayerStatusCollection _empirePlayers;
-        private StationPresentationModel _selectedSectorStation;
         #endregion
 
         #region Events
@@ -206,7 +199,7 @@ namespace Supremacy.Client.Views
                 }
                 );
 
-            _selectedSectorStation = new StationPresentationModel(appContext);
+            SelectedSectorStation = new StationPresentationModel(appContext);
         }
         #endregion
 
@@ -270,13 +263,13 @@ namespace Supremacy.Client.Views
                 _selectedSector = value;
                 OnSelectedSectorChanged();
 
-                _selectedSectorStation.Sector = _selectedSector;
+                SelectedSectorStation.Sector = _selectedSector;
                 // _stationScrapVisibility = _selectedSectorStation.ScrapVisibility;
                 OnSelectedSectorStationChanged();
             }
         }
 
-        public StationPresentationModel SelectedSectorStation => _selectedSectorStation;
+        public StationPresentationModel SelectedSectorStation { get; }
 
         public Sector HoveredSector
         {
@@ -301,7 +294,7 @@ namespace Supremacy.Client.Views
                 _selectedSector = value;
                 OnSelectedSectorChanged();
 
-                _selectedSectorStation.Sector = _selectedSector;
+                SelectedSectorStation.Sector = _selectedSector;
                 OnSelectedSectorStationChanged();
             }
         }
@@ -585,17 +578,11 @@ namespace Supremacy.Client.Views
 
         public BitmapImage GetInsigniaImage(string insigniaPath)
         {
-            Uri imageUri;
+            Uri imageUri = File.Exists(ResourceManager.GetResourcePath(insigniaPath))
+                ? ResourceManager.GetResourceUri(insigniaPath)
+                : ResourceManager.GetResourceUri(@"Resources\Images\Insignias\__default.png");
             //var imagePath =   insigniaPath.ToLowerInvariant();
 
-            if (File.Exists(ResourceManager.GetResourcePath(insigniaPath)))
-            {
-                imageUri = ResourceManager.GetResourceUri(insigniaPath);
-            }
-            else
-            {
-                imageUri = ResourceManager.GetResourceUri(@"Resources\Images\Insignias\__default.png");
-            }
 
             return ImageCache.Current.Get(imageUri);
         }

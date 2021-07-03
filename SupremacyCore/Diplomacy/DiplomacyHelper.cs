@@ -173,14 +173,7 @@ namespace Supremacy.Diplomacy
                     continue;
                 }
 
-                if (regard > 0)
-                {
-                    regard = Math.Max(0, (int)(regard * decay.Positive));
-                }
-                else
-                {
-                    regard = Math.Min(0, (int)(regard * decay.Negative));
-                }
+                regard = regard > 0 ? Math.Max(0, (int)(regard * decay.Positive)) : Math.Min(0, (int)(regard * decay.Negative));
 
                 if (regard == 0)
                 {

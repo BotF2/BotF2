@@ -57,32 +57,22 @@ namespace Supremacy.VFS
     {
         #region Fields and Properties
 
-        private int _defaultFilesSize;
         /// <summary>
         /// Gets or sets the default size of the files (in KB).
         /// </summary>
         /// <value>The size the default size of the files (in KB).</value>
-        public int DefaultFilesSize
-        {
-            get => _defaultFilesSize;
-            set => _defaultFilesSize = value;
-        }
+        public int DefaultFilesSize { get; set; }
 
         /// <summary>
         /// Memory buffers to hold the files of the source.
         /// </summary>
         private readonly Dictionary<string, byte[]> _files;
 
-        private CompressionAlgorithm _compressionAlgorithm = CompressionAlgorithm.None;
         /// <summary>
         /// Gets or sets the compression mode.
         /// </summary>
         /// <value>The compression mode.</value>
-        public CompressionAlgorithm CompressionAlgorithm
-        {
-            get => _compressionAlgorithm;
-            set => _compressionAlgorithm = value;
-        }
+        public CompressionAlgorithm CompressionAlgorithm { get; set; } = CompressionAlgorithm.None;
 
         #endregion
 
@@ -95,7 +85,7 @@ namespace Supremacy.VFS
         public MemorySource(string name)
         {
             Name = name;
-            _defaultFilesSize = 1024;
+            DefaultFilesSize = 1024;
             _files = new Dictionary<string, byte[]>(StringComparer);
         }
 
@@ -156,11 +146,11 @@ namespace Supremacy.VFS
 
             if (access == FileAccess.Read)
             {
-                memoryStream.SetCompression(_compressionAlgorithm, CompressionMode.Decompress);
+                memoryStream.SetCompression(CompressionAlgorithm, CompressionMode.Decompress);
             }
             else
             {
-                memoryStream.SetCompression(_compressionAlgorithm, CompressionMode.Compress);
+                memoryStream.SetCompression(CompressionAlgorithm, CompressionMode.Compress);
             }
 
             return memoryStream;
@@ -170,10 +160,10 @@ namespace Supremacy.VFS
         {
             _files.Add(resolvedName, null);
 
-            MemoryStream stream = new MemoryStream(_defaultFilesSize * 1024);
+            MemoryStream stream = new MemoryStream(DefaultFilesSize * 1024);
             MemoryFileStream memoryStream = new MemoryFileStream(this, resolvedName, stream, FileAccess.ReadWrite, FileShare.None);
 
-            memoryStream.SetCompression(_compressionAlgorithm, CompressionMode.Compress);
+            memoryStream.SetCompression(CompressionAlgorithm, CompressionMode.Compress);
 
             return memoryStream;
         }

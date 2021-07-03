@@ -23,11 +23,8 @@ namespace Supremacy.Client.Views
     {
         private readonly Civilization _sender;
         private readonly Civilization _recipient;
-        private readonly DiplomacyMessageElementActionCategory _actionCategory;
-        private readonly DiplomacyMessageElementType _elementType;
         private readonly ScriptExpression _scriptExpression;
         private readonly DelegateCommand<DataTemplate> _editParameterCommand;
-        private readonly ICommand _removeCommand;
 
         public DiplomacyMessageElement(
             [NotNull] Civilization sender,
@@ -38,9 +35,9 @@ namespace Supremacy.Client.Views
         {
             _sender = sender ?? throw new ArgumentNullException("sender");
             _recipient = recipient ?? throw new ArgumentNullException("recipient");
-            _actionCategory = actionCategory;
-            _elementType = elementType; // includes TreatyWarPact
-            _removeCommand = removeCommand;
+            ActionCategory = actionCategory;
+            ElementType = elementType; // includes TreatyWarPact
+            RemoveCommand = removeCommand;
 
             _editParameterCommand = new DelegateCommand<DataTemplate>(
                 ExecuteEditParameterCommand,
@@ -75,7 +72,7 @@ namespace Supremacy.Client.Views
                 return;
             }
 
-            Type parameterType = GetViewModelParameterTypeForElementType(_elementType);
+            Type parameterType = GetViewModelParameterTypeForElementType(ElementType);
             string displayMemberPath = (string)null;
 
             if (HasFixedParameter)
@@ -124,13 +121,13 @@ namespace Supremacy.Client.Views
             return HasParameter;
         }
 
-        public DiplomacyMessageElementType ElementType => _elementType;
+        public DiplomacyMessageElementType ElementType { get; }
 
-        public DiplomacyMessageElementActionCategory ActionCategory => _actionCategory;
+        public DiplomacyMessageElementActionCategory ActionCategory { get; }
 
         public ICommand EditParameterCommand => _editParameterCommand;
 
-        public ICommand RemoveCommand => _removeCommand;
+        public ICommand RemoveCommand { get; }
 
         #region Description Property
 

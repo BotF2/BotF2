@@ -28,12 +28,10 @@ namespace Supremacy.VFS
     {
         #region Fields
         private T _baseStream;
-        private bool _closed;
         private readonly string _resolvedPath;
         #endregion
 
         #region Events
-        private FileAccess _access;
         private FileShare _share;
         public event EventHandler<EventArgs> Closed;
         #endregion
@@ -44,7 +42,7 @@ namespace Supremacy.VFS
             _resolvedPath = resolvedPath;
             BaseStream = baseStream;
             _share = share;
-            _access = access;
+            Access = access;
         }
         #endregion
 
@@ -75,7 +73,7 @@ namespace Supremacy.VFS
 
         public override bool CanRead => !IsDisposed && _baseStream.CanRead;
 
-        protected bool IsDisposed => _closed;
+        protected bool IsDisposed { get; private set; }
 
         public override bool CanSeek => !IsDisposed && _baseStream.CanSeek;
 
@@ -143,7 +141,7 @@ namespace Supremacy.VFS
 
         protected override void Dispose(bool disposing)
         {
-            if (_closed)
+            if (IsDisposed)
             {
                 return;
             }
@@ -179,7 +177,7 @@ namespace Supremacy.VFS
 
             OnClosed();
 
-            _closed = true;
+            IsDisposed = true;
 
             if (disposing)
             {
@@ -195,7 +193,7 @@ namespace Supremacy.VFS
 
         protected void VerifyNotDisposed()
         {
-            if (_closed)
+            if (IsDisposed)
             {
                 throw new ObjectDisposedException("StreamDecorator");
             }
@@ -215,7 +213,7 @@ namespace Supremacy.VFS
 
         protected internal string ResolvedPath => _resolvedPath;
 
-        public FileAccess Access => _access;
+        public FileAccess Access { get; }
 
         public FileShare Share => _share;
         #endregion

@@ -17,19 +17,18 @@ namespace Supremacy.Scripting.Ast
     public class Ast : IAst, ISupportInitializeNotification
     {
         private static int _count;
-        private readonly int _id;
         private SourceSpan _sourceSpan;
 
         public Ast()
         {
             _sourceSpan = SourceSpan.None;
-            _id = _count++;
+            UniqueId = _count++;
         }
 
         protected Ast(Ast copySource)
         {
             _sourceSpan = SourceSpan.None;
-            _id = copySource._id;
+            UniqueId = copySource.UniqueId;
             _sourceSpan = copySource._sourceSpan;
         }
 
@@ -240,7 +239,7 @@ namespace Supremacy.Scripting.Ast
             set => _sourceSpan = value;
         }
 
-        public int UniqueId => _id;
+        public int UniqueId { get; }
 
         protected static void DumpChild(IAst child, SourceWriter sw, int indentChange = 0)
         {

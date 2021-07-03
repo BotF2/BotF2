@@ -18,26 +18,25 @@ namespace Supremacy.Game
     public class PlayerContext
     {
         #region Fields
-        private readonly IIndexedCollection<Player> _players;
         #endregion
 
         #region Constructors
         public PlayerContext(IIndexedCollection<Player> players)
         {
-            _players = players ?? throw new ArgumentNullException("players");
+            Players = players ?? throw new ArgumentNullException("players");
         }
         #endregion
 
         #region Properties
         public static PlayerContext Current { get; set; }
 
-        public IIndexedCollection<Player> Players => _players;
+        public IIndexedCollection<Player> Players { get; }
         #endregion
 
         #region Methods
         public bool IsHumanPlayer(ICivIdentity civ)
         {
-            return _players.Any(player => player.Empire.CivID == civ.CivID);
+            return Players.Any(player => player.Empire.CivID == civ.CivID);
         }
         #endregion
     }

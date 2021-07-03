@@ -89,7 +89,7 @@ namespace Supremacy.Orbitals
     {
         public OrbitalBattery() { }
 
-        // ReSharper disable RedundantOverridenMember
+
         public override void SerializeOwnedData(SerializationWriter writer, object context)
         {
             base.SerializeOwnedData(writer, context);
@@ -101,7 +101,7 @@ namespace Supremacy.Orbitals
             base.DeserializeOwnedData(reader, context);
             _isActive = reader.ReadBoolean();
         }
-        // ReSharper restore RedundantOverridenMember
+
 
         public OrbitalBattery(OrbitalBatteryDesign design)
             : base(design) { }

@@ -38,18 +38,15 @@ namespace Supremacy.Universe
 
     public class QuadNode<T> : IEnumerable<T> where T : IQuadTreeMember
     {
-        private int _count;
+        public int Count { get; private set; }
 
-        public int Count => _count;
+        public MapRectangle Region { get; }
 
-        public MapRectangle Region => _region;
-
-        private readonly MapRectangle _region;
         private readonly int _depthLeft;
 
         public QuadNode(MapRectangle region, int depthLeft)
         {
-            _region = region;
+            Region = region;
             _depthLeft = depthLeft;
         }
 
@@ -137,7 +134,7 @@ namespace Supremacy.Universe
 
         public void Add(T member)
         {
-            ++_count;
+            ++Count;
             if (IsLeaf)
             {
                 if (member.BoundingBox.Intersects(Region))
@@ -180,24 +177,18 @@ namespace Supremacy.Universe
 
     public struct MapLocationQuadtreeNode : IQuadTreeMember
     {
-        private int _lastSearchHit;
-        private readonly MapLocation _location;
         private readonly MapRectangle _boundingBox;
 
         public MapLocationQuadtreeNode(MapLocation location)
         {
-            _location = location;
+            Location = location;
             _boundingBox = new MapRectangle(location);
-            _lastSearchHit = 0;
+            LastSearchHit = 0;
         }
 
-        public MapLocation Location => _location;
+        public MapLocation Location { get; }
 
-        public int LastSearchHit
-        {
-            get => _lastSearchHit;
-            set => _lastSearchHit = value;
-        }
+        public int LastSearchHit { get; set; }
 
         public MapRectangle BoundingBox => _boundingBox;
 

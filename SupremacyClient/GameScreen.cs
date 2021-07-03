@@ -30,10 +30,7 @@ namespace Supremacy.Client
 {
     public class GameScreenBase : Control
     {
-        // ReSharper disable once PrivateFieldCanBeConvertedToLocalVariable
         private readonly IUnityContainer _container;
-        private readonly IRegionManager _regionManager;
-        private readonly IPlayerOrderService _playerOrderService;
 
         #region Static Members
         public static readonly DependencyProperty AppContextProperty;
@@ -78,8 +75,8 @@ namespace Supremacy.Client
         protected GameScreenBase([NotNull] IUnityContainer container)
         {
             _container = container ?? throw new ArgumentNullException("container");
-            _regionManager = _container.Resolve<IRegionManager>();
-            _playerOrderService = _container.Resolve<IPlayerOrderService>();
+            RegionManager = _container.Resolve<IRegionManager>();
+            PlayerOrderService = _container.Resolve<IPlayerOrderService>();
 
             AppContext = _container.Resolve<IAppContext>();
         }
@@ -91,9 +88,9 @@ namespace Supremacy.Client
             set => SetValue(AppContextProperty, value);
         }
 
-        protected IPlayerOrderService PlayerOrderService => _playerOrderService;
+        protected IPlayerOrderService PlayerOrderService { get; }
 
-        protected IRegionManager RegionManager => _regionManager;
+        protected IRegionManager RegionManager { get; }
 
         protected void PauseAnimations()
         {

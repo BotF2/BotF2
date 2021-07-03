@@ -41,9 +41,9 @@ namespace Supremacy.Client.Views
                 {
                     return _designInstance;
                 }
-                // ReSharper disable AssignNullToNotNullAttribute
+
                 _designInstance = new DiplomacyScreenViewModel(DesignTimeAppContext.Instance, null);
-                // ReSharper restore AssignNullToNotNullAttribute
+
                 if (_designInstance.ForeignPowers != null) // && _designInstance.ForeignPowers.Count() > 0)
                 {
                     _designInstance.SelectedForeignPower = _designInstance.ForeignPowers.First();
@@ -74,7 +74,7 @@ namespace Supremacy.Client.Views
         public bool localIsHost => ServiceLocator.Current.GetInstance<IAppContext>().IsGameHost;
 
         private readonly ObservableCollection<ForeignPowerViewModel> _foreignPowers;
-        private readonly ReadOnlyObservableCollection<ForeignPowerViewModel> _foreignPowersView;
+
         /*
           DISPLAY MODE
          */
@@ -103,7 +103,7 @@ namespace Supremacy.Client.Views
             : base(appContext, regionManager)
         {
             _foreignPowers = new ObservableCollection<ForeignPowerViewModel>();
-            _foreignPowersView = new ReadOnlyObservableCollection<ForeignPowerViewModel>(_foreignPowers);
+            ForeignPowers = new ReadOnlyObservableCollection<ForeignPowerViewModel>(_foreignPowers);
             // DISPLAY MODE
             _setDisplayModeCommand = new DelegateCommand<ICheckableCommandParameter>(ExecuteSetDisplayModeComand, CanExecuteSetDisplayModeComand);
 
@@ -900,7 +900,7 @@ namespace Supremacy.Client.Views
 
         #endregion
 
-        public ReadOnlyObservableCollection<ForeignPowerViewModel> ForeignPowers => _foreignPowersView;
+        public ReadOnlyObservableCollection<ForeignPowerViewModel> ForeignPowers { get; }
         // DiplayMode
         public ICommand SetDisplayModeCommand => _setDisplayModeCommand;
 

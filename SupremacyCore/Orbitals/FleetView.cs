@@ -282,9 +282,9 @@ namespace Supremacy.Orbitals
 
         #region Constructors and Finalizers
         public ShipView(
-            // ReSharper disable SuggestBaseTypeForParameter
+
             Ship source,
-            // ReSharper restore SuggestBaseTypeForParameter
+
             bool isPresenceKnown,
             bool isDesignKnown,
             bool isOwned)

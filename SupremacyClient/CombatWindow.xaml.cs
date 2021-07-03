@@ -397,15 +397,8 @@ namespace Supremacy.Client
                 RushButton.IsEnabled = true;
                 TransportsButton.IsEnabled = true;
             }
-            if (_update.HostileAssets.Any(ha => ha.CombatShips.Any(ncs => (ncs.Source.OrbitalDesign.ShipType == "Transport") && ((ncs.Owner == _theTargeted1Civ) || (ncs.Owner == _theTargeted2Civ))))
-                || _update.HostileAssets.Any(ha => ha.NonCombatShips.Any(ncs => (ncs.Source.OrbitalDesign.ShipType == "Transport") && ((ncs.Owner == _theTargeted1Civ) || (ncs.Owner == _theTargeted2Civ)))))
-            {
-                TransportsButton.IsEnabled = true;
-            }
-            else
-            {
-                TransportsButton.IsEnabled = false;
-            }
+            TransportsButton.IsEnabled = _update.HostileAssets.Any(ha => ha.CombatShips.Any(ncs => (ncs.Source.OrbitalDesign.ShipType == "Transport") && ((ncs.Owner == _theTargeted1Civ) || (ncs.Owner == _theTargeted2Civ))))
+                || _update.HostileAssets.Any(ha => ha.NonCombatShips.Any(ncs => (ncs.Source.OrbitalDesign.ShipType == "Transport") && ((ncs.Owner == _theTargeted1Civ) || (ncs.Owner == _theTargeted2Civ))));
 
             //GameLog.Core.CombatDetails.DebugFormat("Secondary Target is set to theTargetCiv = {0}", _theTargeted2Civ.ShortName);
             GameLog.Core.CombatDetails.DebugFormat("Primary Target is set to theTargetCiv = {0}", _theTargeted1Civ.ShortName); //theTargeted1Civ);
@@ -428,15 +421,8 @@ namespace Supremacy.Client
                 RushButton.IsEnabled = true;
                 TransportsButton.IsEnabled = true;
             }
-            if (_update.HostileAssets.Any(ha => ha.CombatShips.Any(ncs => (ncs.Source.OrbitalDesign.ShipType == "Transport") && ((ncs.Owner == _theTargeted1Civ) || (ncs.Owner == _theTargeted2Civ))))
-               || _update.HostileAssets.Any(ha => ha.NonCombatShips.Any(ncs => (ncs.Source.OrbitalDesign.ShipType == "Transport") && ((ncs.Owner == _theTargeted1Civ) || (ncs.Owner == _theTargeted2Civ)))))
-            {
-                TransportsButton.IsEnabled = true;
-            }
-            else
-            {
-                TransportsButton.IsEnabled = false;
-            }
+            TransportsButton.IsEnabled = _update.HostileAssets.Any(ha => ha.CombatShips.Any(ncs => (ncs.Source.OrbitalDesign.ShipType == "Transport") && ((ncs.Owner == _theTargeted1Civ) || (ncs.Owner == _theTargeted2Civ))))
+               || _update.HostileAssets.Any(ha => ha.NonCombatShips.Any(ncs => (ncs.Source.OrbitalDesign.ShipType == "Transport") && ((ncs.Owner == _theTargeted1Civ) || (ncs.Owner == _theTargeted2Civ))));
 
             GameLog.Core.CombatDetails.DebugFormat("Secondary Target is set to theTargetCiv = {0}", _theTargeted2Civ.ShortName);
         }

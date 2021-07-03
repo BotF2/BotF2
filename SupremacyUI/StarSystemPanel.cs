@@ -196,7 +196,7 @@ namespace Supremacy.UI
         #endregion
 
         #region Properties and Indexers
-        // ReSharper disable MemberCanBeMadeStatic.Local
+
         private IAppContext AppContext
         {
             get
@@ -222,8 +222,6 @@ namespace Supremacy.UI
                 return s_resourceManager;
             }
         }
-        // ReSharper restore MemberCanBeMadeStatic.Local
-
         public Sector Sector => _regionContext.Value as Sector;
 
         public bool ShowStats

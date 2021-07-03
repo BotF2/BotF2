@@ -16,13 +16,11 @@ namespace Supremacy.Client.Commands
 
     public class CompositeCommandArgs<TParameter> : CompositeCommandArgs
     {
-        private readonly TParameter _parameter;
-
         public CompositeCommandArgs(TParameter parameter)
         {
-            _parameter = parameter;
+            Parameter = parameter;
         }
 
-        public TParameter Parameter => _parameter;
+        public TParameter Parameter { get; }
     }
 }

@@ -123,14 +123,7 @@ namespace Supremacy.Client.Dialogs
                 return;
             }
 
-            if (string.IsNullOrEmpty(sitRepCommentText.Text.Trim()))
-            {
-                entry.SitRepComment = null;
-            }
-            else
-            {
-                entry.SitRepComment = sitRepCommentText.Text;
-            }
+            entry.SitRepComment = string.IsNullOrEmpty(sitRepCommentText.Text.Trim()) ? null : sitRepCommentText.Text;
             //ServiceLocator.Current.GetInstance<IPlayerOrderService>().AddOrder(new SetObjectNameOrder(entry, entry.ClassName));
         }
 

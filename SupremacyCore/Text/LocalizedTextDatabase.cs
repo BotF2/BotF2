@@ -18,17 +18,15 @@ namespace Supremacy.Text
     [ContentProperty("Groups")]
     public sealed class LocalizedTextDatabase : SupportInitializeBase
     {
-        private readonly LocalizedTextGroupCollection _groups;
-
         public LocalizedTextDatabase()
         {
-            _groups = new LocalizedTextGroupCollection();
+            Groups = new LocalizedTextGroupCollection();
         }
 
         public string GetString(object groupKey, object stringkey)
         {
 
-            if (_groups.TryGetValue(groupKey, out LocalizedTextGroup group) && group.Entries.TryGetValue(stringkey, out LocalizedString entry))
+            if (Groups.TryGetValue(groupKey, out LocalizedTextGroup group) && group.Entries.TryGetValue(stringkey, out LocalizedString entry))
             {
                 return entry.LocalText;
             }
@@ -36,7 +34,7 @@ namespace Supremacy.Text
             return null;
         }
 
-        public LocalizedTextGroupCollection Groups => _groups;
+        public LocalizedTextGroupCollection Groups { get; }
 
         public void Merge([NotNull] LocalizedTextDatabase database, bool overwrite = false)
         {
@@ -59,7 +57,7 @@ namespace Supremacy.Text
             }
 
 
-            if (_groups.TryGetValue(group.Key, out LocalizedTextGroup existingGroup))
+            if (Groups.TryGetValue(group.Key, out LocalizedTextGroup existingGroup))
             {
                 foreach (LocalizedString entry in group.Entries)
                 {
@@ -76,7 +74,7 @@ namespace Supremacy.Text
             }
             else
             {
-                _groups.Add(group);
+                Groups.Add(group);
             }
         }
 
@@ -185,40 +183,33 @@ namespace Supremacy.Text
 
     public static class LocalizedTextGroups
     {
-        private static readonly object _galaxyScreen = new StandardLocalizedTextGroupKey("GalaxyScreen");
-        private static readonly object _colonyScreen = new StandardLocalizedTextGroupKey("ColonyScreen");
-        private static readonly object _invasionScreen = new StandardLocalizedTextGroupKey("InvasionScreen");
-        private static readonly object _assetsScreen = new StandardLocalizedTextGroupKey("AssetsScreen");
-        private static readonly object _diplomacyScreen = new StandardLocalizedTextGroupKey("DiplomacyScreen");
         private static readonly object _diplomacyText = new StandardLocalizedTextGroupKey("DiplomacyText");
 
-        public static object GalaxyScreen => _galaxyScreen;
+        public static object GalaxyScreen { get; } = new StandardLocalizedTextGroupKey("GalaxyScreen");
 
-        public static object ColonyScreen => _colonyScreen;
+        public static object ColonyScreen { get; } = new StandardLocalizedTextGroupKey("ColonyScreen");
 
-        public static object InvasionScreen => _invasionScreen;
+        public static object InvasionScreen { get; } = new StandardLocalizedTextGroupKey("InvasionScreen");
 
-        public static object AssetsScreen => _assetsScreen;
+        public static object AssetsScreen { get; } = new StandardLocalizedTextGroupKey("AssetsScreen");
 
-        public static object DiplomacyScreen => _diplomacyScreen;
+        public static object DiplomacyScreen { get; } = new StandardLocalizedTextGroupKey("DiplomacyScreen");
 
         public static object DiplomacyText => _diplomacyText;
 
         [TypeConverter(typeof(LocalizedTextGroupKeyConverter))]
         public sealed class StandardLocalizedTextGroupKey
         {
-            private readonly string _name;
-
             internal StandardLocalizedTextGroupKey([NotNull] string name)
             {
-                _name = name ?? throw new ArgumentNullException("name");
+                Name = name ?? throw new ArgumentNullException("name");
             }
 
-            public string Name => _name;
+            public string Name { get; }
 
             public override string ToString()
             {
-                return _name;
+                return Name;
             }
         }
 
@@ -348,14 +339,14 @@ namespace Supremacy.Text
 
         internal object GroupKey
         {
-            // ReSharper disable MemberCanBePrivate.Local
+
             get => _groupKey;
             set
             {
                 VerifyInitializing();
                 _groupKey = value;
             }
-            // ReSharper restore MemberCanBePrivate.Local
+
         }
 
         protected override void OnKeyCollision(object key, LocalizedString item)
@@ -463,32 +454,30 @@ namespace Supremacy.Text
 
     public sealed class NameTypeTextGroupKey
     {
-        private readonly Type _type;
         private readonly string _name;
 
         public NameTypeTextGroupKey([NotNull] Type type, [NotNull] string name)
         {
-            _type = type ?? throw new ArgumentNullException("type");
+            Type = type ?? throw new ArgumentNullException("type");
             _name = name ?? throw new ArgumentNullException("name");
         }
 
-        public Type Type => _type;
+        public Type Type { get; }
 
         public string Name => _name;
     }
 
     public sealed class ContextualTextEntryKey : IEquatable<ContextualTextEntryKey>
     {
-        private readonly object _baseKey;
         private readonly object _context;
 
         public ContextualTextEntryKey([NotNull] object context, [NotNull] object baseKey)
         {
-            _baseKey = baseKey ?? throw new ArgumentNullException("baseKey");
+            BaseKey = baseKey ?? throw new ArgumentNullException("baseKey");
             _context = context ?? throw new ArgumentNullException("context");
         }
 
-        public object BaseKey => _baseKey;
+        public object BaseKey { get; }
 
         public object Context => _context;
 
@@ -504,7 +493,7 @@ namespace Supremacy.Text
                 return true;
             }
 
-            return Equals(other._baseKey, _baseKey) &&
+            return Equals(other.BaseKey, BaseKey) &&
                    Equals(other._context, _context);
         }
 
@@ -517,7 +506,7 @@ namespace Supremacy.Text
         {
             unchecked
             {
-                return (_baseKey.GetHashCode() * 397) ^ _context.GetHashCode();
+                return (BaseKey.GetHashCode() * 397) ^ _context.GetHashCode();
             }
         }
 

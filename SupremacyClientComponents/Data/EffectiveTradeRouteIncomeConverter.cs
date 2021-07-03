@@ -65,13 +65,9 @@ namespace Supremacy.Client.Data
             {
                 colony = tradeRoute.SourceColony;
             }
-            else if (tradeRoute.TargetColony.OwnerID == empire.CivID)
-            {
-                colony = tradeRoute.TargetColony;
-            }
             else
             {
-                colony = null;
+                colony = tradeRoute.TargetColony.OwnerID == empire.CivID ? tradeRoute.TargetColony : null;
             }
 
             if (colony == null)

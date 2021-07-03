@@ -1930,17 +1930,7 @@ namespace FMOD
         public RESULT playSound(CHANNELINDEX channelid, Sound sound, bool paused, ref Channel channel)
         {
             RESULT result = RESULT.OK;
-            IntPtr channelraw;
-
-            if (channel != null)
-            {
-                channelraw = channel.getRaw();
-            }
-            else
-            {
-                channelraw = new IntPtr();
-            }
-
+            IntPtr channelraw = channel != null ? channel.getRaw() : new IntPtr();
             try
             {
                 result = FMOD_System_PlaySound(systemraw, channelid, sound.getRaw(), paused, ref channelraw);
@@ -1970,17 +1960,7 @@ namespace FMOD
         public RESULT playDSP(CHANNELINDEX channelid, DSP dsp, bool paused, ref Channel channel)
         {
             RESULT result = RESULT.OK;
-            IntPtr channelraw;
-
-            if (channel != null)
-            {
-                channelraw = channel.getRaw();
-            }
-            else
-            {
-                channelraw = new IntPtr();
-            }
-
+            IntPtr channelraw = channel != null ? channel.getRaw() : new IntPtr();
             try
             {
                 result = FMOD_System_PlayDSP(systemraw, channelid, dsp.getRaw(), paused, ref channelraw);

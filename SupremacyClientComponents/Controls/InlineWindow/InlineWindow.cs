@@ -2114,14 +2114,7 @@ namespace Supremacy.Client.Controls
         /// </remarks>
         public void ToggleWindowState()
         {
-            if (WindowState == WindowState.Normal)
-            {
-                WindowState = WindowState.Maximized;
-            }
-            else
-            {
-                WindowState = WindowState.Normal;
-            }
+            WindowState = WindowState == WindowState.Normal ? WindowState.Maximized : WindowState.Normal;
         }
 
         /// <summary>

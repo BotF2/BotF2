@@ -177,14 +177,7 @@ namespace Supremacy.Orbitals
                 _buildSlotEnergyCost = Number.ParseUInt16(element["BuildSlotEnergyCost"].InnerText.Trim());
             }
 
-            if (element["MaxBuildTechLevel"] != null)
-            {
-                _maxBuildTechLevel = Number.ParseByte(element["MaxBuildTechLevel"].InnerText.Trim());
-            }
-            else
-            {
-                _maxBuildTechLevel = NoMaxBuildTechLevel;
-            }
+            _maxBuildTechLevel = element["MaxBuildTechLevel"] != null ? Number.ParseByte(element["MaxBuildTechLevel"].InnerText.Trim()) : (byte)NoMaxBuildTechLevel;
         }
 
         protected override string DefaultImageSubFolder => "Shipyards/";

@@ -29,31 +29,25 @@ namespace Supremacy.Client
     [MarkupExtensionReturnType(typeof(object))]
     public sealed class StringResourceExtension : MarkupExtension
     {
-        private string _key;
-
         [ConstructorArgument("key")]
-        public string Key
-        {
-            get => _key;
-            set => _key = value;
-        }
+        public string Key { get; set; }
 
         public StringCase Case { get; set; }
 
         public StringResourceExtension()
         {
-            _key = string.Empty;
+            Key = string.Empty;
             Case = StringCase.Original;
         }
 
         public StringResourceExtension(string key)
         {
-            _key = key;
+            Key = key;
         }
 
         public override object ProvideValue(IServiceProvider serviceProvider)
         {
-            string text = ResourceManager.GetString(_key);
+            string text = ResourceManager.GetString(Key);
 
             switch (Case)
             {

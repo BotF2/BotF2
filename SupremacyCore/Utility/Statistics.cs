@@ -83,7 +83,7 @@ namespace Supremacy.Utility
             double sum = 0.0, term = z;
             for (int i = 3; sum + term != sum; i += 2)
             {
-                sum = sum + term;
+                sum += term;
                 term = term * z * z / i;
             }
             return 0.5 + sum * Phi(z);

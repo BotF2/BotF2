@@ -63,11 +63,11 @@ namespace Supremacy.Client.Services
                 return false;
             }
 
-            GameLog.Client.UI.DebugFormat("[INavigationService] Activating Screen: {0}", screenName);
+            GameLog.Client.UIDetails.DebugFormat("[INavigationService] Activating Screen: {0}", screenName);
 
             _regionManager.Regions[ClientRegions.GameScreens].Activate(view);
 
-            GameLog.Client.UI.DebugFormat("[INavigationService] Screen Activated: {0}", screenName);
+            GameLog.Client.UIDetails.DebugFormat("[INavigationService] Screen Activated: {0}", screenName);
 
             return true;
         }

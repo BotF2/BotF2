@@ -25,12 +25,12 @@ namespace Supremacy.Game
     }
 
     [Serializable]
-    // ReSharper disable RedundantExtendsListEntry
+
     public abstract class GameObject : Cloneable,
                                        IGameObject,
                                        IOwnedDataSerializableAndRecreatable,
                                        INotifyPropertyChanged
-    // ReSharper restore RedundantExtendsListEntry
+
     {
         private int _objectId;
 
@@ -98,13 +98,13 @@ namespace Supremacy.Game
 
         protected internal virtual void OnDeserialized() { }
 
-#pragma warning disable 168
+
         [OnSerializing]
         private void OnSerializing(StreamingContext context)
         {
             Compact();
         }
-#pragma warning restore 168
+
 
         /// <summary>
         /// Compacts this <see cref="GameObject"/> to reduce the serialization footprint.

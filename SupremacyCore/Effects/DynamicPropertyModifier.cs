@@ -16,7 +16,6 @@ namespace Supremacy.Effects
 {
     public abstract class DynamicPropertyModifier<TValue>
     {
-        private readonly object _stackingKey;
         private readonly StateScope _invalidationSuppressionScope;
 
         protected virtual string Description => null;
@@ -29,11 +28,11 @@ namespace Supremacy.Effects
         protected DynamicPropertyModifier([NotNull] object stackingKey)
             : this()
         {
-            _stackingKey = stackingKey ?? throw new ArgumentNullException("stackingKey");
+            StackingKey = stackingKey ?? throw new ArgumentNullException("stackingKey");
         }
 
         [CanBeNull]
-        public object StackingKey => _stackingKey;
+        public object StackingKey { get; }
 
         public TValue ProvideValue(TValue baseValue, TValue currentValue)
         {

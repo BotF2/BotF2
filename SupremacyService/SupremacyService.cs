@@ -51,7 +51,6 @@ namespace Supremacy.WCF
         private static readonly Lazy<GameLog> _log = new Lazy<GameLog>(() => GameLog.Server);
 
         private readonly object _aiAsyncLock;
-        private readonly LobbyData _lobbyData;
         private readonly Dictionary<Player, PlayerOrdersMessage> _playerOrders;
         private readonly ServerPlayerInfoCollection _playerInfo;
         private readonly IGameErrorService _errorService;
@@ -78,7 +77,7 @@ namespace Supremacy.WCF
             _errorService = ServiceLocator.Current.GetInstance<IGameErrorService>();
             _playerInfo = new ServerPlayerInfoCollection();
             _playerOrders = new Dictionary<Player, PlayerOrdersMessage>();
-            _lobbyData = new LobbyData
+            LobbyData = new LobbyData
             {
                 Players = _playerInfo.Select(o => o.Player).ToArray()
             };
@@ -129,7 +128,7 @@ namespace Supremacy.WCF
 
         internal ServiceHost Host { get; set; }
 
-        internal LobbyData LobbyData => _lobbyData;
+        internal LobbyData LobbyData { get; }
         #endregion
 
         #region Methods
@@ -183,7 +182,7 @@ namespace Supremacy.WCF
                     }
                     else
                     {
-                        _game = GameContext.Create(_lobbyData.GameOptions, _lobbyData.IsMultiplayerGame);
+                        _game = GameContext.Create(LobbyData.GameOptions, LobbyData.IsMultiplayerGame);
                         GameContext.PushThreadContext(_game);
                         try
                         {
@@ -409,14 +408,7 @@ namespace Supremacy.WCF
             {
                 player = new Player { PlayerID = _playerInfo.Count };
 
-                if (!string.IsNullOrWhiteSpace(playerName))
-                {
-                    player.Name = playerName;
-                }
-                else
-                {
-                    player.Name = "Player " + player.PlayerID;
-                }
+                player.Name = !string.IsNullOrWhiteSpace(playerName) ? playerName : "Player " + player.PlayerID;
 
                 OperationContext session = OperationContext.Current;
 
@@ -429,7 +421,7 @@ namespace Supremacy.WCF
                 EnsureChannelClosingHandling();
 
                 _playerInfo.Add(playerInfo);
-                _lobbyData.Players = _playerInfo.Select(o => o.Player).ToArray();
+                LobbyData.Players = _playerInfo.Select(o => o.Player).ToArray();
             }
 
             OnPlayerJoined(player);
@@ -563,7 +555,7 @@ namespace Supremacy.WCF
 
                             GameContext.PushThreadContext(_game);
 
-                            try { _ = SavedGameManager.AutoSave(gameHost, _lobbyData); }
+                            try { _ = SavedGameManager.AutoSave(gameHost, LobbyData); }
                             finally { _ = GameContext.PopThreadContext(); }
                         });
                 }
@@ -951,14 +943,7 @@ namespace Supremacy.WCF
             else
             {
                 ServerPlayerInfo recipient = _playerInfo.FromPlayerId(recipientId);
-                if (recipient != null)
-                {
-                    recipients = new[] { recipient, sender };
-                }
-                else
-                {
-                    recipients = new[] { sender };
-                }
+                recipients = recipient != null ? (new[] { recipient, sender }) : (new[] { sender });
             }
 
             foreach (ServerPlayerInfo recipient in recipients)
@@ -1009,7 +994,7 @@ namespace Supremacy.WCF
 
             lock (_playerInfo.SyncRoot)
             {
-                PlayerSlot slot = _lobbyData.Slots[slotId];
+                PlayerSlot slot = LobbyData.Slots[slotId];
                 if (slot.IsFrozen)
                 {
                     return;
@@ -1054,7 +1039,7 @@ namespace Supremacy.WCF
                     slot.Status = SlotStatus.Taken;
                     slot.Claim = SlotClaim.Assigned;
 
-                    PlayerSlot oldSlot = _lobbyData.Slots
+                    PlayerSlot oldSlot = LobbyData.Slots
                         .Where(o => o != slot)
 .FirstOrDefault(otherSlot => otherSlot.Player == assignedPlayer);
 
@@ -1094,7 +1079,7 @@ namespace Supremacy.WCF
                     fileName,
                     _game,
                     CurrentPlayer,
-                    _lobbyData);
+                    LobbyData);
             }
             catch (Exception e) //ToDo: Just log or additional handling necessary?
             {
@@ -1111,13 +1096,13 @@ namespace Supremacy.WCF
 
             lock (_playerInfo.SyncRoot)
             {
-                _lobbyData.Players = _playerInfo.ToPlayerArray();
+                LobbyData.Players = _playerInfo.ToPlayerArray();
 
                 bool playerAssignmentsChanged = false;
-                List<Player> unassignedPlayers = _lobbyData.Players.Except(_lobbyData.Slots.Select(o => o.Player)).ToList();
+                List<Player> unassignedPlayers = LobbyData.Players.Except(LobbyData.Slots.Select(o => o.Player)).ToList();
                 if (unassignedPlayers.Count != 0)
                 {
-                    List<PlayerSlot> vacantSlots = _lobbyData.Slots.Where(o => o.IsVacant).ToList();
+                    List<PlayerSlot> vacantSlots = LobbyData.Slots.Where(o => o.IsVacant).ToList();
 
                     foreach (Player unassignedPlayer in unassignedPlayers)
                     {
@@ -1135,7 +1120,7 @@ namespace Supremacy.WCF
                     }
                 }
 
-                foreach (PlayerSlot slot in _lobbyData.Slots.Where(
+                foreach (PlayerSlot slot in LobbyData.Slots.Where(
                     slot => slot.Status == SlotStatus.Open &&
                             slot.Claim == SlotClaim.Unassigned))
                 {
@@ -1143,7 +1128,7 @@ namespace Supremacy.WCF
                     slot.Claim = SlotClaim.Assigned;
                 }
 
-                _lobbyData.GameOptions.Freeze();
+                LobbyData.GameOptions.Freeze();
 
                 if (playerAssignmentsChanged)
                 {
@@ -1182,20 +1167,20 @@ namespace Supremacy.WCF
                 }
             }
 
-            _lobbyData.IsMultiplayerGame = initData.IsMultiplayerGame;
-            _lobbyData.GameOptions = initData.Options;
-            _lobbyData.Empires = initData.EmpireNames;
+            LobbyData.IsMultiplayerGame = initData.IsMultiplayerGame;
+            LobbyData.GameOptions = initData.Options;
+            LobbyData.Empires = initData.EmpireNames;
 
-            _lobbyData.GameMod = mod;
+            LobbyData.GameMod = mod;
 
             localPlayer = EstablishPlayer(initData.LocalPlayerName);
 
             int empireCount = initData.EmpireIDs.Length;
 
-            _lobbyData.Players = new[] { localPlayer };
-            _lobbyData.Slots = new PlayerSlot[empireCount];
+            LobbyData.Players = new[] { localPlayer };
+            LobbyData.Slots = new PlayerSlot[empireCount];
 
-            lobbyData = _lobbyData;
+            lobbyData = LobbyData;
 
             for (int i = 0; i < empireCount; i++)
             {
@@ -1210,7 +1195,7 @@ namespace Supremacy.WCF
 
                 };
 
-                _lobbyData.Slots[i] = slot;
+                LobbyData.Slots[i] = slot;
 
                 if (slot.IsFrozen)
                 {
@@ -1225,8 +1210,8 @@ namespace Supremacy.WCF
 
             if (initData.GameType != GameType.MultiplayerNew)
             {
-                PlayerSlot playerSlot = _lobbyData.Slots.FirstOrDefault(o => o.EmpireID == initData.LocalPlayerEmpireID) ??
-                                 _lobbyData.Slots[0];
+                PlayerSlot playerSlot = LobbyData.Slots.FirstOrDefault(o => o.EmpireID == initData.LocalPlayerEmpireID) ??
+                                 LobbyData.Slots[0];
                 AssignPlayerSlot(playerSlot.SlotID, localPlayer.PlayerID);
             }
 
@@ -1254,7 +1239,7 @@ namespace Supremacy.WCF
                     return JoinGameResult.GameAlreadyStarted;
                 }
 
-                if (_playerInfo.Count >= _lobbyData.Slots.Length)
+                if (_playerInfo.Count >= LobbyData.Slots.Length)
                 {
                     localPlayer = null;
                     lobbyData = null;
@@ -1332,7 +1317,7 @@ namespace Supremacy.WCF
 
             lock (_playerInfo.SyncRoot)
             {
-                _lobbyData.GameOptions = options;
+                LobbyData.GameOptions = options;
             }
 
             _ = Observable.ToAsync(SendLobbyUpdate, _scheduler)();
@@ -1378,7 +1363,7 @@ namespace Supremacy.WCF
             {
                 EnsurePlayer();
 
-                PlayerSlot slot = _lobbyData.Slots[slotId];
+                PlayerSlot slot = LobbyData.Slots[slotId];
                 if (slot.IsFrozen)
                 {
                     return;
@@ -1411,7 +1396,7 @@ namespace Supremacy.WCF
             {
                 EnsurePlayer();
 
-                PlayerSlot slot = _lobbyData.Slots[slotId];
+                PlayerSlot slot = LobbyData.Slots[slotId];
                 if (slot.IsFrozen || slot.IsClosed)
                 {
                     return;

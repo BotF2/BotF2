@@ -7,7 +7,6 @@ namespace Supremacy.Client.Controls
     /// </summary>
     public class InfoCardEventArgs : CancelRoutedEventArgs
     {
-        private readonly InfoCard _infoCard;
 
         /// <summary>
         /// Initializes a new instance of the <c>InfoCardEventArgs</c> class.
@@ -32,13 +31,13 @@ namespace Supremacy.Client.Controls
             : base(routedEvent, source)
         {
             // Initialize parameters
-            _infoCard = infoCard;
+            InfoCard = infoCard;
         }
 
         /// <summary>
         /// Gets or sets the <see cref="InfoCard"/> that is the focus of this event.
         /// </summary>
         /// <value>The <see cref="InfoCard"/> that is the focus of this event.</value>
-        public InfoCard InfoCard => _infoCard;
+        public InfoCard InfoCard { get; }
     }
 }

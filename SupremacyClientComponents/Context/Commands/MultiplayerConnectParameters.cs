@@ -15,16 +15,15 @@ namespace Supremacy.Client.Commands
 {
     public class MultiplayerConnectParameters
     {
-        private readonly string _playerName;
         private readonly string _remoteHost;
 
         public MultiplayerConnectParameters([NotNull] string playerName, [NotNull] string remoteHost)
         {
-            _playerName = playerName ?? throw new ArgumentNullException("playerName");
+            PlayerName = playerName ?? throw new ArgumentNullException("playerName");
             _remoteHost = remoteHost ?? throw new ArgumentNullException("remoteHost");
         }
 
-        public string PlayerName => _playerName;
+        public string PlayerName { get; }
 
         public string RemoteHost => _remoteHost;
     }

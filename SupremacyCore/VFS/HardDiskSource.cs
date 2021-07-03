@@ -137,16 +137,9 @@ namespace Supremacy.VFS
             }
 
             // Get the files names
-            string[] directoryFiles;
-            if (recurse)
-            {
-                directoryFiles = Directory.GetFiles(fullPath, searchPattern, SearchOption.AllDirectories);
-            }
-            else
-            {
-                directoryFiles = Directory.GetFiles(fullPath, searchPattern, SearchOption.TopDirectoryOnly);
-            }
-
+            string[] directoryFiles = recurse
+                ? Directory.GetFiles(fullPath, searchPattern, SearchOption.AllDirectories)
+                : Directory.GetFiles(fullPath, searchPattern, SearchOption.TopDirectoryOnly);
             files.AddRange(directoryFiles.Select(f => IOPath.IsPathRooted(f) ? f.Remove(0, sourcePath.Length + 1) : f));
 
             return files.AsReadOnly();
@@ -331,14 +324,7 @@ namespace Supremacy.VFS
 
             string resolvedName = ResolveFileName(path, recurse);
 
-            if (string.IsNullOrEmpty(resolvedName))
-            {
-                fileInfo = new FileInfo(TranslatePath(path));
-            }
-            else
-            {
-                fileInfo = new FileInfo(resolvedName);
-            }
+            fileInfo = string.IsNullOrEmpty(resolvedName) ? new FileInfo(TranslatePath(path)) : new FileInfo(resolvedName);
 
             try
             {
@@ -429,7 +415,6 @@ namespace Supremacy.VFS
         {
             private readonly FileInfo _physicalFileInfo;
             private readonly HardDiskSource _source;
-            private readonly string _virtualPath;
 
             /// <summary>
             /// Initializes a new instance of the <see cref="HardDiskVirtualFileInfo"/> class.
@@ -443,7 +428,7 @@ namespace Supremacy.VFS
                 [NotNull] FileInfo physicalFileInfo)
             {
                 _source = source ?? throw new ArgumentNullException("source");
-                _virtualPath = virtualPath ?? throw new ArgumentNullException("virtualPath");
+                VirtualPath = virtualPath ?? throw new ArgumentNullException("virtualPath");
                 _physicalFileInfo = physicalFileInfo ?? throw new ArgumentNullException("physicalFileInfo");
             }
 
@@ -466,7 +451,7 @@ namespace Supremacy.VFS
             /// Gets the file's virtual path.
             /// </summary>
             /// <value>The file's virtual path.</value>
-            public string VirtualPath => _virtualPath;
+            public string VirtualPath { get; }
 
             /// <summary>
             /// Gets the length of the file in bytes.

@@ -102,7 +102,7 @@ namespace Supremacy.Universe
             try // avoid hang up if this file is opened by another program 
             {
                 // better //  file = "./From_HomeSystemsXML_(autoCreated).csv";
-                file = pathOutputFile + "_HomeSystems-xml_" 
+                file = pathOutputFile + "_HomeSystems-xml_"
                     + GameContext.Current.Options.StartingTechLevel.ToString() + "_List(autoCreated).csv";
 
                 Console.WriteLine("writing {0}", file);
@@ -274,19 +274,19 @@ namespace Supremacy.Universe
                         _cruiserCount = 0;
                     }
 
-                    if (_colonyCount > 0) _colonyText = separator + _colonyCount + hyphen + _colonyText; else _colonyText = " ;";
-                    if (_constructionCount > 0) _constructionText = separator + _constructionCount + hyphen + _constructionText; else _constructionText = " ;";
-                    if (_scoutCount > 0) _scoutText = separator + _scoutCount + hyphen + _scoutText; else _scoutText = " ;";
-                    if (_frigateCount > 0) _frigateText = separator + _frigateCount + hyphen + _frigateText; else _frigateText = " ;";
-                    if (_destroyerCount > 0) _destroyerText = separator + _destroyerCount + hyphen + _destroyerText; else _destroyerText = " ;";
-                    if (_cruiserCount > 0) _cruiserText = separator + _cruiserCount + hyphen + _cruiserText; else _cruiserText = " ;";
-                    if (_strikeCruiserCount > 0) _strikeCruiserText = separator + _strikeCruiserCount + hyphen + _strikeCruiserText; else _strikeCruiserText = " ;";
-                    if (_commandCount > 0) _commandText = separator + _commandCount + hyphen + _commandText; else _commandText = " ;";
-                    if (_scienceCount > 0) _scienceText = separator + _scienceCount + hyphen + _scienceText; else _scienceText = " ;";
-                    if (_medicalCount > 0) _medicalText = separator + _medicalCount + hyphen + _medicalText; else _medicalText = " ;";
-                    if (_transportCount > 0) _transportText = separator + _transportCount + hyphen + _transportText; else _transportText = " ;";
-                    if (_diploCount > 0) _diploText = separator + _diploCount + hyphen + _diploText; else _diploText = " ;";
-                    if (_spyCount > 0) _spyText = separator + _spyCount + hyphen + _spyText; else _spyText = " ;";
+                    _colonyText = _colonyCount > 0 ? separator + _colonyCount + hyphen + _colonyText : " ;";
+                    _constructionText = _constructionCount > 0 ? separator + _constructionCount + hyphen + _constructionText : " ;";
+                    _scoutText = _scoutCount > 0 ? separator + _scoutCount + hyphen + _scoutText : " ;";
+                    _frigateText = _frigateCount > 0 ? separator + _frigateCount + hyphen + _frigateText : " ;";
+                    _destroyerText = _destroyerCount > 0 ? separator + _destroyerCount + hyphen + _destroyerText : " ;";
+                    _cruiserText = _cruiserCount > 0 ? separator + _cruiserCount + hyphen + _cruiserText : " ;";
+                    _strikeCruiserText = _strikeCruiserCount > 0 ? separator + _strikeCruiserCount + hyphen + _strikeCruiserText : " ;";
+                    _commandText = _commandCount > 0 ? separator + _commandCount + hyphen + _commandText : " ;";
+                    _scienceText = _scienceCount > 0 ? separator + _scienceCount + hyphen + _scienceText : " ;";
+                    _medicalText = _medicalCount > 0 ? separator + _medicalCount + hyphen + _medicalText : " ;";
+                    _transportText = _transportCount > 0 ? separator + _transportCount + hyphen + _transportText : " ;";
+                    _diploText = _diploCount > 0 ? separator + _diploCount + hyphen + _diploText : " ;";
+                    _spyText = _spyCount > 0 ? separator + _spyCount + hyphen + _spyText : " ;";
 
 
                     _text

@@ -40,18 +40,13 @@ namespace Supremacy.VFS.Utilities
     {
         #region Fields and Properties
 
-        private bool _isCaseSensitive;
         /// <summary>
         /// Gets or sets a value indicating whether this instance uses case sensitive comparisons.
         /// </summary>
         /// <value>
         /// 	<c>true</c> if this instance uses case sensitive comparisons; otherwise, <c>false</c>.
         /// </value>
-        public bool IsCaseSensitive
-        {
-            get => _isCaseSensitive;
-            set => _isCaseSensitive = value;
-        }
+        public bool IsCaseSensitive { get; set; }
 
         private bool _isInvariantCulture;
         /// <summary>
@@ -72,23 +67,15 @@ namespace Supremacy.VFS.Utilities
 
                 _isInvariantCulture = value;
 
-                if (_isInvariantCulture)
-                {
-                    _cultureInfo = CultureInfo.InvariantCulture;
-                }
-                else
-                {
-                    _cultureInfo = new CultureInfo(_cultureName);
-                }
+                CultureInfo = _isInvariantCulture ? CultureInfo.InvariantCulture : new CultureInfo(_cultureName);
             }
         }
 
-        private CultureInfo _cultureInfo;
         /// <summary>
         /// Gets the current culture.
         /// </summary>
         /// <value>The current culture.</value>
-        public CultureInfo CultureInfo => _cultureInfo;
+        public CultureInfo CultureInfo { get; private set; }
 
         /// <summary>
         /// Name of the current culture.
@@ -107,7 +94,7 @@ namespace Supremacy.VFS.Utilities
         /// <param name="culture">The name of the culture to use for culture-based comparisons.</param>
         public CaseCultureStringComparer(bool isCaseSensitive, bool isInvariantCulture, string culture)
         {
-            _isCaseSensitive = isCaseSensitive;
+            IsCaseSensitive = isCaseSensitive;
             _isInvariantCulture = isInvariantCulture;
             _cultureName = culture;
         }
@@ -126,7 +113,7 @@ namespace Supremacy.VFS.Utilities
 
             if (!_isInvariantCulture)
             {
-                _cultureInfo = new CultureInfo(_cultureName);
+                CultureInfo = new CultureInfo(_cultureName);
             }
         }
 
@@ -142,22 +129,22 @@ namespace Supremacy.VFS.Utilities
         /// <returns></returns>
         public bool Equals(string x, string y)
         {
-            if (_isCaseSensitive && _isInvariantCulture)
+            if (IsCaseSensitive && _isInvariantCulture)
             {
                 return x.Equals(y, StringComparison.InvariantCulture);
             }
 
-            if (!_isCaseSensitive && _isInvariantCulture)
+            if (!IsCaseSensitive && _isInvariantCulture)
             {
                 return x.Equals(y, StringComparison.InvariantCultureIgnoreCase);
             }
 
-            if (_isCaseSensitive && !_isInvariantCulture)
+            if (IsCaseSensitive && !_isInvariantCulture)
             {
                 return x.Equals(y, StringComparison.CurrentCulture);
             }
 
-            if (!_isCaseSensitive && !_isInvariantCulture)
+            if (!IsCaseSensitive && !_isInvariantCulture)
             {
                 return x.Equals(y, StringComparison.CurrentCultureIgnoreCase);
             }
@@ -172,7 +159,7 @@ namespace Supremacy.VFS.Utilities
         /// <returns>A hash code for the specified object.</returns>
         public int GetHashCode(string obj)
         {
-            if (_isCaseSensitive)
+            if (IsCaseSensitive)
             {
                 return obj.GetHashCode();
             }
@@ -197,12 +184,12 @@ namespace Supremacy.VFS.Utilities
         /// <returns></returns>
         public int Compare(string x, string y)
         {
-            if (_isCaseSensitive)
+            if (IsCaseSensitive)
             {
-                return _cultureInfo.CompareInfo.Compare(x, y, CompareOptions.None);
+                return CultureInfo.CompareInfo.Compare(x, y, CompareOptions.None);
             }
 
-            return _cultureInfo.CompareInfo.Compare(x, y, CompareOptions.IgnoreCase);
+            return CultureInfo.CompareInfo.Compare(x, y, CompareOptions.IgnoreCase);
         }
         #endregion
     }

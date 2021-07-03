@@ -304,19 +304,11 @@ namespace Supremacy.Diplomacy
 
             CivilizationPairedMap<IDiplomacyData> diplomacyDataMap = GameContext.Current.DiplomacyData;
 
-            Civilization ignoreCiv;
-
-            if (includeStatement != null &&
+            Civilization ignoreCiv = includeStatement != null &&
                 (includeStatement.StatementType == StatementType.CommendWar ||
-                 includeStatement.StatementType == StatementType.DenounceWar))
-            {
-                ignoreCiv = includeStatement.Parameter as Civilization;
-            }
-            else
-            {
-                ignoreCiv = null;
-            }
-
+                 includeStatement.StatementType == StatementType.DenounceWar)
+                ? includeStatement.Parameter as Civilization
+                : null;
             foreach (Civilization otherCiv in GameContext.Current.Civilizations)
             {
                 if (otherCiv.CivID == source.OwnerID || otherCiv.CivID == civ.CivID || otherCiv == ignoreCiv)
@@ -482,19 +474,11 @@ namespace Supremacy.Diplomacy
             int currentTurn = GameContext.Current.TurnNumber;
             AgreementMatrix agreementMatrix = GameContext.Current.AgreementMatrix;
 
-            Civilization ignoreCiv;
-
-            if (includeStatement != null &&
+            Civilization ignoreCiv = includeStatement != null &&
                 (includeStatement.StatementType == StatementType.CommendWar ||
-                 includeStatement.StatementType == StatementType.DenounceWar))
-            {
-                ignoreCiv = includeStatement.Parameter as Civilization;
-            }
-            else
-            {
-                ignoreCiv = null;
-            }
-
+                 includeStatement.StatementType == StatementType.DenounceWar)
+                ? includeStatement.Parameter as Civilization
+                : null;
             foreach (Civilization otherCiv in GameContext.Current.Civilizations)
             {
                 if (otherCiv.CivID == source.OwnerID || otherCiv.CivID == civ.CivID || otherCiv == ignoreCiv)

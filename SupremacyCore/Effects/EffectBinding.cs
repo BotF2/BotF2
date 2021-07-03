@@ -115,13 +115,9 @@ namespace Supremacy.Effects
                 {
                     State = EffectState.Suspended;
                 }
-                else if (_isAttached)
-                {
-                    State = EffectState.Attached;
-                }
                 else
                 {
-                    State = EffectState.Detached;
+                    State = _isAttached ? EffectState.Attached : EffectState.Detached;
                 }
             }
         }

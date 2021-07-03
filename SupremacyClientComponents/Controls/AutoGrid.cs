@@ -42,10 +42,10 @@ namespace Supremacy.Client.Controls
         #region ReservedPosition Nested Type
         private struct ReservedPosition : IEquatable<ReservedPosition>
         {
-            // ReSharper disable MemberCanBePrivate.Local
+
             public readonly int Row;
             public readonly int Column;
-            // ReSharper restore MemberCanBePrivate.Local
+
 
             public ReservedPosition(int row, int column)
             {

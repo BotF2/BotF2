@@ -12,7 +12,6 @@ namespace Supremacy.Client
     /// <typeparam name="T">The type of items.</typeparam>
     public class DeferrableObservableCollection<T> : ObservableCollection<T>
     {
-        private bool _isDirty;
         private readonly bool _useStableSort;
         private readonly IComparer<T> _sortComparer;
         private int _usageCounter;
@@ -183,13 +182,13 @@ namespace Supremacy.Client
             // Decrement the counter
             _usageCounter = Math.Max(0, _usageCounter - 1);
 
-            if (_usageCounter != 0 || !_isDirty)
+            if (_usageCounter != 0 || !IsDirty)
             {
                 return;
             }
 
             // Flag as not dirty
-            _isDirty = false;
+            IsDirty = false;
 
             // Raise property changed events since there was a pending suspended change
             OnPropertyChanged(new PropertyChangedEventArgs("Item[]"));
@@ -214,7 +213,7 @@ namespace Supremacy.Client
         /// <value>
         /// <c>true</c> if there are any suspended property changes; otherwise, <c>false</c>.
         /// </value>
-        public bool IsDirty => _isDirty;
+        public bool IsDirty { get; private set; }
 
         /// <summary>
         /// Gets whether property change notifications are currently suspended.
@@ -232,7 +231,7 @@ namespace Supremacy.Client
         {
             if (IsPropertyChangeSuspended)
             {
-                _isDirty = true;
+                IsDirty = true;
             }
             else
             {
@@ -248,7 +247,7 @@ namespace Supremacy.Client
         {
             if (IsPropertyChangeSuspended)
             {
-                _isDirty = true;
+                IsDirty = true;
             }
             else
             {

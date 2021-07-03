@@ -116,14 +116,7 @@ namespace Supremacy.Client.Views
             }
             set
             {
-                if (value == null)
-                {
-                    _playerId = Game.Player.UnassignedPlayerID;
-                }
-                else
-                {
-                    _playerId = value.PlayerID;
-                }
+                _playerId = value == null ? Game.Player.UnassignedPlayerID : value.PlayerID;
 
                 OnPropertyChanged("Player");
 

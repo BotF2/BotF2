@@ -234,7 +234,6 @@ namespace Supremacy.Client
     {
         private readonly ObservableCollection<Control> _screens;
         private readonly Grid _itemsContainer;
-        private readonly ReadOnlyObservableCollection<Control> _screensView;
         private Control _currentScreen;
         private Control _fallbackScreen;
         //private RenderTargetBitmap _lastScreenBitmap;
@@ -245,7 +244,7 @@ namespace Supremacy.Client
         {
             _itemsContainer = new Grid();
             _screens = new ObservableCollection<Control>();
-            _screensView = new ReadOnlyObservableCollection<Control>(_screens);
+            Screens = new ReadOnlyObservableCollection<Control>(_screens);
             _currentScreen = null;
 
             AddVisualChild(_itemsContainer);
@@ -254,7 +253,7 @@ namespace Supremacy.Client
             Loaded += OnLoaded;
         }
 
-        public ReadOnlyObservableCollection<Control> Screens => _screensView;
+        public ReadOnlyObservableCollection<Control> Screens { get; }
 
         void OnLoaded(object sender, RoutedEventArgs e)
         {
@@ -272,7 +271,7 @@ namespace Supremacy.Client
         public void AddScreen(Control screen)
         {
             // works
-            GameLog.Client.UI.DebugFormat("GameScreenStack.cs: screen={0}", screen);
+            GameLog.Client.UIDetails.DebugFormat("GameScreenStack.cs: screen={0}", screen);
             Console.WriteLine("GameScreenStack.cs: screen={0}", screen);
             if (screen == null)
             {
